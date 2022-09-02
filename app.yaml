@@ -1,0 +1,7 @@
+runtime: nodejs14
+env: standard
+service: default
+handlers:
+  - url: /.*
+    secure: always
+    script: auto

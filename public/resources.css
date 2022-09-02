@@ -1,0 +1,46 @@
+
+.resourceBlock {
+  position: relative;
+  width: 58px;
+  height: 72px;
+}
+
+.resourceSymbol {
+  color: #fad54d;
+  font-size: 70px;
+  text-shadow: 0 0 4px #fad54d;
+  position: absolute;
+  top: -20px;
+  left: 0px;
+}
+
+.resourceText {
+  position: absolute;
+  font-size: 15px;
+  width: 32px;
+  height: 32px;
+  left: 5px;
+  top: 7px;
+  line-height: 32px;
+  text-align: center;
+}
+
+.influenceSymbol {
+  color: #72d4f7;
+  font-size: 45px;
+  text-shadow: 0 0 4px #72d4f7;
+  position: absolute;
+  top: 16px;
+  left: 20px;
+}
+
+.influenceText {
+  position: absolute;
+  font-size: 15px;
+  width: 32px;
+  height: 32px;
+  left: 22px;
+  top: 33px;
+  line-height: 32px;
+  text-align: center;
+}

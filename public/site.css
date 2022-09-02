@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'Slider';
+  src: url('Slider.eot');
+  src: url('Slider.eot?#iefix') format('embedded-opentype'),
+      url('Slider.woff2') format('woff2'),
+      url('Slider.woff') format('woff'),
+      url('Slider.ttf') format('truetype'),
+      url('Slider.svg#Slider') format('svg');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "slider";
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
