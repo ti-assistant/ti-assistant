@@ -1,5 +1,6 @@
 const ATTACHMENTS = {
   "Demilitarized Zone": {
+    name: "Demilitarized Zone",
     required: {
       type: "Cultural",
       home: false,
@@ -9,6 +10,7 @@ const ATTACHMENTS = {
     attribute: "demilitarized",
   },
   "Dyson Sphere": {
+    name: "Dyson Sphere",
     required: {
       type: "Cultural",
       home: false,
@@ -18,6 +20,7 @@ const ATTACHMENTS = {
     attribute: "",
   },
   "Paradise World": {
+    name: "Paradise World",
     required: {
       type: "Cultural",
       home: false,
@@ -27,6 +30,7 @@ const ATTACHMENTS = {
     attribute: "",
   },
   "Tomb of Emphidia": {
+    name: "Tomb of Emphidia",
     required: {
       type: "Cultural",
       home: false,
@@ -36,6 +40,7 @@ const ATTACHMENTS = {
     attribute: "tomb",
   },
   "Biotic Research Facility": {
+    name: "Biotic Research Facility",
     required: {
       type: "Industrial",
       home: false,
@@ -45,6 +50,7 @@ const ATTACHMENTS = {
     attribute: "green-skip",
   },
   "Cybernetic Research Facility": {
+    name: "Cybernetic Research Facility",
     required: {
       type: "Industrial",
       home: false,
@@ -54,6 +60,7 @@ const ATTACHMENTS = {
     attribute: "yellow-skip",
   },
   "Propulsion Research Facility": {
+    name: "Propulsion Research Facility",
     required: {
       type: "Industrial",
       home: false,
@@ -63,6 +70,7 @@ const ATTACHMENTS = {
     attribute: "blue-skip",
   },
   "Lazax Survivors": {
+    name: "Lazax Survivors",
     required: {
       type: "Hazardous",
       home: false,
@@ -72,6 +80,7 @@ const ATTACHMENTS = {
     attribute: "",
   },
   "Mining World": {
+    name: "Mining World",
     required: {
       type: "Hazardous",
       home: false,
@@ -81,6 +90,7 @@ const ATTACHMENTS = {
     attribute: "",
   },
   "Rich World": {
+    name: "Rich World",
     required: {
       type: "Hazardous",
       home: false,
@@ -90,6 +100,7 @@ const ATTACHMENTS = {
     attribute: "",
   },
   "Warfare Research Facility": {
+    name: "Warfare Research Facility",
     required: {
       type: "Hazardous",
       home: false,
@@ -99,6 +110,7 @@ const ATTACHMENTS = {
     attribute: "red-skip",
   },
   "Ul the Progenitor": {
+    name: "Ul the Progenitor",
     required: {
       name: "Elysium",
       home: true,
@@ -108,6 +120,7 @@ const ATTACHMENTS = {
     attribute: "space-cannon",
   },
   "Terraform": {
+    name: "Terraform",
     required: {
       legendary: false,
       home: false,
@@ -117,6 +130,7 @@ const ATTACHMENTS = {
     attribute: "all-types",
   },
   "Nano-Forge": {
+    name: "Nano-Forge",
     required: {
       legendary: false,
       home: false,

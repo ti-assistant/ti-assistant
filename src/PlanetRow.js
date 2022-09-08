@@ -2,7 +2,10 @@ import Image from 'next/image';
 import { useState } from "react";
 import useSWR from 'swr'
 
+import { AttachRow } from "/src/AttachRow.js";
 import { Resources } from "/src/Resources.js";
+import { Modal } from "/src/Modal.js";
+import { FactionSymbol } from "/src/FactionCard.js";
 
 const fetcher = async (url) => {
   const res = await fetch(url)
@@ -15,9 +18,8 @@ const fetcher = async (url) => {
   return data
 };
 
-function PlanetSymbol({ type }) {
-  let color;
-  switch (type) {
+function PlanetSymbol({ type, faction }) {
+switch (type) {
     case "Industrial":
       return <Image src="/images/industrial_icon.svg" alt="Industrial Planet Icon" width="36px" height="36px" />;
     case "Cultural":
@@ -25,8 +27,16 @@ function PlanetSymbol({ type }) {
     case "Hazardous":
       return <Image src="/images/hazardous_icon.svg" alt="Hazardous Planet Icon" width="36px" height="36px" />;
     case "all":
-      // TODO: Add image for all 3 icons.
+      return <div style={{marginLeft: "8px", width:"36px", height: "36px"}}>
+        <Image src="/images/industrial_icon.svg" alt="Industrial Planet Icon" width="18px" height="18px" />
+        <Image src="/images/cultural_icon.svg" alt="Cultural Planet Icon" width="18px" height="18px" />
+        <Image src="/images/hazardous_icon.svg" alt="Hazardous Planet Icon" width="18px" height="18px" />
+      </div>;
     case "none":
+      if (faction === undefined) {
+        return null;
+      }
+      return <FactionSymbol faction={faction} size={42} />;
     default:
       return null;
   }
@@ -44,7 +54,6 @@ function PlanetAttributes({ attributes }) {
     return null;
   }
   function getAttributeIcon(attribute) {
-    let color;
     switch (attribute) {
       case "legendary":
         return <LegendaryPlanetIcon />;
@@ -60,6 +69,8 @@ function PlanetAttributes({ attributes }) {
         return <Image src="/images/demilitarized_zone.svg" alt="Demilitarized Zone" width="22px" height="22px" />;
       case "tomb":
         return <Image src="/images/tomb_symbol.webp" alt="Tomb of Emphidia" width="22px" height="22px" />;
+      case "space-cannon":
+        return <div style={{width: "22px", height: "22px"}}>✹✹✹</div>
       default:
         return null;
     }
@@ -105,37 +116,23 @@ function PlanetAttributes({ attributes }) {
 }
 
 function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
-  return (
-  <div>
-    <div style={{position: "fixed", left: "0px", top: "0px", width: "100%", height: "100%", backgroundColor: "grey", opacity: "50%", zIndex: 900}} onClick={closeMenu}>
-
-    </div>
-    <div style={{position:"fixed", backgroundColor: "white", zIndex: 901,
-      padding: "4px", width: "90%", marginLeft: "auto", marginTop: "auto"}}>
-    <div
-        style={{
-          color: "grey",
-          cursor: "pointer",
-          fontSize: "20px",
-          marginLeft: "8px",
-        }}
-        onClick={closeMenu}
-      >
-        &#x2715;
-      </div>
+  return (<Modal closeMenu={closeMenu} visible={true} title="Attachments"
+    content={
+    <div>
       {Object.entries(attachments).map(([name, attachment]) => {
         return (
-          <div key={name}>
+          
+          <div key={name} className="flexRow" style={{justifyContent: "flex-start", alignItems: "center"}}>
             <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={planet.attachments.includes(name)}></input>
-            {name}
+            <AttachRow attachment={attachment} />
           </div>
         );
       })}
     </div>
-  </div>);
+  } />);
 }
 
-export function PlanetRow({planet, updatePlanet, removePlanet}) {
+export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
 
@@ -148,16 +145,6 @@ export function PlanetRow({planet, updatePlanet, removePlanet}) {
 
   function canAttach() {
     return Object.keys(availableAttachments()).length !== 0;
-    if (planet.name === "Mecatol Rex") {
-      return false;
-    }
-    if (!planet.home) {
-      return true;
-    }
-    if (planet.name === "Elysium") {
-      return true;
-    }
-    return false;
   }
   
   function availableAttachments() {
@@ -224,96 +211,48 @@ export function PlanetRow({planet, updatePlanet, removePlanet}) {
     });
   }
 
-  function calculateResources() {
-    let resources = planet.resources;
-    const hasSkip = planet.attributes.includes("red-skip") || planet.attributes.includes("blue-skip") || planet.attributes.includes('green-skip') || planet.attributes.includes('yellow-skip');
-    const value = planet.attachments.reduce((result, current) => {
-      let resources = result.resources;
-      let hasSkip = result.hasSkip;
-      let attachment = attachments[current];
-      if (attachment.attribute.includes("skip")) {
-        if (hasSkip) {
-          resources += attachment.resources;
-        }
-        hasSkip = true;
-      } else {
-        resources += attachment.resources;
-      }
-      return {
-        resources: resources,
-        hasSkip: hasSkip,
-      };
-    }, {resources: resources, hasSkip: hasSkip});
-    return value.resources;
-  }
-
-  function calculateInfluence() {
-    let influence = planet.influence;
-    const hasSkip = planet.attributes.includes("red-skip") || planet.attributes.includes("blue-skip") || planet.attributes.includes('green-skip') || planet.attributes.includes('yellow-skip');
-    const value = planet.attachments.reduce((result, current) => {
-      let influence = result.influence;
-      let hasSkip = result.hasSkip;
-      let attachment = attachments[current];
-      if (attachment.attribute.includes("skip")) {
-        if (hasSkip) {
-          influence += attachment.influence;
-        }
-        hasSkip = true;
-      } else {
-        influence += attachment.influence;
-      }
-      return {
-        influence: influence,
-        hasSkip: hasSkip,
-      };
-    }, {influence: influence, hasSkip: hasSkip});
-    return value.influence;
-  }
-
-  function calculateAttributes() {
-    let attributes = [...planet.attributes];
-    const hasSkip = planet.attributes.includes("red-skip") || planet.attributes.includes("blue-skip") || planet.attributes.includes('green-skip') || planet.attributes.includes('yellow-skip');
-    const value = planet.attachments.reduce((result, current) => {
-      let attributes = result.attributes;
-      let hasSkip = result.hasSkip;
-      let attachment = attachments[current];
-      if (!attachment.attribute) {
-        return result;
-      }
-      if (attachment.attribute.includes("skip") && !hasSkip) {
-        attributes.push(attachment.attribute);
-        hasSkip = true;
-      }
-      if (!attachment.attribute.includes("skip")) {
-        attributes.push(attachment.attribute);
-      }
-      return {
-        attributes: attributes,
-        hasSkip: hasSkip,
-      };
-    }, {attributes: attributes, hasSkip: hasSkip});
-    console.log(value);
-    return value.attributes;
-  }
-
   return (
-    <div className="planetRow">
+    <div className={`planetRow ${!planet.isReady ? "exhausted" : ""}`}>
       {showAttachMenu ?
         <AttachMenu planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} /> : null}
-      <div
+      {addPlanet !== undefined ? 
+        <div
         style={{
-          position: "absolute",
-          color: "grey",
+          position: "relative",
+          top: "32px",
+          lineHeight: "20px",
+          color: "darkgreen",
           cursor: "pointer",
           fontSize: "20px",
-          zIndex: 100
+          zIndex: 100,
+          marginRight: "8px",
+          height: "20px",
         }}
-        onClick={() => removePlanet(planet.name)}
+        onClick={() => addPlanet(planet.name)}
       >
-        &#x2715;
+        &#x2713;
       </div>
-      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%"}}>
-        <div style={{ lineHeight: "90px", fontSize: "24px", zIndex: 2}}>
+      : null}
+      {removePlanet !== undefined ? 
+        <div
+          style={{
+            position: "relative",
+            top: "32px",
+            lineHeight: "20px",
+            color: "darkred",
+            cursor: "pointer",
+            fontSize: "20px",
+            zIndex: 100,
+            marginRight: "8px",
+            height: "20px",
+          }}
+          onClick={() => removePlanet(planet.name)}
+        >
+          &#x2715;
+        </div>
+      : null}
+      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2}}>
+        <div style={{ display: "flex", alignItems: "end", paddingBottom: "14px", fontSize: "24px", zIndex: 2}}>
           {planet.name}
         </div>
         <div
@@ -326,7 +265,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet}) {
             zIndex: 1,
           }}
         >
-          <PlanetSymbol type={planet.type} />
+          <PlanetSymbol type={planet.type} faction={planet.faction} />
         </div>
       </div>
       <Resources
@@ -341,11 +280,13 @@ export function PlanetRow({planet, updatePlanet, removePlanet}) {
       >
         <PlanetAttributes attributes={planet.attributes} />
       </div>
+      {updatePlanet !== undefined ? 
       <div className="flexColumn">
         <button onClick={() => togglePlanet(planet.name)}>
             {planet.isReady ? "Exhaust" : "Ready"}
         </button>
         {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
       </div>
+      : null}
     </div>);
 }

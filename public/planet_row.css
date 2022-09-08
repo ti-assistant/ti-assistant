@@ -2,8 +2,11 @@
   display: flex;
   flex-direction: row;
   height: 72px;
-  border: 1px dashed;
   padding-left: 4px;
   padding-right: 4px;
   position: relative;
+}
+
+.planetRow.exhausted {
+  background-color: lightgrey;
 }

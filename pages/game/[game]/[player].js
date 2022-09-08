@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
+import { AddPlanetList } from "/src/AddPlanetList.js";
 import { Resources } from "/src/Resources.js";
 import { PlanetRow } from "/src/PlanetRow.js";
+import { Tab, TabBody } from "/src/Tab.js";
+import { Modal } from "/src/Modal.js";
 import useSWR from 'swr'
-import Image from 'next/image';
-import cultural_icon from '/public/images/cultural_icon.svg';
-import hazardous_icon from '/public/images/hazardous_icon.svg';
-import industrial_icon from '/public/images/industrial_icon.svg';
 
 const fetcher = async (url) => {
   const res = await fetch(url)
@@ -113,7 +112,7 @@ export default function GamePage() {
         isReady: true,
         type: "Hazardous",
         home: false,
-        attributes: ["legendary", "blue-skip"],
+        attributes: [],
         attachments: []
       },
       {
@@ -133,7 +132,7 @@ export default function GamePage() {
         isReady: false,
         type: "Industrial",
         home: false,
-        attributes: ["red-skip", "tomb", "demilitarized"],
+        attributes: [],
         attachments: []
       },
       {
@@ -161,12 +160,18 @@ export default function GamePage() {
 
   const [player, setPlayer] = useState(initial_player);
   const [showAddTech, setShowAddTech] = useState(false);
+  const [showAddPlanet, setShowAddPlanet] = useState(false);
+  const [tabShown, setTabShown] = useState("planets");
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
+  const { data: planets, error: planetsError } = useSWR("/api/planets", fetcher);
 
+  if (planetsError) {
+    return (<div>Failed to load planets</div>);
+  }
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
   }
-  if (!attachments) {
+  if (!attachments || !planets) {
     return (<div>Loading...</div>);
   }
 
@@ -187,6 +192,37 @@ export default function GamePage() {
     setPlayer({
       ...player,
       planets: planets
+    });
+  }
+
+  function addPlanet(add) {
+    const planet = planets.find((value) => value.name === add);
+    setPlayer({
+      ...player,
+      planets: [...player.planets, {...planet, isReady: false}], 
+    });
+  }
+
+  function readyAll() {
+    setPlayer({
+      ...player,
+      planets: player.planets.map((planet) => {
+        return {
+          ...planet,
+          isReady: true,
+        };
+      })
+    });
+  }
+  function exhaustAll() {
+    setPlayer({
+      ...player,
+      planets: player.planets.map((planet) => {
+        return {
+          ...planet,
+          isReady: false,
+        };
+      })
     });
   }
 
@@ -258,6 +294,10 @@ export default function GamePage() {
         } else {
           updatedPlanet.attributes.push(attachment.attribute);
         }
+      } else if (attachment.attribute === "all-types") {
+        updatedPlanet.type = "all";
+        updatedPlanet.resources += attachment.resources;
+        updatedPlanet.influence += attachment.influence;
       } else {
         updatedPlanet.resources += attachment.resources;
         updatedPlanet.influence += attachment.influence;
@@ -266,13 +306,14 @@ export default function GamePage() {
         }
       }
     });
-    if (updatedPlanet.name === "Lodor") {
-      console.log(updatedPlanet);
-    }
     return updatedPlanet;
   }
 
   const updatedPlanets = player.planets.map(applyPlanetAttachments);
+
+  const remainingPlanets = planets.filter((planet) => {
+    return player.planets.findIndex((ownedPlanet) => ownedPlanet.name === planet.name) === -1;
+  });
 
   function remainingResources() {
     return updatedPlanets.reduce((prev, current) => {
@@ -291,10 +332,18 @@ export default function GamePage() {
     }, 0);
   }
 
+  function toggleAddPlanetMenu() {
+    setShowAddPlanet(!showAddPlanet);
+  }
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <Modal closeMenu={toggleAddPlanetMenu} visible={showAddPlanet} title="Add Planet"
+        content={
+          <AddPlanetList planets={remainingPlanets} addPlanet={addPlanet} />
+      } />
       <h2
         style={{
           display: "flex",
@@ -430,81 +479,40 @@ export default function GamePage() {
           <div
             style={{ display: "flex", flexDirection: "column", width: "100%" }}
           >
-            <b style={{ textAlign: "center", margin: "4px" }}>Planets</b>
-            {updatedPlanets.map((planet) => {
-              return <PlanetRow key={planet.name} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
-              // return (
-              //   <div
-              //     key={planet.name}
-              //     style={{
-              //       display: "flex",
-              //       flexDirection: "row",
-              //       height: "72px",
-              //       border: "1px dashed",
-              //       paddingLeft: "4px",
-              //       paddingRight: "4px",
-              //       position: "relative"
-              //     }}
-              //   >
-              //     <div
-              //       style={{
-              //         position: "absolute",
-              //         color: "grey",
-              //         cursor: "pointer",
-              //         fontSize: "20px"
-              //       }}
-              //       onClick={() => removePlanet(planet.name)}
-              //     >
-              //       &#x2715;
-              //     </div>
-              //     <div style={{ lineHeight: "90px", fontSize: "24px", zIndex: 99 }}>
-              //       {planet.name}
-              //     </div>
-              //     <div
-              //       style={{
-              //         position: "relative",
-              //         top: "18px",
-              //         left: "-16px",
-              //         opacity: "70%",
-              //         zIndex: 1,
-              //       }}
-              //     >
-              //       <PlanetSymbol type={planet.type} />
-              //     </div>
-              //     <Resources
-              //       resources={planet.resources}
-              //       influence={planet.influence}
-              //     />
-              //     <div
-              //       style={{
-              //         marginLeft: "10px",
-              //         marginRight: "10px",
-              //         width: "72px"
-              //       }}
-              //     >
-              //       <PlanetAttributes attributes={planet.attributes} />
-              //     </div>
-              //     <div
-              //       style={{
-              //         display: "flex",
-              //         flexDirection: "column",
-              //         justifyContent: "space-evenly"
-              //       }}
-              //     >
-              //       {planet.isReady ? (
-              //         <button onClick={() => exhaustPlanet(planet.name)}>
-              //           Exhaust
-              //         </button>
-              //       ) : (
-              //         <button onClick={() => readyPlanet(planet.name)}>
-              //           Ready
-              //         </button>
-              //       )}
-              //       {canAttach(planet) ? <button>Attach</button> : null}
-              //     </div>
-              //   </div>
-              // );
-            })}
+            {/* Tabs */}
+            <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid black"}}>
+              <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content={
+                <b style={{ textAlign: "center", margin: "4px" }}>Techs</b>
+              } />
+              <Tab selectTab={setTabShown} id="planets" selectedId={tabShown} content={
+                <b style={{ textAlign: "center", margin: "4px" }}>Planets</b>
+              } />
+              <Tab selectTab={setTabShown} id="objectives" selectedId={tabShown} content={
+                <b style={{ textAlign: "center", margin: "4px" }}>Objectives</b>
+              } />
+            </div>
+            <TabBody id="techs" selectedId={tabShown} content={
+            <div>
+              Technologies
+            </div>} />
+            <TabBody id="planets" selectedId={tabShown} content={
+            <div>
+            <div className="flexRow" style={{height: "32px"}}>
+              <button onClick={toggleAddPlanetMenu}>Add Planet</button>
+              <button onClick={readyAll}>Ready All</button>
+              <button onClick={exhaustAll}>Exhaust All</button>
+            </div>
+            <div>
+              {updatedPlanets.map((planet) => {
+                return <PlanetRow key={planet.name} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
+              })}
+            </div>
+            </div>} />
+
+            <TabBody id="objectives" selectedId={tabShown} content={
+            <div>
+              Objectives
+            </div>} />
           </div>
         </div>
       </div>

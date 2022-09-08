@@ -19,10 +19,20 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 .flexColumn {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+}
+
+.tab {
+  padding: 4px;
+}
+
+.tab.active {
+  background-color: lightblue;
+  font-weight: bold;
 }
