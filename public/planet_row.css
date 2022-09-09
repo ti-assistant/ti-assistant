@@ -10,3 +10,16 @@
 .planetRow.exhausted {
   background-color: lightgrey;
 }
+
+.techRow {
+  display: flex;
+  flex-direction: row;
+  height: 48px;
+  padding-left: 4px;
+  padding-right: 4px;
+  position: relative;
+}
+
+.techRow.exhausted {
+  background-color: lightgrey;
+}

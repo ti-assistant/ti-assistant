@@ -7,31 +7,40 @@
 
 .resourceSymbol {
   color: #fad54d;
-  font-size: 70px;
+  font-size: 60px;
   text-shadow: 0 0 4px #fad54d;
   position: absolute;
-  top: -20px;
-  left: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 38px;
 }
 
-.resourceText {
+.resourceTextWrapper {
+  left: 0;
+  top: 0;
   position: absolute;
-  font-size: 15px;
-  width: 32px;
-  height: 32px;
-  left: 5px;
-  top: 7px;
-  line-height: 32px;
-  text-align: center;
+  font-size: 14px;
+  width: 42px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .influenceSymbol {
   color: #72d4f7;
   font-size: 45px;
+  width: 42px;
+  height: 46px;
   text-shadow: 0 0 4px #72d4f7;
   position: absolute;
-  top: 16px;
-  left: 20px;
+  top: 22px;
+  left: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .influenceText {
@@ -43,4 +52,16 @@
   top: 33px;
   line-height: 32px;
   text-align: center;
+}
+
+.influenceTextWrapper {
+  left: 17px;
+  top: 26px;
+  position: absolute;
+  font-size: 14px;
+  width: 42px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

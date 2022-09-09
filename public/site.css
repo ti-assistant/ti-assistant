@@ -30,9 +30,11 @@ body {
 
 .tab {
   padding: 4px;
+  height: 24px;
+  font-size: 20px;
 }
 
 .tab.active {
   background-color: lightblue;
-  font-weight: bold;
+  border-radius: 5px 5px 0px 0px;
 }

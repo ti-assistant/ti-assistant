@@ -1,18 +1,18 @@
 export function Resources({ resources, influence }) {
   return (
     <div className="resourceBlock">
-      <span className="resourceSymbol">
+      <div className="resourceSymbol">
         &#x25CB;
-      </span>
-      <span className="resourceText">
+      </div>
+      <div className="resourceTextWrapper">
         {resources}
-      </span>
-      <span className="influenceSymbol">
+      </div>
+      <div className="influenceSymbol">
         &#x2B21;
-      </span>
-      <span className="influenceText">
+      </div>
+      <div className="influenceTextWrapper">
         {influence}
-      </span>
+      </div>
     </div>
   );
 }

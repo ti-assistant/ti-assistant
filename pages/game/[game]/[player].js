@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { AddPlanetList } from "/src/AddPlanetList.js";
+import { AddTechList } from "/src/AddTechList.js";
 import { Resources } from "/src/Resources.js";
 import { PlanetRow } from "/src/PlanetRow.js";
+import { TechRow } from "/src/TechRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 import { Modal } from "/src/Modal.js";
 import useSWR from 'swr'
@@ -164,26 +166,22 @@ export default function GamePage() {
   const [tabShown, setTabShown] = useState("planets");
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
   const { data: planets, error: planetsError } = useSWR("/api/planets", fetcher);
+  const { data: technologies, error: techsError } = useSWR("/api/techs", fetcher);
 
   if (planetsError) {
     return (<div>Failed to load planets</div>);
   }
+  if (techsError) {
+    return (<div>Failed to load technologies</div>);
+  }
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
   }
-  if (!attachments || !planets) {
+  if (!attachments || !planets || !technologies) {
     return (<div>Loading...</div>);
   }
 
-  function removeTech(remove) {
-    let techs = player.technologies.filter((tech) => tech.name !== remove);
-    setPlayer({
-      ...player,
-      technologies: techs
-    });
-  }
-
-  function toggleAddTech() {
+  function toggleAddTechMenu() {
     setShowAddTech(!showAddTech);
   }
 
@@ -200,6 +198,22 @@ export default function GamePage() {
     setPlayer({
       ...player,
       planets: [...player.planets, {...planet, isReady: false}], 
+    });
+  }
+  
+  function removeTech(remove) {
+    let technologies = player.technologies.filter((tech) => tech.name !== remove);
+    setPlayer({
+      ...player,
+      technologies: technologies
+    });
+  }
+
+  function addTech(add) {
+    const tech = technologies.find((value) => value.name === add);
+    setPlayer({
+      ...player,
+      technologies: [...player.technologies, {...tech, isReady: true}], 
     });
   }
 
@@ -259,7 +273,7 @@ export default function GamePage() {
   }
 
   function updatePlanet(name, updatedPlanet) {
-    let planets = player.planets.map((planet) => {
+    const planets = player.planets.map((planet) => {
       if (planet.name === name) {
         return {
           ...planet,
@@ -272,6 +286,22 @@ export default function GamePage() {
     setPlayer({
       ...player,
       planets: planets
+    });
+  }
+
+  function updateTech(name, updatedTech) {
+    const techs = player.technologies.map((tech) => {
+      if (tech.name === name) {
+        return {
+          ...tech,
+          isReady: updatedTech.isReady,
+        };
+      }
+      return tech;
+    });
+    setPlayer({
+      ...player,
+      technologies: techs
     });
   }
 
@@ -309,6 +339,10 @@ export default function GamePage() {
     return updatedPlanet;
   }
 
+  const remainingTechs = technologies.filter((tech) => {
+    return player.technologies.findIndex((ownedTech) => ownedTech.name === tech.name) === -1;
+  });
+
   const updatedPlanets = player.planets.map(applyPlanetAttachments);
 
   const remainingPlanets = planets.filter((planet) => {
@@ -340,6 +374,10 @@ export default function GamePage() {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <Modal closeMenu={toggleAddTechMenu} visible={showAddTech} title="Research Tech"
+        content={
+          <AddTechList techs={remainingTechs} addTech={addTech} />
+        } />
       <Modal closeMenu={toggleAddPlanetMenu} visible={showAddPlanet} title="Add Planet"
         content={
           <AddPlanetList planets={remainingPlanets} addPlanet={addPlanet} />
@@ -493,7 +531,14 @@ export default function GamePage() {
             </div>
             <TabBody id="techs" selectedId={tabShown} content={
             <div>
-              Technologies
+              <div className="flexRow" style={{height: "32px"}}>
+                <button onClick={toggleAddTechMenu}>Research Tech</button>
+              </div>
+              <div style={{maxHeight: "500px", overflow: "auto"}}>
+                {player.technologies.map((tech) => {
+                  return <TechRow key={tech.name} tech={tech} updateTech={updateTech} removeTech={removeTech} />
+                })}
+              </div>
             </div>} />
             <TabBody id="planets" selectedId={tabShown} content={
             <div>
@@ -502,7 +547,7 @@ export default function GamePage() {
               <button onClick={readyAll}>Ready All</button>
               <button onClick={exhaustAll}>Exhaust All</button>
             </div>
-            <div>
+            <div style={{maxHeight: "500px", overflow: "auto"}}>
               {updatedPlanets.map((planet) => {
                 return <PlanetRow key={planet.name} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
               })}

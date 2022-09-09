@@ -64,7 +64,7 @@ function PlanetAttributes({ attributes }) {
       case "blue-skip":
         return <Image src="/images/blue_tech.webp" alt="Blue Tech Skip" width="22px" height="22px" />;
       case "green-skip":
-        return <Image src="/images/green_tech.webp" alt="Blue Tech Skip" width="22px" height="22px" />;
+        return <Image src="/images/green_tech.webp" alt="Green Tech Skip" width="22px" height="22px" />;
       case "demilitarized":
         return <Image src="/images/demilitarized_zone.svg" alt="Demilitarized Zone" width="22px" height="22px" />;
       case "tomb":
