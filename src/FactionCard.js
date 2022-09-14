@@ -85,7 +85,7 @@ export function FactionSymbol({ faction, size }) {
 
 export function FactionCard({ player, onClick }) {
   const border = "3px solid " + player.color;
-  const victory_points = player.victory_points.reduce((prev, current) => {
+  const victory_points = (player.victory_points ?? []).reduce((prev, current) => {
     return prev + current.amount;
   }, 0);
   return (
@@ -98,8 +98,8 @@ export function FactionCard({ player, onClick }) {
         border: border
       }}
     >
-      <div style={{ width: "40px", height: "40px", display: "inline-block" }}>
-        icon
+      <div class="flexRow" style={{ width: "40px", height: "40px", paddingLeft: "4px", paddingRight: "8px" }}>
+        <FactionSymbol faction={player.faction} size={40} />
       </div>
       <b style={{ paddingRight: "12px" }}>{player.faction}</b>
       {victory_points} VPs

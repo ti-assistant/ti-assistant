@@ -3,6 +3,18 @@ import { useState } from "react";
 import { PlanetRow } from "/src/PlanetRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 
+function sortPlanets(planets, field, descending = false) {
+  planets.sort((a, b) => {
+    if (a[field] > b[field]) {
+      return descending ? -1 : 1;
+    }
+    if (a[field] < b[field]) {
+      return descending ? 1 : -1;
+    }
+    return 0;
+  });
+}
+
 export function AddPlanetList({ planets, addPlanet }) {
   const [tabShown, setTabShown] = useState("normal");
 
@@ -11,6 +23,7 @@ export function AddPlanetList({ planets, addPlanet }) {
       !planet.attributes.includes("legendary")
   });
   const homePlanets = planets.filter((planet) => planet.home);
+  sortPlanets(homePlanets, "faction");
   const legendaryPlanets = planets.filter((planet) => planet.attributes.includes("legendary"));
 
   return (

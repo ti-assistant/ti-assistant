@@ -11,8 +11,19 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Myriad Pro';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Myriad Pro'), url('MYRIADPRO-REGULAR.woff') format('woff');
+}
+
 body {
   font-family: "slider";
+}
+
+.myriadPro {
+  font-family: "Myriad Pro";
 }
 
 .flexRow {

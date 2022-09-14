@@ -1,3 +1,5 @@
+const { getFirestore } = require('firebase-admin/firestore');
+
 const GAME_INFO = {
   phase: "Action",
   agendaUnlocked: false,
@@ -71,6 +73,15 @@ const GAME_INFO = {
   ],
 };
 
-export default function handler(req, res) {
-  res.status(200).json(GAME_INFO);
+export default async function handler(req, res) {
+  const gameid = req.query.game;
+  const db = getFirestore();
+
+  const gameRef = await db.collection('games').doc(gameid).get();
+
+  if (!gameRef.exists) {
+    res.status(404);
+  }
+
+  res.status(200).json(gameRef.data());
 }

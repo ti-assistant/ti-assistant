@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/router'
 import { AddPlanetList } from "/src/AddPlanetList.js";
 import { AddTechList } from "/src/AddTechList.js";
 import { Resources } from "/src/Resources.js";
@@ -7,37 +8,21 @@ import { TechRow } from "/src/TechRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 import { Modal } from "/src/Modal.js";
 import useSWR from 'swr'
+import { ObjectiveList } from "/src/ObjectiveList";
 
 const fetcher = async (url) => {
   const res = await fetch(url)
   const data = await res.json()
 
-  console.log(data);
   if (res.status !== 200) {
     throw new Error(data.message)
   }
   return data
 };
 
-
-const allTech = [
-  {
-    name: "Gravity Drive",
-    canExhaust: false
-  },
-  {
-    name: "Sling Relay",
-    canExhaust: true
-  },
-  {
-    name: "Sarween Tools",
-    canExhaust: false
-  }
-];
-
 export default function GamePage() {
   let initial_player = {
-    faction: "Universities of Jol'Nar",
+    faction: "Arborec",
     strategy_card: {
       name: "Construction",
       order: 4
@@ -45,56 +30,6 @@ export default function GamePage() {
     timer: "01:30:00",
     active_player: true,
     technologies: [
-      {
-        name: "Gravity Drive",
-        canExhaust: false,
-        isReady: true
-      },
-      {
-        name: "Sling Relay",
-        canExhaust: true,
-        isReady: false
-      },
-      {
-        name: "Sarween Tools",
-        canExhaust: false,
-        isReady: true
-      },
-      {
-        name: "Neural Motivator",
-        canExhaust: false,
-        isReady: true
-      },
-      {
-        name: "War Sun",
-        canExhaust: false,
-        isReady: true
-      },
-      {
-        name: "Carrier II",
-        canExhaust: false,
-        isReady: true
-      },
-      {
-        name: "Magen Defense Grid",
-        canExhaust: false,
-        isReady: true
-      },
-      {
-        name: "Light/Wave Deflector",
-        canExhaust: false,
-        isReady: true
-      },
-      {
-        name: "Integrated Economy",
-        canExhaust: true,
-        isReady: true
-      },
-      {
-        name: "Dreadnaught II",
-        canExhaust: false,
-        isReady: true
-      }
     ],
     planets: [
       {
@@ -164,20 +99,30 @@ export default function GamePage() {
   const [showAddTech, setShowAddTech] = useState(false);
   const [showAddPlanet, setShowAddPlanet] = useState(false);
   const [tabShown, setTabShown] = useState("planets");
+  const router = useRouter();
+  const { game: gameid, player: playerID } = router.query;
+  const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/game/${gameid}` : null, fetcher);
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
-  const { data: planets, error: planetsError } = useSWR("/api/planets", fetcher);
+  const { data: objectives, error: objectivesError } = useSWR("/api/objectives", fetcher);
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/planets?gameid=${gameid}` : null, fetcher);
   const { data: technologies, error: techsError } = useSWR("/api/techs", fetcher);
 
+  if (attachmentsError) {
+    return (<div>Failed to load attachments</div>);
+  }
+  if (objectivesError) {
+    return (<div>Failed to load objectives</div>);
+  }
   if (planetsError) {
     return (<div>Failed to load planets</div>);
   }
   if (techsError) {
     return (<div>Failed to load technologies</div>);
   }
-  if (attachmentsError) {
-    return (<div>Failed to load attachments</div>);
+  if (gameStateError) {
+    return (<div>Failed to load game state</div>);
   }
-  if (!attachments || !planets || !technologies) {
+  if (!attachments || !objectives || !planets || !technologies || !gameState) {
     return (<div>Loading...</div>);
   }
 
@@ -339,14 +284,17 @@ export default function GamePage() {
     return updatedPlanet;
   }
 
+  
+  const gamePlayer = gameState.players[playerID - 1];
+
   const remainingTechs = technologies.filter((tech) => {
     return player.technologies.findIndex((ownedTech) => ownedTech.name === tech.name) === -1;
   });
 
-  const updatedPlanets = player.planets.map(applyPlanetAttachments);
+  const updatedPlanets = gamePlayer.planets.map(applyPlanetAttachments);
 
   const remainingPlanets = planets.filter((planet) => {
-    return player.planets.findIndex((ownedPlanet) => ownedPlanet.name === planet.name) === -1;
+    return gamePlayer.planets.findIndex((ownedPlanet) => ownedPlanet.name === planet.name) === -1;
   });
 
   function remainingResources() {
@@ -369,6 +317,7 @@ export default function GamePage() {
   function toggleAddPlanetMenu() {
     setShowAddPlanet(!showAddPlanet);
   }
+
 
   return (
     <div
@@ -398,7 +347,7 @@ export default function GamePage() {
           alignItems: "center"
         }}
       >
-        {player.faction}
+        {gamePlayer.faction}
       </div>
       <div style={{ display: "flex", width: "100%", maxWidth: "500px" }}>
         <div
@@ -555,9 +504,8 @@ export default function GamePage() {
             </div>} />
 
             <TabBody id="objectives" selectedId={tabShown} content={
-            <div>
-              Objectives
-            </div>} />
+              <ObjectiveList objectives={objectives} faction={player.faction} />
+            } />
           </div>
         </div>
       </div>

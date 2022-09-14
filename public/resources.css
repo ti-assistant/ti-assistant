@@ -7,14 +7,15 @@
 
 .resourceSymbol {
   color: #fad54d;
-  font-size: 60px;
+  font-size: 28px;
   text-shadow: 0 0 4px #fad54d;
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 38px;
+  width: 40px;
+  height: 46px;
+  font-weight: bold;
 }
 
 .resourceTextWrapper {
@@ -23,7 +24,7 @@
   position: absolute;
   font-size: 14px;
   width: 42px;
-  height: 46px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;

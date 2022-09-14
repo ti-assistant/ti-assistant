@@ -132,6 +132,23 @@ function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
   } />);
 }
 
+function ExhaustIcon({ isReady, clickFn }) {
+  const content = isReady ? "↶" : "↷";
+  return (
+    <div onClick={clickFn} className="flexRow" style={{height: "32px", width: "32px", fontSize:"32px", border: "1px solid black", borderRadius: "20px", boxShadow: "0px 0px 5px 1px black"}}>
+      {content}
+    </div>
+  );
+}
+
+function AttachIcon({ clickFn }) {
+  return (
+    <div onClick={clickFn} className="flexRow" style={{height: "32px", width: "32px", fontSize: "32px", border: "1px solid black", borderRadius: "16px", boxShadow: "0px 0px 5px 1px black"}}>
+
+    </div>
+  );
+}
+
 export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
@@ -280,13 +297,18 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
       >
         <PlanetAttributes attributes={planet.attributes} />
       </div>
-      {updatePlanet !== undefined ? 
-      <div className="flexColumn">
-        <button onClick={() => togglePlanet(planet.name)}>
-            {planet.isReady ? "Exhaust" : "Ready"}
-        </button>
-        {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
-      </div>
+      {/* {updatePlanet !== undefined ? 
+        <div className="flexRow">
+          <ExhaustIcon isReady={planet.isReady} clickFn={() => togglePlanet(planet.name)} />
+        </div>
+      : null} */}
+      {updatePlanet !== undefined ?
+          <div className="flexColumn">
+            <button onClick={() => togglePlanet(planet.name)}>
+                {planet.isReady ? "Exhaust" : "Ready"}
+            </button>
+            {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
+          </div>
       : null}
     </div>);
 }

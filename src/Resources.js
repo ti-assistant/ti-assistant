@@ -2,7 +2,7 @@ export function Resources({ resources, influence }) {
   return (
     <div className="resourceBlock">
       <div className="resourceSymbol">
-        &#x25CB;
+        ◯
       </div>
       <div className="resourceTextWrapper">
         {resources}

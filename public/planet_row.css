@@ -14,6 +14,7 @@
 .techRow {
   display: flex;
   flex-direction: row;
+  align-items: center;
   height: 48px;
   padding-left: 4px;
   padding-right: 4px;
@@ -22,4 +23,13 @@
 
 .techRow.exhausted {
   background-color: lightgrey;
+}
+
+.objectiveRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 4px;
+  padding-right: 4px;
+  position: relative;
 }
