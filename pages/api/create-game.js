@@ -28,7 +28,6 @@ export default async function handler(req, res) {
     homePlanetsRef.forEach((planet) => {
       homePlanets[planet.id] = {
         ready: true,
-        owner: faction.name,
       };
     });
 
@@ -46,7 +45,10 @@ export default async function handler(req, res) {
   factions.forEach((faction) => {
     baseFactions[faction.name] = faction;
     Object.entries(faction.planets).forEach(([name, planet]) => {
-      basePlanets[name] = planet;
+      basePlanets[name] = {
+        ...planet,
+        owners: [faction.name],
+      };
     });
   });
 

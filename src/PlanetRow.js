@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router'
 import { useState } from "react";
 import useSWR from 'swr'
 
@@ -149,13 +150,19 @@ function AttachIcon({ clickFn }) {
 }
 
 export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
+  const router = useRouter();
+  const { game: gameid, faction: playerFaction } = router.query;
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
+  const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
   }
-  if (!attachments) {
+  if (gameStateError) {
+    return (<div>Failed to load game stae</div>);
+  }
+  if (!attachments || !gameState) {
     return (<div>Loading...</div>);
   }
 
@@ -227,6 +234,20 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
     });
   }
 
+  let claimed = null;
+  let claimedColor = null;
+  (planet.owners ?? []).forEach((owner) => {
+    if (owner !== playerFaction) {
+      if (claimed === null) {
+        claimed = owner;
+        claimedColor = gameState.factions[owner].color.toLowerCase();
+      } else {
+        claimed = "Multiple Players";
+        claimedColor = "darkred";
+      }
+    }
+  });
+
   return (
     <div className={`planetRow ${!planet.ready ? "exhausted" : ""}`}>
       {showAttachMenu ?
@@ -235,7 +256,6 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
         <div
         style={{
           position: "relative",
-          top: "32px",
           lineHeight: "20px",
           color: "darkgreen",
           cursor: "pointer",
@@ -253,7 +273,6 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
         <div
           style={{
             position: "relative",
-            top: "32px",
             lineHeight: "20px",
             color: "darkred",
             cursor: "pointer",
@@ -267,14 +286,26 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
           &#x2715;
         </div>
       : null}
-      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2}}>
-        <div style={{ display: "flex", alignItems: "end", paddingBottom: "14px", fontSize: "24px", zIndex: 2}}>
+      {claimed ? 
+        <div style={{fontFamily: "Myriad Pro",
+        position: "absolute",
+        color: claimedColor,
+        borderRadius: "5px",
+        border: `1px solid ${claimedColor}`,
+        padding: "0px 4px",
+        fontSize: "12px",
+        bottom: "4px",
+        left: "28px"
+      }}>Claimed by {claimed}</div> : null
+      }
+      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2, alignItems: "center"}}>
+        <div style={{fontSize: "24px", zIndex: 2}}>
           {planet.name}
         </div>
         <div
           style={{
             position: "relative",
-            top: "18px",
+            top: "-9px",
             marginLeft: "-16px",
             opacity: "70%",
             height: "36px",
@@ -302,7 +333,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
         </div>
       : null} */}
       {updatePlanet !== undefined ?
-          <div className="flexColumn">
+          <div className="flexColumn" style={{height: "100%"}}>
             <button onClick={() => togglePlanet(planet.name)}>
                 {planet.ready ? "Exhaust" : "Ready"}
             </button>

@@ -15,25 +15,30 @@ export default async function handler(req, res) {
   let planets = {};
   planetsRef.forEach(async (val) => {
     let planet = val.data();
+    let id = val.id;
 
     // Add data from the game to planets.
-    if (gamestate.data().planets && gamestate.data().planets[val.id]) {
+    if (gamestate.data().planets && gamestate.data().planets[id]) {
       planet = {
         ...planet,
-        ...gamestate.data().planets[val.id]
+        ...gamestate.data().planets[id]
       };
     }
     // Update data based on faction's information.
-    if (faction && gamestate.data().factions[faction].planets[val.id]) {
+    if (faction && gamestate.data().factions[faction].planets[id]) {
       planet = {
         ...planet,
-        ...gamestate.data().factions[faction].planets[val.id]
+        ...gamestate.data().factions[faction].planets[id],
       };
     }
     if (factions && val.data().home && !factions.includes(val.data().faction)) {
       return;
     }
-    planets[val.id] = planet;
+    // Have to do this to avoid database issues when storing [0.0.0].
+    if (id === "000") {
+      id = "[0.0.0]";
+    }
+    planets[id] = planet;
   });
 
   res.status(200).json(planets);

@@ -83,5 +83,11 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
-  res.status(200).json(gameRef.data());
+  const updatedData = gameRef.data();
+  if (updatedData.planets["000"]) {
+    updatedData.planets["[0.0.0]"] = updatedData.planets["000"];
+    delete updatedData.planets["000"];
+  }
+
+  res.status(200).json(updatedData);
 }

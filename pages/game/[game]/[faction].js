@@ -342,13 +342,13 @@ export default function GamePage() {
 
   const updatedPlanets = [];
   Object.values(planets).forEach((planet) => {
-    if (planet.owner === playerFaction) {
+    if ((planet.owners ?? []).includes(playerFaction)) {
       updatedPlanets.push(planet);
     }
   });
   const remainingPlanets = [];
   Object.values(planets).forEach((planet) => {
-    if (planet.owner !== playerFaction) {
+    if (!(planet.owners ?? []).includes(playerFaction)) {
       remainingPlanets.push(planet);
     }
   });
@@ -552,7 +552,7 @@ export default function GamePage() {
               <button onClick={readyAll}>Ready All</button>
               <button onClick={exhaustAll}>Exhaust All</button>
             </div>
-            <div style={{maxHeight: "500px", overflow: "auto"}}>
+            <div style={{maxHeight: "500px", overflow: "auto", paddingBottom: "4px"}}>
               {updatedPlanets.map((planet) => {
                 return <PlanetRow key={planet.name} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
               })}

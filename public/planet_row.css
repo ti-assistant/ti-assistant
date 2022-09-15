@@ -1,6 +1,7 @@
 .planetRow {
   display: flex;
   flex-direction: row;
+  align-items: center;
   height: 72px;
   padding-left: 4px;
   padding-right: 4px;
