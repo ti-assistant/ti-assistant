@@ -199,70 +199,84 @@ export default function GamePage() {
     mutate(`/api/${gameid}/planets?faction=${playerFaction}`, poster(`/api/${gameid}/planetUpdate`, data), options);
   }
   
-  function removeTech(remove) {
-    let technologies = player.technologies.filter((tech) => tech.name !== remove);
-    setPlayer({
-      ...player,
-      technologies: technologies
-    });
+  function removeTech(toRemove) {
+    const data = {
+      action: "REMOVE_TECH",
+      faction: playerFaction,
+      tech: toRemove,
+    };
+
+    const updatedFaction = {...faction};
+
+    delete updatedFaction.techs[toRemove];
+
+    const options = {
+      optimisticData: updatedFaction,
+    };
+
+    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
   }
 
-  function addTech(add) {
-    const tech = technologies.find((value) => value.name === add);
-    setPlayer({
-      ...player,
-      technologies: [...player.technologies, {...tech, ready: true}], 
-    });
+  function addTech(toAdd) {
+    const data = {
+      action: "ADD_TECH",
+      faction: playerFaction,
+      tech: toAdd,
+    };
+
+    const updatedFaction = {...faction};
+
+    updatedFaction.techs[toAdd] = {
+      ready: true,
+    };
+
+    const options = {
+      optimisticData: updatedFaction,
+    };
+
+    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
   }
 
   function readyAll() {
     const data = {
       action: "TOGGLE_PLANET",
       faction: playerFaction,
-      planets: gameState.factions[playerFaction].planets,
+      planets: Object.keys(gameState.factions[playerFaction].planets),
       ready: true,
     };
 
-    let updatedData = {...faction};
+    let updatedPlanets = {...planets};
 
-    updatedData.planets = updatedData.planets.map((planet) => {
-      return {
-        ...planet,
-        ready: true,
-      };
+    Object.keys(gameState.factions[playerFaction].planets).forEach((name) => {
+      updatedPlanets[name].ready = true;
     });
 
     const options = {
-      optimisticData: updatedData,
-      rollbackOnError: true,
+      optimisticData: updatedPlanets,
     };
 
-    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
+    mutate(`/api/${gameid}/planets?faction=${playerFaction}`, poster(`/api/${gameid}/planetUpdate`, data), options);
   }
 
   function exhaustAll() {
     const data = {
       action: "TOGGLE_PLANET",
       faction: playerFaction,
-      planets: gameState.factions[playerFaction].planets,
+      planets: Object.keys(gameState.factions[playerFaction].planets),
       ready: false,
     };
 
-    let updatedData = {...faction};
+    let updatedPlanets = {...planets};
 
-    updatedData.planets = updatedData.planets.map((planet) => {
-      return {
-        ...planet,
-        ready: false,
-      };
+    Object.keys(gameState.factions[playerFaction].planets).forEach((name) => {
+      updatedPlanets[name].ready = false;
     });
 
     const options = {
-      optimisticData: updatedData,
-      rollbackOnError: true,
+      optimisticData: updatedPlanets,
     };
 
-    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
+    mutate(`/api/${gameid}/planets?faction=${playerFaction}`, poster(`/api/${gameid}/planetUpdate`, data), options);
   }
 
   function updatePlanet(name, updatedPlanet) {
@@ -334,10 +348,15 @@ export default function GamePage() {
     return updatedPlanet;
   }
 
-  const gamePlayer = gameState.factions[playerFaction];
+  // const gamePlayer = gameState.factions[playerFaction];
+  const gamePlayer = faction;
 
+  const ownedTechs = technologies.filter((tech) => {
+    return gamePlayer.techs[tech.name];
+  });
   const remainingTechs = technologies.filter((tech) => {
-    return player.technologies.findIndex((ownedTech) => ownedTech.name === tech.name) === -1;
+    return !gamePlayer.techs[tech.name];
+    // return player.technologies.findIndex((ownedTech) => ownedTech.name === tech.name) === -1;
   });
 
   const updatedPlanets = [];
@@ -403,7 +422,7 @@ export default function GamePage() {
           alignItems: "center"
         }}
       >
-        {gamePlayer.faction}
+        {playerFaction}
       </div>
       <div style={{ display: "flex", width: "100%", maxWidth: "500px" }}>
         <div
@@ -540,7 +559,7 @@ export default function GamePage() {
                 <button onClick={toggleAddTechMenu}>Research Tech</button>
               </div>
               <div style={{maxHeight: "500px", overflow: "auto"}}>
-                {player.technologies.map((tech) => {
+                {ownedTechs.map((tech) => {
                   return <TechRow key={tech.name} tech={tech} updateTech={updateTech} removeTech={removeTech} />
                 })}
               </div>

@@ -32,9 +32,19 @@ export default async function handler(req, res) {
     });
 
     // Get starting techs for each faction.
+    // TODO(jboman): Handle factions that have a choice in starting techs.
+    const factionRef = await db.collection('factions').doc(faction.name).get();
+    const factionData = factionRef.data();
+    const startingTechs = {};
+    (factionData.startswith.techs ?? []).forEach((tech) => {
+      startingTechs[tech] = {
+        ready: true,
+      };
+    });
     return {
       ...faction,
       planets: homePlanets,
+      techs: startingTechs,
     };
   });
 

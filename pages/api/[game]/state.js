@@ -89,5 +89,14 @@ export default async function handler(req, res) {
     delete updatedData.planets["000"];
   }
 
+  Object.entries(updatedData.factions).forEach(([name, faction]) => {
+    const updatedFaction = faction;
+    if (updatedFaction.planets["000"]) {
+      updatedFaction.planets["[0.0.0]"] = updatedFaction.planets["000"];
+      delete updatedFaction.planets["000"];
+    }
+    updatedData.factions[name] = updatedFaction;
+  });
+
   res.status(200).json(updatedData);
 }

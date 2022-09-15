@@ -164,7 +164,7 @@ const BASE_TECHS = [
     game: "base",
   },
   {
-    name: "AI Defense Algorithm",
+    name: "AI Development Algorithm",
     type: "red",
     prereqs: [],
     game: "pok",

@@ -14,72 +14,6 @@ function TechIcon({ type, width, height }) {
   return type;
 }
 
-function PlanetAttributes({ attributes }) {
-  if (attributes.length === 0) {
-    return null;
-  }
-  function getAttributeIcon(attribute) {
-    switch (attribute) {
-      case "legendary":
-        return <LegendaryPlanetIcon />;
-      case "red-skip":
-        return <Image src="/images/red_tech.webp" alt="Red Tech Skip" width="22px" height="22px" />;
-      case "yellow-skip":
-        return <Image src="/images/yellow_tech.webp" alt="Yellow Tech Skip" width="22px" height="22px" />;
-      case "blue-skip":
-        return <Image src="/images/blue_tech.webp" alt="Blue Tech Skip" width="22px" height="22px" />;
-      case "green-skip":
-        return <Image src="/images/green_tech.webp" alt="Blue Tech Skip" width="22px" height="22px" />;
-      case "demilitarized":
-        return <Image src="/images/demilitarized_zone.svg" alt="Demilitarized Zone" width="22px" height="22px" />;
-      case "tomb":
-        return <Image src="/images/tomb_symbol.webp" alt="Tomb of Emphidia" width="22px" height="22px" />;
-      case "space-cannon":
-        return <div style={{width: "22px", height: "22px"}}>✹✹✹</div>
-      default:
-        return null;
-    }
-  }
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "12px",
-        height: "48px",
-        justifyContent: "space-evenly"
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          width: "48px",
-        }}
-      >
-        {attributes.map((attribute, index) => {
-          if (index >= 2) {
-            return null;
-          }
-          return <div key={attribute}>{getAttributeIcon(attribute)}</div>;
-        })}
-      </div>
-      {attributes.length > 2 ? (
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
-          {attributes.map((attribute, index) => {
-            if (index < 2) {
-              return null;
-            }
-            return <div key={attribute}>{getAttributeIcon(attribute)}</div>;
-          })}
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
 export function TechRow({tech, updateTech, removeTech, addTech}) {
 
   function toggleTech() {
@@ -87,6 +21,20 @@ export function TechRow({tech, updateTech, removeTech, addTech}) {
       ...tech,
       isReady: !tech.isReady,
     });
+  }
+
+  function getTechColor() {
+    switch (tech.type) {
+      case "red":
+        return "darkred";
+      case "yellow":
+        return "darkgoldenrod";
+      case "blue":
+        return "darkblue";
+      case "green":
+        return "darkgreen";
+    }
+    return "black";
   }
 
   return (
@@ -129,7 +77,7 @@ export function TechRow({tech, updateTech, removeTech, addTech}) {
         })}
       </div> */}
       <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2}}>
-        <div style={{ display: "flex", fontSize: "24px", zIndex: 2}}>
+        <div style={{ display: "flex", fontSize: "20px", zIndex: 2, color: getTechColor()}}>
           {tech.name}
         </div>
       </div>

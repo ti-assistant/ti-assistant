@@ -43,8 +43,21 @@ export default async function handler(req, res) {
 
   let gamePlanetString;
   let playerPlanetString;
+  let playerTechString;
   let readyString;
   switch (data.action) {
+    case "ADD_TECH":
+      readyString = `factions.${data.faction}.techs.${data.tech}.ready`;
+      await db.collection('games').doc(gameid).update({
+        [readyString]: true,
+      });
+      break;
+    case "REMOVE_TECH":
+      playerTechString = `factions.${data.faction}.techs.${data.tech}`;
+      await db.collection('games').doc(gameid).update({
+        [playerTechString]: FieldValue.delete(),
+      });
+      break;
     case "TOGGLE_PLANET":
       data.planets.forEach(async (planet) => {
         readyString = `factions.${data.faction}.planets.${planet}.ready`;
