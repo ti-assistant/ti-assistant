@@ -20,11 +20,11 @@ export function AddPlanetList({ planets, addPlanet }) {
 
   const normalPlanets = planets.filter((planet) => {
     return !planet.home &&
-      !planet.attributes.includes("legendary")
+      !(planet.attributes ?? []).includes("legendary")
   });
   const homePlanets = planets.filter((planet) => planet.home);
   sortPlanets(homePlanets, "faction");
-  const legendaryPlanets = planets.filter((planet) => planet.attributes.includes("legendary"));
+  const legendaryPlanets = planets.filter((planet) => (planet.attributes ?? []).includes("legendary"));
 
   return (
     <div>

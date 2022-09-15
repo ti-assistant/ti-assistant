@@ -17,7 +17,7 @@ const fetcher = async (url) => {
 export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: gameState, error } = useSWR(gameid ? `/api/game/${gameid}` : null, fetcher);
+  const { data: gameState, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
 
   if (!qrCode && gameid) {
@@ -36,9 +36,8 @@ export default function SelectFactionPage() {
     return (<div>Loading...</div>);
   }
 
-  function selectFaction(index) {
-    const playerID = index + 1;
-    router.push(`/game/${gameid}/${playerID}`);
+  function selectFaction(faction) {
+    router.push(`/game/${gameid}/${faction}`);
   }
 
   function goToMainPage() {
@@ -55,9 +54,6 @@ export default function SelectFactionPage() {
       light:"#FFBF60FF"
     }
   }
-
-
-
 
   return (
     <div className="flexColumn" style={{alignItems: "center"}}>
@@ -88,12 +84,12 @@ export default function SelectFactionPage() {
         >
           Main Screen
         </div>
-        {gameState.players.map((player, index) => {
+        {Object.entries(gameState.factions).map(([name, faction]) => {
           return (
             <FactionCard
-              key={index}
-              player={player}
-              onClick={() => selectFaction(index)}
+              key={name}
+              faction={faction}
+              onClick={() => selectFaction(name)}
             />
           );
         })}

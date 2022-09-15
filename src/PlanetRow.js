@@ -11,7 +11,6 @@ const fetcher = async (url) => {
   const res = await fetch(url)
   const data = await res.json()
 
-  console.log(data);
   if (res.status !== 200) {
     throw new Error(data.message)
   }
@@ -132,8 +131,8 @@ function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
   } />);
 }
 
-function ExhaustIcon({ isReady, clickFn }) {
-  const content = isReady ? "↶" : "↷";
+function ExhaustIcon({ ready, clickFn }) {
+  const content = ready ? "↶" : "↷";
   return (
     <div onClick={clickFn} className="flexRow" style={{height: "32px", width: "32px", fontSize:"32px", border: "1px solid black", borderRadius: "20px", boxShadow: "0px 0px 5px 1px black"}}>
       {content}
@@ -210,7 +209,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
   function togglePlanet() {
     updatePlanet(planet.name, {
       ...planet,
-      isReady: !planet.isReady,
+      ready: !planet.ready,
     });
   }
 
@@ -229,7 +228,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
   }
 
   return (
-    <div className={`planetRow ${!planet.isReady ? "exhausted" : ""}`}>
+    <div className={`planetRow ${!planet.ready ? "exhausted" : ""}`}>
       {showAttachMenu ?
         <AttachMenu planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} /> : null}
       {addPlanet !== undefined ? 
@@ -295,17 +294,17 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
           width: "48px"
         }}
       >
-        <PlanetAttributes attributes={planet.attributes} />
+        <PlanetAttributes attributes={planet.attributes ?? []} />
       </div>
       {/* {updatePlanet !== undefined ? 
         <div className="flexRow">
-          <ExhaustIcon isReady={planet.isReady} clickFn={() => togglePlanet(planet.name)} />
+          <ExhaustIcon ready={planet.ready} clickFn={() => togglePlanet(planet.name)} />
         </div>
       : null} */}
       {updatePlanet !== undefined ?
           <div className="flexColumn">
             <button onClick={() => togglePlanet(planet.name)}>
-                {planet.isReady ? "Exhaust" : "Ready"}
+                {planet.ready ? "Exhaust" : "Ready"}
             </button>
             {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
           </div>

@@ -14,7 +14,7 @@ const fetcher = async (url) => {
 };
 
 function PlayerSelect({
-  player,
+  faction,
   isSpeaker,
   selectedFactions,
   selectedColors,
@@ -22,7 +22,7 @@ function PlayerSelect({
   updateColor,
   updateSpeaker
 }) {
-  const { data: factions, error: factionError } = useSWR("/api/factions", fetcher);
+  const { data: availableFactions, error: factionError } = useSWR("/api/factions", fetcher);
   const { data: colors, error: colorError } = useSWR("/api/colors", fetcher);
 
   if (factionError) {
@@ -31,7 +31,7 @@ function PlayerSelect({
   if (colorError) {
     return (<div>Failed to load colors</div>);
   }
-  if (!factions || !colors) {
+  if (!availableFactions || !colors) {
     return (<div>Loading...</div>);
   }
 
@@ -54,12 +54,12 @@ function PlayerSelect({
       />
       <select
         onChange={setFaction}
-        value={player.faction === null ? "" : player.faction}
+        value={faction.name === null ? "" : faction.name}
       >
         <option key="None" value="" disabled hidden>
           Select Faction
         </option>
-        {Object.entries(factions).map(([name, faction]) => {
+        {Object.entries(availableFactions).map(([name, faction]) => {
           return (
             <option key={name} value={name} style={selectedFactions.includes(name) ? { color: "grey" } : {}}>
               {name}
@@ -69,7 +69,7 @@ function PlayerSelect({
       </select>
       <select
         onChange={setColor}
-        value={player.color === null ? "" : player.color}
+        value={faction.color === null ? "" : faction.color}
       >
         <option key="None" value="">
           Select Color
@@ -86,40 +86,40 @@ function PlayerSelect({
   );
 }
 
-const INITIAL_PLAYERS = [
+const INITIAL_FACTIONS = [
   {
-    faction: null,
+    name: null,
     color: null
   },
   {
-    faction: null,
+    name: null,
     color: null
   },
   {
-    faction: null,
+    name: null,
     color: null
   },
   {
-    faction: null,
+    name: null,
     color: null
   },
   {
-    faction: null,
+    name: null,
     color: null
   },
   {
-    faction: null,
+    name: null,
     color: null
   }
 ];
 
 export default function SetupPage() {
   const [speaker, setSpeaker] = useState(0);
-  const [players, setPlayers] = useState(INITIAL_PLAYERS);
+  const [factions, setFactions] = useState(INITIAL_FACTIONS);
 
   const router = useRouter();
 
-  const { data: factions, error: factionError } = useSWR("/api/factions", fetcher);
+  const { data: availableFactions, error: factionError } = useSWR("/api/factions", fetcher);
   const { data: colors, error: colorError } = useSWR("/api/colors", fetcher);
 
   if (factionError) {
@@ -128,85 +128,85 @@ export default function SetupPage() {
   if (colorError) {
     return (<div>Failed to load colors</div>);
   }
-  if (!factions || !colors) {
+  if (!availableFactions || !colors) {
     return (<div>Loading...</div>);
   }
 
   function reset() {
-    setPlayers(INITIAL_PLAYERS);
+    setFactions(INITIAL_FACTIONS);
     setSpeaker(0);
   }
 
   function updatePlayerCount(event) {
     const newCount = event.target.value;
-    if (newCount === players.length) {
+    if (newCount === factions.length) {
       return;
     }
-    if (newCount > players.length) {
+    if (newCount > factions.length) {
       const newPlayers = [];
-      for (let i = players.length; i < newCount; i++) {
+      for (let i = factions.length; i < newCount; i++) {
         newPlayers.push({
-          faction: null,
+          name: null,
           color: null
         });
       }
-      setPlayers([...players, ...newPlayers]);
+      setFactions([...factions, ...newPlayers]);
     }
-    if (newCount < players.length) {
-      for (let i = newCount; i < players.length; i++) {
-        if (players[i].faction !== null) {
+    if (newCount < factions.length) {
+      for (let i = newCount; i < factions.length; i++) {
+        if (factions[i].name !== null) {
           updatePlayerFaction(i, null);
         }
-        if (players[i].color !== null) {
+        if (factions[i].color !== null) {
           updatePlayerColor(i, null);
         }
       }
-      setPlayers(players.slice(0, newCount));
+      setFactions(factions.slice(0, newCount));
     }
   }
 
   function updatePlayerFaction(index, value) {
-    setPlayers(
-      players.map((player, i) => {
+    setFactions(
+      factions.map((faction, i) => {
         if (index === i) {
-          return { ...player, faction: value };
+          return { ...faction, name: value };
         }
-        if (player.faction === value) {
-          return { ...player, faction: null };
+        if (faction.name === value) {
+          return { ...faction, name: null };
         }
-        return player;
+        return faction;
       })
     );
   }
 
   function updatePlayerColor(index, value) {
-    setPlayers(
-      players.map((player, i) => {
+    setFactions(
+      factions.map((faction, i) => {
         if (index === i) {
-          return { ...player, color: value };
+          return { ...faction, color: value };
         }
-        if (player.color === value) {
-          return { ...player, color: null };
+        if (faction.color === value) {
+          return { ...faction, color: null };
         }
-        return player;
+        return faction;
       })
     );
   }
 
   function randomSpeaker() {
-    setSpeaker(Math.floor(Math.random() * players.length));
+    setSpeaker(Math.floor(Math.random() * factions.length));
   }
 
   function randomFactions() {
     let selectedFactions = [];
-    for (let index = 0; index < players.length; index++) {
-      if (players[index].faction !== null) {
-        selectedFactions[index] = players[index].faction;
+    for (let index = 0; index < factions.length; index++) {
+      if (factions[index].name !== null) {
+        selectedFactions[index] = factions[index].name;
       }
     }
-    const factionKeys = Object.keys(factions);
-    for (let index = 0; index < players.length; index++) {
-      if (players[index].faction !== null) {
+    const factionKeys = Object.keys(availableFactions);
+    for (let index = 0; index < factions.length; index++) {
+      if (factions[index].name !== null) {
         continue;
       }
       let selectedFaction = null;
@@ -219,9 +219,9 @@ export default function SetupPage() {
       }
       selectedFactions[index] = selectedFaction;
     }
-    setPlayers(
-      players.map((player, index) => {
-        return { ...player, faction: selectedFactions[index] };
+    setFactions(
+      factions.map((faction, index) => {
+        return { ...faction, name: selectedFactions[index] };
       })
     );
   }
@@ -233,7 +233,7 @@ export default function SetupPage() {
         'Content-Type': "application/json",
       },
       body: JSON.stringify({
-        players: players,
+        factions: factions,
         speaker: speaker,
       }),
     });
@@ -242,8 +242,8 @@ export default function SetupPage() {
   }
 
   function disableRandomizeFactionButton() {
-    for (let player of players) {
-      if (player.faction === null) {
+    for (let faction of factions) {
+      if (faction.name === null) {
         return false;
       }
     }
@@ -251,16 +251,16 @@ export default function SetupPage() {
   }
 
   function disableNextButton() {
-    for (let player of players) {
-      if (player.color === null || player.faction === null) {
+    for (let faction of factions) {
+      if (faction.color === null || faction.name === null) {
         return true;
       }
     }
     return false;
   }
 
-  const selectedFactions = players.map((player) => player.faction);
-  const selectedColors = players.map((player) => player.color);
+  const selectedFactions = factions.map((faction) => faction.name);
+  const selectedColors = factions.map((faction) => faction.color);
 
   return (
     <div className="App">
@@ -270,17 +270,17 @@ export default function SetupPage() {
           const number = index + 3;
           return (
             <span key={number}>
-              <input onChange={updatePlayerCount} type="radio" value={number} name="numPlayers" checked={players.length === number} /> {number}
+              <input onChange={updatePlayerCount} type="radio" value={number} name="numPlayers" checked={factions.length === number} /> {number}
             </span>
           );
         })}
       </div>
       <div>
-        {players.map((player, index) => {
+        {factions.map((faction, index) => {
           return (
             <PlayerSelect
               key={index}
-              player={player}
+              faction={faction}
               isSpeaker={index === speaker}
               selectedFactions={selectedFactions}
               selectedColors={selectedColors}

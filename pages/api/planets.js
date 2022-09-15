@@ -10,9 +10,7 @@ export default async function handler(req, res) {
   let factions = null;
   if (gameid) {
     const gamestate = await db.collection('games').doc(gameid).get();
-    factions = gamestate.data().players.map((player) => {
-      return player.faction;
-    });
+    factions = Object.keys(gamestate.data().factions);
   }
 
   // TODO(jboman): Handle Council Keleres.

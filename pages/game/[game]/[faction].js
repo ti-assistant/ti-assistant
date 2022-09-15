@@ -7,7 +7,7 @@ import { PlanetRow } from "/src/PlanetRow.js";
 import { TechRow } from "/src/TechRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 import { Modal } from "/src/Modal.js";
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { ObjectiveList } from "/src/ObjectiveList";
 
 const fetcher = async (url) => {
@@ -19,6 +19,23 @@ const fetcher = async (url) => {
   }
   return data
 };
+
+const poster = async (url, data) => {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const val = await res.json();
+
+  if (res.status !== 200) {
+    throw new Error(val.message);
+  }
+  return val;
+}
 
 export default function GamePage() {
   let initial_player = {
@@ -36,7 +53,7 @@ export default function GamePage() {
         name: "Lodor",
         resources: 3,
         influence: 1,
-        isReady: true,
+        ready: true,
         type: "Cultural",
         home: false,
         attributes: [],
@@ -46,7 +63,7 @@ export default function GamePage() {
         name: "New Albion",
         resources: 2,
         influence: 1,
-        isReady: true,
+        ready: true,
         type: "Hazardous",
         home: false,
         attributes: [],
@@ -56,7 +73,7 @@ export default function GamePage() {
         name: "Mecatol Rex",
         resources: 1,
         influence: 6,
-        isReady: true,
+        ready: true,
         attributes: [],
         home: false,
         type: "none",
@@ -66,7 +83,7 @@ export default function GamePage() {
         name: "Archon Vail",
         resources: 2,
         influence: 1,
-        isReady: false,
+        ready: false,
         type: "Industrial",
         home: false,
         attributes: [],
@@ -76,7 +93,7 @@ export default function GamePage() {
         name: "Dal Bootha",
         resources: 4,
         influence: 1,
-        isReady: false,
+        ready: false,
         type: "Industrial",
         home: false,
         attributes: [],
@@ -86,7 +103,7 @@ export default function GamePage() {
         name: "Avar",
         resources: 1,
         influence: 1,
-        isReady: true,
+        ready: true,
         type: "None",
         home: true,
         attributes: [],
@@ -100,15 +117,20 @@ export default function GamePage() {
   const [showAddPlanet, setShowAddPlanet] = useState(false);
   const [tabShown, setTabShown] = useState("planets");
   const router = useRouter();
-  const { game: gameid, player: playerID } = router.query;
-  const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/game/${gameid}` : null, fetcher);
+  const { mutate } = useSWRConfig();
+  const { game: gameid, faction: playerFaction } = router.query;
+  const { data: faction, error: factionError } = useSWR(gameid && playerFaction ? `/api/${gameid}/${playerFaction}` : null, fetcher);
+  const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
   const { data: objectives, error: objectivesError } = useSWR("/api/objectives", fetcher);
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/planets?gameid=${gameid}` : null, fetcher);
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${playerFaction}` : null, fetcher);
   const { data: technologies, error: techsError } = useSWR("/api/techs", fetcher);
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
+  }
+  if (factionError) {
+    return (<div>Failed to load faction</div>);
   }
   if (objectivesError) {
     return (<div>Failed to load objectives</div>);
@@ -122,28 +144,59 @@ export default function GamePage() {
   if (gameStateError) {
     return (<div>Failed to load game state</div>);
   }
-  if (!attachments || !objectives || !planets || !technologies || !gameState) {
+  if (!attachments || !faction || !objectives || !planets || !technologies || !gameState) {
     return (<div>Loading...</div>);
   }
+
+  // const planets = allPlanets.map((planet) => {
+  //   if (faction.planets[planet.name]) {
+  //     return {
+  //       ...planet,
+  //       ...faction.planets[planet.name],
+  //     };
+  //   }
+  //   return planet;
+  // });
 
   function toggleAddTechMenu() {
     setShowAddTech(!showAddTech);
   }
 
-  function removePlanet(remove) {
-    let planets = player.planets.filter((planet) => planet.name !== remove);
-    setPlayer({
-      ...player,
-      planets: planets
-    });
+  function removePlanet(toRemove) {
+    const data = {
+      action: "REMOVE_PLANET",
+      faction: playerFaction,
+      planet: toRemove,
+    };
+
+    const updatedPlanets = {...planets};
+
+    delete updatedPlanets[toRemove].owner;
+
+    const options = {
+      optimisticData: updatedPlanets,
+    };
+
+    mutate(`/api/${gameid}/planets?faction=${playerFaction}`, poster(`/api/${gameid}/planetUpdate`, data), options);
   }
 
-  function addPlanet(add) {
-    const planet = planets.find((value) => value.name === add);
-    setPlayer({
-      ...player,
-      planets: [...player.planets, {...planet, isReady: false}], 
-    });
+  function addPlanet(toAdd) {
+    const data = {
+      action: "ADD_PLANET",
+      faction: playerFaction,
+      planet: toAdd,
+    };
+
+    const updatedPlanets = {...planets};
+
+    updatedPlanets[toAdd].owner = playerFaction;
+    updatedPlanets[toAdd].ready = false;
+
+    const options = {
+      optimisticData: updatedPlanets,
+    };
+
+    mutate(`/api/${gameid}/planets?faction=${playerFaction}`, poster(`/api/${gameid}/planetUpdate`, data), options);
   }
   
   function removeTech(remove) {
@@ -158,80 +211,77 @@ export default function GamePage() {
     const tech = technologies.find((value) => value.name === add);
     setPlayer({
       ...player,
-      technologies: [...player.technologies, {...tech, isReady: true}], 
+      technologies: [...player.technologies, {...tech, ready: true}], 
     });
   }
 
   function readyAll() {
-    setPlayer({
-      ...player,
-      planets: player.planets.map((planet) => {
-        return {
-          ...planet,
-          isReady: true,
-        };
-      })
+    const data = {
+      action: "TOGGLE_PLANET",
+      faction: playerFaction,
+      planets: gameState.factions[playerFaction].planets,
+      ready: true,
+    };
+
+    let updatedData = {...faction};
+
+    updatedData.planets = updatedData.planets.map((planet) => {
+      return {
+        ...planet,
+        ready: true,
+      };
     });
+
+    const options = {
+      optimisticData: updatedData,
+      rollbackOnError: true,
+    };
+
+    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
   }
+
   function exhaustAll() {
-    setPlayer({
-      ...player,
-      planets: player.planets.map((planet) => {
-        return {
-          ...planet,
-          isReady: false,
-        };
-      })
-    });
-  }
+    const data = {
+      action: "TOGGLE_PLANET",
+      faction: playerFaction,
+      planets: gameState.factions[playerFaction].planets,
+      ready: false,
+    };
 
-  function exhaustPlanet(name) {
-    let planets = player.planets.map((planet) => {
-      if (planet.name === name) {
-        return {
-          ...planet,
-          isReady: false
-        };
-      }
-      return planet;
-    });
-    setPlayer({
-      ...player,
-      planets: planets
-    });
-  }
+    let updatedData = {...faction};
 
-  function readyPlanet(name) {
-    let planets = player.planets.map((planet) => {
-      if (planet.name === name) {
-        return {
-          ...planet,
-          isReady: true
-        };
-      }
-      return planet;
+    updatedData.planets = updatedData.planets.map((planet) => {
+      return {
+        ...planet,
+        ready: false,
+      };
     });
-    setPlayer({
-      ...player,
-      planets: planets
-    });
+
+    const options = {
+      optimisticData: updatedData,
+      rollbackOnError: true,
+    };
+
+    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
   }
 
   function updatePlanet(name, updatedPlanet) {
-    const planets = player.planets.map((planet) => {
-      if (planet.name === name) {
-        return {
-          ...planet,
-          attachments: updatedPlanet.attachments,
-          isReady: updatedPlanet.isReady,
-        };
-      }
-      return planet;
-    });
-    setPlayer({
-      ...player,
-      planets: planets
-    });
+    const data = {
+      action: "TOGGLE_PLANET",
+      faction: playerFaction,
+      planets: [name],
+      ready: updatedPlanet.ready,
+    };
+
+    let updatedPlanets = {...planets};
+
+    planets[name].ready = updatedPlanet.ready;
+
+    const options = {
+      optimisticData: updatedPlanets,
+    };
+
+    mutate(`/api/${gameid}/planets?faction=${playerFaction}`, poster(`/api/${gameid}/planetUpdate`, data), options);
   }
 
   function updateTech(name, updatedTech) {
@@ -239,7 +289,7 @@ export default function GamePage() {
       if (tech.name === name) {
         return {
           ...tech,
-          isReady: updatedTech.isReady,
+          ready: updatedTech.ready,
         };
       }
       return tech;
@@ -284,22 +334,28 @@ export default function GamePage() {
     return updatedPlanet;
   }
 
-  
-  const gamePlayer = gameState.players[playerID - 1];
+  const gamePlayer = gameState.factions[playerFaction];
 
   const remainingTechs = technologies.filter((tech) => {
     return player.technologies.findIndex((ownedTech) => ownedTech.name === tech.name) === -1;
   });
 
-  const updatedPlanets = gamePlayer.planets.map(applyPlanetAttachments);
-
-  const remainingPlanets = planets.filter((planet) => {
-    return gamePlayer.planets.findIndex((ownedPlanet) => ownedPlanet.name === planet.name) === -1;
+  const updatedPlanets = [];
+  Object.values(planets).forEach((planet) => {
+    if (planet.owner === playerFaction) {
+      updatedPlanets.push(planet);
+    }
+  });
+  const remainingPlanets = [];
+  Object.values(planets).forEach((planet) => {
+    if (planet.owner !== playerFaction) {
+      remainingPlanets.push(planet);
+    }
   });
 
   function remainingResources() {
     return updatedPlanets.reduce((prev, current) => {
-      if (!current.isReady) {
+      if (!current.ready) {
         return prev;
       }
       return prev + current.resources;
@@ -307,7 +363,7 @@ export default function GamePage() {
   }
   function remainingInfluence() {
     return updatedPlanets.reduce((prev, current) => {
-      if (!current.isReady) {
+      if (!current.ready) {
         return prev;
       }
       return prev + current.influence;
@@ -446,7 +502,7 @@ export default function GamePage() {
                       Exhaust
                     </button>
                   ) : null}
-                  {!tech.isReady ? (
+                  {!tech.ready ? (
                     <button onClick={() => readyTech(tech.name)}>Ready</button>
                   ) : null}
                 </div>

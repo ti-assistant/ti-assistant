@@ -16,28 +16,45 @@ export default async function handler(req, res) {
     return
   }
 
-  let players = req.body.players;
+  let factions = req.body.factions;
 
   const db = getFirestore();
 
-  const playerPromises = players.map(async (player) => {
-    const homePlanetsRef = await db.collection('planets').where('faction', '==', player.faction).get();
-    const homePlanets = [];
+  const factionPromises = factions.map(async (faction) => {
+    // Get home planets for each faction.
+    // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
+    const homePlanetsRef = await db.collection('planets').where('faction', '==', faction.name).get();
+    const homePlanets = {};
     homePlanetsRef.forEach((planet) => {
-      homePlanets.push(planet.data());
+      homePlanets[planet.id] = {
+        ready: true,
+        owner: faction.name,
+      };
     });
+
+    // Get starting techs for each faction.
     return {
-      ...player,
+      ...faction,
       planets: homePlanets,
     };
   });
 
-  players = await Promise.all(playerPromises);
+  factions = await Promise.all(factionPromises);
+
+  let baseFactions = {};
+  let basePlanets = {};
+  factions.forEach((faction) => {
+    baseFactions[faction.name] = faction;
+    Object.entries(faction.planets).forEach(([name, planet]) => {
+      basePlanets[name] = planet;
+    });
+  });
 
   const gameState = {
     speaker: req.body.speaker,
-    players: players,
-  }
+    factions: baseFactions,
+    planets: basePlanets,
+  };
 
   let gameid = makeid(6);
 
