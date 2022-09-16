@@ -17,10 +17,19 @@ export default async function handler(req, res) {
   }
 
   let factions = req.body.factions;
+  let speaker = req.body.speaker;
 
   const db = getFirestore();
 
-  const factionPromises = factions.map(async (faction) => {
+  const factionPromises = factions.map(async (faction, index) => {
+    // Determine speaker order for each faction.
+    let order;
+    if (index >= speaker) {
+      order = index - speaker + 1;
+    } else {
+      order = index + factions.length - speaker + 1;
+    }
+
     // Get home planets for each faction.
     // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
     const homePlanetsRef = await db.collection('planets').where('faction', '==', faction.name).get();
@@ -45,6 +54,7 @@ export default async function handler(req, res) {
       ...faction,
       planets: homePlanets,
       techs: startingTechs,
+      order: order,
     };
   });
 

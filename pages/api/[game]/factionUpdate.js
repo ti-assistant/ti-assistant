@@ -1,30 +1,5 @@
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 
-async function fetchPlanets(db, gameid) {
-  const planetsRef = await db.collection('planets').orderBy('name').get();
-
-  const gamestate = await db.collection('games').doc(gameid).get();
-  const factions = Object.keys(gamestate.data().factions);
-
-  // TODO(jboman): Handle Council Keleres.
-  let planets = [];
-  planetsRef.forEach(async (val) => {
-    const planet = val.data();
-    if (gamestate.data().planets[val.id]) {
-      planets.push({
-        ...planet,
-        ...gamestate.data().planets[val.id]
-      });
-      return;
-    }
-    if (factions && val.data().home && !factions.includes(val.data().faction)) {
-      return;
-    }
-    planets.push(val.data());
-  });
-  return planets;
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' })
@@ -41,19 +16,24 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
+  let tech = data.tech;
+  if (tech === "Light/Wave Deflector") {
+    tech = "LightWave Deflector";
+  }
+
   let gamePlanetString;
   let playerPlanetString;
   let playerTechString;
   let readyString;
   switch (data.action) {
     case "ADD_TECH":
-      readyString = `factions.${data.faction}.techs.${data.tech}.ready`;
+      readyString = `factions.${data.faction}.techs.${tech}.ready`;
       await db.collection('games').doc(gameid).update({
         [readyString]: true,
       });
       break;
     case "REMOVE_TECH":
-      playerTechString = `factions.${data.faction}.techs.${data.tech}`;
+      playerTechString = `factions.${data.faction}.techs.${tech}`;
       await db.collection('games').doc(gameid).update({
         [playerTechString]: FieldValue.delete(),
       });

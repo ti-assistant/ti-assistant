@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { FactionSymbol } from "/src/FactionCard.js";
+
 function TechIcon({ type, width, height }) {
   switch (type) {
     case "red":
@@ -76,10 +78,23 @@ export function TechRow({tech, updateTech, removeTech, addTech}) {
           return <TechIcon key={index} type={prereq} width="22px" height="22px" />;
         })}
       </div> */}
-      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2}}>
+      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2, alignItems: "center"}}>
         <div style={{ display: "flex", fontSize: "20px", zIndex: 2, color: getTechColor()}}>
           {tech.name}
         </div>
+        {tech.faction ? (
+        <div
+          style={{
+            position: "relative",
+            marginLeft: "-10px",
+            opacity: "70%",
+            height: "36px",
+            zIndex: 1,
+          }}
+        >
+          <FactionSymbol faction={tech.faction} size={36} />
+        </div>
+        ): null}
       </div>
       <div
           style={{

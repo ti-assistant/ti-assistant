@@ -124,7 +124,7 @@ export default function GamePage() {
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
   const { data: objectives, error: objectivesError } = useSWR("/api/objectives", fetcher);
   const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${playerFaction}` : null, fetcher);
-  const { data: technologies, error: techsError } = useSWR("/api/techs", fetcher);
+  const { data: technologies, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher);
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -351,12 +351,17 @@ export default function GamePage() {
   // const gamePlayer = gameState.factions[playerFaction];
   const gamePlayer = faction;
 
-  const ownedTechs = technologies.filter((tech) => {
-    return gamePlayer.techs[tech.name];
+  const ownedTechs = [];
+  Object.entries(technologies).forEach(([key, tech]) => {
+    if (gamePlayer.techs[key]) {
+      ownedTechs.push(tech);
+    }
   });
-  const remainingTechs = technologies.filter((tech) => {
-    return !gamePlayer.techs[tech.name];
-    // return player.technologies.findIndex((ownedTech) => ownedTech.name === tech.name) === -1;
+  const remainingTechs = [];
+  Object.entries(technologies).forEach(([key, tech]) => {
+    if (!gamePlayer.techs[key]) {
+      remainingTechs.push(tech);
+    }
   });
 
   const updatedPlanets = [];

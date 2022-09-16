@@ -55,6 +55,14 @@ export default function SelectFactionPage() {
     }
   }
 
+  const factions = Object.entries(gameState.factions).sort((a, b) => {
+    if (a[1].order > b[1].order) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
   return (
     <div className="flexColumn" style={{alignItems: "center"}}>
       <h1>Twilight Imperium Assistant</h1>
@@ -84,7 +92,7 @@ export default function SelectFactionPage() {
         >
           Main Screen
         </div>
-        {Object.entries(gameState.factions).map(([name, faction]) => {
+        {factions.map(([name, faction]) => {
           return (
             <FactionCard
               key={name}
