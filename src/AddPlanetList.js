@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRouter } from 'next/router'
 
 import { PlanetRow } from "/src/PlanetRow.js";
+import { SystemRow } from "/src/SystemRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 
 function sortPlanets(planets, field, descending = false) {
@@ -16,21 +18,66 @@ function sortPlanets(planets, field, descending = false) {
 }
 
 export function AddPlanetList({ planets, addPlanet }) {
+  const router = useRouter();
   const [tabShown, setTabShown] = useState("normal");
+  const [groupBySystem, setGroupBySystem] = useState(false);
+  const { faction: playerFaction } = router.query;
 
-  const normalPlanets = planets.filter((planet) => {
+  if (!playerFaction) {
+    return <div>Loading...</div>;
+  }
+
+  function toggleGroupBySystem() {
+    setGroupBySystem(!groupBySystem);
+  }
+
+  const remainingPlanets = [];
+  Object.values(planets).forEach((planet) => {
+    if (!(planet.owners ?? []).includes(playerFaction)) {
+      remainingPlanets.push(planet);
+    }
+  });
+
+  const normalPlanets = remainingPlanets.filter((planet) => {
     return !planet.home &&
       !(planet.attributes ?? []).includes("legendary")
   });
-  const homePlanets = planets.filter((planet) => planet.home);
+  let planetsBySystem = [];
+  Object.values(planets).forEach((planet) => {
+    if (!planet.system) {
+      return;
+    }
+    if (!planetsBySystem[planet.system]) {
+      planetsBySystem[planet.system] = [];
+    }
+    planetsBySystem[planet.system].push(planet);
+  });
+  planetsBySystem = planetsBySystem.filter((system) => {
+    for (let i = 0; i < system.length; i++) {
+      if (!(system[i].owners ?? []).includes(playerFaction)) {
+        return true;
+      }
+    }
+    return false;
+  });
+  planetsBySystem.sort((a, b) => {
+    if (a[0].name < b[0].name) {
+      return -1;
+    }
+    if (b[0].name < a[0].name) {
+      return 1;
+    }
+    return 0;
+  });
+  const homePlanets = remainingPlanets.filter((planet) => planet.home);
   sortPlanets(homePlanets, "faction");
-  const legendaryPlanets = planets.filter((planet) => (planet.attributes ?? []).includes("legendary"));
+  const legendaryPlanets = remainingPlanets.filter((planet) => (planet.attributes ?? []).includes("legendary"));
 
   return (
     <div>
       <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "white", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid black"}}>
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown} content={
-          "Normal"
+          "Planets"
         } />
         <Tab selectTab={setTabShown} id="home" selectedId={tabShown} content={
           "Home"
@@ -41,9 +88,23 @@ export function AddPlanetList({ planets, addPlanet }) {
       </div>
       <TabBody id="normal" selectedId={tabShown} content={
         <div>
-          {normalPlanets.map((planet) => {
-            return <PlanetRow key={planet.name} planet={planet} addPlanet={addPlanet} />;
-          })}
+          <div className="flexRow" style={{backgroundColor: "white", height: "32px", justifyContent: "flex-start", position: "fixed", zIndex: 904, width: "84%"}}>
+              <input name="speaker" type="checkbox"
+            checked={groupBySystem}
+            onChange={toggleGroupBySystem}
+          />
+          <label>Group by System</label>
+          </div>
+          <div style={{paddingTop: "32px"}}>
+            {groupBySystem ? 
+              planetsBySystem.map((system) => {
+                return <SystemRow key={system[0].system} planets={system} addPlanet={addPlanet} />;
+              }) :
+              normalPlanets.map((planet) => {
+                return <PlanetRow key={planet.name} planet={planet} addPlanet={addPlanet} />;
+              })
+            }
+          </div>
         </div>
       } />
       <TabBody id="home" selectedId={tabShown} content={

@@ -370,12 +370,6 @@ export default function GamePage() {
       updatedPlanets.push(planet);
     }
   });
-  const remainingPlanets = [];
-  Object.values(planets).forEach((planet) => {
-    if (!(planet.owners ?? []).includes(playerFaction)) {
-      remainingPlanets.push(planet);
-    }
-  });
 
   function remainingResources() {
     return updatedPlanets.reduce((prev, current) => {
@@ -409,7 +403,7 @@ export default function GamePage() {
         } />
       <Modal closeMenu={toggleAddPlanetMenu} visible={showAddPlanet} title="Add Planet"
         content={
-          <AddPlanetList planets={remainingPlanets} addPlanet={addPlanet} />
+          <AddPlanetList planets={planets} addPlanet={addPlanet} />
       } />
       <h2
         style={{
