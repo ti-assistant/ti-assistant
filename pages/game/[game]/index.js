@@ -21,7 +21,7 @@ export default function SelectFactionPage() {
   const [ qrCode, setQrCode ] = useState(null);
 
   if (!qrCode && gameid) {
-    QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, opts, (err, url) => {
+    QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {}, (err, url) => {
       if (err) {
         throw err;
       }
@@ -41,18 +41,7 @@ export default function SelectFactionPage() {
   }
 
   function goToMainPage() {
-    router.push(`/game/${gameid}/main.js`);
-  }
-
-  const opts = {
-    errorCorrectionLevel: 'H',
-    type: 'image/jpeg',
-    quality: 0.3,
-    margin: 1,
-    color: {
-      dark:"#010599FF",
-      light:"#FFBF60FF"
-    }
+    router.push(`/game/${gameid}/main`);
   }
 
   const factions = Object.entries(gameState.factions).sort((a, b) => {
@@ -65,7 +54,7 @@ export default function SelectFactionPage() {
 
   return (
     <div className="flexColumn" style={{alignItems: "center"}}>
-      <h1>Twilight Imperium Assistant</h1>
+      <h2>Twilight Imperium Assistant</h2>
       <div className="flexRow">
       <h3>Game ID: {gameid}</h3>
       {qrCode ? <img src={qrCode} /> : null}
@@ -75,7 +64,7 @@ export default function SelectFactionPage() {
           display: "flex",
           flexFlow: "column wrap",
           gap: "10px",
-          maxWidth: "750px",
+          maxWidth: "500px",
           width: "100%",
         }}
       >
@@ -84,10 +73,11 @@ export default function SelectFactionPage() {
           style={{
             border: "3px solid grey",
             borderRadius: "5px",
-            height: "40px",
+            height: "60px",
             display: "flex",
             alignItems: "center",
-            paddingLeft: "4px"
+            justifyContent: "center",
+            fontSize: "24px",
           }}
         >
           Main Screen
@@ -98,6 +88,7 @@ export default function SelectFactionPage() {
               key={name}
               faction={faction}
               onClick={() => selectFaction(name)}
+              speaker={name === gameState.state.speaker}
             />
           );
         })}

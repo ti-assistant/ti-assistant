@@ -83,7 +83,7 @@ export function FactionSymbol({ faction, size }) {
   return <Image src={`/images/factions/${faction}.webp`} alt={`${faction} Icon`} width={`${width}px`} height={`${height}px`} />;
 }
 
-export function FactionCard({ faction, onClick }) {
+export function FactionCard({ faction, onClick, speaker }) {
   const border = "3px solid " + faction.color;
   const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
     return prev + current.amount;
@@ -95,14 +95,16 @@ export function FactionCard({ faction, onClick }) {
         borderRadius: "5px",
         display: "flex",
         alignItems: "center",
-        border: border
+        border: border,
+        fontSize: "24px",
+        position: "relative",
       }}
     >
-      <div className="flexRow" style={{ width: "40px", height: "40px", paddingLeft: "4px", paddingRight: "8px" }}>
+      <div className="flexRow" style={{ width: "40px", height: "52px", paddingLeft: "4px", paddingRight: "8px" }}>
         <FactionSymbol faction={faction.name} size={40} />
       </div>
-      <b style={{ paddingRight: "12px" }}>{faction.name}</b>
-      {victory_points} VPs
+      <div style={{ paddingRight: "12px" }}>{faction.name}</div>
+      {speaker ? <div style={{position: "absolute", right: 0, paddingRight: "16px"}}>Speaker</div> : null}
     </div>
   );
 }

@@ -25,6 +25,8 @@ export default async function handler(req, res) {
   let playerPlanetString;
   let playerTechString;
   let readyString;
+  let factionChoiceString;
+  let factionStartingTechString;
   switch (data.action) {
     case "ADD_TECH":
       readyString = `factions.${data.faction}.techs.${tech}.ready`;
@@ -46,6 +48,19 @@ export default async function handler(req, res) {
         });
       });
       break;
+    case "CHOOSE_STARTING_TECHS":
+      data.techs.forEach(async (tech) => {
+        readyString = `factions.${data.faction}.techs.${tech}.ready`;
+        await db.collection('games').doc(gameid).update({
+          [readyString]: true,
+        });
+      })
+      factionChoiceString = `factions.${data.faction}.startswith.choice`;
+      factionStartingTechString = `factions.${data.faction}.startswith.techs`;
+      await db.collection('games').doc(gameid).update({
+        [factionChoiceString]: FieldValue.delete(),
+        [factionStartingTechString]: data.techs,
+      });
     case "ADD_PLANET":
       gamePlanetString = `planets.${data.planet}.owner`;
       readyString = `factions.${data.faction}.planets.${data.planet}.ready`;
@@ -75,6 +90,9 @@ export default async function handler(req, res) {
   }
   
   const responseRef = await db.collection('games').doc(gameid).get();
+  if (data.returnAll) {
+    return res.status(200).json(responseRef.data().factions);
+  }
   const response = responseRef.data().factions[data.faction];
 
   return res.status(200).json(response);

@@ -55,6 +55,7 @@ export default async function handler(req, res) {
       planets: homePlanets,
       techs: startingTechs,
       order: order,
+      startswith: factionData.startswith,
     };
   });
 
@@ -62,7 +63,11 @@ export default async function handler(req, res) {
 
   let baseFactions = {};
   let basePlanets = {};
-  factions.forEach((faction) => {
+  speaker = "";
+  factions.forEach((faction, index) => {
+    if (index === req.body.speaker) {
+      speaker = faction.name;
+    }
     baseFactions[faction.name] = faction;
     Object.entries(faction.planets).forEach(([name, planet]) => {
       basePlanets[name] = {
@@ -73,6 +78,10 @@ export default async function handler(req, res) {
   });
 
   const gameState = {
+    state: {
+      speaker: speaker,
+      phase: "SETUP",
+    },
     speaker: req.body.speaker,
     factions: baseFactions,
     planets: basePlanets,

@@ -119,7 +119,7 @@ export default function GamePage() {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
-  const { data: faction, error: factionError } = useSWR(gameid && playerFaction ? `/api/${gameid}/${playerFaction}` : null, fetcher);
+  const { data: faction, error: factionError } = useSWR(gameid && playerFaction ? `/api/${gameid}/factions/${playerFaction}` : null, fetcher);
   const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
   const { data: objectives, error: objectivesError } = useSWR("/api/objectives", fetcher);
@@ -214,7 +214,7 @@ export default function GamePage() {
       optimisticData: updatedFaction,
     };
 
-    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
+    mutate(`/api/${gameid}/factions/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
   }
 
   function addTech(toAdd) {
@@ -234,7 +234,7 @@ export default function GamePage() {
       optimisticData: updatedFaction,
     };
 
-    mutate(`/api/${gameid}/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
+    mutate(`/api/${gameid}/factions/${playerFaction}`, poster(`/api/${gameid}/factionUpdate`, data), options);
   }
 
   function readyAll() {

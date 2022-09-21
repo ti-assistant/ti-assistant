@@ -16,7 +16,7 @@ function TechIcon({ type, width, height }) {
   return type;
 }
 
-export function TechRow({tech, updateTech, removeTech, addTech}) {
+export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
 
   function toggleTech() {
     updateTech(tech.name, {
@@ -41,6 +41,7 @@ export function TechRow({tech, updateTech, removeTech, addTech}) {
 
   return (
     <div className={`techRow ${tech.canExhaust && !tech.isReady ? "exhausted" : ""}`}>
+      {leftContent ? <div style={{zIndex: 2}}>{leftContent}</div> : null}
       {addTech !== undefined ? 
         <div
         style={{
