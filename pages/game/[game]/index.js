@@ -78,6 +78,7 @@ export default function SelectFactionPage() {
             alignItems: "center",
             justifyContent: "center",
             fontSize: "24px",
+            cursor: "pointer",
           }}
         >
           Main Screen

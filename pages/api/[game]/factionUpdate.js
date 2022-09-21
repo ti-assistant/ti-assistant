@@ -41,26 +41,29 @@ export default async function handler(req, res) {
       });
       break;
     case "TOGGLE_PLANET":
-      data.planets.forEach(async (planet) => {
+      for (const planet of data.planets) {
         readyString = `factions.${data.faction}.planets.${planet}.ready`;
         await db.collection('games').doc(gameid).update({
           [readyString]: data.ready,
         });
-      });
+      }
       break;
-    case "CHOOSE_STARTING_TECHS":
-      data.techs.forEach(async (tech) => {
-        readyString = `factions.${data.faction}.techs.${tech}.ready`;
-        await db.collection('games').doc(gameid).update({
-          [readyString]: true,
-        });
-      })
-      factionChoiceString = `factions.${data.faction}.startswith.choice`;
+    case "CHOOSE_STARTING_TECH":
+      readyString = `factions.${data.faction}.techs.${data.tech}.ready`;
       factionStartingTechString = `factions.${data.faction}.startswith.techs`;
       await db.collection('games').doc(gameid).update({
-        [factionChoiceString]: FieldValue.delete(),
-        [factionStartingTechString]: data.techs,
+        [readyString]: true,
+        [factionStartingTechString]: FieldValue.arrayUnion(data.tech),
       });
+      break;
+    case "REMOVE_STARTING_TECH":
+      playerTechString = `factions.${data.faction}.techs.${data.tech}`;
+      factionStartingTechString = `factions.${data.faction}.startswith.techs`;
+      await db.collection('games').doc(gameid).update({
+        [playerTechString]: FieldValue.delete(),
+        [factionStartingTechString]: FieldValue.arrayRemove(data.tech),
+      });
+      break;
     case "ADD_PLANET":
       gamePlanetString = `planets.${data.planet}.owner`;
       readyString = `factions.${data.faction}.planets.${data.planet}.ready`;
@@ -90,10 +93,40 @@ export default async function handler(req, res) {
   }
   
   const responseRef = await db.collection('games').doc(gameid).get();
-  if (data.returnAll) {
-    return res.status(200).json(responseRef.data().factions);
+  const factions = {...responseRef.data().factions};
+
+  if (Object.keys(factions).includes("Council Keleres")) {
+    const councilChoice = new Set();
+    for (const [name, faction] of Object.entries(factions)) {
+      if (name === "Council Keleres") {
+        continue;
+      }
+      (faction.startswith.techs ?? []).forEach((tech) => {
+        councilChoice.add(tech);
+      });
+    }
+    factions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
+    // Remove techs that are no longer available for Keleres.
+    if (data.action === "REMOVE_STARTING_TECH") {
+      for (const [index, tech] of (factions["Council Keleres"].startswith.techs ?? []).entries()) {
+        if (!councilChoice.has(tech)) {
+          playerTechString = `factions.Council Keleres.techs.${tech}`;
+          factionStartingTechString = `factions.Council Keleres.startswith.techs`;
+          await db.collection('games').doc(gameid).update({
+            [playerTechString]: FieldValue.delete(),
+            [factionStartingTechString]: FieldValue.arrayRemove(tech),
+          });
+          delete factions["Council Keleres"].techs[tech];
+          factions["Council Keleres"].startswith.techs.splice(index, 1);
+        }
+      }
+    }
   }
-  const response = responseRef.data().factions[data.faction];
+
+  if (data.returnAll) {
+    return res.status(200).json(factions);
+  }
+  const response = factions[data.faction];
 
   return res.status(200).json(response);
 }

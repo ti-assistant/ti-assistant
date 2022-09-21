@@ -62,35 +62,35 @@ export function AddTechList({ techs, addTech }) {
         } />
       </div>
       <TabBody id="blue" selectedId={tabShown} content={
-        <div>
+        <div className="flexColumn" style={{gap: "4px"}}>
           {blueTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="green" selectedId={tabShown} content={
-        <div>
+        <div className="flexColumn" style={{gap: "4px"}}>
           {greenTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="yellow" selectedId={tabShown} content={
-        <div>
+        <div className="flexColumn" style={{gap: "4px"}}>
           {yellowTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="red" selectedId={tabShown} content={
-        <div>
+        <div className="flexColumn" style={{gap: "4px"}}>
           {redTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="upgrades" selectedId={tabShown} content={
-        <div>
+        <div className="flexColumn" style={{gap: "4px"}}>
           {unitUpgrades.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}

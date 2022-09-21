@@ -184,7 +184,7 @@ export function SystemRow({planets, addPlanet}) {
             });
           });
 
-        return <div style={{display: "flex", flexDirection: "row", height: "72px"}}>
+        return <div key={planet.name} style={{display: "flex", flexDirection: "row", height: "72px"}}>
                   {claimed ? 
           <div style={{fontFamily: "Myriad Pro",
           position: "absolute",

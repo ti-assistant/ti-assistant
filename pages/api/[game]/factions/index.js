@@ -11,7 +11,19 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
-  res.status(200).json(gamestate.data().factions);
+  const factions = gamestate.data().factions;
+
+  if (Object.keys(gamestate.data().factions).includes("Council Keleres")) {
+    const councilChoice = new Set();
+    Object.values(gamestate.data().factions).forEach((faction) => {
+      (faction.startswith.techs ?? []).forEach((tech) => {
+        councilChoice.add(tech);
+      });
+    });
+    factions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
+  }
+
+  res.status(200).json(factions);
 
   // const factions = Object.keys(gamestate.data().factions);
 

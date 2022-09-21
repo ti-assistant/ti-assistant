@@ -40,34 +40,32 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
   }
 
   return (
-    <div className={`techRow ${tech.canExhaust && !tech.isReady ? "exhausted" : ""}`}>
+    <div className={`techRow ${tech.canExhaust && !tech.isReady ? "exhausted" : ""}`} style={{fontSize: "16px", gap: "4px"}}>
       {leftContent ? <div style={{zIndex: 2}}>{leftContent}</div> : null}
-      {addTech !== undefined ? 
+      {addTech ? 
         <div
         style={{
           display: "flex",
           alignItems: "center",
           color: "darkgreen",
           cursor: "pointer",
-          fontSize: "20px",
           zIndex: 100,
-          marginRight: "8px",
+          marginRight: "4px",
         }}
         onClick={() => addTech(tech.name)}
       >
         &#x2713;
       </div>
       : null}
-      {removeTech !== undefined ? 
+      {removeTech ? 
         <div
           style={{
             display: "flex",
             alignItems: "center",
             color: "darkred",
             cursor: "pointer",
-            fontSize: "20px",
             zIndex: 100,
-            marginRight: "8px",
+            marginRight: "4px",
           }}
           onClick={() => removeTech(tech.name)}
         >
@@ -79,8 +77,8 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
           return <TechIcon key={index} type={prereq} width="22px" height="22px" />;
         })}
       </div> */}
-      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2, alignItems: "center"}}>
-        <div style={{ display: "flex", fontSize: "20px", zIndex: 2, color: getTechColor()}}>
+      <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center"}}>
+        <div style={{ display: "flex", zIndex: 2, color: getTechColor()}}>
           {tech.name}
         </div>
         {tech.faction ? (
@@ -101,16 +99,9 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
           style={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "flex-end",
             alignItems: "center",
-            position: "absolute",
-            opacity: "70%",
-            height: "48px",
-            zIndex: 1,
-            width: "99%",
-            height: "100%",
-            paddingRight: "8px",
-            boxSizing: "border-box",
+            opacity: "80%",
+            flexShrink: 0,
           }}
         >
           {tech.prereqs.map((prereq, index) => {
@@ -118,12 +109,12 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
         })}
           {/* <TechIcon type={tech.type} faction={tech.faction} width="32px" height="36px" /> */}
         </div>
-      {updateTech !== undefined && tech.canExhaust ? 
+      {/* {updateTech !== undefined && tech.canExhaust ? 
       <div className="flexColumn" style={{zIndex:2}}>
         <button onClick={() => toggleTech(tech.name)}>
             {tech.isReady ? "Exhaust" : "Ready"}
         </button>
       </div>
-      : null}
+      : null} */}
     </div>);
 }
