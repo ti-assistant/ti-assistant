@@ -75,7 +75,7 @@ export function AddPlanetList({ planets, addPlanet }) {
 
   return (
     <div>
-      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "white", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid black"}}>
+      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown} content={
           "Planets"
         } />
@@ -88,7 +88,7 @@ export function AddPlanetList({ planets, addPlanet }) {
       </div>
       <TabBody id="normal" selectedId={tabShown} content={
         <div>
-          <div className="flexRow" style={{backgroundColor: "white", height: "32px", justifyContent: "flex-start", position: "fixed", zIndex: 904, width: "84%"}}>
+          <div className="flexRow" style={{backgroundColor: "#222", height: "32px", justifyContent: "flex-start", position: "fixed", zIndex: 904, width: "84%"}}>
               <input name="speaker" type="checkbox"
             checked={groupBySystem}
             onChange={toggleGroupBySystem}

@@ -316,8 +316,22 @@ function StartingComponents({ faction }) {
   )
 }
 
-export function FactionTile({ faction, speaker, onClick, opts = {} }) {
-  const border = "3px solid " + (faction.passed ? "grey" : faction.color);
+export function FactionTile({ faction, onClick, opts = {} }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+
+  if (!state) {
+    return (<div>Loading...</div>);
+  }
+  if (stateError) {
+    return (<div>Failed to load game state</div>);
+  }
+
+  const speaker = faction.name === state.state.speaker;
+
+  const color = faction.color === "Blue" ? "cornflowerblue" : faction.color;
+  const border = "3px solid " + (faction.passed ? "#555" : color);
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
   // }, 0);
@@ -342,6 +356,7 @@ export function FactionTile({ faction, speaker, onClick, opts = {} }) {
         position: "relative",
         cursor: onClick ? "pointer" : "auto",
         alignItems: "center",
+        whiteSpace: "nowrap"
       }}
     >
       <div className="flexRow" style={{justifyContent: "flex-start", gap: "4px", padding: "0px 4px", height: "40px"}}>
@@ -350,23 +365,41 @@ export function FactionTile({ faction, speaker, onClick, opts = {} }) {
         </div>
         {speaker ? <div style={{fontFamily: "Myriad Pro",
           position: "absolute",
-          color: "darkred",
+          color: color,
           borderRadius: "5px",
-          border: "1px solid darkred",
+          border: `2px solid ${color}`,
           padding: "0px 2px",
           fontSize: "12px",
-          bottom: "2px",
-          right: "2px"}}>
+          top: "-10px",
+          left: "4px",
+          zIndex: 1,
+          backgroundColor: "#222"}}>
           Speaker
         </div> : null}
-        {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative", top: speaker ? "-10px" : "0" }}>{faction.name}</div>}
+        {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{faction.name}</div>}
       </div>
     </div>
   );
 }
 
-export function FactionCard({ faction, onClick, speaker, opts = {} }) {
-  const border = "3px solid " + faction.color;
+export function FactionCard({ faction, onClick, opts = {} }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+
+  if (!state) {
+    return (<div>Loading...</div>);
+  }
+  if (stateError) {
+    return (<div>Failed to load game state</div>);
+  }
+
+  const speaker = faction.name === state.state.speaker;
+
+  
+  const color = faction.color === "Blue" ? "cornflowerblue" : faction.color;
+
+  const border = "3px solid " + (faction.passed ? "#555" : color);
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
   // }, 0);
@@ -394,8 +427,20 @@ export function FactionCard({ faction, onClick, speaker, opts = {} }) {
         <div className="flexRow" style={iconStyle}>
           <FactionSymbol faction={faction.name} size={40} />
         </div>
+        {speaker ? <div style={{fontFamily: "Myriad Pro",
+          position: "absolute",
+          color: color,
+          borderRadius: "5px",
+          border: `2px solid ${color}`,
+          padding: "0px 2px",
+          fontSize: "12px",
+          top: "-10px",
+          left: "4px",
+          zIndex: 1,
+          backgroundColor: "#222"}}>
+          Speaker
+        </div> : null}
         {opts.hideName ? null : <div style={{ paddingRight: "12px" }}>{faction.name}</div>}
-        {speaker ? <div style={{position: "absolute", right: 0, paddingRight: "16px"}}>Speaker</div> : null}
       </div>
       {opts.displayStartingComponents ? 
         <StartingComponents faction={faction} />

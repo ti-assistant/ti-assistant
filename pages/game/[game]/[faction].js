@@ -541,7 +541,7 @@ export default function GamePage() {
             style={{ display: "flex", flexDirection: "column", width: "100%" }}
           >
             {/* Tabs */}
-            <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid black"}}>
+            <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid grey"}}>
               <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content={
                 <b style={{ textAlign: "center", margin: "4px" }}>Techs</b>
               } />

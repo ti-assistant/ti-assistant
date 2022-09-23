@@ -27,7 +27,8 @@ export function StrategyCard({ card, active, onClick, opts = {} }) {
     return (<div>Loading...</div>);
   }
 
-  const border = "3px solid " + (active ? card.color : "grey");
+  const color = (active ? card.color : "#555");
+  const textColor = (active ? "#eee" : "#555");
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
   // }, 0);
@@ -38,19 +39,19 @@ export function StrategyCard({ card, active, onClick, opts = {} }) {
         borderRadius: "5px",
         display: "flex",
         flexDirection: "column",
-        border: border,
+        border: `3px solid ${color}`,
         fontSize: opts.fontSize ?? "24px",
         position: "relative",
         cursor: onClick ? "pointer" : "auto",
-        height: "54px",
+        height: "64px",
         justifyContent: "center",
       }}
     >
       <div className="flexRow" style={{padding: "4px 4px 4px 0px", justifyContent: "flex-start", alignItems: "center"}}>
-        <div style={{flexBasis: "14%", minWidth: "50px", fontSize: "32px", display: "flex", justifyContent: "center"}}>{card.order}</div>
-        {opts.hideName ? null : <div style={{flexBasis: "50%"}}>{card.name}</div>}
+        <div style={{flexBasis: "14%", minWidth: "50px", fontSize: "32px", display: "flex", justifyContent: "center", color: textColor}}>{card.order}</div>
+        {opts.hideName ? null : <div style={{flexBasis: "50%", color: textColor}}>{card.name}</div>}
         {faction ? 
-          <div style={{maxWidth: "140px", flexGrow: 4}}>
+          <div style={{flexGrow: 4, whiteSpace: "nowrap"}}>
             <FactionTile faction={faction} opts={{fontSize: "16px"}} />
           </div>
         : null}

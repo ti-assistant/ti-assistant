@@ -19,9 +19,14 @@ export default function SelectFactionPage() {
   const { game: gameid } = router.query;
   const { data: gameState, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
-
+  
   if (!qrCode && gameid) {
-    QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {}, (err, url) => {
+    QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
+      color: {
+        dark: "#eeeeeeff",
+        light: "#222222ff",
+      },
+    }, (err, url) => {
       if (err) {
         throw err;
       }

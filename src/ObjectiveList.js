@@ -95,7 +95,7 @@ export function ObjectiveList({ faction, objectives, addObjective, removeObjecti
 
   return (
     <div>
-      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "white", padding: "4px 4px 0px 4px", borderBottom: "1px solid black"}}>
+      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
         <Tab selectTab={setTabShown} id="stage-one" selectedId={tabShown} content={
           "Stage I"
         } />

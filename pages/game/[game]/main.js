@@ -376,7 +376,7 @@ export default function SelectFactionPage() {
                       {getStrategyCardsForFaction(orderedStrategyCards, activeFaction.name).map((card) => {
                         return (
                         <div key={card.name}>
-                          <label style={{color: card.used ? "grey" : "black"}}>
+                          <label style={{color: card.used ? "grey" : "#eee"}}>
                             <input type="checkbox" id={card.name} disabled={card.used} onChange={() => toggleAction(card.name)} checked={selectedActions.includes(card.name)} />
                             {card.name}
                           </label>
@@ -387,7 +387,7 @@ export default function SelectFactionPage() {
                         <input type="checkbox" id="Tactical" onChange={() => toggleAction("Tactical")} checked={selectedActions.includes("Tactical")} />
                         Tactical/Component
                       </label>
-                      <label style={{color: !canFactionPass(activeFaction.name) ? "grey" : "black"}}>
+                      <label style={{color: !canFactionPass(activeFaction.name) ? "grey" : "#eee"}}>
                         <input type="checkbox" id="Pass" disabled={!canFactionPass(activeFaction.name)} onChange={() => toggleAction("Pass")} checked={selectedActions.includes("Pass")} />
                         Pass
                       </label>
@@ -444,7 +444,7 @@ export default function SelectFactionPage() {
             </div>
             <h3>Status Phase: Round {round}</h3>
             <div className="flexRow" style={{gap: "40px", width: "100%", alignItems: "flex-start", justifyContent: "space-between"}}>
-              <div className="flexColumn" style={{flexBasis: "25%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "200px"}}>
+              <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
                 <div style={{textAlign: "center"}}>Initiative Order</div>
                 {filteredStrategyCards.map((card) => {
                   return <StrategyCard key={card.name} card={card} active={!card.used} opts={{hideName: true}} />
@@ -454,7 +454,7 @@ export default function SelectFactionPage() {
             <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px"}}>
               <li>In Initiative Order: Score up to one public and one secret objective</li>
               <li>
-                <div className="flexRow" style={{gap: "8px"}}>
+                <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
                   <FactionTile faction={factions[gameState.state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
                   Reveal one Stage {round > 3 ? "II" : "I"} objective
                 </div>

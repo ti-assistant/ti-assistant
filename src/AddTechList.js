@@ -44,7 +44,7 @@ export function AddTechList({ techs, addTech }) {
 
   return (
     <div>
-      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "white", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid black"}}>
+      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
         <Tab selectTab={setTabShown} id="blue" selectedId={tabShown} content={
           <Image src="/images/blue_tech.webp" alt="Blue Tech Skip" width="22px" height="22px" />
         } />
@@ -62,35 +62,35 @@ export function AddTechList({ techs, addTech }) {
         } />
       </div>
       <TabBody id="blue" selectedId={tabShown} content={
-        <div className="flexColumn" style={{gap: "4px"}}>
+        <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
           {blueTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="green" selectedId={tabShown} content={
-        <div className="flexColumn" style={{gap: "4px"}}>
+        <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
           {greenTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="yellow" selectedId={tabShown} content={
-        <div className="flexColumn" style={{gap: "4px"}}>
+        <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
           {yellowTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="red" selectedId={tabShown} content={
-        <div className="flexColumn" style={{gap: "4px"}}>
+        <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
           {redTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}
         </div>
       } />
       <TabBody id="upgrades" selectedId={tabShown} content={
-        <div className="flexColumn" style={{gap: "4px"}}>
+        <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
           {unitUpgrades.map((tech) => {
             return <TechRow key={tech.name} tech={tech} addTech={addTech} />;
           })}

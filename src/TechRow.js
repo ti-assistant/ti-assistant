@@ -28,15 +28,15 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
   function getTechColor() {
     switch (tech.type) {
       case "red":
-        return "darkred";
+        return "indianred";
       case "yellow":
-        return "darkgoldenrod";
+        return "goldenrod";
       case "blue":
-        return "darkblue";
+        return "cornflowerblue";
       case "green":
-        return "darkgreen";
+        return "seagreen";
     }
-    return "black";
+    return "#eee";
   }
 
   return (

@@ -25,6 +25,12 @@ body {
   color: #eee;
 }
 
+@media only screen and (max-width: 600px) {
+  body {
+    margin: 0px 8px;
+  }
+}
+
 .myriadPro {
   font-family: "Myriad Pro";
 }
@@ -51,5 +57,6 @@ body {
 
 .tab.active {
   background-color: lightblue;
+  color: #333;
   border-radius: 5px 5px 0px 0px;
 }

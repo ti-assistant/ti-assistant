@@ -9,7 +9,8 @@
 }
 
 .planetRow.exhausted {
-  background-color: lightgrey;
+  background-color: #111;
+  color: #666;  
 }
 
 .systemRow {
@@ -19,13 +20,14 @@
   padding-left: 4px;
   padding-right: 4px;
   position: relative;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid grey
 }
 
 .techRow {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: stretch;
   min-height: 32px;
   padding-left: 4px;
   padding-right: 4px;
@@ -33,7 +35,8 @@
 }
 
 .techRow.exhausted {
-  background-color: lightgrey;
+  background-color: #111;
+  color: #666;
 }
 
 .objectiveRow {
