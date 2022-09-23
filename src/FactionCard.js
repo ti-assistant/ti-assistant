@@ -316,8 +316,8 @@ function StartingComponents({ faction }) {
   )
 }
 
-export function FactionTile({ faction, onClick, opts = {} }) {
-  const border = "3px solid " + faction.color;
+export function FactionTile({ faction, speaker, onClick, opts = {} }) {
+  const border = "3px solid " + (faction.passed ? "grey" : faction.color);
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
   // }, 0);
@@ -348,7 +348,18 @@ export function FactionTile({ faction, onClick, opts = {} }) {
         <div className="flexRow" style={iconStyle}>
           <FactionSymbol faction={faction.name} size={40} />
         </div>
-        {opts.hideName ? null : <div style={{ textAlign: "center" }}>{faction.name}</div>}
+        {speaker ? <div style={{fontFamily: "Myriad Pro",
+          position: "absolute",
+          color: "darkred",
+          borderRadius: "5px",
+          border: "1px solid darkred",
+          padding: "0px 2px",
+          fontSize: "12px",
+          bottom: "2px",
+          right: "2px"}}>
+          Speaker
+        </div> : null}
+        {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative", top: speaker ? "-10px" : "0" }}>{faction.name}</div>}
       </div>
     </div>
   );

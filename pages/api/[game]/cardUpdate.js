@@ -1,4 +1,6 @@
-const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+import { fetchStrategyCards } from '../../../server/util/fetch';
+
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,42 +18,45 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
-  let cardString;
-  let orderString;
+
   switch (data.action) {
-    case "ASSIGN_STRATEGY_CARD":
-      cardString = `strategycards.${data.card}.faction`;
+    case "ASSIGN_STRATEGY_CARD": {
+      const factionString = `strategycards.${data.card}.faction`;
       await db.collection('games').doc(gameid).update({
-        [cardString]: data.faction,
+        [factionString]: data.faction,
       });
-      break;
-    case "CLEAR_STRATEGY_CARDS":
-      for (const card of Object.keys(gameRef.data().strategycards)) {
-        cardString = `strategycards.${card}.faction`;
-        orderString = `strategycards.${card}.order`;
+      if (data.faction === "Naalu Collective") {
+        const orderString = `strategycards.${data.card}.order`;
         await db.collection('games').doc(gameid).update({
-          [cardString]: FieldValue.delete(),
-          [orderString]: FieldValue.delete(),
+          [orderString]: 0,
         });
       }
       break;
+    }
+    case "USE_STRATEGY_CARD": {
+      const usedString = `strategycards.${data.card}.used`;
+      await db.collection('games').doc(gameid).update({
+        [usedString]: true,
+      });
+      break;
+    }
+    case "CLEAR_STRATEGY_CARDS": {
+      for (const card of Object.keys(gameRef.data().strategycards)) {
+        const usedString = `strategycards.${card}.used`;
+        const cardString = `strategycards.${card}.faction`;
+        const orderString = `strategycards.${card}.order`;
+        await db.collection('games').doc(gameid).update({
+          [cardString]: FieldValue.delete(),
+          [orderString]: FieldValue.delete(),
+          [usedString]: FieldValue.delete(),
+        });
+      }
+      break;
+    }
   }
+
   
-  const strategiesRef = await db.collection('strategycards').orderBy('order').get();
+  const strategyCards = await fetchStrategyCards(gameid);
 
-  const gamestate = await db.collection('games').doc(gameid).get();
-  const strategycards = gamestate.data().strategycards ?? {};
-
-  let cards = {};
-  strategiesRef.forEach(async (val) => {
-    let strategy = val.data();
-    let id = val.id;
-
-    cards[id] = {
-      ...strategy,
-      ...(strategycards[id] ?? {}),
-    };
-  });
-
-  res.status(200).json(cards);
+  res.status(200).json(strategyCards);
 }

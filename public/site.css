@@ -20,6 +20,7 @@
 
 body {
   font-family: "slider";
+  margin: 0px 48px;
 }
 
 .myriadPro {
@@ -37,6 +38,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 .tab {

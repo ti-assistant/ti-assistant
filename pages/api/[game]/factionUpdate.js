@@ -80,6 +80,22 @@ export default async function handler(req, res) {
         [playerPlanetString]: FieldValue.delete(),
       });
       break;
+    case "PASS": {
+      const factionPassString = `factions.${data.faction}.passed`;
+      await db.collection('games').doc(gameid).update({
+        [factionPassString]: true,
+      });
+      break;
+    }
+    case "READY_ALL": {
+      const updateVal = {};
+      for (const factionName of Object.keys(gameRef.data().factions)) {
+        const factionPassString = `factions.${factionName}.passed`;
+        updateVal[factionPassString] = false;
+      }
+      await db.collection('games').doc(gameid).update(updateVal);
+      break;
+    }
     case "ADD_OBJECTIVE":
       await db.collection('games').doc(gameid).update({
         objectives: FieldValue.arrayUnion(data.objective),
