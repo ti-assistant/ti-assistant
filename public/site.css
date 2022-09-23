@@ -21,6 +21,8 @@
 body {
   font-family: "slider";
   margin: 0px 48px;
+  background-color: #222;
+  color: #eee;
 }
 
 .myriadPro {
