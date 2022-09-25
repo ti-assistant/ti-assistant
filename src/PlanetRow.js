@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { useState } from "react";
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 
 import { AttachRow } from "/src/AttachRow.js";
 import { Resources } from "/src/Resources.js";
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
+import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
 
 const fetcher = async (url) => {
   const res = await fetch(url)
@@ -70,7 +71,7 @@ function PlanetAttributes({ attributes }) {
       case "tomb":
         return <Image src="/images/tomb_symbol.webp" alt="Tomb of Emphidia" width="22px" height="22px" />;
       case "space-cannon":
-        return <div style={{width: "22px", height: "22px"}}>✹✹✹</div>
+        return <div style={{width: "44px", height: "22px"}}>✹✹✹</div>
       default:
         return null;
     }
@@ -123,7 +124,7 @@ function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
         return (
           
           <div key={name} className="flexRow" style={{justifyContent: "flex-start", alignItems: "center"}}>
-            <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={planet.attachments.includes(name)}></input>
+            <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={attachment.planet === planet.name}></input>
             <AttachRow attachment={attachment} />
           </div>
         );
@@ -149,10 +150,11 @@ function AttachIcon({ clickFn }) {
   );
 }
 
-export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
+export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={}}) {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
-  const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
+  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
 
@@ -174,11 +176,18 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
     if (planet.name === "Mecatol Rex") {
       return {};
     }
-    let available = Object.keys(attachments).filter((name) => {
-      if (planet.attachments.includes(name)) {
+    let available = Object.values(attachments).filter((attachment) => {
+      // If attached to this planet, always show.
+      if (attachment.planet === planet.name) {
         return true;
       }
-      const attachment = attachments[name];
+      // If attached to a different planet, never show.
+      if (attachment.planet) {
+        return false;
+      }
+      if (attachment.name === "Terraform" && playerFaction.name === "Titans of Ul") {
+        return false;
+      }
       if (attachment.required.type !== undefined) {
         if (attachment.required.type !== planet.type && planet.type !== "all") {
           return false;
@@ -200,10 +209,10 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
         }
       }
       return true;
-    }).reduce((result, name) => {
+    }).reduce((result, attachment) => {
       return {
         ...result,
-        [name]: attachments[name],
+        [attachment.name]: attachment,
       };
     }, {});
     return available;
@@ -221,23 +230,17 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
   }
 
   function toggleAttachment(name) {
-    let attaches = planet.attachments;
-    const index = attaches.indexOf(name);
-    if (index === -1) {
-      attaches.push(name);
+    if (attachments[name].planet === planet.name) {
+      removeFromPlanet(mutate, gameid, attachments, name);
     } else {
-      attaches.splice(index, 1);
+      attachToPlanet(mutate, gameid, attachments, planet.name, name);
     }
-    updatePlanet(planet.name, {
-      ...planet,
-      attachments: attaches,
-    });
   }
 
   let claimed = null;
   let claimedColor = null;
   (planet.owners ?? []).forEach((owner) => {
-    if (owner !== playerFaction) {
+    if (opts.showSelfOwned || owner !== playerFaction) {
       if (claimed === null) {
         claimed = owner;
         claimedColor = gameState.factions[owner].color.toLowerCase();
@@ -295,7 +298,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
         padding: "0px 4px",
         fontSize: "12px",
         bottom: "4px",
-        left: "28px"
+        left: (addPlanet || removePlanet) ? "28px" : "0"
       }}>Claimed by {claimed}</div> : null
       }
       <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2, alignItems: "center"}}>
@@ -321,7 +324,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet}) {
       />
       <div
         style={{
-          marginRight: "10px",
+          margin: "0px 4px 0px 8px",
           width: "48px"
         }}
       >

@@ -20,8 +20,7 @@ export default function GamePage() {
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
   const { data: faction, error: factionError } = useSWR(gameid && playerFaction ? `/api/${gameid}/factions/${playerFaction}` : null, fetcher);
-  const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: attachments, error: attachmentsError } = useSWR("/api/attachments", fetcher);
+  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: objectives, error: objectivesError } = useSWR("/api/objectives", fetcher);
   const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${playerFaction}` : null, fetcher);
   const { data: technologies, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher);
@@ -41,22 +40,16 @@ export default function GamePage() {
   if (techsError) {
     return (<div>Failed to load technologies</div>);
   }
-  if (gameStateError) {
-    return (<div>Failed to load game state</div>);
-  }
-  if (!attachments || !faction || !objectives || !planets || !technologies || !gameState) {
+  if (!attachments || !faction || !objectives || !planets || !technologies) {
     return (<div>Loading...</div>);
   }
 
-  // const planets = allPlanets.map((planet) => {
-  //   if (faction.planets[planet.name]) {
-  //     return {
-  //       ...planet,
-  //       ...faction.planets[planet.name],
-  //     };
-  //   }
-  //   return planet;
-  // });
+  const ownedPlanets = [];
+  Object.values(planets).forEach((planet) => {
+    if ((planet.owners ?? []).includes(playerFaction)) {
+      ownedPlanets.push(planet);
+    }
+  });
 
   function toggleAddTechMenu() {
     setShowAddTech(!showAddTech);
@@ -138,16 +131,17 @@ export default function GamePage() {
   }
 
   function readyAll() {
+    const planetNames = ownedPlanets.map((planet) => planet.name);
     const data = {
       action: "TOGGLE_PLANET",
       faction: playerFaction,
-      planets: Object.keys(gameState.factions[playerFaction].planets),
+      planets: planetNames,
       ready: true,
     };
 
     let updatedPlanets = {...planets};
 
-    Object.keys(gameState.factions[playerFaction].planets).forEach((name) => {
+    planetNames.forEach((name) => {
       updatedPlanets[name].ready = true;
     });
 
@@ -159,16 +153,17 @@ export default function GamePage() {
   }
 
   function exhaustAll() {
+    const planetNames = ownedPlanets.map((planet) => planet.name);
     const data = {
       action: "TOGGLE_PLANET",
       faction: playerFaction,
-      planets: Object.keys(gameState.factions[playerFaction].planets),
+      planets: planetNames,
       ready: false,
     };
 
     let updatedPlanets = {...planets};
 
-    Object.keys(gameState.factions[playerFaction].planets).forEach((name) => {
+    planetNames.forEach((name) => {
       updatedPlanets[name].ready = false;
     });
 
@@ -224,8 +219,8 @@ export default function GamePage() {
   function applyPlanetAttachments(planet) {
     let updatedPlanet = {...planet};
     updatedPlanet.attributes = [...planet.attributes];
-    planet.attachments.forEach((name) => {
-      const attachment = attachments[name];
+    const planetAttachments = Object.values(attachments).filter((attachment) => attachment.planet === planet.name);
+    planetAttachments.forEach((attachment) => {
       if (attachment.attribute.includes("skip")) {
         if (hasSkip(updatedPlanet)) {
           updatedPlanet.resources += attachment.resources;
@@ -240,7 +235,7 @@ export default function GamePage() {
       } else {
         updatedPlanet.resources += attachment.resources;
         updatedPlanet.influence += attachment.influence;
-        if (attachment.attribute) {
+        if (attachment.attribute && !updatedPlanet.attributes.includes(attachment.attribute)) {
           updatedPlanet.attributes.push(attachment.attribute);
         }
       }
@@ -248,7 +243,6 @@ export default function GamePage() {
     return updatedPlanet;
   }
 
-  // const gamePlayer = gameState.factions[playerFaction];
   const gamePlayer = faction;
 
   const ownedTechs = [];
@@ -266,8 +260,10 @@ export default function GamePage() {
 
   const updatedPlanets = [];
   Object.values(planets).forEach((planet) => {
-    if ((planet.owners ?? []).includes(playerFaction)) {
-      updatedPlanets.push(planet);
+    let updatedPlanet = {...planet};
+    if ((updatedPlanet.owners ?? []).includes(playerFaction)) {
+      updatedPlanet = applyPlanetAttachments(updatedPlanet);
+      updatedPlanets.push(updatedPlanet);
     }
   });
 

@@ -88,12 +88,12 @@ export function AddPlanetList({ planets, addPlanet }) {
       </div>
       <TabBody id="normal" selectedId={tabShown} content={
         <div>
-          <div className="flexRow" style={{backgroundColor: "#222", height: "32px", justifyContent: "flex-start", position: "fixed", zIndex: 904, width: "84%"}}>
-              <input name="speaker" type="checkbox"
+          <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "fixed", zIndex: 904, width: "84%", fontSize: "14px"}}>
+          <label>
+              <input type="checkbox"
             checked={groupBySystem}
             onChange={toggleGroupBySystem}
-          />
-          <label>Group by System</label>
+          />Group by System</label>
           </div>
           <div style={{paddingTop: "32px"}}>
             {groupBySystem ? 

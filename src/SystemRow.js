@@ -5,6 +5,7 @@ import useSWR from 'swr'
 
 import { AttachRow } from "/src/AttachRow.js";
 import { Resources } from "/src/Resources.js";
+import { PlanetRow } from "/src/PlanetRow.js";
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
 
@@ -170,64 +171,7 @@ export function SystemRow({planets, addPlanet}) {
       : null}
       <div style={{display: "flex", flexDirection: "column", height: height, justifyContent: "center"}}>
       {planets.map((planet) => {
-          let claimed = null;
-          let claimedColor = null;
-          planets.forEach((planet) => {
-            (planet.owners ?? []).forEach((owner) => {
-                if (claimed === null) {
-                  claimed = owner;
-                  claimedColor = gameState.factions[owner].color.toLowerCase();
-                } else {
-                  claimed = "Multiple Players";
-                  claimedColor = "darkred";
-                }
-            });
-          });
-
-        return <div key={planet.name} style={{display: "flex", flexDirection: "row", height: "72px"}}>
-                  {claimed ? 
-          <div style={{fontFamily: "Myriad Pro",
-          position: "absolute",
-          color: claimedColor,
-          borderRadius: "5px",
-          border: `1px solid ${claimedColor}`,
-          padding: "0px 4px",
-          fontSize: "12px",
-          bottom: "4px",
-          left: "28px"
-        }}>Claimed by {claimed}</div> : null
-        }
-        <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2, alignItems: "center"}}>
-          <div style={{fontSize: "24px", zIndex: 2}}>
-            {planet.name}
-          </div>
-          <div
-            style={{
-              position: "relative",
-              top: "-9px",
-              marginLeft: "-16px",
-              opacity: "70%",
-              height: "36px",
-              zIndex: 1,
-            }}
-          >
-            <PlanetSymbol type={planet.type} faction={planet.faction} />
-          </div>
-        </div>
-        
-      <Resources
-        resources={planet.resources}
-        influence={planet.influence}
-      />
-      <div
-        style={{
-          marginRight: "10px",
-          width: "48px"
-        }}
-      >
-        <PlanetAttributes attributes={planet.attributes ?? []} />
-      </div>
-      </div>
+        return <PlanetRow key={planet.name} planet={planet} opts={{showSelfOwned: true}} />;
       })}
       </div>
     </div>);

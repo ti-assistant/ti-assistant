@@ -114,66 +114,74 @@ export function ObjectiveList() {
     return null;
   }
 
+  function changeTab(tabName) {
+    if (tabShown === tabName) {
+      return;
+    }
+    setEditMode(false);
+    setTabShown(tabName);
+  }
+
   return (
     <div>
       <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
-        <Tab selectTab={setTabShown} id="stage-one" selectedId={tabShown} content={
+        <Tab selectTab={changeTab} id="stage-one" selectedId={tabShown} content={
           "Stage I"
         } />
-        <Tab selectTab={setTabShown} id="stage-two" selectedId={tabShown} content={
+        <Tab selectTab={changeTab} id="stage-two" selectedId={tabShown} content={
           "Stage II"
         } />
-        <Tab selectTab={setTabShown} id="secret" selectedId={tabShown} content={
+        <Tab selectTab={changeTab} id="secret" selectedId={tabShown} content={
           "Secrets"
         } />
-        <Tab selectTab={setTabShown} id="other" selectedId={tabShown} content={
+        <Tab selectTab={changeTab} id="other" selectedId={tabShown} content={
           "Other"
         } />
       </div>
       <TabBody id="stage-one" selectedId={tabShown} content={
         <div>
-          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {stageOneObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
             {stageOneObjectives.map((obj) => {
               return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
             })}
-          </div>
-          {editModeButton("stage-one") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+          </div> : null}
+          {editModeButton("stage-one") ? <div className="flexRow" style={{padding: "8px 0px"}}>
             {editModeButton("stage-one")}
           </div> : null }
         </div>
       } />
       <TabBody id="stage-two" selectedId={tabShown} content={
         <div>
-          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {stageTwoObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
             {stageTwoObjectives.map((obj) => {
               return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
             })}
-          </div>
-          {editModeButton("stage-two") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+          </div> : null}
+          {editModeButton("stage-two") ? <div className="flexRow" style={{padding: "8px 0px"}}>
           {editModeButton("stage-two")}
           </div> : null}
         </div>
       } />
       <TabBody id="secret" selectedId={tabShown} content={
         <div>
-          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {secretObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {secretObjectives.map((obj) => {
             return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}
-          </div>
-          {editModeButton("secret") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+          </div> : null}
+          {editModeButton("secret") ? <div className="flexRow" style={{padding: "8px 0px"}}>
             {editModeButton("secret")}
           </div> : null}
         </div>
       } />
       <TabBody id="other" selectedId={tabShown} content={
         <div>
-          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {otherObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {otherObjectives.map((obj) => {
             return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}
-          </div>
-          {editModeButton("other") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+          </div> : null}
+          {editModeButton("other") ? <div className="flexRow" style={{padding: "8px 0px"}}>
             {editModeButton("other")}
           </div> : null}
         </div>

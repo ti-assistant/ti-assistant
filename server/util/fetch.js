@@ -65,3 +65,44 @@ export async function fetchStrategyCards(gameid) {
 
   return objectives;
 }
+
+/**
+ * Fetches the attachments associated with a game.
+ * @param {string} gameid The game id. If not present, the default list will be fetched.
+ * @returns {Promise} attachments keyed by name.
+ */
+ export async function fetchAttachments(gameid) {
+  const db = getFirestore();
+
+  const attachmentsRef = await db.collection('attachments').get();
+
+  if (!gameid) {
+    return attachmentsRef.data();
+  }
+
+  const gameState = await db.collection('games').doc(gameid).get();
+  const gameAttachments = gameState.data().attachments ?? {};
+
+  let attachments = {};
+  attachmentsRef.forEach(async (val) => {
+    if (!gameAttachments[val.id]) {
+      attachments[val.id] = val.data();
+      return;
+    }
+
+    attachments[val.id] = {
+      ...val.data(),
+      ...gameAttachments[val.id],
+    };
+  });
+
+  // Remove faction specific attachments if those factions are not in the game.
+  const gameFactions = gameState.data().factions;
+
+  if (!gameFactions['Titans of Ul']) {
+    delete attachments['Elysium'];
+    delete attachments['Terraform'];
+  }
+
+  return attachments;
+}

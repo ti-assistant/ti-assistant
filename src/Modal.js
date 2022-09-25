@@ -3,7 +3,7 @@ export function Modal({ closeMenu, visible, title, content, top }) {
   return (
     <div style={{position: "fixed", left: "0px", top: "0px", width: "100%",
     height: "100%", display: visible ? "flex" : "none", zIndex: 899,
-    flexDirection: "column", alignItems: "center"}}>
+    flexDirection: "column", alignItems: "center", color: "#eee"}}>
 
       <div style={{position: "absolute", width: "100%", height: "100%", backgroundColor: "black", opacity: "50%", zIndex: 900}} onClick={closeMenu}>
   
