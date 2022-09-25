@@ -3,13 +3,12 @@ const { getFirestore } = require('firebase-admin/firestore');
 export default async function handler(req, res) {
   const db = getFirestore();
 
-  const objectivesRef = db.collection('objectives');
-  const objectiveQueries = await objectivesRef.get();
+  // const objectivesRef = db.collection('objectives').get();
 
-  let objectives = [];
-  objectiveQueries.forEach((val) => {
-    objectives.push(val.data());
-  });
+  // let objectives = {};
+  // objectivesRef.data().forEach((val) => {
+  //   objectives[val.id] = val.data();
+  // });
 
-  res.status(200).json(objectives);
+  res.status(200).json({});
 }

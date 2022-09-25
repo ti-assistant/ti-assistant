@@ -1,8 +1,11 @@
 import { useState } from "react";
-import Image from 'next/image';
+import { useRouter } from 'next/router'
+import useSWR, { useSWRConfig } from 'swr'
 
+import { fetcher, poster } from './util/api/util'
 import { ObjectiveRow } from "/src/ObjectiveRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
+import { revealObjective, removeObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
 
 
 function sortObjectives(objectives, field, descending = false) {
@@ -17,35 +20,37 @@ function sortObjectives(objectives, field, descending = false) {
   });
 }
 
-export function ObjectiveList({ faction, objectives, addObjective, removeObjective }) {
+export function ObjectiveList({ faction }) {
+  const router = useRouter();
+  const { game: gameid, faction: factionName } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const [tabShown, setTabShown] = useState("stage-one");
   const [editMode, setEditMode] = useState(false);
-  const [localObjectives, setLocalObjectives] = useState(objectives);
 
-  function removeObjective(toRemove) {
-    setLocalObjectives(localObjectives.map((obj) => {
-      if (obj.name === toRemove) {
-        return {
-          ...obj,
-          selected: false,
-        };
-      }
-      return obj;
-    }));
+  if (objectivesError) {
+    return (<div>Failed to load objectives</div>);
   }
-  function addObjective(toAdd) {
-    setLocalObjectives(localObjectives.map((obj) => {
-      if (obj.name === toAdd) {
-        return {
-          ...obj,
-          selected: true,
-        };
-      }
-      return obj;
-    }));
+  if (!objectives) {
+    return (<div>Loading...</div>);
   }
 
-  let filteredObjectives = localObjectives.filter((obj) => {
+  function addObj(objective) {
+    revealObjective(mutate, gameid, objectives, objective);
+    setEditMode(false);
+  }
+  function removeObj(objective) {
+    removeObjective(mutate, gameid, objectives, objective);
+  }
+  function scoreObj(objective, add) {
+    if (add) {
+      scoreObjective(mutate, gameid, objectives, factionName, objective);
+    } else {
+      unscoreObjective(mutate, gameid, objectives, factionName, objective);
+    }
+  }
+
+  let filteredObjectives = Object.values(objectives).filter((obj) => {
     return (editMode && !obj.selected) || (!editMode && obj.selected);
   })
 
@@ -73,24 +78,39 @@ export function ObjectiveList({ faction, objectives, addObjective, removeObjecti
     setEditMode(!editMode);
   }
 
-  function scoreObjective(toScore, score) {
-    setLocalObjectives(localObjectives.map((obj) => {
-      if (obj.name === toScore) {
-        let scoredBy = (obj.scoredBy ?? []);
-        if (score) {
-          scoredBy = [...scoredBy, "Naaz-Rokha Alliance", faction, "Embers of Muaat", "Naalu Collective", "Federation of Sol", "Vuil'Raith Cabal", "Nomad", "Empyrean"];
-        } else {
-          scoredBy = scoredBy.filter((scorer) => {
-            return faction !== scorer;
-          });
+  function editModeButton(stage) {
+    if (editMode) {
+      return (<button onClick={toggleEditMode}>Done</button>);
+    }
+    switch (stage) {
+      case "stage-one":
+        if (stageOneObjectives.length < 5) {
+          return (<button onClick={toggleEditMode}>Reveal Objective</button>);
+        } else if (stageOneObjectives.length === 5) {
+          return (<button onClick={toggleEditMode}>Reveal Objective (Incentive Program [For])</button>);
         }
-        return {
-          ...obj,
-          scoredBy: scoredBy.sort(),
-        };
-      }
-      return obj;
-    }));
+        return null;
+      case "stage-two":
+        if (stageTwoObjectives.length < 5) {
+          return (<button onClick={toggleEditMode}>Reveal Objective</button>);
+        } else if (stageTwoObjectives.length === 5) {
+          return (<button onClick={toggleEditMode}>Reveal Objective (Incentive Program [Against])</button>);
+        }
+        return null;
+      case "secret":
+        if (secretObjectives.length < 3) {
+          return (<div className="flexColumn" style={{gap: "4px"}}>
+            <button onClick={toggleEditMode}>Reveal Objective</button>
+            <div>This will not reveal to other players</div>
+          </div>);
+        } else if (secretObjectives.length === 3) {
+          return (<button onClick={toggleEditMode}>Reveal Objective (Incentive Program [Against])</button>);
+        }
+        return null;
+      case "other":
+        return (<button onClick={toggleEditMode}>Select Objective</button>);
+    }
+    return null;
   }
 
   return (
@@ -110,34 +130,53 @@ export function ObjectiveList({ faction, objectives, addObjective, removeObjecti
         } />
       </div>
       <TabBody id="stage-one" selectedId={tabShown} content={
-        <div style={{maxHeight: "450px", overflow: "auto"}}>
-          {stageOneObjectives.map((obj) => {
-            return <ObjectiveRow key={obj.name} faction={faction} objective={obj} scoreObjective={scoreObjective} removeObjective={editMode ? null : () => removeObjective(obj.name)} addObjective={editMode ? () => addObjective(obj.name) : null} />;
-          })}
+        <div>
+          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+            {stageOneObjectives.map((obj) => {
+              return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
+            })}
+          </div>
+          {editModeButton("stage-one") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+            {editModeButton("stage-one")}
+          </div> : null }
         </div>
       } />
       <TabBody id="stage-two" selectedId={tabShown} content={
-        <div style={{maxHeight: "450px", overflow: "auto"}}>
-          {stageTwoObjectives.map((obj) => {
-            return <ObjectiveRow key={obj.name} objective={obj} />;
-          })}
+        <div>
+          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+            {stageTwoObjectives.map((obj) => {
+              return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
+            })}
+          </div>
+          {editModeButton("stage-two") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+          {editModeButton("stage-two")}
+          </div> : null}
         </div>
       } />
       <TabBody id="secret" selectedId={tabShown} content={
-        <div style={{maxHeight: "450px", overflow: "auto"}}>
+        <div>
+          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {secretObjectives.map((obj) => {
-            return <ObjectiveRow key={obj.name} objective={obj} />;
+            return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}
+          </div>
+          {editModeButton("secret") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+            {editModeButton("secret")}
+          </div> : null}
         </div>
       } />
       <TabBody id="other" selectedId={tabShown} content={
-        <div style={{maxHeight: "450px", overflow: "auto"}}>
+        <div>
+          <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {otherObjectives.map((obj) => {
-            return <ObjectiveRow key={obj.name} objective={obj} />;
+            return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}
+          </div>
+          {editModeButton("other") ? <div className="flexRow" style={{borderTop: "1px solid grey", padding: "8px 0px"}}>
+            {editModeButton("other")}
+          </div> : null}
         </div>
       } />
-      <button onClick={toggleEditMode}>Add Objective</button>
     </div>
   )
 }

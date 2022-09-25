@@ -100,7 +100,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
   }
 
   function canScore() {
-    return !(objective.scoredBy ?? []).includes(faction);
+    return removeObjective && !(objective.scorers ?? []).includes(faction);
   }
 
   return (
@@ -152,7 +152,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
         </div>
       </div>
       <div className="flexRow" style={{justifyContent: "flex-start"}}>
-        {(objective.scoredBy ?? []).map((scorer) => {
+        {(objective.scorers ?? []).map((scorer) => {
           if (scorer === faction) {
             return (
               <div className="flexRow" style={{position: "relative", width: "45px"}}>

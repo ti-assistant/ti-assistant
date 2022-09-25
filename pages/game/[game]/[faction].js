@@ -9,110 +9,10 @@ import { Tab, TabBody } from "/src/Tab.js";
 import { Modal } from "/src/Modal.js";
 import useSWR, { useSWRConfig } from 'swr'
 import { ObjectiveList } from "/src/ObjectiveList";
-
-const fetcher = async (url) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data.message)
-  }
-  return data
-};
-
-const poster = async (url, data) => {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  const val = await res.json();
-
-  if (res.status !== 200) {
-    throw new Error(val.message);
-  }
-  return val;
-}
+import { fetcher, poster } from '../../../src/util/api/util';
 
 export default function GamePage() {
-  let initial_player = {
-    faction: "Arborec",
-    strategy_card: {
-      name: "Construction",
-      order: 4
-    },
-    timer: "01:30:00",
-    active_player: true,
-    technologies: [
-    ],
-    planets: [
-      {
-        name: "Lodor",
-        resources: 3,
-        influence: 1,
-        ready: true,
-        type: "Cultural",
-        home: false,
-        attributes: [],
-        attachments: ["Demilitarized Zone", "Dyson Sphere"]
-      },
-      {
-        name: "New Albion",
-        resources: 2,
-        influence: 1,
-        ready: true,
-        type: "Hazardous",
-        home: false,
-        attributes: [],
-        attachments: []
-      },
-      {
-        name: "Mecatol Rex",
-        resources: 1,
-        influence: 6,
-        ready: true,
-        attributes: [],
-        home: false,
-        type: "none",
-        attachments: []
-      },
-      {
-        name: "Archon Vail",
-        resources: 2,
-        influence: 1,
-        ready: false,
-        type: "Industrial",
-        home: false,
-        attributes: [],
-        attachments: []
-      },
-      {
-        name: "Dal Bootha",
-        resources: 4,
-        influence: 1,
-        ready: false,
-        type: "Industrial",
-        home: false,
-        attributes: [],
-        attachments: []
-      },
-      {
-        name: "Avar",
-        resources: 1,
-        influence: 1,
-        ready: true,
-        type: "None",
-        home: true,
-        attributes: [],
-        attachments: []
-      }
-    ]
-  };
-
-  const [player, setPlayer] = useState(initial_player);
+  const [player, setPlayer] = useState({});
   const [showAddTech, setShowAddTech] = useState(false);
   const [showAddPlanet, setShowAddPlanet] = useState(false);
   const [tabShown, setTabShown] = useState("planets");
@@ -434,7 +334,7 @@ export default function GamePage() {
             marginRight: "20px"
           }}
         >
-          {player.strategy_card.order}: {player.strategy_card.name}
+          4: Construction
         </div>
         <div
           style={{
