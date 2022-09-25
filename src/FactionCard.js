@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router'
+import { useState } from "react";
 import useSWR, { mutate, useSWRConfig } from 'swr'
 
 import { TechRow } from '/src/TechRow.js'
@@ -30,6 +31,18 @@ const poster = async (url, data) => {
   }
   return val;
 };
+
+function getFactionColor(color) {
+  switch (color) {
+    case "Blue":
+      return "cornflowerblue";
+    // case "Magenta":
+    //   return "hotpink";
+    // case "Green":
+    //   return "mediumseagreen";
+  }
+  return color;
+}
 
 export function FactionSymbol({ faction, size }) {
   let width = size;
@@ -316,7 +329,7 @@ function StartingComponents({ faction }) {
   )
 }
 
-export function FactionTile({ faction, onClick, opts = {} }) {
+export function FactionTile({ faction, onClick, speakerButton, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
@@ -330,7 +343,7 @@ export function FactionTile({ faction, onClick, opts = {} }) {
 
   const speaker = faction.name === state.state.speaker;
 
-  const color = faction.color === "Blue" ? "cornflowerblue" : faction.color;
+  const color = getFactionColor(faction.color);
   const border = "3px solid " + (faction.passed ? "#555" : color);
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
@@ -345,38 +358,41 @@ export function FactionTile({ faction, onClick, opts = {} }) {
     opacity: "60%",
   };
   return (
-    <div
-      onClick={onClick}
-      style={{
-        borderRadius: "5px",
-        display: "flex",
-        flexDirection: "column",
-        border: border,
-        fontSize: opts.fontSize ?? "24px",
-        position: "relative",
-        cursor: onClick ? "pointer" : "auto",
-        alignItems: "center",
-        whiteSpace: "nowrap"
-      }}
-    >
-      <div className="flexRow" style={{justifyContent: "flex-start", gap: "4px", padding: "0px 4px", height: "40px"}}>
-        <div className="flexRow" style={iconStyle}>
-          <FactionSymbol faction={faction.name} size={40} />
-        </div>
-        {speaker ? <div style={{fontFamily: "Myriad Pro",
-          position: "absolute",
-          color: color,
+    <div>
+      <div
+        onClick={onClick}
+        style={{
           borderRadius: "5px",
-          border: `2px solid ${color}`,
-          padding: "0px 2px",
-          fontSize: "12px",
-          top: "-10px",
-          left: "4px",
-          zIndex: 1,
-          backgroundColor: "#222"}}>
-          Speaker
-        </div> : null}
-        {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{faction.name}</div>}
+          display: "flex",
+          flexDirection: "column",
+          border: border,
+          fontSize: opts.fontSize ?? "24px",
+          position: "relative",
+          cursor: onClick ? "pointer" : "auto",
+          alignItems: "center",
+          whiteSpace: "nowrap",
+          padding: "0px 4px",
+        }}
+      >
+        <div className="flexRow" style={{justifyContent: "flex-start", gap: "4px", padding: "0px 4px", height: "40px"}}>
+          <div className="flexRow" style={iconStyle}>
+            <FactionSymbol faction={faction.name} size={40} />
+          </div>
+          {speaker ? <div style={{fontFamily: "Myriad Pro",
+            position: "absolute",
+            color: color === "Black" ? "#eee" : color,
+            borderRadius: "5px",
+            border: `2px solid ${color}`,
+            padding: "0px 2px",
+            fontSize: "12px",
+            top: "-10px",
+            left: "4px",
+            zIndex: 1,
+            backgroundColor: "#222"}}>
+            Speaker
+          </div> : null}
+          {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{faction.name}</div>}
+        </div>
       </div>
     </div>
   );
@@ -397,7 +413,7 @@ export function FactionCard({ faction, onClick, opts = {} }) {
   const speaker = faction.name === state.state.speaker;
 
   
-  const color = faction.color === "Blue" ? "cornflowerblue" : faction.color;
+  const color = getFactionColor(faction.color);
 
   const border = "3px solid " + (faction.passed ? "#555" : color);
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {

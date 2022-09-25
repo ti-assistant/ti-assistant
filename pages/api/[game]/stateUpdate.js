@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       switch (gameRef.data().state.phase) {
         case "SETUP":
           nextPhase = "STRATEGY";
-          activeFaction = getNextFaction(gameRef.data().factions, 1);
+          activeFaction = gameRef.data().factions[gameRef.data().state.speaker];
           break;
         case "STRATEGY":
           nextPhase = "ACTION";
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
           break;
         case "AGENDA":
           nextPhase = "STRATEGY";
-          activeFaction = getNextFaction(gameRef.data().factions, 1);
+          activeFaction = gameRef.data().factions[gameRef.data().state.speaker];
           ++round;
           break;
       }
@@ -84,6 +84,12 @@ export default async function handler(req, res) {
         "state.activeplayer": onDeckFaction ? onDeckFaction.name : "None",
       });
       break;
+    case "SET_SPEAKER": {
+      await db.collection('games').doc(gameid).update({
+        "state.speaker": data.speaker,
+      });
+      break;
+    }
       // if (gameRef.data().state.phase === "STRATEGY") {
       //   const factions = gameRef.data().factions;
       //   const currentFaction = factions[gameRef.data().state.activeplayer];

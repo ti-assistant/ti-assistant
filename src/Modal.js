@@ -10,7 +10,7 @@ export function Modal({ closeMenu, visible, title, content, top }) {
       </div>
       <div style={{position: "relative", backgroundColor: "#222", zIndex: 901, width: "85%", maxHeight: "90%", overflow: "auto", top:topValue}}>  
       <div className="flexRow" style={{padding: "0px 4px", borderBottom: "1px solid grey", justifyContent: "flex-start", alignItems: "center", height: "40px", position: "sticky", top: 0, backgroundColor: "#222", zIndex: 902}}>
-        <div
+        {closeMenu ? <div
             style={{
               color: "grey",
               cursor: "pointer",
@@ -22,7 +22,7 @@ export function Modal({ closeMenu, visible, title, content, top }) {
             onClick={closeMenu}
           >
             &#x2715;
-          </div>
+          </div> : null}
           <div style={{textAlign: "center", flexBasis: "100%", fontSize: "24px"}}>
             {title}
           </div>

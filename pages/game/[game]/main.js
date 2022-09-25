@@ -11,6 +11,7 @@ import { useStrategyCard, resetStrategyCards, strategyCardOrder } from '../../..
 import { passFaction, readyAllFactions } from '../../../src/util/api/factions';
 import { pluralize } from '../../../src/util/util';
 import { fetcher, poster } from '../../../src/util/api/util';
+import { SpeakerModal } from '../../../src/SpeakerModal';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function SelectFactionPage() {
   const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
+  const [ showSpeakerModal, setShowSpeakerModal ] = useState(false);
 
   // TODO: Consider moving this to a sub-function.
   const [ selectedActions, setSelectedActions ] = useState([]);
@@ -175,7 +177,11 @@ export default function SelectFactionPage() {
     case "SETUP":
       return (
         <div>
+          <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
           <div className="flexColumn" style={{alignItems: "center"}}>
+            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+              Set Speaker
+            </button>
             <h2>Twilight Imperium Assistant</h2>
             <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
               <h4>Game ID: {gameid}</h4>
@@ -196,8 +202,12 @@ export default function SelectFactionPage() {
               </div>
               <li>Draw 2 secret objectives and keep one</li>
               <li>Re-shuffle secret objectives</li>
-              <li>Draw 5 stage one objectives and reveal 2</li>
-              <li>Draw 5 stage two objectives</li>
+              <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
+                <FactionTile faction={factions[gameState.state.speaker]} opts={{fontSize: "18px"}} />
+                Draw 5 stage one objectives and reveal 2</div></li>
+              <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
+                <FactionTile faction={factions[gameState.state.speaker]} opts={{fontSize: "18px"}} />
+                Draw 5 stage two objectives</div></li>
             </ol>
             <button disabled={!factionChoicesComplete()} onClick={nextPhase}>Next</button>
             {!factionChoicesComplete() ? <div style={{color: "darkred"}}>Select all tech choices</div> : null}
@@ -240,7 +250,11 @@ export default function SelectFactionPage() {
       const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
       return (
         <div>
+          <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
           <div className="flexColumn" style={{alignItems: "center", gap: "8px"}}>
+            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+              Set Speaker
+            </button>
             <h2>Twilight Imperium Assistant</h2>
             <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
               <h4>Game ID: {gameid}</h4>
@@ -257,7 +271,7 @@ export default function SelectFactionPage() {
               {onDeckFaction ? 
                 <div className="flexColumn" style={{alignItems: "center"}}>
                   On Deck
-                  <FactionCard faction={onDeckFaction} opts={{fontSize: "20px"}}/>
+                  <FactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
                 </div>
               : null}
             </div>
@@ -318,30 +332,42 @@ export default function SelectFactionPage() {
       }
 
       function nextPlayerButtons() {
+        const completeFunction = selectedActions.includes("Politics") ? () => setShowSpeakerModal(true) : completeActions;
         switch (selectedActions.length) {
           case 0:
             return <button disabled>Next Player</button>
           case 1:
-            return <button onClick={() => completeActions()}>Next Player</button>
+            return <button onClick={completeFunction}>Next Player</button>
           case 2:
             if (!hasTech(activeFaction, "Fleet Logistics")) {
               return <div>
-                <button onClick={() => completeActions(true)}>Next Player (using Fleet Logistics)</button>
-                <button onClick={() => completeActions()}>Next Player (using Master Plan)</button>
+                <button onClick={completeFunction}>Next Player (using Fleet Logistics)</button>
+                <button onClick={completeFunction}>Next Player (using Master Plan)</button>
               </div>
             }
-            return <button onClick={() => {completeActions(true)}}>Next Player (using Fleet Logistics)</button>
+            return <button onClick={completeFunction}>Next Player (using Fleet Logistics)</button>
           case 3:
-            return <button onClick={() => {completeActions(true)}}>Next Player (using Fleet Logistics and Master Plan)</button>
+            return <button onClick={completeFunction}>Next Player (using Fleet Logistics and Master Plan)</button>
           case 4:
-            return <button onClick={() => {completeActions(true)}}>Next Player (using Fleet Logistics, Master Plan, and The Codex?)</button>
+            return <button onClick={completeFunction}>Next Player (using Fleet Logistics, Master Plan, and The Codex?)</button>
         }
         throw new Error("Too many actions selected");
       }
 
+      function speakerSelectionComplete(selected) {
+        if (selected && selectedActions.includes("Politics")) {
+          completeActions()
+        }
+        setShowSpeakerModal(false);
+      }
+
       return (
         <div>
+          <SpeakerModal forceSelection={selectedActions.includes("Politics")} visible={showSpeakerModal} onComplete={speakerSelectionComplete} />
           <div className="flexColumn" style={{alignItems: "center"}}>
+            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+              Set Speaker
+            </button>
             <h2>Twilight Imperium Assistant</h2>
             <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
               <h4>Game ID: {gameid}</h4>
@@ -437,6 +463,10 @@ export default function SelectFactionPage() {
       });
       return (
           <div className="flexColumn" style={{alignItems: "center"}}>
+            <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
+            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+              Set Speaker
+            </button>
             <h2>Twilight Imperium Assistant</h2>
             <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
               <h4>Game ID: {gameid}</h4>
@@ -529,7 +559,11 @@ export default function SelectFactionPage() {
     case "AGENDA":
       return (
         <div>
+          <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
           <div className="flexColumn" style={{alignItems: "center"}}>
+            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+              Set Speaker
+            </button>
             <h2>Twilight Imperium Assistant</h2>
             <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
               <h4>Game ID: {gameid}</h4>
