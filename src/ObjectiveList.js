@@ -20,11 +20,12 @@ function sortObjectives(objectives, field, descending = false) {
   });
 }
 
-export function ObjectiveList({ faction }) {
+// TODO: Rename to Objective Tab
+export function ObjectiveList() {
   const router = useRouter();
   const { game: gameid, faction: factionName } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
   const [tabShown, setTabShown] = useState("stage-one");
   const [editMode, setEditMode] = useState(false);
 
@@ -86,14 +87,14 @@ export function ObjectiveList({ faction }) {
       case "stage-one":
         if (stageOneObjectives.length < 5) {
           return (<button onClick={toggleEditMode}>Reveal Objective</button>);
-        } else if (stageOneObjectives.length === 5) {
+        } else if (stageOneObjectives.length === 5 && stageTwoObjectives.length !== 6) {
           return (<button onClick={toggleEditMode}>Reveal Objective (Incentive Program [For])</button>);
         }
         return null;
       case "stage-two":
         if (stageTwoObjectives.length < 5) {
           return (<button onClick={toggleEditMode}>Reveal Objective</button>);
-        } else if (stageTwoObjectives.length === 5) {
+        } else if (stageTwoObjectives.length === 5 && stageOneObjectives.length !== 6) {
           return (<button onClick={toggleEditMode}>Reveal Objective (Incentive Program [Against])</button>);
         }
         return null;
@@ -104,7 +105,7 @@ export function ObjectiveList({ faction }) {
             <div>This will not reveal to other players</div>
           </div>);
         } else if (secretObjectives.length === 3) {
-          return (<button onClick={toggleEditMode}>Reveal Objective (Incentive Program [Against])</button>);
+          return (<button onClick={toggleEditMode}>Reveal Objective (Classified Document Leaks [For])</button>);
         }
         return null;
       case "other":

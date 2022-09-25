@@ -8,10 +8,7 @@ export function Tab({ selectTab, id, selectedId, content, extraContent }) {
 }
 
 export function TabBody({ id, selectedId, content }) {
-  if (id !== selectedId) {
-    return null;
-  }
-  return <div>
+  return <div style={{display: id === selectedId ? "block" : "none"}}>
     {content}
   </div>;
 }
