@@ -25,7 +25,7 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
 
   function selectSpeaker(name) {
     setSpeaker(mutate, gameid, gameState, name);
-    onComplete();
+    onComplete(true);
   }
 
   const orderedFactions = Object.entries(factions).sort((a, b) => {
