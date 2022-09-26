@@ -117,38 +117,11 @@ function PlanetAttributes({ attributes }) {
 }
 
 export function SystemRow({planets, addPlanet}) {
-  const router = useRouter();
-  const { game: gameid, faction: playerFaction } = router.query;
-  const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-
-  if (gameStateError) {
-    return (<div>Failed to load game stae</div>);
-  }
-  if (!gameState) {
-    return (<div>Loading...</div>);
-  }
-
   function addPlanets() {
     planets.forEach((planet) => {
       addPlanet(planet.name);
     });
   }
-
-  let claimed = null;
-  let claimedColor = null;
-  planets.forEach((planet) => {
-    (planet.owners ?? []).forEach((owner) => {
-      if (claimed === null) {
-        claimed = owner;
-        claimedColor = gameState.factions[owner].color.toLowerCase();
-      } else {
-        claimed = "Multiple Players";
-        claimedColor = "darkred";
-      }
-    });
-  });
-
-  const height = planets.length * 72;
 
   return (
     <div className="systemRow">

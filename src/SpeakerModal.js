@@ -11,7 +11,7 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const { data: gameState, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
 
   if (factionsError) {
     return (<div>Failed to load factions</div>);
@@ -19,12 +19,12 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
   if (stateError) {
     return (<div>Failed to load state</div>);
   }
-  if (!factions || !gameState) {
+  if (!factions || !state) {
     return (<div>Loading...</div>);
   }
 
   function selectSpeaker(name) {
-    setSpeaker(mutate, gameid, gameState, name);
+    setSpeaker(mutate, gameid, state, name, factions);
     onComplete(true);
   }
 
@@ -39,9 +39,9 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
   return (
   <Modal closeMenu={forceSelection ? null : onComplete} visible={visible} title="Select Speaker"
     content={
-      <div className="flexRow" style={{gap: "8px", alignItems: "center", justifyContent: "space-evenly", padding: "40px 4px"}}>
+      <div className="flexRow" style={{flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "space-evenly", padding: "40px"}}>
         {orderedFactions.map(([name, faction]) => {
-          if (forceSelection && name === gameState.state.speaker) {
+          if (forceSelection && name === state.speaker) {
             return null;
           }
           return (

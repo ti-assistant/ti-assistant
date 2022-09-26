@@ -85,39 +85,24 @@ export default async function handler(req, res) {
       });
       break;
     case "SET_SPEAKER": {
-      await db.collection('games').doc(gameid).update({
+      const updates = {
         "state.speaker": data.speaker,
-      });
+      };
+      const currentOrder = gameRef.data().factions[data.speaker].order;
+      for (const [name, faction] of Object.entries(gameRef.data().factions)) {
+        let factionOrder = faction.order - currentOrder + 1;
+        if (factionOrder < 1) {
+          factionOrder += Object.keys(gameRef.data().factions).length;
+        }
+        const factionString = `factions.${name}.order`;
+        updates[factionString] = factionOrder;
+      }
+      await db.collection('games').doc(gameid).update(updates);
       break;
     }
-      // if (gameRef.data().state.phase === "STRATEGY") {
-      //   const factions = gameRef.data().factions;
-      //   const currentFaction = factions[gameRef.data().state.activeplayer];
-      //   const nextorder = currentFaction.order + 1;
-      //   // const nextorder = Math.max((currentFaction.order + 1) % (Object.keys(factions).length + 1), 1);
-      //   let ondeckfaction;
-      //   for (const faction of Object.values(factions)) {
-      //     if (faction.order === nextorder) {
-      //       ondeckfaction = faction;
-      //       break;
-      //     }
-      //   }
-      //   await db.collection('games').doc(gameid).update({
-      //     "state.activeplayer": ondeckfaction ? ondeckfaction.name : "None",
-      //   });
-      // }
-      // if (gameRef.data().state.phase === "ACTION") {
-      //   const factions = gameRef.data().factions;
-      //   const strategyCards = fetchStrategyCards(gameid);
-      //   const onDeckFaction = getOnDeckFaction(gameRef.data().state, factions, strategyCards);
-
-      // }
-      // // TODO: Action phase
-      // break;
-
   }
 
   const responseRef = await db.collection('games').doc(gameid).get();
 
-  return res.status(200).json(responseRef.data());
+  return res.status(200).json(responseRef.data().state);
 }

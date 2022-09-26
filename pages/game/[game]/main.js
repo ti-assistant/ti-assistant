@@ -17,7 +17,7 @@ export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: gameState, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
   const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
@@ -53,7 +53,7 @@ export default function SelectFactionPage() {
   if (strategyCardsError) {
     return (<div>Failed to load strategy cards</div>);
   }
-  if (!gameState || !techs || !factions || !strategyCards) {
+  if (!state || !techs || !factions || !strategyCards) {
     return (<div>Loading...</div>);
   }
 
@@ -103,8 +103,8 @@ export default function SelectFactionPage() {
     };
     let phase;
     let activeFaction;
-    let round = gameState.state.round;
-    switch (gameState.state.phase) {
+    let round = state.round;
+    switch (state.phase) {
       case "SETUP":
         phase = "STRATEGY";
         break;
@@ -144,10 +144,10 @@ export default function SelectFactionPage() {
         break;
     }
 
-    const updatedState = {...gameState};
-    updatedState.state.phase = phase;
-    updatedState.state.activeplayer = activeFaction ? activeFaction.name : "None";
-    updatedState.state.round = round;
+    const updatedState = {...state};
+    state.phase = phase;
+    state.activeplayer = activeFaction ? activeFaction.name : "None";
+    state.round = round;
 
     const options = {
       optimisticData: updatedState,
@@ -163,9 +163,9 @@ export default function SelectFactionPage() {
       action: "ADVANCE_PLAYER",
     };
     
-    const updatedState = {...gameState};
-    const onDeckFaction = getOnDeckFaction(gameState.state, factions, strategyCards);
-    updatedState.state.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
+    const updatedState = {...state};
+    const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
+    state.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
 
     const options = {
       optimisticData: updatedState,
@@ -173,7 +173,7 @@ export default function SelectFactionPage() {
     return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
   }
 
-  switch (gameState.state.phase) {
+  switch (state.phase) {
     case "SETUP":
       return (
         <div>
@@ -203,10 +203,10 @@ export default function SelectFactionPage() {
               <li>Draw 2 secret objectives and keep one</li>
               <li>Re-shuffle secret objectives</li>
               <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                <FactionTile faction={factions[gameState.state.speaker]} opts={{fontSize: "18px"}} />
+                <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} />
                 Draw 5 stage one objectives and reveal 2</div></li>
               <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                <FactionTile faction={factions[gameState.state.speaker]} opts={{fontSize: "18px"}} />
+                <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} />
                 Draw 5 stage two objectives</div></li>
             </ol>
             <button disabled={!factionChoicesComplete()} onClick={nextPhase}>Next</button>
@@ -224,6 +224,11 @@ export default function SelectFactionPage() {
     
         const updatedCards = {...strategyCards};
         updatedCards[card.name].faction = faction.name;
+        for (const [name, card] of Object.entries(updatedCards)) {
+          if (card.invalid) {
+            delete updatedCards[name].invalid;
+          }
+        }
         if (faction.name === "Naalu Collective") {
           updatedCards[card.name].order = 0;
         }
@@ -235,8 +240,8 @@ export default function SelectFactionPage() {
         mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
       }
       
-      const activefaction = factions[gameState.state.activeplayer] ?? null;
-      const onDeckFaction = getOnDeckFaction(gameState.state, factions, strategyCards);
+      const activefaction = factions[state.activeplayer] ?? null;
+      const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
       // let ondeckfaction;
       // if (activefaction) {
       //   const nextorder = activefaction.order + 1;
@@ -250,17 +255,17 @@ export default function SelectFactionPage() {
       const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
       return (
         <div>
-          <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
+          {/* <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} /> */}
           <div className="flexColumn" style={{alignItems: "center", gap: "8px"}}>
-            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+            {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
-            </button>
+            </button> */}
             <h2>Twilight Imperium Assistant</h2>
             <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
               <h4>Game ID: {gameid}</h4>
               {qrCode ? <img src={qrCode} /> : null}
             </div>
-            <h3>Round {gameState.state.round}: Strategy Phase</h3>
+            <h3>Round {state.round}: Strategy Phase</h3>
             <div className="flexRow" style={{gap: "8px"}}>
               {activefaction ?
               <div className="flexColumn" style={{alignItems: "center"}}>
@@ -275,9 +280,9 @@ export default function SelectFactionPage() {
                 </div>
               : null}
             </div>
-            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px"}}>
+            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px"}}>
               {orderedStrategyCards.map(([name, card]) => {
-                return <StrategyCard key={name} card={card} active={card.faction || !activefaction ? false : true} onClick={card.faction ? null : () => assignStrategyCard(card, activefaction)}/>
+                return <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)}/>
               })}
             </div>
             {activefaction ? null :
@@ -288,8 +293,8 @@ export default function SelectFactionPage() {
       );
     }
     case "ACTION": {
-      const activeFaction = factions[gameState.state.activeplayer] ?? null;
-      const onDeckFaction = getOnDeckFaction(gameState.state, factions, strategyCards);
+      const activeFaction = factions[state.activeplayer] ?? null;
+      const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
       const orderedStrategyCards = Object.values(strategyCards).filter((card) => card.faction).sort((a, b) => a.order - b.order);
 
       function canFactionPass(factionName) {
@@ -373,7 +378,7 @@ export default function SelectFactionPage() {
               <h4>Game ID: {gameid}</h4>
               {qrCode ? <img src={qrCode} /> : null}
             </div>
-            <h3>Round {gameState.state.round}: Action Phase</h3>
+            <h3>Round {state.round}: Action Phase</h3>
             <div className="flexRow" style={{width: "100%", alignItems: "flex-start", justifyContent: "space-between"}}>
               <div className="flexColumn" style={{flexBasis: "33%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px"}}>
                 {orderedStrategyCards.map((card) => {
@@ -432,7 +437,7 @@ export default function SelectFactionPage() {
       );
     }
     case "STATUS":
-      const round = gameState.state.round;
+      const round = state.round;
       const orderedStrategyCards = Object.values(strategyCards).filter((card) => card.faction).sort((a, b) => a.order - b.order);
       const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
         return card.faction && orderedStrategyCards.findIndex((othercard) => card.faction === othercard.faction) === index;
@@ -485,7 +490,7 @@ export default function SelectFactionPage() {
               <li>In Initiative Order: Score up to one public and one secret objective</li>
               <li>
                 <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                  <FactionTile faction={factions[gameState.state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+                  <FactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
                   Reveal one Stage {round > 3 ? "II" : "I"} objective
                 </div>
               </li>
@@ -500,7 +505,7 @@ export default function SelectFactionPage() {
                     return (
                       <div key={num} className="flexColumn" style={{alignItems: "flex-start", gap: "4px", paddingLeft: "8px"}}>
                         Draw {num} {pluralize("Action Card", num)} {num === 3 ? "and discard any one" : null}
-                        <div className="flexRow" style={{gap: "4px", padding: "0px 8px"}}>
+                        <div className="flexRow" style={{flexWrap: "wrap", justifyContent: "flex-start", gap: "4px", padding: "0px 8px"}}>
                           {factions.map((faction) => {
                             return <FactionTile key={faction.name} faction={faction} opts={{fontSize: "16px"}}/>
                           })}
@@ -521,7 +526,7 @@ export default function SelectFactionPage() {
                     return (
                       <div key={num} className="flexColumn" style={{alignItems: "flex-start", gap: "4px"}}>
                         Gain {num} {pluralize("Command Token", num)} and Redistribute 
-                        <div className="flexRow" style={{gap: "4px", padding: "0px 8px"}}>
+                        <div className="flexRow" style={{flexWrap: "wrap", justifyContent: "flex-start", gap: "4px", padding: "0px 8px"}}>
                           {factions.map((faction) => {
                             return <FactionTile key={faction.name} faction={faction} opts={{fontSize: "16px"}}/>
                           })}
@@ -551,7 +556,7 @@ export default function SelectFactionPage() {
               <h4>Game ID: {gameid}</h4>
               {qrCode ? <img src={qrCode} /> : null}
             </div>
-            <h3>Round {gameState.state.round}: Status Phase</h3>
+            <h3>Round {state.round}: Status Phase</h3>
             <button onClick={nextPhase}>Next</button>
           </div>
         </div>
@@ -569,7 +574,7 @@ export default function SelectFactionPage() {
               <h4>Game ID: {gameid}</h4>
               {qrCode ? <img src={qrCode} /> : null}
             </div>
-            <h3>Round {gameState.state.round}: Agenda Phase</h3>
+            <h3>Round {state.round}: Agenda Phase</h3>
             <button onClick={nextPhase}>Next</button>
           </div>
         </div>

@@ -49,10 +49,10 @@ export function StrategyCard({ card, active, onClick, opts = {} }) {
     >
       <div className="flexRow" style={{padding: "4px 4px 4px 0px", justifyContent: "flex-start", alignItems: "center"}}>
         <div style={{flexBasis: "14%", minWidth: "50px", fontSize: "32px", display: "flex", justifyContent: "center", color: textColor}}>{card.order}</div>
-        {opts.hideName ? null : <div style={{flexBasis: "50%", color: textColor}}>{card.name}</div>}
+        {opts.hideName ? null : <div style={{flexBasis: "40%", color: textColor}}>{card.name}</div>}
         {faction ? 
           <div style={{flexGrow: 4, whiteSpace: "nowrap"}}>
-            <FactionTile faction={faction} opts={{fontSize: "16px"}} />
+            <FactionTile faction={faction} menu={true} opts={{fontSize: "16px"}} />
           </div>
         : null}
       </div>

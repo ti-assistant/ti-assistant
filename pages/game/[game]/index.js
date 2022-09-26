@@ -17,7 +17,8 @@ const fetcher = async (url) => {
 export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: gameState, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+
   const [ qrCode, setQrCode ] = useState(null);
   
   if (!qrCode && gameid) {
@@ -34,10 +35,10 @@ export default function SelectFactionPage() {
     });
   }
 
-  if (error) {
+  if (factionsError) {
     return (<div>Failed to load game</div>);
   }
-  if (!gameState) {
+  if (!factions) {
     return (<div>Loading...</div>);
   }
 
@@ -49,7 +50,7 @@ export default function SelectFactionPage() {
     router.push(`/game/${gameid}/main`);
   }
 
-  const factions = Object.entries(gameState.factions).sort((a, b) => {
+  const orderedFactions = Object.entries(factions).sort((a, b) => {
     if (a[1].order > b[1].order) {
       return 1;
     } else {
@@ -88,13 +89,12 @@ export default function SelectFactionPage() {
         >
           Main Screen
         </div>
-        {factions.map(([name, faction]) => {
+        {orderedFactions.map(([name, faction]) => {
           return (
             <FactionCard
               key={name}
               faction={faction}
               onClick={() => selectFaction(name)}
-              speaker={name === gameState.state.speaker}
             />
           );
         })}

@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { useState } from "react";
-import useSWR, { mutate, useSWRConfig } from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
+import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
+import { getNextIndex } from './util/util';
 
 import { TechRow } from '/src/TechRow.js'
+import { setSpeaker } from '/src/util/api/state.js';
 
 const fetcher = async (url) => {
   const res = await fetch(url)
@@ -162,6 +165,7 @@ const techOrder = [
 function StartingComponents({ faction }) {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
   const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
 
@@ -329,25 +333,96 @@ function StartingComponents({ faction }) {
   )
 }
 
-export function FactionTile({ faction, onClick, speakerButton, opts = {} }) {
+export function FactionTile({ faction, onClick, menu, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: strategyCards, cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const [showMenu, setShowMenu] = useState(false);
 
   if (!state) {
     return (<div>Loading...</div>);
   }
-  if (stateError) {
+  if (stateError || factionsError || cardsError) {
     return (<div>Failed to load game state</div>);
   }
 
-  const speaker = faction.name === state.state.speaker;
+  function toggleMenu() {
+    setShowMenu(!showMenu);
+  }
 
-  const color = getFactionColor(faction.color);
-  const border = "3px solid " + (faction.passed ? "#555" : color);
-  // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
-  //   return prev + current.amount;
-  // }, 0);
+  function hideMenu() {
+    setShowMenu(false);
+  }
+
+  function setFactionToSpeaker() {
+    hideMenu();
+    setSpeaker(mutate, gameid, state, faction.name, factions);
+    console.log("setting speaker");
+  }
+
+  function publicDisgrace() {
+    hideMenu();
+    console.log("Public Disgrace!");
+    const card = Object.values(strategyCards).find((card) => card.faction === faction.name);
+    unassignStrategyCard(mutate, gameid, strategyCards, card.name, state);
+  }
+
+  function quantumDatahubNode() {
+    hideMenu();
+    console.log("Quantum");
+    const factionCard = Object.values(strategyCards).find((card) => card.faction === faction.name);
+    const hacanCard = Object.values(strategyCards).find((card) => card.faction === "Emirates of Hacan");
+    swapStrategyCards(mutate, gameid, strategyCards, factionCard, hacanCard);
+  }
+
+  function giftOfPrescience() {
+    hideMenu();
+    console.log("Gift");
+    const factionCard = Object.values(strategyCards).find((card) => card.faction === faction.name);
+    setFirstStrategyCard(mutate, gameid, strategyCards, factionCard.name);
+  }
+
+  // NOTE: Only works for Strategy phase. Other phases are not deterministic.
+  function didFactionJustGo() {
+    const numFactions = Object.keys(factions).length;
+    if (numFactions === 3 || numFactions === 4) {
+      let numPicked = 0;
+      for (const card of Object.values(strategyCards)) {
+        if (card.faction) {
+          ++numPicked;
+        }
+      }
+      if (numPicked === numFactions) {
+        return faction.order === numFactions;
+      }
+      if (numPicked > numFactions) {
+        const nextOrder = numFactions - (numPicked - numFactions) + 1;
+        return faction.order === nextOrder;
+      }
+    }
+    if (state.activeplayer === "None") {
+      return faction.order === numFactions;
+    }
+    return getNextIndex(faction.order, numFactions + 1, 1) === factions[state.activeplayer].order;
+  }
+
+  function haveAllFactionsPicked() {
+    const numFactions = Object.keys(factions).length;
+    let numPicked = 0;
+    for (const card of Object.values(strategyCards)) {
+      if (card.faction) {
+        ++numPicked;
+      }
+    }
+    if (numFactions === 3 || numFactions === 4) {
+      return numFactions * 2 === numPicked;
+    }
+    return numFactions === numPicked;
+  }
+
   const iconStyle = {
     width: "40px",
     height: "40px",
@@ -357,10 +432,64 @@ export function FactionTile({ faction, onClick, speakerButton, opts = {} }) {
     width: "100%",
     opacity: "60%",
   };
+  const iconButtonStyle = {
+    width: "27px",
+    height: "27px",
+    position: "absolute",
+    zIndex: 2,
+    left: 0,
+    width: "100%",
+    opacity: "60%",
+  };
+
+  function getMenuButtons() {
+    const buttons = [];
+    switch (state.phase) {
+      case "STRATEGY":
+        if (didFactionJustGo()) {
+          // NOTE: Doesn't work correctly for 3 to 4 players.
+          buttons.push(<div key="Public Disgrace" style={{cursor: "pointer", gap: "4px", padding: "4px 8px", boxShadow: "1px 1px 4px black", backgroundColor: "#222", border: `2px solid ${color}`, borderRadius: "5px", fontSize: opts.fontSize ?? "24px"}} onClick={publicDisgrace}>Public Disgrace</div>)
+        }
+        if (haveAllFactionsPicked()) {
+          // TODO: Decide whether this should be on Hacan instead.
+          if (Object.keys(factions).includes("Emirates of Hacan") && faction.name !== "Emirates of Hacan" && Object.keys(factions['Emirates of Hacan'].techs).includes("Quantum Datahub Node")) {
+            buttons.push(<div key="Quantum Datahub Node" style={{position: "relative", cursor: "pointer", gap: "4px", padding: "4px 8px", boxShadow: "1px 1px 4px black", backgroundColor: "#222", border: `2px solid ${color}`, borderRadius: "5px", fontSize: opts.fontSize ?? "24px"}} onClick={quantumDatahubNode}>
+              Quantum Datahub Node
+            </div>)
+          }
+          console.log(factions);
+          if (Object.keys(factions).includes("Naalu Collective") && faction.name !== "Naalu Collective") {
+            buttons.push(<div key="Gift of Prescience" style={{position: "relative", cursor: "pointer", gap: "4px", padding: "4px 8px", boxShadow: "1px 1px 4px black", backgroundColor: "#222", border: `2px solid ${color}`, borderRadius: "5px", fontSize: opts.fontSize ?? "24px"}} onClick={giftOfPrescience}>
+              Gift of Prescience
+            </div>)
+          }
+        }
+        return buttons;
+      case "ACTION":
+        break;
+      case "STATUS":
+        break;
+      case "AGENDA":
+        break;
+    }
+    return buttons;
+  }
+
+  const speaker = faction.name === state.speaker;
+
+  const color = getFactionColor(faction.color);
+  const border = "3px solid " + (faction.passed ? "#555" : color);
+  // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
+  //   return prev + current.amount;
+  // }, 0);
+
   return (
-    <div>
+    <div
+      style={{position: "relative"}}
+      tabIndex={0}
+      onBlur={onClick ? () => {} : hideMenu}>
       <div
-        onClick={onClick}
+        onClick={onClick ? onClick : toggleMenu}
         style={{
           borderRadius: "5px",
           display: "flex",
@@ -368,7 +497,7 @@ export function FactionTile({ faction, onClick, speakerButton, opts = {} }) {
           border: border,
           fontSize: opts.fontSize ?? "24px",
           position: "relative",
-          cursor: onClick ? "pointer" : "auto",
+          cursor: (onClick || (menu && getMenuButtons().length !== 0)) ? "pointer" : "auto",
           alignItems: "center",
           whiteSpace: "nowrap",
           padding: "0px 4px",
@@ -394,6 +523,11 @@ export function FactionTile({ faction, onClick, speakerButton, opts = {} }) {
           {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{faction.name}</div>}
         </div>
       </div>
+      {menu ? <div className="flexColumn" style={{fontFamily: "Myriad Pro", left: "100%", marginLeft: "4px", top: "0", position: "absolute", display: showMenu ? "flex" : "none", height: "40px", zIndex: 2}}>
+        <div className="flexColumn" style={{alignItems: "stretch", gap: "4px"}}>
+          {getMenuButtons()}
+        </div>
+      </div> : null}
     </div>
   );
 }
@@ -410,8 +544,7 @@ export function FactionCard({ faction, onClick, opts = {} }) {
     return (<div>Failed to load game state</div>);
   }
 
-  const speaker = faction.name === state.state.speaker;
-
+  const speaker = faction.name === state.speaker;
   
   const color = getFactionColor(faction.color);
 

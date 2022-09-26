@@ -155,16 +155,16 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
-  const { data: gameState, error: gameStateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
   }
-  if (gameStateError) {
-    return (<div>Failed to load game stae</div>);
+  if (factionsError) {
+    return (<div>Failed to load game state</div>);
   }
-  if (!attachments || !gameState) {
+  if (!attachments || !factions) {
     return (<div>Loading...</div>);
   }
 
@@ -243,7 +243,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
     if (opts.showSelfOwned || owner !== playerFaction) {
       if (claimed === null) {
         claimed = owner;
-        claimedColor = gameState.factions[owner].color.toLowerCase();
+        claimedColor = factions[owner].color.toLowerCase();
       } else {
         claimed = "Multiple Players";
         claimedColor = "darkred";
