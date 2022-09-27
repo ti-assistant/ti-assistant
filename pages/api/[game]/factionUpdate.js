@@ -16,9 +16,12 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
-  let tech = data.tech.replace(" Ω", "");
-  if (tech === "Light/Wave Deflector") {
-    tech = "LightWave Deflector";
+  let tech = data.tech;
+  if (tech) {
+    tech = tech.replace(" Ω", "");
+    if (tech === "Light/Wave Deflector") {
+      tech = "LightWave Deflector";
+    }
   }
 
   let gamePlanetString;

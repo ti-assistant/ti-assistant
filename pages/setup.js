@@ -530,7 +530,8 @@ export default function SetupPage() {
       currentOptions.expansions.delete(expansion);
       setFactions(factions.map((faction, index) => {
         const tempFaction = {...faction};
-        if (tempFaction.color === "Magenta" || tempFaction.color === "Orange") {
+        if (!currentOptions.expansions.has("pok") &&
+            (tempFaction.color === "Magenta" || tempFaction.color === "Orange")) {
           tempFaction.color = null;
         }
         if (!tempFaction.name || availableFactions[tempFaction.name].game === "base") {
@@ -557,6 +558,7 @@ export default function SetupPage() {
 
   return (
     <div className="flexColumn" style={{gap: "20px"}}>
+      <h2>TWILIGHT IMPERIUM ASSISTANT</h2>
       <div>
         <label>Player Count</label>
         <div>

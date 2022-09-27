@@ -578,7 +578,7 @@ export function FactionCard({ faction, onClick, opts = {} }) {
         </div>
         {speaker ? <div style={{fontFamily: "Myriad Pro",
           position: "absolute",
-          color: color,
+          color: color === "Black" ? "#eee" : color,
           borderRadius: "5px",
           border: `2px solid ${color}`,
           padding: "0px 2px",

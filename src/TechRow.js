@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ReactModal from 'react-modal';
 import Image from 'next/image';
 
 import { Modal } from "/src/Modal.js";
