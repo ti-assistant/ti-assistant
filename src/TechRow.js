@@ -1,5 +1,8 @@
+import { useState } from "react";
+import ReactModal from 'react-modal';
 import Image from 'next/image';
 
+import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
 
 function TechIcon({ type, width, height }) {
@@ -16,7 +19,45 @@ function TechIcon({ type, width, height }) {
   return type;
 }
 
+function UnitStat({name, stat}) {
+  return (
+    <div style={{flexBasis: "25%", border: "1px solid #eee", borderRadius: "10px"}}>
+      <div style={{fontSize: "24px"}}>{stat}</div>
+      <div style={{fontSize: "14px", borderTop: "1px solid #eee"}}>{name}</div>
+    </div>
+  );
+}
+
+function UnitStatBlock({stats}) {
+  if (!stats) {
+    return null;
+  }
+  return (
+    <div className="flexRow" style={{justifyContent: "flex-start", marginTop: "4px", fontFamily:"Slider", alignItems: "stretch"}}>
+      {stats.cost ? <UnitStat name="COST" stat={stats.cost} /> : <div style={{flexBasis: "25%"}}></div>}
+      {stats.combat ? <UnitStat name="COMBAT" stat={stats.combat} /> : <div style={{flexBasis: "25%"}}></div>}
+      {stats.move ? <UnitStat name="MOVE" stat={stats.move} /> : <div style={{flexBasis: "25%"}}></div>}
+      {stats.capacity ? <UnitStat name="CAPACITY" stat={stats.capacity} /> : <div style={{flexBasis: "25%"}}></div>}
+    </div>
+  )
+}
+
+function InfoContent({tech}) {
+  const description = tech.description.replaceAll("\\n", "\n");
+  return (
+    <div className="myriadPro" style={{whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
+      {description}
+      <UnitStatBlock stats={tech.stats} />
+    </div>
+  );
+}
+
 export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
+  function displayInfo() {
+    setShowInfoModal(true);
+  }
 
   function toggleTech() {
     updateTech(tech.name, {
@@ -41,6 +82,9 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
 
   return (
     <div className={`techRow ${tech.canExhaust && !tech.isReady ? "exhausted" : ""}`} style={{fontSize: "16px", gap: "4px"}}>
+      <Modal closeMenu={() => setShowInfoModal(false)} level={2} visible={showInfoModal} title={tech.name} content={
+        <InfoContent tech={tech} />
+      } top="30%" />
       {leftContent ? <div style={{zIndex: 2}}>{leftContent}</div> : null}
       {addTech ? 
         <div
@@ -78,22 +122,25 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
         })}
       </div> */}
       <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center"}}>
-        <div style={{ display: "flex", zIndex: 2, color: getTechColor()}}>
+        <div style={{ position: "relative", display: "flex", zIndex: 2, color: getTechColor()}}>
           {tech.name}
-        </div>
-        {tech.faction ? (
+          {tech.faction ? (
         <div
           style={{
-            position: "relative",
-            marginLeft: "-10px",
+            position: "absolute",
             opacity: "70%",
-            height: "36px",
-            zIndex: 1,
+            height: "32px",
+            zIndex: -2,
+            top: "-6px",
+            right: "-16px", 
           }}
         >
-          <FactionSymbol faction={tech.faction} size={36} />
+          <FactionSymbol faction={tech.faction} size={32} />
         </div>
         ): null}
+        </div>
+
+        <div style={{marginLeft: "8px", fontSize: "20px", position: "relative", zIndex: 2}} onClick={displayInfo}>&#x24D8;</div>
       </div>
       <div
           style={{
@@ -105,7 +152,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
           }}
         >
           {tech.prereqs.map((prereq, index) => {
-          return <TechIcon key={index} type={prereq} width="27px" height="28px" />;
+          return <TechIcon key={index} type={prereq} width="23px" height="24px" />;
         })}
           {/* <TechIcon type={tech.type} faction={tech.faction} width="32px" height="36px" /> */}
         </div>

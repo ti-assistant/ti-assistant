@@ -100,8 +100,9 @@ export default function GamePage() {
     };
 
     const updatedFaction = {...faction};
+    const newString = toRemove.replace(" Ω", "");
 
-    delete updatedFaction.techs[toRemove];
+    delete updatedFaction.techs[newString];
 
     const options = {
       optimisticData: updatedFaction,
@@ -111,6 +112,7 @@ export default function GamePage() {
   }
 
   function addTech(toAdd) {
+    console.log(newString);
     const data = {
       action: "ADD_TECH",
       faction: playerFaction,
@@ -118,8 +120,9 @@ export default function GamePage() {
     };
 
     const updatedFaction = {...faction};
+    const newString = toAdd.replace(" Ω", "");
 
-    updatedFaction.techs[toAdd] = {
+    updatedFaction.techs[newString] = {
       ready: true,
     };
 
@@ -288,6 +291,8 @@ export default function GamePage() {
     setShowAddPlanet(!showAddPlanet);
   }
 
+  const maxHeight = screen.height - 330;
+
 
   return (
     <div
@@ -453,7 +458,7 @@ export default function GamePage() {
               <div className="flexRow" style={{height: "32px"}}>
                 <button onClick={toggleAddTechMenu}>Research Tech</button>
               </div>
-              <div style={{maxHeight: "500px", overflow: "auto"}}>
+              <div style={{maxHeight: `${maxHeight}px`, padding: "4px", overflow: "auto"}}>
                 {ownedTechs.map((tech) => {
                   return <TechRow key={tech.name} tech={tech} updateTech={updateTech} removeTech={removeTech} />
                 })}
@@ -466,7 +471,7 @@ export default function GamePage() {
               <button onClick={readyAll}>Ready All</button>
               <button onClick={exhaustAll}>Exhaust All</button>
             </div>
-            <div style={{maxHeight: "500px", overflow: "auto", paddingBottom: "4px"}}>
+            <div style={{maxHeight: `${maxHeight}px`, overflow: "auto", paddingBottom: "4px"}}>
               {updatedPlanets.map((planet) => {
                 return <PlanetRow key={planet.name} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
               })}

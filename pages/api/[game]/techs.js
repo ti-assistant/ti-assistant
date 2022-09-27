@@ -10,6 +10,7 @@ export default async function handler(req, res) {
 
   const gamestate = await db.collection('games').doc(gameid).get();
   const factions = Object.keys(gamestate.data().factions);
+  const options = gamestate.data().options;
 
   let techs = {};
   techsRef.forEach(async (val) => {
@@ -26,6 +27,18 @@ export default async function handler(req, res) {
         return;
       }
     }
+
+    // Maybe filter out PoK technologies.
+    if (!options.expansions.includes("pok") && tech.game === "pok") {
+      return;
+    }
+
+    // Maybe update techs for codices.
+    if (tech.omega && options.expansions.includes(tech.omega.expansion)) {
+      tech.name += " Ω";
+      tech.description = tech.omega.description;
+    }
+    
 
     techs[id] = tech;
   });

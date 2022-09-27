@@ -19,7 +19,8 @@ function PlayerSelect({
   selectedColors,
   handleChange,
   updateColor,
-  updateSpeaker
+  updateSpeaker,
+  expansions,
 }) {
   const { data: availableFactions, error: factionError } = useSWR("/api/factions", fetcher);
   const { data: colors, error: colorError } = useSWR("/api/colors", fetcher);
@@ -33,6 +34,16 @@ function PlayerSelect({
   if (!availableFactions || !colors) {
     return (<div>Loading...</div>);
   }
+
+  const filteredFactions = Object.entries(availableFactions).filter(([name, faction]) => {
+    if (faction.game === "base") {
+      return true;
+    }
+    if (!expansions.has(faction.game)) {
+      return false;
+    }
+    return true;
+  });
 
   function setFaction(event) {
     const value = event.target.value === "" ? null : event.target.value;
@@ -58,7 +69,7 @@ function PlayerSelect({
         <option key="None" value="" disabled hidden>
           Select Faction
         </option>
-        {Object.entries(availableFactions).map(([name, faction]) => {
+        {filteredFactions.map(([name, faction]) => {
           return (
             <option key={name} value={name} style={selectedFactions.includes(name) ? { color: "grey" } : {}}>
               {name}
@@ -112,9 +123,19 @@ const INITIAL_FACTIONS = [
   }
 ];
 
+const INITIAL_OPTIONS = {
+  'expansions': new Set([
+    "pok",
+    "codex-one",
+    "codex-two",
+    "codex-three",
+  ]),
+}
+
 export default function SetupPage() {
   const [speaker, setSpeaker] = useState(0);
   const [factions, setFactions] = useState(INITIAL_FACTIONS);
+  const [options, setOptions] = useState(INITIAL_OPTIONS);
 
   const router = useRouter();
 
@@ -136,14 +157,13 @@ export default function SetupPage() {
     setSpeaker(0);
   }
 
-  function updatePlayerCount(event) {
-    const newCount = event.target.value;
-    if (newCount === factions.length) {
+  function updatePlayerCount(count) {
+    if (count === factions.length) {
       return;
     }
-    if (newCount > factions.length) {
+    if (count > factions.length) {
       const newPlayers = [];
-      for (let i = factions.length; i < newCount; i++) {
+      for (let i = factions.length; i < count; i++) {
         newPlayers.push({
           name: null,
           color: null
@@ -151,8 +171,8 @@ export default function SetupPage() {
       }
       setFactions([...factions, ...newPlayers]);
     }
-    if (newCount < factions.length) {
-      for (let i = newCount; i < factions.length; i++) {
+    if (count < factions.length) {
+      for (let i = count; i < factions.length; i++) {
         if (factions[i].name !== null) {
           updatePlayerFaction(i, null);
         }
@@ -160,7 +180,7 @@ export default function SetupPage() {
           updatePlayerColor(i, null);
         }
       }
-      setFactions(factions.slice(0, newCount));
+      setFactions(factions.slice(0, count));
     }
   }
 
@@ -203,7 +223,16 @@ export default function SetupPage() {
         selectedFactions[index] = factions[index].name;
       }
     }
-    const factionKeys = Object.keys(availableFactions);
+    const filteredFactions = Object.entries(availableFactions).filter(([name, faction]) => {
+      if (faction.game === "base") {
+        return true;
+      }
+      if (!options.expansions.has(faction.game)) {
+        return false;
+      }
+      return true;
+    });
+    const factionKeys = filteredFactions.map(([name, faction]) => name);
     for (let index = 0; index < factions.length; index++) {
       if (factions[index].name !== null) {
         continue;
@@ -226,6 +255,8 @@ export default function SetupPage() {
   }
 
   async function startGame() {
+    const optionsToSend = {};
+    optionsToSend.expansions = Array.from(options.expansions);
     const res = await fetch("/api/create-game", {
       method: "POST",
       headers: {
@@ -234,6 +265,7 @@ export default function SetupPage() {
       body: JSON.stringify({
         factions: factions,
         speaker: speaker,
+        options: optionsToSend,
       }),
     });
     const data = await res.json();
@@ -258,18 +290,47 @@ export default function SetupPage() {
     return false;
   }
 
+  function toggleExpansion(value, expansion) {
+    const currentOptions = {...options};
+    if (value) {
+      currentOptions.expansions.add(expansion);
+    } else {
+      currentOptions.expansions.delete(expansion);
+      if (!currentOptions.expansions.has("pok")) {
+        if (factions.length > 6) {
+          updatePlayerCount(6);
+        }
+      }
+      setFactions(factions.map((faction, index) => {
+        if (!faction.name || availableFactions[faction.name].game === "base") {
+          return faction;
+        }
+        if (!currentOptions.expansions.has(availableFactions[faction.name].game)) {
+          return {
+            ...faction,
+            name: null
+          };
+        };
+        return faction;
+      }));
+    }
+    setOptions(currentOptions);
+  }
+
   const selectedFactions = factions.map((faction) => faction.name);
   const selectedColors = factions.map((faction) => faction.color);
+
+  const maxFactions = options.expansions.has("pok") ? 8 : 6;
 
   return (
     <div className="App">
       <label>Player Count</label>
       <div>
-        {[...Array(6)].map((e, index) => {
+        {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
           return (
             <span key={number}>
-              <input onChange={updatePlayerCount} type="radio" value={number} name="numPlayers" checked={factions.length === number} /> {number}
+              <input onChange={(event) => updatePlayerCount(event.target.value)} type="radio" value={number} name="numPlayers" checked={factions.length === number} /> {number}
             </span>
           );
         })}
@@ -285,10 +346,51 @@ export default function SetupPage() {
               selectedColors={selectedColors}
               handleChange={(value) => updatePlayerFaction(index, value)}
               updateColor={(value) => updatePlayerColor(index, value)}
-              updateSpeaker={(value) => setSpeaker(index)}
+              updateSpeaker={() => setSpeaker(index)}
+              expansions={options.expansions}
             />
           );
         })}
+      </div>
+      <div>
+        Options:
+        <div>
+          Expansions:
+          <div className="flexColumn">
+            <label>
+              Prophecy of Kings
+              <input
+                type="checkbox"
+                checked={options.expansions.has("pok")}
+                onChange={(event) => toggleExpansion(event.target.checked, "pok")}
+              />
+            </label>
+            <label>
+              Codex I
+              <input
+                type="checkbox"
+                checked={options.expansions.has("codex-one")}
+                onChange={(event) => toggleExpansion(event.target.checked, "codex-one")}
+              />
+            </label>
+            <label>
+              Codex II
+              <input
+                type="checkbox"
+                checked={options.expansions.has("codex-two")}
+                onChange={(event) => toggleExpansion(event.target.checked, "codex-two")}
+              />
+            </label>
+            <label>
+              Codex III
+              <input
+                type="checkbox"
+                checked={options.expansions.has("codex-three")}
+                onChange={(event) => toggleExpansion(event.target.checked, "codex-three")}
+              />
+            </label>
+          </div>
+        </div>
       </div>
       <button onClick={reset}>Reset</button>
       <button onClick={randomSpeaker}>Randomize Speaker</button>

@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
-  let tech = data.tech;
+  let tech = data.tech.replace(" Ω", "");
   if (tech === "Light/Wave Deflector") {
     tech = "LightWave Deflector";
   }

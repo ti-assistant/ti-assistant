@@ -19,6 +19,9 @@ export default async function handler(req, res) {
   let factions = req.body.factions;
   let speaker = req.body.speaker;
 
+  let options = req.body.options;
+  console.log(options);
+
   const db = getFirestore();
 
   const factionPromises = factions.map(async (faction, index) => {
@@ -85,6 +88,7 @@ export default async function handler(req, res) {
     speaker: req.body.speaker,
     factions: baseFactions,
     planets: basePlanets,
+    options: options,
   };
 
   let gameid = makeid(6);

@@ -122,6 +122,8 @@ export function ObjectiveList() {
     setTabShown(tabName);
   }
 
+  const maxHeight = screen.height - 370;
+
   return (
     <div>
       <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
@@ -140,7 +142,7 @@ export function ObjectiveList() {
       </div>
       <TabBody id="stage-one" selectedId={tabShown} content={
         <div>
-          {stageOneObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {stageOneObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
             {stageOneObjectives.map((obj) => {
               return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
             })}
@@ -152,7 +154,7 @@ export function ObjectiveList() {
       } />
       <TabBody id="stage-two" selectedId={tabShown} content={
         <div>
-          {stageTwoObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {stageTwoObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
             {stageTwoObjectives.map((obj) => {
               return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
             })}
@@ -164,7 +166,7 @@ export function ObjectiveList() {
       } />
       <TabBody id="secret" selectedId={tabShown} content={
         <div>
-          {secretObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {secretObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {secretObjectives.map((obj) => {
             return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}
@@ -176,7 +178,7 @@ export function ObjectiveList() {
       } />
       <TabBody id="other" selectedId={tabShown} content={
         <div>
-          {otherObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: "450px", overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {otherObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {otherObjectives.map((obj) => {
             return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}
