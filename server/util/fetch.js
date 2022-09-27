@@ -49,16 +49,32 @@ export async function fetchStrategyCards(gameid) {
 
   const gameState = await db.collection('games').doc(gameid).get();
   const gameObjectives = gameState.data().objectives ?? {};
+  const options = gameState.data().options;
 
   let objectives = {};
   objectivesRef.forEach(async (val) => {
+    let objective = val.data();
+
+    // Maybe filter out PoK objectives.
+    if (!options.expansions.includes("pok") && objective.game === "pok") {
+      return;
+    }
+    // Filter out objectives that are removed by PoK.
+    if (options.expansions.includes("pok") && objective.game === "non-pok") {
+      return;
+    }
+
+    if (objective.omega && options.expansions.includes(objective.omega.expansion)) {
+      objective.description = objective.omega.description;
+    }
+
     if (!gameObjectives[val.id]) {
-      objectives[val.id] = val.data();
+      objectives[val.id] = objective;
       return;
     }
 
     objectives[val.id] = {
-      ...val.data(),
+      ...objective,
       ...gameObjectives[val.id],
     };
   });
