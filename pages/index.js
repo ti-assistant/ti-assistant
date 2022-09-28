@@ -15,11 +15,7 @@ function Header({ title }) {
 export default function HomePage() {
   const [likes, setLikes] = useState(0);
 
-  const [stage, setStage] = useState(Stage.MainMenu);
-
-  function handleClick() {
-    setLikes(likes + 1);
-  }
+  const [gameId, setGameId] = useState("Game ID");
 
   const router = useRouter();
 
@@ -28,41 +24,43 @@ export default function HomePage() {
   }
 
   function joinGame() {
-
+    // TODO: Check for game's existence before allowing to join.
+    router.push(`/game/${gameId}`);
   }
 
-  switch (stage) {
-    case Stage.MainMenu:
-      return (
-        <div>
-          <Header title="Main Menu" />
+  function maybeClearGameId() {
+    if (gameId === "Game ID") {
+      setGameId("");
+    }
+  }
 
-          <Link href="/setup">
-            <a>Start Game</a>
-          </Link>
-    
-          <button onClick={startGame}>Start Game</button>
-          <button onClick={joinGame}>Join Game</button>
-        </div>
-      );
-    case Stage.Game:
-      return (
-        <div>
-          <Header title="Develop. Preview. Ship. 🚀" />
-          <ul>
-            {names.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-    
-          <button onClick={() => setStage(Stage.MainMenu)}>Back</button>
-        </div>
-      );
+  function validGameId() {
+    if (gameId === "Game Id") {
+      return false;
+    }
+    if (gameId === "") {
+      return false;
+    }
+    return gameId.length === 6;
   }
 
   return (
-    <div>
-      <Header title="Develop. Preview. Ship. 🚀" />
+    <div className="flexColumn" style={{gap: "16px"}}>
+      <h2
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
+        Twilight Imperium Assistant
+      </h2>
+
+      <button onClick={startGame}>Start Game</button>
+      <div>
+        <button onClick={joinGame} disabled={!validGameId()}>Join Game</button>
+        <input value={gameId} onFocus={maybeClearGameId} onInput={(e) => setGameId(e.target.value)}/>
+      </div>
     </div>
   );
 }
