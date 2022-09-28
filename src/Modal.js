@@ -28,7 +28,7 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
             {title}
           </div>
         </div>
-        <div style={{padding: "4px"}}>
+        <div style={{padding: "0px 4px 4px 4px"}}>
           {content}
         </div>
       </div>

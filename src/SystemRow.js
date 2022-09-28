@@ -142,7 +142,7 @@ export function SystemRow({planets, addPlanet}) {
         &#x2713;
       </div>
       : null}
-      <div style={{display: "flex", flexDirection: "column", justifyContent: "center"}}>
+      <div style={{display: "flex", flexDirection: "column", justifyContent: "center", width: "100%"}}>
       {planets.map((planet) => {
         return <PlanetRow key={planet.name} planet={planet} opts={{showSelfOwned: true}} />;
       })}

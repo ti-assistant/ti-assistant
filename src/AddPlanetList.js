@@ -75,7 +75,7 @@ export function AddPlanetList({ planets, addPlanet }) {
 
   return (
     <div>
-      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
+      <div className="flexRow" style={{ position: "sticky", top: "36px", backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown} content={
           "Planets"
         } />
@@ -88,14 +88,14 @@ export function AddPlanetList({ planets, addPlanet }) {
       </div>
       <TabBody id="normal" selectedId={tabShown} content={
         <div>
-          <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "fixed", zIndex: 904, width: "84%", fontSize: "14px"}}>
+          <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "14px"}}>
           <label>
               <input type="checkbox"
             checked={groupBySystem}
             onChange={toggleGroupBySystem}
           />Group by System</label>
           </div>
-          <div style={{paddingTop: "32px"}}>
+          <div>
             {groupBySystem ? 
               planetsBySystem.map((system) => {
                 return <SystemRow key={system[0].system} planets={system} addPlanet={addPlanet} />;
