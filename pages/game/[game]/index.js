@@ -3,16 +3,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { useEffect, useState } from "react";
 import { FactionCard } from '/src/FactionCard.js'
 import QRCode from "qrcode";
-
-const fetcher = async (url) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data.message)
-  }
-  return data
-};
+import { fetcher } from '../../../src/util/api/util';
 
 export default function SelectFactionPage() {
   const router = useRouter();

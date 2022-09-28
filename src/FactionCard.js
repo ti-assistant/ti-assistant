@@ -3,37 +3,12 @@ import { useRouter } from 'next/router'
 import { useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
 import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
+import { chooseStartingTech, removeStartingTech } from './util/api/techs';
+import { fetcher, poster } from './util/api/util';
 import { getNextIndex } from './util/util';
 
 import { TechRow } from '/src/TechRow.js'
 import { setSpeaker } from '/src/util/api/state.js';
-
-const fetcher = async (url) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data.message)
-  }
-  return data
-};
-
-const poster = async (url, data) => {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  const val = await res.json();
-
-  if (res.status !== 200) {
-    throw new Error(val.message);
-  }
-  return val;
-};
 
 function getFactionColor(color) {
   switch (color) {
@@ -227,68 +202,11 @@ function StartingComponents({ faction }) {
   });
 
   function addTech(tech) {
-    const data = {
-      action: "CHOOSE_STARTING_TECH",
-      faction: faction.name,
-      tech: tech,
-      returnAll: true,
-    };
-
-    const updatedFactions = {...factions};
-
-    updatedFactions[faction.name].startswith.techs = [
-      ...(updatedFactions[faction.name].startswith.techs ?? []),
-      tech,
-    ];
-    if (updatedFactions["Council Keleres"]) {
-      const councilChoice = new Set(updatedFactions["Council Keleres"].startswith.choice.options);
-      councilChoice.add(tech);
-      updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
-    }
-
-    const options = {
-      optimisticData: updatedFactions,
-    };
-
-    mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+    chooseStartingTech(mutate, gameid, factions, faction.name, tech);
   }
 
   function removeTech(tech) {
-    const data = {
-      action: "REMOVE_STARTING_TECH",
-      faction: faction.name,
-      tech: tech,
-      returnAll: true,
-    };
-
-    const updatedFactions = {...factions};
-
-    updatedFactions[faction.name].startswith.techs = (updatedFactions[faction.name].startswith.techs ?? []).filter((startingTech) => startingTech !== tech);
-    
-    if (updatedFactions["Council Keleres"]) {
-      const councilChoice = new Set();
-      for (const [name, faction] of Object.entries(factions)) {
-        if (name === "Council Keleres") {
-          continue;
-        }
-        (faction.startswith.techs ?? []).forEach((tech) => {
-          councilChoice.add(tech);
-        });
-      }
-      updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
-      for (const [index, tech] of (factions["Council Keleres"].startswith.techs ?? []).entries()) {
-        if (!councilChoice.has(tech)) {
-          delete updatedFactions["Council Keleres"].techs[tech];
-          factions["Council Keleres"].startswith.techs.splice(index, 1);
-        }
-      }
-    }
-
-    const options = {
-      optimisticData: updatedFactions,
-    };
-
-    mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+    removeStartingTech(mutate, gameid, factions, faction.name, tech);
   }
 
   const numToChoose = !startswith.choice ? 0 : startswith.choice.select - (startswith.techs ?? []).length;
@@ -457,7 +375,6 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
               Quantum Datahub Node
             </div>)
           }
-          console.log(factions);
           if (Object.keys(factions).includes("Naalu Collective") && faction.name !== "Naalu Collective") {
             buttons.push(<div key="Gift of Prescience" style={{position: "relative", cursor: "pointer", gap: "4px", padding: "4px 8px", boxShadow: "1px 1px 4px black", backgroundColor: "#222", border: `2px solid ${color}`, borderRadius: "5px", fontSize: opts.fontSize ?? "24px"}} onClick={giftOfPrescience}>
               Gift of Prescience
@@ -532,7 +449,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
   );
 }
 
-export function FactionCard({ faction, onClick, opts = {} }) {
+export function FactionCard({ faction, onClick, style, content, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
@@ -559,20 +476,22 @@ export function FactionCard({ faction, onClick, opts = {} }) {
     zIndex: opts.backgroundIcon ? -1 : 1,
 
   };
+  const cardStyle = {
+    borderRadius: "5px",
+    display: "flex",
+    flexDirection: "column",
+    border: border,
+    fontSize: opts.fontSize ?? "24px",
+    position: "relative",
+    cursor: onClick ? "pointer" : "auto",
+    ...(style ?? {}),
+  }
   return (
     <div
       onClick={onClick}
-      style={{
-        borderRadius: "5px",
-        display: "flex",
-        flexDirection: "column",
-        border: border,
-        fontSize: opts.fontSize ?? "24px",
-        position: "relative",
-        cursor: onClick ? "pointer" : "auto",
-      }}
+      style={cardStyle}
     >
-      <div className="flexRow" style={{justifyContent: "flex-start", gap: "4px", padding: "0px 4px"}}>
+      <div className="flexRow" style={{justifyContent: "center", gap: "4px", padding: "0px 4px"}}>
         <div className="flexRow" style={iconStyle}>
           <FactionSymbol faction={faction.name} size={40} />
         </div>
@@ -590,6 +509,9 @@ export function FactionCard({ faction, onClick, opts = {} }) {
           Speaker
         </div> : null}
         {opts.hideName ? null : <div style={{ paddingRight: "12px" }}>{faction.name}</div>}
+      </div>
+      <div>
+        {content}
       </div>
       {opts.displayStartingComponents ? 
         <StartingComponents faction={faction} />

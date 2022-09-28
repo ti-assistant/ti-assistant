@@ -12,6 +12,7 @@ import { passFaction, readyAllFactions } from '../../../src/util/api/factions';
 import { pluralize } from '../../../src/util/util';
 import { fetcher, poster } from '../../../src/util/api/util';
 import { SpeakerModal } from '../../../src/SpeakerModal';
+import { BasicFactionTile } from '../../../src/FactionTile';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -203,10 +204,12 @@ export default function SelectFactionPage() {
               <li>Draw 2 secret objectives and keep one</li>
               <li>Re-shuffle secret objectives</li>
               <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} />
+                <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+                {/* <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} /> */}
                 Draw 5 stage one objectives and reveal 2</div></li>
               <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} />
+              <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+                {/* <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} /> */}
                 Draw 5 stage two objectives</div></li>
             </ol>
             <button disabled={!factionChoicesComplete()} onClick={nextPhase}>Next</button>

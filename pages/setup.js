@@ -4,16 +4,7 @@ import useSWR from 'swr'
 import { FactionTile } from "../src/FactionCard";
 import { BasicFactionTile } from "../src/FactionTile";
 import { Modal } from "../src/Modal";
-
-const fetcher = async (url) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data.message)
-  }
-  return data
-};
+import { fetcher } from "../src/util/api/util";
 
 function getFactionColor(color) {
   if (!color) {
@@ -28,99 +19,6 @@ function getFactionColor(color) {
     //   return "mediumseagreen";
   }
   return color;
-}
-
-function PlayerSelect({
-  faction,
-  isSpeaker,
-  selectedFactions,
-  selectedColors,
-  handleChange,
-  updateColor,
-  updateSpeaker,
-  expansions,
-}) {
-  const { data: availableFactions, error: factionError } = useSWR("/api/factions", fetcher);
-  const { data: colors, error: colorError } = useSWR("/api/colors", fetcher);
-
-  if (factionError) {
-    return (<div>Failed to load factions</div>);
-  }
-  if (colorError) {
-    return (<div>Failed to load colors</div>);
-  }
-  if (!availableFactions || !colors) {
-    return (<div>Loading...</div>);
-  }
-
-  const filteredFactions = Object.entries(availableFactions).filter(([name, faction]) => {
-    if (faction.game === "base") {
-      return true;
-    }
-    if (!expansions.has(faction.game)) {
-      return false;
-    }
-    return true;
-  });
-  const filteredColors = colors.filter((color) => {
-    if (color === "Magenta" || color === "Orange") {
-      if (!expansions.has("pok")) {
-        return false;
-      }
-    }
-    return true;
-  });
-
-  function setFaction(event) {
-    const value = event.target.value === "" ? null : event.target.value;
-    handleChange(value);
-  }
-  function setColor(event) {
-    const value = event.target.value === "" ? null : event.target.value;
-    updateColor(value);
-  }
-  return (
-    <div>
-      <label>SPEAKER</label>
-      <input
-        name="speaker"
-        type="checkbox"
-        checked={isSpeaker}
-        onChange={updateSpeaker}
-      />
-      <select
-        onChange={setFaction}
-        value={faction.name === null ? "" : faction.name}
-        style={{fontFamily: 'Myriad Pro'}}
-      >
-        <option key="None" value="" disabled hidden>
-          Select Faction
-        </option>
-        {filteredFactions.map(([name, faction]) => {
-          return (
-            <option key={name} value={name} style={selectedFactions.includes(name) ? { color: "grey" } : {}}>
-              {name}
-            </option>
-          );
-        })}
-      </select>
-      <select
-        onChange={setColor}
-        value={faction.color === null ? "" : faction.color}
-      >
-        <option key="None" value="">
-          Select Color
-        </option>
-        {filteredColors.map((color) => {
-          return (
-            <option key={color} value={color} style={selectedColors.includes(color) ? { color: "grey" } : {}}>
-              {color}
-            </option>
-          );
-        })}
-      </select>
-    </div>
-  );
 }
 
 function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, expansions, opts }) {
@@ -652,23 +550,6 @@ export default function SetupPage() {
               opts={{menuSide: "top"}} /> : null}
         </div>
       </div>
-      {/* <div>
-        {factions.map((faction, index) => {
-          return (
-            <PlayerSelect
-              key={index}
-              faction={faction}
-              isSpeaker={index === speaker}
-              selectedFactions={selectedFactions}
-              selectedColors={selectedColors}
-              handleChange={(value) => updatePlayerFaction(index, value)}
-              updateColor={(value) => updatePlayerColor(index, value)}
-              updateSpeaker={() => setSpeaker(index)}
-              expansions={options.expansions}
-            />
-          );
-        })}
-      </div> */}
       <div>
         Options:
         <div>

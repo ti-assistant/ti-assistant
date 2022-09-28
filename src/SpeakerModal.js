@@ -3,8 +3,8 @@ import useSWR, { useSWRConfig } from 'swr'
 
 import { fetcher, poster } from './util/api/util'
 import { setSpeaker } from './util/api/state';
-import { FactionTile } from "/src/FactionCard.js";
 import { Modal } from "/src/Modal.js";
+import { BasicFactionTile } from './FactionTile';
 
 export function SpeakerModal({ forceSelection, visible, onComplete }) {
   const router = useRouter();
@@ -45,7 +45,7 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
             return null;
           }
           return (
-            <FactionTile
+            <BasicFactionTile
               key={name}
               faction={faction}
               onClick={() => selectSpeaker(name)}

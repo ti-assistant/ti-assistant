@@ -8,16 +8,7 @@ import { Resources } from "/src/Resources.js";
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
 import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
-
-const fetcher = async (url) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data.message)
-  }
-  return data
-};
+import { fetcher } from './util/api/util';
 
 function PlanetSymbol({ type, faction }) {
 switch (type) {
@@ -131,23 +122,6 @@ function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
       })}
     </div>
   } />);
-}
-
-function ExhaustIcon({ ready, clickFn }) {
-  const content = ready ? "↶" : "↷";
-  return (
-    <div onClick={clickFn} className="flexRow" style={{height: "32px", width: "32px", fontSize:"32px", border: "1px solid black", borderRadius: "20px", boxShadow: "0px 0px 5px 1px black"}}>
-      {content}
-    </div>
-  );
-}
-
-function AttachIcon({ clickFn }) {
-  return (
-    <div onClick={clickFn} className="flexRow" style={{height: "32px", width: "32px", fontSize: "32px", border: "1px solid black", borderRadius: "16px", boxShadow: "0px 0px 5px 1px black"}}>
-
-    </div>
-  );
 }
 
 export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={}}) {

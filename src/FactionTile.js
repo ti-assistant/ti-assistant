@@ -31,13 +31,13 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
   }
 
   const iconStyle = {
-    width: "40px",
-    height: "40px",
+    width: opts.iconSize ? `${opts.iconSize}px` : "40px",
+    height: opts.iconSize ? `${opts.iconSize}px` : "40px",
     position: "absolute",
     zIndex: -1,
     left: 0,
     width: "100%",
-    opacity: "60%",
+    opacity: opts.hideName ? "100%" : "60%",
   };
 
   const color = getFactionColor(faction.color);
@@ -79,7 +79,6 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
       break;
   }
 
-  console.log(opts);
   return (
     <div
       style={{position: "relative"}}
@@ -94,15 +93,15 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
           border: border,
           fontSize: opts.fontSize ?? "24px",
           position: "relative",
-          cursor: (onClick || menuButtons.length !== 0) ? "pointer" : "auto",
+          cursor: (onClick || (menuButtons ?? []).length !== 0) ? "pointer" : "auto",
           alignItems: "center",
           whiteSpace: "nowrap",
-          padding: "0px 4px",
+          padding: opts.hideName ? 0 : "0px 4px",
         }}
       >
-        <div className="flexRow" style={{justifyContent: "flex-start", gap: "4px", padding: "0px 4px", height: "40px"}}>
+        <div className="flexRow" style={{justifyContent: "flex-start", gap: "4px", padding: "0px 4px", height: opts.iconSize ? `${opts.iconSize}px` : "40px", minWidth: opts.iconSize ? `${opts.iconSize}px` : "40px"}}>
           {faction.name ? <div className="flexRow" style={iconStyle}>
-            <FactionSymbol faction={name} size={40} />
+            <FactionSymbol faction={name} size={opts.iconSize ?? 40} />
           </div> : null}
           {speaker ? <div style={{fontFamily: "Myriad Pro",
             position: "absolute",

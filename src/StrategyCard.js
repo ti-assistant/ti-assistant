@@ -1,21 +1,10 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router'
-import useSWR, { mutate, useSWRConfig } from 'swr'
+import useSWR from 'swr'
+
+import { fetcher } from './util/api/util';
 import { FactionTile } from '/src/FactionCard.js'
 
-import { TechRow } from '/src/TechRow.js'
-
-const fetcher = async (url) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data.message)
-  }
-  return data
-};
-
-export function StrategyCard({ card, active, onClick, opts = {} }) {
+export function StrategyCard({ card, active, onClick, factionActions, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: faction, factionError } = useSWR(gameid && card.faction ? `/api/${gameid}/factions/${card.faction}` : null, fetcher);
