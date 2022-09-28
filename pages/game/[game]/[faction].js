@@ -10,6 +10,174 @@ import { Modal } from "/src/Modal.js";
 import useSWR, { useSWRConfig } from 'swr'
 import { ObjectiveList } from "/src/ObjectiveList";
 import { fetcher, poster } from '../../../src/util/api/util';
+import { pluralize } from "../../../src/util/util";
+
+const techOrder = [
+  "green",
+  "blue",
+  "yellow",
+  "red",
+];
+
+function Prompt({ faction, prompt }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  
+  if (factionsError) {
+    return (<div>Failed to load factions</div>);
+  }
+  if (techError) {
+    return (<div>Failed to load techs</div>);
+  }
+  if (!techs || !factions) {
+    return (<div>Loading...</div>);
+  }
+
+  const startswith = faction.startswith;
+  const orderedTechs = (startswith.techs ?? []).map((tech) => {
+    return techs[tech];
+  }).sort((a, b) => {
+    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+    if (typeDiff !== 0) {
+      return typeDiff;
+    }
+    const prereqDiff = a.prereqs.length - b.prereqs.length;
+    if (prereqDiff !== 0) {
+      return prereqDiff;
+    }
+    if (a.name < b.name) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+  const orderedChoices = ((startswith.choice ?? {}).options ?? []).filter((tech) => {
+    return !(startswith.techs ?? []).includes(tech);
+  }).map((tech) => {
+    return techs[tech];
+  }).sort((a, b) => {
+    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+    if (typeDiff !== 0) {
+      return typeDiff;
+    }
+    const prereqDiff = a.prereqs.length - b.prereqs.length;
+    if (prereqDiff !== 0) {
+      return prereqDiff;
+    }
+    if (a.name < b.name) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+  async function addTech(tech) {
+    const data = {
+      action: "CHOOSE_STARTING_TECH",
+      faction: faction.name,
+      tech: tech,
+      returnAll: true,
+    };
+
+    const updatedFactions = {...factions};
+
+    updatedFactions[faction.name].startswith.techs = [
+      ...(updatedFactions[faction.name].startswith.techs ?? []),
+      tech,
+    ];
+    if (updatedFactions["Council Keleres"]) {
+      const councilChoice = new Set(updatedFactions["Council Keleres"].startswith.choice.options);
+      councilChoice.add(tech);
+      updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
+    }
+
+    const options = {
+      optimisticData: updatedFactions,
+    };
+
+    await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+
+    const opts = {
+      optimisticData: updatedFactions[faction.name],
+    };
+    
+    mutate(`/api/${gameid}/factions/${faction.name}`, fetcher(`/api/${gameid}/factions/${faction.name}`, data), opts)
+  }
+
+  async function removeTech(tech) {
+    const data = {
+      action: "REMOVE_STARTING_TECH",
+      faction: faction.name,
+      tech: tech,
+      returnAll: true,
+    };
+
+    const updatedFactions = {...factions};
+
+    updatedFactions[faction.name].startswith.techs = (updatedFactions[faction.name].startswith.techs ?? []).filter((startingTech) => startingTech !== tech);
+    
+    if (updatedFactions["Council Keleres"]) {
+      const councilChoice = new Set();
+      for (const [name, faction] of Object.entries(factions)) {
+        if (name === "Council Keleres") {
+          continue;
+        }
+        (faction.startswith.techs ?? []).forEach((tech) => {
+          councilChoice.add(tech);
+        });
+      }
+      updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
+      for (const [index, tech] of (factions["Council Keleres"].startswith.techs ?? []).entries()) {
+        if (!councilChoice.has(tech)) {
+          delete updatedFactions["Council Keleres"].techs[tech];
+          factions["Council Keleres"].startswith.techs.splice(index, 1);
+        }
+      }
+    }
+
+    const options = {
+      optimisticData: updatedFactions,
+    };
+
+    await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+    
+    const opts = {
+      optimisticData: updatedFactions[faction.name],
+    };
+    
+    mutate(`/api/${gameid}/factions/${faction.name}`, fetcher(`/api/${gameid}/factions/${faction.name}`, data), opts)
+  }
+
+  const numToChoose = !startswith.choice ? 0 : startswith.choice.select - (startswith.techs ?? []).length;
+
+  function confirmChoice() {
+    // TODO: This should clear the prompt on the server (or mark as completed)
+  }
+
+  switch (prompt.type) {
+    case "STARTING_TECH":
+      return <div> 
+        Techs {startswith.choice ? "(Choice)" : null}
+        <div style={{paddingLeft: "4px"}}>
+          {orderedTechs.map((tech) => {
+            return <TechRow key={tech.name} tech={tech} removeTech={startswith.choice ? () => removeTech(tech.name) : null} />;
+          })}
+        </div>
+        {numToChoose > 0 ?
+          <div>
+            Choose {numToChoose} more {pluralize("tech", numToChoose)}
+            <div>
+              {orderedChoices.map((tech) => {
+                return <TechRow key={tech.name} tech={tech} addTech={() => addTech(tech.name)} />;
+              })}
+            </div>
+          </div>
+        : <button onClick={confirmChoice}>Confirm</button>}
+      </div>;
+  }
+}
 
 export default function GamePage() {
   const [player, setPlayer] = useState({});
@@ -293,6 +461,13 @@ export default function GamePage() {
 
   const maxHeight = screen.height - 330;
 
+  const validPrompts = (faction.prompts ?? []).filter((prompt) => {
+    return !prompt.ignored;
+  });
+  
+  function ignorePrompt() {
+    // TODO: Ignore prompt. Decide whether to remind the player later or not.
+  }
 
   return (
     <div
@@ -306,6 +481,11 @@ export default function GamePage() {
         content={
           <AddPlanetList planets={planets} addPlanet={addPlanet} />
       } />
+      {/* TODO: Uncomment after putting in server-side functionality for adding/removing prompts */}
+      {/* <Modal closeMenu={ignorePrompt} visible={validPrompts.length > 0} title={validPrompts[0].title}
+        content={
+          <Prompt prompt={validPrompts[0]} faction={gamePlayer} />
+        } /> */}
       <h2
         style={{
           display: "flex",

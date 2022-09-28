@@ -53,12 +53,22 @@ export default async function handler(req, res) {
         ready: true,
       };
     });
+
+    const prompts = [];
+    if (factionData.startswith.choice) {
+      prompts.push({
+        title: "Choose Starting Tech",
+        type: "STARTING_TECH",
+      });
+    }
+
     return {
       ...faction,
       planets: homePlanets,
       techs: startingTechs,
       order: order,
       startswith: factionData.startswith,
+      prompts: prompts,
     };
   });
 
