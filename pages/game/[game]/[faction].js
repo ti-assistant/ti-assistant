@@ -359,7 +359,7 @@ function FactionContent() {
     router.push(`/game/${gameid}/${factionName}`);
   }
 
-  const maxHeight = screen.height - 390;
+  const maxHeight = screen.height - 420;
   return (<div>
           <Modal closeMenu={toggleAddTechMenu} visible={showAddTech} title="Research Tech"
         content={
@@ -429,15 +429,9 @@ function FactionContent() {
       >
         {/* Tabs */}
         <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid grey"}}>
-          <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content={
-            <b style={{ textAlign: "center", margin: "4px" }}>Techs</b>
-          } />
-          <Tab selectTab={setTabShown} id="planets" selectedId={tabShown} content={
-            <b style={{ textAlign: "center", margin: "4px" }}>Planets</b>
-          } />
-          <Tab selectTab={setTabShown} id="objectives" selectedId={tabShown} content={
-            <b style={{ textAlign: "center", margin: "4px" }}>Objectives</b>
-          } />
+          <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content="Techs" />
+          <Tab selectTab={setTabShown} id="planets" selectedId={tabShown} content="Planets" />
+          <Tab selectTab={setTabShown} id="objectives" selectedId={tabShown} content="Objectives" />
         </div>
         <TabBody id="techs" selectedId={tabShown} content={
         <div>
