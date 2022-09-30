@@ -605,6 +605,7 @@ export default function GamePage() {
   
   function swapToFaction(factionName) {
     router.push(`/game/${gameid}/${factionName}`);
+    return;
   }
 
   let orderedFactions = [];
