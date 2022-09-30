@@ -32,7 +32,14 @@ export default async function handler(req, res) {
       };
     }
     if (factions && val.data().home && !factions.includes(val.data().faction)) {
-      return;
+      // TODO: Make Council select this so that this can be avoided.
+      if (gamestate.data().factions['Council Keleres']) {
+        if (val.data().faction !== "Mentak" && val.data().faction !== "Xxcha Kingdom" && val.data().faction !== "Argent Flight") {
+          return;
+        }
+      } else {
+        return;
+      }
     }
     // Have to do this to avoid database issues when storing [0.0.0].
     if (id === "000") {
