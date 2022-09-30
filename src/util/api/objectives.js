@@ -1,15 +1,5 @@
 import { fetcher, poster } from './util'
 
-/**
- * Checks whether a faction has unlocked a specific tech.
- * @param {Object} faction
- * @param {string} tech
- * @returns {bool}
- */
-export function hasTech(faction, tech) {
-  return !!faction.techs[tech];
-}
-
 export function revealObjective(mutate, gameid, objectives, objectiveName) {
   const data = {
     action: "REVEAL_OBJECTIVE",

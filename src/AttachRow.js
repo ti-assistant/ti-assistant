@@ -4,7 +4,7 @@ import { Resources } from "/src/Resources.js";
 
 function LegendaryPlanetIcon() {
   return (
-    <div style={{borderRadius: "22px", height: "18px", width: "18px", paddingTop: "3px", paddingLeft: "3px", boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
+    <div style={{display: "flex", alignItems: "flex-start", borderRadius: "22px", height: "18px", width: "18px", paddingTop: "3px", paddingLeft: "3px", boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
       <Image src="/images/legendary_planet.svg" alt="Legendary Planet Icon" width="15px" height="15px" />
     </div>);
 }
@@ -49,7 +49,7 @@ export function AttachRow({ attachment }) {
     }
   }
   return (
-    <div className="flexRow" style={{width: "100%", height: "72px", justifyContent: "left"}}>
+    <div className="flexRow" style={{width: "100%", height: "72px", justifyContent: "left", fontSize: "16px"}}>
       <div style={{flexBasis: "50%"}}>{attachment.name}</div>
       <Resources resources={attachment.resources} influence={attachment.influence} />
       {isSkip() ? <div style={{marginRight: "6px"}}>OR</div> : null}

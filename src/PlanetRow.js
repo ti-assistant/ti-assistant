@@ -10,14 +10,14 @@ import { FactionSymbol } from "/src/FactionCard.js";
 import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
 import { fetcher } from './util/api/util';
 
-function PlanetSymbol({ type, faction }) {
-switch (type) {
+export function PlanetSymbol({ type, faction, size="36px" }) {
+  switch (type) {
     case "Industrial":
-      return <Image src="/images/industrial_icon.svg" alt="Industrial Planet Icon" width="36px" height="36px" />;
+      return <Image src="/images/industrial_icon.svg" alt="Industrial Planet Icon" width={size} height={size} />;
     case "Cultural":
-      return <Image src="/images/cultural_icon.svg" alt="Cultural Planet Icon" width="36px" height="36px" />;
+      return <Image src="/images/cultural_icon.svg" alt="Cultural Planet Icon" width={size} height={size} />;
     case "Hazardous":
-      return <Image src="/images/hazardous_icon.svg" alt="Hazardous Planet Icon" width="36px" height="36px" />;
+      return <Image src="/images/hazardous_icon.svg" alt="Hazardous Planet Icon" width={size} height={size} />;
     case "all":
       return <div style={{marginLeft: "8px", width:"36px", height: "36px"}}>
         <Image src="/images/industrial_icon.svg" alt="Industrial Planet Icon" width="18px" height="18px" />
@@ -36,12 +36,27 @@ switch (type) {
 
 function LegendaryPlanetIcon() {
   return (
-    <div style={{borderRadius: "22px", height: "18px", width: "18px", paddingTop: "3px", paddingLeft: "3px", boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
+    <div style={{display: "flex", alignItems: "flex-start", borderRadius: "22px", height: "18px", width: "18px", paddingTop: "3px", paddingLeft: "3px", boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
       <Image src="/images/legendary_planet.svg" alt="Legendary Planet Icon" width="15px" height="15px" />
     </div>);
 }
 
-function PlanetAttributes({ attributes }) {
+function getFactionColor(color) {
+  if (!color) {
+    return "#555";
+  }
+  switch (color) {
+    case "Blue":
+      return "cornflowerblue";
+    // case "Magenta":
+    //   return "hotpink";
+    // case "Green":
+    //   return "mediumseagreen";
+  }
+  return color;
+}
+
+export function PlanetAttributes({ attributes }) {
   if (attributes.length === 0) {
     return null;
   }
@@ -84,13 +99,39 @@ function PlanetAttributes({ attributes }) {
           justifyContent: "space-evenly",
           alignItems: "center",
           width: "48px",
+          flexWrap: "wrap",
+        }}
+      >
+        {attributes.map((attribute, index) => {
+          return <div key={index}>{getAttributeIcon(attribute)}</div>;
+        })}
+      </div>
+    </div>
+  )
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        marginTop: "12px",
+        height: "48px",
+        justifyContent: "space-evenly"
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          width: "48px",
         }}
       >
         {attributes.map((attribute, index) => {
           if (index >= 2) {
             return null;
           }
-          return <div key={attribute}>{getAttributeIcon(attribute)}</div>;
+          return <div key={index}>{getAttributeIcon(attribute)}</div>;
         })}
       </div>
       {attributes.length > 2 ? (
@@ -99,7 +140,7 @@ function PlanetAttributes({ attributes }) {
             if (index < 2) {
               return null;
             }
-            return <div key={attribute}>{getAttributeIcon(attribute)}</div>;
+            return <div key={index}>{getAttributeIcon(attribute)}</div>;
           })}
         </div>
       ) : null}
@@ -217,7 +258,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
     if (opts.showSelfOwned || owner !== playerFaction) {
       if (claimed === null) {
         claimed = owner;
-        claimedColor = factions[owner].color.toLowerCase();
+        claimedColor = getFactionColor(factions[owner].color);
       } else {
         claimed = "Multiple Players";
         claimedColor = "darkred";

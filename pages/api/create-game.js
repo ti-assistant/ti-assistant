@@ -90,6 +90,18 @@ export default async function handler(req, res) {
     });
   });
 
+  let baseObjectives = {
+    "Custodians Token": {
+      selected: true,
+    },
+    "Imperial Point": {
+      selected: true,
+    },
+    "Support for the Throne": {
+      selected: true,
+    },
+  };
+
   const gameState = {
     state: {
       speaker: speaker,
@@ -99,6 +111,7 @@ export default async function handler(req, res) {
     factions: baseFactions,
     planets: basePlanets,
     options: options,
+    objectives: baseObjectives,
   };
 
   let gameid = makeid(6);
@@ -109,7 +122,7 @@ export default async function handler(req, res) {
     game = await db.collection('games').doc(gameid).get();
   }
 
-  const result = await db.collection('games').doc(gameid).set(gameState);
+  await db.collection('games').doc(gameid).set(gameState);
 
   // console.log(req.body);
   res.status(200).json({gameid: gameid});

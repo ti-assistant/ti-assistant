@@ -26,7 +26,7 @@ export function SystemRow({planets, addPlanet}) {
         &#x2713;
       </div>
       : null}
-      <div className="flexColumn" style={{width: "100%"}}>
+      <div className="flexColumn" style={{width: "100%", alignItems: "stretch"}}>
         {planets.map((planet) => {
           return <PlanetRow key={planet.name} planet={planet} opts={{showSelfOwned: true}} />;
         })}

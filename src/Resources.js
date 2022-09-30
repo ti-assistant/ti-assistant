@@ -1,8 +1,8 @@
 export function Resources({ resources, influence }) {
   return (
     <div className="resourceBlock">
-      <div className="resourceSymbol">
-        ◯
+      <div className="resourceSymbol">	
+        &#9711;
       </div>
       <div className="resourceTextWrapper">
         {resources}

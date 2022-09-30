@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
 
-function TechIcon({ type, width, height }) {
+export function TechIcon({ type, width, height }) {
   switch (type) {
     case "red":
       return <Image src="/images/red_tech.webp" alt="Red Tech Skip" width={width} height={height} />;
@@ -13,7 +13,7 @@ function TechIcon({ type, width, height }) {
     case "blue":
       return <Image src="/images/blue_tech.webp" alt="Blue Tech Skip" width={width} height={height} />;
     case "green":
-      return <Image src="/images/green_tech.webp" alt="Blue Tech Skip" width={width} height={height} />;
+      return <Image src="/images/green_tech.webp" alt="Green Tech Skip" width={width} height={height} />;
   }
   return type;
 }

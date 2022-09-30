@@ -122,7 +122,7 @@ export function ObjectiveList() {
     setTabShown(tabName);
   }
 
-  const maxHeight = screen.height - 370;
+  const maxHeight = screen.height - 420;
 
   return (
     <div>
