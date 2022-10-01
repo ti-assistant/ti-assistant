@@ -32,7 +32,7 @@ export function AddPlanetList({ planets, addPlanet }) {
   }
 
   const remainingPlanets = [];
-  Object.values(planets).forEach((planet) => {
+  Object.values(planets ?? {}).forEach((planet) => {
     if (!(planet.owners ?? []).includes(playerFaction)) {
       remainingPlanets.push(planet);
     }
@@ -43,7 +43,7 @@ export function AddPlanetList({ planets, addPlanet }) {
       !(planet.attributes ?? []).includes("legendary")
   });
   let planetsBySystem = [];
-  Object.values(planets).forEach((planet) => {
+  Object.values(planets ?? {}).forEach((planet) => {
     if (!planet.system) {
       return;
     }

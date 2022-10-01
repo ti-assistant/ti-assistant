@@ -61,7 +61,7 @@ export function unscoreObjective(mutate, gameid, objectives, factionName, object
 
   const updatedObjectives = {...objectives};
 
-  const factionIndex = (updatedObjectives[objectiveName].scorers ?? []).findIndex((scorer) => scorer === factionName);
+  const factionIndex = (updatedObjectives[objectiveName].scorers ?? []).lastIndexOf(factionName);
   if (factionIndex !== -1) {
     updatedObjectives[objectiveName].scorers.splice(factionIndex, 1);
   }

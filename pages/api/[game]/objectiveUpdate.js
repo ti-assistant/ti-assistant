@@ -35,15 +35,28 @@ export default async function handler(req, res) {
     }
     case "SCORE_OBJECTIVE": {
       const objectiveString = `objectives.${data.objective}.scorers`;
+      let updateValue = FieldValue.arrayUnion(data.faction);
+      if (data.objective === "Support for the Throne" || data.objective === "Imperial Point") {
+        const scorers = gameRef.data().objectives[data.objective].scorers ?? [];
+        scorers.push(data.faction);
+        updateValue = scorers;
+      }
       await db.collection('games').doc(gameid).update({
-        [objectiveString]: FieldValue.arrayUnion(data.faction),
+        [objectiveString]: updateValue,
       });
       break;
     }
     case "UNSCORE_OBJECTIVE": {
       const objectiveString = `objectives.${data.objective}.scorers`;
+      let updateValue = FieldValue.arrayRemove(data.faction)
+      if (data.objective === "Support for the Throne" || data.objective === "Imperial Point") {
+        const scorers = gameRef.data().objectives[data.objective].scorers ?? [];
+        const lastIndex = scorers.lastIndexOf(data.faction);
+        scorers.splice(lastIndex, 1);
+        updateValue = scorers;
+      }
       await db.collection('games').doc(gameid).update({
-        [objectiveString]: FieldValue.arrayRemove(data.faction),
+        [objectiveString]: updateValue,
       });
       break;
     }

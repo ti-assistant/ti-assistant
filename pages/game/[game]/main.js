@@ -431,6 +431,9 @@ export default function SelectFactionPage() {
                 : null}
               </div>
               <div className="flexColumn" style={{flexBasis: "33%"}}>
+                {orderedFactions.map(([name, faction]) => {
+                  return <FactionCard key={name} faction={faction} content={<FactionSummary faction={faction} />} />
+                })}
                 Third column
               </div>
             </div>

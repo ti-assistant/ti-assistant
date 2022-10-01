@@ -100,7 +100,13 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
   }
 
   function canScore() {
-    return removeObjective && !(objective.scorers ?? []).includes(faction);
+    if (!removeObjective) {
+      return false;
+    }
+    if (objective.max && (objective.scorers ?? []).length === objective.max) {
+      return false;
+    }
+    return (!(objective.scorers ?? []).includes(faction) || objective.repeatable);
   }
 
   return (
