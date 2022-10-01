@@ -13,6 +13,7 @@ import { pluralize } from '../../../src/util/util';
 import { fetcher, poster } from '../../../src/util/api/util';
 import { SpeakerModal } from '../../../src/SpeakerModal';
 import { BasicFactionTile } from '../../../src/FactionTile';
+import { FactionSummary } from '../../../src/FactionSummary';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -34,6 +35,9 @@ export default function SelectFactionPage() {
         dark: "#eeeeeeff",
         light: "#222222ff",
       },
+      width: 120,
+      height: 120,
+      margin: 4,
     }, (err, url) => {
       if (err) {
         throw err;
@@ -180,15 +184,10 @@ export default function SelectFactionPage() {
         <div>
           <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
           <div className="flexColumn" style={{alignItems: "center"}}>
-            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+            {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
-            </button>
-            <h2>Twilight Imperium Assistant</h2>
-            <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
-              <h4>Game ID: {gameid}</h4>
-              {qrCode ? <img src={qrCode} /> : null}
-            </div>
-            <h3>Setup Game</h3>
+            </button> */}
+            <Header />
             <ol className='flexColumn' style={{alignItems: "center", margin: "0px", padding: "0px", fontSize: "24px", gap: "8px"}}>
               <li>Build the galaxy</li>
               <li>Shuffle decks</li>
@@ -263,12 +262,7 @@ export default function SelectFactionPage() {
             {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
             </button> */}
-            <h2>Twilight Imperium Assistant</h2>
-            <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
-              <h4>Game ID: {gameid}</h4>
-              {qrCode ? <img src={qrCode} /> : null}
-            </div>
-            <h3>Round {state.round}: Strategy Phase</h3>
+            <Header />
             <div className="flexRow" style={{gap: "8px"}}>
               {activefaction ?
               <div className="flexColumn" style={{alignItems: "center"}}>
@@ -283,7 +277,7 @@ export default function SelectFactionPage() {
                 </div>
               : null}
             </div>
-            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px"}}>
+            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px", marginTop: "8px"}}>
               {orderedStrategyCards.map(([name, card]) => {
                 return <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)}/>
               })}
@@ -373,17 +367,12 @@ export default function SelectFactionPage() {
         <div>
           <SpeakerModal forceSelection={selectedActions.includes("Politics")} visible={showSpeakerModal} onComplete={speakerSelectionComplete} />
           <div className="flexColumn" style={{alignItems: "center"}}>
-            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+            {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
-            </button>
-            <h2>Twilight Imperium Assistant</h2>
-            <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
-              <h4>Game ID: {gameid}</h4>
-              {qrCode ? <img src={qrCode} /> : null}
-            </div>
-            <h3>Round {state.round}: Action Phase</h3>
+            </button> */}
+            <Header />
             <div className="flexRow" style={{width: "100%", alignItems: "flex-start", justifyContent: "space-between"}}>
-              <div className="flexColumn" style={{flexBasis: "33%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px"}}>
+              <div className="flexColumn" style={{flexBasis: "33%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px", marginTop: "24px"}}>
                 {orderedStrategyCards.map((card) => {
                   return <StrategyCard key={card.name} card={card} active={!card.used} />
                 })}
@@ -430,7 +419,7 @@ export default function SelectFactionPage() {
                 </div>
                 : null}
               </div>
-              <div className="flexColumn" style={{flexBasis: "33%"}}>
+              <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
                 {orderedFactions.map(([name, faction]) => {
                   return <FactionCard key={name} faction={faction} content={<FactionSummary faction={faction} />} />
                 })}
@@ -475,15 +464,10 @@ export default function SelectFactionPage() {
       return (
           <div className="flexColumn" style={{alignItems: "center"}}>
             <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
-            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+            {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
-            </button>
-            <h2>Twilight Imperium Assistant</h2>
-            <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
-              <h4>Game ID: {gameid}</h4>
-              {qrCode ? <img src={qrCode} /> : null}
-            </div>
-            <h3>Status Phase: Round {round}</h3>
+            </button> */}
+            <Header />
             <div className="flexRow" style={{gap: "40px", width: "100%", alignItems: "flex-start", justifyContent: "space-between"}}>
               <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
                 <div style={{textAlign: "center"}}>Initiative Order</div>
@@ -559,7 +543,7 @@ export default function SelectFactionPage() {
           <div className="flexColumn" style={{alignItems: "center"}}>
             <h2>Twilight Imperium Assistant</h2>
             <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
-              <h4>Game ID: {gameid}</h4>
+              <div>Game ID: {gameid}</div>
               {qrCode ? <img src={qrCode} /> : null}
             </div>
             <h3>Round {state.round}: Status Phase</h3>
@@ -572,15 +556,10 @@ export default function SelectFactionPage() {
         <div>
           <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
           <div className="flexColumn" style={{alignItems: "center"}}>
-            <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
+            {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
-            </button>
-            <h2>Twilight Imperium Assistant</h2>
-            <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
-              <h4>Game ID: {gameid}</h4>
-              {qrCode ? <img src={qrCode} /> : null}
-            </div>
-            <h3>Round {state.round}: Agenda Phase</h3>
+            </button> */}
+            <Header />
             <button onClick={nextPhase}>Next</button>
           </div>
         </div>
@@ -590,4 +569,56 @@ export default function SelectFactionPage() {
   return (
     <div>Error...</div>
   );
+}
+
+function Header() {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const [ qrCode, setQrCode ] = useState(null);
+
+  if (!qrCode && gameid) {
+    QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
+      color: {
+        dark: "#eeeeeeff",
+        light: "#222222ff",
+      },
+      width: 120,
+      height: 120,
+      margin: 4,
+    }, (err, url) => {
+      if (err) {
+        throw err;
+      }
+      setQrCode(url);
+    });
+  }
+
+  let phase = "";
+  switch (state.phase) {
+    case "SETUP":
+      phase = "Setup";
+      break;
+    case "STRATEGY":
+      phase = "Strategy";
+      break;
+    case "ACTION":
+      phase = "Action";
+      break;
+    case "STATUS":
+      phase = "Status";
+      break;
+    case "AGENDA":
+      phase = "Agenda";
+      break;
+  }
+
+  return <div>
+    <h2>Twilight Imperium Assistant</h2>
+    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "44px", top: "8px"}}>
+      {qrCode ? <img src={qrCode} /> : null}
+      <div>Game ID: {gameid}</div>
+    </div>
+    <h3>{state.round && state.round !== 0 ? `Round ${state.round}:` : null} {phase} Phase</h3>
+  </div>
 }

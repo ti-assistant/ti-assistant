@@ -491,11 +491,7 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
       onClick={onClick}
       style={cardStyle}
     >
-      <div className="flexRow" style={{justifyContent: "center", gap: "4px", padding: "0px 4px"}}>
-        <div className="flexRow" style={iconStyle}>
-          <FactionSymbol faction={faction.name} size={40} />
-        </div>
-        {speaker ? <div style={{fontFamily: "Myriad Pro",
+      {speaker ? <div style={{fontFamily: "Myriad Pro",
           position: "absolute",
           color: color === "Black" ? "#eee" : color,
           borderRadius: "5px",
@@ -508,8 +504,12 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
           backgroundColor: "#222"}}>
           Speaker
         </div> : null}
+      {opts.hideTitle ? null : <div className="flexRow" style={{justifyContent: "center", gap: "4px", padding: "0px 4px"}}>
+        <div className="flexRow" style={iconStyle}>
+          <FactionSymbol faction={faction.name} size={40} />
+        </div>
         {opts.hideName ? null : <div style={{ paddingRight: "12px" }}>{faction.name}</div>}
-      </div>
+      </div>}
       <div>
         {content}
       </div>

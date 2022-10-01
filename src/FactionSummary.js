@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { FactionSymbol } from "./FactionCard";
 import { PlanetAttributes, PlanetSymbol } from "./PlanetRow";
 import { Resources } from "./Resources";
 import { TechIcon } from "./TechRow";
@@ -190,7 +191,10 @@ export function FactionSummary({ faction, options={} }) {
   }, 0);
 
   return (
-    <div className="flexRow" style={{width: "100%"}}>
+    <div className="flexRow" style={{width: "100%", zIndex: 2, position: "relative"}}>
+      {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
+        <FactionSymbol faction={faction.name} size={90} />
+      </div> : null}
       <TechSummary techs={ownedTechs} />
       <div className="flexColumn" style={{flexBasis: "30%", fontSize: "28px"}}>
         <div style={{fontSize: "40px"}}>
