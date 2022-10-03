@@ -20,7 +20,6 @@ export default async function handler(req, res) {
   let speaker = req.body.speaker;
 
   let options = req.body.options;
-  console.log(options);
 
   const db = getFirestore();
 

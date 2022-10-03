@@ -16,10 +16,8 @@ const shouldNotPluralize = [
 
 export function pluralize(text, number) {
   if (number === 1 || shouldNotPluralize.includes(text)) {
-    console.log(`Returning ${text}`);
     return `${text}`;
   } else {
-    console.log(`Wh ${text}s`);
     return `${text}s`;
   }
 }

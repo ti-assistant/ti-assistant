@@ -38,7 +38,7 @@ export async function fetchStrategyCards(gameid) {
  * @param {string} gameid The game id. If not present, the default list will be fetched.
  * @returns {Promise} objectives keyed by name.
  */
- export async function fetchObjectives(gameid) {
+ export async function fetchObjectives(gameid, secret) {
   const db = getFirestore();
 
   const objectivesRef = await db.collection('objectives').get();
@@ -49,6 +49,7 @@ export async function fetchStrategyCards(gameid) {
 
   const gameState = await db.collection('games').doc(gameid).get();
   const gameObjectives = gameState.data().objectives ?? {};
+  const secretObjectives = (gameState.data()[secret] ?? {}).objectives ?? {};
   const options = gameState.data().options;
 
   let objectives = {};
@@ -68,14 +69,10 @@ export async function fetchStrategyCards(gameid) {
       objective.description = objective.omega.description;
     }
 
-    if (!gameObjectives[val.id]) {
-      objectives[val.id] = objective;
-      return;
-    }
-
     objectives[val.id] = {
       ...objective,
-      ...gameObjectives[val.id],
+      ...(gameObjectives[val.id] ?? {}),
+      ...(secretObjectives[val.id] ?? {}),
     };
   });
 

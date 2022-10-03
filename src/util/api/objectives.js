@@ -1,9 +1,10 @@
 import { fetcher, poster } from './util'
 
-export function revealObjective(mutate, gameid, objectives, objectiveName) {
+export function revealObjective(mutate, gameid, objectives, factionName, objectiveName) {
   const data = {
     action: "REVEAL_OBJECTIVE",
     objective: objectiveName,
+    faction: factionName,
   };
 
   const updatedObjectives = {...objectives};
@@ -17,10 +18,11 @@ export function revealObjective(mutate, gameid, objectives, objectiveName) {
   mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data), options);
 }
 
-export function removeObjective(mutate, gameid, objectives, objectiveName) {
+export function removeObjective(mutate, gameid, objectives, factionName, objectiveName) {
   const data = {
     action: "REMOVE_OBJECTIVE",
     objective: objectiveName,
+    faction: factionName,
   };
 
   const updatedObjectives = {...objectives};

@@ -13,6 +13,7 @@ export default async function handler(req, res) {
   const db = getFirestore();
 
   const gameRef = await db.collection('games').doc(gameid).get();
+  const objective = await db.collection('objectives').doc(data.objective).get();
 
   if (!gameRef.exists) {
     res.status(404);
@@ -20,21 +21,46 @@ export default async function handler(req, res) {
 
   switch (data.action) {
     case "REVEAL_OBJECTIVE": {
-      const objectiveString = `objectives.${data.objective}.selected`;
-      await db.collection('games').doc(gameid).update({
-        [objectiveString]: true,
-      });
+      if (objective.data().type === "secret") {
+        const secret = req.cookies.secret;
+        const objectiveString = `${secret}.objectives.${data.objective}.selected`;
+        const factionString = `${secret}.objectives.${data.objective}.factions`;
+
+        await db.collection('games').doc(gameid).update({
+          [objectiveString]: true,
+          [factionString]: FieldValue.arrayUnion(data.faction),
+        });
+      } else {
+        const objectiveString = `objectives.${data.objective}.selected`;
+        await db.collection('games').doc(gameid).update({
+          [objectiveString]: true,
+        });
+      }
       break;
     }
     case "REMOVE_OBJECTIVE": {
-      const objectiveString = `objectives.${data.objective}.selected`;
-      await db.collection('games').doc(gameid).update({
-        [objectiveString]: false,
-      });
+      if (objective.data().type === "secret") {
+        const secret = req.cookies.secret;
+        const objectiveString = `${secret}.objectives.${data.objective}.selected`;
+        const factionString = `${secret}.objectives.${data.objective}.factions`;
+
+        await db.collection('games').doc(gameid).update({
+          [objectiveString]: true,
+          [factionString]: FieldValue.arrayRemove(data.faction),
+        });
+      } else {
+        const objectiveString = `objectives.${data.objective}.selected`;
+        const scorersString = `objectives.${data.objective}.scorers`;
+        await db.collection('games').doc(gameid).update({
+          [objectiveString]: false,
+          [scorersString]: [],
+        });
+      }
       break;
     }
     case "SCORE_OBJECTIVE": {
       const objectiveString = `objectives.${data.objective}.scorers`;
+      const revealedString = `objectives.${data.objective}.selected`;
       let updateValue = FieldValue.arrayUnion(data.faction);
       if (data.objective === "Support for the Throne" || data.objective === "Imperial Point") {
         const scorers = gameRef.data().objectives[data.objective].scorers ?? [];
@@ -42,12 +68,14 @@ export default async function handler(req, res) {
         updateValue = scorers;
       }
       await db.collection('games').doc(gameid).update({
+        [revealedString]: true,
         [objectiveString]: updateValue,
       });
       break;
     }
     case "UNSCORE_OBJECTIVE": {
       const objectiveString = `objectives.${data.objective}.scorers`;
+      const revealedString = `objectives.${data.objective}.selected`;
       let updateValue = FieldValue.arrayRemove(data.faction)
       if (data.objective === "Support for the Throne" || data.objective === "Imperial Point") {
         const scorers = gameRef.data().objectives[data.objective].scorers ?? [];
@@ -56,13 +84,14 @@ export default async function handler(req, res) {
         updateValue = scorers;
       }
       await db.collection('games').doc(gameid).update({
+        [revealedString]: true,
         [objectiveString]: updateValue,
       });
       break;
     }
   }
 
-  const objectives = await fetchObjectives(gameid);
+  const objectives = await fetchObjectives(gameid, req.cookies.secret);
 
   res.status(200).json(objectives);
 }

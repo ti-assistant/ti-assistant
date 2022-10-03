@@ -92,7 +92,7 @@ function InfoContent({objective}) {
   );
 }
 
-export function ObjectiveRow({faction, objective, addObjective, removeObjective, scoreObjective}) {
+export function ObjectiveRow({faction, objective, addObjective, removeObjective, scoreObjective, viewing}) {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   function displayInfo() {
@@ -100,7 +100,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
   }
 
   function canScore() {
-    if (!removeObjective) {
+    if (!removeObjective || viewing) {
       return false;
     }
     if (objective.max && (objective.scorers ?? []).length === objective.max) {
@@ -148,7 +148,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
           </div>
         : null}
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", flexBasis: "50%", flexGrow: 2}}>
-          <div style={{ display: "flex", fontSize: "20px", zIndex: 2}}>
+          <div style={{ display: "flex", fontSize: "18px", zIndex: 2}}>
             {objective.name}
           </div>
           <div style={{marginLeft: "8px", fontSize: "20px"}} onClick={displayInfo}>&#x24D8;</div>

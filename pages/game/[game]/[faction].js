@@ -398,7 +398,7 @@ function FactionContent() {
   function applyPlanetAttachments(planet) {
     let updatedPlanet = {...planet};
     updatedPlanet.attributes = [...planet.attributes];
-    const planetAttachments = Object.values(attachments).filter((attachment) => attachment.planet === planet.name);
+    const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planet === planet.name);
     planetAttachments.forEach((attachment) => {
       if (attachment.attribute.includes("skip")) {
         if (hasSkip(updatedPlanet)) {
@@ -464,7 +464,6 @@ function FactionContent() {
   let VPs = 0;
   for (const objective of Object.values(objectives ?? {})) {
     if ((objective.scorers ?? []).includes(playerFaction)) {
-      console.log(objective);
       VPs += objective.points;
     }
   }
