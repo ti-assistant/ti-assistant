@@ -191,7 +191,7 @@ export function FactionSummary({ faction, options={} }) {
   }, 0);
 
   return (
-    <div className="flexRow" style={{width: "100%", zIndex: 2, position: "relative"}}>
+    <div className="flexRow" style={{width: "100%", maxWidth: "800px", zIndex: 2, position: "relative"}}>
       {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
         <FactionSymbol faction={faction.name} size={90} />
       </div> : null}

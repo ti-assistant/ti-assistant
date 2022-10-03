@@ -25,7 +25,9 @@ function SecretTab() {
   const router = useRouter();
   const { game: gameid, faction: factionName } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
   const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [tabShown, setTabShown] = useState(factionName);
   const [editMode, setEditMode] = useState(false);
@@ -40,6 +42,7 @@ function SecretTab() {
     if (tabShown === tabName) {
       return;
     }
+    setEditMode(false);
     setTabShown(tabName);
   }
 
