@@ -483,6 +483,7 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
     border: border,
     fontSize: opts.fontSize ?? "24px",
     position: "relative",
+    boxSizing: "border-box",
     cursor: onClick ? "pointer" : "auto",
     ...(style ?? {}),
   }
