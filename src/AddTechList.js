@@ -44,7 +44,7 @@ export function AddTechList({ techs, addTech }) {
 
   return (
     <div>
-      <div className="flexRow" style={{ position: "sticky", top: "36px", backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
+      <div className="flexRow" style={{ minWidth: "320px", position: "sticky", top: "36px", backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
         <Tab selectTab={setTabShown} id="blue" selectedId={tabShown} content={
           <Image src="/images/blue_tech.webp" alt="Blue Tech Skip" width="22px" height="22px" />
         } />

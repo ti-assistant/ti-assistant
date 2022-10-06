@@ -465,7 +465,7 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
   
   const color = getFactionColor(faction.color);
 
-  const border = "3px solid " + (faction.passed ? "#555" : color);
+  const border = "3px solid " + color;
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
   // }, 0);

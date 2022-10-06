@@ -49,7 +49,7 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
     whiteSpace: "nowrap",
     position: "absolute",
     display: showMenu ? "flex" : "none",
-    zIndex: 2
+    zIndex: 10
   };
   switch (opts.menuSide) {
     case "top":

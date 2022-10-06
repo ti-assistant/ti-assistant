@@ -20,7 +20,7 @@
 
 body {
   font-family: "slider";
-  margin: 0px 48px;
+  margin: 0px 150px;
   background-color: #222;
   color: #eee;
 }
@@ -29,6 +29,50 @@ body {
   body {
     margin: 0px 8px;
   }
+}
+
+button {
+  all: unset;
+  font-size: 16px;
+  font-family: 'Myriad Pro';
+  background-color: #333;
+  color: #eee;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0px 1px 4px black;
+}
+
+.leftSidebar {
+  position: fixed;
+  transform: rotate(-90deg);
+  left: 36px;
+  width: 100vh;
+  text-align: center;
+  top: 100%;
+  background-color: #333;
+  color: #eee;
+  box-shadow: 0px 0px 8px 1px #111;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  font-size: 48px;
+  transform-origin: 0px 0px;
+}
+
+.rightSidebar {
+  position: fixed;
+  transform: rotate(90deg);
+  right: 36px;
+  width: 100vh;
+  text-align: center;
+  top: 100%;
+  background-color: #333;
+  color: #eee;
+  box-shadow: 0px 0px 8px 1px #111;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  font-size: 48px;
+  transform-origin: 100% 0px;
 }
 
 .myriadPro {

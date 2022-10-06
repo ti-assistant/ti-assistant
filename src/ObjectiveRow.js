@@ -86,7 +86,7 @@ function PlanetAttributes({ attributes }) {
 
 function InfoContent({objective}) {
   return (
-    <div className="myriadPro" style={{textAlign: "center", fontSize: "20px"}}>
+    <div className="myriadPro" style={{maxWidth: "400px", padding: "8px", whiteSpace: "wrap", textAlign: "center", fontSize: "20px"}}>
       {objective.description}
     </div>
   );
@@ -100,7 +100,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
   }
 
   function canScore() {
-    if (!removeObjective || viewing) {
+    if (!removeObjective || viewing || !faction) {
       return false;
     }
     if (objective.max && (objective.scorers ?? []).length === objective.max) {

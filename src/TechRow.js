@@ -44,7 +44,7 @@ function UnitStatBlock({stats}) {
 function InfoContent({tech}) {
   const description = tech.description.replaceAll("\\n", "\n");
   return (
-    <div className="myriadPro" style={{whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
+    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
       {description}
       <UnitStatBlock stats={tech.stats} />
     </div>

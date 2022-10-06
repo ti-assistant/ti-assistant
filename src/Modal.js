@@ -9,7 +9,7 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
       <div style={{position: "absolute", width: "100%", height: "100%", backgroundColor: "black", opacity: "50%", zIndex: zIndex}} onClick={closeMenu}>
   
       </div>
-      <div style={{position: "relative", backgroundColor: "#222", zIndex: zIndex + 1, width: "85%", maxHeight: "90%", overflow: "auto", top:topValue}}>  
+      <div style={{position: "relative", backgroundColor: "#222", zIndex: zIndex + 1, maxWidth: "85%", maxHeight: "90%", overflow: "auto", top:topValue}}>  
       <div className="flexRow" style={{padding: "4px", borderBottom: "1px solid grey", justifyContent: "flex-start", alignItems: "center", position: "sticky", top: 0, backgroundColor: "#222", zIndex: zIndex + 2}}>
         {closeMenu ? <div
             style={{
@@ -24,7 +24,7 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
           >
             &#x2715;
           </div> : null}
-          <div style={{textAlign: "center", flexBasis: "100%", fontSize: "24px"}}>
+          <div style={{padding: "4px 32px", textAlign: "center", flexBasis: "100%", fontSize: "24px"}}>
             {title}
           </div>
         </div>

@@ -6,14 +6,17 @@ import { TechChoice } from '/src/TechChoice.js'
 import QRCode from "qrcode";
 import { StrategyCard } from '../../../src/StrategyCard';
 import { getOnDeckFaction, getStrategyCardsForFaction } from '../../../src/util/helpers';
-import { hasTech, unlockTech } from '../../../src/util/api/techs';
+import { hasTech, lockTech, unlockTech } from '../../../src/util/api/techs';
 import { useStrategyCard, resetStrategyCards, strategyCardOrder } from '../../../src/util/api/cards';
 import { passFaction, readyAllFactions } from '../../../src/util/api/factions';
 import { pluralize } from '../../../src/util/util';
 import { fetcher, poster } from '../../../src/util/api/util';
 import { SpeakerModal } from '../../../src/SpeakerModal';
+import { ObjectiveModal } from '../../../src/ObjectiveModal';
 import { BasicFactionTile } from '../../../src/FactionTile';
 import { FactionSummary } from '../../../src/FactionSummary';
+import { ObjectiveRow } from '../../../src/ObjectiveRow';
+import { removeObjective } from '../../../src/util/api/objectives';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -23,8 +26,14 @@ export default function SelectFactionPage() {
   const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
   const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
   const [ qrCode, setQrCode ] = useState(null);
   const [ showSpeakerModal, setShowSpeakerModal ] = useState(false);
+  const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
+
+  const [ revealedObjectives, setRevealedObjectives ] = useState([]);
 
   // TODO: Consider moving this to a sub-function.
   const [ selectedActions, setSelectedActions ] = useState([]);
@@ -81,7 +90,6 @@ export default function SelectFactionPage() {
     });
     return complete;
   }
-
 
 
   // function clearStrategyCards() {
@@ -178,10 +186,23 @@ export default function SelectFactionPage() {
     return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
   }
 
+  function removeObj(objectiveName) {
+    setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
+    removeObjective(mutate, gameid, objectives, null, objectiveName);
+  }
+
   switch (state.phase) {
     case "SETUP":
+      const stageOneObjectives = Object.values(objectives).filter((objective) => objective.type === "stage-one");
+      const selectedStageOneObjectives = stageOneObjectives.filter((objective) => objective.selected);
+
+      function statusPhaseComplete() {
+        return factionChoicesComplete() && selectedStageOneObjectives.length > 1;
+      }
+    
       return (
         <div>
+          <ObjectiveModal visible={showObjectiveModal} type="stage-one" onComplete={() => setShowObjectiveModal(false)} />
           <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
           <div className="flexColumn" style={{alignItems: "center"}}>
             {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
@@ -204,15 +225,23 @@ export default function SelectFactionPage() {
               <li>Re-shuffle secret objectives</li>
               <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
                 <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
-                {/* <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} /> */}
                 Draw 5 stage one objectives and reveal 2</div></li>
+                {selectedStageOneObjectives.length > 0 ?
+                 <ObjectiveRow objective={selectedStageOneObjectives[0]} removeObjective={() => removeObj(selectedStageOneObjectives[0].name)} viewing={true} /> :
+                 <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
+                {selectedStageOneObjectives.length > 1 ?
+                 <ObjectiveRow objective={selectedStageOneObjectives[1]} removeObjective={() => removeObj(selectedStageOneObjectives[1].name)} /> :
+                 <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
               <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
               <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
                 {/* <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} /> */}
                 Draw 5 stage two objectives</div></li>
             </ol>
-            <button disabled={!factionChoicesComplete()} onClick={nextPhase}>Next</button>
-            {!factionChoicesComplete() ? <div style={{color: "darkred"}}>Select all tech choices</div> : null}
+            <button disabled={!statusPhaseComplete()} onClick={nextPhase}>Next</button>
+            {!factionChoicesComplete() ?
+              <div style={{color: "darkred"}}>Select all faction tech choices</div> :
+              null}
+            {selectedStageOneObjectives.length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
           </div>
         </div>
       );
@@ -371,20 +400,21 @@ export default function SelectFactionPage() {
               Set Speaker
             </button> */}
             <Header />
-            <div className="flexRow" style={{width: "100%", alignItems: "flex-start", justifyContent: "space-between"}}>
-              <div className="flexColumn" style={{flexBasis: "33%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px", marginTop: "24px"}}>
+            <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
+              <div className="flexColumn" style={{flexBasis: "33%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px"}}>
+                <div className="flexRow">Initiative Order</div>
                 {orderedStrategyCards.map((card) => {
                   return <StrategyCard key={card.name} card={card} active={!card.used} />
                 })}
               </div>
-              <div className="flexColumn" style={{flexBasis: "33%"}}>
+              <div className="flexColumn" style={{flexBasis: "33%", gap: "16px"}}>
                 <div className="flexRow" style={{flexBasis: "33%", gap: "8px"}}>
                   {activeFaction ?
                   <div className="flexColumn" style={{alignItems: "center"}}>
                     Active Player
                     <FactionCard faction={activeFaction} />
                   </div>
-                  : "Strategy Phase Complete"}
+                  : <div style={{fontSize: "42px"}}>Strategy Phase Complete</div>}
                   {onDeckFaction ? 
                     <div className="flexColumn" style={{alignItems: "center"}}>
                       On Deck
@@ -418,15 +448,15 @@ export default function SelectFactionPage() {
                   {nextPlayerButtons()}
                 </div>
                 : null}
+                <button onClick={nextPhase}>Next Phase</button>
               </div>
               <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
+                <div className="flexRow">Speaker Order</div>
                 {orderedFactions.map(([name, faction]) => {
-                  return <FactionCard key={name} faction={faction} content={<FactionSummary faction={faction} />} />
+                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
                 })}
-                Third column
               </div>
             </div>
-            <button onClick={nextPhase}>Next</button>
           </div>
         </div>
       );
@@ -461,14 +491,23 @@ export default function SelectFactionPage() {
         }
         numberOfCommandTokens[number].push(faction);
       });
+
+      const type = (round < 4) ? "stage-one" : "stage-two";
+
       return (
           <div className="flexColumn" style={{alignItems: "center"}}>
+            <ObjectiveModal visible={showObjectiveModal} type={type} onComplete={(objectiveName) => {
+              if (objectiveName) {
+                setRevealedObjectives([...revealedObjectives, objectives[objectiveName]])
+              }
+              setShowObjectiveModal(false)
+            }} />
             <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
             {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
             </button> */}
             <Header />
-            <div className="flexRow" style={{gap: "40px", width: "100%", alignItems: "flex-start", justifyContent: "space-between"}}>
+            <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
               <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
                 <div style={{textAlign: "center"}}>Initiative Order</div>
                 {filteredStrategyCards.map((card) => {
@@ -480,24 +519,41 @@ export default function SelectFactionPage() {
               <li>In Initiative Order: Score up to one public and one secret objective</li>
               <li>
                 <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                  <FactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+                  <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
                   Reveal one Stage {round > 3 ? "II" : "I"} objective
                 </div>
+                <div className='flexRow'>
+                {revealedObjectives.length > 0 ?
+                 <ObjectiveRow objective={revealedObjectives[0]} removeObjective={() => removeObj(revealedObjectives[0].name)} /> :
+                 <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
+                 </div>
               </li>
               <li>
                 <div className="flexColumn" style={{justifyContent: "flex-start", alignItems: "stretch", gap: "2px"}}>
                 In Initiative Order: 
-                  {Object.entries(numberOfActionCards).map(([number, factions]) => {
+                  {Object.entries(numberOfActionCards).map(([number, localFactions]) => {
                     const num = parseInt(number);
-                    if (factions.length === 0) {
+                    if (localFactions.length === 0) {
                       return null;
                     }
                     return (
                       <div key={num} className="flexColumn" style={{alignItems: "flex-start", gap: "4px", paddingLeft: "8px"}}>
                         Draw {num} {pluralize("Action Card", num)} {num === 3 ? "and discard any one" : null}
                         <div className="flexRow" style={{flexWrap: "wrap", justifyContent: "flex-start", gap: "4px", padding: "0px 8px"}}>
-                          {factions.map((faction) => {
-                            return <FactionTile key={faction.name} faction={faction} opts={{fontSize: "16px"}}/>
+                          {localFactions.map((faction) => {
+                            let menuButtons = [];
+                            if (!hasTech(faction, "Neural Motivator")) {
+                              menuButtons.push({
+                                text: "Add Neural Motivator",
+                                action: () => unlockTech(mutate, gameid, factions, faction.name, "Neural Motivator"),
+                              });
+                            } else {
+                              menuButtons.push({
+                                text: "Remove Neural Motivator",
+                                action: () => lockTech(mutate, gameid, factions, faction.name, "Neural Motivator"),
+                              });
+                            }
+                            return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} menuButtons={menuButtons} opts={{fontSize: "16px", menuSide: "bottom"}}/>
                           })}
                         </div>
                       </div>
@@ -508,17 +564,28 @@ export default function SelectFactionPage() {
               <li>Return Command Tokens from the Board to Reinforcements</li>
               <li>
                 <div className="flexColumn" style={{justifyContent: "flex-start", alignItems: "stretch", gap: "2px"}}>
-                  {Object.entries(numberOfCommandTokens).map(([number, factions]) => {
+                  {Object.entries(numberOfCommandTokens).map(([number, localFactions]) => {
                     const num = parseInt(number);
-                    if (factions.length === 0) {
+                    if (localFactions.length === 0) {
                       return null;
                     }
                     return (
                       <div key={num} className="flexColumn" style={{alignItems: "flex-start", gap: "4px"}}>
                         Gain {num} {pluralize("Command Token", num)} and Redistribute 
                         <div className="flexRow" style={{flexWrap: "wrap", justifyContent: "flex-start", gap: "4px", padding: "0px 8px"}}>
-                          {factions.map((faction) => {
-                            return <FactionTile key={faction.name} faction={faction} opts={{fontSize: "16px"}}/>
+                          {localFactions.map((faction) => {                            let menuButtons = [];
+                            if (!hasTech(faction, "Hyper Metabolism")) {
+                              menuButtons.push({
+                                text: "Add Hyper Metabolism",
+                                action: () => unlockTech(mutate, gameid, factions, faction.name, "Hyper Metabolism"),
+                              });
+                            } else {
+                              menuButtons.push({
+                                text: "Remove Hyper Metabolism",
+                                action: () => lockTech(mutate, gameid, factions, faction.name, "Hyper Metabolism"),
+                              });
+                            }
+                            return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} menuButtons={menuButtons} opts={{fontSize: "16px", menuSide: "bottom"}}/>
                           })}
                         </div>
                       </div>
@@ -530,37 +597,84 @@ export default function SelectFactionPage() {
               <li>Repair Units</li>
               <li>Return Strategy Cards</li>
             </ol>
-            <button onClick={nextPhase}>Next</button>
+            <button onClick={nextPhase}>Advance to Agenda Phase</button>
             </div>
-            <div style={{flexBasis: "25%"}}>
-              Third column
+            <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
+              <div className="flexRow">Speaker Order</div>
+              {orderedFactions.map(([name, faction]) => {
+                return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
+              })}
             </div>
-          </div>
-        </div>
-      );
-      return (
-        <div>
-          <div className="flexColumn" style={{alignItems: "center"}}>
-            <h2>Twilight Imperium Assistant</h2>
-            <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "40px", top: "20px"}}>
-              <div>Game ID: {gameid}</div>
-              {qrCode ? <img src={qrCode} /> : null}
-            </div>
-            <h3>Round {state.round}: Status Phase</h3>
-            <button onClick={nextPhase}>Next</button>
           </div>
         </div>
       );
     case "AGENDA":
+      const votingOrder = Object.values(factions).sort((a, b) => {
+        if (a.name === "Argent Flight") {
+          return -1;
+        }
+        if (b.name === "Argent Flight") {
+          return 1;
+        }
+        if (a.order === 1) {
+          return 1;
+        }
+        if (b.order === 1) {
+          return -1;
+        }
+        return a.order - b.order;
+      });
+
+      console.log(votingOrder);
+    
       return (
-        <div>
+        <div className="flexColumn" style={{alignItems: "center"}}>
           <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
-          <div className="flexColumn" style={{alignItems: "center"}}>
-            {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
-              Set Speaker
-            </button> */}
             <Header />
-            <button onClick={nextPhase}>Next</button>
+            <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
+            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
+                <div style={{textAlign: "center"}}>Voting Order</div>
+                <div>TODO: Add vote counts over here</div>
+                <div>TODO: Argent gets N extra votes</div>
+                {votingOrder.map((faction) => {
+                  return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} />
+                })}
+              </div>
+            <div className='flexColumn' style={{flexBasis: "30%"}}>
+            <div>TODO: Agenda phase timer</div>
+              <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px"}}>
+                <li>
+                  <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
+                    <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+                      Reveal and read one Agenda
+                  </div>
+                </li>
+                <li>In Speaker Order:
+                <div className="flexColumn" style={{fontSize: "22px", paddingLeft: "8px", gap: "4px", alignItems: "flex-start"}}>
+                  <div>Perform any <i>When an Agenda is revealed</i> actions</div>
+                  <div>Perform any <i>After an Agenda is revealed</i> actions</div>
+                </div>
+                </li>
+                <li>Discuss</li>
+                <li>In Voting Order: Cast votes (or abstain)</li>
+                <li>
+                  <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
+                    <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+                      Choose outcome if tied
+                  </div>
+                </li>
+                <li>Resolve agenda outcome</li>
+                <li>Repeat Steps 1 to 6</li>
+                <li>Ready all planets</li>
+            </ol>
+              <button onClick={nextPhase}>Start Next Round</button>
+            </div>
+            <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
+              <div className="flexRow">Speaker Order</div>
+              {orderedFactions.map(([name, faction]) => {
+                return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
+              })}
+            </div>
           </div>
         </div>
       );
@@ -568,6 +682,15 @@ export default function SelectFactionPage() {
   }
   return (
     <div>Error...</div>
+  );
+}
+
+function Sidebar({side, content}) {
+  const className = `${side}Sidebar`;
+  return (
+    <div className={className}>
+      {content}
+    </div>
   );
 }
 
@@ -613,12 +736,17 @@ function Header() {
       break;
   }
 
-  return <div>
+  return <div className="flexColumn" style={{top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
+    <Sidebar side="left" content={`${state.phase} PHASE`} />
+    <Sidebar side="right" content={`ROUND ${state.round}`} />
+
+    {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
+      SETUP PHASE
+    </div> */}
     <h2>Twilight Imperium Assistant</h2>
-    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "44px", top: "8px"}}>
+    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
       {qrCode ? <img src={qrCode} /> : null}
       <div>Game ID: {gameid}</div>
     </div>
-    <h3>{state.round && state.round !== 0 ? `Round ${state.round}:` : null} {phase} Phase</h3>
   </div>
 }
