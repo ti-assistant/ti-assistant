@@ -285,36 +285,47 @@ export default function SelectFactionPage() {
       // }
       const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
       return (
-        <div>
+        <div className="flexColumn" style={{alignItems: "center"}}>
           {/* <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} /> */}
-          <div className="flexColumn" style={{alignItems: "center", gap: "8px"}}>
             {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
             </button> */}
             <Header />
-            <div className="flexRow" style={{gap: "8px"}}>
-              {activefaction ?
-              <div className="flexColumn" style={{alignItems: "center"}}>
-                Active Player
-                <FactionCard faction={activefaction} />
-              </div>
-              : "Strategy Phase Complete"}
-              {onDeckFaction ? 
-                <div className="flexColumn" style={{alignItems: "center"}}>
-                  On Deck
-                  <FactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
+            <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
+                <div className="flexColumn" style={{flexBasis: "30%"}}>
+                  TODO: Decide what, if anything, should go here
                 </div>
-              : null}
+                <div className="flexColumn" style={{flexBasis: "30%"}}>
+              <div className="flexRow" style={{gap: "8px"}}>
+                {activefaction ?
+                <div className="flexColumn" style={{alignItems: "center"}}>
+                  Active Player
+                  <FactionCard faction={activefaction} />
+                </div>
+                : "Strategy Phase Complete"}
+                {onDeckFaction ? 
+                  <div className="flexColumn" style={{alignItems: "center"}}>
+                    On Deck
+                    <FactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
+                  </div>
+                : null}
+              </div>
+              <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px", marginTop: "8px"}}>
+                {orderedStrategyCards.map(([name, card]) => {
+                  return <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)}/>
+                })}
+              </div>
+              {activefaction ? null :
+                <button onClick={nextPhase}>Next</button>
+              }
+              </div>
+              <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
+                <div className="flexRow">Speaker Order</div>
+                {orderedFactions.map(([name, faction]) => {
+                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
+                })}
+              </div>
             </div>
-            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px", marginTop: "8px"}}>
-              {orderedStrategyCards.map(([name, card]) => {
-                return <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)}/>
-              })}
-            </div>
-            {activefaction ? null :
-              <button onClick={nextPhase}>Next</button>
-            }
-          </div>
         </div>
       );
     }
