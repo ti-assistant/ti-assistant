@@ -95,19 +95,33 @@ export async function fetchStrategyCards(gameid) {
 
   const gameState = await db.collection('games').doc(gameid).get();
   const gameAttachments = gameState.data().attachments ?? {};
+  const options = gameState.data().options;
 
   let attachments = {};
   attachmentsRef.forEach(async (val) => {
-    if (!gameAttachments[val.id]) {
-      attachments[val.id] = val.data();
+    let attachment = val.data();
+
+    // Maybe filter out PoK objectives.
+    if (attachment.game !== "base" && !options.expansions.includes(attachment.game)) {
+      return;
+    }
+    // Filter out objectives that are removed by PoK.
+    if (options.expansions.includes("pok") && attachment.game === "non-pok") {
       return;
     }
 
+
     attachments[val.id] = {
-      ...val.data(),
-      ...gameAttachments[val.id],
+      ...attachment,
+      ...(gameAttachments[val.id] ?? {}),
     };
   });
+
+  Object.values(attachments).forEach((attachment) => {
+    if (attachment.replaces) {
+      delete attachments[attachment.replaces];
+    }
+  })
 
   // Remove faction specific attachments if those factions are not in the game.
   const gameFactions = gameState.data().factions;
