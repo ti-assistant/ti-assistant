@@ -17,16 +17,36 @@ import { BasicFactionTile } from '../../../src/FactionTile';
 import { FactionSummary } from '../../../src/FactionSummary';
 import { ObjectiveRow } from '../../../src/ObjectiveRow';
 import { removeObjective } from '../../../src/util/api/objectives';
+import { Modal } from "/src/Modal.js";
+
+function InfoContent({content}) {
+  return (
+    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
+      {content}
+    </div>
+  );
+}
 
 export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
-  const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
-  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: options, optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher, { 
     refreshInterval: 5000,
   });
   const [ qrCode, setQrCode ] = useState(null);
@@ -37,6 +57,10 @@ export default function SelectFactionPage() {
 
   // TODO: Consider moving this to a sub-function.
   const [ selectedActions, setSelectedActions ] = useState([]);
+
+  const [ infoModal, setInfoModal ] = useState({
+    show: false,
+  });
 
   if (!qrCode && gameid) {
     QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
@@ -110,13 +134,22 @@ export default function SelectFactionPage() {
   //   mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
   // }
 
-  function nextPhase() {
+  function phaseComplete() {
+    switch (state.phase) {
+      case "STATUS":
+        return revealedObjectives.length === 1;
+    }
+  }
+
+  function nextPhase(skipAgenda = false) {
     const data = {
       action: "ADVANCE_PHASE",
+      skipAgenda: skipAgenda,
     };
     let phase;
     let activeFaction;
     let round = state.round;
+    let agendaUnlocked = state.agendaUnlocked;
     switch (state.phase) {
       case "SETUP":
         phase = "STRATEGY";
@@ -140,9 +173,10 @@ export default function SelectFactionPage() {
         activeFaction = factions[minCard.faction];
         break;
       case "STATUS":
-        // TODO(jboman): Update to consider not agenda
         resetStrategyCards(mutate, gameid, strategyCards);
-        phase = "AGENDA";
+        setRevealedObjectives([]);
+        phase = skipAgenda ? "STRATEGY" : "AGENDA";
+        agendaUnlocked = !skipAgenda;
         break;
       case "AGENDA":
         phase = "STRATEGY";
@@ -160,6 +194,7 @@ export default function SelectFactionPage() {
     const updatedState = {...state};
     state.phase = phase;
     state.activeplayer = activeFaction ? activeFaction.name : "None";
+    state.agendaUnlocked = agendaUnlocked;
     state.round = round;
 
     const options = {
@@ -191,9 +226,17 @@ export default function SelectFactionPage() {
     removeObjective(mutate, gameid, objectives, null, objectiveName);
   }
 
+  function showInfoModal(title, content) {
+    setInfoModal({
+      show: true,
+      title: title,
+      content: content,
+    });
+  }
+
   switch (state.phase) {
     case "SETUP":
-      const stageOneObjectives = Object.values(objectives).filter((objective) => objective.type === "stage-one");
+      const stageOneObjectives = Object.values(objectives ?? {}).filter((objective) => objective.type === "stage-one");
       const selectedStageOneObjectives = stageOneObjectives.filter((objective) => objective.selected);
 
       function statusPhaseComplete() {
@@ -204,7 +247,7 @@ export default function SelectFactionPage() {
         <div>
           <ObjectiveModal visible={showObjectiveModal} type="stage-one" onComplete={() => setShowObjectiveModal(false)} />
           <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
-          <div className="flexColumn" style={{alignItems: "center"}}>
+          <div className="flexColumn" style={{alignItems: "center", height: "100vh"}}>
             {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
             </button> */}
@@ -237,7 +280,7 @@ export default function SelectFactionPage() {
                 {/* <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} /> */}
                 Draw 5 stage two objectives</div></li>
             </ol>
-            <button disabled={!statusPhaseComplete()} onClick={nextPhase}>Next</button>
+            <button disabled={!statusPhaseComplete()} onClick={() => nextPhase()}>Start Game</button>
             {!factionChoicesComplete() ?
               <div style={{color: "darkred"}}>Select all faction tech choices</div> :
               null}
@@ -270,6 +313,46 @@ export default function SelectFactionPage() {
         await nextPlayer();
         mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
       }
+
+      function getStartOfStrategyPhaseAbilities() {
+        let abilities = {};
+        for (const [name, faction] of Object.entries(factions)) {
+          abilities[name] = [];
+          if (name === "Council Keleres") {
+            abilities[name].push({
+              name: "Council Patronage",
+              description: "Replenish your commodities, then gain 1 trade good",
+            });
+          }
+        }
+        return abilities;
+      }
+
+      function hasStartOfStrategyPhaseAbilities() {
+        for (const abilities of Object.values(getStartOfStrategyPhaseAbilities())) {
+          if (abilities.length > 0) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function getEndOfStrategyPhaseAbilities() {
+        let abilities = {};
+        for (const [name, faction] of Object.entries(factions)) {
+          abilities[name] = [];
+        }
+        return abilities;
+      }
+
+      function hasEndOfStrategyPhaseAbilities() {
+        for (const abilities of Object.values(getEndOfStrategyPhaseAbilities())) {
+          if (abilities.length > 0) {
+            return true;
+          }
+        }
+        return false;
+      }
       
       const activefaction = factions[state.activeplayer] ?? null;
       const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
@@ -286,6 +369,9 @@ export default function SelectFactionPage() {
       const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
       return (
         <div className="flexColumn" style={{alignItems: "center"}}>
+          <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={infoModal.title} content={
+            <InfoContent content={infoModal.content} />
+          } top="30%" />
           {/* <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} /> */}
             {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
               Set Speaker
@@ -293,9 +379,52 @@ export default function SelectFactionPage() {
             <Header />
             <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
                 <div className="flexColumn" style={{flexBasis: "30%"}}>
-                  TODO: Decide what, if anything, should go here
+                  {hasStartOfStrategyPhaseAbilities() ? 
+                  <div className="flexColumn">
+                    Start of Strategy Phase
+                  <ol>
+                {Object.entries(getStartOfStrategyPhaseAbilities()).map(([factionName, abilities]) => {
+                if (abilities.length === 0) {
+                  return null;
+                }
+                return <li key={factionName}>
+                <div className="flexRow" style={{gap: "8px"}}>
+                  <BasicFactionTile faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: "16px"}}/>
+                  <div className="flexColumn">
+                    {abilities.map((ability) => {
+                      return <div className="flexRow">{ability.name}<div className="popupIcon" onClick={() => showInfoModal(ability.name, ability.description)}>&#x24D8;</div></div>;
+                    })}
+                  </div>
                 </div>
-                <div className="flexColumn" style={{flexBasis: "30%"}}>
+              </li>
+              })}
+              </ol> 
+              </div>
+    : null}
+                      {hasEndOfStrategyPhaseAbilities() ? 
+                  <div className="flexColumn">
+                    End of Strategy Phase
+                  <ol>
+                {Object.entries(getEndOfStrategyPhaseAbilities()).map(([factionName, abilities]) => {
+                if (abilities.length === 0) {
+                  return null;
+                }
+                return <li key={factionName}>
+                <div className="flexRow" style={{gap: "8px"}}>
+                  <BasicFactionTile faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: "16px"}}/>
+                  <div className="flexColumn">
+                    {abilities.map((ability) => {
+                      return <div className="flexRow">{ability.name}<div className="popupIcon" onClick={() => showInfoModal(ability.name, ability.description)}>&#x24D8;</div></div>;
+                    })}
+                  </div>
+                </div>
+              </li>
+              })}
+              </ol> 
+              </div>
+    : null}
+                </div>
+                <div className="flexColumn" style={{flexBasis: "30%", gap: "8px"}}>
               <div className="flexRow" style={{gap: "8px"}}>
                 {activefaction ?
                 <div className="flexColumn" style={{alignItems: "center"}}>
@@ -316,7 +445,7 @@ export default function SelectFactionPage() {
                 })}
               </div>
               {activefaction ? null :
-                <button onClick={nextPhase}>Next</button>
+                <button onClick={() => nextPhase()}>Advance to Action Phase</button>
               }
               </div>
               <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
@@ -354,7 +483,7 @@ export default function SelectFactionPage() {
         setSelectedActions(updatedActions);
       }
 
-      async function completeActions(fleetLogistics) {
+      async function completeActions(fleetLogistics = false) {
         if (selectedActions.length === 0) {
           return;
         }
@@ -379,19 +508,19 @@ export default function SelectFactionPage() {
           case 0:
             return <button disabled>Next Player</button>
           case 1:
-            return <button onClick={completeFunction}>Next Player</button>
+            return <button onClick={() => completeFunction()}>Next Player</button>
           case 2:
             if (!hasTech(activeFaction, "Fleet Logistics")) {
               return <div>
-                <button onClick={completeFunction}>Next Player (using Fleet Logistics)</button>
-                <button onClick={completeFunction}>Next Player (using Master Plan)</button>
+                <button onClick={() => completeFunction(true)}>Next Player (using Fleet Logistics)</button>
+                <button onClick={() => completeFunction()}>Next Player (using Master Plan)</button>
               </div>
             }
-            return <button onClick={completeFunction}>Next Player (using Fleet Logistics)</button>
+            return <button onClick={() => completeFunction(true)}>Next Player (using Fleet Logistics)</button>
           case 3:
-            return <button onClick={completeFunction}>Next Player (using Fleet Logistics and Master Plan)</button>
+            return <button onClick={() => completeFunction(true)}>Next Player (using Fleet Logistics and Master Plan)</button>
           case 4:
-            return <button onClick={completeFunction}>Next Player (using Fleet Logistics, Master Plan, and The Codex?)</button>
+            return <button onClick={() => completeFunction(true)}>Next Player (using Fleet Logistics, Master Plan, and The Codex?)</button>
         }
         throw new Error("Too many actions selected");
       }
@@ -434,7 +563,7 @@ export default function SelectFactionPage() {
                   : null}
                 </div>
                 {activeFaction ? 
-                  <div className="flexColumn">
+                  <div className="flexColumn" style={{gap: "8px"}}>
                     Actions
                     <div className="flexRow">
                       {getStrategyCardsForFaction(orderedStrategyCards, activeFaction.name).map((card) => {
@@ -459,7 +588,9 @@ export default function SelectFactionPage() {
                   {nextPlayerButtons()}
                 </div>
                 : null}
-                <button onClick={nextPhase}>Next Phase</button>
+                {!activeFaction ? 
+                  <button onClick={() => nextPhase()}>Advance to Status Phase</button>
+                : null}
               </div>
               <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
                 <div className="flexRow">Speaker Order</div>
@@ -505,8 +636,59 @@ export default function SelectFactionPage() {
 
       const type = (round < 4) ? "stage-one" : "stage-two";
 
+      function getStartOfStatusPhaseAbilities() {
+        let abilities = {};
+        if (factions['Arborec']) {
+          abilities['Mitosis'] = {
+            factions: ["Arborec"],
+            description: "Place 1 Infantry from your reinforcements on any planet you control",
+          };
+        }
+        if (!options.expansions.includes("codex-one")) {
+          let wormholeFactions = [];
+          for (const [name, faction] of Object.entries(factions)) {
+            if (hasTech(faction, "Wormhole Generator")) {
+              wormholeFactions.push(name);
+            }
+          }
+          if (wormholeFactions.length > 0) {
+            abilities["Wormhole Generator"] = {
+              factions: wormholeFactions,
+              description: "Place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships",
+            };
+          }
+        }
+        return abilities;
+      }
+
+      function getEndOfStatusPhaseAbilities() {
+        let abilities = {};
+        if (factions['Federation of Sol']) {
+          abilities['Genesis'] = {
+            factions: ["Federation of Sol"],
+            description: "If your flagship is on the game board, place 1 Infantry from your reinforcements in its system's space area",
+          };
+        }
+        let bioplasmosisFactions = [];
+        for (const [name, faction] of Object.entries(factions)) {
+          if (hasTech(faction, "Bioplasmosis")) {
+            bioplasmosisFactions.push(name);
+          }
+        }
+        if (bioplasmosisFactions.length > 0) {
+          abilities["Bioplasmosis"] = {
+            factions: bioplasmosisFactions,
+            description: "You may remove any number of Infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems",
+          };
+        }
+        return abilities;
+      }
+
       return (
           <div className="flexColumn" style={{alignItems: "center"}}>
+            <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={infoModal.title} content={
+              <InfoContent content={infoModal.content} />
+            } top="30%" />
             <ObjectiveModal visible={showObjectiveModal} type={type} onComplete={(objectiveName) => {
               if (objectiveName) {
                 setRevealedObjectives([...revealedObjectives, objectives[objectiveName]])
@@ -525,8 +707,18 @@ export default function SelectFactionPage() {
                   return <StrategyCard key={card.name} card={card} active={!card.used} opts={{hideName: true}} />
                 })}
               </div>
-            <div className='flexColumn' style={{flexBasis: "50%"}}>
-            <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px"}}>
+            <div className='flexColumn' style={{flexBasis: "50%", gap: "8px"}}>
+            <ol className='flexColumn' style={{alignItems: "flex-start", gap: "16px", margin: "0px", padding: "0px", fontSize: "24px"}}>
+              {Object.entries(getStartOfStatusPhaseAbilities()).map(([abilityName, ability]) => {
+                return <li key={abilityName}>
+                <div className="flexRow" style={{gap: "8px"}}>
+                  {ability.factions.map((factionName) => {
+                    return <BasicFactionTile key={factionName} faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: "16px"}}/>;
+                  })}
+                  {abilityName}<div className="popupIcon" onClick={() => showInfoModal(abilityName, ability.description)}>&#x24D8;</div>
+                </div>
+              </li>
+              })}
               <li>In Initiative Order: Score up to one public and one secret objective</li>
               <li>
                 <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
@@ -607,8 +799,26 @@ export default function SelectFactionPage() {
               <li>Ready Cards</li>
               <li>Repair Units</li>
               <li>Return Strategy Cards</li>
+              {Object.entries(getEndOfStatusPhaseAbilities()).map(([abilityName, ability]) => {
+                return <li key={abilityName}>
+                <div className="flexRow" style={{gap: "8px"}}>
+                  {ability.factions.map((factionName) => {
+                    return <BasicFactionTile key={factionName} faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: "16px"}}/>;
+                  })}
+                  {abilityName}<div className="popupIcon" onClick={() => showInfoModal(abilityName, ability.description)}>&#x24D8;</div>
+                </div>
+              </li>
+              })}
             </ol>
-            <button onClick={nextPhase}>Advance to Agenda Phase</button>
+            {!phaseComplete() ? 
+              <div style={{color: "darkred"}}>Reveal one Stage {round > 3 ? "II" : "I"} objective</div>
+            : null}
+            <div className="flexRow" style={{gap: "8px"}}>
+            {!state.agendaUnlocked ? 
+              <button disabled={!phaseComplete()} onClick={() => nextPhase(true)}>Start Next Round</button>
+            : null}
+            <button disabled={!phaseComplete()} onClick={() => nextPhase()}>Advance to Agenda Phase</button>  
+            </div>
             </div>
             <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
               <div className="flexRow">Speaker Order</div>
@@ -678,7 +888,7 @@ export default function SelectFactionPage() {
                 <li>Repeat Steps 1 to 6</li>
                 <li>Ready all planets</li>
             </ol>
-              <button onClick={nextPhase}>Start Next Round</button>
+              <button onClick={() => nextPhase()}>Start Next Round</button>
             </div>
             <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
               <div className="flexRow">Speaker Order</div>
@@ -708,7 +918,9 @@ function Sidebar({side, content}) {
 function Header() {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
   const [ qrCode, setQrCode ] = useState(null);
 
   if (!qrCode && gameid) {

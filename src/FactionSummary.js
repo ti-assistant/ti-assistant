@@ -123,10 +123,16 @@ export function PlanetSummary({ planets, options = {} }) {
 export function FactionSummary({ faction, options={} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher, {
+    refreshInterval: 5000,
+  });
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${faction.name}` : null, fetcher);
-  const { data: technologies, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${faction.name}` : null, fetcher);
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${faction.name}` : null, fetcher, {
+    refreshInterval: 5000,
+  });
+  const { data: technologies, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${faction.name}` : null, fetcher, {
+    refreshInterval: 5000,
+  });
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -144,7 +150,7 @@ export function FactionSummary({ faction, options={} }) {
   function applyPlanetAttachments(planet) {
     let updatedPlanet = {...planet};
     updatedPlanet.attributes = [...planet.attributes];
-    const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planet === planet.name);
+    const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planets.includes(planet.name));
     planetAttachments.forEach((attachment) => {
       if (attachment.attribute.includes("skip")) {
         if (hasSkip(updatedPlanet)) {

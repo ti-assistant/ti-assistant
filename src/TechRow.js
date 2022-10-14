@@ -139,7 +139,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
         ): null}
         </div>
 
-        <div style={{marginLeft: "8px", fontSize: "20px", position: "relative", zIndex: 2}} onClick={displayInfo}>&#x24D8;</div>
+        <div className="popupIcon" onClick={displayInfo}>&#x24D8;</div>
       </div>
       <div
           style={{

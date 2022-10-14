@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { BasicFactionTile } from './FactionTile';
 
 import { fetcher } from './util/api/util';
 import { FactionTile } from '/src/FactionCard.js'
@@ -8,12 +9,10 @@ export function StrategyCard({ card, active, onClick, factionActions, opts = {} 
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: faction, factionError } = useSWR(gameid && card.faction ? `/api/${gameid}/factions/${card.faction}` : null, fetcher);
+  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   
-  if (factionError) {
+  if (factionError || stateError) {
     return (<div>Failed to load faction info</div>);
-  }
-  if (card.faction && !faction) {
-    return (<div>Loading...</div>);
   }
 
   const color = (active ? card.color : "#555");
@@ -41,7 +40,7 @@ export function StrategyCard({ card, active, onClick, factionActions, opts = {} 
         {opts.hideName ? null : <div style={{flexBasis: "40%", color: textColor}}>{card.name}</div>}
         {faction ? 
           <div style={{flexGrow: 4, whiteSpace: "nowrap"}}>
-            <FactionTile faction={faction} menu={true} opts={{fontSize: "16px"}} />
+            <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menu={true} opts={{fontSize: "16px"}} />
           </div>
         : null}
       </div>

@@ -20,16 +20,16 @@ export default async function handler(req, res) {
 
   switch (data.action) {
     case "ATTACH_TO_PLANET": {
-      const attachString = `attachments.${data.attachment}.planet`;
+      const attachString = `attachments.${data.attachment}.planets`;
       await db.collection('games').doc(gameid).update({
-        [attachString]: data.planet,
+        [attachString]: FieldValue.arrayUnion(data.planet),
       });
       break;
     }
     case "REMOVE_FROM_PLANET": {
-      const attachString = `attachments.${data.attachment}.planet`;
+      const attachString = `attachments.${data.attachment}.planets`;
       await db.collection('games').doc(gameid).update({
-        [attachString]: FieldValue.delete(),
+        [attachString]: FieldValue.arrayRemove(data.planet),
       });
       break;
     }

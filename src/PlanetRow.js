@@ -155,9 +155,9 @@ function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
       {Object.entries(attachments).map(([name, attachment]) => {
         return (
           
-          <div key={name} className="flexRow" style={{justifyContent: "flex-start", alignItems: "center"}}>
-            <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={attachment.planet === planet.name}></input>
-            <AttachRow attachment={attachment} />
+          <div key={name} className="flexRow" style={{minWidth: "280px", whiteSpace: "nowrap", justifyContent: "flex-start", alignItems: "stretch", alignItems: "center"}}>
+            <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={attachment.planets.includes(planet.name)}></input>
+            <AttachRow attachment={attachment} currentPlanet={planet.name} />
           </div>
         );
       })}
@@ -193,12 +193,8 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
     }
     let available = Object.values(attachments).filter((attachment) => {
       // If attached to this planet, always show.
-      if (attachment.planet === planet.name) {
+      if (attachment.planets.includes(planet.name)) {
         return true;
-      }
-      // If attached to a different planet, never show.
-      if (attachment.planet) {
-        return false;
       }
       if (attachment.name === "Terraform" && playerFaction.name === "Titans of Ul") {
         return false;
@@ -245,8 +241,8 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
   }
 
   function toggleAttachment(name) {
-    if (attachments[name].planet === planet.name) {
-      removeFromPlanet(mutate, gameid, attachments, name);
+    if (attachments[name].planets.includes(planet.name)) {
+      removeFromPlanet(mutate, gameid, attachments, planet.name, name);
     } else {
       attachToPlanet(mutate, gameid, attachments, planet.name, name);
     }

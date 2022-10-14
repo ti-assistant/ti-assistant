@@ -37,10 +37,20 @@ button {
   font-family: 'Myriad Pro';
   background-color: #333;
   color: #eee;
-  padding: 4px 6px;
+  padding: 3px 5px;
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0px 1px 4px black;
+  border: 1px solid #333;
+}
+
+button:disabled {
+  background-color: #222;
+  color: #555;
+  box-shadow: none;
+  box-sizing: border-box;
+  border: 1px solid #333;
+  cursor: default;
 }
 
 .leftSidebar {
@@ -103,4 +113,12 @@ button {
   background-color: lightblue;
   color: #333;
   border-radius: 5px 5px 0px 0px;
+}
+
+.popupIcon {
+  margin-left: 8px;
+  font-size: 20px;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
 }

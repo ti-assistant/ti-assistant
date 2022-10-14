@@ -105,6 +105,7 @@ export default async function handler(req, res) {
     state: {
       speaker: speaker,
       phase: "SETUP",
+      round: 1,
     },
     speaker: req.body.speaker,
     factions: baseFactions,

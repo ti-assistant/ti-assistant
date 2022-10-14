@@ -151,7 +151,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
           <div style={{ display: "flex", fontSize: "18px", zIndex: 2}}>
             {objective.name}
           </div>
-          <div style={{marginLeft: "8px", fontSize: "20px"}} onClick={displayInfo}>&#x24D8;</div>
+          <div className="popupIcon" onClick={displayInfo}>&#x24D8;</div>
         </div>
         <div className="flexColumn">
           {canScore() ? <button onClick={() => scoreObjective(objective.name, true)}>Score</button> : null}

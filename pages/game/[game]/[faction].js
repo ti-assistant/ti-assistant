@@ -30,8 +30,12 @@ function Prompt({ faction, prompt }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
-  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
   
   if (factionsError) {
     return (<div>Failed to load factions</div>);
@@ -308,13 +312,22 @@ function FactionContent() {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
-  const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${playerFaction}` : null, fetcher);
-  const { data: technologies, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher);
-  const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${playerFaction}` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: technologies, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -398,7 +411,7 @@ function FactionContent() {
   function applyPlanetAttachments(planet) {
     let updatedPlanet = {...planet};
     updatedPlanet.attributes = [...planet.attributes];
-    const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planet === planet.name);
+    const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planets.includes(planet.name));
     planetAttachments.forEach((attachment) => {
       if (attachment.attribute.includes("skip")) {
         if (hasSkip(updatedPlanet)) {
@@ -592,15 +605,26 @@ function FactionContent() {
 export default function GamePage() {
   const router = useRouter();
   const { game: gameid, faction: playerFaction } = router.query;
-  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, {
+    refreshInterval: 5000,
+  });
+  const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, {
+    refreshInterval: 5000,
+  });
+  const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, {
+    refreshInterval: 5000,
+  });
 
   if (factionsError || cardsError || stateError) {
     return (<div>Failed to load factions</div>);
   }
   if (!factions || !strategyCards || !state) {
     return (<div>Loading...</div>);
+  }
+
+  if (!factions[playerFaction]) {
+    router.push(`/game/${gameid}`);
+    return
   }
   
   function swapToFaction(factionName) {

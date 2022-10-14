@@ -112,6 +112,7 @@ export async function fetchStrategyCards(gameid) {
 
 
     attachments[val.id] = {
+      planets: [],
       ...attachment,
       ...(gameAttachments[val.id] ?? {}),
     };

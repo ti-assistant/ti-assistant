@@ -28,10 +28,11 @@ export function attachToPlanet(mutate, gameid, attachments, planetName, attachme
   mutate(`/api/${gameid}/attachments`, poster(`/api/${gameid}/attachmentUpdate`, data), options);
 }
 
-export function removeFromPlanet(mutate, gameid, attachments, attachmentName) {
+export function removeFromPlanet(mutate, gameid, attachments, planetName, attachmentName) {
   const data = {
     action: "REMOVE_FROM_PLANET",
     attachment: attachmentName,
+    planet: planetName,
   };
 
   const updatedAttachments = {...attachments};

@@ -40,9 +40,9 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
     opacity: opts.hideName ? "100%" : "60%",
   };
 
-  const color = getFactionColor(faction.color);
+  const color = faction.passed ? "#555" : getFactionColor(faction.color);
   const name = faction.name ?? "Select Faction";
-  const border = "3px solid " + (faction.passed ? "#555" : color);
+  const border = `3px solid ${color}`;
 
   const menuButtonStyle = {
     fontFamily: "Myriad Pro",
@@ -105,7 +105,7 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
           </div> : null}
           {speaker ? <div style={{fontFamily: "Myriad Pro",
             position: "absolute",
-            color: color === "Black" ? "#eee" : color,
+            color: color,
             borderRadius: "5px",
             border: `2px solid ${color}`,
             padding: "0px 2px",

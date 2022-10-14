@@ -33,6 +33,7 @@ export default async function handler(req, res) {
       let nextPhase;
       let activeFaction;
       let round = gameRef.data().state.round ?? 1;
+      let agendaUnlocked = gameRef.data().state.agendaUnlocked ?? false;
       switch (gameRef.data().state.phase) {
         case "SETUP":
           nextPhase = "STRATEGY";
@@ -58,8 +59,11 @@ export default async function handler(req, res) {
           nextPhase = "STATUS";
           break;
         case "STATUS":
-          // TODO(jboman): Update to handle agenda phase not starting.
-          nextPhase = "AGENDA";
+          nextPhase = data.skipAgenda ? "STRATEGY" : "AGENDA";
+          agendaUnlocked = !data.skipAgenda;
+          if (data.skipAgenda) {
+            activeFaction = gameRef.data().factions[gameRef.data().state.speaker];
+          }
           break;
         case "AGENDA":
           nextPhase = "STRATEGY";
@@ -73,6 +77,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         "state.phase": nextPhase,
         "state.activeplayer": activeFaction ? activeFaction.name : "None",
+        "state.agendaUnlocked": agendaUnlocked,
         "state.round": round,
       });
       break;

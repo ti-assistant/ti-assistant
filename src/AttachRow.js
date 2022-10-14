@@ -10,7 +10,7 @@ function LegendaryPlanetIcon() {
 }
 
 
-export function AttachRow({ attachment }) {
+export function AttachRow({ attachment, currentPlanet }) {
   function isSkip() {
     return attachment.attribute.includes("skip");
   }
@@ -48,12 +48,34 @@ export function AttachRow({ attachment }) {
         return null;
     }
   }
+  let attached = null;
+  (attachment.planets ?? []).forEach((planet) => {
+    if (planet !== currentPlanet) {
+      if (attached === null) {
+        attached = planet;
+      } else {
+        attached = "Multiple Planets";
+      }
+    }
+  });
+
   return (
-    <div className="flexRow" style={{width: "100%", height: "72px", justifyContent: "left", fontSize: "16px"}}>
-      <div style={{flexBasis: "50%"}}>{attachment.name}</div>
+    <div className="flexRow" style={{width: "100%", height: "72px", justifyContent: "flex-start", fontSize: "16px", position: "relative"}}>
+      <div style={{flexBasis: "60%"}}>{attachment.name}</div>
       <Resources resources={attachment.resources} influence={attachment.influence} />
       {isSkip() ? <div style={{marginRight: "6px"}}>OR</div> : null}
       {hasAttribute() ? getAttributeIcon("22px", "22px") : null}
+      {attached ? 
+        <div style={{fontFamily: "Myriad Pro",
+        position: "absolute",
+        color: "indianred",
+        borderRadius: "5px",
+        border: `1px solid indianred`,
+        padding: "0px 4px",
+        fontSize: "12px",
+        bottom: "4px",
+      }}>Attached to {attached}</div> : null
+      }
     </div>
   );
 }

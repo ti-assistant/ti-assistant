@@ -7,8 +7,14 @@ export default async function handler(req, res) {
 
   const gamestate = await db.collection('games').doc(gameid).get();
 
+  if (!gamestate.data()) {
+    res.status(404);
+    return;
+  }
+
   if (!gamestate.data().factions) {
     res.status(404);
+    return;
   }
 
   const factions = gamestate.data().factions;
