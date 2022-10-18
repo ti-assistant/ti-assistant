@@ -105,6 +105,14 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update(updates);
       break;
     }
+    case "SET_GAME_TIMER": {
+      const timer = gameRef.data().state.timer ?? 0;
+      if (data.timer > timer) {
+        await db.collection('games').doc(gameid).update({
+          "state.timer": data.timer,
+        });
+      }
+    }
   }
 
   const responseRef = await db.collection('games').doc(gameid).get();

@@ -7,9 +7,9 @@ import QRCode from "qrcode";
 import { StrategyCard } from '../../../src/StrategyCard';
 import { getOnDeckFaction, getStrategyCardsForFaction } from '../../../src/util/helpers';
 import { hasTech, lockTech, unlockTech } from '../../../src/util/api/techs';
-import { useStrategyCard, resetStrategyCards, strategyCardOrder } from '../../../src/util/api/cards';
+import { useStrategyCard, resetStrategyCards, strategyCardOrder, unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from '../../../src/util/api/cards';
 import { passFaction, readyAllFactions } from '../../../src/util/api/factions';
-import { pluralize } from '../../../src/util/util';
+import { getNextIndex, pluralize } from '../../../src/util/util';
 import { fetcher, poster } from '../../../src/util/api/util';
 import { SpeakerModal } from '../../../src/SpeakerModal';
 import { ObjectiveModal } from '../../../src/ObjectiveModal';
@@ -18,6 +18,8 @@ import { FactionSummary } from '../../../src/FactionSummary';
 import { ObjectiveRow } from '../../../src/ObjectiveRow';
 import { removeObjective } from '../../../src/util/api/objectives';
 import { Modal } from "/src/Modal.js";
+import { VoteCount } from '../../../src/VoteCount';
+import { AgendaTimer, GameTimer } from '../../../src/Timer';
 
 function InfoContent({content}) {
   return (
@@ -353,6 +355,58 @@ export default function SelectFactionPage() {
         }
         return false;
       }
+
+      function didFactionJustGo(factionName) {
+        const numFactions = Object.keys(factions).length;
+        const faction = factions[factionName];
+        if (numFactions === 3 || numFactions === 4) {
+          let numPicked = 0;
+          for (const card of Object.values(strategyCards)) {
+            if (card.faction) {
+              ++numPicked;
+            }
+          }
+          if (numPicked === numFactions) {
+            return faction.order === numFactions;
+          }
+          if (numPicked > numFactions) {
+            const nextOrder = numFactions - (numPicked - numFactions) + 1;
+            return faction.order === nextOrder;
+          }
+        }
+        if (state.activeplayer === "None") {
+          return faction.order === numFactions;
+        }
+        return getNextIndex(faction.order, numFactions + 1, 1) === factions[state.activeplayer].order;
+      }
+
+      function haveAllFactionsPicked() {
+        const numFactions = Object.keys(factions).length;
+        let numPicked = 0;
+        for (const card of Object.values(strategyCards)) {
+          if (card.faction) {
+            ++numPicked;
+          }
+        }
+        if (numFactions === 3 || numFactions === 4) {
+          return numFactions * 2 === numPicked;
+        }
+        return numFactions === numPicked;
+      }
+
+      function publicDisgrace(cardName) {
+        unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
+      }
+
+      function quantumDatahubNode(factionName) {
+        const factionCard = Object.values(strategyCards).find((card) => card.faction === factionName);
+        const hacanCard = Object.values(strategyCards).find((card) => card.faction === "Emirates of Hacan");
+        swapStrategyCards(mutate, gameid, strategyCards, factionCard, hacanCard);
+      }
+    
+      function giftOfPrescience(cardName) {
+        setFirstStrategyCard(mutate, gameid, strategyCards, cardName);
+      }
       
       const activefaction = factions[state.activeplayer] ?? null;
       const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
@@ -378,7 +432,7 @@ export default function SelectFactionPage() {
             </button> */}
             <Header />
             <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-                <div className="flexColumn" style={{flexBasis: "30%"}}>
+                <div className="flexColumn" style={{flexBasis: "25%"}}>
                   {hasStartOfStrategyPhaseAbilities() ? 
                   <div className="flexColumn">
                     Start of Strategy Phase
@@ -429,19 +483,42 @@ export default function SelectFactionPage() {
                 {activefaction ?
                 <div className="flexColumn" style={{alignItems: "center"}}>
                   Active Player
-                  <FactionCard faction={activefaction} />
+                  <BasicFactionTile faction={activefaction} opts={{iconSize: 60, fontSize: "32px"}} />
                 </div>
-                : "Strategy Phase Complete"}
+                : <div style={{fontSize: "36px"}}>Strategy Phase Complete</div>}
                 {onDeckFaction ? 
                   <div className="flexColumn" style={{alignItems: "center"}}>
                     On Deck
-                    <FactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
+                    <BasicFactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
                   </div>
                 : null}
               </div>
               <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px", marginTop: "8px"}}>
                 {orderedStrategyCards.map(([name, card]) => {
-                  return <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)}/>
+                  const factionActions = [];
+                  if (card.faction) {
+                    if (didFactionJustGo(card.faction)) {
+                      factionActions.push({
+                        text: "Public Disgrace",
+                        action: () => publicDisgrace(name),
+                      });
+                    }
+                    if (haveAllFactionsPicked()) {
+                      if (factions['Emirates of Hacan'] && card.faction !== "Emirates of Hacan") {
+                        factionActions.push({
+                          text: "Quantum Datahub Node",
+                          action: () => quantumDatahubNode(card.faction),
+                        });
+                      }
+                      if (factions['Naalu Collective'] && card.faction !== "Naalu Collective") {
+                        factionActions.push({
+                          text: "Gift of Prescience",
+                          action: () => giftOfPrescience(name),
+                        });
+                      }
+                    }
+                  }
+                  return <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)} factionActions={factionActions} />
                 })}
               </div>
               {activefaction ? null :
@@ -552,13 +629,13 @@ export default function SelectFactionPage() {
                   {activeFaction ?
                   <div className="flexColumn" style={{alignItems: "center"}}>
                     Active Player
-                    <FactionCard faction={activeFaction} />
+                    <BasicFactionTile faction={activeFaction} opts={{iconSize: 60, fontSize: "32px"}} />
                   </div>
-                  : <div style={{fontSize: "42px"}}>Strategy Phase Complete</div>}
+                  : <div style={{fontSize: "42px"}}>Action Phase Complete</div>}
                   {onDeckFaction ? 
                     <div className="flexColumn" style={{alignItems: "center"}}>
                       On Deck
-                      <FactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
+                      <BasicFactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
                     </div>
                   : null}
                 </div>
@@ -845,25 +922,24 @@ export default function SelectFactionPage() {
         }
         return a.order - b.order;
       });
-
-      console.log(votingOrder);
     
       return (
         <div className="flexColumn" style={{alignItems: "center"}}>
           <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
             <Header />
             <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
-                <div style={{textAlign: "center"}}>Voting Order</div>
-                <div>TODO: Add vote counts over here</div>
-                <div>TODO: Argent gets N extra votes</div>
+            <div className="flexColumn" style={{flexBasis: "20%", gap: "4px", alignItems: "stretch"}}>
+                <div className="flexRow">
+                  <div style={{textAlign: "center", flexGrow: 4}}>Voting Order</div>
+                  <div style={{textAlign: "center", width: "80px"}}>Votes</div>
+                </div>
                 {votingOrder.map((faction) => {
-                  return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} />
+                  return <VoteCount key={faction.name} factionName={faction.name} />
                 })}
               </div>
-            <div className='flexColumn' style={{flexBasis: "30%"}}>
-            <div>TODO: Agenda phase timer</div>
+            <div className='flexColumn' style={{flexBasis: "30%", gap: "12px"}}>            
               <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px"}}>
+                <AgendaTimer />
                 <li>
                   <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
                     <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
@@ -970,6 +1046,9 @@ function Header() {
     <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
       {qrCode ? <img src={qrCode} /> : null}
       <div>Game ID: {gameid}</div>
+    </div>
+    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "288px", top: "16px"}}>
+      <GameTimer />
     </div>
   </div>
 }

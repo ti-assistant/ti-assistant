@@ -6,6 +6,16 @@
   flex-shrink: 0;
 }
 
+.votingBlock {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 76px;
+  height: 46px;
+  flex-shrink: 0;
+}
+
 .resourceSymbol {
   color: #fad54d;
   line-height: 28px;
@@ -32,6 +42,15 @@
   justify-content: center;
 }
 
+.resourceBlock .influenceSymbol {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .influenceSymbol {
   color: #72d4f7;
   font-size: 45px;
@@ -39,6 +58,12 @@
   width: 42px;
   height: 46px;
   text-shadow: 0 0 4px #72d4f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resourceBlock .influenceTextWrapper {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -48,9 +73,18 @@
 }
 
 .influenceTextWrapper {
-  right: 0;
-  bottom: 0;
   position: absolute;
+  font-size: 14px;
+  width: 42px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.votingBlock .influenceTextWrapper {
+  left: 0;
+  top: 0;
   font-size: 14px;
   width: 42px;
   height: 46px;

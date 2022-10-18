@@ -44,10 +44,22 @@ export default async function handler(req, res) {
       const factionOne = gameRef.data().strategycards[data.cardOne].faction;
       const factionTwo = gameRef.data().strategycards[data.cardTwo].faction;
 
-      await db.collection('games').doc(gameid).update({
+      const updates = {
         [factionOneString]: factionTwo,
         [factionTwoString]: factionOne,
-      });
+      };
+
+      const cardOneOrder = `strategycards.${data.cardOne}.order`;
+      const cardTwoOrder = `strategycards.${data.cardTwo}.order`;
+      if (gameRef.data().strategycards[data.cardOne].order === 0) {
+        updates[cardOneOrder] = FieldValue.delete();
+        updates[cardTwoOrder] = 0;
+      } else if (gameRef.data().strategycards[data.cardTwo].order === 0) {
+        updates[cardTwoOrder] = FieldValue.delete();
+        updates[cardOneOrder] = 0;
+      }
+
+      await db.collection('games').doc(gameid).update(updates);
       break;
     }
     case "PUBLIC_DISGRACE": {

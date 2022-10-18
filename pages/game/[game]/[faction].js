@@ -17,6 +17,7 @@ import { FactionCard, FactionSymbol } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { TechIcon } from "../../../src/TechRow";
 import { FactionSummary } from "../../../src/FactionSummary";
+import { applyPlanetAttachments } from "../../../src/util/helpers";
 
 const techOrder = [
   "green",
@@ -407,33 +408,6 @@ function FactionContent() {
       planet.attributes.includes('green-skip') ||
       planet.attributes.includes('yellow-skip');
   }
-
-  function applyPlanetAttachments(planet) {
-    let updatedPlanet = {...planet};
-    updatedPlanet.attributes = [...planet.attributes];
-    const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planets.includes(planet.name));
-    planetAttachments.forEach((attachment) => {
-      if (attachment.attribute.includes("skip")) {
-        if (hasSkip(updatedPlanet)) {
-          updatedPlanet.resources += attachment.resources;
-          updatedPlanet.influence += attachment.influence;
-        } else {
-          updatedPlanet.attributes.push(attachment.attribute);
-        }
-      } else if (attachment.attribute === "all-types") {
-        updatedPlanet.type = "all";
-        updatedPlanet.resources += attachment.resources;
-        updatedPlanet.influence += attachment.influence;
-      } else {
-        updatedPlanet.resources += attachment.resources;
-        updatedPlanet.influence += attachment.influence;
-        if (attachment.attribute && !updatedPlanet.attributes.includes(attachment.attribute)) {
-          updatedPlanet.attributes.push(attachment.attribute);
-        }
-      }
-    });
-    return updatedPlanet;
-  }
   
   const gamePlayer = factions[playerFaction];
 
@@ -469,7 +443,7 @@ function FactionContent() {
   Object.values(planets ?? {}).forEach((planet) => {
     let updatedPlanet = {...planet};
     if ((updatedPlanet.owners ?? []).includes(playerFaction)) {
-      updatedPlanet = applyPlanetAttachments(updatedPlanet);
+      updatedPlanet = applyPlanetAttachments(updatedPlanet, attachments);
       updatedPlanets.push(updatedPlanet);
     }
   });

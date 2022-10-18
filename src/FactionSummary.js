@@ -5,6 +5,7 @@ import { PlanetAttributes, PlanetSymbol } from "./PlanetRow";
 import { Resources } from "./Resources";
 import { TechIcon } from "./TechRow";
 import { fetcher } from "./util/api/util";
+import { applyPlanetAttachments } from "./util/helpers";
 import { pluralize } from "./util/util";
 
 export function TechSummary({ techs }) {
@@ -147,33 +148,6 @@ export function FactionSummary({ faction, options={} }) {
     return (<div>Failed to load objectives</div>);
   }
 
-  function applyPlanetAttachments(planet) {
-    let updatedPlanet = {...planet};
-    updatedPlanet.attributes = [...planet.attributes];
-    const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planets.includes(planet.name));
-    planetAttachments.forEach((attachment) => {
-      if (attachment.attribute.includes("skip")) {
-        if (hasSkip(updatedPlanet)) {
-          updatedPlanet.resources += attachment.resources;
-          updatedPlanet.influence += attachment.influence;
-        } else {
-          updatedPlanet.attributes.push(attachment.attribute);
-        }
-      } else if (attachment.attribute === "all-types") {
-        updatedPlanet.type = "all";
-        updatedPlanet.resources += attachment.resources;
-        updatedPlanet.influence += attachment.influence;
-      } else {
-        updatedPlanet.resources += attachment.resources;
-        updatedPlanet.influence += attachment.influence;
-        if (attachment.attribute && !updatedPlanet.attributes.includes(attachment.attribute)) {
-          updatedPlanet.attributes.push(attachment.attribute);
-        }
-      }
-    });
-    return updatedPlanet;
-  }
-
   const ownedTechs = Object.values(technologies ?? {}).filter((tech) => {
     return !!faction.techs[tech.name];
   });
@@ -181,7 +155,7 @@ export function FactionSummary({ faction, options={} }) {
   const ownedPlanets = Object.values(planets ?? {}).filter((planet) => {
     return (planet.owners ?? []).includes(faction.name);
   }).map((planet) => {
-    return applyPlanetAttachments(planet);
+    return applyPlanetAttachments(planet, attachments);
   });
 
   const VPs = Object.values(objectives ?? {}).filter((objective) => {
@@ -197,7 +171,7 @@ export function FactionSummary({ faction, options={} }) {
   }, 0);
 
   return (
-    <div className="flexRow" style={{width: "100%", maxWidth: "800px", zIndex: 2, position: "relative"}}>
+    <div className="flexRow" style={{width: "100%", maxWidth: "800px", padding: "4px 0px", zIndex: 2, position: "relative"}}>
       {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
         <FactionSymbol faction={faction.name} size={90} />
       </div> : null}

@@ -55,10 +55,15 @@ export function swapStrategyCards(mutate, gameid, strategyCards, cardOne, cardTw
   };
 
   const updatedCards = {...strategyCards};
-  const factionOne = cardOne.faction;
-  const factionTwo = cardTwo.faction;
-  updatedCards[cardOne.name].faction = factionTwo;
-  updatedCards[cardTwo.name].faction = factionOne;
+  updatedCards[cardOne.name].faction = cardTwo.faction;
+  updatedCards[cardTwo.name].faction = cardOne.faction;
+  if (cardOne.order === 0) {
+    updatedCards[cardTwo.name].order = 0;
+    updatedCards[cardOne.name].order = strategyCardOrder[cardOne.name];
+  } else if (cardTwo.order === 0) {
+    updatedCards[cardTwo.name].order = strategyCardOrder[cardTwo.name];
+    updatedCards[cardOne.name].order = 0;
+  }
 
   const options = {
     optimisticData: updatedCards,

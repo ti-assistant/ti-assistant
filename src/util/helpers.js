@@ -79,11 +79,44 @@ export function getOnDeckFaction(state, factions, strategyCards) {
 
 /**
  * Gets the strategy card(s) that a faction has selected.
- * @param {Array<Object>} strategyCards 
+ * @param {Object} strategyCards 
  * @param {string} faction 
  * @returns {Array<Object>}
  */
 export function getStrategyCardsForFaction(strategyCards, faction) {
   const cards = Object.values(strategyCards).filter((card) => card.faction === faction);
   return cards;
+}
+
+/**
+ * Updates planet values based on the attachments on the planet.
+ * @param {Object} planet
+ * @param {Object} attachments 
+ * @returns {Object}
+ */
+export function applyPlanetAttachments(planet, attachments) {
+  let updatedPlanet = {...planet};
+  updatedPlanet.attributes = [...planet.attributes];
+  const planetAttachments = Object.values(attachments ?? {}).filter((attachment) => attachment.planets.includes(planet.name));
+  planetAttachments.forEach((attachment) => {
+    if (attachment.attribute.includes("skip")) {
+      if (hasSkip(updatedPlanet)) {
+        updatedPlanet.resources += attachment.resources;
+        updatedPlanet.influence += attachment.influence;
+      } else {
+        updatedPlanet.attributes.push(attachment.attribute);
+      }
+    } else if (attachment.attribute === "all-types") {
+      updatedPlanet.type = "all";
+      updatedPlanet.resources += attachment.resources;
+      updatedPlanet.influence += attachment.influence;
+    } else {
+      updatedPlanet.resources += attachment.resources;
+      updatedPlanet.influence += attachment.influence;
+      if (attachment.attribute && !updatedPlanet.attributes.includes(attachment.attribute)) {
+        updatedPlanet.attributes.push(attachment.attribute);
+      }
+    }
+  });
+  return updatedPlanet;
 }

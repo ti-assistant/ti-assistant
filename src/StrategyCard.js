@@ -40,7 +40,7 @@ export function StrategyCard({ card, active, onClick, factionActions, opts = {} 
         {opts.hideName ? null : <div style={{flexBasis: "40%", color: textColor}}>{card.name}</div>}
         {faction ? 
           <div style={{flexGrow: 4, whiteSpace: "nowrap"}}>
-            <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menu={true} opts={{fontSize: "16px"}} />
+            <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={factionActions} opts={{fontSize: "16px"}} />
           </div>
         : null}
       </div>
