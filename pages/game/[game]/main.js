@@ -484,7 +484,9 @@ export default function SelectFactionPage() {
                 <div className="flexColumn" style={{alignItems: "center"}}>
                   Active Player
                   <FactionCard faction={activefaction} content={
-                    <FactionTimer key={activefaction.name} factionName={activefaction.name} />
+                    <div style={{paddingBottom: "4px"}}>
+                      <FactionTimer key={activefaction.name} factionName={activefaction.name} />
+                    </div>
                   } opts={{iconSize: 60, fontSize: "24px"}} />
                 </div>
                 : <div style={{fontSize: "36px"}}>Strategy Phase Complete</div>}
@@ -590,7 +592,7 @@ export default function SelectFactionPage() {
             return <button onClick={() => completeFunction()}>Next Player</button>
           case 2:
             if (!hasTech(activeFaction, "Fleet Logistics")) {
-              return <div>
+              return <div className="flexColumn" style={{gap: "8px"}}>
                 <button onClick={() => completeFunction(true)}>Next Player (using Fleet Logistics)</button>
                 <button onClick={() => completeFunction()}>Next Player (using Master Plan)</button>
               </div>
@@ -611,6 +613,34 @@ export default function SelectFactionPage() {
         setShowSpeakerModal(false);
       }
 
+      function FactionActions({}) {
+        if  (!activeFaction) {
+          return null;
+        }
+        return <div className="flexColumn" style={{gap: "8px"}}>
+          <div style={{fontSize: "28px"}}>Select Actions</div>
+          <div className="flexColumn" style={{padding: "0px 8px", gap: "12px", fontSize: "24px", alignItems: "flex-start"}}>
+          {getStrategyCardsForFaction(orderedStrategyCards, activeFaction.name).map((card) => {
+            if (card.used) {
+              return null
+            }
+            return (
+              <button key={card.name} className={selectedActions.includes(card.name) ? "selected" : ""} style={{fontSize: "24px"}} onClick={() => toggleAction(card.name)}>
+                {card.name}
+              </button>
+            );
+          })}
+          <button className={selectedActions.includes("Tactical") ? "selected" : ""} style={{fontSize: "24px"}} onClick={() => toggleAction("Tactical")}>
+            Tactical/Component
+          </button>
+          <button className={selectedActions.includes("Pass") ? "selected" : ""} style={{fontSize: "24px"}} 
+           disabled={!canFactionPass(activeFaction.name)} onClick={() => toggleAction("Pass")}>
+            Pass
+          </button>
+        </div>
+      </div>
+      }
+
       return (
         <div>
           <SpeakerModal forceSelection={selectedActions.includes("Politics")} visible={showSpeakerModal} onComplete={speakerSelectionComplete} />
@@ -620,20 +650,24 @@ export default function SelectFactionPage() {
             </button> */}
             <Header />
             <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-              <div className="flexColumn" style={{flexBasis: "33%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px"}}>
+              <div className="flexColumn" style={{flexBasis: "25%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px"}}>
                 <div className="flexRow">Initiative Order</div>
                 {orderedStrategyCards.map((card) => {
                   return <StrategyCard key={card.name} card={card} active={!card.used} />
                 })}
               </div>
-              <div className="flexColumn" style={{flexBasis: "33%", gap: "16px"}}>
-                <div className="flexRow" style={{flexBasis: "33%", gap: "8px"}}>
+              <div className="flexColumn" style={{flexBasis: "50%", gap: "16px"}}>
+                <div className="flexRow" style={{gap: "8px"}}>
                   {activeFaction ?
-                  <div className="flexColumn" style={{alignItems: "center"}}>
+                  <div className="flexColumn" style={{alignItems: "center", gap: "12px"}}>
                     Active Player
                     <FactionCard faction={activeFaction} content={
+                      <div className="flexColumn" style={{gap: "8px", paddingBottom: "12px", minWidth: "360px"}}>
                       <FactionTimer key={activeFaction.name} factionName={activeFaction.name} />
+                      <FactionActions />
+                      </div>
                     } opts={{iconSize: 60, fontSize: "32px"}} />
+                    {nextPlayerButtons()}
                   </div>
                   : <div style={{fontSize: "42px"}}>Action Phase Complete</div>}
                   {onDeckFaction ? 
@@ -643,37 +677,11 @@ export default function SelectFactionPage() {
                     </div>
                   : null}
                 </div>
-                {activeFaction ? 
-                  <div className="flexColumn" style={{gap: "8px"}}>
-                    Actions
-                    <div className="flexRow">
-                      {getStrategyCardsForFaction(orderedStrategyCards, activeFaction.name).map((card) => {
-                        return (
-                        <div key={card.name}>
-                          <label style={{color: card.used ? "grey" : "#eee"}}>
-                            <input type="checkbox" id={card.name} disabled={card.used} onChange={() => toggleAction(card.name)} checked={selectedActions.includes(card.name)} />
-                            {card.name}
-                          </label>
-                        </div>
-                        );
-                      })}
-                      <label>
-                        <input type="checkbox" id="Tactical" onChange={() => toggleAction("Tactical")} checked={selectedActions.includes("Tactical")} />
-                        Tactical/Component
-                      </label>
-                      <label style={{color: !canFactionPass(activeFaction.name) ? "grey" : "#eee"}}>
-                        <input type="checkbox" id="Pass" disabled={!canFactionPass(activeFaction.name)} onChange={() => toggleAction("Pass")} checked={selectedActions.includes("Pass")} />
-                        Pass
-                      </label>
-                    </div>
-                  {nextPlayerButtons()}
-                </div>
-                : null}
                 {!activeFaction ? 
                   <button onClick={() => nextPhase()}>Advance to Status Phase</button>
                 : null}
               </div>
-              <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
+              <div className="flexColumn" style={{flexBasis: "25%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
                 <div className="flexRow">Speaker Order</div>
                 {orderedFactions.map(([name, faction]) => {
                   return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />

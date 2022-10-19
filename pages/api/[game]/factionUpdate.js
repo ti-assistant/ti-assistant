@@ -119,6 +119,13 @@ export default async function handler(req, res) {
       }
       break;
     }
+    case "MANUAL_VP_ADJUST": {
+      const vps = gameRef.data().factions[data.faction].vps ?? 0;
+      const factionString = `factions.${data.faction}.vps`;
+      await db.collection('games').doc(gameid).update({
+        [factionString]: vps + data.vps,
+      });
+    }
   }
   
   const responseRef = await db.collection('games').doc(gameid).get();

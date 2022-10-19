@@ -53,6 +53,12 @@ button:disabled {
   cursor: default;
 }
 
+button.selected {
+  border: 1px solid #eee;
+  background-color: #444;
+  color: #fff;
+}
+
 .leftSidebar {
   position: fixed;
   transform: rotate(-90deg);
@@ -120,5 +126,27 @@ button:disabled {
   font-size: 20px;
   position: relative;
   z-index: 2;
+  cursor: pointer;
+}
+
+.arrowUp {
+  width: 0; 
+  height: 0; 
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  
+  border-bottom: 8px solid #ddd;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.arrowDown {
+  width: 0; 
+  height: 0; 
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  
+  border-top: 8px solid #ddd;
+  box-sizing: border-box;
   cursor: pointer;
 }

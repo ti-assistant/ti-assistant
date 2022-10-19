@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { FactionSymbol } from "./FactionCard";
 import { PlanetAttributes, PlanetSymbol } from "./PlanetRow";
 import { Resources } from "./Resources";
 import { TechIcon } from "./TechRow";
+import { manualVPUpdate } from "./util/api/factions";
 import { fetcher } from "./util/api/util";
 import { applyPlanetAttachments } from "./util/helpers";
 import { pluralize } from "./util/util";
@@ -124,10 +125,12 @@ export function PlanetSummary({ planets, options = {} }) {
 export function FactionSummary({ faction, options={} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher, {
     refreshInterval: 5000,
   });
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, { refreshInterval: 5000 });
   const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${faction.name}` : null, fetcher, {
     refreshInterval: 5000,
   });
@@ -158,7 +161,7 @@ export function FactionSummary({ faction, options={} }) {
     return applyPlanetAttachments(planet, attachments);
   });
 
-  const VPs = Object.values(objectives ?? {}).filter((objective) => {
+  const VPs = (faction.vps ?? 0) + Object.values(objectives ?? {}).filter((objective) => {
     return (objective.scorers ?? []).includes(faction.name);
   }).reduce((total, objective) => {
     const count = objective.scorers.reduce((count, scorer) => {
@@ -170,6 +173,11 @@ export function FactionSummary({ faction, options={} }) {
     return total + (count * objective.points);
   }, 0);
 
+  function manualVpAdjust(increase) {
+    const value = increase ? 1 : -1;
+    manualVPUpdate(mutate, gameid, factions, faction.name, value);
+  }
+
   return (
     <div className="flexRow" style={{width: "100%", maxWidth: "800px", padding: "4px 0px", zIndex: 2, position: "relative"}}>
       {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
@@ -177,8 +185,10 @@ export function FactionSummary({ faction, options={} }) {
       </div> : null}
       <TechSummary techs={ownedTechs} />
       <div className="flexColumn" style={{flexBasis: "30%", fontSize: "28px"}}>
-        <div style={{fontSize: "40px"}}>
-          {VPs}
+        <div className="flexRow" style={{gap: "4px", fontSize: "40px"}}>
+          {VPs > 0 ? <div className="arrowDown" onClick={() => manualVpAdjust(false)}></div> : <div style={{width: "12px"}}></div>}
+          <div className="flexRow" style={{width: "32px"}}>{VPs}</div>
+          <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
         </div>
         <div style={{fontSize: "28px"}}>{pluralize('VP', VPs)}</div>
       </div>

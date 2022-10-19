@@ -63,6 +63,7 @@ export default async function handler(req, res) {
           agendaUnlocked = !data.skipAgenda;
           if (data.skipAgenda) {
             activeFaction = gameRef.data().factions[gameRef.data().state.speaker];
+            ++round;
           }
           break;
         case "AGENDA":

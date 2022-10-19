@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
 import { saveFactionTimer } from './util/api/factions';
@@ -8,6 +8,21 @@ import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
 import { applyPlanetAttachments } from './util/helpers';
+import { useBetween } from 'use-between';
+
+const usePaused = () => {
+  const [paused, setPaused] = useState(false);
+
+  const pause = useCallback(() => setPaused(true));
+  const unpause = useCallback(() => setPaused(false));
+  return {
+    paused,
+    pause,
+    unpause,
+  };
+};
+
+const useSharedPause = () => useBetween(usePaused);
 
 export function TimerDisplay({ time }) {
   const hours = Math.floor(time / 3600);
@@ -23,7 +38,7 @@ export function AgendaTimer({}) {
   const [ firstAgendaTimer, setFirstAgendaTimer ] = useState(0);
   const [ secondAgendaTimer, setSecondAgendaTimer ] = useState(0);
   const [ currentAgenda, setCurrentAgenda ] = useState(1);
-  const [ paused, setPaused ] = useState(false);
+  const { paused } = useSharedPause();
 
 
   function updateTime() {
@@ -35,10 +50,6 @@ export function AgendaTimer({}) {
     } else {
       setSecondAgendaTimer(secondAgendaTimer + 1);
     }
-  }
-
-  function togglePause() {
-    setPaused(!paused);
   }
 
   useEffect(() => {
@@ -71,7 +82,7 @@ export function AgendaTimer({}) {
         </div>
       </div>
       <div className="flexRow" style={{gap: "12px"}}>
-      <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button>
+      {/* <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button> */}
       {currentAgenda === 1 ?
         <button onClick={() => setCurrentAgenda(2)}>Second Agenda</button>
       : null}
@@ -85,7 +96,8 @@ export function GameTimer({}) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const [ gameTimer, setGameTimer ] = useState(0);
-  const [ paused, setPaused ] = useState(false);
+  // const [ paused, setPaused ] = useState(false);
+  const { paused, pause, unpause } = useSharedPause();
 
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
 
@@ -120,7 +132,11 @@ export function GameTimer({}) {
   }, [state]);
 
   function togglePause() {
-    setPaused(!paused);
+    if (paused) {
+      unpause();
+    } else {
+      pause();
+    }
   }
 
   return (
@@ -141,7 +157,8 @@ export function FactionTimer({ factionName }) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const [ factionTimer, setFactionTimer ] = useState(0);
-  const [ paused, setPaused ] = useState(false);
+  const { paused } = useSharedPause();
+  // const [ paused, setPaused ] = useState(false);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
 
   useEffect(() => {
@@ -173,17 +190,10 @@ export function FactionTimer({ factionName }) {
     setStartingTime();
   }, [factions, factionName]);
 
-  function togglePause() {
-    setPaused(!paused);
-  }
-
   return (
     <div className="flexColumn" style={{width: "100%", gap: "4px"}}>
       <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}> 
         <TimerDisplay time={!factions ? 0 : factionTimer} />
-      </div>
-      <div className="flexRow" style={{gap: "12px"}}>
-        <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button>
       </div>
     </div>
   );

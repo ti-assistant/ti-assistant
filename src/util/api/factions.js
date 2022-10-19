@@ -66,7 +66,6 @@ export function saveFactionTimer(mutate, gameid, factions, factionName, factionT
   const options = {
     optimisticData: updatedFactions,
   };
-  console.log(updatedFactions);
 
   mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 
@@ -77,4 +76,29 @@ export function saveFactionTimer(mutate, gameid, factions, factionName, factionT
 
     mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
   }
+}
+
+export function manualVPUpdate(mutate, gameid, factions, factionName, value) {
+  const data = {
+    action: "MANUAL_VP_ADJUST",
+    faction: factionName,
+    vps: value,
+    returnAll: true,
+  };
+
+  const updatedFactions = {...factions};
+
+  updatedFactions[factionName].vps = (updatedFactions[factionName].vps ?? 0) + value;
+
+  const options = {
+    optimisticData: updatedFactions,
+  };
+
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+
+  const opts = {
+    optimisticData: updatedFactions[factionName],
+  };
+
+  mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
 }
