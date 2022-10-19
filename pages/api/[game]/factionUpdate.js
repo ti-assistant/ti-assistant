@@ -109,6 +109,16 @@ export default async function handler(req, res) {
         objectives: FieldValue.arrayRemove(data.objective),
       });
       break;
+    case "SAVE_FACTION_TIMER": {
+      const timer = gameRef.data().factions[data.faction].timer ?? 0;
+      if (data.timer > timer) {
+        const factionString = `factions.${data.faction}.timer`;
+        await db.collection('games').doc(gameid).update({
+          [factionString]: data.timer,
+        });
+      }
+      break;
+    }
   }
   
   const responseRef = await db.collection('games').doc(gameid).get();

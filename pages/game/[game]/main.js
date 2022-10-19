@@ -19,7 +19,7 @@ import { ObjectiveRow } from '../../../src/ObjectiveRow';
 import { removeObjective } from '../../../src/util/api/objectives';
 import { Modal } from "/src/Modal.js";
 import { VoteCount } from '../../../src/VoteCount';
-import { AgendaTimer, GameTimer } from '../../../src/Timer';
+import { AgendaTimer, FactionTimer, GameTimer } from '../../../src/Timer';
 
 function InfoContent({content}) {
   return (
@@ -483,7 +483,9 @@ export default function SelectFactionPage() {
                 {activefaction ?
                 <div className="flexColumn" style={{alignItems: "center"}}>
                   Active Player
-                  <BasicFactionTile faction={activefaction} opts={{iconSize: 60, fontSize: "32px"}} />
+                  <FactionCard faction={activefaction} content={
+                    <FactionTimer key={activefaction.name} factionName={activefaction.name} />
+                  } opts={{iconSize: 60, fontSize: "24px"}} />
                 </div>
                 : <div style={{fontSize: "36px"}}>Strategy Phase Complete</div>}
                 {onDeckFaction ? 
@@ -629,7 +631,9 @@ export default function SelectFactionPage() {
                   {activeFaction ?
                   <div className="flexColumn" style={{alignItems: "center"}}>
                     Active Player
-                    <BasicFactionTile faction={activeFaction} opts={{iconSize: 60, fontSize: "32px"}} />
+                    <FactionCard faction={activeFaction} content={
+                      <FactionTimer key={activeFaction.name} factionName={activeFaction.name} />
+                    } opts={{iconSize: 60, fontSize: "32px"}} />
                   </div>
                   : <div style={{fontSize: "42px"}}>Action Phase Complete</div>}
                   {onDeckFaction ? 

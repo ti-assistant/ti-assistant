@@ -50,3 +50,31 @@ export function readyAllFactions(mutate, gameid, factions) {
     mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
   }
 }
+
+export function saveFactionTimer(mutate, gameid, factions, factionName, factionTimer) {
+  const data = {
+    action: "SAVE_FACTION_TIMER",
+    faction: factionName,
+    timer: factionTimer,
+    returnAll: true,
+  };
+
+  const updatedFactions = {...factions};
+
+  updatedFactions[factionName].timer = factionTimer;
+
+  const options = {
+    optimisticData: updatedFactions,
+  };
+  console.log(updatedFactions);
+
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+
+  for (const factionName of Object.keys(updatedFactions)) {
+    const opts = {
+      optimisticData: updatedFactions[factionName],
+    };
+
+    mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
+  }
+}

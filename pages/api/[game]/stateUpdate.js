@@ -112,6 +112,7 @@ export default async function handler(req, res) {
           "state.timer": data.timer,
         });
       }
+      break;
     }
   }
 
