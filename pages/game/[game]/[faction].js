@@ -340,6 +340,24 @@ function FactionContent() {
     }, 0);
   }
 
+  function allPlanetsExhausted() {
+    for (const planet of updatedPlanets) {
+      if (planet.ready) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function allPlanetsReady() {
+    for (const planet of updatedPlanets) {
+      if (!planet.ready) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   const strategyCard = Object.values(strategyCards ?? {}).find((card) => {
     return card.faction === playerFaction;
   });
@@ -402,8 +420,8 @@ function FactionContent() {
         <div>
         <div className="flexRow" style={{height: "32px"}}>
           <button onClick={toggleAddPlanetMenu}>Add Planet</button>
-          <button onClick={readyAll}>Ready All</button>
-          <button onClick={exhaustAll}>Exhaust All</button>
+          <button onClick={readyAll} disabled={allPlanetsReady()}>Ready All</button>
+          <button onClick={exhaustAll} disabled={allPlanetsExhausted()}>Exhaust All</button>
         </div>
         <div style={{maxHeight: `${maxHeight}px`, overflow: "auto", paddingBottom: "4px"}}>
           {updatedPlanets.map((planet) => {
