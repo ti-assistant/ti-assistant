@@ -51,7 +51,7 @@ function InfoContent({tech}) {
   );
 }
 
-export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
+export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opts = {}}) {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   function displayInfo() {
@@ -139,7 +139,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent}) {
         ): null}
         </div>
 
-        <div className="popupIcon" onClick={displayInfo}>&#x24D8;</div>
+        <div className="popupIcon" style={{display: opts.hideInfo ? "none" : "block"}} onClick={displayInfo}>&#x24D8;</div>
       </div>
       <div
           style={{

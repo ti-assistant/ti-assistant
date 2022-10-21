@@ -150,3 +150,31 @@ button.selected {
   box-sizing: border-box;
   cursor: pointer;
 }
+
+.hoverInfo {
+  display: none;
+}
+
+.hoverParent {
+  position: relative;
+}
+
+.hoverParent:hover .hoverInfo {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+}
+
+.hoverInfo.right {
+  left: 100%;
+  margin-left: 16px;
+  height: 0px;
+  min-width: 240px;
+}
+
+.hoverInfo.left {
+  right: 100%;
+  margin-right: 16px;
+  height: 0px;
+}
+

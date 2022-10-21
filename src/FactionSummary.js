@@ -3,34 +3,55 @@ import useSWR, { useSWRConfig } from "swr";
 import { FactionSymbol } from "./FactionCard";
 import { PlanetAttributes, PlanetSymbol } from "./PlanetRow";
 import { Resources } from "./Resources";
-import { TechIcon } from "./TechRow";
+import { TechIcon, TechRow } from "./TechRow";
 import { manualVPUpdate } from "./util/api/factions";
 import { fetcher } from "./util/api/util";
-import { applyPlanetAttachments } from "./util/helpers";
+import { applyAllPlanetAttachments, filterToClaimedPlanets } from "./util/planets";
+import { filterToOwnedTechs } from "./util/techs";
 import { pluralize } from "./util/util";
 
+function getTechColor(tech) {
+  switch (tech.type) {
+    case "red":
+      return "indianred";
+    case "yellow":
+      return "goldenrod";
+    case "blue":
+      return "cornflowerblue";
+    case "green":
+      return "seagreen";
+  }
+  return "#eee";
+}
+
+function TechList({ techs }) {
+  return <div className="flexColumn" style={{alignItems: "stretch", padding: "4px 8px", backgroundColor: "#222", boxShadow: "1px 1px 4px black", whiteSpace: "nowrap", gap: "4px", border: `2px solid #333`, borderRadius: "5px"}}>
+  {techs.map((tech) => <div style={{color: getTechColor(tech)}}>{tech.name}</div>)}
+</div>
+}
+
 export function TechSummary({ techs }) {
-  let blueTechs = 0;
-  let yellowTechs = 0;
-  let greenTechs = 0;
-  let redTechs = 0;
-  let upgradeTechs = 0;
+  let blueTechs = [];
+  let yellowTechs = [];
+  let greenTechs = [];
+  let redTechs = [];
+  let upgradeTechs = [];
   for (const tech of techs) {
     switch (tech.type) {
       case "red":
-        ++redTechs;
+        redTechs.push(tech);
         break;
       case "yellow":
-        ++yellowTechs;
+        yellowTechs.push(tech);
         break;
       case "green":
-        ++greenTechs;
+        greenTechs.push(tech);
         break;
       case "blue":
-        ++blueTechs;
+        blueTechs.push(tech);
         break;
       case "upgrade":
-        ++upgradeTechs;
+        upgradeTechs.push(tech);
         break;
     }
   }
@@ -38,23 +59,62 @@ export function TechSummary({ techs }) {
   return (
   <div className="flexColumn" style={{flexBasis: "30%", fontSize: "16px", height: "90px", justifyContent: "space-evenly"}}>
     <div className="flexRow" style={{width: "100%"}}>
-      <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-        <div className="flexColumn" style={{flexBasis: "30%"}}>{redTechs}</div><TechIcon type={"red"} width="21px" height="22px" />
+      <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
+        <div className="flexColumn" style={{flexBasis: "30%"}}>{redTechs.length}</div>
+        <TechIcon type={"red"} width="21px" height="22px" />
+        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
+          {redTechs.length > 0 ?
+          <div className="flexColumn">
+            <TechList techs={redTechs} />
+          </div>
+          : null}
+        </div>
       </div>
-      <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-      <div className="flexColumn" style={{flexBasis: "30%"}}>{greenTechs}</div> <TechIcon type={"green"} width="21px" height="22px" />
+      <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
+        <div className="flexColumn" style={{flexBasis: "30%"}}>{greenTechs.length}</div>
+        <TechIcon type={"green"} width="21px" height="22px" />
+        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
+          {greenTechs.length > 0 ?
+          <div className="flexColumn">
+            <TechList techs={greenTechs} />
+          </div>
+          : null}
+        </div>
       </div>
     </div>
     <div className="flexRow" style={{width: "100%"}}>
-      <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-      <div className="flexColumn" style={{flexBasis: "30%"}}>{blueTechs}</div><TechIcon type={"blue"} width="21px" height="22px" />
+      <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
+        <div className="flexColumn" style={{flexBasis: "30%"}}>{blueTechs.length}</div>
+        <TechIcon type={"blue"} width="21px" height="22px" />
+        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
+          {blueTechs.length > 0 ?
+          <div className="flexColumn">
+            <TechList techs={blueTechs} />
+          </div>
+          : null}
+        </div>
       </div>
-      <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-      <div className="flexColumn" style={{flexBasis: "30%"}}>{yellowTechs}</div><TechIcon type={"yellow"} width="21px" height="22px" />
+      <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
+        <div className="flexColumn" style={{flexBasis: "30%"}}>{yellowTechs.length}</div>
+        <TechIcon type={"yellow"} width="21px" height="22px" />
+        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
+          {yellowTechs.length > 0 ?
+          <div className="flexColumn">
+            <TechList techs={yellowTechs} />
+          </div>
+          : null}
+        </div>
       </div>
     </div>
-    <div className="flexRow" style={{width: "100%"}}>
-      {upgradeTechs} {pluralize("Upgrade", upgradeTechs)}
+    <div className="flexRow hoverParent" style={{width: "100%"}}>
+      {upgradeTechs.length} {pluralize("Upgrade", upgradeTechs.length)}
+      <div className="hoverInfo right" style={{marginLeft: "0px"}}>
+          {upgradeTechs.length > 0 ?
+          <div className="flexColumn">
+            <TechList techs={upgradeTechs} />
+          </div>
+          : null}
+        </div>
     </div>
   </div>
   );
@@ -122,7 +182,7 @@ export function PlanetSummary({ planets, options = {} }) {
   );
 }
 
-export function FactionSummary({ faction, options={} }) {
+export function FactionSummary({ factionName, options={} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
@@ -131,10 +191,10 @@ export function FactionSummary({ faction, options={} }) {
   });
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, { refreshInterval: 5000 });
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${faction.name}` : null, fetcher, {
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${factionName}` : null, fetcher, {
     refreshInterval: 5000,
   });
-  const { data: technologies, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${faction.name}` : null, fetcher, {
+  const { data: techs, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${factionName}` : null, fetcher, {
     refreshInterval: 5000,
   });
 
@@ -151,21 +211,18 @@ export function FactionSummary({ faction, options={} }) {
     return (<div>Failed to load objectives</div>);
   }
 
-  const ownedTechs = Object.values(technologies ?? {}).filter((tech) => {
-    return !!faction.techs[tech.name];
-  });
+  const faction = factions[factionName] ?? {};
 
-  const ownedPlanets = Object.values(planets ?? {}).filter((planet) => {
-    return (planet.owners ?? []).includes(faction.name);
-  }).map((planet) => {
-    return applyPlanetAttachments(planet, attachments);
-  });
+  const ownedTechs = filterToOwnedTechs(techs, faction);
+
+  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
   const VPs = (faction.vps ?? 0) + Object.values(objectives ?? {}).filter((objective) => {
-    return (objective.scorers ?? []).includes(faction.name);
+    return (objective.scorers ?? []).includes(factionName);
   }).reduce((total, objective) => {
     const count = objective.scorers.reduce((count, scorer) => {
-      if (scorer === faction.name) {
+      if (scorer === factionName) {
         return count + 1;
       }
       return count;
@@ -175,13 +232,13 @@ export function FactionSummary({ faction, options={} }) {
 
   function manualVpAdjust(increase) {
     const value = increase ? 1 : -1;
-    manualVPUpdate(mutate, gameid, factions, faction.name, value);
+    manualVPUpdate(mutate, gameid, factions, factionName, value);
   }
 
   return (
     <div className="flexRow" style={{width: "100%", maxWidth: "800px", padding: "4px 0px", zIndex: 2, position: "relative"}}>
       {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
-        <FactionSymbol faction={faction.name} size={90} />
+        <FactionSymbol faction={factionName} size={90} />
       </div> : null}
       <TechSummary techs={ownedTechs} />
       <div className="flexColumn" style={{flexBasis: "30%", fontSize: "28px"}}>
@@ -192,6 +249,6 @@ export function FactionSummary({ faction, options={} }) {
         </div>
         <div style={{fontSize: "28px"}}>{pluralize('VP', VPs)}</div>
       </div>
-      <PlanetSummary planets={ownedPlanets} options={options} />
+      <PlanetSummary planets={updatedPlanets} options={options} />
     </div>);
 }

@@ -17,7 +17,9 @@ import { FactionCard, FactionSymbol } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { TechIcon } from "../../../src/TechRow";
 import { FactionSummary } from "../../../src/FactionSummary";
-import { applyPlanetAttachments } from "../../../src/util/helpers";
+import { FactionTimer } from "../../../src/Timer";
+import { applyAllPlanetAttachments, filterToClaimedPlanets } from "../../../src/util/planets";
+import { filterToOwnedTechs, filterToUnownedTechs, sortTechs } from "../../../src/util/techs";
 
 const techOrder = [
   "green",
@@ -49,23 +51,25 @@ function Prompt({ faction, prompt }) {
   }
 
   const startswith = faction.startswith;
-  const orderedTechs = (startswith.techs ?? []).map((tech) => {
-    return techs[tech];
-  }).sort((a, b) => {
-    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
-    if (typeDiff !== 0) {
-      return typeDiff;
-    }
-    const prereqDiff = a.prereqs.length - b.prereqs.length;
-    if (prereqDiff !== 0) {
-      return prereqDiff;
-    }
-    if (a.name < b.name) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
+  const startingTechs = filterToStartingTechs(techs, faction);
+  sortTechs(startingTechs);
+  // const orderedTechs = (startswith.techs ?? []).map((tech) => {
+  //   return techs[tech];
+  // }).sort((a, b) => {
+  //   const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+  //   if (typeDiff !== 0) {
+  //     return typeDiff;
+  //   }
+  //   const prereqDiff = a.prereqs.length - b.prereqs.length;
+  //   if (prereqDiff !== 0) {
+  //     return prereqDiff;
+  //   }
+  //   if (a.name < b.name) {
+  //     return -1;
+  //   } else {
+  //     return 1;
+  //   }
+  // });
   const orderedChoices = ((startswith.choice ?? {}).options ?? []).filter((tech) => {
     return !(startswith.techs ?? []).includes(tech);
   }).map((tech) => {
@@ -173,7 +177,7 @@ function Prompt({ faction, prompt }) {
       return <div> 
         Techs {startswith.choice ? "(Choice)" : null}
         <div style={{paddingLeft: "4px"}}>
-          {orderedTechs.map((tech) => {
+          {startingTechs.map((tech) => {
             return <TechRow key={tech.name} tech={tech} removeTech={startswith.choice ? () => removeTech(tech.name) : null} />;
           })}
         </div>
@@ -190,121 +194,6 @@ function Prompt({ faction, prompt }) {
       </div>;
   }
 }
-
-// function FactionSummary({ VPs, ownedTechs, ownedPlanets, options={} }) {
-//   let resources = 0;
-//   let influence = 0;
-//   let cultural = 0;
-//   let hazardous = 0;
-//   let industrial = 0;
-//   const skips = [];
-//   for (const planet of ownedPlanets) {
-//     if (planet.ready || options.total) {
-//       resources += planet.resources;
-//       influence += planet.influence;
-//       for (const attribute of planet.attributes) {
-//         if (attribute.includes("skip")) {
-//           skips.push(attribute);
-//         }
-//       }
-//     }
-//     switch (planet.type) {
-//       case "Cultural":
-//         ++cultural;
-//         break;
-//       case "Industrial":
-//         ++industrial;
-//         break;
-//       case "Hazardous":
-//         ++hazardous;
-//         break;
-//     }
-//     if (planet.attributes.includes("all-types")) {
-//       ++cultural;
-//       ++industrial;
-//       ++hazardous;
-//     }
-//   }
-
-//   let blueTechs = 0;
-//   let yellowTechs = 0;
-//   let greenTechs = 0;
-//   let redTechs = 0;
-//   let upgradeTechs = 0;
-//   for (const tech of ownedTechs) {
-//     switch (tech.type) {
-//       case "red":
-//         ++redTechs;
-//         break;
-//       case "yellow":
-//         ++yellowTechs;
-//         break;
-//       case "green":
-//         ++greenTechs;
-//         break;
-//       case "blue":
-//         ++blueTechs;
-//         break;
-//       case "upgrade":
-//         ++upgradeTechs;
-//         break;
-//     }
-//   }
-
-//   return (
-//     <div className="flexRow" style={{width: "100%"}}>
-//       <div className="flexColumn" style={{flexBasis: "30%", fontSize: "16px", height: "90px", justifyContent: "space-evenly"}}>
-//         <div className="flexRow" style={{width: "100%"}}>
-//           <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-//             <div className="flexColumn" style={{flexBasis: "30%"}}>{redTechs}</div><TechIcon type={"red"} width="21px" height="22px" />
-//           </div>
-//           <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-//           <div className="flexColumn" style={{flexBasis: "30%"}}>{greenTechs}</div> <TechIcon type={"green"} width="21px" height="22px" />
-//           </div>
-//         </div>
-//         <div className="flexRow" style={{width: "100%"}}>
-//           <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-//           <div className="flexColumn" style={{flexBasis: "30%"}}>{blueTechs}</div><TechIcon type={"blue"} width="21px" height="22px" />
-//           </div>
-//           <div className="flexRow" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
-//           <div className="flexColumn" style={{flexBasis: "30%"}}>{yellowTechs}</div><TechIcon type={"yellow"} width="21px" height="22px" />
-//           </div>
-//         </div>
-//         <div className="flexRow" style={{width: "100%"}}>
-//           {upgradeTechs} {pluralize("Upgrade", upgradeTechs)}
-//         </div>
-//       </div>
-//       <div className="flexColumn" style={{flexBasis: "30%", fontSize: "28px"}}>
-//         <div style={{fontSize: "40px"}}>
-//           {VPs}
-//         </div>
-//         <div style={{fontSize: "28px"}}>{pluralize('VP', VPs)}</div>
-//       </div>
-//       <div className="flexColumn" style={{flexBasis: "30%"}}>
-//         <div className="flexRow">
-//           <Resources
-//             resources={resources}
-//             influence={influence}
-//           />
-//           <PlanetAttributes attributes={skips} />
-//         </div>
-//         <div className="flexRow" style={{fontSize: "16px", width: "100%"}}>
-//           <div className="flexRow" style={{flexBasis: "33%"}}>
-//             <div className="flexColumn" style={{flexBasis: "15%"}}>{cultural}</div>
-//             <PlanetSymbol type={"Cultural"} size="18px" />
-//           </div>
-//           <div className="flexRow" style={{flexBasis: "33%"}}>
-//             <div>{hazardous}</div>
-//             <PlanetSymbol type={"Hazardous"} size="18px" />
-//           </div>
-//           <div className="flexRow" style={{flexBasis: "33%"}}>
-//             <div>{industrial}</div>
-//             <PlanetSymbol type={"Industrial"} size="18px" />
-//           </div>
-//         </div>
-//       </div>
-//     </div>);
-// }
 
 function FactionContent() {
   const [showAddTech, setShowAddTech] = useState(false);
@@ -323,7 +212,7 @@ function FactionContent() {
   const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${playerFaction}` : null, fetcher, { 
     refreshInterval: 5000,
   });
-  const { data: technologies, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher, { 
+  const { data: techs, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher, { 
     refreshInterval: 5000,
   });
   const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, { 
@@ -357,12 +246,7 @@ function FactionContent() {
     return;
   }
 
-  const ownedPlanets = [];
-  Object.values(planets ?? {}).forEach((planet) => {
-    if ((planet.owners ?? []).includes(playerFaction)) {
-      ownedPlanets.push(planet);
-    }
-  });
+  const ownedPlanets = filterToClaimedPlanets(planets, playerFaction);
 
   function toggleAddTechMenu() {
     setShowAddTech(!showAddTech);
@@ -409,14 +293,9 @@ function FactionContent() {
       planet.attributes.includes('yellow-skip');
   }
   
-  const gamePlayer = factions[playerFaction];
+  const faction = factions[playerFaction];
 
-  const ownedTechs = [];
-  Object.entries(technologies ?? {}).forEach(([key, tech]) => {
-    if (gamePlayer.techs[key]) {
-      ownedTechs.push(tech);
-    }
-  });
+  const ownedTechs = filterToOwnedTechs(techs, faction);
   ownedTechs.sort((a, b) => {
     const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
     if (typeDiff !== 0) {
@@ -432,21 +311,10 @@ function FactionContent() {
       return 1;
     }
   });
-  const remainingTechs = [];
-  Object.entries(technologies ?? {}).forEach(([key, tech]) => {
-    if (!gamePlayer.techs[key]) {
-      remainingTechs.push(tech);
-    }
-  });
+  const remainingTechs = filterToUnownedTechs(techs, faction);
 
-  const updatedPlanets = [];
-  Object.values(planets ?? {}).forEach((planet) => {
-    let updatedPlanet = {...planet};
-    if ((updatedPlanet.owners ?? []).includes(playerFaction)) {
-      updatedPlanet = applyPlanetAttachments(updatedPlanet, attachments);
-      updatedPlanets.push(updatedPlanet);
-    }
-  });
+  const claimedPlanets = filterToClaimedPlanets(planets, playerFaction);
+  const updatedPlanets = applyAllPlanetAttachments(claimedPlanets, attachments);
 
   let VPs = 0;
   for (const objective of Object.values(objectives ?? {})) {
@@ -492,30 +360,7 @@ function FactionContent() {
         content={
           <AddPlanetList planets={planets} addPlanet={addPlanet} />
       } />
-  <div style={{ display: "flex", width: "100%", maxWidth: "500px" }}>
-    {/* {strategyCard ? <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexBasis: "50%",
-        height: "32px",
-        border: `2px solid ${strategyCard.color}`,
-        borderRadius: "4px",
-        paddingLeft: "12px"
-      }}
-    >
-      {strategyCard.order} {strategyCard.name}
-    </div> : null} */}
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center"
-      }}
-    >
-      {gamePlayer.timer}
-    </div>
-  </div>
-  <FactionSummary faction={gamePlayer} VPs={VPs} ownedTechs={ownedTechs} ownedPlanets={updatedPlanets} />
+  <FactionSummary factionName={playerFaction} VPs={VPs} ownedTechs={ownedTechs} ownedPlanets={updatedPlanets} />
   <div
     style={{
       width: "100%",
@@ -634,7 +479,7 @@ export default function GamePage() {
       {/* TODO: Uncomment after putting in server-side functionality for adding/removing prompts */}
       {/* <Modal closeMenu={ignorePrompt} visible={validPrompts.length > 0} title={validPrompts[0].title}
         content={
-          <Prompt prompt={validPrompts[0]} faction={gamePlayer} />
+          <Prompt prompt={validPrompts[0]} faction={faction} />
         } /> */}
       <h2
         style={{

@@ -7,7 +7,6 @@ import { saveGameTimer } from './util/api/state';
 import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
-import { applyPlanetAttachments } from './util/helpers';
 import { useBetween } from 'use-between';
 
 const usePaused = () => {

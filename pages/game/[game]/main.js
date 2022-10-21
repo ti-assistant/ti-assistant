@@ -532,7 +532,7 @@ export default function SelectFactionPage() {
               <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
                 <div className="flexRow">Speaker Order</div>
                 {orderedFactions.map(([name, faction]) => {
-                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
+                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true}} />} />
                 })}
               </div>
             </div>
@@ -684,7 +684,7 @@ export default function SelectFactionPage() {
               <div className="flexColumn" style={{flexBasis: "25%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
                 <div className="flexRow">Speaker Order</div>
                 {orderedFactions.map(([name, faction]) => {
-                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
+                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true}} />} />
                 })}
               </div>
             </div>
@@ -912,7 +912,7 @@ export default function SelectFactionPage() {
             <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
               <div className="flexRow">Speaker Order</div>
               {orderedFactions.map(([name, faction]) => {
-                return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
+                return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true}} />} />
               })}
             </div>
           </div>
@@ -943,7 +943,7 @@ export default function SelectFactionPage() {
             <div className="flexColumn" style={{flexBasis: "20%", gap: "4px", alignItems: "stretch"}}>
                 <div className="flexRow">
                   <div style={{textAlign: "center", flexGrow: 4}}>Voting Order</div>
-                  <div style={{textAlign: "center", width: "80px"}}>Votes</div>
+                  <div style={{textAlign: "center", width: "80px"}}>Available Votes</div>
                 </div>
                 {votingOrder.map((faction) => {
                   return <VoteCount key={faction.name} factionName={faction.name} />
@@ -981,7 +981,7 @@ export default function SelectFactionPage() {
             <div className="flexColumn" style={{flexBasis: "33%", alignItems: "stretch", gap: "6px", maxWidth: "400px"}}>
               <div className="flexRow">Speaker Order</div>
               {orderedFactions.map(([name, faction]) => {
-                return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary faction={faction} options={{showIcon: true}} />} />
+                return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true}} />} />
               })}
             </div>
           </div>
