@@ -5,7 +5,10 @@
  * @returns {Array<Object>}
  */
 export function filterToOwnedTechs(techs, faction) {
-  return Object.values(techs ?? {}).filter((tech) => !!(faction.techs ?? {})[tech.name]);
+  return Object.values(techs ?? {}).filter((tech) => {
+    const techName = tech.name.replace(" Ω", "");
+    return !!(faction.techs ?? {})[techName];
+  });
 }
 
 /**
@@ -15,7 +18,10 @@ export function filterToOwnedTechs(techs, faction) {
  * @returns {Array<Object>}
  */
  export function filterToUnownedTechs(techs, faction) {
-  return Object.values(techs ?? {}).filter((tech) => !(faction.techs ?? {})[tech.name]);
+  return Object.values(techs ?? {}).filter((tech) => {
+    const techName = tech.name.replace(" Ω", "");
+    return !(faction.techs ?? {})[techName];
+  });
 }
 
 /**
@@ -25,7 +31,10 @@ export function filterToOwnedTechs(techs, faction) {
  * @returns {Array<Object>}
  */
  export function filterToStartingTechs(techs, faction) {
-  return Object.values(techs ?? {}).filter((tech) => !!(faction.startswith.techs ?? {})[tech.name]);
+  return Object.values(techs ?? {}).filter((tech) => {
+    const techName = tech.name.replace(" Ω", "");
+    return !(faction.startswith.techs ?? {})[techName];
+  });
 }
 
 const TECH_ORDER = [

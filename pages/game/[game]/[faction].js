@@ -285,13 +285,6 @@ function FactionContent() {
       exhaustPlanets(mutate, gameid, planets, [name], playerFaction);
     }
   }
-
-  function hasSkip(planet) {
-    return planet.attributes.includes("red-skip") ||
-      planet.attributes.includes("blue-skip") ||
-      planet.attributes.includes('green-skip') ||
-      planet.attributes.includes('yellow-skip');
-  }
   
   const faction = factions[playerFaction];
 

@@ -23,6 +23,18 @@ export function applyAllPlanetAttachments(planets, attachments) {
 }
 
 /**
+ * Returns true if the planet has a tech-skip, false otherwise.
+ * @param {Object} planet 
+ * @returns {boolean}
+ */
+function hasSkip(planet) {
+  return planet.attributes.includes("red-skip") ||
+    planet.attributes.includes("blue-skip") ||
+    planet.attributes.includes('green-skip') ||
+    planet.attributes.includes('yellow-skip');
+}
+
+/**
  * Updates a single planet's values based on the attachments on the planet.
  * @param {Object} planet
  * @param {Object} attachments 
