@@ -20,7 +20,7 @@ export function setSpeaker(mutate, gameid, state, speaker, factions) {
   const updatedFactions = {...factions};
   
   Object.entries(updatedFactions).forEach(([name, faction]) => {
-    let factionOrder = faction.order - currentOrder;
+    let factionOrder = faction.order - currentOrder + 1;
     if (factionOrder < 1) {
       factionOrder += Object.keys(updatedFactions).length;
     }

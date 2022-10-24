@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
+import { setSpeaker } from './util/api/state';
 import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
@@ -11,6 +12,7 @@ import { FactionTile } from '/src/FactionCard.js'
 export function VoteCount({ factionName, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
   const { data: factions, factionError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, {
     refreshInterval: 5000,
   });
@@ -24,6 +26,7 @@ export function VoteCount({ factionName, opts = {} }) {
     refreshInterval: 5000,
   });
   const [ usingPredictiveIntelligence, setUsingPredictiveIntelligence ] = useState(true);
+  const [ castVotes, setCastVotes ] = useState(0);
 
   if (factionError || planetError || attachmentsError) {
     return (<div>Failed to load faction info</div>);
@@ -48,6 +51,12 @@ export function VoteCount({ factionName, opts = {} }) {
   }
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
   const menuButtons = [];
+  if (factionName !== state.speaker) {
+    menuButtons.push({
+        text: "Set Speaker",
+        action: () => setSpeaker(mutate, gameid, state, factionName, factions),
+    });
+  }
   if (hasPredictiveIntelligence) {
     if (usingPredictiveIntelligence) {
       extraVotes += 3;
@@ -95,14 +104,19 @@ export function VoteCount({ factionName, opts = {} }) {
                     <span style={{fontFamily: "Myriad Pro"}}>When you cast at least 1 vote, cast 1 additional vote for each player in the game, including you.</span>
                   </div>
                 : null}
-                {hasPredictiveIntelligence && usingPredictiveIntelligence ? 
+                {/* {hasPredictiveIntelligence && usingPredictiveIntelligence ? 
                   <div className="flexColumn" style={{gap: "4px", padding: "4px 8px", backgroundColor: "#222", boxShadow: "1px 1px 4px black", border: `2px solid #333`, borderRadius: "5px"}}>
                     Predictive Intelligence: <span style={{fontFamily: "Myriad Pro"}}>When you cast votes during the agenda phase, you may cast 3 additional votes; if you do, and the outcome you voted for is not resolved, exhaust this card.</span>
                   </div>
-                : null}
+                : null} */}
               </div>
             </div>
           </div>
+        </div>
+        <div className="flexRow hoverParent" style={{flexShrink: 0, width: "72px", gap: "4px", fontSize: "24px"}}>
+          {castVotes > 0 ? <div className="arrowDown" onClick={() => setCastVotes(castVotes - 1)}></div> : <div style={{width: "12px"}}></div>}
+          <div className="flexRow" style={{width: "32px"}}>{castVotes}</div>
+          {<div className="arrowUp" onClick={() => setCastVotes(castVotes + 1)}></div>}
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@ function getTechColor(tech) {
 
 function TechList({ techs }) {
   return <div className="flexColumn" style={{alignItems: "stretch", padding: "4px 8px", backgroundColor: "#222", boxShadow: "1px 1px 4px black", whiteSpace: "nowrap", gap: "4px", border: `2px solid #333`, borderRadius: "5px"}}>
-  {techs.map((tech) => <div style={{color: getTechColor(tech)}}>{tech.name}</div>)}
+  {techs.map((tech) => <div key={tech.name} style={{color: getTechColor(tech)}}>{tech.name}</div>)}
 </div>
 }
 

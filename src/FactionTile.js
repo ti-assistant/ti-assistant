@@ -105,7 +105,7 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
           </div> : null}
           {speaker ? <div style={{fontFamily: "Myriad Pro",
             position: "absolute",
-            color: color,
+            color: color === "Black" ? "#eee" : color,
             borderRadius: "5px",
             border: `2px solid ${color}`,
             padding: "0px 2px",

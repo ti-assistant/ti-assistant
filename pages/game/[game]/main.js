@@ -940,10 +940,11 @@ export default function SelectFactionPage() {
           <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
             <Header />
             <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-            <div className="flexColumn" style={{flexBasis: "20%", gap: "4px", alignItems: "stretch"}}>
-                <div className="flexRow">
+            <div className="flexColumn" style={{flexBasis: "25%", gap: "4px", alignItems: "stretch"}}>
+                <div className="flexRow" style={{gap: "12px"}}>
                   <div style={{textAlign: "center", flexGrow: 4}}>Voting Order</div>
                   <div style={{textAlign: "center", width: "80px"}}>Available Votes</div>
+                  <div style={{textAlign: "center", width: "80px"}}>Cast Votes</div>
                 </div>
                 {votingOrder.map((faction) => {
                   return <VoteCount key={faction.name} factionName={faction.name} />

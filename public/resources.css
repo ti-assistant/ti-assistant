@@ -13,6 +13,7 @@
   align-items: center;
   width: 76px;
   height: 46px;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 
