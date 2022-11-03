@@ -50,12 +50,8 @@ export default function SelectFactionPage() {
   });
 
   return (
-    <div className="flexColumn" style={{alignItems: "center"}}>
-      <h2>Twilight Imperium Assistant</h2>
-      <div className="flexRow">
-      <h3>Game ID: {gameid}</h3>
-      {qrCode ? <img src={qrCode} /> : null}
-      </div>
+    <div className="flexColumn" style={{alignItems: "center", height: "100vh"}}>
+      <Header />
       <div
         style={{
           display: "flex",
@@ -92,4 +88,55 @@ export default function SelectFactionPage() {
       </div>
     </div>
   );
+}
+
+function Sidebar({side, content}) {
+  const className = `${side}Sidebar`;
+  return (
+    <div className={className} style={{letterSpacing: "3px"}}>
+      {content}
+    </div>
+  );
+}
+
+function Header() {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const [ qrCode, setQrCode ] = useState(null);
+
+  if (!qrCode && gameid) {
+    QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
+      color: {
+        dark: "#eeeeeeff",
+        light: "#222222ff",
+      },
+      width: 120,
+      height: 120,
+      margin: 4,
+    }, (err, url) => {
+      if (err) {
+        throw err;
+      }
+      setQrCode(url);
+    });
+  }
+
+  const round = state ? `ROUND ${state.round}` : "Loading...";
+
+  return <div className="flexColumn" style={{top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
+    <Sidebar side="left" content={`SELECT FACTION`} />
+    <Sidebar side="right" content={round} />
+
+    {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
+      SETUP PHASE
+    </div> */}
+    <h2>Twilight Imperium Assistant</h2>
+    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
+      {qrCode ? <img src={qrCode} /> : null}
+      <div>Game ID: {gameid}</div>
+    </div>
+  </div>
 }
