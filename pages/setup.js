@@ -663,7 +663,7 @@ export default function SetupPage() {
 function Sidebar({side, content}) {
   const className = `${side}Sidebar`;
   return (
-    <div className={className}>
+    <div className={className} style={{letterSpacing: "3px"}}>
       {content}
     </div>
   );

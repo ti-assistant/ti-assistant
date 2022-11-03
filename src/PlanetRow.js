@@ -155,8 +155,8 @@ function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
       {Object.entries(attachments).map(([name, attachment]) => {
         return (
           
-          <div key={name} className="flexRow" style={{minWidth: "280px", whiteSpace: "nowrap", justifyContent: "flex-start", alignItems: "stretch", alignItems: "center"}}>
-            <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={attachment.planets.includes(planet.name)}></input>
+          <div key={name} className="flexRow" style={{minWidth: "280px", whiteSpace: "nowrap", justifyContent: "flex-start", alignItems: "stretch", alignItems: "center", padding: "0px 4px"}}>
+            {/* <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={attachment.planets.includes(planet.name)}></input> */}
             <AttachRow attachment={attachment} currentPlanet={planet.name} />
           </div>
         );

@@ -1,4 +1,8 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import useSWR, { useSWRConfig } from 'swr';
+import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
+import { fetcher } from './util/api/util';
 
 import { Resources } from "/src/Resources.js";
 
@@ -11,6 +15,11 @@ function LegendaryPlanetIcon() {
 
 
 export function AttachRow({ attachment, currentPlanet }) {
+  const router = useRouter();
+  const { mutate } = useSWRConfig();
+  const { game: gameid, faction: playerFaction } = router.query;
+  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+
   function isSkip() {
     return attachment.attribute.includes("skip");
   }
@@ -59,9 +68,19 @@ export function AttachRow({ attachment, currentPlanet }) {
     }
   });
 
+  function toggleAttachment() {
+    if (attachment.planets.includes(currentPlanet)) {
+      removeFromPlanet(mutate, gameid, attachments, currentPlanet, attachment.name);
+    } else {
+      attachToPlanet(mutate, gameid, attachments, currentPlanet, attachment.name);
+    }
+  }
+
   return (
-    <div className="flexRow" style={{width: "100%", height: "72px", justifyContent: "flex-start", fontSize: "16px", position: "relative"}}>
-      <div style={{flexBasis: "60%"}}>{attachment.name}</div>
+    <div className="flexRow" style={{width: "100%", height: "72px", justifyContent: "flex-start", fontSize: "16px", position: "relative", gap: "4px"}}>
+      <div style={{flexBasis: "60%"}}>
+        <button onClick={toggleAttachment} className={attachment.planets.includes(currentPlanet) ? "selected" : ""}>{attachment.name}</button>
+      </div>
       <Resources resources={attachment.resources} influence={attachment.influence} />
       {isSkip() ? <div style={{marginRight: "6px"}}>OR</div> : null}
       {hasAttribute() ? getAttributeIcon("22px", "22px") : null}
@@ -73,7 +92,7 @@ export function AttachRow({ attachment, currentPlanet }) {
         border: `1px solid indianred`,
         padding: "0px 4px",
         fontSize: "12px",
-        bottom: "4px",
+        bottom: "2px",
       }}>Attached to {attached}</div> : null
       }
     </div>
