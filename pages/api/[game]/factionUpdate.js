@@ -67,6 +67,41 @@ export default async function handler(req, res) {
         [factionStartingTechString]: FieldValue.arrayRemove(data.tech),
       });
       break;
+    case "CHOOSE_SUB_FACTION": {
+      const planetsString = `factions.${data.faction}.planets`;
+      await db.collection('games').doc(gameid).update({
+        [planetsString]: {},
+      });
+      let planets = [];
+      switch (data.subFaction) {
+        case "Argent Flight":
+          planets = [
+            "Avar",
+            "Valk",
+            "Ylir",
+          ];
+          break;
+        case "Mentak Coalition":
+          planets = [
+            "Moll Primus",
+          ];
+          break;
+        case "Xxcha Kingdom":
+          planets = [
+            "Archon Ren",
+            "Archon Tau",
+          ];
+          break;
+      }
+      const playerSubFactionString = `factions.${data.faction}.startswith.faction`;
+      const startingPlanetsString = `factions.${data.faction}.startswith.planets`;
+      const updates = {
+        [playerSubFactionString]: data.subFaction,
+        [startingPlanetsString]: planets,
+      };
+      await db.collection('games').doc(gameid).update(updates);
+      break;
+    }
     case "ADD_PLANET":
       gamePlanetString = `planets.${data.planet}.owner`;
       readyString = `factions.${data.faction}.planets.${data.planet}.ready`;

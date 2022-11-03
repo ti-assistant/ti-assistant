@@ -81,6 +81,17 @@ export default async function handler(req, res) {
       speaker = faction.name;
     }
     baseFactions[faction.name] = faction;
+    if (faction.name === "Winnu" && !options.expansions.includes("pok")) {
+      baseFactions[faction.name].startswith.choice = {
+        select: 1,
+        options: [
+          "Neural Motivator",
+          "Sarween Tools",
+          "Antimass Deflectors",
+          "Plasma Scoring",
+        ],
+      };
+    }
     Object.entries(faction.planets).forEach(([name, planet]) => {
       basePlanets[name] = {
         ...planet,

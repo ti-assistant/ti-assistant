@@ -1,6 +1,8 @@
-import { fetchAttachments } from '../../../server/util/fetch';
+import { fetchAttachments, fetchPlanets } from '../../../server/util/fetch';
 
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+
+function getUpdatedValues()
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

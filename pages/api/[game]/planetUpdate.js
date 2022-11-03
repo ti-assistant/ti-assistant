@@ -1,43 +1,45 @@
+import { fetchPlanets } from '../../../server/util/fetch';
+
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 
-async function fetchPlanets(db, gameid, faction) {
-  const planetsRef = await db.collection('planets').orderBy('name').get();
+// async function fetchPlanets(db, gameid, faction) {
+//   const planetsRef = await db.collection('planets').orderBy('name').get();
 
-  const gamestate = await db.collection('games').doc(gameid).get();
-  const factions = Object.keys(gamestate.data().factions);
+//   const gamestate = await db.collection('games').doc(gameid).get();
+//   const factions = Object.keys(gamestate.data().factions);
 
-  // TODO(jboman): Handle Council Keleres.
-  let planets = {};
-  planetsRef.forEach(async (val) => {
-    let planet = val.data();
-    let id = val.id;
+//   // TODO(jboman): Handle Council Keleres.
+//   let planets = {};
+//   planetsRef.forEach(async (val) => {
+//     let planet = val.data();
+//     let id = val.id;
 
-    // Add data from the game to planets.
-    if (gamestate.data().planets && gamestate.data().planets[id]) {
-      planet = {
-        ...planet,
-        ...gamestate.data().planets[id]
-      };
-    }
-    // Update data based on faction's information.
-    if (faction && gamestate.data().factions[faction].planets[id]) {
-      planet = {
-        ...planet,
-        ...gamestate.data().factions[faction].planets[id],
-      };
-    }
-    if (factions && val.data().home && !factions.includes(val.data().faction)) {
-      return;
-    }
-    // Have to do this to avoid database issues when storing [0.0.0].
-    if (id === "000") {
-      id = "[0.0.0]";
-    }
-    planets[id] = planet;
-  });
+//     // Add data from the game to planets.
+//     if (gamestate.data().planets && gamestate.data().planets[id]) {
+//       planet = {
+//         ...planet,
+//         ...gamestate.data().planets[id]
+//       };
+//     }
+//     // Update data based on faction's information.
+//     if (faction && gamestate.data().factions[faction].planets[id]) {
+//       planet = {
+//         ...planet,
+//         ...gamestate.data().factions[faction].planets[id],
+//       };
+//     }
+//     if (factions && val.data().home && !factions.includes(val.data().faction)) {
+//       return;
+//     }
+//     // Have to do this to avoid database issues when storing [0.0.0].
+//     if (id === "000") {
+//       id = "[0.0.0]";
+//     }
+//     planets[id] = planet;
+//   });
 
-  return planets;
-}
+//   return planets;
+// }
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -101,7 +103,7 @@ export default async function handler(req, res) {
       break;
   }
   
-  const response = await fetchPlanets(db, gameid, data.faction);
+  const response = await fetchPlanets(gameid, data.faction);
 
   return res.status(200).json(response);
 }

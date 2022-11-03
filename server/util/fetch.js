@@ -38,7 +38,7 @@ export async function fetchStrategyCards(gameid) {
  * @param {string} gameid The game id. If not present, the default list will be fetched.
  * @returns {Promise} objectives keyed by name.
  */
- export async function fetchObjectives(gameid, secret) {
+export async function fetchObjectives(gameid, secret) {
   const db = getFirestore();
 
   const objectivesRef = await db.collection('objectives').get();
@@ -84,7 +84,7 @@ export async function fetchStrategyCards(gameid) {
  * @param {string} gameid The game id. If not present, the default list will be fetched.
  * @returns {Promise} attachments keyed by name.
  */
- export async function fetchAttachments(gameid) {
+export async function fetchAttachments(gameid) {
   const db = getFirestore();
 
   const attachmentsRef = await db.collection('attachments').get();
@@ -133,4 +133,54 @@ export async function fetchStrategyCards(gameid) {
   }
 
   return attachments;
+}
+
+function isCouncilPlanet(planet) {
+  return planet.faction === "Mentak Coalition" || planet.faction === "Xxcha Kingdom" || planet.faction === "Argent Flight";
+}
+
+/**
+ * Fetches the planets associated with a game.
+ * @param {string} gameid The game id. If not present, the default list will be fetched.
+ * @returns {Promise} planets keyed by name.
+ */
+ export async function fetchPlanets(gameid, faction) {
+  const db = getFirestore();
+
+  const planetsRef = await db.collection('planets').get();
+
+  if (!gameid) {
+    return planetsRef.data();
+  }
+
+  const gameState = await db.collection('games').doc(gameid).get();
+
+  const gamePlanets = gameState.data().planets ?? {};
+  const gameFactions = gameState.data().factions ?? {};
+  const factionPlanets = (gameFactions[faction] ?? {}).planets ?? {};
+
+  let planets = {};
+  planetsRef.forEach(async (val) => {
+    let planet = val.data();
+    let id = val.id;
+
+    if (planet.home && gameFactions && !gameFactions[planet.faction]) {
+      if (!gameFactions['Council Keleres'] || !(gameFactions['Council Keleres'].startswith.planets ?? []).includes(planet.name)) {
+        return;
+      }
+    }
+
+    planet = {
+      ...planet,
+      ...gamePlanets[id] ?? {},
+      ...factionPlanets[id] ?? {},
+    };
+
+    if (id === "000") {
+      id = "[0.0.0]";
+    }
+    planets[id] = planet;
+  });
+
+  return planets;
 }

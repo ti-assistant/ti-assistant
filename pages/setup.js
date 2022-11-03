@@ -165,6 +165,7 @@ const INITIAL_OPTIONS = {
     "codex-two",
     "codex-three",
   ]),
+  'allow-double-council': false,
 }
 
 export default function SetupPage() {
@@ -189,6 +190,7 @@ export default function SetupPage() {
 
   function reset() {
     setFactions(INITIAL_FACTIONS);
+    setOptions(INITIAL_OPTIONS);
     setSpeaker(-1);
   }
 
@@ -329,7 +331,7 @@ export default function SetupPage() {
   }
 
   async function startGame() {
-    const optionsToSend = {};
+    const optionsToSend = options;
     optionsToSend.expansions = Array.from(options.expansions);
     
     // TODO: Consider just leaving gaps in the factions array to avoid this nonsense.
@@ -417,7 +419,55 @@ export default function SetupPage() {
         return true;
       }
     }
+    if (invalidCouncil()) {
+      return true;
+    }
     return false;
+  }
+
+  function missingFactions() {
+    for (let faction of factions) {
+      if (faction.name === null) {
+        return true;
+      }
+    }
+  }
+
+  function missingColors() {
+    for (let faction of factions) {
+      if (faction.color === null) {
+        return true;
+      }
+    }
+  }
+
+  function isCouncilInGame() {
+    for (let faction of factions) {
+      if (faction.name === "Council Keleres") {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function invalidCouncil() {
+    if (options['allow-double-council']) {
+      return false;
+    }
+    let factionCount = options.expansions.has("pok") ? 0 : 1;
+    for (let faction of factions) {
+      if (faction.name === "Xxcha Kingdom" || faction.name === "Argent Flight" || faction.name === "Mentak Coalition" || faction.name === "Council Keleres") {
+        ++factionCount;
+      }
+    }
+    return factionCount === 4;
+  }
+
+  function toggleOption(value, option) {
+    const currentOptions = {...options};
+    currentOptions[option] = value;
+
+    setOptions(currentOptions);
   }
 
   function toggleExpansion(value, expansion) {
@@ -456,21 +506,21 @@ export default function SetupPage() {
 
   return (
     <div className="flexColumn" style={{gap: "20px"}}>
-      <h2>TWILIGHT IMPERIUM ASSISTANT</h2>
-      <div>
+      <Header />
+      <div className="flexColumn" style={{height: "100vh", width: "100%", alignItems: "center", gap: "32px"}}>
+      <div className="flexColumn" style={{gap: "8px"}}>
         <label>Player Count</label>
-        <div>
+        <div className='flexRow' style={{gap: "8px"}}>
           {[...Array(maxFactions - 2)].map((e, index) => {
             const number = index + 3;
             return (
-              <span key={number}>
-                <input onChange={(event) => updatePlayerCount(event.target.value)} type="radio" value={number} name="numPlayers" checked={factions.length === number} /> {number}
-              </span>
+              <button key={number} onClick={() => updatePlayerCount(number)} className={factions.length === number ? "selected" : ""}>{number}</button>
             );
           })}
         </div>
       </div>
-      <div className="flexColumn" style={{position: "relative", gap: "120px", alignItems: "center"}}>
+      <div className="flexRow" style={{width: "100%"}}>
+      <div className="flexColumn" style={{flexBasis: "60%", position: "relative", gap: "120px", alignItems: "center"}}>
         <div className="flexRow" style={{position: "absolute", width: "100%", height: "100%"}}>
           TABLE (replace with image)
         </div>
@@ -551,46 +601,32 @@ export default function SetupPage() {
         </div>
       </div>
       <div>
-        Options:
+      <div style={{width: "540px"}}>
+        <div style={{fontSize: "24px"}}>Options:</div>
+        <div style={{padding: "16px 16px 0px 16px"}}>
         <div>
           Expansions:
-          <div className="flexColumn">
-            <label>
-              Prophecy of Kings
-              <input
-                type="checkbox"
-                checked={options.expansions.has("pok")}
-                onChange={(event) => toggleExpansion(event.target.checked, "pok")}
-              />
-            </label>
-            <label>
-              Codex I
-              <input
-                type="checkbox"
-                checked={options.expansions.has("codex-one")}
-                onChange={(event) => toggleExpansion(event.target.checked, "codex-one")}
-              />
-            </label>
-            <label>
-              Codex II
-              <input
-                type="checkbox"
-                checked={options.expansions.has("codex-two")}
-                onChange={(event) => toggleExpansion(event.target.checked, "codex-two")}
-              />
-            </label>
-            <label>
-              Codex III
-              <input
-                type="checkbox"
-                checked={options.expansions.has("codex-three")}
-                onChange={(event) => toggleExpansion(event.target.checked, "codex-three")}
-              />
-            </label>
+          <div className="flexRow" style={{gap: "8px", padding: "8px 20px"}}>
+            <button className={options.expansions.has("pok") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("pok"), "pok")}>Prophecy of Kings</button>
+            <button className={options.expansions.has("codex-one") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-one"), "codex-one")}>Codex I</button>
+            <button className={options.expansions.has("codex-two") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-two"), "codex-two")}>Codex II</button>
+            <button className={options.expansions.has("codex-three") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-three"), "codex-three")}>Codex III</button>
           </div>
         </div>
+        {isCouncilInGame() ? 
+        <div>
+          Council Keleres:
+          <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
+            <button className={options['allow-double-council'] ? "selected" : ""} onClick={() => toggleOption(!options['allow-double-council'], "allow-double-council")}>Allow selecting a duplicate sub-faction</button>
+          </div>
+        </div>
+        : null}
+        </div>
       </div>
-      <div className="flexColumn" style={{gap: "8px"}}>
+      </div>
+      
+    </div>
+    <div className="flexColumn" style={{gap: "8px"}}>
         <button onClick={reset}>Reset</button>
         <div className="flexRow" style={{gap: "8px"}}>
           <button onClick={randomSpeaker}>Randomize Speaker</button>
@@ -604,10 +640,50 @@ export default function SetupPage() {
           disabled={disableRandomizeColorsButton()}
           > Randomize Remaining Colors</button>
         </div>
+        {missingFactions() ?
+          <div style={{color: "darkred"}}>Select All Factions</div>
+        : null}
+        {speaker === -1 ?
+          <div style={{color: "darkred"}}>Select Speaker</div>
+        : null}
+        {missingColors() ?
+          <div style={{color: "darkred"}}>Select All Colors</div>
+        : null}
+        {invalidCouncil() ?
+          <div style={{color: "darkred"}}>No available sub-faction for Council Keleres</div>
+        : null}
         <button onClick={startGame} disabled={disableNextButton()}>
           Start Game
         </button>
       </div>
+    </div></div>
+  );
+}
+
+function Sidebar({side, content}) {
+  const className = `${side}Sidebar`;
+  return (
+    <div className={className}>
+      {content}
     </div>
   );
+}
+
+function Header() {
+  return <div className="flexColumn" style={{top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
+    <Sidebar side="left" content={`SETUP GAME`} />
+    <Sidebar side="right" content={`SETUP GAME`} />
+
+    {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
+      SETUP PHASE
+    </div> */}
+    <h2>Twilight Imperium Assistant</h2>
+    {/* <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
+      {qrCode ? <img src={qrCode} /> : null}
+      <div>Game ID: {gameid}</div>
+    </div>
+    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "288px", top: "16px"}}>
+      <GameTimer />
+    </div> */}
+  </div>
 }

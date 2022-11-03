@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
 import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
+import { chooseSubFaction } from './util/api/factions';
 import { chooseStartingTech, removeStartingTech } from './util/api/techs';
 import { fetcher, poster } from './util/api/util';
 import { getNextIndex } from './util/util';
@@ -142,7 +143,9 @@ function StartingComponents({ faction }) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
+  const { data: planets, planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: options, optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
 
   if (factionsError) {
     return (<div>Failed to load factions</div>);
@@ -209,10 +212,30 @@ function StartingComponents({ faction }) {
     removeStartingTech(mutate, gameid, factions, faction.name, tech);
   }
 
-  const numToChoose = !startswith.choice ? 0 : startswith.choice.select - (startswith.techs ?? []).length;
+  function selectSubFaction(subFaction) {
+    chooseSubFaction(mutate, gameid, factions, faction.name, subFaction);
+  }
+
+  let numToChoose = !startswith.choice ? 0 : startswith.choice.select - (startswith.techs ?? []).length;
+  if (orderedChoices.length < numToChoose) {
+    numToChoose = orderedChoices.length;
+  }
 
   return (
     <div style={{paddingLeft: "4px", display: "flex", flexDirection: "column", gap: "4px"}}>
+      {startswith.planetchoice ? "Choose Sub-Faction" : null}
+      {startswith.planetchoice ? <div className='flexColumn' style={{gap: "4px", alignItems: "flex-start"}}>
+        {startswith.planetchoice.options.map((faction) => {
+          console.log(options);
+          if (!(options['allow-double-council'] ?? false) && factions[faction]) {
+            return null;
+          }
+          if (faction === "Argent Flight" && !options.expansions.includes("pok")) {
+            return null;
+          }
+          return <button key={faction} className={startswith.faction === faction ? "selected" : ""} onClick={() => selectSubFaction(faction)}>{faction}</button>
+        })}
+      </div> : null}
       Planets
       <div style={{paddingLeft: "8px", fontFamily: "Myriad Pro"}}>
         {orderedPlanets.map((planet) => {

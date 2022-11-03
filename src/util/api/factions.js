@@ -102,3 +102,51 @@ export function manualVPUpdate(mutate, gameid, factions, factionName, value) {
 
   mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
 }
+
+export function chooseSubFaction(mutate, gameid, factions, factionName, subFactionName) {
+  const data = {
+    action: "CHOOSE_SUB_FACTION",
+    faction: factionName,
+    subFaction: subFactionName,
+    returnAll: true,
+  };
+
+  console.log(factionName);
+
+  const updatedFactions = {...factions};
+
+  updatedFactions[factionName].startswith.faction = subFactionName;
+
+  switch (subFactionName) {
+    case "Argent Flight":
+      updatedFactions[factionName].startswith.planets = [
+        "Avar",
+        "Valk",
+        "Ylir",
+      ];
+      break;
+    case "Mentak Coalition":
+      updatedFactions[factionName].startswith.planets = [
+        "Moll Primus",
+      ];
+      break;
+    case "Xxcha Kingdom":
+      updatedFactions[factionName].startswith.planets = [
+        "Archon Ren",
+        "Archon Tau",
+      ];
+      break;
+  }
+
+  const options = {
+    optimisticData: updatedFactions,
+  };
+
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+
+  const opts = {
+    optimisticData: updatedFactions[factionName],
+  };
+
+  mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
+}

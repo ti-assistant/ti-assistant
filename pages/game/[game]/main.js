@@ -20,6 +20,7 @@ import { removeObjective } from '../../../src/util/api/objectives';
 import { Modal } from "/src/Modal.js";
 import { VoteCount } from '../../../src/VoteCount';
 import { AgendaTimer, FactionTimer, GameTimer } from '../../../src/Timer';
+import { claimPlanet, readyPlanets } from '../../../src/util/api/planets';
 
 function InfoContent({content}) {
   return (
@@ -37,6 +38,9 @@ export default function SelectFactionPage() {
     refreshInterval: 5000,
   });
   const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
+  const { data: planets, planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher, { 
     refreshInterval: 5000,
   });
   const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, { 
@@ -87,6 +91,9 @@ export default function SelectFactionPage() {
   if (techError) {
     return (<div>Failed to load techs</div>);
   }
+  if (planetsError) {
+    return (<div>Failed to load techs</div>);
+  }
   if (factionsError) {
     return (<div>Failed to load factions</div>);
   }
@@ -105,16 +112,26 @@ export default function SelectFactionPage() {
     }
   });
 
-  function factionChoicesComplete() {
+  function factionTechChoicesComplete() {
     let complete = true;
     orderedFactions.forEach(([name, faction]) => {
       if (faction.startswith.choice) {
-        if ((faction.startswith.techs ?? []).length !== faction.startswith.choice.select) {
+        const numSelected = (faction.startswith.techs ?? []).length;
+        const numRequired = faction.startswith.choice.select;
+        const numAvailable = faction.startswith.choice.options.length;
+        if (numSelected !== numRequired && numSelected !== numAvailable) {
           complete = false;
         }
       }
     });
     return complete;
+  }
+
+  function factionSubFactionChoicesComplete() {
+    if (!factions['Council Keleres']) {
+      return true;
+    }
+    return (factions['Council Keleres'].startswith.planets ?? []).length !== 0;
   }
 
 
@@ -155,6 +172,12 @@ export default function SelectFactionPage() {
     switch (state.phase) {
       case "SETUP":
         phase = "STRATEGY";
+        if (factions['Council Keleres']) {
+          for (const planet of factions['Council Keleres'].startswith.planets) {
+            claimPlanet(mutate, gameid, planets, planet, "Council Keleres");
+          }
+          readyPlanets(mutate, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
+        }
         break;
       case "STRATEGY":
         phase = "ACTION";
@@ -242,7 +265,9 @@ export default function SelectFactionPage() {
       const selectedStageOneObjectives = stageOneObjectives.filter((objective) => objective.selected);
 
       function statusPhaseComplete() {
-        return factionChoicesComplete() && selectedStageOneObjectives.length > 1;
+        return factionSubFactionChoicesComplete() &&
+          factionTechChoicesComplete() &&
+          selectedStageOneObjectives.length > 1;
       }
     
       return (
@@ -282,11 +307,14 @@ export default function SelectFactionPage() {
                 {/* <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} /> */}
                 Draw 5 stage two objectives</div></li>
             </ol>
-            <button disabled={!statusPhaseComplete()} onClick={() => nextPhase()}>Start Game</button>
-            {!factionChoicesComplete() ?
+            {!factionTechChoicesComplete() ?
               <div style={{color: "darkred"}}>Select all faction tech choices</div> :
               null}
+            {!factionSubFactionChoicesComplete() ?
+              <div style={{color: "darkred"}}>Select Council Keleres sub-faction</div> :
+              null}
             {selectedStageOneObjectives.length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
+            <button disabled={!statusPhaseComplete()} onClick={() => nextPhase()}>Start Game</button>
           </div>
         </div>
       );
