@@ -28,23 +28,12 @@ function SecretTab() {
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { 
     refreshInterval: 5000,
   });
-  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const [tabShown, setTabShown] = useState(factionName);
   const [editMode, setEditMode] = useState(false);
 
   const secretObjectives = Object.values(objectives).filter((obj) => {
     return obj.type === "secret";
   });
   sortObjectives(secretObjectives, "name");
-
-
-  function changeTab(tabName) {
-    if (tabShown === tabName) {
-      return;
-    }
-    setEditMode(false);
-    setTabShown(tabName);
-  }
 
   function toggleEditMode() {
     setEditMode(!editMode);
@@ -65,30 +54,17 @@ function SecretTab() {
     }
   }
 
-  const orderedFactions = Object.keys(factions).sort((a, b) => {
-    if (a < b) {
-      return -1;
-    }
-    return 1;
-  });
-
-  const secretObjectivesByFaction = [];
-  for (const factionName of Object.keys(factions)) {
-    secretObjectivesByFaction[factionName] = new Set();
-  }
+  const factionSecrets = new Set();
   for (const objective of secretObjectives) {
     if (!editMode) {
-      for (const factionName of (objective.factions ?? [])) {
-        secretObjectivesByFaction[factionName].add(objective);
-      }
-      for (const factionName of (objective.scorers ?? [])) {
-        secretObjectivesByFaction[factionName].add(objective);
+      if ((objective.factions ?? []).includes(factionName) ||
+          (objective.scorers ?? []).includes(factionName)) {
+        factionSecrets.add(objective);
       }
     } else {
-      for (const factionName of Object.keys(factions)) {
-        if (!(objective.factions ?? []).includes(factionName) && !(objective.scorers ?? []).includes(factionName)) {
-          secretObjectivesByFaction[factionName].add(objective);
-        }
+      if (!(objective.factions ?? []).includes(factionName) &&
+          !(objective.scorers ?? []).includes(factionName)) {
+        factionSecrets.add(objective);
       }
     }
   }
@@ -109,27 +85,14 @@ function SecretTab() {
   }
 
   return <div>
-    <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
-      {orderedFactions.map((factionName) => {
-        return <Tab key={factionName} selectTab={changeTab} id={factionName} selectedId={tabShown} content={
-          <FactionSymbol faction={factionName} size={24} />
-        } />
-      })}
-    </div>
     <div>
-      {orderedFactions.map((faction) => {
-        const isSelf = faction === factionName;
-        return <TabBody key={faction} id={faction} selectedId={tabShown} content={
-            <div>
-              {secretObjectivesByFaction[faction].length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
-              {Array.from(secretObjectivesByFaction[faction]).map((obj) => {
-                return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={isSelf ? scoreObj : null} removeObjective={editMode || !isSelf ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} viewing={factionName !== faction} />;
-              })}
-              </div> : null}
-              {isSelf ? editModeButton(secretObjectivesByFaction[faction]) : null}
-            </div>
-        } />
-      })}
+      {factionSecrets.size !== 0 ?
+        <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+          {Array.from(factionSecrets).map((obj) => {
+            return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
+          })}
+        </div> : null}
+        <div className="flexRow" style={{padding:"4px"}}>{editModeButton(factionSecrets)}</div>
     </div>
   </div>;
 }
@@ -279,17 +242,7 @@ export function ObjectiveList() {
         </div>
       } />
       <TabBody id="secret" selectedId={tabShown} content={
-        <SecretTab secretObjectives={secretObjectives} factionName={factionName} editMode={editMode} editModeButton={editModeButton("secret")} />
-        // <div>
-        //   {secretObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
-        //   {secretObjectives.map((obj) => {
-        //     return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
-        //   })}
-        //   </div> : null}
-        //   {editModeButton("secret") ? <div className="flexRow" style={{padding: "8px 0px"}}>
-        //     {editModeButton("secret")}
-        //   </div> : null}
-        // </div>
+        <SecretTab />
       } />
       <TabBody id="other" selectedId={tabShown} content={
         <div>

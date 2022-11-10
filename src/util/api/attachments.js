@@ -10,7 +10,7 @@ export function hasTech(faction, tech) {
   return !!faction.techs[tech];
 }
 
-export function attachToPlanet(mutate, gameid, attachments, planetName, attachmentName) {
+export function attachToPlanet(mutate, gameid, attachments, planetName, attachmentName, gameOptions) {
   const data = {
     action: "ATTACH_TO_PLANET",
     attachment: attachmentName,
@@ -19,7 +19,11 @@ export function attachToPlanet(mutate, gameid, attachments, planetName, attachme
 
   const updatedAttachments = {...attachments};
 
-  updatedAttachments[attachmentName].planet = planetName;
+  if (gameOptions['multiple-planet-attachments']) {
+    updatedAttachments[attachmentName].planets.push(planetName);
+  } else {
+    updatedAttachments[attachmentName].planets = [planetName];
+  }
   
   const options = {
     optimisticData: updatedAttachments,

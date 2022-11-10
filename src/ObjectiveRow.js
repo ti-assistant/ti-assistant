@@ -158,10 +158,10 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
         </div>
       </div>
       <div className="flexRow" style={{justifyContent: "flex-start"}}>
-        {(objective.scorers ?? []).map((scorer) => {
+        {(objective.scorers ?? []).map((scorer, index) => {
           if (scorer === faction) {
             return (
-              <div className="flexRow" style={{position: "relative", width: "45px"}}>
+              <div key={`${scorer}-${index}`} className="flexRow" style={{position: "relative", width: "45px"}}>
                 <div style={{width: "16px", fontSize: "8px", lineHeight: "8px", height: "16px", top: "0px", left: "28px", position: "absolute", zIndex: 40, backgroundColor: "#222", color: "red", display: "flex", alignItems: "center", fontWeight: "bold", justifyContent: "center", borderRadius: "12px", boxShadow: "1px 1px 4px black"}} onClick={() => scoreObjective(objective.name, false)}>
                   &#x2715;
                 </div>
@@ -169,7 +169,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
               </div>
             );
           }
-          return <div className="flexRow" style={{width: "45px"}}>
+          return <div key={`${scorer}-${index}`} className="flexRow" style={{width: "45px"}}>
             <FactionSymbol faction={scorer} size={42} />
           </div>
         })}

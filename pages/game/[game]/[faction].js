@@ -218,6 +218,9 @@ function FactionContent() {
   const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, { 
     refreshInterval: 5000,
   });
+  const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher, { 
+    refreshInterval: 5000,
+  });
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -257,7 +260,7 @@ function FactionContent() {
   }
 
   function addPlanet(toAdd) {
-    claimPlanet(mutate, gameid, planets, toAdd, playerFaction);
+    claimPlanet(mutate, gameid, planets, toAdd, playerFaction, options);
   }
   
   function removeTech(toRemove) {
@@ -487,6 +490,7 @@ export default function GamePage() {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <div className="flexColumn" style={{width: "100%", maxWidth: "800px"}}>
       {/* TODO: Uncomment after putting in server-side functionality for adding/removing prompts */}
       {/* <Modal closeMenu={ignorePrompt} visible={validPrompts.length > 0} title={validPrompts[0].title}
         content={
@@ -507,12 +511,13 @@ export default function GamePage() {
     {orderTitle}
     <div className="flexRow" style={{width: "100%", alignItems: "space-evenly"}}>
       {orderedFactions.map((faction) => {
-        return <BasicFactionTile faction={faction} onClick={() => swapToFaction(faction.name)} opts={{hideName: true, iconSize: 28}} />
+        return <BasicFactionTile key={faction.name} faction={faction} onClick={() => swapToFaction(faction.name)} opts={{hideName: true, iconSize: 28}} />
       })}
     </div>
   </div>
       <div style={{width: "100%", margin: "4px"}}>
         <FactionCard faction={factions[playerFaction]} style={{width: "100%"}} content={<FactionContent />} />
+      </div>
       </div>
     </div>);
 }

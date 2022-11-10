@@ -60,6 +60,8 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
+  const options = gameRef.data().options;
+
   let gamePlanetString;
   let playerPlanetString;
   let readyString;
@@ -78,10 +80,13 @@ export default async function handler(req, res) {
     case "ADD_PLANET":
       gamePlanetString = `planets.${data.planet}.owners`;
       readyString = `factions.${data.faction}.planets.${data.planet}.ready`;
+      let updateVal = [data.faction];
+      if (options['multiple-planet-owners']) {
+        updateVal = FieldValue.arrayUnion(data.faction);
+      }
       await db.collection('games').doc(gameid).update({
-        [gamePlanetString]: FieldValue.arrayUnion(data.faction),
-        [readyString]: false,
-      });
+        [gamePlanetString]: updateVal,
+      }); 
       break;
     case "REMOVE_PLANET":
       gamePlanetString = `planets.${data.planet}.owners`;

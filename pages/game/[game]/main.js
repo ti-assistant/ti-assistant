@@ -174,7 +174,7 @@ export default function SelectFactionPage() {
         phase = "STRATEGY";
         if (factions['Council Keleres']) {
           for (const planet of factions['Council Keleres'].startswith.planets) {
-            claimPlanet(mutate, gameid, planets, planet, "Council Keleres");
+            claimPlanet(mutate, gameid, planets, planet, "Council Keleres", options);
           }
           readyPlanets(mutate, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
         }

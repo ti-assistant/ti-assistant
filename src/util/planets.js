@@ -44,6 +44,9 @@ function applyPlanetAttachments(planet, attachments) {
   let updatedPlanet = {...planet};
   updatedPlanet.attributes = [...planet.attributes];
   const planetAttachments = filterToPlanetAttachments(attachments, planet.name);
+  planetAttachments.sort((a, b) => {
+    return a.ordering[planet.name] - b.ordering[planet.name];
+  });
   planetAttachments.forEach((attachment) => {
     if (attachment.attribute.includes("skip")) {
       if (hasSkip(updatedPlanet)) {

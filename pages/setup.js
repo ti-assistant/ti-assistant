@@ -165,6 +165,8 @@ const INITIAL_OPTIONS = {
     "codex-two",
     "codex-three",
   ]),
+  'multiple-planet-owners': false,
+  'multiple-planet-attachments': false,
   'allow-double-council': false,
 }
 
@@ -611,6 +613,15 @@ export default function SetupPage() {
             <button className={options.expansions.has("codex-one") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-one"), "codex-one")}>Codex I</button>
             <button className={options.expansions.has("codex-two") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-two"), "codex-two")}>Codex II</button>
             <button className={options.expansions.has("codex-three") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-three"), "codex-three")}>Codex III</button>
+          </div>
+        </div>
+        <div>
+          Assistant Options:
+          <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
+            <button className={options['multiple-planet-owners'] ? "selected" : ""} onClick={() => toggleOption(!options['multiple-planet-owners'], "multiple-planet-owners")}>Allow multiple factions to claim planet</button>
+          </div>
+          <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
+            <button className={options['multiple-planet-attachments'] ? "selected" : ""} onClick={() => toggleOption(!options['multiple-planet-attachments'], "multiple-planet-attachments")}>Allow the same attachment to be placed on multiple planets</button>
           </div>
         </div>
         {isCouncilInGame() ? 

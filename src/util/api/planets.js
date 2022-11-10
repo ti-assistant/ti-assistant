@@ -42,7 +42,7 @@ export async function exhaustPlanets(mutate, gameid, planets, toExhaust, faction
   return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data), options);
 }
 
-export async function claimPlanet(mutate, gameid, planets, planet, factionName) {
+export async function claimPlanet(mutate, gameid, planets, planet, factionName, gameOptions) {
   const data = {
     action: "ADD_PLANET",
     faction: factionName,
@@ -54,7 +54,11 @@ export async function claimPlanet(mutate, gameid, planets, planet, factionName) 
   if (!updatedPlanets[planet].owners) {
     updatedPlanets[planet].owners = [];
   }
-  updatedPlanets[planet].owners.push(factionName);
+  if (gameOptions['multiple-planet-owners']) {
+    updatedPlanets[planet].owners.push(factionName);
+  } else {
+    updatedPlanets[planet].owners = [factionName];
+  }
   updatedPlanets[planet].ready = false;
 
   const options = {

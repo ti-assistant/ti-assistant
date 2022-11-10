@@ -170,6 +170,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
 
@@ -244,7 +245,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
     if (attachments[name].planets.includes(planet.name)) {
       removeFromPlanet(mutate, gameid, attachments, planet.name, name);
     } else {
-      attachToPlanet(mutate, gameid, attachments, planet.name, name);
+      attachToPlanet(mutate, gameid, attachments, planet.name, name, options);
     }
   }
 
@@ -348,9 +349,9 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
       : null} */}
       {updatePlanet !== undefined ?
           <div className="flexColumn" style={{height: "100%"}}>
-            <button onClick={() => togglePlanet(planet.name)}>
+            {/* <button onClick={() => togglePlanet(planet.name)}>
                 {planet.ready ? "Exhaust" : "Ready"}
-            </button>
+            </button> */}
             {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
           </div>
       : null}

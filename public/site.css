@@ -25,7 +25,7 @@ body {
   color: #eee;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 900px) {
   body {
     margin: 0px 8px;
   }
@@ -91,6 +91,16 @@ button.selected {
   transform-origin: 100% 0px;
 }
 
+@media only screen and (max-width: 900px) {
+  .leftSidebar {
+    display: none;
+  }
+  
+  .rightSidebar {
+    display: none;
+  }
+}
+
 .myriadPro {
   font-family: "Myriad Pro";
 }
@@ -134,7 +144,7 @@ button.selected {
   height: 0; 
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  
+
   border-bottom: 8px solid #ddd;
   box-sizing: border-box;
   cursor: pointer;

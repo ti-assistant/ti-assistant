@@ -10,6 +10,12 @@ export function revealObjective(mutate, gameid, objectives, factionName, objecti
   const updatedObjectives = {...objectives};
 
   updatedObjectives[objectiveName].selected = true;
+  if (updatedObjectives[objectiveName].type === "secret") {
+    updatedObjectives[objectiveName].factions = [
+      ...(updatedObjectives[objectiveName].factions ?? []),
+      factionName,
+    ];
+  }
 
   const options = {
     optimisticData: updatedObjectives,
@@ -28,6 +34,10 @@ export function removeObjective(mutate, gameid, objectives, factionName, objecti
   const updatedObjectives = {...objectives};
 
   updatedObjectives[objectiveName].selected = false;
+  updatedObjectives[objectiveName].scorers = [];
+  if (updatedObjectives[objectiveName].type === "secret") {
+    updatedObjectives[objectiveName].factions = (updatedObjectives[objectiveName].factions ?? []).filter((faction) => faction !== factionName);
+  }
 
   const options = {
     optimisticData: updatedObjectives,

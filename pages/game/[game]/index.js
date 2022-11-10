@@ -134,7 +134,7 @@ function Header() {
       SETUP PHASE
     </div> */}
     <h2>Twilight Imperium Assistant</h2>
-    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
+    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "44px"}}>
       {qrCode ? <img src={qrCode} /> : null}
       <div>Game ID: {gameid}</div>
     </div>

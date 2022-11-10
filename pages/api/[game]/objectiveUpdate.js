@@ -43,9 +43,10 @@ export default async function handler(req, res) {
         const secret = req.cookies.secret;
         const objectiveString = `${secret}.objectives.${data.objective}.selected`;
         const factionString = `${secret}.objectives.${data.objective}.factions`;
-
+        const scorersString = `objectives.${data.objective}.scorers`;
         await db.collection('games').doc(gameid).update({
-          [objectiveString]: true,
+          [objectiveString]: false,
+          [scorersString]: [],
           [factionString]: FieldValue.arrayRemove(data.faction),
         });
       } else {
