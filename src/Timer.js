@@ -9,6 +9,20 @@ import { hasTech } from './util/api/techs';
 import { fetcher } from './util/api/util';
 import { useBetween } from 'use-between';
 
+const useCurrentAgenda = () => {
+  const [currentAgenda, setCurrentAgenda] = useState(1);
+
+  const advanceAgendaPhase = useCallback(() => setCurrentAgenda(2));
+  const resetAgendaPhase = useCallback(() => setCurrentAgenda(1));
+  return {
+    currentAgenda,
+    advanceAgendaPhase,
+    resetAgendaPhase,
+  };
+};
+
+export const useSharedCurrentAgenda = () => useBetween(useCurrentAgenda);
+
 const usePaused = () => {
   const [paused, setPaused] = useState(false);
 
@@ -36,7 +50,7 @@ export function TimerDisplay({ time }) {
 export function AgendaTimer({}) {
   const [ firstAgendaTimer, setFirstAgendaTimer ] = useState(0);
   const [ secondAgendaTimer, setSecondAgendaTimer ] = useState(0);
-  const [ currentAgenda, setCurrentAgenda ] = useState(1);
+  const { currentAgenda, advanceAgendaPhase } = useSharedCurrentAgenda();
   const { paused } = useSharedPause();
 
 
@@ -83,7 +97,7 @@ export function AgendaTimer({}) {
       <div className="flexRow" style={{gap: "12px"}}>
       {/* <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button> */}
       {currentAgenda === 1 ?
-        <button onClick={() => setCurrentAgenda(2)}>Second Agenda</button>
+        <button onClick={advanceAgendaPhase}>Second Agenda</button>
       : null}
       </div>  
     </div>

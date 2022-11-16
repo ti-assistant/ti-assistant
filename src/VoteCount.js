@@ -2,12 +2,15 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
+import { useSharedCurrentAgenda } from './Timer';
 import { setSpeaker } from './util/api/state';
 import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from './util/planets';
 import { FactionTile } from '/src/FactionCard.js'
+
+const enableVotingTargets = false;
 
 export function VoteCount({ factionName, opts = {} }) {
   const router = useRouter();
@@ -27,6 +30,11 @@ export function VoteCount({ factionName, opts = {} }) {
   });
   const [ usingPredictiveIntelligence, setUsingPredictiveIntelligence ] = useState(true);
   const [ castVotes, setCastVotes ] = useState(0);
+  const { currentAgenda } = useSharedCurrentAgenda();
+
+  useEffect(() => {
+    setCastVotes(0);
+  }, [currentAgenda]);
 
   if (factionError || planetError || attachmentsError) {
     return (<div>Failed to load faction info</div>);
@@ -118,6 +126,9 @@ export function VoteCount({ factionName, opts = {} }) {
           <div className="flexRow" style={{width: "32px"}}>{castVotes}</div>
           {<div className="arrowUp" onClick={() => setCastVotes(castVotes + 1)}></div>}
         </div>
+        {/* <div className="flexRow">
+          <button style={{width: "42px"}}>Select Target</button>
+        </div> */}
       </div>
     </div>
   );

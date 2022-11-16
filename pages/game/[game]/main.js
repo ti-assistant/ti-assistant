@@ -19,7 +19,7 @@ import { ObjectiveRow } from '../../../src/ObjectiveRow';
 import { removeObjective } from '../../../src/util/api/objectives';
 import { Modal } from "/src/Modal.js";
 import { VoteCount } from '../../../src/VoteCount';
-import { AgendaTimer, FactionTimer, GameTimer } from '../../../src/Timer';
+import { AgendaTimer, FactionTimer, GameTimer, useSharedCurrentAgenda } from '../../../src/Timer';
 import { claimPlanet, readyPlanets } from '../../../src/util/api/planets';
 
 function InfoContent({content}) {
@@ -67,6 +67,7 @@ export default function SelectFactionPage() {
   const [ infoModal, setInfoModal ] = useState({
     show: false,
   });
+  const { resetAgendaPhase } = useSharedCurrentAgenda();
 
   if (!qrCode && gameid) {
     QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
@@ -205,6 +206,7 @@ export default function SelectFactionPage() {
         break;
       case "AGENDA":
         phase = "STRATEGY";
+        resetAgendaPhase();
         activeFaction = null;
         for (const faction of Object.values(factions)) {
           if (faction.order === 1) {
@@ -678,13 +680,13 @@ export default function SelectFactionPage() {
             </button> */}
             <Header />
             <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-              <div className="flexColumn" style={{flexBasis: "25%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "400px"}}>
+              <div className="flexColumn" style={{flexBasis: "30%", gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px"}}>
                 <div className="flexRow">Initiative Order</div>
                 {orderedStrategyCards.map((card) => {
                   return <StrategyCard key={card.name} card={card} active={!card.used} />
                 })}
               </div>
-              <div className="flexColumn" style={{flexBasis: "50%", gap: "16px"}}>
+              <div className="flexColumn" style={{flexBasis: "45%", gap: "16px"}}>
                 <div className="flexRow" style={{gap: "8px"}}>
                   {activeFaction ?
                   <div className="flexColumn" style={{alignItems: "center", gap: "12px"}}>
@@ -973,6 +975,7 @@ export default function SelectFactionPage() {
                   <div style={{textAlign: "center", flexGrow: 4}}>Voting Order</div>
                   <div style={{textAlign: "center", width: "80px"}}>Available Votes</div>
                   <div style={{textAlign: "center", width: "80px"}}>Cast Votes</div>
+                  {/* <div style={{textAlign: "center", width: "60px"}}>Target</div> */}
                 </div>
                 {votingOrder.map((faction) => {
                   return <VoteCount key={faction.name} factionName={faction.name} />

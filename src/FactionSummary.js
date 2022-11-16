@@ -56,65 +56,61 @@ export function TechSummary({ techs }) {
     }
   }
 
+  const techOrder = [
+    "red",
+    "green",
+    "blue",
+    "yellow",
+    "upgrade",
+  ];
+
+  techs.sort((a, b) => {
+    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+    if (typeDiff !== 0) {
+      return typeDiff;
+    }
+    const prereqDiff = a.prereqs.length - b.prereqs.length;
+    if (prereqDiff !== 0) {
+      return prereqDiff;
+    }
+    if (a.name < b.name) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+
   return (
-  <div className="flexColumn" style={{flexBasis: "30%", fontSize: "16px", height: "90px", justifyContent: "space-evenly"}}>
+  <div className="flexColumn hoverParent" style={{flexBasis: "30%", fontSize: "16px", height: "90px", justifyContent: "space-evenly"}}>
+    <div className="hoverInfo left" style={{marginRight: "20px"}}>
+      {techs.length > 0 ?
+          <div className="flexColumn">
+            <TechList techs={techs} />
+          </div>
+      : null}
+    </div>
     <div className="flexRow" style={{width: "100%"}}>
       <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
         <div className="flexColumn" style={{flexBasis: "30%"}}>{redTechs.length}</div>
         <TechIcon type={"red"} width="21px" height="22px" />
-        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
-          {redTechs.length > 0 ?
-          <div className="flexColumn">
-            <TechList techs={redTechs} />
-          </div>
-          : null}
-        </div>
       </div>
       <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
         <div className="flexColumn" style={{flexBasis: "30%"}}>{greenTechs.length}</div>
         <TechIcon type={"green"} width="21px" height="22px" />
-        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
-          {greenTechs.length > 0 ?
-          <div className="flexColumn">
-            <TechList techs={greenTechs} />
-          </div>
-          : null}
-        </div>
       </div>
     </div>
     <div className="flexRow" style={{width: "100%"}}>
       <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
         <div className="flexColumn" style={{flexBasis: "30%"}}>{blueTechs.length}</div>
         <TechIcon type={"blue"} width="21px" height="22px" />
-        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
-          {blueTechs.length > 0 ?
-          <div className="flexColumn">
-            <TechList techs={blueTechs} />
-          </div>
-          : null}
-        </div>
       </div>
       <div className="flexRow hoverParent" style={{flexBasis: "50%", justifyContent: "flex-start", gap: "6px"}}>
         <div className="flexColumn" style={{flexBasis: "30%"}}>{yellowTechs.length}</div>
         <TechIcon type={"yellow"} width="21px" height="22px" />
-        <div className="hoverInfo right" style={{marginLeft: "0px"}}>
-          {yellowTechs.length > 0 ?
-          <div className="flexColumn">
-            <TechList techs={yellowTechs} />
-          </div>
-          : null}
-        </div>
       </div>
     </div>
     <div className="flexRow hoverParent" style={{width: "100%"}}>
       {upgradeTechs.length} {pluralize("Upgrade", upgradeTechs.length)}
-      <div className="hoverInfo right" style={{marginLeft: "0px"}}>
-          {upgradeTechs.length > 0 ?
-          <div className="flexColumn">
-            <TechList techs={upgradeTechs} />
-          </div>
-          : null}
-        </div>
     </div>
   </div>
   );

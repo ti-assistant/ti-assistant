@@ -132,10 +132,11 @@ const unitOrder = [
 ];
 
 const techOrder = [
+  "red",
   "green",
   "blue",
   "yellow",
-  "red",
+  "upgrade",
 ];
 
 function StartingComponents({ faction }) {
