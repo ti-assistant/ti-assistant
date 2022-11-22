@@ -15,7 +15,7 @@ export function StrategyCard({ card, active, onClick, factionActions, opts = {} 
     return (<div>Failed to load faction info</div>);
   }
 
-  const color = (active ? card.color : "#555");
+  const color = (active && !opts.noColor ? card.color : "#555");
   const textColor = (active ? "#eee" : "#555");
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;

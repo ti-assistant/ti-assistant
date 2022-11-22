@@ -81,7 +81,7 @@ export function TechSummary({ techs }) {
   });
 
   return (
-  <div className="flexColumn hoverParent" style={{flexBasis: "30%", fontSize: "16px", height: "90px", justifyContent: "space-evenly"}}>
+  <div className="flexColumn hoverParent" style={{flexBasis: "30%", flexGrow: 2, maxWidth: "120px", fontSize: "16px", height: "90px", justifyContent: "space-evenly"}}>
     <div className="hoverInfo left" style={{marginRight: "20px"}}>
       {techs.length > 0 ?
           <div className="flexColumn">
@@ -152,7 +152,7 @@ export function PlanetSummary({ planets, options = {} }) {
   }
 
   return (
-  <div className="flexColumn" style={{flexBasis: "30%"}}>
+  <div className="flexColumn" style={{flexBasis: "30%", flexGrow: 2, maxWidth: "120px"}}>
     <div className="flexRow">
       <Resources
         resources={resources}
@@ -236,8 +236,8 @@ export function FactionSummary({ factionName, options={} }) {
       {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
         <FactionSymbol faction={factionName} size={90} />
       </div> : null}
-      <TechSummary techs={ownedTechs} />
-      <div className="flexColumn" style={{flexBasis: "30%", fontSize: "28px"}}>
+      {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
+      <div className="flexColumn" style={{flexBasis: "30%", height: "91px", fontSize: "28px"}}>
         <div className="flexRow" style={{gap: "4px", fontSize: "40px"}}>
           {VPs > 0 ? <div className="arrowDown" onClick={() => manualVpAdjust(false)}></div> : <div style={{width: "12px"}}></div>}
           <div className="flexRow" style={{width: "32px"}}>{VPs}</div>
@@ -245,6 +245,6 @@ export function FactionSummary({ factionName, options={} }) {
         </div>
         <div style={{fontSize: "28px"}}>{pluralize('VP', VPs)}</div>
       </div>
-      <PlanetSummary planets={updatedPlanets} options={options} />
+      {options.hidePlanets ? null : <PlanetSummary planets={updatedPlanets} options={options} />}
     </div>);
 }
