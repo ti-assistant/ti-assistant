@@ -80,10 +80,13 @@ export default async function handler(req, res) {
         }
       }
       // Don't block pick if it's the only one left.
-      if (numPickedCards < 8) {
-        const invalidString = `strategycards.${data.card}.invalid`;
-        updates[invalidString] = true;
-      }
+      // if (numPickedCards < 8) {
+      //   const invalidString = `strategycards.${data.card}.invalid`;
+      //   updates[invalidString] = true;
+      // }
+      
+      const orderString = `strategycards.${data.card}.order`;
+      updates[orderString] = FieldValue.delete();
       await db.collection('games').doc(gameid).update(updates);
       break;
     }

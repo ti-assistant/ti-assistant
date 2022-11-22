@@ -424,6 +424,23 @@ export default function SelectFactionPage() {
         return numFactions === numPicked;
       }
 
+      const activefaction = factions[state.activeplayer] ?? null;
+      const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
+
+      function undoPick() {
+
+        let cardName;
+
+        orderedStrategyCards.map(([name, card]) => {
+          if (card.faction) {
+            if (didFactionJustGo(card.faction)) {
+              cardName = name;
+            }
+          }
+        });
+        unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
+      }
+
       function publicDisgrace(cardName) {
         unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
       }
@@ -438,8 +455,6 @@ export default function SelectFactionPage() {
         setFirstStrategyCard(mutate, gameid, strategyCards, cardName);
       }
       
-      const activefaction = factions[state.activeplayer] ?? null;
-      const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
       // let ondeckfaction;
       // if (activefaction) {
       //   const nextorder = activefaction.order + 1;
@@ -555,6 +570,9 @@ export default function SelectFactionPage() {
                   return <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)} factionActions={factionActions} />
                 })}
               </div>
+              {!activefaction || activefaction.name !== state.speaker ?
+                <button onClick={() => undoPick()}>Undo</button>
+              : null}
               {activefaction ? null :
                 <button onClick={() => nextPhase()}>Advance to Action Phase</button>
               }

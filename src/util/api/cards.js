@@ -112,15 +112,14 @@ export async function unassignStrategyCard(mutate, gameid, strategyCards, cardNa
       numPickedCards++;
     }
   }
-  if (numPickedCards < 8) {
-    updatedCards[cardName].invalid = true;
-  }
+  // if (numPickedCards < 8) {
+  //   updatedCards[cardName].invalid = true;
+  // }
   delete updatedCards[cardName].faction;
-  // Need to reset the card order if Naalu picked it.
-  // TODO: Consider doing this at the end of the phase.
-  if (factionName === "Naalu Collective") {
+  // Need to reset the card order
+  // if (factionName === "Naalu Collective") {
     updatedCards[cardName].order = strategyCardOrder[cardName];
-  }
+  // }
 
   const options = {
     optimisticData: updatedCards,

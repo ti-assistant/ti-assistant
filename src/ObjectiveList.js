@@ -75,11 +75,17 @@ function SecretTab() {
     if (editMode) {
       return (<button onClick={toggleEditMode}>Done</button>);
     }
-    if (objs.size <= 3) {
+    // It's possible for 5 secret objectives to be scored by a player.
+    // 3 normally, 1 from Obsidian, and 1 from Classified Document Leaks.
+    if (objs.size <= 4) {
       return (<div className="flexColumn" style={{gap: "4px"}}>
         <button onClick={toggleEditMode}>Pick Objective</button>
         <div style={{fontSize: "16px", textAlign: "center"}}>Secret Objectives will only be revealed to other players when scored</div>
       </div>);
+    } else {
+      return (<div className="flexColumn" style={{gap: "4px"}}>
+      <div style={{fontSize: "16px", textAlign: "center"}}>Secret Objectives will only be revealed to other players when scored</div>
+    </div>);
     }
     return null;
   }

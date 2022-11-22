@@ -32,6 +32,7 @@ export function VoteCount({ factionName, opts = {} }) {
   const [ castVotes, setCastVotes ] = useState(0);
   const { currentAgenda } = useSharedCurrentAgenda();
 
+  // Reset cast votes whenever current agenda changes.
   useEffect(() => {
     setCastVotes(0);
   }, [currentAgenda]);
