@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import useSWR, { useSWRConfig } from 'swr'
+import useSWR, { mutate, useSWRConfig } from 'swr'
 import { useEffect, useState } from "react";
 import { FactionCard, FactionTile } from '/src/FactionCard.js'
 import { TechChoice } from '/src/TechChoice.js'
@@ -34,27 +34,13 @@ export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
-  const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
-  const { data: planets, planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
-  const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
-  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
-  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
-  const { data: options, optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: techs, techError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
+  const { data: planets, planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: strategyCards, strategyCardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: options, optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
   const [ showSpeakerModal, setShowSpeakerModal ] = useState(false);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
@@ -1079,6 +1065,18 @@ export default function SelectFactionPage() {
   );
 }
 
+function refreshData(gameid, mutate) {
+  mutate(`/api/${gameid}/state`, fetcher(`/api/${gameid}/state`));
+  mutate(`/api/${gameid}/techs`, fetcher(`/api/${gameid}/techs`));
+  mutate(`/api/${gameid}/planets`, fetcher(`/api/${gameid}/planets`));
+  mutate(`/api/${gameid}/strategyCards`, fetcher(`/api/${gameid}/strategyCards`));
+  mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`));
+  mutate(`/api/${gameid}/objectives`, fetcher(`/api/${gameid}/objectives`));
+  mutate(`/api/${gameid}/options`, fetcher(`/api/${gameid}/options`));
+  mutate(`/api/${gameid}/agendas`, fetcher(`/api/${gameid}/agendas`));
+
+}
+
 function Sidebar({side, content}) {
   const className = `${side}Sidebar`;
   return (
@@ -1091,9 +1089,8 @@ function Sidebar({side, content}) {
 function Header() {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
+  const { mutate } = useSWRConfig();
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
 
   if (!qrCode && gameid) {
@@ -1140,9 +1137,10 @@ function Header() {
       SETUP PHASE
     </div> */}
     <h2>Twilight Imperium Assistant</h2>
-    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
+    <div className="flexRow" style={{gap: "8px", alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
       {qrCode ? <img src={qrCode} /> : null}
       <div>Game ID: {gameid}</div>
+      <button onClick={() => refreshData(gameid, mutate)}>Refresh</button>
     </div>
     <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "288px", top: "16px"}}>
       <GameTimer />

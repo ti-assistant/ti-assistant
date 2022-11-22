@@ -179,7 +179,7 @@ button.selected {
   left: 100%;
   margin-left: 16px;
   height: 0px;
-  min-width: 240px;
+  max-width: 240px;
 }
 
 .hoverInfo.left {

@@ -182,17 +182,11 @@ export function FactionSummary({ factionName, options={} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher, {
-    refreshInterval: 5000,
-  });
-  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
-  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, { refreshInterval: 5000 });
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${factionName}` : null, fetcher, {
-    refreshInterval: 5000,
-  });
-  const { data: techs, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${factionName}` : null, fetcher, {
-    refreshInterval: 5000,
-  });
+  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${factionName}` : null, fetcher);
+  const { data: techs, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${factionName}` : null, fetcher);
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);

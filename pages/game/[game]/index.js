@@ -102,9 +102,7 @@ function Sidebar({side, content}) {
 function Header() {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
+  const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
 
   if (!qrCode && gameid) {

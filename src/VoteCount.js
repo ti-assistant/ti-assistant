@@ -16,18 +16,10 @@ export function VoteCount({ factionName, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: factions, factionError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher, {
-    refreshInterval: 5000,
-  });
-  const { data: planets, planetError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher, {
-    refreshInterval: 5000,
-  });
-  const { data: attachments, attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher, {
-    refreshInterval: 5000,
-  });
-  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher, {
-    refreshInterval: 5000,
-  });
+  const { data: factions, factionError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: planets, planetError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: attachments, attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [ usingPredictiveIntelligence, setUsingPredictiveIntelligence ] = useState(true);
   const [ castVotes, setCastVotes ] = useState(0);
   const { currentAgenda } = useSharedCurrentAgenda();

@@ -25,9 +25,7 @@ function SecretTab() {
   const router = useRouter();
   const { game: gameid, faction: factionName } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { 
-    refreshInterval: 5000,
-  });
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const [editMode, setEditMode] = useState(false);
 
   const secretObjectives = Object.values(objectives).filter((obj) => {
@@ -108,7 +106,7 @@ export function ObjectiveList() {
   const router = useRouter();
   const { game: gameid, faction: factionName } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, { refreshInterval: 5000 });
+  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const [tabShown, setTabShown] = useState("stage-one");
   const [editMode, setEditMode] = useState(false);
 
