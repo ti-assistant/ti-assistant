@@ -8,8 +8,18 @@ import { getNextIndex } from '../util/util';
 import { fetcher, poster } from '../util/api/util';
 import { BasicFactionTile } from '../FactionTile';
 import { FactionTimer } from '../Timer';
-import SummaryColumn from '../main/SummaryColumn';
 import { FactionCard } from '../FactionCard';
+import { Modal } from '../Modal';
+import { useState } from 'react';
+import SummaryColumn from './SummaryColumn';
+
+function InfoContent({content}) {
+  return (
+    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
+      {content}
+    </div>
+  );
+}
 
 export default function StrategyPhase() {
   const router = useRouter();
@@ -18,6 +28,9 @@ export default function StrategyPhase() {
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: strategyCards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const [ infoModal, setInfoModal ] = useState({
+    show: false,
+  });
 
   function nextPhase(skipAgenda = false) {
     const data = {

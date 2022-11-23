@@ -23,6 +23,10 @@ export default function ActionPhase() {
   const [ showSpeakerModal, setShowSpeakerModal ] = useState(false);
   const [ selectedActions, setSelectedActions ] = useState([]);
 
+  if (!factions || !state || !strategyCards) {
+    return <div>Loading...</div>;
+  }
+
   function nextPhase(skipAgenda = false) {
     const data = {
       action: "ADVANCE_PHASE",
