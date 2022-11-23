@@ -25,6 +25,9 @@ export default function StrategyPhase() {
       skipAgenda: skipAgenda,
     };
     const phase = "ACTION";
+    let minCard = {
+      order: Number.MAX_SAFE_INTEGER,
+    };
     for (const strategyCard of Object.values(strategyCards)) {
       if (strategyCard.faction && strategyCard.order < minCard.order) {
         minCard = strategyCard;
