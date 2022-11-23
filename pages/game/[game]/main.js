@@ -23,6 +23,7 @@ import { AgendaTimer, FactionTimer, GameTimer, useSharedCurrentAgenda } from '..
 import { claimPlanet, readyPlanets } from '../../../src/util/api/planets';
 import AgendaPhase from '../../../src/main/AgendaPhase';
 import SummaryColumn from '../../../src/main/SummaryColumn';
+import SetupPhase from '../../../src/main/SetupPhase';
 
 function InfoContent({content}) {
   return (
@@ -253,61 +254,10 @@ export default function SelectFactionPage() {
 
   switch (state.phase) {
     case "SETUP":
-      const stageOneObjectives = Object.values(objectives ?? {}).filter((objective) => objective.type === "stage-one");
-      const selectedStageOneObjectives = stageOneObjectives.filter((objective) => objective.selected);
-
-      function statusPhaseComplete() {
-        return factionSubFactionChoicesComplete() &&
-          factionTechChoicesComplete() &&
-          selectedStageOneObjectives.length > 1;
-      }
-    
       return (
-        <div>
-          <ObjectiveModal visible={showObjectiveModal} type="stage-one" onComplete={() => setShowObjectiveModal(false)} />
-          <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
-          <div className="flexColumn" style={{alignItems: "center", height: "100vh"}}>
-            {/* <button style={{position: "fixed", top: "20px", left: "40px"}} onClick={() => setShowSpeakerModal(true)}>
-              Set Speaker
-            </button> */}
-            <Header />
-            <ol className='flexColumn' style={{alignItems: "center", margin: "0px", padding: "0px", fontSize: "24px", gap: "8px"}}>
-              <li>Build the galaxy</li>
-              <li>Shuffle decks</li>
-              <li>Gather starting components</li>
-              <div className="flexRow" style={{alignItems:"stretch", justifyContent: "space-between", gap: "8px"}}>
-                {orderedFactions.map(([name, faction]) => {
-                  return <FactionCard key={name} faction={faction} opts={{
-                    displayStartingComponents: true,
-                    fontSize: "16px",
-                  }} />
-                })}
-              </div>
-              <li>Draw 2 secret objectives and keep one</li>
-              <li>Re-shuffle secret objectives</li>
-              <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
-                Draw 5 stage one objectives and reveal 2</div></li>
-                {selectedStageOneObjectives.length > 0 ?
-                 <ObjectiveRow objective={selectedStageOneObjectives[0]} removeObjective={() => removeObj(selectedStageOneObjectives[0].name)} viewing={true} /> :
-                 <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
-                {selectedStageOneObjectives.length > 1 ?
-                 <ObjectiveRow objective={selectedStageOneObjectives[1]} removeObjective={() => removeObj(selectedStageOneObjectives[1].name)} /> :
-                 <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
-              <li><div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-              <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
-                {/* <FactionTile faction={factions[state.speaker]} opts={{fontSize: "18px"}} /> */}
-                Draw 5 stage two objectives</div></li>
-            </ol>
-            {!factionTechChoicesComplete() ?
-              <div style={{color: "darkred"}}>Select all faction tech choices</div> :
-              null}
-            {!factionSubFactionChoicesComplete() ?
-              <div style={{color: "darkred"}}>Select Council Keleres sub-faction</div> :
-              null}
-            {selectedStageOneObjectives.length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
-            <button disabled={!statusPhaseComplete()} onClick={() => nextPhase()}>Start Game</button>
-          </div>
+        <div className="flexColumn" style={{alignItems: "center"}}>
+          <Header />
+          <SetupPhase />
         </div>
       );
     case "STRATEGY": {

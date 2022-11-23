@@ -154,7 +154,7 @@ function StartingComponents({ faction }) {
   if (techError) {
     return (<div>Failed to load techs</div>);
   }
-  if (!techs || !factions) {
+  if (!techs || !factions || !options) {
     return (<div>Loading...</div>);
   }
 
