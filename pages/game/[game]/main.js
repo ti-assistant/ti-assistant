@@ -21,6 +21,8 @@ import { Modal } from "/src/Modal.js";
 import { VoteCount } from '../../../src/VoteCount';
 import { AgendaTimer, FactionTimer, GameTimer, useSharedCurrentAgenda } from '../../../src/Timer';
 import { claimPlanet, readyPlanets } from '../../../src/util/api/planets';
+import AgendaPhase from '../../../src/main/AgendaPhase';
+import SummaryColumn from '../../../src/main/SummaryColumn';
 
 function InfoContent({content}) {
   return (
@@ -247,15 +249,6 @@ export default function SelectFactionPage() {
       title: title,
       content: content,
     });
-  }
-
-  let maxSummaryWidth = "400px";
-  if (!showPlanets && !showTechs) {
-    maxSummaryWidth = "200px";
-  } else if (!showPlanets) {
-    maxSummaryWidth = "280px";
-  } else if (!showTechs) {
-    maxSummaryWidth = "280px";
   }
 
   switch (state.phase) {
@@ -575,16 +568,7 @@ export default function SelectFactionPage() {
               }
               </div>
               <div className="flexColumn" style={{flexBasis: "33%", maxwidth: "400px"}}>
-                <div className="flexColumn" style={{width: "100%", alignItems: "stretch", gap: "6px", maxWidth: maxSummaryWidth}}>
-                  <div className="flexRow">Speaker Order</div>
-                  <div className="flexRow">
-                    <button onClick={() => setShowTechs(!showTechs)}>{showTechs ? "Hide Techs" : "Show Techs"}</button>
-                    <button onClick={() => setShowPlanets(!showPlanets)}>{showPlanets ? "Hide Planets" : "Show Planets"}</button>
-                  </div>
-                  {orderedFactions.map(([name, faction]) => {
-                    return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true, hidePlanets: !showPlanets, hideTechs: !showTechs}} />} />
-                  })}
-                </div>
+                <SummaryColumn />
               </div>
             </div>
         </div>
@@ -733,16 +717,7 @@ export default function SelectFactionPage() {
                 : null}
               </div>
               <div className="flexColumn" style={{flexBasis: "25%", maxWidth: "400px"}}>
-                <div className="flexColumn" style={{width: "100%", alignItems: "stretch", gap: "6px", maxWidth: maxSummaryWidth}}>
-                  <div className="flexRow">Speaker Order</div>
-                  <div className="flexRow">
-                    <button onClick={() => setShowTechs(!showTechs)}>{showTechs ? "Hide Techs" : "Show Techs"}</button>
-                    <button onClick={() => setShowPlanets(!showPlanets)}>{showPlanets ? "Hide Planets" : "Show Planets"}</button>
-                  </div>
-                  {orderedFactions.map(([name, faction]) => {
-                    return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true, hidePlanets: !showPlanets, hideTechs: !showTechs}} />} />
-                  })}
-                </div>
+                <SummaryColumn />
               </div>
             </div>
           </div>
@@ -967,98 +942,18 @@ export default function SelectFactionPage() {
             </div>
             </div>
             <div className="flexColumn" style={{flexBasis: "33%", maxWidth: "400px"}}>
-              <div className="flexColumn" style={{width: "100%", alignItems: "stretch", gap: "6px", maxWidth: maxSummaryWidth}}>
-                <div className="flexRow">Speaker Order</div>
-                <div className="flexRow">
-                    <button onClick={() => setShowTechs(!showTechs)}>{showTechs ? "Hide Techs" : "Show Techs"}</button>
-                    <button onClick={() => setShowPlanets(!showPlanets)}>{showPlanets ? "Hide Planets" : "Show Planets"}</button>
-                  </div>
-                {orderedFactions.map(([name, faction]) => {
-                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true, hidePlanets: !showPlanets, hideTechs: !showTechs}} />} />
-                })}
-              </div>
+              <SummaryColumn />
             </div>
           </div>
         </div>
       );
     case "AGENDA":
-      const votingOrder = Object.values(factions).sort((a, b) => {
-        if (a.name === "Argent Flight") {
-          return -1;
-        }
-        if (b.name === "Argent Flight") {
-          return 1;
-        }
-        if (a.order === 1) {
-          return 1;
-        }
-        if (b.order === 1) {
-          return -1;
-        }
-        return a.order - b.order;
-      });
-    
       return (
         <div className="flexColumn" style={{alignItems: "center"}}>
-          <SpeakerModal visible={showSpeakerModal} onComplete={() => setShowSpeakerModal(false)} />
-            <Header />
-            <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-            <div className="flexColumn" style={{flexBasis: "25%", gap: "4px", alignItems: "stretch"}}>
-                <div className="flexRow" style={{gap: "12px"}}>
-                  <div style={{textAlign: "center", flexGrow: 4}}>Voting Order</div>
-                  <div style={{textAlign: "center", width: "80px"}}>Available Votes</div>
-                  <div style={{textAlign: "center", width: "80px"}}>Cast Votes</div>
-                  {/* <div style={{textAlign: "center", width: "60px"}}>Target</div> */}
-                </div>
-                {votingOrder.map((faction) => {
-                  return <VoteCount key={faction.name} factionName={faction.name} />
-                })}
-              </div>
-            <div className='flexColumn' style={{flexBasis: "30%", gap: "12px"}}>            
-              <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px"}}>
-                <AgendaTimer />
-                <li>
-                  <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                    <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
-                      Reveal and read one Agenda
-                  </div>
-                </li>
-                <li>In Speaker Order:
-                <div className="flexColumn" style={{fontSize: "22px", paddingLeft: "8px", gap: "4px", alignItems: "flex-start"}}>
-                  <div>Perform any <i>When an Agenda is revealed</i> actions</div>
-                  <div>Perform any <i>After an Agenda is revealed</i> actions</div>
-                </div>
-                </li>
-                <li>Discuss</li>
-                <li>In Voting Order: Cast votes (or abstain)</li>
-                <li>
-                  <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-                    <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
-                      Choose outcome if tied
-                  </div>
-                </li>
-                <li>Resolve agenda outcome</li>
-                <li>Repeat Steps 1 to 6</li>
-                <li>Ready all planets</li>
-            </ol>
-              <button onClick={() => nextPhase()}>Start Next Round</button>
-            </div>
-            <div className="flexColumn" style={{flexBasis: "33%", maxWidth: "400px"}}>
-              <div className="flexColumn" style={{width: "100%", alignItems: "stretch", gap: "6px", maxWidth: maxSummaryWidth}}>
-                <div className="flexRow">Speaker Order</div>
-                <div className="flexRow">
-                    <button onClick={() => setShowTechs(!showTechs)}>{showTechs ? "Hide Techs" : "Show Techs"}</button>
-                    <button onClick={() => setShowPlanets(!showPlanets)}>{showPlanets ? "Hide Planets" : "Show Planets"}</button>
-                  </div>
-                {orderedFactions.map(([name, faction]) => {
-                  return <FactionCard key={name} faction={faction} opts={{hideTitle: true}} content={<FactionSummary factionName={name} options={{showIcon: true, hidePlanets: !showPlanets, hideTechs: !showTechs}} />} />
-                })}
-              </div>
-            </div>
-          </div>
+          <Header />
+          <AgendaPhase />
         </div>
       );
-
   }
   return (
     <div>Error...</div>

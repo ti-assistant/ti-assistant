@@ -153,7 +153,7 @@ export function GameTimer({}) {
   }
 
   return (
-    <div className="flexColumn" style={{width: "100%", gap: "4px"}}>
+    <div className="flexColumn" style={{width: "100%", gap: "4px", whiteSpace: "nowrap"}}>
       <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}>
         <div style={{fontSize: "18px"}}>Game Time</div>
         <TimerDisplay time={!state ? 0 : gameTimer} />
