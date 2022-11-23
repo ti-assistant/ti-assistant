@@ -9,14 +9,6 @@ import { ObjectiveRow } from '../ObjectiveRow';
 import { removeObjective } from '../util/api/objectives';
 import { claimPlanet, readyPlanets } from '../util/api/planets';
 
-function InfoContent({content}) {
-  return (
-    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
-      {content}
-    </div>
-  );
-}
-
 export default function SetupPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -25,6 +17,7 @@ export default function SetupPhase() {
   const { data: planets } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
 
@@ -76,11 +69,11 @@ export default function SetupPhase() {
     state.phase = phase;
     state.activeplayer = activeFactionName;
 
-    const options = {
+    const updateOptions = {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), updateOptions);
   }
 
   function removeObj(objectiveName) {
@@ -119,13 +112,13 @@ export default function SetupPhase() {
             <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
             Draw 5 stage one objectives and reveal 2
           </div>
-          {selectedStageOneObjectives.length > 0 ?
-            <ObjectiveRow objective={selectedStageOneObjectives[0]} removeObjective={() => removeObj(selectedStageOneObjectives[0].name)} viewing={true} /> :
-            <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
-          {selectedStageOneObjectives.length > 1 ?
-            <ObjectiveRow objective={selectedStageOneObjectives[1]} removeObjective={() => removeObj(selectedStageOneObjectives[1].name)} /> :
-            <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
         </li>
+        {selectedStageOneObjectives.length > 0 ?
+          <ObjectiveRow objective={selectedStageOneObjectives[0]} removeObjective={() => removeObj(selectedStageOneObjectives[0].name)} viewing={true} /> :
+          <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
+        {selectedStageOneObjectives.length > 1 ?
+          <ObjectiveRow objective={selectedStageOneObjectives[1]} removeObjective={() => removeObj(selectedStageOneObjectives[1].name)} /> :
+          <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
         <li>
           <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
             <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />

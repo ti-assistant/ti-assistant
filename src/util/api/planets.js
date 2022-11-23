@@ -42,7 +42,7 @@ export async function exhaustPlanets(mutate, gameid, planets, toExhaust, faction
   return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data), options);
 }
 
-export async function claimPlanet(mutate, gameid, planets, planet, factionName, gameOptions) {
+export async function claimPlanet(mutate, gameid, planets, planet, factionName, gameOptions = {}) {
   const data = {
     action: "ADD_PLANET",
     faction: factionName,
