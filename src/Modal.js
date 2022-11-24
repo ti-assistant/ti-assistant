@@ -19,12 +19,13 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
               marginLeft: "6px",
               position: "absolute",
               top: "4px",
+              zIndex: zIndex + 3,
             }}
             onClick={closeMenu}
           >
             &#x2715;
           </div> : null}
-          <div style={{padding: "4px 32px", textAlign: "center", flexBasis: "100%", fontSize: "24px"}}>
+          <div style={{position: "relative", padding: "4px 32px", textAlign: "center", flexBasis: "100%", fontSize: "24px"}}>
             {title}
           </div>
         </div>

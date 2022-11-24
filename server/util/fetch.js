@@ -212,11 +212,11 @@ function isCouncilPlanet(planet) {
     let id = val.id.replace(" POK", "");
 
     // Maybe filter out PoK agendas.
-    if (agenda.game !== "base" && !options.expansions.includes(agenda.game)) {
+    if (agenda.expansion !== "base" && !options.expansions.includes(agenda.expansion)) {
       return;
     }
     // Filter out agendas that are removed by PoK.
-    if (options.expansions.includes("pok") && agenda.game === "nonpok") {
+    if (options.expansions.includes("pok") && agenda.expansion === "nonpok") {
       return;
     }
 

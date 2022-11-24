@@ -9,6 +9,8 @@ import StrategyPhase from '../../../src/main/StrategyPhase';
 import ActionPhase from '../../../src/main/ActionPhase';
 import StatusPhase from '../../../src/main/StatusPhase';
 import { GameTimer } from '../../../src/Timer';
+import { AgendaRow } from '../../../src/AgendaRow';
+import { repealAgenda } from '../../../src/util/api/agendas';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -68,7 +70,7 @@ function refreshData(gameid, mutate) {
   mutate(`/api/${gameid}/state`, fetcher(`/api/${gameid}/state`));
   mutate(`/api/${gameid}/techs`, fetcher(`/api/${gameid}/techs`));
   mutate(`/api/${gameid}/planets`, fetcher(`/api/${gameid}/planets`));
-  mutate(`/api/${gameid}/strategyCards`, fetcher(`/api/${gameid}/strategyCards`));
+  mutate(`/api/${gameid}/strategyCards`, fetcher(`/api/${gameid}/strategycards`));
   mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`));
   mutate(`/api/${gameid}/objectives`, fetcher(`/api/${gameid}/objectives`));
   mutate(`/api/${gameid}/options`, fetcher(`/api/${gameid}/options`));
@@ -89,6 +91,7 @@ function Header() {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
 
   if (!qrCode && gameid) {
@@ -108,11 +111,25 @@ function Header() {
     });
   }
 
+  function removeAgenda(agendaName) {
+    repealAgenda(mutate, gameid, agendas, agendaName);
+  } 
+
+  const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
+    return agenda.passed && agenda.type === "law";
+  });
+
   return (
-    <div className="flexColumn" style={{top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
+    <div className="flexColumn" style={{zIndex: 400, top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
       <Sidebar side="left" content={`${state.phase} PHASE`} />
       <Sidebar side="right" content={`ROUND ${state.round}`} />
       <h2>Twilight Imperium Assistant</h2>
+      {passedLaws.length > 0 ? 
+        <div className='flexColumn'>
+          Laws in Effect
+          {passedLaws.map((agenda) => <AgendaRow key={agenda.name} agenda={agenda} removeAgenda={removeAgenda} />)}
+        </div>
+      : null}
       <div className="flexRow" style={{gap: "8px", alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
         {qrCode ? <img src={qrCode} /> : null}
         <div>Game ID: {gameid}</div>
