@@ -1,4 +1,4 @@
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 import { fetchStrategyCards } from '../../../server/util/fetch';
 import { getOnDeckFaction } from '../../../src/util/helpers';
@@ -28,6 +28,7 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
+  const timestampString = `updates.state.timestamp`;
   switch (data.action) {
     case "ADVANCE_PHASE":
       let nextPhase;
@@ -80,6 +81,7 @@ export default async function handler(req, res) {
         "state.activeplayer": activeFaction ? activeFaction.name : "None",
         "state.agendaUnlocked": agendaUnlocked,
         "state.round": round,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "ADVANCE_PLAYER":
@@ -88,11 +90,13 @@ export default async function handler(req, res) {
       const onDeckFaction = getOnDeckFaction(gameRef.data().state, factions, strategyCards);
       await db.collection('games').doc(gameid).update({
         "state.activeplayer": onDeckFaction ? onDeckFaction.name : "None",
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "SET_SPEAKER": {
       const updates = {
         "state.speaker": data.speaker,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
       const currentOrder = gameRef.data().factions[data.speaker].order;
       for (const [name, faction] of Object.entries(gameRef.data().factions)) {
@@ -111,6 +115,7 @@ export default async function handler(req, res) {
       if (data.timer > timer) {
         await db.collection('games').doc(gameid).update({
           "state.timer": data.timer,
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       }
       break;

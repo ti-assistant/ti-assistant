@@ -1,6 +1,6 @@
 import { fetchStrategyCards } from '../../../server/util/fetch';
 
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,12 +18,13 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
-
+  const timestampString = `updates.strategycards.timestamp`;
   switch (data.action) {
     case "ASSIGN_STRATEGY_CARD": {
       const factionString = `strategycards.${data.card}.faction`;
       const updates = {
         [factionString]: data.faction,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
       for (const [name, card] of Object.entries((gameRef.data().strategycards ?? {}))) {
         if (card.invalid) {
@@ -47,6 +48,7 @@ export default async function handler(req, res) {
       const updates = {
         [factionOneString]: factionTwo,
         [factionTwoString]: factionOne,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
 
       const cardOneOrder = `strategycards.${data.cardOne}.order`;
@@ -68,6 +70,7 @@ export default async function handler(req, res) {
       const updates = {
         [factionString]: FieldValue.delete(),
         "state.activeplayer": currentFaction,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
       let numPickedCards = 0;
       for (const [name, card] of Object.entries(gameRef.data().strategycards)) {
@@ -94,6 +97,7 @@ export default async function handler(req, res) {
       const orderString = `strategycards.${data.card}.order`;
       const updates = {
         [orderString]: 0,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
       for (const [name, card] of Object.entries(gameRef.data().strategycards)) {
         if (card.order === 0) {
@@ -108,6 +112,7 @@ export default async function handler(req, res) {
       const usedString = `strategycards.${data.card}.used`;
       await db.collection('games').doc(gameid).update({
         [usedString]: true,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }
@@ -120,6 +125,7 @@ export default async function handler(req, res) {
           [cardString]: FieldValue.delete(),
           [orderString]: FieldValue.delete(),
           [usedString]: FieldValue.delete(),
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       }
       break;

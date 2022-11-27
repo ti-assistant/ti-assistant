@@ -11,6 +11,7 @@ import StatusPhase from '../../../src/main/StatusPhase';
 import { GameTimer } from '../../../src/Timer';
 import { AgendaRow } from '../../../src/AgendaRow';
 import { repealAgenda } from '../../../src/util/api/agendas';
+import { Updater } from '../../../src/Updater';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -24,45 +25,30 @@ export default function SelectFactionPage() {
   // Consider combining things into a single thing, with separate values for each column.
   // This will allow re-using the right column, which will usually be the summary.
 
+  let innerContent = null;
   switch (state.phase) {
     case "SETUP":
-      return (
-        <div className="flexColumn" style={{alignItems: "center"}}>
-          <Header />
-          <SetupPhase />
-        </div>
-      );
+      innerContent = <SetupPhase />;
+      break;
     case "STRATEGY":
-      return (
-        <div className="flexColumn" style={{alignItems: "center"}}>
-          <Header />
-          <StrategyPhase />
-        </div>
-      );
+      innerContent = <StrategyPhase />;
+      break;
     case "ACTION":
-      return (
-        <div className="flexColumn" style={{alignItems: "center"}}>
-          <Header />
-          <ActionPhase />
-        </div>
-      );
+      innerContent = <ActionPhase />;
+      break;
     case "STATUS":
-      return (
-        <div className="flexColumn" style={{alignItems: "center"}}>
-          <Header />
-          <StatusPhase />
-        </div>
-      );
+      innerContent = <StatusPhase />;
+      break;
     case "AGENDA":
-      return (
-        <div className="flexColumn" style={{alignItems: "center"}}>
-          <Header />
-          <AgendaPhase />
-        </div>
-      );
+      innerContent = <AgendaPhase />;
+      break;
   }
   return (
-    <div>Error...</div>
+    <div className="flexColumn" style={{alignItems: "center"}}>
+      <Updater />
+      <Header />
+      {innerContent}
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import { getFirestore } from 'firebase-admin/firestore';
+import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,11 +16,13 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
+  const timestampString = `updates.options.timestamp`;
   switch (data.action) {
     case "SET_OPTION": {
       const optionString = `options.${data.option}`;
       await db.collection('games').doc(gameid).update({
         [optionString]: data.value,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }

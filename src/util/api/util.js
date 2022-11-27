@@ -27,6 +27,7 @@ export async function fetcher(url) {
 }
 
 export async function poster(url, data) {
+  data.timestamp = Date.now();
   const res = await fetch(url, {
     method: "POST",
     headers: {

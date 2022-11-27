@@ -1,4 +1,4 @@
-const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -30,17 +30,20 @@ export default async function handler(req, res) {
   let readyString;
   let factionChoiceString;
   let factionStartingTechString;
+  const timestampString = `updates.factions.timestamp`;
   switch (data.action) {
     case "ADD_TECH":
       readyString = `factions.${data.faction}.techs.${tech}.ready`;
       await db.collection('games').doc(gameid).update({
         [readyString]: true,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "REMOVE_TECH":
       playerTechString = `factions.${data.faction}.techs.${tech}`;
       await db.collection('games').doc(gameid).update({
         [playerTechString]: FieldValue.delete(),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "TOGGLE_PLANET":
@@ -48,6 +51,7 @@ export default async function handler(req, res) {
         readyString = `factions.${data.faction}.planets.${planet}.ready`;
         await db.collection('games').doc(gameid).update({
           [readyString]: data.ready,
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       }
       break;
@@ -57,6 +61,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [readyString]: true,
         [factionStartingTechString]: FieldValue.arrayUnion(data.tech),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "REMOVE_STARTING_TECH":
@@ -65,6 +70,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [playerTechString]: FieldValue.delete(),
         [factionStartingTechString]: FieldValue.arrayRemove(data.tech),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "CHOOSE_SUB_FACTION": {
@@ -98,6 +104,7 @@ export default async function handler(req, res) {
       const updates = {
         [playerSubFactionString]: data.subFaction,
         [startingPlanetsString]: planets,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
       await db.collection('games').doc(gameid).update(updates);
       break;
@@ -108,6 +115,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [gamePlanetString]: data.faction,
         [readyString]: false,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "REMOVE_PLANET":
@@ -116,17 +124,21 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [gamePlanetString]: null,
         [playerPlanetString]: FieldValue.delete(),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     case "PASS": {
       const factionPassString = `factions.${data.faction}.passed`;
       await db.collection('games').doc(gameid).update({
         [factionPassString]: true,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }
     case "READY_ALL": {
-      const updateVal = {};
+      const updateVal = {
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      };
       for (const factionName of Object.keys(gameRef.data().factions)) {
         const factionPassString = `factions.${factionName}.passed`;
         updateVal[factionPassString] = false;
@@ -134,22 +146,13 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update(updateVal);
       break;
     }
-    case "ADD_OBJECTIVE":
-      await db.collection('games').doc(gameid).update({
-        objectives: FieldValue.arrayUnion(data.objective),
-      });
-      break;
-    case "REMOVE_OBJECTIVE":
-      await db.collection('games').doc(gameid).update({
-        objectives: FieldValue.arrayRemove(data.objective),
-      });
-      break;
     case "SAVE_FACTION_TIMER": {
       const timer = gameRef.data().factions[data.faction].timer ?? 0;
       if (data.timer > timer) {
         const factionString = `factions.${data.faction}.timer`;
         await db.collection('games').doc(gameid).update({
           [factionString]: data.timer,
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       }
       break;
@@ -159,6 +162,7 @@ export default async function handler(req, res) {
       const factionString = `factions.${data.faction}.vps`;
       await db.collection('games').doc(gameid).update({
         [factionString]: vps + data.vps,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
     }
   }

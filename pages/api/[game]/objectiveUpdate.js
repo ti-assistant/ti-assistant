@@ -1,6 +1,6 @@
 import { fetchObjectives } from '../../../server/util/fetch';
 
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,6 +19,7 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
+  const timestampString = `updates.objectives.timestamp`;
   switch (data.action) {
     case "REVEAL_OBJECTIVE": {
       if (objective.data().type === "secret") {
@@ -29,11 +30,13 @@ export default async function handler(req, res) {
         await db.collection('games').doc(gameid).update({
           [objectiveString]: true,
           [factionString]: FieldValue.arrayUnion(data.faction),
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       } else {
         const objectiveString = `objectives.${data.objective}.selected`;
         await db.collection('games').doc(gameid).update({
           [objectiveString]: true,
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       }
       break;
@@ -48,6 +51,7 @@ export default async function handler(req, res) {
           [objectiveString]: false,
           [scorersString]: [],
           [factionString]: FieldValue.arrayRemove(data.faction),
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       } else {
         const objectiveString = `objectives.${data.objective}.selected`;
@@ -55,6 +59,7 @@ export default async function handler(req, res) {
         await db.collection('games').doc(gameid).update({
           [objectiveString]: false,
           [scorersString]: [],
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       }
       break;
@@ -71,6 +76,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [revealedString]: true,
         [objectiveString]: updateValue,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }
@@ -87,6 +93,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [revealedString]: true,
         [objectiveString]: updateValue,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }

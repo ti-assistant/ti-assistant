@@ -1,6 +1,6 @@
 import { fetchAttachments, fetchPlanets } from '../../../server/util/fetch';
 
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 import { filterToPlanetAttachments } from '../../../src/util/attachments';
 
 export default async function handler(req, res) {
@@ -21,6 +21,7 @@ export default async function handler(req, res) {
   
   const options = gameRef.data().options;
 
+  const timestampString = `updates.attachments.timestamp`;
   switch (data.action) {
     case "ATTACH_TO_PLANET": {
       const attachString = `attachments.${data.attachment}.planets`;
@@ -38,6 +39,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [attachString]: updateVal,
         [orderString]: maxAttachOrder + 1,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }
@@ -47,6 +49,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [attachString]: FieldValue.arrayRemove(data.planet),
         [orderString]: FieldValue.delete(),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }

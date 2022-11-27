@@ -1,6 +1,6 @@
 import { fetchAgendas } from '../../../server/util/fetch';
 
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -18,6 +18,7 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
+  const timestampString = `updates.agendas.timestamp`;
   switch (data.action) {
     case "PASS_AGENDA": {
       const passedString = `agendas.${data.agenda}.passed`;
@@ -25,6 +26,7 @@ export default async function handler(req, res) {
       await db.collection('games').doc(gameid).update({
         [passedString]: true,
         [targetString]: data.target,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }
@@ -37,6 +39,7 @@ export default async function handler(req, res) {
         [passedString]: passed,
         [resolvedString]: true,
         [targetString]: data.target,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }
@@ -44,6 +47,7 @@ export default async function handler(req, res) {
       const agendaString = `agendas.${data.agenda}`;
       await db.collection('games').doc(gameid).update({
         [agendaString]: FieldValue.delete(),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
     }

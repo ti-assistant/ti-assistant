@@ -68,16 +68,6 @@ export default async function handler(req, res) {
         [claimedString]: false,
       });
       break;
-    case "ADD_OBJECTIVE":
-      await db.collection('games').doc(gameid).update({
-        objectives: FieldValue.arrayUnion(data.objective),
-      });
-      break;
-    case "REMOVE_OBJECTIVE":
-      await db.collection('games').doc(gameid).update({
-        objectives: FieldValue.arrayRemove(data.objective),
-      });
-      break;
   }
   
   const responseRef = await db.collection('games').doc(gameid).get();
