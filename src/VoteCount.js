@@ -8,9 +8,64 @@ import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from './util/planets';
-import { FactionTile } from '/src/FactionCard.js'
 
-const enableVotingTargets = false;
+export function getTargets(agenda, factions, strategycards, planets, agendas, objectives) {
+  if (!agenda) {
+    return [];
+  }
+switch (agenda.elect) {
+    case "For/Against":
+      return [
+        "For",
+        "Against",
+        "Abstain",
+      ];
+    case "Player":
+      return [...Object.values(factions).map((faction) => {return faction.shortname}), "Abstain"];
+    case "Strategy Card":
+      return [...Object.keys(strategycards), "Abstain"];
+    case "Planet":
+      return [...Object.keys(planets), "Abstain"];
+    case "Cultural Planet":
+      const culturalPlanets = Object.values(planets).filter((planet) => {
+        return planet.type === "Cultural";
+      }).map((planet) => planet.name);
+      return [...culturalPlanets, "Abstain"];
+    case "Hazardous Planet":
+      const hazardousPlanets = Object.values(planets).filter((planet) => {
+        return planet.type === "Hazardous";
+      }).map((planet) => planet.name);
+      return [...hazardousPlanets, "Abstain"];
+    case "Industrial Planet":
+      const industrialPlanets = Object.values(planets).filter((planet) => {
+        return planet.type === "Industrial";
+      }).map((planet) => planet.name);
+      return [...industrialPlanets, "Abstain"];
+    case "Non-Home, Non-Mecatol Rex planet":
+    case "Non-Home Planet Other Than Mecatol Rex":
+      const electablePlanets = Object.values(planets).filter((planet) => {
+        return !planet.home && planet.name !== "Mecatol Rex";
+      }).map((planet) => planet.name);
+      return [...electablePlanets, "Abstain"];
+    case "Law":
+      const passedLaws = Object.values(agendas).filter((agenda) => {
+        return agenda.type === "law" && agenda.passed;
+      }).map((law) => law.name);
+      return [...passedLaws, "Abstain"];
+    case "Scored Secret Objective":
+      const secrets = Object.values(objectives).filter((objective) => {
+        return objective.type === "secret";
+      });
+      const scoredSecrets = secrets.filter((objective) => {
+        return (objective.scorers ?? []).length > 0;
+      });
+      if (scoredSecrets.length === 0) {
+        return [...secrets.map((secret) => secret.name), "Abstain"];
+      }
+      return [...scoredSecrets.map((secret) => secret.name), "Abstain"];
+  }
+  return [];
+}
 
 export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const router = useRouter();
@@ -50,9 +105,11 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
     setTarget(null);
   }, [currentAgenda]);
 
+  const elect = agenda.elect;
+
   useEffect(() => {
     setTarget(null);
-  }, [agenda]);
+  }, [elect]);
 
   function updateCastVotes(votes) {
     setCastVotes(votes);
@@ -112,67 +169,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
     menuButtonStyletop: "0",
   };
 
-  function getTargets() {
-    if (!agenda) {
-      return [
-        "For",
-        "Against",
-        "Abstain",
-      ];
-    }
-    switch (agenda.elect) {
-      case "For/Against":
-        return [
-          "For",
-          "Against",
-          "Abstain",
-        ];
-      case "Player":
-        return [...Object.values(factions).map((faction) => {return faction.shortname}), "Abstain"];
-      case "Strategy Card":
-        return [...Object.keys(strategycards), "Abstain"];
-      case "Planet":
-        return [...Object.keys(planets), "Abstain"];
-      case "Cultural Planet":
-        const culturalPlanets = Object.values(planets).filter((planet) => {
-          return planet.type === "Cultural";
-        }).map((planet) => planet.name);
-        return [...culturalPlanets, "Abstain"];
-      case "Hazardous Planet":
-        const hazardousPlanets = Object.values(planets).filter((planet) => {
-          return planet.type === "Hazardous";
-        }).map((planet) => planet.name);
-        return [...hazardousPlanets, "Abstain"];
-      case "Industrial Planet":
-        const industrialPlanets = Object.values(planets).filter((planet) => {
-          return planet.type === "Industrial";
-        }).map((planet) => planet.name);
-        return [...industrialPlanets, "Abstain"];
-      case "Non-Home, Non-Mecatol Rex planet":
-        const electablePlanets = Object.values(planets).filter((planet) => {
-          return !planet.home && planet.name !== "Mecatol Rex";
-        }).map((planet) => planet.name);
-        return [...electablePlanets, "Abstain"];
-      case "Law":
-        const passedLaws = Object.values(agendas).filter((agenda) => {
-          return agenda.type === "law" && agenda.passed;
-        }).map((law) => law.name);
-        return [...passedLaws, "Abstain"];
-      case "Scored Secret Objective":
-        const secrets = Object.values(objectives).filter((objective) => {
-          return objective.type === "secret";
-        });
-        const scoredSecrets = secrets.filter((objective) => {
-          return (objective.scorers ?? []).length > 0;
-        });
-        if (scoredSecrets.length === 0) {
-          return [...secrets.map((secret) => secret.name), "Abstain"];
-        }
-        return [...scoredSecrets.map((secret) => secret.name), "Abstain"];
-    }
-  }
-
-  const targets = getTargets();
+  const targets = getTargets(agenda, factions, strategycards, planets, agendas, objectives);
 
   return (
     <div
@@ -200,7 +197,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
           <div className="influenceTextWrapper">
             {influence}
           </div>
-          <div className="hoverParent" style={{fontSize: "16px"}}>
+          <div style={{fontSize: "16px"}}>
             + {extraVotes}
             <div className="flexColumn hoverInfo right">
               <div className="flexColumn" style={{gap: "4px"}}>

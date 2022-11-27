@@ -13,6 +13,7 @@ import { ObjectiveRow } from '../ObjectiveRow';
 import { removeObjective } from '../util/api/objectives';
 import { Modal } from "/src/Modal.js";
 import SummaryColumn from './SummaryColumn';
+import { LawsInEffect } from '../LawsInEffect';
 
 function InfoContent({content}) {
   return (
@@ -178,13 +179,14 @@ export default function StatusPhase() {
         }
         setShowObjectiveModal(false)
       }} />
-      <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
+      <div className="flexColumn" style={{flexBasis: "25%", gap: "4px", alignItems: "stretch"}}>
         <div style={{textAlign: "center"}}>
           Initiative Order
         </div>
         {filteredStrategyCards.map((card) => {
           return <StrategyCard key={card.name} card={card} active={!card.used} opts={{hideName: true}} />
         })}
+        <LawsInEffect />
       </div>
       <div className='flexColumn' style={{flexBasis: "50%", gap: "8px"}}>
         <ol className='flexColumn' style={{alignItems: "flex-start", gap: "16px", margin: "0px", padding: "0px", fontSize: "24px"}}>

@@ -12,7 +12,7 @@ import { useBetween } from 'use-between';
 const useCurrentAgenda = () => {
   const [currentAgenda, setCurrentAgenda] = useState(1);
 
-  const advanceAgendaPhase = useCallback(() => setCurrentAgenda(2));
+  const advanceAgendaPhase = useCallback(() => setCurrentAgenda(++currentAgenda));
   const resetAgendaPhase = useCallback(() => setCurrentAgenda(1));
   return {
     currentAgenda,
@@ -60,7 +60,7 @@ export function AgendaTimer({}) {
     }
     if (currentAgenda === 1) {
       setFirstAgendaTimer(firstAgendaTimer + 1);
-    } else {
+    } else if (currentAgenda === 2) {
       setSecondAgendaTimer(secondAgendaTimer + 1);
     }
   }
@@ -94,12 +94,11 @@ export function AgendaTimer({}) {
           <TimerDisplay time={secondAgendaTimer} />
         </div>
       </div>
-      <div className="flexRow" style={{gap: "12px"}}>
+      {/* <div className="flexRow" style={{gap: "12px"}}>
       {/* <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button> */}
-      {currentAgenda === 1 ?
+      {/* {currentAgenda === 1 ?
         <button onClick={advanceAgendaPhase}>Second Agenda</button>
-      : null}
-      </div>  
+      : null} */}
     </div>
   );
 }

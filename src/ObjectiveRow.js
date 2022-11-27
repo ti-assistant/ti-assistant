@@ -86,7 +86,7 @@ function PlanetAttributes({ attributes }) {
 
 function InfoContent({objective}) {
   return (
-    <div className="myriadPro" style={{maxWidth: "400px", padding: "8px", whiteSpace: "wrap", textAlign: "center", fontSize: "20px"}}>
+    <div className="myriadPro" style={{maxWidth: "800px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "32px"}}>
       {objective.description}
     </div>
   );
@@ -111,9 +111,9 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
 
   return (
     <div className="objectiveRow">
-      <Modal closeMenu={() => setShowInfoModal(false)} visible={showInfoModal} title={objective.name} content={
+      <Modal closeMenu={() => setShowInfoModal(false)} visible={showInfoModal} title={<div style={{fontSize: "40px"}}>{objective.name}</div>} content={
         <InfoContent objective={objective} />
-      } top="35%" />
+      } top="35%" level={2} />
       <div className="flexRow" style={{ height: "30px"}}>
         {addObjective ? 
           <div

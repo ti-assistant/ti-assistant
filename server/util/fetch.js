@@ -210,9 +210,10 @@ function isCouncilPlanet(planet) {
 
     // Remove POK from Representative Government
     let id = val.id.replace(" POK", "");
+    
 
     // Maybe filter out PoK agendas.
-    if (agenda.expansion !== "base" && !options.expansions.includes(agenda.expansion)) {
+    if (agenda.expansion !== "base" && agenda.expansion !== "nonpok" && !options.expansions.includes(agenda.expansion)) {
       return;
     }
     // Filter out agendas that are removed by PoK.

@@ -110,12 +110,6 @@ function Header() {
       <Sidebar side="left" content={`${state.phase} PHASE`} />
       <Sidebar side="right" content={`ROUND ${state.round}`} />
       <h2>Twilight Imperium Assistant</h2>
-      {passedLaws.length > 0 ? 
-        <div className='flexColumn'>
-          Laws in Effect
-          {passedLaws.map((agenda) => <AgendaRow key={agenda.name} agenda={agenda} removeAgenda={removeAgenda} />)}
-        </div>
-      : null}
       <div className="flexRow" style={{gap: "8px", alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
         {qrCode ? <img src={qrCode} /> : null}
         <div>Game ID: {gameid}</div>

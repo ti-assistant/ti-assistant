@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import SummaryColumn from './SummaryColumn';
 import { AgendaTimer, useSharedCurrentAgenda } from '../Timer';
 import { fetcher, poster } from '../util/api/util';
-import { VoteCount } from '../VoteCount';
+import { getTargets, VoteCount } from '../VoteCount';
 import { BasicFactionTile } from '../FactionTile';
 import { AgendaRow } from '../AgendaRow';
 import { Modal } from '../Modal';
 import { passAgenda, resolveAgenda } from '../util/api/agendas';
+import { LawsInEffect } from '../LawsInEffect';
+import { SelectableRow } from '../SelectableRow';
 
 function InfoContent({content}) {
   return (
@@ -28,9 +30,7 @@ function AgendaSelectModal({ visible, onComplete }) {
     return null;
   }
 
-  const orderedAgendas = Object.values(agendas).filter((agenda) => {
-    return !agenda.resolved;
-  }).sort((a, b) => {
+  const orderedAgendas = Object.values(agendas).sort((a, b) => {
     if (a.name < b.name) {
       return -1;
     }
@@ -40,10 +40,54 @@ function AgendaSelectModal({ visible, onComplete }) {
   return (
   <Modal closeMenu={() => onComplete(null)} visible={visible} title={`Reveal Agenda`}
     content={
-      <div className="flexColumn" style={{alignItems: "flex-start"}}>
+      <div className="flexColumn" style={{justifyContent: "flex-start", paddingTop: "4px", width: "900px", alignItems: "flex-start", flexWrap: "wrap", height: "80vh"}}>
         {orderedAgendas.map((agenda) => {
           return (
-            <AgendaRow key={agenda.name} agenda={agenda} addAgenda={() => onComplete(agenda.name)} />
+            <div style={{flex: "0 0 4%"}}>
+              <AgendaRow key={agenda.name} agenda={agenda} addAgenda={() => onComplete(agenda.name)} />
+            </div>
+          );
+        })}
+      </div>
+  } />
+  );
+}
+
+function OutcomeSelectModal({ visible, onComplete }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+
+  if (!options) {
+    return null;
+  }
+
+  const outcomes = [
+    "For/Against",
+    "Player",
+    "Strategy Card",
+    "Planet",
+    "Cultural Planet",
+    "Hazardous Planet",
+    "Industrial Planet",
+    "Non-Home Planet Other Than Mecatol Rex",
+    "Law",
+    "Scored Secret Objective",
+  ];
+
+  return (
+  <Modal closeMenu={() => onComplete(null)} visible={visible} title={`Reveal Agenda`}
+    content={
+      <div className="flexColumn" style={{justifyContent: "flex-start", paddingTop: "4px", alignItems: "flex-start"}}>
+        {outcomes.map((outcome) => {
+          return (
+            <div>
+              <SelectableRow key={outcome} content={
+                <div style={{ display: "flex", fontSize: "18px", zIndex: 2}}>
+                  {outcome}
+                 </div>} itemName={outcome} selectItem={() => onComplete(outcome)} />
+            </div>
           );
         })}
       </div>
@@ -55,42 +99,93 @@ export default function AgendaPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
+  const { data: factions, factionError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: planets, planetError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: strategycards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
 
   const [ agenda, setAgenda ] = useState(null);
   const [ agendaModal, setAgendaModal ] = useState(null);
+  // Only used for Covert Legislation.
+  const [ subAgenda, setSubAgenda ] = useState(null);
+  const [ subAgendaModal, setSubAgendaModal ] = useState(null);
+  const [ outcome, setOutcome ] = useState(null);
+  const [ outcomeModal, setOutcomeModal ] = useState(null);
 
   const [ factionVotes, setFactionVotes ] = useState({});
 
   const [ infoModal, setInfoModal ] = useState({
     show: false,
   });
-  const { currentAgenda, resetAgendaPhase } = useSharedCurrentAgenda();
+  const [ speakerTieBreak, setSpeakerTieBreak ] = useState(null);
+  const { currentAgenda, advanceAgendaPhase, resetAgendaPhase } = useSharedCurrentAgenda();
+
+  const votes  = computeVotes();
+  const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
+    return Math.max(maxVotes, voteCount);
+  }, 0);
+  const selectedTargets = Object.entries(votes).filter(([target, voteCount]) => {
+    return voteCount === maxVotes;
+  }).map(([target, voteCount]) => {
+    return target;
+  });
+  const isTie = selectedTargets.length !== 1;
+
+  const localAgenda = {...agenda};
+  if (outcome) {
+    localAgenda.elect = outcome;
+  }
+
+  const allTargets = getTargets(localAgenda, factions, strategycards, planets, agendas, objectives);
+
+  function toggleSpeakerTieBreak(target) {
+    if (speakerTieBreak === target) {
+      setSpeakerTieBreak(null);
+    } else {
+      setSpeakerTieBreak(target);
+    }
+  }
 
   // When completing an agenda, make changes.
-  useEffect(() => {
-    if (agenda) {
-      const votes = computeVotes();
-      let maxVotes = 0;
-      let chosenTarget = null;
-      Object.entries(votes).forEach(([target, votes]) => {
-      if (votes > maxVotes) {
-        maxVotes = votes;
-          chosenTarget = target;
-        }
-      });
-      resolveAgenda(mutate, gameid, agendas, agenda.name, chosenTarget);
-      setAgenda(null);
-      setFactionVotes({});
-    }
-  }, [currentAgenda]);
+  // useEffect(() => {
+  //   if (agenda) {
+  //     const votes = computeVotes();
+  //     let maxVotes = 0;
+  //     let chosenTarget = null;
+  //     Object.entries(votes).forEach(([target, votes]) => {
+  //     if (votes > maxVotes) {
+  //       maxVotes = votes;
+  //         chosenTarget = target;
+  //       }
+  //     });
+  //     resolveAgenda(mutate, gameid, agendas, agenda.name, chosenTarget);
+  //     setAgenda(null);
+  //     setFactionVotes({});
+  //   }
+  // }, [currentAgenda]);
 
   if (!factions) {
     return <div>Loading...</div>;
   }
 
+  function completeAgenda() {
+    if (isTie && !speakerTieBreak) {
+      throw Error("No selected target?");
+    }
+    const target = isTie ? speakerTieBreak : selectedTargets[0];
+    if (subAgenda) {
+      resolveAgenda(mutate, gameid, agendas, subAgenda.name, target);
+    }
+    resolveAgenda(mutate, gameid, agendas, agenda.name, subAgenda.name);
+    setAgenda(null);
+    setSubAgenda(null);
+    setOutcome(null);
+    setFactionVotes({});
+    setSpeakerTieBreak(null);
+    advanceAgendaPhase(); 
+  }
 
   function nextPhase(skipAgenda = false) {
     const data = {
@@ -127,6 +222,19 @@ export default function AgendaPhase() {
       setAgenda(agendas[agendaName]);
     }
     setAgendaModal(false);
+    setSubAgenda(null);
+    setFactionVotes({});
+  }
+  function selectSubAgenda(agendaName) {
+    if (agendaName !== null) {
+      setSubAgenda(agendas[agendaName]);
+    }
+    setSubAgendaModal(false);
+  }
+  function selectEligibleOutcome(outcome) {
+    setOutcome(outcome);
+    setSubAgenda(null);
+    setOutcomeModal(false);
     setFactionVotes({});
   }
 
@@ -194,6 +302,8 @@ export default function AgendaPhase() {
   return (
   <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
     <AgendaSelectModal visible={agendaModal} onComplete={(agendaName) => selectAgenda(agendaName)} />
+    <AgendaSelectModal visible={subAgendaModal} onComplete={(agendaName) => selectSubAgenda(agendaName)} />
+    <OutcomeSelectModal visible={outcomeModal} onComplete={(eligibleOutcome) => selectEligibleOutcome(eligibleOutcome)} />
     <div className="flexColumn" style={{flexBasis: "30%", gap: "4px", alignItems: "stretch"}}>
       <div className="flexRow" style={{gap: "12px"}}>
         <div style={{textAlign: "center", flexGrow: 4}}>Voting Order</div>
@@ -202,29 +312,34 @@ export default function AgendaPhase() {
         <div style={{textAlign: "center", width: "80px"}}>Target</div>
       </div>
       {votingOrder.map((faction) => {
-        return <VoteCount key={faction.name} factionName={faction.name} changeVote={changeVote} agenda={agenda} />
+        return <VoteCount key={faction.name} factionName={faction.name} changeVote={changeVote} agenda={localAgenda} />
       })}
+      <LawsInEffect />
     </div>
-    <div className='flexColumn' style={{flexBasis: "30%", gap: "12px"}}>            
-      <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px"}}>
-        <div className="flexColumn" style={{borderRadius: "10px", padding: "8px", border: "1px solid #555", gap: "8px", alignItems: "center", width: "100%"}}>
-        {agenda ? 
-          <AgendaRow agenda={agenda} removeAgenda={() => {setAgenda(null); setFactionVotes({});}} />
-        : <button onClick={() => setAgendaModal(true)}>Select Agenda</button>}
-        {orderedVotes ? 
-          <div className={flexDirection} style={{gap: "4px", paddingLeft: "20px", alignItems: "flex-start", width: "100%"}}>
-          {Object.entries(orderedVotes).map(([name, number]) => {
-            return <div>{name}: {number}</div>
-          })}
-          </div>
-        : null}
-        </div>
-        <AgendaTimer />
+    <div className='flexColumn' style={{flexBasis: "30%", gap: "12px"}}> 
+      <AgendaTimer />
+      {currentAgenda > 2 ? <div style={{fontSize: "40px", width: "100%"}}>
+        Agenda Phase Complete
+        </div> : 
+      <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px", alignItems: "stretch"}}>
         <li>
-          <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
+          <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
             <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
               Reveal and read one Agenda
           </div>
+          <div className='flexColumn' style={{gap: "4px"}}>
+          {agenda ? 
+          <AgendaRow agenda={agenda} removeAgenda={() => {setAgenda(null); setFactionVotes({});}} />
+          : <button onClick={() => setAgendaModal(true)}>Reveal Agenda</button>}
+          {agenda && agenda.name === "Covert Legislation" ? 
+            (outcome ? 
+              <SelectableRow itemName={outcome} content={
+                <div style={{display: "flex", fontSize: "18px"}}>
+                  {outcome}
+                </div>} removeItem={() => selectEligibleOutcome(null)} /> : 
+            <button onClick={() => setOutcomeModal(true)}>Reveal Eligible Outcomes</button>)
+          : null}
+        </div>
         </li>
         <li>In Speaker Order:
         <div className="flexColumn" style={{fontSize: "22px", paddingLeft: "8px", gap: "4px", alignItems: "flex-start"}}>
@@ -233,20 +348,60 @@ export default function AgendaPhase() {
         </div>
         </li>
         <li>Discuss</li>
-        <li>In Voting Order: Cast votes (or abstain)</li>
         <li>
-          <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
+          In Voting Order: Cast votes (or abstain)
+          {orderedVotes && Object.keys(orderedVotes).length > 0 ? 
+          <div className={flexDirection} style={{marginTop: "12px", gap: "4px", padding: "8px 20px", alignItems: "flex-start", width: "100%", border: "1px solid #555", borderRadius: "10px"}}>
+          {Object.entries(orderedVotes).map(([target, voteCount]) => {
+            return <div key={target}>{target}: {voteCount}</div>
+          })}
+          </div>
+        : null}
+        </li>
+        <li>
+          <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
             <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
               Choose outcome if tied
           </div>
+          {isTie ? 
+           <div className="flexRow" style={{paddingTop: "8px", gap: "4px", flexWrap: "wrap", maxWidth: "600px", width: "100%"}}>
+            {selectedTargets.length > 0 ? selectedTargets.map((target) => {
+              return <button key={target} className={speakerTieBreak === target ? "selected" : ""} onClick={() => toggleSpeakerTieBreak(target)}>{target}</button>;
+            }) : 
+            allTargets.map((target) => {
+              if (target === "Abstain") {
+                return null;
+              }
+              return <button key={target} className={speakerTieBreak === target ? "selected" : ""} onClick={() => toggleSpeakerTieBreak(target)}>{target}</button>;
+            })}
+            </div>
+          : null}
         </li>
-        <li>Resolve agenda outcome</li>
+        <li>Resolve agenda outcome
+          <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
+          {agenda && agenda.name === "Covert Legislation" ? 
+            subAgenda ? 
+            <AgendaRow agenda={subAgenda} removeAgenda={() => setSubAgenda(null)} />
+            : <button onClick={() => setSubAgendaModal(true)}>Reveal Covert Legislation Agenda</button>
+          : null}
+          {!isTie && selectedTargets.length > 0 ? 
+            <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
+              <button onClick={completeAgenda}>Resolve with target: {selectedTargets[0]}</button>
+            </div>
+          : null}
+          {isTie && speakerTieBreak && (selectedTargets.length === 0 || selectedTargets.includes(speakerTieBreak)) ? 
+            <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
+              <button onClick={completeAgenda}>Resolve with target: {speakerTieBreak}</button>
+            </div>
+          : null}
+          </div>
+        </li>
         <li>Repeat Steps 1 to 6</li>
         <li>Ready all planets</li>
-    </ol>
+    </ol>}
       <button onClick={() => nextPhase()}>Start Next Round</button>
     </div>
-    <div className="flexColumn" style={{flexBasis: "33%", maxWidth: "400px"}}>
+    <div className="flexColumn" style={{flexBasis: "30%", maxWidth: "400px"}}>
       <SummaryColumn />
     </div>
   </div>

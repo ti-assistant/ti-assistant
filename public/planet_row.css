@@ -56,3 +56,13 @@
   position: relative;
   align-items: stretch;
 }
+
+.selectableRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 4px;
+  padding-right: 4px;
+  position: relative;
+  align-items: stretch;
+}

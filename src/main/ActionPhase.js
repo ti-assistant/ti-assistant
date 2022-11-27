@@ -12,6 +12,7 @@ import { SpeakerModal } from '../SpeakerModal';
 import { BasicFactionTile } from '../FactionTile';
 import { FactionTimer } from '../Timer';
 import SummaryColumn from './SummaryColumn.js';
+import { LawsInEffect } from '../LawsInEffect.js';
 
 export default function ActionPhase() {
   const router = useRouter();
@@ -183,6 +184,7 @@ export default function ActionPhase() {
         {orderedStrategyCards.map((card) => {
           return <StrategyCard key={card.name} card={card} active={!card.used} opts={{noColor: true}} />
         })}
+        <LawsInEffect />
       </div>
       <div className="flexColumn" style={{flexBasis: "45%", gap: "16px"}}>
         <div className="flexRow" style={{gap: "8px"}}>

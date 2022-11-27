@@ -42,6 +42,8 @@ export function AgendaRow({agenda, addAgenda, removeAgenda}) {
   
   const type = agenda.type === "law" ? "LAW" : "DIRECTIVE";
 
+  const textColor = addAgenda && agenda.resolved ? "#555" : "#eee";
+
   return (
     <div className="agendaRow">
       <Modal closeMenu={() => setShowInfoModal(false)} visible={showInfoModal} title={<div className="flexColumn" style={{fontSize: "40px"}}>{agenda.name}<div style={{fontSize: "24px"}}>[{type}]</div></div>} content={
@@ -81,11 +83,11 @@ export function AgendaRow({agenda, addAgenda, removeAgenda}) {
           </div>
         : null}
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", flexBasis: "50%", flexGrow: 2}}>
-          <div style={{ display: "flex", fontSize: "18px", zIndex: 2}}>
+          <div style={{ display: "flex", fontSize: "18px", zIndex: 2, color: textColor}}>
             {agenda.name}
           </div>
           <div className="popupIcon" onClick={displayInfo}>&#x24D8;</div>
-          {agenda.target && agenda.target !== "For" ?
+          {agenda.target ?
             <div style={{paddingLeft: "8px"}}>[{agenda.target}]</div>
           : null}
         </div>

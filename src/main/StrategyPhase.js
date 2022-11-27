@@ -12,6 +12,7 @@ import { FactionCard } from '../FactionCard';
 import { Modal } from '../Modal';
 import { useState } from 'react';
 import SummaryColumn from './SummaryColumn';
+import { LawsInEffect } from '../LawsInEffect';
 
 function InfoContent({content}) {
   return (
@@ -283,6 +284,7 @@ export default function StrategyPhase() {
           })}
           </ol> 
         </div> : null}
+        <LawsInEffect />
       </div>
       <div className="flexColumn" style={{flexBasis: "30%", gap: "8px"}}>
         <div className="flexRow" style={{gap: "8px"}}>
