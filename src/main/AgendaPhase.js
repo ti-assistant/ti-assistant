@@ -177,8 +177,10 @@ export default function AgendaPhase() {
     const target = isTie ? speakerTieBreak : selectedTargets[0];
     if (subAgenda) {
       resolveAgenda(mutate, gameid, agendas, subAgenda.name, target);
+      resolveAgenda(mutate, gameid, agendas, agenda.name, subAgenda.name);
+    } else {
+      resolveAgenda(mutate, gameid, agendas, agenda.name, target);
     }
-    resolveAgenda(mutate, gameid, agendas, agenda.name, subAgenda.name);
     setAgenda(null);
     setSubAgenda(null);
     setOutcome(null);
