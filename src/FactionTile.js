@@ -34,7 +34,7 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
     width: opts.iconSize ? `${opts.iconSize}px` : "40px",
     height: opts.iconSize ? `${opts.iconSize}px` : "40px",
     position: "absolute",
-    zIndex: -1,
+    zIndex: 0,
     left: 0,
     width: "100%",
     opacity: opts.hideName ? "100%" : "60%",

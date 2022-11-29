@@ -201,7 +201,7 @@ function FactionContent() {
   const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${playerFaction}` : null, fetcher);
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: techs, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher);
   const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
@@ -275,7 +275,27 @@ function FactionContent() {
   
   const faction = factions[playerFaction];
 
-  const ownedTechs = filterToOwnedTechs(techs, faction);
+  const techsObj = {};
+  Object.values(techs ?? {}).forEach((tech) => {
+    if (tech.faction) {
+      if (playerFaction === "Nekro Virus" && !factions[tech.faction]) {
+        return;
+      } else if (playerFaction !== "Nekro Virus" && tech.faction !== playerFaction) {
+        return;
+      }
+    }
+    techsObj[tech.name] = tech;
+  });
+  if (playerFaction !== "Nekro Virus") {
+    Object.values(techsObj).forEach((tech) => {
+      if (tech.replaces) {
+        delete techsObj[tech.replaces];
+      }
+    });
+  }
+
+
+  const ownedTechs = filterToOwnedTechs(techsObj, faction);
   ownedTechs.sort((a, b) => {
     const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
     if (typeDiff !== 0) {
@@ -291,7 +311,7 @@ function FactionContent() {
       return 1;
     }
   });
-  const remainingTechs = filterToUnownedTechs(techs, faction);
+  const remainingTechs = filterToUnownedTechs(techsObj, faction);
 
   const claimedPlanets = filterToClaimedPlanets(planets, playerFaction);
   const updatedPlanets = applyAllPlanetAttachments(claimedPlanets, attachments);
@@ -390,7 +410,7 @@ function FactionContent() {
           <div className="flexRow" style={{height: "32px"}}>
             <button onClick={toggleAddTechMenu}>Research Tech</button>
           </div>
-          <div style={{maxHeight: `${maxHeight}px`, padding: "6px", overflow: "auto"}}>
+          <div className="flexColumn" style={{gap: "8px", maxHeight: `${maxHeight}px`, padding: "6px", overflow: "auto", justifyContent: "space-between", alignItems: "stretch"}}>
             {ownedTechs.map((tech) => {
               return <TechRow key={tech.name} tech={tech} removeTech={removeTech} />
             })}
@@ -405,7 +425,7 @@ function FactionContent() {
         </div>
         <div style={{maxHeight: `${maxHeight}px`, overflow: "auto", paddingBottom: "4px"}}>
           {updatedPlanets.map((planet) => {
-            return <PlanetRow key={planet.name} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
+            return <PlanetRow key={planet.name} factionName={playerFaction} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} opts={{showAttachButton: true}} />;
           })}
         </div>
         </div>} />

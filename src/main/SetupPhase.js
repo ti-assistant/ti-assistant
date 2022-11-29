@@ -21,6 +21,10 @@ export default function SetupPhase() {
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
 
+  if (!state || !planets || !factions || !objectives || !options) {
+    return <div>Loading...</div>;
+  }
+
   const orderedFactions = Object.entries(factions).sort((a, b) => {
     if (a[1].order > b[1].order) {
       return 1;

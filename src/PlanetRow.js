@@ -149,7 +149,7 @@ export function PlanetAttributes({ attributes }) {
 }
 
 function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
-  return (<Modal closeMenu={closeMenu} visible={true} title="Attachments"
+  return (<Modal closeMenu={closeMenu} visible={true} title={"Attachments for " + planet.name}
     content={
     <div>
       {Object.entries(attachments).map(([name, attachment]) => {
@@ -165,7 +165,7 @@ function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
   } />);
 }
 
-export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={}}) {
+export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addPlanet, opts={}}) {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
@@ -197,7 +197,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
       if (attachment.planets.includes(planet.name)) {
         return true;
       }
-      if (attachment.name === "Terraform" && playerFaction.name === "Titans of Ul") {
+      if (attachment.name === "Terraform" && factionName === "Titans of Ul") {
         return false;
       }
       if (attachment.required.type !== undefined) {
@@ -252,7 +252,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
   let claimed = null;
   let claimedColor = null;
   (planet.owners ?? []).forEach((owner) => {
-    if (opts.showSelfOwned || owner !== playerFaction) {
+    if (opts.showSelfOwned || owner !== factionName) {
       if (claimed === null) {
         claimed = owner;
         claimedColor = getFactionColor(factions[owner].color);
@@ -264,20 +264,20 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
   });
 
   return (
-    <div className={`planetRow ${!planet.ready ? "exhausted" : ""}`}>
+    <div className={`planetRow hoverParent ${!planet.ready ? "exhausted" : ""}`}>
       {showAttachMenu ?
         <AttachMenu planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} /> : null}
       {addPlanet !== undefined ? 
         <div
         style={{
           position: "relative",
-          lineHeight: "20px",
+          lineHeight: "32px",
           color: "darkgreen",
           cursor: "pointer",
-          fontSize: "20px",
+          fontSize: "32px",
           zIndex: 100,
           marginRight: "8px",
-          height: "20px",
+          height: "32px",
         }}
         onClick={() => addPlanet(planet.name)}
       >
@@ -288,13 +288,13 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
         <div
           style={{
             position: "relative",
-            lineHeight: "20px",
+            lineHeight: "32px",
             color: "darkred",
             cursor: "pointer",
-            fontSize: "20px",
+            fontSize: "32px",
             zIndex: 100,
-            marginRight: "8px",
-            height: "20px",
+            marginRight: "6px",
+            height: "32px",
           }}
           onClick={() => removePlanet(planet.name)}
         >
@@ -304,7 +304,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
       {claimed ? 
         <div style={{fontFamily: "Myriad Pro",
         position: "absolute",
-        color: claimedColor,
+        color: claimedColor === "Black" ? "#aaa" : claimedColor,
         borderRadius: "5px",
         border: `1px solid ${claimedColor}`,
         padding: "0px 4px",
@@ -330,6 +330,9 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
           <PlanetSymbol type={planet.type} faction={planet.faction} />
         </div>
       </div>
+      {!opts.showAttachButton ? <div className="flexRow" style={{width: "56px", paddingRight: "12px"}}>
+        {canAttach() ? <button className="hiddenButton" onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
+      </div> : null}
       <Resources
         resources={planet.resources}
         influence={planet.influence}
@@ -337,7 +340,7 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
       <div
         style={{
           margin: "0px 4px 0px 8px",
-          width: "48px"
+          width: "52px"
         }}
       >
         <PlanetAttributes attributes={planet.attributes ?? []} />
@@ -352,7 +355,9 @@ export function PlanetRow({planet, updatePlanet, removePlanet, addPlanet, opts={
             {/* <button onClick={() => togglePlanet(planet.name)}>
                 {planet.ready ? "Exhaust" : "Ready"}
             </button> */}
-            {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
+            {opts.showAttachButton ? <div style={{width: "56px"}}>
+              {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
+            </div> : null}
           </div>
       : null}
     </div>);

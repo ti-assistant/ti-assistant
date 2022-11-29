@@ -18,15 +18,15 @@ export default async function handler(req, res) {
     let id = val.id;
 
     // Filter out other faction technologies.
-    if (tech.faction) {
-      if (faction === "Nekro Virus") {
-        if (!factions.includes(tech.faction)) {
-          return;
-        }
-      } else if (tech.faction !== faction) {
-        return;
-      }
-    }
+    // if (tech.faction) {
+    //   if (faction === "Nekro Virus") {
+    //     if (!factions.includes(tech.faction)) {
+    //       return;
+    //     }
+    //   } else if (tech.faction !== faction) {
+    //     return;
+    //   }
+    // }
 
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("pok") && tech.game === "pok") {
@@ -43,13 +43,13 @@ export default async function handler(req, res) {
     techs[id] = tech;
   });
 
-  if (faction !== "Nekro Virus") {
-    Object.values(techs).forEach((tech) => {
-      if (tech.replaces) {
-        delete techs[tech.replaces];
-      }
-    });
-  }
+  // if (faction !== "Nekro Virus") {
+  //   Object.values(techs).forEach((tech) => {
+  //     if (tech.replaces) {
+  //       delete techs[tech.replaces];
+  //     }
+  //   });
+  // }
 
   res.status(200).json(techs);
 }

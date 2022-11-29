@@ -59,6 +59,12 @@ button.selected {
   color: #fff;
 }
 
+input[type=text] {
+  background-color: #333;
+  color: #fff;
+  box-sizing: border-box;
+}
+
 .leftSidebar {
   position: fixed;
   transform: rotate(-90deg);
@@ -165,6 +171,10 @@ button.selected {
   display: none;
 }
 
+.hiddenButton {
+  display: none;
+}
+
 .hoverParent {
   position: relative;
 }
@@ -173,6 +183,10 @@ button.selected {
   display: flex;
   position: absolute;
   z-index: 1000;
+}
+
+.hoverParent:hover .hiddenButton {
+  display: flex;
 }
 
 .hoverInfo.right {

@@ -38,7 +38,7 @@ export default function StatusPhase() {
     show: false,
   });
 
-  if (!strategyCards) {
+  if (!strategyCards || !state || !factions || !objectives || !options) {
     return <div>Loading...</div>;
   }
 

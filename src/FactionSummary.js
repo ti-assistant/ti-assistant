@@ -1,14 +1,21 @@
 import { useRouter } from "next/router";
+import { useState, useTransition } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { FactionSymbol } from "./FactionCard";
-import { PlanetAttributes, PlanetSymbol } from "./PlanetRow";
+import { Modal } from "./Modal";
+import { PlanetAttributes, PlanetRow, PlanetSymbol } from "./PlanetRow";
+import { SystemRow } from "./SystemRow";
 import { Resources } from "./Resources";
+import { Tab, TabBody } from "./Tab";
 import { TechIcon, TechRow } from "./TechRow";
 import { manualVPUpdate } from "./util/api/factions";
+import { claimPlanet, unclaimPlanet } from "./util/api/planets";
 import { fetcher } from "./util/api/util";
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from "./util/planets";
-import { filterToOwnedTechs } from "./util/techs";
+import { filterToOwnedTechs, sortTechs } from "./util/techs";
 import { pluralize } from "./util/util";
+import { FactionSelectModal } from "./FactionSelectModal";
+import { hasTech, lockTech, unlockTech } from "./util/api/techs";
 
 function getTechColor(tech) {
   switch (tech.type) {
@@ -116,7 +123,250 @@ export function TechSummary({ techs }) {
   );
 }
 
-export function PlanetSummary({ planets, options = {} }) {
+export function UpdateObjectivesModal({ visible, onComplete }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: techs } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
+  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: planets } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+
+  const [ groupBySystem, setGroupBySystem ] = useState(false);
+  const [ showFactionSelect, setShowFactionSelect ] = useState(false);
+
+  const [ factionName, setFactionName ] = useState(null);
+
+  if (!factions || !planets || !options || !state) {
+    return <div>Loading...</div>;
+  }
+
+  return <Modal visible={visible} title="Work in progress" closeMenu={onComplete} content="Coming soon" />
+}
+
+export function UpdateTechsModal({ visible, onComplete }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: techs } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
+  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+
+  const [ showFactionSelect, setShowFactionSelect ] = useState(false);
+
+  const [ factionName, setFactionName ] = useState(null);
+
+  if (!factions || !techs || !options || !state) {
+    return <div>Loading...</div>;
+  }
+
+  if (factionName === null) {
+    setFactionName(state.speaker);
+    return <div>Loading...</div>;
+  }
+
+  function updateFaction(factionName) {
+    if (factions[factionName]) {
+      setFactionName(factionName);
+    }
+    setShowFactionSelect(false);
+  }
+  
+  const techsObj = {};
+  Object.values(techs ?? {}).forEach((tech) => {
+    if (tech.faction) {
+      if (factionName === "Nekro Virus" && !factions[tech.faction]) {
+        return;
+      } else if (factionName !== "Nekro Virus" && tech.faction !== factionName) {
+        return;
+      }
+    }
+    techsObj[tech.name] = tech;
+  });
+  if (factionName !== "Nekro Virus") {
+    Object.values(techsObj).forEach((tech) => {
+      if (tech.replaces) {
+        delete techsObj[tech.replaces];
+      }
+    });
+  }
+
+  const techArr = Object.values(techsObj);
+  sortTechs(techArr);
+  const greenTechs = techArr.filter((tech) => tech.type === "green");
+  const blueTechs = techArr.filter((tech) => tech.type === "blue");
+  const yellowTechs = techArr.filter((tech) => tech.type === "yellow");
+  const redTechs = techArr.filter((tech) => tech.type === "red");
+  const upgradeTechs = techArr.filter((tech) => tech.type === "upgrade");
+
+  function addTech(toAdd) {
+    unlockTech(mutate, gameid, factions, factionName, toAdd);
+  }
+
+  function removeTech(toRemove) {
+    lockTech(mutate, gameid, factions, factionName, toRemove);
+  }
+
+  function getTechRow(tech) {
+    if (hasTech(factions[factionName], tech.name)) {
+      return <div key={tech.name}><TechRow tech={tech} removeTech={removeTech} /></div>;
+    } else {
+      return <div key={tech.name}><TechRow tech={tech} addTech={addTech} /></div>;
+    }
+  }
+
+  const innerContent = (
+    <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
+      <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
+        <FactionSymbol faction={factionName} size={400} />
+      </div>
+      <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
+        <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
+          <button onClick={() => setShowFactionSelect(true)}>Switch Faction</button>
+        </div>
+      </div>
+      <div className="flexColumn" style={{gap: "20px", paddingBottom: "8px"}}>
+        <div className="flexRow" style={{width: "1500px", alignItems: "flex-start", justifyContent: "space-around"}}>
+          <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
+            {greenTechs.map(getTechRow)}
+          </div>
+          <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
+            {blueTechs.map(getTechRow)}
+          </div>
+          <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
+            {yellowTechs.map(getTechRow)}
+          </div>
+        </div>
+        <div className="flexRow" style={{width: "900px", alignItems: "flex-start", gap: "12px"}}>
+          <div className="flexColumn" style={{gap: "8px", flex: "0 0 45%",  alignItems: "stretch"}}>
+            {redTechs.map(getTechRow)}
+          </div>
+          <div className="flexColumn" style={{gap: "8px", flex: "0 0 45%",  alignItems: "stretch"}}>
+            {upgradeTechs.map(getTechRow)}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return <div>
+    <FactionSelectModal title="Select Faction" visible={showFactionSelect} onComplete={(factionName) => updateFaction(factionName)} level={2} />
+    <Modal closeMenu={onComplete} title={"Update Techs for " + factionName} visible={visible} content={innerContent} />
+  </div>
+}
+
+export function UpdatePlanetsModal({ visible, onComplete }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: attachments } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: planets } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+
+  const [ groupBySystem, setGroupBySystem ] = useState(false);
+  const [ showFactionSelect, setShowFactionSelect ] = useState(false);
+
+  const [ factionName, setFactionName ] = useState(null);
+
+  if (!factions || !planets || !options || !state || !attachments) {
+    return <div>Loading...</div>;
+  }
+
+  if (factionName === null) {
+    setFactionName(state.speaker);
+  }
+
+  function updateFaction(factionName) {
+    if (factions[factionName]) {
+      setFactionName(factionName);
+    }
+    setShowFactionSelect(false);
+  }
+
+  const updatedPlanets = applyAllPlanetAttachments(Object.values(planets ?? {}), attachments);
+
+  const planetsArr = [];
+  const planetsBySystem = [];
+  updatedPlanets.forEach((planet) => {
+    planetsArr.push(planet);
+    if (!planet.system) {
+      planetsBySystem[planet.name] = [planet];
+      return;
+    }
+    if (!planetsBySystem[planet.system]) {
+      planetsBySystem[planet.system] = [];
+    }
+    planetsBySystem[planet.system].push(planet);
+    });
+  planetsBySystem.sort((a, b) => {
+    if (a[0].name < b[0].name) {
+      return -1;
+    }
+    if (b[0].name < a[0].name) {
+      return 1;
+    }
+    return 0;
+  });
+
+  function removePlanet(toRemove) {
+    unclaimPlanet(mutate, gameid, planets, toRemove, factionName);
+  }
+
+  function addPlanet(toAdd) {
+    claimPlanet(mutate, gameid, planets, toAdd, factionName, options);
+  }
+
+  const innerContent = (
+    <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
+      <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
+        <FactionSymbol faction={factionName} size={400} />
+      </div>
+      <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
+        <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
+          <button onClick={() => setShowFactionSelect(true)}>Switch Faction</button>
+          <button className={groupBySystem ? "selected" : ""} onClick={() => setGroupBySystem(!groupBySystem)}>
+            Group By System
+          </button>
+        </div>
+      </div>
+        <div className="flexRow" style={{width: "1600px", flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch"}}>
+          {groupBySystem ? 
+            planetsBySystem.map((system, systemName) => {
+              let allControlled = true;
+              system.forEach((planet) => {
+                if (!(planet.owners ?? []).includes(factionName)) {
+                  allControlled = false;
+                }
+              });
+              if (allControlled) {
+                return <div key={systemName} className="flexColumn" style={{alignItems: "flex-start", flex: "0 0 25%", borderBottom: "1px solid #777"}}><SystemRow factionName={factionName} planets={system} removePlanet={removePlanet} /></div>;
+              } else {
+                return <div key={systemName} className="flexColumn" style={{alignItems: "flex-start", flex: "0 0 25%", borderBottom: "1px solid #777"}}><SystemRow factionName={factionName} planets={system} addPlanet={addPlanet} /></div>;
+              }
+            }) :
+            planetsArr.map((planet) => {
+              if ((planet.owners ?? []).includes(factionName)) {
+                return <div key={planet.name} style={{flex: "0 0 25%"}}><PlanetRow factionName={factionName} planet={planet} removePlanet={removePlanet} updatePlanet={() => {}} opts={{showSelfOwned: true}} /></div>;
+              } else {
+                return <div key={planet.name} style={{flex: "0 0 25%"}}><PlanetRow factionName={factionName} planet={planet} addPlanet={addPlanet} updatePlanet={() => {}} opts={{showSelfOwned: true}} /></div>;
+              }
+            })
+          }
+        </div>
+    </div>
+  );
+
+  return <div>
+    <FactionSelectModal title="Select Faction" visible={showFactionSelect} onComplete={(factionName) => updateFaction(factionName)} level={2} />
+    <Modal closeMenu={onComplete} title={"Update Planets for " + factionName} visible={visible} content={innerContent} />
+  </div>
+}
+
+export function PlanetSummary({ planets, factionName, options = {} }) {
   let resources = 0;
   let influence = 0;
   let cultural = 0;
@@ -226,7 +476,7 @@ export function FactionSummary({ factionName, options={} }) {
   }
 
   return (
-    <div className="flexRow" style={{width: "100%", maxWidth: "800px", padding: "4px 0px", zIndex: 2, position: "relative"}}>
+    <div className="flexRow" style={{width: "100%", maxWidth: "800px", padding: "4px 0px", position: "relative"}}>
       {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
         <FactionSymbol faction={factionName} size={90} />
       </div> : null}
@@ -239,6 +489,6 @@ export function FactionSummary({ factionName, options={} }) {
         </div>
         <div style={{fontSize: "28px"}}>{pluralize('VP', VPs)}</div>
       </div>
-      {options.hidePlanets ? null : <PlanetSummary planets={updatedPlanets} options={options} />}
+      {options.hidePlanets ? null : <PlanetSummary planets={updatedPlanets} factionName={factionName} options={options} />}
     </div>);
 }

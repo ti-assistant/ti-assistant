@@ -130,7 +130,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
 
   let influence = 0;
   for (const planet of updatedPlanets) {
-    if (planet.ready || options.total) {
+    if (planet.ready || opts.total) {
       influence += planet.influence;
     }
   }

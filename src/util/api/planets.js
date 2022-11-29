@@ -59,13 +59,13 @@ export async function claimPlanet(mutate, gameid, planets, planet, factionName, 
   } else {
     updatedPlanets[planet].owners = [factionName];
   }
-  updatedPlanets[planet].ready = false;
+  updatedPlanets[planet].ready = true;
 
   const options = {
     optimisticData: updatedPlanets,
   };
 
-  mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data), options);
+  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
 }
 
 export async function unclaimPlanet(mutate, gameid, planets, planet, factionName) {
@@ -85,6 +85,6 @@ export async function unclaimPlanet(mutate, gameid, planets, planet, factionName
     optimisticData: updatedPlanets,
   };
 
-  mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data), options);
+  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
 }
 

@@ -8,7 +8,7 @@ import { getTargets, VoteCount } from '../VoteCount';
 import { BasicFactionTile } from '../FactionTile';
 import { AgendaRow } from '../AgendaRow';
 import { Modal } from '../Modal';
-import { passAgenda, resolveAgenda } from '../util/api/agendas';
+import { passAgenda, repealAgenda, resolveAgenda } from '../util/api/agendas';
 import { LawsInEffect } from '../LawsInEffect';
 import { SelectableRow } from '../SelectableRow';
 
@@ -120,7 +120,12 @@ export default function AgendaPhase() {
     show: false,
   });
   const [ speakerTieBreak, setSpeakerTieBreak ] = useState(null);
+  const [ miscount, setMiscount ] = useState(false);
   const { currentAgenda, advanceAgendaPhase, resetAgendaPhase } = useSharedCurrentAgenda();
+
+  if (!agendas || !factions || !planets || !strategycards || !objectives || !state) {
+    return <div>Loading...</div>;
+  }
 
   const votes  = computeVotes();
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
@@ -148,28 +153,6 @@ export default function AgendaPhase() {
     }
   }
 
-  // When completing an agenda, make changes.
-  // useEffect(() => {
-  //   if (agenda) {
-  //     const votes = computeVotes();
-  //     let maxVotes = 0;
-  //     let chosenTarget = null;
-  //     Object.entries(votes).forEach(([target, votes]) => {
-  //     if (votes > maxVotes) {
-  //       maxVotes = votes;
-  //         chosenTarget = target;
-  //       }
-  //     });
-  //     resolveAgenda(mutate, gameid, agendas, agenda.name, chosenTarget);
-  //     setAgenda(null);
-  //     setFactionVotes({});
-  //   }
-  // }, [currentAgenda]);
-
-  if (!factions) {
-    return <div>Loading...</div>;
-  }
-
   function completeAgenda() {
     if (isTie && !speakerTieBreak) {
       throw Error("No selected target?");
@@ -181,12 +164,19 @@ export default function AgendaPhase() {
     } else {
       resolveAgenda(mutate, gameid, agendas, agenda.name, target);
     }
-    setAgenda(null);
+    if (agenda.name === "Miscount Disclosed") {
+      setAgenda(agendas[target]);
+      repealAgenda(mutate, gameid, agendas, target);
+      setMiscount(true);
+    } else {
+      setAgenda(null);
+      advanceAgendaPhase();
+      setMiscount(false);
+    }
     setSubAgenda(null);
     setOutcome(null);
     setFactionVotes({});
     setSpeakerTieBreak(null);
-    advanceAgendaPhase(); 
   }
 
   function nextPhase(skipAgenda = false) {
@@ -281,8 +271,6 @@ export default function AgendaPhase() {
     return orderedVotes;
   }
 
-  const orderedVotes = computeVotes();
-
   const votingOrder = Object.values(factions).sort((a, b) => {
     if (a.name === "Argent Flight") {
       return -1;
@@ -326,8 +314,10 @@ export default function AgendaPhase() {
       <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px", alignItems: "stretch"}}>
         <li>
           <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
-            <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
-              Reveal and read one Agenda
+            {!miscount ? <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px"}}>
+              <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+              Reveal and read one Agenda</div>
+            : "Re-voting on miscounted agenda"}
           </div>
           <div className='flexColumn' style={{gap: "4px"}}>
           {agenda ? 
@@ -352,9 +342,9 @@ export default function AgendaPhase() {
         <li>Discuss</li>
         <li>
           In Voting Order: Cast votes (or abstain)
-          {orderedVotes && Object.keys(orderedVotes).length > 0 ? 
+          {votes && Object.keys(votes).length > 0 ? 
           <div className={flexDirection} style={{marginTop: "12px", gap: "4px", padding: "8px 20px", alignItems: "flex-start", width: "100%", border: "1px solid #555", borderRadius: "10px"}}>
-          {Object.entries(orderedVotes).map(([target, voteCount]) => {
+          {Object.entries(votes).map(([target, voteCount]) => {
             return <div key={target}>{target}: {voteCount}</div>
           })}
           </div>
@@ -398,7 +388,7 @@ export default function AgendaPhase() {
           : null}
           </div>
         </li>
-        <li>Repeat Steps 1 to 6</li>
+        {currentAgenda === 1 ? <li>Repeat Steps 1 to 6</li> : null}
         <li>Ready all planets</li>
     </ol>}
       <button onClick={() => nextPhase()}>Start Next Round</button>

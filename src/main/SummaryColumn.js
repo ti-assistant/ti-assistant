@@ -2,8 +2,9 @@ import { useRouter } from 'next/router'
 import useSWR, { mutate } from 'swr'
 import { FactionCard } from '../FactionCard.js'
 import { fetcher } from '../util/api/util';
-import { FactionSummary } from '../FactionSummary';
+import { FactionSummary, UpdateObjectivesModal, UpdatePlanetsModal, UpdateTechsModal } from '../FactionSummary';
 import { updateOption } from '../util/api/options.js';
+import { useState } from 'react';
 
 export default function SummaryColumn() {
   const router = useRouter();
@@ -11,7 +12,11 @@ export default function SummaryColumn() {
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
 
-  if (!options) {
+  const [ showTechModal, setShowTechModal ] = useState(false);
+  const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
+  const [ showPlanetModal, setShowPlanetModal ] = useState(false);
+
+  if (!options || !factions) {
     return <div>Loading...</div>;
   }
 
@@ -50,10 +55,18 @@ export default function SummaryColumn() {
     
   return (
     <div className="flexColumn" style={{width: "100%", alignItems: "stretch", gap: "6px", maxWidth: maxSummaryWidth}}>
+      <UpdateTechsModal visible={showTechModal} onComplete={() => setShowTechModal(false)} />
+      <UpdateObjectivesModal visible={showObjectiveModal} onComplete={() => setShowObjectiveModal(false)} />
+      <UpdatePlanetsModal visible={showPlanetModal} onComplete={() => setShowPlanetModal(false)} />
       <div className="flexRow">Speaker Order</div>
       <div className="flexRow">
         <button onClick={() => setOption("faction-summary-show-techs", !showTechs)}>{showTechs ? "Hide Techs" : "Show Techs"}</button>
         <button onClick={() => setOption("faction-summary-show-planets", !showPlanets)}>{showPlanets ? "Hide Planets" : "Show Planets"}</button>
+      </div>
+      <div className="flexRow">
+        {showTechs ? <button onClick={() => setShowTechModal(true)}>Update Techs</button> : null}
+        <button onClick={() => setShowObjectiveModal(true)}>Score Objectives</button>
+        {showPlanets ? <button onClick={() => setShowPlanetModal(true)}>Update Planets</button> : null}
       </div>
       {orderedFactions.map(([name, faction]) => {
         return (
