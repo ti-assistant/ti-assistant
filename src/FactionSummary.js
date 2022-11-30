@@ -16,6 +16,8 @@ import { filterToOwnedTechs, sortTechs } from "./util/techs";
 import { pluralize } from "./util/util";
 import { FactionSelectModal } from "./FactionSelectModal";
 import { hasTech, lockTech, unlockTech } from "./util/api/techs";
+import { ObjectiveRow } from "./ObjectiveRow";
+import { removeObjective, revealObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
 
 function getTechColor(tech) {
   switch (tech.type) {
@@ -127,14 +129,11 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: techs } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
+  const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: planets } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
-
-  const [ groupBySystem, setGroupBySystem ] = useState(false);
-  const [ showFactionSelect, setShowFactionSelect ] = useState(false);
 
   const [ factionName, setFactionName ] = useState(null);
 
@@ -142,7 +141,127 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
     return <div>Loading...</div>;
   }
 
-  return <Modal visible={visible} title="Work in progress" closeMenu={onComplete} content="Coming soon" />
+  if (factionName === null) {
+    setFactionName(state.speaker);
+    return <div>Loading...</div>;
+  }
+
+  function scoreObj(objectiveName, score) {
+    if (score) {
+      addObjective(objectiveName);
+      scoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+    } else {
+      unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+    }
+  }
+
+  function addObjective(objectiveName) {
+    revealObjective(mutate, gameid, objectives, factionName, objectiveName);
+  }
+
+  function removeObj(objectiveName) {
+    removeObjective(mutate, gameid, objectives, factionName, objectiveName);
+  }
+
+  const orderedFactionNames = Object.keys(factions).sort();
+
+  const sortedObjectives = Object.values(objectives).sort((a, b) => {
+    if (a.selected && !b.selected) {
+      return -1;
+    } else if (b.selected && !a.selected) {
+      return 1;
+    }
+    return a.name - b.name;
+  })
+
+  const stageOneObjectives = sortedObjectives.filter((obj) => obj.type === "stage-one");
+  const stageTwoObjectives = sortedObjectives.filter((obj) => obj.type === "stage-two");
+  const secretObjectives = sortedObjectives.filter((obj) => obj.type === "secret");
+  const otherObjectives = sortedObjectives.filter((obj) => obj.type === "other");
+
+  let transition = {
+    'stage-one': stageOneObjectives[0].selected,
+    'stage-two': stageTwoObjectives[0].selected,
+    'secret': secretObjectives[0].selected,
+    'other': otherObjectives[0].selected,
+  };
+
+  const innerContent = (
+    <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
+      <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
+        <FactionSymbol faction={factionName} size={400} />
+      </div>
+      <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
+        <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
+          {orderedFactionNames.map((name) => {
+            return (
+              <button className={name === factionName ? "selected" : ""}
+                onClick={() => setFactionName(name)}>{name}</button>
+
+            );
+          })}
+        </div>
+      </div>
+      <div className="flexRow" style={{width: "1500px", paddingBottom: "8px", alignItems: "flex-start", justifyContent: "space-between", height: "100%"}}>
+        <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
+          <div className="flexColumn" style={{fontSize: "24px"}}>Stage I</div>
+          {stageOneObjectives.map((obj) => {
+            if (obj.selected) {
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+            }
+            if (transition['stage-one'] && !obj.selected) {
+              transition['stage-one'] = false;
+              return <div style={{paddingTop: "4px", borderTop: "1px solid #777"}}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+            }
+            return <ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
+          })}
+        </div>
+        <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
+          <div className="flexColumn" style={{fontSize: "24px"}}>Stage II</div>
+          {stageTwoObjectives.map((obj) => {
+            if (obj.selected) {
+              return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)}  faction={factionName} removeObjective={() => removeObj(obj.name)} />
+            }
+            if (transition['stage-two'] && !obj.selected) {
+              transition['stage-two'] = false;
+              return <div style={{paddingTop: "4px", borderTop: "1px solid #777"}}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+            }
+            return <ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /> 
+          })}
+        </div>
+        <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
+          <div className="flexColumn" style={{fontSize: "24px"}}>Secret</div>
+          {secretObjectives.map((obj) => {
+            if (obj.selected) {
+              return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+            }
+            if (transition['secret'] && !obj.selected) {
+              transition['secret'] = false;
+              return <div style={{paddingTop: "4px", borderTop: "1px solid #777"}}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+            }
+            return <ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
+          })}
+        </div>
+        <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
+          <div className="flexColumn" style={{fontSize: "24px"}}>Other</div>
+          {otherObjectives.map((obj) => {
+            if (obj.selected) {
+              return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)}  faction={factionName} removeObjective={() => removeObj(obj.name)} />
+            }
+            if (transition['other'] && !obj.selected) {
+              transition['other'] = false;
+              return <div style={{paddingTop: "4px", borderTop: "1px solid #777"}}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+            }
+            return <ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
+          })}
+        </div>
+      </div>
+    </div>
+  );
+
+  return <div>
+    <Modal closeMenu={onComplete} title={"Score Objectives for " + factionName} visible={visible} content={innerContent} />
+  </div>
 }
 
 export function UpdateTechsModal({ visible, onComplete }) {
@@ -165,13 +284,6 @@ export function UpdateTechsModal({ visible, onComplete }) {
   if (factionName === null) {
     setFactionName(state.speaker);
     return <div>Loading...</div>;
-  }
-
-  function updateFaction(factionName) {
-    if (factions[factionName]) {
-      setFactionName(factionName);
-    }
-    setShowFactionSelect(false);
   }
   
   const techsObj = {};
@@ -217,6 +329,8 @@ export function UpdateTechsModal({ visible, onComplete }) {
     }
   }
 
+  const orderedFactionNames = Object.keys(factions).sort();
+
   const innerContent = (
     <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
       <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
@@ -224,26 +338,53 @@ export function UpdateTechsModal({ visible, onComplete }) {
       </div>
       <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
         <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
-          <button onClick={() => setShowFactionSelect(true)}>Switch Faction</button>
+          {orderedFactionNames.map((name) => {
+            return (
+              <button className={name === factionName ? "selected" : ""}
+                onClick={() => setFactionName(name)}>{name}</button>
+
+            );
+          })}
         </div>
       </div>
       <div className="flexColumn" style={{gap: "20px", paddingBottom: "8px"}}>
         <div className="flexRow" style={{width: "1500px", alignItems: "flex-start", justifyContent: "space-around"}}>
           <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
+            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
+              <TechIcon type="green" width="27px" height="28px"/>
+              Biotic
+              <TechIcon type="green" width="27px" height="28px"/>
+            </div>
             {greenTechs.map(getTechRow)}
           </div>
           <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
+            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
+              <TechIcon type="blue" width="27px" height="28px"/>
+              Propulsion
+              <TechIcon type="blue" width="27px" height="28px"/>
+            </div>
             {blueTechs.map(getTechRow)}
           </div>
           <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
+            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
+              <TechIcon type="yellow" width="27px" height="28px"/>
+              Cybernetic
+              <TechIcon type="yellow" width="27px" height="28px"/>
+            </div>
             {yellowTechs.map(getTechRow)}
           </div>
         </div>
         <div className="flexRow" style={{width: "900px", alignItems: "flex-start", gap: "12px"}}>
           <div className="flexColumn" style={{gap: "8px", flex: "0 0 45%",  alignItems: "stretch"}}>
+            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
+              <TechIcon type="red" width="26px" height="28px"/>
+              Warfare
+              <TechIcon type="red" width="26px" height="28px"/>
+            </div>
             {redTechs.map(getTechRow)}
           </div>
           <div className="flexColumn" style={{gap: "8px", flex: "0 0 45%",  alignItems: "stretch"}}>
+            <div className="flexColumn" style={{fontSize: "28px"}}>Unit Upgrades</div>
             {upgradeTechs.map(getTechRow)}
           </div>
         </div>
@@ -252,7 +393,6 @@ export function UpdateTechsModal({ visible, onComplete }) {
   );
 
   return <div>
-    <FactionSelectModal title="Select Faction" visible={showFactionSelect} onComplete={(factionName) => updateFaction(factionName)} level={2} />
     <Modal closeMenu={onComplete} title={"Update Techs for " + factionName} visible={visible} content={innerContent} />
   </div>
 }
@@ -320,6 +460,8 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
     claimPlanet(mutate, gameid, planets, toAdd, factionName, options);
   }
 
+  const orderedFactionNames = Object.keys(factions).sort();
+
   const innerContent = (
     <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
       <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
@@ -327,7 +469,12 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
       </div>
       <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
         <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
-          <button onClick={() => setShowFactionSelect(true)}>Switch Faction</button>
+        {orderedFactionNames.map((name) => {
+            return (
+              <button className={name === factionName ? "selected" : ""}
+                onClick={() => setFactionName(name)}>{name}</button>
+            );
+          })}
           <button className={groupBySystem ? "selected" : ""} onClick={() => setGroupBySystem(!groupBySystem)}>
             Group By System
           </button>

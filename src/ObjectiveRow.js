@@ -100,7 +100,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
   }
 
   function canScore() {
-    if (!removeObjective || viewing || !faction) {
+    if (!scoreObjective || viewing || !faction) {
       return false;
     }
     if (objective.max && (objective.scorers ?? []).length === objective.max) {
@@ -114,17 +114,20 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
       <Modal closeMenu={() => setShowInfoModal(false)} visible={showInfoModal} title={<div style={{fontSize: "40px"}}>{objective.name}</div>} content={
         <InfoContent objective={objective} />
       } top="35%" level={2} />
-      <div className="flexRow" style={{ height: "30px"}}>
+      <div className="flexRow hoverParent" style={{ height: "38px"}}>
+        <div style={{width: "36px"}}>
         {addObjective ? 
           <div
+          className=""
           style={{
-            display: "flex",
             alignItems: "center",
+            fontSize: "32px",
+            lineHeight: "32px",
             color: "darkgreen",
             cursor: "pointer",
-            fontSize: "20px",
             zIndex: 100,
             marginRight: "8px",
+            height: "32px",
           }}
           onClick={() => addObjective(objective.name)}
         >
@@ -133,25 +136,28 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
         : null}
         {removeObjective ? 
           <div
+            className=""
             style={{
-              display: "flex",
               alignItems: "center",
+              fontSize: "32px",
+              lineHeight: "32px",
               color: "darkred",
               cursor: "pointer",
-              fontSize: "20px",
               zIndex: 100,
               marginRight: "8px",
+              height: "32px",
             }}
             onClick={() => removeObjective(objective.name)}
           >
             &#x2715;
           </div>
         : null}
+        </div>
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", flexBasis: "50%", flexGrow: 2}}>
-          <div style={{ display: "flex", fontSize: "18px", zIndex: 2}}>
+          <div style={{ display: "flex", flex: "2 0 50%", fontSize: "19px", zIndex: 2}}>
             {objective.name}
           </div>
-          <div className="popupIcon" onClick={displayInfo}>&#x24D8;</div>
+          <div className="popupIcon" style={{paddingRight: "8px"}} onClick={displayInfo}>&#x24D8;</div>
         </div>
         <div className="flexColumn">
           {canScore() ? <button onClick={() => scoreObjective(objective.name, true)}>Score</button> : null}
@@ -162,7 +168,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
           if (scorer === faction) {
             return (
               <div key={`${scorer}-${index}`} className="flexRow" style={{position: "relative", width: "45px"}}>
-                <div style={{width: "16px", fontSize: "8px", lineHeight: "8px", height: "16px", top: "0px", left: "28px", position: "absolute", zIndex: 40, backgroundColor: "#222", color: "red", display: "flex", alignItems: "center", fontWeight: "bold", justifyContent: "center", borderRadius: "12px", boxShadow: "1px 1px 4px black"}} onClick={() => scoreObjective(objective.name, false)}>
+                <div style={{cursor: "pointer", width: "16px", fontSize: "8px", lineHeight: "8px", height: "16px", top: "0px", left: "28px", position: "absolute", zIndex: 40, backgroundColor: "#222", color: "red", display: "flex", alignItems: "center", fontWeight: "bold", justifyContent: "center", borderRadius: "12px", boxShadow: "1px 1px 4px black"}} onClick={() => scoreObjective(objective.name, false)}>
                   &#x2715;
                 </div>
                 <FactionSymbol faction={scorer} size={42} />
