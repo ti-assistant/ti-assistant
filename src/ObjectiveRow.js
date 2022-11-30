@@ -86,7 +86,7 @@ function PlanetAttributes({ attributes }) {
 
 function InfoContent({objective}) {
   return (
-    <div className="myriadPro" style={{maxWidth: "800px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "32px"}}>
+    <div className="myriadPro" style={{boxSizing: "border-box", maxWidth: "800px", width: "100%", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "32px"}}>
       {objective.description}
     </div>
   );

@@ -158,6 +158,9 @@ function isCouncilPlanet(planet) {
   const gamePlanets = gameState.data().planets ?? {};
   const gameFactions = gameState.data().factions ?? {};
   const factionPlanets = (gameFactions[faction] ?? {}).planets ?? {};
+  const gameOptions = gameState.data().options ?? {};
+
+  const inGameSystems = (gameOptions['map-string'] ?? "").split(" ").map((system) => parseInt(system));
 
   let planets = {};
   planetsRef.forEach(async (val) => {
@@ -168,6 +171,9 @@ function isCouncilPlanet(planet) {
       if (!gameFactions['Council Keleres'] || !(gameFactions['Council Keleres'].startswith.planets ?? []).includes(planet.name)) {
         return;
       }
+    }
+    if (inGameSystems.length > 0 && planet.system && !inGameSystems.includes(planet.system)) {
+      return;
     }
 
     planet = {

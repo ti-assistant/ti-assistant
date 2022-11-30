@@ -149,7 +149,7 @@ export function PlanetAttributes({ attributes }) {
 }
 
 function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
-  return (<Modal closeMenu={closeMenu} visible={true} title={"Attachments for " + planet.name}
+  return (<Modal closeMenu={closeMenu} visible={true} level={2} title={"Attachments for " + planet.name}
     content={
     <div>
       {Object.entries(attachments).map(([name, attachment]) => {
@@ -265,8 +265,6 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
 
   return (
     <div className={`planetRow hoverParent ${!planet.ready ? "exhausted" : ""}`}>
-      {showAttachMenu ?
-        <AttachMenu planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} /> : null}
       {addPlanet !== undefined ? 
         <div
         style={{
@@ -330,7 +328,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
           <PlanetSymbol type={planet.type} faction={planet.faction} />
         </div>
       </div>
-      {!opts.showAttachButton ? <div className="flexRow" style={{width: "56px", paddingRight: "12px"}}>
+      {!opts.showAttachButton ? <div className="flexRow" style={{width: "62px", paddingRight: "6px"}}>
         {canAttach() ? <button className="hiddenButton" onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
       </div> : null}
       <Resources
@@ -360,5 +358,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
             </div> : null}
           </div>
       : null}
+      {showAttachMenu ?
+        <AttachMenu planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} /> : null}
     </div>);
 }

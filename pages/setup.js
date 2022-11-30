@@ -168,6 +168,7 @@ const INITIAL_OPTIONS = {
   'multiple-planet-owners': false,
   'multiple-planet-attachments': false,
   'allow-double-council': false,
+  'map-string': "",
 }
 
 export default function SetupPage() {
@@ -613,6 +614,13 @@ export default function SetupPage() {
             <button className={options.expansions.has("codex-one") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-one"), "codex-one")}>Codex I</button>
             <button className={options.expansions.has("codex-two") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-two"), "codex-two")}>Codex II</button>
             <button className={options.expansions.has("codex-three") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-three"), "codex-three")}>Codex III</button>
+          </div>
+        </div>
+        <div>
+          Map:
+          <div className="flexColumn" style={{fontFamily: "Myriad Pro", gap: "8px", padding: "8px 20px", alignItems: "flex-start"}}>
+            Map String (opt):<input type="textbox" style={{width: "100%"}} onChange={(event)=> toggleOption(event.target.value, "map-string")}></input>
+            Used to filter out planets that are not claimable.
           </div>
         </div>
         <div>

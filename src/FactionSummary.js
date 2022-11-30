@@ -187,12 +187,12 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   };
 
   const innerContent = (
-    <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
+    <div className="flexColumn" style={{position: "sticky", minHeight: "400px", overflow: "hidden", maxHeight: "85vh"}}>
       <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
         <FactionSymbol faction={factionName} size={400} />
       </div>
-      <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
-        <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
+      <div className="flexColumn" style={{position: "sticky", width: "100%", backgroundColor: "#222", zIndex: 902}}>
+        <div className="flexRow" style={{backgroundColor: "#222", position: "sticky", zIndex: 904, fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
           {orderedFactionNames.map((name) => {
             return (
               <button className={name === factionName ? "selected" : ""}
@@ -202,9 +202,14 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
           })}
         </div>
       </div>
-      <div className="flexRow" style={{width: "1500px", paddingBottom: "8px", alignItems: "flex-start", justifyContent: "space-between", height: "100%"}}>
+      <div className="flexRow" style={{padding: "8px 0px", backgroundColor: "#222", position: "sticky", width: "1500px", alignItems: "flex-start", justifyContent: "space-between", zIndex: 902}}>
+          <div className="flexColumn" style={{flex: "0 0 24%", fontSize: "24px"}}>Stage I</div>
+          <div className="flexColumn" style={{flex: "0 0 24%", fontSize: "24px"}}>Stage II</div>
+          <div className="flexColumn" style={{flex: "0 0 24%", fontSize: "24px"}}>Secret</div>
+          <div className="flexColumn" style={{flex: "0 0 24%", fontSize: "24px"}}>Other</div>
+      </div>
+      <div className="flexRow" style={{width: "1500px", paddingBottom: "8px", alignItems: "flex-start", justifyContent: "space-between", height: "100%", overflowY: "scroll"}}>
         <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
-          <div className="flexColumn" style={{fontSize: "24px"}}>Stage I</div>
           {stageOneObjectives.map((obj) => {
             if (obj.selected) {
               return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
@@ -217,7 +222,6 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
           })}
         </div>
         <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
-          <div className="flexColumn" style={{fontSize: "24px"}}>Stage II</div>
           {stageTwoObjectives.map((obj) => {
             if (obj.selected) {
               return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)}  faction={factionName} removeObjective={() => removeObj(obj.name)} />
@@ -230,7 +234,6 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
           })}
         </div>
         <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
-          <div className="flexColumn" style={{fontSize: "24px"}}>Secret</div>
           {secretObjectives.map((obj) => {
             if (obj.selected) {
               return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
@@ -243,7 +246,6 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
           })}
         </div>
         <div className="flexColumn" style={{flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch"}}>
-          <div className="flexColumn" style={{fontSize: "24px"}}>Other</div>
           {otherObjectives.map((obj) => {
             if (obj.selected) {
               return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)}  faction={factionName} removeObjective={() => removeObj(obj.name)} />
@@ -463,11 +465,11 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
   const orderedFactionNames = Object.keys(factions).sort();
 
   const innerContent = (
-    <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
+    <div className="flexColumn" style={{position: "sticky", minHeight: "400px", maxHeight: "85vh"}}>
       <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
         <FactionSymbol faction={factionName} size={400} />
       </div>
-      <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
+      <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px", zIndex: 902,  backgroundColor: "#222"}}>
         <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
         {orderedFactionNames.map((name) => {
             return (
@@ -480,7 +482,7 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
           </button>
         </div>
       </div>
-        <div className="flexRow" style={{width: "1600px", flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch"}}>
+        <div className="flexRow" style={{width: "1600px", flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch", overflowY: "scroll"}}>
           {groupBySystem ? 
             planetsBySystem.map((system, systemName) => {
               let allControlled = true;
@@ -508,7 +510,6 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
   );
 
   return <div>
-    <FactionSelectModal title="Select Faction" visible={showFactionSelect} onComplete={(factionName) => updateFaction(factionName)} level={2} />
     <Modal closeMenu={onComplete} title={"Update Planets for " + factionName} visible={visible} content={innerContent} />
   </div>
 }
