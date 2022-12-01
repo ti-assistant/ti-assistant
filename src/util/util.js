@@ -21,3 +21,24 @@ export function pluralize(text, number) {
     return `${text}s`;
   }
 }
+
+export function validateMapString(mapString) {
+  const systemArray = mapString.split(" ");
+  switch (systemArray.length) {
+    // 3 rings or less
+    case 36:
+      break;
+    // 4 rings
+    case 60:
+      break;
+    default:
+      return false;
+  }
+  for (const system of systemArray) {
+    if (isNaN(parseInt(system))) {
+      return false;
+    }
+  }
+  // TODO: Load systems and ensure that they are all found.
+  return true;
+}
