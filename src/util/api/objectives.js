@@ -1,6 +1,6 @@
 import { fetcher, poster } from './util'
 
-export function revealObjective(mutate, gameid, objectives, factionName, objectiveName) {
+export function revealObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName) {
   const data = {
     action: "REVEAL_OBJECTIVE",
     objective: objectiveName,
@@ -21,10 +21,10 @@ export function revealObjective(mutate, gameid, objectives, factionName, objecti
     optimisticData: updatedObjectives,
   };
 
-  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data), options);
+  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data, setUpdateTime), options);
 }
 
-export function removeObjective(mutate, gameid, objectives, factionName, objectiveName) {
+export function removeObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName) {
   const data = {
     action: "REMOVE_OBJECTIVE",
     objective: objectiveName,
@@ -43,10 +43,10 @@ export function removeObjective(mutate, gameid, objectives, factionName, objecti
     optimisticData: updatedObjectives,
   };
 
-  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data), options);
+  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data, setUpdateTime), options);
 }
 
-export function scoreObjective(mutate, gameid, objectives, factionName, objectiveName) {
+export function scoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName) {
   const data = {
     action: "SCORE_OBJECTIVE",
     objective: objectiveName,
@@ -61,10 +61,10 @@ export function scoreObjective(mutate, gameid, objectives, factionName, objectiv
     optimisticData: updatedObjectives,
   };
 
-  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data), options);
+  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data, setUpdateTime), options);
 }
 
-export function unscoreObjective(mutate, gameid, objectives, factionName, objectiveName) {
+export function unscoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName) {
   const data = {
     action: "UNSCORE_OBJECTIVE",
     objective: objectiveName,
@@ -82,5 +82,5 @@ export function unscoreObjective(mutate, gameid, objectives, factionName, object
     optimisticData: updatedObjectives,
   };
 
-  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data), options);
+  mutate(`/api/${gameid}/objectives`, poster(`/api/${gameid}/objectiveUpdate`, data, setUpdateTime), options);
 }

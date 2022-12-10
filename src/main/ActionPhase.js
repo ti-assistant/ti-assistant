@@ -13,6 +13,7 @@ import { BasicFactionTile } from '../FactionTile';
 import { FactionTimer } from '../Timer';
 import SummaryColumn from './SummaryColumn.js';
 import { LawsInEffect } from '../LawsInEffect.js';
+import { useSharedUpdateTimes } from '../Updater.js';
 
 export default function ActionPhase() {
   const router = useRouter();
@@ -23,6 +24,8 @@ export default function ActionPhase() {
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [ showSpeakerModal, setShowSpeakerModal ] = useState(false);
   const [ selectedActions, setSelectedActions ] = useState([]);
+
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!factions || !state || !strategyCards) {
     return <div>Loading...</div>;
@@ -55,9 +58,9 @@ export default function ActionPhase() {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
 
-    readyAllFactions(mutate, gameid, factions);
+    readyAllFactions(mutate, setUpdateTime, gameid, factions);
   }
 
   async function nextPlayer() {
@@ -72,7 +75,7 @@ export default function ActionPhase() {
     const options = {
       optimisticData: updatedState,
     };
-    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
   }
 
   const activeFaction = factions[state.activeplayer] ?? null;
@@ -104,14 +107,14 @@ export default function ActionPhase() {
       return;
     }
     if (fleetLogistics && !hasTech(activeFaction, "Fleet Logistics")) {
-      unlockTech(mutate, gameid, factions, activeFaction.name, "Fleet Logistics");
+      unlockTech(mutate, setUpdateTime, gameid, factions, activeFaction.name, "Fleet Logistics");
     }
     for (const action of selectedActions) {
       if (strategyCards[action]) {
-        useStrategyCard(mutate, gameid, strategyCards, action);
+        useStrategyCard(mutate, setUpdateTime, gameid, strategyCards, action);
       }
       if (action === "Pass") {
-        await passFaction(mutate, gameid, factions, activeFaction.name);
+        await passFaction(mutate, setUpdateTime, gameid, factions, activeFaction.name);
       }
     }
     nextPlayer();

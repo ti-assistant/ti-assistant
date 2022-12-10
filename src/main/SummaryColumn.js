@@ -5,6 +5,7 @@ import { fetcher } from '../util/api/util';
 import { FactionSummary, UpdateObjectivesModal, UpdatePlanetsModal, UpdateTechsModal } from '../FactionSummary';
 import { updateOption } from '../util/api/options.js';
 import { useState } from 'react';
+import { useSharedUpdateTimes } from '../Updater.js';
 
 export default function SummaryColumn() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function SummaryColumn() {
   const [ showTechModal, setShowTechModal ] = useState(false);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ showPlanetModal, setShowPlanetModal ] = useState(false);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!options || !factions) {
     return <div>Loading...</div>;
@@ -32,7 +34,7 @@ export default function SummaryColumn() {
   const showPlanets = options['faction-summary-show-planets'] ?? true;
   
   function setOption(optionName, value) {
-    updateOption(mutate, gameid, options, optionName, value);
+    updateOption(mutate, setUpdateTime, gameid, options, optionName, value);
   }
 
   let maxSummaryWidth = "400px";

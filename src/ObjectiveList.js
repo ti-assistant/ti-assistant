@@ -7,6 +7,7 @@ import { ObjectiveRow } from "/src/ObjectiveRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 import { revealObjective, removeObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
 import { FactionSymbol } from "./FactionCard";
+import { useSharedUpdateTimes } from "./Updater";
 
 
 function sortObjectives(objectives, field, descending = false) {
@@ -27,6 +28,7 @@ function SecretTab() {
   const { mutate } = useSWRConfig();
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const [editMode, setEditMode] = useState(false);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   const secretObjectives = Object.values(objectives).filter((obj) => {
     return obj.type === "secret";
@@ -38,17 +40,17 @@ function SecretTab() {
   }
 
   function addObj(objective) {
-    revealObjective(mutate, gameid, objectives, factionName, objective);
+    revealObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
     setEditMode(false);
   }
   function removeObj(objective) {
-    removeObjective(mutate, gameid, objectives, factionName, objective);
+    removeObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
   }
   function scoreObj(objective, add) {
     if (add) {
-      scoreObjective(mutate, gameid, objectives, factionName, objective);
+      scoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
     } else {
-      unscoreObjective(mutate, gameid, objectives, factionName, objective);
+      unscoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
     }
   }
 
@@ -109,6 +111,7 @@ export function ObjectiveList() {
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const [tabShown, setTabShown] = useState("stage-one");
   const [editMode, setEditMode] = useState(false);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (objectivesError) {
     return (<div>Failed to load objectives</div>);
@@ -118,17 +121,17 @@ export function ObjectiveList() {
   }
 
   function addObj(objective) {
-    revealObjective(mutate, gameid, objectives, factionName, objective);
+    revealObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
     setEditMode(false);
   }
   function removeObj(objective) {
-    removeObjective(mutate, gameid, objectives, factionName, objective);
+    removeObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
   }
   function scoreObj(objective, add) {
     if (add) {
-      scoreObjective(mutate, gameid, objectives, factionName, objective);
+      scoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
     } else {
-      unscoreObjective(mutate, gameid, objectives, factionName, objective);
+      unscoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective);
     }
   }
 

@@ -10,6 +10,7 @@ import { FactionSymbol } from "/src/FactionCard.js";
 import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
 import { fetcher } from './util/api/util';
 import { SelectableRow } from './SelectableRow';
+import { useSharedUpdateTimes } from './Updater';
 
 export function PlanetSymbol({ type, faction, size="36px" }) {
   switch (type) {
@@ -174,6 +175,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -244,9 +246,9 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
 
   function toggleAttachment(name) {
     if (attachments[name].planets.includes(planet.name)) {
-      removeFromPlanet(mutate, gameid, attachments, planet.name, name);
+      removeFromPlanet(mutate, setUpdateTime, gameid, attachments, planet.name, name);
     } else {
-      attachToPlanet(mutate, gameid, attachments, planet.name, name, options);
+      attachToPlanet(mutate, setUpdateTime, gameid, attachments, planet.name, name, options);
     }
   }
 

@@ -1,6 +1,6 @@
 import { fetcher, poster } from './util'
 
-export function setSpeaker(mutate, gameid, state, speaker, factions) {
+export function setSpeaker(mutate, setUpdateTime, gameid, state, speaker, factions) {
   const data = {
     action: "SET_SPEAKER",
     speaker: speaker,
@@ -13,7 +13,7 @@ export function setSpeaker(mutate, gameid, state, speaker, factions) {
     optimisticData: updatedState,
   };
 
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
 
   const currentOrder = factions[speaker].order;
 
@@ -34,7 +34,7 @@ export function setSpeaker(mutate, gameid, state, speaker, factions) {
   mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`), opts);
 }
 
-export function saveGameTimer(mutate, gameid, state, timer) {
+export function saveGameTimer(mutate, setUpdateTime, gameid, state, timer) {
   const data = {
     action: "SET_GAME_TIMER",
     timer: timer,
@@ -47,5 +47,5 @@ export function saveGameTimer(mutate, gameid, state, timer) {
     optimisticData: updatedState,
   };
 
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
 }

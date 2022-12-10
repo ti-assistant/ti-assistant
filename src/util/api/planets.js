@@ -1,6 +1,6 @@
 import { fetcher, poster } from './util'
 
-export async function readyPlanets(mutate, gameid, planets, toReady, factionName) {
+export async function readyPlanets(mutate, setUpdateTime, gameid, planets, toReady, factionName) {
   const data = {
     action: "TOGGLE_PLANET",
     faction: factionName,
@@ -18,10 +18,10 @@ export async function readyPlanets(mutate, gameid, planets, toReady, factionName
     optimisticData: updatedPlanets,
   };
 
-  return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data), options);
+  return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
 }
 
-export async function exhaustPlanets(mutate, gameid, planets, toExhaust, factionName) {
+export async function exhaustPlanets(mutate, setUpdateTime, gameid, planets, toExhaust, factionName) {
   const data = {
     action: "TOGGLE_PLANET",
     faction: factionName,
@@ -39,10 +39,10 @@ export async function exhaustPlanets(mutate, gameid, planets, toExhaust, faction
     optimisticData: updatedPlanets,
   };
 
-  return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data), options);
+  return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
 }
 
-export async function claimPlanet(mutate, gameid, planets, planet, factionName, gameOptions = {}) {
+export async function claimPlanet(mutate, setUpdateTime, gameid, planets, planet, factionName, gameOptions = {}) {
   const data = {
     action: "ADD_PLANET",
     faction: factionName,
@@ -65,10 +65,10 @@ export async function claimPlanet(mutate, gameid, planets, planet, factionName, 
     optimisticData: updatedPlanets,
   };
 
-  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
+  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
 }
 
-export async function unclaimPlanet(mutate, gameid, planets, planet, factionName) {
+export async function unclaimPlanet(mutate, setUpdateTime, gameid, planets, planet, factionName) {
   const data = {
     action: "REMOVE_PLANET",
     faction: factionName,
@@ -85,6 +85,6 @@ export async function unclaimPlanet(mutate, gameid, planets, planet, factionName
     optimisticData: updatedPlanets,
   };
 
-  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
+  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
 }
 

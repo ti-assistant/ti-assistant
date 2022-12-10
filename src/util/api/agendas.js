@@ -1,6 +1,6 @@
 import { fetcher, poster } from './util'
 
-export function passAgenda(mutate, gameid, agendas, agendaName, target) {
+export function passAgenda(mutate, setUpdateTime, gameid, agendas, agendaName, target) {
   const data = {
     action: "PASS_AGENDA",
     agenda: agendaName,
@@ -16,10 +16,10 @@ export function passAgenda(mutate, gameid, agendas, agendaName, target) {
     optimisticData: updatedAgendas,
   };
 
-  mutate(`/api/${gameid}/agendas`, poster(`/api/${gameid}/agendaUpdate`, data), options);
+  mutate(`/api/${gameid}/agendas`, poster(`/api/${gameid}/agendaUpdate`, data, setUpdateTime), options);
 }
 
-export function resolveAgenda(mutate, gameid, agendas, agendaName, target) {
+export function resolveAgenda(mutate, setUpdateTime, gameid, agendas, agendaName, target) {
   const data = {
     action: "RESOLVE_AGENDA",
     agenda: agendaName,
@@ -36,10 +36,10 @@ export function resolveAgenda(mutate, gameid, agendas, agendaName, target) {
     optimisticData: updatedAgendas,
   };
 
-  mutate(`/api/${gameid}/agendas`, poster(`/api/${gameid}/agendaUpdate`, data), options);
+  mutate(`/api/${gameid}/agendas`, poster(`/api/${gameid}/agendaUpdate`, data, setUpdateTime), options);
 }
 
-export function repealAgenda(mutate, gameid, agendas, agendaName) {
+export function repealAgenda(mutate, setUpdateTime, gameid, agendas, agendaName) {
   const data = {
     action: "REPEAL_AGENDA",
     agenda: agendaName,
@@ -54,5 +54,5 @@ export function repealAgenda(mutate, gameid, agendas, agendaName) {
     optimisticData: updatedAgendas,
   };
 
-  mutate(`/api/${gameid}/agendas`, poster(`/api/${gameid}/agendaUpdate`, data), options);
+  mutate(`/api/${gameid}/agendas`, poster(`/api/${gameid}/agendaUpdate`, data, setUpdateTime), options);
 }

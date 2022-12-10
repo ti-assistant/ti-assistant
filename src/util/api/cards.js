@@ -11,7 +11,7 @@ export const strategyCardOrder = {
   "Imperial": 8,
 };
 
-export function useStrategyCard(mutate, gameid, strategyCards, cardName) {
+export function useStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName) {
   const data = {
     action: "USE_STRATEGY_CARD",
     card: cardName,
@@ -25,10 +25,10 @@ export function useStrategyCard(mutate, gameid, strategyCards, cardName) {
     optimisticData: updatedCards,
   };
 
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
 }
 
-export function resetStrategyCards(mutate, gameid, strategyCards) {
+export function resetStrategyCards(mutate, setUpdateTime, gameid, strategyCards) {
   const data = {
     action: "CLEAR_STRATEGY_CARDS",
   };
@@ -44,10 +44,10 @@ export function resetStrategyCards(mutate, gameid, strategyCards) {
     optimisticData: updatedCards,
   };
 
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
 }
 
-export function swapStrategyCards(mutate, gameid, strategyCards, cardOne, cardTwo) {
+export function swapStrategyCards(mutate, setUpdateTime, gameid, strategyCards, cardOne, cardTwo) {
   const data = {
     action: "SWAP_STRATEGY_CARDS",
     cardOne: cardOne.name,
@@ -68,10 +68,10 @@ export function swapStrategyCards(mutate, gameid, strategyCards, cardOne, cardTw
   const options = {
     optimisticData: updatedCards,
   };
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
 }
 
-export function setFirstStrategyCard(mutate, gameid, strategyCards, cardName) {
+export function setFirstStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName) {
   const data = {
     action: "GIFT_OF_PRESCIENCE",
     card: cardName,
@@ -88,10 +88,10 @@ export function setFirstStrategyCard(mutate, gameid, strategyCards, cardName) {
   const options = {
     optimisticData: updatedCards,
   };
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
 }
 
-export async function unassignStrategyCard(mutate, gameid, strategyCards, cardName, state) {
+export async function unassignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName, state) {
   const data = {
     action: "PUBLIC_DISGRACE",
     card: cardName,
@@ -124,7 +124,7 @@ export async function unassignStrategyCard(mutate, gameid, strategyCards, cardNa
   const options = {
     optimisticData: updatedCards,
   };
-  await mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+  await mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
 
   const updatedState = {...state};
   updatedState.activeplayer = factionName;

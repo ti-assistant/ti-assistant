@@ -14,7 +14,7 @@ export function hasTech(faction, tech) {
   return !!faction.techs[techName];
 }
 
-export async function unlockTech(mutate, gameid, factions, factionName, tech) {
+export async function unlockTech(mutate, setUpdateTime, gameid, factions, factionName, tech) {
   const data = {
     action: "ADD_TECH",
     faction: factionName,
@@ -33,7 +33,7 @@ export async function unlockTech(mutate, gameid, factions, factionName, tech) {
     optimisticData: updatedFactions,
   };
 
-  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
 
   const opts = {
     optimisticData: updatedFactions[factionName],
@@ -41,7 +41,7 @@ export async function unlockTech(mutate, gameid, factions, factionName, tech) {
   mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
 }
 
-export async function lockTech(mutate, gameid, factions, factionName, tech) {
+export async function lockTech(mutate, setUpdateTime, gameid, factions, factionName, tech) {
   const data = {
     action: "REMOVE_TECH",
     faction: factionName,
@@ -58,7 +58,7 @@ export async function lockTech(mutate, gameid, factions, factionName, tech) {
     optimisticData: updatedFactions,
   };
 
-  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
 
   const opts = {
     optimisticData: updatedFactions[factionName],
@@ -66,7 +66,7 @@ export async function lockTech(mutate, gameid, factions, factionName, tech) {
   mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
 }
 
-export async function chooseStartingTech(mutate, gameid, factions, factionName, tech) {
+export async function chooseStartingTech(mutate, setUpdateTime, gameid, factions, factionName, tech) {
   const data = {
     action: "CHOOSE_STARTING_TECH",
     faction: factionName,
@@ -90,7 +90,7 @@ export async function chooseStartingTech(mutate, gameid, factions, factionName, 
     optimisticData: updatedFactions,
   };
 
-  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
 
   const opts = {
     optimisticData: updatedFactions[factionName],
@@ -107,7 +107,7 @@ export async function chooseStartingTech(mutate, gameid, factions, factionName, 
   mutate(`/api/${gameid}/factions/Council Keleres`, fetcher(`/api/${gameid}/factions/Council Keleres`), councilOptions);
 }
 
-export async function removeStartingTech(mutate, gameid, factions, factionName, tech) {
+export async function removeStartingTech(mutate, setUpdateTime, gameid, factions, factionName, tech) {
   const data = {
     action: "REMOVE_STARTING_TECH",
     faction: factionName,
@@ -142,7 +142,7 @@ export async function removeStartingTech(mutate, gameid, factions, factionName, 
     optimisticData: updatedFactions,
   };
 
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
   
   const opts = {
     optimisticData: updatedFactions[factionName],

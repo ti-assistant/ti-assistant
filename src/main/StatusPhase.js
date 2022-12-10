@@ -14,6 +14,7 @@ import { removeObjective } from '../util/api/objectives';
 import { Modal } from "/src/Modal.js";
 import SummaryColumn from './SummaryColumn';
 import { LawsInEffect } from '../LawsInEffect';
+import { useSharedUpdateTimes } from '../Updater';
 
 function InfoContent({content}) {
   return (
@@ -37,6 +38,7 @@ export default function StatusPhase() {
   const [ infoModal, setInfoModal ] = useState({
     show: false,
   });
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!strategyCards || !state || !factions || !objectives || !options) {
     return <div>Loading...</div>;
@@ -54,7 +56,7 @@ export default function StatusPhase() {
       action: "ADVANCE_PHASE",
       skipAgenda: skipAgenda,
     };
-    resetStrategyCards(mutate, gameid, strategyCards);
+    resetStrategyCards(mutate, setUpdateTime, gameid, strategyCards);
     setRevealedObjectives([]);
     const phase = skipAgenda ? "STRATEGY" : "AGENDA";
     const activeFactionName = state.speaker;
@@ -71,14 +73,14 @@ export default function StatusPhase() {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
 
-    readyAllFactions(mutate, gameid, factions);
+    readyAllFactions(mutate, setUpdateTime, gameid, factions);
   }
 
   function removeObj(objectiveName) {
     setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
-    removeObjective(mutate, gameid, objectives, null, objectiveName);
+    removeObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
   }
 
   function showInfoModal(title, content) {
@@ -233,12 +235,12 @@ export default function StatusPhase() {
                     if (!hasTech(faction, "Neural Motivator")) {
                       menuButtons.push({
                         text: "Add Neural Motivator",
-                        action: () => unlockTech(mutate, gameid, factions, faction.name, "Neural Motivator"),
+                        action: () => unlockTech(mutate, setUpdateTime, gameid, factions, faction.name, "Neural Motivator"),
                       });
                     } else {
                       menuButtons.push({
                         text: "Remove Neural Motivator",
-                        action: () => lockTech(mutate, gameid, factions, faction.name, "Neural Motivator"),
+                        action: () => lockTech(mutate, setUpdateTime, gameid, factions, faction.name, "Neural Motivator"),
                       });
                     }
                     return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} menuButtons={menuButtons} opts={{fontSize: "16px", menuSide: "bottom"}}/>
@@ -265,12 +267,12 @@ export default function StatusPhase() {
                   if (!hasTech(faction, "Hyper Metabolism")) {
                     menuButtons.push({
                       text: "Add Hyper Metabolism",
-                      action: () => unlockTech(mutate, gameid, factions, faction.name, "Hyper Metabolism"),
+                      action: () => unlockTech(mutate, setUpdateTime, gameid, factions, faction.name, "Hyper Metabolism"),
                     });
                   } else {
                     menuButtons.push({
                       text: "Remove Hyper Metabolism",
-                      action: () => lockTech(mutate, gameid, factions, faction.name, "Hyper Metabolism"),
+                      action: () => lockTech(mutate, setUpdateTime, gameid, factions, faction.name, "Hyper Metabolism"),
                     });
                   }
                   return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} menuButtons={menuButtons} opts={{fontSize: "16px", menuSide: "bottom"}}/>

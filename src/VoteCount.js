@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
 import { useSharedCurrentAgenda } from './Timer';
+import { useSharedUpdateTimes } from './Updater';
 import { setSpeaker } from './util/api/state';
 import { hasTech } from './util/api/techs';
 
@@ -82,6 +83,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const [ target, setTarget ] = useState(null);
   const [ showTargets, setShowTargets ] = useState(false);
   const { currentAgenda } = useSharedCurrentAgenda();
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   function toggleTargets() {
     setShowTargets(!showTargets);
@@ -143,7 +145,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   if (factionName !== state.speaker) {
     menuButtons.push({
         text: "Set Speaker",
-        action: () => setSpeaker(mutate, gameid, state, factionName, factions),
+        action: () => setSpeaker(mutate, setUpdateTime, gameid, state, factionName, factions),
     });
   }
   if (hasPredictiveIntelligence) {

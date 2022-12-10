@@ -1,6 +1,6 @@
 import { poster } from './util'
 
-export async function updateOption(mutate, gameid, options, optionName, value) {
+export async function updateOption(mutate, setUpdateTime, gameid, options, optionName, value) {
   const data = {
     action: "SET_OPTION",
     option: optionName,
@@ -15,5 +15,5 @@ export async function updateOption(mutate, gameid, options, optionName, value) {
     optimisticData: updatedOptions,
   };
 
-  await mutate(`/api/${gameid}/options`, poster(`/api/${gameid}/optionUpdate`, data), updateOptions);
+  await mutate(`/api/${gameid}/options`, poster(`/api/${gameid}/optionUpdate`, data, setUpdateTime), updateOptions);
 }

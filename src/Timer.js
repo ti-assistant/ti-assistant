@@ -8,6 +8,7 @@ import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
 import { useBetween } from 'use-between';
+import { useSharedUpdateTimes } from './Updater';
 
 const useCurrentAgenda = () => {
   const [currentAgenda, setCurrentAgenda] = useState(1);
@@ -112,6 +113,7 @@ export function GameTimer({}) {
   const { paused, pause, unpause } = useSharedPause();
 
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   useEffect(() => {
     if (paused) {
@@ -119,7 +121,7 @@ export function GameTimer({}) {
     }
 
     if (state && gameTimer % 15 === 0) {
-      saveGameTimer(mutate, gameid, state, gameTimer);
+      saveGameTimer(mutate, setUpdateTime, gameid, state, gameTimer);
     }
 
     const timeout = setTimeout(() => {
@@ -172,6 +174,7 @@ export function FactionTimer({ factionName }) {
   const { paused } = useSharedPause();
   // const [ paused, setPaused ] = useState(false);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   useEffect(() => {
     if (paused) {
@@ -179,7 +182,7 @@ export function FactionTimer({ factionName }) {
     }
 
     if (factions && factionTimer % 5 === 0) {
-      saveFactionTimer(mutate, gameid, factions, factionName, factionTimer);
+      saveFactionTimer(mutate, setUpdateTime, gameid, factions, factionName, factionTimer);
     }
 
     const timeout = setTimeout(() => {

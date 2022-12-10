@@ -18,6 +18,7 @@ import { FactionSelectModal } from "./FactionSelectModal";
 import { hasTech, lockTech, unlockTech } from "./util/api/techs";
 import { ObjectiveRow } from "./ObjectiveRow";
 import { removeObjective, revealObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
+import { useSharedUpdateTimes } from "./Updater";
 
 function getTechColor(tech) {
   switch (tech.type) {
@@ -136,6 +137,7 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
 
   const [ factionName, setFactionName ] = useState(null);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!factions || !planets || !options || !state) {
     return <div>Loading...</div>;
@@ -149,18 +151,18 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   function scoreObj(objectiveName, score) {
     if (score) {
       addObjective(objectiveName);
-      scoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+      scoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName);
     } else {
-      unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+      unscoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName);
     }
   }
 
   function addObjective(objectiveName) {
-    revealObjective(mutate, gameid, objectives, factionName, objectiveName);
+    revealObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName);
   }
 
   function removeObj(objectiveName) {
-    removeObjective(mutate, gameid, objectives, factionName, objectiveName);
+    removeObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName);
   }
 
   const orderedFactionNames = Object.keys(factions).sort();
@@ -278,6 +280,7 @@ export function UpdateTechsModal({ visible, onComplete }) {
   const [ showFactionSelect, setShowFactionSelect ] = useState(false);
 
   const [ factionName, setFactionName ] = useState(null);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!factions || !techs || !options || !state) {
     return <div>Loading...</div>;
@@ -327,11 +330,11 @@ export function UpdateTechsModal({ visible, onComplete }) {
   const upgradeTechs = techArr.filter((tech) => tech.type === "upgrade");
 
   function addTech(toAdd) {
-    unlockTech(mutate, gameid, factions, factionName, toAdd);
+    unlockTech(mutate, setUpdateTime, gameid, factions, factionName, toAdd);
   }
 
   function removeTech(toRemove) {
-    lockTech(mutate, gameid, factions, factionName, toRemove);
+    lockTech(mutate, setUpdateTime, gameid, factions, factionName, toRemove);
   }
 
   function getTechRow(tech) {
@@ -437,6 +440,7 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
   const [ showFactionSelect, setShowFactionSelect ] = useState(false);
 
   const [ factionName, setFactionName ] = useState(null);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!factions || !planets || !options || !state || !attachments) {
     return <div>Loading...</div>;
@@ -479,11 +483,11 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
   });
 
   function removePlanet(toRemove) {
-    unclaimPlanet(mutate, gameid, planets, toRemove, factionName);
+    unclaimPlanet(mutate, setUpdateTime, gameid, planets, toRemove, factionName);
   }
 
   function addPlanet(toAdd) {
-    claimPlanet(mutate, gameid, planets, toAdd, factionName, options);
+    claimPlanet(mutate, setUpdateTime, gameid, planets, toAdd, factionName, options);
   }
 
   const orderedFactionNames = Object.keys(factions).sort();
@@ -609,6 +613,7 @@ export function FactionSummary({ factionName, options={} }) {
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${factionName}` : null, fetcher);
   const { data: techs, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${factionName}` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -644,7 +649,7 @@ export function FactionSummary({ factionName, options={} }) {
 
   function manualVpAdjust(increase) {
     const value = increase ? 1 : -1;
-    manualVPUpdate(mutate, gameid, factions, factionName, value);
+    manualVPUpdate(mutate, setUpdateTime, gameid, factions, factionName, value);
   }
 
   return (

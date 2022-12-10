@@ -1,7 +1,25 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
+import { useBetween } from "use-between";
 import { fetcher } from "./util/api/util";
+
+const useUpdater = () => {
+  const [updateObject, setUpdateObject] = useState({});
+
+  const setUpdateTime = useCallback((endpoint, time) => {
+    setUpdateObject({
+      ...updateObject,
+      [endpoint]: time,
+    });
+  });
+  return {
+    updateObject,
+    setUpdateTime,
+  };
+};
+
+export const useSharedUpdateTimes = () => useBetween(useUpdater);
 
 export function Updater({}) {
   const router = useRouter();
@@ -10,6 +28,7 @@ export function Updater({}) {
   const { data: updates } = useSWR(gameid ? `/api/${gameid}/updates` : null, fetcher, {
     refreshInterval: 5000,
   });
+  const { updateObject, setUpdateTime } = useSharedUpdateTimes();
 
   const [ initialLoad, setInitialLoad ] = useState(true);
 
@@ -31,6 +50,30 @@ export function Updater({}) {
   const stateUpdate = (localUpdates.state ?? {}).timestamp ?? 0;
 
   useEffect(() => {
+    if (updateObject.agendas > localAgendas) {
+      setLocalAgendas(updateObject.agendas);
+    }
+    if (updateObject.attachments > localAttachments) {
+      setLocalAttachments(updateObject.attachments);
+    }
+    if (updateObject.options > localOptions) {
+      setLocalOptions(updateObject.options);
+    }
+    if (updateObject.planets > localPlanets) {
+      setLocalPlanets(updateObject.planets);
+    }
+    if (updateObject.factions > localFactions) {
+      setLocalFactions(updateObject.factions);
+    }
+    if (updateObject.state > localState) {
+      setLocalState(updateObject.state);
+    }
+    if (updateObject.strategycards > localStrategyCards) {
+      setLocalStrategyCards(updateObject.strategycards);
+    }
+  }, [updateObject]);
+
+  useEffect(() => {
     if (agendasUpdate > localAgendas) {
       setLocalAgendas(agendasUpdate);
       if (!initialLoad) {
@@ -45,6 +88,7 @@ export function Updater({}) {
       if (!initialLoad) {
         mutate(`/api/${gameid}/attachments`, fetcher(`/api/${gameid}/attachments`));
       }
+      setUpdateTime("attachments", attachmentsUpdate);
     }
   }, [attachmentsUpdate]);
 
@@ -54,6 +98,7 @@ export function Updater({}) {
       if (!initialLoad) {
         mutate(`/api/${gameid}/planets`, fetcher(`/api/${gameid}/planets`));
       }
+      setUpdateTime("planets", planetsUpdate);
     }
   }, [planetsUpdate]);
 
@@ -63,6 +108,7 @@ export function Updater({}) {
       if (!initialLoad) {
         mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`));
       }
+      setUpdateTime("factions", factionsUpdate);
     }
   }, [factionsUpdate]);
 
@@ -72,6 +118,7 @@ export function Updater({}) {
       if (!initialLoad) {
         mutate(`/api/${gameid}/options`, fetcher(`/api/${gameid}/options`));
       }
+      setUpdateTime("options", optionsUpdate);
     }
   }, [optionsUpdate]);
 
@@ -81,6 +128,7 @@ export function Updater({}) {
       if (!initialLoad) {
         mutate(`/api/${gameid}/strategycards`, fetcher(`/api/${gameid}/strategycards`));
       }
+      setUpdateTime("strategycards", strategycardsUpdate);
     }
   }, [strategycardsUpdate]);
 
@@ -90,6 +138,7 @@ export function Updater({}) {
       if (!initialLoad) {
         mutate(`/api/${gameid}/state`, fetcher(`/api/${gameid}/state`));
       }
+      setUpdateTime("state", stateUpdate);
     }
   }, [stateUpdate]);
 

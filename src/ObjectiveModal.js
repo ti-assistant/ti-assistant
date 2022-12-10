@@ -7,6 +7,7 @@ import { Modal } from "/src/Modal.js";
 import { BasicFactionTile } from './FactionTile';
 import { revealObjective } from './util/api/objectives';
 import { ObjectiveRow } from './ObjectiveRow';
+import { useSharedUpdateTimes } from './Updater';
 
 function typeToText(type) {
   switch (type) {
@@ -27,6 +28,7 @@ export function ObjectiveModal({ type, visible, onComplete }) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (objectivesError) {
     return (<div>Failed to load objectives</div>);
@@ -36,7 +38,7 @@ export function ObjectiveModal({ type, visible, onComplete }) {
   }
 
   function selectObjective(objectiveName) {
-    revealObjective(mutate, gameid, objectives, null, objectiveName);
+    revealObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
     onComplete(objectiveName);
   }
 

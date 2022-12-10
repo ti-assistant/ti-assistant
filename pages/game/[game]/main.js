@@ -97,14 +97,6 @@ function Header() {
     });
   }
 
-  function removeAgenda(agendaName) {
-    repealAgenda(mutate, gameid, agendas, agendaName);
-  } 
-
-  const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
-    return agenda.passed && agenda.type === "law";
-  });
-
   return (
     <div className="flexColumn" style={{zIndex: 400, top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
       <Sidebar side="left" content={`${state.phase} PHASE`} />

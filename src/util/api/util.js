@@ -26,8 +26,33 @@ export async function fetcher(url) {
   return data
 }
 
-export async function poster(url, data) {
+function getUpdatedEndpoint(url) {
+  const update = url.substring(url.lastIndexOf('/') + 1);
+  switch(update) {
+    case "agendaUpdate":
+      return "agendas";
+    case "attachmentUpdate":
+      return "attachments";
+    case "cardUpdate":
+      return "strategycards";
+    case "factionUpdate":
+      return "factions";
+    case "objectiveUpdate":
+      return "objectives";
+    case "optionUpdate":
+      return "options";
+    case "planetUpdate":
+      return "planets";
+    case "stateUpdate":
+      return "state";
+  }
+  console.log("Error");
+  return "";
+}
+
+export async function poster(url, data, setUpdateTime) {
   data.timestamp = Date.now();
+  setUpdateTime(getUpdatedEndpoint(url), data.timestamp);
   const res = await fetch(url, {
     method: "POST",
     headers: {

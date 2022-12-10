@@ -13,6 +13,7 @@ import { Modal } from '../Modal';
 import { useState } from 'react';
 import SummaryColumn from './SummaryColumn';
 import { LawsInEffect } from '../LawsInEffect';
+import { useSharedUpdateTimes } from '../Updater';
 
 function InfoContent({content}) {
   return (
@@ -32,6 +33,7 @@ export default function StrategyPhase() {
   const [ infoModal, setInfoModal ] = useState({
     show: false,
   });
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!factions || !state || !strategyCards) {
     return <div>Loading...</div>;
@@ -64,9 +66,9 @@ export default function StrategyPhase() {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
 
-    readyAllFactions(mutate, gameid, factions);
+    readyAllFactions(mutate, setUpdateTime, gameid, factions);
   }
 
   async function nextPlayer() {
@@ -81,7 +83,7 @@ export default function StrategyPhase() {
     const options = {
       optimisticData: updatedState,
     };
-    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
   }
 
   function showInfoModal(title, content) {
@@ -113,7 +115,7 @@ export default function StrategyPhase() {
       optimisticData: updatedCards,
     };
     await nextPlayer();
-    mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+    mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
   }
 
   function getStartOfStrategyPhaseAbilities() {
@@ -208,21 +210,21 @@ export default function StrategyPhase() {
         }
       }
     });
-    unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
+    unassignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName, state);
   }
 
   function publicDisgrace(cardName) {
-    unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
+    unassignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName, state);
   }
 
   function quantumDatahubNode(factionName) {
     const factionCard = Object.values(strategyCards).find((card) => card.faction === factionName);
     const hacanCard = Object.values(strategyCards).find((card) => card.faction === "Emirates of Hacan");
-    swapStrategyCards(mutate, gameid, strategyCards, factionCard, hacanCard);
+    swapStrategyCards(mutate, setUpdateTime, gameid, strategyCards, factionCard, hacanCard);
   }
 
   function giftOfPrescience(cardName) {
-    setFirstStrategyCard(mutate, gameid, strategyCards, cardName);
+    setFirstStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName);
   }
 
   const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);

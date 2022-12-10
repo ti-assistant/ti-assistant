@@ -3,6 +3,7 @@ import useSWR, { useSWRConfig } from "swr";
 import { fetcher } from "./util/api/util";
 import { repealAgenda } from "./util/api/agendas";
 import { AgendaRow } from "./AgendaRow";
+import { useSharedUpdateTimes } from "./Updater";
 
 
 export function LawsInEffect({}) {
@@ -10,9 +11,10 @@ export function LawsInEffect({}) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   function removeAgenda(agendaName) {
-    repealAgenda(mutate, gameid, agendas, agendaName);
+    repealAgenda(mutate, setUpdateTime, gameid, agendas, agendaName);
   } 
 
   const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {

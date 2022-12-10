@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
+import { useSharedUpdateTimes } from './Updater';
 import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
 import { chooseSubFaction } from './util/api/factions';
 import { chooseStartingTech, removeStartingTech } from './util/api/techs';
@@ -147,6 +148,7 @@ function StartingComponents({ faction }) {
   const { data: planets, planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: options, optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (factionsError) {
     return (<div>Failed to load factions</div>);
@@ -206,15 +208,15 @@ function StartingComponents({ faction }) {
   });
 
   function addTech(tech) {
-    chooseStartingTech(mutate, gameid, factions, faction.name, tech);
+    chooseStartingTech(mutate, setUpdateTime, gameid, factions, faction.name, tech);
   }
 
   function removeTech(tech) {
-    removeStartingTech(mutate, gameid, factions, faction.name, tech);
+    removeStartingTech(mutate, setUpdateTime, gameid, factions, faction.name, tech);
   }
 
   function selectSubFaction(subFaction) {
-    chooseSubFaction(mutate, gameid, factions, faction.name, subFaction);
+    chooseSubFaction(mutate, setUpdateTime, gameid, factions, faction.name, subFaction);
   }
 
   let numToChoose = !startswith.choice ? 0 : startswith.choice.select - (startswith.techs ?? []).length;
@@ -283,6 +285,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
   const { data: strategyCards, cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [showMenu, setShowMenu] = useState(false);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!state) {
     return (<div>Loading...</div>);
@@ -301,7 +304,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
 
   function setFactionToSpeaker() {
     hideMenu();
-    setSpeaker(mutate, gameid, state, faction.name, factions);
+    setSpeaker(mutate, setUpdateTime, gameid, state, faction.name, factions);
     console.log("setting speaker");
   }
 
@@ -309,7 +312,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
     hideMenu();
     console.log("Public Disgrace!");
     const card = Object.values(strategyCards).find((card) => card.faction === faction.name);
-    unassignStrategyCard(mutate, gameid, strategyCards, card.name, state);
+    unassignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, card.name, state);
   }
 
   function quantumDatahubNode() {
@@ -317,14 +320,14 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
     console.log("Quantum");
     const factionCard = Object.values(strategyCards).find((card) => card.faction === faction.name);
     const hacanCard = Object.values(strategyCards).find((card) => card.faction === "Emirates of Hacan");
-    swapStrategyCards(mutate, gameid, strategyCards, factionCard, hacanCard);
+    swapStrategyCards(mutate, setUpdateTime, gameid, strategyCards, factionCard, hacanCard);
   }
 
   function giftOfPrescience() {
     hideMenu();
     console.log("Gift");
     const factionCard = Object.values(strategyCards).find((card) => card.faction === faction.name);
-    setFirstStrategyCard(mutate, gameid, strategyCards, factionCard.name);
+    setFirstStrategyCard(mutate, setUpdateTime, gameid, strategyCards, factionCard.name);
   }
 
   // NOTE: Only works for Strategy phase. Other phases are not deterministic.

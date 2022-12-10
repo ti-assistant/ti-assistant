@@ -8,6 +8,7 @@ import { BasicFactionTile } from '../FactionTile';
 import { ObjectiveRow } from '../ObjectiveRow';
 import { removeObjective } from '../util/api/objectives';
 import { claimPlanet, readyPlanets } from '../util/api/planets';
+import { useSharedUpdateTimes } from '../Updater';
 
 export default function SetupPhase() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function SetupPhase() {
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
+  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (!state || !planets || !factions || !objectives || !options) {
     return <div>Loading...</div>;
@@ -62,9 +64,9 @@ export default function SetupPhase() {
     };
     if (factions['Council Keleres']) {
       for (const planet of factions['Council Keleres'].startswith.planets) {
-        claimPlanet(mutate, gameid, planets, planet, "Council Keleres", options);
+        claimPlanet(mutate, setUpdateTime, gameid, planets, planet, "Council Keleres", options);
       }
-      readyPlanets(mutate, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
+      readyPlanets(mutate, setUpdateTime, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
     }
     const activeFactionName = state.speaker;
     const phase = "STRATEGY";
@@ -77,12 +79,12 @@ export default function SetupPhase() {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), updateOptions);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), updateOptions);
   }
 
   function removeObj(objectiveName) {
     setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
-    removeObjective(mutate, gameid, objectives, null, objectiveName);
+    removeObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
   }
 
   const stageOneObjectives = Object.values(objectives ?? {}).filter((objective) => objective.type === "stage-one");
