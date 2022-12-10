@@ -9,6 +9,7 @@ import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
 import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
 import { fetcher } from './util/api/util';
+import { SelectableRow } from './SelectableRow';
 
 export function PlanetSymbol({ type, faction, size="36px" }) {
   switch (type) {
@@ -264,41 +265,12 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
   });
 
   return (
-    <div className={`planetRow hoverParent ${!planet.ready ? "exhausted" : ""}`}>
-      {addPlanet !== undefined ? 
-        <div
-        style={{
-          position: "relative",
-          lineHeight: "32px",
-          color: "darkgreen",
-          cursor: "pointer",
-          fontSize: "32px",
-          zIndex: 100,
-          marginRight: "8px",
-          height: "32px",
-        }}
-        onClick={() => addPlanet(planet.name)}
-      >
-        &#x2713;
-      </div>
-      : null}
-      {removePlanet !== undefined ? 
-        <div
-          style={{
-            position: "relative",
-            lineHeight: "32px",
-            color: "darkred",
-            cursor: "pointer",
-            fontSize: "32px",
-            zIndex: 100,
-            marginRight: "6px",
-            height: "32px",
-          }}
-          onClick={() => removePlanet(planet.name)}
-        >
-          &#x2715;
-        </div>
-      : null}
+    <SelectableRow
+      itemName={planet.name}
+      selectItem={addPlanet}
+      removeItem={removePlanet} 
+      content={
+        <div className="flexRow hoverParent" style={{width: "100%", alignItems: "center", justifyContent: "space-between"}}>
       {claimed ? 
         <div style={{fontFamily: "Myriad Pro",
         position: "absolute",
@@ -308,13 +280,11 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
         padding: "0px 4px",
         fontSize: "12px",
         bottom: "4px",
-        left: (addPlanet || removePlanet) ? "28px" : "0"
+        left: "0",
       }}>Claimed by {claimed}</div> : null
       }
       <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2, alignItems: "center"}}>
-        <div style={{fontSize: "24px", zIndex: 2}}>
-          {planet.name}
-        </div>
+        <div style={{zIndex: 1}}>{planet.name}</div>
         <div
           style={{
             position: "relative",
@@ -322,7 +292,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
             marginLeft: "-16px",
             opacity: "70%",
             height: "36px",
-            zIndex: 1,
+            zIndex: 0,
           }}
         >
           <PlanetSymbol type={planet.type} faction={planet.faction} />
@@ -360,5 +330,8 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
       : null}
       {showAttachMenu ?
         <AttachMenu planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} /> : null}
-    </div>);
+        </div>
+      }  
+    />
+  );
 }

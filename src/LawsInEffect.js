@@ -21,9 +21,9 @@ export function LawsInEffect({}) {
 
   if (passedLaws.length > 0) {
     return (
-      <div className='flexColumn'>
+      <div className='flexColumn' style={{gap: "8px"}}>
         Laws in Effect
-        <div className="flexColumn" style={{alignItems: "flex-start"}}>
+        <div className="flexColumn" style={{alignItems: "flex-start", gap: "8px"}}>
           {passedLaws.map((agenda) => <AgendaRow key={agenda.name} agenda={agenda} removeAgenda={removeAgenda} />)}
         </div>
       </div>

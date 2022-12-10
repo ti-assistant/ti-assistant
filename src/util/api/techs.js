@@ -7,7 +7,11 @@ import { fetcher, poster } from './util'
  * @returns {bool}
  */
 export function hasTech(faction, tech) {
-  return !!faction.techs[tech];
+  let techName = tech.replace(" Ω", "");
+  if (techName === "Light/Wave Deflector") {
+    techName = "LightWave Deflector";
+  }
+  return !!faction.techs[techName];
 }
 
 export async function unlockTech(mutate, gameid, factions, factionName, tech) {

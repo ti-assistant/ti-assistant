@@ -20,7 +20,7 @@ function InfoContent({content}) {
   );
 }
 
-function AgendaSelectModal({ visible, onComplete }) {
+function AgendaSelectModal({ visible, onComplete, filter }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
@@ -30,20 +30,39 @@ function AgendaSelectModal({ visible, onComplete }) {
     return null;
   }
 
-  const orderedAgendas = Object.values(agendas).sort((a, b) => {
+  let filteredAgendas = Object.values(agendas).filter((agenda) => {
+    if (!filter) return true;
+    for (const [type, value] of Object.entries(filter)) {
+      if (value && agenda[type] !== value) {
+        console.log("Type: " + agenda[type]);
+        return false;
+      }
+    }
+    return true;
+  });
+
+  const orderedAgendas = filteredAgendas.sort((a, b) => {
     if (a.name < b.name) {
       return -1;
     }
     return 1;
-  })
+  });
+
+  let width = 1400;
+  if (orderedAgendas.length < 35) {
+    width = 920;
+  }
+  if (orderedAgendas.length < 18) {
+    width = 460;
+  }
 
   return (
   <Modal closeMenu={() => onComplete(null)} visible={visible} title={`Reveal Agenda`}
     content={
-      <div className="flexColumn" style={{justifyContent: "flex-start", paddingTop: "4px", width: "900px", alignItems: "flex-start", flexWrap: "wrap", height: "80vh"}}>
+      <div className="flexColumn" style={{justifyContent: "stretch", paddingTop: "4px", width: `${width}px`, alignItems: "flex-start", flexWrap: "wrap", overflowY: "hidden", maxHeight: "80vh", height: "850px"}}>
         {orderedAgendas.map((agenda) => {
           return (
-            <div style={{flex: "0 0 4%"}}>
+            <div style={{flex: "0 0 5%"}}>
               <AgendaRow key={agenda.name} agenda={agenda} addAgenda={() => onComplete(agenda.name)} />
             </div>
           );
@@ -57,34 +76,23 @@ function OutcomeSelectModal({ visible, onComplete }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+  const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
 
-  if (!options) {
-    return null;
-  }
-
-  const outcomes = [
-    "For/Against",
-    "Player",
-    "Strategy Card",
-    "Planet",
-    "Cultural Planet",
-    "Hazardous Planet",
-    "Industrial Planet",
-    "Non-Home Planet Other Than Mecatol Rex",
-    "Law",
-    "Scored Secret Objective",
-  ];
+  const outcomes = new Set();
+  Object.values(agendas ?? {}).forEach((agenda) => {
+    if (agenda.target || agenda.elect === "???") return;
+    outcomes.add(agenda.elect);
+  });
 
   return (
-  <Modal closeMenu={() => onComplete(null)} visible={visible} title={`Reveal Agenda`}
+  <Modal closeMenu={() => onComplete(null)} visible={visible} title={`Reveal Eligible Outcome`}
     content={
-      <div className="flexColumn" style={{justifyContent: "flex-start", paddingTop: "4px", alignItems: "flex-start"}}>
-        {outcomes.map((outcome) => {
+      <div className="flexColumn" style={{justifyContent: "flex-start", padding: "8px 0px", alignItems: "flex-start", gap: "8px"}}>
+        {Array.from(outcomes).map((outcome) => {
           return (
-            <div>
+            <div key={outcome}>
               <SelectableRow key={outcome} content={
-                <div style={{ display: "flex", fontSize: "18px", zIndex: 2}}>
+                <div style={{ display: "flex", zIndex: 2}}>
                   {outcome}
                  </div>} itemName={outcome} selectItem={() => onComplete(outcome)} />
             </div>
@@ -292,7 +300,7 @@ export default function AgendaPhase() {
   return (
   <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
     <AgendaSelectModal visible={agendaModal} onComplete={(agendaName) => selectAgenda(agendaName)} />
-    <AgendaSelectModal visible={subAgendaModal} onComplete={(agendaName) => selectSubAgenda(agendaName)} />
+    <AgendaSelectModal visible={subAgendaModal} onComplete={(agendaName) => selectSubAgenda(agendaName)} filter={{elect: outcome}} />
     <OutcomeSelectModal visible={outcomeModal} onComplete={(eligibleOutcome) => selectEligibleOutcome(eligibleOutcome)} />
     <div className="flexColumn" style={{flexBasis: "30%", gap: "4px", alignItems: "stretch"}}>
       <div className="flexRow" style={{gap: "12px"}}>

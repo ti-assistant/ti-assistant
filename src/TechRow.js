@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
+import { SelectableRow } from "./SelectableRow";
 
 export function TechIcon({ type, width, height }) {
   switch (type) {
@@ -80,47 +81,16 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
   }
 
   return (
-    <div className={`techRow ${tech.canExhaust && !tech.isReady ? "exhausted" : ""}`} style={{fontSize: "24px", gap: "4px"}}>
+    <SelectableRow 
+      itemName={tech.name}
+      selectItem={addTech}
+      removeItem={removeTech}
+      content={
+    <div className="flexRow" style={{gap: "16px", width: "100%", justifyContent: "stretch"}}>
       <Modal closeMenu={() => setShowInfoModal(false)} level={2} visible={showInfoModal} title={<div style={{fontSize: "40px"}}>{tech.name}</div>} content={
         <InfoContent tech={tech} />
       } top="30%" />
       {leftContent ? <div style={{zIndex: 2}}>{leftContent}</div> : null}
-      {addTech ? 
-        <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          fontSize: "32px",
-          lineHeight: "32px",
-          color: "darkgreen",
-          cursor: "pointer",
-          zIndex: 100,
-          marginRight: "4px",
-          height: "32px",
-        }}
-        onClick={() => addTech(tech.name)}
-      >
-        &#x2713;
-      </div>
-      : null}
-      {removeTech ? 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            fontSize: "32px",
-            lineHeight: "32px",
-            color: "darkred",
-            cursor: "pointer",
-            zIndex: 100,
-            marginRight: "4px",
-            height: "32px",
-          }}
-          onClick={() => removeTech(tech.name)}
-        >
-          &#x2715;
-        </div>
-      : null}
       {/* <div className="flexRow" style={{width: "100%", height: "100%", position: "absolute", top: "0", left: "0"}}>
         {tech.prereqs.map((prereq, index) => {
           return <TechIcon key={index} type={prereq} width="22px" height="22px" />;
@@ -168,5 +138,5 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
         </button>
       </div>
       : null} */}
-    </div>);
+    </div>} />);
 }

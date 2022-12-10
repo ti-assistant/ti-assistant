@@ -307,12 +307,23 @@ export function UpdateTechsModal({ visible, onComplete }) {
     });
   }
 
+  function equalizeTechListLengths(a, b) {
+    while (a.length > b.length) {
+      b.push({});
+    }
+    while (b.length > a.length) {
+      a.push({});
+    }
+  }
+
   const techArr = Object.values(techsObj);
   sortTechs(techArr);
   const greenTechs = techArr.filter((tech) => tech.type === "green");
   const blueTechs = techArr.filter((tech) => tech.type === "blue");
+  equalizeTechListLengths(greenTechs, blueTechs);
   const yellowTechs = techArr.filter((tech) => tech.type === "yellow");
   const redTechs = techArr.filter((tech) => tech.type === "red");
+  equalizeTechListLengths(redTechs, yellowTechs);
   const upgradeTechs = techArr.filter((tech) => tech.type === "upgrade");
 
   function addTech(toAdd) {
@@ -324,6 +335,9 @@ export function UpdateTechsModal({ visible, onComplete }) {
   }
 
   function getTechRow(tech) {
+    if (!tech.name) {
+      return <div style={{height: "40px"}}></div>
+    }
     if (hasTech(factions[factionName], tech.name)) {
       return <div key={tech.name}><TechRow tech={tech} removeTech={removeTech} /></div>;
     } else {
@@ -349,44 +363,54 @@ export function UpdateTechsModal({ visible, onComplete }) {
           })}
         </div>
       </div>
-      <div className="flexColumn" style={{gap: "20px", paddingBottom: "8px"}}>
-        <div className="flexRow" style={{width: "1500px", alignItems: "flex-start", justifyContent: "space-around"}}>
-          <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
+      <div className="flexRow" style={{width: "1500px", height: "80vh", alignItems: "stretch", justifyContent: "space-between", gap: "20px"}}>
+        <div className="flexColumn" style={{flex: "0 0 32%", gap: "20px", alignItems: "stretch", justifyContent: "flex-start"}}>
+          <div className="flexColumn" style={{flex: "0 0 45%", gap: "8px", alignItems: "stretch", justifyContent: "flex-start"}}>
             <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
               <TechIcon type="green" width="27px" height="28px"/>
               Biotic
               <TechIcon type="green" width="27px" height="28px"/>
             </div>
-            {greenTechs.map(getTechRow)}
-          </div>
-          <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
-            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
-              <TechIcon type="blue" width="27px" height="28px"/>
-              Propulsion
-              <TechIcon type="blue" width="27px" height="28px"/>
+            <div>
+              {greenTechs.map(getTechRow)}
             </div>
-            {blueTechs.map(getTechRow)}
           </div>
-          <div className="flexColumn" style={{gap: "8px", flex: "0 0 30%",  alignItems: "stretch"}}>
-            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
-              <TechIcon type="yellow" width="27px" height="28px"/>
-              Cybernetic
-              <TechIcon type="yellow" width="27px" height="28px"/>
-            </div>
-            {yellowTechs.map(getTechRow)}
-          </div>
-        </div>
-        <div className="flexRow" style={{width: "900px", alignItems: "flex-start", gap: "12px"}}>
-          <div className="flexColumn" style={{gap: "8px", flex: "0 0 45%",  alignItems: "stretch"}}>
+          <div className="flexColumn" style={{flex: "0 0 45%", gap: "8px", alignItems: "stretch", justifyContent: "flex-start"}}>
             <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
               <TechIcon type="red" width="26px" height="28px"/>
               Warfare
               <TechIcon type="red" width="26px" height="28px"/>
             </div>
-            {redTechs.map(getTechRow)}
+            <div>
+              {redTechs.map(getTechRow)}
+            </div>
           </div>
-          <div className="flexColumn" style={{gap: "8px", flex: "0 0 45%",  alignItems: "stretch"}}>
-            <div className="flexColumn" style={{fontSize: "28px"}}>Unit Upgrades</div>
+        </div>
+        <div className="flexColumn" style={{flex: "0 0 32%", gap: "20px", alignItems: "stretch", justifyContent: "flex-start"}}>
+          <div className="flexColumn" style={{flex: "0 0 45%", gap: "8px", alignItems: "stretch", justifyContent: "flex-start"}}>
+            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
+              <TechIcon type="blue" width="27px" height="28px"/>
+              Propulsion
+              <TechIcon type="blue" width="27px" height="28px"/>
+            </div>
+            <div>
+              {blueTechs.map(getTechRow)}
+            </div>
+          </div>
+          <div className="flexColumn" style={{flex: "0 0 45%", gap: "8px", alignItems: "stretch", justifyContent: "flex-start"}}>
+            <div className="flexRow" style={{gap: "8px", justifyContent: "center", fontSize: "28px"}}>
+              <TechIcon type="yellow" width="27px" height="28px"/>
+              Cybernetic
+              <TechIcon type="yellow" width="27px" height="28px"/>
+            </div>
+            <div>
+              {yellowTechs.map(getTechRow)}
+            </div>
+          </div>
+        </div>
+        <div className="flexColumn" style={{flex: "0 0 32%", gap: "8px",  alignItems: "stretch"}}>
+          <div className="flexColumn" style={{fontSize: "28px"}}>Unit Upgrades</div>
+          <div>
             {upgradeTechs.map(getTechRow)}
           </div>
         </div>

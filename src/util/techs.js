@@ -1,3 +1,5 @@
+import { hasTech } from "./api/techs";
+
 /**
  * Gets all the techs owned by a specific faction.
  * @param {Object} techs
@@ -6,8 +8,7 @@
  */
 export function filterToOwnedTechs(techs, faction) {
   return Object.values(techs ?? {}).filter((tech) => {
-    const techName = tech.name.replace(" Ω", "");
-    return !!(faction.techs ?? {})[techName];
+    return !!hasTech(faction, tech.name);
   });
 }
 
@@ -19,8 +20,7 @@ export function filterToOwnedTechs(techs, faction) {
  */
  export function filterToUnownedTechs(techs, faction) {
   return Object.values(techs ?? {}).filter((tech) => {
-    const techName = tech.name.replace(" Ω", "");
-    return !(faction.techs ?? {})[techName];
+    return !hasTech(faction, tech.name);
   });
 }
 

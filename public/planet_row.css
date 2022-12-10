@@ -58,10 +58,45 @@
 
 .selectableRow {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 4px;
-  padding-right: 4px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px 4px;
   position: relative;
-  align-items: stretch;
+  min-height: 40px;
+  font-size: 24px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  font-size: 32px;
+  line-height: 32px;
+  height: 32px;
+  width: 30px;
+  z-index: 100;
+  margin-right: 8px;
+}
+
+.clickable {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.icon.positive {
+  color: darkgreen;
+}
+
+.icon.negative {
+  color: darkred;
+}
+
+.checkmark {
+  display: flex;
+  align-items: center;
+  color: darkgreen;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 100;
+  margin-right: 8px;
 }

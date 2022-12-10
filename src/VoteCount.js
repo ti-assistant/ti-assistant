@@ -41,7 +41,6 @@ switch (agenda.elect) {
         return planet.type === "Industrial";
       }).map((planet) => planet.name);
       return [...industrialPlanets, "Abstain"];
-    case "Non-Home, Non-Mecatol Rex planet":
     case "Non-Home Planet Other Than Mecatol Rex":
       const electablePlanets = Object.values(planets).filter((planet) => {
         return !planet.home && planet.name !== "Mecatol Rex";
