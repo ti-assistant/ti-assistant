@@ -63,8 +63,8 @@ function AgendaSelectModal({ visible, onComplete, filter }) {
       <div className="flexColumn" style={{justifyContent: "stretch", paddingTop: "4px", width: `${width}px`, alignItems: "flex-start", flexWrap: "wrap", overflowY: "hidden", maxHeight: "80vh", height: "850px"}}>
         {orderedAgendas.map((agenda) => {
           return (
-            <div style={{flex: "0 0 5%"}}>
-              <AgendaRow key={agenda.name} agenda={agenda} addAgenda={() => onComplete(agenda.name)} />
+            <div key={agenda.name} style={{flex: "0 0 5%"}}>
+              <AgendaRow agenda={agenda} addAgenda={() => onComplete(agenda.name)} />
             </div>
           );
         })}

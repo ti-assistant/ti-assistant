@@ -5,6 +5,7 @@ import { FactionTile } from "../src/FactionCard";
 import { BasicFactionTile } from "../src/FactionTile";
 import { Modal } from "../src/Modal";
 import { fetcher } from "../src/util/api/util";
+import Image from "next/image";
 
 function getFactionColor(color) {
   if (!color) {
@@ -104,7 +105,7 @@ function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, e
           {filteredFactions.map(([factionName, faction]) => {
             faction.color = color;
             return (
-              <div style={{flexBasis: "15%", flexGrow: 2, flexShrink: 2}}>
+              <div key={factionName} style={{flexBasis: "15%", flexGrow: 2, flexShrink: 2}}>
                 <BasicFactionTile faction={faction} onClick={() => selectFaction(faction.name)} />
               </div>
             );
@@ -119,7 +120,7 @@ function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, e
               color: color,
             };
             return (
-              <div style={{flexBasis: "20%"}}>
+              <div key={color} style={{flexBasis: "20%"}}>
                 <BasicFactionTile faction={tempFaction} onClick={() => selectColor(color)} />
               </div>
             );
@@ -169,6 +170,480 @@ const INITIAL_OPTIONS = {
   'multiple-planet-attachments': false,
   'allow-double-council': false,
   'map-string': "",
+}
+
+function FactionSystemImage({factionName}) {
+  if (!factionName || factionName === "Council Keleres") {
+    return <Image src="/images/systems/ST_0.png" alt="Faction Tile" width="57px" height="50px" />
+  }
+  return <Image src={`/images/systems/${factionName}.png`} alt={`${factionName}'s Home System`} width="57px" height="50px" />
+}
+
+function validSystemNumber(number) {
+  let intVal = parseInt(number);
+  if (intVal === NaN) {
+    return false;
+  }
+  if (intVal < 19 || (intVal > 50 && intVal < 59) || (intVal === 81) || (intVal === 82) || intVal > 91) {
+    return false;
+  }
+  return true;
+}
+
+function SystemImage({systemNumber}) {
+  if (!systemNumber || !validSystemNumber(systemNumber)) {
+    return <Image style={{opacity: "10%"}} src="/images/systems/Hexagon.png" alt={`System Tile`} width="57px" height="50px" />
+    // return <div style={{width: "57px", height: "50px"}}></div>
+  }
+  const checkForA = systemNumber.split("A");
+  if (checkForA.length > 1) {
+    return <Image src={`/images/systems/ST_${checkForA[0]}A.png`} alt={`System ${systemNumber} Tile`} width="57px" height="50px" />;
+  }
+  const checkForB = systemNumber.split("A");
+  if (checkForB.length > 1) {
+    return <Image src={`/images/systems/ST_${checkForB[0]}A.png`} alt={`System ${systemNumber} Tile`} width="57px" height="50px" />;
+  }
+  if (systemNumber > 81) {
+    return <Image style={{opacity: "10%"}} src="/images/systems/Hexagon.png" alt={`System Tile`} width="57px" height="50px" />
+  }
+  return <Image src={`/images/systems/ST_${systemNumber}.png`} alt={`System ${systemNumber} Tile`} width="57px" height="50px" />
+}
+
+function Map({mapString, factions}) {
+  const systemTiles = mapString.split(" ");
+
+  switch (factions.length) {
+    case 3:
+      return (
+        <div className="flexRow" style={{position: "relative"}}>
+          {/* Column 1 */}
+          <div className="flexColumn" style={{marginTop: "-250px"}}>
+            <FactionSystemImage factionName={factions[0].name} />
+            <SystemImage systemNumber={systemTiles[32]} />
+          </div>
+          {/* Column 2 */}
+          <div className="flexColumn" style={{marginTop: "-200px", marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[34]} />
+            <SystemImage systemNumber={systemTiles[16]} />
+            <SystemImage systemNumber={systemTiles[15]} />
+            <SystemImage systemNumber={systemTiles[14]} />
+          </div>
+          {/* Column 3 */}
+          <div className="flexColumn" style={{marginTop: "-100px", marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[17]} />
+            <SystemImage systemNumber={systemTiles[5]} />
+            <SystemImage systemNumber={systemTiles[5]} />
+            <SystemImage systemNumber={systemTiles[13]} />
+            <SystemImage systemNumber={systemTiles[28]} />
+          </div>
+          {/* Column 4 - Middle Column */}
+          <div className="flexColumn" style={{marginTop: "-100px", marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[6]} />
+            <SystemImage systemNumber={systemTiles[0]} />
+            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+            <SystemImage systemNumber={systemTiles[3]} />
+            <SystemImage systemNumber={systemTiles[12]} />
+            <FactionSystemImage factionName={factions[2].name} />
+          </div>
+          {/* Column 5 */}
+          <div className="flexColumn" style={{marginTop: "-100px", marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[7]} />
+            <SystemImage systemNumber={systemTiles[1]} />
+            <SystemImage systemNumber={systemTiles[2]} />
+            <SystemImage systemNumber={systemTiles[11]} />
+            <SystemImage systemNumber={systemTiles[26]} />
+          </div>
+          {/* Column 6 */}
+          <div className="flexColumn" style={{marginTop: "-200px", marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[20]} />
+            <SystemImage systemNumber={systemTiles[8]} />
+            <SystemImage systemNumber={systemTiles[9]} />
+            <SystemImage systemNumber={systemTiles[10]} />
+          </div>
+          {/* Column 7 */}
+          <div className="flexColumn" style={{marginTop: "-250px", marginLeft: "-14px"}}>
+            <FactionSystemImage factionName={factions[1].name} />
+            <SystemImage systemNumber={systemTiles[22]} />
+          </div>
+        </div>
+      );
+      case 4:
+        return (
+          <div className="flexRow" style={{position: "relative"}}>
+            {/* Column 1 */}
+            <div className="flexColumn">
+              <SystemImage systemNumber={systemTiles[33]} />
+              <SystemImage systemNumber={systemTiles[32]} />
+              <FactionSystemImage factionName={factions[0].name} />
+              <SystemImage systemNumber={systemTiles[30]} />
+            </div>
+            {/* Column 2 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[34]} />
+              <SystemImage systemNumber={systemTiles[16]} />
+              <SystemImage systemNumber={systemTiles[15]} />
+              <SystemImage systemNumber={systemTiles[14]} />
+              <SystemImage systemNumber={systemTiles[29]} />
+            </div>
+            {/* Column 3 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <FactionSystemImage factionName={factions[3].name} />
+              <SystemImage systemNumber={systemTiles[17]} />
+              <SystemImage systemNumber={systemTiles[5]} />
+              <SystemImage systemNumber={systemTiles[4]} />
+              <SystemImage systemNumber={systemTiles[13]} />
+              <SystemImage systemNumber={systemTiles[28]} />
+            </div>
+            {/* Column 4 - Middle Column */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[18]} />
+              <SystemImage systemNumber={systemTiles[6]} />
+              <SystemImage systemNumber={systemTiles[0]} />
+              <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+              <SystemImage systemNumber={systemTiles[3]} />
+              <SystemImage systemNumber={systemTiles[12]} />
+              <SystemImage systemNumber={systemTiles[27]} />
+            </div>
+            {/* Column 5 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[19]} />
+              <SystemImage systemNumber={systemTiles[7]} />
+              <SystemImage systemNumber={systemTiles[1]} />
+              <SystemImage systemNumber={systemTiles[2]} />
+              <SystemImage systemNumber={systemTiles[11]} />
+              <FactionSystemImage factionName={factions[2].name} />
+            </div>
+            {/* Column 6 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[20]} />
+              <SystemImage systemNumber={systemTiles[8]} />
+              <SystemImage systemNumber={systemTiles[9]} />
+              <SystemImage systemNumber={systemTiles[10]} />
+              <SystemImage systemNumber={systemTiles[25]} />
+            </div>
+            {/* Column 7 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[21]} />
+              <FactionSystemImage factionName={factions[1].name} />
+              <SystemImage systemNumber={systemTiles[23]} />
+              <SystemImage systemNumber={systemTiles[24]} />
+            </div>
+          </div>
+        );
+
+    case 5:
+      return (
+        <div className="flexRow" style={{position: "relative"}}>
+          {/* Column 1 */}
+          <div className="flexColumn">
+            <FactionSystemImage factionName={factions[0].name} />
+            <SystemImage systemNumber={systemTiles[32]} />
+            <SystemImage systemNumber={systemTiles[31]} />
+            <FactionSystemImage factionName={factions[4].name} />
+          </div>
+          {/* Column 2 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[34]} />
+            <SystemImage systemNumber={systemTiles[16]} />
+            <SystemImage systemNumber={systemTiles[15]} />
+            <SystemImage systemNumber={systemTiles[14]} />
+            <SystemImage systemNumber={systemTiles[29]} />
+          </div>
+          {/* Column 3 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[35]} />
+            <SystemImage systemNumber={systemTiles[17]} />
+            <SystemImage systemNumber={systemTiles[5]} />
+            <SystemImage systemNumber={systemTiles[4]} />
+            <SystemImage systemNumber="87A" />
+            <SystemImage systemNumber="84A" />
+          </div>
+          {/* Column 4 - Middle Column */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <FactionSystemImage factionName={factions[3].name} />
+            <SystemImage systemNumber={systemTiles[6]} />
+            <SystemImage systemNumber={systemTiles[0]} />
+            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+            <SystemImage systemNumber="86A" />
+            <SystemImage systemNumber={systemTiles[12]} />
+            <SystemImage systemNumber="85A" />
+          </div>
+          {/* Column 5 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[19]} />
+            <SystemImage systemNumber={systemTiles[7]} />
+            <SystemImage systemNumber={systemTiles[1]} />
+            <SystemImage systemNumber={systemTiles[2]} />
+            <SystemImage systemNumber="88A" />
+            <SystemImage systemNumber="83A" />
+          </div>
+          {/* Column 6 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[20]} />
+            <SystemImage systemNumber={systemTiles[8]} />
+            <SystemImage systemNumber={systemTiles[9]} />
+            <SystemImage systemNumber={systemTiles[10]} />
+            <SystemImage systemNumber={systemTiles[25]} />
+          </div>
+          {/* Column 7 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <FactionSystemImage factionName={factions[1].name} />
+            <SystemImage systemNumber={systemTiles[22]} />
+            <SystemImage systemNumber={systemTiles[23]} />
+            <FactionSystemImage factionName={factions[2].name} />
+          </div>
+        </div>
+      );
+    case 6:
+      return (
+        <div className="flexRow" style={{position: "relative"}}>
+          {/* Column 1 */}
+          <div className="flexColumn">
+            <FactionSystemImage factionName={factions[0].name} />
+            <SystemImage systemNumber={systemTiles[32]} />
+            <SystemImage systemNumber={systemTiles[31]} />
+            <FactionSystemImage factionName={factions[4].name} />
+          </div>
+          {/* Column 2 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[34]} />
+            <SystemImage systemNumber={systemTiles[16]} />
+            <SystemImage systemNumber={systemTiles[15]} />
+            <SystemImage systemNumber={systemTiles[14]} />
+            <SystemImage systemNumber={systemTiles[29]} />
+          </div>
+          {/* Column 3 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[35]} />
+            <SystemImage systemNumber={systemTiles[17]} />
+            <SystemImage systemNumber={systemTiles[5]} />
+            <SystemImage systemNumber={systemTiles[4]} />
+            <SystemImage systemNumber={systemTiles[13]} />
+            <SystemImage systemNumber={systemTiles[28]} />
+          </div>
+          {/* Column 4 - Middle Column */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <FactionSystemImage factionName={factions[3].name} />
+            <SystemImage systemNumber={systemTiles[6]} />
+            <SystemImage systemNumber={systemTiles[0]} />
+            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+            <SystemImage systemNumber={systemTiles[3]} />
+            <SystemImage systemNumber={systemTiles[12]} />
+            <FactionSystemImage factionName={factions[2].name} />
+          </div>
+          {/* Column 5 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[19]} />
+            <SystemImage systemNumber={systemTiles[7]} />
+            <SystemImage systemNumber={systemTiles[1]} />
+            <SystemImage systemNumber={systemTiles[2]} />
+            <SystemImage systemNumber={systemTiles[11]} />
+            <SystemImage systemNumber={systemTiles[26]} />
+          </div>
+          {/* Column 6 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <SystemImage systemNumber={systemTiles[20]} />
+            <SystemImage systemNumber={systemTiles[8]} />
+            <SystemImage systemNumber={systemTiles[9]} />
+            <SystemImage systemNumber={systemTiles[10]} />
+            <SystemImage systemNumber={systemTiles[25]} />
+          </div>
+          {/* Column 7 */}
+          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <FactionSystemImage factionName={factions[1].name} />
+            <SystemImage systemNumber={systemTiles[22]} />
+            <SystemImage systemNumber={systemTiles[23]} />
+            <FactionSystemImage factionName={factions[5].name} />
+          </div>
+        </div>
+      );
+      case 7:
+        return (
+          <div className="flexRow" style={{position: "relative"}}>
+            {/* Column 1 */}
+            <div className="flexColumn">
+              <SystemImage systemNumber={systemTiles[56]} />
+              <SystemImage systemNumber={systemTiles[55]} />
+              <FactionSystemImage factionName={factions[4].name} />
+              <SystemImage systemNumber={systemTiles[53]} />
+              <SystemImage systemNumber={systemTiles[52]} />
+            </div>
+            {/* Column 2 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <FactionSystemImage factionName={factions[0].name} />
+              <SystemImage systemNumber={systemTiles[33]} />
+              <SystemImage systemNumber={systemTiles[32]} />
+              <SystemImage systemNumber={systemTiles[31]} />
+              <SystemImage systemNumber={systemTiles[30]} />
+              <FactionSystemImage factionName={factions[2].name} />
+            </div>
+            {/* Column 3 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[58]} />
+              <SystemImage systemNumber={systemTiles[34]} />
+              <SystemImage systemNumber={systemTiles[16]} />
+              <SystemImage systemNumber={systemTiles[15]} />
+              <SystemImage systemNumber={systemTiles[14]} />
+              <SystemImage systemNumber={systemTiles[29]} />
+              <SystemImage systemNumber={systemTiles[50]} />
+            </div>
+            {/* Column 4 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[59]} />
+              <SystemImage systemNumber={systemTiles[35]} />
+              <SystemImage systemNumber={systemTiles[17]} />
+              <SystemImage systemNumber={systemTiles[5]} />
+              <SystemImage systemNumber={systemTiles[4]} />
+              <SystemImage systemNumber={systemTiles[13]} />
+              <SystemImage systemNumber="87A" />
+              <SystemImage systemNumber="84A" />
+            </div>
+            {/* Column 5 - Middle Column */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <FactionSystemImage factionName={factions[3].name} />
+              <SystemImage systemNumber={systemTiles[18]} />
+              <SystemImage systemNumber={systemTiles[6]} />
+              <SystemImage systemNumber={systemTiles[0]} />
+              <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+              <SystemImage systemNumber={systemTiles[3]} />
+              <SystemImage systemNumber="86A" />
+              <SystemImage systemNumber={systemTiles[27]} />
+              <SystemImage systemNumber="85A" />
+            </div>
+            {/* Column 5 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[37]} />
+              <SystemImage systemNumber={systemTiles[19]} />
+              <SystemImage systemNumber={systemTiles[7]} />
+              <SystemImage systemNumber={systemTiles[1]} />
+              <SystemImage systemNumber={systemTiles[2]} />
+              <SystemImage systemNumber={systemTiles[11]} />
+              <SystemImage systemNumber="86A" />
+              <SystemImage systemNumber="83A" />
+            </div>
+            {/* Column 6 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[38]} />
+              <SystemImage systemNumber={systemTiles[20]} />
+              <SystemImage systemNumber={systemTiles[8]} />
+              <SystemImage systemNumber={systemTiles[9]} />
+              <SystemImage systemNumber={systemTiles[10]} />
+              <SystemImage systemNumber={systemTiles[25]} />
+              <SystemImage systemNumber={systemTiles[46]} />
+            </div>
+            {/* Column 6 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <FactionSystemImage factionName={factions[1].name} />
+              <SystemImage systemNumber={systemTiles[21]} />
+              <SystemImage systemNumber={systemTiles[22]} />
+              <SystemImage systemNumber={systemTiles[23]} />
+              <SystemImage systemNumber={systemTiles[24]} />
+              <FactionSystemImage factionName={factions[5].name} />
+            </div>
+            {/* Column 7 */}
+            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <SystemImage systemNumber={systemTiles[40]} />
+              <SystemImage systemNumber={systemTiles[41]} />
+              <FactionSystemImage factionName={factions[6].name} />
+              <SystemImage systemNumber={systemTiles[43]} />
+              <SystemImage systemNumber={systemTiles[44]} />
+            </div>
+          </div>
+        );
+        case 8:
+          return (
+            <div className="flexRow" style={{position: "relative"}}>
+              {/* Column 1 */}
+              <div className="flexColumn">
+                <SystemImage systemNumber={systemTiles[56]} />
+                <SystemImage systemNumber={systemTiles[55]} />
+                <FactionSystemImage factionName={factions[4].name} />
+                <SystemImage systemNumber={systemTiles[53]} />
+                <SystemImage systemNumber={systemTiles[52]} />
+              </div>
+              {/* Column 2 */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <FactionSystemImage factionName={factions[0].name} />
+                <SystemImage systemNumber={systemTiles[33]} />
+                <SystemImage systemNumber={systemTiles[32]} />
+                <SystemImage systemNumber={systemTiles[31]} />
+                <SystemImage systemNumber={systemTiles[30]} />
+                <FactionSystemImage factionName={factions[2].name} />
+              </div>
+              {/* Column 3 */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <SystemImage systemNumber={systemTiles[58]} />
+                <SystemImage systemNumber={systemTiles[34]} />
+                <SystemImage systemNumber={systemTiles[16]} />
+                <SystemImage systemNumber={systemTiles[15]} />
+                <SystemImage systemNumber={systemTiles[14]} />
+                <SystemImage systemNumber={systemTiles[29]} />
+                <SystemImage systemNumber={systemTiles[50]} />
+              </div>
+              {/* Column 4 */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <SystemImage systemNumber={systemTiles[59]} />
+                <SystemImage systemNumber={systemTiles[35]} />
+                <SystemImage systemNumber={systemTiles[17]} />
+                <SystemImage systemNumber={systemTiles[5]} />
+                <SystemImage systemNumber={systemTiles[4]} />
+                <SystemImage systemNumber={systemTiles[13]} />
+                <SystemImage systemNumber={systemTiles[28]} />
+                <SystemImage systemNumber={systemTiles[49]} />
+              </div>
+              {/* Column 5 - Middle Column */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <FactionSystemImage factionName={factions[3].name} />
+                <SystemImage systemNumber={systemTiles[18]} />
+                <SystemImage systemNumber={systemTiles[6]} />
+                <SystemImage systemNumber={systemTiles[0]} />
+                <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+                <SystemImage systemNumber={systemTiles[3]} />
+                <SystemImage systemNumber={systemTiles[3]} />
+                <SystemImage systemNumber={systemTiles[27]} />
+                <FactionSystemImage factionName={factions[1].name} />
+              </div>
+              {/* Column 5 */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <SystemImage systemNumber={systemTiles[37]} />
+                <SystemImage systemNumber={systemTiles[19]} />
+                <SystemImage systemNumber={systemTiles[7]} />
+                <SystemImage systemNumber={systemTiles[1]} />
+                <SystemImage systemNumber={systemTiles[2]} />
+                <SystemImage systemNumber={systemTiles[11]} />
+                <SystemImage systemNumber={systemTiles[26]} />
+                <SystemImage systemNumber={systemTiles[47]} />
+              </div>
+              {/* Column 6 */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <SystemImage systemNumber={systemTiles[38]} />
+                <SystemImage systemNumber={systemTiles[20]} />
+                <SystemImage systemNumber={systemTiles[8]} />
+                <SystemImage systemNumber={systemTiles[9]} />
+                <SystemImage systemNumber={systemTiles[10]} />
+                <SystemImage systemNumber={systemTiles[25]} />
+                <SystemImage systemNumber={systemTiles[46]} />
+              </div>
+              {/* Column 6 */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <FactionSystemImage factionName={factions[1].name} />
+                <SystemImage systemNumber={systemTiles[21]} />
+                <SystemImage systemNumber={systemTiles[22]} />
+                <SystemImage systemNumber={systemTiles[23]} />
+                <SystemImage systemNumber={systemTiles[24]} />
+                <FactionSystemImage factionName={factions[5].name} />
+              </div>
+              {/* Column 7 */}
+              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+                <SystemImage systemNumber={systemTiles[40]} />
+                <SystemImage systemNumber={systemTiles[41]} />
+                <FactionSystemImage factionName={factions[6].name} />
+                <SystemImage systemNumber={systemTiles[43]} />
+                <SystemImage systemNumber={systemTiles[44]} />
+              </div>
+            </div>
+          );
+  }
 }
 
 export default function SetupPage() {
@@ -334,13 +809,35 @@ export default function SetupPage() {
   }
 
   async function startGame() {
-    const optionsToSend = options;
+    const optionsToSend = {...options};
     optionsToSend.expansions = Array.from(options.expansions);
     
     // TODO: Consider just leaving gaps in the factions array to avoid this nonsense.
     const factionsToSend = [];
     let speakerToSend = 0;
     factionsToSend.push(factions[0]);
+    if (factions.length > 3) {
+      factionsToSend.push(factions[3]);
+      if (speaker === 3) {
+        speakerToSend = factionsToSend.length - 1;
+      }
+    }
+    if (factions.length > 7) {
+      factionsToSend.push(factions[7]);
+      if (speaker === 7) {
+        speakerToSend = factionsToSend.length - 1;
+      }
+    }
+    factionsToSend.push(factions[1]);
+    if (speaker === 1) {
+      speakerToSend = factionsToSend.length - 1;
+    }
+    if (factions.length > 5) {
+      factionsToSend.push(factions[5]);
+      if (speaker === 5) {
+        speakerToSend = factionsToSend.length - 1;
+      }
+    }
     if (factions.length > 6) {
       factionsToSend.push(factions[6]);
       if (speaker === 6) {
@@ -351,33 +848,11 @@ export default function SetupPage() {
     if (speaker === 2) {
       speakerToSend = factionsToSend.length - 1;
     }
-    if (factions.length > 5) {
-      factionsToSend.push(factions[5]);
-      if (speaker === 5) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
-    if (factions.length > 7) {
-      factionsToSend.push(factions[7]);
-      if (speaker === 7) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
-    if (factions.length > 3) {
-      factionsToSend.push(factions[3]);
-      if (speaker === 3) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
     if (factions.length > 4) {
       factionsToSend.push(factions[4]);
       if (speaker === 4) {
         speakerToSend = factionsToSend.length - 1;
       }
-    }
-    factionsToSend.push(factions[1]);
-    if (speaker === 1) {
-      speakerToSend = factionsToSend.length - 1;
     }
 
     const res = await fetch("/api/create-game", {
@@ -525,64 +1000,12 @@ export default function SetupPage() {
       <div className="flexRow" style={{width: "100%"}}>
       <div className="flexColumn" style={{flexBasis: "60%", position: "relative", gap: "120px", alignItems: "center"}}>
         <div className="flexRow" style={{position: "absolute", width: "100%", height: "100%"}}>
-          TABLE (replace with image)
+          <Map mapString={options['map-string']} factions={factions} />
+          {/* <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="364px" height="317px" /> */}
+
+          {/* TABLE (replace with image) */}
         </div>
-        {/* Player 1 and 8 */}
-        <div className="flexRow" style={{gap: "60px"}}>
-          <FactionSelect faction={factions[0]}
-            isSpeaker={0 === speaker} 
-            setFaction={(value) => updatePlayerFaction(0, value)}
-            setColor={(value) => updatePlayerColor(0, value)}
-            setSpeaker={() => setSpeaker(0)}
-            expansions={options.expansions}
-            opts={{menuSide: "bottom"}} />
-          {factions.length > 6 ?
-            <FactionSelect faction={factions[6]}
-              isSpeaker={6 === speaker} 
-              setFaction={(value) => updatePlayerFaction(6, value)}
-              setColor={(value) => updatePlayerColor(6, value)}
-              setSpeaker={() => setSpeaker(6)}
-              expansions={options.expansions}
-              opts={{menuSide: "bottom"}} /> : null}
-        </div>
-        <div className="flexRow" style={{gap: "400px"}}>
-          {/* Player 2 and 5 */}
-          <div className="flexColumn" style={{gap: "80px"}}>
-            <FactionSelect faction={factions[1]}
-              isSpeaker={1 === speaker} 
-              setFaction={(value) => updatePlayerFaction(1, value)}
-              setColor={(value) => updatePlayerColor(1, value)}
-              setSpeaker={() => setSpeaker(1)}
-              expansions={options.expansions}
-              opts={{menuSide: "right"}} />
-            {factions.length > 4 ?
-              <FactionSelect faction={factions[4]}
-                isSpeaker={4 === speaker} 
-                setFaction={(value) => updatePlayerFaction(4, value)}
-                setColor={(value) => updatePlayerColor(4, value)}
-                setSpeaker={() => setSpeaker(4)}
-                expansions={options.expansions}
-                opts={{menuSide: "right"}} /> : null}
-          </div>
-          {/* Player 3 and 6 */}
-          <div className="flexColumn" style={{flexBasis: "10%", gap: "80px"}}>
-            <FactionSelect faction={factions[2]}
-              isSpeaker={2 === speaker} 
-              setFaction={(value) => updatePlayerFaction(2, value)}
-              setColor={(value) => updatePlayerColor(2, value)}
-              setSpeaker={() => setSpeaker(2)}
-              expansions={options.expansions}
-              opts={{menuSide: "left"}} />
-            {factions.length > 5 ?
-              <FactionSelect faction={factions[5]}
-                isSpeaker={5 === speaker} 
-                setFaction={(value) => updatePlayerFaction(5, value)}
-                setColor={(value) => updatePlayerColor(5, value)}
-                setSpeaker={() => setSpeaker(5)}
-                expansions={options.expansions}
-                opts={{menuSide: "left"}} /> : null}
-          </div>
-        </div>
+        {/* Top Side */}
         {/* Player 4 and 8 */}
         <div className="flexRow" style={{gap: "60px"}}>
           {factions.length > 3 ?
@@ -599,6 +1022,74 @@ export default function SetupPage() {
               setFaction={(value) => updatePlayerFaction(7, value)}
               setColor={(value) => updatePlayerColor(7, value)}
               setSpeaker={() => setSpeaker(7)}
+              expansions={options.expansions}
+              opts={{menuSide: "bottom"}} /> : null}
+        </div>
+        {/* Left Side */}
+        <div className="flexRow" style={{gap: "400px"}}>
+          {/* Player 1 and 5 */}
+          <div className="flexColumn" style={{gap: "80px"}}>
+            <FactionSelect faction={factions[0]}
+              isSpeaker={0 === speaker} 
+              setFaction={(value) => updatePlayerFaction(0, value)}
+              setColor={(value) => updatePlayerColor(0, value)}
+              setSpeaker={() => setSpeaker(0)}
+              expansions={options.expansions}
+              opts={{menuSide: "bottom"}} />
+            {factions.length > 4 ?
+              <FactionSelect faction={factions[4]}
+                isSpeaker={4 === speaker} 
+                setFaction={(value) => updatePlayerFaction(4, value)}
+                setColor={(value) => updatePlayerColor(4, value)}
+                setSpeaker={() => setSpeaker(4)}
+                expansions={options.expansions}
+                opts={{menuSide: "right"}} /> : null}
+          </div>
+          {/* Right Side */}
+          {/* Player 2 and 6 (or 3 in 5-player) */}
+          <div className="flexColumn" style={{flexBasis: "10%", gap: "80px"}}>
+            <FactionSelect faction={factions[1]}
+              isSpeaker={1 === speaker} 
+              setFaction={(value) => updatePlayerFaction(1, value)}
+              setColor={(value) => updatePlayerColor(1, value)}
+              setSpeaker={() => setSpeaker(1)}
+              expansions={options.expansions}
+              opts={{menuSide: "right"}} />
+            {factions.length === 5 ?
+              <FactionSelect faction={factions[2]}
+                isSpeaker={2 === speaker} 
+                setFaction={(value) => updatePlayerFaction(2, value)}
+                setColor={(value) => updatePlayerColor(2, value)}
+                setSpeaker={() => setSpeaker(2)}
+                expansions={options.expansions}
+                opts={{menuSide: "top"}} /> : null}
+            {factions.length > 5 ?
+              <FactionSelect faction={factions[5]}
+                isSpeaker={5 === speaker} 
+                setFaction={(value) => updatePlayerFaction(5, value)}
+                setColor={(value) => updatePlayerColor(5, value)}
+                setSpeaker={() => setSpeaker(5)}
+                expansions={options.expansions}
+                opts={{menuSide: "left"}} /> : null}
+          </div>
+        </div>
+        {/* Bottom Side */}
+        {/* Player 3 and 7 */}
+        <div className="flexRow" style={{gap: "60px"}}>
+          {factions.length !== 5 ?
+            <FactionSelect faction={factions[2]}
+              isSpeaker={2 === speaker} 
+              setFaction={(value) => updatePlayerFaction(2, value)}
+              setColor={(value) => updatePlayerColor(2, value)}
+              setSpeaker={() => setSpeaker(2)}
+              expansions={options.expansions}
+              opts={{menuSide: "left"}} /> : null}
+          {factions.length > 6 ?
+            <FactionSelect faction={factions[6]}
+              isSpeaker={6 === speaker} 
+              setFaction={(value) => updatePlayerFaction(6, value)}
+              setColor={(value) => updatePlayerColor(6, value)}
+              setSpeaker={() => setSpeaker(6)}
               expansions={options.expansions}
               opts={{menuSide: "top"}} /> : null}
         </div>
