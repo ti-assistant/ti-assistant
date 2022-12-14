@@ -18,7 +18,7 @@ export async function readyPlanets(mutate, setUpdateTime, gameid, planets, toRea
     optimisticData: updatedPlanets,
   };
 
-  return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
+  return mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
 }
 
 export async function exhaustPlanets(mutate, setUpdateTime, gameid, planets, toExhaust, factionName) {
@@ -39,7 +39,7 @@ export async function exhaustPlanets(mutate, setUpdateTime, gameid, planets, toE
     optimisticData: updatedPlanets,
   };
 
-  return mutate(`/api/${gameid}/planets?faction=${factionName}`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
+  return mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data, setUpdateTime), options);
 }
 
 export async function claimPlanet(mutate, setUpdateTime, gameid, planets, planet, factionName, gameOptions = {}) {

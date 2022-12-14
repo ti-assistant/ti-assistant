@@ -8,12 +8,14 @@ import { FactionTile } from '/src/FactionCard.js'
 export function StrategyCard({ card, active, onClick, factionActions, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: faction, factionError } = useSWR(gameid && card.faction ? `/api/${gameid}/factions/${card.faction}` : null, fetcher);
+  const { data: factions, factionError } = useSWR(gameid && card.faction ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   
   if (factionError || stateError) {
     return (<div>Failed to load faction info</div>);
   }
+
+  const faction = card.faction ? factions[card.faction] : null;
 
   const color = (active && !opts.noColor ? card.color : "#555");
   const textColor = (active ? "#eee" : "#555");

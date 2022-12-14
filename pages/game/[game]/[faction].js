@@ -111,12 +111,6 @@ function Prompt({ faction, prompt }) {
     };
 
     await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
-
-    const opts = {
-      optimisticData: updatedFactions[faction.name],
-    };
-    
-    mutate(`/api/${gameid}/factions/${faction.name}`, fetcher(`/api/${gameid}/factions/${faction.name}`, data), opts)
   }
 
   async function removeTech(tech) {
@@ -155,12 +149,6 @@ function Prompt({ faction, prompt }) {
     };
 
     await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
-    
-    const opts = {
-      optimisticData: updatedFactions[faction.name],
-    };
-    
-    mutate(`/api/${gameid}/factions/${faction.name}`, fetcher(`/api/${gameid}/factions/${faction.name}`, data), opts)
   }
 
   const numToChoose = !startswith.choice ? 0 : startswith.choice.select - (startswith.techs ?? []).length;
@@ -203,7 +191,7 @@ function FactionContent() {
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
-  const { data: techs, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs?faction=${playerFaction}` : null, fetcher);
+  const { data: techs, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs` : null, fetcher);
   const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { setUpdateTime } = useSharedUpdateTimes();

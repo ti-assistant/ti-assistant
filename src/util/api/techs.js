@@ -34,11 +34,6 @@ export async function unlockTech(mutate, setUpdateTime, gameid, factions, factio
   };
 
   await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
-
-  const opts = {
-    optimisticData: updatedFactions[factionName],
-  };
-  mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
 }
 
 export async function lockTech(mutate, setUpdateTime, gameid, factions, factionName, tech) {
@@ -59,11 +54,6 @@ export async function lockTech(mutate, setUpdateTime, gameid, factions, factionN
   };
 
   await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
-
-  const opts = {
-    optimisticData: updatedFactions[factionName],
-  };
-  mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
 }
 
 export async function chooseStartingTech(mutate, setUpdateTime, gameid, factions, factionName, tech) {
@@ -91,20 +81,6 @@ export async function chooseStartingTech(mutate, setUpdateTime, gameid, factions
   };
 
   await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
-
-  const opts = {
-    optimisticData: updatedFactions[factionName],
-  };
-
-  mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
-
-  if (!factions['Council Keleres'] || factionName === "Council Keleres") {
-    return;
-  }
-  const councilOptions = {
-    optimisticData: updatedFactions['Council Keleres'],
-  };
-  mutate(`/api/${gameid}/factions/Council Keleres`, fetcher(`/api/${gameid}/factions/Council Keleres`), councilOptions);
 }
 
 export async function removeStartingTech(mutate, setUpdateTime, gameid, factions, factionName, tech) {
@@ -143,18 +119,4 @@ export async function removeStartingTech(mutate, setUpdateTime, gameid, factions
   };
 
   mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
-  
-  const opts = {
-    optimisticData: updatedFactions[factionName],
-  };
-
-  mutate(`/api/${gameid}/factions/${factionName}`, fetcher(`/api/${gameid}/factions/${factionName}`), opts);
-
-  if (!factions['Council Keleres'] || factionName === "Council Keleres") {
-    return;
-  }
-  const councilOptions = {
-    optimisticData: updatedFactions['Council Keleres'],
-  };
-  mutate(`/api/${gameid}/factions/Council Keleres`, fetcher(`/api/${gameid}/factions/Council Keleres`), councilOptions);
 }

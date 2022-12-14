@@ -611,8 +611,8 @@ export function FactionSummary({ factionName, options={} }) {
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets?faction=${factionName}` : null, fetcher);
-  const { data: techs, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs?faction=${factionName}` : null, fetcher);
+  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: techs, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
   const { setUpdateTime } = useSharedUpdateTimes();
 
   if (attachmentsError) {

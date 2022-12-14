@@ -15,7 +15,9 @@ export function FactionSelectModal({ excludeFactions, title, visible, onComplete
     return (<div>Loading...</div>);
   }
 
-  const orderedFactions = Object.entries(factions).sort((a, b) => {
+  const orderedFactions = Object.entries(factions)
+    .filter(([name, faction]) => !excludeFactions.includes(name))
+    .sort((a, b) => {
     if (a[1].order > b[1].order) {
       return 1;
     } else {
@@ -24,13 +26,10 @@ export function FactionSelectModal({ excludeFactions, title, visible, onComplete
   });
 
   return (
-  <Modal closeMenu={onComplete} visible={visible} level={level} title={title}
+  <Modal closeMenu={() => onComplete()} visible={visible} level={level} title={title}
     content={
       <div className="flexRow" style={{flexWrap: "wrap", gap: "8px", alignItems: "center", justifyContent: "space-evenly", padding: "40px"}}>
         {orderedFactions.map(([factionName, faction]) => {
-          if ((excludeFactions ?? []).includes(factionName)) {
-            return null;
-          }
           return (
             <BasicFactionTile
               key={factionName}
