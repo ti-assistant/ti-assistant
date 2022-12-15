@@ -229,7 +229,6 @@ function StartingComponents({ faction }) {
       {startswith.planetchoice ? "Choose Sub-Faction" : null}
       {startswith.planetchoice ? <div className='flexColumn' style={{gap: "4px", alignItems: "flex-start"}}>
         {startswith.planetchoice.options.map((faction) => {
-          console.log(options);
           if (!(options['allow-double-council'] ?? false) && factions[faction]) {
             return null;
           }

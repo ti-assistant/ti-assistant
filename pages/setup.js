@@ -174,14 +174,14 @@ const INITIAL_OPTIONS = {
 
 function FactionSystemImage({factionName}) {
   if (!factionName || factionName === "Council Keleres") {
-    return <Image src="/images/systems/ST_0.png" alt="Faction Tile" width="57px" height="50px" />
+    return <Image src="/images/systems/ST_0.png" alt="Faction Tile" width="69px" height="60px" />
   }
-  return <Image src={`/images/systems/${factionName}.png`} alt={`${factionName}'s Home System`} width="57px" height="50px" />
+  return <Image src={`/images/systems/${factionName}.png`} alt={`${factionName}'s Home System`} width="69px" height="60px" />
 }
 
 function validSystemNumber(number) {
   let intVal = parseInt(number);
-  if (intVal === NaN) {
+  if (isNaN(intVal)) {
     return false;
   }
   if (intVal < 19 || (intVal > 50 && intVal < 59) || (intVal === 81) || (intVal === 82) || intVal > 91) {
@@ -192,21 +192,21 @@ function validSystemNumber(number) {
 
 function SystemImage({systemNumber}) {
   if (!systemNumber || !validSystemNumber(systemNumber)) {
-    return <Image style={{opacity: "10%"}} src="/images/systems/Hexagon.png" alt={`System Tile`} width="57px" height="50px" />
+    return <Image style={{opacity: "10%"}} src="/images/systems/Hexagon.png" alt={`System Tile`} width="69px" height="60px" />
     // return <div style={{width: "57px", height: "50px"}}></div>
   }
   const checkForA = systemNumber.split("A");
   if (checkForA.length > 1) {
-    return <Image src={`/images/systems/ST_${checkForA[0]}A.png`} alt={`System ${systemNumber} Tile`} width="57px" height="50px" />;
+    return <Image src={`/images/systems/ST_${checkForA[0]}A.png`} alt={`System ${systemNumber} Tile`} width="69px" height="60px" />;
   }
   const checkForB = systemNumber.split("A");
   if (checkForB.length > 1) {
-    return <Image src={`/images/systems/ST_${checkForB[0]}A.png`} alt={`System ${systemNumber} Tile`} width="57px" height="50px" />;
+    return <Image src={`/images/systems/ST_${checkForB[0]}A.png`} alt={`System ${systemNumber} Tile`} width="69px" height="60px" />;
   }
   if (systemNumber > 81) {
-    return <Image style={{opacity: "10%"}} src="/images/systems/Hexagon.png" alt={`System Tile`} width="57px" height="50px" />
+    return <Image style={{opacity: "10%"}} src="/images/systems/Hexagon.png" alt={`System Tile`} width="69px" height="60px" />
   }
-  return <Image src={`/images/systems/ST_${systemNumber}.png`} alt={`System ${systemNumber} Tile`} width="57px" height="50px" />
+  return <Image src={`/images/systems/ST_${systemNumber}.png`} alt={`System ${systemNumber} Tile`} width="69px" height="60px" />
 }
 
 function Map({mapString, factions}) {
@@ -217,19 +217,19 @@ function Map({mapString, factions}) {
       return (
         <div className="flexRow" style={{position: "relative"}}>
           {/* Column 1 */}
-          <div className="flexColumn" style={{marginTop: "-250px"}}>
+          <div className="flexColumn" style={{marginTop: "-180px"}}>
             <FactionSystemImage factionName={factions[0].name} />
             <SystemImage systemNumber={systemTiles[32]} />
           </div>
           {/* Column 2 */}
-          <div className="flexColumn" style={{marginTop: "-200px", marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginTop: "-120px", marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[34]} />
             <SystemImage systemNumber={systemTiles[16]} />
             <SystemImage systemNumber={systemTiles[15]} />
             <SystemImage systemNumber={systemTiles[14]} />
           </div>
           {/* Column 3 */}
-          <div className="flexColumn" style={{marginTop: "-100px", marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[17]} />
             <SystemImage systemNumber={systemTiles[5]} />
             <SystemImage systemNumber={systemTiles[5]} />
@@ -237,16 +237,16 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[28]} />
           </div>
           {/* Column 4 - Middle Column */}
-          <div className="flexColumn" style={{marginTop: "-100px", marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[6]} />
             <SystemImage systemNumber={systemTiles[0]} />
-            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" />
             <SystemImage systemNumber={systemTiles[3]} />
             <SystemImage systemNumber={systemTiles[12]} />
             <FactionSystemImage factionName={factions[2].name} />
           </div>
           {/* Column 5 */}
-          <div className="flexColumn" style={{marginTop: "-100px", marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[7]} />
             <SystemImage systemNumber={systemTiles[1]} />
             <SystemImage systemNumber={systemTiles[2]} />
@@ -254,14 +254,14 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[26]} />
           </div>
           {/* Column 6 */}
-          <div className="flexColumn" style={{marginTop: "-200px", marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginTop: "-120px", marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[20]} />
             <SystemImage systemNumber={systemTiles[8]} />
             <SystemImage systemNumber={systemTiles[9]} />
             <SystemImage systemNumber={systemTiles[10]} />
           </div>
           {/* Column 7 */}
-          <div className="flexColumn" style={{marginTop: "-250px", marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginTop: "-180px", marginLeft: "-17px"}}>
             <FactionSystemImage factionName={factions[1].name} />
             <SystemImage systemNumber={systemTiles[22]} />
           </div>
@@ -278,7 +278,7 @@ function Map({mapString, factions}) {
               <SystemImage systemNumber={systemTiles[30]} />
             </div>
             {/* Column 2 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[34]} />
               <SystemImage systemNumber={systemTiles[16]} />
               <SystemImage systemNumber={systemTiles[15]} />
@@ -286,8 +286,8 @@ function Map({mapString, factions}) {
               <SystemImage systemNumber={systemTiles[29]} />
             </div>
             {/* Column 3 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
-              <FactionSystemImage factionName={factions[3].name} />
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
+              <FactionSystemImage factionName={factions[1].name} />
               <SystemImage systemNumber={systemTiles[17]} />
               <SystemImage systemNumber={systemTiles[5]} />
               <SystemImage systemNumber={systemTiles[4]} />
@@ -295,26 +295,26 @@ function Map({mapString, factions}) {
               <SystemImage systemNumber={systemTiles[28]} />
             </div>
             {/* Column 4 - Middle Column */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[18]} />
               <SystemImage systemNumber={systemTiles[6]} />
               <SystemImage systemNumber={systemTiles[0]} />
-              <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+              <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" />
               <SystemImage systemNumber={systemTiles[3]} />
               <SystemImage systemNumber={systemTiles[12]} />
               <SystemImage systemNumber={systemTiles[27]} />
             </div>
             {/* Column 5 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[19]} />
               <SystemImage systemNumber={systemTiles[7]} />
               <SystemImage systemNumber={systemTiles[1]} />
               <SystemImage systemNumber={systemTiles[2]} />
               <SystemImage systemNumber={systemTiles[11]} />
-              <FactionSystemImage factionName={factions[2].name} />
+              <FactionSystemImage factionName={factions[3].name} />
             </div>
             {/* Column 6 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[20]} />
               <SystemImage systemNumber={systemTiles[8]} />
               <SystemImage systemNumber={systemTiles[9]} />
@@ -322,9 +322,9 @@ function Map({mapString, factions}) {
               <SystemImage systemNumber={systemTiles[25]} />
             </div>
             {/* Column 7 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[21]} />
-              <FactionSystemImage factionName={factions[1].name} />
+              <FactionSystemImage factionName={factions[2].name} />
               <SystemImage systemNumber={systemTiles[23]} />
               <SystemImage systemNumber={systemTiles[24]} />
             </div>
@@ -336,13 +336,13 @@ function Map({mapString, factions}) {
         <div className="flexRow" style={{position: "relative"}}>
           {/* Column 1 */}
           <div className="flexColumn">
-            <FactionSystemImage factionName={factions[0].name} />
+            <FactionSystemImage factionName={factions[1].name} />
             <SystemImage systemNumber={systemTiles[32]} />
             <SystemImage systemNumber={systemTiles[31]} />
-            <FactionSystemImage factionName={factions[4].name} />
+            <FactionSystemImage factionName={factions[0].name} />
           </div>
           {/* Column 2 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[34]} />
             <SystemImage systemNumber={systemTiles[16]} />
             <SystemImage systemNumber={systemTiles[15]} />
@@ -350,7 +350,7 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[29]} />
           </div>
           {/* Column 3 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[35]} />
             <SystemImage systemNumber={systemTiles[17]} />
             <SystemImage systemNumber={systemTiles[5]} />
@@ -359,17 +359,17 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber="84A" />
           </div>
           {/* Column 4 - Middle Column */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
-            <FactionSystemImage factionName={factions[3].name} />
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
+            <FactionSystemImage factionName={factions[2].name} />
             <SystemImage systemNumber={systemTiles[6]} />
             <SystemImage systemNumber={systemTiles[0]} />
-            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" />
             <SystemImage systemNumber="86A" />
             <SystemImage systemNumber={systemTiles[12]} />
             <SystemImage systemNumber="85A" />
           </div>
           {/* Column 5 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[19]} />
             <SystemImage systemNumber={systemTiles[7]} />
             <SystemImage systemNumber={systemTiles[1]} />
@@ -378,7 +378,7 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber="83A" />
           </div>
           {/* Column 6 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[20]} />
             <SystemImage systemNumber={systemTiles[8]} />
             <SystemImage systemNumber={systemTiles[9]} />
@@ -386,11 +386,11 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[25]} />
           </div>
           {/* Column 7 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
-            <FactionSystemImage factionName={factions[1].name} />
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
+            <FactionSystemImage factionName={factions[3].name} />
             <SystemImage systemNumber={systemTiles[22]} />
             <SystemImage systemNumber={systemTiles[23]} />
-            <FactionSystemImage factionName={factions[2].name} />
+            <FactionSystemImage factionName={factions[4].name} />
           </div>
         </div>
       );
@@ -399,13 +399,13 @@ function Map({mapString, factions}) {
         <div className="flexRow" style={{position: "relative"}}>
           {/* Column 1 */}
           <div className="flexColumn">
-            <FactionSystemImage factionName={factions[0].name} />
+            <FactionSystemImage factionName={factions[1].name} />
             <SystemImage systemNumber={systemTiles[32]} />
             <SystemImage systemNumber={systemTiles[31]} />
-            <FactionSystemImage factionName={factions[4].name} />
+            <FactionSystemImage factionName={factions[0].name} />
           </div>
           {/* Column 2 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[34]} />
             <SystemImage systemNumber={systemTiles[16]} />
             <SystemImage systemNumber={systemTiles[15]} />
@@ -413,7 +413,7 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[29]} />
           </div>
           {/* Column 3 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[35]} />
             <SystemImage systemNumber={systemTiles[17]} />
             <SystemImage systemNumber={systemTiles[5]} />
@@ -422,17 +422,17 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[28]} />
           </div>
           {/* Column 4 - Middle Column */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
-            <FactionSystemImage factionName={factions[3].name} />
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
+            <FactionSystemImage factionName={factions[2].name} />
             <SystemImage systemNumber={systemTiles[6]} />
             <SystemImage systemNumber={systemTiles[0]} />
-            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+            <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" />
             <SystemImage systemNumber={systemTiles[3]} />
             <SystemImage systemNumber={systemTiles[12]} />
-            <FactionSystemImage factionName={factions[2].name} />
+            <FactionSystemImage factionName={factions[5].name} />
           </div>
           {/* Column 5 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[19]} />
             <SystemImage systemNumber={systemTiles[7]} />
             <SystemImage systemNumber={systemTiles[1]} />
@@ -441,7 +441,7 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[26]} />
           </div>
           {/* Column 6 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
             <SystemImage systemNumber={systemTiles[20]} />
             <SystemImage systemNumber={systemTiles[8]} />
             <SystemImage systemNumber={systemTiles[9]} />
@@ -449,11 +449,11 @@ function Map({mapString, factions}) {
             <SystemImage systemNumber={systemTiles[25]} />
           </div>
           {/* Column 7 */}
-          <div className="flexColumn" style={{marginLeft: "-14px"}}>
-            <FactionSystemImage factionName={factions[1].name} />
+          <div className="flexColumn" style={{marginLeft: "-17px"}}>
+            <FactionSystemImage factionName={factions[3].name} />
             <SystemImage systemNumber={systemTiles[22]} />
             <SystemImage systemNumber={systemTiles[23]} />
-            <FactionSystemImage factionName={factions[5].name} />
+            <FactionSystemImage factionName={factions[4].name} />
           </div>
         </div>
       );
@@ -464,21 +464,21 @@ function Map({mapString, factions}) {
             <div className="flexColumn">
               <SystemImage systemNumber={systemTiles[56]} />
               <SystemImage systemNumber={systemTiles[55]} />
-              <FactionSystemImage factionName={factions[4].name} />
+              <FactionSystemImage factionName={factions[1].name} />
               <SystemImage systemNumber={systemTiles[53]} />
               <SystemImage systemNumber={systemTiles[52]} />
             </div>
             {/* Column 2 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
-              <FactionSystemImage factionName={factions[0].name} />
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
+              <FactionSystemImage factionName={factions[2].name} />
               <SystemImage systemNumber={systemTiles[33]} />
               <SystemImage systemNumber={systemTiles[32]} />
               <SystemImage systemNumber={systemTiles[31]} />
               <SystemImage systemNumber={systemTiles[30]} />
-              <FactionSystemImage factionName={factions[2].name} />
+              <FactionSystemImage factionName={factions[0].name} />
             </div>
             {/* Column 3 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[58]} />
               <SystemImage systemNumber={systemTiles[34]} />
               <SystemImage systemNumber={systemTiles[16]} />
@@ -488,7 +488,7 @@ function Map({mapString, factions}) {
               <SystemImage systemNumber={systemTiles[50]} />
             </div>
             {/* Column 4 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[59]} />
               <SystemImage systemNumber={systemTiles[35]} />
               <SystemImage systemNumber={systemTiles[17]} />
@@ -499,30 +499,30 @@ function Map({mapString, factions}) {
               <SystemImage systemNumber="84A" />
             </div>
             {/* Column 5 - Middle Column */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <FactionSystemImage factionName={factions[3].name} />
               <SystemImage systemNumber={systemTiles[18]} />
               <SystemImage systemNumber={systemTiles[6]} />
               <SystemImage systemNumber={systemTiles[0]} />
-              <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+              <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" />
               <SystemImage systemNumber={systemTiles[3]} />
               <SystemImage systemNumber="86A" />
               <SystemImage systemNumber={systemTiles[27]} />
               <SystemImage systemNumber="85A" />
             </div>
             {/* Column 5 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[37]} />
               <SystemImage systemNumber={systemTiles[19]} />
               <SystemImage systemNumber={systemTiles[7]} />
               <SystemImage systemNumber={systemTiles[1]} />
               <SystemImage systemNumber={systemTiles[2]} />
               <SystemImage systemNumber={systemTiles[11]} />
-              <SystemImage systemNumber="86A" />
+              <SystemImage systemNumber="88A" />
               <SystemImage systemNumber="83A" />
             </div>
             {/* Column 6 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[38]} />
               <SystemImage systemNumber={systemTiles[20]} />
               <SystemImage systemNumber={systemTiles[8]} />
@@ -532,19 +532,19 @@ function Map({mapString, factions}) {
               <SystemImage systemNumber={systemTiles[46]} />
             </div>
             {/* Column 6 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
-              <FactionSystemImage factionName={factions[1].name} />
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
+              <FactionSystemImage factionName={factions[4].name} />
               <SystemImage systemNumber={systemTiles[21]} />
               <SystemImage systemNumber={systemTiles[22]} />
               <SystemImage systemNumber={systemTiles[23]} />
               <SystemImage systemNumber={systemTiles[24]} />
-              <FactionSystemImage factionName={factions[5].name} />
+              <FactionSystemImage factionName={factions[6].name} />
             </div>
             {/* Column 7 */}
-            <div className="flexColumn" style={{marginLeft: "-14px"}}>
+            <div className="flexColumn" style={{marginLeft: "-17px"}}>
               <SystemImage systemNumber={systemTiles[40]} />
               <SystemImage systemNumber={systemTiles[41]} />
-              <FactionSystemImage factionName={factions[6].name} />
+              <FactionSystemImage factionName={factions[5].name} />
               <SystemImage systemNumber={systemTiles[43]} />
               <SystemImage systemNumber={systemTiles[44]} />
             </div>
@@ -557,21 +557,21 @@ function Map({mapString, factions}) {
               <div className="flexColumn">
                 <SystemImage systemNumber={systemTiles[56]} />
                 <SystemImage systemNumber={systemTiles[55]} />
-                <FactionSystemImage factionName={factions[4].name} />
+                <FactionSystemImage factionName={factions[1].name} />
                 <SystemImage systemNumber={systemTiles[53]} />
                 <SystemImage systemNumber={systemTiles[52]} />
               </div>
               {/* Column 2 */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
-                <FactionSystemImage factionName={factions[0].name} />
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
+                <FactionSystemImage factionName={factions[2].name} />
                 <SystemImage systemNumber={systemTiles[33]} />
                 <SystemImage systemNumber={systemTiles[32]} />
                 <SystemImage systemNumber={systemTiles[31]} />
                 <SystemImage systemNumber={systemTiles[30]} />
-                <FactionSystemImage factionName={factions[2].name} />
+                <FactionSystemImage factionName={factions[0].name} />
               </div>
               {/* Column 3 */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
                 <SystemImage systemNumber={systemTiles[58]} />
                 <SystemImage systemNumber={systemTiles[34]} />
                 <SystemImage systemNumber={systemTiles[16]} />
@@ -581,7 +581,7 @@ function Map({mapString, factions}) {
                 <SystemImage systemNumber={systemTiles[50]} />
               </div>
               {/* Column 4 */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
                 <SystemImage systemNumber={systemTiles[59]} />
                 <SystemImage systemNumber={systemTiles[35]} />
                 <SystemImage systemNumber={systemTiles[17]} />
@@ -592,19 +592,19 @@ function Map({mapString, factions}) {
                 <SystemImage systemNumber={systemTiles[49]} />
               </div>
               {/* Column 5 - Middle Column */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
                 <FactionSystemImage factionName={factions[3].name} />
                 <SystemImage systemNumber={systemTiles[18]} />
                 <SystemImage systemNumber={systemTiles[6]} />
                 <SystemImage systemNumber={systemTiles[0]} />
-                <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="57px" height="50px" />
+                <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" />
                 <SystemImage systemNumber={systemTiles[3]} />
                 <SystemImage systemNumber={systemTiles[3]} />
                 <SystemImage systemNumber={systemTiles[27]} />
-                <FactionSystemImage factionName={factions[1].name} />
+                <FactionSystemImage factionName={factions[7].name} />
               </div>
               {/* Column 5 */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
                 <SystemImage systemNumber={systemTiles[37]} />
                 <SystemImage systemNumber={systemTiles[19]} />
                 <SystemImage systemNumber={systemTiles[7]} />
@@ -615,7 +615,7 @@ function Map({mapString, factions}) {
                 <SystemImage systemNumber={systemTiles[47]} />
               </div>
               {/* Column 6 */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
                 <SystemImage systemNumber={systemTiles[38]} />
                 <SystemImage systemNumber={systemTiles[20]} />
                 <SystemImage systemNumber={systemTiles[8]} />
@@ -625,25 +625,151 @@ function Map({mapString, factions}) {
                 <SystemImage systemNumber={systemTiles[46]} />
               </div>
               {/* Column 6 */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
-                <FactionSystemImage factionName={factions[1].name} />
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
+                <FactionSystemImage factionName={factions[4].name} />
                 <SystemImage systemNumber={systemTiles[21]} />
                 <SystemImage systemNumber={systemTiles[22]} />
                 <SystemImage systemNumber={systemTiles[23]} />
                 <SystemImage systemNumber={systemTiles[24]} />
-                <FactionSystemImage factionName={factions[5].name} />
+                <FactionSystemImage factionName={factions[6].name} />
               </div>
               {/* Column 7 */}
-              <div className="flexColumn" style={{marginLeft: "-14px"}}>
+              <div className="flexColumn" style={{marginLeft: "-17px"}}>
                 <SystemImage systemNumber={systemTiles[40]} />
                 <SystemImage systemNumber={systemTiles[41]} />
-                <FactionSystemImage factionName={factions[6].name} />
+                <FactionSystemImage factionName={factions[5].name} />
                 <SystemImage systemNumber={systemTiles[43]} />
                 <SystemImage systemNumber={systemTiles[44]} />
               </div>
             </div>
           );
   }
+}
+
+function getFactionSelectStyle(numFactions, index) {
+  const baseStyle = {
+    position: 'absolute',
+    width: "300px",
+  };
+  switch (numFactions) {
+    case 3:
+      switch (index) {
+        case 0:
+          baseStyle.marginRight = "700px";
+          baseStyle.justifyContent = "flex-end";
+          baseStyle.marginBottom = "240px";
+          return baseStyle;
+        case 1:
+          baseStyle.marginLeft = "700px";
+          baseStyle.justifyContent = "flex-start";
+          baseStyle.marginBottom = "240px";
+          return baseStyle;
+        case 2:
+          baseStyle.marginTop = "420px";
+          baseStyle.justifyContent = "center";
+          return baseStyle;
+      }
+      break;
+    case 4:
+      switch (index) {
+        case 0:
+          baseStyle.marginRight = "700px";
+          baseStyle.justifyContent = "flex-end";
+          baseStyle.marginTop = "60px";
+          return baseStyle;
+        case 1:
+          baseStyle.marginRight = "380px";
+          baseStyle.justifyContent = "flex-end";
+          baseStyle.marginBottom = "420px";
+          return baseStyle;
+        case 2:
+          baseStyle.marginLeft = "700px";
+          baseStyle.justifyContent = "flex-start";
+          baseStyle.marginBottom = "60px";
+          return baseStyle;
+        case 3:
+          baseStyle.marginLeft = "380px";
+          baseStyle.marginTop = "420px";
+          baseStyle.justifyContent = "flex-start";
+          return baseStyle;
+      }
+      break;
+    case 5:
+    case 6:
+      switch (index) {
+        case 0:
+          baseStyle.marginRight = "700px";
+          baseStyle.justifyContent = "flex-end";
+          baseStyle.marginTop = "180px";
+          return baseStyle;
+        case 1:
+          baseStyle.marginRight = "700px";
+          baseStyle.justifyContent = "flex-end";
+          baseStyle.marginBottom = "180px";
+          return baseStyle;
+        case 2:
+          baseStyle.justifyContent = "center";
+          baseStyle.marginBottom = "480px";
+          return baseStyle;
+        case 3:
+          baseStyle.marginLeft = "700px";
+          baseStyle.justifyContent = "flex-start";
+          baseStyle.marginBottom = "180px";
+          return baseStyle;
+        case 4:
+          baseStyle.marginLeft = "700px";
+          baseStyle.justifyContent = "flex-start";
+          baseStyle.marginTop = "180px";
+          return baseStyle;
+        case 5:
+          baseStyle.justifyContent = "center";
+          baseStyle.marginTop = "480px";
+          return baseStyle;
+      }
+      break;
+    case 7:
+    case 8:
+      switch (index) {
+        case 0:
+          baseStyle.marginRight = "580px";
+          baseStyle.justifyContent = "flex-end";
+          baseStyle.marginTop = "420px";
+          return baseStyle;
+        case 1:
+          baseStyle.marginRight = "800px";
+          baseStyle.justifyContent = "flex-end";
+          return baseStyle;
+        case 2:
+          baseStyle.marginRight = "580px";
+          baseStyle.justifyContent = "flex-end";
+          baseStyle.marginBottom = "420px";
+          return baseStyle;
+        case 3:
+          baseStyle.justifyContent = "center";
+          baseStyle.marginBottom = "600px";
+          return baseStyle;
+        case 4:
+          baseStyle.marginLeft = "580px";
+          baseStyle.justifyContent = "flex-start";
+          baseStyle.marginBottom = "420px";
+          return baseStyle;
+        case 5:
+          baseStyle.marginLeft = "800px";
+          baseStyle.justifyContent = "flex-start";
+          return baseStyle;
+        case 6:
+          baseStyle.marginLeft = "580px";
+          baseStyle.justifyContent = "flex-start";
+          baseStyle.marginTop = "420px";
+          return baseStyle;
+        case 7:
+          baseStyle.justifyContent = "center";
+          baseStyle.marginTop = "600px";
+          return baseStyle;
+      }
+      break;
+  }
+  return baseStyle;
 }
 
 export default function SetupPage() {
@@ -813,47 +939,8 @@ export default function SetupPage() {
     optionsToSend.expansions = Array.from(options.expansions);
     
     // TODO: Consider just leaving gaps in the factions array to avoid this nonsense.
-    const factionsToSend = [];
-    let speakerToSend = 0;
-    factionsToSend.push(factions[0]);
-    if (factions.length > 3) {
-      factionsToSend.push(factions[3]);
-      if (speaker === 3) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
-    if (factions.length > 7) {
-      factionsToSend.push(factions[7]);
-      if (speaker === 7) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
-    factionsToSend.push(factions[1]);
-    if (speaker === 1) {
-      speakerToSend = factionsToSend.length - 1;
-    }
-    if (factions.length > 5) {
-      factionsToSend.push(factions[5]);
-      if (speaker === 5) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
-    if (factions.length > 6) {
-      factionsToSend.push(factions[6]);
-      if (speaker === 6) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
-    factionsToSend.push(factions[2]);
-    if (speaker === 2) {
-      speakerToSend = factionsToSend.length - 1;
-    }
-    if (factions.length > 4) {
-      factionsToSend.push(factions[4]);
-      if (speaker === 4) {
-        speakerToSend = factionsToSend.length - 1;
-      }
-    }
+    const factionsToSend = factions;
+    const speakerToSend = speaker;
 
     const res = await fetch("/api/create-game", {
       method: "POST",
@@ -998,101 +1085,94 @@ export default function SetupPage() {
         </div>
       </div>
       <div className="flexRow" style={{width: "100%"}}>
-      <div className="flexColumn" style={{flexBasis: "60%", position: "relative", gap: "120px", alignItems: "center"}}>
+      <div className="flexColumn" style={{position: "relative", flex: "0 0 60%", height: "60vh"}}>
+      {/* <div className="flexColumn" style={{flexBasis: "60%", position: "relative", gap: "120px", alignItems: "center"}}> */}
         <div className="flexRow" style={{position: "absolute", width: "100%", height: "100%"}}>
           <Map mapString={options['map-string']} factions={factions} />
           {/* <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="364px" height="317px" /> */}
 
           {/* TABLE (replace with image) */}
         </div>
-        {/* Top Side */}
-        {/* Player 4 and 8 */}
-        <div className="flexRow" style={{gap: "60px"}}>
-          {factions.length > 3 ?
-            <FactionSelect faction={factions[3]}
-              isSpeaker={3 === speaker} 
-              setFaction={(value) => updatePlayerFaction(3, value)}
-              setColor={(value) => updatePlayerColor(3, value)}
-              setSpeaker={() => setSpeaker(3)}
-              expansions={options.expansions}
-              opts={{menuSide: "top"}} /> : null}
-          {factions.length > 7 ?
-            <FactionSelect faction={factions[7]}
-              isSpeaker={7 === speaker} 
-              setFaction={(value) => updatePlayerFaction(7, value)}
-              setColor={(value) => updatePlayerColor(7, value)}
-              setSpeaker={() => setSpeaker(7)}
-              expansions={options.expansions}
-              opts={{menuSide: "bottom"}} /> : null}
+        {/* Player 1 */}
+        <div className="flexRow" style={getFactionSelectStyle(factions.length, 0)}>
+          <FactionSelect faction={factions[0]}
+            isSpeaker={0 === speaker} 
+            setFaction={(value) => updatePlayerFaction(0, value)}
+            setColor={(value) => updatePlayerColor(0, value)}
+            setSpeaker={() => setSpeaker(0)}
+            expansions={options.expansions}
+            opts={{menuSide: "left"}} />
         </div>
-        {/* Left Side */}
-        <div className="flexRow" style={{gap: "400px"}}>
-          {/* Player 1 and 5 */}
-          <div className="flexColumn" style={{gap: "80px"}}>
-            <FactionSelect faction={factions[0]}
-              isSpeaker={0 === speaker} 
-              setFaction={(value) => updatePlayerFaction(0, value)}
-              setColor={(value) => updatePlayerColor(0, value)}
-              setSpeaker={() => setSpeaker(0)}
-              expansions={options.expansions}
-              opts={{menuSide: "bottom"}} />
-            {factions.length > 4 ?
-              <FactionSelect faction={factions[4]}
-                isSpeaker={4 === speaker} 
-                setFaction={(value) => updatePlayerFaction(4, value)}
-                setColor={(value) => updatePlayerColor(4, value)}
-                setSpeaker={() => setSpeaker(4)}
-                expansions={options.expansions}
-                opts={{menuSide: "right"}} /> : null}
-          </div>
-          {/* Right Side */}
-          {/* Player 2 and 6 (or 3 in 5-player) */}
-          <div className="flexColumn" style={{flexBasis: "10%", gap: "80px"}}>
-            <FactionSelect faction={factions[1]}
-              isSpeaker={1 === speaker} 
-              setFaction={(value) => updatePlayerFaction(1, value)}
-              setColor={(value) => updatePlayerColor(1, value)}
-              setSpeaker={() => setSpeaker(1)}
-              expansions={options.expansions}
-              opts={{menuSide: "right"}} />
-            {factions.length === 5 ?
-              <FactionSelect faction={factions[2]}
-                isSpeaker={2 === speaker} 
-                setFaction={(value) => updatePlayerFaction(2, value)}
-                setColor={(value) => updatePlayerColor(2, value)}
-                setSpeaker={() => setSpeaker(2)}
-                expansions={options.expansions}
-                opts={{menuSide: "top"}} /> : null}
-            {factions.length > 5 ?
-              <FactionSelect faction={factions[5]}
-                isSpeaker={5 === speaker} 
-                setFaction={(value) => updatePlayerFaction(5, value)}
-                setColor={(value) => updatePlayerColor(5, value)}
-                setSpeaker={() => setSpeaker(5)}
-                expansions={options.expansions}
-                opts={{menuSide: "left"}} /> : null}
-          </div>
+        {/* Player 2 */}
+        <div className="flexRow" style={getFactionSelectStyle(factions.length, 1)}>
+          <FactionSelect faction={factions[1]}
+            isSpeaker={1 === speaker} 
+            setFaction={(value) => updatePlayerFaction(1, value)}
+            setColor={(value) => updatePlayerColor(1, value)}
+            setSpeaker={() => setSpeaker(1)}
+            expansions={options.expansions}
+            opts={{menuSide: "left"}} />
         </div>
-        {/* Bottom Side */}
-        {/* Player 3 and 7 */}
-        <div className="flexRow" style={{gap: "60px"}}>
-          {factions.length !== 5 ?
-            <FactionSelect faction={factions[2]}
-              isSpeaker={2 === speaker} 
-              setFaction={(value) => updatePlayerFaction(2, value)}
-              setColor={(value) => updatePlayerColor(2, value)}
-              setSpeaker={() => setSpeaker(2)}
-              expansions={options.expansions}
-              opts={{menuSide: "left"}} /> : null}
-          {factions.length > 6 ?
-            <FactionSelect faction={factions[6]}
-              isSpeaker={6 === speaker} 
-              setFaction={(value) => updatePlayerFaction(6, value)}
-              setColor={(value) => updatePlayerColor(6, value)}
-              setSpeaker={() => setSpeaker(6)}
-              expansions={options.expansions}
-              opts={{menuSide: "top"}} /> : null}
+        {/* Player 3 */}
+        <div className="flexRow" style={getFactionSelectStyle(factions.length, 2)}>
+          <FactionSelect faction={factions[2]}
+            isSpeaker={2 === speaker} 
+            setFaction={(value) => updatePlayerFaction(2, value)}
+            setColor={(value) => updatePlayerColor(2, value)}
+            setSpeaker={() => setSpeaker(2)}
+            expansions={options.expansions}
+            opts={{menuSide: "top"}} />
         </div>
+        {/* Player 4 */}
+        {factions.length > 3 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 3)}>
+        <FactionSelect faction={factions[3]}
+            isSpeaker={3 === speaker} 
+            setFaction={(value) => updatePlayerFaction(3, value)}
+            setColor={(value) => updatePlayerColor(3, value)}
+            setSpeaker={() => setSpeaker(3)}
+            expansions={options.expansions}
+            opts={{menuSide: "right"}} />
+        </div> : null}
+        {/* Player 5 */}
+        {factions.length > 4 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 4)}>
+          <FactionSelect faction={factions[4]}
+            isSpeaker={4 === speaker} 
+            setFaction={(value) => updatePlayerFaction(4, value)}
+            setColor={(value) => updatePlayerColor(4, value)}
+            setSpeaker={() => setSpeaker(4)}
+            expansions={options.expansions}
+            opts={{menuSide: "right"}} />
+        </div> : null}
+        {/* Player 6 */}
+        {factions.length > 5 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 5)}>
+          <FactionSelect faction={factions[5]}
+            isSpeaker={5 === speaker} 
+            setFaction={(value) => updatePlayerFaction(5, value)}
+            setColor={(value) => updatePlayerColor(5, value)}
+            setSpeaker={() => setSpeaker(5)}
+            expansions={options.expansions}
+            opts={{menuSide: "bottom"}} />
+        </div> : null}
+        {/* Player 7 */}
+        {factions.length > 6 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 6)}>
+          <FactionSelect faction={factions[6]}
+            isSpeaker={6 === speaker} 
+            setFaction={(value) => updatePlayerFaction(6, value)}
+            setColor={(value) => updatePlayerColor(6, value)}
+            setSpeaker={() => setSpeaker(6)}
+            expansions={options.expansions}
+            opts={{menuSide: "bottom"}} />
+        </div> : null}
+        {/* Player 8 */}
+        {factions.length > 7 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 7)}>
+          <FactionSelect faction={factions[7]}
+            isSpeaker={7 === speaker} 
+            setFaction={(value) => updatePlayerFaction(7, value)}
+            setColor={(value) => updatePlayerColor(7, value)}
+            setSpeaker={() => setSpeaker(7)}
+            expansions={options.expansions}
+            opts={{menuSide: "bottom"}} />
+        </div> : null}
       </div>
       <div>
       <div style={{width: "540px"}}>

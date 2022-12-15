@@ -35,7 +35,6 @@ function AgendaSelectModal({ visible, onComplete, filter }) {
     if (!filter) return true;
     for (const [type, value] of Object.entries(filter)) {
       if (value && agenda[type] !== value) {
-        console.log("Type: " + agenda[type]);
         return false;
       }
     }

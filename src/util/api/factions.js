@@ -83,8 +83,6 @@ export function chooseSubFaction(mutate, setUpdateTime, gameid, factions, factio
     returnAll: true,
   };
 
-  console.log(factionName);
-
   const updatedFactions = {...factions};
 
   updatedFactions[factionName].startswith.faction = subFactionName;
