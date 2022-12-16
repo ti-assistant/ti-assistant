@@ -19,17 +19,31 @@ export default async function handler(req, res) {
 
   const factions = gamestate.data().factions;
 
-  if (Object.keys(gamestate.data().factions).includes("Council Keleres")) {
+  const factionsRef = await db.collection('factions').get();
+  const baseFactions = {};
+  factionsRef.forEach((val) => {
+    baseFactions[val.id] = val.data();
+  });
+
+  const factionsToReturn = {};
+  Object.entries(factions).forEach(([id, faction]) => {
+    factionsToReturn[id] = {
+      ...baseFactions[id],
+      ...faction,
+    };
+  });
+
+  if (Object.keys(factionsToReturn).includes("Council Keleres")) {
     const councilChoice = new Set();
-    Object.values(gamestate.data().factions).forEach((faction) => {
+    Object.values(factionsToReturn).forEach((faction) => {
       (faction.startswith.techs ?? []).forEach((tech) => {
         councilChoice.add(tech);
       });
     });
-    factions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
+    factionsToReturn["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
   }
 
-  res.status(200).json(factions);
+  res.status(200).json(factionsToReturn);
 
   // const factions = Object.keys(gamestate.data().factions);
 
