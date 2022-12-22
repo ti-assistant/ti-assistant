@@ -25,7 +25,7 @@ export function useStrategyCard(mutate, setUpdateTime, gameid, strategyCards, ca
     optimisticData: updatedCards,
   };
 
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
+  return mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
 }
 
 export function resetStrategyCards(mutate, setUpdateTime, gameid, strategyCards) {

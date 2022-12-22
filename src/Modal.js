@@ -1,14 +1,35 @@
+import { CSSTransition } from "react-transition-group";
+
 export function Modal({ closeMenu, level, visible, title, content, top }) {
   const topValue = top ?? "5%";
   const zIndex = 900 * (level ?? 1);
+
+  function onExited(node) {
+    node.style.display = "none";
+  }
+  function onEnter(node) {
+    node.style.display = "flex";
+  }
   return (
+    <CSSTransition
+      in={visible}
+      timeout={500}
+      classNames="fade"
+      onEnter={onEnter}
+      onExited={onExited}
+    >
     <div className="flexColumn" style={{position: "fixed", left: "0px", top: "0px", width: "100%",
-    height: "100%", display: visible ? "flex" : "none", zIndex: zIndex + 3,
+    height: "100%", display: "none", zIndex: zIndex + 3,
     flexDirection: "column", alignItems: "center", color: "#eee"}}>
 
       <div style={{position: "absolute", width: "100%", height: "100%", backgroundColor: "black", opacity: "50%"}} onClick={closeMenu}>
   
       </div>
+    <CSSTransition
+      in={visible}
+      timeout={500}
+      classNames="modal"
+    >
       <div style={{position: "relative", backgroundColor: "#222", maxWidth: "85%", maxHeight: "90vh", overflow: "auto"}}>  
       <div className="flexRow" style={{padding: "4px", borderBottom: "1px solid grey", justifyContent: "flex-start", alignItems: "center", position: "sticky", top: 0, backgroundColor: "#222"}}>
         {closeMenu ? <div
@@ -33,5 +54,7 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
           {content}
         </div>
       </div>
-    </div>);
+    </CSSTransition>
+    </div>
+    </CSSTransition>);
 }

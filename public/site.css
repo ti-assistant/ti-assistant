@@ -44,6 +44,10 @@ button {
   border: 1px solid #333;
 }
 
+button:hover {
+  background-color: #444;
+}
+
 button:disabled {
   background-color: #222;
   color: #555;
@@ -58,6 +62,7 @@ button.selected {
   background-color: #444;
   color: #fff;
 }
+
 
 input[type=text] {
   background-color: #333;
@@ -168,7 +173,10 @@ input[type=text] {
 }
 
 .hoverInfo {
-  display: none;
+  transform-origin: top left;
+  position: absolute;
+  transition: clip-path 200ms;
+  clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
 }
 
 .hiddenButton {
@@ -179,10 +187,11 @@ input[type=text] {
   position: relative;
 }
 
-.hoverParent:hover .hoverInfo {
+.hoverParent:hover > .hoverInfo {
   display: flex;
   position: absolute;
   z-index: 1000;
+  clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)
 }
 
 .hoverParent:hover .hiddenButton {
@@ -202,3 +211,57 @@ input[type=text] {
   height: 0px;
 }
 
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-exit-active {
+  transition: opacity 300ms;
+}
+
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 500ms;
+}
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 500ms;
+}
+
+.grow-enter {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.grow-enter-active {
+  transform: scaleY(1);
+  transform-origin: top;
+  transition: transform 500ms;
+}
+.grow-exit {
+  transform: scaleY(1);
+  transform-origin: top;
+}
+.grow-exit-active {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 500ms;
+}

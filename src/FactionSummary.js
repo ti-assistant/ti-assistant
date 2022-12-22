@@ -165,9 +165,9 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
     removeObjective(mutate, setUpdateTime, gameid, objectives, factionName, objectiveName);
   }
 
-  const orderedFactionNames = Object.keys(factions).sort();
+  const orderedFactionNames = Object.keys(factions ?? {}).sort();
 
-  const sortedObjectives = Object.values(objectives).sort((a, b) => {
+  const sortedObjectives = Object.values(objectives ?? {}).sort((a, b) => {
     if (a.selected && !b.selected) {
       return -1;
     } else if (b.selected && !a.selected) {
@@ -182,10 +182,10 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   const otherObjectives = sortedObjectives.filter((obj) => obj.type === "other");
 
   let transition = {
-    'stage-one': stageOneObjectives[0].selected,
-    'stage-two': stageTwoObjectives[0].selected,
-    'secret': secretObjectives[0].selected,
-    'other': otherObjectives[0].selected,
+    'stage-one': stageOneObjectives.length > 0 && stageOneObjectives[0].selected,
+    'stage-two': stageTwoObjectives.length > 0 && stageTwoObjectives[0].selected,
+    'secret': secretObjectives.length > 0 && secretObjectives[0].selected,
+    'other': otherObjectives.length > 0 && otherObjectives[0].selected,
   };
 
   const innerContent = (

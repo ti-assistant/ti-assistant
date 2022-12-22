@@ -150,13 +150,12 @@ export function PlanetAttributes({ attributes }) {
   );
 }
 
-function AttachMenu({planet, attachments, toggleAttachment, closeMenu}) {
-  return (<Modal closeMenu={closeMenu} visible={true} level={2} title={"Attachments for " + planet.name}
+function AttachMenu({planet, attachments, visible, closeMenu}) {
+  return (<Modal closeMenu={closeMenu} visible={visible} level={2} title={"Attachments for " + planet.name}
     content={
     <div>
       {Object.entries(attachments).map(([name, attachment]) => {
         return (
-          
           <div key={name} className="flexRow" style={{minWidth: "280px", whiteSpace: "nowrap", justifyContent: "flex-start", alignItems: "stretch", alignItems: "center", padding: "0px 4px"}}>
             {/* <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={attachment.planets.includes(planet.name)}></input> */}
             <AttachRow attachment={attachment} currentPlanet={planet.name} />
@@ -330,8 +329,8 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
             </div> : null}
           </div>
       : null}
-      {showAttachMenu ?
-        <AttachMenu planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} /> : null}
+      {/* {showAttachMenu ? */}
+      <AttachMenu visible={showAttachMenu} planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} />
         </div>
       }  
     />
