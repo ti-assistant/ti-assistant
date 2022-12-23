@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
 import React, { useEffect, useRef, useState } from "react";
-import { FactionCard } from '../FactionCard.js'
+import { FactionCard, FactionSymbol } from '../FactionCard.js'
 import { StrategyCard } from '../StrategyCard';
 import { getOnDeckFaction, getStrategyCardsForFaction } from '../util/helpers';
 import { hasTech, unlockTech } from '../util/api/techs';
@@ -17,11 +17,16 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { PlanetRow } from '../PlanetRow.js';
 import { ObjectiveRow } from '../ObjectiveRow.js';
 import { claimPlanet } from '../util/api/planets.js';
-import { scoreObjective } from '../util/api/objectives.js';
+import { removeObjective, scoreObjective } from '../util/api/objectives.js';
 import { LabeledDiv } from '../LabeledDiv.js';
 import { HoverMenu } from '../HoverMenu.js';
 import { setSpeaker } from '../util/api/state.js';
-import { TechRow } from '../TechRow.js';
+import { TechIcon, TechRow } from '../TechRow.js';
+import { BasicFactionTile } from '../FactionTile.js';
+import { getFactionColor } from '../util/factions.js';
+import { getTechColor } from '../util/techs.js';
+import { TechSelectHoverMenu } from './util/TechSelectHoverMenu.js';
+import { SelectableRow } from '../SelectableRow.js';
 
 function ActivePlayerColumn({activeFaction}) {
   const router = useRouter();
@@ -66,7 +71,7 @@ function ActivePlayerColumn({activeFaction}) {
       unlockTech(mutate, setUpdateTime, gameid, factions, activeFaction.name, tech.name);
     });
     if (!!subState.speaker) {
-      setSpeaker(mutate, setUpdateTime, gameid, state, subState.speaker, factions);
+      setSpeaker(mutate, setUpdateTime, gameid, state, subState.speaker.name, factions);
     }
 
     if (strategyCards[selectedAction]) {
@@ -86,7 +91,7 @@ function ActivePlayerColumn({activeFaction}) {
       case "Politics":
         return !!subState.speaker;
       case "Technology":
-        return (subState.techs ?? []).length > 0;
+        return ((subState.techs ?? {})[activeFaction.name] ?? []).length > 0;
     }
     return selectedAction !== null;
   }
@@ -96,15 +101,15 @@ function ActivePlayerColumn({activeFaction}) {
     if (!isTurnComplete()) {
         return (
           <div className="flexRow" style={{gap: "8px"}}>
-            <button disabled>Take Another Action</button>
-            <button disabled>Next Player</button>
+            <button disabled style={{fontSize: "24px"}} >Take Another Action</button>
+            <button disabled style={{fontSize: "24px"}} >End Turn</button>
           </div>
         );
     } else {
       return (
         <div className="flexRow" style={{gap: "8px"}}>
-          <button onClick={finalizeAction}>Take Another Action</button>
-          <button onClick={completeActions}>Next Player</button>
+          <button onClick={finalizeAction} style={{fontSize: "24px"}} >Take Another Action</button>
+          <button onClick={completeActions} style={{fontSize: "24px"}} >End Turn</button>
         </div>
       );
     }
@@ -214,19 +219,23 @@ function ActivePlayerColumn({activeFaction}) {
     return objective.type === "secret" && objective.phase === "action";
   });
 
-  const researchableTechs = Object.values(techs ?? {}).filter((tech) => {
-    if (hasTech(activeFaction, tech.name)) {
-      return false;
-    }
-    if (tech.faction && activeFaction.name !== tech.faction) {
-      return false;
-    }
-    const researchedTechNames = (subState.techs ?? []).map((tech) => tech.name);
-    if (researchedTechNames.includes(tech.name)) {
-      return false;
-    }
-    return true;
-  });
+  function getResearchableTechs(faction) {
+    return Object.values(techs ?? {}).filter((tech) => {
+      if (hasTech(faction, tech.name)) {
+        return false;
+      }
+      if (faction.name !== "Nekro Virus" && tech.faction && faction.name !== tech.faction) {
+        return false;
+      }
+      const researchedTechNames = ((subState.techs ?? [])[faction.name] ?? []).map((tech) => tech.name);
+      if (researchedTechNames.includes(tech.name)) {
+        return false;
+      }
+      return true;
+    });
+  }
+
+  const researchableTechs = getResearchableTechs(activeFaction);
 
   const numColumns = Math.ceil(claimablePlanets.length / 13);
   const width = numColumns * 102 + (numColumns - 1) * 4 + 16;
@@ -236,6 +245,16 @@ function ActivePlayerColumn({activeFaction}) {
     padding: "8px",
     flexWrap: "wrap",
     maxHeight: "400px",
+    maxWidth: "800px",
+    alignItems: "stretch",
+    gap: "4px",
+    writingMode: "vertical-lr",
+    justifyContent: "flex-start",
+  };
+
+  const secretButtonStyle = {
+    fontFamily: "Myriad Pro",
+    padding: "8px",
     alignItems: "stretch",
     gap: "4px",
   };
@@ -268,11 +287,16 @@ function ActivePlayerColumn({activeFaction}) {
     });
   }
 
-  function removeTech(toRemove) {
-    setSubState({
-      ...subState,
-      techs: (subState.techs ?? []).filter((tech) => tech.name !== toRemove),
-    });
+  function removeTech(factionName, toRemove) {
+    const updatedState = {...subState};
+    if (!updatedState.techs) {
+      return;
+    }
+    if (!updatedState.techs[factionName]) {
+      return;
+    }
+    updatedState.techs[factionName] = updatedState.techs[factionName].filter((tech) => tech.name !== toRemove);
+    setSubState(updatedState);
   }
 
   function addTech(toAdd) {
@@ -282,76 +306,125 @@ function ActivePlayerColumn({activeFaction}) {
     });
   }
 
+  function addTech(factionName, tech) {
+    const updatedState = {...subState};
+    if (!updatedState.techs) {
+      updatedState.techs = {};
+    }
+    if (!updatedState.techs[factionName]) {
+      updatedState.techs[factionName] = [];
+    }
+    updatedState.techs[factionName].push(tech);
+    setSubState(updatedState);
+  }
+
+  function selectSpeaker(faction) {
+    setSubState({
+      ...subState,
+      speaker: faction,
+    });
+  }
+  function resetSpeaker() {
+    setSubState({
+      ...subState,
+      speaker: null,
+    });
+  }
+
   function AdditionalActions({visible}) {
+    const orderedFactions = Object.values(factions).sort((a, b) => {
+      if (a.order === activeFaction.order) {
+        return -1;
+      }
+      if (b.order === activeFaction.order) {
+        return 1;
+      }
+      if (a.order < activeFaction.order) {
+        if (b.order < activeFaction.order) {
+          return a.order - b.order;
+        }
+        return 1;
+      }
+      if (b.order > activeFaction.order) {
+        return a.order - b.order;
+      }
+      return -1;
+    });
     switch (selectedAction) {
       case "Technology":
         return (
           <React.Fragment>
-            <LabeledDiv label="PRIMARY" content={
+            {activeFaction.name !== "Nekro Virus" ? <LabeledDiv label="PRIMARY" content={
               <React.Fragment>
                 <div className='flexColumn' style={{alignItems: "stretch"}}>
-                {(subState.techs ?? []).map((tech) => {
-                  return <TechRow key={tech.name} tech={tech} removeTech={removeTech} />
+                {((subState.techs ?? {})[activeFaction.name] ?? []).map((tech) => {
+                  return <TechRow key={tech.name} tech={tech} removeTech={(techName) => removeTech(activeFaction.name, techName)} />
                 })}
                 </div>
-                {researchableTechs.length > 0 && (subState.techs ?? []).length < 2 ?
-                <HoverMenu label="Research Tech" style={{width: "1100px", minHeight: "400px"}} content={
-                  <div className="flexRow" style={{padding: "8px", alignItems: "flex-start", gap: "8px"}}>
-                    <HoverMenu label="Warfare" style={{width: "210px"}} content={
-                      <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
-                      {researchableTechs.filter((tech) => tech.type === "red")
-                        .map((tech) => {
-                          return <button key={tech.name} style={{width: "180px"}} onClick={() => addTech(tech)}>{tech.name}</button>
-                        })}
-                    </div>
-                    } />
-                    <HoverMenu label="Propulsion" style={{width: "210px"}} content={
-                      <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
-                      {researchableTechs.filter((tech) => tech.type === "blue")
-                        .map((tech) => {
-                          return <button key={tech.name} style={{width: "180px"}} onClick={() => addTech(tech)}>{tech.name}</button>
-                        })}
-                    </div>
-                    } />
-                    <HoverMenu label="Cybernetic" style={{width: "210px"}} content={
-                      <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
-                      {researchableTechs.filter((tech) => tech.type === "yellow")
-                        .map((tech) => {
-                          return <button key={tech.name} style={{width: "180px"}} onClick={() => addTech(tech)}>{tech.name}</button>
-                        })}
-                    </div>
-                    } />
-                    <HoverMenu label="Biotic" style={{width: "210px"}} content={
-                      <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
-                      {researchableTechs.filter((tech) => tech.type === "green")
-                        .map((tech) => {
-                          return <button key={tech.name} style={{width: "180px"}} onClick={() => addTech(tech)}>{tech.name}</button>
-                        })}
-                    </div>
-                    } />
-                    <HoverMenu label="Unit Upgrades" style={{width: "210px"}} content={
-                      <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
-                      {researchableTechs.filter((tech) => tech.type === "upgrade")
-                        .map((tech) => {
-                          return <button key={tech.name} style={{width: "180px"}} onClick={() => addTech(tech)}>{tech.name}</button>
-                        })}
-                    </div>
-                    } />
-                  </div>
-                } /> : null}
-              </React.Fragment>} />
+                {((subState.techs ?? {})[activeFaction.name] ?? []).length < 2 ?
+                  <TechSelectHoverMenu techs={researchableTechs} selectTech={(tech) => addTech(activeFaction.name, tech)} />
+                : null}
+              </React.Fragment>} /> : null}
               <LabeledDiv label="SECONDARY" content={
-                Object.values((factions ?? {})).map((faction) => {
-                  return <div>
-                    {faction.name}
-                    <HoverMenu label="Research Tech" content={<div>Testing</div>} />
-                  </div>
-                })
-                // <HoverMenu label="Research Tech" style={{width: "1100px", minHeight: "400px"}} content={
-                //   <div>Testing</div>
-                // } />
+                <div className="flexColumn" style={{width: "100%"}}>
+                {orderedFactions.map((faction) => {
+                  if (faction.name === activeFaction.name || faction.name === "Nekro Virus") {
+                    return null;
+                  }
+                  let maxTechs = 1;
+                  if (faction.name === "Universities of Jol-Nar") {
+                    maxTechs = 2;
+                    // TODO: Add ability for people to copy them.
+                  }
+                  const availableTechs = getResearchableTechs(faction);
+                  return (
+                    <LabeledDiv key={faction.name} label={
+                      <div className="flexRow" style={{gap: "4px"}}>{faction.name}<FactionSymbol faction={faction.name} size={16} /></div>
+                    } color={getFactionColor(faction)} style={{width: "100%"}}>
+                      <React.Fragment>
+                      {((subState.techs ?? {})[faction.name] ?? []).map((tech) => {
+                        return <TechRow key={tech.name} tech={tech} removeTech={(techName) => removeTech(faction.name, techName)} />
+                      })}
+                      {((subState.techs ?? {})[faction.name] ?? []).length < maxTechs ?
+                        <TechSelectHoverMenu techs={availableTechs} selectTech={(tech) => addTech(faction.name, tech)} />
+                      : null}
+                      </React.Fragment>
+                      </LabeledDiv>
+                  );
+                })}
+                </div>
               } />
             </React.Fragment>
+        );
+      case "Politics":
+        return (
+          <React.Fragment>
+            <LabeledDiv label="NEW SPEAKER" content={           
+              <React.Fragment>
+                <div className='flexColumn' style={{alignItems: "stretch"}}>
+                {subState.speaker ? 
+                  <SelectableRow itemName={subState.speaker.name} removeItem={resetSpeaker} content={
+                    <BasicFactionTile faction={subState.speaker} />
+                  } />
+                : null}
+                {/* {(subState.speaker ?? []).map((planet) => {
+                  return <PlanetRow key={planet.name} planet={planet} removePlanet={removePlanet} />
+                })} */}
+                </div>
+                {!subState.speaker  ?
+                <HoverMenu label="Select Speaker" style={{minWidth: "160px"}} content={
+                  <div className="flexRow" style={targetButtonStyle}>
+                    {orderedFactions.map((faction) => {
+                      if (state.speaker === faction.name) {
+                        return null;
+                      }
+                      return (
+                        <button key={faction.name} style={{width: "160px"}} onClick={() => selectSpeaker(faction)}>{faction.name}</button>);
+                    })}
+                  </div>} /> : null}
+              </React.Fragment>}
+            />
+          </React.Fragment>
         );
       case "Diplomacy":
         if (activeFaction.name === "Xxcha Kingdom") {
@@ -365,8 +438,8 @@ function ActivePlayerColumn({activeFaction}) {
                   })}
                   </div>
                   {claimablePlanets.length > 0 && (subState.planets ?? []).length === 0  ?
-                  <HoverMenu label="Conquer Planet" style={{width: width, minWidth: "160px"}} content={
-                    <div className="flexColumn" style={targetButtonStyle}>
+                  <HoverMenu label="Conquer Planet" style={{minWidth: "160px"}} content={
+                    <div className="flexRow" style={targetButtonStyle}>
                       {claimablePlanets.map((planet) => {
                         return (
                           <button key={planet.name} style={{width: "90px"}} onClick={() => addPlanet(planet)}>{planet.name}</button>);
@@ -378,24 +451,62 @@ function ActivePlayerColumn({activeFaction}) {
           );
         }
       case "Leadership":
-      case "Diplomacy":
-        // TODO: Display additional button for Xxcha.
-      case "Politics":
-        // TODO: Display select speaker button.
       case "Construction":
       case "Trade":
       case "Warfare":
-        // TODO: Display tech select buttons.
+        return null;
       case "Imperial":
+        let hasImperialPoint = false;
+        (subState.objectives ?? []).forEach((objective) => {
+          if (objective.name === "Imperial Point") {
+            hasImperialPoint = true;
+          }
+        });
+        const availablePublicObjectives = Object.values(objectives ?? {}).filter((objective) => {
+          if ((objective.scorers ?? []).includes(activeFaction.name)) {
+            return false;
+          }
+          if (!objective.selected) {
+            return false;
+          }
+          return (objective.type === "stage-one" || objective.type === "stage-two");
+        });
+        const scoredPublics = (subState.objectives ?? []).filter((objective) => {
+          return objective.type === "stage-one" || objective.type === "stage-two";
+        });
+        return (
+          <React.Fragment>
+            <LabeledDiv label="IMPERIAL POINT">      
+              <div className="flexRow" style={{paddingTop: "8px", width: "100%", justifyContent: "space-evenly"}}>
+                <button className={hasImperialPoint ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => addObjective(objectives["Imperial Point"])}>Yes</button>
+                <button className={!hasImperialPoint ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => undoObjective("Imperial Point")}>No</button>
+              </div>
+            </LabeledDiv>   
+            <LabeledDiv label="SCORED PUBLIC">         
+                <React.Fragment>
+            <div className='flexColumn' style={{alignItems: "stretch"}}>
+            {scoredPublics.map((objective) => {
+              return <ObjectiveRow key={objective.name} objective={objective} removeObjective={undoObjective} />
+            })}
+            </div>
+            {availablePublicObjectives.length > 0 && scoredPublics.length < 1 ?
+            <HoverMenu label="Score Public Objective" style={{width: "260px"}} content={
+              <div className="flexColumn" style={{...secretButtonStyle}}>
+                  {availablePublicObjectives.map((objective) => {
+                    return (
+                      <button key={objective.name} style={{width: "230px"}} onClick={() => addObjective(objective)}>{objective.name}</button>);
+                  })}
+              </div>} /> : null}
+            </React.Fragment>
+            </LabeledDiv>
+          </React.Fragment>
+        );
         // TODO: Display buttons for various actions.
       case "Component":
+        return null;
       case "Pass":
-        // TODO: If last player to pass, display secret obj.
-        return (
-          <div>
-            <button>Take Another Action</button>
-          </div>
-        );
+        // TODO: Display option for Prove Endurance.
+        return null;
       case "Tactical":
         return (
           <React.Fragment>
@@ -407,8 +518,8 @@ function ActivePlayerColumn({activeFaction}) {
                 })}
                 </div>
                 {claimablePlanets.length > 0 ?
-                <HoverMenu label="Conquer Planet" style={{width: width, minWidth: "160px"}} content={
-                  <div className="flexColumn" style={targetButtonStyle}>
+                <HoverMenu label="Conquer Planet" style={{minWidth: "160px"}} content={
+                  <div className="flexRow" style={targetButtonStyle}>
                     {claimablePlanets.map((planet) => {
                       return (
                         <button key={planet.name} style={{width: "90px"}} onClick={() => addPlanet(planet)}>{planet.name}</button>);
@@ -424,7 +535,7 @@ function ActivePlayerColumn({activeFaction}) {
           </div>
           {scorableObjectives.length > 0 && (subState.objectives ?? []).length < 4 ?
           <HoverMenu label="Score Secret Objective" style={{width: "260px"}} content={
-            <div className="flexColumn" style={{...targetButtonStyle, maxHeight: "600px"}}>
+            <div className="flexColumn" style={{...secretButtonStyle}}>
                 {scorableObjectives.map((objective) => {
                   return (
                     <button key={objective.name} style={{width: "230px"}} onClick={() => addObjective(objective)}>{objective.name}</button>);
@@ -442,7 +553,7 @@ function ActivePlayerColumn({activeFaction}) {
   }
 
 
-  return (<div className="flexColumn" style={{width: "100%", alignItems: "center", gap: "12px"}}>
+  return (<div className="flexColumn" style={{width: "100%", height: "80vh", justifyContent: "flex-start", alignItems: "center", gap: "12px"}}>
     <SpeakerModal forceSelection={selectedAction === "Politics"} visible={showSpeakerModal} onComplete={speakerSelectionComplete} />
   Active Player
   <SwitchTransition>

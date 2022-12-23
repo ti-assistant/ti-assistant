@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
-import { saveFactionTimer } from './util/api/factions';
-import { saveGameTimer } from './util/api/state';
 import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
 import { useBetween } from 'use-between';
 import { useSharedUpdateTimes } from './Updater';
+import { saveFactionTimer, saveGameTimer } from './util/api/timers';
 
 const useCurrentAgenda = () => {
   const [currentAgenda, setCurrentAgenda] = useState(1);
@@ -112,7 +111,7 @@ export function GameTimer({}) {
   // const [ paused, setPaused ] = useState(false);
   const { paused, pause, unpause } = useSharedPause();
 
-  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: timers, timersError } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
   const { setUpdateTime } = useSharedUpdateTimes();
 
   useEffect(() => {
@@ -120,8 +119,8 @@ export function GameTimer({}) {
       return;
     }
 
-    if (state && gameTimer % 15 === 0) {
-      saveGameTimer(mutate, setUpdateTime, gameid, state, gameTimer);
+    if (timers && gameTimer % 15 === 0) {
+      saveGameTimer(mutate, setUpdateTime, gameid, timers, gameTimer);
     }
 
     const timeout = setTimeout(() => {
@@ -132,18 +131,19 @@ export function GameTimer({}) {
   }, [gameTimer, paused]);
 
   function setStartingTime() {
-    if (!state) {
+    if (!timers) {
       const timeout = setTimeout(setStartingTime, 1000);
+      return;
     }
-    if (state.timer && state.timer > gameTimer) {
-      setGameTimer(state.timer);
+    if (timers.game && timers.game > gameTimer) {
+      setGameTimer(timers.game);
     }
   }
 
   useEffect(() => {
     const timeout = setTimeout(setStartingTime, 1000);
     return () => clearTimeout(timeout);
-  }, [state]);
+  }, [timers]);
 
   function togglePause() {
     if (paused) {
@@ -157,7 +157,7 @@ export function GameTimer({}) {
     <div className="flexColumn" style={{width: "100%", gap: "4px", whiteSpace: "nowrap"}}>
       <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}>
         <div style={{fontSize: "18px"}}>Game Time</div>
-        <TimerDisplay time={!state ? 0 : gameTimer} />
+        <TimerDisplay time={!timers ? 0 : gameTimer} />
       </div>
       <div className="flexRow" style={{gap: "12px"}}>
         <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button>
@@ -173,7 +173,7 @@ export function FactionTimer({ factionName }) {
   const [ factionTimer, setFactionTimer ] = useState(0);
   const { paused } = useSharedPause();
   // const [ paused, setPaused ] = useState(false);
-  const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: timers, timersError } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
   const { setUpdateTime } = useSharedUpdateTimes();
 
   useEffect(() => {
@@ -181,8 +181,8 @@ export function FactionTimer({ factionName }) {
       return;
     }
 
-    if (factions && factionTimer % 5 === 0) {
-      saveFactionTimer(mutate, setUpdateTime, gameid, factions, factionName, factionTimer);
+    if (timers && factionTimer % 5 === 0) {
+      saveFactionTimer(mutate, setUpdateTime, gameid, timers, factionName, factionTimer);
     }
 
     const timeout = setTimeout(() => {
@@ -193,22 +193,23 @@ export function FactionTimer({ factionName }) {
   }, [factionTimer, paused]);
 
   function setStartingTime() {
-    if (!factions) {
+    if (!timers) {
       const timeout = setTimeout(setStartingTime, 1000);
+      return;
     }
-    if (factions[factionName].timer && factions[factionName].timer > factionTimer) {
-      setFactionTimer(factions[factionName].timer);
+    if (timers[factionName] && timers[factionName] > factionTimer) {
+      setFactionTimer(timers[factionName]);
     }
   }
 
   useEffect(() => {
     setStartingTime();
-  }, [factions, factionName]);
+  }, [timers, factionName]);
 
   return (
     <div className="flexColumn" style={{width: "100%", gap: "4px"}}>
       <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}> 
-        <TimerDisplay time={!factions ? 0 : factionTimer} />
+        <TimerDisplay time={!timers ? 0 : factionTimer} />
       </div>
     </div>
   );

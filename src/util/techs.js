@@ -1,5 +1,19 @@
 import { hasTech } from "./api/techs";
 
+export function getTechColor(tech) {
+  switch (tech.type) {
+    case "red":
+      return "indianred";
+    case "yellow":
+      return "goldenrod";
+    case "blue":
+      return "cornflowerblue";
+    case "green":
+      return "seagreen";
+  }
+  return "#eee";
+}
+
 /**
  * Gets all the techs owned by a specific faction.
  * @param {Object} techs

@@ -45,6 +45,8 @@ function getUpdatedEndpoint(url) {
       return "planets";
     case "stateUpdate":
       return "state";
+    case "timerUpdate":
+      return "timers";
   }
   console.log("Error");
   return "";

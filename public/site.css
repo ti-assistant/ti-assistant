@@ -176,11 +176,13 @@ input[type=text] {
   transform-origin: top left;
   position: absolute;
   transition: clip-path 200ms;
+  box-sizing: border-box;
   clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
 }
 
 .hiddenButton {
-  display: none;
+  opacity: 0;
+  transition: opacity 200ms;
 }
 
 .hoverParent {
@@ -191,11 +193,15 @@ input[type=text] {
   display: flex;
   position: absolute;
   z-index: 1000;
-  clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)
+  clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
+}
+
+.hoverInfo:has(.hoverParent:hover) {
+  clip-path: polygon(0% 0%, 0% 1000%, 1000% 1000%, 1000% 0%);
 }
 
 .hoverParent:hover .hiddenButton {
-  display: flex;
+  opacity: 1;
 }
 
 .hoverInfo.right {

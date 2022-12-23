@@ -1,17 +1,18 @@
-export function LabeledDiv({label, content}) {
+export function LabeledDiv({label, children, style = {}, color = "#999", content}) {
   return (
     <div
       className="flexColumn"
       style={{
         position: "relative",
         gap: "8px",
-        border: "2px solid #999",
+        border: `2px solid ${color}`,
         borderRadius: "5px",
         width: "90%",
         boxSizing: "border-box",
         margin: "8px 0px",
         padding: "8px 8px",
-        alignItems: "flex-start"
+        alignItems: "flex-start",
+        ...style,
     }}>
       <div
         style={{
@@ -22,10 +23,11 @@ export function LabeledDiv({label, content}) {
           backgroundColor: "#222",
           borderRadius: "5px",
           padding: "2px 4px",
-          color: "#aaa"}}
+          color: `${color}`}}
       >
         {label}
       </div>
       {content}
+      {children}
     </div>);
 }

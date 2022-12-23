@@ -6,21 +6,7 @@ import { BasicFactionTile } from "../src/FactionTile";
 import { Modal } from "../src/Modal";
 import { fetcher } from "../src/util/api/util";
 import Image from "next/image";
-
-function getFactionColor(color) {
-  if (!color) {
-    return "#555";
-  }
-  switch (color) {
-    case "Blue":
-      return "cornflowerblue";
-    // case "Magenta":
-    //   return "hotpink";
-    // case "Green":
-    //   return "mediumseagreen";
-  }
-  return color;
-}
+import { getFactionColor } from "../src/util/factions";
 
 function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, expansions, opts }) {
   const [showFactionModal, setShowFactionModal] = useState(false);

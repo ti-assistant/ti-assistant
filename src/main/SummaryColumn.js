@@ -4,7 +4,7 @@ import { FactionCard } from '../FactionCard.js'
 import { fetcher } from '../util/api/util';
 import { FactionSummary, UpdateObjectivesModal, UpdatePlanetsModal, UpdateTechsModal } from '../FactionSummary';
 import { updateOption } from '../util/api/options.js';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSharedUpdateTimes } from '../Updater.js';
 
 export default function SummaryColumn() {

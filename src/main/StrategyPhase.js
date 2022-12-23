@@ -10,7 +10,7 @@ import { BasicFactionTile } from '../FactionTile';
 import { FactionTimer } from '../Timer';
 import { FactionCard } from '../FactionCard';
 import { Modal } from '../Modal';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import SummaryColumn from './SummaryColumn';
 import { LawsInEffect } from '../LawsInEffect';
 import { useSharedUpdateTimes } from '../Updater';

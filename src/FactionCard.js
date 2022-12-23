@@ -1,28 +1,17 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router'
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
 import { useSharedUpdateTimes } from './Updater';
 import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
 import { chooseSubFaction } from './util/api/factions';
 import { chooseStartingTech, removeStartingTech } from './util/api/techs';
 import { fetcher, poster } from './util/api/util';
+import { getFactionColor } from './util/factions';
 import { getNextIndex } from './util/util';
 
 import { TechRow } from '/src/TechRow.js'
 import { setSpeaker } from '/src/util/api/state.js';
-
-function getFactionColor(color) {
-  switch (color) {
-    case "Blue":
-      return "cornflowerblue";
-    // case "Magenta":
-    //   return "hotpink";
-    // case "Green":
-    //   return "mediumseagreen";
-  }
-  return color;
-}
 
 export function FactionSymbol({ faction, size }) {
   let width = size;
@@ -420,7 +409,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
 
   const speaker = faction.name === state.speaker;
 
-  const color = getFactionColor(faction.color);
+  const color = getFactionColor(faction);
   const border = "3px solid " + (faction.passed ? "#555" : color);
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
@@ -489,7 +478,7 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
 
   const speaker = faction.name === state.speaker;
   
-  const color = getFactionColor(faction.color);
+  const color = getFactionColor(faction);
 
   const border = "3px solid " + color;
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FactionCard } from '../FactionCard';
 import { fetcher, poster } from '../util/api/util';
 import { ObjectiveModal } from '../ObjectiveModal';

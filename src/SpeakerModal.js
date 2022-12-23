@@ -6,6 +6,7 @@ import { setSpeaker } from './util/api/state';
 import { Modal } from "/src/Modal.js";
 import { BasicFactionTile } from './FactionTile';
 import { useSharedUpdateTimes } from './Updater';
+import { useRef } from 'react';
 
 export function SpeakerModal({ forceSelection, visible, onComplete }) {
   const router = useRouter();

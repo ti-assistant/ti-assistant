@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
 import { useSharedCurrentAgenda } from './Timer';

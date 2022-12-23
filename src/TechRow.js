@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
 import { SelectableRow } from "./SelectableRow";
+import { getTechColor } from "./util/techs";
 
 export function TechIcon({ type, width, height }) {
   switch (type) {
@@ -66,20 +67,6 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
     });
   }
 
-  function getTechColor() {
-    switch (tech.type) {
-      case "red":
-        return "indianred";
-      case "yellow":
-        return "goldenrod";
-      case "blue":
-        return "cornflowerblue";
-      case "green":
-        return "seagreen";
-    }
-    return "#eee";
-  }
-
   return (
     <SelectableRow 
       itemName={tech.name}
@@ -97,7 +84,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
         })}
       </div> */}
       <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center"}}>
-        <div style={{ position: "relative", display: "flex", zIndex: 2, color: getTechColor()}}>
+        <div style={{ position: "relative", display: "flex", zIndex: 2, color: getTechColor(tech)}}>
           {tech.name}
           {tech.faction ? (
         <div

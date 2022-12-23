@@ -33,19 +33,3 @@ export function setSpeaker(mutate, setUpdateTime, gameid, state, speaker, factio
 
   mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`), opts);
 }
-
-export function saveGameTimer(mutate, setUpdateTime, gameid, state, timer) {
-  const data = {
-    action: "SET_GAME_TIMER",
-    timer: timer,
-  };
-
-  const updatedState = {...state};
-  state.timer = timer;
-
-  const options = {
-    optimisticData: updatedState,
-  };
-
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
-}

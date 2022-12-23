@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router'
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
 
 import { AttachRow } from "/src/AttachRow.js";
@@ -257,7 +257,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
     if (opts.showSelfOwned || owner !== factionName) {
       if (claimed === null) {
         claimed = owner;
-        claimedColor = getFactionColor(factions[owner].color);
+        claimedColor = getFactionColor(factions[owner]);
       } else {
         claimed = "Multiple Players";
         claimedColor = "darkred";

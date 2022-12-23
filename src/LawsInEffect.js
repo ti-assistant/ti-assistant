@@ -4,6 +4,7 @@ import { fetcher } from "./util/api/util";
 import { repealAgenda } from "./util/api/agendas";
 import { AgendaRow } from "./AgendaRow";
 import { useSharedUpdateTimes } from "./Updater";
+import { useRef } from "react";
 
 
 export function LawsInEffect({}) {

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SummaryColumn from './SummaryColumn';
 import { AgendaTimer, useSharedCurrentAgenda } from '../Timer';
 import { fetcher, poster } from '../util/api/util';

@@ -1,20 +1,6 @@
 import { FactionSymbol } from "./FactionCard";
 import { useState } from "react";
-
-function getFactionColor(color) {
-  if (!color) {
-    return "#555";
-  }
-  switch (color) {
-    case "Blue":
-      return "cornflowerblue";
-    // case "Magenta":
-    //   return "hotpink";
-    // case "Green":
-    //   return "mediumseagreen";
-  }
-  return color;
-}
+import { getFactionColor } from "./util/factions";
 
 /**
  *
@@ -40,7 +26,7 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
     opacity: opts.hideName ? "100%" : "60%",
   };
 
-  const color = faction.passed ? "#555" : getFactionColor(faction.color);
+  const color = faction.passed ? "#555" : getFactionColor(faction);
   const name = faction.name ?? "Select Faction";
   const border = `3px solid ${color}`;
 

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { FactionSymbol } from "./FactionCard";
 import { Modal } from "./Modal";
@@ -12,27 +12,13 @@ import { manualVPUpdate } from "./util/api/factions";
 import { claimPlanet, unclaimPlanet } from "./util/api/planets";
 import { fetcher } from "./util/api/util";
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from "./util/planets";
-import { filterToOwnedTechs, sortTechs } from "./util/techs";
+import { filterToOwnedTechs, getTechColor, sortTechs } from "./util/techs";
 import { pluralize } from "./util/util";
 import { FactionSelectModal } from "./FactionSelectModal";
 import { hasTech, lockTech, unlockTech } from "./util/api/techs";
 import { ObjectiveRow } from "./ObjectiveRow";
 import { removeObjective, revealObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
 import { useSharedUpdateTimes } from "./Updater";
-
-function getTechColor(tech) {
-  switch (tech.type) {
-    case "red":
-      return "indianred";
-    case "yellow":
-      return "goldenrod";
-    case "blue":
-      return "cornflowerblue";
-    case "green":
-      return "seagreen";
-  }
-  return "#eee";
-}
 
 function TechList({ techs }) {
   return <div className="flexColumn" style={{alignItems: "stretch", padding: "4px 8px", backgroundColor: "#222", boxShadow: "1px 1px 4px black", whiteSpace: "nowrap", gap: "4px", border: `2px solid #333`, borderRadius: "5px"}}>

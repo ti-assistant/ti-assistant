@@ -12,6 +12,7 @@ export function HoverMenu({label, style, content, position = "left", borderColor
     borderRadius: "5px",
     minWidth: "160px",
     backgroundColor: "#222",
+    overflow: "visible",
   };
 
   return (

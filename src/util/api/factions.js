@@ -37,25 +37,6 @@ export function readyAllFactions(mutate, setUpdateTime, gameid, factions) {
   mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
 }
 
-export function saveFactionTimer(mutate, setUpdateTime, gameid, factions, factionName, factionTimer) {
-  const data = {
-    action: "SAVE_FACTION_TIMER",
-    faction: factionName,
-    timer: factionTimer,
-    returnAll: true,
-  };
-
-  const updatedFactions = {...factions};
-
-  updatedFactions[factionName].timer = factionTimer;
-
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
-}
-
 export function manualVPUpdate(mutate, setUpdateTime, gameid, factions, factionName, value) {
   const data = {
     action: "MANUAL_VP_ADJUST",

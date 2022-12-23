@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { StrategyCard } from '../StrategyCard';
 import { hasTech, lockTech, unlockTech } from '../util/api/techs';
 import { resetStrategyCards } from '../util/api/cards';

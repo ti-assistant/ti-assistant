@@ -1,25 +1,38 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { useBetween } from "use-between";
 import { fetcher } from "./util/api/util";
 
-const useUpdater = () => {
-  const [updateObject, setUpdateObject] = useState({});
+let updateObject = {};
 
-  const setUpdateTime = useCallback((endpoint, time) => {
-    setUpdateObject({
-      ...updateObject,
-      [endpoint]: time,
-    });
-  });
-  return {
-    updateObject,
-    setUpdateTime,
+const setUpdateTime = (endpoint, time) => {
+  updateObject = {
+    ...updateObject,
+    [endpoint]: time,
   };
 };
 
-export const useSharedUpdateTimes = () => useBetween(useUpdater);
+export const useSharedUpdateTimes = () => {
+  return { updateObject, setUpdateTime };
+}
+
+// const useUpdater = () => {
+//   const [updateObject, setUpdateObject] = useState({});
+
+//   const setUpdateTime = useCallback((endpoint, time) => {
+//     setUpdateObject({
+//       ...updateObject,
+//       [endpoint]: time,
+//     });
+//   }, []);
+//   return {
+//     updateObject,
+//     setUpdateTime,
+//   };
+// };
+
+// export const useSharedUpdateTimes = () => useBetween(useUpdater);
 
 export function Updater({}) {
   const router = useRouter();
@@ -39,6 +52,7 @@ export function Updater({}) {
   const [ localFactions, setLocalFactions ] = useState(0);
   const [ localState, setLocalState ] = useState(0);
   const [ localStrategyCards, setLocalStrategyCards ] = useState(0);
+  const [ localTimers, setLocalTimers ] = useState(0);
 
   const localUpdates = updates ?? {};
   const agendasUpdate = (localUpdates.agendas ?? {}).timestamp ?? 0;
@@ -48,6 +62,7 @@ export function Updater({}) {
   const planetsUpdate = (localUpdates.planets ?? {}).timestamp ?? 0;
   const strategycardsUpdate = (localUpdates.strategycards ?? {}).timestamp ?? 0;
   const stateUpdate = (localUpdates.state ?? {}).timestamp ?? 0;
+  const timersUpdate = (localUpdates.timers ?? {}).timestamp ?? 0;
 
   useEffect(() => {
     if (updateObject.agendas > localAgendas) {
@@ -70,6 +85,9 @@ export function Updater({}) {
     }
     if (updateObject.strategycards > localStrategyCards) {
       setLocalStrategyCards(updateObject.strategycards);
+    }
+    if (updateObject.timers > localTimers) {
+      setLocalTimers(updateObject.timers);
     }
   }, [updateObject]);
 
@@ -142,6 +160,16 @@ export function Updater({}) {
     }
   }, [stateUpdate]);
 
+  useEffect(() => {
+    if (timersUpdate > localTimers) {
+      setLocalTimers(timersUpdate);
+      if (!initialLoad) {
+        mutate(`/api/${gameid}/timers`, fetcher(`/api/${gameid}/timers`));
+      }
+      setUpdateTime("timers", timersUpdate);
+    }
+  }, [timersUpdate]);
+
   if (!updates) {
     return null;
   }
@@ -154,6 +182,7 @@ export function Updater({}) {
     setLocalOptions(optionsUpdate);
     setLocalStrategyCards(strategycardsUpdate);
     setLocalState(stateUpdate);
+    setLocalTimers(timersUpdate);
     setInitialLoad(false);
   }
 

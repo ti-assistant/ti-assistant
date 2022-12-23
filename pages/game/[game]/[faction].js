@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import { AddPlanetList } from "/src/AddPlanetList.js";
 import { AddTechList } from "/src/AddTechList.js";

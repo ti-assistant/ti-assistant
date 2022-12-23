@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useRef } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useSharedUpdateTimes } from './Updater';
 import { attachToPlanet, removeFromPlanet } from './util/api/attachments';

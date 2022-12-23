@@ -8,6 +8,7 @@ import { BasicFactionTile } from './FactionTile';
 import { revealObjective } from './util/api/objectives';
 import { ObjectiveRow } from './ObjectiveRow';
 import { useSharedUpdateTimes } from './Updater';
+import { useRef } from 'react';
 
 function typeToText(type) {
   switch (type) {
