@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import { AddPlanetList } from "/src/AddPlanetList.js";
 import { AddTechList } from "/src/AddTechList.js";
@@ -21,7 +21,6 @@ import { FactionTimer } from "../../../src/Timer";
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from "../../../src/util/planets";
 import { filterToOwnedTechs, filterToUnownedTechs, sortTechs } from "../../../src/util/techs";
 import { useSharedUpdateTimes } from "../../../src/Updater";
-import { LabeledDiv } from "../../../src/LabeledDiv";
 
 const techOrder = [
   "green",
@@ -30,40 +29,6 @@ const techOrder = [
   "red",
   "upgrade",
 ];
-
-function Actions({faction}) {
-  const router = useRouter();
-  const { game: gameid } = router.query;
-  const { mutate } = useSWRConfig();
-  const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-
-  switch (state.phase) {
-    case "ACTION":
-      return <div className="flexColumn">
-        {state.activeplayer === faction.name ?
-          <React.Fragment>
-            Select Action
-            <div className="flexRow" style={{gap: "8px", flexWrap: "wrap"}}>
-            <button style={{fontSize: "12px"}}>Construction</button>
-            <button style={{fontSize: "12px"}}>Technology</button>
-            <button style={{fontSize: "12px"}}>Tactical</button>
-            <button style={{fontSize: "12px"}}>Component</button>
-            <button style={{fontSize: "12px"}}>Pass</button>
-
-            </div>
-            <button>End Turn</button>
-          </React.Fragment>
-        : null}
-      </div>
-
-  }
-  return <div>
-    TODO: Get subState info.
-    {state.activeplayer === faction.name ?
-      <div>Current player</div> 
-    : null}
-  </div>
-}
 
 function Prompt({ faction, prompt }) {
   const router = useRouter();
@@ -229,8 +194,6 @@ function FactionContent() {
   const { data: techs, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs` : null, fetcher);
   const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
-  const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-
   const { setUpdateTime } = useSharedUpdateTimes();
 
   if (attachmentsError) {
@@ -424,12 +387,8 @@ function FactionContent() {
       }}
     >
       <div
-        style={{ display: "flex", flexDirection: "column", width: "100%", padding: "8px"}}
+        style={{ display: "flex", flexDirection: "column", width: "100%" }}
       >
-      <LabeledDiv label={`${state.phase} PHASE`} style={{width: "100%"}}>
-        <Actions faction={faction} />
-
-      </LabeledDiv>
         {/* Tabs */}
         <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid grey"}}>
           <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content="Techs" />

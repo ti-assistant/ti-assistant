@@ -6,9 +6,10 @@ import { fetcher, poster } from '../util/api/util';
 import { ObjectiveModal } from '../ObjectiveModal';
 import { BasicFactionTile } from '../FactionTile';
 import { ObjectiveRow } from '../ObjectiveRow';
-import { removeObjective } from '../util/api/objectives';
+import { removeObjective, revealObjective } from '../util/api/objectives';
 import { claimPlanet, readyPlanets } from '../util/api/planets';
 import { useSharedUpdateTimes } from '../Updater';
+import { HoverMenu } from '../HoverMenu';
 
 export default function SetupPhase() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function SetupPhase() {
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
+  const [ subState, setSubState ] = useState({});
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
   const { setUpdateTime } = useSharedUpdateTimes();
 
@@ -68,6 +70,9 @@ export default function SetupPhase() {
       }
       readyPlanets(mutate, setUpdateTime, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
     }
+    (subState.objectives ?? []).forEach((objective) => {
+      revealObjective(mutate, setUpdateTime, gameid, objectives, null, objective.name);
+    });
     const activeFactionName = state.speaker;
     const phase = "STRATEGY";
 
@@ -82,7 +87,18 @@ export default function SetupPhase() {
     mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), updateOptions);
   }
 
+  function addObj(objective) {
+    setSubState({
+      ...subState,
+      objectives: [...(subState.objectives ?? []), objective],
+    })
+  }
+
   function removeObj(objectiveName) {
+    setSubState({
+      ...subState,
+      objectives: (subState.objectives ?? []).filter((objective) => objective.name !== objectiveName),
+    });
     setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
     removeObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
   }
@@ -93,8 +109,16 @@ export default function SetupPhase() {
   function statusPhaseComplete() {
     return factionSubFactionChoicesComplete() &&
       factionTechChoicesComplete() &&
-      selectedStageOneObjectives.length > 1;
+      (subState.objectives ?? []).length > 1;
+      // selectedStageOneObjectives.length > 1;
   }
+
+  const flexBasis = 100 / Object.keys(factions ?? {}).length;
+
+  const revealedObjectiveNames = (subState.objectives ?? []).map((objective) => objective.name);
+  const availableObjectives = Object.values(objectives ?? {}).filter((objective) => {
+    return objective.type === "stage-one" && !revealedObjectiveNames.includes(objective.name);
+  });
 
   return (
     <div className="flexColumn" style={{alignItems: "center", height: "100vh"}}>
@@ -105,10 +129,12 @@ export default function SetupPhase() {
         <li>Gather starting components</li>
         <div className="flexRow" style={{alignItems:"stretch", justifyContent: "space-between", gap: "8px"}}>
           {orderedFactions.map(([name, faction]) => {
-            return <FactionCard key={name} faction={faction} opts={{
+            return <div style={{flexBasis: `${flexBasis}%`, height: "100%"}}>
+            <FactionCard key={name} faction={faction} opts={{
               displayStartingComponents: true,
               fontSize: "16px",
             }} />
+            </div>
           })}
         </div>
         <li>Draw 2 secret objectives and keep one</li>
@@ -119,12 +145,21 @@ export default function SetupPhase() {
             Draw 5 stage one objectives and reveal 2
           </div>
         </li>
-        {selectedStageOneObjectives.length > 0 ?
-          <ObjectiveRow objective={selectedStageOneObjectives[0]} removeObjective={() => removeObj(selectedStageOneObjectives[0].name)} viewing={true} /> :
-          <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
-        {selectedStageOneObjectives.length > 1 ?
-          <ObjectiveRow objective={selectedStageOneObjectives[1]} removeObjective={() => removeObj(selectedStageOneObjectives[1].name)} /> :
-          <button onClick={() => setShowObjectiveModal(true)}>Reveal Objective</button>}
+        {(subState.objectives ?? []).map((objective) => {
+          return <ObjectiveRow objective={objective} removeObjective={() => removeObj(objective.name)} viewing={true} />;
+        })}
+        {(subState.objectives ?? []).length < 2 ? 
+          <HoverMenu label="Reveal Objective" direction="up">
+            <div className='flexColumn' style={{gap: "4px", alignItems: "stretch", whiteSpace: "nowrap", padding: "8px"}}>
+              {Object.values(availableObjectives).filter((objective) => {
+                return objective.type === "stage-one"
+              })
+                .map((objective) => {
+                  return <button onClick={() => addObj(objective)}>{objective.name}</button>
+                })}
+            </div>
+          </HoverMenu>
+        : null}
         <li>
           <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
             <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
@@ -138,8 +173,8 @@ export default function SetupPhase() {
       {!factionSubFactionChoicesComplete() ?
         <div style={{color: "darkred"}}>Select Council Keleres sub-faction</div> :
         null}
-      {selectedStageOneObjectives.length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
-      <button disabled={!statusPhaseComplete()} onClick={() => nextPhase()}>Start Game</button>
+      {(subState.objectives).length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
+      <button disabled={!statusPhaseComplete()} style={{fontSize: "24px"}} onClick={() => nextPhase()}>Start Game</button>
     </div>
   );
 }

@@ -12,6 +12,9 @@ import { passAgenda, repealAgenda, resolveAgenda } from '../util/api/agendas';
 import { LawsInEffect } from '../LawsInEffect';
 import { SelectableRow } from '../SelectableRow';
 import { useSharedUpdateTimes } from '../Updater';
+import { HoverMenu } from '../HoverMenu';
+import { LabeledDiv } from '../LabeledDiv';
+import { getFactionColor, getFactionName } from '../util/factions';
 
 function InfoContent({content}) {
   return (
@@ -296,6 +299,26 @@ export default function AgendaPhase() {
     return a.order - b.order;
   });
 
+  const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 1;
+  });
+  const outcomes = new Set();
+  Object.values(agendas ?? {}).forEach((agenda) => {
+    if (agenda.target || agenda.elect === "???") return;
+    outcomes.add(agenda.elect);
+  });
+
+  let width = 1400;
+  if (orderedAgendas.length < 35) {
+    width = 920;
+  }
+  if (orderedAgendas.length < 18) {
+    width = 460;
+  }
+
   const flexDirection = agenda && agenda.elect === "For/Against" ? "flexRow" : "flexColumn";
     
   return (
@@ -323,25 +346,63 @@ export default function AgendaPhase() {
       <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px", alignItems: "stretch"}}>
         <li>
           <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
-            {!miscount ? <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px"}}>
-              <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
-              Reveal and read one Agenda</div>
+            {!miscount ? 
+            !agenda ? <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px"}}>
+              <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
+                <HoverMenu label="Reveal and Read one Agenda">
+                  <div className="flexRow" style={{gap: "4px", writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: "8px", maxHeight: "530px", flexWrap: "wrap"}}>
+                    {orderedAgendas.map((agenda) => {
+                      return <button onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
+                    })}
+                  </div>
+                </HoverMenu>
+              </LabeledDiv>
+              </div> :
+              <LabeledDiv label="AGENDA">
+                <AgendaRow agenda={agenda} removeAgenda={() => {setAgenda(null); setFactionVotes({});}} />
+              </LabeledDiv>
             : "Re-voting on miscounted agenda"}
           </div>
           <div className='flexColumn' style={{gap: "4px"}}>
-          {agenda ? 
-          <AgendaRow agenda={agenda} removeAgenda={() => {setAgenda(null); setFactionVotes({});}} />
-          : <button onClick={() => setAgendaModal(true)}>Reveal Agenda</button>}
-          {agenda && agenda.name === "Covert Legislation" ? 
-            (outcome ? 
+          {/* {agenda ? 
+            <LabeledDiv label="AGENDA" style={{width: "auto"}}>
+              <AgendaRow agenda={agenda} removeAgenda={() => {setAgenda(null); setFactionVotes({});}} />
+            </LabeledDiv>
+          : <HoverMenu label="Reveal Agenda">
+            <div className="flexRow" style={{gap: "4px", writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: "8px", maxHeight: "530px", flexWrap: "wrap"}}>
+              {orderedAgendas.map((agenda) => {
+                return <button onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
+              })}
+            </div>
+          </HoverMenu>} */}
+          
+          {/* <button onClick={() => setAgendaModal(true)}>Reveal Agenda</button> */}
+        </div>
+        </li>
+        {agenda && agenda.name === "Covert Legislation" ? 
+          <li>
+            <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
+
+            {outcome ? 
+              <LabeledDiv label="ELIGIBLE OUTCOMES">
               <SelectableRow itemName={outcome} content={
                 <div style={{display: "flex", fontSize: "18px"}}>
                   {outcome}
-                </div>} removeItem={() => selectEligibleOutcome(null)} /> : 
-            <button onClick={() => setOutcomeModal(true)}>Reveal Eligible Outcomes</button>)
+                </div>} removeItem={() => selectEligibleOutcome(null)} />
+              </LabeledDiv> : 
+            <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
+
+            <HoverMenu label="Reveal Eligible Outcomes">
+              <div className='flexColumn' style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: 'flex-start'}}>
+              {Array.from(outcomes).map((outcome) => {
+                return <button onClick={() => selectEligibleOutcome(outcome)}>{outcome}</button>
+              })}
+              </div>
+            </HoverMenu>
+            </LabeledDiv>}
+            </div>
+            </li>
           : null}
-        </div>
-        </li>
         <li>In Speaker Order:
         <div className="flexColumn" style={{fontSize: "22px", paddingLeft: "8px", gap: "4px", alignItems: "flex-start"}}>
           <div>Perform any <i>When an Agenda is revealed</i> actions</div>
@@ -359,7 +420,34 @@ export default function AgendaPhase() {
           </div>
         : null}
         </li>
-        <li>
+        {isTie ? 
+          <li>
+            <div>
+              {speakerTieBreak === null ? <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])} style={{width: "auto"}}>
+                <HoverMenu label="Choose outcome if tied">
+                  <div className="flexRow" style={{alignItems: "stretch", justifyContent: "flex-start", gap: "4px", padding: "8px", writingMode: "vertical-lr", maxHeight: "320px", flexWrap: "wrap"}}>
+                    {selectedTargets.length > 0 ? selectedTargets.map((target) => {
+                      return <button key={target} className={speakerTieBreak === target ? "selected" : ""} onClick={() => toggleSpeakerTieBreak(target)}>{target}</button>;
+                    }) : 
+                    allTargets.map((target) => {
+                      if (target === "Abstain") {
+                        return null;
+                      }
+                      return <button key={target} className={speakerTieBreak === target ? "selected" : ""} onClick={() => toggleSpeakerTieBreak(target)}>{target}</button>;
+                    })}
+                  </div>
+                </HoverMenu>
+              </LabeledDiv> : 
+              <LabeledDiv label="SPEAKER SELECTED OPTION">
+                <SelectableRow itemName={speakerTieBreak} removeItem={() => setSpeakerTieBreak(null)}>
+                  {speakerTieBreak}
+                </SelectableRow>
+              </LabeledDiv>
+              }
+            </div>
+          </li>
+        : null}
+        {/* <li>
           <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
             <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
               Choose outcome if tied
@@ -377,7 +465,7 @@ export default function AgendaPhase() {
             })}
             </div>
           : null}
-        </li>
+        </li> */}
         <li>Resolve agenda outcome
           <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
           {agenda && agenda.name === "Covert Legislation" ? 

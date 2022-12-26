@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { FactionTile } from "../src/FactionCard";
@@ -7,8 +7,10 @@ import { Modal } from "../src/Modal";
 import { fetcher } from "../src/util/api/util";
 import Image from "next/image";
 import { getFactionColor } from "../src/util/factions";
+import { HoverMenu } from "../src/HoverMenu";
+import { LabeledDiv } from "../src/LabeledDiv";
 
-function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, expansions, opts }) {
+function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, setPlayerName, expansions, opts }) {
   const [showFactionModal, setShowFactionModal] = useState(false);
   const [showColorModal, setShowColorModal] = useState(false);
   const { data: availableFactions, error: factionError } = useSWR("/api/factions", fetcher);
@@ -84,8 +86,28 @@ function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, e
 
   const color = getFactionColor(faction.color);
 
+  function savePlayerName(element) {
+    if (element.innerText !== "" && element.innerText !== "Player Name") {
+      setPlayerName(element.innerText);
+    }
+    if (element.innerText === "") {
+      element.innerText = "Player Name";
+      setPlayerName(null);
+    }
+  }
+
+  const label = 
+  <React.Fragment>
+  <span spellcheck={false} contentEditable={true} suppressContentEditableWarning={true} 
+    onBlur={(e) => savePlayerName(e.target)}>
+    Player Name
+  </span>
+  {isSpeaker ? " - Speaker" : null}
+  </React.Fragment>
+
   return (
-    <div style={{flexBasis: "50%"}}>
+    <LabeledDiv label={label} color={getFactionColor(faction)} style={{width: "280px"}}>
+    <div className="flexColumn" style={{width: "100%", alignItems: "flex-start", whiteSpace: "nowrap", gap: "4px"}}>
       <Modal top="20%" closeMenu={() => setShowFactionModal(false)} visible={showFactionModal} title="Select Faction" content={
         <div className="flexRow" style={{padding: "16px", flexWrap: "wrap", gap: "16px 40px"}}>
           {filteredFactions.map(([factionName, faction]) => {
@@ -113,8 +135,45 @@ function FactionSelect({ faction, isSpeaker, setFaction, setColor, setSpeaker, e
           })}
         </div>
       } />
-      <BasicFactionTile faction={faction} speaker={isSpeaker} menuButtons={menuButtons} opts={opts} />
+      {/* <HoverMenu label={faction.name ? faction.name : "Select Faction"} borderColor={faction.color ? faction.color : undefined}> */}
+        <div className="flexColumn" style={{paddingTop: "8px", whiteSpace: "nowrap", alignItems: "flex-start", gap: "8px", overflow: "visible", width: "100%"}}>
+        <HoverMenu label={faction.name ? faction.name : "Pick Faction"}>
+          <div className="flexRow" style={{padding: "8px",
+    flexWrap: "wrap",
+    maxHeight: "310px",
+    alignItems: "stretch",
+    gap: "4px",
+    writingMode: "vertical-lr",
+    justifyContent: "flex-start"}}>
+          {filteredFactions.map(([factionName, local]) => {
+            return <button key={local.name} className={faction.name === factionName ? "selected" : ""} style={{width: "160px"}} onClick={() => selectFaction(factionName)}>{local.name}</button>
+          })}
+          </div>
+        </HoverMenu>
+        <div className="flexRow" style={{width: "100%", justifyContent: "space-between"}}>
+        <HoverMenu label={faction.color ? "Change Color" : "Pick Color"} style={{minWidth: "92px"}}>
+        <div className="flexRow" style={{padding: "8px",
+    flexWrap: "wrap",
+    maxHeight: "122px",
+    alignItems: "stretch",
+    gap: "4px",
+    writingMode: "vertical-lr",
+    justifyContent: "flex-start"}}>
+          {filteredColors.map((color) => {
+              const factionColor = getFactionColor({color: color});
+              return (
+                <button key={color} style={{width: "60px", backgroundColor: factionColor, color: factionColor}} className={faction.color === color ? "selected" : ""} onClick={() => selectColor(color)}>{color}</button>
+              );
+            })}
+            </div>
+        </HoverMenu>
+        {isSpeaker ? null : <button onClick={() => setSpeaker()}>Make Speaker</button>}
+        </div>
+        </div>
+      {/* </HoverMenu> */}
+      {/* <BasicFactionTile faction={faction} speaker={isSpeaker} menuButtons={menuButtons} opts={opts} /> */}
     </div>
+    </LabeledDiv>
   )
 }
 
@@ -651,7 +710,7 @@ function getFactionSelectStyle(numFactions, index) {
           baseStyle.marginBottom = "240px";
           return baseStyle;
         case 2:
-          baseStyle.marginTop = "420px";
+          baseStyle.marginTop = "480px";
           baseStyle.justifyContent = "center";
           return baseStyle;
       }
@@ -666,7 +725,7 @@ function getFactionSelectStyle(numFactions, index) {
         case 1:
           baseStyle.marginRight = "380px";
           baseStyle.justifyContent = "flex-end";
-          baseStyle.marginBottom = "420px";
+          baseStyle.marginBottom = "480px";
           return baseStyle;
         case 2:
           baseStyle.marginLeft = "700px";
@@ -675,7 +734,7 @@ function getFactionSelectStyle(numFactions, index) {
           return baseStyle;
         case 3:
           baseStyle.marginLeft = "380px";
-          baseStyle.marginTop = "420px";
+          baseStyle.marginTop = "480px";
           baseStyle.justifyContent = "flex-start";
           return baseStyle;
       }
@@ -695,7 +754,7 @@ function getFactionSelectStyle(numFactions, index) {
           return baseStyle;
         case 2:
           baseStyle.justifyContent = "center";
-          baseStyle.marginBottom = "480px";
+          baseStyle.marginBottom = "540px";
           return baseStyle;
         case 3:
           baseStyle.marginLeft = "700px";
@@ -709,7 +768,7 @@ function getFactionSelectStyle(numFactions, index) {
           return baseStyle;
         case 5:
           baseStyle.justifyContent = "center";
-          baseStyle.marginTop = "480px";
+          baseStyle.marginTop = "540px";
           return baseStyle;
       }
       break;
@@ -719,7 +778,7 @@ function getFactionSelectStyle(numFactions, index) {
         case 0:
           baseStyle.marginRight = "580px";
           baseStyle.justifyContent = "flex-end";
-          baseStyle.marginTop = "420px";
+          baseStyle.marginTop = "480px";
           return baseStyle;
         case 1:
           baseStyle.marginRight = "800px";
@@ -728,16 +787,16 @@ function getFactionSelectStyle(numFactions, index) {
         case 2:
           baseStyle.marginRight = "580px";
           baseStyle.justifyContent = "flex-end";
-          baseStyle.marginBottom = "420px";
+          baseStyle.marginBottom = "480px";
           return baseStyle;
         case 3:
           baseStyle.justifyContent = "center";
-          baseStyle.marginBottom = "600px";
+          baseStyle.marginBottom = "660px";
           return baseStyle;
         case 4:
           baseStyle.marginLeft = "580px";
           baseStyle.justifyContent = "flex-start";
-          baseStyle.marginBottom = "420px";
+          baseStyle.marginBottom = "480px";
           return baseStyle;
         case 5:
           baseStyle.marginLeft = "800px";
@@ -746,11 +805,11 @@ function getFactionSelectStyle(numFactions, index) {
         case 6:
           baseStyle.marginLeft = "580px";
           baseStyle.justifyContent = "flex-start";
-          baseStyle.marginTop = "420px";
+          baseStyle.marginTop = "480px";
           return baseStyle;
         case 7:
           baseStyle.justifyContent = "center";
-          baseStyle.marginTop = "600px";
+          baseStyle.marginTop = "660px";
           return baseStyle;
       }
       break;
@@ -836,6 +895,17 @@ export default function SetupPage() {
         }
         if (faction.color === value) {
           return { ...faction, color: null };
+        }
+        return faction;
+      })
+    );
+  }
+  
+  function updatePlayerName(index, value) {
+    setFactions(
+      factions.map((faction, i) => {
+        if (index === i) {
+          return { ...faction, playerName: value };
         }
         return faction;
       })
@@ -1086,6 +1156,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(0, value)}
             setColor={(value) => updatePlayerColor(0, value)}
             setSpeaker={() => setSpeaker(0)}
+            setPlayerName={(value) => updatePlayerName(0, value)}
             expansions={options.expansions}
             opts={{menuSide: "left"}} />
         </div>
@@ -1096,6 +1167,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(1, value)}
             setColor={(value) => updatePlayerColor(1, value)}
             setSpeaker={() => setSpeaker(1)}
+            setPlayerName={(value) => updatePlayerName(1, value)}
             expansions={options.expansions}
             opts={{menuSide: "left"}} />
         </div>
@@ -1106,6 +1178,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(2, value)}
             setColor={(value) => updatePlayerColor(2, value)}
             setSpeaker={() => setSpeaker(2)}
+            setPlayerName={(value) => updatePlayerName(2, value)}
             expansions={options.expansions}
             opts={{menuSide: "top"}} />
         </div>
@@ -1116,6 +1189,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(3, value)}
             setColor={(value) => updatePlayerColor(3, value)}
             setSpeaker={() => setSpeaker(3)}
+            setPlayerName={(value) => updatePlayerName(3, value)}
             expansions={options.expansions}
             opts={{menuSide: "right"}} />
         </div> : null}
@@ -1126,6 +1200,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(4, value)}
             setColor={(value) => updatePlayerColor(4, value)}
             setSpeaker={() => setSpeaker(4)}
+            setPlayerName={(value) => updatePlayerName(4, value)}
             expansions={options.expansions}
             opts={{menuSide: "right"}} />
         </div> : null}
@@ -1136,6 +1211,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(5, value)}
             setColor={(value) => updatePlayerColor(5, value)}
             setSpeaker={() => setSpeaker(5)}
+            setPlayerName={(value) => updatePlayerName(5, value)}
             expansions={options.expansions}
             opts={{menuSide: "bottom"}} />
         </div> : null}
@@ -1146,6 +1222,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(6, value)}
             setColor={(value) => updatePlayerColor(6, value)}
             setSpeaker={() => setSpeaker(6)}
+            setPlayerName={(value) => updatePlayerName(6, value)}
             expansions={options.expansions}
             opts={{menuSide: "bottom"}} />
         </div> : null}
@@ -1156,6 +1233,7 @@ export default function SetupPage() {
             setFaction={(value) => updatePlayerFaction(7, value)}
             setColor={(value) => updatePlayerColor(7, value)}
             setSpeaker={() => setSpeaker(7)}
+            setPlayerName={(value) => updatePlayerName(7, value)}
             expansions={options.expansions}
             opts={{menuSide: "bottom"}} />
         </div> : null}

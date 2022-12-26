@@ -1,6 +1,6 @@
 import { FactionSymbol } from "./FactionCard";
 import { useState } from "react";
-import { getFactionColor } from "./util/factions";
+import { getFactionColor, getFactionName } from "./util/factions";
 
 /**
  *
@@ -102,7 +102,7 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
             backgroundColor: "#222"}}>
             Speaker
           </div> : null}
-          {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{name}</div>}
+          {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{getFactionName(faction)}</div>}
         </div>
       </div>
       {menuButtons && menuButtons.length !== 0 ? <div className="flexColumn" style={menuButtonStyle}>

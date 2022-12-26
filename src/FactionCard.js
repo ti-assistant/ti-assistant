@@ -2,12 +2,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { useRef, useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
+import { HoverMenu } from './HoverMenu';
 import { useSharedUpdateTimes } from './Updater';
 import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
 import { chooseSubFaction } from './util/api/factions';
 import { chooseStartingTech, removeStartingTech } from './util/api/techs';
 import { fetcher, poster } from './util/api/util';
-import { getFactionColor } from './util/factions';
+import { getFactionColor, getFactionName } from './util/factions';
 import { getNextIndex } from './util/util';
 
 import { TechRow } from '/src/TechRow.js'
@@ -254,11 +255,18 @@ function StartingComponents({ faction }) {
       {numToChoose > 0 ?
         <div>
           Choose {numToChoose} more {pluralize("tech", numToChoose)}
-          <div>
+          <HoverMenu label="Choose Starting Tech" style={{minWidth: "100%"}}>
+            <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", whiteSpace: "nowrap", padding: "8px"}}>
+            {orderedChoices.map((tech) => {
+              return <button key={tech.name} onClick={() => addTech(tech.name)}>{tech.name}</button>
+            })}
+            </div>
+          </HoverMenu>
+          {/* <div>
             {orderedChoices.map((tech) => {
               return <TechRow key={tech.name} tech={tech} addTech={() => addTech(tech.name)} />;
             })}
-          </div>
+          </div> */}
         </div>
       : null}
     </div>
@@ -452,7 +460,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
             backgroundColor: "#222"}}>
             Speaker
           </div> : null}
-          {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{faction.name}</div>}
+          {opts.hideName ? null : <div style={{ textAlign: "center", position: "relative"}}>{getFactionName(faction)}</div>}
         </div>
       </div>
       {menu ? <div className="flexColumn" style={{fontFamily: "Myriad Pro", left: "100%", marginLeft: "4px", top: "0", position: "absolute", display: showMenu ? "flex" : "none", height: "40px", zIndex: 2}}>
@@ -525,7 +533,7 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
         <div className="flexRow" style={iconStyle}>
           <FactionSymbol faction={faction.name} size={40} />
         </div>
-        {opts.hideName ? null : <div style={{ paddingRight: "12px" }}>{faction.name}</div>}
+        {opts.hideName ? null : <div style={{ paddingRight: "12px" }}>{getFactionName(faction)}</div>}
       </div>}
       <div>
         {content}

@@ -170,38 +170,29 @@ export default async function handler(req, res) {
   const responseRef = await db.collection('games').doc(gameid).get();
   const factions = {...responseRef.data().factions};
 
-  if (Object.keys(factions).includes("Council Keleres")) {
+  const factionsRef = await db.collection('factions').get();
+  const baseFactions = {};
+  factionsRef.forEach((val) => {
+    baseFactions[val.id] = val.data();
+  });
+
+  const factionsToReturn = {};
+  Object.entries(factions).forEach(([id, faction]) => {
+    factionsToReturn[id] = {
+      ...baseFactions[id],
+      ...faction,
+    };
+  });
+
+  if (Object.keys(factionsToReturn).includes("Council Keleres")) {
     const councilChoice = new Set();
-    for (const [name, faction] of Object.entries(factions)) {
-      if (name === "Council Keleres") {
-        continue;
-      }
+    Object.values(factionsToReturn).forEach((faction) => {
       (faction.startswith.techs ?? []).forEach((tech) => {
         councilChoice.add(tech);
       });
-    }
-    factions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
-    // Remove techs that are no longer available for Keleres.
-    if (data.action === "REMOVE_STARTING_TECH") {
-      for (const [index, tech] of (factions["Council Keleres"].startswith.techs ?? []).entries()) {
-        if (!councilChoice.has(tech)) {
-          playerTechString = `factions.Council Keleres.techs.${tech}`;
-          factionStartingTechString = `factions.Council Keleres.startswith.techs`;
-          await db.collection('games').doc(gameid).update({
-            [playerTechString]: FieldValue.delete(),
-            [factionStartingTechString]: FieldValue.arrayRemove(tech),
-          });
-          delete factions["Council Keleres"].techs[tech];
-          factions["Council Keleres"].startswith.techs.splice(index, 1);
-        }
-      }
-    }
+    });
+    factionsToReturn["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
   }
 
-  if (data.returnAll) {
-    return res.status(200).json(factions);
-  }
-  const response = factions[data.faction];
-
-  return res.status(200).json(response);
+  res.status(200).json(factionsToReturn);
 }

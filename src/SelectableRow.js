@@ -1,4 +1,4 @@
-export function SelectableRow({itemName, content, selectItem, removeItem}) {
+export function SelectableRow({itemName, children, content, selectItem, removeItem}) {
   return (
     <div className="selectableRow">
       {selectItem ? 
@@ -17,6 +17,7 @@ export function SelectableRow({itemName, content, selectItem, removeItem}) {
           &#x2715;
         </div>
       : null}
+      {children}
       {content}
     </div>
   );

@@ -9,3 +9,13 @@ export function getFactionColor(faction) {
   }
   return faction.color;
 }
+
+export function getFactionName(faction) {
+  if (!faction) {
+    return "Loading...";
+  }
+  if (faction.playerName) {
+    return faction.playerName + " - " + faction.shortname;
+  }
+  return faction.name;
+}

@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
+import { HoverMenu } from './HoverMenu';
 import { useSharedCurrentAgenda } from './Timer';
 import { useSharedUpdateTimes } from './Updater';
 import { setSpeaker } from './util/api/state';
@@ -191,6 +192,10 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
             <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={menuButtons} opts={{fontSize: "16px"}} />
           </div>
         : null}
+        {factionName === "Nekro Virus" ? 
+          "Cannot Vote"
+        : 
+        <React.Fragment>
         <div className="votingBlock">
           <div className="influenceSymbol">
             &#x2B21;
@@ -222,7 +227,17 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
           <div className="flexRow" style={{width: "32px"}}>{castVotes}</div>
           {<div className="arrowUp" onClick={() => updateCastVotes(castVotes + 1)}></div>}
         </div>
-        <div className="flexRow" style={{flexShrink: 0, minWidth: "72px"}}>
+        </React.Fragment>}
+        <HoverMenu label={target ? target : "Select"}>
+          <div className="flexRow" style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: "flex-start", writingMode: "vertical-lr", maxHeight: "300px", flexWrap: "wrap"}}>
+            {targets.map((target) => {
+              return (
+                <button key={target} onClick={() => {updateTarget(target)}}>{target}</button>
+              );
+            })}
+          </div>
+        </HoverMenu>
+        {/* <div className="flexRow" style={{flexShrink: 0, minWidth: "72px"}}>
           <button className={showTargets ? "selected" : ""} onClick={toggleTargets}>{target ? target : "Select"}</button>
         </div>
         {targets && targets.length !== 0 ? <div className="flexColumn" style={targetButtonStyle}>
@@ -232,7 +247,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
               <div key={target} style={{cursor: "pointer", gap: "4px", padding: "4px 8px", boxShadow: "1px 1px 4px black", backgroundColor: "#222", border: `2px solid #555`, borderRadius: "5px", fontSize: opts.fontSize ?? "16px"}} onClick={() => {hideTargets(); updateTarget(target)}}>{target}</div>)
           })}
         </div>
-        </div> : null}
+        </div> : null} */}
       </div>
     </div>
   );

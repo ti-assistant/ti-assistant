@@ -7,11 +7,12 @@ export function LabeledDiv({label, children, style = {}, color = "#999", content
         gap: "8px",
         border: `2px solid ${color}`,
         borderRadius: "5px",
-        width: "90%",
+        width: "100%",
         boxSizing: "border-box",
         margin: "8px 0px",
         padding: "8px 8px",
         alignItems: "flex-start",
+        paddingTop: "12px",
         ...style,
     }}>
       <div

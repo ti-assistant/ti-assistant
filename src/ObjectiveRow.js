@@ -92,7 +92,7 @@ function InfoContent({objective}) {
   );
 }
 
-export function ObjectiveRow({faction, objective, addObjective, removeObjective, scoreObjective, viewing}) {
+export function ObjectiveRow({faction, objective, addObjective, removeObjective, scoreObjective, viewing, hideScorers}) {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   function displayInfo() {
@@ -163,7 +163,7 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
           {canScore() ? <button onClick={() => scoreObjective(objective.name, true)}>Score</button> : null}
         </div>
       </div>
-      <div className="flexRow" style={{justifyContent: "flex-start"}}>
+      {hideScorers ? null : <div className="flexRow" style={{justifyContent: "flex-start"}}>
         {(objective.scorers ?? []).map((scorer, index) => {
           if (scorer === faction) {
             return (
@@ -179,6 +179,6 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
             <FactionSymbol faction={scorer} size={42} />
           </div>
         })}
-      </div>
+      </div>}
     </div>);
 }
