@@ -420,7 +420,7 @@ export default function AgendaPhase() {
           </div>
         : null}
         </li>
-        {isTie ? 
+        {agenda && isTie ? 
           <li>
             <div>
               {speakerTieBreak === null ? <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])} style={{width: "auto"}}>
@@ -469,9 +469,16 @@ export default function AgendaPhase() {
         <li>Resolve agenda outcome
           <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
           {agenda && agenda.name === "Covert Legislation" ? 
-            subAgenda ? 
-            <AgendaRow agenda={subAgenda} removeAgenda={() => setSubAgenda(null)} />
-            : <button onClick={() => setSubAgendaModal(true)}>Reveal Covert Legislation Agenda</button>
+            !subAgenda ? 
+            <HoverMenu label="Reveal Covert Legislation Agenda">
+              <div className="flexRow" style={{gap: "4px", writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: "8px", maxHeight: "240px", flexWrap: "wrap"}}>
+                {Object.values(agendas ?? {}).filter((agenda) => agenda.elect === outcome)
+                .map((agenda) => {
+                  return <button onClick={() => selectSubAgenda(agenda.name)}>{agenda.name}</button>;
+                })}
+              </div>
+            </HoverMenu>
+            : <AgendaRow agenda={subAgenda} removeAgenda={() => setSubAgenda(null)} />
           : null}
           {!isTie && selectedTargets.length > 0 ? 
             <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>

@@ -53,8 +53,8 @@ function ActivePlayerColumn({activeFaction}) {
     if (fleetLogistics && !hasTech(activeFaction, "Fleet Logistics")) {
       unlockTech(mutate, setUpdateTime, gameid, factions, activeFaction.name, "Fleet Logistics");
     }
-    finalizeAction();
-    await nextPlayer();
+    await finalizeAction();
+    nextPlayer();
   }
 
   async function finalizeAction() {
@@ -93,7 +93,8 @@ function ActivePlayerColumn({activeFaction}) {
       case "Politics":
         return !!subState.speaker;
       case "Technology":
-        return (((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? []).length > 0;
+        return activeFaction.name === "Nekro Virus" ||
+          (((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? []).length > 0;
     }
     return selectedAction !== null;
   }
@@ -124,7 +125,7 @@ function ActivePlayerColumn({activeFaction}) {
     
     const updatedState = {...state};
     const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
-    state.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
+    updatedState.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
 
     const options = {
       optimisticData: updatedState,
@@ -365,6 +366,12 @@ function ActivePlayerColumn({activeFaction}) {
     });
   }
 
+  function lastFaction() {
+    const numFactions = Object.keys(factions ?? {}).length;
+    const numPassed = Object.values(factions ?? {}).filter((faction) => faction.passed).length;
+    return numFactions - 1 === numPassed;
+  }
+
   function AdditionalActions({visible}) {
     const orderedFactions = Object.values(factions).sort((a, b) => {
       if (a.order === activeFaction.order) {
@@ -386,20 +393,21 @@ function ActivePlayerColumn({activeFaction}) {
     });
     switch (selectedAction) {
       case "Technology":
+        const researchedTech = ((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? [];
         return (
           <React.Fragment>
-            {activeFaction.name !== "Nekro Virus" ? <LabeledDiv label="PRIMARY" content={
+            {activeFaction.name !== "Nekro Virus" ? <LabeledDiv label="PRIMARY" style={{width: "90%"}} content={
               <React.Fragment>
-                <div className='flexColumn' style={{alignItems: "stretch"}}>
-                {(((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? []).map((tech) => {
+                {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
+                {researchedTech.map((tech) => {
                   return <TechRow key={tech.name} tech={tech} removeTech={(techName) => removeTech(activeFaction.name, techName)} />
                 })}
-                </div>
-                {(((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? []).length < 2 ?
+                </div> : null}
+                {researchedTech.length < 2 ?
                   <TechSelectHoverMenu techs={researchableTechs} selectTech={(tech) => addTech(activeFaction.name, tech)} />
                 : null}
               </React.Fragment>} /> : null}
-              <LabeledDiv label="SECONDARY" content={
+              <LabeledDiv label="SECONDARY" style={{width: "90%"}} content={
                 <div className="flexColumn" style={{width: "100%"}}>
                 {orderedFactions.map((faction) => {
                   if (faction.name === activeFaction.name || faction.name === "Nekro Virus") {
@@ -434,7 +442,7 @@ function ActivePlayerColumn({activeFaction}) {
       case "Politics":
         return (
           <React.Fragment>
-            <LabeledDiv label="NEW SPEAKER" content={           
+            <LabeledDiv label="NEW SPEAKER" style={{width: "90%"}} content={           
               <React.Fragment>
                 <div className='flexColumn' style={{alignItems: "stretch"}}>
                 {subState.speaker ? 
@@ -465,7 +473,7 @@ function ActivePlayerColumn({activeFaction}) {
         if (activeFaction.name === "Xxcha Kingdom") {
           return (
             <React.Fragment>
-              <LabeledDiv label="PEACE ACCORDS" content={           
+              <LabeledDiv label="PEACE ACCORDS" style={{width: "90%"}} content={           
                 <React.Fragment>
                   <div className='flexColumn' style={{alignItems: "stretch"}}>
                   {claimedPlanets.map((planet) => {
@@ -511,13 +519,13 @@ function ActivePlayerColumn({activeFaction}) {
         });
         return (
           <React.Fragment>
-            <LabeledDiv label="IMPERIAL POINT">      
+            <LabeledDiv label="IMPERIAL POINT?" style={{width: "90%"}}>
               <div className="flexRow" style={{paddingTop: "8px", width: "100%", justifyContent: "space-evenly"}}>
                 <button className={hasImperialPoint ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => addObjective(activeFaction.name, objectives["Imperial Point"])}>Yes</button>
                 <button className={!hasImperialPoint ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => undoObjective(activeFaction.name, "Imperial Point")}>No</button>
               </div>
             </LabeledDiv>   
-            <LabeledDiv label="SCORED PUBLIC">         
+            <LabeledDiv label="SCORED PUBLIC" style={{width: "90%"}}>
                 <React.Fragment>
             <div className='flexColumn' style={{alignItems: "stretch"}}>
             {scoredPublics.map((objective) => {
@@ -540,18 +548,36 @@ function ActivePlayerColumn({activeFaction}) {
       case "Component":
         return null;
       case "Pass":
+        if (!lastFaction()) {
+          return null;
+        }
+        let hasProveEndurance = false;
+        scoredObjectives.forEach((objective) => {
+          if (objective.name === "Prove Endurance") {
+            hasProveEndurance = true;
+          }
+        });
+        return (
+        <LabeledDiv label="PROVE ENDURANCE?" style={{width: "90%"}}>      
+          <div className="flexRow" style={{paddingTop: "8px", width: "100%", justifyContent: "space-evenly"}}>
+            <button className={hasProveEndurance ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => addObjective(activeFaction.name, objectives["Prove Endurance"])}>Yes</button>
+            <button className={!hasProveEndurance ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => undoObjective(activeFaction.name, "Prove Endurance")}>No</button>
+          </div>
+        </LabeledDiv>   
+        );
         // TODO: Display option for Prove Endurance.
         return null;
       case "Tactical":
+        const conqueredPlanets = ((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? [];
         return (
           <React.Fragment>
-            <LabeledDiv label="CONQUERED PLANETS">       
+            <LabeledDiv label="CONQUERED PLANETS" style={{width: "90%"}}>
               <React.Fragment>
-                <div className='flexColumn' style={{alignItems: "stretch"}}>
-                {(((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? []).map((planet) => {
+                {conqueredPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
+                {conqueredPlanets.map((planet) => {
                   return <PlanetRow key={planet.name} planet={planet} removePlanet={() => removePlanet(activeFaction.name, planet.name)} />
                 })}
-                </div>
+                </div> : null}
                 {claimablePlanets.length > 0 ?
                 <HoverMenu label="Conquer Planet" style={{minWidth: "160px"}} content={
                   <div className="flexRow" style={targetButtonStyle}>
@@ -562,13 +588,13 @@ function ActivePlayerColumn({activeFaction}) {
                   </div>} /> : null}
               </React.Fragment>
             </LabeledDiv>
-            <LabeledDiv label="SCORED SECRETS">
+            <LabeledDiv label="SCORED SECRETS" style={{width: "90%"}}>
               <React.Fragment>
-                <div className='flexColumn' style={{alignItems: "stretch"}}>
+                {scoredObjectives.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
                 {scoredObjectives.map((objective) => {
                   return <ObjectiveRow key={objective.name} objective={objective} removeObjective={() => undoObjective(activeFaction.name, objective.name)} />
                 })}
-                </div>
+                </div> : null}
                 {scorableObjectives.length > 0 && scoredObjectives.length < 4 ?
                 <HoverMenu label="Score Secret Objective" style={{width: "260px"}}>
                   <div className="flexColumn" style={{...secretButtonStyle}}>

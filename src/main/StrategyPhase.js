@@ -17,7 +17,7 @@ import { useSharedUpdateTimes } from '../Updater';
 
 function InfoContent({content}) {
   return (
-    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
+    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "32px"}}>
       {content}
     </div>
   );
@@ -230,7 +230,7 @@ export default function StrategyPhase() {
   const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
   return (
     <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-      <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={infoModal.title} content={
+      <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={<div style={{fontSize: "40px"}}>{infoModal.title}</div>} content={
         <InfoContent content={infoModal.content} />
       } top="30%" />
       <div className="flexColumn" style={{flexBasis: "25%"}}>
