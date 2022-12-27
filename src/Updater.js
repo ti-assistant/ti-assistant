@@ -39,7 +39,7 @@ export function Updater({}) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: updates } = useSWR(gameid ? `/api/${gameid}/updates` : null, fetcher, {
-    refreshInterval: 5000,
+    refreshInterval: 2000,
   });
   const { updateObject, setUpdateTime } = useSharedUpdateTimes();
 
@@ -50,7 +50,9 @@ export function Updater({}) {
   const [ localOptions, setLocalOptions ] = useState(0);
   const [ localPlanets, setLocalPlanets ] = useState(0);
   const [ localFactions, setLocalFactions ] = useState(0);
+  const [ localObjectives, setLocalObjectives ] = useState(0);
   const [ localState, setLocalState ] = useState(0);
+  const [ localSubState, setLocalSubState ] = useState(0);
   const [ localStrategyCards, setLocalStrategyCards ] = useState(0);
   const [ localTimers, setLocalTimers ] = useState(0);
 
@@ -58,10 +60,12 @@ export function Updater({}) {
   const agendasUpdate = (localUpdates.agendas ?? {}).timestamp ?? 0;
   const attachmentsUpdate = (localUpdates.attachments ?? {}).timestamp ?? 0;
   const factionsUpdate = (localUpdates.factions ?? {}).timestamp ?? 0;
+  const objectivesUpdate = (localUpdates.objectives ?? {}).timestamp ?? 0;
   const optionsUpdate = (localUpdates.options ?? {}).timestamp ?? 0;
   const planetsUpdate = (localUpdates.planets ?? {}).timestamp ?? 0;
   const strategycardsUpdate = (localUpdates.strategycards ?? {}).timestamp ?? 0;
   const stateUpdate = (localUpdates.state ?? {}).timestamp ?? 0;
+  const subStateUpdate = (localUpdates.subState ?? {}).timestamp ?? 0;
   const timersUpdate = (localUpdates.timers ?? {}).timestamp ?? 0;
 
   useEffect(() => {
@@ -70,6 +74,9 @@ export function Updater({}) {
     }
     if (updateObject.attachments > localAttachments) {
       setLocalAttachments(updateObject.attachments);
+    }
+    if (updateObject.objectives > localObjectives) {
+      setLocalObjectives(updateObject.objectives);
     }
     if (updateObject.options > localOptions) {
       setLocalOptions(updateObject.options);
@@ -82,6 +89,9 @@ export function Updater({}) {
     }
     if (updateObject.state > localState) {
       setLocalState(updateObject.state);
+    }
+    if (updateObject.subState > localSubState) {
+      setLocalSubState(updateObject.subState);
     }
     if (updateObject.strategycards > localStrategyCards) {
       setLocalStrategyCards(updateObject.strategycards);
@@ -131,6 +141,16 @@ export function Updater({}) {
   }, [factionsUpdate]);
 
   useEffect(() => {
+    if (objectivesUpdate > localOptions) {
+      setLocalObjectives(objectivesUpdate);
+      if (!initialLoad) {
+        mutate(`/api/${gameid}/objectives`, fetcher(`/api/${gameid}/objectives`));
+      }
+      setUpdateTime("objectives", objectivesUpdate);
+    }
+  }, [objectivesUpdate]);
+
+  useEffect(() => {
     if (optionsUpdate > localOptions) {
       setLocalOptions(optionsUpdate);
       if (!initialLoad) {
@@ -161,6 +181,16 @@ export function Updater({}) {
   }, [stateUpdate]);
 
   useEffect(() => {
+    if (subStateUpdate > localSubState) {
+      setLocalSubState(subStateUpdate);
+      if (!initialLoad) {
+        mutate(`/api/${gameid}/subState`, fetcher(`/api/${gameid}/subState`));
+      }
+      setUpdateTime("subState", subStateUpdate);
+    }
+  }, [subStateUpdate]);
+
+  useEffect(() => {
     if (timersUpdate > localTimers) {
       setLocalTimers(timersUpdate);
       if (!initialLoad) {
@@ -179,9 +209,11 @@ export function Updater({}) {
     setLocalAttachments(attachmentsUpdate);
     setLocalPlanets(planetsUpdate);
     setLocalFactions(factionsUpdate);
+    setLocalObjectives(objectivesUpdate);
     setLocalOptions(optionsUpdate);
     setLocalStrategyCards(strategycardsUpdate);
     setLocalState(stateUpdate);
+    setLocalSubState(subStateUpdate);
     setLocalTimers(timersUpdate);
     setInitialLoad(false);
   }

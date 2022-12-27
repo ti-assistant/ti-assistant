@@ -43,6 +43,8 @@ function getUpdatedEndpoint(url) {
       return "options";
     case "planetUpdate":
       return "planets";
+    case "subStateUpdate":
+      return "subState";
     case "stateUpdate":
       return "state";
     case "timerUpdate":

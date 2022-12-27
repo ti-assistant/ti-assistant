@@ -13,15 +13,18 @@ import { fetcher, poster } from '../../../src/util/api/util';
 import { pluralize } from "../../../src/util/util";
 import { lockTech, unlockTech } from "../../../src/util/api/techs";
 import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
-import { FactionCard, FactionSymbol } from "../../../src/FactionCard";
+import { FactionCard, FactionSymbol, StartingComponents } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { TechIcon } from "../../../src/TechRow";
 import { FactionSummary } from "../../../src/FactionSummary";
 import { FactionTimer } from "../../../src/Timer";
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from "../../../src/util/planets";
 import { filterToOwnedTechs, filterToUnownedTechs, sortTechs } from "../../../src/util/techs";
-import { useSharedUpdateTimes } from "../../../src/Updater";
+import { Updater, useSharedUpdateTimes } from "../../../src/Updater";
 import { LabeledDiv } from "../../../src/LabeledDiv";
+import { StrategyCard } from "../../../src/StrategyCard";
+import { assignStrategyCard } from "../../../src/util/api/cards";
+import { nextPlayer } from "../../../src/util/api/state";
 
 const techOrder = [
   "green",
@@ -30,6 +33,68 @@ const techOrder = [
   "red",
   "upgrade",
 ];
+
+function PhaseSection() {
+  const router = useRouter();
+  const { mutate } = useSWRConfig();
+  const { game: gameid, faction: factionName } = router.query;
+  const { data: factions = {}, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: state = {}, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
+
+  if (!state) {
+    return null;
+  }
+
+  function assignCard(card) {
+    assignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, card.name, factionName);
+    nextPlayer(mutate, setUpdateTime, gameid, state, factions, strategyCards);
+  }
+
+  let phaseName = `${state.phase} PHASE`;
+  let phaseContent = null;
+  switch (state.phase) {
+    case "SETUP":
+      phaseName = "STARTING COMPONENTS"
+      phaseContent = 
+      <div style={{fontSize: "16px", whiteSpace: "nowrap"}}>
+        <StartingComponents faction={factions[factionName]} />
+      </div>;
+      break;
+    case "STRATEGY":
+      if (factionName === state.activeplayer) {
+        phaseName = "SELECT STRATEGY CARD";
+        phaseContent = 
+          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
+          {Object.values(strategyCards).filter((card) => !card.faction)
+            .map((card) => {
+              return <StrategyCard key={card.name} card={card} active={true} onClick={() => assignCard(card)} />;
+            })}
+          </div>;
+      }
+      break;
+    case "ACTION":
+      if (factionName === state.activeplayer) {
+        phaseName = "SELECT ACTIONS";
+        phaseContent = 
+          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
+          {Object.values(strategyCards).filter((card) => !card.faction)
+            .map((card) => {
+              return <StrategyCard key={card.name} card={card} active={true} onClick={() => assignCard(card)} />;
+            })}
+          </div>;
+      }
+  }
+  if (!phaseContent) {
+    return null;
+  }
+  return (
+    <LabeledDiv label={phaseName}>
+      {phaseContent}
+    </LabeledDiv>
+  )
+}
 
 function Actions({faction}) {
   const router = useRouter();
@@ -426,10 +491,7 @@ function FactionContent() {
       <div
         style={{ display: "flex", flexDirection: "column", width: "100%", padding: "8px"}}
       >
-      <LabeledDiv label={`${state.phase} PHASE`} style={{width: "100%"}}>
-        <Actions faction={faction} />
-
-      </LabeledDiv>
+      <PhaseSection />
         {/* Tabs */}
         <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid grey"}}>
           <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content="Techs" />
@@ -519,6 +581,7 @@ export default function GamePage() {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <Updater />
       <div className="flexColumn" style={{width: "100%", maxWidth: "800px"}}>
       {/* TODO: Uncomment after putting in server-side functionality for adding/removing prompts */}
       {/* <Modal closeMenu={ignorePrompt} visible={validPrompts.length > 0} title={validPrompts[0].title}

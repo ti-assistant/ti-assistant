@@ -3,12 +3,14 @@ import { useRouter } from 'next/router'
 import { useRef, useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
 import { HoverMenu } from './HoverMenu';
+import { SelectableRow } from './SelectableRow';
 import { useSharedUpdateTimes } from './Updater';
 import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
 import { chooseSubFaction } from './util/api/factions';
 import { chooseStartingTech, removeStartingTech } from './util/api/techs';
 import { fetcher, poster } from './util/api/util';
 import { getFactionColor, getFactionName } from './util/factions';
+import { getTechColor } from './util/techs';
 import { getNextIndex } from './util/util';
 
 import { TechRow } from '/src/TechRow.js'
@@ -130,7 +132,7 @@ const techOrder = [
   "upgrade",
 ];
 
-function StartingComponents({ faction }) {
+export function StartingComponents({ faction }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
@@ -237,25 +239,29 @@ function StartingComponents({ faction }) {
         })}
       </div>
       Units
-      <div style={{paddingLeft: "4px", fontFamily: "Myriad Pro"}}>
+      <div className="flexColumn" style={{paddingLeft: "4px", fontFamily: "Myriad Pro", justifyContent: "stretch", alignItems: "flex-start"}}>
         {orderedUnits.map(([unit, number]) => {
-          return <div key={unit} className="flexRow" style={{justifyContent: "flex-start"}}>
-            <div style={{display: "flex", justifyContent: "center", flexBasis: "14%"}}>
-              {number}
-            </div>{pluralize(unit, number)}
-          </div>;
+          return <div key={unit}>
+              {`${number} ${pluralize(unit, number)}`}
+            </div>;
         })}
       </div>
       Techs {startswith.choice ? "(Choice)" : null}
       <div style={{paddingLeft: "4px"}}>
         {orderedTechs.map((tech) => {
+          if (startswith.choice) {
+            return <SelectableRow key={tech.name} itemName={tech.name} removeItem={() => removeTech(tech.name)} style={{color: getTechColor(tech), fontSize: "16px", whiteSpace: "nowrap"}}>
+              {tech.name}
+            </SelectableRow>
+          }
+          return <div key={tech.name} style={{whiteSpace: "nowrap", fontFamily: "Myriad Pro", color: getTechColor(tech)}}>{tech.name}</div>;
           return <TechRow key={tech.name} tech={tech} removeTech={startswith.choice ? () => removeTech(tech.name) : null} />;
         })}
       </div>
       {numToChoose > 0 ?
         <div>
           Choose {numToChoose} more {pluralize("tech", numToChoose)}
-          <HoverMenu label="Choose Starting Tech" style={{minWidth: "100%"}}>
+          <HoverMenu label="Choose Starting Tech" style={{minWidth: "100%"}} direction="up">
             <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", whiteSpace: "nowrap", padding: "8px"}}>
             {orderedChoices.map((tech) => {
               return <button key={tech.name} onClick={() => addTech(tech.name)}>{tech.name}</button>

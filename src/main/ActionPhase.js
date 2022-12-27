@@ -27,6 +27,7 @@ import { getFactionColor, getFactionName } from '../util/factions.js';
 import { getTechColor } from '../util/techs.js';
 import { TechSelectHoverMenu } from './util/TechSelectHoverMenu.js';
 import { SelectableRow } from '../SelectableRow.js';
+import { addSubStatePlanet, addSubStateTech, clearSubState, finalizeSubState, removeSubStatePlanet, removeSubStateTech, scoreSubStateObjective, setSubStateSpeaker, undoSubStateSpeaker, unscoreSubStateObjective } from '../util/api/subState.js';
 
 function ActivePlayerColumn({activeFaction}) {
   const router = useRouter();
@@ -38,12 +39,10 @@ function ActivePlayerColumn({activeFaction}) {
   const { data: strategyCards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: planets } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const [ showSpeakerModal, setShowSpeakerModal ] = useState(false);
   const [ selectedAction, setSelectedAction ] = useState(null);
   const { setUpdateTime } = useSharedUpdateTimes();
-
-  const [ subState, setSubState ] = useState({});
-
   
   const orderedStrategyCards = Object.values(strategyCards).filter((card) => card.faction).sort((a, b) => a.order - b.order);
   async function completeActions(fleetLogistics = false) {
@@ -61,20 +60,7 @@ function ActivePlayerColumn({activeFaction}) {
     if (selectedAction === null) {
       return;
     }
-    Object.entries(subState.factions ?? {}).forEach(([factionName, updates]) => {
-      (updates.planets ?? []).forEach((planet) => {
-        claimPlanet(mutate, setUpdateTime, gameid, planets, planet.name, factionName);
-      });
-      (updates.techs ?? []).forEach((tech) => {
-        unlockTech(mutate, setUpdateTime, gameid, factions, factionName, tech.name);
-      });
-      (updates.objectives ?? []).forEach((objective) => {
-        scoreObjective(mutate, setUpdateTime, gameid, objectives, factionName, objective.name);
-      });
-    });
-    if (!!subState.speaker) {
-      setSpeaker(mutate, setUpdateTime, gameid, state, subState.speaker.name, factions);
-    }
+    finalizeSubState(mutate, setUpdateTime, gameid, subState);
 
     if (strategyCards[selectedAction]) {
       useStrategyCard(mutate, setUpdateTime, gameid, strategyCards, selectedAction);
@@ -84,7 +70,6 @@ function ActivePlayerColumn({activeFaction}) {
     }
 
     // TODO: SubState needs to be saved to the backend.
-    setSubState({});
     setSelectedAction(null);
   }
 
@@ -154,7 +139,7 @@ function ActivePlayerColumn({activeFaction}) {
     } else {
       setSelectedAction(action);
     }
-    setSubState({});
+    clearSubState(mutate, setUpdateTime, gameid, subState);
   }
 
   function FactionActions({}) {
@@ -192,16 +177,15 @@ function ActivePlayerColumn({activeFaction}) {
     if ((planet.owners ?? []).includes(activeFaction.name)) {
       return false;
     }
-    const claimedPlanetNames = claimedPlanets.map((planet) => planet.name);
-    if (claimedPlanetNames.includes(planet.name)) {
+    if (claimedPlanets.includes(planet.name)) {
       return false;
     }
     if (claimedPlanets.length > 0) {
-      if (claimedPlanets[0].system) {
-        return planet.system === claimedPlanets[0].system;
+      if (planets[claimedPlanets[0]].system) {
+        return planet.system === planets[claimedPlanets[0]].system;
       }
-      if (claimedPlanets[0].faction) {
-        return planet.faction === claimedPlanets[0].faction;
+      if (planets[claimedPlanets[0]].faction) {
+        return planet.faction === planets[claimedPlanets[0]].faction;
       }
       return false;
     }
@@ -213,8 +197,7 @@ function ActivePlayerColumn({activeFaction}) {
     if ((objective.scorers ?? []).includes(activeFaction.name)) {
       return false;
     }
-    const scoredObjectiveNames = scoredObjectives.map((objective) => objective.name);
-    if (scoredObjectiveNames.includes(objective.name)) {
+    if (scoredObjectives.includes(objective.name)) {
       return false;
     }
     if (objective.name === "Become a Martyr" || objective.name === "Prove Endurance") {
@@ -233,8 +216,7 @@ function ActivePlayerColumn({activeFaction}) {
         return false;
       }
       const researchedTechs = ((subState.factions ?? {})[faction.name] ?? {}).techs ?? [];
-      const researchedTechNames = researchedTechs.map((tech) => tech.name);
-      if (researchedTechNames.includes(tech.name)) {
+      if (researchedTechs.includes(tech.name)) {
         return false;
       }
       if (tech.replaces) {
@@ -273,97 +255,34 @@ function ActivePlayerColumn({activeFaction}) {
   };
 
   function removePlanet(factionName, toRemove) {
-    const updatedState = {...subState};
-    if (!updatedState.factions || !updatedState.factions[factionName]) {
-      return;
-    }
-    if (!updatedState.factions[factionName].planets) {
-      return;
-    }
-    updatedState.factions[factionName].planets = updatedState.factions[factionName].planets.filter((planet) => planet.name !== toRemove);
-    setSubState(updatedState);
+    removeSubStatePlanet(mutate, setUpdateTime, gameid, subState, factionName, toRemove);
   }
 
   function addPlanet(factionName, toAdd) {
-    const updatedState = {...subState};
-    if (!updatedState.factions) {
-      updatedState.factions = {};
-    }
-    if (!updatedState.factions[factionName]) {
-      updatedState.factions[factionName] = {};
-    }
-    if (!updatedState.factions[factionName].planets) {
-      updatedState.factions[factionName].planets = [];
-    }
-    updatedState.factions[factionName].planets.push(toAdd);
-    setSubState(updatedState);
+    addSubStatePlanet(mutate, setUpdateTime, gameid, subState, factionName, toAdd.name);
   }
 
   function addObjective(factionName, toScore) {
-    const updatedState = {...subState};
-    if (!updatedState.factions) {
-      updatedState.factions = {};
-    }
-    if (!updatedState.factions[factionName]) {
-      updatedState.factions[factionName] = {};
-    }
-    if (!updatedState.factions[factionName].objectives) {
-      updatedState.factions[factionName].objectives = [];
-    }
-    updatedState.factions[factionName].objectives.push(toScore);
-    setSubState(updatedState);
+    scoreSubStateObjective(mutate, setUpdateTime, gameid, subState, factionName, toScore.name);
   }
   
   function undoObjective(factionName, toRemove) {
-    const updatedState = {...subState};
-    if (!updatedState.factions || !updatedState.factions[factionName]) {
-      return;
-    }
-    if (!updatedState.factions[factionName].objectives) {
-      return;
-    }
-    updatedState.factions[factionName].objectives = updatedState.factions[factionName].objectives.filter((objective) => objective.name !== toRemove);
-    setSubState(updatedState);
+    unscoreSubStateObjective(mutate, setUpdateTime, gameid, subState, factionName, toRemove);
   }
 
   function removeTech(factionName, toRemove) {
-    const updatedState = {...subState};
-    if (!updatedState.factions || !updatedState.factions[factionName]) {
-      return;
-    }
-    if (!updatedState.factions[factionName].techs) {
-      return;
-    }
-    updatedState.factions[factionName].techs = updatedState.factions[factionName].techs.filter((tech) => tech.name !== toRemove);
-    setSubState(updatedState);
+    removeSubStateTech(mutate, setUpdateTime, gameid, subState, factionName, toRemove);
   }
 
   function addTech(factionName, tech) {
-    const updatedState = {...subState};
-    if (!updatedState.factions) {
-      updatedState.factions = {};
-    }
-    if (!updatedState.factions[factionName]) {
-      updatedState.factions[factionName] = {};
-    }
-    if (!updatedState.factions[factionName].techs) {
-      updatedState.factions[factionName].techs = [];
-    }
-    updatedState.factions[factionName].techs.push(tech);
-    setSubState(updatedState);
+    addSubStateTech(mutate, setUpdateTime, gameid, subState, factionName, tech.name);
   }
 
   function selectSpeaker(faction) {
-    setSubState({
-      ...subState,
-      speaker: faction,
-    });
+    setSubStateSpeaker(mutate, setUpdateTime, gameid, subState, faction.name);
   }
   function resetSpeaker() {
-    setSubState({
-      ...subState,
-      speaker: null,
-    });
+    undoSubStateSpeaker(mutate, setUpdateTime, gameid, subState);
   }
 
   function lastFaction() {
@@ -400,7 +319,7 @@ function ActivePlayerColumn({activeFaction}) {
               <React.Fragment>
                 {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
                 {researchedTech.map((tech) => {
-                  return <TechRow key={tech.name} tech={tech} removeTech={(techName) => removeTech(activeFaction.name, techName)} />
+                  return <TechRow key={tech} tech={techs[tech]} removeTech={() => removeTech(activeFaction.name, tech)} />
                 })}
                 </div> : null}
                 {researchedTech.length < 2 ?
@@ -426,7 +345,7 @@ function ActivePlayerColumn({activeFaction}) {
                     } color={getFactionColor(faction)} style={{width: "100%"}}>
                       <React.Fragment>
                       {researchedTechs.map((tech) => {
-                        return <TechRow key={tech.name} tech={tech} removeTech={(techName) => removeTech(faction.name, techName)} />
+                        return <TechRow key={tech} tech={techs[tech]} removeTech={() => removeTech(faction.name, tech)} />
                       })}
                       {researchedTechs.length < maxTechs ?
                         <TechSelectHoverMenu techs={availableTechs} selectTech={(tech) => addTech(faction.name, tech)} />
@@ -446,8 +365,8 @@ function ActivePlayerColumn({activeFaction}) {
               <React.Fragment>
                 <div className='flexColumn' style={{alignItems: "stretch"}}>
                 {subState.speaker ? 
-                  <SelectableRow itemName={subState.speaker.name} removeItem={resetSpeaker} content={
-                    <BasicFactionTile faction={subState.speaker} />
+                  <SelectableRow itemName={subState.speaker} removeItem={resetSpeaker} content={
+                    <BasicFactionTile faction={factions[subState.speaker]} />
                   } />
                 : null}
                 {/* {(subState.speaker ?? []).map((planet) => {
@@ -462,7 +381,7 @@ function ActivePlayerColumn({activeFaction}) {
                         return null;
                       }
                       return (
-                        <button key={faction.name} style={{width: "160px"}} onClick={() => selectSpeaker(faction)}>{faction.name}</button>);
+                        <button key={faction.name} style={{width: "160px"}} onClick={() => selectSpeaker(faction.name)}>{faction.name}</button>);
                     })}
                   </div>} /> : null}
               </React.Fragment>}
@@ -575,7 +494,7 @@ function ActivePlayerColumn({activeFaction}) {
               <React.Fragment>
                 {conqueredPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
                 {conqueredPlanets.map((planet) => {
-                  return <PlanetRow key={planet.name} planet={planet} removePlanet={() => removePlanet(activeFaction.name, planet.name)} />
+                  return <PlanetRow key={planet} planet={planets[planet]} removePlanet={() => removePlanet(activeFaction.name, planet)} />
                 })}
                 </div> : null}
                 {claimablePlanets.length > 0 ?
@@ -592,7 +511,7 @@ function ActivePlayerColumn({activeFaction}) {
               <React.Fragment>
                 {scoredObjectives.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
                 {scoredObjectives.map((objective) => {
-                  return <ObjectiveRow key={objective.name} objective={objective} removeObjective={() => undoObjective(activeFaction.name, objective.name)} />
+                  return <ObjectiveRow key={objective} objective={objectives[objective]} removeObjective={() => undoObjective(activeFaction.name, objective)} />
                 })}
                 </div> : null}
                 {scorableObjectives.length > 0 && scoredObjectives.length < 4 ?

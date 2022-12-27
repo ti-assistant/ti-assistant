@@ -3,7 +3,6 @@ import useSWR from 'swr'
 import { BasicFactionTile } from './FactionTile';
 
 import { fetcher } from './util/api/util';
-import { FactionTile } from '/src/FactionCard.js'
 
 export function StrategyCard({ card, active, onClick, factionActions, opts = {} }) {
   const router = useRouter();

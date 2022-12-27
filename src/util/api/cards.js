@@ -134,3 +134,28 @@ export async function unassignStrategyCard(mutate, setUpdateTime, gameid, strate
   };
   await mutate(`/api/${gameid}/state`, fetcher(`/api/${gameid}/state`), opts);
 }
+
+export function assignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName, factionName) {
+  const data = {
+    action: "ASSIGN_STRATEGY_CARD",
+    card: cardName,
+    faction: factionName,
+  };
+
+  const updatedCards = {...strategyCards};
+  updatedCards[cardName].faction = factionName;
+  for (const [name, card] of Object.entries(updatedCards)) {
+    if (card.invalid) {
+      delete updatedCards[name].invalid;
+    }
+  }
+  if (factionName === "Naalu Collective") {
+    updatedCards[cardName].order = 0;
+  }
+
+  const options = {
+    optimisticData: updatedCards,
+  };
+  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
+}
+

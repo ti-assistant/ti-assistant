@@ -10,6 +10,9 @@ import { removeObjective, revealObjective } from '../util/api/objectives';
 import { claimPlanet, readyPlanets } from '../util/api/planets';
 import { useSharedUpdateTimes } from '../Updater';
 import { HoverMenu } from '../HoverMenu';
+import { LabeledDiv } from '../LabeledDiv';
+import { getFactionColor, getFactionName } from '../util/factions';
+import { finalizeSubState, hideSubStateObjective, revealSubStateObjective } from '../util/api/subState';
 
 export default function SetupPhase() {
   const router = useRouter();
@@ -20,8 +23,9 @@ export default function SetupPhase() {
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+  const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
-  const [ subState, setSubState ] = useState({});
+  // const [ subState, setSubState ] = useState({});
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
   const { setUpdateTime } = useSharedUpdateTimes();
 
@@ -60,6 +64,7 @@ export default function SetupPhase() {
   }
 
   function nextPhase(skipAgenda = false) {
+    finalizeSubState(mutate, setUpdateTime, gameid, subState);
     const data = {
       action: "ADVANCE_PHASE",
       skipAgenda: skipAgenda,
@@ -70,8 +75,8 @@ export default function SetupPhase() {
       }
       readyPlanets(mutate, setUpdateTime, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
     }
-    (subState.objectives ?? []).forEach((objective) => {
-      revealObjective(mutate, setUpdateTime, gameid, objectives, null, objective.name);
+    (subState.objectives ?? []).forEach((objectiveName) => {
+      revealObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
     });
     const activeFactionName = state.speaker;
     const phase = "STRATEGY";
@@ -88,19 +93,21 @@ export default function SetupPhase() {
   }
 
   function addObj(objective) {
-    setSubState({
-      ...subState,
-      objectives: [...(subState.objectives ?? []), objective],
-    })
+    revealSubStateObjective(mutate, setUpdateTime, gameid, subState, objective.name);
+    // setSubState({
+    //   ...subState,
+    //   objectives: [...(subState.objectives ?? []), objective],
+    // })
   }
 
   function removeObj(objectiveName) {
-    setSubState({
-      ...subState,
-      objectives: (subState.objectives ?? []).filter((objective) => objective.name !== objectiveName),
-    });
-    setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
-    removeObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
+    hideSubStateObjective(mutate, setUpdateTime, gameid, subState, objectiveName);
+    // setSubState({
+    //   ...subState,
+    //   objectives: (subState.objectives ?? []).filter((objective) => objective.name !== objectiveName),
+    // });
+    // setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
+    // removeObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
   }
 
   const stageOneObjectives = Object.values(objectives ?? {}).filter((objective) => objective.type === "stage-one");
@@ -115,7 +122,7 @@ export default function SetupPhase() {
 
   const flexBasis = 100 / Object.keys(factions ?? {}).length;
 
-  const revealedObjectiveNames = (subState.objectives ?? []).map((objective) => objective.name);
+  const revealedObjectiveNames = (subState.objectives ?? []);
   const availableObjectives = Object.values(objectives ?? {}).filter((objective) => {
     return objective.type === "stage-one" && !revealedObjectiveNames.includes(objective.name);
   });
@@ -140,14 +147,15 @@ export default function SetupPhase() {
         <li>Draw 2 secret objectives and keep one</li>
         <li>Re-shuffle secret objectives</li>
         <li>
-          <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-            <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+          <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
             Draw 5 stage one objectives and reveal 2
-          </div>
-        </li>
-        {(subState.objectives ?? []).map((objective) => {
-          return <ObjectiveRow objective={objective} removeObjective={() => removeObj(objective.name)} viewing={true} />;
-        })}
+            {(subState.objectives ?? []).length > 0 ? 
+              <LabeledDiv label="REVEALED OBJECTIVES">
+                {(subState.objectives ?? []).map((objectiveName) => {
+                  return <ObjectiveRow objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
+                })}
+              </LabeledDiv>
+            : null}
         {(subState.objectives ?? []).length < 2 ? 
           <HoverMenu label="Reveal Objective" direction="up">
             <div className='flexColumn' style={{gap: "4px", alignItems: "stretch", whiteSpace: "nowrap", padding: "8px"}}>
@@ -160,11 +168,12 @@ export default function SetupPhase() {
             </div>
           </HoverMenu>
         : null}
+          </LabeledDiv>
+        </li>
         <li>
-          <div className="flexRow" style={{gap: "8px", whiteSpace: "nowrap"}}>
-            <BasicFactionTile faction={factions[state.speaker]} speaker={true} opts={{fontSize: "18px"}} />
+          <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
             Draw 5 stage two objectives
-          </div>
+          </LabeledDiv>
         </li>
       </ol>
       {!factionTechChoicesComplete() ?
@@ -173,7 +182,7 @@ export default function SetupPhase() {
       {!factionSubFactionChoicesComplete() ?
         <div style={{color: "darkred"}}>Select Council Keleres sub-faction</div> :
         null}
-      {(subState.objectives).length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
+      {(subState.objectives ?? []).length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
       <button disabled={!statusPhaseComplete()} style={{fontSize: "24px"}} onClick={() => nextPhase()}>Start Game</button>
     </div>
   );

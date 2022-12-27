@@ -1,3 +1,4 @@
+import { getOnDeckFaction } from '../helpers';
 import { fetcher, poster } from './util'
 
 export function setSpeaker(mutate, setUpdateTime, gameid, state, speaker, factions) {
@@ -7,7 +8,7 @@ export function setSpeaker(mutate, setUpdateTime, gameid, state, speaker, factio
   };
 
   const updatedState = {...state};
-  state.speaker = speaker;
+  updatedState.speaker = speaker;
 
   const options = {
     optimisticData: updatedState,
@@ -32,4 +33,19 @@ export function setSpeaker(mutate, setUpdateTime, gameid, state, speaker, factio
   };
 
   mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`), opts);
+}
+
+export async function nextPlayer(mutate, setUpdateTime, gameid, state, factions, strategyCards) {
+  const data = {
+    action: "ADVANCE_PLAYER",
+  };
+  
+  const updatedState = {...state};
+  const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
+  state.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
+
+  const options = {
+    optimisticData: updatedState,
+  };
+  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
 }

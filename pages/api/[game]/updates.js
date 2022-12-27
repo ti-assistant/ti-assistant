@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   const updates = {};
-  Object.entries(gameRef.data().updates).forEach(([name, val]) => {
+  Object.entries(gameRef.data().updates ?? {}).forEach(([name, val]) => {
     updates[name] = {
       timestamp: val.timestamp.toMillis(),
     };

@@ -71,6 +71,7 @@ export default async function handler(req, res) {
         [factionString]: FieldValue.delete(),
         "state.activeplayer": currentFaction,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
+        [`updates.state.timestamp`]: Timestamp.fromMillis(data.timestamp),
       };
       let numPickedCards = 0;
       for (const [name, card] of Object.entries(gameRef.data().strategycards)) {

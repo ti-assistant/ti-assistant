@@ -1,6 +1,6 @@
-export function SelectableRow({itemName, children, content, selectItem, removeItem}) {
+export function SelectableRow({itemName, children, content, selectItem, removeItem, style}) {
   return (
-    <div className="selectableRow">
+    <div className="selectableRow" style={style}>
       {selectItem ? 
         <div
           className="icon clickable positive"
