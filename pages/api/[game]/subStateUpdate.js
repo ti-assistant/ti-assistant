@@ -29,6 +29,15 @@ export default async function handler(req, res) {
       };
       break;
     }
+    case "SET_ACTION": {
+      updates = {
+        "subState": {
+          selectedAction: data.actionName,
+        },
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "SET_SPEAKER": {
       updates = {
         "subState.speaker": data.factionName,
@@ -106,7 +115,7 @@ export default async function handler(req, res) {
       break;
     }
     case "FINALIZE_SUB_STATE": {
-      const subState = gameRef.data().subState;
+      const subState = gameRef.data().subState ?? {};
       updates = {
         "subState": FieldValue.delete(),
         [timestampString]: timestamp,

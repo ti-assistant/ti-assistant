@@ -16,7 +16,8 @@ export default function SummaryColumn() {
   const [ showTechModal, setShowTechModal ] = useState(false);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ showPlanetModal, setShowPlanetModal ] = useState(false);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   if (!options || !factions) {
     return <div>Loading...</div>;
@@ -34,7 +35,7 @@ export default function SummaryColumn() {
   const showPlanets = options['faction-summary-show-planets'] ?? true;
   
   function setOption(optionName, value) {
-    updateOption(mutate, setUpdateTime, gameid, options, optionName, value);
+    updateOption(mutate, gameid, options, optionName, value);
   }
 
   let maxSummaryWidth = "400px";

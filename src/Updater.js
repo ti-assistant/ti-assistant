@@ -65,7 +65,7 @@ export function Updater({}) {
   const planetsUpdate = (localUpdates.planets ?? {}).timestamp ?? 0;
   const strategycardsUpdate = (localUpdates.strategycards ?? {}).timestamp ?? 0;
   const stateUpdate = (localUpdates.state ?? {}).timestamp ?? 0;
-  const subStateUpdate = (localUpdates.subState ?? {}).timestamp ?? 0;
+  const subStateUpdate = (localUpdates.substate ?? {}).timestamp ?? 0;
   const timersUpdate = (localUpdates.timers ?? {}).timestamp ?? 0;
 
   useEffect(() => {

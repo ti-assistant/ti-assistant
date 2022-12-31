@@ -194,7 +194,6 @@ function FactionContent() {
   const { data: techs, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs` : null, fetcher);
   const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
-  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -230,36 +229,36 @@ function FactionContent() {
   }
 
   function removePlanet(toRemove) {
-    unclaimPlanet(mutate, setUpdateTime, gameid, planets, toRemove, playerFaction);
+    unclaimPlanet(mutate, gameid, planets, toRemove, playerFaction);
   }
 
   function addPlanet(toAdd) {
-    claimPlanet(mutate, setUpdateTime, gameid, planets, toAdd, playerFaction, options);
+    claimPlanet(mutate, gameid, planets, toAdd, playerFaction, options);
   }
   
   function removeTech(toRemove) {
-    lockTech(mutate, setUpdateTime, gameid, factions, playerFaction, toRemove);
+    lockTech(mutate, gameid, factions, playerFaction, toRemove);
   }
 
   function addTech(toAdd) {
-    unlockTech(mutate, setUpdateTime, gameid, factions, playerFaction, toAdd);
+    unlockTech(mutate, gameid, factions, playerFaction, toAdd);
   }
 
   function readyAll() {
     const planetNames = ownedPlanets.map((planet) => planet.name);
-    readyPlanets(mutate, setUpdateTime, gameid, planets, planetNames, playerFaction);
+    readyPlanets(mutate, gameid, planets, planetNames, playerFaction);
   }
 
   function exhaustAll() {
     const planetNames = ownedPlanets.map((planet) => planet.name);
-    exhaustPlanets(mutate, setUpdateTime, gameid, planets, planetNames, playerFaction);
+    exhaustPlanets(mutate, gameid, planets, planetNames, playerFaction);
   }
 
   function updatePlanet(name, updatedPlanet) {
     if (updatedPlanet.ready) {
-      readyPlanets(mutate, setUpdateTime, gameid, planets, [name], playerFaction);
+      readyPlanets(mutate, gameid, planets, [name], playerFaction);
     } else {
-      exhaustPlanets(mutate, setUpdateTime, gameid, planets, [name], playerFaction);
+      exhaustPlanets(mutate, gameid, planets, [name], playerFaction);
     }
   }
   

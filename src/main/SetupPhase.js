@@ -27,7 +27,8 @@ export default function SetupPhase() {
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   // const [ subState, setSubState ] = useState({});
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   if (!state || !planets || !factions || !objectives || !options) {
     return <div>Loading...</div>;
@@ -64,19 +65,19 @@ export default function SetupPhase() {
   }
 
   function nextPhase(skipAgenda = false) {
-    finalizeSubState(mutate, setUpdateTime, gameid, subState);
+    finalizeSubState(mutate, gameid, subState);
     const data = {
       action: "ADVANCE_PHASE",
       skipAgenda: skipAgenda,
     };
     if (factions['Council Keleres']) {
       for (const planet of factions['Council Keleres'].startswith.planets) {
-        claimPlanet(mutate, setUpdateTime, gameid, planets, planet, "Council Keleres", options);
+        claimPlanet(mutate, gameid, planets, planet, "Council Keleres", options);
       }
-      readyPlanets(mutate, setUpdateTime, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
+      readyPlanets(mutate, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
     }
     (subState.objectives ?? []).forEach((objectiveName) => {
-      revealObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
+      revealObjective(mutate, gameid, objectives, null, objectiveName);
     });
     const activeFactionName = state.speaker;
     const phase = "STRATEGY";
@@ -89,11 +90,11 @@ export default function SetupPhase() {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), updateOptions);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), updateOptions);
   }
 
   function addObj(objective) {
-    revealSubStateObjective(mutate, setUpdateTime, gameid, subState, objective.name);
+    revealSubStateObjective(mutate, gameid, subState, objective.name);
     // setSubState({
     //   ...subState,
     //   objectives: [...(subState.objectives ?? []), objective],
@@ -101,13 +102,13 @@ export default function SetupPhase() {
   }
 
   function removeObj(objectiveName) {
-    hideSubStateObjective(mutate, setUpdateTime, gameid, subState, objectiveName);
+    hideSubStateObjective(mutate, gameid, subState, objectiveName);
     // setSubState({
     //   ...subState,
     //   objectives: (subState.objectives ?? []).filter((objective) => objective.name !== objectiveName),
     // });
     // setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
-    // removeObjective(mutate, setUpdateTime, gameid, objectives, null, objectiveName);
+    // removeObjective(mutate, gameid, objectives, null, objectiveName);
   }
 
   const stageOneObjectives = Object.values(objectives ?? {}).filter((objective) => objective.type === "stage-one");

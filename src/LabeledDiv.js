@@ -10,7 +10,7 @@ export function LabeledDiv({label, children, style = {}, color = "#999", content
         width: "100%",
         boxSizing: "border-box",
         margin: "8px 0px",
-        padding: "8px 8px",
+        padding: "10px 8px 8px 8px",
         alignItems: "flex-start",
         paddingTop: "12px",
         ...style,
@@ -24,7 +24,7 @@ export function LabeledDiv({label, children, style = {}, color = "#999", content
           backgroundColor: "#222",
           borderRadius: "5px",
           padding: "2px 4px",
-          color: `${color}`}}
+          color: `${color === "Black" ? "#999" : color}`}}
       >
         {label}
       </div>

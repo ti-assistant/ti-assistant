@@ -25,6 +25,7 @@ import { LabeledDiv } from "../../../src/LabeledDiv";
 import { StrategyCard } from "../../../src/StrategyCard";
 import { assignStrategyCard } from "../../../src/util/api/cards";
 import { nextPlayer } from "../../../src/util/api/state";
+import { ActivePlayerColumn, AdditionalActions, FactionActionButtons, FactionActions, NextPlayerButtons } from "../../../src/main/ActionPhase";
 
 const techOrder = [
   "green",
@@ -40,16 +41,18 @@ function PhaseSection() {
   const { game: gameid, faction: factionName } = router.query;
   const { data: factions = {}, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state = {}, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: subState = {}, error: subStateError } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   if (!state) {
     return null;
   }
 
   function assignCard(card) {
-    assignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, card.name, factionName);
-    nextPlayer(mutate, setUpdateTime, gameid, state, factions, strategyCards);
+    assignStrategyCard(mutate, gameid, strategyCards, card.name, factionName);
+    nextPlayer(mutate, gameid, state, factions, strategyCards);
   }
 
   let phaseName = `${state.phase} PHASE`;
@@ -76,14 +79,25 @@ function PhaseSection() {
       break;
     case "ACTION":
       if (factionName === state.activeplayer) {
-        phaseName = "SELECT ACTIONS";
+        phaseName = "ACTION PHASE";
         phaseContent = 
-          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
-          {Object.values(strategyCards).filter((card) => !card.faction)
-            .map((card) => {
-              return <StrategyCard key={card.name} card={card} active={true} onClick={() => assignCard(card)} />;
-            })}
-          </div>;
+          <React.Fragment>
+            <FactionActionButtons factionName={factionName} />
+            <AdditionalActions
+              factionName={factionName}
+              visible={!!subState.selectedAction}
+              style={{width: "100%"}}
+              hoverMenuStyle={{maxHeight: "60vh", maxWidth: "90vw"}} />
+            {subState.selectedAction ? <div className="flexRow" style={{width: "100%", paddingTop: "8px"}}>
+              <NextPlayerButtons factionName={factionName} buttonStyle={{fontSize: "20px"}} />
+            </div> : null}
+          </React.Fragment>;
+          // <React.Fragment>
+
+          //   <AdditionalActions visible={!!subState.selectedAction} />
+          // </React.Fragment>;
+      } else if (subState.selectedAction === "Technology") {
+        // TODO: Let faction select technology.
       }
   }
   if (!phaseContent) {
@@ -296,7 +310,6 @@ function FactionContent() {
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
 
-  const { setUpdateTime } = useSharedUpdateTimes();
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -332,36 +345,36 @@ function FactionContent() {
   }
 
   function removePlanet(toRemove) {
-    unclaimPlanet(mutate, setUpdateTime, gameid, planets, toRemove, playerFaction);
+    unclaimPlanet(mutate, gameid, planets, toRemove, playerFaction);
   }
 
   function addPlanet(toAdd) {
-    claimPlanet(mutate, setUpdateTime, gameid, planets, toAdd, playerFaction, options);
+    claimPlanet(mutate, gameid, planets, toAdd, playerFaction, options);
   }
   
   function removeTech(toRemove) {
-    lockTech(mutate, setUpdateTime, gameid, factions, playerFaction, toRemove);
+    lockTech(mutate, gameid, factions, playerFaction, toRemove);
   }
 
   function addTech(toAdd) {
-    unlockTech(mutate, setUpdateTime, gameid, factions, playerFaction, toAdd);
+    unlockTech(mutate, gameid, factions, playerFaction, toAdd);
   }
 
   function readyAll() {
     const planetNames = ownedPlanets.map((planet) => planet.name);
-    readyPlanets(mutate, setUpdateTime, gameid, planets, planetNames, playerFaction);
+    readyPlanets(mutate, gameid, planets, planetNames, playerFaction);
   }
 
   function exhaustAll() {
     const planetNames = ownedPlanets.map((planet) => planet.name);
-    exhaustPlanets(mutate, setUpdateTime, gameid, planets, planetNames, playerFaction);
+    exhaustPlanets(mutate, gameid, planets, planetNames, playerFaction);
   }
 
   function updatePlanet(name, updatedPlanet) {
     if (updatedPlanet.ready) {
-      readyPlanets(mutate, setUpdateTime, gameid, planets, [name], playerFaction);
+      readyPlanets(mutate, gameid, planets, [name], playerFaction);
     } else {
-      exhaustPlanets(mutate, setUpdateTime, gameid, planets, [name], playerFaction);
+      exhaustPlanets(mutate, gameid, planets, [name], playerFaction);
     }
   }
   

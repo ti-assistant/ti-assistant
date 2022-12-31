@@ -1,6 +1,6 @@
 import { poster } from "./util";
 
-export function saveFactionTimer(mutate, setUpdateTime, gameid, timers, factionName, factionTimer) {
+export function saveFactionTimer(mutate, gameid, timers, factionName, factionTimer) {
   const data = {
     action: "SAVE_FACTION_TIMER",
     faction: factionName,
@@ -15,10 +15,10 @@ export function saveFactionTimer(mutate, setUpdateTime, gameid, timers, factionN
     optimisticData: updatedTimers,
   };
 
-  mutate(`/api/${gameid}/timers`, poster(`/api/${gameid}/timerUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/timers`, poster(`/api/${gameid}/timerUpdate`, data), options);
 }
 
-export function saveGameTimer(mutate, setUpdateTime, gameid, timers, timer) {
+export function saveGameTimer(mutate, gameid, timers, timer) {
   const data = {
     action: "SET_GAME_TIMER",
     timer: timer,
@@ -31,5 +31,5 @@ export function saveGameTimer(mutate, setUpdateTime, gameid, timers, timer) {
     optimisticData: updatedTimers,
   };
 
-  mutate(`/api/${gameid}/timers`, poster(`/api/${gameid}/timerUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/timers`, poster(`/api/${gameid}/timerUpdate`, data), options);
 }

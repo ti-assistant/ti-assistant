@@ -1,6 +1,6 @@
 import { fetcher, poster } from './util'
 
-export async function passFaction(mutate, setUpdateTime, gameid, factions, factionName) {
+export async function passFaction(mutate, gameid, factions, factionName) {
   const data = {
     action: "PASS",
     faction: factionName,
@@ -15,10 +15,10 @@ export async function passFaction(mutate, setUpdateTime, gameid, factions, facti
     optimisticData: updatedFactions,
   };
 
-  return mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
+  return mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }
 
-export function readyAllFactions(mutate, setUpdateTime, gameid, factions) {
+export function readyAllFactions(mutate, gameid, factions) {
   const data = {
     action: "READY_ALL",
     returnAll: true,
@@ -34,10 +34,10 @@ export function readyAllFactions(mutate, setUpdateTime, gameid, factions) {
     optimisticData: updatedFactions,
   };
 
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }
 
-export function manualVPUpdate(mutate, setUpdateTime, gameid, factions, factionName, value) {
+export function manualVPUpdate(mutate, gameid, factions, factionName, value) {
   const data = {
     action: "MANUAL_VP_ADJUST",
     faction: factionName,
@@ -53,10 +53,10 @@ export function manualVPUpdate(mutate, setUpdateTime, gameid, factions, factionN
     optimisticData: updatedFactions,
   };
 
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }
 
-export function chooseSubFaction(mutate, setUpdateTime, gameid, factions, factionName, subFactionName) {
+export function chooseSubFaction(mutate, gameid, factions, factionName, subFactionName) {
   const data = {
     action: "CHOOSE_SUB_FACTION",
     faction: factionName,
@@ -93,5 +93,5 @@ export function chooseSubFaction(mutate, setUpdateTime, gameid, factions, factio
     optimisticData: updatedFactions,
   };
 
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }

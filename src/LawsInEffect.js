@@ -12,10 +12,11 @@ export function LawsInEffect({}) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   function removeAgenda(agendaName) {
-    repealAgenda(mutate, setUpdateTime, gameid, agendas, agendaName);
+    repealAgenda(mutate, gameid, agendas, agendaName);
   } 
 
   const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {

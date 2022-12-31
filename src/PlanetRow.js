@@ -174,7 +174,8 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const [showAttachMenu, setShowAttachMenu] = useState(false);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   if (attachmentsError) {
     return (<div>Failed to load attachments</div>);
@@ -245,9 +246,9 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
 
   function toggleAttachment(name) {
     if (attachments[name].planets.includes(planet.name)) {
-      removeFromPlanet(mutate, setUpdateTime, gameid, attachments, planet.name, name);
+      removeFromPlanet(mutate, gameid, attachments, planet.name, name);
     } else {
-      attachToPlanet(mutate, setUpdateTime, gameid, attachments, planet.name, name, options);
+      attachToPlanet(mutate, gameid, attachments, planet.name, name, options);
     }
   }
 

@@ -10,7 +10,7 @@ export function hasTech(faction, tech) {
   return !!faction.techs[tech];
 }
 
-export function attachToPlanet(mutate, setUpdateTime, gameid, attachments, planetName, attachmentName, gameOptions) {
+export function attachToPlanet(mutate, gameid, attachments, planetName, attachmentName, gameOptions) {
   const data = {
     action: "ATTACH_TO_PLANET",
     attachment: attachmentName,
@@ -29,10 +29,10 @@ export function attachToPlanet(mutate, setUpdateTime, gameid, attachments, plane
     optimisticData: updatedAttachments,
   };
 
-  mutate(`/api/${gameid}/attachments`, poster(`/api/${gameid}/attachmentUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/attachments`, poster(`/api/${gameid}/attachmentUpdate`, data), options);
 }
 
-export function removeFromPlanet(mutate, setUpdateTime, gameid, attachments, planetName, attachmentName) {
+export function removeFromPlanet(mutate, gameid, attachments, planetName, attachmentName) {
   const data = {
     action: "REMOVE_FROM_PLANET",
     attachment: attachmentName,
@@ -47,5 +47,5 @@ export function removeFromPlanet(mutate, setUpdateTime, gameid, attachments, pla
     optimisticData: updatedAttachments,
   };
 
-  mutate(`/api/${gameid}/attachments`, poster(`/api/${gameid}/attachmentUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/attachments`, poster(`/api/${gameid}/attachmentUpdate`, data), options);
 }

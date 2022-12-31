@@ -14,7 +14,8 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
   const { mutate } = useSWRConfig();
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   if (factionsError) {
     return (<div>Failed to load factions</div>);
@@ -27,7 +28,7 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
   }
 
   function selectSpeaker(name) {
-    setSpeaker(mutate, setUpdateTime, gameid, state, name, factions);
+    setSpeaker(mutate, gameid, state, name, factions);
     onComplete(true);
   }
 

@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { useSharedUpdateTimes } from '../../Updater';
 
 function genCookie(length) {
   let result = '';
@@ -54,8 +55,9 @@ function getUpdatedEndpoint(url) {
   return "";
 }
 
-export async function poster(url, data, setUpdateTime) {
+export async function poster(url, data) {
   data.timestamp = Date.now();
+  const { setUpdateTime } = useSharedUpdateTimes();
   setUpdateTime(getUpdatedEndpoint(url), data.timestamp);
   const res = await fetch(url, {
     method: "POST",

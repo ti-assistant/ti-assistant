@@ -1,7 +1,7 @@
 import { setSpeaker } from './state';
 import { fetcher, poster } from './util'
 
-export function clearSubState(mutate, setUpdateTime, gameid, subState) {
+export function clearSubState(mutate, gameid, subState) {
   const data = {
     action: "CLEAR_SUB_STATE",
   };
@@ -12,26 +12,43 @@ export function clearSubState(mutate, setUpdateTime, gameid, subState) {
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  return mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function setSubStateSpeaker(mutate, setUpdateTime, gameid, subState, factionName) {
+export function setSubStateSelectedAction(mutate, gameid, subState, actionName) {
+  const data = {
+    action: "SET_ACTION",
+    actionName: actionName,
+  };
+
+  const updatedSubState = {
+    selectedAction: actionName,
+  };
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+export function setSubStateSpeaker(mutate, gameid, subState, factionName) {
   const data = {
     action: "SET_SPEAKER",
     factionName: factionName,
   };
 
   const updatedSubState = {...subState};
-  updatedSubState.speaker = speaker;
+  updatedSubState.speaker = factionName;
 
   const options = {
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function undoSubStateSpeaker(mutate, setUpdateTime, gameid, subState) {
+export function undoSubStateSpeaker(mutate, gameid, subState) {
   const data = {
     action: "UNDO_SPEAKER",
   };
@@ -43,10 +60,10 @@ export function undoSubStateSpeaker(mutate, setUpdateTime, gameid, subState) {
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function addSubStateTech(mutate, setUpdateTime, gameid, subState, factionName, techName) {
+export function addSubStateTech(mutate, gameid, subState, factionName, techName) {
   const data = {
     action: "ADD_TECH",
     factionName: factionName,
@@ -69,10 +86,10 @@ export function addSubStateTech(mutate, setUpdateTime, gameid, subState, faction
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function removeSubStateTech(mutate, setUpdateTime, gameid, subState, factionName, techName) {
+export function removeSubStateTech(mutate, gameid, subState, factionName, techName) {
   const data = {
     action: "REMOVE_TECH",
     factionName: factionName,
@@ -96,10 +113,10 @@ export function removeSubStateTech(mutate, setUpdateTime, gameid, subState, fact
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function addSubStatePlanet(mutate, setUpdateTime, gameid, subState, factionName, planetName) {
+export function addSubStatePlanet(mutate, gameid, subState, factionName, planetName) {
   const data = {
     action: "ADD_PLANET",
     factionName: factionName,
@@ -122,10 +139,10 @@ export function addSubStatePlanet(mutate, setUpdateTime, gameid, subState, facti
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function removeSubStatePlanet(mutate, setUpdateTime, gameid, subState, factionName, planetName) {
+export function removeSubStatePlanet(mutate, gameid, subState, factionName, planetName) {
   const data = {
     action: "REMOVE_PLANET",
     factionName: factionName,
@@ -149,10 +166,10 @@ export function removeSubStatePlanet(mutate, setUpdateTime, gameid, subState, fa
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function scoreSubStateObjective(mutate, setUpdateTime, gameid, subState, factionName, objectiveName) {
+export function scoreSubStateObjective(mutate, gameid, subState, factionName, objectiveName) {
   const data = {
     action: "SCORE_OBJECTIVE",
     factionName: factionName,
@@ -175,10 +192,10 @@ export function scoreSubStateObjective(mutate, setUpdateTime, gameid, subState, 
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function unscoreSubStateObjective(mutate, setUpdateTime, gameid, subState, factionName, objectiveName) {
+export function unscoreSubStateObjective(mutate, gameid, subState, factionName, objectiveName) {
   const data = {
     action: "UNSCORE_OBJECTIVE",
     factionName: factionName,
@@ -202,10 +219,10 @@ export function unscoreSubStateObjective(mutate, setUpdateTime, gameid, subState
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function revealSubStateObjective(mutate, setUpdateTime, gameid, subState, objectiveName) {
+export function revealSubStateObjective(mutate, gameid, subState, objectiveName) {
   const data = {
     action: "REVEAL_OBJECTIVE",
     objectiveName: objectiveName,
@@ -221,10 +238,10 @@ export function revealSubStateObjective(mutate, setUpdateTime, gameid, subState,
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function hideSubStateObjective(mutate, setUpdateTime, gameid, subState, objectiveName) {
+export function hideSubStateObjective(mutate, gameid, subState, objectiveName) {
   const data = {
     action: "HIDE_OBJECTIVE",
     objectiveName: objectiveName,
@@ -240,10 +257,10 @@ export function hideSubStateObjective(mutate, setUpdateTime, gameid, subState, o
     optimisticData: updatedSubState,
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function finalizeSubState(mutate, setUpdateTime, gameid, subState) {
+export function finalizeSubState(mutate, gameid, subState) {
   const data = {
     action: "FINALIZE_SUB_STATE",
   };
@@ -252,5 +269,5 @@ export function finalizeSubState(mutate, setUpdateTime, gameid, subState) {
     optimisticData: {},
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data, setUpdateTime), options);
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }

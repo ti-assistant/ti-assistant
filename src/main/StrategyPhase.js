@@ -33,7 +33,8 @@ export default function StrategyPhase() {
   const [ infoModal, setInfoModal ] = useState({
     show: false,
   });
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   if (!factions || !state || !strategyCards) {
     return <div>Loading...</div>;
@@ -66,9 +67,9 @@ export default function StrategyPhase() {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
 
-    readyAllFactions(mutate, setUpdateTime, gameid, factions);
+    readyAllFactions(mutate, gameid, factions);
   }
 
   async function nextPlayer() {
@@ -83,7 +84,7 @@ export default function StrategyPhase() {
     const options = {
       optimisticData: updatedState,
     };
-    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
+    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
   }
 
   function showInfoModal(title, content) {
@@ -115,7 +116,7 @@ export default function StrategyPhase() {
       optimisticData: updatedCards,
     };
     await nextPlayer();
-    mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data, setUpdateTime), options);
+    mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
   }
 
   function getStartOfStrategyPhaseAbilities() {
@@ -210,21 +211,21 @@ export default function StrategyPhase() {
         }
       }
     });
-    unassignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName, state);
+    unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
   }
 
   function publicDisgrace(cardName) {
-    unassignStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName, state);
+    unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
   }
 
   function quantumDatahubNode(factionName) {
     const factionCard = Object.values(strategyCards).find((card) => card.faction === factionName);
     const hacanCard = Object.values(strategyCards).find((card) => card.faction === "Emirates of Hacan");
-    swapStrategyCards(mutate, setUpdateTime, gameid, strategyCards, factionCard, hacanCard);
+    swapStrategyCards(mutate, gameid, strategyCards, factionCard, hacanCard);
   }
 
   function giftOfPrescience(cardName) {
-    setFirstStrategyCard(mutate, setUpdateTime, gameid, strategyCards, cardName);
+    setFirstStrategyCard(mutate, gameid, strategyCards, cardName);
   }
 
   const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);

@@ -22,7 +22,8 @@ export function AttachRow({ attachment, currentPlanet }) {
   const { game: gameid, faction: playerFaction } = router.query;
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   function isSkip() {
     return attachment.attribute.includes("skip");
@@ -74,9 +75,9 @@ export function AttachRow({ attachment, currentPlanet }) {
 
   function toggleAttachment() {
     if (attachment.planets.includes(currentPlanet)) {
-      removeFromPlanet(mutate, setUpdateTime, gameid, attachments, currentPlanet, attachment.name);
+      removeFromPlanet(mutate, gameid, attachments, currentPlanet, attachment.name);
     } else {
-      attachToPlanet(mutate, setUpdateTime, gameid, attachments, currentPlanet, attachment.name, options);
+      attachToPlanet(mutate, gameid, attachments, currentPlanet, attachment.name, options);
     }
   }
 

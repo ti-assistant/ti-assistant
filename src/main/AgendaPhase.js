@@ -133,7 +133,8 @@ export default function AgendaPhase() {
   const [ speakerTieBreak, setSpeakerTieBreak ] = useState(null);
   const [ miscount, setMiscount ] = useState(false);
   const { currentAgenda, advanceAgendaPhase, resetAgendaPhase } = useSharedCurrentAgenda();
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   if (!agendas || !factions || !planets || !strategycards || !objectives || !state) {
     return <div>Loading...</div>;
@@ -171,14 +172,14 @@ export default function AgendaPhase() {
     }
     const target = isTie ? speakerTieBreak : selectedTargets[0];
     if (subAgenda) {
-      resolveAgenda(mutate, setUpdateTime, gameid, agendas, subAgenda.name, target);
-      resolveAgenda(mutate, setUpdateTime, gameid, agendas, agenda.name, subAgenda.name);
+      resolveAgenda(mutate, gameid, agendas, subAgenda.name, target);
+      resolveAgenda(mutate, gameid, agendas, agenda.name, subAgenda.name);
     } else {
-      resolveAgenda(mutate, setUpdateTime, gameid, agendas, agenda.name, target);
+      resolveAgenda(mutate, gameid, agendas, agenda.name, target);
     }
     if (agenda.name === "Miscount Disclosed") {
       setAgenda(agendas[target]);
-      repealAgenda(mutate, setUpdateTime, gameid, agendas, target);
+      repealAgenda(mutate, gameid, agendas, target);
       setMiscount(true);
     } else {
       setAgenda(null);
@@ -210,7 +211,7 @@ export default function AgendaPhase() {
       optimisticData: updatedState,
     };
 
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data, setUpdateTime), options);
+    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
   }
 
   function showInfoModal(title, content) {

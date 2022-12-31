@@ -112,7 +112,8 @@ export function GameTimer({}) {
   const { paused, pause, unpause } = useSharedPause();
 
   const { data: timers, timersError } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   useEffect(() => {
     if (paused) {
@@ -120,7 +121,7 @@ export function GameTimer({}) {
     }
 
     if (timers && gameTimer % 15 === 0) {
-      saveGameTimer(mutate, setUpdateTime, gameid, timers, gameTimer);
+      saveGameTimer(mutate, gameid, timers, gameTimer);
     }
 
     const timeout = setTimeout(() => {
@@ -174,7 +175,8 @@ export function FactionTimer({ factionName }) {
   const { paused } = useSharedPause();
   // const [ paused, setPaused ] = useState(false);
   const { data: timers, timersError } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
-  const { setUpdateTime } = useSharedUpdateTimes();
+  
+
 
   useEffect(() => {
     if (paused) {
@@ -182,7 +184,7 @@ export function FactionTimer({ factionName }) {
     }
 
     if (timers && factionTimer % 5 === 0) {
-      saveFactionTimer(mutate, setUpdateTime, gameid, timers, factionName, factionTimer);
+      saveFactionTimer(mutate, gameid, timers, factionName, factionTimer);
     }
 
     const timeout = setTimeout(() => {
