@@ -1,6 +1,7 @@
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
 import { fetchStrategyCards } from '../../../server/util/fetch';
+import { computeVotes } from '../../../src/main/AgendaPhase';
 import { getOnDeckFaction } from '../../../src/util/helpers';
 
 export default async function handler(req, res) {
@@ -17,6 +18,14 @@ export default async function handler(req, res) {
 
   if (!gameRef.exists) {
     res.status(404);
+  }
+
+  let tech = data.techName;
+  if (tech) {
+    tech = tech.replace(" Ω", "");
+    if (tech === "Light/Wave Deflector") {
+      tech = "LightWave Deflector";
+    }
   }
 
   let updates;
@@ -55,7 +64,7 @@ export default async function handler(req, res) {
     case "ADD_TECH": {
       const techString = `subState.factions.${data.factionName}.techs`;
       updates = {
-        [techString]: FieldValue.arrayUnion(data.techName),
+        [techString]: FieldValue.arrayUnion(tech),
         [timestampString]: timestamp,
       };
       break;
@@ -63,7 +72,7 @@ export default async function handler(req, res) {
     case "REMOVE_TECH": {
       const techString = `subState.factions.${data.factionName}.techs`;
       updates = {
-        [techString]: FieldValue.arrayRemove(data.techName),
+        [techString]: FieldValue.arrayRemove(tech),
         [timestampString]: timestamp,
       };
       break;
@@ -100,6 +109,17 @@ export default async function handler(req, res) {
       };
       break;
     }
+    case "CAST_VOTES": {
+      const voteString = `subState.factions.${data.factionName}.votes`;
+      const targetString = `subState.factions.${data.factionName}.target`;
+      updates = {
+        [voteString]: data.numVotes,
+        [targetString]: data.target,
+        [timestampString]: timestamp,
+        "subState.tieBreak": FieldValue.delete(),
+      }
+      break;
+    }
     case "REVEAL_OBJECTIVE": {
       updates = {
         "subState.objectives": FieldValue.arrayUnion(data.objectiveName),
@@ -114,6 +134,36 @@ export default async function handler(req, res) {
       };
       break;
     }
+    case "REVEAL_AGENDA": {
+      updates = {
+        "subState.agenda": data.agendaName,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "HIDE_AGENDA": {
+      updates = {
+        "subState.agenda": FieldValue.delete(),
+        [timestampString]: timestamp,
+        "subState.tieBreak": FieldValue.delete(),
+        "subState.outcome": FieldValue.delete(),
+      };
+      Object.keys(gameRef.data().factions).forEach((factionName) => {
+        const voteString = `subState.factions.${factionName}.votes`;
+        const targetString = `subState.factions.${factionName}.target`;
+        updates[voteString] = FieldValue.delete();
+        updates[targetString] = FieldValue.delete();
+      });
+      break;
+    }
+    case "SET_OTHER_FIELD": {
+      const newFieldString = `subState.${data.fieldName}`
+      updates = {
+        [newFieldString]: data.value,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "FINALIZE_SUB_STATE": {
       const subState = gameRef.data().subState ?? {};
       updates = {
@@ -123,6 +173,16 @@ export default async function handler(req, res) {
       if (subState.speaker) {
         updates[`state.speaker`] = subState.speaker;
         updates[`updates.state.timestamp`] = timestamp;
+        updates[`updates.factions.timestamp`] = timestamp;
+        const currentOrder = gameRef.data().factions[subState.speaker].order;
+        for (const [name, faction] of Object.entries(gameRef.data().factions)) {
+          let factionOrder = faction.order - currentOrder + 1;
+          if (factionOrder < 1) {
+            factionOrder += Object.keys(gameRef.data().factions).length;
+          }
+          const factionString = `factions.${name}.order`;
+          updates[factionString] = factionOrder;
+        }
       }
       (subState.objectives ?? []).forEach((objective) => {
         updates[`objectives.${objective}.selected`] = true;

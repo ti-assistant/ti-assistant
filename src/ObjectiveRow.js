@@ -95,6 +95,10 @@ function InfoContent({objective}) {
 export function ObjectiveRow({faction, objective, addObjective, removeObjective, scoreObjective, viewing, hideScorers}) {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
+  if (!objective) {
+    return null;
+  }
+
   function displayInfo() {
     setShowInfoModal(true);
   }

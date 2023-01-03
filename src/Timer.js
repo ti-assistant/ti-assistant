@@ -7,7 +7,7 @@ import { hasTech } from './util/api/techs';
 import { fetcher } from './util/api/util';
 import { useBetween } from 'use-between';
 import { useSharedUpdateTimes } from './Updater';
-import { saveFactionTimer, saveGameTimer } from './util/api/timers';
+import { saveAgendaTimer, saveFactionTimer, saveGameTimer } from './util/api/timers';
 
 const useCurrentAgenda = () => {
   const [currentAgenda, setCurrentAgenda] = useState(1);
@@ -42,28 +42,61 @@ export function TimerDisplay({ time }) {
   const minutes = Math.floor(time % 3600 / 60);
   const seconds = time % 60;
 
-  return <div className="flexRow" style={{width: "132px", fontSize: "24px"}}>
+  return <div className="flexRow" style={{width: "160px", fontSize: "24px"}}>
     {hours} : {minutes < 10 ? `0${minutes}` : minutes} : {seconds < 10 ? `0${seconds}` : seconds}
   </div>
 }
 
 export function AgendaTimer({}) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: timers = {} } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
+  const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
+
+
   const [ firstAgendaTimer, setFirstAgendaTimer ] = useState(0);
   const [ secondAgendaTimer, setSecondAgendaTimer ] = useState(0);
   const { currentAgenda, advanceAgendaPhase } = useSharedCurrentAgenda();
   const { paused } = useSharedPause();
 
+  const agendaNum = subState.agendaNum ?? 1;
 
   function updateTime() {
     if (paused) {
       return;
     }
-    if (currentAgenda === 1) {
+    
+    if (agendaNum === 1) {
+      if (timers && firstAgendaTimer % 15 === 0) {
+        saveAgendaTimer(mutate, gameid, timers, firstAgendaTimer, agendaNum);
+      }
       setFirstAgendaTimer(firstAgendaTimer + 1);
-    } else if (currentAgenda === 2) {
+    } else if (agendaNum === 2) {
+      if (timers && secondAgendaTimer % 15 === 0) {
+        saveAgendaTimer(mutate, gameid, timers, secondAgendaTimer, agendaNum);
+      }
       setSecondAgendaTimer(secondAgendaTimer + 1);
     }
   }
+
+  function setStartingTime() {
+    if (!timers) {
+      const timeout = setTimeout(setStartingTime, 1000);
+      return;
+    }
+    if (timers.firstAgenda && timers.firstAgenda > firstAgendaTimer) {
+      setFirstAgendaTimer(timers.firstAgenda);
+    }
+    if (timers.secondAgenda && timers.secondAgenda > secondAgendaTimer) {
+      setSecondAgendaTimer(timers.secondAgenda);
+    }
+  }
+
+  useEffect(() => {
+    const timeout = setTimeout(setStartingTime, 1000);
+    return () => clearTimeout(timeout);
+  }, [timers]);
 
   useEffect(() => {
     if (paused) {

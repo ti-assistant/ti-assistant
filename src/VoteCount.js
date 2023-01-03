@@ -6,6 +6,7 @@ import { HoverMenu } from './HoverMenu';
 import { useSharedCurrentAgenda } from './Timer';
 import { useSharedUpdateTimes } from './Updater';
 import { setSpeaker } from './util/api/state';
+import { castSubStateVotes } from './util/api/subState';
 import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
@@ -23,7 +24,7 @@ switch (agenda.elect) {
         "Abstain",
       ];
     case "Player":
-      return [...Object.values(factions).map((faction) => {return faction.shortname}), "Abstain"];
+      return [...Object.values(factions).map((faction) => {return faction.name}), "Abstain"];
     case "Strategy Card":
       return [...Object.keys(strategycards), "Abstain"];
     case "Planet":
@@ -79,8 +80,9 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const { data: strategycards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: subState } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const [ usingPredictiveIntelligence, setUsingPredictiveIntelligence ] = useState(true);
-  const [ castVotes, setCastVotes ] = useState(0);
+  // const [ castVotes, setCastVotes ] = useState(0);
   const [ target, setTarget ] = useState(null);
   const [ showTargets, setShowTargets ] = useState(false);
   const { currentAgenda } = useSharedCurrentAgenda();
@@ -103,10 +105,10 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   }
 
   // Reset cast votes whenever current agenda changes.
-  useEffect(() => {
-    setCastVotes(0);
-    setTarget(null);
-  }, [currentAgenda]);
+  // useEffect(() => {
+  //   setCastVotes(0);
+  //   setTarget(null);
+  // }, [currentAgenda]);
 
   const elect = agenda.elect;
 
@@ -114,12 +116,20 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
     setTarget(null);
   }, [elect]);
 
-  function updateCastVotes(votes) {
-    setCastVotes(votes);
-    if (target) {
-      changeVote(factionName, votes, target);
+  function castVotes(target, votes) {
+    if (!target || target === "Abstain") {
+      castSubStateVotes(mutate, gameid, subState, factionName, "Abstain", 0);
+    } else {
+      castSubStateVotes(mutate, gameid, subState, factionName, target, votes);
     }
   }
+
+  // function updateCastVotes(votes) {
+  //   setCastVotes(votes);
+  //   if (target) {
+  //     changeVote(factionName, votes, target);
+  //   }
+  // }
 
   if (factionError || planetError || attachmentsError) {
     return (<div>Failed to load faction info</div>);
@@ -137,6 +147,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
       influence += planet.influence;
     }
   }
+  influence -= Math.min(factions[factionName].votes ?? 0, influence);
 
   let extraVotes = 0;
   if (factionName === "Argent Flight") {
@@ -173,6 +184,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   };
 
   const targets = getTargets(agenda, factions, strategycards, planets, agendas, objectives);
+  const factionSubState = ((subState.factions ?? {})[factionName] ?? {});
 
   return (
     <div
@@ -189,7 +201,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
       }}>
       <div className="flexRow" style={{gap: "16px", padding: "4px 4px 4px 8px", justifyContent: "flex-start", alignItems: "center"}}>
       {faction ? 
-          <div style={{flexBasis: "45%", flexGrow: 4, flexShrink: 0, whiteSpace: "nowrap"}}>
+          <div style={{flexBasis: "200px", flexGrow: 0, flexShrink: 0, whiteSpace: "nowrap"}}>
             <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={menuButtons} opts={{fontSize: "16px"}} />
           </div>
         : null}
@@ -224,16 +236,18 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
           </div>
         </div>
         <div className="flexRow hoverParent" style={{flexShrink: 0, width: "72px", gap: "4px", fontSize: "24px"}}>
-          {castVotes > 0 ? <div className="arrowDown" onClick={() => updateCastVotes(castVotes - 1)}></div> : <div style={{width: "12px"}}></div>}
-          <div className="flexRow" style={{width: "32px"}}>{castVotes}</div>
-          {<div className="arrowUp" onClick={() => updateCastVotes(castVotes + 1)}></div>}
+          {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{width: "12px"}}></div>}
+          <div className="flexRow" style={{width: "32px"}}>{factionSubState.votes ?? 0}</div>
+          {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
         </div>
         </React.Fragment>}
-        <HoverMenu label={target ? target : "Select"}>
+        <HoverMenu label={
+          factionSubState.target ? factions[factionSubState.target] ? factions[factionSubState.target].shortname : factionSubState.target : "Select"
+        }>
           <div className="flexRow" style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: "flex-start", writingMode: "vertical-lr", maxHeight: "300px", flexWrap: "wrap"}}>
             {targets.map((target) => {
               return (
-                <button key={target} onClick={() => {updateTarget(target)}}>{target}</button>
+                <button key={target} onClick={() => {castVotes(target, 0)}}>{target}</button>
               );
             })}
           </div>

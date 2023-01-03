@@ -56,6 +56,45 @@ export function manualVPUpdate(mutate, gameid, factions, factionName, value) {
   mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }
 
+export function updateCastVotes(mutate, gameid, factions, subStateFactions) {
+  const data = {
+    action: "UPDATE_CAST_VOTES",
+    factions: subStateFactions,
+    returnAll: true,
+  };
+
+  const updatedFactions = {...factions};
+
+  Object.entries(subStateFactions).forEach(([factionName, votes]) => {
+    updatedFactions[factionName].castVotes += votes;
+  });
+
+  const options = {
+    optimisticData: updatedFactions,
+  };
+
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+}
+
+export function resetCastVotes(mutate, gameid, factions) {
+  const data = {
+    action: "RESET_CAST_VOTES",
+    returnAll: true,
+  };
+
+  const updatedFactions = {...factions};
+
+  Object.keys(factions).forEach((factionName) => {
+    updatedFactions[factionName].castVotes = 0;
+  });
+
+  const options = {
+    optimisticData: updatedFactions,
+  };
+
+  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+}
+
 export function chooseSubFaction(mutate, gameid, factions, factionName, subFactionName) {
   const data = {
     action: "CHOOSE_SUB_FACTION",

@@ -99,7 +99,7 @@ export function FactionActions({factionName}) {
 </div>
 }
 
-export function AdditionalActions({ factionName, visible, style, hoverMenuStyle = {} }) {
+export function AdditionalActions({ factionName, visible, style, hoverMenuStyle = {}, factionOnly = false }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
@@ -111,7 +111,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
 
-  if (!factions) {
+  if (!factions || !techs) {
     return null;
   }
   
@@ -219,8 +219,6 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
     fontFamily: "Myriad Pro",
     padding: "8px",
     flexWrap: "wrap",
-    maxHeight: "400px",
-    maxWidth: "800px",
     alignItems: "stretch",
     gap: "4px",
     writingMode: "vertical-lr",
@@ -257,9 +255,31 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
   switch (subState.selectedAction) {
     case "Technology":
       const researchedTech = ((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? [];
+      if (!!factionOnly) {
+        const isActive = state.activeplayer === factionName;
+        const numTechs = isActive || factionName === "Universities of Jol-Nar" ? 2 : 1;
+        return (
+          activeFaction.name !== "Nekro Virus" ?
+          <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>{isActive ? "Technology Primary" : "Technology Secondary"}</div>}   content={
+            <React.Fragment>
+              {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
+              {researchedTech.map((tech) => {
+                return <TechRow key={tech} tech={techs[tech]} removeTech={() => removeTech(activeFaction.name, tech)} />
+              })}
+              </div> : null}
+              {researchedTech.length < numTechs ?
+                <TechSelectHoverMenu
+                  techs={researchableTechs}
+                  selectTech={(tech) => addTech(activeFaction.name, tech)}
+                  direction="vertical" />
+              : null}
+            </React.Fragment>} /> : null
+        )
+      }
       return (
         <div className="flexColumn" style={style}>
-          {activeFaction.name !== "Nekro Virus" ? <LabeledDiv label="PRIMARY" style={{width: "90%"}} content={
+          {activeFaction.name !== "Nekro Virus"  ?
+          <LabeledDiv label="PRIMARY" content={
             <React.Fragment>
               {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
               {researchedTech.map((tech) => {
@@ -267,7 +287,10 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
               })}
               </div> : null}
               {researchedTech.length < 2 ?
-                <TechSelectHoverMenu techs={researchableTechs} selectTech={(tech) => addTech(activeFaction.name, tech)} />
+                <TechSelectHoverMenu
+                  techs={researchableTechs}
+                  selectTech={(tech) => addTech(activeFaction.name, tech)}
+                  direction="horizontal" />
               : null}
             </React.Fragment>} /> : null}
             <LabeledDiv label="SECONDARY" content={
@@ -502,9 +525,6 @@ export function NextPlayerButtons({factionName, buttonStyle}) {
   async function completeActions(fleetLogistics = false) {
     if (subState.selectedAction === null) {
       return;
-    }
-    if (fleetLogistics && !hasTech(factions[factionName], "Fleet Logistics")) {
-      unlockTech(mutate, gameid, factions, factionName, "Fleet Logistics");
     }
     await finalizeAction();
     nextPlayer();

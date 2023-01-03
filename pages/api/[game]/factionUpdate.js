@@ -165,6 +165,27 @@ export default async function handler(req, res) {
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
     }
+    case "UPDATE_CAST_VOTES": {
+      const updates = {
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      };
+      Object.entries(data.factions).forEach(([factionName, votes]) => {
+        const factionString = `factions.${factionName}.votes`;
+        const value = (gameRef.data().factions[factionName].votes ?? 0) + votes.votes;
+        updates[factionString] = value;
+      });
+      await db.collection('games').doc(gameid).update(updates);
+    }
+    case "RESET_CAST_VOTES": {
+      const updates = {
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      };
+      Object.keys(gameRef.data().factions).forEach((factionName) => {
+        const factionString = `factions.${factionName}.castVotes`;
+        updates[factionString] = FieldValue.delete();
+      });
+      await db.collection('games').doc(gameid).update(updates);
+    }
   }
   
   const responseRef = await db.collection('games').doc(gameid).get();

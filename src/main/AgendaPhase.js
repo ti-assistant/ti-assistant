@@ -15,6 +15,8 @@ import { useSharedUpdateTimes } from '../Updater';
 import { HoverMenu } from '../HoverMenu';
 import { LabeledDiv } from '../LabeledDiv';
 import { getFactionColor, getFactionName } from '../util/factions';
+import { finalizeSubState, hideSubStateAgenda, revealSubStateAgenda, setSubStateOther } from '../util/api/subState';
+import { resetCastVotes, updateCastVotes } from '../util/api/factions';
 
 function InfoContent({content}) {
   return (
@@ -106,6 +108,37 @@ function OutcomeSelectModal({ visible, onComplete }) {
   );
 }
 
+export function computeVotes(agenda, subStateFactions = {}) {
+  const castVotes = agenda && agenda.elect === "For/Against" ? {"For": 0, "Against": 0} : {};
+  Object.values(subStateFactions).forEach((faction) => {
+    if (faction.target && faction.target !== "Abstain" && faction.votes > 0) {
+      if (!castVotes[faction.target]) {
+        castVotes[faction.target] = 0;
+      }
+      castVotes[faction.target] += faction.votes ?? 0;
+    }
+  });
+  const orderedVotes = Object.keys(castVotes).sort((a, b) => {
+    if (a === "For") {
+      return -1;
+    }
+    if (b === "For") {
+      return 1;
+    }
+    if (a < b) {
+      return -1;
+    }
+    return 1;
+  }).reduce(
+    (obj, key) => { 
+      obj[key] = castVotes[key]; 
+      return obj;
+    }, 
+    {}
+  );
+  return orderedVotes;
+}
+
 export default function AgendaPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -116,6 +149,7 @@ export default function AgendaPhase() {
   const { data: strategycards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
 
   const [ agenda, setAgenda ] = useState(null);
   const [ agendaModal, setAgendaModal ] = useState(null);
@@ -132,15 +166,20 @@ export default function AgendaPhase() {
   });
   const [ speakerTieBreak, setSpeakerTieBreak ] = useState(null);
   const [ miscount, setMiscount ] = useState(false);
-  const { currentAgenda, advanceAgendaPhase, resetAgendaPhase } = useSharedCurrentAgenda();
+  const { advanceAgendaPhase, resetAgendaPhase } = useSharedCurrentAgenda();
   
 
+  let currentAgenda = null;
+  const agendaNum = subState.agendaNum ?? 1;
+  if (subState.agenda) {
+    currentAgenda = agendas[subState.agenda];
+  }
 
   if (!agendas || !factions || !planets || !strategycards || !objectives || !state) {
     return <div>Loading...</div>;
   }
 
-  const votes  = computeVotes();
+  const votes  = computeVotes(currentAgenda, subState.factions);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -151,48 +190,49 @@ export default function AgendaPhase() {
   });
   const isTie = selectedTargets.length !== 1;
 
-  const localAgenda = {...agenda};
-  if (outcome) {
-    localAgenda.elect = outcome;
+  const localAgenda = {...currentAgenda};
+  if (subState.outcome) {
+    localAgenda.elect = subState.outcome;
   }
 
   const allTargets = getTargets(localAgenda, factions, strategycards, planets, agendas, objectives);
 
-  function toggleSpeakerTieBreak(target) {
-    if (speakerTieBreak === target) {
-      setSpeakerTieBreak(null);
-    } else {
-      setSpeakerTieBreak(target);
-    }
+  // function toggleSpeakerTieBreak(target) {
+  //   if (speakerTieBreak === target) {
+  //     setSpeakerTieBreak(null);
+  //   } else {
+  //     setSpeakerTieBreak(target);
+  //   }
+  // }
+  
+  function selectSpeakerTieBreak(tieBreak) {
+    setSubStateOther(mutate, gameid, subState, "tieBreak", tieBreak);
   }
 
-  function completeAgenda() {
-    if (isTie && !speakerTieBreak) {
-      throw Error("No selected target?");
+  async function completeAgenda() {
+    const target = isTie ? subState.tieBreak : selectedTargets[0];
+    let activeAgenda = subState.agenda;
+    if (subState.subAgenda) {
+      activeAgenda = subState.subAgenda;
+      resolveAgenda(mutate, gameid, agendas, subState.agenda, subState.subAgenda);
     }
-    const target = isTie ? speakerTieBreak : selectedTargets[0];
-    if (subAgenda) {
-      resolveAgenda(mutate, gameid, agendas, subAgenda.name, target);
-      resolveAgenda(mutate, gameid, agendas, agenda.name, subAgenda.name);
-    } else {
-      resolveAgenda(mutate, gameid, agendas, agenda.name, target);
-    }
-    if (agenda.name === "Miscount Disclosed") {
-      setAgenda(agendas[target]);
+    resolveAgenda(mutate, gameid, agendas, activeAgenda, target);
+
+    updateCastVotes(mutate, gameid, factions, subState.factions);
+    hideSubStateAgenda(mutate, gameid, subState, "");
+    // await finalizeSubState(mutate, gameid, subState);
+    if (activeAgenda === "Miscount Disclosed") {
       repealAgenda(mutate, gameid, agendas, target);
-      setMiscount(true);
+      revealSubStateAgenda(mutate, gameid, subState, target);
+      setSubStateOther(mutate, gameid, subState, "miscount", true);
     } else {
-      setAgenda(null);
-      advanceAgendaPhase();
-      setMiscount(false);
+      const agendaNum = subState.agendaNum ?? 1;
+      setSubStateOther(mutate, gameid, subState, "agendaNum", agendaNum + 1);
     }
-    setSubAgenda(null);
-    setOutcome(null);
-    setFactionVotes({});
-    setSpeakerTieBreak(null);
   }
 
   function nextPhase(skipAgenda = false) {
+    resetCastVotes(mutate, gameid, factions);
     const data = {
       action: "ADVANCE_PHASE",
       skipAgenda: skipAgenda,
@@ -212,6 +252,7 @@ export default function AgendaPhase() {
     };
 
     mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+    finalizeSubState(mutate, gameid, subState);
   }
 
   function showInfoModal(title, content) {
@@ -221,15 +262,22 @@ export default function AgendaPhase() {
       content: content,
     });
   }
-
+  
   function selectAgenda(agendaName) {
-    if (agendaName !== null) {
-      setAgenda(agendas[agendaName]);
-    }
-    setAgendaModal(false);
-    setSubAgenda(null);
-    setFactionVotes({});
+    revealSubStateAgenda(mutate, gameid, subState, agendaName);
   }
+  function hideAgenda(agendaName) {
+    hideSubStateAgenda(mutate, gameid, subState, agendaName);
+  }
+
+  // function selectAgenda(agendaName) {
+  //   if (agendaName !== null) {
+  //     setAgenda(agendas[agendaName]);
+  //   }
+  //   setAgendaModal(false);
+  //   setSubAgenda(null);
+  //   setFactionVotes({});
+  // }
   function selectSubAgenda(agendaName) {
     if (agendaName !== null) {
       setSubAgenda(agendas[agendaName]);
@@ -237,6 +285,7 @@ export default function AgendaPhase() {
     setSubAgendaModal(false);
   }
   function selectEligibleOutcome(outcome) {
+    setSubStateOther(mutate, gameid, subState, "outcome", outcome);
     setOutcome(outcome);
     setSubAgenda(null);
     setOutcomeModal(false);
@@ -255,34 +304,36 @@ export default function AgendaPhase() {
     setFactionVotes(updatedVotes);
   }
 
-  function computeVotes() {
-    const castVotes = agenda && agenda.elect === "For/Against" ? {"For": 0, "Against": 0} : {};
-    Object.values(factionVotes).forEach((votes) => {
-      if (!castVotes[votes.target]) {
-        castVotes[votes.target] = 0;
-      }
-      castVotes[votes.target] += votes.votes;
-    });
-    const orderedVotes = Object.keys(castVotes).sort((a, b) => {
-      if (a === "For") {
-        return -1;
-      }
-      if (b === "For") {
-        return 1;
-      }
-      if (a < b) {
-        return -1;
-      }
-      return 1;
-    }).reduce(
-      (obj, key) => { 
-        obj[key] = castVotes[key]; 
-        return obj;
-      }, 
-      {}
-    );
-    return orderedVotes;
-  }
+  // function computeVotes() {
+  //   const castVotes = agenda && agenda.elect === "For/Against" ? {"For": 0, "Against": 0} : {};
+  //   Object.values(subState.factions ?? {}).forEach((faction) => {
+  //     if (faction.target && faction.target !== "Abstain") {
+  //       if (!castVotes[faction.target]) {
+  //         castVotes[faction.target] = 0;
+  //       }
+  //       castVotes[faction.target] += faction.votes ?? 0;
+  //     }
+  //   });
+  //   const orderedVotes = Object.keys(castVotes).sort((a, b) => {
+  //     if (a === "For") {
+  //       return -1;
+  //     }
+  //     if (b === "For") {
+  //       return 1;
+  //     }
+  //     if (a < b) {
+  //       return -1;
+  //     }
+  //     return 1;
+  //   }).reduce(
+  //     (obj, key) => { 
+  //       obj[key] = castVotes[key]; 
+  //       return obj;
+  //     }, 
+  //     {}
+  //   );
+  //   return orderedVotes;
+  // }
 
   const votingOrder = Object.values(factions).sort((a, b) => {
     if (a.name === "Argent Flight") {
@@ -320,14 +371,15 @@ export default function AgendaPhase() {
     width = 460;
   }
 
-  const flexDirection = agenda && agenda.elect === "For/Against" ? "flexRow" : "flexColumn";
-    
+  const flexDirection = currentAgenda && currentAgenda.elect === "For/Against" ? "flexRow" : "flexColumn";
+  const label = !!subState.miscount ? "Re-voting on Miscounted Agenda" : agendaNum === 1 ? "FIRST AGENDA" : "SECOND AGENDA";
+
   return (
   <div className="flexRow" style={{gap: "40px", height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
     <AgendaSelectModal visible={agendaModal} onComplete={(agendaName) => selectAgenda(agendaName)} />
-    <AgendaSelectModal visible={subAgendaModal} onComplete={(agendaName) => selectSubAgenda(agendaName)} filter={{elect: outcome}} />
+    <AgendaSelectModal visible={subAgendaModal} onComplete={(agendaName) => selectSubAgenda(agendaName)} filter={{elect: subState.outcome}} />
     <OutcomeSelectModal visible={outcomeModal} onComplete={(eligibleOutcome) => selectEligibleOutcome(eligibleOutcome)} />
-    <div className="flexColumn" style={{flexBasis: "30%", gap: "4px", alignItems: "stretch"}}>
+    <div className="flexColumn" style={{gap: "4px", alignItems: "stretch"}}>
       <div className="flexRow" style={{gap: "12px"}}>
         <div style={{textAlign: "center", flexGrow: 4}}>Voting Order</div>
         <div style={{textAlign: "center", width: "80px"}}>Available Votes</div>
@@ -341,14 +393,14 @@ export default function AgendaPhase() {
     </div>
     <div className='flexColumn' style={{flexBasis: "30%", gap: "12px"}}> 
       <AgendaTimer />
-      {currentAgenda > 2 ? <div style={{fontSize: "40px", width: "100%"}}>
+      {agendaNum > 2 ? <div style={{fontSize: "40px", width: "100%"}}>
         Agenda Phase Complete
         </div> : 
       <ol className='flexColumn' style={{alignItems: "flex-start", gap: "20px", margin: "0px", padding: "0px", fontSize: "24px", alignItems: "stretch"}}>
         <li>
           <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
             {!miscount ? 
-            !agenda ? <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px"}}>
+            !currentAgenda ? <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px"}}>
               <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
                 <HoverMenu label="Reveal and Read one Agenda">
                   <div className="flexRow" style={{gap: "4px", writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: "8px", maxHeight: "530px", flexWrap: "wrap"}}>
@@ -359,8 +411,8 @@ export default function AgendaPhase() {
                 </HoverMenu>
               </LabeledDiv>
               </div> :
-              <LabeledDiv label="AGENDA">
-                <AgendaRow agenda={agenda} removeAgenda={() => {setAgenda(null); setFactionVotes({});}} />
+              <LabeledDiv label={label}>
+                <AgendaRow agenda={currentAgenda} removeAgenda={() => hideAgenda(currentAgenda.name)} />
               </LabeledDiv>
             : "Re-voting on miscounted agenda"}
           </div>
@@ -380,15 +432,15 @@ export default function AgendaPhase() {
           {/* <button onClick={() => setAgendaModal(true)}>Reveal Agenda</button> */}
         </div>
         </li>
-        {agenda && agenda.name === "Covert Legislation" ? 
+        {currentAgenda && currentAgenda.name === "Covert Legislation" ? 
           <li>
             <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
 
-            {outcome ? 
+            {subState.outcome ? 
               <LabeledDiv label="ELIGIBLE OUTCOMES">
-              <SelectableRow itemName={outcome} content={
+              <SelectableRow itemName={subState.outcome} content={
                 <div style={{display: "flex", fontSize: "18px"}}>
-                  {outcome}
+                  {subState.outcome}
                 </div>} removeItem={() => selectEligibleOutcome(null)} />
               </LabeledDiv> : 
             <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
@@ -396,7 +448,7 @@ export default function AgendaPhase() {
             <HoverMenu label="Reveal Eligible Outcomes">
               <div className='flexColumn' style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: 'flex-start'}}>
               {Array.from(outcomes).map((outcome) => {
-                return <button onClick={() => selectEligibleOutcome(outcome)}>{outcome}</button>
+                return <button key={outcome} onClick={() => selectEligibleOutcome(outcome)}>{outcome}</button>
               })}
               </div>
             </HoverMenu>
@@ -421,27 +473,27 @@ export default function AgendaPhase() {
           </div>
         : null}
         </li>
-        {agenda && isTie ? 
+        {currentAgenda && isTie ? 
           <li>
             <div>
-              {speakerTieBreak === null ? <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])} style={{width: "auto"}}>
+              {!subState.tieBreak ? <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])} style={{width: "auto"}}>
                 <HoverMenu label="Choose outcome if tied">
                   <div className="flexRow" style={{alignItems: "stretch", justifyContent: "flex-start", gap: "4px", padding: "8px", writingMode: "vertical-lr", maxHeight: "320px", flexWrap: "wrap"}}>
                     {selectedTargets.length > 0 ? selectedTargets.map((target) => {
-                      return <button key={target} className={speakerTieBreak === target ? "selected" : ""} onClick={() => toggleSpeakerTieBreak(target)}>{target}</button>;
+                      return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                     }) : 
                     allTargets.map((target) => {
                       if (target === "Abstain") {
                         return null;
                       }
-                      return <button key={target} className={speakerTieBreak === target ? "selected" : ""} onClick={() => toggleSpeakerTieBreak(target)}>{target}</button>;
+                      return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                     })}
                   </div>
                 </HoverMenu>
               </LabeledDiv> : 
               <LabeledDiv label="SPEAKER SELECTED OPTION">
-                <SelectableRow itemName={speakerTieBreak} removeItem={() => setSpeakerTieBreak(null)}>
-                  {speakerTieBreak}
+                <SelectableRow itemName={subState.tieBreak} removeItem={() => selectSpeakerTieBreak(null)}>
+                  {subState.tieBreak}
                 </SelectableRow>
               </LabeledDiv>
               }
@@ -469,7 +521,7 @@ export default function AgendaPhase() {
         </li> */}
         <li>Resolve agenda outcome
           <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
-          {agenda && agenda.name === "Covert Legislation" ? 
+          {currentAgenda && currentAgenda.name === "Covert Legislation" ? 
             !subAgenda ? 
             <HoverMenu label="Reveal Covert Legislation Agenda">
               <div className="flexRow" style={{gap: "4px", writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: "8px", maxHeight: "240px", flexWrap: "wrap"}}>
@@ -486,9 +538,9 @@ export default function AgendaPhase() {
               <button onClick={completeAgenda}>Resolve with target: {selectedTargets[0]}</button>
             </div>
           : null}
-          {isTie && speakerTieBreak && (selectedTargets.length === 0 || selectedTargets.includes(speakerTieBreak)) ? 
+          {isTie && subState.tieBreak && (selectedTargets.length === 0 || selectedTargets.includes(subState.tieBreak)) ? 
             <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
-              <button onClick={completeAgenda}>Resolve with target: {speakerTieBreak}</button>
+              <button onClick={completeAgenda}>Resolve with target: {subState.tieBreak}</button>
             </div>
           : null}
           </div>
@@ -496,7 +548,7 @@ export default function AgendaPhase() {
         {currentAgenda === 1 ? <li>Repeat Steps 1 to 6</li> : null}
         <li>Ready all planets</li>
     </ol>}
-      <button onClick={() => nextPhase()}>Start Next Round</button>
+      <button style={{marginTop: "12px", fontSize: "24px"}} onClick={() => nextPhase()}>Start Next Round</button>
     </div>
     <div className="flexColumn" style={{flexBasis: "30%", maxWidth: "400px"}}>
       <SummaryColumn />

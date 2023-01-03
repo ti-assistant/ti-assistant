@@ -10,7 +10,7 @@ import { fetcher, poster } from '../util/api/util';
 import { ObjectiveModal } from '../ObjectiveModal';
 import { BasicFactionTile } from '../FactionTile';
 import { ObjectiveRow } from '../ObjectiveRow';
-import { removeObjective, revealObjective } from '../util/api/objectives';
+import { removeObjective, revealObjective, scoreObjective, unscoreObjective } from '../util/api/objectives';
 import { Modal } from "/src/Modal.js";
 import SummaryColumn from './SummaryColumn';
 import { LawsInEffect } from '../LawsInEffect';
@@ -19,6 +19,7 @@ import { HoverMenu } from '../HoverMenu';
 import { LabeledDiv } from '../LabeledDiv';
 import { getFactionColor, getFactionName } from '../util/factions';
 import { SelectableRow } from '../SelectableRow';
+import { finalizeSubState, hideSubStateObjective, revealSubStateObjective, scoreSubStateObjective, unscoreSubStateObjective } from '../util/api/subState';
 
 function InfoContent({content}) {
   return (
@@ -37,13 +38,12 @@ export default function StatusPhase() {
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+  const { data: subState } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
   const [ infoModal, setInfoModal ] = useState({
     show: false,
-  });
-  const [ subState, setSubState ] = useState({});
-  
+  });  
 
 
   if (!strategyCards || !state || !factions || !objectives || !options) {
@@ -58,9 +58,7 @@ export default function StatusPhase() {
   }
 
   function nextPhase(skipAgenda = false) {
-    (subState.objectives ?? []).forEach((objective) => {
-      revealObjective(mutate, gameid, objectives, null, objective.name);
-    });
+    finalizeSubState(mutate, gameid, subState);
     const data = {
       action: "ADVANCE_PHASE",
       skipAgenda: skipAgenda,
@@ -87,40 +85,20 @@ export default function StatusPhase() {
   }
 
   function addObj(objective) {
-    setSubState({
-      ...subState,
-      objectives: [...(subState.objectives ?? []), objective],
-    })
+    revealSubStateObjective(mutate, gameid, subState, objective.name);
   }
 
   function removeObj(objectiveName) {
-    setSubState({
-      ...subState,
-      objectives: (subState.objectives ?? []).filter((objective) => objective.name !== objectiveName),
-    });
+    hideSubStateObjective(mutate, gameid, subState, objectiveName);
   }
 
-  function scoreObjective(factionName, objective) {
-    const updatedState = {...subState};
-    if (!updatedState.factions) {
-      updatedState.factions = {};
-    }
-    if (!updatedState.factions[factionName]) {
-      updatedState.factions[factionName] = {};
-    }
-    if (!updatedState.factions[factionName].objectives) {
-      updatedState.factions[factionName].objectives = [];
-    }
-    updatedState.factions[factionName].objectives.push(objective);
-    setSubState(updatedState);
+  function scoreObj(factionName, objective) {
+    scoreObjective(mutate, gameid, objectives, factionName, objective.name);
+    scoreSubStateObjective(mutate, gameid, subState, factionName, objective.name);
   }
-  function unscoreObjective(factionName, objectiveName) {
-    const updatedState = {...subState};
-    if (!updatedState.factions || !updatedState.factions[factionName] || !updatedState.factions[factionName].objectives) {
-      return;
-    }
-    updatedState.factions[factionName].objectives = updatedState.factions[factionName].objectives.filter((objective) => objective.name !== objectiveName);
-    setSubState(updatedState);
+  function unscoreObj(factionName, objectiveName) {
+    unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+    unscoreSubStateObjective(mutate, gameid, subState, factionName, objectiveName);
   }
 
   function showInfoModal(title, content) {
@@ -265,37 +243,37 @@ export default function StatusPhase() {
               const factionColor = getFactionColor(factions[card.faction]);
               const factionName = getFactionName(factions[card.faction]);
               const scoredPublics = (((subState.factions ?? {})[card.faction] ?? {}).objectives ?? []).filter((objective) => {
-                return objective.type === "stage-one" || objective.type === "stage-two";
+                return objectives[objective].type === "stage-one" || objectives[objective].type === "stage-two";
               });
               const scoredSecrets = (((subState.factions ?? {})[card.faction] ?? {}).objectives ?? []).filter((objective) => {
-                return objective.type === "secret";
+                return objectives[objective].type === "secret";
               });
               return <HoverMenu label={factionName} borderColor={factionColor}>
-                <div className='flexColumn' style={{gap: "4px", padding: "8px", flexWrap: "wrap"}}>
-{scoredPublics.length > 0 ?
+                <div className='flexColumn' style={{gap: "4px", padding: "8px"}}>
+                {scoredPublics.length > 0 ?
                   <LabeledDiv label="SCORED PUBLIC" style={{whiteSpace: "nowrap"}}>
-                    <SelectableRow itemName={scoredPublics[0].name} removeItem={() => unscoreObjective(card.faction, scoredPublics[0].name)}>
-                      {scoredPublics[0].name}
+                    <SelectableRow itemName={scoredPublics[0]} removeItem={() => unscoreObj(card.faction, scoredPublics[0])}>
+                      {scoredPublics[0]}
                     </SelectableRow>
                   </LabeledDiv>
-                : <HoverMenu label="Public">
+                : <HoverMenu label="Score Public">
                   <div className="flexColumn" style={{whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch"}}>
                   {availableObjectives.length === 0 ? "No unscored public objectives" : null}
                   {availableObjectives.map((objective) => {
-                    return <button onClick={() => scoreObjective(card.faction, objective)}>{objective.name}</button>
+                    return <button onClick={() => scoreObj(card.faction, objective)}>{objective.name}</button>
                   })}
                   </div> 
                 </HoverMenu>}
                 {scoredSecrets.length > 0 ? 
                   <LabeledDiv label="SCORED SECRET" style={{whiteSpace: "nowrap"}}>
-                  <SelectableRow itemName={scoredSecrets[0].name} removeItem={() => unscoreObjective(card.faction, scoredSecrets[0].name)}>
-                    {scoredSecrets[0].name}
+                  <SelectableRow itemName={scoredSecrets[0]} removeItem={() => unscoreObj(card.faction, scoredSecrets[0])}>
+                    {scoredSecrets[0]}
                   </SelectableRow>
                   </LabeledDiv>
-                  : <HoverMenu label="Secret">
+                  : <HoverMenu label="Score Secret">
                   <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch"}}>
                   {secrets.map((objective) => {
-                    return <button onClick={() => scoreObjective(card.faction, objective)}>{objective.name}</button>
+                    return <button onClick={() => scoreObj(card.faction, objective)}>{objective.name}</button>
                   })}
                   </div>
                 </HoverMenu>}
@@ -359,17 +337,17 @@ export default function StatusPhase() {
         </li>
         <li>
           {(subState.objectives ?? []).length > 0 ? 
-            <LabeledDiv label="REVEALED OBJECTIVE"><ObjectiveRow objective={subState.objectives[0]} removeObjective={() => removeObj(subState.objectives[0].name)} viewing={true} /></LabeledDiv>
+            <LabeledDiv label="REVEALED OBJECTIVE"><ObjectiveRow objective={objectives[subState.objectives[0]]} removeObjective={() => removeObj(subState.objectives[0])} viewing={true} /></LabeledDiv>
           : <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])} style={{width: "100%"}}>
           <div className='flexRow' style={{whiteSpace: "nowrap"}}>
             {(subState.objectives ?? []).map((objective) => {
-              return <ObjectiveRow objective={objective} removeObjective={() => removeObj(objective.name)} viewing={true} />;
+              return <ObjectiveRow objective={objectives[objective]} removeObjective={() => removeObj(objective.name)} viewing={true} />;
             })}
             {(subState.objectives ?? []).length < 1 ? 
               <HoverMenu label={`Reveal one Stage ${round > 3 ? "II" : "I"} objective`}>
-                <div className='flexColumn' style={{gap: "4px", alignItems: "stretch", whiteSpace: "nowrap", padding: "8px"}}>
+                <div className='flexRow' style={{maxHeight: "400px", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start"}}>
                   {Object.values(availableObjectives).filter((objective) => {
-                    return objective.type === "stage-one"
+                    return objective.type === (round > 3 ? "stage-two" : "stage-one");
                   })
                     .map((objective) => {
                       return <button onClick={() => addObj(objective)}>{objective.name}</button>

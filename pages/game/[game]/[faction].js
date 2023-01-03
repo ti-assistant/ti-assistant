@@ -11,7 +11,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { ObjectiveList } from "/src/ObjectiveList";
 import { fetcher, poster } from '../../../src/util/api/util';
 import { pluralize } from "../../../src/util/util";
-import { lockTech, unlockTech } from "../../../src/util/api/techs";
+import { hasTech, lockTech, unlockTech } from "../../../src/util/api/techs";
 import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
 import { FactionCard, FactionSymbol, StartingComponents } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
@@ -26,6 +26,17 @@ import { StrategyCard } from "../../../src/StrategyCard";
 import { assignStrategyCard } from "../../../src/util/api/cards";
 import { nextPlayer } from "../../../src/util/api/state";
 import { ActivePlayerColumn, AdditionalActions, FactionActionButtons, FactionActions, NextPlayerButtons } from "../../../src/main/ActionPhase";
+import { getFactionColor, getFactionName } from "../../../src/util/factions";
+import { HoverMenu } from "../../../src/HoverMenu";
+import { castSubStateVotes, finalizeSubState, hideSubStateAgenda, hideSubStateObjective, revealSubStateAgenda, revealSubStateObjective, scoreSubStateObjective, setSubStateOther, unscoreSubStateObjective } from "../../../src/util/api/subState";
+import { SelectableRow } from "../../../src/SelectableRow";
+import { ObjectiveRow } from "../../../src/ObjectiveRow";
+import { scoreObjective, unscoreObjective } from "../../../src/util/api/objectives";
+import { AgendaRow } from "../../../src/AgendaRow";
+import { getTargets, VoteCount } from "../../../src/VoteCount";
+import { computeVotes } from "../../../src/main/AgendaPhase";
+import { repealAgenda, resolveAgenda } from "../../../src/util/api/agendas";
+import { updateCastVotes } from "../../../src/util/api/factions";
 
 const techOrder = [
   "green",
@@ -39,7 +50,12 @@ function PhaseSection() {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: factionName } = router.query;
+  const { data: agendas = {} } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
+  const { data: attachments = {} } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: strategycards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions = {}, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: planets = {} } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: objectives = {} } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: state = {}, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: subState = {}, error: subStateError } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
@@ -54,17 +70,156 @@ function PhaseSection() {
     assignStrategyCard(mutate, gameid, strategyCards, card.name, factionName);
     nextPlayer(mutate, gameid, state, factions, strategyCards);
   }
+  function addObj(objective) {
+    revealSubStateObjective(mutate, gameid, subState, objective.name);
+  }
+  function removeObj(objectiveName) {
+    hideSubStateObjective(mutate, gameid, subState, objectiveName);
+  }
+  function scoreObj(factionName, objective) {
+    scoreObjective(mutate, gameid, objectives, factionName, objective.name);
+    scoreSubStateObjective(mutate, gameid, subState, factionName, objective.name);
+  }
+  function unscoreObj(factionName, objectiveName) {
+    unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+    unscoreSubStateObjective(mutate, gameid, subState, factionName, objectiveName);
+  }
+  function selectAgenda(agendaName) {
+    revealSubStateAgenda(mutate, gameid, subState, agendaName);
+  }
+  function hideAgenda(agendaName) {
+    hideSubStateAgenda(mutate, gameid, subState, agendaName);
+  }
+  function selectEligibleOutcome(outcome) {
+    setSubStateOther(mutate, gameid, subState, "outcome", outcome);
+  }
+  function selectSpeakerTieBreak(tieBreak) {
+    setSubStateOther(mutate, gameid, subState, "tieBreak", tieBreak);
+  }
+  const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 1;
+  });
+  const outcomes = new Set();
+  Object.values(agendas ?? {}).forEach((agenda) => {
+    if (agenda.target || agenda.elect === "???") return;
+    outcomes.add(agenda.elect);
+  });
+  let currentAgenda = null;
+  const agendaNum = subState.agendaNum ?? 1;
+  if (agendaNum > 2) {
+    return null;
+  }
+  if (subState.agenda) {
+    currentAgenda = agendas[subState.agenda];
+  }
+  const factionSubState = ((subState.factions ?? {})[factionName] ?? {});
+  
+  const localAgenda = {...currentAgenda};
+  if (subState.outcome) {
+    localAgenda.elect = subState.outcome;
+  }
+  const targets = getTargets(localAgenda, factions, strategycards, planets, agendas, objectives);
+  const totalVotes = computeVotes(currentAgenda, subState.factions);
+  const maxVotes = Object.values(totalVotes).reduce((maxVotes, voteCount) => {
+    return Math.max(maxVotes, voteCount);
+  }, 0);
+  const selectedTargets = Object.entries(totalVotes).filter(([target, voteCount]) => {
+    return voteCount === maxVotes;
+  }).map(([target, voteCount]) => {
+    return target;
+  });
+  const isTie = selectedTargets.length !== 1;
+  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
+  let influence = 0;
+  for (const planet of updatedPlanets) {
+    if (planet.ready || opts.total) {
+      influence += planet.influence;
+    }
+  }
+  influence -= Math.min(factions[factionName].votes ?? 0, influence);
+  let extraVotes = 0;
+  if (factionName === "Argent Flight") {
+    extraVotes += Object.keys(factions).length;
+  }
+  if (hasTech(factions[factionName], "Predictive Intelligence")) {
+    extraVotes += 3;
+  }
+  const label = !!subState.miscount ? "Re-voting on Miscounted Agenda" : agendaNum === 1 ? "FIRST AGENDA" : "SECOND AGENDA";
+  async function completeAgenda() {
+    const target = subState.tieBreak ? subState.tieBreak : selectedTargets[0];
+    let activeAgenda = subState.agenda;
+    if (subState.subAgenda) {
+      activeAgenda = subState.subAgenda;
+      resolveAgenda(mutate, gameid, agendas, subState.agenda, subState.subAgenda);
+    }
+    resolveAgenda(mutate, gameid, agendas, activeAgenda, target);
+
+    updateCastVotes(mutate, gameid, factions, subState.factions);
+    hideSubStateAgenda(mutate, gameid, subState);
+    // await finalizeSubState(mutate, gameid, subState);
+    if (activeAgenda === "Miscount Disclosed") {
+      repealAgenda(mutate, gameid, agendas, target);
+      revealSubStateAgenda(mutate, gameid, subState, target);
+      setSubStateOther(mutate, gameid, subState, "miscount", true);
+    } else {
+      const agendaNum = subState.agendaNum ?? 1;
+      setSubStateOther(mutate, gameid, subState, "agendaNum", agendaNum + 1);
+    }
+  }
+  function castVotes(target, votes) {
+    if (!target || target === "Abstain") {
+      castSubStateVotes(mutate, gameid, subState, factionName, "Abstain", 0);
+    } else {
+      castSubStateVotes(mutate, gameid, subState, factionName, target, votes);
+    }
+  }
+
+  const isSpeaker = state.speaker === factionName;
   let phaseName = `${state.phase} PHASE`;
   let phaseContent = null;
   switch (state.phase) {
-    case "SETUP":
-      phaseName = "STARTING COMPONENTS"
+    case "SETUP": {
+      const revealedObjectiveNames = (subState.objectives ?? []);
+      const availableObjectives = Object.values(objectives ?? {}).filter((objective) => {
+        return objective.type === "stage-one" && !revealedObjectiveNames.includes(objective.name);
+      });
+      phaseName = "SETUP PHASE"
       phaseContent = 
-      <div style={{fontSize: "16px", whiteSpace: "nowrap"}}>
-        <StartingComponents faction={factions[factionName]} />
-      </div>;
+      <React.Fragment>
+              {isSpeaker ? <LabeledDiv label="Speaker Actions">
+          {(subState.objectives ?? []).length > 0 ? 
+              <LabeledDiv label="REVEALED OBJECTIVES">
+                {(subState.objectives ?? []).map((objectiveName) => {
+                  return <ObjectiveRow objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
+                })}
+              </LabeledDiv>
+            : null}
+        {(subState.objectives ?? []).length < 2 ? 
+          <HoverMenu label="Reveal Objective">
+            <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll"}}>
+              {Object.values(availableObjectives).filter((objective) => {
+                return objective.type === "stage-one"
+              })
+                .map((objective) => {
+                  return <button onClick={() => addObj(objective)}>{objective.name}</button>
+                })}
+            </div>
+          </HoverMenu>
+        : null}
+        </LabeledDiv> : null}
+        <LabeledDiv label="Starting Components">
+          <div style={{fontSize: "16px", whiteSpace: "nowrap"}}>
+            <StartingComponents faction={factions[factionName]} />
+          </div>
+        </LabeledDiv>
+      </React.Fragment>;
       break;
+    }
     case "STRATEGY":
       if (factionName === state.activeplayer) {
         phaseName = "SELECT STRATEGY CARD";
@@ -87,7 +242,8 @@ function PhaseSection() {
               factionName={factionName}
               visible={!!subState.selectedAction}
               style={{width: "100%"}}
-              hoverMenuStyle={{maxHeight: "60vh", maxWidth: "90vw"}} />
+              hoverMenuStyle={{overflowX: "scroll", maxWidth: "85vw"}} 
+              factionOnly={true} />
             {subState.selectedAction ? <div className="flexRow" style={{width: "100%", paddingTop: "8px"}}>
               <NextPlayerButtons factionName={factionName} buttonStyle={{fontSize: "20px"}} />
             </div> : null}
@@ -98,7 +254,198 @@ function PhaseSection() {
           // </React.Fragment>;
       } else if (subState.selectedAction === "Technology") {
         // TODO: Let faction select technology.
+        phaseContent = <AdditionalActions
+          factionName={factionName}
+          visible={!!subState.selectedAction}
+          style={{width: "100%"}}
+          hoverMenuStyle={{overflowX: "scroll", maxWidth: "85vw"}} 
+          factionOnly={true} />
       }
+      break;
+    case "STATUS": {
+      const type = (state.round < 4) ? "stage-one" : "stage-two";
+      const availableObjectives = Object.values(objectives ?? {}).filter((objective) => {
+        return objective.selected && (objective.type === "stage-one" || objective.type === "stage-two") && !(objective.scorers ?? []).includes(factionName);
+      });
+      const secrets = Object.values(objectives ?? {}).filter((objective) => {
+        return objective.type === "secret" &&
+          !(objective.scorers ?? []).includes(factionName) &&
+          objective.phase === "status";
+      })
+      const scoredPublics = (((subState.factions ?? {})[factionName] ?? {}).objectives ?? []).filter((objective) => {
+        return objectives[objective].type === "stage-one" || objectives[objective].type === "stage-two";
+      });
+      const scoredSecrets = (((subState.factions ?? {})[factionName] ?? {}).objectives ?? []).filter((objective) => {
+        return objectives[objective].type === "secret";
+      });
+      const revealableObjectives = Object.values(objectives ?? {}).filter((objective) => {
+        return objective.type === type && !objective.selected;
+      });
+      phaseName = "STATUS PHASE";
+      phaseContent =
+        // <LabeledDiv label="SCORE OBJECTIVES">
+        <React.Fragment>
+        <div className='flexColumn' style={{gap: "4px", padding: "8px", flexWrap: "wrap", alignItems: "stretch"}}>
+        {scoredPublics.length > 0 ?
+          <LabeledDiv label="SCORED PUBLIC" style={{whiteSpace: "nowrap"}}>
+            <SelectableRow itemName={scoredPublics[0]} removeItem={() => unscoreObj(factionName, scoredPublics[0])}>
+              {scoredPublics[0]}
+            </SelectableRow>
+          </LabeledDiv>
+        : <HoverMenu label="Score Public Objective">
+          <div className="flexColumn" style={{whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch"}}>
+          {availableObjectives.length === 0 ? "No unscored public objectives" : null}
+          {availableObjectives.map((objective) => {
+            return <button key={objective.name} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
+          })}
+          </div> 
+        </HoverMenu>}
+        {scoredSecrets.length > 0 ? 
+          <LabeledDiv label="SCORED SECRET" style={{whiteSpace: "nowrap"}}>
+          <SelectableRow itemName={scoredSecrets[0]} removeItem={() => unscoreObj(factionName, scoredSecrets[0])}>
+            {scoredSecrets[0]}
+          </SelectableRow>
+          </LabeledDiv>
+          : <HoverMenu label="Score Secret Objective">
+          <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll"}}>
+          {secrets.map((objective) => {
+            return <button key={objective.name} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
+          })}
+          </div>
+        </HoverMenu>}
+        </div>
+        {isSpeaker ?
+          <LabeledDiv label="Speaker Actions">
+          {(subState.objectives ?? []).length > 0 ? 
+            <LabeledDiv label="REVEALED OBJECTIVE"><ObjectiveRow objective={objectives[subState.objectives[0]]} removeObjective={() => removeObj(subState.objectives[0])} viewing={true} /></LabeledDiv>
+          :
+          <div className='flexRow' style={{whiteSpace: "nowrap"}}>
+            {(subState.objectives ?? []).map((objective) => {
+              return <ObjectiveRow objective={objectives[objective]} removeObjective={() => removeObj(objective.name)} viewing={true} />;
+            })}
+            {(subState.objectives ?? []).length < 1 ? 
+              <HoverMenu label={`Reveal one Stage ${state.round > 3 ? "II" : "I"} objective`} style={{maxHeight: "400px"}}>
+                <div className='flexRow' style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
+                  {Object.values(revealableObjectives).filter((objective) => {
+                    return objective.type === (state.round > 3 ? "stage-two" : "stage-one");
+                  })
+                    .map((objective) => {
+                      return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
+                    })}
+                </div>
+              </HoverMenu>
+            : null}
+            </div>}
+          </LabeledDiv>
+        : null}
+        </React.Fragment>;
+        break;
+    }
+    case "AGENDA": {
+      phaseName = "AGENDA PHASE";
+      phaseContent = <React.Fragment>
+        {isSpeaker ? 
+            (!currentAgenda ? <HoverMenu label="Reveal and Read one Agenda">
+            <div className='flexRow' style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
+              {orderedAgendas.map((agenda) => {
+                  return <button key={agenda.name} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
+                })}
+              </div>
+            </HoverMenu> :
+            <React.Fragment>
+              <LabeledDiv label={label}>
+                <AgendaRow agenda={currentAgenda} removeAgenda={() => {hideAgenda(currentAgenda.name)}} />
+              </LabeledDiv>
+              {currentAgenda.name === "Covert Legislation" ?
+                (subState.outcome ? 
+                  <LabeledDiv label="ELIGIBLE OUTCOMES">
+                  <SelectableRow itemName={subState.outcome} content={
+                    <div style={{display: "flex", fontSize: "18px"}}>
+                      {subState.outcome}
+                    </div>} removeItem={() => selectEligibleOutcome(null)} />
+                  </LabeledDiv> :
+                <HoverMenu label="Reveal Eligible Outcomes">
+                  <div className='flexColumn' style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: 'flex-start'}}>
+                  {Array.from(outcomes).map((outcome) => {
+                    return <button key={outcome} onClick={() => selectEligibleOutcome(outcome)}>{outcome}</button>
+                  })}
+                  </div>
+                </HoverMenu>)
+              : null}
+            </React.Fragment>
+            )
+        : null}
+        {currentAgenda ? 
+          <div className="flexColumn" style={{alignItems: "stretch", width: "100%"}}>
+            <LabeledDiv label="VOTE ON AGENDA">
+              <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Target</div>}>
+          <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"}>
+            <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
+                  {targets.map((target) => {
+                    return (
+                      <button key={target} onClick={() => {castVotes(target, 0)}}>{target}</button>
+                    );
+                  })}
+                </div>
+              </HoverMenu>
+            </LabeledDiv>
+            <div className="flexRow" style={{width: '100%', gap: "12px", alignItems: "stretch"}}>
+              <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Available Votes</div>}>
+                
+        <div className="votingBlock">
+              <div className="influenceSymbol">
+                &#x2B21;
+              </div>
+              <div className="influenceTextWrapper">
+                {influence}
+              </div>
+              <div style={{fontSize: "16px"}}>
+            + {extraVotes}
+            </div>
+            </div>
+              </LabeledDiv>
+            <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Cast Votes</div>}>
+            <div className="flexRow" style={{justifyContent: "flex-start", flexShrink: 0, gap: "12px", fontSize: "24px", paddingLeft: "12px"}}>
+            {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{width: "12px"}}></div>}
+            <div className="flexRow" style={{width: "32px"}}>{factionSubState.votes ?? 0}</div>
+            {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
+          </div>
+            </LabeledDiv>
+            </div>
+          </LabeledDiv>
+          {isSpeaker && isTie ?
+              (!subState.tieBreak ?
+              <HoverMenu label="Choose outcome (vote tied)">
+                <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
+                  {selectedTargets.length > 0 ? selectedTargets.map((target) => {
+                    return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                  }) : 
+                  targets.map((target) => {
+                    if (target === "Abstain") {
+                      return null;
+                    }
+                    return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                  })}
+                </div>
+              </HoverMenu> : 
+            <LabeledDiv label="TIE BREAK">
+              <SelectableRow itemName={subState.tieBreak} removeItem={() => selectSpeakerTieBreak(null)}>
+                {subState.tieBreak}
+              </SelectableRow>
+            </LabeledDiv>
+              )
+          : null}
+          {isSpeaker && (selectedTargets.length === 1 || subState.tieBreak) ? 
+            <div className="flexRow" style={{width: "100%", justifyContent: "center"}}>
+              <button onClick={completeAgenda}>Resolve with target: {selectedTargets.length === 1 ? selectedTargets[0] : subState.tieBreak}</button>
+            </div>
+          : null}
+          </div>
+          // <VoteCount factionName={factionName} agenda={currentAgenda} />
+        : null}
+      </React.Fragment>;
+      break;
+    }
   }
   if (!phaseContent) {
     return null;
@@ -462,10 +809,6 @@ function FactionContent() {
     }
     return true;
   }
-
-  const strategyCard = Object.values(strategyCards ?? {}).find((card) => {
-    return card.faction === playerFaction;
-  });
 
   const orderedFactions = Object.values(factions ?? {}).sort((a, b) => a.order - b.order);
 

@@ -39,6 +39,18 @@ export default async function handler(req, res) {
       }
       break;
     }
+    case "SAVE_AGENDA_TIMER": {
+      const timerName = data.agendaNum === 1 ? "firstAgenda" : "secondAgenda";
+      const timer = (gameRef.data().timers ?? {})[timerName] ?? 0;
+      if (data.timer > timer) {
+        const timerString = `timers.${timerName}`;
+        await db.collection('games').doc(gameid).update({
+          [timerString]: data.timer,
+          [timestampString]: Timestamp.fromMillis(data.timestamp),
+        });
+      }
+      break;
+    }
   }
 
   const responseRef = await db.collection('games').doc(gameid).get();

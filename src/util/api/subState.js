@@ -222,6 +222,31 @@ export function unscoreSubStateObjective(mutate, gameid, subState, factionName, 
   mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
+export function castSubStateVotes(mutate, gameid, subState, factionName, target, numVotes) {
+  const data = {
+    action: "CAST_VOTES",
+    factionName: factionName,
+    target: target,
+    numVotes: numVotes,
+  };
+
+  const updatedSubState = {...subState};
+  if (!updatedSubState.factions) {
+    updatedSubState.factions = {};
+  }
+  if (!updatedSubState.factions[factionName]) {
+    updatedSubState.factions[factionName] = {};
+  }
+  updatedSubState.factions[factionName].votes = numVotes;
+  updatedSubState.factions[factionName].target = target;
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
 export function revealSubStateObjective(mutate, gameid, subState, objectiveName) {
   const data = {
     action: "REVEAL_OBJECTIVE",
@@ -249,9 +274,59 @@ export function hideSubStateObjective(mutate, gameid, subState, objectiveName) {
 
   const updatedSubState = {...subState};
   if (!updatedSubState.objectives) {
-    updatedSubState.objectives = {};
+    updatedSubState.objectives = [];
   }
+  updatedSubState.factions = {};
+  delete updatedSubState.tieBreak;
   updatedSubState.objectives = updatedSubState.objectives.filter((objective) => objective !== objectiveName);
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+export function revealSubStateAgenda(mutate, gameid, subState, agendaName) {
+  const data = {
+    action: "REVEAL_AGENDA",
+    agendaName: agendaName,
+  };
+
+  const updatedSubState = {...subState};
+  updatedSubState.agenda = agendaName;
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+export function hideSubStateAgenda(mutate, gameid, subState, agendaName) {
+  const data = {
+    action: "HIDE_AGENDA",
+  };
+
+  const updatedSubState = {...subState};
+  delete updatedSubState.agenda;
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+export function setSubStateOther(mutate, gameid, subState, fieldName, value) {
+  const data = {
+    action: "SET_OTHER_FIELD",
+    fieldName: fieldName,
+    value: value,
+  };
+
+  const updatedSubState = {...subState};
+  updatedSubState[fieldName] = value;
 
   const options = {
     optimisticData: updatedSubState,
@@ -265,9 +340,11 @@ export function finalizeSubState(mutate, gameid, subState) {
     action: "FINALIZE_SUB_STATE",
   };
 
+  const updatedSubState = {};
+
   const options = {
     optimisticData: {},
   };
 
-  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+  return mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }

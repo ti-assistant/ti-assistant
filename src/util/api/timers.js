@@ -33,3 +33,23 @@ export function saveGameTimer(mutate, gameid, timers, timer) {
 
   mutate(`/api/${gameid}/timers`, poster(`/api/${gameid}/timerUpdate`, data), options);
 }
+
+export function saveAgendaTimer(mutate, gameid, timers, timer, agendaNum) {
+  const data = {
+    action: "SAVE_AGENDA_TIMER",
+    timer: timer,
+  };
+
+  const updatedTimers = {...timers};
+  if (agendaNum === 1) {
+    updatedTimers.firstAgenda = timer;
+  } else {
+    updatedTimers.secondAgenda = timer;
+  }
+
+  const options = {
+    optimisticData: updatedTimers,
+  };
+
+  mutate(`/api/${gameid}/timers`, poster(`/api/${gameid}/timerUpdate`, data), options);
+}
