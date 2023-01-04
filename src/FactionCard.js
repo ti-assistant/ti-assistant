@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router'
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import useSWR, { useSWRConfig } from 'swr'
 import { HoverMenu } from './HoverMenu';
+import { LabeledDiv } from './LabeledDiv';
 import { SelectableRow } from './SelectableRow';
 import { useSharedUpdateTimes } from './Updater';
 import { unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from './util/api/cards';
@@ -96,7 +97,14 @@ export function FactionSymbol({ faction, size }) {
       width = height * 0.944;
       break;
   }
-  return <Image src={`/images/factions/${faction}.webp`} alt={`${faction} Icon`} width={`${width}px`} height={`${height}px`} />;
+  return <Image src={`/images/factions/${faction}.webp`} alt={`${faction} Icon`}
+    width={`${width}px`} height={`${height}px`} />;
+}
+
+export function FullFactionSymbol({ faction }) {
+  return <Image src={`/images/factions/${faction}.webp`} alt={`${faction} Icon`}
+    layout="fill" 
+    objectFit='contain'/>;
 }
 
 const shouldNotPluralize = [
@@ -261,8 +269,8 @@ export function StartingComponents({ faction }) {
       </div>
       {numToChoose > 0 ?
         <div>
-          Choose {numToChoose} more {pluralize("tech", numToChoose)}
-          <HoverMenu label="Choose Starting Tech" style={{minWidth: "100%"}} direction="up">
+          {/* Choose {numToChoose} more {pluralize("tech", numToChoose)} */}
+          <HoverMenu label="Choose Starting Tech" style={{minWidth: "100%"}}>
             <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", whiteSpace: "nowrap", padding: "8px"}}>
             {orderedChoices.map((tech) => {
               return <button key={tech.name} onClick={() => addTech(tech.name)}>{tech.name}</button>
@@ -480,7 +488,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
   );
 }
 
-export function FactionCard({ faction, onClick, style, content, opts = {} }) {
+export function FactionCard({ faction, onClick, style, content, children, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
@@ -519,12 +527,18 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
     padding: "2px",
     ...(style ?? {}),
   }
+
+  const isSpeaker = speaker;
+  const label = speaker ? `Speaker: ${getFactionName(faction)}` : getFactionName(faction);
+
   return (
-    <div
+    <LabeledDiv label={label} color={getFactionColor(faction)} onClick={onClick} style={{justifyContent: "flex-start", ...style}}>
+    {/* <div
       onClick={onClick}
       style={cardStyle}
-    >
-      {speaker ? <div style={{fontFamily: "Myriad Pro",
+    > */}
+      <div className="flexColumn" style={{width: "100%", alignItems: "flex-start", fontSize: opts.fontSize ?? "24px", position: "relative", height: "100%"}}>
+      {/* {speaker ? <div style={{fontFamily: "Myriad Pro",
           position: "absolute",
           color: color === "Black" ? "#eee" : color,
           borderRadius: "5px",
@@ -536,19 +550,28 @@ export function FactionCard({ faction, onClick, style, content, opts = {} }) {
           zIndex: 1,
           backgroundColor: "#222"}}>
           Speaker
-        </div> : null}
-      {opts.hideTitle ? null : <div className="flexRow" style={{justifyContent: "center", gap: "4px", padding: "0px 4px"}}>
+        </div> : null} */}
+      {opts.hideTitle ? null : <div className="flexRow" style={{zIndex: -1, position: "absolute", width: "100%", height: "100%"}}>
+      <div className="flexRow" style={{zIndex: -1, opacity: "40%", position: "absolute", width: opts.iconSize ? opts.iconSize : "100%", height: opts.iconSize ? opts.iconSize : "100%"}}>
+        <FullFactionSymbol faction={faction.name} size={100} />
+
+      </div>
+      </div>}
+      {/* {opts.hideTitle ? null : <div className="flexRow" style={{justifyContent: "center", gap: "4px", padding: "0px 4px"}}>
         <div className="flexRow" style={iconStyle}>
           <FactionSymbol faction={faction.name} size={40} />
         </div>
         {opts.hideName ? null : <div style={{ paddingRight: "12px" }}>{getFactionName(faction)}</div>}
-      </div>}
-      <div>
+      </div>} */}
+      <React.Fragment>
         {content}
-      </div>
+        {children}
+      </React.Fragment>
       {opts.displayStartingComponents ? 
         <StartingComponents faction={faction} />
       : null}
-    </div>
+      </div>
+    {/* </div> */}
+    </LabeledDiv>
   );
 }

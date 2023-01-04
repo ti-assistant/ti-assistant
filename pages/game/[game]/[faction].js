@@ -13,7 +13,7 @@ import { fetcher, poster } from '../../../src/util/api/util';
 import { pluralize } from "../../../src/util/util";
 import { hasTech, lockTech, unlockTech } from "../../../src/util/api/techs";
 import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
-import { FactionCard, FactionSymbol, StartingComponents } from "../../../src/FactionCard";
+import { FactionCard, StartingComponents } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { TechIcon } from "../../../src/TechRow";
 import { FactionSummary } from "../../../src/FactionSummary";
@@ -195,7 +195,7 @@ function PhaseSection() {
           {(subState.objectives ?? []).length > 0 ? 
               <LabeledDiv label="REVEALED OBJECTIVES">
                 {(subState.objectives ?? []).map((objectiveName) => {
-                  return <ObjectiveRow objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
+                  return <ObjectiveRow key={objectiveName} objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
                 })}
               </LabeledDiv>
             : null}
@@ -206,7 +206,7 @@ function PhaseSection() {
                 return objective.type === "stage-one"
               })
                 .map((objective) => {
-                  return <button onClick={() => addObj(objective)}>{objective.name}</button>
+                  return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
                 })}
             </div>
           </HoverMenu>
@@ -817,7 +817,7 @@ function FactionContent() {
   }
 
   const maxHeight = screen.height - 420;
-  return (<div className="flexColumn" style={{gap: "8px"}}>
+  return (<div className="flexColumn" style={{gap: "8px", width: "100%"}}>
           <Modal closeMenu={toggleAddTechMenu} visible={showAddTech} title="Research Tech"
         content={
           <AddTechList techs={remainingTechs} addTech={addTech} />
@@ -826,7 +826,7 @@ function FactionContent() {
         content={
           <AddPlanetList planets={planets} addPlanet={addPlanet} />
       } />
-  <FactionSummary factionName={playerFaction} VPs={VPs} ownedTechs={ownedTechs} ownedPlanets={updatedPlanets} />
+  <FactionSummary factionName={playerFaction} VPs={VPs} ownedTechs={ownedTechs} ownedPlanets={updatedPlanets} options={{showIcon: true}} />
   <div
     style={{
       width: "100%",
@@ -964,7 +964,12 @@ export default function GamePage() {
     </div>
   </div>
       <div style={{width: "100%", margin: "4px"}}>
-        <FactionCard faction={factions[playerFaction]} style={{width: "100%"}} content={<FactionContent />} />
+        {/* <LabeledDiv>
+          <FactionContent />
+        </LabeledDiv> */}
+        <FactionCard faction={factions[playerFaction]} style={{width: "100%"}} opts={{hideTitle: true}}>
+          <FactionContent />
+        </FactionCard>
       </div>
       </div>
     </div>);

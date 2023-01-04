@@ -221,6 +221,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
     flexWrap: "wrap",
     alignItems: "stretch",
     gap: "4px",
+    maxHeight: "420px",
     writingMode: "vertical-lr",
     justifyContent: "flex-start",
     ...hoverMenuStyle,
@@ -260,7 +261,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
         const numTechs = isActive || factionName === "Universities of Jol-Nar" ? 2 : 1;
         return (
           activeFaction.name !== "Nekro Virus" ?
-          <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>{isActive ? "Technology Primary" : "Technology Secondary"}</div>}   content={
+          <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>{isActive ? "Technology Primary" : "Technology Secondary"}</div>}>
             <React.Fragment>
               {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
               {researchedTech.map((tech) => {
@@ -273,11 +274,12 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                   selectTech={(tech) => addTech(activeFaction.name, tech)}
                   direction="vertical" />
               : null}
-            </React.Fragment>} /> : null
+            </React.Fragment>
+            </LabeledDiv> : null
         )
       }
       return (
-        <div className="flexColumn" style={style}>
+        <div className="flexColumn" style={{gap: "4px", ...style}}>
           {activeFaction.name !== "Nekro Virus"  ?
           <LabeledDiv label="PRIMARY" content={
             <React.Fragment>
@@ -294,7 +296,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
               : null}
             </React.Fragment>} /> : null}
             <LabeledDiv label="SECONDARY" content={
-              <div className="flexColumn" style={{width: "100%"}}>
+              <div className="flexColumn" style={{width: "100%", gap: "4px"}}>
               {orderedFactions.map((faction) => {
                 if (faction.name === activeFaction.name || faction.name === "Nekro Virus") {
                   return null;
@@ -307,9 +309,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                 const researchedTechs = (((subState.factions ?? {})[faction.name] ?? {}).techs ?? []);
                 const availableTechs = getResearchableTechs(faction);
                 return (
-                  <LabeledDiv key={faction.name} label={
-                    <div className="flexRow" style={{gap: "4px"}}>{getFactionName(faction)}<FactionSymbol faction={faction.name} size={16} /></div>
-                  } color={getFactionColor(faction)} style={{width: "100%"}}>
+                  <LabeledDiv key={faction.name} label={getFactionName(faction)} color={getFactionColor(faction)} style={{width: "100%"}}>
                     <React.Fragment>
                     {researchedTechs.map((tech) => {
                       return <TechRow key={tech} tech={techs[tech]} removeTech={() => removeTech(faction.name, tech)} />
@@ -327,7 +327,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
       );
     case "Politics":
       return (
-        <div className="flexColumn" style={style}>
+        <div className="flexColumn" style={{gap: "4px", ...style}}>
           <LabeledDiv label="NEW SPEAKER" style={{width: "90%"}} content={           
             <React.Fragment>
               {subState.speaker ? <div className='flexColumn' style={{alignItems: "stretch"}}>
@@ -357,7 +357,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
     case "Diplomacy":
       if (activeFaction.name === "Xxcha Kingdom") {
         return (
-          <div className="flexColumn" style={style}>
+          <div className="flexColumn" style={{gap: "4px", ...style}}>
             <LabeledDiv label="PEACE ACCORDS" content={           
               <React.Fragment>
                 {claimedPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
@@ -403,7 +403,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
         return objectives[objective].type === "stage-one" || objectives[objective].type === "stage-two";
       });
       return (
-        <div className="flexColumn" style={style}>
+        <div className="flexColumn" style={{gap: "4px", ...style}}>
           <LabeledDiv label="IMPERIAL POINT ?">
             <div className="flexRow" style={{width: "100%", justifyContent: "space-evenly"}}>
               <button className={hasImperialPoint ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => addObjective(activeFaction.name, objectives["Imperial Point"])}>Yes</button>
@@ -443,7 +443,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
         }
       });
       return (
-      <LabeledDiv label="PROVE ENDURANCE?" style={style}>      
+      <LabeledDiv label="PROVE ENDURANCE?" style={{gap: "4px", ...style}}>
         <div className="flexRow" style={{paddingTop: "8px", width: "100%", justifyContent: "space-evenly"}}>
           <button className={hasProveEndurance ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => addObjective(activeFaction.name, objectives["Prove Endurance"])}>Yes</button>
           <button className={!hasProveEndurance ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => undoObjective(activeFaction.name, "Prove Endurance")}>No</button>
@@ -455,7 +455,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
     case "Tactical":
       const conqueredPlanets = ((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? [];
       return (
-        <div className="flexColumn" style={style}>
+        <div className="flexColumn" style={{gap: "4px", ...style}}>
           <LabeledDiv label="CONQUERED PLANETS">
             <React.Fragment>
               {conqueredPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
@@ -851,20 +851,21 @@ export function ActivePlayerColumn({activeFaction}) {
   // }
 
 
-  return (<div className="flexColumn" style={{width: "100%", height: "80vh", justifyContent: "flex-start", alignItems: "center", gap: "12px"}}>
-  Active Player
-  <SwitchTransition>
-    <CSSTransition
-      key={activeFaction.name}
-      timeout={500}
-      classNames="fade">
-      <FactionCard faction={activeFaction} content={
-        <div className="flexColumn" style={{gap: "8px", paddingBottom: "12px", minWidth: "480px"}}>
-          <FactionTimer factionName={activeFaction.name} />
-          <FactionActions factionName={activeFaction.name} />
-          <AdditionalActions visible={!!subState.selectedAction} factionName={activeFaction.name} style={{width: "90%"}} />
-        </div>
-      } opts={{iconSize: 60, fontSize: "32px"}} />
+  return (
+  <div className="flexColumn" style={{width: "90%", height: "80vh", justifyContent: "flex-start", alignItems: "center", gap: "12px"}}>
+    Active Player
+    <SwitchTransition>
+      <CSSTransition
+        key={activeFaction.name}
+        timeout={500}
+        classNames="fade">
+        <FactionCard faction={activeFaction} style={{minHeight: "240px"}} opts={{iconSize: "200px", fontSize: "32px", justifyContent: "flex-start"}}>
+          <div className="flexColumn" style={{gap: "8px", width:"100%", paddingBottom: "12px", minWidth: "480px"}}>
+            <FactionTimer factionName={activeFaction.name} />
+            <FactionActions factionName={activeFaction.name} />
+            <AdditionalActions visible={!!subState.selectedAction} factionName={activeFaction.name} style={{width: "90%"}} />
+          </div>
+        </FactionCard>
       </CSSTransition>
     </SwitchTransition>
     <NextPlayerButtons factionName={activeFaction.name} buttonStyle={{fontSize: "24px"}} />

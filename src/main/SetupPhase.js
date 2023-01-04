@@ -135,14 +135,15 @@ export default function SetupPhase() {
         <li>Build the galaxy</li>
         <li>Shuffle decks</li>
         <li>Gather starting components</li>
-        <div className="flexRow" style={{alignItems:"stretch", justifyContent: "space-between", gap: "8px"}}>
+        <div className="flexRow" style={{width: "80vw", alignItems:"stretch", justifyContent: "stretch", gap: "8px"}}>
           {orderedFactions.map(([name, faction]) => {
-            return <div style={{flexBasis: `${flexBasis}%`, height: "100%"}}>
+            return (
             <FactionCard key={name} faction={faction} opts={{
               displayStartingComponents: true,
               fontSize: "16px",
+              iconSize: "60%"
             }} />
-            </div>
+            );
           })}
         </div>
         <li>Draw 2 secret objectives and keep one</li>

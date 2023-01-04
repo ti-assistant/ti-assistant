@@ -13,7 +13,7 @@ import { fetcher, poster } from '../../../src/util/api/util';
 import { pluralize } from "../../../src/util/util";
 import { lockTech, unlockTech } from "../../../src/util/api/techs";
 import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
-import { FactionCard, FactionSymbol } from "../../../src/FactionCard";
+import { FactionCard } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { TechIcon } from "../../../src/TechRow";
 import { FactionSummary } from "../../../src/FactionSummary";

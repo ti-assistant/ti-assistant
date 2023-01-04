@@ -229,8 +229,8 @@ export default function StatusPhase() {
         })}
         <li>
           <div className="flexColumn" style={{gap: "4px", alignItems: "flex-start"}}>
-          In Initiative Order: Score up to one public and one secret objective
-          <div className="flexRow" style={{gap: "4px"}}>
+          <LabeledDiv labelSize={20} label="In Initiative Order: Score up to one public and one secret objective">
+          <div className="flexRow" style={{gap: "12px 4px", flexWrap: "wrap", justifyContent: "space-around", alignItems: "stretch"}}>
             {filteredStrategyCards.map((card) => {
               const availableObjectives = Object.values(objectives ?? {}).filter((objective) => {
                 return objective.selected && (objective.type === "stage-one" || objective.type === "stage-two") && !(objective.scorers ?? []).includes(card.faction);
@@ -249,7 +249,7 @@ export default function StatusPhase() {
                 return objectives[objective].type === "secret";
               });
               return <HoverMenu label={factionName} borderColor={factionColor}>
-                <div className='flexColumn' style={{gap: "4px", padding: "8px"}}>
+                <div className={scoredPublics.length === 0 && scoredSecrets.length === 0 ? 'flexRow' : 'flexColumn'} style={{gap: "4px", padding: "8px", alignItems: "flex-start"}}>
                 {scoredPublics.length > 0 ?
                   <LabeledDiv label="SCORED PUBLIC" style={{whiteSpace: "nowrap"}}>
                     <SelectableRow itemName={scoredPublics[0]} removeItem={() => unscoreObj(card.faction, scoredPublics[0])}>
@@ -280,6 +280,7 @@ export default function StatusPhase() {
                 </div>
               </HoverMenu>})}
           </div>
+          </LabeledDiv>
           {/* <HoverMenu label="Score Objectives">
           <div className="flexColumn" style={{flexWrap: "wrap", padding: "8px"}}>
             {filteredStrategyCards.map((card) => {
@@ -345,7 +346,7 @@ export default function StatusPhase() {
             })}
             {(subState.objectives ?? []).length < 1 ? 
               <HoverMenu label={`Reveal one Stage ${round > 3 ? "II" : "I"} objective`}>
-                <div className='flexRow' style={{maxHeight: "400px", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start"}}>
+                <div className='flexRow' style={{gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start"}}>
                   {Object.values(availableObjectives).filter((objective) => {
                     return objective.type === (round > 3 ? "stage-two" : "stage-one");
                   })
@@ -381,7 +382,6 @@ export default function StatusPhase() {
         </li>
         <li>
           <div className="flexColumn" style={{justifyContent: "flex-start", alignItems: "stretch", gap: "2px"}}>
-            In Initiative Order: 
             {Object.entries(numberOfActionCards).map(([number, localFactions]) => {
               const num = parseInt(number);
               if (localFactions.length === 0) {
@@ -389,7 +389,7 @@ export default function StatusPhase() {
               }
               return (
                 <div key={num} className="flexColumn" style={{alignItems: "flex-start", gap: "4px", paddingLeft: "8px"}}>
-                  <LabeledDiv label={`Draw ${num} ${pluralize("Action Card", num)}${num === 3 ? " and discard any one" : ""}`}>
+                  <LabeledDiv labelSize={20} label={`Draw ${num} ${pluralize("Action Card", num)}${num === 3 ? " and discard any one" : ""}`}>
                   <div className="flexRow" style={{flexWrap: "wrap", justifyContent: "flex-start", gap: "8px", padding: "0px 8px"}}>
                   {localFactions.map((faction) => {
                     let menuButtons = [];
@@ -422,7 +422,7 @@ export default function StatusPhase() {
             }
             return (
               <div key={num} className="flexColumn" style={{alignItems: "flex-start", gap: "4px"}}>
-                <LabeledDiv label={`Gain ${num} ${pluralize("Command Token", num)} and Redistribute`}>
+                <LabeledDiv labelSize={20} label={`Gain ${num} ${pluralize("Command Token", num)} and Redistribute`}>
                 <div className="flexRow" style={{flexWrap: "wrap", justifyContent: "flex-start", gap: "4px", padding: "0px 8px"}}>
                 {localFactions.map((faction) => {
                   let menuButtons = [];

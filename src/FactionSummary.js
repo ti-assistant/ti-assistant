@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useRef, useState, useTransition } from "react";
 import useSWR, { useSWRConfig } from "swr";
-import { FactionSymbol } from "./FactionCard";
+import { FullFactionSymbol } from "./FactionCard";
 import { Modal } from "./Modal";
 import { PlanetAttributes, PlanetRow, PlanetSymbol } from "./PlanetRow";
 import { SystemRow } from "./SystemRow";
@@ -175,8 +175,10 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
 
   const innerContent = (
     <div className="flexColumn" style={{position: "sticky", minHeight: "400px", overflow: "hidden", maxHeight: "85vh"}}>
-      <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
-        <FactionSymbol faction={factionName} size={400} />
+      <div className="flexColumn" style={{top: 0, height: "100%", width: "100%", position: "absolute", zIndex: -1, opacity: 0.2}}>
+        <div className="flexColumn" style={{position: "relative", height: "500px", width: "500px"}}>
+          <FullFactionSymbol faction={factionName} />
+        </div>
       </div>
       <div className="flexColumn" style={{position: "sticky", width: "100%", backgroundColor: "#222", zIndex: 902}}>
         <div className="flexRow" style={{backgroundColor: "#222", position: "sticky", zIndex: 904, fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
@@ -338,8 +340,10 @@ export function UpdateTechsModal({ visible, onComplete }) {
 
   const innerContent = (
     <div className="flexColumn" style={{position: "sticky", minHeight: "400px"}}>
-      <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
-        <FactionSymbol faction={factionName} size={400} />
+      <div className="flexColumn" style={{top: 0, height: "100%", width: "100%", position: "absolute", zIndex: -1, opacity: 0.2}}>
+        <div className="flexColumn" style={{position: "relative", height: "500px", width: "500px"}}>
+          <FullFactionSymbol faction={factionName} />
+        </div>
       </div>
       <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px",  backgroundColor: "#222", zIndex: 902}}>
         <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
@@ -481,8 +485,10 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
 
   const innerContent = (
     <div className="flexColumn" style={{position: "sticky", minHeight: "400px", maxHeight: "85vh"}}>
-      <div className="flexColumn" style={{top: 0, height: "100%", position: "fixed", zIndex: -1, opacity: 0.2}}>
-        <FactionSymbol faction={factionName} size={400} />
+      <div className="flexColumn" style={{top: 0, height: "100%", width: "100%", position: "absolute", zIndex: -1, opacity: 0.2}}>
+        <div className="flexColumn" style={{position: "relative", height: "500px", width: "500px"}}>
+          <FullFactionSymbol faction={factionName} />
+        </div>
       </div>
       <div className="flexColumn" style={{position: "sticky", width: "100%", top: "44px", zIndex: 902,  backgroundColor: "#222"}}>
         <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "16px", gap: "24px", margin: "8px 0px"}}>
@@ -641,9 +647,12 @@ export function FactionSummary({ factionName, options={} }) {
   }
 
   return (
-    <div className="flexRow" style={{width: "100%", maxWidth: "800px", padding: "4px 0px", position: "relative"}}>
-      {options.showIcon ? <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5}}>
-        <FactionSymbol faction={factionName} size={90} />
+    <div className="flexRow" style={{width: "100%", maxWidth: "800px", position: "relative"}}>
+      {options.showIcon ? 
+      <div className="flexColumn" style={{position: "absolute", zIndex: -1, width: "100%", height: "100%"}}>
+        <div className="flexColumn" style={{position: "absolute", zIndex: -1, opacity: 0.5, width: "90px", height: "90px"}}>
+          <FullFactionSymbol faction={factionName} size={90} />
+        </div>
       </div> : null}
       {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
       <div className="flexColumn" style={{flexBasis: "30%", height: "91px", fontSize: "28px"}}>

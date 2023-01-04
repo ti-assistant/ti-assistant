@@ -164,6 +164,7 @@ export default async function handler(req, res) {
         [factionString]: vps + data.vps,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
+      break;
     }
     case "UPDATE_CAST_VOTES": {
       const updates = {
@@ -175,6 +176,7 @@ export default async function handler(req, res) {
         updates[factionString] = value;
       });
       await db.collection('games').doc(gameid).update(updates);
+      break;
     }
     case "RESET_CAST_VOTES": {
       const updates = {
@@ -185,6 +187,7 @@ export default async function handler(req, res) {
         updates[factionString] = FieldValue.delete();
       });
       await db.collection('games').doc(gameid).update(updates);
+      break;
     }
   }
   

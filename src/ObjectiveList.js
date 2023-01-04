@@ -6,7 +6,6 @@ import { fetcher, poster } from './util/api/util'
 import { ObjectiveRow } from "/src/ObjectiveRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 import { revealObjective, removeObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
-import { FactionSymbol } from "./FactionCard";
 import { useSharedUpdateTimes } from "./Updater";
 
 

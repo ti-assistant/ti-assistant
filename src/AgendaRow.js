@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { Modal } from "/src/Modal.js";
-import { FactionSymbol } from "./FactionCard";
 import { SelectableRow } from "./SelectableRow";
 
 function InfoContent({agenda}) {
@@ -54,7 +53,7 @@ export function AgendaRow({agenda, addAgenda, removeAgenda}) {
             <InfoContent agenda={agenda} />
           } top="35%" level={2} />
           <div className="flexRow" style={{gap: "4px", height: "50px"}}>
-            <div className="flexColumn" style={{fontSize: "20px", color: textColor, gap: "4px", alignItems: "flex-start"}}>
+            <div className="flexColumn" style={{fontSize: "20px", color: textColor, gap: "4px", alignItems: "flex-start", whiteSpace: "nowrap"}}>
               <div>{agenda.name}</div>
               {agenda.target ?
                 <div>[{agenda.target}]</div>

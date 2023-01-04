@@ -6,6 +6,8 @@ import { FactionSummary, UpdateObjectivesModal, UpdatePlanetsModal, UpdateTechsM
 import { updateOption } from '../util/api/options.js';
 import { useRef, useState } from 'react';
 import { useSharedUpdateTimes } from '../Updater.js';
+import { LabeledDiv } from '../LabeledDiv.js';
+import { getFactionColor } from '../util/factions.js';
 
 export default function SummaryColumn() {
   const router = useRouter();
@@ -40,7 +42,7 @@ export default function SummaryColumn() {
 
   let maxSummaryWidth = "400px";
   if (!showPlanets && !showTechs) {
-    maxSummaryWidth = "200px";
+    maxSummaryWidth = "240px";
   } else if (!showPlanets) {
     maxSummaryWidth = "280px";
   } else if (!showTechs) {
@@ -49,6 +51,7 @@ export default function SummaryColumn() {
 
   const factionCardOptions = {
     hideTitle: true,
+    iconSize: "95px",
   };
   const factionSummaryOptions = {
     showIcon: true,
@@ -57,25 +60,29 @@ export default function SummaryColumn() {
   };
     
   return (
-    <div className="flexColumn" style={{width: "100%", alignItems: "stretch", gap: "6px", maxWidth: maxSummaryWidth}}>
+    <div className="flexColumn" style={{width: "100%", alignItems: "stretch", maxWidth: maxSummaryWidth}}>
       <UpdateTechsModal visible={showTechModal} onComplete={() => setShowTechModal(false)} />
       <UpdateObjectivesModal visible={showObjectiveModal} onComplete={() => setShowObjectiveModal(false)} />
       <UpdatePlanetsModal visible={showPlanetModal} onComplete={() => setShowPlanetModal(false)} />
-      <div className="flexRow">Speaker Order</div>
-      <div className="flexRow">
-        <button onClick={() => setOption("faction-summary-show-techs", !showTechs)}>{showTechs ? "Hide Techs" : "Show Techs"}</button>
-        <button onClick={() => setOption("faction-summary-show-planets", !showPlanets)}>{showPlanets ? "Hide Planets" : "Show Planets"}</button>
-      </div>
-      <div className="flexRow">
-        {showTechs ? <button onClick={() => setShowTechModal(true)}>Update Techs</button> : null}
-        <button onClick={() => setShowObjectiveModal(true)}>Score Objectives</button>
-        {showPlanets ? <button onClick={() => setShowPlanetModal(true)}>Update Planets</button> : null}
+      <div className="flexColumn" style={{gap: "6px", whiteSpace: "nowrap"}}>
+        <div className="flexRow">Speaker Order</div>
+        <div className="flexRow" style={{gap: "12px"}}>
+          <button onClick={() => setOption("faction-summary-show-techs", !showTechs)}>{showTechs ? "Hide Techs" : "Show Techs"}</button>
+          <button onClick={() => setOption("faction-summary-show-planets", !showPlanets)}>{showPlanets ? "Hide Planets" : "Show Planets"}</button>
+        </div>
+        <div className="flexRow" style={{gap: "12px"}}>
+          {showTechs ? <button onClick={() => setShowTechModal(true)}>Update Techs</button> : null}
+          <button onClick={() => setShowObjectiveModal(true)}>Score Objectives</button>
+          {showPlanets ? <button onClick={() => setShowPlanetModal(true)}>Update Planets</button> : null}
+        </div>
       </div>
       {orderedFactions.map(([name, faction]) => {
         return (
-          <FactionCard key={name} faction={faction} opts={factionCardOptions} content={
+          <LabeledDiv color={getFactionColor(faction)}>
+          {/* <FactionCard key={name} faction={faction} opts={factionCardOptions} content={ */}
             <FactionSummary factionName={name} options={factionSummaryOptions} />
-          } />
+          </LabeledDiv>
+          // } />
         );
       })}
     </div>
