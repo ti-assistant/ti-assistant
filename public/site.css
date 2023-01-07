@@ -25,9 +25,20 @@ body {
   color: #eee;
 }
 
+.mobileTitle {
+  display: none;
+}
+
 @media only screen and (max-width: 900px) {
   body {
     margin: 0px 8px;
+  }
+
+  .mobileTitle {
+    display: flex;
+    margin: 20px 0px;
+    font-size: 24px;
+    text-align: center;
   }
 }
 
@@ -184,6 +195,14 @@ input[type=text] {
   clip-path: polygon(0% 101%, 0% 101%, 0% 101%, 0% 101%);
 }
 
+.hoverInfo.left {
+  clip-path: polygon(101% 0%, 101% 0%, 101% 0%, 101% 0%);
+}
+
+.hoverInfo.up.left {
+  clip-path: polygon(101% 101%, 101% 101%, 101% 101%, 101% 101%);
+}
+
 .hiddenButton {
   opacity: 0;
   transition: opacity 200ms;
@@ -209,7 +228,7 @@ input[type=text] {
   opacity: 1;
 }
 
-.hoverInfo.right {
+/* .hoverInfo.right {
   left: 100%;
   margin-left: 16px;
   height: 0px;
@@ -220,7 +239,7 @@ input[type=text] {
   right: 100%;
   margin-right: 16px;
   height: 0px;
-}
+} */
 
 .fade-enter {
   opacity: 0;
