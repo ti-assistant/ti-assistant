@@ -1,4 +1,4 @@
-export function LabeledDiv({label, children, style = {}, color = "#999", labelSize = 16, content}) {
+export function LabeledDiv({label, children, onClick, style = {}, color = "#999", labelSize = 16, content}) {
   const divStyle = {
     position: "relative",
     gap: "8px",
@@ -9,6 +9,7 @@ export function LabeledDiv({label, children, style = {}, color = "#999", labelSi
     marginTop: `${labelSize - 4}px`,
     padding: `${!!label ? labelSize - 4 : 8}px 8px 8px 8px`,
     alignItems: "flex-start",
+    cursor: onClick ? "pointer" : "cursor",
     ...style,
   };
   const labelStyle = {
@@ -25,7 +26,8 @@ export function LabeledDiv({label, children, style = {}, color = "#999", labelSi
   return (
     <div
       className="flexColumn"
-      style={divStyle}>
+      style={divStyle}
+      onClick={onClick}>
       {!!label ? <div
         style={labelStyle}
       >

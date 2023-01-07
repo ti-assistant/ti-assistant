@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { FactionCard } from '/src/FactionCard.js'
 import QRCode from "qrcode";
 import { fetcher } from '../../../src/util/api/util';
+import { LabeledDiv } from '../../../src/LabeledDiv';
+import { getFactionColor, getFactionName } from '../../../src/util/factions';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -56,7 +58,6 @@ export default function SelectFactionPage() {
         style={{
           display: "flex",
           flexFlow: "column wrap",
-          gap: "10px",
           maxWidth: "500px",
           width: "100%",
         }}
@@ -78,11 +79,17 @@ export default function SelectFactionPage() {
         </div>
         {orderedFactions.map(([name, faction]) => {
           return (
-            <FactionCard
-              key={name}
-              faction={faction}
-              onClick={() => selectFaction(name)}
-            />
+            <LabeledDiv key={faction.name} color={getFactionColor(faction)}
+              onClick={() => selectFaction(name)}>
+              <div className='flexColumn' style={{height: "32px", fontSize: "20px", width: '100%'}}>
+                {getFactionName(faction)}
+              </div>
+            </LabeledDiv>
+            // <FactionCard
+            //   key={name}
+            //   faction={faction}
+            //   onClick={() => selectFaction(name)}
+            // ></FactionCard>
           );
         })}
       </div>
@@ -124,17 +131,19 @@ function Header() {
 
   const round = state ? `ROUND ${state.round}` : "Loading...";
 
-  return <div className="flexColumn" style={{top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
+  return <div className="flexRow" style={{top: 0, width: "100vw", position: "fixed", justifyContent: "space-evenly"}}>
     <Sidebar side="left" content={`SELECT FACTION`} />
     <Sidebar side="right" content={round} />
+
+    <div style={{cursor: "pointer", backgroundColor: "#222", fontSize: "24px"}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
 
     {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
       SETUP PHASE
     </div> */}
-    <h2>Twilight Imperium Assistant</h2>
-    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "44px"}}>
-      {qrCode ? <img src={qrCode} /> : null}
+    {/* <h2>Twilight Imperium Assistant</h2> */}
+    <div className="flexRow" style={{alignItems: "center", justifyContent: "center"}}>
       <div>Game ID: {gameid}</div>
+      {qrCode ? <img src={qrCode} /> : null}
     </div>
   </div>
 }
