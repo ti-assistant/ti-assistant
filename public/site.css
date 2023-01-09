@@ -1,3 +1,20 @@
+:root{
+  --one-pixel: max( calc(1px + (2 - 1) * ((100vw - 1280px) / (2560 - 1280))), 1px);
+  --three-pixel: max( calc(3px + (6 - 3) * ((100vw - 1280px) / (2560 - 1280))), 3px);
+  --four-pixel: max( calc(4px + (8 - 4) * ((100vw - 1280px) / (2560 - 1280))), 4px);
+  --five-pixel: max( calc(5px + (10 - 5) * ((100vw - 1280px) / (2560 - 1280))), 5px);
+  --eight-pixel: max( calc(8px + (16 - 8) * ((100vw - 1280px) / (2560 - 1280))), 8px);
+  --sixteen-pixel: max( calc(14px + (28 - 14) * ((100vw - 1280px) / (2560 - 1280))), 14px);
+  --sixteen-pixel: max( calc(16px + (32 - 16) * ((100vw - 1280px) / (2560 - 1280))), 16px);
+  --eighteen-pixel: max( calc(18px + (36 - 18) * ((100vw - 1280px) / (2560 - 1280))), 18px);
+  --twenty-pixel: max( calc(20px + (40 - 20) * ((100vw - 1280px) / (2560 - 1280))), 20px);
+  --twenty-four-pixel: max( calc(24px + (48 - 24) * ((100vw - 1280px) / (2560 - 1280))), 24px);
+  --thirty-six-pixel: max( calc(32px + (64 - 32) * ((100vw - 1280px) / (2560 - 1280))), 32px);
+  --thirty-six-pixel: max( calc(36px + (72 - 36) * ((100vw - 1280px) / (2560 - 1280))), 36px);
+  --forty-eight-pixel: max( calc(48px + (96 - 48) * ((100vw - 1280px) / (2560 - 1280))), 48px);
+  --one-fifty-pixel: max( calc(150px + (300 - 150) * ((100vw - 1280px) / (2560 - 1280))), 50px);
+}
+
 @font-face {
   font-family: 'Slider';
   src: url('Slider.eot');
@@ -20,7 +37,8 @@
 
 body {
   font-family: "slider";
-  margin: 0px 150px;
+  font-size: var(--sixteen-pixel);
+  margin: 0px var(--one-fifty-pixel);
   background-color: #222;
   color: #eee;
 }
@@ -29,30 +47,47 @@ body {
   display: none;
 }
 
-@media only screen and (max-width: 900px) {
-  body {
-    margin: 0px 8px;
-  }
-
-  .mobileTitle {
-    display: flex;
-    margin: 20px 0px;
-    font-size: 24px;
-    text-align: center;
-  }
+.tinyFont {
+  font-size: 12px;
 }
+
+.smallFont {
+  font-size: 14px;
+  font-size: var(--fourteen-pixel);
+}
+
+.mediumFont {
+  font-size: 16px;
+  font-size: var(--sixteen-pixel);
+}
+
+.largeFont {
+  font-size: 18px;
+  font-size: var(--eighteen-pixel);
+  /* font-size: calc(12px + (40 - 12) * ((100vw - 900) / (2560 - 900))); */
+}
+
+.extraLargeFont {
+  font-size: 24px;
+  font-size: var(--twenty-four-pixel);
+}
+
+
+
 
 button {
   all: unset;
-  font-size: 16px;
+  font-size: var(--eighteen-pixel);
   font-family: 'Myriad Pro';
   background-color: #333;
   color: #eee;
   padding: 3px 5px;
+  padding: var(--three-pixel) var(--five-pixel);
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0px 1px 4px black;
-  border: 1px solid #333;
+  box-shadow: 0px var(--one-pixel) var(--four-pixel) black;
+  border: var(--one-pixel) solid #333;
 }
 
 button:hover {
@@ -64,12 +99,12 @@ button:disabled {
   color: #555;
   box-shadow: none;
   box-sizing: border-box;
-  border: 1px solid #333;
+  border: var(--one-pixel) solid #333;
   cursor: default;
 }
 
 button.selected {
-  border: 1px solid #eee;
+  border: var(--one-pixel) solid #eee;
   background-color: #444;
   color: #fff;
 }
@@ -84,32 +119,32 @@ input[type=text] {
 .leftSidebar {
   position: fixed;
   transform: rotate(-90deg);
-  left: 36px;
+  left: var(--thirty-six-pixel);
   width: 100vh;
   text-align: center;
   top: 100%;
   background-color: #333;
   color: #eee;
-  box-shadow: 0px 0px 8px 1px #111;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  font-size: 48px;
+  box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
+  padding-bottom: var(--twenty-pixel);
+  padding-top: var(--twenty-pixel);
+  font-size: var(--forty-eight-pixel);
   transform-origin: 0px 0px;
 }
 
 .rightSidebar {
   position: fixed;
   transform: rotate(90deg);
-  right: 36px;
+  right: var(--thirty-six-pixel);
   width: 100vh;
   text-align: center;
   top: 100%;
   background-color: #333;
   color: #eee;
-  box-shadow: 0px 0px 8px 1px #111;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  font-size: 48px;
+  box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
+  padding-bottom: var(--twenty-pixel);
+  padding-top: var(--twenty-pixel);
+  font-size: var(--forty-eight-pixel);
   transform-origin: 100% 0px;
 }
 
@@ -132,6 +167,7 @@ input[type=text] {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  gap: var(--eight-pixel);
 }
 
 .flexColumn {
@@ -139,6 +175,7 @@ input[type=text] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: var(--eight-pixel);
 }
 
 .tab {
@@ -154,10 +191,9 @@ input[type=text] {
 }
 
 .popupIcon {
-  margin-left: 8px;
-  font-size: 20px;
+  margin-left: var(--eight-pixel);
+  font-size: var(--twenty-pixel);
   position: relative;
-  z-index: 2;
   cursor: pointer;
 }
 
@@ -294,4 +330,34 @@ input[type=text] {
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 500ms;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+.nonMobile {
+  display: flex;
+}
+
+
+@media only screen and (max-width: 900px) {
+  body {
+    margin: 0px 8px;
+  }
+
+  .mobileOnly {
+    display: flex;
+  }
+
+  .nonMobile {
+    display: none;
+  }
+
+  .mobileTitle {
+    display: flex;
+    margin: 20px 0px;
+    font-size: 24px;
+    text-align: center;
+  }
 }

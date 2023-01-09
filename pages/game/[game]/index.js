@@ -6,6 +6,8 @@ import QRCode from "qrcode";
 import { fetcher } from '../../../src/util/api/util';
 import { LabeledDiv } from '../../../src/LabeledDiv';
 import { getFactionColor, getFactionName } from '../../../src/util/factions';
+import { responsivePixels } from '../../../src/util/util';
+import { FactionSymbol, FullFactionSymbol } from '../../../src/FactionCard';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -55,23 +57,23 @@ export default function SelectFactionPage() {
     <div className="flexColumn" style={{alignItems: "center", height: "100vh"}}>
       <Header />
       <div
+        className="flexColumn"
         style={{
-          display: "flex",
-          flexFlow: "column wrap",
-          maxWidth: "500px",
+          alignItems: "stretch",
+          maxWidth: `${responsivePixels(500)}`,
           width: "100%",
         }}
       >
         <div
           onClick={goToMainPage}
           style={{
-            border: "3px solid grey",
+            border: `${responsivePixels(3)} solid grey`,
             borderRadius: "5px",
-            height: "60px",
+            height: `10vh`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "24px",
+            fontSize: `${responsivePixels(24)}`,
             cursor: "pointer",
           }}
         >
@@ -81,7 +83,10 @@ export default function SelectFactionPage() {
           return (
             <LabeledDiv key={faction.name} color={getFactionColor(faction)}
               onClick={() => selectFaction(name)}>
-              <div className='flexColumn' style={{height: "32px", fontSize: "20px", width: '100%'}}>
+              <div className="flexRow" style={{zIndex: -1, opacity: "40%", position: "absolute", width: "100%", height: "100%"}}>
+                <FullFactionSymbol faction={faction.name} />
+              </div>
+              <div className='flexColumn' style={{height: "5vh", fontSize: responsivePixels(20), width: '100%'}}>
                 {getFactionName(faction)}
               </div>
             </LabeledDiv>
@@ -118,8 +123,8 @@ function Header() {
         dark: "#eeeeeeff",
         light: "#222222ff",
       },
-      width: 120,
-      height: 120,
+      width: responsivePixels(120),
+      height: responsivePixels(120),
       margin: 4,
     }, (err, url) => {
       if (err) {
@@ -129,20 +134,31 @@ function Header() {
     });
   }
 
-  const round = state ? `ROUND ${state.round}` : "Loading...";
+  const round = state ? `ROUND ${state.round}` : "";
 
-  return <div className="flexRow" style={{top: 0, width: "100vw", position: "fixed", justifyContent: "space-evenly"}}>
+  // return <div className="flexRow" style={{top: 0, width: "100vw", position: "fixed", justifyContent: "space-evenly"}}>
+  //   <Sidebar side="left" content={`SELECT FACTION`} />
+  //   <Sidebar side="right" content={round} />
+
+  //   <div style={{cursor: "pointer", backgroundColor: "#222", fontSize: responsivePixels(24)}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
+
+  //   {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
+  //     SETUP PHASE
+  //   </div> */}
+  //   {/* <h2>Twilight Imperium Assistant</h2> */}
+  //   <div className="flexRow" style={{alignItems: "center", justifyContent: "center"}}>
+  //     <div>Game ID: {gameid}</div>
+  //     {qrCode ? <img src={qrCode} /> : null}
+  //   </div>
+  // </div>
+
+  return <div className="flex" style={{top: 0, width: "100vw", position: "fixed", justifyContent: "space-between"}}>
     <Sidebar side="left" content={`SELECT FACTION`} />
     <Sidebar side="right" content={round} />
-
-    <div style={{cursor: "pointer", backgroundColor: "#222", fontSize: "24px"}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
-
-    {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
-      SETUP PHASE
-    </div> */}
-    {/* <h2>Twilight Imperium Assistant</h2> */}
-    <div className="flexRow" style={{alignItems: "center", justifyContent: "center"}}>
-      <div>Game ID: {gameid}</div>
+    <div className="extraLargeFont nonMobile" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: `${responsivePixels(12)}`, left: `${responsivePixels(150)}`}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
+    <div className="flexColumn extraLargeFont mobileOnly" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", textAlign: "center", top: `${responsivePixels(12)}`, width: "100%"}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
+    <div className="flexRow nonMobile" style={{position: "fixed", top: `${responsivePixels(12)}`, right: `${responsivePixels(150)}`, alignItems: "flex-start", justifyContent: "center"}}>
+      <div style={{marginTop: `${responsivePixels(16)}`}}>Game ID: {gameid}</div>
       {qrCode ? <img src={qrCode} /> : null}
     </div>
   </div>

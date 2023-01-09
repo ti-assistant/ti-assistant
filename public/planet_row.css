@@ -40,8 +40,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: var(--four-pixel);
+  padding-right: var(--four-pixel);
   position: relative;
   align-items: stretch;
 }
@@ -61,16 +61,16 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 0px 4px;
+  padding: 0px var(--four-pixel);
   position: relative;
-  min-height: 40px;
-  font-size: 24px;
+  min-height: var(--forty-eight-pixel);
+  font-size: var(--twenty-four-pixel);
 }
 
 .icon {
   display: flex;
   align-items: center;
-  font-size: 32px;
+  font-size: var(--thirty-two-pixel);
   line-height: 32px;
   height: 32px;
   width: 30px;

@@ -8,6 +8,7 @@ import { fetcher } from './util/api/util';
 import { useBetween } from 'use-between';
 import { useSharedUpdateTimes } from './Updater';
 import { saveAgendaTimer, saveFactionTimer, saveGameTimer } from './util/api/timers';
+import { responsivePixels } from './util/util';
 
 const useCurrentAgenda = () => {
   const [currentAgenda, setCurrentAgenda] = useState(1);
@@ -42,7 +43,7 @@ export function TimerDisplay({ time }) {
   const minutes = Math.floor(time % 3600 / 60);
   const seconds = time % 60;
 
-  return <div className="flexRow" style={{width: "160px", fontSize: "24px"}}>
+  return <div className="flexRow" style={{width: responsivePixels(160), fontSize: responsivePixels(24)}}>
     {hours} : {minutes < 10 ? `0${minutes}` : minutes} : {seconds < 10 ? `0${seconds}` : seconds}
   </div>
 }
@@ -112,18 +113,18 @@ export function AgendaTimer({}) {
   // const totalTimer = firstAgendaTimer + secondAgendaTimer;
 
   return (
-    <div className="flexColumn" style={{width: "100%", gap: "4px"}}>
+    <div className="flexColumn" style={{width: "100%"}}>
       {/* <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}>
         <div style={{fontSize: "18px"}}>Total Time</div>
         <TimerDisplay time={totalTimer} />
       </div> */}
       <div className="flexRow" style={{width: "100%", justifyContent: "space-evenly"}}>
-        <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}>
-          <div style={{fontSize: "18px"}}>First Agenda</div>
+        <div className="flexColumn" style={{alignItems: "center", justifyContent: "center"}}>
+          <div style={{fontSize: responsivePixels(18)}}>First Agenda</div>
           <TimerDisplay time={firstAgendaTimer} />
         </div>
-        <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}>
-          <div style={{fontSize: "18px"}}>Second Agenda</div>
+        <div className="flexColumn" style={{alignItems: "center", justifyContent: "center"}}>
+          <div style={{fontSize: responsivePixels(18)}}>Second Agenda</div>
           <TimerDisplay time={secondAgendaTimer} />
         </div>
       </div>
@@ -188,12 +189,12 @@ export function GameTimer({}) {
   }
 
   return (
-    <div className="flexColumn" style={{width: "100%", gap: "4px", whiteSpace: "nowrap"}}>
-      <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}>
-        <div style={{fontSize: "18px"}}>Game Time</div>
+    <div className="flexColumn" style={{width: "100%", whiteSpace: "nowrap"}}>
+      <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", gap: responsivePixels(4)}}>
+        <div style={{fontSize: responsivePixels(18)}}>Game Time</div>
         <TimerDisplay time={!timers ? 0 : gameTimer} />
       </div>
-      <div className="flexRow" style={{gap: "12px"}}>
+      <div className="flexRow">
         <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button>
       </div>
     </div>
@@ -242,8 +243,8 @@ export function FactionTimer({ factionName }) {
   }, [timers, factionName]);
 
   return (
-    <div className="flexColumn" style={{width: "100%", gap: "4px"}}>
-      <div className="flexColumn" style={{gap: "4px", alignItems: "center", justifyContent: "center"}}> 
+    <div className="flexColumn" style={{width: "100%", gap: responsivePixels(8)}}>
+      <div className="flexColumn" style={{gap: responsivePixels(8), alignItems: "center", justifyContent: "center"}}> 
         <TimerDisplay time={!timers ? 0 : factionTimer} />
       </div>
     </div>

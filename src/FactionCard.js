@@ -12,7 +12,7 @@ import { chooseStartingTech, removeStartingTech } from './util/api/techs';
 import { fetcher, poster } from './util/api/util';
 import { getFactionColor, getFactionName } from './util/factions';
 import { getTechColor } from './util/techs';
-import { getNextIndex } from './util/util';
+import { getNextIndex, responsivePixels } from './util/util';
 
 import { TechRow } from '/src/TechRow.js'
 import { setSpeaker } from '/src/util/api/state.js';
@@ -226,9 +226,9 @@ export function StartingComponents({ faction }) {
   }
 
   return (
-    <div style={{paddingLeft: "4px", display: "flex", flexDirection: "column", gap: "4px"}}>
+    <div className='flexColumn' style={{height: "100%", alignItems: "flex-start", justifyContent: 'flex-start', flexDirection: "column", gap: responsivePixels(4)}}>
       {startswith.planetchoice ? "Choose Sub-Faction" : null}
-      {startswith.planetchoice ? <div className='flexColumn' style={{gap: "4px", alignItems: "flex-start"}}>
+      {startswith.planetchoice ? <div className='flexColumn' style={{gap: responsivePixels(4), alignItems: "flex-start"}}>
         {startswith.planetchoice.options.map((faction) => {
           if (!(options['allow-double-council'] ?? false) && factions[faction]) {
             return null;
@@ -240,7 +240,7 @@ export function StartingComponents({ faction }) {
         })}
       </div> : null}
       Planets
-      <div style={{paddingLeft: "8px", fontFamily: "Myriad Pro"}}>
+      <div style={{paddingLeft: responsivePixels(4), fontFamily: "Myriad Pro"}}>
         {orderedPlanets.map((planet) => {
           return <div key={planet}>
             {planet}
@@ -248,7 +248,7 @@ export function StartingComponents({ faction }) {
         })}
       </div>
       Units
-      <div className="flexColumn" style={{paddingLeft: "4px", fontFamily: "Myriad Pro", justifyContent: "stretch", alignItems: "flex-start"}}>
+      <div className="flexColumn" style={{paddingLeft: responsivePixels(4), fontFamily: "Myriad Pro", justifyContent: "stretch", alignItems: "flex-start", gap: responsivePixels(1)}}>
         {orderedUnits.map(([unit, number]) => {
           return <div key={unit}>
               {`${number} ${pluralize(unit, number)}`}
@@ -263,7 +263,7 @@ export function StartingComponents({ faction }) {
               {tech.name}
             </SelectableRow>
           }
-          return <div key={tech.name} style={{whiteSpace: "nowrap", fontFamily: "Myriad Pro", color: getTechColor(tech)}}>{tech.name}</div>;
+          return <div key={tech.name} style={{whiteSpace: "nowrap", fontFamily: "Myriad Pro", color: getTechColor(tech), fontSize: responsivePixels(16)}}>{tech.name}</div>;
           return <TechRow key={tech.name} tech={tech} removeTech={startswith.choice ? () => removeTech(tech.name) : null} />;
         })}
       </div>

@@ -12,6 +12,8 @@ import { GameTimer } from '../../../src/Timer';
 import { AgendaRow } from '../../../src/AgendaRow';
 import { repealAgenda } from '../../../src/util/api/agendas';
 import { Updater } from '../../../src/Updater';
+import { responsivePixels } from '../../../src/util/util';
+import { Footer, Header } from '../../../src/Header';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -48,6 +50,7 @@ export default function SelectFactionPage() {
       <Updater />
       <Header />
       {innerContent}
+      <Footer />
     </div>
   );
 }
@@ -66,49 +69,48 @@ function refreshData(gameid, mutate) {
 function Sidebar({side, content}) {
   const className = `${side}Sidebar`;
   return (
-    <div className={className} style={{letterSpacing: "3px"}}>
+    <div className={className} style={{letterSpacing: responsivePixels(3)}}>
       {content}
     </div>
   );
 }
+// function Header() {
+//   const router = useRouter();
+//   const { game: gameid } = router.query;
+//   const { mutate } = useSWRConfig();
+//   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+//   const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
+//   const [ qrCode, setQrCode ] = useState(null);
 
-function Header() {
-  const router = useRouter();
-  const { game: gameid } = router.query;
-  const { mutate } = useSWRConfig();
-  const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
-  const [ qrCode, setQrCode ] = useState(null);
+//   if (!qrCode && gameid) {
+//     QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
+//       color: {
+//         dark: "#eeeeeeff",
+//         light: "#222222ff",
+//       },
+//       width: 120,
+//       height: 120,
+//       margin: 4,
+//     }, (err, url) => {
+//       if (err) {
+//         throw err;
+//       }
+//       setQrCode(url);
+//     });
+//   }
 
-  if (!qrCode && gameid) {
-    QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
-      color: {
-        dark: "#eeeeeeff",
-        light: "#222222ff",
-      },
-      width: 120,
-      height: 120,
-      margin: 4,
-    }, (err, url) => {
-      if (err) {
-        throw err;
-      }
-      setQrCode(url);
-    });
-  }
-
-  return (
-    <div className="flexColumn" style={{zIndex: 400, top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
-      <Sidebar side="left" content={`${state.phase} PHASE`} />
-      <Sidebar side="right" content={`ROUND ${state.round}`} />
-      <h2>Twilight Imperium Assistant</h2>
-      <div className="flexRow" style={{gap: "8px", alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
-        {qrCode ? <img src={qrCode} /> : null}
-        <div>Game ID: {gameid}</div>
-        <button onClick={() => refreshData(gameid, mutate)}>Refresh</button>
-      </div>
-      <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "288px", top: "16px"}}>
-        <GameTimer />
-      </div>
-    </div>);
-}
+//   return (
+//     <div className="flexColumn" style={{zIndex: 400, top: 0, position: "fixed", alignItems: "center", justifyContent: "center"}}>
+//       <Sidebar side="left" content={`${state.phase} PHASE`} />
+//       <Sidebar side="right" content={`ROUND ${state.round}`} />
+//       <h2>Twilight Imperium Assistant</h2>
+//       <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: responsivePixels(150), top: responsivePixels(12)}}>
+//         {qrCode ? <img src={qrCode} /> : null}
+//         <div>Game ID: {gameid}</div>
+//         <button onClick={() => refreshData(gameid, mutate)}>Refresh</button>
+//       </div>
+//       <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "288px", top: "16px"}}>
+//         <GameTimer />
+//       </div>
+//     </div>);
+// }

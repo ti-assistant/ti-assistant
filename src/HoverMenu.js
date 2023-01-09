@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { getResponsiveFormula, responsivePixels } from "./util/util";
 
 export function HoverMenu({label, style, children, content, directin = "down", borderColor = "#aaa"}) {
   const menu = useRef(null);
@@ -11,9 +12,13 @@ export function HoverMenu({label, style, children, content, directin = "down", b
     if (rect.top + innerMenu.current.clientHeight > window.innerHeight &&
         rect.top - innerMenu.current.clientHeight > 0) {
       setDirection("up");
+    } else {
+      setDirection("down");
     }
     if (rect.left + innerMenu.current.clientWidth > window.innerWidth) {
       setSide("left");
+    } else {
+      setSide("right");
     }
   });
 
@@ -38,26 +43,23 @@ export function HoverMenu({label, style, children, content, directin = "down", b
   const classNames = "flexColumn hoverInfo" + (direction === "up" ? " up" : "") + (side === "left" ? " left" : "");
 
   return (
-    <div className="hoverParent" ref={menu}>
+    <div className="hoverParent largeFont" ref={menu}>
       <div style={{
         border: `2px solid ${borderColor}`,
         borderRadius: "5px",
-        padding: "4px 8px",
-        fontSize: "18px",
+        padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
         pointer: "pointer",
         whiteSpace: "nowrap",
       }}>{label}</div>
       <div className={classNames} style={hoverMenuStyle} ref={innerMenu}>
         {direction === "down" ? <div style={{
-          padding: "4px 8px",
-          fontSize: "18px",
+          padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
           pointer: "pointer",
         }}>{label}</div> : null}
         {children}
         {content}
         {direction === "up" ? <div style={{
-          padding: "4px 8px",
-          fontSize: "18px",
+          padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
           pointer: "pointer",
         }}>{label}</div> : null}
       </div>

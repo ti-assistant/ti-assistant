@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { FactionTile } from "../src/FactionCard";
-import { BasicFactionTile } from "../src/FactionTile";
-import { Modal } from "../src/Modal";
 import { fetcher } from "../src/util/api/util";
 import Image from "next/image";
 import { getFactionColor } from "../src/util/factions";
 import { HoverMenu } from "../src/HoverMenu";
 import { LabeledDiv } from "../src/LabeledDiv";
+import { responsivePixels } from "../src/util/util";
+import { FullFactionSymbol } from "../src/FactionCard";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -38,9 +37,9 @@ function Options({ updatePlayerCount, toggleOption, toggleExpansion, options, nu
       break;
   }
   
-return <div className="flexColumn" style={{gap: "8px"}}>
+return <div className="flexColumn">
   <label>Player Count</label>
-  <div className='flexRow' style={{gap: "8px"}}>
+  <div className='flexRow'>
     {[...Array(maxFactions - 2)].map((e, index) => {
       const number = index + 3;
       return (
@@ -49,11 +48,11 @@ return <div className="flexColumn" style={{gap: "8px"}}>
     })}
   </div>
   <HoverMenu label="Options">
-<div style={{width: "540px"}}>
-  <div style={{padding: "8px 16px 0px 16px"}}>
+<div>
+  <div style={{padding: `${responsivePixels(8)} ${responsivePixels(16)} 0 ${responsivePixels(16)}`}}>
   <div>
     Expansions:
-    <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px", padding: "8px 20px"}}>
+    <div className="flexRow" style={{justifyContent: "flex-start", padding: `${responsivePixels(8)} ${responsivePixels(20)}`}}>
       <button className={options.expansions.has("pok") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("pok"), "pok")}>Prophecy of Kings</button>
       <button className={options.expansions.has("codex-one") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-one"), "codex-one")}>Codex I</button>
       <button className={options.expansions.has("codex-two") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-two"), "codex-two")}>Codex II</button>
@@ -62,33 +61,24 @@ return <div className="flexColumn" style={{gap: "8px"}}>
   </div>
   <div>
     Map:
-    <div className="flexColumn" style={{fontFamily: "Myriad Pro", gap: "8px", padding: "8px 16px", alignItems: "flex-start"}}>
+    <div className="flexColumn" style={{fontFamily: "Myriad Pro", padding: `${responsivePixels(8)} ${responsivePixels(16)}`, alignItems: "flex-start"}}>
       {mapStyles.length > 1 ?
       <React.Fragment>
         Map Type:
-        <div className="flexRow" style={{paddingLeft: "16px", gap: '8px'}}>
+        <div className="flexRow" style={{paddingLeft: `${responsivePixels(16)}`}}>
           {mapStyles.map((style) => {
             return <button key={style} className={options['map-style'] === style ? "selected" : ""} onClick={() => toggleOption(style, "map-style")}>{capitalizeFirstLetter(style)}</button>
           })}
         </div>
       </React.Fragment> : null}
-      Map String:<input type="textbox" style={{width: "100%"}} onChange={(event)=> toggleOption(event.target.value, "map-string")}></input>
+      Map String:<input type="textbox" className="mediumFont" style={{width: "100%"}} onChange={(event)=> toggleOption(event.target.value, "map-string")}></input>
       Used to filter out planets that are not claimable.
     </div>
   </div>
-  {/* <div>
-    Assistant Options:
-    <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
-      <button className={options['multiple-planet-owners'] ? "selected" : ""} onClick={() => toggleOption(!options['multiple-planet-owners'], "multiple-planet-owners")}>Allow multiple factions to claim planet</button>
-    </div>
-    <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
-      <button className={options['multiple-planet-attachments'] ? "selected" : ""} onClick={() => toggleOption(!options['multiple-planet-attachments'], "multiple-planet-attachments")}>Allow the same attachment to be placed on multiple planets</button>
-    </div>
-  </div> */}
   {isCouncil ? 
   <div>
     Council Keleres:
-    <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
+    <div className="flexColumn" style={{alignItems: "flex-start", padding: `${responsivePixels(8)} ${responsivePixels(20)}`}}>
       <button className={options['allow-double-council'] ? "selected" : ""} onClick={() => toggleOption(!options['allow-double-council'], "allow-double-council")}>Allow selecting a duplicate sub-faction</button>
     </div>
   </div>
@@ -298,64 +288,35 @@ function FactionSelect({ factions, position, speaker, setFaction, setColor, setS
   </React.Fragment>
 
   return (
-    <LabeledDiv label={label} color={getFactionColor(faction)} style={{width: "280px"}}>
-    <div className="flexColumn" style={{width: "100%", alignItems: "flex-start", whiteSpace: "nowrap", gap: "4px"}}>
-      <Modal top="20%" closeMenu={() => setShowFactionModal(false)} visible={showFactionModal} title="Select Faction" content={
-        <div className="flexRow" style={{padding: "16px", flexWrap: "wrap", gap: "16px 40px"}}>
-          {filteredFactions.map(([factionName, faction]) => {
-            faction.color = color;
-            return (
-              <div key={factionName} style={{flexBasis: "15%", flexGrow: 2, flexShrink: 2}}>
-                <BasicFactionTile faction={faction} onClick={() => selectFaction(faction.name)} />
-              </div>
-            );
-          })}
-        </div>
-      } />
-      <Modal top="20%" closeMenu={() => setShowColorModal(false)} visible={showColorModal} title="Select Color" content={
-        <div className="flexRow" style={{padding: "16px", flexWrap: "wrap", gap: "16px 40px"}}>
-          {filteredColors.map((color) => {
-            const tempFaction = {
-              name: faction.name ?? null,
-              color: color,
-            };
-            return (
-              <div key={color} style={{flexBasis: "20%"}}>
-                <BasicFactionTile faction={tempFaction} onClick={() => selectColor(color)} />
-              </div>
-            );
-          })}
-        </div>
-      } />
-      {/* <HoverMenu label={faction.name ? faction.name : "Select Faction"} borderColor={faction.color ? faction.color : undefined}> */}
-        <div className="flexColumn" style={{paddingTop: "8px", whiteSpace: "nowrap", alignItems: "flex-start", gap: "8px", overflow: "visible", width: "100%"}}>
+    <LabeledDiv label={label} color={getFactionColor(faction)} style={{width: "22vw"}}>
+    <div className="flexColumn" style={{width: "100%", alignItems: "flex-start", whiteSpace: "nowrap", gap: responsivePixels(4)}}>
+        <div className="flexColumn" style={{whiteSpace: "nowrap", alignItems: "flex-start", overflow: "visible", width: "100%"}}>
         <HoverMenu label={faction.name ? faction.name : "Pick Faction"}>
-          <div className="flexRow" style={{padding: "8px",
+          <div className="flexRow" style={{padding: `${responsivePixels(8)}`,
     flexWrap: "wrap",
-    maxHeight: "284px",
+    maxHeight: `${responsivePixels(284)}`,
     alignItems: "stretch",
-    gap: "4px",
+    gap: `${responsivePixels(4)}`,
     writingMode: "vertical-lr",
-    justifyContent: "flex-start",
-    fontSize: "12px"}}>
+    justifyContent: "flex-start"}}>
           {filteredFactions.map(([factionName, local]) => {
-            return <button key={local.name} className={faction.name === factionName ? "selected" : ""} style={{width: "140px", fontSize: "14px"}} onClick={() => selectFaction(factionName)}>{local.name}</button>
+            return <button key={local.name} className={"mediumFont" + (faction.name === factionName ? " selected" : "")} style={{width: `${responsivePixels(140)}`, fontSize: "1vw"}} onClick={() => selectFaction(factionName)}>{local.name}</button>
           })}
           </div>
         </HoverMenu>
         <div className="flexRow" style={{width: "100%", justifyContent: "space-between"}}>
-        <HoverMenu label={faction.color ? "Change Color" : "Pick Color"} style={{minWidth: "92px"}}>
-        <div className="flexRow" style={{padding: "8px",
+        <HoverMenu label={faction.color ? "Change Color" : "Pick Color"} style={{minWidth: responsivePixels(92)}}>
+        <div className="flexRow" style={{padding: `${responsivePixels(8)}`,
     flexWrap: "wrap",
-    maxHeight: "122px",
+    maxHeight: `${responsivePixels(122)}`,
     alignItems: "stretch",
-    gap: "4px",
+    gap: `${responsivePixels(4)}`,
     writingMode: "vertical-lr",
     justifyContent: "flex-start"}}>
           {filteredColors.map((color) => {
               const factionColor = getFactionColor({color: color});
               return (
-                <button key={color} style={{width: "60px", backgroundColor: factionColor, color: factionColor}} className={faction.color === color ? "selected" : ""} onClick={() => selectColor(color)}>{color}</button>
+                <button key={color} style={{width: `${responsivePixels(60)}`, backgroundColor: factionColor, color: factionColor}} className={faction.color === color ? "selected" : ""} onClick={() => selectColor(color)}>{color}</button>
               );
             })}
             </div>
@@ -436,7 +397,7 @@ function validSystemNumber(number) {
   return true;
 }
 
-function SystemImage({systemNumber}) {
+function SystemImage({systemNumber, owner}) {
   if (!systemNumber || !validSystemNumber(systemNumber)) {
     return (
       <div className="flexRow" style={{position: "relative", width: "100%", height: "100%"}}>
@@ -465,6 +426,12 @@ function SystemImage({systemNumber}) {
   return (
   <div className="flexRow" style={{position: "relative", width: "100%", height: "100%"}}>
     <Image src={`/images/systems/ST_${systemNumber}.png`} alt={`System ${systemNumber} Tile`} layout="fill" objectFit="contain" />
+    {/* TODO: Display planet owners on map.
+    <div className="flexRow" style={{position: "absolute", backgroundColor: "#222", borderRadius: "100%", left: "10px", top: "25px", width: "18px", height: "18px", border: "1px solid red"}}>
+      <div className="flexRow" style={{position: "relative", width: "90%", height: "90%"}}>
+        <FullFactionSymbol faction={"Vuil'Raith Cabal"} />
+      </div>
+    </div> */}
   </div>);
 }
 
@@ -662,7 +629,7 @@ export function Map({mapString, mapStyle, factions}) {
 
   const classnames = "flexRow map";
 
-  return <div className={classnames} style={{position: "relative", width: "100%", height: "100%", padding: "1%", boxSizing: 'border-box'}}>
+  return <div className={classnames} style={{position: "relative", width: "100%", height: "100%", padding: "1%", boxSizing: 'border-box', gap: 0}}>
     {columns.map((column, index) => {
       if (numColumns === 7 && (index === 0 || index === 8)) {
         return null;
@@ -740,577 +707,7 @@ export function Map({mapString, mapStyle, factions}) {
         })}
       </div>);
     })}
-  </div>
-
-  /**
-   * 3-6 players
-   * Ratio: 14% across, 12% per tile vertically
-   */
-  switch (factions.length) {
-    case 3:
-      return (
-        <div className="flexRow map" style={{position: "relative", width: "100%", height: "100%", padding: "1%", boxSizing: 'border-box'}}>
-          {/* Column 1 */}
-          <div className="mapColumn leftThree twoTiles" style={{bottom: "19.5%"}}>
-            <FactionSystemImage factionName={factions[2].name} />
-            <SystemImage systemNumber={systemTiles[32]} />
-          </div>
-          {/* Column 2 */}
-          <div className="mapColumn leftTwo fourTiles" style={{bottom: "13%"}}>
-            <SystemImage systemNumber={systemTiles[34]} />
-            <SystemImage systemNumber={systemTiles[16]} />
-            <SystemImage systemNumber={systemTiles[15]} />
-            <SystemImage systemNumber={systemTiles[14]} />
-          </div>
-          {/* Column 3 */}
-          <div className="mapColumn leftOne fiveTiles">
-            <SystemImage systemNumber={systemTiles[17]} />
-            <SystemImage systemNumber={systemTiles[5]} />
-            <SystemImage systemNumber={systemTiles[5]} />
-            <SystemImage systemNumber={systemTiles[13]} />
-            <SystemImage systemNumber={systemTiles[28]} />
-          </div>
-          {/* Column 4 - Middle Column */}
-          <div className="mapColumn sixTiles">
-            <SystemImage systemNumber={systemTiles[6]} />
-            <SystemImage systemNumber={systemTiles[0]} />
-            <div className="flexRow" style={{position: "relative", width: "100%", height: "100%"}}>
-              <Image src="/images/systems/Mecatol Rex.png" alt={`Mecatol Rex`} layout="fill" objectFit="contain" />
-            </div>
-            {/* <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" /> */}
-            <SystemImage systemNumber={systemTiles[3]} />
-            <SystemImage systemNumber={systemTiles[12]} />
-            <FactionSystemImage factionName={factions[1].name} />
-          </div>
-          {/* Column 5 */}
-          <div className="mapColumn rightOne fiveTiles">
-            <SystemImage systemNumber={systemTiles[7]} />
-            <SystemImage systemNumber={systemTiles[1]} />
-            <SystemImage systemNumber={systemTiles[2]} />
-            <SystemImage systemNumber={systemTiles[11]} />
-            <SystemImage systemNumber={systemTiles[26]} />
-          </div>
-          {/* Column 6 */}
-          <div className="mapColumn rightTwo fourTiles" style={{bottom: "13%"}}>
-            <SystemImage systemNumber={systemTiles[20]} />
-            <SystemImage systemNumber={systemTiles[8]} />
-            <SystemImage systemNumber={systemTiles[9]} />
-            <SystemImage systemNumber={systemTiles[10]} />
-          </div>
-          {/* Column 7 */}
-          <div className="mapColumn rightThree twoTiles" style={{bottom: "19.5%"}}>
-            <FactionSystemImage factionName={factions[0].name} />
-            <SystemImage systemNumber={systemTiles[22]} />
-          </div>
-        </div>
-      );
-      case 4:
-        return (
-          <div className="flexRow map">
-            {/* Column 1 */}
-            <div className="mapColumn leftThree fourTiles">
-              <SystemImage systemNumber={systemTiles[33]} />
-              <SystemImage systemNumber={systemTiles[32]} />
-              <FactionSystemImage factionName={factions[3].name} />
-              <SystemImage systemNumber={systemTiles[30]} />
-            </div>
-            {/* Column 2 */}
-            <div className="mapColumn leftTwo fiveTiles">
-              <SystemImage systemNumber={systemTiles[34]} />
-              <SystemImage systemNumber={systemTiles[16]} />
-              <SystemImage systemNumber={systemTiles[15]} />
-              <SystemImage systemNumber={systemTiles[14]} />
-              <SystemImage systemNumber={systemTiles[29]} />
-            </div>
-            {/* Column 3 */}
-            <div className="mapColumn leftOne sixTiles">
-              <FactionSystemImage factionName={factions[0].name} />
-              <SystemImage systemNumber={systemTiles[17]} />
-              <SystemImage systemNumber={systemTiles[5]} />
-              <SystemImage systemNumber={systemTiles[4]} />
-              <SystemImage systemNumber={systemTiles[13]} />
-              <SystemImage systemNumber={systemTiles[28]} />
-            </div>
-            {/* Column 4 - Middle Column */}
-            <div className="mapColumn sevenTiles">
-              <SystemImage systemNumber={systemTiles[18]} />
-              <SystemImage systemNumber={systemTiles[6]} />
-              <SystemImage systemNumber={systemTiles[0]} />
-              <FactionSystemImage factionName="Mecatol Rex" />
-              <SystemImage systemNumber={systemTiles[3]} />
-              <SystemImage systemNumber={systemTiles[12]} />
-              <SystemImage systemNumber={systemTiles[27]} />
-            </div>
-            {/* Column 5 */}
-            <div className="mapColumn rightOne sixTiles">
-              <SystemImage systemNumber={systemTiles[19]} />
-              <SystemImage systemNumber={systemTiles[7]} />
-              <SystemImage systemNumber={systemTiles[1]} />
-              <SystemImage systemNumber={systemTiles[2]} />
-              <SystemImage systemNumber={systemTiles[11]} />
-              <FactionSystemImage factionName={factions[2].name} />
-            </div>
-            {/* Column 6 */}
-            <div className="mapColumn rightTwo fiveTiles">
-              <SystemImage systemNumber={systemTiles[20]} />
-              <SystemImage systemNumber={systemTiles[8]} />
-              <SystemImage systemNumber={systemTiles[9]} />
-              <SystemImage systemNumber={systemTiles[10]} />
-              <SystemImage systemNumber={systemTiles[25]} />
-            </div>
-            {/* Column 7 */}
-            <div className="mapColumn rightThree fourTiles">
-              <SystemImage systemNumber={systemTiles[21]} />
-              <FactionSystemImage factionName={factions[1].name} />
-              <SystemImage systemNumber={systemTiles[23]} />
-              <SystemImage systemNumber={systemTiles[24]} />
-            </div>
-          </div>
-        );
-
-    case 5:
-      return (
-        <div className="flexRow map">
-          {/* Column 1 */}
-          <div className="mapColumn leftThree fourTiles">
-            <FactionSystemImage factionName={factions[4].name} />
-            <SystemImage systemNumber={systemTiles[32]} />
-            <SystemImage systemNumber={systemTiles[31]} />
-            <FactionSystemImage factionName={factions[3].name} />
-          </div>
-          {/* Column 2 */}
-          <div className="mapColumn leftTwo fiveTiles">
-            <SystemImage systemNumber={systemTiles[34]} />
-            <SystemImage systemNumber={systemTiles[16]} />
-            <SystemImage systemNumber={systemTiles[15]} />
-            <SystemImage systemNumber={systemTiles[14]} />
-            <SystemImage systemNumber={systemTiles[29]} />
-          </div>
-          {/* Column 3 */}
-          <div className="mapColumn leftOne sixTiles">
-            <SystemImage systemNumber={systemTiles[35]} />
-            <SystemImage systemNumber={systemTiles[17]} />
-            <SystemImage systemNumber={systemTiles[5]} />
-            <SystemImage systemNumber={systemTiles[4]} />
-            <SystemImage systemNumber="87A" />
-            <SystemImage systemNumber="84A" />
-          </div>
-          {/* Column 4 - Middle Column */}
-          <div className="mapColumn sevenTiles">
-            <FactionSystemImage factionName={factions[0].name} />
-            <SystemImage systemNumber={systemTiles[6]} />
-            <SystemImage systemNumber={systemTiles[0]} />
-            <FactionSystemImage factionName="Mecatol Rex" />
-            {/* <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" /> */}
-            <SystemImage systemNumber="86A" />
-            <SystemImage systemNumber={systemTiles[12]} />
-            <SystemImage systemNumber="85A" />
-          </div>
-          {/* Column 5 */}
-          <div className="mapColumn rightOne sixTiles">
-            <SystemImage systemNumber={systemTiles[19]} />
-            <SystemImage systemNumber={systemTiles[7]} />
-            <SystemImage systemNumber={systemTiles[1]} />
-            <SystemImage systemNumber={systemTiles[2]} />
-            <SystemImage systemNumber="88A" />
-            <SystemImage systemNumber="83A" />
-          </div>
-          {/* Column 6 */}
-          <div className="mapColumn rightTwo fiveTiles">
-            <SystemImage systemNumber={systemTiles[20]} />
-            <SystemImage systemNumber={systemTiles[8]} />
-            <SystemImage systemNumber={systemTiles[9]} />
-            <SystemImage systemNumber={systemTiles[10]} />
-            <SystemImage systemNumber={systemTiles[25]} />
-          </div>
-          {/* Column 7 */}
-          <div className="mapColumn rightThree fourTiles">
-            <FactionSystemImage factionName={factions[1].name} />
-            <SystemImage systemNumber={systemTiles[22]} />
-            <SystemImage systemNumber={systemTiles[23]} />
-            <FactionSystemImage factionName={factions[2].name} />
-          </div>
-        </div>
-      );
-    case 6:
-      switch (mapStyle) {
-        case "standard":
-          return (
-            <div className="flexRow" style={{position: "relative", width: "100%", height: "100%", boxSizing: 'border-box'}}>
-              {/* Column 1 */}
-              <div className="mapColumn leftThree fourTiles">
-                <FactionSystemImage factionName={factions[5].name} />
-                <SystemImage systemNumber={systemTiles[32]} />
-                <SystemImage systemNumber={systemTiles[31]} />
-                <FactionSystemImage factionName={factions[4].name} />
-              </div>
-              {/* Column 2 */}
-              <div className="mapColumn leftTwo fiveTiles">
-                <SystemImage systemNumber={systemTiles[34]} />
-                <SystemImage systemNumber={systemTiles[16]} />
-                <SystemImage systemNumber={systemTiles[15]} />
-                <SystemImage systemNumber={systemTiles[14]} />
-                <SystemImage systemNumber={systemTiles[29]} />
-              </div>
-              {/* Column 3 */}
-              <div className="mapColumn leftOne sixTiles">
-                <SystemImage systemNumber={systemTiles[35]} />
-                <SystemImage systemNumber={systemTiles[17]} />
-                <SystemImage systemNumber={systemTiles[5]} />
-                <SystemImage systemNumber={systemTiles[4]} />
-                <SystemImage systemNumber={systemTiles[13]} />
-                <SystemImage systemNumber={systemTiles[28]} />
-              </div>
-              {/* Column 4 - Middle Column */}
-              <div className="mapColumn sevenTiles">
-                <FactionSystemImage factionName={factions[0].name} />
-                <SystemImage systemNumber={systemTiles[6]} />
-                <SystemImage systemNumber={systemTiles[0]} />
-                <div className="flexRow" style={{width: "100%", height: "100%"}}>
-                  <Image src="/images/systems/Mecatol Rex.png" alt={`Mecatol Rex`} layout="fill" objectFit="contain" />
-                </div>            <SystemImage systemNumber={systemTiles[3]} />
-                <SystemImage systemNumber={systemTiles[12]} />
-                <FactionSystemImage factionName={factions[3].name} />
-              </div>
-              {/* Column 5 */}
-              <div className="mapColumn rightOne sixTiles">
-                <SystemImage systemNumber={systemTiles[19]} />
-                <SystemImage systemNumber={systemTiles[7]} />
-                <SystemImage systemNumber={systemTiles[1]} />
-                <SystemImage systemNumber={systemTiles[2]} />
-                <SystemImage systemNumber={systemTiles[11]} />
-                <SystemImage systemNumber={systemTiles[26]} />
-              </div>
-              {/* Column 6 */}
-              <div className="mapColumn rightTwo fiveTiles">
-                <SystemImage systemNumber={systemTiles[20]} />
-                <SystemImage systemNumber={systemTiles[8]} />
-                <SystemImage systemNumber={systemTiles[9]} />
-                <SystemImage systemNumber={systemTiles[10]} />
-                <SystemImage systemNumber={systemTiles[25]} />
-              </div>
-              {/* Column 7 */}
-              <div className="mapColumn rightThree fourTiles">
-                <FactionSystemImage factionName={factions[1].name} />
-                <SystemImage systemNumber={systemTiles[22]} />
-                <SystemImage systemNumber={systemTiles[23]} />
-                <FactionSystemImage factionName={factions[2].name} />
-              </div>
-            </div>
-          );
-      }
-      break;
-      case 7:
-        return (
-          <div className="map flexRow eightPlayer">
-            {/* Column 1 */}
-            <div className="eightPlayerMapColumn leftFour fiveTiles">
-              <SystemImage systemNumber={systemTiles[56]} />
-              <SystemImage systemNumber={systemTiles[55]} />
-              <FactionSystemImage factionName={factions[5].name} />
-              <SystemImage systemNumber={systemTiles[53]} />
-              <SystemImage systemNumber={systemTiles[52]} />
-            </div>
-            {/* Column 2 */}
-            <div className="eightPlayerMapColumn leftThree sixTiles">
-              <FactionSystemImage factionName={factions[6].name} />
-              <SystemImage systemNumber={systemTiles[33]} />
-              <SystemImage systemNumber={systemTiles[32]} />
-              <SystemImage systemNumber={systemTiles[31]} />
-              <SystemImage systemNumber={systemTiles[30]} />
-              <FactionSystemImage factionName={factions[4].name} />
-            </div>
-            {/* Column 3 */}
-            <div className="eightPlayerMapColumn leftTwo sevenTiles">
-              <SystemImage systemNumber={systemTiles[58]} />
-              <SystemImage systemNumber={systemTiles[34]} />
-              <SystemImage systemNumber={systemTiles[16]} />
-              <SystemImage systemNumber={systemTiles[15]} />
-              <SystemImage systemNumber={systemTiles[14]} />
-              <SystemImage systemNumber={systemTiles[29]} />
-              <SystemImage systemNumber={systemTiles[50]} />
-            </div>
-            {/* Column 4 */}
-            <div className="eightPlayerMapColumn leftOne eightTiles">
-              <SystemImage systemNumber={systemTiles[59]} />
-              <SystemImage systemNumber={systemTiles[35]} />
-              <SystemImage systemNumber={systemTiles[17]} />
-              <SystemImage systemNumber={systemTiles[5]} />
-              <SystemImage systemNumber={systemTiles[4]} />
-              <SystemImage systemNumber={systemTiles[13]} />
-              <SystemImage systemNumber="87A" />
-              <SystemImage systemNumber="84A" />
-            </div>
-            {/* Column 5 - Middle Column */}
-            <div className="eightPlayerMapColumn nineTiles">
-              <FactionSystemImage factionName={factions[0].name} />
-              <SystemImage systemNumber={systemTiles[18]} />
-              <SystemImage systemNumber={systemTiles[6]} />
-              <SystemImage systemNumber={systemTiles[0]} />
-              <FactionSystemImage factionName="Mecatol Rex" />
-              <SystemImage systemNumber={systemTiles[3]} />
-              <SystemImage systemNumber="86A" />
-              <SystemImage systemNumber={systemTiles[27]} />
-              <SystemImage systemNumber="85A" />
-            </div>
-            {/* Column 5 */}
-            <div className="eightPlayerMapColumn rightOne eightTiles">
-              <SystemImage systemNumber={systemTiles[37]} />
-              <SystemImage systemNumber={systemTiles[19]} />
-              <SystemImage systemNumber={systemTiles[7]} />
-              <SystemImage systemNumber={systemTiles[1]} />
-              <SystemImage systemNumber={systemTiles[2]} />
-              <SystemImage systemNumber={systemTiles[11]} />
-              <SystemImage systemNumber="88A" />
-              <SystemImage systemNumber="83A" />
-            </div>
-            {/* Column 6 */}
-            <div className="eightPlayerMapColumn rightTwo sevenTiles">
-              <SystemImage systemNumber={systemTiles[38]} />
-              <SystemImage systemNumber={systemTiles[20]} />
-              <SystemImage systemNumber={systemTiles[8]} />
-              <SystemImage systemNumber={systemTiles[9]} />
-              <SystemImage systemNumber={systemTiles[10]} />
-              <SystemImage systemNumber={systemTiles[25]} />
-              <SystemImage systemNumber={systemTiles[46]} />
-            </div>
-            {/* Column 6 */}
-            <div className="eightPlayerMapColumn rightThree sixTiles">
-              <FactionSystemImage factionName={factions[1].name} />
-              <SystemImage systemNumber={systemTiles[21]} />
-              <SystemImage systemNumber={systemTiles[22]} />
-              <SystemImage systemNumber={systemTiles[23]} />
-              <SystemImage systemNumber={systemTiles[24]} />
-              <FactionSystemImage factionName={factions[3].name} />
-            </div>
-            {/* Column 7 */}
-            <div className="eightPlayerMapColumn rightFour fiveTiles">
-              <SystemImage systemNumber={systemTiles[40]} />
-              <SystemImage systemNumber={systemTiles[41]} />
-              <FactionSystemImage factionName={factions[2].name} />
-              <SystemImage systemNumber={systemTiles[43]} />
-              <SystemImage systemNumber={systemTiles[44]} />
-            </div>
-          </div>
-        );
-        case 8:
-          return (
-            <div className="map flexRow eightPlayer">
-              {/* Column 1 */}
-              <div className="eightPlayerMapColumn leftFour fiveTiles">
-                <SystemImage systemNumber={systemTiles[56]} />
-                <SystemImage systemNumber={systemTiles[55]} />
-                <FactionSystemImage factionName={factions[6].name} />
-                <SystemImage systemNumber={systemTiles[53]} />
-                <SystemImage systemNumber={systemTiles[52]} />
-              </div>
-              {/* Column 2 */}
-              <div className="eightPlayerMapColumn leftThree sixTiles">
-                <FactionSystemImage factionName={factions[7].name} />
-                <SystemImage systemNumber={systemTiles[33]} />
-                <SystemImage systemNumber={systemTiles[32]} />
-                <SystemImage systemNumber={systemTiles[31]} />
-                <SystemImage systemNumber={systemTiles[30]} />
-                <FactionSystemImage factionName={factions[5].name} />
-              </div>
-              {/* Column 3 */}
-              <div className="eightPlayerMapColumn leftTwo sevenTiles">
-                <SystemImage systemNumber={systemTiles[58]} />
-                <SystemImage systemNumber={systemTiles[34]} />
-                <SystemImage systemNumber={systemTiles[16]} />
-                <SystemImage systemNumber={systemTiles[15]} />
-                <SystemImage systemNumber={systemTiles[14]} />
-                <SystemImage systemNumber={systemTiles[29]} />
-                <SystemImage systemNumber={systemTiles[50]} />
-              </div>
-              {/* Column 4 */}
-              <div className="eightPlayerMapColumn leftOne eightTiles">
-                <SystemImage systemNumber={systemTiles[59]} />
-                <SystemImage systemNumber={systemTiles[35]} />
-                <SystemImage systemNumber={systemTiles[17]} />
-                <SystemImage systemNumber={systemTiles[5]} />
-                <SystemImage systemNumber={systemTiles[4]} />
-                <SystemImage systemNumber={systemTiles[13]} />
-                <SystemImage systemNumber={systemTiles[28]} />
-                <SystemImage systemNumber={systemTiles[49]} />
-              </div>
-              {/* Column 5 - Middle Column */}
-              <div className="eightPlayerMapColumn nineTiles">
-                <FactionSystemImage factionName={factions[0].name} />
-                <SystemImage systemNumber={systemTiles[18]} />
-                <SystemImage systemNumber={systemTiles[6]} />
-                <SystemImage systemNumber={systemTiles[0]} />
-                <FactionSystemImage factionName="Mecatol Rex" />
-                {/* <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="69px" height="60px" /> */}
-                <SystemImage systemNumber={systemTiles[3]} />
-                <SystemImage systemNumber={systemTiles[12]} />
-                <SystemImage systemNumber={systemTiles[27]} />
-                <FactionSystemImage factionName={factions[4].name} />
-              </div>
-              {/* Column 5 */}
-              <div className="eightPlayerMapColumn rightOne eightTiles">
-                <SystemImage systemNumber={systemTiles[37]} />
-                <SystemImage systemNumber={systemTiles[19]} />
-                <SystemImage systemNumber={systemTiles[7]} />
-                <SystemImage systemNumber={systemTiles[1]} />
-                <SystemImage systemNumber={systemTiles[2]} />
-                <SystemImage systemNumber={systemTiles[11]} />
-                <SystemImage systemNumber={systemTiles[26]} />
-                <SystemImage systemNumber={systemTiles[47]} />
-              </div>
-              {/* Column 6 */}
-              <div className="eightPlayerMapColumn rightTwo sevenTiles">
-                <SystemImage systemNumber={systemTiles[38]} />
-                <SystemImage systemNumber={systemTiles[20]} />
-                <SystemImage systemNumber={systemTiles[8]} />
-                <SystemImage systemNumber={systemTiles[9]} />
-                <SystemImage systemNumber={systemTiles[10]} />
-                <SystemImage systemNumber={systemTiles[25]} />
-                <SystemImage systemNumber={systemTiles[46]} />
-              </div>
-              {/* Column 6 */}
-              <div className="eightPlayerMapColumn rightThree sixTiles">
-                <FactionSystemImage factionName={factions[1].name} />
-                <SystemImage systemNumber={systemTiles[21]} />
-                <SystemImage systemNumber={systemTiles[22]} />
-                <SystemImage systemNumber={systemTiles[23]} />
-                <SystemImage systemNumber={systemTiles[24]} />
-                <FactionSystemImage factionName={factions[3].name} />
-              </div>
-              {/* Column 7 */}
-              <div className="eightPlayerMapColumn rightFour fiveTiles">
-                <SystemImage systemNumber={systemTiles[40]} />
-                <SystemImage systemNumber={systemTiles[41]} />
-                <FactionSystemImage factionName={factions[2].name} />
-                <SystemImage systemNumber={systemTiles[43]} />
-                <SystemImage systemNumber={systemTiles[44]} />
-              </div>
-            </div>
-          );
-  }
-}
-
-function getFactionSelectStyle(numFactions, index, mapSize) {
-  const baseStyle = {
-    position: 'absolute',
-    width: "300px",
-  };
-  switch (numFactions) {
-    case 3:
-      switch (index) {
-        case 0:
-          baseStyle.marginRight = `${mapSize + 228}px`;
-          baseStyle.justifyContent = "flex-end";
-          baseStyle.marginBottom = `${mapSize * .5}px`;
-          return baseStyle;
-        case 1:
-          baseStyle.marginLeft = `${mapSize + 228}px`;
-          baseStyle.justifyContent = "flex-start";
-          baseStyle.marginBottom = `${mapSize * .5}px`;
-          return baseStyle;
-        case 2:
-          baseStyle.marginTop = `${mapSize + 12}px`;
-          baseStyle.justifyContent = "center";
-          return baseStyle;
-      }
-      break;
-    case 4:
-      switch (index) {
-        case 0:
-          baseStyle.marginRight = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-end";
-          baseStyle.marginTop = `${mapSize * .1}px`;
-          return baseStyle;
-        case 1:
-          baseStyle.justifyContent = "center";
-          baseStyle.marginBottom = `${mapSize + 92}px`;
-          return baseStyle;
-        case 2:
-          baseStyle.marginLeft = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-start";
-          baseStyle.marginBottom = `${mapSize * .15}px`;
-          return baseStyle;
-        case 3:
-          baseStyle.marginTop = `${mapSize + 72}px`;
-          baseStyle.justifyContent = "center";
-          return baseStyle;
-      }
-      break;
-    case 5:
-    case 6:
-      switch (index) {
-        case 0:
-          baseStyle.marginRight = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-end";
-          baseStyle.marginTop = `${mapSize * .4}px`;
-          return baseStyle;
-        case 1:
-          baseStyle.marginRight = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-end";
-          baseStyle.marginBottom = `${mapSize * .4}px`;
-          return baseStyle;
-        case 2:
-          baseStyle.justifyContent = "center";
-          baseStyle.marginBottom = `${mapSize + 100}px`;
-          return baseStyle;
-        case 3:
-          baseStyle.marginLeft = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-start";
-          baseStyle.marginBottom = `${mapSize * .4}px`;
-          return baseStyle;
-        case 4:
-          baseStyle.marginLeft = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-start";
-          baseStyle.marginTop = `${mapSize * .4}px`;
-          return baseStyle;
-        case 5:
-          baseStyle.marginTop = `${mapSize + 80}px`;
-          return baseStyle;
-      }
-      break;
-    case 7:
-    case 8:
-      switch (index) {
-        case 0:
-          baseStyle.marginRight = `${mapSize + 140}px`;
-          baseStyle.justifyContent = "flex-end";
-          baseStyle.marginTop = `${mapSize * .75}px`;
-          return baseStyle;
-        case 1:
-          baseStyle.marginRight = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-end";
-          return baseStyle;
-        case 2:
-          baseStyle.marginRight = `${mapSize + 140}px`;
-          baseStyle.justifyContent = "flex-end";
-          baseStyle.marginBottom = `${mapSize * .8}px`;
-          return baseStyle;
-        case 3:
-          baseStyle.justifyContent = "center";
-          baseStyle.marginBottom = `${mapSize + 88}px`;
-          return baseStyle;
-        case 4:
-          baseStyle.marginLeft = `${mapSize + 140}px`;
-          baseStyle.justifyContent = "flex-start";
-          baseStyle.marginBottom = `${mapSize * .8}px`;
-          return baseStyle;
-        case 5:
-          baseStyle.marginLeft = `${mapSize + 240}px`;
-          baseStyle.justifyContent = "flex-start";
-          return baseStyle;
-        case 6:
-          baseStyle.marginLeft = `${mapSize + 140}px`;
-          baseStyle.justifyContent = "flex-start";
-          baseStyle.marginTop = `${mapSize * .75}px`;
-          return baseStyle;
-        case 7:
-          baseStyle.justifyContent = "center";
-          baseStyle.marginTop = `${mapSize + 88}px`;
-          return baseStyle;
-      }
-      break;
-  }
-  return baseStyle;
+  </div>;
 }
 
 export default function SetupPage() {
@@ -1618,14 +1015,14 @@ export default function SetupPage() {
   }
 
   function MiddleTopGapDiv({}) {
-    let height = "0px";
+    let height = "0";
     switch (factions.length) {
       case 3:
-        height = "117px";
+        height = responsivePixels(98);
         break;
       case 5:
         if (options['map-style'] !== "warp") {
-          height = "117px";
+          height = responsivePixels(98);
           break;
         }
       default:
@@ -1635,98 +1032,100 @@ export default function SetupPage() {
   }
 
   function RightTopGapDiv({}) {
-    let height = "80px";
+    let height = responsivePixels(80);
     switch (factions.length) {
       case 3:
-        height = "40px";
+        height = responsivePixels(60);
         break;
       case 4:
-        height = "110px";
+        height = responsivePixels(110);
         break;
       case 5:
       case 6:
-        height = "60px";
+        height = responsivePixels(60);
         break;
       case 7:
         if (options['map-style'] === "warp") {
-          height = "80px";
+          height = responsivePixels(80);
           break;
         }
       case 8:
-        height = "10px";
+        height = responsivePixels(24);
         break;
     }
     return <div style={{height: height}}></div>
   }
 
   function SideGapDiv({}) {
-    let height = "80px";
+    let height = responsivePixels(80);
     switch (factions.length) {
       default:
         return null;
       case 5:
       case 6:
-        height = "32px";
+        height = responsivePixels(36);
         break;
       case 7:
       case 8:
-        height = "0px";
+        height = responsivePixels(0);
         break;
     }
     return <div style={{height: height}}></div>
   }
 
   function LeftTopGapDiv({}) {
-    let height = "80px";
+    let height = responsivePixels(80);
     switch (factions.length) {
       case 3:
-        height = "40px";
+        height = responsivePixels(60);
         break;
       case 4:
-        height = "160px";
+        height = responsivePixels(160);
         break;
       case 5:
       case 6:
-        height = "60px";
+        height = responsivePixels(60);
         break;
       case 7:
       case 8:
-        height = "20px";
+        height = responsivePixels(20);
         break;
     }
     return <div style={{height: height}}></div>
   }
   function LeftBottomGapDiv({}) {
-    let height = "80px";
+    let height = responsivePixels(80);
     switch (factions.length) {
       case 3:
       case 4:
       case 5:
       case 6:
+      case 7:
+      case 8:
         return null;
     }
     return <div style={{height: height}}></div>
   }
   function RightBottomGapDiv({}) {
-    let height = "80px";
+    let height = responsivePixels(80);
     switch (factions.length) {
       case 3:
-        height = "242px";
+        height = responsivePixels(242);
         break;
       case 4:
-        height = "172px";
+        height = responsivePixels(172);
         break;
       case 5:
       case 6:
-        height = "41px";
+        height = responsivePixels(41);
         break;
       case 7:
         if (options['map-style'] === "warp") {
-          height = "80px";
+          height = responsivePixels(80);
           break;
         }
       case 8:
-        height = "38px";
+        height = responsivePixels(38);
         break;
     }
     return <div style={{height: height}}></div>
@@ -1737,7 +1136,7 @@ export default function SetupPage() {
 
   const maxFactions = options.expansions.has("pok") ? 8 : 6;
 
-  const mapSize = 360;
+  const mapSize = Math.min(window.innerHeight * 0.5, window.innerWidth * 0.25);
   if (window.innerWidth < 960) {
     // TODO: Allow setting up a game on mobile.
   }
@@ -1745,7 +1144,7 @@ export default function SetupPage() {
   return (
     <React.Fragment>
       <Header />
-      <div className="flexRow" style={{alignItems: "flex-start", justifyContent: "center", margin: "48px 0", height: "calc(100vh - 96px)"}}>
+      <div className="flexRow" style={{alignItems: "flex-start", justifyContent: "center", margin: `${responsivePixels(48)} 0`, width: "100%"}}>
         <div className="flexColumn" style={{height: "100%", justifyContent: "flex-start"}}>
           <Options updatePlayerCount={updatePlayerCount} toggleOption={toggleOption} toggleExpansion={toggleExpansion} options={options} numFactions={factions.length} maxFactions={maxFactions} isCouncil={isCouncilInGame()} />
           <LeftTopGapDiv />
@@ -1780,7 +1179,7 @@ export default function SetupPage() {
             options={options} /> : null}
           <LeftBottomGapDiv />
         </div>
-        <div className="flexColumn" style={{flex: `${mapSize}px 0 0`, height: "100%", justifyContent: "flex-start"}}>
+        <div className="flexColumn" style={{flex: `30vw 0 0`, height: "100%", justifyContent: "flex-start"}}>
           <MiddleTopGapDiv />
           {factions.length > 3 && !(factions.length === 5 && options['map-style'] !== "warp") ? <FactionSelect
             factions={factions}
@@ -1791,7 +1190,7 @@ export default function SetupPage() {
             setSpeaker={setSpeaker}
             setPlayerName={updatePlayerName}
             options={options} /> : null}
-          <div className="flexRow" style={{flexShrink: 0, flexGrow: 0, position: "relative", width: `${mapSize}px`, height: `${mapSize}px`}}>
+          <div className="flexRow" style={{flexShrink: 0, flexGrow: 0, position: "relative", width: "30vw", height: "30vw"}}>
             {/* TODO: Add zoom button 
               <div style={{position: "absolute", right: 24, top: 24}}>
                 Icon button zoom
@@ -1810,8 +1209,7 @@ export default function SetupPage() {
             options={options} /> : null}
         </div>
         <div className="flexColumn" style={{height: "100%", alignItems: "flex-start", justifyContent: "flex-start"}}>
-          <div className="flexColumn" style={{width: "100%", gap: "8px"}}>
-            {/* <div className="flexRow" style={{gap: "8px"}}> */}
+          <div className="flexColumn" style={{width: "100%"}}>
             <LabeledDiv label="Randomize">
               <div className="flexRow" style={{whiteSpace: "nowrap", width: "100%"}}>
               <button style={{textAlign: "center"}} onClick={randomSpeaker}>Speaker</button>
@@ -1864,8 +1262,8 @@ export default function SetupPage() {
             setPlayerName={updatePlayerName}
             options={options} /> : null}
           <RightBottomGapDiv />
-          <div className="flexColumn" style={{width: "100%", gap: "8px"}}>
-            <button style={{fontSize: "40px", fontFamily: "Slider"}} onClick={startGame} disabled={disableNextButton()}>
+          <div className="flexColumn" style={{width: "100%"}}>
+            <button style={{fontSize: `${responsivePixels(40)}`, fontFamily: "Slider"}} onClick={startGame} disabled={disableNextButton()}>
               Start Game
             </button>
             {disableNextButton() ?
@@ -1874,203 +1272,13 @@ export default function SetupPage() {
           </div>
         </div>
       </div>
-      <div className="flexColumn" style={{position: "relative", height: "100vh", alignItems: "center", justifyContent: "center", display: "none"}}>
-      <div className="flexColumn" style={{position: "absolute", gap: "8px", marginRight: `${mapSize + 260}px`, marginBottom: `${mapSize * 1.25}px`}}>
-        <label>Player Count</label>
-        <div className='flexRow' style={{gap: "8px"}}>
-          {[...Array(maxFactions - 2)].map((e, index) => {
-            const number = index + 3;
-            return (
-              <button key={number} onClick={() => updatePlayerCount(number)} className={factions.length === number ? "selected" : ""}>{number}</button>
-            );
-          })}
-        </div>
-        <HoverMenu label="Options">
-      <div style={{width: "540px"}}>
-        <div style={{padding: "8px 16px 0px 16px"}}>
-        <div>
-          Expansions:
-          <div className="flexRow" style={{gap: "8px", padding: "8px 20px"}}>
-            <button className={options.expansions.has("pok") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("pok"), "pok")}>Prophecy of Kings</button>
-            <button className={options.expansions.has("codex-one") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-one"), "codex-one")}>Codex I</button>
-            <button className={options.expansions.has("codex-two") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-two"), "codex-two")}>Codex II</button>
-            <button className={options.expansions.has("codex-three") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-three"), "codex-three")}>Codex III</button>
-          </div>
-        </div>
-        <div>
-          Map:
-          <div className="flexColumn" style={{fontFamily: "Myriad Pro", gap: "8px", padding: "8px 20px", alignItems: "flex-start"}}>
-            <div className="flexRow">
-              <button className={options['map-style'] === "standard" ? "selected" : ""} onClick={() => toggleOption("standard", "map-style")}>Standard</button>
-            </div>
-            Map String:<input type="textbox" style={{width: "100%"}} onChange={(event)=> toggleOption(event.target.value, "map-string")}></input>
-            Used to filter out planets that are not claimable.
-          </div>
-        </div>
-        {/* <div>
-          Assistant Options:
-          <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
-            <button className={options['multiple-planet-owners'] ? "selected" : ""} onClick={() => toggleOption(!options['multiple-planet-owners'], "multiple-planet-owners")}>Allow multiple factions to claim planet</button>
-          </div>
-          <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
-            <button className={options['multiple-planet-attachments'] ? "selected" : ""} onClick={() => toggleOption(!options['multiple-planet-attachments'], "multiple-planet-attachments")}>Allow the same attachment to be placed on multiple planets</button>
-          </div>
-        </div> */}
-        {isCouncilInGame() ? 
-        <div>
-          Council Keleres:
-          <div className="flexColumn" style={{gap: "8px", alignItems: "flex-start", padding: "8px 20px"}}>
-            <button className={options['allow-double-council'] ? "selected" : ""} onClick={() => toggleOption(!options['allow-double-council'], "allow-double-council")}>Allow selecting a duplicate sub-faction</button>
-          </div>
-        </div>
-        : null}
-        </div>
-      </div>
-      </HoverMenu>
-      </div>
-      {/* <div className="flexRow" style={{}}> */}
-      {/* <div className="flexColumn" style={{position: "relative", flex: "0 0 60%", height: "60vh"}}> */}
-      {/* <div className="flexColumn" style={{flexBasis: "60%", position: "relative", gap: "120px", alignItems: "center"}}> */}
-        <div className="flexRow" style={{position: "absolute", height: "100vh"}}>
-          <div className="flexRow" style={{position: "relative", width: `${mapSize}px`, height: `${mapSize}px`}}>
-            <Map mapString={options['map-string']} factions={factions} />
-            {/* <Image src="/images/systems/Mecatol Rex.png" alt="Mecatol Rex" width="364px" height="317px" /> */}
-
-            {/* TABLE (replace with image) */}
-          </div>
-        </div>
-        {/* Player 1 */}
-        <div className="flexRow" style={getFactionSelectStyle(factions.length, 0, mapSize)}>
-          <FactionSelect faction={factions[0]}
-            isSpeaker={0 === speaker} 
-            setFaction={(value) => updatePlayerFaction(0, value)}
-            setColor={(value) => updatePlayerColor(0, value)}
-            setSpeaker={() => setSpeaker(0)}
-            setPlayerName={(value) => updatePlayerName(0, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "left"}} />
-        </div>
-        {/* Player 2 */}
-        <div className="flexRow" style={getFactionSelectStyle(factions.length, 1, mapSize)}>
-          <FactionSelect faction={factions[1]}
-            isSpeaker={1 === speaker} 
-            setFaction={(value) => updatePlayerFaction(1, value)}
-            setColor={(value) => updatePlayerColor(1, value)}
-            setSpeaker={() => setSpeaker(1)}
-            setPlayerName={(value) => updatePlayerName(1, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "left"}} />
-        </div>
-        {/* Player 3 */}
-        <div className="flexRow" style={getFactionSelectStyle(factions.length, 2, mapSize)}>
-          <FactionSelect faction={factions[2]}
-            isSpeaker={2 === speaker} 
-            setFaction={(value) => updatePlayerFaction(2, value)}
-            setColor={(value) => updatePlayerColor(2, value)}
-            setSpeaker={() => setSpeaker(2)}
-            setPlayerName={(value) => updatePlayerName(2, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "top"}} />
-        </div>
-        {/* Player 4 */}
-        {factions.length > 3 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 3, mapSize)}>
-        <FactionSelect faction={factions[3]}
-            isSpeaker={3 === speaker} 
-            setFaction={(value) => updatePlayerFaction(3, value)}
-            setColor={(value) => updatePlayerColor(3, value)}
-            setSpeaker={() => setSpeaker(3)}
-            setPlayerName={(value) => updatePlayerName(3, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "right"}} />
-        </div> : null}
-        {/* Player 5 */}
-        {factions.length > 4 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 4, mapSize)}>
-          <FactionSelect faction={factions[4]}
-            isSpeaker={4 === speaker} 
-            setFaction={(value) => updatePlayerFaction(4, value)}
-            setColor={(value) => updatePlayerColor(4, value)}
-            setSpeaker={() => setSpeaker(4)}
-            setPlayerName={(value) => updatePlayerName(4, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "right"}} />
-        </div> : null}
-        {/* Player 6 */}
-        {factions.length > 5 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 5, mapSize)}>
-          <FactionSelect faction={factions[5]}
-            isSpeaker={5 === speaker} 
-            setFaction={(value) => updatePlayerFaction(5, value)}
-            setColor={(value) => updatePlayerColor(5, value)}
-            setSpeaker={() => setSpeaker(5)}
-            setPlayerName={(value) => updatePlayerName(5, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "bottom"}} />
-        </div> : null}
-        {/* Player 7 */}
-        {factions.length > 6 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 6, mapSize)}>
-          <FactionSelect faction={factions[6]}
-            isSpeaker={6 === speaker} 
-            setFaction={(value) => updatePlayerFaction(6, value)}
-            setColor={(value) => updatePlayerColor(6, value)}
-            setSpeaker={() => setSpeaker(6)}
-            setPlayerName={(value) => updatePlayerName(6, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "bottom"}} />
-        </div> : null}
-        {/* Player 8 */}
-        {factions.length > 7 ? <div className="flexRow" style={getFactionSelectStyle(factions.length, 7, mapSize)}>
-          <FactionSelect faction={factions[7]}
-            isSpeaker={7 === speaker} 
-            setFaction={(value) => updatePlayerFaction(7, value)}
-            setColor={(value) => updatePlayerColor(7, value)}
-            setSpeaker={() => setSpeaker(7)}
-            setPlayerName={(value) => updatePlayerName(7, value)}
-            expansions={options.expansions}
-            opts={{menuSide: "bottom"}} />
-        </div> : null}
-        <div className="flexColumn" style={{position: "absolute", marginLeft: `${mapSize + 260}px`, marginBottom: `${mapSize * 1.25}px`, gap: "8px"}}>
-        <button onClick={reset}>Reset</button>
-        <div className="flexRow" style={{gap: "8px"}}>
-          <button style={{textAlign: "center"}} onClick={randomSpeaker}>Randomize Speaker</button>
-          <button style={{textAlign: "center"}} 
-            onClick={randomFactions}
-            disabled={disableRandomizeFactionButton()}
-          >
-            Randomize Remaining Factions
-          </button>
-          <button style={{textAlign: "center"}} onClick={randomColors}
-          disabled={disableRandomizeColorsButton()}
-          > Randomize Remaining Colors</button>
-        </div>
-        </div>
-        {/* {missingFactions() ?
-          <div style={{color: "darkred"}}>Select All Factions</div>
-        : null}
-        {speaker === -1 ?
-          <div style={{color: "darkred"}}>Select Speaker</div>
-        : null}
-        {missingColors() ?
-          <div style={{color: "darkred"}}>Select All Colors</div>
-        : null}
-        {invalidCouncil() ?
-          <div style={{color: "darkred"}}>No available sub-faction for Council Keleres</div>
-        : null} */}
-      {/* </div> */}
-      
-    {/* </div> */}
-    <div className="flexColumn" style={{position: "absolute", marginLeft: `${mapSize + 260}px`, marginTop: `${mapSize * 1.25}px`, gap: "8px"}}>
-      <button style={{fontSize: "40px", fontFamily: "Slider"}} onClick={startGame} disabled={disableNextButton()}>
-        Start Game
-      </button>
-    </div>
-      </div>
-    {/* </div> */}
     </React.Fragment>);
 }
 
 function Sidebar({side, content}) {
   const className = `${side}Sidebar`;
   return (
-    <div className={className} style={{letterSpacing: "3px"}}>
+    <div className={className} style={{letterSpacing: responsivePixels(3)}}>
       {content}
     </div>
   );
@@ -2079,20 +1287,9 @@ function Sidebar({side, content}) {
 function Header() {
   const router = useRouter();
 
-  return <div className="flexColumn" style={{top: 0, position: "fixed", alignItems: "flex-start", justifyContent: "flex-start"}}>
+  return <div className="flexRow" style={{top: 0, position: "fixed", alignItems: "flex-start", justifyContent: "flex-start"}}>
     <Sidebar side="left" content={`SETUP GAME`} />
     <Sidebar side="right" content={`SETUP GAME`} />
-
-    {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
-      SETUP PHASE
-    </div> */}
-    <div style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: "12px", left: "150px", fontSize: "24px"}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
-    {/* <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", left: "144px", top: "8px"}}>
-      {qrCode ? <img src={qrCode} /> : null}
-      <div>Game ID: {gameid}</div>
-    </div>
-    <div className="flexRow" style={{alignItems: "center", justifyContent: "center", position: "fixed", right: "288px", top: "16px"}}>
-      <GameTimer />
-    </div> */}
+    <div className="extraLargeFont" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: `${responsivePixels(12)}`, left: `${responsivePixels(150)}`}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
   </div>
 }

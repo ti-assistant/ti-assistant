@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
 import { useRef, useState } from "react";
-import { FactionCard } from '../FactionCard';
+import { FactionCard, FactionSymbol, FullFactionSymbol, StartingComponents } from '../FactionCard';
 import { fetcher, poster } from '../util/api/util';
 import { ObjectiveModal } from '../ObjectiveModal';
 import { BasicFactionTile } from '../FactionTile';
@@ -13,6 +13,7 @@ import { HoverMenu } from '../HoverMenu';
 import { LabeledDiv } from '../LabeledDiv';
 import { getFactionColor, getFactionName } from '../util/factions';
 import { finalizeSubState, hideSubStateObjective, revealSubStateObjective } from '../util/api/subState';
+import { responsivePixels } from '../util/util';
 
 export default function SetupPhase() {
   const router = useRouter();
@@ -129,23 +130,29 @@ export default function SetupPhase() {
   });
 
   return (
-    <div className="flexColumn" style={{alignItems: "center", height: "100vh"}}>
-      <ObjectiveModal visible={showObjectiveModal} type="stage-one" onComplete={() => setShowObjectiveModal(false)} />
-      <ol className='flexColumn' style={{alignItems: "center", margin: "0px", padding: "0px", fontSize: "24px", gap: "8px"}}>
+    <div className="flexColumn" style={{alignItems: "center", justifyContent: "flex-start", marginTop: responsivePixels(120)}}>
+      {/* <ObjectiveModal visible={showObjectiveModal} type="stage-one" onComplete={() => setShowObjectiveModal(false)} /> */}
+      <ol className='flexColumn' style={{alignItems: "flex-start", margin: 0, padding: 0, fontSize: responsivePixels(24)}}>
         <li>Build the galaxy</li>
         <li>Shuffle decks</li>
-        <li>Gather starting components</li>
-        <div className="flexRow" style={{width: "80vw", alignItems:"stretch", justifyContent: "stretch", gap: "8px"}}>
+        <li><LabeledDiv label="Gather starting components">
+        <div className="flexRow" style={{flewWrap: "wrap", width: "100%", alignItems:"stretch", justifyContent: "stretch"}}>
           {orderedFactions.map(([name, faction]) => {
             return (
-            <FactionCard key={name} faction={faction} opts={{
-              displayStartingComponents: true,
-              fontSize: "16px",
-              iconSize: "60%"
-            }} />
+            <HoverMenu key={name} label={name} borderColor={getFactionColor(faction)}>
+              <div style={{padding: `0 ${responsivePixels(8)} ${responsivePixels(8)} ${responsivePixels(8)}`}}>
+              <StartingComponents faction={faction} />
+              </div>
+            </HoverMenu>
+            // <FactionCard key={name} faction={faction} opts={{
+            //   displayStartingComponents: true,
+            //   fontSize: "16px",
+            //   iconSize: "60%"
+            // }} />
             );
           })}
-        </div>
+        </div></LabeledDiv>
+        </li>
         <li>Draw 2 secret objectives and keep one</li>
         <li>Re-shuffle secret objectives</li>
         <li>
@@ -153,14 +160,22 @@ export default function SetupPhase() {
             Draw 5 stage one objectives and reveal 2
             {(subState.objectives ?? []).length > 0 ? 
               <LabeledDiv label="REVEALED OBJECTIVES">
+                <div className="flexColumn" style={{alignItems: "stretch"}}>
                 {(subState.objectives ?? []).map((objectiveName) => {
-                  return <ObjectiveRow objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
+                  return <ObjectiveRow key={objectiveName} objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
                 })}
+                </div>
               </LabeledDiv>
             : null}
         {(subState.objectives ?? []).length < 2 ? 
           <HoverMenu label="Reveal Objective" direction="up">
-            <div className='flexColumn' style={{gap: "4px", alignItems: "stretch", whiteSpace: "nowrap", padding: "8px"}}>
+            <div className='flexRow' style={{padding: `${responsivePixels(8)}`,
+    flexWrap: "wrap",
+    maxHeight: `${responsivePixels(180)}`,
+    alignItems: "stretch",
+    gap: `${responsivePixels(4)}`,
+    writingMode: "vertical-lr",
+    justifyContent: "flex-start"}}>
               {Object.values(availableObjectives).filter((objective) => {
                 return objective.type === "stage-one"
               })
@@ -185,7 +200,7 @@ export default function SetupPhase() {
         <div style={{color: "darkred"}}>Select Council Keleres sub-faction</div> :
         null}
       {(subState.objectives ?? []).length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null}
-      <button disabled={!statusPhaseComplete()} style={{fontSize: "24px"}} onClick={() => nextPhase()}>Start Game</button>
+      <button disabled={!statusPhaseComplete()} style={{fontSize: responsivePixels(40)}} onClick={() => nextPhase()}>Start Game</button>
     </div>
   );
 }

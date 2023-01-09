@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "./FactionCard";
+import { responsivePixels } from "./util/util";
 
 function TechIcon({ type, width, height }) {
   switch (type) {
@@ -119,19 +120,19 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
         <InfoContent objective={objective} />
       } top="35%" level={2} />
       <div className="flexRow hoverParent" style={{ height: "38px"}}>
-        <div style={{width: "36px"}}>
+        <div style={{width: responsivePixels(36)}}>
         {addObjective ? 
           <div
           className=""
           style={{
             alignItems: "center",
-            fontSize: "32px",
-            lineHeight: "32px",
+            fontSize: responsivePixels(32),
+            lineHeight: responsivePixels(32),
             color: "darkgreen",
             cursor: "pointer",
             zIndex: 100,
-            marginRight: "8px",
-            height: "32px",
+            marginRight: responsivePixels(8),
+            height: responsivePixels(32),
           }}
           onClick={() => addObjective(objective.name)}
         >
@@ -143,13 +144,13 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
             className=""
             style={{
               alignItems: "center",
-              fontSize: "32px",
-              lineHeight: "32px",
+              fontSize: responsivePixels(32),
+              lineHeight: responsivePixels(32),
               color: "darkred",
               cursor: "pointer",
               zIndex: 100,
-              marginRight: "8px",
-              height: "32px",
+              marginRight: responsivePixels(8),
+              height: responsivePixels(32),
             }}
             onClick={() => removeObjective(objective.name)}
           >
@@ -158,10 +159,10 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
         : null}
         </div>
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", flexBasis: "50%", flexGrow: 2}}>
-          <div style={{ display: "flex", flex: "2 0 50%", fontSize: "19px", zIndex: 2}}>
+          <div style={{ display: "flex", flex: "2 0 50%", fontSize: responsivePixels(19)}}>
             {objective.name}
           </div>
-          <div className="popupIcon" style={{paddingRight: "8px"}} onClick={displayInfo}>&#x24D8;</div>
+          <div className="popupIcon" style={{paddingRight: responsivePixels(8)}} onClick={displayInfo}>&#x24D8;</div>
         </div>
         <div className="flexColumn">
           {canScore() ? <button onClick={() => scoreObjective(objective.name, true)}>Score</button> : null}
@@ -171,8 +172,8 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
         {(objective.scorers ?? []).map((scorer, index) => {
           if (scorer === faction) {
             return (
-              <div key={`${scorer}-${index}`} className="flexRow" style={{position: "relative", width: "45px"}}>
-                <div style={{cursor: "pointer", width: "16px", fontSize: "8px", lineHeight: "8px", height: "16px", top: "0px", left: "28px", position: "absolute", zIndex: 40, backgroundColor: "#222", color: "red", display: "flex", alignItems: "center", fontWeight: "bold", justifyContent: "center", borderRadius: "12px", boxShadow: "1px 1px 4px black"}} onClick={() => scoreObjective(objective.name, false)}>
+              <div key={`${scorer}-${index}`} className="flexRow" style={{position: "relative", width: responsivePixels(45)}}>
+                <div style={{cursor: "pointer", width: responsivePixels(16), fontSize: responsivePixels(8), lineHeight: responsivePixels(8), height: responsivePixels(16), top: "0px", left: responsivePixels(28), position: "absolute", zIndex: 40, backgroundColor: "#222", color: "red", display: "flex", alignItems: "center", fontWeight: "bold", justifyContent: "center", borderRadius: "12px", boxShadow: "1px 1px 4px black"}} onClick={() => scoreObjective(objective.name, false)}>
                   &#x2715;
                 </div>
                 <FactionSymbol faction={scorer} size={42} />

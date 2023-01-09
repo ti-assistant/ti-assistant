@@ -66,6 +66,7 @@ export default async function handler(req, res) {
       planets: homePlanets,
       techs: startingTechs,
       order: order,
+      mapPosition: index,
       startswith: factionData.startswith,
       prompts: prompts,
     };

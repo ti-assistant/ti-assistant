@@ -42,3 +42,15 @@ export function validateMapString(mapString) {
   // TODO: Load systems and ensure that they are all found.
   return true;
 }
+
+export function getResponsiveFormula(minSize, maxSize) {
+  return `calc(${minSize}px + (${maxSize} - ${minSize}) * ((100vw - 1280px) / (2560 - 1280)))`;
+}
+
+export function responsivePixels(number) {
+  return `max( calc( ${number}px + ( ${number * 2} - ${number} ) * ( ( 100vw - 1280px ) / ( 2560 - 1280 ) ) ), ${number}px )`;
+}
+
+export function responsiveNegativePixels(number) {
+  return `min( calc( ${number}px + ( ${number * 2} - ${number} ) * ( ( 100vw - 1280px ) / ( 2560 - 1280 ) ) ), ${number}px )`;
+}
