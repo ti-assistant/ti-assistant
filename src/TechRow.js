@@ -5,6 +5,8 @@ import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
 import { SelectableRow } from "./SelectableRow";
 import { getTechColor } from "./util/techs";
+import { responsiveNegativePixels, responsivePixels } from "./util/util";
+import { FullFactionSymbol } from "./FactionCard";
 
 export function TechIcon({ type, width, height }) {
   switch (type) {
@@ -17,6 +19,29 @@ export function TechIcon({ type, width, height }) {
     case "green":
       return <Image src="/images/green_tech.webp" alt="Green Tech Skip" width={width} height={height} />;
   }
+  return type;
+}
+
+export function WrappedTechIcon({ type, size }) {
+  const width = responsivePixels(size - 1);
+  const height = responsivePixels(size);
+  return <div style={{position: "relative", width: width, height: height}}>
+    <FullTechIcon type={type} />
+  </div>
+}
+
+export function FullTechIcon({ type }) {
+  switch (type) {
+    case "red":
+      return <Image src="/images/red_tech.webp" alt="Red Tech" layout="fill" objectFit='contain'/>;
+    case "yellow":
+      return <Image src="/images/yellow_tech.webp" alt="Yellow Tech" layout="fill" objectFit='contain'/>;
+    case "blue":
+      return <Image src="/images/blue_tech.webp" alt="Blue Tech" layout="fill" objectFit='contain'/>;
+    case "green":
+      return <Image src="/images/green_tech.webp" alt="Green Tech" layout="fill" objectFit='contain'/>;
+  }
+  return null;
   return type;
 }
 
@@ -46,7 +71,7 @@ function UnitStatBlock({stats}) {
 function InfoContent({tech}) {
   const description = tech.description.replaceAll("\\n", "\n");
   return (
-    <div className="myriadPro" style={{maxWidth: "800px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "32px"}}>
+    <div className="myriadPro" style={{maxWidth: responsivePixels(800), minWidth: responsivePixels(300), padding: responsivePixels(4), whiteSpace: "pre-line", textAlign: "center", fontSize: responsivePixels(32)}}>
       {description}
       <UnitStatBlock stats={tech.stats} />
     </div>
@@ -73,8 +98,8 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
       selectItem={addTech}
       removeItem={removeTech}
       content={
-    <div className="flexRow" style={{gap: "16px", width: "100%", justifyContent: "stretch"}}>
-      <Modal closeMenu={() => setShowInfoModal(false)} level={2} visible={showInfoModal} title={<div style={{fontSize: "40px"}}>{tech.name}</div>} content={
+    <div className="flexRow" style={{width: "100%", justifyContent: "stretch"}}>
+      <Modal closeMenu={() => setShowInfoModal(false)} level={2} visible={showInfoModal} title={<div style={{fontSize: responsivePixels(40)}}>{tech.name}</div>} content={
         <InfoContent tech={tech} />
       } top="30%" />
       {leftContent ? <div style={{zIndex: 2}}>{leftContent}</div> : null}
@@ -83,7 +108,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
           return <TechIcon key={index} type={prereq} width="22px" height="22px" />;
         })}
       </div> */}
-      <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center"}}>
+      <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center", zIndex: 2}}>
         <div style={{ position: "relative", display: "flex", zIndex: 2, color: getTechColor(tech)}}>
           {tech.name}
           {tech.faction ? (
@@ -91,18 +116,21 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
           style={{
             position: "absolute",
             opacity: "70%",
-            height: "32px",
+            height: responsivePixels(20),
             zIndex: -2,
-            top: "-6px",
-            right: "-16px", 
+            top: responsiveNegativePixels(-4),
+            right: responsiveNegativePixels(-16),
           }}
         >
-          <FactionSymbol faction={tech.faction} size={32} />
+          <div style={{position: "relative", width: responsivePixels(24), height: responsivePixels(24)}}>
+          <FullFactionSymbol faction={tech.faction} />
+          </div>
+          {/* <FactionSymbol faction={tech.faction} size={24} /> */}
         </div>
         ): null}
         </div>
 
-        <div className="popupIcon" style={{display: opts.hideInfo ? "none" : "block"}} onClick={displayInfo}>&#x24D8;</div>
+        <div className="popupIcon" style={{display: opts.hideInfo ? "none" : "block", fontSize: responsivePixels(16)}} onClick={displayInfo}>&#x24D8;</div>
       </div>
       <div
           style={{
@@ -114,7 +142,8 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
           }}
         >
           {tech.prereqs.map((prereq, index) => {
-          return <TechIcon key={index} type={prereq} width="23px" height="24px" />;
+            return <WrappedTechIcon key={index} type={prereq} size={20} />
+          // return <TechIcon key={index} type={prereq} width={responsivePixels(23)} height={responsivePixels(24)} />;
         })}
           {/* <TechIcon type={tech.type} faction={tech.faction} width="32px" height="36px" /> */}
         </div>

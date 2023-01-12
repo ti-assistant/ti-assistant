@@ -3,16 +3,19 @@
   --three-pixel: max( calc(3px + (6 - 3) * ((100vw - 1280px) / (2560 - 1280))), 3px);
   --four-pixel: max( calc(4px + (8 - 4) * ((100vw - 1280px) / (2560 - 1280))), 4px);
   --five-pixel: max( calc(5px + (10 - 5) * ((100vw - 1280px) / (2560 - 1280))), 5px);
+  --six-pixel: max( calc(6px + (12 - 6) * ((100vw - 1280px) / (2560 - 1280))), 6px);
   --eight-pixel: max( calc(8px + (16 - 8) * ((100vw - 1280px) / (2560 - 1280))), 8px);
-  --sixteen-pixel: max( calc(14px + (28 - 14) * ((100vw - 1280px) / (2560 - 1280))), 14px);
+  --fourteen-pixel: max( calc(14px + (28 - 14) * ((100vw - 1280px) / (2560 - 1280))), 14px);
   --sixteen-pixel: max( calc(16px + (32 - 16) * ((100vw - 1280px) / (2560 - 1280))), 16px);
   --eighteen-pixel: max( calc(18px + (36 - 18) * ((100vw - 1280px) / (2560 - 1280))), 18px);
   --twenty-pixel: max( calc(20px + (40 - 20) * ((100vw - 1280px) / (2560 - 1280))), 20px);
   --twenty-four-pixel: max( calc(24px + (48 - 24) * ((100vw - 1280px) / (2560 - 1280))), 24px);
   --thirty-six-pixel: max( calc(32px + (64 - 32) * ((100vw - 1280px) / (2560 - 1280))), 32px);
   --thirty-six-pixel: max( calc(36px + (72 - 36) * ((100vw - 1280px) / (2560 - 1280))), 36px);
+  --forty-pixel: max( calc(40px + (80 - 40) * ((100vw - 1280px) / (2560 - 1280))), 40px);
   --forty-eight-pixel: max( calc(48px + (96 - 48) * ((100vw - 1280px) / (2560 - 1280))), 48px);
-  --one-fifty-pixel: max( calc(150px + (300 - 150) * ((100vw - 1280px) / (2560 - 1280))), 50px);
+  --one-twenty-pixel: max( calc(120px + (240 - 120) * ((100vw - 1280px) / (2560 - 1280))), 120px);
+  --one-fifty-pixel: max( calc(150px + (300 - 150) * ((100vw - 1280px) / (2560 - 1280))), 150px);
 }
 
 @font-face {
@@ -38,7 +41,7 @@
 body {
   font-family: "slider";
   font-size: var(--sixteen-pixel);
-  margin: 0px var(--one-fifty-pixel);
+  margin: 0px var(--one-twenty-pixel);
   background-color: #222;
   color: #eee;
 }
@@ -83,7 +86,7 @@ button {
   color: #eee;
   padding: 3px 5px;
   padding: var(--three-pixel) var(--five-pixel);
-  border-radius: 4px;
+  border-radius: var(--four-pixel);
   cursor: pointer;
   box-shadow: 0px 1px 4px black;
   box-shadow: 0px var(--one-pixel) var(--four-pixel) black;
@@ -119,32 +122,32 @@ input[type=text] {
 .leftSidebar {
   position: fixed;
   transform: rotate(-90deg);
-  left: var(--thirty-six-pixel);
+  left: var(--twenty-four-pixel);
   width: 100vh;
   text-align: center;
   top: 100%;
   background-color: #333;
   color: #eee;
   box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
-  padding-bottom: var(--twenty-pixel);
-  padding-top: var(--twenty-pixel);
-  font-size: var(--forty-eight-pixel);
+  padding-bottom: var(--fourteen-pixel);
+  padding-top: var(--fourteen-pixel);
+  font-size: var(--thirty-six-pixel);
   transform-origin: 0px 0px;
 }
 
 .rightSidebar {
   position: fixed;
   transform: rotate(90deg);
-  right: var(--thirty-six-pixel);
+  right: var(--twenty-four-pixel);
   width: 100vh;
   text-align: center;
   top: 100%;
   background-color: #333;
   color: #eee;
   box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
-  padding-bottom: var(--twenty-pixel);
-  padding-top: var(--twenty-pixel);
-  font-size: var(--forty-eight-pixel);
+  padding-bottom: var(--fourteen-pixel);
+  padding-top: var(--fourteen-pixel);
+  font-size: var(--thirty-six-pixel);
   transform-origin: 100% 0px;
 }
 
@@ -195,15 +198,16 @@ input[type=text] {
   font-size: var(--twenty-pixel);
   position: relative;
   cursor: pointer;
+  z-index: inherit;
 }
 
 .arrowUp {
   width: 0; 
   height: 0; 
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
+  border-left: var(--six-pixel) solid transparent;
+  border-right: var(--six-pixel) solid transparent;
 
-  border-bottom: 8px solid #ddd;
+  border-bottom: var(--eight-pixel) solid #ddd;
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -211,10 +215,10 @@ input[type=text] {
 .arrowDown {
   width: 0; 
   height: 0; 
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
+  border-left: var(--six-pixel) solid transparent;
+  border-right: var(--six-pixel) solid transparent;
   
-  border-top: 8px solid #ddd;
+  border-top: var(--eight-pixel) solid #ddd;
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -260,7 +264,7 @@ input[type=text] {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
 }
 
-.hoverParent:hover .hiddenButton {
+.hiddenButtonParent:hover .hiddenButton {
   opacity: 1;
 }
 

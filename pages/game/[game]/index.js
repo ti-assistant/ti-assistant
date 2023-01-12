@@ -68,7 +68,7 @@ export default function SelectFactionPage() {
           onClick={goToMainPage}
           style={{
             border: `${responsivePixels(3)} solid grey`,
-            borderRadius: "5px",
+            borderRadius: responsivePixels(5),
             height: `10vh`,
             display: "flex",
             alignItems: "center",
@@ -117,15 +117,17 @@ function Header() {
   const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [ qrCode, setQrCode ] = useState(null);
 
+  const qrCodeSize = Math.max(164 + (328 - 164) * (( window.innerWidth - 1280 )/(2560 - 1280)), 164);
+  const qrMarginSize = Math.max(4 + (8 - 4) * (( window.innerWidth - 1280 )/(2560 - 1280)), 4);
   if (!qrCode && gameid) {
     QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
       color: {
         dark: "#eeeeeeff",
         light: "#222222ff",
       },
-      width: responsivePixels(120),
-      height: responsivePixels(120),
-      margin: 4,
+      width: qrCodeSize,
+      height: qrCodeSize,
+      margin: 0,
     }, (err, url) => {
       if (err) {
         throw err;
@@ -157,8 +159,8 @@ function Header() {
     <Sidebar side="right" content={round} />
     <div className="extraLargeFont nonMobile" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: `${responsivePixels(12)}`, left: `${responsivePixels(150)}`}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
     <div className="flexColumn extraLargeFont mobileOnly" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", textAlign: "center", top: `${responsivePixels(12)}`, width: "100%"}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
-    <div className="flexRow nonMobile" style={{position: "fixed", top: `${responsivePixels(12)}`, right: `${responsivePixels(150)}`, alignItems: "flex-start", justifyContent: "center"}}>
-      <div style={{marginTop: `${responsivePixels(16)}`}}>Game ID: {gameid}</div>
+    <div className="flexColumn nonMobile" style={{position: "fixed", top: `${responsivePixels(12)}`, right: `${responsivePixels(150)}`, alignItems: "center", justifyContent: "center"}}>
+      <div>Game ID: {gameid}</div>
       {qrCode ? <img src={qrCode} /> : null}
     </div>
   </div>

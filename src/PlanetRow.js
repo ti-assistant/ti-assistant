@@ -11,6 +11,9 @@ import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
 import { fetcher } from './util/api/util';
 import { SelectableRow } from './SelectableRow';
 import { useSharedUpdateTimes } from './Updater';
+import { responsiveNegativePixels, responsivePixels } from './util/util';
+import { ResponsiveResources } from './Resources';
+import { FullFactionSymbol } from './FactionCard';
 
 export function PlanetSymbol({ type, faction, size="36px" }) {
   switch (type) {
@@ -30,16 +33,52 @@ export function PlanetSymbol({ type, faction, size="36px" }) {
       if (faction === undefined) {
         return null;
       }
+      return <FullFactionSymbol faction={faction} />
       return <FactionSymbol faction={faction} size={42} />;
     default:
       return null;
   }
 }
 
+export function FullPlanetSymbol({ type, faction, size }) {
+  let image;
+  switch (type) {
+    case "Industrial":
+      image = <Image src="/images/industrial_icon.svg" alt="Industrial Planet Icon" layout="fill" objectFit='contain'/>;
+      break;
+    case "Cultural":
+      image = <Image src="/images/cultural_icon.svg" alt="Cultural Planet Icon" layout="fill" objectFit='contain'/>;
+      break;
+    case "Hazardous":
+      image = <Image src="/images/hazardous_icon.svg" alt="Hazardous Planet Icon" layout="fill" objectFit='contain'/>;
+      break;
+    case "all":
+      return <div style={{marginLeft: "8px", width:"36px", height: "36px"}}>
+        <Image src="/images/industrial_icon.svg" alt="Industrial Planet Icon" width="18px" height="18px" />
+        <Image src="/images/cultural_icon.svg" alt="Cultural Planet Icon" width="18px" height="18px" />
+        <Image src="/images/hazardous_icon.svg" alt="Hazardous Planet Icon" width="18px" height="18px" />
+      </div>;
+    case "none":
+      if (faction === undefined) {
+        return null;
+      }
+      return <div style={{position: "relative", width: responsivePixels(size), height: responsivePixels(size)}}>
+          <FullFactionSymbol faction={faction} />
+        </div>
+    default:
+      return null;
+  }
+  return <div style={{position: "relative", height: responsivePixels(size), width: responsivePixels(size)}}>
+    {image}
+  </div>
+}
+
 function LegendaryPlanetIcon() {
   return (
-    <div style={{display: "flex", alignItems: "flex-start", borderRadius: "22px", height: "18px", width: "18px", paddingTop: "3px", paddingLeft: "3px", boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
-      <Image src="/images/legendary_planet.svg" alt="Legendary Planet Icon" width="15px" height="15px" />
+    <div style={{display: "flex", alignItems: "flex-start", borderRadius: responsivePixels(22), height: responsivePixels(16), width: responsivePixels(16), paddingTop: responsivePixels(2), paddingLeft: responsivePixels(2), boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
+      <div style={{position: "relative", width: responsivePixels(14), height: responsivePixels(14)}}>
+      <Image src="/images/legendary_planet.svg" alt="Legendary Planet Icon" layout="fill" objectFit='contain'/>
+      </div>
     </div>);
 }
 
@@ -67,48 +106,49 @@ export function PlanetAttributes({ attributes }) {
       case "legendary":
         return <LegendaryPlanetIcon />;
       case "red-skip":
-        return <Image src="/images/red_tech.webp" alt="Red Tech Skip" width="22px" height="22px" />;
+        return <Image src="/images/red_tech.webp" alt="Red Tech Skip" layout="fill" objectFit='contain'/>;
       case "yellow-skip":
-        return <Image src="/images/yellow_tech.webp" alt="Yellow Tech Skip" width="22px" height="22px" />;
+        return <Image src="/images/yellow_tech.webp" alt="Yellow Tech Skip" layout="fill" objectFit='contain'/>;
       case "blue-skip":
-        return <Image src="/images/blue_tech.webp" alt="Blue Tech Skip" width="22px" height="22px" />;
+        return <Image src="/images/blue_tech.webp" alt="Blue Tech Skip" layout="fill" objectFit='contain'/>;
       case "green-skip":
-        return <Image src="/images/green_tech.webp" alt="Green Tech Skip" width="22px" height="22px" />;
+        return <Image src="/images/green_tech.webp" alt="Green Tech Skip" layout="fill" objectFit='contain'/>;
       case "demilitarized":
-        return <Image src="/images/demilitarized_zone.svg" alt="Demilitarized Zone" width="22px" height="22px" />;
+        return <Image src="/images/demilitarized_zone.svg" alt="Demilitarized Zone" layout="fill" objectFit='contain'/>;
       case "tomb":
-        return <Image src="/images/tomb_symbol.webp" alt="Tomb of Emphidia" width="22px" height="22px" />;
+        return <Image src="/images/tomb_symbol.webp" alt="Tomb of Emphidia" layout="fill" objectFit='contain'/>;
       case "space-cannon":
-        return <div style={{width: "44px", height: "22px"}}>✹✹✹</div>
+        return <div style={{width: responsivePixels(36), height: responsivePixels(22)}}>✹✹✹</div>
       default:
         return null;
     }
   }
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "12px",
-        height: "48px",
-        justifyContent: "space-evenly"
-      }}
-    >
+    // <div
+    //   style={{
+    //     display: "flex",
+    //     flexDirection: "column",
+    //     marginTop: "12px",
+    //     height: responsivePixels(36),
+    //     justifyContent: "space-evenly"
+    //   }}
+    // >
       <div
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          width: "48px",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          width: responsivePixels(36),
           flexWrap: "wrap",
+          gap: responsivePixels(4),
         }}
       >
         {attributes.map((attribute, index) => {
-          return <div key={index}>{getAttributeIcon(attribute)}</div>;
+          return <div key={index} style={{width: responsivePixels(16), height: responsivePixels(16), position: "relative"}}>{getAttributeIcon(attribute)}</div>;
         })}
       </div>
-    </div>
+    // </div>
   )
   return (
     <div
@@ -272,45 +312,45 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
       selectItem={addPlanet}
       removeItem={removePlanet} 
       content={
-        <div className="flexRow hoverParent" style={{width: "100%", alignItems: "center", justifyContent: "space-between"}}>
+        <div className="flexRow hiddenButtonParent" style={{width: "100%", alignItems: "center", justifyContent: "space-between", paddingTop: responsivePixels(4), boxSizing: "border-box"}}>
       {claimed ? 
         <div style={{fontFamily: "Myriad Pro",
         position: "absolute",
         color: claimedColor === "Black" ? "#aaa" : claimedColor,
-        borderRadius: "5px",
-        border: `1px solid ${claimedColor}`,
-        padding: "0px 4px",
-        fontSize: "12px",
-        bottom: "4px",
+        borderRadius: responsivePixels(5),
+        border: `${responsivePixels(1)} solid ${claimedColor}`,
+        padding: `0 ${responsivePixels(4)}`,
+        fontSize: responsivePixels(12),
+        bottom: responsivePixels(4),
         left: "0",
       }}>Claimed by {claimed}</div> : null
       }
-      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", flexGrow: 2, alignItems: "center"}}>
+      <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", alignItems: "center"}}>
         <div style={{zIndex: 1}}>{planet.name}</div>
         <div
           style={{
             position: "relative",
-            top: "-9px",
-            marginLeft: "-16px",
-            opacity: "70%",
-            height: "36px",
-            zIndex: 0,
+            top: responsiveNegativePixels(-4),
+            marginLeft: responsiveNegativePixels(-12),
+            opacity: "60%",
+            height: responsivePixels(28),
+            zIndex: -1,
           }}
         >
-          <PlanetSymbol type={planet.type} faction={planet.faction} />
+          <FullPlanetSymbol type={planet.type} faction={planet.faction} size={28} />
         </div>
       </div>
-      {!opts.showAttachButton ? <div className="flexRow" style={{width: "62px", paddingRight: "6px"}}>
-        {canAttach() ? <button className="hiddenButton" onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
+      {!opts.showAttachButton ? <div className="flexRow" style={{width: responsivePixels(62), paddingRight: responsivePixels(6)}}>
+        {canAttach() ? <button style={{fontSize: responsivePixels(12)}} className="hiddenButton" onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
       </div> : null}
-      <Resources
+      <ResponsiveResources
         resources={planet.resources}
         influence={planet.influence}
       />
       <div
         style={{
-          margin: "0px 4px 0px 8px",
-          width: "52px"
+          margin: `0 ${responsivePixels(4)} 0 ${responsivePixels(8)}`,
+          width: responsivePixels(24)
         }}
       >
         <PlanetAttributes attributes={planet.attributes ?? []} />
@@ -325,7 +365,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
             {/* <button onClick={() => togglePlanet(planet.name)}>
                 {planet.ready ? "Exhaust" : "Ready"}
             </button> */}
-            {opts.showAttachButton ? <div style={{width: "56px"}}>
+            {opts.showAttachButton ? <div style={{width: responsivePixels(56)}}>
               {canAttach() ? <button onClick={() => displayAttachMenu(planet.name)}>Attach</button> : null}
             </div> : null}
           </div>

@@ -38,12 +38,18 @@ const usePaused = () => {
 
 const useSharedPause = () => useBetween(usePaused);
 
-export function TimerDisplay({ time }) {
+export function TimerDisplay({ time, style }) {
   const hours = Math.floor(time / 3600);
   const minutes = Math.floor(time % 3600 / 60);
   const seconds = time % 60;
 
-  return <div className="flexRow" style={{width: responsivePixels(160), fontSize: responsivePixels(24)}}>
+  const timerStyle = {
+    width: responsivePixels(160),
+    fontSize: responsivePixels(24),
+    ...style,
+  }
+
+  return <div className="flexRow" style={timerStyle}>
     {hours} : {minutes < 10 ? `0${minutes}` : minutes} : {seconds < 10 ? `0${seconds}` : seconds}
   </div>
 }
@@ -191,8 +197,8 @@ export function GameTimer({}) {
   return (
     <div className="flexColumn" style={{width: "100%", whiteSpace: "nowrap"}}>
       <div className="flexColumn" style={{alignItems: "center", justifyContent: "center", gap: responsivePixels(4)}}>
-        <div style={{fontSize: responsivePixels(18)}}>Game Time</div>
-        <TimerDisplay time={!timers ? 0 : gameTimer} />
+        {/* <div style={{fontSize: responsivePixels(18)}}>Game Time</div> */}
+        <TimerDisplay time={!timers ? 0 : gameTimer} style={{fontSize: responsivePixels(28)}} />
       </div>
       <div className="flexRow">
         <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button>
@@ -201,7 +207,33 @@ export function GameTimer({}) {
   );
 }
 
-export function FactionTimer({ factionName }) {
+export function StaticFactionTimer({ factionName, style }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const [ factionTimer, setFactionTimer ] = useState(0);
+  // const [ paused, setPaused ] = useState(false);
+  const { data: timers, timersError } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
+
+  function setStartingTime() {
+    if (!timers) {
+      setTimeout(setStartingTime, 1000);
+      return;
+    }
+    if (timers[factionName] && timers[factionName] > factionTimer) {
+      setFactionTimer(timers[factionName]);
+    }
+  }
+
+  useEffect(() => {
+    setStartingTime();
+  }, [timers, factionName]);
+
+  return (
+    <TimerDisplay time={!timers ? 0 : factionTimer} style={style} />
+  );
+}
+
+export function FactionTimer({ factionName, style }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
@@ -243,11 +275,11 @@ export function FactionTimer({ factionName }) {
   }, [timers, factionName]);
 
   return (
-    <div className="flexColumn" style={{width: "100%", gap: responsivePixels(8)}}>
-      <div className="flexColumn" style={{gap: responsivePixels(8), alignItems: "center", justifyContent: "center"}}> 
-        <TimerDisplay time={!timers ? 0 : factionTimer} />
-      </div>
-    </div>
+    // <div className="flexColumn" style={{width: "100%", gap: responsivePixels(8)}}>
+      // <div className="flexColumn" style={{gap: responsivePixels(8), alignItems: "center", justifyContent: "center"}}> 
+        <TimerDisplay time={!timers ? 0 : factionTimer} style={style} />
+      // </div>
+    // </div>
   );
 
 }

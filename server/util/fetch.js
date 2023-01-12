@@ -78,6 +78,12 @@ export async function fetchObjectives(gameid, secret) {
     };
   });
 
+  Object.values(objectives).forEach((objective) => {
+    if (objective.replaces) {
+      delete objectives[objective.replaces];
+    }
+  })
+
   return objectives;
 }
 
@@ -124,7 +130,7 @@ export async function fetchAttachments(gameid) {
     if (attachment.replaces) {
       delete attachments[attachment.replaces];
     }
-  })
+  });
 
   // Remove faction specific attachments if those factions are not in the game.
   const gameFactions = gameState.data().factions;

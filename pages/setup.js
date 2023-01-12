@@ -443,6 +443,16 @@ export function Map({mapString, mapStyle, factions}) {
     numColumns = 9;
   }
 
+  const updatedFactions = factions.map((faction) => {
+    if (faction.name === "Council Keleres" && !!faction.startswith.faction) {
+      return {
+        ...faction,
+        name: faction.startswith.faction,
+      };
+    }
+    return faction;
+  })
+
   let columns = [
     [56, 55, 54, 53, 52],
     [57, 33, 32, 31, 30, 51],
@@ -478,14 +488,14 @@ export function Map({mapString, mapStyle, factions}) {
   switch (factions.length) {
     case 3:
       clearOuterRing();
-      columns[7][1] = factions[0].name ?? "ST_0";
+      columns[7][1] = updatedFactions[0].name ?? "ST_0";
       columns[7][3] = "empty";
       columns[7][4] = "empty";
       columns[3][1] = "empty";
       columns[4][1] = "empty";    
       columns[5][1] = "empty";
-      columns[4][7] = factions[1].name ?? "ST_0";
-      columns[1][1] = factions[2].name ?? "ST_0";
+      columns[4][7] = updatedFactions[1].name ?? "ST_0";
+      columns[1][1] = updatedFactions[2].name ?? "ST_0";
       columns[1][3] = "empty";
       columns[1][4] = "empty";
       columns[2][5] = "empty";
@@ -493,27 +503,27 @@ export function Map({mapString, mapStyle, factions}) {
       break;
     case 4:
       clearOuterRing();
-      columns[3][1] = factions[0].name ?? "ST_0";
-      columns[7][2] = factions[1].name ?? "ST_0";
-      columns[5][6] = factions[2].name ?? "ST_0";
-      columns[1][3] = factions[3].name ?? "ST_0";
+      columns[3][1] = updatedFactions[0].name ?? "ST_0";
+      columns[7][2] = updatedFactions[1].name ?? "ST_0";
+      columns[5][6] = updatedFactions[2].name ?? "ST_0";
+      columns[1][3] = updatedFactions[3].name ?? "ST_0";
       break;
     case 5:
       clearOuterRing();
       switch (mapStyle) {
         case "standard":
-          columns[6][1] = factions[0].name ?? "ST_0";
-          columns[7][4] = factions[1].name ?? "ST_0";
-          columns[4][7] = factions[2].name ?? "ST_0";
-          columns[1][4] = factions[3].name ?? "ST_0";
-          columns[2][1] = factions[4].name ?? "ST_0";
+          columns[6][1] = updatedFactions[0].name ?? "ST_0";
+          columns[7][4] = updatedFactions[1].name ?? "ST_0";
+          columns[4][7] = updatedFactions[2].name ?? "ST_0";
+          columns[1][4] = updatedFactions[3].name ?? "ST_0";
+          columns[2][1] = updatedFactions[4].name ?? "ST_0";
           break;
         case "skinny":
-          columns[6][1] = factions[0].name ?? "ST_0";
-          columns[7][3] = factions[1].name ?? "ST_0";
-          columns[4][7] = factions[2].name ?? "ST_0";
-          columns[1][3] = factions[3].name ?? "ST_0";
-          columns[2][1] = factions[4].name ?? "ST_0";
+          columns[6][1] = updatedFactions[0].name ?? "ST_0";
+          columns[7][3] = updatedFactions[1].name ?? "ST_0";
+          columns[4][7] = updatedFactions[2].name ?? "ST_0";
+          columns[1][3] = updatedFactions[3].name ?? "ST_0";
+          columns[2][1] = updatedFactions[4].name ?? "ST_0";
           columns[1][1] = "empty";
           columns[1][4] = "empty";
           columns[2][5] = "empty";
@@ -522,11 +532,11 @@ export function Map({mapString, mapStyle, factions}) {
           columns[6][5] = "empty";
           break;
         case "warp":
-          columns[4][1] = factions[0].name ?? "ST_0";
-          columns[7][1] = factions[1].name ?? "ST_0";
-          columns[7][4] = factions[2].name ?? "ST_0";
-          columns[1][4] = factions[3].name ?? "ST_0";
-          columns[1][1] = factions[4].name ?? "ST_0";
+          columns[4][1] = updatedFactions[0].name ?? "ST_0";
+          columns[7][1] = updatedFactions[1].name ?? "ST_0";
+          columns[7][4] = updatedFactions[2].name ?? "ST_0";
+          columns[1][4] = updatedFactions[3].name ?? "ST_0";
+          columns[1][1] = updatedFactions[4].name ?? "ST_0";
           columns[4][5] = "ST_86A";
           columns[3][5] = "ST_87A";
           columns[3][6] = "ST_84A";
@@ -541,33 +551,33 @@ export function Map({mapString, mapStyle, factions}) {
       switch (mapStyle) {
         case "standard":
           clearOuterRing();
-          columns[4][1] = factions[0].name ?? "ST_0";
-          columns[7][1] = factions[1].name ?? "ST_0";
-          columns[7][4] = factions[2].name ?? "ST_0";
-          columns[4][7] = factions[3].name ?? "ST_0";
-          columns[1][4] = factions[4].name ?? "ST_0";
-          columns[1][1] = factions[5].name ?? "ST_0";
+          columns[4][1] = updatedFactions[0].name ?? "ST_0";
+          columns[7][1] = updatedFactions[1].name ?? "ST_0";
+          columns[7][4] = updatedFactions[2].name ?? "ST_0";
+          columns[4][7] = updatedFactions[3].name ?? "ST_0";
+          columns[1][4] = updatedFactions[4].name ?? "ST_0";
+          columns[1][1] = updatedFactions[5].name ?? "ST_0";
           break;
         case "large":
-          columns[4][0] = factions[0].name ?? "ST_0";
-          columns[8][0] = factions[1].name ?? "ST_0";
-          columns[8][4] = factions[2].name ?? "ST_0";
-          columns[4][8] = factions[3].name ?? "ST_0";
-          columns[0][4] = factions[4].name ?? "ST_0";
-          columns[0][0] = factions[5].name ?? "ST_0";
+          columns[4][0] = updatedFactions[0].name ?? "ST_0";
+          columns[8][0] = updatedFactions[1].name ?? "ST_0";
+          columns[8][4] = updatedFactions[2].name ?? "ST_0";
+          columns[4][8] = updatedFactions[3].name ?? "ST_0";
+          columns[0][4] = updatedFactions[4].name ?? "ST_0";
+          columns[0][0] = updatedFactions[5].name ?? "ST_0";
           break;
       }
       break;
     case 7:
       switch (mapStyle) {
         case "standard":
-          columns[4][0] = factions[0].name ?? "ST_0";
-          columns[7][0] = factions[1].name ?? "ST_0";
-          columns[8][2] = factions[2].name ?? "ST_0";
-          columns[7][5] = factions[3].name ?? "ST_0";
-          columns[1][5] = factions[4].name ?? "ST_0";
-          columns[0][2] = factions[5].name ?? "ST_0";
-          columns[1][0] = factions[6].name ?? "ST_0";
+          columns[4][0] = updatedFactions[0].name ?? "ST_0";
+          columns[7][0] = updatedFactions[1].name ?? "ST_0";
+          columns[8][2] = updatedFactions[2].name ?? "ST_0";
+          columns[7][5] = updatedFactions[3].name ?? "ST_0";
+          columns[1][5] = updatedFactions[4].name ?? "ST_0";
+          columns[0][2] = updatedFactions[5].name ?? "ST_0";
+          columns[1][0] = updatedFactions[6].name ?? "ST_0";
           columns[4][6] = "ST_86A";
           columns[3][6] = "ST_87A";
           columns[3][7] = "ST_84A";
@@ -577,13 +587,13 @@ export function Map({mapString, mapStyle, factions}) {
           break;
         case "warp":
           columns[8] = columns[8].map((col) => "empty");
-          columns[4][0] = factions[0].name ?? "ST_0";
-          columns[7][1] = factions[1].name ?? "ST_0";
-          columns[7][4] = factions[2].name ?? "ST_0";
-          columns[4][8] = factions[3].name ?? "ST_0";
-          columns[1][5] = factions[4].name ?? "ST_0";
-          columns[0][2] = factions[5].name ?? "ST_0";
-          columns[1][0] = factions[6].name ?? "ST_0";
+          columns[4][0] = updatedFactions[0].name ?? "ST_0";
+          columns[7][1] = updatedFactions[1].name ?? "ST_0";
+          columns[7][4] = updatedFactions[2].name ?? "ST_0";
+          columns[4][8] = updatedFactions[3].name ?? "ST_0";
+          columns[1][5] = updatedFactions[4].name ?? "ST_0";
+          columns[0][2] = updatedFactions[5].name ?? "ST_0";
+          columns[1][0] = updatedFactions[6].name ?? "ST_0";
           columns[0][0] = "empty";
           columns[0][3] = "empty";
           columns[0][4] = "empty";
@@ -601,14 +611,14 @@ export function Map({mapString, mapStyle, factions}) {
       }
       break;
     case 8:
-      columns[4][0] = factions[0].name ?? "ST_0";
-      columns[7][0] = factions[1].name ?? "ST_0";
-      columns[8][2] = factions[2].name ?? "ST_0";
-      columns[7][5] = factions[3].name ?? "ST_0";
-      columns[4][8] = factions[4].name ?? "ST_0";
-      columns[1][5] = factions[5].name ?? "ST_0";
-      columns[0][2] = factions[6].name ?? "ST_0";
-      columns[1][0] = factions[7].name ?? "ST_0";
+      columns[4][0] = updatedFactions[0].name ?? "ST_0";
+      columns[7][0] = updatedFactions[1].name ?? "ST_0";
+      columns[8][2] = updatedFactions[2].name ?? "ST_0";
+      columns[7][5] = updatedFactions[3].name ?? "ST_0";
+      columns[4][8] = updatedFactions[4].name ?? "ST_0";
+      columns[1][5] = updatedFactions[5].name ?? "ST_0";
+      columns[0][2] = updatedFactions[6].name ?? "ST_0";
+      columns[1][0] = updatedFactions[7].name ?? "ST_0";
       switch (mapStyle) {
         case "warp":
           columns[0][0] = "empty";

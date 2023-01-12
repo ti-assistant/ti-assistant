@@ -1,8 +1,11 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { BasicFactionTile } from './FactionTile';
+import { LabeledDiv } from './LabeledDiv';
 
 import { fetcher } from './util/api/util';
+import { getFactionColor, getFactionName } from './util/factions';
+import { responsivePixels } from './util/util';
 
 export function StrategyCard({ card, active, onClick, factionActions, opts = {} }) {
   const router = useRouter();
@@ -25,23 +28,23 @@ export function StrategyCard({ card, active, onClick, factionActions, opts = {} 
     <div
       onClick={onClick}
       style={{
-        borderRadius: "5px",
+        borderRadius: responsivePixels(5),
         display: "flex",
         flexDirection: "column",
-        border: `3px solid ${color}`,
-        fontSize: opts.fontSize ?? "24px",
+        border: `${responsivePixels(3)} solid ${color}`,
+        fontSize: opts.fontSize ?? responsivePixels(24),
         position: "relative",
         cursor: onClick ? "pointer" : "auto",
-        height: "64px",
+        height: responsivePixels(54),
         justifyContent: "center",
       }}
     >
-      <div className="flexRow" style={{padding: "4px 4px 4px 0px", justifyContent: "flex-start", alignItems: "center"}}>
-        <div style={{flexBasis: "14%", minWidth: "50px", fontSize: "32px", display: "flex", justifyContent: "center", color: textColor}}>{card.order}</div>
+      <div className="flexRow" style={{padding: `${responsivePixels(4)} ${responsivePixels(4)} ${responsivePixels(4)} 0`, justifyContent: "flex-start", alignItems: "center"}}>
+        <div style={{flexBasis: "14%", minWidth: responsivePixels(32), fontSize: responsivePixels(32), display: "flex", justifyContent: "center", color: textColor}}>{card.order}</div>
         {opts.hideName ? null : <div style={{flexBasis: "40%", color: textColor}}>{card.name}</div>}
         {faction ? 
           <div style={{flexGrow: 4, whiteSpace: "nowrap"}}>
-            <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={factionActions} opts={{fontSize: "16px"}} />
+            <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={factionActions} opts={{fontSize: responsivePixels(16)}} />
           </div>
         : null}
       </div>

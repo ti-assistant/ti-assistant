@@ -5,6 +5,12 @@ export function getFactionColor(faction) {
   switch (faction.color) {
     case "Blue":
       return "cornflowerblue";
+    case "Purple":
+      return "mediumpurple";
+    case "Magenta":
+      return "hotpink";
+    case "Yellow":
+      return "gold";
     // TODO: Mess around with other colors.
   }
   return faction.color;

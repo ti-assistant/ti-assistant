@@ -1,11 +1,18 @@
+import { responsivePixels } from "./util/util";
+
 export function SelectableRow({itemName, children, content, selectItem, removeItem, style}) {
   const iconStyle = {};
   if (style && style.fontSize) {
-    const size = parseInt(style.fontSize.replace("px", "")) + 12;
-    iconStyle.fontSize = `${size}px`;
-    iconStyle.width = `${size}px`;
-    iconStyle.height = `${size}px`;
-    iconStyle.lineHeight = `${size}px`;
+    const baseSize = parseInt(style.fontSize.replace("px", ""));
+    const size = parseInt(style.fontSize.replace("px", "")) + 8;
+    iconStyle.fontSize = responsivePixels(size);
+    iconStyle.width = responsivePixels(size);
+    iconStyle.height = responsivePixels(size);
+    iconStyle.lineHeight = responsivePixels(size);
+    style = {
+      ...style,
+      fontSize: responsivePixels(baseSize),
+    }
   }
   
   return (

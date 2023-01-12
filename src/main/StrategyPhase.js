@@ -4,16 +4,19 @@ import { StrategyCard } from '../StrategyCard';
 import { getOnDeckFaction } from '../util/helpers';
 import { strategyCardOrder, unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from '../util/api/cards';
 import { readyAllFactions } from '../util/api/factions';
-import { getNextIndex } from '../util/util';
+import { getNextIndex, responsivePixels } from '../util/util';
 import { fetcher, poster } from '../util/api/util';
 import { BasicFactionTile } from '../FactionTile';
-import { FactionTimer } from '../Timer';
-import { FactionCard } from '../FactionCard';
+import { FactionTimer, StaticFactionTimer } from '../Timer';
+import { FactionCard, FullFactionSymbol } from '../FactionCard';
 import { Modal } from '../Modal';
 import { useRef, useState } from 'react';
 import SummaryColumn from './SummaryColumn';
 import { LawsInEffect } from '../LawsInEffect';
 import { useSharedUpdateTimes } from '../Updater';
+import { LabeledDiv } from '../LabeledDiv';
+import { getFactionColor, getFactionName } from '../util/factions';
+import { NumberedItem } from '../NumberedItem';
 
 function InfoContent({content}) {
   return (
@@ -230,11 +233,11 @@ export default function StrategyPhase() {
 
   const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
   return (
-    <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-      <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={<div style={{fontSize: "40px"}}>{infoModal.title}</div>} content={
+    <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between", gap: responsivePixels(20)}}>
+      <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={<div style={{fontSize: responsivePixels(40)}}>{infoModal.title}</div>} content={
         <InfoContent content={infoModal.content} />
       } top="30%" />
-      <div className="flexColumn" style={{flexBasis: "25%"}}>
+      <div className="flexColumn" style={{alignItems: "center", width: responsivePixels(280)}}>
       {hasStartOfStrategyPhaseAbilities() ? 
         <div className="flexColumn">
           Start of Strategy Phase
@@ -244,9 +247,22 @@ export default function StrategyPhase() {
               return null;
             }
             return (
-            <li key={factionName}>
-              <div className="flexRow" style={{gap: "8px"}}>
-                <BasicFactionTile faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: "16px"}}/>
+            <NumberedItem key={factionName}>
+              <LabeledDiv label={getFactionName(factions[factionName])} color={getFactionColor(factions[factionName])}>
+                <div className="flexColumn">
+                  {abilities.map((ability) => {
+                    return (
+                      <div className="flexRow">
+                        {ability.name}
+                        <div className="popupIcon" onClick={() => showInfoModal(ability.name, ability.description)}>
+                          &#x24D8;
+                        </div>
+                      </div>);
+                  })}
+                  </div>
+              </LabeledDiv>
+              {/* <div className="flexRow">
+                <BasicFactionTile faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: responsivePixels(16)}}/>
                 <div className="flexColumn">
                 {abilities.map((ability) => {
                   return (
@@ -258,8 +274,8 @@ export default function StrategyPhase() {
                     </div>);
                 })}
                 </div>
-              </div>
-            </li>);
+              </div> */}
+            </NumberedItem>);
           })}
           </ol> 
         </div> : null}
@@ -273,8 +289,8 @@ export default function StrategyPhase() {
             }
             return (
               <li key={factionName}>
-                <div className="flexRow" style={{gap: "8px"}}>
-                  <BasicFactionTile faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: "16px"}}/>
+                <div className="flexRow">
+                  <BasicFactionTile faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: responsivePixels(16)}}/>
                   <div className="flexColumn">
                   {abilities.map((ability) => {
                     return (
@@ -293,26 +309,30 @@ export default function StrategyPhase() {
         </div> : null}
         <LawsInEffect />
       </div>
-      <div className="flexColumn" style={{flexBasis: "30%", gap: "8px"}}>
-        <div className="flexRow" style={{gap: "8px"}}>
+      <div className="flexColumn">
+        <div className="flexRow" style={{position: "relative", maxWidth: "100%"}}>
           {activefaction ?
             <div className="flexColumn" style={{alignItems: "center"}}>
               Active Player
               <FactionCard faction={activefaction} content={
-                <div style={{paddingBottom: "4px"}}>
-                  <FactionTimer key={activefaction.name} factionName={activefaction.name} />
+                <div style={{paddingBottom: responsivePixels(4)}}>
+                  <FactionTimer factionName={activefaction.name} style={{fontSize: responsivePixels(28)}} />
                 </div>
-              } opts={{iconSize: 60, fontSize: "24px"}} />
+              } style={{height: responsivePixels(80)}} opts={{iconSize: responsivePixels(68), fontSize: responsivePixels(24)}} />
             </div>
-          : <div style={{fontSize: "36px"}}>Strategy Phase Complete</div>}
+          : <div style={{fontSize: responsivePixels(36)}}>Strategy Phase Complete</div>}
           {onDeckFaction ? 
             <div className="flexColumn" style={{alignItems: "center"}}>
               On Deck
-              <BasicFactionTile faction={onDeckFaction} opts={{fontSize: "20px"}}/>
+              <FactionCard faction={onDeckFaction} content={
+                <div style={{paddingBottom: responsivePixels(4), fontSize: responsivePixels(12)}}>
+                  <StaticFactionTimer factionName={onDeckFaction.name} style={{fontSize: responsivePixels(16), width: responsivePixels(140)}} />
+                </div>
+              } style={{height: responsivePixels(50)}} opts={{iconSize: responsivePixels(44), fontSize: responsivePixels(24)}} />
             </div>
           : null}
         </div>
-        <div className="flexColumn" style={{gap: "4px", alignItems: "stretch", width: "100%", maxWidth: "500px", marginTop: "8px"}}>
+        <div className="flexColumn" style={{gap: responsivePixels(4), alignItems: "stretch", width: "100%", marginTop: responsivePixels(8), width: responsivePixels(420)}}>
         {orderedStrategyCards.map(([name, card]) => {
           const factionActions = [];
           if (card.faction) {
@@ -348,7 +368,7 @@ export default function StrategyPhase() {
         <button onClick={() => nextPhase()}>Advance to Action Phase</button>
       }
       </div>
-      <div className="flexColumn" style={{flexBasis: "33%", maxwidth: "400px"}}>
+      <div className="flexColumn" style={{height: "100vh", width: responsivePixels(280)}}>
         <SummaryColumn />
       </div>
     </div>

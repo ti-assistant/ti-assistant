@@ -18,11 +18,11 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
       onEnter={onEnter}
       onExited={onExited}
     >
-    <div className="flexColumn" style={{position: "fixed", left: "0px", top: "0px", width: "100%",
-    height: "100%", display: "none", zIndex: zIndex + 3,
+    <div className="flexColumn" style={{position: "fixed", left: "0px", top: "0px", width: "100vw",
+    height: "100vh", display: "none", zIndex: zIndex + 3,
     flexDirection: "column", alignItems: "center", color: "#eee"}}>
 
-      <div style={{position: "absolute", width: "100%", height: "100%", backgroundColor: "black", opacity: "50%"}} onClick={closeMenu}>
+      <div style={{position: "absolute", width: "100vw", height: "100vh", backgroundColor: "black", opacity: "50%"}} onClick={closeMenu}>
   
       </div>
     <CSSTransition

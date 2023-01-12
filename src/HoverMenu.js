@@ -10,12 +10,13 @@ export function HoverMenu({label, style, children, content, directin = "down", b
   useLayoutEffect(() => {
     const rect = menu.current.getBoundingClientRect();
     if (rect.top + innerMenu.current.clientHeight > window.innerHeight &&
-        rect.top - innerMenu.current.clientHeight > 0) {
+        rect.bottom - innerMenu.current.clientHeight > 0) {
       setDirection("up");
     } else {
       setDirection("down");
     }
-    if (rect.left + innerMenu.current.clientWidth > window.innerWidth) {
+    if (rect.left + innerMenu.current.clientWidth > window.innerWidth &&
+        rect.right - innerMenu.current.clientWidth > 0) {
       setSide("left");
     } else {
       setSide("right");
@@ -31,8 +32,8 @@ export function HoverMenu({label, style, children, content, directin = "down", b
     bottom: direction === "up" ? 0 : "auto",
     right: side === "left" ? 0 : "auto",
     border: `2px solid ${borderColor}`,
-    borderRadius: "5px",
-    minWidth: "160px",
+    borderRadius: responsivePixels(5),
+    minWidth: responsivePixels(160),
     // maxHeight: "620px",
     backgroundColor: "#222",
     overflow: "visible",
