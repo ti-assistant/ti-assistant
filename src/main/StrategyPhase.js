@@ -320,13 +320,13 @@ export default function StrategyPhase() {
                 </div>
               } style={{height: responsivePixels(80)}} opts={{iconSize: responsivePixels(68), fontSize: responsivePixels(24)}} />
             </div>
-          : <div style={{fontSize: responsivePixels(36)}}>Strategy Phase Complete</div>}
+          : <div style={{fontSize: responsivePixels(30), paddingTop: responsivePixels(24)}}>Strategy Phase Complete</div>}
           {onDeckFaction ? 
             <div className="flexColumn" style={{alignItems: "center"}}>
               On Deck
               <FactionCard faction={onDeckFaction} content={
                 <div style={{paddingBottom: responsivePixels(4), fontSize: responsivePixels(12)}}>
-                  <StaticFactionTimer factionName={onDeckFaction.name} style={{fontSize: responsivePixels(16), width: responsivePixels(140)}} />
+                  <StaticFactionTimer factionName={onDeckFaction.name} style={{fontSize: responsivePixels(18), width: responsivePixels(140)}} />
                 </div>
               } style={{height: responsivePixels(50)}} opts={{iconSize: responsivePixels(44), fontSize: responsivePixels(24)}} />
             </div>
@@ -365,7 +365,7 @@ export default function StrategyPhase() {
         <button onClick={() => undoPick()}>Undo</button>
       : null}
       {activefaction ? null :
-        <button onClick={() => nextPhase()}>Advance to Action Phase</button>
+        <button style={{fontSize: responsivePixels(20)}} onClick={() => nextPhase()}>Advance to Action Phase</button>
       }
       </div>
       <div className="flexColumn" style={{height: "100vh", width: responsivePixels(280)}}>

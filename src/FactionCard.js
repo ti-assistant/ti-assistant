@@ -488,7 +488,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
   );
 }
 
-export function FactionCard({ faction, onClick, style, content, children, opts = {} }) {
+export function FactionCard({ faction, rightLabel, onClick, style, content, children, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: state, stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
@@ -532,12 +532,12 @@ export function FactionCard({ faction, onClick, style, content, children, opts =
   const label = speaker ? `Speaker: ${getFactionName(faction)}` : getFactionName(faction);
 
   return (
-    <LabeledDiv label={label} color={getFactionColor(faction)} onClick={onClick} style={{justifyContent: "flex-start", ...style}}>
+    <LabeledDiv label={label} rightLabel={rightLabel} color={getFactionColor(faction)} onClick={onClick} style={{justifyContent: "flex-start", ...style}}>
     {/* <div
       onClick={onClick}
       style={cardStyle}
     > */}
-      <div className="flexColumn" style={{width: "100%", alignItems: "flex-start", fontSize: opts.fontSize ?? "24px", position: "relative", height: "100%"}}>
+      <div className="flexColumn" style={{width: "100%", justifyContent: "flex-start", fontSize: opts.fontSize ?? "24px", position: "relative", height: "100%"}}>
       {/* {speaker ? <div style={{fontFamily: "Myriad Pro",
           position: "absolute",
           color: color === "Black" ? "#eee" : color,

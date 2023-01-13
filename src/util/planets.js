@@ -40,7 +40,7 @@ function hasSkip(planet) {
  * @param {Object} attachments 
  * @returns {Object}
  */
-function applyPlanetAttachments(planet, attachments) {
+export function applyPlanetAttachments(planet, attachments) {
   let updatedPlanet = {...planet};
   updatedPlanet.attributes = [...planet.attributes];
   const planetAttachments = filterToPlanetAttachments(attachments, planet.name);

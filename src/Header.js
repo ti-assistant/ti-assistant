@@ -2,13 +2,14 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import QRCode from "qrcode";
 import useSWR from "swr";
-import { responsivePixels } from "./util/util";
+import { responsiveNegativePixels, responsivePixels } from "./util/util";
 import { fetcher } from "./util/api/util";
 import { GameTimer } from "./Timer";
 import { HoverMenu } from "./HoverMenu";
 import { Map } from "../pages/setup";
 import { LabeledDiv } from "./LabeledDiv";
 import { UpdateObjectives, UpdatePlanets, UpdateTechs, UpdateTechsModal } from "./FactionSummary";
+import React from "react";
 
 export function Sidebar({ side, content }) {
   const className = `${side}Sidebar`;
@@ -22,17 +23,25 @@ export function Sidebar({ side, content }) {
 export function Header() {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [qrCode, setQrCode] = useState(null);
 
+  if (!factions || !state) {
+    return null;
+  }
+
+
+  const qrCodeSize = Math.max(164 + (328 - 164) * (( window.innerWidth - 1280 )/(2560 - 1280)), 164);
   if (!qrCode && gameid) {
     QRCode.toDataURL(`https://twilight-imperium-360307.wm.r.appspot.com/game/${gameid}`, {
       color: {
         dark: "#eeeeeeff",
         light: "#222222ff",
       },
-      width: responsivePixels(120),
-      height: responsivePixels(120),
+      width: qrCodeSize,
+      height: qrCodeSize,
       margin: 4,
     }, (err, url) => {
       if (err) {
@@ -60,7 +69,21 @@ export function Header() {
   //   </div>
   // </div>
 
-  return <div className="flex" style={{ top: 0, width: "100vw", paddingTop: responsivePixels(20), position: "fixed", justifyContent: "space-between" }}>
+  const mapOrderedFactions = Object.values(factions).sort((a, b) => a.mapPosition - b.mapPosition);
+
+  return <React.Fragment>
+    {options['map-string'].length > 0 ?
+    // <div style={{ cursor: "pointer", zIndex: 1001, position: "fixed", backgroundColor: "#222", top: `${responsivePixels(100)}`, left: `${responsivePixels(120)}` }}>
+      <HoverMenu label="View Map" buttonStyle={{position: "fixed", top:responsivePixels(100), left: `${responsivePixels(120)}` }}>
+        <div className="flexRow" style={{ zIndex: 10000, width: "81vw", height: "78vh" }}>
+          <div style={{ marginTop: responsiveNegativePixels(-40), width: "90vh", height: "90vh" }}>
+            <Map factions={mapOrderedFactions} mapString={options['map-string']} mapStyle={options['map-style']} />
+          </div>
+        </div>
+      </HoverMenu>
+    // </div>
+    : null}
+    <div className="flex" style={{ top: 0, width: "100vw", paddingTop: responsivePixels(20), position: "fixed", justifyContent: "space-between" }}>
     <Sidebar side="left" content={`${state.phase} PHASE`} />
     <Sidebar side="right" content={round} />
     <div className="extraLargeFont nonMobile"
@@ -94,30 +117,25 @@ export function Header() {
       </div>
     }
   </div>
+  </React.Fragment>
 }
 
 export function Footer({ }) {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const { data: options, error } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [qrCode, setQrCode] = useState(null);
 
-  if (!options || !factions) {
+  if (!state) {
     return null;
   }
 
-  console.log(options);
-
-  const mapOrderedFactions = Object.values(factions).sort((a, b) => a.mapPosition - b.mapPosition);
-
   return <div className="flex" style={{ bottom: 0, width: "100vw", paddingBottom: responsivePixels(20), position: "fixed", justifyContent: "space-between" }}>
-    {state.phase !== "SETUP" ? <div style={{position: "fixed", bottom: responsivePixels(68), left: responsivePixels(120)}}>
+    {state.phase !== "SETUP" ? <div style={{position: "fixed", bottom: responsivePixels(12), left: responsivePixels(108)}}>
     <LabeledDiv label="Update">
-      <div className="flexColumn" style={{width: "100%", alignItems: "stretch"}}>
+      <div className="flexRow" style={{width: "100%", alignItems: "stretch"}}>
         <HoverMenu label="Techs">
-          <div className="flexColumn" style={{height: "70vh", width: "80vw"}}>
+          <div className="flexColumn" style={{height: "77vh", width: "84vw"}}>
             <UpdateTechs />
           </div>
         </HoverMenu>
@@ -127,21 +145,12 @@ export function Footer({ }) {
           </div>
         </HoverMenu>
         <HoverMenu label="Planets">
-          <div className="flexColumn" style={{height: "80vh", width: "80vw"}}>
+          <div className="flexColumn" style={{height: "77vh", width: "70vw"}}>
             <UpdatePlanets />
           </div>
         </HoverMenu>
       </div>
     </LabeledDiv>
-    </div> : null}
-    {options['map-string'].length > 0 ? <div style={{ cursor: "pointer", position: "fixed", backgroundColor: "#222", bottom: `${responsivePixels(24)}`, left: `${responsivePixels(120)}` }}>
-      <HoverMenu label="View Map">
-        <div className="flexRow" style={{ zIndex: 10000, width: "81vw", height: "85vh" }}>
-          <div style={{ width: "90vh", height: "90vh" }}>
-            <Map factions={mapOrderedFactions} mapString={options['map-string']} mapStyle={options['map-style']} />
-          </div>
-        </div>
-      </HoverMenu>
     </div> : null}
   </div>
 }

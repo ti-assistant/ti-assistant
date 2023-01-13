@@ -72,7 +72,6 @@
   line-height: var(--thirty-two-pixel);
   height: var(--thirty-two-pixel);
   width: var(--thirty-pixel);
-  z-index: 100;
   margin-right: var(--eight-pixel);
 }
 

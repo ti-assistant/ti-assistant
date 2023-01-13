@@ -97,19 +97,19 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
       itemName={tech.name}
       selectItem={addTech}
       removeItem={removeTech}
-      content={
+      >
     <div className="flexRow" style={{width: "100%", justifyContent: "stretch"}}>
       <Modal closeMenu={() => setShowInfoModal(false)} level={2} visible={showInfoModal} title={<div style={{fontSize: responsivePixels(40)}}>{tech.name}</div>} content={
         <InfoContent tech={tech} />
       } top="30%" />
-      {leftContent ? <div style={{zIndex: 2}}>{leftContent}</div> : null}
+      {leftContent ? <div>{leftContent}</div> : null}
       {/* <div className="flexRow" style={{width: "100%", height: "100%", position: "absolute", top: "0", left: "0"}}>
         {tech.prereqs.map((prereq, index) => {
           return <TechIcon key={index} type={prereq} width="22px" height="22px" />;
         })}
       </div> */}
-      <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center", zIndex: 2}}>
-        <div style={{ position: "relative", display: "flex", zIndex: 2, color: getTechColor(tech)}}>
+      <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center"}}>
+        <div style={{ position: "relative", display: "flex", color: getTechColor(tech)}}>
           {tech.name}
           {tech.faction ? (
         <div
@@ -132,7 +132,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
 
         <div className="popupIcon" style={{display: opts.hideInfo ? "none" : "block", fontSize: responsivePixels(16)}} onClick={displayInfo}>&#x24D8;</div>
       </div>
-      <div
+      {opts.hideSymbols ? null : <div
           style={{
             display: "flex",
             flexDirection: "row",
@@ -146,7 +146,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
           // return <TechIcon key={index} type={prereq} width={responsivePixels(23)} height={responsivePixels(24)} />;
         })}
           {/* <TechIcon type={tech.type} faction={tech.faction} width="32px" height="36px" /> */}
-        </div>
+        </div>}
       {/* {updateTech !== undefined && tech.canExhaust ? 
       <div className="flexColumn" style={{zIndex:2}}>
         <button onClick={() => toggleTech(tech.name)}>
@@ -154,5 +154,5 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
         </button>
       </div>
       : null} */}
-    </div>} />);
+    </div></SelectableRow>);
 }

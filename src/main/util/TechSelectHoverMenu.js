@@ -1,5 +1,6 @@
 import { HoverMenu } from "../../HoverMenu";
 import { getTechColor } from "../../util/techs";
+import { responsivePixels } from "../../util/util";
 
 function sortTechs(techs, fields) {
   techs.sort((a, b) => {
@@ -39,40 +40,40 @@ export function TechSelectHoverMenu({ techs, selectTech, direction = "horizontal
 
   return (
     <HoverMenu label="Research Tech" style={{whiteSpace: "nowrap"}} content={
-      <div className={direction === "horizontal" ? "flexRow" : "flexColumn"} style={{padding: "8px", alignItems: "flex-start", gap: "8px", overflow: "visible"}}>
+      <div className={direction === "horizontal" ? "flexRow" : "flexColumn"} style={{padding: responsivePixels(8), alignItems: "flex-start", overflow: "visible"}}>
         {redTechs.length > 0 ?
-        <HoverMenu label="Warfare" style={{width: "210px"}} borderColor={getTechColor(redTechs[0])} content={
-          <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
+        <HoverMenu label="Warfare" borderColor={getTechColor(redTechs[0])} content={
+          <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {redTechs.map((tech) => {
-              return <button key={tech.name} style={{width: "180px"}} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
             })}
         </div>
         } /> : null}
-        {blueTechs.length > 0 ? <HoverMenu label="Propulsion" style={{width: "210px"}} borderColor={getTechColor(blueTechs[0])}  content={
-          <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
+        {blueTechs.length > 0 ? <HoverMenu label="Propulsion" borderColor={getTechColor(blueTechs[0])}  content={
+          <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {blueTechs.map((tech) => {
-              return <button key={tech.name} style={{width: "180px"}} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
             })}
         </div>
         } /> : null}
-        {yellowTechs.length > 0 ? <HoverMenu label="Cybernetic" style={{width: "210px"}} borderColor={getTechColor(yellowTechs[0])}  content={
-          <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
+        {yellowTechs.length > 0 ? <HoverMenu label="Cybernetic" borderColor={getTechColor(yellowTechs[0])}  content={
+          <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {yellowTechs.map((tech) => {
-              return <button key={tech.name} style={{width: "180px"}} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
             })}
         </div>
         } /> : null}
-        {greenTechs.length > 0 ? <HoverMenu label="Biotic" style={{width: "210px"}} borderColor={getTechColor(greenTechs[0])}  content={
-          <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
+        {greenTechs.length > 0 ? <HoverMenu label="Biotic" borderColor={getTechColor(greenTechs[0])}  content={
+          <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {greenTechs.map((tech) => {
-              return <button key={tech.name} style={{width: "180px"}} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
             })}
         </div>
         } /> : null}
-        {unitUpgrades.length > 0 ? <HoverMenu label="Unit Upgrades" style={{width: "210px"}} content={
-          <div className="flexColumn" style={{padding: "8px", gap: "4px"}}>
+        {unitUpgrades.length > 0 ? <HoverMenu label="Unit Upgrades" content={
+          <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {unitUpgrades.map((tech) => {
-              return <button key={tech.name} style={{width: "180px"}} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
             })}
         </div>
         } /> : null}

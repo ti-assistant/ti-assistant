@@ -252,6 +252,10 @@ input[type=text] {
   position: relative;
 }
 
+.hoverParent:hover {
+  z-index: 1005;
+}
+
 .hoverParent:hover > .hoverInfo {
   display: flex;
   position: absolute;

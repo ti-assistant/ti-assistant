@@ -80,6 +80,9 @@ export function addSubStateTech(mutate, gameid, subState, factionName, techName)
   if (!updatedSubState.factions[factionName].techs) {
     updatedSubState.factions[factionName].techs = [];
   }
+  if (techName === "Light/Wave Deflector") {
+    techName = "LightWave Deflector";
+  }
   updatedSubState.factions[factionName].techs.push(techName);
 
   const options = {

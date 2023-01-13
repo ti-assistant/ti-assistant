@@ -19,7 +19,7 @@ export function LabeledDiv({label, rightLabel, children, onClick, style = {}, co
   const labelStyle = {
     position: "absolute",
     whiteSpace: "nowrap",
-    left: responsivePixels(8),
+    left: responsivePixels(6),
     // top: "calc(8px + (36 - 8) * ((100vw - 1280px) / (3000 - 1280))",
     top: responsiveNegativePixels(-12),
     // top: `-${Math.floor(labelSize * .75)}px`,
@@ -32,7 +32,7 @@ export function LabeledDiv({label, rightLabel, children, onClick, style = {}, co
   const rightLabelStyle = {
     position: "absolute",
     whiteSpace: "nowrap",
-    right: responsivePixels(8),
+    right: responsivePixels(6),
     // top: "calc(8px + (36 - 8) * ((100vw - 1280px) / (3000 - 1280))",
     top: responsiveNegativePixels(-12),
     // top: `-${Math.floor(labelSize * .75)}px`,

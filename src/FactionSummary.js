@@ -861,7 +861,7 @@ export function PlanetSummary({ planets, factionName, options = {} }) {
           resources={resources}
           influence={influence}
         />
-        <PlanetAttributes attributes={skips} />
+        {/* <PlanetAttributes attributes={skips} /> */}
       </div>
       <div className="flexColumn" style={{ gap: responsivePixels(4), fontSize: responsivePixels(14) }}>
         <div className="flexRow" style={{ gap: responsivePixels(4), flexBasis: "33%" }}>

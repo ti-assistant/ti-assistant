@@ -211,6 +211,7 @@ export function StaticFactionTimer({ factionName, style }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const [ factionTimer, setFactionTimer ] = useState(0);
+  const [ prevFactionName, setPrevFactionName ] = useState(factionName);
   // const [ paused, setPaused ] = useState(false);
   const { data: timers, timersError } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
 
@@ -219,8 +220,9 @@ export function StaticFactionTimer({ factionName, style }) {
       setTimeout(setStartingTime, 1000);
       return;
     }
-    if (timers[factionName] && timers[factionName] > factionTimer) {
-      setFactionTimer(timers[factionName]);
+    if ((timers[factionName] && timers[factionName] > factionTimer) || prevFactionName !== factionName) {
+      setPrevFactionName(factionName);
+      setFactionTimer(timers[factionName] ?? 0);
     }
   }
 
@@ -238,6 +240,8 @@ export function FactionTimer({ factionName, style }) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const [ factionTimer, setFactionTimer ] = useState(0);
+  const [ prevFactionName, setPrevFactionName ] = useState(factionName);
+
   const { paused } = useSharedPause();
   // const [ paused, setPaused ] = useState(false);
   const { data: timers, timersError } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
@@ -265,8 +269,9 @@ export function FactionTimer({ factionName, style }) {
       const timeout = setTimeout(setStartingTime, 1000);
       return;
     }
-    if (timers[factionName] && timers[factionName] > factionTimer) {
-      setFactionTimer(timers[factionName]);
+    if ((timers[factionName] && timers[factionName] > factionTimer) || factionName !== prevFactionName) {
+      setPrevFactionName(factionName);
+      setFactionTimer(timers[factionName] ?? 0);
     }
   }
 
