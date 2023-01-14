@@ -19,6 +19,7 @@ export async function fetcher(url) {
     method: "GET",
     credentials: 'include',
   })
+  console.log(url);
   const data = await res.json()
 
   if (res.status !== 200) {

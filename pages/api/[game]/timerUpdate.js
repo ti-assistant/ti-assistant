@@ -65,5 +65,5 @@ export default async function handler(req, res) {
 
   const responseRef = await db.collection('games').doc(gameid).get();
 
-  return res.status(200).json(responseRef.data().timers);
+  return res.status(200).json(responseRef.data().timers ?? {});
 }

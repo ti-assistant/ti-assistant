@@ -379,9 +379,10 @@ function FactionSystemImage({className, factionName}) {
       <Image src="/images/systems/ST_0.png" alt={`Faction Tile`} layout="fill" objectFit="contain" /></div>
     );
   }
+  const adjustedFactionName = factionName.replace("'", "");
   return (
     <div className={`flexRow ${className}`} style={{position: "relative", width: "100%", height: "100%"}}>
-      <Image src={`/images/systems/${factionName}.png`} alt={`${factionName}'s Home System`} layout="fill" objectFit="contain" />
+      <Image src={`/images/systems/${adjustedFactionName}.png`} alt={`${factionName}'s Home System`} layout="fill" objectFit="contain" />
     </div>
   );
 }
@@ -435,7 +436,7 @@ function SystemImage({systemNumber, owner}) {
   </div>);
 }
 
-export function Map({mapString, mapStyle, factions}) {
+export function Map({mapString, mapStyle, mallice, factions}) {
   const systemTiles = mapString.split(" ");
 
   let numColumns = 7;
@@ -443,12 +444,126 @@ export function Map({mapString, mapStyle, factions}) {
     numColumns = 9;
   }
 
-  const updatedFactions = factions.map((faction) => {
-    if (faction.name === "Council Keleres" && !!faction.startswith.faction) {
+  let ghosts = false;
+  let ghostsCorner = null;
+  const updatedFactions = factions.map((faction, index) => {
+    if (faction.name === "Council Keleres" && !!(faction.startswith ?? {}).faction) {
       return {
         ...faction,
         name: faction.startswith.faction,
       };
+    }
+    if (faction.name === "Ghosts of Creuss") {
+      switch (factions.length) {
+        case 3:
+          switch (index) {
+            case 0:
+              ghostsCorner = "top-right";
+              break;
+            case 1:
+              ghostsCorner = "bottom-right";
+              break;
+            case 2:
+              ghostsCorner = "top-left";
+              break;
+          }
+          break;
+        case 4:
+          switch (index) {
+            case 0:
+              ghostsCorner = "top-left";
+              break;
+            case 1:
+              ghostsCorner = "top-right";
+              break;
+            case 2:
+              ghostsCorner = "bottom-right";
+              break;
+            case 3:
+              ghostsCorner = "bottom-left";
+              break;
+          }
+          break;
+        case 5:
+          switch (index) {
+            case 0:
+              ghostsCorner = "top-right";
+              break;
+            case 1:
+              ghostsCorner = "bottom-right";
+              break;
+            case 2:
+              ghostsCorner = "bottom-right";
+              break;
+            case 3:
+              ghostsCorner = "bottom-left";
+              break;
+            case 4:
+              ghostsCorner = "top-left";
+              break;
+          }
+          break;
+        case 6:
+          switch (index) {
+            case 0:
+            case 1:
+              ghostsCorner = "top-right";
+              break;
+            case 2:
+            case 3:
+              ghostsCorner = "bottom-right";
+              break;
+            case 4:
+              ghostsCorner = "bottom-left";
+              break;
+            case 5:
+              ghostsCorner = "top-left";
+              break;
+          }
+          break;
+        case 7:
+          switch (index) {
+            case 0:
+            case 1:
+              ghostsCorner = "top-right";
+              break;
+            case 2:
+            case 3:
+              ghostsCorner = "bottom-right";
+              break;
+            case 4:
+              ghostsCorner = "bottom-left";
+              break;
+            case 5:
+            case 6:
+              ghostsCorner = "top-left";
+              break;
+          }
+          break;
+        case 8:
+          switch (index) {
+            case 0:
+            case 1:
+              ghostsCorner = "top-right";
+              break;
+            case 2:
+            case 3:
+            case 4:
+              ghostsCorner = "bottom-right";
+              break;
+            case 5:
+              ghostsCorner = "bottom-left";
+              break;
+            case 6:
+            case 7:
+              ghostsCorner = "top-left";
+              break;
+          }
+          break;
+
+      }
+
+      ghosts = true;
     }
     return faction;
   })
@@ -717,6 +832,20 @@ export function Map({mapString, mapStyle, factions}) {
         })}
       </div>);
     })}
+    {ghosts ? <div style={{position: "absolute",
+      right: (ghostsCorner === "top-right" || ghostsCorner === "bottom-right" ? "8%" : null),
+      bottom: (ghostsCorner === "bottom-right" || ghostsCorner === "bottom-left" ? "8%" : null),
+      left: (ghostsCorner === "bottom-left" || ghostsCorner === "top-left" ? "8%" : null),
+      top: (ghostsCorner === "top-right" || ghostsCorner === "top-left" ? "8%" : null),
+      width: numColumns === 7 ? "14%" : "12%", height: numColumns === 7 ? "14%" : "12%"}}>
+      <FactionSystemImage factionName={`ST_51`} />
+    </div> : null}
+    {mallice ? <div style={{position: "absolute",
+    left: (ghostsCorner !== "bottom-left" ? "8%" : null),
+    right:(ghostsCorner === "bottom-left" ? "8%" : null),
+    bottom: "8%", width: numColumns === 7 ? "14%" : "12%", height: numColumns === 7 ? "14%" : "12%"}}>
+      <FactionSystemImage factionName={`ST_82${mallice}`} />
+    </div> : null}
   </div>;
 }
 
@@ -1206,7 +1335,7 @@ export default function SetupPage() {
                 Icon button zoom
               </div>
             */}
-            <Map mapStyle={options['map-style']} mapString={options['map-string']} factions={factions} />
+            <Map mapStyle={options['map-style']} mapString={options['map-string']} mallice={options['expansions'].has("pok") ? "A" : null} factions={factions} />
           </div>
           {!(factions.length === 5 && options['map-style'] === "warp") && !(factions.length === 7 && options['map-style'] !== "warp") ? <FactionSelect
             factions={factions}

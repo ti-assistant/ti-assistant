@@ -25,9 +25,10 @@ export function Sidebar({ side, content }) {
 export function Header() {
   const router = useRouter();
   const { game: gameid } = router.query;
-  const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
-  const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+  const { data: agendas = {} } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
+  const { data: options = {} } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: planets = {} } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [qrCode, setQrCode] = useState(null);
 
@@ -73,21 +74,28 @@ export function Header() {
   // </div>
 
   const mapOrderedFactions = Object.values(factions).sort((a, b) => a.mapPosition - b.mapPosition);
+  let mallice = null;
+  if ((options['expansions'] ?? []).includes("pok")) {
+    mallice = "A";
+    if (((planets['Mallice'] ?? {}).owners ?? []).length > 0) {
+      mallice = "B";
+    }
+  }
 
   const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
     return agenda.passed && agenda.type === "law";
   });
   function removeAgenda(agendaName) {
     repealAgenda(mutate, gameid, agendas, agendaName);
-  } 
+  }
 
   return <React.Fragment>
-    {options['map-string'].length > 0 ?
+    {(options['map-string'] ?? []).length > 0 ?
     // <div style={{ cursor: "pointer", zIndex: 1001, position: "fixed", backgroundColor: "#222", top: `${responsivePixels(100)}`, left: `${responsivePixels(120)}` }}>
       <HoverMenu label="View Map" buttonStyle={{position: "fixed", top:responsivePixels(100), left: `${responsivePixels(120)}` }}>
         <div className="flexRow" style={{ zIndex: 10000, width: "81vw", height: "78vh" }}>
           <div style={{ marginTop: responsiveNegativePixels(-40), width: "90vh", height: "90vh" }}>
-            <Map factions={mapOrderedFactions} mapString={options['map-string']} mapStyle={options['map-style']} />
+            <Map factions={mapOrderedFactions} mapString={options['map-string']} mapStyle={options['map-style']} mallice={mallice} />
           </div>
         </div>
       </HoverMenu>
