@@ -10,14 +10,14 @@ import { Modal } from "/src/Modal.js";
 import useSWR, { useSWRConfig } from 'swr'
 import { ObjectiveList } from "/src/ObjectiveList";
 import { fetcher, poster } from '../../../src/util/api/util';
-import { pluralize } from "../../../src/util/util";
+import { pluralize, responsivePixels } from "../../../src/util/util";
 import { hasTech, lockTech, unlockTech } from "../../../src/util/api/techs";
 import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
 import { FactionCard, StartingComponents } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { TechIcon } from "../../../src/TechRow";
 import { FactionSummary } from "../../../src/FactionSummary";
-import { FactionTimer } from "../../../src/Timer";
+import { FactionTimer, StaticFactionTimer } from "../../../src/Timer";
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from "../../../src/util/planets";
 import { filterToOwnedTechs, filterToUnownedTechs, sortTechs } from "../../../src/util/techs";
 import { Updater, useSharedUpdateTimes } from "../../../src/Updater";
@@ -191,7 +191,7 @@ function PhaseSection() {
       phaseName = "SETUP PHASE"
       phaseContent = 
       <React.Fragment>
-              {isSpeaker ? <LabeledDiv label="Speaker Actions">
+              <LabeledDiv label="Speaker Actions">
           {(subState.objectives ?? []).length > 0 ? 
               <LabeledDiv label="REVEALED OBJECTIVES">
                 {(subState.objectives ?? []).map((objectiveName) => {
@@ -211,7 +211,7 @@ function PhaseSection() {
             </div>
           </HoverMenu>
         : null}
-        </LabeledDiv> : null}
+        </LabeledDiv>
         <LabeledDiv label="Starting Components">
           <div style={{fontSize: "16px", whiteSpace: "nowrap"}}>
             <StartingComponents faction={factions[factionName]} />
@@ -314,7 +314,6 @@ function PhaseSection() {
           </div>
         </HoverMenu>}
         </div>
-        {isSpeaker ?
           <LabeledDiv label="Speaker Actions">
           {(subState.objectives ?? []).length > 0 ? 
             <LabeledDiv label="REVEALED OBJECTIVE"><ObjectiveRow objective={objectives[subState.objectives[0]]} removeObjective={() => removeObj(subState.objectives[0])} viewing={true} /></LabeledDiv>
@@ -337,25 +336,26 @@ function PhaseSection() {
             : null}
             </div>}
           </LabeledDiv>
-        : null}
         </React.Fragment>;
         break;
     }
     case "AGENDA": {
       phaseName = "AGENDA PHASE";
       phaseContent = <React.Fragment>
-        {isSpeaker ? 
-            (!currentAgenda ? <HoverMenu label="Reveal and Read one Agenda">
-            <div className='flexRow' style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
+        <LabeledDiv label="Speaker Actions" style={{marginTop: "4px", paddingTop: "12 px"}}>
+            {!currentAgenda ? <HoverMenu label="Reveal and Read one Agenda">
+            <div className='flexRow' style={{maxWidth: "85vw", gap: "4px", maxHeight: "400px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
               {orderedAgendas.map((agenda) => {
                   return <button key={agenda.name} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                 })}
               </div>
             </HoverMenu> :
             <React.Fragment>
+              <div className="largeFont" style={{width: "100%"}}>
               <LabeledDiv label={label}>
                 <AgendaRow agenda={currentAgenda} removeAgenda={() => {hideAgenda(currentAgenda.name)}} />
               </LabeledDiv>
+              </div>
               {currentAgenda.name === "Covert Legislation" ?
                 (subState.outcome ? 
                   <LabeledDiv label="ELIGIBLE OUTCOMES">
@@ -372,9 +372,8 @@ function PhaseSection() {
                   </div>
                 </HoverMenu>)
               : null}
-            </React.Fragment>
-            )
-        : null}
+            </React.Fragment>}
+        </LabeledDiv>
         {currentAgenda ? 
           <div className="flexColumn" style={{alignItems: "stretch", width: "100%"}}>
             <LabeledDiv label="VOTE ON AGENDA">
@@ -413,8 +412,9 @@ function PhaseSection() {
             </LabeledDiv>
             </div>
           </LabeledDiv>
-          {isSpeaker && isTie ?
-              (!subState.tieBreak ?
+          {isTie ?
+              <LabeledDiv label="Speaker Actions" style={{paddingTop: "12px"}}>
+              {!subState.tieBreak ?
               <HoverMenu label="Choose outcome (vote tied)">
                 <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
                   {selectedTargets.length > 0 ? selectedTargets.map((target) => {
@@ -428,14 +428,15 @@ function PhaseSection() {
                   })}
                 </div>
               </HoverMenu> : 
-            <LabeledDiv label="TIE BREAK">
+            <LabeledDiv label="TIE BREAK" style={{fontSize: "18px"}}>
               <SelectableRow itemName={subState.tieBreak} removeItem={() => selectSpeakerTieBreak(null)}>
                 {subState.tieBreak}
               </SelectableRow>
             </LabeledDiv>
-              )
+          
+    }</LabeledDiv>
           : null}
-          {isSpeaker && (selectedTargets.length === 1 || subState.tieBreak) ? 
+          {(selectedTargets.length === 1 || subState.tieBreak) ? 
             <div className="flexRow" style={{width: "100%", justifyContent: "center"}}>
               <button onClick={completeAgenda}>Resolve with target: {selectedTargets.length === 1 ? selectedTargets[0] : subState.tieBreak}</button>
             </div>
@@ -869,8 +870,8 @@ function FactionContent() {
         <div>
         <div className="flexRow" style={{height: "32px"}}>
           <button onClick={toggleAddPlanetMenu}>Add Planet</button>
-          <button onClick={readyAll} disabled={allPlanetsReady()}>Ready All</button>
-          <button onClick={exhaustAll} disabled={allPlanetsExhausted()}>Exhaust All</button>
+          {/* <button onClick={readyAll} disabled={allPlanetsReady()}>Ready All</button>
+          <button onClick={exhaustAll} disabled={allPlanetsExhausted()}>Exhaust All</button> */}
         </div>
         <div style={{maxHeight: `${maxHeight}px`, overflow: "auto", paddingBottom: "4px"}}>
           {updatedPlanets.map((planet) => {
@@ -967,7 +968,7 @@ export default function GamePage() {
         {/* <LabeledDiv>
           <FactionContent />
         </LabeledDiv> */}
-        <FactionCard faction={factions[playerFaction]} style={{width: "100%"}} opts={{hideTitle: true}}>
+        <FactionCard faction={factions[playerFaction]} style={{width: "100%"}} rightLabel={<StaticFactionTimer factionName={playerFaction} style={{fontSize: responsivePixels(16), width: "auto"}} />} opts={{hideTitle: true}}>
           <FactionContent />
         </FactionCard>
       </div>

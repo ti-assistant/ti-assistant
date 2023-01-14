@@ -56,7 +56,7 @@ export function manualVPUpdate(mutate, gameid, factions, factionName, value) {
   mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }
 
-export function updateCastVotes(mutate, gameid, factions, subStateFactions) {
+export function updateCastVotes(mutate, gameid, factions, subStateFactions = {}) {
   const data = {
     action: "UPDATE_CAST_VOTES",
     factions: subStateFactions,

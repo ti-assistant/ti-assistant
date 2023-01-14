@@ -47,10 +47,10 @@ export function ObjectiveRow({faction, objective, addObjective, removeObjective,
       <div className="flexColumn" style={{width: "100%", gap: 0}}>
       <div className="flexRow hoverParent" style={{width: "100%", justifyContent: "space-between"}}>
         <div style={{display: "flex", flexDirection: "row", alignItems: "center", flexBasis: "50%", flexGrow: 2}}>
-          <div style={{whiteSpace: "normal", display: "flex", flex: "2 0 50%", fontSize: responsivePixels(16)}}>
+          <div style={{whiteSpace: "normal", display: "flex", flex: "2 0 50%"}}>
             {objective.name}
           </div>
-          <div className="popupIcon" style={{paddingRight: responsivePixels(8), fontSize: responsivePixels(16)}} onClick={displayInfo}>&#x24D8;</div>
+          <div className="popupIcon" style={{paddingRight: responsivePixels(8)}} onClick={displayInfo}>&#x24D8;</div>
         </div>
         <div className="flexColumn">
           {canScore() ? <button style={{fontSize: responsivePixels(12)}} onClick={() => scoreObjective(objective.name, true)}>Score</button> : null}

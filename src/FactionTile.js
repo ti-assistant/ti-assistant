@@ -1,4 +1,4 @@
-import { FactionSymbol } from "./FactionCard";
+import { FactionSymbol, FullFactionSymbol } from "./FactionCard";
 import { useState } from "react";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { responsivePixels } from "./util/util";
@@ -83,12 +83,13 @@ export function BasicFactionTile({ faction, onClick, speaker, menuButtons, opts 
           cursor: (onClick || (menuButtons ?? []).length !== 0) ? "pointer" : "auto",
           alignItems: "center",
           whiteSpace: "nowrap",
+          backgroundColor: "#222",
           padding: opts.hideName ? 0 : `0 ${responsivePixels(4)}`,
         }}
       >
         <div className="flexRow" style={{justifyContent: "flex-start", gap: responsivePixels(4), padding: "0px 4px", height: opts.iconSize ? responsivePixels(opts.iconSize) : responsivePixels(40), minWidth: opts.iconSize ? responsivePixels(opts.iconSize) : responsivePixels(40)}}>
           {faction.name ? <div className="flexRow" style={iconStyle}>
-            <FactionSymbol faction={name} size={opts.iconSize ?? 40} />
+            <FullFactionSymbol faction={name} size={opts.iconSize ?? 40} />
           </div> : null}
           {/* {speaker ? <div style={{fontFamily: "Myriad Pro",
             position: "absolute",

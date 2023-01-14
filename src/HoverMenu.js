@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getResponsiveFormula, responsivePixels } from "./util/util";
+import { getResponsiveFormula, responsiveNegativePixels, responsivePixels } from "./util/util";
 
-export function HoverMenu({label, style, buttonStyle = {}, children, content, directin = "down", borderColor = "#aaa"}) {
+export function HoverMenu({label, style, shift = {}, buttonStyle = {}, children, content, directin = "down", borderColor = "#aaa"}) {
   const menu = useRef(null);
   const innerMenu = useRef(null);
   const [ direction, setDirection ] = useState("down");
@@ -38,6 +38,9 @@ export function HoverMenu({label, style, buttonStyle = {}, children, content, di
     backgroundColor: "#222",
     overflow: "visible",
     whiteSpace: "nowrap",
+    gap: 0,
+    left: shift.left ? responsiveNegativePixels(-shift.left) : "auto",
+    right: shift.right ?? side === "left" ? 0 : "auto",
     ...style,
   };
 
@@ -56,12 +59,16 @@ export function HoverMenu({label, style, buttonStyle = {}, children, content, di
         {direction === "down" ? <div style={{
           padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
           pointer: "pointer",
+          marginLeft: shift.left ? responsivePixels(shift.left) : 0,
+          marginRight: shift.right ? responsivePixels(shift.right) : 0,
         }}>{label}</div> : null}
         {children}
         {content}
         {direction === "up" ? <div style={{
           padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
           pointer: "pointer",
+          marginLeft: shift.left ? responsivePixels(shift.left) : 0,
+          marginRight: shift.right ? responsivePixels(shift.right) : 0,
         }}>{label}</div> : null}
       </div>
     </div>);

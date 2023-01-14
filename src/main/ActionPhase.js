@@ -284,7 +284,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
       return (
         <div className="flexColumn largeFont" style={{...style}}>
           {activeFaction.name !== "Nekro Virus"  ?
-          <LabeledDiv label="PRIMARY" content={
+          <LabeledDiv label="PRIMARY" style={{width: "75%"}} content={
             <React.Fragment>
               {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
               {researchedTech.map((tech) => {
@@ -343,14 +343,14 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
               </div>
               : null}
               {!subState.speaker  ?
-              <HoverMenu label="Select Speaker" style={{minWidth: "160px"}} content={
+              <HoverMenu label="Select Speaker" content={
                 <div className="flexRow" style={targetButtonStyle}>
                   {orderedFactions.map((faction) => {
                     if (state.speaker === faction.name) {
                       return null;
                     }
                     return (
-                      <button key={faction.name} style={{width: "160px"}} onClick={() => selectSpeaker(faction.name)}>{faction.name}</button>);
+                      <button key={faction.name} onClick={() => selectSpeaker(faction.name)}>{getFactionName(faction)}</button>);
                   })}
                 </div>} /> : null}
             </React.Fragment>}
@@ -360,7 +360,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
     case "Diplomacy":
       if (activeFaction.name === "Xxcha Kingdom") {
         return (
-          <div className="flexColumn largeFont" style={{gap: "4px", ...style}}>
+          <div className="flexColumn largeFont" style={{...style}}>
             <LabeledDiv label="PEACE ACCORDS" content={           
               <React.Fragment>
                 {claimedPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
@@ -370,11 +370,11 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                 })}
                 </div> : null}
                 {claimablePlanets.length > 0 && claimedPlanets.length === 0  ?
-                <HoverMenu label="Claim Empty Planet" style={{minWidth: "160px"}} content={
+                <HoverMenu label="Claim Empty Planet" content={
                   <div className="flexRow" style={targetButtonStyle}>
                     {claimablePlanets.map((planet) => {
                       return (
-                        <button key={planet.name} style={{width: "90px"}} onClick={() => addPlanet(activeFaction.name, planet)}>{planet.name}</button>);
+                        <button key={planet.name} style={{width: responsivePixels(90)}} onClick={() => addPlanet(activeFaction.name, planet)}>{planet.name}</button>);
                     })}
                   </div>} /> : null}
               </React.Fragment>}
@@ -382,6 +382,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
           </div>
         );
       }
+      return null;
     case "Leadership":
     case "Construction":
     case "Trade":
@@ -407,26 +408,26 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
         return objectives[objective].type === "stage-one" || objectives[objective].type === "stage-two";
       });
       return (
-        <div className="flexColumn" style={{gap: "4px", ...style}}>
+        <div className="flexColumn largeFont" style={{...style}}>
           <LabeledDiv label="IMPERIAL POINT ?">
             <div className="flexRow" style={{width: "100%", justifyContent: "space-evenly"}}>
-              <button className={hasImperialPoint ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => addObjective(activeFaction.name, objectives["Imperial Point"])}>Yes</button>
-              <button className={!hasImperialPoint ? "selected" : ""} style={{fontSize: "20px"}} onClick={() => undoObjective(activeFaction.name, "Imperial Point")}>No</button>
+              <button className={hasImperialPoint ? "selected" : ""} style={{fontSize: responsivePixels(20)}} onClick={() => addObjective(activeFaction.name, objectives["Imperial Point"])}>Yes</button>
+              <button className={!hasImperialPoint ? "selected" : ""} style={{fontSize: responsivePixels(20)}} onClick={() => undoObjective(activeFaction.name, "Imperial Point")}>No</button>
             </div>
           </LabeledDiv>   
           <LabeledDiv label="SCORED PUBLIC">
               <React.Fragment>
           {scoredPublics.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
           {scoredPublics.map((objective) => {
-            return <ObjectiveRow key={objective} objective={objectives[objective]} removeObjective={() => undoObjective(activeFaction.name, objective)} />
+            return <ObjectiveRow key={objective} objective={objectives[objective]} removeObjective={() => undoObjective(activeFaction.name, objective)} hideScorers={true} />
           })}
           </div> : null}
           {availablePublicObjectives.length > 0 && scoredPublics.length < 1 ?
-          <HoverMenu label="Score Public Objective" style={{width: "260px"}} content={
+          <HoverMenu label="Score Public Objective" content={
             <div className="flexColumn" style={{...secretButtonStyle}}>
                 {availablePublicObjectives.map((objective) => {
                   return (
-                    <button key={objective.name} style={{width: "230px"}} onClick={() => addObjective(activeFaction.name, objective)}>{objective.name}</button>);
+                    <button key={objective.name} onClick={() => addObjective(activeFaction.name, objective)}>{objective.name}</button>);
                 })}
             </div>} /> : null}
           </React.Fragment>
@@ -661,6 +662,7 @@ export default function ActionPhase() {
   }
 
   const activeFaction = factions[state.activeplayer] ?? null;
+  console.log(activeFaction);
   const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
   const orderedStrategyCards = Object.values(strategyCards).filter((card) => card.faction).sort((a, b) => a.order - b.order);
 
@@ -677,7 +679,7 @@ export default function ActionPhase() {
       </div>
       <div className="flexColumn" style={{gap: responsivePixels(16)}}>
         <div className="flexRow" style={{width: "100%"}}>
-          {activeFaction ?
+          {activeFaction && onDeckFaction ?
             <ActivePlayerColumn activeFaction={activeFaction} onDeckFaction={onDeckFaction} />
           : <div style={{fontSize: responsivePixels(42)}}>Action Phase Complete</div>}
           {/* {onDeckFaction ? 

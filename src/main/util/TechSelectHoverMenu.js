@@ -45,35 +45,35 @@ export function TechSelectHoverMenu({ techs, selectTech, direction = "horizontal
         <HoverMenu label="Warfare" borderColor={getTechColor(redTechs[0])} content={
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {redTechs.map((tech) => {
-              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)} style={{fontSize: responsivePixels(16)}}>{tech.name}</button>
             })}
         </div>
         } /> : null}
         {blueTechs.length > 0 ? <HoverMenu label="Propulsion" borderColor={getTechColor(blueTechs[0])}  content={
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {blueTechs.map((tech) => {
-              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)} style={{fontSize: responsivePixels(16)}}>{tech.name}</button>
             })}
         </div>
         } /> : null}
         {yellowTechs.length > 0 ? <HoverMenu label="Cybernetic" borderColor={getTechColor(yellowTechs[0])}  content={
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {yellowTechs.map((tech) => {
-              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)} style={{fontSize: responsivePixels(16)}}>{tech.name}</button>
             })}
         </div>
         } /> : null}
         {greenTechs.length > 0 ? <HoverMenu label="Biotic" borderColor={getTechColor(greenTechs[0])}  content={
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {greenTechs.map((tech) => {
-              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)} style={{fontSize: responsivePixels(16)}}>{tech.name}</button>
             })}
         </div>
         } /> : null}
         {unitUpgrades.length > 0 ? <HoverMenu label="Unit Upgrades" content={
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
           {unitUpgrades.map((tech) => {
-              return <button key={tech.name} onClick={() => selectTech(tech)}>{tech.name}</button>
+              return <button key={tech.name} onClick={() => selectTech(tech)} style={{fontSize: responsivePixels(16)}}>{tech.name}</button>
             })}
         </div>
         } /> : null}

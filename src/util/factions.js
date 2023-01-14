@@ -25,3 +25,13 @@ export function getFactionName(faction) {
   }
   return faction.name;
 }
+
+export function getFactionShortName(faction) {
+  if (!faction) {
+    return null;
+  }
+  if (faction.playerName) {
+    return faction.playerName;
+  }
+  return faction.shortname;
+}

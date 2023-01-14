@@ -1,4 +1,5 @@
 import { CSSTransition } from "react-transition-group";
+import { responsivePixels } from "./util/util";
 
 export function Modal({ closeMenu, level, visible, title, content, top }) {
   const topValue = top ?? "5%";
@@ -31,22 +32,22 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
       classNames="modal"
     >
       <div style={{position: "relative", backgroundColor: "#222", maxWidth: "85%", maxHeight: "90vh", overflow: "auto"}}>  
-      <div className="flexRow" style={{padding: "4px", borderBottom: "1px solid grey", justifyContent: "flex-start", alignItems: "center", position: "sticky", top: 0, backgroundColor: "#222"}}>
+      <div className="flexRow" style={{padding: responsivePixels(4), borderBottom: `${responsivePixels(1)} solid grey`, justifyContent: "flex-start", alignItems: "center", position: "sticky", top: 0, backgroundColor: "#222"}}>
         {closeMenu ? <div
             style={{
               color: "grey",
               cursor: "pointer",
-              fontSize: "20px",
-              marginLeft: "6px",
+              fontSize: responsivePixels(20),
+              marginLeft: responsivePixels(6),
               position: "absolute",
-              top: "4px",
+              top: responsivePixels(4),
               zIndex: zIndex + 3,
             }}
             onClick={closeMenu}
           >
             &#x2715;
           </div> : null}
-          <div style={{padding: "4px 32px", textAlign: "center", flexBasis: "100%", fontSize: "24px"}}>
+          <div style={{padding: `${responsivePixels(4)} ${responsivePixels(32)}`, textAlign: "center", flexBasis: "100%", fontSize: responsivePixels(40)}}>
             {title}
           </div>
         </div>

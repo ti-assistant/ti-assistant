@@ -79,8 +79,8 @@ export default function SummaryColumn() {
 
       {orderedFactions.map(([name, faction]) => {
         return (
-          <div style={{flex: `${responsivePixels(72)} 0 0`}}>
-            <LabeledDiv key={name} label={getFactionName(faction)} rightLabel={<StaticFactionTimer factionName={name} style={{fontSize: responsivePixels(16), width: "auto"}} />} color={getFactionColor(faction)} style={{height: "100%"}}>
+          <div key={name} style={{flex: `${responsivePixels(72)} 0 0`}}>
+            <LabeledDiv label={getFactionName(faction)} rightLabel={<StaticFactionTimer factionName={name} style={{fontSize: responsivePixels(16), width: "auto"}} />} color={getFactionColor(faction)} style={{height: "100%"}}>
             {/* <FactionCard key={name} faction={faction} opts={factionCardOptions} content={ */}
               <FactionSummary factionName={name} options={factionSummaryOptions} />
             </LabeledDiv>

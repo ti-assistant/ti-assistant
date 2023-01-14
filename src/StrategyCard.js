@@ -64,13 +64,13 @@ export function SmallStrategyCard({ card, active }) {
 
   const faction = card.faction ? factions[card.faction] : null;
 
-  const color = (active ? getFactionColor(faction) : "#555");
+  const borderColor = (!faction.passed ? getFactionColor(faction) : "#555");
   const textColor = (active ? "#eee" : "#555");
   // const victory_points = (faction.victory_points ?? []).reduce((prev, current) => {
   //   return prev + current.amount;
   // }, 0);
   return (
-    <LabeledDiv label={getFactionName(faction)} color={color} style={{
+    <LabeledDiv label={getFactionName(faction)} color={borderColor} style={{
       display: "flex",
       flexDirection: "column",
       fontSize: responsivePixels(24),

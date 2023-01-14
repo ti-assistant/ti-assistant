@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr'
 import { BasicFactionTile } from './FactionTile';
 import { HoverMenu } from './HoverMenu';
+import { LabeledDiv } from './LabeledDiv';
 import { useSharedCurrentAgenda } from './Timer';
 import { useSharedUpdateTimes } from './Updater';
 import { setSpeaker } from './util/api/state';
@@ -10,7 +11,9 @@ import { castSubStateVotes } from './util/api/subState';
 import { hasTech } from './util/api/techs';
 
 import { fetcher } from './util/api/util';
+import { getFactionColor, getFactionName } from './util/factions';
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from './util/planets';
+import { responsivePixels } from './util/util';
 
 export function getTargets(agenda, factions, strategycards, planets, agendas, objectives) {
   if (!agenda) {
@@ -187,7 +190,9 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const factionSubState = ((subState.factions ?? {})[factionName] ?? {});
 
   return (
-    <div
+    <LabeledDiv label={getFactionName(faction)} color={getFactionColor(faction)}>
+      
+    {/* <div
       style={{
         borderRadius: "5px",
         display: "flex",
@@ -198,60 +203,89 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
         cursor: "auto",
         height: "64px",
         justifyContent: "center",
-      }}>
-      <div className="flexRow" style={{gap: "16px", padding: "4px 4px 4px 8px", justifyContent: "flex-start", alignItems: "center"}}>
-      {faction ? 
+      }}> */}
+      <div className="flexRow" style={{gap: responsivePixels(16), width: "100%", justifyContent: "space-between", alignItems: "center"}}>
+      {/* {faction ? 
           <div style={{flexBasis: "200px", flexGrow: 0, flexShrink: 0, whiteSpace: "nowrap"}}>
             <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={menuButtons} opts={{fontSize: "16px"}} />
           </div>
-        : null}
+        : null} */}
         {factionName === "Nekro Virus" ? 
           "Cannot Vote"
         : 
         <React.Fragment>
-        <div className="votingBlock">
-          <div className="influenceSymbol">
+        <div style={{
+          position: "relative",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          whiteSpace: "nowrap",
+          flexShrink: 0,
+          height: "100%",
+        }}>
+          <div style={{
+            color: "#72d4f7",
+            lineHeight: responsivePixels(35),
+            fontSize: responsivePixels(35),
+            textShadow: `0 0 ${responsivePixels(4)} #72d4f7`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: responsivePixels(28),
+            height: responsivePixels(35),
+          }}>
             &#x2B21;
           </div>
-          <div className="influenceTextWrapper">
+          <div style={{
+            lineHeight: responsivePixels(35),
+            fontSize: responsivePixels(12),
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: responsivePixels(28),
+            height: responsivePixels(35),
+          }}>
             {influence}
           </div>
-          <div style={{fontSize: "16px"}}>
+          <div style={{fontSize: responsivePixels(16)}}>
             + {extraVotes}
-            <div className="flexColumn hoverInfo right">
-              <div className="flexColumn" style={{gap: "4px"}}>
+            {/* <div className="flexColumn hoverInfo right">
+              <div className="flexColumn" style={{gap: responsivePixels(8)}}>
                 {factionName === "Argent Flight" ? 
                   <div className="flexColumn" style={{gap: "4px", padding: "4px 8px", backgroundColor: "#222", boxShadow: "1px 1px 4px black", border: `2px solid #333`, borderRadius: "5px"}}>
                     Zeal
                     <span style={{fontFamily: "Myriad Pro"}}>When you cast at least 1 vote, cast 1 additional vote for each player in the game, including you.</span>
                   </div>
-                : null}
+                : null} */}
                 {/* {hasPredictiveIntelligence && usingPredictiveIntelligence ? 
                   <div className="flexColumn" style={{gap: "4px", padding: "4px 8px", backgroundColor: "#222", boxShadow: "1px 1px 4px black", border: `2px solid #333`, borderRadius: "5px"}}>
                     Predictive Intelligence: <span style={{fontFamily: "Myriad Pro"}}>When you cast votes during the agenda phase, you may cast 3 additional votes; if you do, and the outcome you voted for is not resolved, exhaust this card.</span>
                   </div>
                 : null} */}
-              </div>
-            </div>
+              {/* </div>
+            </div> */}
           </div>
         </div>
-        <div className="flexRow hoverParent" style={{flexShrink: 0, width: "72px", gap: "4px", fontSize: "24px"}}>
-          {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{width: "12px"}}></div>}
-          <div className="flexRow" style={{width: "32px"}}>{factionSubState.votes ?? 0}</div>
-          {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
+        <div className="flexRow hoverParent" style={{flexShrink: 0, gap: responsivePixels(4), fontSize: responsivePixels(20)}}>
+          {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{width: responsivePixels(12)}}></div>}
+          <div className="flexRow" style={{width: responsivePixels(24)}}>{factionSubState.votes ?? 0}</div>
+          {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : <div style={{width: responsivePixels(12)}}></div>}
         </div>
         </React.Fragment>}
-        <HoverMenu label={
-          factionSubState.target ? factions[factionSubState.target] ? factions[factionSubState.target].shortname : factionSubState.target : "Select"
-        }>
-          <div className="flexRow" style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: "flex-start", writingMode: "vertical-lr", maxHeight: "300px", flexWrap: "wrap"}}>
-            {targets.map((target) => {
-              return (
-                <button key={target} onClick={() => {castVotes(target, 0)}}>{target}</button>
-              );
-            })}
-          </div>
-        </HoverMenu>
+        <div style={{flexGrow: 4}}>
+          <HoverMenu label={
+            factionSubState.target ? factions[factionSubState.target] ? getFactionName(factions[factionSubState.target]) : factionSubState.target : "Select"
+          } buttonStyle={{fontSize: responsivePixels(14)}} style={{minWidth: "100%"}}>
+            <div className="flexRow" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch", justifyContent: "flex-start", writingMode: "vertical-lr", maxHeight: responsivePixels(300), flexWrap: "wrap"}}>
+              {targets.map((target) => {
+                return (
+                  <button key={target} style={{fontSize: responsivePixels(14)}} onClick={() => {castVotes(target, 0)}}>{target}</button>
+                );
+              })}
+            </div>
+          </HoverMenu>
+        </div>
         {/* <div className="flexRow" style={{flexShrink: 0, minWidth: "72px"}}>
           <button className={showTargets ? "selected" : ""} onClick={toggleTargets}>{target ? target : "Select"}</button>
         </div>
@@ -264,6 +298,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
         </div>
         </div> : null} */}
       </div>
-    </div>
+    {/* </div> */}
+    </LabeledDiv>
   );
 }

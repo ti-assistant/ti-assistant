@@ -2,9 +2,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
+import { LabeledDiv } from './LabeledDiv';
+import { PlanetAttributes } from './PlanetRow';
+import { ResponsiveResources } from './Resources';
 import { useSharedUpdateTimes } from './Updater';
 import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
 import { fetcher } from './util/api/util';
+import { responsivePixels } from './util/util';
 
 import { Resources } from "/src/Resources.js";
 
@@ -82,22 +86,23 @@ export function AttachRow({ attachment, currentPlanet }) {
   }
 
   return (
-    <div className="flexRow" style={{width: "100%", height: "72px", justifyContent: "flex-start", fontSize: "16px", position: "relative", gap: "4px"}}>
+    <div className="flexRow" style={{width: "100%", height: responsivePixels(72), justifyContent: "flex-start", fontSize: responsivePixels(14), position: "relative", gap: responsivePixels(4), whiteSpace: "nowrap"}}>
       <div style={{flexBasis: "60%"}}>
-        <button onClick={toggleAttachment} className={attachment.planets.includes(currentPlanet) ? "selected" : ""}>{attachment.name}</button>
+        <button style={{fontSize: responsivePixels(14)}} onClick={toggleAttachment} className={attachment.planets.includes(currentPlanet) ? "selected" : ""}>{attachment.name}</button>
       </div>
-      <Resources resources={attachment.resources} influence={attachment.influence} />
-      {isSkip() ? <div style={{marginRight: "6px"}}>OR</div> : null}
-      {hasAttribute() ? getAttributeIcon("22px", "22px") : null}
+      <ResponsiveResources resources={attachment.resources} influence={attachment.influence} />
+      {isSkip() ? <div style={{marginRight: responsivePixels(6)}}>OR</div> : null}
+      {hasAttribute() ? <PlanetAttributes attributes={[attachment.attribute]} /> : null}
+      {/* {hasAttribute() ? getAttributeIcon("22px", "22px") : null} */}
       {attached ? 
         <div style={{fontFamily: "Myriad Pro",
         position: "absolute",
         color: "indianred",
-        borderRadius: "5px",
-        border: `1px solid indianred`,
-        padding: "0px 4px",
-        fontSize: "12px",
-        bottom: "2px",
+        borderRadius: responsivePixels(5),
+        border: `${responsivePixels(1)} solid indianred`,
+        padding: `0 ${responsivePixels(4)}`,
+        fontSize: responsivePixels(12),
+        bottom: responsivePixels(2),
       }}>Attached to {attached}</div> : null
       }
     </div>

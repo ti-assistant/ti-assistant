@@ -315,7 +315,7 @@ export default function StrategyPhase() {
             <div className="flexColumn" style={{alignItems: "center"}}>
               Active Player
               <FactionCard faction={activefaction} content={
-                <div style={{paddingBottom: responsivePixels(4)}}>
+                <div className="flexColumn" style={{paddingBottom: responsivePixels(4), height: "100%"}}>
                   <FactionTimer factionName={activefaction.name} style={{fontSize: responsivePixels(28)}} />
                 </div>
               } style={{height: responsivePixels(80)}} opts={{iconSize: responsivePixels(68), fontSize: responsivePixels(24)}} />
@@ -325,7 +325,7 @@ export default function StrategyPhase() {
             <div className="flexColumn" style={{alignItems: "center"}}>
               On Deck
               <FactionCard faction={onDeckFaction} content={
-                <div style={{paddingBottom: responsivePixels(4), fontSize: responsivePixels(12)}}>
+                <div className="flexColumn" style={{paddingBottom: responsivePixels(4), height: "100%"}}>
                   <StaticFactionTimer factionName={onDeckFaction.name} style={{fontSize: responsivePixels(18), width: responsivePixels(140)}} />
                 </div>
               } style={{height: responsivePixels(50)}} opts={{iconSize: responsivePixels(44), fontSize: responsivePixels(24)}} />

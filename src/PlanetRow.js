@@ -14,6 +14,8 @@ import { useSharedUpdateTimes } from './Updater';
 import { responsiveNegativePixels, responsivePixels } from './util/util';
 import { ResponsiveResources } from './Resources';
 import { FullFactionSymbol } from './FactionCard';
+import React from 'react';
+import { getFactionColor } from './util/factions';
 
 export function PlanetSymbol({ type, faction, size="36px" }) {
   switch (type) {
@@ -80,21 +82,6 @@ function LegendaryPlanetIcon() {
       <Image src="/images/legendary_planet.svg" alt="Legendary Planet Icon" layout="fill" objectFit='contain'/>
       </div>
     </div>);
-}
-
-function getFactionColor(color) {
-  if (!color) {
-    return "#555";
-  }
-  switch (color) {
-    case "Blue":
-      return "cornflowerblue";
-    // case "Magenta":
-    //   return "hotpink";
-    // case "Green":
-    //   return "mediumseagreen";
-  }
-  return color;
 }
 
 export function PlanetAttributes({ attributes }) {
@@ -193,13 +180,15 @@ export function PlanetAttributes({ attributes }) {
 function AttachMenu({planet, attachments, visible, closeMenu}) {
   return (<Modal closeMenu={closeMenu} visible={visible} level={2} title={"Attachments for " + planet.name}
     content={
-    <div>
+    <div className="flexColumn" style={{boxSizing: "border-box", padding: responsivePixels(4), width: "100%"}}>
       {Object.entries(attachments).map(([name, attachment]) => {
+        return <AttachRow key={name} attachment={attachment} currentPlanet={planet.name} />
+
         return (
-          <div key={name} className="flexRow" style={{minWidth: "280px", whiteSpace: "nowrap", justifyContent: "flex-start", alignItems: "stretch", alignItems: "center", padding: "0px 4px"}}>
+          // <div key={name} className="flexRow" style={{whiteSpace: "nowrap", justifyContent: "flex-start", alignItems: "stretch", alignItems: "center", padding: `0 ${responsivePixels(4)}`}}>
             {/* <input onChange={() => toggleAttachment(name, attachment)} type="checkbox" checked={attachment.planets.includes(planet.name)}></input> */}
-            <AttachRow attachment={attachment} currentPlanet={planet.name} />
-          </div>
+            // <AttachRow attachment={attachment} currentPlanet={planet.name} />
+          // </div>
         );
       })}
     </div>
@@ -298,7 +287,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
     if (opts.showSelfOwned || owner !== factionName) {
       if (claimed === null) {
         claimed = owner;
-        claimedColor = getFactionColor(factions[owner]);
+        // claimedColor = getFactionColor(factions[owner]);
       } else {
         claimed = "Multiple Players";
         claimedColor = "darkred";
@@ -321,8 +310,8 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
         border: `${responsivePixels(1)} solid ${claimedColor}`,
         padding: `0 ${responsivePixels(4)}`,
         fontSize: responsivePixels(12),
-        bottom: responsivePixels(4),
-        left: "0",
+        bottom: responsivePixels(0),
+        left: responsivePixels(24),
       }}>Claimed by {claimed}</div> : null
       }
       <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", alignItems: "center"}}>

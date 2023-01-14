@@ -138,7 +138,7 @@ export function UpdateObjectives({ }) {
   }
 
   if (factionName === null) {
-    if (state.activeplayer) {
+    if (state.activeplayer && state.activeplayer !== "None") {
       setFactionName(state.activeplayer);
     } else {
       setFactionName(state.speaker);
@@ -197,7 +197,7 @@ export function UpdateObjectives({ }) {
       <div className="flexRow" style={{ flexWrap: "wrap", backgroundColor: "#222", zIndex: 904, fontSize: responsivePixels(14) }}>
         {orderedFactionNames.map((name) => {
           return (
-            <button className={name === factionName ? "selected" : ""} style={{ fontSize: responsivePixels(14) }}
+            <button key={name} className={name === factionName ? "selected" : ""} style={{ fontSize: responsivePixels(14) }}
               onClick={() => setFactionName(name)}>{name}</button>
 
           );
@@ -209,7 +209,7 @@ export function UpdateObjectives({ }) {
         <div className="flexColumn" style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}>Secret</div>
         <div className="flexColumn" style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}>Other</div>
       </div>
-      <div className="flexRow" style={{ boxSizing: "border-box", padding: responsivePixels(8), alignItems: "flex-start", justifyContent: "space-between", height: "100%", width: "100%", overflowY: "scroll" }}>
+      <div className="flexRow smallFont" style={{ boxSizing: "border-box", padding: responsivePixels(8), alignItems: "flex-start", justifyContent: "space-between", height: "100%", width: "100%", overflowY: "scroll" }}>
         <div className="flexColumn" style={{ flex: "0 0 24%", gap: responsivePixels(8), justifyItems: "flex-start", alignItems: "stretch" }}>
           {stageOneObjectives.map((obj) => {
             if (obj.selected) {
@@ -217,7 +217,7 @@ export function UpdateObjectives({ }) {
             }
             if (transition['stage-one'] && !obj.selected) {
               transition['stage-one'] = false;
-              return <div style={{ paddingTop: responsivePixels(4), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+              return <div key={obj.name} style={{ paddingTop: responsivePixels(4), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
             }
             return <ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
           })}
@@ -225,37 +225,37 @@ export function UpdateObjectives({ }) {
         <div className="flexColumn" style={{ flex: "0 0 24%", justifyItems: "flex-start", alignItems: "stretch" }}>
           {stageTwoObjectives.map((obj) => {
             if (obj.selected) {
-              return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
             }
             if (transition['stage-two'] && !obj.selected) {
               transition['stage-two'] = false;
-              return <div style={{ paddingTop: responsivePixels(8), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+              return <div key={obj.name} style={{ paddingTop: responsivePixels(8), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
             }
-            return <ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
+            return <ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
           })}
         </div>
         <div className="flexColumn" style={{ flex: "0 0 24%", justifyItems: "flex-start", alignItems: "stretch" }}>
           {secretObjectives.map((obj) => {
             if (obj.selected) {
-              return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
             }
             if (transition['secret'] && !obj.selected) {
               transition['secret'] = false;
-              return <div style={{ paddingTop: responsivePixels(4), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+              return <div key={obj.name} style={{ paddingTop: responsivePixels(4), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
             }
-            return <ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
+            return <ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
           })}
         </div>
         <div className="flexColumn" style={{ flex: "0 0 24%", justifyItems: "flex-start", alignItems: "stretch" }}>
           {otherObjectives.map((obj) => {
             if (obj.selected) {
-              return <ObjectiveRow objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
             }
             if (transition['other'] && !obj.selected) {
               transition['other'] = false;
-              return <div style={{ paddingTop: responsivePixels(4), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
+              return <div key={obj.name} style={{ paddingTop: responsivePixels(4), borderTop: `${responsivePixels(1)} solid #777` }}><ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} /></div>
             }
-            return <ObjectiveRow objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
+            return <ObjectiveRow key={obj.name} objective={obj} faction={factionName} scoreObjective={(name, score) => scoreObj(name, score)} addObjective={() => addObjective(obj.name)} />
           })}
         </div>
       </div>
@@ -428,7 +428,7 @@ export function UpdateTechs({ }) {
   }
 
   if (factionName === null) {
-    if (state.activeplayer) {
+    if (state.activeplayer && state.activeplayer !== "None") {
       setFactionName(state.activeplayer);
     } else {
       setFactionName(state.speaker);
@@ -504,7 +504,7 @@ export function UpdateTechs({ }) {
       <div className="flexRow" style={{ flexWrap: "wrap", backgroundColor: "#222", zIndex: 904, fontSize: responsivePixels(14) }}>
         {orderedFactionNames.map((name) => {
           return (
-            <button className={name === factionName ? "selected" : ""} style={{ fontSize: responsivePixels(14) }}
+            <button key={name} className={name === factionName ? "selected" : ""} style={{ fontSize: responsivePixels(14) }}
               onClick={() => setFactionName(name)}>{name}</button>
 
           );
@@ -604,7 +604,7 @@ export function UpdatePlanets({ }) {
   }
 
   if (factionName === null) {
-    if (state.activeplayer) {
+    if (state.activeplayer && state.activeplayer !== "None") {
       setFactionName(state.activeplayer);
     } else {
       setFactionName(state.speaker);
@@ -665,7 +665,7 @@ export function UpdatePlanets({ }) {
       <div className="flexRow" style={{ flexWrap: "wrap", backgroundColor: "#222", zIndex: 904, fontSize: responsivePixels(14) }}>
         {orderedFactionNames.map((name) => {
           return (
-            <button className={name === factionName ? "selected" : ""} style={{ fontSize: responsivePixels(14) }}
+            <button key={name} className={name === factionName ? "selected" : ""} style={{ fontSize: responsivePixels(14) }}
               onClick={() => setFactionName(name)}>{name}</button>
 
           );

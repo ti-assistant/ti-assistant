@@ -10,6 +10,8 @@ import { Map } from "../pages/setup";
 import { LabeledDiv } from "./LabeledDiv";
 import { UpdateObjectives, UpdatePlanets, UpdateTechs, UpdateTechsModal } from "./FactionSummary";
 import React from "react";
+import { AgendaRow } from "./AgendaRow";
+import { repealAgenda } from "./util/api/agendas";
 
 export function Sidebar({ side, content }) {
   const className = `${side}Sidebar`;
@@ -23,6 +25,7 @@ export function Sidebar({ side, content }) {
 export function Header() {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
@@ -71,6 +74,13 @@ export function Header() {
 
   const mapOrderedFactions = Object.values(factions).sort((a, b) => a.mapPosition - b.mapPosition);
 
+  const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
+    return agenda.passed && agenda.type === "law";
+  });
+  function removeAgenda(agendaName) {
+    repealAgenda(mutate, gameid, agendas, agendaName);
+  } 
+
   return <React.Fragment>
     {options['map-string'].length > 0 ?
     // <div style={{ cursor: "pointer", zIndex: 1001, position: "fixed", backgroundColor: "#222", top: `${responsivePixels(100)}`, left: `${responsivePixels(120)}` }}>
@@ -82,6 +92,27 @@ export function Header() {
         </div>
       </HoverMenu>
     // </div>
+    : null}
+    {state.phase === "SETUP" ?
+      <div className="flexRow nonMobile" style={{ position: "fixed", top: `${responsivePixels(20)}`, right: `${responsivePixels(120)}`, alignItems: "flex-start", justifyContent: "center" }}>
+        <div style={{ marginTop: `${responsivePixels(16)}` }}>Game ID: {gameid}</div>
+        {qrCode ? <img src={qrCode} /> : null}
+      </div> :
+      // <div className="nonMobile" style={{ position: "fixed", top: responsivePixels(60), left: responsivePixels(120) }}>
+        <HoverMenu label="View QR Code" buttonStyle={{position: "fixed", top: responsivePixels(60), left: responsivePixels(120)}}>
+          <div className="flexColumn" style={{position: "relative", zIndex: 10000, marginTop: responsivePixels(16)}}>
+            Game ID: {gameid}
+            {qrCode ? <img src={qrCode} /> : null}
+          </div>
+        </HoverMenu>
+      // </div>
+    }
+    {passedLaws.length > 0 ? 
+        <HoverMenu label="Laws in Effect" buttonStyle={{position: "fixed", top: responsivePixels(20), right: responsivePixels(440)}}>
+        <div className="flexColumn" style={{alignItems: "flex-start", padding: responsivePixels(8)}}>
+          {passedLaws.map((agenda) => <AgendaRow key={agenda.name} agenda={agenda} removeAgenda={removeAgenda} />)}
+        </div>
+      </HoverMenu>
     : null}
     <div className="flex" style={{ top: 0, width: "100vw", paddingTop: responsivePixels(20), position: "fixed", justifyContent: "space-between" }}>
     <Sidebar side="left" content={`${state.phase} PHASE`} />
@@ -102,20 +133,7 @@ export function Header() {
         <GameTimer />
       </div> : null}
     <div className="flexColumn extraLargeFont mobileOnly" style={{ cursor: "pointer", position: "fixed", backgroundColor: "#222", textAlign: "center", top: `${responsivePixels(20)}`, width: "100%" }} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
-    {state.phase === "SETUP" ?
-      <div className="flexRow nonMobile" style={{ position: "fixed", top: `${responsivePixels(20)}`, right: `${responsivePixels(120)}`, alignItems: "flex-start", justifyContent: "center" }}>
-        <div style={{ marginTop: `${responsivePixels(16)}` }}>Game ID: {gameid}</div>
-        {qrCode ? <img src={qrCode} /> : null}
-      </div> :
-      <div className="nonMobile" style={{ position: "fixed", top: responsivePixels(60), left: responsivePixels(120) }}>
-        <HoverMenu label="View QR Code">
-          <div className="flexColumn nonMobile">
-            <div style={{ marginTop: `${responsivePixels(16)}` }}>Game ID: {gameid}</div>
-            {qrCode ? <img src={qrCode} /> : null}
-          </div>
-        </HoverMenu>
-      </div>
-    }
+
   </div>
   </React.Fragment>
 }
@@ -135,17 +153,17 @@ export function Footer({ }) {
     <LabeledDiv label="Update">
       <div className="flexRow" style={{width: "100%", alignItems: "stretch"}}>
         <HoverMenu label="Techs">
-          <div className="flexColumn" style={{height: "77vh", width: "84vw"}}>
+          <div className="flexColumn" style={{height: "90vh", width: "82vw"}}>
             <UpdateTechs />
           </div>
         </HoverMenu>
-        <HoverMenu label="Objectives">
-          <div className="flexColumn" style={{height: "77vh", width: "80vw"}}>
+        <HoverMenu label="Objectives" shift={{left: 78}}>
+          <div className="flexColumn" style={{height: "90vh", width: "82vw"}}>
             <UpdateObjectives />
           </div>
         </HoverMenu>
-        <HoverMenu label="Planets">
-          <div className="flexColumn" style={{height: "77vh", width: "70vw"}}>
+        <HoverMenu label="Planets" shift={{left: 195}}>
+          <div className="flexColumn largeFont" style={{height: "90vh", width: "82vw"}}>
             <UpdatePlanets />
           </div>
         </HoverMenu>

@@ -13,6 +13,7 @@ export function LawsInEffect({}) {
   const { mutate } = useSWRConfig();
   const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   
+  return null;
 
 
   function removeAgenda(agendaName) {

@@ -51,6 +51,16 @@ export default async function handler(req, res) {
       }
       break;
     }
+    case "RESET_AGENDA_TIMERS": {
+      const timerOneString = `timers.firstAgenda`;
+      const timerTwoString = `timers.secondAgenda`;
+      await db.collection('games').doc(gameid).update({
+        [timerOneString]: 0,
+        [timerTwoString]: 0,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      });
+      break;
+    }
   }
 
   const responseRef = await db.collection('games').doc(gameid).get();
