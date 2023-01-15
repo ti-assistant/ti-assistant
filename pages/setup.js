@@ -9,7 +9,7 @@ import { LabeledDiv } from "../src/LabeledDiv";
 import { responsivePixels } from "../src/util/util";
 import { FullFactionSymbol } from "../src/FactionCard";
 
-function capitalizeFirstLetter(string) {
+export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 

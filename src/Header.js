@@ -92,7 +92,7 @@ export function Header() {
   return <React.Fragment>
     {(options['map-string'] ?? []).length > 0 ?
     // <div style={{ cursor: "pointer", zIndex: 1001, position: "fixed", backgroundColor: "#222", top: `${responsivePixels(100)}`, left: `${responsivePixels(120)}` }}>
-      <HoverMenu label="View Map" buttonStyle={{position: "fixed", top:responsivePixels(100), left: `${responsivePixels(120)}` }}>
+      <HoverMenu label="View Map" buttonStyle={{position: "fixed", top:responsivePixels(state.phase === "SETUP" ? 60 : 100), left: `${responsivePixels(120)}` }}>
         <div className="flexRow" style={{ zIndex: 10000, width: "81vw", height: "78vh" }}>
           <div style={{ marginTop: responsiveNegativePixels(-40), width: "90vh", height: "90vh" }}>
             <Map factions={mapOrderedFactions} mapString={options['map-string']} mapStyle={options['map-style']} mallice={mallice} />

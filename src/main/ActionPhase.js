@@ -30,6 +30,7 @@ import { SelectableRow } from '../SelectableRow.js';
 import { addSubStatePlanet, addSubStateTech, clearSubState, finalizeSubState, removeSubStatePlanet, removeSubStateTech, scoreSubStateObjective, setSubStateSelectedAction, setSubStateSpeaker, undoSubStateSpeaker, unscoreSubStateObjective } from '../util/api/subState.js';
 import { responsiveNegativePixels, responsivePixels } from '../util/util.js';
 import { applyPlanetAttachments } from '../util/planets.js';
+import { ComponentAction } from './util/ComponentAction.js';
 
 export function FactionActionButtons({factionName, buttonStyle}) {
   const router = useRouter();
@@ -436,7 +437,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
       );
       // TODO: Display buttons for various actions.
     case "Component":
-      return null;
+      return <ComponentAction factionName={activeFaction.name} />
     case "Pass":
       if (!lastFaction()) {
         return null;

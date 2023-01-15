@@ -248,3 +248,50 @@ function isCouncilPlanet(planet) {
 
   return agendas;
 }
+
+/**
+ * Fetches the components associated with a game.
+ * @param {string} gameid The game id. If not present, the default list will be fetched.
+ * @returns {Promise} components keyed by name.
+ */
+export async function fetchComponents(gameid) {
+  const db = getFirestore();
+
+  const componentsRef = await db.collection('components').get();
+
+  if (!gameid) {
+    return componentsRef.data();
+  }
+
+  const gameState = await db.collection('games').doc(gameid).get();
+
+  const gameComponents = gameState.data().components ?? {};
+  const options = gameState.data().options;
+
+  let components = {};
+  componentsRef.forEach(async (val) => {
+    let component = val.data();
+
+    // Remove POK from Representative Government
+    // let id = val.id.replace(" POK", "");
+
+
+    // Maybe filter out PoK components.
+    if (component.expansion && component.expansion !== "base" && component.expansion !== "nonpok" && !options.expansions.includes(component.expansion)) {
+      return;
+    }
+    // Filter out agendas that are removed by PoK.
+    if (options.expansions.includes("pok") && component.expansion === "nonpok") {
+      return;
+    }
+
+    component = {
+      ...component,
+      ...gameComponents[val.id] ?? {},
+    };
+
+    components[val.id] = component;
+  });
+
+  return components;
+}

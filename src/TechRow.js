@@ -47,7 +47,7 @@ export function FullTechIcon({ type }) {
 
 function UnitStat({name, stat}) {
   return (
-    <div style={{flex: "0 0 25%", boxSizing: "border-box", border: "1px solid #eee", borderRadius: "10px"}}>
+    <div style={{flex: "0 0 24%", boxSizing: "border-box", border: "1px solid #eee", borderRadius: "10px"}}>
       <div style={{fontSize: "32px"}}>{stat}</div>
       <div style={{fontSize: "20px", borderTop: "1px solid #eee"}}>{name}</div>
     </div>
