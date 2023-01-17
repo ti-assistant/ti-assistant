@@ -88,3 +88,44 @@ export async function unclaimPlanet(mutate, gameid, planets, planet, factionName
   mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
 }
 
+export function addAttachment(mutate, gameid, planets, planetName, attachmentName) {
+  const data = {
+    action: "ADD_ATTACHMENT",
+    attachment: attachmentName,
+    planet: planetName,
+  };
+
+  const updatedPlanets = {...planets};
+
+  updatedPlanets[planetName].attachments.push(attachmentName);
+
+  Object.values(planets).forEach((planet) => {
+    if ((planet.attachments.includes(attachmentName))) {
+      updatedPlanets[planet.name].attachments = updatedPlanets[planet.name].attachments.filter((attachment) => attachment !== attachmentName);
+    }
+  });
+
+  const options = {
+    optimisticData: updatedPlanets,
+  };
+
+  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
+}
+
+export function removeAttachment(mutate, gameid, planets, planetName, attachmentName) {
+  const data = {
+    action: "REMOVE_ATTACHMENT",
+    attachment: attachmentName,
+    planet: planetName,
+  };
+
+  const updatedPlanets = {...planets};
+
+  updatedPlanets[planetName].attachments = updatedPlanets[planetName].attachments.filter((attachment) => attachment !== attachmentName);
+
+  const options = {
+    optimisticData: updatedPlanets,
+  };
+
+  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
+}

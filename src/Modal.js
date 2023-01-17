@@ -19,7 +19,7 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
       onEnter={onEnter}
       onExited={onExited}
     >
-    <div className="flexColumn" style={{position: "fixed", left: "0px", top: "0px", width: "100vw",
+    <div className={`flexColumn modal ${visible ? "shown" : ""}`} style={{position: "fixed", left: "0px", top: "0px", width: "100vw",
     height: "100vh", display: "none", zIndex: zIndex + 3,
     flexDirection: "column", alignItems: "center", color: "#eee"}}>
 

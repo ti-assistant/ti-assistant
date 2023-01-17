@@ -7,7 +7,6 @@ import { AttachRow } from "/src/AttachRow.js";
 import { Resources } from "/src/Resources.js";
 import { Modal } from "/src/Modal.js";
 import { FactionSymbol } from "/src/FactionCard.js";
-import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
 import { fetcher } from './util/api/util';
 import { SelectableRow } from './SelectableRow';
 import { useSharedUpdateTimes } from './Updater';
@@ -226,7 +225,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
     }
     let available = Object.values(attachments).filter((attachment) => {
       // If attached to this planet, always show.
-      if (attachment.planets.includes(planet.name)) {
+      if (planet.attachments.includes(attachment.name)) {
         return true;
       }
       if (attachment.name === "Terraform" && factionName === "Titans of Ul") {
@@ -271,14 +270,6 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
       ...planet,
       ready: !planet.ready,
     });
-  }
-
-  function toggleAttachment(name) {
-    if (attachments[name].planets.includes(planet.name)) {
-      removeFromPlanet(mutate, gameid, attachments, planet.name, name);
-    } else {
-      attachToPlanet(mutate, gameid, attachments, planet.name, name, options);
-    }
   }
 
   let claimed = null;
@@ -360,7 +351,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
           </div>
       : null}
       {/* {showAttachMenu ? */}
-      <AttachMenu visible={showAttachMenu} planet={planet} attachments={availableAttachments()} toggleAttachment={toggleAttachment} closeMenu={displayAttachMenu} />
+      <AttachMenu visible={showAttachMenu} planet={planet} attachments={availableAttachments()} closeMenu={displayAttachMenu} />
         </div>
       }  
     />

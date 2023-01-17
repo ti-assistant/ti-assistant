@@ -234,9 +234,10 @@ export function ComponentAction({ factionName }) {
       return true;
     });
 
-    return <HoverMenu label="Select Component">
+    return (
+    <HoverMenu label="Select Component">
       <ComponentSelect components={filteredComponents} selectComponent={selectComponent} />
-    </HoverMenu>;
+    </HoverMenu>);
   }
 
   return (
@@ -244,7 +245,7 @@ export function ComponentAction({ factionName }) {
       <Modal closeMenu={() => setShowInfoModal(false)} visible={showInfoModal} title={<div className="flexColumn" style={{fontSize: responsivePixels(40)}}>{component.name}</div>} content={
         <InfoContent component={component} />
       } top="35%" level={2} />
-    <div className="flexColumn largeFont" style={{width: "100%"}}>
+    <div className="flexColumn largeFont" style={{width: "100%", justifyContent: "flex-start"}}>
       <LabeledDiv label="SELECTED COMPONENT" style={{width: "90%"}}> 
         <SelectableRow removeItem={() => selectComponent(null)}>
           {component.name}

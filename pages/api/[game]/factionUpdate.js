@@ -18,10 +18,9 @@ export default async function handler(req, res) {
 
   let tech = data.tech;
   if (tech) {
-    tech = tech.replace(" Ω", "");
-    if (tech === "Light/Wave Deflector") {
-      tech = "LightWave Deflector";
-    }
+    tech = tech.replace(/\//g,"")
+      .replace(/\./g,"")
+      .replace(" Ω", "");
   }
 
   let gamePlanetString;
@@ -183,7 +182,7 @@ export default async function handler(req, res) {
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
       Object.keys(gameRef.data().factions).forEach((factionName) => {
-        const factionString = `factions.${factionName}.castVotes`;
+        const factionString = `factions.${factionName}.votes`;
         updates[factionString] = FieldValue.delete();
       });
       await db.collection('games').doc(gameid).update(updates);

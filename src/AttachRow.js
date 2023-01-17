@@ -7,6 +7,7 @@ import { PlanetAttributes } from './PlanetRow';
 import { ResponsiveResources } from './Resources';
 import { useSharedUpdateTimes } from './Updater';
 import { attachToPlanet, removeFromPlanet } from './util/api/attachments';
+import { addAttachment, removeAttachment } from './util/api/planets';
 import { fetcher } from './util/api/util';
 import { responsivePixels } from './util/util';
 
@@ -25,6 +26,7 @@ export function AttachRow({ attachment, currentPlanet }) {
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
   const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: planets = {} } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   
 
@@ -67,28 +69,30 @@ export function AttachRow({ attachment, currentPlanet }) {
     }
   }
   let attached = null;
-  (attachment.planets ?? []).forEach((planet) => {
-    if (planet !== currentPlanet) {
+  Object.values(planets).forEach((planet) => {
+    if ((planet.attachments ?? []).includes(attachment.name) && planet.name !== currentPlanet) {
       if (attached === null) {
-        attached = planet;
+        attached = planet.name;
       } else {
         attached = "Multiple Planets";
       }
     }
-  });
+  })
 
   function toggleAttachment() {
-    if (attachment.planets.includes(currentPlanet)) {
-      removeFromPlanet(mutate, gameid, attachments, currentPlanet, attachment.name);
+    if ((planets[currentPlanet].attachments ?? []).includes(attachment.name)) {
+      // removeFromPlanet(mutate, gameid, attachments, currentPlanet, attachment.name);
+      removeAttachment(mutate, gameid, planets, currentPlanet, attachment.name)
     } else {
-      attachToPlanet(mutate, gameid, attachments, currentPlanet, attachment.name, options);
+      // attachToPlanet(mutate, gameid, attachments, currentPlanet, attachment.name, options);
+      addAttachment(mutate, gameid, planets, currentPlanet, attachment.name);
     }
   }
 
   return (
     <div className="flexRow" style={{width: "100%", height: responsivePixels(72), justifyContent: "flex-start", fontSize: responsivePixels(14), position: "relative", gap: responsivePixels(4), whiteSpace: "nowrap"}}>
       <div style={{flexBasis: "60%"}}>
-        <button style={{fontSize: responsivePixels(14)}} onClick={toggleAttachment} className={attachment.planets.includes(currentPlanet) ? "selected" : ""}>{attachment.name}</button>
+        <button style={{fontSize: responsivePixels(14)}} onClick={toggleAttachment} className={planets[currentPlanet].attachments.includes(attachment.name) ? "selected" : ""}>{attachment.name}</button>
       </div>
       <ResponsiveResources resources={attachment.resources} influence={attachment.influence} />
       {isSkip() ? <div style={{marginRight: responsivePixels(6)}}>OR</div> : null}

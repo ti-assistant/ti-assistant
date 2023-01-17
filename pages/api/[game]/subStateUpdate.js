@@ -1,6 +1,6 @@
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
-import { fetchStrategyCards } from '../../../server/util/fetch';
+import { fetchObjectives, fetchStrategyCards } from '../../../server/util/fetch';
 import { computeVotes } from '../../../src/main/AgendaPhase';
 import { getOnDeckFaction } from '../../../src/util/helpers';
 
@@ -22,10 +22,9 @@ export default async function handler(req, res) {
 
   let tech = data.techName;
   if (tech) {
+    tech = tech.replace(/\//g,"");
+    tech = tech.replace(/\./g,"");
     tech = tech.replace(" Ω", "");
-    if (tech === "Light/Wave Deflector") {
-      tech = "LightWave Deflector";
-    }
   }
 
   let updates;
@@ -166,6 +165,7 @@ export default async function handler(req, res) {
     }
     case "FINALIZE_SUB_STATE": {
       const subState = gameRef.data().subState ?? {};
+      const gameObjectives = await fetchObjectives(gameid, req.cookies.secret);
       updates = {
         "subState": FieldValue.delete(),
         [timestampString]: timestamp,
@@ -204,9 +204,20 @@ export default async function handler(req, res) {
           updates[`objectives.${objective}.scorers`] = FieldValue.arrayUnion(factionName);
           updates[`updates.objectives.timestamp`] = timestamp;
         });
+        if ((value.objectives ?? []).length > 0 && 
+            gameRef.data().factions[factionName].hero === "locked") {
+          const scoredObjectives = Object.entries(gameObjectives).filter(([objectiveID, objective]) => {
+            return objective.type !== "other" && 
+              ((objective.scorers ?? []).includes(factionName) || (value.objectives ?? []).includes(objectiveID));
+          }).length;
+          if (scoredObjectives >= 3) {
+            updates[`factions.${factionName}.hero`] = "unlocked";
+            updates[`updates.factions.timestamp`] = Timestamp.fromMillis(data.timestamp);
+          }
+        }
       });
-      break;
     }
+    break;
   }
   await db.collection('games').doc(gameid).update(updates);
 

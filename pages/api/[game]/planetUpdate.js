@@ -1,6 +1,29 @@
-import { fetchPlanets } from '../../../server/util/fetch';
+import { fetchAttachments, fetchPlanets } from '../../../server/util/fetch';
+import { applyPlanetAttachments } from '../../../src/util/planets';
 
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
+
+async function shouldUnlockXxchaCommander(data, gameRef, gamePlanets, attachments) {
+  const factionName = "Xxcha Kingdom";
+  if (gameRef.data().factions[factionName].commander === "unlocked") {
+    return false;
+  }
+  const totalInfluence = Object.values(gamePlanets).reduce((count, planet) => {
+    if (data.planet === planet.name && data.action === "ADD_PLANET") {
+      const updatedPlanet = applyPlanetAttachments(planet, attachments);
+      return count + updatedPlanet.influence;
+    }
+    if (data.planet === planet.name && data.action === "ADD_ATTACHMENT") {
+      planet.attachments.push(data.attachment);
+    }
+    if ((planet.owners ?? []).includes(factionName)) {
+      const updatedPlanet = applyPlanetAttachments(planet, attachments);
+      return count + updatedPlanet.influence;
+    }
+    return count;
+  }, 0);
+  return totalInfluence >= 12;
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -20,6 +43,8 @@ export default async function handler(req, res) {
   if (!gameRef.exists) {
     res.status(404);
   }
+
+  const gamePlanets = await fetchPlanets(gameid);
 
   const options = gameRef.data().options;
 
@@ -47,10 +72,16 @@ export default async function handler(req, res) {
       if (options['multiple-planet-owners']) {
         updateVal = FieldValue.arrayUnion(data.faction);
       }
-      await db.collection('games').doc(gameid).update({
+      const updates = {
         [gamePlanetString]: updateVal,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
-      }); 
+      };
+      const attachments = await fetchAttachments(gameid);
+      if (await shouldUnlockXxchaCommander(data, gameRef, gamePlanets, attachments)) {
+        updates[`factions.${data.faction}.commander`] = "unlocked";
+        updates[`updates.factions.timestamp`] = Timestamp.fromMillis(data.timestamp);
+      }
+      await db.collection('games').doc(gameid).update(updates); 
       break;
     case "REMOVE_PLANET":
       gamePlanetString = `planets.${data.planet}.owners`;
@@ -61,6 +92,34 @@ export default async function handler(req, res) {
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
+    case "ADD_ATTACHMENT": {
+      const planetAttachmentString = `planets.${data.planet}.attachments`;
+      const updates = {
+        [planetAttachmentString]: FieldValue.arrayUnion(data.attachment),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      };
+      Object.values(gamePlanets).forEach((planet) => {
+        const planetRemoveString = `planets.${planet.name}.attachments`;
+        if ((planet.attachments ?? []).includes(data.attachment)) {
+          updates[planetRemoveString] = FieldValue.arrayRemove(data.attachment);
+        }
+      });
+      const attachments = await fetchAttachments(gameid);
+      if (await shouldUnlockXxchaCommander(data, gameRef, gamePlanets, attachments)) {
+        updates[`factions.Xxcha Kingdom.commander`] = "unlocked";
+        updates[`updates.factions.timestamp`] = Timestamp.fromMillis(data.timestamp);
+      }
+      await db.collection('games').doc(gameid).update(updates);
+      break;
+    }
+    case "REMOVE_ATTACHMENT": {
+      const planetAttachmentString = `planets.${data.planet}.attachments`;
+      await db.collection('games').doc(gameid).update({
+        [planetAttachmentString]: FieldValue.arrayRemove(data.attachment),
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      });
+      break;
+    }
   }
   
   const response = await fetchPlanets(gameid, data.faction);

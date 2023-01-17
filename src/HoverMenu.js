@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getResponsiveFormula, responsiveNegativePixels, responsivePixels } from "./util/util";
 
-export function HoverMenu({label, style, shift = {}, buttonStyle = {}, children, content, directin = "down", borderColor = "#aaa"}) {
+export function HoverMenu({label, style, borderless, shift = {}, buttonStyle = {}, children, content, directin = "down", borderColor = "#aaa"}) {
   const menu = useRef(null);
   const innerMenu = useRef(null);
   const [ direction, setDirection ] = useState("down");
@@ -31,7 +31,7 @@ export function HoverMenu({label, style, shift = {}, buttonStyle = {}, children,
     top: direction === "down" ? 0 : "auto",
     bottom: direction === "up" ? 0 : "auto",
     right: side === "left" ? 0 : "auto",
-    border: `${responsivePixels(2)} solid ${borderColor}`,
+    border: borderless ? null : `${responsivePixels(2)} solid ${borderColor}`,
     borderRadius: responsivePixels(5),
     // minWidth: responsivePixels(160),
     // maxHeight: "620px",
@@ -47,13 +47,17 @@ export function HoverMenu({label, style, shift = {}, buttonStyle = {}, children,
   const classNames = "flexColumn hoverInfo" + (direction === "up" ? " up" : "") + (side === "left" ? " left" : "");
 
   return (
-    <div className="hoverParent largeFont" ref={menu} style={buttonStyle}>
+    <div className="hoverParent largeFont"
+      onMouseEnter={() => menu.current.classList.add("hover")}
+      onMouseLeave={() => menu.current.classList.remove("hover")}
+      ref={menu} style={buttonStyle}>
       <div style={{
-        border: `${responsivePixels(2)} solid ${borderColor}`,
+        border: borderless ? null : `${responsivePixels(2)} solid ${borderColor}`,
         borderRadius: responsivePixels(5),
         padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
         pointer: "pointer",
         whiteSpace: "nowrap",
+        backgroundColor: "#222",
       }}>{label}</div>
       <div className={classNames} style={hoverMenuStyle} ref={innerMenu}>
         {direction === "down" ? <div style={{

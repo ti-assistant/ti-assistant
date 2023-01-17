@@ -1,5 +1,3 @@
-import { filterToPlanetAttachments } from "./attachments";
-
 /**
  * Gets all the planets claimed by a specific faction.
  * @param {Object} planets
@@ -43,9 +41,8 @@ function hasSkip(planet) {
 export function applyPlanetAttachments(planet, attachments) {
   let updatedPlanet = {...planet};
   updatedPlanet.attributes = [...planet.attributes];
-  const planetAttachments = filterToPlanetAttachments(attachments, planet.name);
-  planetAttachments.sort((a, b) => {
-    return a.ordering[planet.name] - b.ordering[planet.name];
+  const planetAttachments = (planet.attachments ?? []).map((attachment) => {
+    return attachments[attachment];
   });
   planetAttachments.forEach((attachment) => {
     if (attachment.attribute.includes("skip")) {

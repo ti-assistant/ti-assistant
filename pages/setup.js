@@ -373,7 +373,7 @@ const INITIAL_OPTIONS = {
 }
 
 function FactionSystemImage({className, factionName}) {
-  if (!factionName || factionName === "Council Keleres") {
+  if (!factionName || factionName === "Council Keleres" || factionName === "ST_0") {
     return (
       <div className="flexRow" style={{position: "relative", width: "100%", height: "100%"}}>
       <Image src="/images/systems/ST_0.png" alt={`Faction Tile`} layout="fill" objectFit="contain" /></div>
@@ -809,7 +809,7 @@ export function Map({mapString, mapStyle, mallice, factions}) {
       }
 
       return (
-      <div key={index} className={classNames}>
+      <div key={index} className={classNames} style={{overflow: "visible"}}>
         {column.map((tileNum, subIndex) => {
           const key = tileNum + "-" + subIndex;
           if (tileNum === null) {

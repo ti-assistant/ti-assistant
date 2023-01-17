@@ -69,6 +69,8 @@ export default async function handler(req, res) {
       mapPosition: index,
       startswith: factionData.startswith,
       prompts: prompts,
+      hero: "locked",
+      commander: "locked",
     };
   });
 

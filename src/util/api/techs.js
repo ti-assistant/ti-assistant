@@ -7,10 +7,9 @@ import { fetcher, poster } from './util'
  * @returns {bool}
  */
 export function hasTech(faction, tech) {
-  let techName = tech.replace(" Ω", "");
-  if (techName === "Light/Wave Deflector") {
-    techName = "LightWave Deflector";
-  }
+  let techName = tech.replace(/\//g,"")
+    .replace(/\./g,"")
+    .replace(" Ω", "");
   return !!faction.techs[techName];
 }
 
@@ -45,7 +44,9 @@ export async function lockTech(mutate, gameid, factions, factionName, tech) {
   };
 
   const updatedFactions = {...factions};
-  const techString = tech.replace(" Ω", "");
+  const techString = tech.replace(/\//g,"")
+    .replace(/\./g,"")
+    .replace(" Ω", "");
 
   delete updatedFactions[factionName].techs[techString];
 

@@ -82,6 +82,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const { data: attachments, attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: strategycards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: options = {} } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: subState } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const [ usingPredictiveIntelligence, setUsingPredictiveIntelligence ] = useState(true);
@@ -147,7 +148,13 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   let influence = 0;
   for (const planet of updatedPlanets) {
     if (planet.ready || opts.total) {
-      influence += planet.influence;
+      if (options.expansions.includes("codex-three") &&
+          factionName === "Xxcha Kingdom" &&
+          faction.hero === "unlocked") {
+        influence += Math.max(planet.resources, planet.influence);
+      } else {
+        influence += planet.influence;
+      }
     }
   }
   influence -= Math.min(factions[factionName].votes ?? 0, influence);
@@ -155,6 +162,9 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   let extraVotes = 0;
   if (factionName === "Argent Flight") {
     extraVotes += Object.keys(factions).length;
+  }
+  if (factionName === "Xxcha Kingdom" && faction.commander === "unlocked") {
+    extraVotes += updatedPlanets.length;
   }
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
   const menuButtons = [];

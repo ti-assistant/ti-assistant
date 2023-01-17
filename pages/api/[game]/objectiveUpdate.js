@@ -19,6 +19,8 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
+  const gameObjectives = await fetchObjectives(gameid, req.cookies.secret);
+
   const timestampString = `updates.objectives.timestamp`;
   switch (data.action) {
     case "REVEAL_OBJECTIVE": {
@@ -73,11 +75,22 @@ export default async function handler(req, res) {
         scorers.push(data.faction);
         updateValue = scorers;
       }
-      await db.collection('games').doc(gameid).update({
+      const updates = {
         [revealedString]: true,
         [objectiveString]: updateValue,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
-      });
+      };
+      if (gameRef.data().factions[data.faction].hero === "locked") {
+        const scoredObjectives = Object.entries(gameObjectives).filter(([objectiveID, objective]) => {
+          return objective.type !== "other" && 
+            ((objective.scorers ?? []).includes(data.faction) || data.objective === objectiveID);
+        }).length;
+        if (scoredObjectives >= 3) {
+          updates[`factions.${data.faction}.hero`] = "unlocked";
+          updates[`updates.factions.timestamp`] = Timestamp.fromMillis(data.timestamp);
+        }
+      }
+      await db.collection('games').doc(gameid).update(updates);
       break;
     }
     case "UNSCORE_OBJECTIVE": {
@@ -90,11 +103,22 @@ export default async function handler(req, res) {
         scorers.splice(lastIndex, 1);
         updateValue = scorers;
       }
-      await db.collection('games').doc(gameid).update({
+      const updates = {
         [revealedString]: true,
         [objectiveString]: updateValue,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
-      });
+      }
+      if (gameRef.data().factions[data.faction].hero === "unlocked") {
+        const scoredObjectives = Object.entries(gameObjectives).filter(([objectiveID, objective]) => {
+          return objective.type !== "other" && 
+            ((objective.scorers ?? []).includes(data.faction) && data.objective !== objectiveID);
+        }).length;
+        if (scoredObjectives < 3) {
+          updates[`factions.${data.faction}.hero`] = "locked";
+          updates[`updates.factions.timestamp`] = Timestamp.fromMillis(data.timestamp);
+        }
+      }
+      await db.collection('games').doc(gameid).update(updates);
       break;
     }
   }

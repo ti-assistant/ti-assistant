@@ -231,6 +231,11 @@ input[type=text] {
   clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
 }
 
+.hoverZoom {
+  transition: transform 200ms;
+  transform: scale(1);
+}
+
 .hoverInfo.up {
   clip-path: polygon(0% 101%, 0% 101%, 0% 101%, 0% 101%);
 }
@@ -256,6 +261,23 @@ input[type=text] {
   z-index: 1005;
 }
 
+.hoverParent.hover {
+  z-index: 1005;
+}
+
+.hoverParent.hover > .hoverInfo {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+  /* clip-path: polygon(101% 101%, 0% 101%, 0% 0%, 101% 0%); */
+  clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
+}
+
+.hoverZoom:hover {
+  transform: scale(3);
+  z-index: 1000;
+}
+
 .hoverParent:hover > .hoverInfo {
   display: flex;
   position: absolute;
@@ -264,7 +286,15 @@ input[type=text] {
   clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
 }
 
+.hoverInfo:has(.hoverParent.hover) {
+  clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
+}
+
 .hoverInfo:has(.hoverParent:hover) {
+  clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
+}
+
+.hoverInfo:has(.modal.shown) {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
 }
 

@@ -1,6 +1,6 @@
 import { getResponsiveFormula, responsiveNegativePixels, responsivePixels } from "./util/util"
 
-export function LabeledDiv({label, rightLabel, children, onClick, style = {}, color = "#999", labelSize = 16, content}) {
+export function LabeledDiv({label, rightLabel, children, blur, onClick, style = {}, color = "#999", labelSize = 16, content}) {
   const padding = `${!!label ? responsivePixels(10) : responsivePixels(6)} ${responsivePixels(6)} ${responsivePixels(6)} ${responsivePixels(6)}`;
   const divStyle = {
     position: "relative",

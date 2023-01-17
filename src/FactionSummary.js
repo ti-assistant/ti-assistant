@@ -819,7 +819,11 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
   </div>
 }
 
-export function PlanetSummary({ planets, factionName, options = {} }) {
+export function PlanetSummary({ planets, faction, options = {} }) {
+  const router = useRouter();
+  const { game: gameid } = router.query;
+  const { data: gameOptions = {} } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+
   let resources = 0;
   let influence = 0;
   let cultural = 0;
@@ -828,8 +832,15 @@ export function PlanetSummary({ planets, factionName, options = {} }) {
   const skips = [];
   for (const planet of planets) {
     if (planet.ready || options.total) {
-      resources += planet.resources;
-      influence += planet.influence;
+      if (gameOptions.expansions.includes('codex-three') &&
+          faction.name === "Xxcha Kingdom" &&
+          faction.hero === "unlocked") {
+        resources += Math.max(planet.resources, planet.influence);
+        influence += Math.max(planet.resources, planet.influence);
+      } else {
+        resources += planet.resources;
+        influence += planet.influence;
+      }
       for (const attribute of planet.attributes) {
         if (attribute.includes("skip")) {
           skips.push(attribute);
@@ -945,6 +956,6 @@ export function FactionSummary({ factionName, options = {} }) {
         </div>
         <div style={{ fontSize: responsivePixels(20) }}>{pluralize('VP', VPs)}</div>
       </div>
-      {options.hidePlanets ? null : <PlanetSummary planets={updatedPlanets} factionName={factionName} options={options} />}
+      {options.hidePlanets ? null : <PlanetSummary planets={updatedPlanets} faction={faction} options={options} />}
     </div>);
 }
