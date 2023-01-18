@@ -40,6 +40,9 @@ function hasSkip(planet) {
  */
 export function applyPlanetAttachments(planet, attachments) {
   let updatedPlanet = {...planet};
+  if (!attachments) {
+    return updatedPlanet;
+  }
   updatedPlanet.attributes = [...planet.attributes];
   const planetAttachments = (planet.attachments ?? []).map((attachment) => {
     return attachments[attachment];

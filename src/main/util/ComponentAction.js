@@ -10,6 +10,7 @@ import { TechRow } from "../../TechRow";
 import { addSubStateTech, clearSubState, removeSubStateTech, setSubStateOther, setSubStateSelectedAction } from "../../util/api/subState";
 import { hasTech } from "../../util/api/techs";
 import { fetcher } from "../../util/api/util";
+import { getFactionColor, getFactionName } from "../../util/factions";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize, responsivePixels } from "../../util/util";
 import { TechSelectHoverMenu } from "./TechSelectHoverMenu";
@@ -218,8 +219,9 @@ export function ComponentAction({ factionName }) {
     }
   }
 
+  console.log(subState.component);
   const component = components[subState.component] ?? null;
-
+  const faction = factions[factionName];
 
   if (!component) {
     const filteredComponents = Object.values(components).filter((component) => {
@@ -227,7 +229,15 @@ export function ComponentAction({ factionName }) {
         return false;
       }
 
-      if (component.type === "tech" && !hasTech(factions[factionName], component.name)) {
+      if (component.subFaction && component.subFaction !== faction.startswith.faction) {
+        return false;
+      }
+
+      if (component.type === "tech" && !hasTech(faction, component.name)) {
+        return false;
+      }
+
+      if (component.leader === "hero" && faction.hero !== "unlocked") {
         return false;
       }
 

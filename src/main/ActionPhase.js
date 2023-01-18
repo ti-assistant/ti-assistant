@@ -462,32 +462,34 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
       const conqueredPlanets = ((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? [];
       return (
         <div className="flexColumn largeFont" style={{...style}}>
-          <LabeledDiv label="CONQUERED PLANETS" blur={true}>
+          {conqueredPlanets.length > 0 ? <LabeledDiv label="CONQUERED PLANETS">
             <React.Fragment>
-              {conqueredPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
+              <div className='flexColumn' style={{alignItems: "stretch"}}>
               {conqueredPlanets.map((planet) => {
                 const adjustedPlanet = applyPlanetAttachments(planets[planet], attachments)
                 return <PlanetRow key={planet} planet={adjustedPlanet} removePlanet={() => removePlanet(activeFaction.name, planet)} />
               })}
-              </div> : null}
-              {claimablePlanets.length > 0 ?
+              </div>
+            </React.Fragment>
+          </LabeledDiv> : null}
+          {claimablePlanets.length > 0 ?
               <HoverMenu label="Conquer Planet" content={
                 <div className="flexRow" style={targetButtonStyle}>
                   {claimablePlanets.map((planet) => {
                     return (
                       <button key={planet.name} style={{width: responsivePixels(90)}} onClick={() => addPlanet(activeFaction.name, planet)}>{planet.name}</button>);
                   })}
-                </div>} /> : null}
-            </React.Fragment>
-          </LabeledDiv>
-          <LabeledDiv label="SCORED SECRETS">
+          </div>} /> : null}
+          {scoredObjectives.length > 0 ? <LabeledDiv label="SCORED SECRETS">
             <React.Fragment>
-              {scoredObjectives.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
+              <div className='flexColumn' style={{alignItems: "stretch"}}>
               {scoredObjectives.map((objective) => {
                 return <ObjectiveRow key={objective} objective={objectives[objective]} removeObjective={() => undoObjective(activeFaction.name, objective)} />
               })}
-              </div> : null}
-              {scorableObjectives.length > 0 && scoredObjectives.length < 4 ?
+              </div>
+            </React.Fragment>
+          </LabeledDiv> : null}
+          {scorableObjectives.length > 0 && scoredObjectives.length < 4 ?
               <HoverMenu label="Score Secret Objective">
                 <div className="flexColumn" style={{...secretButtonStyle}}>
                 {scorableObjectives.map((objective) => {
@@ -496,8 +498,6 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                 })}
                 </div>
               </HoverMenu> : null}
-            </React.Fragment>
-          </LabeledDiv>
         </div>
       );
       // TODO: Display tech section for Nekro
@@ -609,9 +609,9 @@ export function ActivePlayerColumn({activeFaction, onDeckFaction}) {
         classNames="fade">
     <FactionCard faction={onDeckFaction} content={
                 <div className="flexColumn" style={{height: "100%", paddingBottom: responsivePixels(4), fontSize: responsivePixels(12)}}>
-                  <StaticFactionTimer factionName={onDeckFaction.name} style={{fontSize: responsivePixels(18), width: responsivePixels(140)}} />
+                  <StaticFactionTimer factionName={onDeckFaction.name} style={{fontSize: responsivePixels(24), width: responsivePixels(180)}} />
                 </div>
-              } style={{width: "auto", height: responsivePixels(60)}} opts={{iconSize: responsivePixels(44), fontSize: responsivePixels(24)}} />
+              } style={{width: "auto", height: responsivePixels(100)}} opts={{iconSize: responsivePixels(80), fontSize: responsivePixels(24)}} />
               </CSSTransition>
             </SwitchTransition>
   </div>);
@@ -663,7 +663,6 @@ export default function ActionPhase() {
   }
 
   const activeFaction = factions[state.activeplayer] ?? null;
-  console.log(activeFaction);
   const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
   const orderedStrategyCards = Object.values(strategyCards).filter((card) => card.faction).sort((a, b) => a.order - b.order);
 

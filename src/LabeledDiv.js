@@ -47,6 +47,7 @@ export function LabeledDiv({label, rightLabel, children, blur, onClick, style = 
       className="flexColumn"
       style={divStyle}
       onClick={onClick}>
+      <div style={{zIndex: "-2", boxSizing: "border-box", left: "1%", top: "1%", borderRadius: "10px", position: "absolute", width: "98%", height: "98%", backdropFilter: "blur(4px)"}}></div>
       {!!label ? <div className="mediumFont"
         style={labelStyle}
       >

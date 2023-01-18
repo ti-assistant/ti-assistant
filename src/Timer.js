@@ -74,10 +74,8 @@ export function AgendaTimer({}) {
       return;
     }
     
-    console.log("Agenda num: " + agendaNum);
     if (agendaNum === 1) {
       if (timers && firstAgendaTimer % 15 === 0) {
-        console.log("saving");
         saveAgendaTimer(mutate, gameid, timers, firstAgendaTimer, agendaNum);
       }
       setFirstAgendaTimer(firstAgendaTimer + 1);

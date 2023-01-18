@@ -306,7 +306,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
       }}>Claimed by {claimed}</div> : null
       }
       <div style={{display: "flex", flexDirection: "row", flexBasis: "50%", alignItems: "center"}}>
-        <div style={{zIndex: 1}}>{planet.name}</div>
+        <div>{planet.name}</div>
         <div
           style={{
             position: "relative",

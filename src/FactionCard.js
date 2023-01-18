@@ -551,7 +551,7 @@ export function FactionCard({ faction, rightLabel, onClick, style, content, chil
           backgroundColor: "#222"}}>
           Speaker
         </div> : null} */}
-      {opts.hideTitle ? null : <div className="flexRow" style={{zIndex: -1, position: "absolute", width: "100%", height: "100%"}}>
+      {opts.hideTitle ? null : <div className="flexRow" style={{zIndex: -2, position: "absolute", width: "100%", height: "100%"}}>
       <div className="flexRow" style={{zIndex: -1, opacity: "40%", position: "absolute", width: opts.iconSize ? opts.iconSize : "100%", height: opts.iconSize ? opts.iconSize : "100%"}}>
         <FullFactionSymbol faction={faction.name} size={100} />
 
