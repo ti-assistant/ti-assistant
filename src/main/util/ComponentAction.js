@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { capitalizeFirstLetter, Map } from "../../../pages/setup";
 import { HoverMenu } from "../../HoverMenu";
-import { LabeledDiv } from "../../LabeledDiv";
+import { LabeledDiv, LabeledLine } from "../../LabeledDiv";
 import { Modal } from "../../Modal";
 import { SelectableRow } from "../../SelectableRow";
 import { TechRow } from "../../TechRow";
@@ -185,9 +185,12 @@ function ComponentDetails({ factionName }) {
       break;
     }
   }
-  return <LabeledDiv label={label}>
+  return <div className="flexColumn" style={{width: "100%", gap: responsivePixels(4)}}>
+    <LabeledLine leftLabel={label} />
+    <div className="flexColumn" style={{width: "90%"}}>
     {innerContent}
-  </LabeledDiv>;
+    </div>
+  </div>;
 }
 
 export function ComponentAction({ factionName }) {
@@ -256,7 +259,7 @@ export function ComponentAction({ factionName }) {
         <InfoContent component={component} />
       } top="35%" level={2} />
     <div className="flexColumn largeFont" style={{width: "100%", justifyContent: "flex-start"}}>
-      <LabeledDiv label="SELECTED COMPONENT" style={{width: "90%"}}> 
+      <LabeledDiv label="COMPONENT" style={{width: "90%"}}> 
         <SelectableRow removeItem={() => selectComponent(null)}>
           {component.name}
           <div className="popupIcon" onClick={displayInfo} style={{fontSize: responsivePixels(16)}}>&#x24D8;</div>

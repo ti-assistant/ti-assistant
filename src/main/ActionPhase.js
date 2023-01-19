@@ -18,7 +18,7 @@ import { PlanetRow } from '../PlanetRow.js';
 import { ObjectiveRow } from '../ObjectiveRow.js';
 import { claimPlanet } from '../util/api/planets.js';
 import { removeObjective, scoreObjective } from '../util/api/objectives.js';
-import { LabeledDiv } from '../LabeledDiv.js';
+import { LabeledDiv, LabeledLine } from '../LabeledDiv.js';
 import { HoverMenu } from '../HoverMenu.js';
 import { setSpeaker } from '../util/api/state.js';
 import { TechIcon, TechRow } from '../TechRow.js';
@@ -69,7 +69,7 @@ export function FactionActionButtons({factionName, buttonStyle}) {
   const orderedStrategyCards = Object.values(strategyCards).filter((card) => card.faction).sort((a, b) => a.order - b.order);
 
   return (
-  <div className="flexRow" style={{padding: "0px 8px", width: "100%", flexWrap: "wrap"}}>
+  <div className="flexRow" style={{padding: "0px 8px", boxSizing: "border-box", width: "100%", flexWrap: "wrap"}}>
     {getStrategyCardsForFaction(orderedStrategyCards, activeFaction.name).map((card) => {
       if (card.used) {
         return null
@@ -265,7 +265,8 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
         const numTechs = isActive || factionName === "Universities of Jol-Nar" ? 2 : 1;
         return (
           activeFaction.name !== "Nekro Virus" ?
-          <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>{isActive ? "Technology Primary" : "Technology Secondary"}</div>}>
+          <div className="flexColumn largeFont" style={{width: "100%", gap: responsivePixels(4)}}>
+          <LabeledLine leftLabel={isActive ? "Technology Primary" : "Technology Secondary"} />
             <React.Fragment>
               {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
               {researchedTech.map((tech) => {
@@ -279,14 +280,16 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                   direction="vertical" />
               : null}
             </React.Fragment>
-            </LabeledDiv> : null
+            </div> : null
         )
       }
       return (
-        <div className="flexColumn largeFont" style={{...style}}>
+        <div className="flexColumn largeFont" style={{...style, gap: responsivePixels(4)}}>
           {activeFaction.name !== "Nekro Virus"  ?
-          <LabeledDiv label="PRIMARY" style={{width: "75%"}} content={
-            <React.Fragment>
+            <div className='flexColumn' style={{gap: responsivePixels(4), width: "100%"}}>
+            <LabeledLine leftLabel="PRIMARY" />
+          {/* // <LabeledDiv label="PRIMARY" style={{width: "75%"}} content={ */}
+
               {researchedTech.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
               {researchedTech.map((tech) => {
                 return <TechRow key={tech} tech={techs[tech]} removeTech={() => removeTech(activeFaction.name, tech)} />
@@ -298,8 +301,9 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                   selectTech={(tech) => addTech(activeFaction.name, tech)}
                   direction="horizontal" />
               : null}
-            </React.Fragment>} /> : null}
-            <LabeledDiv label="SECONDARY" content={
+            </div> : null}
+            <div className='flexColumn' style={{gap: responsivePixels(4), width: "100%"}}>
+            <LabeledLine leftLabel="SECONDARY" />
               <div className="flexRow mediumFont" style={{paddingTop: responsivePixels(4), width: "100%", flexWrap: "wrap"}}>
               {orderedFactions.map((faction) => {
                 if (faction.name === activeFaction.name || faction.name === "Nekro Virus") {
@@ -326,15 +330,16 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                 );
               })}
               </div>
-            } />
+            </div>
           </div>
       );
     case "Politics":
       return (
         <div className="flexColumn" style={{gap: "4px", ...style}}>
-          <LabeledDiv label="NEW SPEAKER" style={{width: "90%"}} content={           
             <React.Fragment>
-              {subState.speaker ? <div className='flexColumn' style={{alignItems: "stretch"}}>
+              {subState.speaker ?
+                <LabeledDiv label="NEW SPEAKER" style={{width: "90%"}}>        
+                <div className='flexColumn' style={{alignItems: "stretch"}}>
                 <SelectableRow itemName={subState.speaker} removeItem={resetSpeaker} content={
                   <BasicFactionTile faction={factions[subState.speaker]} />
                 } />
@@ -342,9 +347,9 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                 return <PlanetRow key={planet.name} planet={planet} removePlanet={removePlanet} />
               })} */}
               </div>
-              : null}
-              {!subState.speaker  ?
-              <HoverMenu label="Select Speaker" content={
+              </LabeledDiv>   
+              : 
+              <HoverMenu label="Select Speaker">
                 <div className="flexRow" style={targetButtonStyle}>
                   {orderedFactions.map((faction) => {
                     if (state.speaker === faction.name) {
@@ -353,15 +358,16 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                     return (
                       <button key={faction.name} onClick={() => selectSpeaker(faction.name)}>{getFactionName(faction)}</button>);
                   })}
-                </div>} /> : null}
-            </React.Fragment>}
-          />
+                </div>
+              </HoverMenu>}
+            </React.Fragment>
         </div>
       );
     case "Diplomacy":
       if (activeFaction.name === "Xxcha Kingdom") {
         return (
           <div className="flexColumn largeFont" style={{...style}}>
+            <LabeledLine leftLabel="PRIMARY" />
             <LabeledDiv label="PEACE ACCORDS" content={           
               <React.Fragment>
                 {claimedPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
@@ -380,6 +386,49 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                   </div>} /> : null}
               </React.Fragment>}
             />
+          </div>
+        );
+      } else if (factions["Xxcha Kingdom"]) {
+        const xxchaPlanets = (((subState.factions ?? {})["Xxcha Kingdom"] ?? {}).planets ?? []);
+        const nonXxchaPlanets = Object.values(planets ?? {}).filter((planet) => {
+          if ((planet.owners ?? []).includes("Xxcha Kingdom")) {
+            return false;
+          }
+          if (claimedPlanets.includes(planet.name)) {
+            return false;
+          }
+          if (claimedPlanets.length > 0) {
+            if (planets[claimedPlanets[0]].system) {
+              return planet.system === planets[claimedPlanets[0]].system;
+            }
+            if (planets[claimedPlanets[0]].faction) {
+              return planet.faction === planets[claimedPlanets[0]].faction;
+            }
+            return false;
+          }
+          return true;
+        });
+        return (
+          <div className="flexColumn largeFont" style={{...style}}>
+            <LabeledLine leftLabel="SECONDARY" />
+            <LabeledDiv label={`${getFactionName(factions["Xxcha Kingdom"])} - Peace Accords`} color={getFactionColor(factions["Xxcha Kingdom"])}>
+              <React.Fragment>
+                {xxchaPlanets.length > 0 ? <div className='flexColumn' style={{alignItems: "stretch"}}>
+                {xxchaPlanets.map((planet) => {
+                  const adjustedPlanet = applyPlanetAttachments(planets[planet], attachments)
+                  return <PlanetRow key={planet} planet={adjustedPlanet} removePlanet={() => removePlanet("Xxcha Kingdom", planet)} />
+                })}
+                </div> : null}
+                {nonXxchaPlanets.length > 0 && xxchaPlanets.length === 0  ?
+                <HoverMenu label="Claim Empty Planet" content={
+                  <div className="flexRow" style={targetButtonStyle}>
+                    {nonXxchaPlanets.map((planet) => {
+                      return (
+                        <button key={planet.name} style={{width: responsivePixels(90)}} onClick={() => addPlanet("Xxcha Kingdom", planet)}>{planet.name}</button>);
+                    })}
+                  </div>} /> : null}
+              </React.Fragment>
+            </LabeledDiv>
           </div>
         );
       }
@@ -464,7 +513,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
         <div className="flexColumn largeFont" style={{...style}}>
           {conqueredPlanets.length > 0 ? <LabeledDiv label="CONQUERED PLANETS">
             <React.Fragment>
-              <div className='flexColumn' style={{alignItems: "stretch"}}>
+              <div className='flexColumn' style={{alignItems: "stretch", width: "100%"}}>
               {conqueredPlanets.map((planet) => {
                 const adjustedPlanet = applyPlanetAttachments(planets[planet], attachments)
                 return <PlanetRow key={planet} planet={adjustedPlanet} removePlanet={() => removePlanet(activeFaction.name, planet)} />

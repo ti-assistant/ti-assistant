@@ -1,5 +1,8 @@
 :root{
+  --negative-four-pixel: min( calc(-4px + (-8 - -4) * ((100vw - 1280px) / (2560 - 1280))), -4px);
+  --negative-two-pixel: min( calc(-2px + (-4 - -2) * ((100vw - 1280px) / (2560 - 1280))), -2px);
   --one-pixel: max( calc(1px + (2 - 1) * ((100vw - 1280px) / (2560 - 1280))), 1px);
+  --two-pixel: max( calc(2px + (4 - 2) * ((100vw - 1280px) / (2560 - 1280))), 2px);
   --three-pixel: max( calc(3px + (6 - 3) * ((100vw - 1280px) / (2560 - 1280))), 3px);
   --four-pixel: max( calc(4px + (8 - 4) * ((100vw - 1280px) / (2560 - 1280))), 4px);
   --five-pixel: max( calc(5px + (10 - 5) * ((100vw - 1280px) / (2560 - 1280))), 5px);
@@ -68,6 +71,11 @@ body {
   font-size: 18px;
   font-size: var(--eighteen-pixel);
   /* font-size: calc(12px + (40 - 12) * ((100vw - 900) / (2560 - 900))); */
+}
+
+.hugeFont {
+  font-size: 20px;
+  font-size: var(--twenty-pixel);
 }
 
 .extraLargeFont {
@@ -378,6 +386,23 @@ input[type=text] {
   display: flex;
 }
 
+.leftLabel {
+  position: absolute;
+  white-space: nowrap;
+  left: var(--six-pixel);
+  top: var(--negative-two-pixel);
+  background-color: #222;
+  border-radius: var(--five-pixel);
+  padding: var(--two-pixel) var(--four-pixel);
+}
+.centerLabel {
+  position: absolute;
+  white-space: nowrap;
+  top: var(--negative-two-pixel);
+  background-color: #222;
+  border-radius: var(--five-pixel);
+  padding: var(--two-pixel) var(--four-pixel);
+}
 
 @media only screen and (max-width: 900px) {
   body {
@@ -397,5 +422,12 @@ input[type=text] {
     margin: 20px 0px;
     font-size: 24px;
     text-align: center;
+  }
+
+  .leftLabel {
+    top: var(--negative-four-pixel);
+  }
+  .centerLabel {
+    top: var(--negative-two-pixel);
   }
 }

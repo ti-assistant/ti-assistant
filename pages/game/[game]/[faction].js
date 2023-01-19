@@ -21,7 +21,7 @@ import { FactionTimer, StaticFactionTimer } from "../../../src/Timer";
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from "../../../src/util/planets";
 import { filterToOwnedTechs, filterToUnownedTechs, sortTechs } from "../../../src/util/techs";
 import { Updater, useSharedUpdateTimes } from "../../../src/Updater";
-import { LabeledDiv } from "../../../src/LabeledDiv";
+import { LabeledDiv, LabeledLine } from "../../../src/LabeledDiv";
 import { StrategyCard } from "../../../src/StrategyCard";
 import { assignStrategyCard } from "../../../src/util/api/cards";
 import { nextPlayer } from "../../../src/util/api/state";
@@ -238,13 +238,15 @@ function PhaseSection() {
         phaseContent = 
           <React.Fragment>
             <FactionActionButtons factionName={factionName} />
+            <div className="flexColumn" style={{width: "95%"}}>
             <AdditionalActions
               factionName={factionName}
               visible={!!subState.selectedAction}
               style={{width: "100%"}}
               hoverMenuStyle={{overflowX: "scroll", maxWidth: "85vw"}} 
               factionOnly={true} />
-            {subState.selectedAction ? <div className="flexRow" style={{width: "100%", paddingTop: "8px"}}>
+              </div>
+            {subState.selectedAction ? <div className="flexRow" style={{width: "100%"}}>
               <NextPlayerButtons factionName={factionName} buttonStyle={{fontSize: "20px"}} />
             </div> : null}
           </React.Fragment>;
@@ -452,9 +454,13 @@ function PhaseSection() {
     return null;
   }
   return (
-    <LabeledDiv label={phaseName}>
+    <div className="flexColumn">
+      <LabeledLine label={phaseName} />
       {phaseContent}
-    </LabeledDiv>
+    </div>
+    // <LabeledDiv label={phaseName}>
+    //   {phaseContent}
+    // </LabeledDiv>
   )
 }
 
@@ -662,9 +668,11 @@ function FactionContent() {
       }}
     >
       <div
-        style={{ display: "flex", flexDirection: "column", width: "100%", padding: "8px"}}
+        className="flexColumn"
+        style={{ width: "100%", alignItems: "stretch", padding: "0px 8px"}}
       >
       <PhaseSection />
+      <LabeledLine label="FACTION DETAILS" />
         {/* Tabs */}
         <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid grey"}}>
           <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content="Techs" />
@@ -689,7 +697,7 @@ function FactionContent() {
           {/* <button onClick={readyAll} disabled={allPlanetsReady()}>Ready All</button>
           <button onClick={exhaustAll} disabled={allPlanetsExhausted()}>Exhaust All</button> */}
         </div>
-        <div style={{maxHeight: `${maxHeight}px`, overflow: "auto", paddingBottom: "4px"}}>
+        <div style={{maxHeight: `${maxHeight}px`, boxSizing: "border-box", overflow: "auto", paddingBottom: "4px"}}>
           {updatedPlanets.map((planet) => {
             return <PlanetRow key={planet.name} factionName={playerFaction} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} opts={{showAttachButton: true}} />;
           })}

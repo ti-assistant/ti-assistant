@@ -194,8 +194,9 @@ export default async function handler(req, res) {
           updates[`updates.factions.timestamp`] = timestamp;
         });
         (value.planets ?? []).forEach((planet) => {
-          updates[`planets.${factionName}.planets.${planet}.ready`] = true;
-          updates[`planets.${planet}.owners`] = [factionName];
+          const planetName = planet === "[0.0.0]" ? "000" : planet;
+          updates[`planets.${factionName}.planets.${planetName}.ready`] = true;
+          updates[`planets.${planetName}.owners`] = [factionName];
           updates[`updates.planets.timestamp`] = timestamp;
           updates[`updates.factions.timestamp`] = timestamp;
         });

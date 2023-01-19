@@ -75,7 +75,6 @@ export function SmallStrategyCard({ card, active }) {
       flexDirection: "column",
       fontSize: responsivePixels(24),
       height: responsivePixels(54),
-      zIndex: -1
     }}>
 
 
