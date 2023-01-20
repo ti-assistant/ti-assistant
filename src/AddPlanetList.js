@@ -74,8 +74,8 @@ export function AddPlanetList({ planets, addPlanet }) {
   const legendaryPlanets = remainingPlanets.filter((planet) => (planet.attributes ?? []).includes("legendary"));
 
   return (
-    <div>
-      <div className="flexRow" style={{ position: "sticky", top: "36px", backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
+    <div className="flexColumn" style={{alignItems  : "stretch"}}>
+      <div className="flexRow" style={{backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px"}}>
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown} content={
           "Planets"
         } />
@@ -87,15 +87,15 @@ export function AddPlanetList({ planets, addPlanet }) {
         } />
       </div>
       <TabBody id="normal" selectedId={tabShown} content={
-        <div>
-          <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "14px"}}>
+        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px"}}>
+          {/* <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "14px"}}>
           <label>
               <input type="checkbox"
             checked={groupBySystem}
             onChange={toggleGroupBySystem}
           />Group by System</label>
-          </div>
-          <div>
+          </div> */}
+          {/* <div> */}
             {groupBySystem ? 
               planetsBySystem.map((system) => {
                 return <SystemRow key={system[0].system} planets={system} addPlanet={addPlanet} />;
@@ -104,18 +104,18 @@ export function AddPlanetList({ planets, addPlanet }) {
                 return <PlanetRow key={planet.name} planet={planet} addPlanet={addPlanet} />;
               })
             }
-          </div>
+          {/* </div> */}
         </div>
       } />
       <TabBody id="home" selectedId={tabShown} content={
-        <div>
+        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px"}}>
           {homePlanets.map((planet) => {
             return <PlanetRow key={planet.name} planet={planet} addPlanet={addPlanet} />;
           })}
         </div>
       } />
       <TabBody id="legendary" selectedId={tabShown} content={
-        <div>
+        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px"}}>
           {legendaryPlanets.map((planet) => {
             return <PlanetRow key={planet.name} planet={planet} addPlanet={addPlanet} />;
           })}

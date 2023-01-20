@@ -225,7 +225,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
     flexWrap: "wrap",
     alignItems: "stretch",
     gap: responsivePixels(4),
-    maxHeight: responsivePixels(364),
+    maxHeight: responsivePixels(404),
     writingMode: "vertical-lr",
     justifyContent: "flex-start",
     ...hoverMenuStyle,

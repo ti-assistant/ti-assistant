@@ -1,6 +1,6 @@
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
-import { fetchObjectives, fetchStrategyCards } from '../../../server/util/fetch';
+import { fetchComponents, fetchObjectives, fetchStrategyCards } from '../../../server/util/fetch';
 import { computeVotes } from '../../../src/main/AgendaPhase';
 import { getOnDeckFaction } from '../../../src/util/helpers';
 
@@ -166,6 +166,7 @@ export default async function handler(req, res) {
     case "FINALIZE_SUB_STATE": {
       const subState = gameRef.data().subState ?? {};
       const gameObjectives = await fetchObjectives(gameid, req.cookies.secret);
+      const components = await fetchComponents(gameid);
       updates = {
         "subState": FieldValue.delete(),
         [timestampString]: timestamp,
@@ -184,6 +185,13 @@ export default async function handler(req, res) {
           updates[factionString] = factionOrder;
         }
       }
+      if (subState.component) {
+        const component = components[subState.component];
+        if (component.type === "leader" && component.leader === "hero") {
+          updates[`factions.${component.faction}.hero`] = "purged";
+          updates[`updates.factions.timestamp`] = timestamp;
+        }
+      }
       (subState.objectives ?? []).forEach((objective) => {
         updates[`objectives.${objective}.selected`] = true;
         updates[`updates.objectives.timestamp`] = timestamp;
@@ -193,6 +201,10 @@ export default async function handler(req, res) {
           updates[`factions.${factionName}.techs.${tech}.ready`] = true;
           updates[`updates.factions.timestamp`] = timestamp;
         });
+        (value.removeTechs ?? []).forEach((tech) => {
+          updates[`factions.${factionName}.techs.${tech}`] = FieldValue.delete();
+          updates[`updates.factions.timestamp`] = timestamp;
+        })
         (value.planets ?? []).forEach((planet) => {
           const planetName = planet === "[0.0.0]" ? "000" : planet;
           updates[`planets.${factionName}.planets.${planetName}.ready`] = true;

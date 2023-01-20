@@ -7,6 +7,7 @@ import { ObjectiveRow } from "/src/ObjectiveRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 import { revealObjective, removeObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
 import { useSharedUpdateTimes } from "./Updater";
+import { LabeledLine } from "./LabeledDiv";
 
 
 function sortObjectives(objectives, field, descending = false) {
@@ -92,8 +93,9 @@ function SecretTab() {
 
   return <div>
     <div>
+      <LabeledLine />
       {factionSecrets.size !== 0 ?
-        <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+        <div className="flexColumn largeFont" style={{maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {Array.from(factionSecrets).map((obj) => {
             return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}
@@ -201,17 +203,19 @@ export function ObjectiveList() {
 
   function changeTab(tabName) {
     if (tabShown === tabName) {
-      return;
+      setEditMode(false);
+      setTabShown(null);
+    } else {
+      setEditMode(false);
+      setTabShown(tabName);
     }
-    setEditMode(false);
-    setTabShown(tabName);
   }
 
   const maxHeight = screen.height - 420;
 
   return (
     <div>
-      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", padding: "4px 4px 0px 4px", borderBottom: "1px solid grey"}}>
+      <div className="flexRow" style={{ position: "sticky", top: "41px", backgroundColor: "#222", padding: "4px 4px 0px 4px"}}>
         <Tab selectTab={changeTab} id="stage-one" selectedId={tabShown} content={
           "Stage I"
         } />
@@ -226,8 +230,9 @@ export function ObjectiveList() {
         } />
       </div>
       <TabBody id="stage-one" selectedId={tabShown} content={
-        <div>
-          {stageOneObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+        <div className="largeFont">
+          <LabeledLine />
+          {stageOneObjectives.length !== 0 ? <div className="flexColumn" style={{maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
             {stageOneObjectives.map((obj) => {
               return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
             })}
@@ -238,8 +243,9 @@ export function ObjectiveList() {
         </div>
       } />
       <TabBody id="stage-two" selectedId={tabShown} content={
-        <div>
-          {stageTwoObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+        <div className="largeFont">
+          <LabeledLine />
+          {stageTwoObjectives.length !== 0 ? <div className="flexColumn" style={{maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
             {stageTwoObjectives.map((obj) => {
               return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
             })}
@@ -253,8 +259,9 @@ export function ObjectiveList() {
         <SecretTab />
       } />
       <TabBody id="other" selectedId={tabShown} content={
-        <div>
-          {otherObjectives.length !== 0 ? <div className="flexColumn" style={{borderBottom: "1px solid grey", maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
+        <div className="largeFont">
+        <LabeledLine />
+          {otherObjectives.length !== 0 ? <div className="flexColumn" style={{maxHeight: `${maxHeight}px`, overflow: "auto", display: "flex", padding: "4px 0px", justifyContent: "stretch", alignItems: "stretch"}}>
           {otherObjectives.map((obj) => {
             return <ObjectiveRow key={obj.name} faction={factionName} objective={obj} scoreObjective={scoreObj} removeObjective={editMode ? null : () => removeObj(obj.name)} addObjective={editMode ? () => addObj(obj.name) : null} />;
           })}

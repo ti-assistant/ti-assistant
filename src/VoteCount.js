@@ -31,7 +31,8 @@ switch (agenda.elect) {
     case "Strategy Card":
       return [...Object.keys(strategycards), "Abstain"];
     case "Planet":
-      return [...Object.keys(planets), "Abstain"];
+      const ownedPlanetNames = Object.values(planets).filter((planet) => (planet.owners ?? []).length > 0).map((planet) => planet.name);
+      return [...ownedPlanetNames, "Abstain"];
     case "Cultural Planet":
       const culturalPlanets = Object.values(planets).filter((planet) => {
         return planet.type === "Cultural";
@@ -49,7 +50,7 @@ switch (agenda.elect) {
       return [...industrialPlanets, "Abstain"];
     case "Non-Home Planet Other Than Mecatol Rex":
       const electablePlanets = Object.values(planets).filter((planet) => {
-        return !planet.home && planet.name !== "Mecatol Rex";
+        return (planet.owners ?? []).length > 0 && !planet.home && planet.name !== "Mecatol Rex";
       }).map((planet) => planet.name);
       return [...electablePlanets, "Abstain"];
     case "Law":

@@ -23,7 +23,7 @@ export function TechIcon({ type, width, height }) {
 }
 
 export function WrappedTechIcon({ type, size }) {
-  const width = responsivePixels(size - 1);
+  const width = responsivePixels(size + 2);
   const height = responsivePixels(size);
   return <div style={{position: "relative", width: width, height: height}}>
     <FullTechIcon type={type} />
@@ -47,9 +47,9 @@ export function FullTechIcon({ type }) {
 
 function UnitStat({name, stat}) {
   return (
-    <div style={{flex: "0 0 24%", boxSizing: "border-box", border: "1px solid #eee", borderRadius: "10px"}}>
-      <div style={{fontSize: "32px"}}>{stat}</div>
-      <div style={{fontSize: "20px", borderTop: "1px solid #eee"}}>{name}</div>
+    <div style={{width: responsivePixels(82), boxSizing: "border-box", border: "1px solid #eee", borderRadius: "10px"}}>
+      <div style={{fontSize: responsivePixels(24), borderBottom: "1px solid #eee"}}>{stat}</div>
+      <div style={{fontSize: responsivePixels(14), padding: "0px 6px"}}>{name}</div>
     </div>
   );
 }
@@ -59,11 +59,11 @@ function UnitStatBlock({stats}) {
     return null;
   }
   return (
-    <div className="flexRow" style={{justifyContent: "flex-start", marginTop: "4px", fontFamily:"Slider", alignItems: "stretch", minWidth: "440px", width: "100%"}}>
-      {stats.cost ? <UnitStat name="COST" stat={stats.cost} /> : <div style={{flex: "0 0 25%"}}></div>}
-      {stats.combat ? <UnitStat name="COMBAT" stat={stats.combat} /> : <div style={{flex: "0 0 25%"}}></div>}
-      {stats.move ? <UnitStat name="MOVE" stat={stats.move} /> : <div style={{flex: "0 0 25%"}}></div>}
-      {stats.capacity ? <UnitStat name="CAPACITY" stat={stats.capacity} /> : <div style={{flex: "0 0 25%"}}></div>}
+    <div className="flexRow" style={{gap: responsivePixels(3), padding: `0px ${responsivePixels(4)}`, margin: "4px 4px 4px 0px", fontFamily:"Slider", alignItems: "stretch", justifyContent: "center", boxSizing: "border-box"}}>
+      <UnitStat name="COST" stat={stats.cost ?? "-"} />
+      <UnitStat name="COMBAT" stat={stats.combat ?? "-"} />
+      <UnitStat name="MOVE" stat={stats.move ?? "-"} />
+      <UnitStat name="CAPACITY" stat={stats.capacity ?? "-"} />
     </div>
   )
 }
@@ -71,7 +71,7 @@ function UnitStatBlock({stats}) {
 function InfoContent({tech}) {
   const description = tech.description.replaceAll("\\n", "\n");
   return (
-    <div className="myriadPro" style={{maxWidth: responsivePixels(800), minWidth: responsivePixels(300), padding: responsivePixels(4), whiteSpace: "pre-line", textAlign: "center", fontSize: responsivePixels(32)}}>
+    <div className="myriadPro" style={{width: "100%", padding: responsivePixels(4), whiteSpace: "pre-line", textAlign: "center", fontSize: responsivePixels(32)}}>
       {description}
       <UnitStatBlock stats={tech.stats} />
     </div>
@@ -109,7 +109,7 @@ export function TechRow({tech, updateTech, removeTech, addTech, leftContent, opt
         })}
       </div> */}
       <div style={{display: "flex", flexDirection: "row", flexGrow: 2, alignItems: "center"}}>
-        <div style={{ position: "relative", display: "flex", color: getTechColor(tech)}}>
+        <div style={{ position: "relative", display: "flex", color: getTechColor(tech), zIndex: 0}}>
           {tech.name}
           {tech.faction ? (
         <div

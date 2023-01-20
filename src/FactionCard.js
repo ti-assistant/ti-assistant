@@ -97,12 +97,14 @@ export function FactionSymbol({ faction, size }) {
       width = height * 0.944;
       break;
   }
-  return <Image src={`/images/factions/${faction}.webp`} alt={`${faction} Icon`}
+  const adjustedFactionName = faction.replace("'", "");
+  return <Image src={`/images/factions/${adjustedFactionName}.webp`} alt={`${faction} Icon`}
     width={`${width}px`} height={`${height}px`} />;
 }
 
 export function FullFactionSymbol({ faction }) {
-  return <Image src={`/images/factions/${faction}.webp`} alt={`${faction} Icon`}
+  const adjustedFactionName = faction.replace("'", "");
+  return <Image src={`/images/factions/${adjustedFactionName}.webp`} alt={`${faction} Icon`}
     layout="fill" 
     objectFit='contain'/>;
 }

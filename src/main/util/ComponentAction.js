@@ -31,7 +31,8 @@ function ComponentSelect({ components, selectComponent }) {
   const techs = components.filter((component) => component.type === "tech");
   const leaders = components.filter((component) => component.type === "leader");
   const exploration = components.filter((component) => component.type === "relic");
-  const others = components.filter((component) => component.type !== "leader" && component.type !== "tech" && component.type !== "card" && component.type !== "relic");
+  const promissory = components.filter((component) => component.type === "promissory");
+  const others = components.filter((component) => component.type !== "leader" && component.type !== "tech" && component.type !== "card" && component.type !== "relic" && component.type !== "promissory");
 
   const innerStyle = {
     fontFamily: "Myriad Pro",
@@ -43,7 +44,9 @@ function ComponentSelect({ components, selectComponent }) {
     writingMode: "vertical-lr",
     justifyContent: "flex-start"};
 
-  return <div className="flexRow" style={{
+  const className = window.innerWidth < 900 ? "flexColumn" : "flexRow";
+
+  return <div className={className} style={{
     padding: responsivePixels(8),
     alignItems: "stretch",
     gap: responsivePixels(4),
@@ -65,9 +68,10 @@ function ComponentSelect({ components, selectComponent }) {
     {leaders.length > 0 ? <HoverMenu label="Leaders">
       <div className="flexRow" style={{padding: responsivePixels(8)}}>
       {leaders.map((component) => {
-        return <LabeledDiv key={component.name} label={capitalizeFirstLetter(component.leader)}>
-          <button key={component.name} onClick={() => selectComponent(component.name)}>{component.name}</button>
-        </LabeledDiv>
+        return <div className="flexColumn" key={component.name}>
+          <LabeledLine label={capitalizeFirstLetter(component.leader)} />
+          <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+        </div>
       })}
       </div>
     </HoverMenu> : null}
@@ -76,6 +80,19 @@ function ComponentSelect({ components, selectComponent }) {
       {exploration.map((component) => {
         return <button key={component.name} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
+      </div>
+    </HoverMenu> : null}
+    {promissory.length > 0 ? <HoverMenu label="Promissory">
+      <div className="flexRow" style={{padding: responsivePixels(8)}}>
+      {promissory.map((component) => {
+        return <div className="flexColumn" key={component.name}>
+          <LabeledLine label={capitalizeFirstLetter(component.faction)} />
+          <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+        </div>
+        return <div className="flexColumn" style={{gap: responsivePixels(4)}}>{capitalizeFirstLetter(component.faction)}:
+            <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+          </div>
+        })}
       </div>
     </HoverMenu> : null}
     {others.length > 0 ? <HoverMenu label="Other">
@@ -213,23 +230,26 @@ export function ComponentAction({ factionName }) {
   }
 
 
-  function selectComponent(componentName) {
+  async function selectComponent(componentName) {
     if (componentName === null) {
-      clearSubState(mutate, gameid, subState);
+      await clearSubState(mutate, gameid, subState);
       setSubStateSelectedAction(mutate, gameid, subState, "Component");
     } else {
       setSubStateOther(mutate, gameid, subState, "component", componentName);
     }
   }
 
-  console.log(subState.component);
   const component = components[subState.component] ?? null;
   const faction = factions[factionName];
 
   if (!component) {
     const filteredComponents = Object.values(components).filter((component) => {
-      if (component.faction && component.faction !== factionName) {
-        return false;
+      if (component.faction) {
+        if (component.type === "promissory" && component.faction === faction.name) {
+          return false
+        } else if (component.type !== "promissory" && component.faction !== faction.name) {
+          return false;
+        }
       }
 
       if (component.subFaction && component.subFaction !== faction.startswith.faction) {

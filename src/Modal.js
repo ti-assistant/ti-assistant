@@ -31,8 +31,8 @@ export function Modal({ closeMenu, level, visible, title, content, top }) {
       timeout={500}
       classNames="modal"
     >
-      <div style={{position: "relative", backgroundColor: "#222", maxWidth: "85%", maxHeight: "90vh", overflow: "auto"}}>  
-      <div className="flexRow" style={{padding: responsivePixels(4), borderBottom: `${responsivePixels(1)} solid grey`, justifyContent: "flex-start", alignItems: "center", position: "sticky", top: 0, backgroundColor: "#222"}}>
+      <div style={{position: "relative", backgroundColor: "#222", maxWidth: "85%", maxHeight: "90vh", overflow: "hidden"}}>  
+      <div className="flexRow" style={{padding: responsivePixels(4), borderBottom: `${responsivePixels(1)} solid grey`, justifyContent: "flex-start", zIndex: 1, alignItems: "center", position: "sticky", top: 0, backgroundColor: "#222"}}>
         {closeMenu ? <div
             style={{
               color: "grey",

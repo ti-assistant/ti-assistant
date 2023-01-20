@@ -344,14 +344,16 @@ function PhaseSection() {
     case "AGENDA": {
       phaseName = "AGENDA PHASE";
       phaseContent = <React.Fragment>
-        <LabeledDiv label="Speaker Actions" style={{marginTop: "4px", paddingTop: "12 px"}}>
-            {!currentAgenda ? <HoverMenu label="Reveal and Read one Agenda">
+            {!currentAgenda ?
+                    <LabeledDiv label="Speaker Actions" style={{marginTop: "4px", paddingTop: "12 px"}}>
+                    <HoverMenu label="Reveal and Read one Agenda">
             <div className='flexRow' style={{maxWidth: "85vw", gap: "4px", maxHeight: "400px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
               {orderedAgendas.map((agenda) => {
                   return <button key={agenda.name} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                 })}
               </div>
-            </HoverMenu> :
+            </HoverMenu>
+            </LabeledDiv> :
             <React.Fragment>
               <div className="largeFont" style={{width: "100%"}}>
               <LabeledDiv label={label}>
@@ -360,28 +362,31 @@ function PhaseSection() {
               </div>
               {currentAgenda.name === "Covert Legislation" ?
                 (subState.outcome ? 
-                  <LabeledDiv label="ELIGIBLE OUTCOMES">
+                  <LabeledDiv label="ELIGIBLE OUTCOMES" style={{paddingTop: "8px"}}>
                   <SelectableRow itemName={subState.outcome} content={
                     <div style={{display: "flex", fontSize: "18px"}}>
                       {subState.outcome}
                     </div>} removeItem={() => selectEligibleOutcome(null)} />
                   </LabeledDiv> :
+                  <LabeledDiv label="Speaker Actions" style={{marginTop: "4px", paddingTop: "12px"}}>
                 <HoverMenu label="Reveal Eligible Outcomes">
                   <div className='flexColumn' style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: 'flex-start'}}>
                   {Array.from(outcomes).map((outcome) => {
                     return <button key={outcome} onClick={() => selectEligibleOutcome(outcome)}>{outcome}</button>
                   })}
                   </div>
-                </HoverMenu>)
+                </HoverMenu>
+                  </LabeledDiv>)
               : null}
             </React.Fragment>}
-        </LabeledDiv>
         {currentAgenda ? 
           <div className="flexColumn" style={{alignItems: "stretch", width: "100%"}}>
-            <LabeledDiv label="VOTE ON AGENDA">
-              <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Target</div>}>
+            <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
+              {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Target</div>}> */}
+              <div className="flexRow" style={{width: "100%", justifyContent: "center"}}>
+                Target:
           <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"}>
-            <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
+            <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
                   {targets.map((target) => {
                     return (
                       <button key={target} onClick={() => {castVotes(target, 0)}}>{target}</button>
@@ -389,9 +394,11 @@ function PhaseSection() {
                   })}
                 </div>
               </HoverMenu>
-            </LabeledDiv>
-            <div className="flexRow" style={{width: '100%', gap: "12px", alignItems: "stretch"}}>
-              <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Available Votes</div>}>
+              </div>
+            {/* </LabeledDiv> */}
+            <div className="flexRow" style={{width: '100%', justifyContent: "center", alignItems: "center"}}>
+              Available Votes: 
+              {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Available Votes</div>}> */}
                 
         <div className="votingBlock">
               <div className="influenceSymbol">
@@ -404,21 +411,26 @@ function PhaseSection() {
             + {extraVotes}
             </div>
             </div>
-              </LabeledDiv>
-            <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Cast Votes</div>}>
+            </div>
+              {/* </LabeledDiv> */}
+            {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Cast Votes</div>}> */}
+            <div className="flexRow" style={{width: '100%', justifyContent: "center", alignItems: "center"}}>
+            Cast Votes:
             <div className="flexRow" style={{justifyContent: "flex-start", flexShrink: 0, gap: "12px", fontSize: "24px", paddingLeft: "12px"}}>
             {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{width: "12px"}}></div>}
             <div className="flexRow" style={{width: "32px"}}>{factionSubState.votes ?? 0}</div>
             {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
           </div>
-            </LabeledDiv>
-            </div>
-          </LabeledDiv>
+          </div>
+          <LabeledLine />
+            {/* </LabeledDiv> */}
+            {/* </div> */}
           {isTie ?
-              <LabeledDiv label="Speaker Actions" style={{paddingTop: "12px"}}>
-              {!subState.tieBreak ?
+              (!subState.tieBreak ?
+                <LabeledDiv label="Speaker Actions" style={{paddingTop: "12px"}}>
+
               <HoverMenu label="Choose outcome (vote tied)">
-                <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
+                <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
                   {selectedTargets.length > 0 ? selectedTargets.map((target) => {
                     return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                   }) : 
@@ -429,14 +441,14 @@ function PhaseSection() {
                     return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                   })}
                 </div>
-              </HoverMenu> : 
-            <LabeledDiv label="TIE BREAK" style={{fontSize: "18px"}}>
+              </HoverMenu></LabeledDiv> : 
+            <LabeledDiv label="SPEAKER TIE BREAK" style={{paddingTop: "8px"}}>
               <SelectableRow itemName={subState.tieBreak} removeItem={() => selectSpeakerTieBreak(null)}>
                 {subState.tieBreak}
               </SelectableRow>
             </LabeledDiv>
           
-    }</LabeledDiv>
+              )
           : null}
           {(selectedTargets.length === 1 || subState.tieBreak) ? 
             <div className="flexRow" style={{width: "100%", justifyContent: "center"}}>
@@ -454,7 +466,7 @@ function PhaseSection() {
     return null;
   }
   return (
-    <div className="flexColumn">
+    <div className="flexColumn largeFont">
       <LabeledLine label={phaseName} />
       {phaseContent}
     </div>
@@ -509,6 +521,14 @@ function FactionContent() {
   }
 
   const ownedPlanets = filterToClaimedPlanets(planets, playerFaction);
+
+  function toggleTabShown(tab) {
+    if (tabShown === tab) {
+      setTabShown(null);
+    } else {
+      setTabShown(tab);
+    }
+  }
 
   function toggleAddTechMenu() {
     setShowAddTech(!showAddTech);
@@ -673,18 +693,20 @@ function FactionContent() {
       >
       <PhaseSection />
       <LabeledLine label="FACTION DETAILS" />
+      <div className="flexColumn" style={{gap: 0, alignItems: "stretch"}}>
         {/* Tabs */}
-        <div className="flexRow" style={{ margin: "0px 4px", borderBottom: "1px solid grey"}}>
-          <Tab selectTab={setTabShown} id="techs" selectedId={tabShown} content="Techs" />
-          <Tab selectTab={setTabShown} id="planets" selectedId={tabShown} content="Planets" />
-          <Tab selectTab={setTabShown} id="objectives" selectedId={tabShown} content="Objectives" />
+        <div className="flexRow" style={{ width: "100%", margin: "0px 4px"}}>
+          <Tab selectTab={toggleTabShown} id="techs" selectedId={tabShown} content="Techs" />
+          <Tab selectTab={toggleTabShown} id="planets" selectedId={tabShown} content="Planets" />
+          <Tab selectTab={toggleTabShown} id="objectives" selectedId={tabShown} content="Objectives" />
         </div>
         <TabBody id="techs" selectedId={tabShown} content={
         <div>
+        <LabeledLine />
           <div className="flexRow" style={{height: "32px"}}>
             <button onClick={toggleAddTechMenu}>Research Tech</button>
           </div>
-          <div className="flexColumn" style={{gap: "8px", maxHeight: `${maxHeight}px`, padding: "6px", overflow: "auto", justifyContent: "space-between", alignItems: "stretch"}}>
+          <div className="flexColumn largeFont" style={{gap: "8px", maxHeight: `${maxHeight}px`, padding: "6px", overflow: "auto", justifyContent: "space-between", alignItems: "stretch"}}>
             {ownedTechs.map((tech) => {
               return <TechRow key={tech.name} tech={tech} removeTech={removeTech} />
             })}
@@ -692,22 +714,27 @@ function FactionContent() {
         </div>} />
         <TabBody id="planets" selectedId={tabShown} content={
         <div>
-        <div className="flexRow" style={{height: "32px"}}>
+        <LabeledLine />
+        <div className="flexRow" style={{height: "40px"}}>
           <button onClick={toggleAddPlanetMenu}>Add Planet</button>
           {/* <button onClick={readyAll} disabled={allPlanetsReady()}>Ready All</button>
           <button onClick={exhaustAll} disabled={allPlanetsExhausted()}>Exhaust All</button> */}
         </div>
-        <div style={{maxHeight: `${maxHeight}px`, boxSizing: "border-box", overflow: "auto", paddingBottom: "4px"}}>
+        <div className="largeFont" style={{maxHeight: `${maxHeight}px`, boxSizing: "border-box", overflow: "auto", paddingBottom: "4px"}}>
           {updatedPlanets.map((planet) => {
-            return <PlanetRow key={planet.name} factionName={playerFaction} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} opts={{showAttachButton: true}} />;
+            return <PlanetRow key={planet.name} factionName={playerFaction} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
           })}
         </div>
         </div>} />
 
         <TabBody id="objectives" selectedId={tabShown} content={
+          <React.Fragment>
+        <LabeledLine />
           <ObjectiveList objectives={objectives} faction={factions[playerFaction]} />
+          </React.Fragment>
         } />
       </div>
+    </div>
     </div>
   </div>
 </div>);
