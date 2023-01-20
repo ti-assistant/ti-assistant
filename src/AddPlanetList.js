@@ -87,7 +87,7 @@ export function AddPlanetList({ planets, addPlanet }) {
         } />
       </div>
       <TabBody id="normal" selectedId={tabShown} content={
-        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px"}}>
+        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px", zIndex: 1, position: "relative"}}>
           {/* <div className="flexRow" style={{backgroundColor: "#222", height: "32px", position: "sticky", zIndex: 904, top: "73px", fontSize: "14px"}}>
           <label>
               <input type="checkbox"
@@ -108,14 +108,14 @@ export function AddPlanetList({ planets, addPlanet }) {
         </div>
       } />
       <TabBody id="home" selectedId={tabShown} content={
-        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px"}}>
+        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px", zIndex: 1, position: "relative"}}>
           {homePlanets.map((planet) => {
             return <PlanetRow key={planet.name} planet={planet} addPlanet={addPlanet} />;
           })}
         </div>
       } />
       <TabBody id="legendary" selectedId={tabShown} content={
-        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px"}}>
+        <div className="largeFont" style={{width: "100%", overflowY: "auto", overvflowX: "hidden", maxHeight: "75vh", boxSizing: "border-box", padding: "4px", zIndex: 1, position: "relative"}}>
           {legendaryPlanets.map((planet) => {
             return <PlanetRow key={planet.name} planet={planet} addPlanet={addPlanet} />;
           })}

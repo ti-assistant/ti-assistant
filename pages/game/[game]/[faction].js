@@ -238,11 +238,11 @@ function PhaseSection() {
         phaseContent = 
           <React.Fragment>
             <FactionActionButtons factionName={factionName} />
-            <div className="flexColumn" style={{width: "95%"}}>
+            <div className="flexColumn" style={{width: "95%", alignItems: "flex-start"}}>
             <AdditionalActions
               factionName={factionName}
               visible={!!subState.selectedAction}
-              style={{width: "100%"}}
+              style={{width: "100%", alignItems: "flex-start"}}
               hoverMenuStyle={{overflowX: "scroll", maxWidth: "85vw"}} 
               factionOnly={true} />
               </div>

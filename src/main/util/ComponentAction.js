@@ -41,6 +41,8 @@ function ComponentSelect({ components, selectComponent }) {
     alignItems: "stretch",
     gap: responsivePixels(4),
     maxHeight: responsivePixels(400),
+    maxWidth: "85vw",
+    overflowX: "scroll",
     writingMode: "vertical-lr",
     justifyContent: "flex-start"};
 
@@ -50,7 +52,8 @@ function ComponentSelect({ components, selectComponent }) {
     padding: responsivePixels(8),
     alignItems: "stretch",
     gap: responsivePixels(4),
-    justifyContent: "flex-start"}}>
+    justifyContent: "flex-start",
+    maxWidth: "85vw"}}>
     <HoverMenu label="Action Cards">
       <div className="flexRow" style={innerStyle}>
       {actionCards.map((component) => {
