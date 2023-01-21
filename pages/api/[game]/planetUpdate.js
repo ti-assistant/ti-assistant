@@ -5,7 +5,7 @@ const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestor
 
 async function shouldUnlockXxchaCommander(data, gameRef, gamePlanets, attachments) {
   const factionName = "Xxcha Kingdom";
-  if (gameRef.data().factions[factionName].commander === "unlocked") {
+  if (!gameRef.data().factions[factionName] || gameRef.data().factions[factionName].commander === "unlocked") {
     return false;
   }
   const totalInfluence = Object.values(gamePlanets).reduce((count, planet) => {
