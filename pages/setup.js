@@ -49,10 +49,17 @@ return <div className="flexColumn">
   </div>
   <HoverMenu label="Options">
 <div>
-  <div style={{padding: `${responsivePixels(8)} ${responsivePixels(16)} 0 ${responsivePixels(16)}`}}>
-  <div>
+  <div className="flexColumn" style={{alignItems: "flex-start", padding: `${responsivePixels(8)} ${responsivePixels(16)} 0 ${responsivePixels(16)}`}}>
+  <div className="flexColumn" style={{alignItems: "flex-start"}}>
+    Victory Points:
+    <div className="flexRow" style={{justifyContent: "flex-start", padding: `0 ${responsivePixels(20)}`}}>
+      <button className={options['victory-points'] === 10 ? "selected" : ""} onClick={()=>{toggleOption(10, "victory-points")}}>10</button>
+      <button className={options['victory-points'] === 14 ? "selected" : ""} onClick={()=>{toggleOption(14, "victory-points")}}>14</button>
+    </div>
+  </div>
+  <div className="flexColumn" style={{alignItems: "flex-start"}}>
     Expansions:
-    <div className="flexRow" style={{justifyContent: "flex-start", padding: `${responsivePixels(8)} ${responsivePixels(20)}`}}>
+    <div className="flexRow" style={{justifyContent: "flex-start", padding: `0 ${responsivePixels(20)}`}}>
       <button className={options.expansions.has("pok") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("pok"), "pok")}>Prophecy of Kings</button>
       <button className={options.expansions.has("codex-one") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-one"), "codex-one")}>Codex I</button>
       <button className={options.expansions.has("codex-two") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-two"), "codex-two")}>Codex II</button>
@@ -370,6 +377,7 @@ const INITIAL_OPTIONS = {
   'allow-double-council': false,
   'map-style': "standard",
   'map-string': "",
+  'victory-points': 10,
 }
 
 function FactionSystemImage({className, factionName}) {
@@ -907,13 +915,14 @@ export default function SetupPage() {
   }
 
   function updatePlayerFaction(index, value) {
+    const prevValue = factions[index].name;
     setFactions(
       factions.map((faction, i) => {
         if (index === i) {
           return { ...faction, name: value };
         }
         if (faction.name === value) {
-          return { ...faction, name: null };
+          return { ...faction, name: prevValue };
         }
         return faction;
       })
@@ -921,13 +930,14 @@ export default function SetupPage() {
   }
 
   function updatePlayerColor(index, value) {
+    const prevValue = factions[index].color;
     setFactions(
       factions.map((faction, i) => {
         if (index === i) {
           return { ...faction, color: value };
         }
         if (faction.color === value) {
-          return { ...faction, color: null };
+          return { ...faction, color: prevValue };
         }
         return faction;
       })
