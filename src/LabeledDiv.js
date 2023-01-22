@@ -1,7 +1,7 @@
 import React from "react";
 import { getResponsiveFormula, responsiveNegativePixels, responsivePixels } from "./util/util"
 
-export function LabeledDiv({label, rightLabel, children, blur, onClick, style = {}, color = "#999", labelSize = 16, content}) {
+export function LabeledDiv({label, rightLabel, children, noBlur, onClick, style = {}, color = "#999", labelSize = 16, content}) {
   const padding = `${!!label ? responsivePixels(10) : responsivePixels(6)} ${responsivePixels(6)} ${responsivePixels(6)} ${responsivePixels(6)}`;
   const divStyle = {
     position: "relative",
@@ -48,7 +48,7 @@ export function LabeledDiv({label, rightLabel, children, blur, onClick, style = 
       className="flexColumn"
       style={divStyle}
       onClick={onClick}>
-      <div style={{zIndex: "-2",  boxSizing: "border-box", left: 0, top: 0, borderRadius: "5px", position: "absolute", width: "100%", height: "100%", backdropFilter: "blur(4px)"}}></div>
+      {noBlur ? null : <div style={{zIndex: "-2",  boxSizing: "border-box", left: 0, top: 0, borderRadius: "5px", position: "absolute", width: "100%", height: "100%", backdropFilter: "blur(4px)"}}></div>}
       {!!label ? <div className="mediumFont"
         style={labelStyle}
       >

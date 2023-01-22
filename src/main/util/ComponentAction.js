@@ -29,7 +29,15 @@ function InfoContent({component}) {
 function ComponentSelect({ components, selectComponent }) {
   const actionCards = components.filter((component) => component.type === "card");
   const techs = components.filter((component) => component.type === "tech");
-  const leaders = components.filter((component) => component.type === "leader");
+  const leaders = components.filter((component) => component.type === "leader").sort((a, b) => {
+    if (a.leader === "agent") {
+      return -1;
+    }
+    if (a.leader === "hero") {
+      return 1;
+    }
+    return 0;
+  })
   const exploration = components.filter((component) => component.type === "relic");
   const promissory = components.filter((component) => component.type === "promissory");
   const others = components.filter((component) => component.type !== "leader" && component.type !== "tech" && component.type !== "card" && component.type !== "relic" && component.type !== "promissory");
@@ -42,7 +50,7 @@ function ComponentSelect({ components, selectComponent }) {
     gap: responsivePixels(4),
     maxHeight: responsivePixels(400),
     maxWidth: "85vw",
-    overflowX: "scroll",
+    overflowX: "auto",
     writingMode: "vertical-lr",
     justifyContent: "flex-start"};
 
@@ -69,11 +77,12 @@ function ComponentSelect({ components, selectComponent }) {
       </div>
     </HoverMenu> : null}
     {leaders.length > 0 ? <HoverMenu label="Leaders">
-      <div className="flexRow" style={{padding: responsivePixels(8)}}>
+      <div className="flexColumn" style={{alignItems: "stretch", padding: responsivePixels(8)}}>
       {leaders.map((component) => {
         return <div className="flexColumn" key={component.name}>
-          <LabeledLine label={capitalizeFirstLetter(component.leader)} />
-          <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+          <LabeledDiv noBlur={true}  label={capitalizeFirstLetter(component.leader)}>
+            <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+          </LabeledDiv>
         </div>
       })}
       </div>
@@ -89,8 +98,9 @@ function ComponentSelect({ components, selectComponent }) {
       <div className="flexRow" style={{padding: responsivePixels(8)}}>
       {promissory.map((component) => {
         return <div className="flexColumn" key={component.name}>
-          <LabeledLine label={capitalizeFirstLetter(component.faction)} />
+          <LabeledDiv noBlur={true} label={capitalizeFirstLetter(component.faction)}>
           <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+        </LabeledDiv>
         </div>
         return <div className="flexColumn" style={{gap: responsivePixels(4)}}>{capitalizeFirstLetter(component.faction)}:
             <button onClick={() => selectComponent(component.name)}>{component.name}</button>
@@ -247,10 +257,13 @@ export function ComponentAction({ factionName }) {
 
   if (!component) {
     const filteredComponents = Object.values(components).filter((component) => {
-      if (component.faction) {
-        if (component.type === "promissory" && component.faction === faction.name) {
-          return false
-        } else if (component.type !== "promissory" && component.faction !== faction.name) {
+      if (component.type === "promissory") {
+        if (!factions[component.faction] || component.faction === faction.name) {
+          return false;
+        }
+      }
+      if (component.faction && component.type !== "promissory") {
+        if (component.faction !== faction.name) {
           return false;
         }
       }

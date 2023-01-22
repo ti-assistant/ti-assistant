@@ -35,7 +35,7 @@ export function StrategyCard({ card, active, onClick, factionActions, opts = {} 
         fontSize: opts.fontSize ?? responsivePixels(24),
         position: "relative",
         cursor: onClick ? "pointer" : "auto",
-        height: responsivePixels(54),
+        height: responsivePixels(48),
         justifyContent: "center",
       }}
     >
@@ -44,7 +44,7 @@ export function StrategyCard({ card, active, onClick, factionActions, opts = {} 
         {opts.hideName ? null : <div style={{flexBasis: "40%", color: textColor}}>{card.name}</div>}
         {faction ? 
           <div style={{flexGrow: 4, whiteSpace: "nowrap"}}>
-            <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={factionActions} opts={{fontSize: responsivePixels(16)}} />
+            <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={factionActions} opts={{fontSize: responsivePixels(16), iconSize: 32}} />
           </div>
         : null}
       </div>

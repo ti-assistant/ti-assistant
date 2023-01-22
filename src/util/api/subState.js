@@ -346,8 +346,6 @@ export function finalizeSubState(mutate, gameid, subState) {
     action: "FINALIZE_SUB_STATE",
   };
 
-  const updatedSubState = {};
-
   const options = {
     optimisticData: {},
   };

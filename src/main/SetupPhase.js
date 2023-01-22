@@ -16,6 +16,62 @@ import { finalizeSubState, hideSubStateObjective, revealSubStateObjective } from
 import { responsivePixels } from '../util/util';
 import { NumberedItem } from '../NumberedItem';
 
+export function startFirstRound(mutate, gameid, subState, factions, planets, objectives, state) {
+  finalizeSubState(mutate, gameid, subState);
+  const data = {
+    action: "ADVANCE_PHASE",
+  };
+  if (factions['Council Keleres']) {
+    for (const planet of factions['Council Keleres'].startswith.planets) {
+      claimPlanet(mutate, gameid, planets, planet, "Council Keleres", options);
+    }
+    readyPlanets(mutate, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
+  }
+  (subState.objectives ?? []).forEach((objectiveName) => {
+    revealObjective(mutate, gameid, objectives, null, objectiveName);
+  });
+  const activeFactionName = state.speaker;
+  const phase = "STRATEGY";
+
+  const updatedState = {...state};
+  state.phase = phase;
+  state.activeplayer = activeFactionName;
+
+  const updateOptions = {
+    optimisticData: updatedState,
+  };
+
+  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), updateOptions);
+}
+
+function factionTechChoicesComplete(factions) {
+  let complete = true;
+  Object.values(factions).forEach((faction) => {
+    if (faction.startswith.choice) {
+      const numSelected = (faction.startswith.techs ?? []).length;
+      const numRequired = faction.startswith.choice.select;
+      const numAvailable = faction.startswith.choice.options.length;
+      if (numSelected !== numRequired && numSelected !== numAvailable) {
+        complete = false;
+      }
+    }
+  });
+  return complete;
+}
+
+function factionSubFactionChoicesComplete(factions) {
+  if (!factions['Council Keleres']) {
+    return true;
+  }
+  return (factions['Council Keleres'].startswith.planets ?? []).length !== 0;
+}
+
+export function setupPhaseComplete(factions, subState) {
+  return factionSubFactionChoicesComplete(factions) &&
+    factionTechChoicesComplete(factions) &&
+    (subState.objectives ?? []).length > 1;
+}
+
 export default function SetupPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -44,56 +100,13 @@ export default function SetupPhase() {
     }
   });
 
-  function factionTechChoicesComplete() {
-    let complete = true;
-    orderedFactions.forEach(([name, faction]) => {
-      if (faction.startswith.choice) {
-        const numSelected = (faction.startswith.techs ?? []).length;
-        const numRequired = faction.startswith.choice.select;
-        const numAvailable = faction.startswith.choice.options.length;
-        if (numSelected !== numRequired && numSelected !== numAvailable) {
-          complete = false;
-        }
-      }
-    });
-    return complete;
+
+
+
+  function nextPhase() {
+    startFirstRound(mutate, gameid, subState, factions, planets, objectives, state);
   }
 
-  function factionSubFactionChoicesComplete() {
-    if (!factions['Council Keleres']) {
-      return true;
-    }
-    return (factions['Council Keleres'].startswith.planets ?? []).length !== 0;
-  }
-
-  function nextPhase(skipAgenda = false) {
-    finalizeSubState(mutate, gameid, subState);
-    const data = {
-      action: "ADVANCE_PHASE",
-      skipAgenda: skipAgenda,
-    };
-    if (factions['Council Keleres']) {
-      for (const planet of factions['Council Keleres'].startswith.planets) {
-        claimPlanet(mutate, gameid, planets, planet, "Council Keleres", options);
-      }
-      readyPlanets(mutate, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
-    }
-    (subState.objectives ?? []).forEach((objectiveName) => {
-      revealObjective(mutate, gameid, objectives, null, objectiveName);
-    });
-    const activeFactionName = state.speaker;
-    const phase = "STRATEGY";
-
-    const updatedState = {...state};
-    state.phase = phase;
-    state.activeplayer = activeFactionName;
-
-    const updateOptions = {
-      optimisticData: updatedState,
-    };
-
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), updateOptions);
-  }
 
   function addObj(objective) {
     revealSubStateObjective(mutate, gameid, subState, objective.name);
@@ -115,13 +128,6 @@ export default function SetupPhase() {
 
   const stageOneObjectives = Object.values(objectives ?? {}).filter((objective) => objective.type === "stage-one");
   const selectedStageOneObjectives = stageOneObjectives.filter((objective) => objective.selected);
-
-  function statusPhaseComplete() {
-    return factionSubFactionChoicesComplete() &&
-      factionTechChoicesComplete() &&
-      (subState.objectives ?? []).length > 1;
-      // selectedStageOneObjectives.length > 1;
-  }
 
   const flexBasis = 100 / Object.keys(factions ?? {}).length;
 
@@ -194,7 +200,7 @@ export default function SetupPhase() {
           </LabeledDiv>
         </NumberedItem>
       </ol>
-      {!statusPhaseComplete() ? 
+      {!setupPhaseComplete(factions, subState) ? 
         <div style={{color: "indianred", fontFamily: "Myriad Pro", fontWeight: "bold"}}>Select all faction choices and reveal 2 objectives</div>
       : null}
       {/* {!factionTechChoicesComplete() ?
@@ -204,7 +210,7 @@ export default function SetupPhase() {
         <div style={{color: "darkred"}}>Select Council Keleres sub-faction</div> :
         null}
       {(subState.objectives ?? []).length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null} */}
-      <button disabled={!statusPhaseComplete()} style={{fontSize: responsivePixels(40)}} onClick={() => nextPhase()}>Start Game</button>
+      <button disabled={!setupPhaseComplete(factions, subState)} style={{fontSize: responsivePixels(40)}} onClick={() => nextPhase()}>Start Game</button>
     </div>
   );
 }

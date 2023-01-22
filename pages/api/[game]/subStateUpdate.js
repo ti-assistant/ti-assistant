@@ -188,7 +188,7 @@ export default async function handler(req, res) {
       if (subState.component) {
         const component = components[subState.component];
         if (component.type === "leader" && component.leader === "hero") {
-          updates[`factions.${component.faction}.hero`] = "purged";
+          updates[`factions.${component.faction}.her  o`] = "purged";
           updates[`updates.factions.timestamp`] = timestamp;
         }
       }
@@ -204,7 +204,7 @@ export default async function handler(req, res) {
         (value.removeTechs ?? []).forEach((tech) => {
           updates[`factions.${factionName}.techs.${tech}`] = FieldValue.delete();
           updates[`updates.factions.timestamp`] = timestamp;
-        })
+        });
         (value.planets ?? []).forEach((planet) => {
           const planetName = planet === "[0.0.0]" ? "000" : planet;
           updates[`planets.${factionName}.planets.${planetName}.ready`] = true;

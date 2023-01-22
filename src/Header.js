@@ -156,7 +156,7 @@ export function Footer({ }) {
     return null;
   }
 
-  return <div className="flex" style={{ bottom: 0, width: "100vw", paddingBottom: responsivePixels(20), position: "fixed", justifyContent: "space-between" }}>
+  return <div className="flex" style={{ bottom: 0, width: "100vw", position: "fixed", justifyContent: "space-between" }}>
     {state.phase !== "SETUP" ? <div style={{position: "fixed", bottom: responsivePixels(12), left: responsivePixels(108)}}>
     <LabeledDiv label="Update">
       <div className="flexRow" style={{width: "100%", alignItems: "stretch"}}>

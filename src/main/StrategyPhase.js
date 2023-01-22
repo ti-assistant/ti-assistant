@@ -26,6 +26,37 @@ function InfoContent({content}) {
   );
 }
 
+export function advanceToActionPhase(mutate, gameid, strategyCards, state, factions) {
+  const data = {
+    action: "ADVANCE_PHASE",
+  };
+  const phase = "ACTION";
+  let minCard = {
+    order: Number.MAX_SAFE_INTEGER,
+  };
+  for (const strategyCard of Object.values(strategyCards)) {
+    if (strategyCard.faction && strategyCard.order < minCard.order) {
+      minCard = strategyCard;
+    }
+  }
+  if (!minCard.faction) {
+    throw Error("Transition to ACTION phase w/o selecting cards?");
+  }
+  const activeFactionName = minCard.faction;
+
+  const updatedState = {...state};
+  state.phase = phase;
+  state.activeplayer = activeFactionName;
+
+  const options = {
+    optimisticData: updatedState,
+  };
+
+  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+
+  readyAllFactions(mutate, gameid, factions);
+}
+
 export default function StrategyPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -43,36 +74,8 @@ export default function StrategyPhase() {
     return <div>Loading...</div>;
   }
 
-  function nextPhase(skipAgenda = false) {
-    const data = {
-      action: "ADVANCE_PHASE",
-      skipAgenda: skipAgenda,
-    };
-    const phase = "ACTION";
-    let minCard = {
-      order: Number.MAX_SAFE_INTEGER,
-    };
-    for (const strategyCard of Object.values(strategyCards)) {
-      if (strategyCard.faction && strategyCard.order < minCard.order) {
-        minCard = strategyCard;
-      }
-    }
-    if (!minCard.faction) {
-      throw Error("Transition to ACTION phase w/o selecting cards?");
-    }
-    const activeFactionName = minCard.faction;
-
-    const updatedState = {...state};
-    state.phase = phase;
-    state.activeplayer = activeFactionName;
-
-    const options = {
-      optimisticData: updatedState,
-    };
-
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-
-    readyAllFactions(mutate, gameid, factions);
+  function nextPhase() {
+    advanceToActionPhase(mutate, gameid, strategyCards, state, factions);
   }
 
   async function nextPlayer() {
@@ -233,7 +236,7 @@ export default function StrategyPhase() {
 
   const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
   return (
-    <div className="flexRow" style={{height: "100vh", width: "100%", alignItems: "center", justifyContent: "space-between", gap: responsivePixels(20)}}>
+    <div className="flexRow" style={{alignItems: "flex-start", height: "100vh", width: "100%", justifyContent: "space-between", gap: responsivePixels(20)}}>
       <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={<div style={{fontSize: responsivePixels(40)}}>{infoModal.title}</div>} content={
         <InfoContent content={infoModal.content} />
       } top="30%" />
@@ -307,9 +310,9 @@ export default function StrategyPhase() {
           })}
           </ol> 
         </div> : null}
-        <LawsInEffect />
+        {/* <LawsInEffect /> */}
       </div>
-      <div className="flexColumn">
+      <div className="flexColumn" style={{justifyContent: "flex-start", marginTop: responsivePixels(56)}}>
         <div className="flexRow" style={{position: "relative", maxWidth: "100%"}}>
           {activefaction ?
             <div className="flexColumn" style={{alignItems: "center"}}>

@@ -37,6 +37,8 @@ import { getTargets, VoteCount } from "../../../src/VoteCount";
 import { computeVotes } from "../../../src/main/AgendaPhase";
 import { repealAgenda, resolveAgenda } from "../../../src/util/api/agendas";
 import { updateCastVotes } from "../../../src/util/api/factions";
+import { advanceToActionPhase } from "../../../src/main/StrategyPhase";
+import { setupPhaseComplete, startFirstRound } from "../../../src/main/SetupPhase";
 
 const techOrder = [
   "green",
@@ -52,7 +54,6 @@ function PhaseSection() {
   const { game: gameid, faction: factionName } = router.query;
   const { data: agendas = {} } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: attachments = {} } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
-  const { data: strategycards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions = {}, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: planets = {} } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: objectives = {} } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
@@ -61,7 +62,7 @@ function PhaseSection() {
   const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   
 
-
+  console.log("En");
   if (!state) {
     return null;
   }
@@ -110,6 +111,7 @@ function PhaseSection() {
   let currentAgenda = null;
   const agendaNum = subState.agendaNum ?? 1;
   if (agendaNum > 2) {
+    console.log("What?");
     return null;
   }
   if (subState.agenda) {
@@ -121,7 +123,7 @@ function PhaseSection() {
   if (subState.outcome) {
     localAgenda.elect = subState.outcome;
   }
-  const targets = getTargets(localAgenda, factions, strategycards, planets, agendas, objectives);
+  const targets = getTargets(localAgenda, factions, strategyCards, planets, agendas, objectives);
   const totalVotes = computeVotes(currentAgenda, subState.factions);
   const maxVotes = Object.values(totalVotes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
@@ -217,10 +219,13 @@ function PhaseSection() {
             <StartingComponents faction={factions[factionName]} />
           </div>
         </LabeledDiv>
+        {setupPhaseComplete(factions, subState) ?
+        <button onClick={() => startFirstRound(mutate, gameid, subState, factions, planets, objectives, state)}>Start Game</button> : null}
       </React.Fragment>;
       break;
     }
     case "STRATEGY":
+      console.log(state.activeplayer)
       if (factionName === state.activeplayer) {
         phaseName = "SELECT STRATEGY CARD";
         phaseContent = 
@@ -229,6 +234,16 @@ function PhaseSection() {
             .map((card) => {
               return <StrategyCard key={card.name} card={card} active={true} onClick={() => assignCard(card)} />;
             })}
+          </div>;
+      }
+      if (state.activeplayer === "None") {
+        console.log("Yep");
+        phaseName = "END OF STRATEGY PHASE";
+        phaseContent = 
+          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
+            <div className="flexRow">
+            <button onClick={() => advanceToActionPhase(mutate, gameid, strategyCards, state, factions)}>Advance to Action Phase</button>
+            </div>
           </div>;
       }
       break;
@@ -462,6 +477,7 @@ function PhaseSection() {
       break;
     }
   }
+  console.log(phaseName);
   if (!phaseContent) {
     return null;
   }
