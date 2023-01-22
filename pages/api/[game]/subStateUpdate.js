@@ -68,8 +68,24 @@ export default async function handler(req, res) {
       };
       break;
     }
-    case "REMOVE_TECH": {
+    case "CLEAR_ADDED_TECH": {
       const techString = `subState.factions.${data.factionName}.techs`;
+      updates = {
+        [techString]: FieldValue.arrayRemove(tech),
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "REMOVE_TECH": {
+      const techString = `subState.factions.${data.factionName}.removeTechs`;
+      updates = {
+        [techString]: FieldValue.arrayUnion(tech),
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "CLEAR_REMOVED_TECH": {
+      const techString = `subState.factions.${data.factionName}.removeTechs`;
       updates = {
         [techString]: FieldValue.arrayRemove(tech),
         [timestampString]: timestamp,

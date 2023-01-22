@@ -92,9 +92,9 @@ export function addSubStateTech(mutate, gameid, subState, factionName, techName)
   mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
-export function removeSubStateTech(mutate, gameid, subState, factionName, techName) {
+export function clearAddedSubStateTech(mutate, gameid, subState, factionName, techName) {
   const data = {
-    action: "REMOVE_TECH",
+    action: "CLEAR_ADDED_TECH",
     factionName: factionName,
     techName: techName,
   };
@@ -114,6 +114,65 @@ export function removeSubStateTech(mutate, gameid, subState, factionName, techNa
   techName = techName.replace(" Ω", "");
   updatedSubState.factions[factionName].techs =
     updatedSubState.factions[factionName].techs.filter((tech) => tech !== techName);
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+export function removeSubStateTech(mutate, gameid, subState, factionName, techName) {
+  const data = {
+    action: "REMOVE_TECH",
+    factionName: factionName,
+    techName: techName,
+  };
+
+  const updatedSubState = {...subState};
+  if (!updatedSubState.factions) {
+    updatedSubState.factions = {};
+  }
+  if (!updatedSubState.factions[factionName]) {
+    updatedSubState.factions[factionName] = {};
+  }
+  if (!updatedSubState.factions[factionName].removeTechs) {
+    updatedSubState.factions[factionName].removeTechs = [];
+  }
+  techName = techName.replace(/\//g,"");
+  techName = techName.replace(/\./g,"");
+  techName = techName.replace(" Ω", "");
+  updatedSubState.factions[factionName].removeTechs.push(techName);
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+export function clearRemovedSubStateTech(mutate, gameid, subState, factionName, techName) {
+  const data = {
+    action: "CLEAR_REMOVED_TECH",
+    factionName: factionName,
+    techName: techName,
+  };
+
+  const updatedSubState = {...subState};
+  if (!updatedSubState.factions) {
+    updatedSubState.factions = {};
+  }
+  if (!updatedSubState.factions[factionName]) {
+    updatedSubState.factions[factionName] = {};
+  }
+  if (!updatedSubState.factions[factionName].removeTechs) {
+    updatedSubState.factions[factionName].removeTechs = [];
+  }
+  techName = techName.replace(/\//g,"");
+  techName = techName.replace(/\./g,"");
+  techName = techName.replace(" Ω", "");
+  updatedSubState.factions[factionName].removeTechs =
+    updatedSubState.factions[factionName].removeTechs.filter((tech) => tech !== techName);
 
   const options = {
     optimisticData: updatedSubState,

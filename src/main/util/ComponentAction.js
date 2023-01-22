@@ -7,7 +7,7 @@ import { LabeledDiv, LabeledLine } from "../../LabeledDiv";
 import { Modal } from "../../Modal";
 import { SelectableRow } from "../../SelectableRow";
 import { TechRow } from "../../TechRow";
-import { addSubStateTech, clearSubState, removeSubStateTech, setSubStateOther, setSubStateSelectedAction } from "../../util/api/subState";
+import { addSubStateTech, clearAddedSubStateTech, clearSubState, removeSubStateTech, setSubStateOther, setSubStateSelectedAction } from "../../util/api/subState";
 import { hasTech } from "../../util/api/techs";
 import { fetcher } from "../../util/api/util";
 import { getFactionColor, getFactionName } from "../../util/factions";
@@ -162,7 +162,7 @@ function ComponentDetails({ factionName }) {
     addSubStateTech(mutate, gameid, subState, factionName, tech.name);
   }
   function removeTech(techName) {
-    removeSubStateTech(mutate, gameid, subState, factionName, techName);
+    clearAddedSubStateTech(mutate, gameid, subState, factionName, techName);
   }
 
   const updatedPlanets = applyAllPlanetAttachments(Object.values(planets), attachments);

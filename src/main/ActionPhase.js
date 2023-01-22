@@ -27,7 +27,7 @@ import { getFactionColor, getFactionName } from '../util/factions.js';
 import { getTechColor } from '../util/techs.js';
 import { TechSelectHoverMenu } from './util/TechSelectHoverMenu.js';
 import { SelectableRow } from '../SelectableRow.js';
-import { addSubStatePlanet, addSubStateTech, clearSubState, finalizeSubState, removeSubStatePlanet, removeSubStateTech, scoreSubStateObjective, setSubStateSelectedAction, setSubStateSpeaker, undoSubStateSpeaker, unscoreSubStateObjective } from '../util/api/subState.js';
+import { addSubStatePlanet, addSubStateTech, clearAddedSubStateTech, clearSubState, finalizeSubState, removeSubStatePlanet, removeSubStateTech, scoreSubStateObjective, setSubStateSelectedAction, setSubStateSpeaker, undoSubStateSpeaker, unscoreSubStateObjective } from '../util/api/subState.js';
 import { responsiveNegativePixels, responsivePixels } from '../util/util.js';
 import { applyPlanetAttachments } from '../util/planets.js';
 import { ComponentAction } from './util/ComponentAction.js';
@@ -164,7 +164,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
   }
 
   function removeTech(factionName, toRemove) {
-    removeSubStateTech(mutate, gameid, subState, factionName, toRemove);
+    clearAddedSubStateTech(mutate, gameid, subState, factionName, toRemove);
   }
 
   function addTech(factionName, tech) {
