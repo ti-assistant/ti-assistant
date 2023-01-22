@@ -188,7 +188,7 @@ export default async function handler(req, res) {
       if (subState.component) {
         const component = components[subState.component];
         if (component.type === "leader" && component.leader === "hero") {
-          updates[`factions.${component.faction}.her  o`] = "purged";
+          updates[`factions.${component.faction}.hero`] = "purged";
           updates[`updates.factions.timestamp`] = timestamp;
         }
       }
