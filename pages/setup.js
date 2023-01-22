@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { fetcher } from "../src/util/api/util";
@@ -14,6 +14,15 @@ export function capitalizeFirstLetter(string) {
 }
 
 function Options({ updatePlayerCount, toggleOption, toggleExpansion, options, numFactions, maxFactions, isCouncil }) {
+  const mapStringRef = useRef(null)
+
+  useEffect(() => {
+    if (options['map-string'] === "") {
+      mapStringRef.current.value = "";
+    }
+  }, [options['map-string']]);
+
+  console.log(options.expansions);
 
   let mapStyles;
   switch (numFactions) {
@@ -78,7 +87,7 @@ return <div className="flexColumn">
           })}
         </div>
       </React.Fragment> : null}
-      Map String:<input type="textbox" className="mediumFont" style={{width: "100%"}} onChange={(event)=> toggleOption(event.target.value, "map-string")}></input>
+      Map String:<input ref={mapStringRef} type="textbox" className="mediumFont" style={{width: "100%"}} onChange={(event)=> toggleOption(event.target.value, "map-string")}></input>
       Used to filter out planets that are not claimable.
     </div>
   </div>
@@ -175,10 +184,19 @@ function getFactionIndex(numFactions, position, options) {
 }
 
 function FactionSelect({ factions, position, speaker, setFaction, setColor, setSpeaker, setPlayerName, options }) {
+  const nameRef = useRef(null);
   const [showFactionModal, setShowFactionModal] = useState(false);
   const [showColorModal, setShowColorModal] = useState(false);
   const { data: availableFactions, error: factionError } = useSWR("/api/factions", fetcher);
   const { data: colors, error: colorError } = useSWR("/api/colors", fetcher);
+
+  const factionIndex = getFactionIndex(factions.length, position, options);
+
+  useEffect(() => {
+    if (nameRef && nameRef.current && !factions[factionIndex].playerName) {
+      nameRef.current.innerText = "Player Name";
+    }
+  }, [factions[factionIndex].playerName])
 
   if (factionError) {
     return (<div>Failed to load factions</div>);
@@ -190,7 +208,6 @@ function FactionSelect({ factions, position, speaker, setFaction, setColor, setS
     return (<div>Loading...</div>);
   }
 
-  const factionIndex = getFactionIndex(factions.length, position, options);
   const faction = factions[factionIndex];
   const isSpeaker = speaker === factionIndex;
 
@@ -286,7 +303,7 @@ function FactionSelect({ factions, position, speaker, setFaction, setColor, setS
 
   const label = 
   <React.Fragment>
-  <span spellCheck={false} contentEditable={true} suppressContentEditableWarning={true}
+  <span ref={nameRef} spellCheck={false} contentEditable={true} suppressContentEditableWarning={true}
     onClick={(e) => e.target.innerText = ""} 
     onBlur={(e) => savePlayerName(e.target)}>
     Player Name
@@ -859,8 +876,10 @@ export function Map({mapString, mapStyle, mallice, factions}) {
 
 export default function SetupPage() {
   const [speaker, setSpeaker] = useState(0);
-  const [factions, setFactions] = useState(INITIAL_FACTIONS);
-  const [options, setOptions] = useState(INITIAL_OPTIONS);
+  const [factions, setFactions] = useState([...INITIAL_FACTIONS]);
+  const [options, setOptions] = useState({...INITIAL_OPTIONS, 
+    expansions: new Set(INITIAL_OPTIONS.expansions),
+  });
 
   const router = useRouter();
 
@@ -878,8 +897,10 @@ export default function SetupPage() {
   }
 
   function reset() {
-    setFactions(INITIAL_FACTIONS);
-    setOptions(INITIAL_OPTIONS);
+    setFactions([...INITIAL_FACTIONS]);
+    setOptions({...INITIAL_OPTIONS, 
+      expansions: new Set(INITIAL_OPTIONS.expansions),
+    });
     setSpeaker(0);
   }
 
