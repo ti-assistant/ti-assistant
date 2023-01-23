@@ -171,6 +171,20 @@ export default async function handler(req, res) {
       });
       break;
     }
+    case "REPEAL_AGENDA": {
+      updates = {
+        "subState.repealedAgenda": data.agendaName,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "REMOVE_REPEALED_AGENDA": {
+      updates = {
+        "subState.repealedAgenda": FieldValue.delete(),
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "SET_OTHER_FIELD": {
       const newFieldString = `subState.${data.fieldName}`
       updates = {
@@ -210,6 +224,10 @@ export default async function handler(req, res) {
           updates[`factions.${component.faction}.hero`] = "purged";
           updates[`updates.factions.timestamp`] = timestamp;
         }
+      }
+      if (subState.repealedAgenda) {
+        updates[`agendas.${subState.repealedAgenda}`] = FieldValue.delete();
+        updates[`updates.agendas.timestamp`] = timestamp;
       }
       (subState.objectives ?? []).forEach((objective) => {
         updates[`objectives.${objective}.selected`] = true;

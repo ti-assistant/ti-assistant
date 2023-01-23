@@ -20,6 +20,7 @@ import { resetCastVotes, updateCastVotes } from '../util/api/factions';
 import { responsivePixels } from '../util/util';
 import { NumberedItem } from '../NumberedItem';
 import { resetAgendaTimers } from '../util/api/timers';
+import { resetStrategyCards } from '../util/api/cards';
 
 function InfoContent({content}) {
   return (
@@ -142,6 +143,27 @@ export function computeVotes(agenda, subStateFactions = {}) {
   return orderedVotes;
 }
 
+export function startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards) {
+  resetCastVotes(mutate, gameid, factions);
+  resetAgendaTimers(mutate, gameid, timers);
+  resetStrategyCards(mutate, gameid, strategyCards);
+  const data = {
+    action: "START_NEXT_ROUND",
+  };
+
+  const updatedState = {...state};
+  state.phase = "STRATEGY";
+  state.activeplayer = state.speaker;
+  state.round = state.round + 1;
+
+  const options = {
+    optimisticData: updatedState,
+  };
+
+  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+  finalizeSubState(mutate, gameid, subState);
+}
+
 export default function AgendaPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -149,7 +171,7 @@ export default function AgendaPhase() {
   const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: factions, factionError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: planets, planetError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
-  const { data: strategycards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { data: strategyCards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
@@ -183,7 +205,7 @@ export default function AgendaPhase() {
     currentAgenda = agendas[subState.agenda];
   }
 
-  if (!agendas || !factions || !planets || !strategycards || !objectives || !state) {
+  if (!agendas || !factions || !planets || !strategyCards || !objectives || !state) {
     return <div>Loading...</div>;
   }
 
@@ -203,7 +225,7 @@ export default function AgendaPhase() {
     localAgenda.elect = subState.outcome;
   }
 
-  const allTargets = getTargets(localAgenda, factions, strategycards, planets, agendas, objectives);
+  const allTargets = getTargets(localAgenda, factions, strategyCards, planets, agendas, objectives);
 
   // function toggleSpeakerTieBreak(target) {
   //   if (speakerTieBreak === target) {
@@ -239,29 +261,8 @@ export default function AgendaPhase() {
     }
   }
 
-  function nextPhase(skipAgenda = false) {
-    resetCastVotes(mutate, gameid, factions);
-    resetAgendaTimers(mutate, gameid, timers);
-    const data = {
-      action: "ADVANCE_PHASE",
-      skipAgenda: skipAgenda,
-    };
-    const phase = "STRATEGY";
-    const activeFactionName = state.speaker;
-    const round = state.round + 1;
-    resetAgendaPhase();
-
-    const updatedState = {...state};
-    state.phase = phase;
-    state.activeplayer = activeFactionName;
-    state.round = round;
-
-    const options = {
-      optimisticData: updatedState,
-    };
-
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-    finalizeSubState(mutate, gameid, subState);
+  function nextPhase() {
+    startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards);
   }
 
   function showInfoModal(title, content) {

@@ -25,7 +25,7 @@ import { LabeledDiv, LabeledLine } from "../../../src/LabeledDiv";
 import { StrategyCard } from "../../../src/StrategyCard";
 import { assignStrategyCard } from "../../../src/util/api/cards";
 import { nextPlayer } from "../../../src/util/api/state";
-import { ActivePlayerColumn, AdditionalActions, FactionActionButtons, FactionActions, NextPlayerButtons } from "../../../src/main/ActionPhase";
+import { ActivePlayerColumn, AdditionalActions, advanceToStatusPhase, FactionActionButtons, FactionActions, NextPlayerButtons } from "../../../src/main/ActionPhase";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { HoverMenu } from "../../../src/HoverMenu";
 import { castSubStateVotes, finalizeSubState, hideSubStateAgenda, hideSubStateObjective, revealSubStateAgenda, revealSubStateObjective, scoreSubStateObjective, setSubStateOther, unscoreSubStateObjective } from "../../../src/util/api/subState";
@@ -39,6 +39,8 @@ import { repealAgenda, resolveAgenda } from "../../../src/util/api/agendas";
 import { updateCastVotes } from "../../../src/util/api/factions";
 import { advanceToActionPhase } from "../../../src/main/StrategyPhase";
 import { setupPhaseComplete, startFirstRound } from "../../../src/main/SetupPhase";
+import { advanceToAgendaPhase, statusPhaseComplete } from "../../../src/main/StatusPhase";
+import { startNextRound } from "../../../src/main/AgendaPhase";
 
 const techOrder = [
   "green",
@@ -60,7 +62,8 @@ function PhaseSection() {
   const { data: state = {}, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: subState = {}, error: subStateError } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
-  
+  const { data: timers = {} } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
+
 
   if (!state) {
     return null;
@@ -218,7 +221,7 @@ function PhaseSection() {
           </div>
         </LabeledDiv>
         {setupPhaseComplete(factions, subState) ?
-        <button onClick={() => startFirstRound(mutate, gameid, subState, factions, planets, objectives, state)}>Start Game</button> : null}
+        <button onClick={() => startFirstRound(mutate, gameid, subState, factions, planets, objectives, state, options)}>Start Game</button> : null}
       </React.Fragment>;
       break;
     }
@@ -274,6 +277,15 @@ function PhaseSection() {
           hoverMenuStyle={{overflowX: "auto", maxWidth: "85vw"}} 
           factionOnly={true} />
       }
+      if (state.activeplayer === "None") {
+        phaseName = "END OF ACTION PHASE";
+        phaseContent = 
+          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
+            <div className="flexRow">
+            <button onClick={() => advanceToStatusPhase(mutate, gameid, strategyCards, state, factions)}>Advance to Status Phase</button>
+            </div>
+          </div>;
+      }
       break;
     case "STATUS": {
       const type = (state.round < 4) ? "stage-one" : "stage-two";
@@ -286,10 +298,10 @@ function PhaseSection() {
           objective.phase === "status";
       })
       const scoredPublics = (((subState.factions ?? {})[factionName] ?? {}).objectives ?? []).filter((objective) => {
-        return objectives[objective].type === "stage-one" || objectives[objective].type === "stage-two";
+        return (objectives[objective] ?? {}).type === "stage-one" || (objectives[objective] ?? {}).type === "stage-two";
       });
       const scoredSecrets = (((subState.factions ?? {})[factionName] ?? {}).objectives ?? []).filter((objective) => {
-        return objectives[objective].type === "secret";
+        return (objectives[objective] ?? {}).type === "secret";
       });
       const revealableObjectives = Object.values(objectives ?? {}).filter((objective) => {
         return objective.type === type && !objective.selected;
@@ -298,7 +310,7 @@ function PhaseSection() {
       phaseContent =
         // <LabeledDiv label="SCORE OBJECTIVES">
         <React.Fragment>
-        <div className='flexColumn' style={{gap: "4px", padding: "8px", flexWrap: "wrap", alignItems: "stretch"}}>
+        <div className='flexColumn' style={{gap: "4px", padding: "8px", flexWrap: "wrap", width: "100%", alignItems: "flex-start"}}>
         {scoredPublics.length > 0 ?
           <LabeledDiv label="SCORED PUBLIC" style={{whiteSpace: "nowrap"}}>
             <SelectableRow itemName={scoredPublics[0]} removeItem={() => unscoreObj(factionName, scoredPublics[0])}>
@@ -349,6 +361,12 @@ function PhaseSection() {
             : null}
             </div>}
           </LabeledDiv>
+          {statusPhaseComplete(subState) ? 
+          <React.Fragment>
+          {!state.agendaUnlocked ? <button onClick={() => startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards)}>Start Next Round</button>: null}
+          <button onClick={() => advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions)}>Advance to Agenda Phase</button>
+          </React.Fragment>
+          : null}
         </React.Fragment>;
         break;
     }
@@ -469,6 +487,7 @@ function PhaseSection() {
           </div>
           // <VoteCount factionName={factionName} agenda={currentAgenda} />
         : null}
+        <button onClick={() => startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards)}>Start Next Round</button>
       </React.Fragment>;
       break;
     }

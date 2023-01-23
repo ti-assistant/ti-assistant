@@ -21,6 +21,7 @@ import { getFactionColor, getFactionName } from '../util/factions';
 import { SelectableRow } from '../SelectableRow';
 import { finalizeSubState, hideSubStateObjective, revealSubStateObjective, scoreSubStateObjective, setSubStateOther, unscoreSubStateObjective } from '../util/api/subState';
 import { NumberedItem } from '../NumberedItem';
+import { startNextRound } from './AgendaPhase';
 
 function InfoContent({content}) {
   return (
@@ -439,6 +440,32 @@ export function MiddleColumn() {
     </React.Fragment>);
 }
 
+
+export function advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions) {
+  finalizeSubState(mutate, gameid, subState);
+  const data = {
+    action: "ADVANCE_PHASE",
+  };
+  resetStrategyCards(mutate, gameid, strategyCards);
+
+  const updatedState = {...state};
+  state.phase = "AGENDA";
+  state.activeplayer = state.speaker;
+  state.agendaUnlocked = true;
+
+  const options = {
+    optimisticData: updatedState,
+  };
+
+  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+
+  readyAllFactions(mutate, gameid, factions);
+}
+
+export function statusPhaseComplete(subState) {
+  return (subState.objectives ?? []).length === 1;
+}
+
 export default function StatusPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -449,6 +476,7 @@ export default function StatusPhase() {
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
+  const { data: timers = {} } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
   const [ infoModal, setInfoModal ] = useState({
@@ -460,39 +488,14 @@ export default function StatusPhase() {
     return <div>Loading...</div>;
   }
 
-  function phaseComplete() {
-    switch (state.phase) {
-      case "STATUS":
-        return (subState.objectives ?? []).length === 1;
-    }
-  }
-
   function nextPhase(skipAgenda = false) {
-    finalizeSubState(mutate, gameid, subState);
-    const data = {
-      action: "ADVANCE_PHASE",
-      skipAgenda: skipAgenda,
-    };
-    resetStrategyCards(mutate, gameid, strategyCards);
-    const phase = skipAgenda ? "STRATEGY" : "AGENDA";
-    const activeFactionName = state.speaker;
-    const round = skipAgenda ? state.round++ : state.round;
-    const agendaUnlocked = !skipAgenda;
-
-    const updatedState = {...state};
-    state.phase = phase;
-    state.activeplayer = activeFactionName;
-    state.agendaUnlocked = agendaUnlocked;
-    state.round = round;
-
-    const options = {
-      optimisticData: updatedState,
-    };
-
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-
-    readyAllFactions(mutate, gameid, factions);
+    if (!skipAgenda) {
+      advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions);
+      return;
+    }
+    startNextRound(mutate, gameid, factions, timers, state, subState);
   }
+
 
   function addObj(objective) {
     revealSubStateObjective(mutate, gameid, subState, objective.name);
@@ -893,14 +896,14 @@ export default function StatusPhase() {
             </NumberedItem>); */}
         {/* })} */}
       {/* </ol> */}
-      {!phaseComplete() ? 
+      {!statusPhaseComplete(subState) ? 
         <div style={{color: "darkred"}}>Reveal one Stage {round > 3 ? "II" : "I"} objective</div>
       : null}
       <div className="flexRow">
       {!state.agendaUnlocked ? 
-        <button disabled={!phaseComplete()} onClick={() => nextPhase(true)}>Start Next Round</button>
+        <button disabled={!statusPhaseComplete(subState)} onClick={() => nextPhase(true)}>Start Next Round</button>
       : null}
-        <button disabled={!phaseComplete()} onClick={() => nextPhase()}>Advance to Agenda Phase</button>  
+        <button disabled={!statusPhaseComplete(subState)} onClick={() => nextPhase()}>Advance to Agenda Phase</button>  
       </div>
     </div>
     <div className="flexColumn" style={{height: "100vh", flexShrink: 0,  width: responsivePixels(280)}}>

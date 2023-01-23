@@ -16,7 +16,7 @@ import { finalizeSubState, hideSubStateObjective, revealSubStateObjective } from
 import { responsivePixels } from '../util/util';
 import { NumberedItem } from '../NumberedItem';
 
-export function startFirstRound(mutate, gameid, subState, factions, planets, objectives, state) {
+export function startFirstRound(mutate, gameid, subState, factions, planets, objectives, state, options) {
   finalizeSubState(mutate, gameid, subState);
   const data = {
     action: "ADVANCE_PHASE",
@@ -104,7 +104,7 @@ export default function SetupPhase() {
 
 
   function nextPhase() {
-    startFirstRound(mutate, gameid, subState, factions, planets, objectives, state);
+    startFirstRound(mutate, gameid, subState, factions, planets, objectives, state, options);
   }
 
 

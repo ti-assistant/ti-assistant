@@ -22,8 +22,6 @@ function Options({ updatePlayerCount, toggleOption, toggleExpansion, options, nu
     }
   }, [options['map-string']]);
 
-  console.log(options.expansions);
-
   let mapStyles;
   switch (numFactions) {
     case 3:

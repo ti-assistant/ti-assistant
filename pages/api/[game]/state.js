@@ -1,3 +1,5 @@
+import { fetchPlanets } from '../../../server/util/fetch';
+
 const { getFirestore } = require('firebase-admin/firestore');
 
 export default async function handler(req, res) {
@@ -10,5 +12,14 @@ export default async function handler(req, res) {
     res.status(404);
   }
 
-  res.status(200).json(gameRef.data().state);
+  const state = gameRef.data().state;
+
+  if (!state.agendaUnlocked) {
+    const planets = await fetchPlanets(gameid);
+    if ((planets['Mecatol Rex'].owners ?? []).length > 0) {
+      state.agendaUnlocked = true;
+    }
+  }
+
+  res.status(200).json(state);
 }

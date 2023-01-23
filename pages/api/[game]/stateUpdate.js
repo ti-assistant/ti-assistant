@@ -84,6 +84,16 @@ export default async function handler(req, res) {
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
+    case "START_NEXT_ROUND": {
+      const state = gameRef.data().state;
+      await db.collection('games').doc(gameid).update({
+        "state.phase": "STRATEGY",
+        "state.activeplayer": state.speaker,
+        "state.round": state.round + 1,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      });
+      break;
+    }
     case "ADVANCE_PLAYER":
       const factions = gameRef.data().factions;
       const strategyCards = await fetchStrategyCards(gameid);

@@ -383,6 +383,38 @@ export function hideSubStateAgenda(mutate, gameid, subState, agendaName) {
   mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
 }
 
+export function repealSubStateAgenda(mutate, gameid, subState, agendaName) {
+  const data = {
+    action: "REPEAL_AGENDA",
+    agendaName: agendaName,
+  };
+
+  const updatedSubState = {...subState};
+  updatedSubState.repealedAgenda = agendaName;
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+export function removeRepealedSubStateAgenda(mutate, gameid, subState) {
+  const data = {
+    action: "REMOVE_REPEALED_AGENDA",
+  };
+
+  const updatedSubState = {...subState};
+  delete updatedSubState.repealedAgenda;
+
+  const options = {
+    optimisticData: updatedSubState,
+  };
+
+  mutate(`/api/${gameid}/subState`, poster(`/api/${gameid}/subStateUpdate`, data), options);
+}
+
+
 export function setSubStateOther(mutate, gameid, subState, fieldName, value) {
   const data = {
     action: "SET_OTHER_FIELD",

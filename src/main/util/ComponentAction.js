@@ -2,12 +2,13 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { capitalizeFirstLetter, Map } from "../../../pages/setup";
+import { AgendaRow } from "../../AgendaRow";
 import { HoverMenu } from "../../HoverMenu";
 import { LabeledDiv, LabeledLine } from "../../LabeledDiv";
 import { Modal } from "../../Modal";
 import { SelectableRow } from "../../SelectableRow";
 import { TechRow } from "../../TechRow";
-import { addSubStateTech, clearAddedSubStateTech, clearSubState, removeSubStateTech, setSubStateOther, setSubStateSelectedAction } from "../../util/api/subState";
+import { addSubStateTech, clearAddedSubStateTech, clearRemovedSubStateTech, clearSubState, removeRepealedSubStateAgenda, removeSubStateTech, repealSubStateAgenda, setSubStateOther, setSubStateSelectedAction } from "../../util/api/subState";
 import { hasTech } from "../../util/api/techs";
 import { fetcher } from "../../util/api/util";
 import { getFactionColor, getFactionName } from "../../util/factions";
@@ -124,6 +125,7 @@ function ComponentDetails({ factionName }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
+  const { data: agendas = {} } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: attachments } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
   const { data: components = {} } = useSWR(gameid ? `/api/${gameid}/components` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
@@ -164,6 +166,18 @@ function ComponentDetails({ factionName }) {
   function removeTech(techName) {
     clearAddedSubStateTech(mutate, gameid, subState, factionName, techName);
   }
+  function addRemoveTech(tech) {
+    removeSubStateTech(mutate, gameid, subState, factionName, tech.name);
+  }
+  function clearAddedTech(techName) {
+    clearRemovedSubStateTech(mutate, gameid, subState, factionName, techName);
+  }
+  function repealLaw(lawName) {
+    repealSubStateAgenda(mutate, gameid, subState, lawName);
+  }
+  function removeRepealedAgenda(agendaName) {
+    removeRepealedSubStateAgenda(mutate, gameid, subState);
+  }
 
   const updatedPlanets = applyAllPlanetAttachments(Object.values(planets), attachments);
 
@@ -183,6 +197,74 @@ function ComponentDetails({ factionName }) {
       } else {
         innerContent = <TechSelectHoverMenu techs={availableTechs} selectTech={addTech} />;
       }
+      break;
+    }
+    case "Divert Funding": {
+      const returnedTechs = ((subState.factions ?? {})[factionName] ?? {}).removeTechs ?? [];
+      const canReturnTechs = Object.keys(factions[factionName].techs ?? {}).filter((tech) => {
+        return !techs[tech].faction && techs[tech].type !== "upgrade";
+      }).map((tech) => techs[tech]);
+      const researchedTech = ((subState.factions ?? {})[factionName] ?? {}).techs ?? [];
+      const availableTechs = getResearchableTechs(factions[factionName]);
+
+      innerContent = <div className="flexColumn" style={{width: "100%"}}>
+        {returnedTechs.length > 0 ? 
+          <React.Fragment>
+          <LabeledDiv label="Returned Tech">
+            {returnedTechs.map((tech) => {
+              return <TechRow key={tech} tech={techs[tech]} removeTech={() => {
+                researchedTech.forEach(removeTech);
+                clearAddedTech(tech);
+              }} />
+            })}
+            </LabeledDiv>
+            {researchedTech.length > 0 ? 
+              <LabeledDiv label="Researched Tech">
+              {researchedTech.map((tech) => {
+                return <TechRow key={tech} tech={techs[tech]} removeTech={() => removeTech(tech)} />
+              })}
+            </LabeledDiv>
+            : <TechSelectHoverMenu techs={availableTechs} selectTech={addTech} />}
+            </React.Fragment>
+        : <TechSelectHoverMenu techs={canReturnTechs} label="Return Tech" selectTech={addRemoveTech} />}
+      </div>;
+      break;
+    }
+    case "Dynamis Core": {
+      const numCommodities = factions[factionName].commodities + 2;
+
+      innerContent = `Gain ${numCommodities} Trade Goods`;
+      break;
+    }
+    case "Repeal Law": {
+      const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
+        return agenda.passed && agenda.type === "law";
+      });
+      const selectStyle = {
+        fontFamily: "Myriad Pro",
+        padding: responsivePixels(8),
+        flexWrap: "wrap",
+        alignItems: "stretch",
+        gap: responsivePixels(4),
+        maxHeight: responsivePixels(400),
+        maxWidth: "85vw",
+        overflowX: "auto",
+        writingMode: "vertical-lr",
+        justifyContent: "flex-start"};
+
+      innerContent = <div className="flexColumn" style={{width: "100%"}}>
+        {subState.repealedAgenda ? 
+          <LabeledDiv label="Repealed Law">
+            <AgendaRow agenda={agendas[subState.repealedAgenda]} removeAgenda={removeRepealedAgenda} />
+          </LabeledDiv>
+        : passedLaws.length > 0 ? <HoverMenu label="Repeal Law">
+            <div className="flexRow" style={selectStyle}>
+            {passedLaws.map((law) => {
+              return <button key={law.name} onClick={() => repealLaw(law.name)}>{law.name}</button>
+            })}
+            </div>
+          </HoverMenu> : "No laws to repeal"}
+      </div>
       break;
     }
     case "Industrial Initiative": {
@@ -248,7 +330,8 @@ export function ComponentAction({ factionName }) {
       await clearSubState(mutate, gameid, subState);
       setSubStateSelectedAction(mutate, gameid, subState, "Component");
     } else {
-      setSubStateOther(mutate, gameid, subState, "component", componentName);
+      const updatedName = componentName.replace(/\./g,"");
+      setSubStateOther(mutate, gameid, subState, "component", updatedName);
     }
   }
 

@@ -16,7 +16,7 @@ function sortTechs(techs, fields) {
   });
 }
 
-export function TechSelectHoverMenu({ techs, selectTech, direction = "horizontal" }) {
+export function TechSelectHoverMenu({ techs, label = "Research Tech", selectTech, direction = "horizontal" }) {
   const blueTechs = techs.filter((tech) => {
     return tech.type === 'blue';
   });
@@ -39,7 +39,7 @@ export function TechSelectHoverMenu({ techs, selectTech, direction = "horizontal
   sortTechs(unitUpgrades, ['name']);
 
   return (
-    <HoverMenu label="Research Tech" style={{whiteSpace: "nowrap"}} content={
+    <HoverMenu label={label} style={{whiteSpace: "nowrap"}} content={
       <div className={direction === "horizontal" ? "flexRow" : "flexColumn"} style={{padding: responsivePixels(8), alignItems: "flex-start", overflow: "visible"}}>
         {redTechs.length > 0 ?
         <HoverMenu label="Warfare" borderColor={getTechColor(redTechs[0])} content={

@@ -604,9 +604,6 @@ export function NextPlayerButtons({factionName, buttonStyle}) {
     switch (subState.selectedAction) {
       case "Politics":
         return !!subState.speaker;
-      case "Technology":
-        return factionName === "Nekro Virus" ||
-          (((subState.factions ?? {})[factionName] ?? {}).techs ?? []).length > 0;
     }
     return !!subState.selectedAction;
   }
@@ -666,6 +663,37 @@ export function ActivePlayerColumn({activeFaction, onDeckFaction}) {
   </div>);
 }
 
+export function advanceToStatusPhase(mutate, gameid, strategyCards, state, factions) {
+  const data = {
+    action: "ADVANCE_PHASE",
+  };
+  const phase = "STATUS";
+  let minCard = {
+    order: Number.MAX_SAFE_INTEGER,
+  };
+  for (const strategyCard of Object.values(strategyCards)) {
+    if (strategyCard.faction && strategyCard.order < minCard.order) {
+      minCard = strategyCard;
+    }
+  }
+  if (!minCard.faction) {
+    throw Error("Transition to STATUS phase w/o selecting cards?");
+  }
+  const activeFactionName = minCard.faction;
+
+  const updatedState = {...state};
+  state.phase = phase;
+  state.activeplayer = activeFactionName;
+
+  const options = {
+    optimisticData: updatedState,
+  };
+
+  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+
+  readyAllFactions(mutate, gameid, factions);
+}
+
 export default function ActionPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -679,37 +707,7 @@ export default function ActionPhase() {
     return <div>Loading...</div>;
   }
 
-  function nextPhase(skipAgenda = false) {
-    const data = {
-      action: "ADVANCE_PHASE",
-      skipAgenda: skipAgenda,
-    };
-    const phase = "STATUS";
-    let minCard = {
-      order: Number.MAX_SAFE_INTEGER,
-    };
-    for (const strategyCard of Object.values(strategyCards)) {
-      if (strategyCard.faction && strategyCard.order < minCard.order) {
-        minCard = strategyCard;
-      }
-    }
-    if (!minCard.faction) {
-      throw Error("Transition to STATUS phase w/o selecting cards?");
-    }
-    const activeFactionName = minCard.faction;
 
-    const updatedState = {...state};
-    state.phase = phase;
-    state.activeplayer = activeFactionName;
-
-    const options = {
-      optimisticData: updatedState,
-    };
-
-    mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-
-    readyAllFactions(mutate, gameid, factions);
-  }
 
   const activeFaction = factions[state.activeplayer] ?? null;
   const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
