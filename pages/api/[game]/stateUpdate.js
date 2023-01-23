@@ -120,6 +120,26 @@ export default async function handler(req, res) {
       }
       break;
     }
+    case "END_GAME": {
+      const state = gameRef.data().state ?? {};
+      const updates = {
+        "state.finalPhase": state.phase,
+        "state.phase": "END",
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      };
+      await db.collection('games').doc(gameid).update(updates);
+      break;
+    }
+    case "CONTINUE_GAME": {
+      const state = gameRef.data().state ?? {};
+      const updates = {
+        "state.finalPhase": FieldValue.delete(),
+        "state.phase": state.finalPhase,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      };
+      await db.collection('games').doc(gameid).update(updates);
+      break;
+    }
   }
 
   const responseRef = await db.collection('games').doc(gameid).get();

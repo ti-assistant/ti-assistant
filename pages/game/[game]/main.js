@@ -14,6 +14,7 @@ import { repealAgenda } from '../../../src/util/api/agendas';
 import { Updater } from '../../../src/Updater';
 import { responsivePixels } from '../../../src/util/util';
 import { Footer, Header } from '../../../src/Header';
+import ResultsPhase from '../../../src/main/ResultsPhase';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -43,6 +44,9 @@ export default function SelectFactionPage() {
       break;
     case "AGENDA":
       innerContent = <AgendaPhase />;
+      break;
+    case "END":
+      innerContent = <ResultsPhase />;
       break;
   }
   return (

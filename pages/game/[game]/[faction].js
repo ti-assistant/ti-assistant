@@ -62,7 +62,6 @@ function PhaseSection() {
   const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   
 
-  console.log("En");
   if (!state) {
     return null;
   }
@@ -111,7 +110,6 @@ function PhaseSection() {
   let currentAgenda = null;
   const agendaNum = subState.agendaNum ?? 1;
   if (agendaNum > 2) {
-    console.log("What?");
     return null;
   }
   if (subState.agenda) {
@@ -225,7 +223,6 @@ function PhaseSection() {
       break;
     }
     case "STRATEGY":
-      console.log(state.activeplayer)
       if (factionName === state.activeplayer) {
         phaseName = "SELECT STRATEGY CARD";
         phaseContent = 
@@ -237,7 +234,6 @@ function PhaseSection() {
           </div>;
       }
       if (state.activeplayer === "None") {
-        console.log("Yep");
         phaseName = "END OF STRATEGY PHASE";
         phaseContent = 
           <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
@@ -258,7 +254,7 @@ function PhaseSection() {
               factionName={factionName}
               visible={!!subState.selectedAction}
               style={{width: "100%", alignItems: "flex-start"}}
-              hoverMenuStyle={{overflowX: "scroll", maxWidth: "85vw"}} 
+              hoverMenuStyle={{overflowX: "auto", maxWidth: "85vw"}} 
               factionOnly={true} />
               </div>
             {subState.selectedAction ? <div className="flexRow" style={{width: "100%"}}>
@@ -275,7 +271,7 @@ function PhaseSection() {
           factionName={factionName}
           visible={!!subState.selectedAction}
           style={{width: "100%"}}
-          hoverMenuStyle={{overflowX: "scroll", maxWidth: "85vw"}} 
+          hoverMenuStyle={{overflowX: "auto", maxWidth: "85vw"}} 
           factionOnly={true} />
       }
       break;
@@ -477,7 +473,6 @@ function PhaseSection() {
       break;
     }
   }
-  console.log(phaseName);
   if (!phaseContent) {
     return null;
   }
@@ -820,6 +815,7 @@ export default function GamePage() {
           margin: "8px 0",
           fontWeight: "normal",
         }}
+        onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}
       >
         Twilight Imperium Assistant
       </h2>

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import useSWR, { mutate } from 'swr'
 import { FactionCard } from '../FactionCard.js'
 import { fetcher } from '../util/api/util';
-import { FactionSummary, UpdateObjectivesModal, UpdatePlanetsModal, UpdateTechsModal } from '../FactionSummary';
+import { computeVPs, FactionSummary, UpdateObjectivesModal, UpdatePlanetsModal, UpdateTechsModal } from '../FactionSummary';
 import { updateOption } from '../util/api/options.js';
 import { useRef, useState } from 'react';
 import { useSharedUpdateTimes } from '../Updater.js';
@@ -10,12 +10,23 @@ import { LabeledDiv } from '../LabeledDiv.js';
 import { getFactionColor, getFactionName } from '../util/factions.js';
 import { responsivePixels } from '../util/util.js';
 import { StaticFactionTimer } from '../Timer.js';
+import { getInitiativeForFaction } from '../util/helpers.js';
 
-export default function SummaryColumn() {
+function sortByOrder(a, b) {
+  if (a[1].order > b[1].order) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+
+export default function SummaryColumn({order, subOrder}) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: objectives = {} } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
+  const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
 
   const [ showTechModal, setShowTechModal ] = useState(false);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
@@ -27,13 +38,31 @@ export default function SummaryColumn() {
     return <div>Loading...</div>;
   }
 
-  const orderedFactions = Object.entries(factions).sort((a, b) => {
-    if (a[1].order > b[1].order) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+  let sortFunction = sortByOrder;
+  let title = "Speaker Order";
+  switch (order) {
+    case "VICTORY_POINTS":
+      sortFunction = (a, b) => {
+        const aVPs = computeVPs(factions, a[0], objectives);
+        const bVPs = computeVPs(factions, b[0], objectives);
+        if (aVPs !== bVPs) {
+          return bVPs - aVPs;
+        }
+        switch (subOrder) {
+          case "INITIATIVE":
+            const aInitiative = getInitiativeForFaction(strategyCards, a[0]);
+            const bInitiative = getInitiativeForFaction(strategyCards, b[0]);
+            return aInitiative - bInitiative;
+          case "SPEAKER":
+            return a[1].order - b[1].order;
+        }
+        return a[1].order - b[1].order;
+      };
+      title = "Final Score";
+      break;
+  }
+
+  const orderedFactions = Object.entries(factions).sort(sortFunction);
 
   const showTechs = options['faction-summary-show-techs'] ?? true;
   const showPlanets = options['faction-summary-show-planets'] ?? true;
@@ -75,7 +104,7 @@ export default function SummaryColumn() {
           {showPlanets ? <button style={{fontSize: responsivePixels(14)}} onClick={() => setShowPlanetModal(true)}>Planets</button> : null}
         </div>
         </LabeledDiv> */}
-      {numFactions < 8 ? <div className="flexRow">Speaker Order</div> : null}
+      {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
 
       {orderedFactions.map(([name, faction]) => {
         return (

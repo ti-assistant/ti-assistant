@@ -236,7 +236,7 @@ export default function StrategyPhase() {
 
   const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
   return (
-    <div className="flexRow" style={{alignItems: "flex-start", height: "100vh", width: "100%", justifyContent: "space-between", gap: responsivePixels(20)}}>
+    <div className="flexRow" style={{alignItems: "center", height: "100vh", width: "100%", justifyContent: "space-between", gap: responsivePixels(20)}}>
       <Modal closeMenu={() => setInfoModal({show: false})} visible={infoModal.show} title={<div style={{fontSize: responsivePixels(40)}}>{infoModal.title}</div>} content={
         <InfoContent content={infoModal.content} />
       } top="30%" />

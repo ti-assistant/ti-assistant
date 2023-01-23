@@ -87,3 +87,13 @@ export function getStrategyCardsForFaction(strategyCards, faction) {
   const cards = Object.values(strategyCards).filter((card) => card.faction === faction);
   return cards;
 }
+
+export function getInitiativeForFaction(strategyCards, factionName) {
+  const cards = getStrategyCardsForFaction(strategyCards, factionName);
+  return cards.reduce((initiative, card) => {
+    if (card.order < initiative) {
+      return card.order;
+    }
+    return initiative;
+  }, Number.MAX_SAFE_INTEGER);
+}

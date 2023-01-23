@@ -1,17 +1,18 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import QRCode from "qrcode";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
 import { fetcher } from "./util/api/util";
 import { GameTimer } from "./Timer";
 import { HoverMenu } from "./HoverMenu";
 import { Map } from "../pages/setup";
 import { LabeledDiv } from "./LabeledDiv";
-import { UpdateObjectives, UpdatePlanets, UpdateTechs, UpdateTechsModal } from "./FactionSummary";
+import { computeVPs, UpdateObjectives, UpdatePlanets, UpdateTechs, UpdateTechsModal } from "./FactionSummary";
 import React from "react";
 import { AgendaRow } from "./AgendaRow";
 import { repealAgenda } from "./util/api/agendas";
+import { continueGame, finishGame } from "./util/api/state";
 
 export function Sidebar({ side, content }) {
   const className = `${side}Sidebar`;
@@ -25,9 +26,11 @@ export function Sidebar({ side, content }) {
 export function Header() {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
   const { data: agendas = {} } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: options = {} } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: objectives = {} } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: planets = {} } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: state, error } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [qrCode, setQrCode] = useState(null);
@@ -73,6 +76,14 @@ export function Header() {
   //   </div>
   // </div>
 
+  function endGame() {
+    finishGame(mutate, gameid, state);
+  }
+
+  function backToGame() {
+    continueGame(mutate, gameid, state);
+  }
+
   const mapOrderedFactions = Object.values(factions).sort((a, b) => a.mapPosition - b.mapPosition);
   let mallice = null;
   if ((options['expansions'] ?? []).includes("pok")) {
@@ -88,6 +99,13 @@ export function Header() {
   function removeAgenda(agendaName) {
     repealAgenda(mutate, gameid, agendas, agendaName);
   }
+
+  let gameFinished = false;
+  Object.values(factions).forEach((faction) => {
+    if (computeVPs(factions, faction.name, objectives) >= options['victory-points']) {
+      gameFinished = true;
+    }
+  });
 
   return <React.Fragment>
     {(options['map-string'] ?? []).length > 0 ?
@@ -115,6 +133,15 @@ export function Header() {
         </HoverMenu>
       // </div>
     }
+    {gameFinished || state.phase === "END" ? 
+      <div className="flexRow extraLargeFont" style={{position: "fixed", top: responsivePixels(20), left: responsivePixels(490)}}>
+        {state.phase === "END" ? 
+          <button style={{fontSize: responsivePixels(24)}} onClick={backToGame}>Back to Game</button>
+
+        : 
+        <button style={{fontFamily: "Slider", fontSize: responsivePixels(32)}} onClick={endGame}>End Game</button>}
+      </div>
+    : null}
     {passedLaws.length > 0 ? 
         <HoverMenu label="Laws in Effect" buttonStyle={{position: "fixed", top: responsivePixels(20), right: responsivePixels(440)}}>
         <div className="flexColumn" style={{alignItems: "flex-start", padding: responsivePixels(8)}}>
@@ -123,7 +150,7 @@ export function Header() {
       </HoverMenu>
     : null}
     <div className="flex" style={{ top: 0, width: "100vw", paddingTop: responsivePixels(20), position: "fixed", justifyContent: "space-between" }}>
-    <Sidebar side="left" content={`${state.phase} PHASE`} />
+    <Sidebar side="left" content={state.phase === "END" ? "END OF GAME" : `${state.phase} PHASE`} />
     <Sidebar side="right" content={round} />
     <div className="extraLargeFont nonMobile"
       style={{
@@ -133,12 +160,12 @@ export function Header() {
         top: `${responsivePixels(20)}`,
         left: `${responsivePixels(120)}`
       }}
-      onClick={() => router.push("/")}>
+      onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}>
       Twilight Imperium Assistant
     </div>
     {state.phase !== "SETUP" ?
       <div className="flexRow nonMobile" style={{ position: "fixed", top: responsivePixels(60), left: responsivePixels(280), alignItems: "center", justifyContent: "center" }}>
-        <GameTimer />
+        <GameTimer frozen={state.phase === "END"} />
       </div> : null}
     <div className="flexColumn extraLargeFont mobileOnly" style={{ cursor: "pointer", position: "fixed", backgroundColor: "#222", textAlign: "center", top: `${responsivePixels(20)}`, width: "100%" }} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
 
@@ -157,7 +184,7 @@ export function Footer({ }) {
   }
 
   return <div className="flex" style={{ bottom: 0, width: "100vw", position: "fixed", justifyContent: "space-between" }}>
-    {state.phase !== "SETUP" ? <div style={{position: "fixed", bottom: responsivePixels(12), left: responsivePixels(108)}}>
+    {state.phase !== "SETUP" && state.phase !== "END" ? <div style={{position: "fixed", bottom: responsivePixels(12), left: responsivePixels(108)}}>
     <LabeledDiv label="Update">
       <div className="flexRow" style={{width: "100%", alignItems: "stretch"}}>
         <HoverMenu label="Techs">

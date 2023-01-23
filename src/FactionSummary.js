@@ -892,6 +892,21 @@ export function PlanetSummary({ planets, faction, options = {} }) {
   );
 }
 
+export function computeVPs(factions, factionName, objectives) {
+  const faction = factions[factionName];
+  return (faction.vps ?? 0) + Object.values(objectives).filter((objective) => {
+    return (objective.scorers ?? []).includes(factionName);
+  }).reduce((total, objective) => {
+    const count = objective.scorers.reduce((count, scorer) => {
+      if (scorer === factionName) {
+        return count + 1;
+      }
+      return count;
+    }, 0);
+    return total + (count * objective.points);
+  }, 0);
+}
+
 export function FactionSummary({ factionName, options = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -900,6 +915,7 @@ export function FactionSummary({ factionName, options = {} }) {
   const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: factions, factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: state = {} } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: techs, error: techsError } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
 
   if (attachmentsError) {
@@ -922,22 +938,14 @@ export function FactionSummary({ factionName, options = {} }) {
   const ownedPlanets = filterToClaimedPlanets(planets, factionName);
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
-  const VPs = (faction.vps ?? 0) + Object.values(objectives ?? {}).filter((objective) => {
-    return (objective.scorers ?? []).includes(factionName);
-  }).reduce((total, objective) => {
-    const count = objective.scorers.reduce((count, scorer) => {
-      if (scorer === factionName) {
-        return count + 1;
-      }
-      return count;
-    }, 0);
-    return total + (count * objective.points);
-  }, 0);
+  const VPs = computeVPs(factions ?? {}, factionName, objectives ?? {})
 
   function manualVpAdjust(increase) {
     const value = increase ? 1 : -1;
     manualVPUpdate(mutate, gameid, factions, factionName, value);
   }
+
+  const editable = state.phase !== "END";
 
   return (
     <div className="flexRow" style={{ height: "100%", width: "100%", maxWidth: responsivePixels(800), position: "relative" }}>
@@ -950,9 +958,9 @@ export function FactionSummary({ factionName, options = {} }) {
       {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
       <div className="flexColumn" style={{ gap: 0 }}>
         <div className="flexRow" style={{ gap: responsivePixels(4), justifyContent: "space-between", fontSize: responsivePixels(28) }}>
-          {VPs > 0 ? <div className="arrowDown" onClick={() => manualVpAdjust(false)}></div> : <div style={{ width: responsivePixels(12) }}></div>}
+          {VPs > 0 && editable ? <div className="arrowDown" onClick={() => manualVpAdjust(false)}></div> : <div style={{ width: responsivePixels(12) }}></div>}
           <div className="flexRow" style={{ width: responsivePixels(24) }}>{VPs}</div>
-          <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
+          {editable ? <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div> : <div style={{ width: responsivePixels(12) }}></div>}
         </div>
         <div style={{ fontSize: responsivePixels(20) }}>{pluralize('VP', VPs)}</div>
       </div>

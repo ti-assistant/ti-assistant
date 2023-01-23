@@ -402,7 +402,7 @@ export default function AgendaPhase() {
       })}
       <LawsInEffect />
     </div>
-    <div className='flexColumn' style={{flexBasis: "30%", paddingTop: responsivePixels(60)}}> 
+    <div className='flexColumn' style={{flexBasis: "30%", paddingTop: responsivePixels(80)}}> 
       <AgendaTimer />
       {agendaNum > 2 ? <div style={{fontSize: responsivePixels(40), textAlign: "center", marginTop: responsivePixels(120), width: "100%"}}>
         Agenda Phase Complete

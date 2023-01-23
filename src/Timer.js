@@ -143,7 +143,7 @@ export function AgendaTimer({}) {
   );
 }
 
-export function GameTimer({}) {
+export function GameTimer({ frozen = false }) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
@@ -156,7 +156,7 @@ export function GameTimer({}) {
 
 
   useEffect(() => {
-    if (paused) {
+    if (paused || frozen) {
       return;
     }
 
@@ -169,7 +169,7 @@ export function GameTimer({}) {
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [gameTimer, paused]);
+  }, [gameTimer, paused, frozen]);
 
   function setStartingTime() {
     if (!timers) {
@@ -200,9 +200,9 @@ export function GameTimer({}) {
         {/* <div style={{fontSize: responsivePixels(18)}}>Game Time</div> */}
         <TimerDisplay time={!timers ? 0 : gameTimer} style={{fontSize: responsivePixels(28)}} />
       </div>
-      <div className="flexRow">
+      {frozen ? null : <div className="flexRow">
         <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button>
-      </div>
+      </div>}
     </div>
   );
 }

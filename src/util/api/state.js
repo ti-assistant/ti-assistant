@@ -49,3 +49,33 @@ export async function nextPlayer(mutate, gameid, state, factions, strategyCards)
   };
   return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
 }
+
+export async function finishGame(mutate, gameid, state) {
+  const data = {
+    action: "END_GAME",
+  };
+
+  const updatedState = {...state};
+  updatedState.finalPhase = state.phase;
+  updatedState.phase = "END";
+
+  const options = {
+    optimisticData: updatedState,
+  };
+  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+}
+
+export async function continueGame(mutate, gameid, state) {
+  const data = {
+    action: "CONTINUE_GAME",
+  };
+
+  const updatedState = {...state};
+  updatedState.phase = state.finalPhase;
+  delete updatedState.finalPhase;
+
+  const options = {
+    optimisticData: updatedState,
+  };
+  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+}

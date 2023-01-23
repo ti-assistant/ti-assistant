@@ -181,10 +181,13 @@ export default async function handler(req, res) {
     }
     case "FINALIZE_SUB_STATE": {
       const subState = gameRef.data().subState ?? {};
+      const gameLog = gameRef.data().gameLog ?? [];
+      gameLog.push(subState);
       const gameObjectives = await fetchObjectives(gameid, req.cookies.secret);
       const components = await fetchComponents(gameid);
       updates = {
         "subState": FieldValue.delete(),
+        "gameLog": gameLog,
         [timestampString]: timestamp,
       };
       if (subState.speaker) {
