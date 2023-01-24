@@ -9,7 +9,7 @@ import { Tab, TabBody } from "/src/Tab.js";
 import { Modal } from "/src/Modal.js";
 import useSWR, { useSWRConfig } from 'swr'
 import { ObjectiveList } from "/src/ObjectiveList";
-import { fetcher, poster } from '../../../src/util/api/util';
+import { fetcher, poster, setGameId } from '../../../src/util/api/util';
 import { pluralize, responsivePixels } from "../../../src/util/util";
 import { hasTech, lockTech, unlockTech } from "../../../src/util/api/techs";
 import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
@@ -510,7 +510,7 @@ function PhaseSection() {
 function FactionContent() {
   const [showAddTech, setShowAddTech] = useState(false);
   const [showAddPlanet, setShowAddPlanet] = useState(false);
-  const [tabShown, setTabShown] = useState("planets");
+  const [tabShown, setTabShown] = useState(null);
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
@@ -777,6 +777,12 @@ export default function GamePage() {
   const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+
+  useEffect(() => {
+    if (!!gameid) {
+      setGameId(gameid);
+    }
+  }, [gameid]);
 
   if (factionsError || cardsError || stateError) {
     return (<div>Failed to load factions</div>);

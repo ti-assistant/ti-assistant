@@ -96,7 +96,7 @@ function ComponentSelect({ components, selectComponent }) {
       </div>
     </HoverMenu> : null}
     {promissory.length > 0 ? <HoverMenu label="Promissory">
-      <div className="flexRow" style={{padding: responsivePixels(8)}}>
+      <div className="flexColumn" style={{alignItems: "stretch", padding: responsivePixels(8)}}>
       {promissory.map((component) => {
         return <div className="flexColumn" key={component.name}>
           <LabeledDiv noBlur={true} label={capitalizeFirstLetter(component.faction)}>
@@ -110,8 +110,15 @@ function ComponentSelect({ components, selectComponent }) {
       </div>
     </HoverMenu> : null}
     {others.length > 0 ? <HoverMenu label="Other">
-      <div className="flexRow" style={innerStyle}>
+      <div className="flexColumn" style={{alignItems: "stretch", padding: responsivePixels(8)}}>
       {others.map((component) => {
+        if (component.type === "flagship") {
+          return <div className="flexColumn" key={component.name}>
+          <LabeledDiv noBlur={true} label={capitalizeFirstLetter(component.type)}>
+          <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+        </LabeledDiv>
+        </div>
+        }
         return <button key={component.name} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>

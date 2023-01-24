@@ -8,6 +8,7 @@ import { LabeledDiv } from '../../../src/LabeledDiv';
 import { getFactionColor, getFactionName } from '../../../src/util/factions';
 import { responsivePixels } from '../../../src/util/util';
 import { FactionSymbol, FullFactionSymbol } from '../../../src/FactionCard';
+import Head from 'next/head';
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -144,23 +145,12 @@ function Header() {
 
   const round = state ? `ROUND ${state.round}` : "";
 
-  // return <div className="flexRow" style={{top: 0, width: "100vw", position: "fixed", justifyContent: "space-evenly"}}>
-  //   <Sidebar side="left" content={`SELECT FACTION`} />
-  //   <Sidebar side="right" content={round} />
-
-  //   <div style={{cursor: "pointer", backgroundColor: "#222", fontSize: responsivePixels(24)}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
-
-  //   {/* <div style={{position: "fixed", paddingBottom: "20px", transform: "rotate(-90deg)", left: "0",  top: "50%", borderBottom: "1px solid grey", fontSize: "40px", transformOrigin: "0 0"}}>
-  //     SETUP PHASE
-  //   </div> */}
-  //   {/* <h2>Twilight Imperium Assistant</h2> */}
-  //   <div className="flexRow" style={{alignItems: "center", justifyContent: "center"}}>
-  //     <div>Game ID: {gameid}</div>
-  //     {qrCode ? <img src={qrCode} /> : null}
-  //   </div>
-  // </div>
-
   return <div className="flex" style={{top: 0, width: "100vw", position: "fixed", justifyContent: "space-between"}}>
+    <Head>
+      <title>Twilight Imperium Assistant</title>
+      <link rel="shortcut icon" href="/images/favicon.ico"></link>
+      {/* <link rel="icon" type="image/png" href="/public/images/favicon.png"></link> */}
+    </Head>
     <Sidebar side="left" content={`SELECT FACTION`} />
     <Sidebar side="right" content={round} />
     <div className="extraLargeFont nonMobile" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: `${responsivePixels(12)}`, left: `${responsivePixels(150)}`}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
