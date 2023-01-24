@@ -3,7 +3,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { useEffect, useState } from "react";
 import { FactionCard } from '/src/FactionCard.js'
 import QRCode from "qrcode";
-import { fetcher } from '../../../src/util/api/util';
+import { fetcher, setGameId } from '../../../src/util/api/util';
 import { LabeledDiv } from '../../../src/LabeledDiv';
 import { getFactionColor, getFactionName } from '../../../src/util/factions';
 import { responsivePixels } from '../../../src/util/util';
@@ -29,6 +29,12 @@ export default function SelectFactionPage() {
       setQrCode(url);
     });
   }
+
+  useEffect(() => {
+    if (!!gameid) {
+      setGameId(gameid);
+    }
+  }, [gameid]);
 
   if (factionsError) {
     return (<div>Failed to load game</div>);

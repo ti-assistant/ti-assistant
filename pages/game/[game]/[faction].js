@@ -41,6 +41,7 @@ import { advanceToActionPhase } from "../../../src/main/StrategyPhase";
 import { setupPhaseComplete, startFirstRound } from "../../../src/main/SetupPhase";
 import { advanceToAgendaPhase, statusPhaseComplete } from "../../../src/main/StatusPhase";
 import { startNextRound } from "../../../src/main/AgendaPhase";
+import Head from "next/head";
 
 const techOrder = [
   "green",
@@ -819,6 +820,10 @@ export default function GamePage() {
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <Head>
+        <title>Twilight Imperium Assistant</title>
+        <link rel="shortcut icon" href="/images/favicon.ico"></link>
+      </Head>
       <Updater />
       <div className="flexColumn" style={{width: "100%", maxWidth: "800px"}}>
       {/* TODO: Uncomment after putting in server-side functionality for adding/removing prompts */}
@@ -833,6 +838,7 @@ export default function GamePage() {
           alignItems: "center",
           margin: "8px 0",
           fontWeight: "normal",
+          cursor: "pointer",
         }}
         onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}
       >

@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QRCode from "qrcode";
-import { fetcher } from '../../../src/util/api/util';
+import { fetcher, setGameId } from '../../../src/util/api/util';
 import AgendaPhase from '../../../src/main/AgendaPhase';
 import SetupPhase from '../../../src/main/SetupPhase';
 import StrategyPhase from '../../../src/main/StrategyPhase';
@@ -20,6 +20,12 @@ export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+
+  useEffect(() => {
+    if (!!gameid) {
+      setGameId(gameid);
+    }
+  }, [gameid]);
 
   if (!state) {
     return <div>Loading...</div>;

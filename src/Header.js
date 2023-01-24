@@ -13,6 +13,7 @@ import React from "react";
 import { AgendaRow } from "./AgendaRow";
 import { repealAgenda } from "./util/api/agendas";
 import { continueGame, finishGame } from "./util/api/state";
+import Head from "next/head";
 
 export function Sidebar({ side, content }) {
   const className = `${side}Sidebar`;
@@ -108,6 +109,11 @@ export function Header() {
   });
 
   return <React.Fragment>
+    <Head>
+      <title>Twilight Imperium Assistant</title>
+      <link rel="shortcut icon" href="/images/favicon.ico"></link>
+      {/* <link rel="icon" type="image/png" href="/public/images/favicon.png"></link> */}
+    </Head>
     {(options['map-string'] ?? []).length > 0 ?
     // <div style={{ cursor: "pointer", zIndex: 1001, position: "fixed", backgroundColor: "#222", top: `${responsivePixels(100)}`, left: `${responsivePixels(120)}` }}>
       <HoverMenu label="View Map" buttonStyle={{position: "fixed", top:responsivePixels(state.phase === "SETUP" ? 60 : 100), left: `${responsivePixels(120)}` }}>
@@ -158,7 +164,8 @@ export function Header() {
         position: "fixed",
         backgroundColor: "#222",
         top: `${responsivePixels(20)}`,
-        left: `${responsivePixels(120)}`
+        left: `${responsivePixels(120)}`,
+        cursor: "pointer",
       }}
       onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}>
       Twilight Imperium Assistant

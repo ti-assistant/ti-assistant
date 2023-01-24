@@ -8,6 +8,7 @@ import { HoverMenu } from "../src/HoverMenu";
 import { LabeledDiv } from "../src/LabeledDiv";
 import { responsivePixels } from "../src/util/util";
 import { FullFactionSymbol } from "../src/FactionCard";
+import Head from "next/head";
 
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1456,6 +1457,10 @@ function Header() {
   const router = useRouter();
 
   return <div className="flexRow" style={{top: 0, position: "fixed", alignItems: "flex-start", justifyContent: "flex-start"}}>
+    <Head>
+      <title>Twilight Imperium Assistant</title>
+      <link rel="shortcut icon" href="/images/favicon.ico"></link>
+    </Head>
     <Sidebar side="left" content={`SETUP GAME`} />
     <Sidebar side="right" content={`SETUP GAME`} />
     <div className="extraLargeFont" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: `${responsivePixels(12)}`, left: `${responsivePixels(150)}`}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>

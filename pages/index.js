@@ -7,14 +7,26 @@ const Stage = {
 
 // index.html
 import Link from 'next/link'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getGameId } from '../src/util/api/util';
+import { continueGame } from '../src/util/api/state';
+import { responsivePixels } from '../src/util/util';
+import Head from 'next/head';
 
 export default function HomePage() {
   const [likes, setLikes] = useState(0);
 
   const [gameId, setGameId] = useState("Game ID");
 
+  const [currentGame, setCurrentGame] = useState(null);
+
   const router = useRouter();
+
+  useEffect(() => {
+    if (!!getGameId()) {
+      setCurrentGame(getGameId());
+    }
+  });
 
   function startGame() {
     router.push("/setup");
@@ -23,6 +35,10 @@ export default function HomePage() {
   function joinGame() {
     // TODO: Check for game's existence before allowing to join.
     router.push(`/game/${gameId}`);
+  }
+
+  function continueGame() {
+    router.push(`/game/${getGameId()}`);
   }
 
   function maybeClearGameId() {
@@ -44,9 +60,12 @@ export default function HomePage() {
   return (
     <div className="flexColumn" style={{gap: "16px"}}>
       <Header />
-      <div className="flexColumn" style={{height: "100vh", gap: "20px"}}>
+      <div className="flexColumn" style={{alignItems: "stretch", textAlign: "center", height: "100vh", gap: "20px"}}>
 
-        <button style={{fontSize: "52px"}} onClick={startGame}>New Game</button>
+        <button style={{fontSize: responsivePixels(54)}} onClick={startGame}>New Game</button>
+        {!!currentGame ? 
+          <button style={{fontSize: responsivePixels(36)}} onClick={() => continueGame()}>Continue Game</button> 
+        : null}
         <div className="flexRow" style={{gap: "8px"}}>
           <button onClick={joinGame} disabled={!validGameId()}>Join Game</button>
           <input value={gameId} onFocus={maybeClearGameId} onInput={(e) => setGameId(e.target.value)}/>
@@ -69,6 +88,10 @@ function Header() {
   const router = useRouter();
 
   return <div className="flexColumn" style={{top: 0, position: "fixed", alignItems: "flex-start", justifyContent: "flex-start"}}>
+    <Head>
+      <title>Twilight Imperium Assistant</title>
+      <link rel="shortcut icon" href="/images/favicon.ico"></link>
+    </Head>
     <div className="mobileTitle">TWILIGHT IMPERIUM ASSISTANT</div>
     <Sidebar side="left" content={`TI ASSISTANT`} />
     <Sidebar side="right" content={`TI ASSISTANT`} />

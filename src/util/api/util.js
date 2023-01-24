@@ -11,6 +11,16 @@ function genCookie(length) {
  return result;
 }
 
+export function setGameId(gameid) {
+  if (!Cookies.get("gameid") || Cookies.get("gameid") !== gameid) {
+    Cookies.set("gameid", gameid);
+  }
+}
+
+export function getGameId() {
+  return Cookies.get("gameid");
+}
+
 export async function fetcher(url) {
   if (!Cookies.get("secret")) {
     Cookies.set("secret", genCookie(16));
