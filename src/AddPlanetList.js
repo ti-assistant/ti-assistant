@@ -33,9 +33,13 @@ export function AddPlanetList({ planets, addPlanet }) {
 
   const remainingPlanets = [];
   Object.values(planets ?? {}).forEach((planet) => {
-    if (!(planet.owners ?? []).includes(playerFaction)) {
-      remainingPlanets.push(planet);
+    if ((planet.owners ?? []).includes(playerFaction)) {
+      return;
     }
+    if (planet.locked) {
+      return;
+    }
+    remainingPlanets.push(planet);
   });
 
   const normalPlanets = remainingPlanets.filter((planet) => {
@@ -75,7 +79,7 @@ export function AddPlanetList({ planets, addPlanet }) {
 
   return (
     <div className="flexColumn" style={{alignItems  : "stretch"}}>
-      <div className="flexRow" style={{backgroundColor: "#222", zIndex: 902, padding: "4px 4px 0px 4px"}}>
+      <div className="flexRow" style={{backgroundColor: "#222", padding: "4px 4px 0px 4px"}}>
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown} content={
           "Planets"
         } />

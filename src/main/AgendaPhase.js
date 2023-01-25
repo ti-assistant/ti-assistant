@@ -8,7 +8,7 @@ import { getTargets, VoteCount } from '../VoteCount';
 import { BasicFactionTile } from '../FactionTile';
 import { AgendaRow } from '../AgendaRow';
 import { Modal } from '../Modal';
-import { passAgenda, repealAgenda, resolveAgenda } from '../util/api/agendas';
+import { repealAgenda, resolveAgenda } from '../util/api/agendas';
 import { LawsInEffect } from '../LawsInEffect';
 import { SelectableRow } from '../SelectableRow';
 import { useSharedUpdateTimes } from '../Updater';
@@ -21,14 +21,6 @@ import { responsivePixels } from '../util/util';
 import { NumberedItem } from '../NumberedItem';
 import { resetAgendaTimers } from '../util/api/timers';
 import { resetStrategyCards } from '../util/api/cards';
-
-function InfoContent({content}) {
-  return (
-    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "20px"}}>
-      {content}
-    </div>
-  );
-}
 
 function AgendaSelectModal({ visible, onComplete, filter }) {
   const router = useRouter();
@@ -408,16 +400,16 @@ export default function AgendaPhase() {
       {agendaNum > 2 ? <div style={{fontSize: responsivePixels(40), textAlign: "center", marginTop: responsivePixels(120), width: "100%"}}>
         Agenda Phase Complete
         </div> : 
-      <ol className='flexColumn' style={{alignItems: "flex-start", margin: "0px", padding: "0px", fontSize: responsivePixels(18), alignItems: "stretch"}}>
+      <ol className='flexColumn' style={{alignItems: "flex-start", margin: "0", padding: "0", fontSize: responsivePixels(18), alignItems: "stretch"}}>
         <NumberedItem>
-          <div className="flexRow mediumFont" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
+          <div className="flexRow mediumFont" style={{justifyContent: "flex-start", whiteSpace: "nowrap"}}>
             {!miscount ? 
-            !currentAgenda ? <div className="flexRow" style={{justifyContent: "flex-start", gap: "8px"}}>
+            !currentAgenda ? <div className="flexRow" style={{justifyContent: "flex-start"}}>
               <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
                 <HoverMenu label="Reveal and Read one Agenda">
                   <div className="flexRow" style={{padding: responsivePixels(8), gap: responsivePixels(4), writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", maxHeight: responsivePixels(400), flexWrap: "wrap"}}>
                     {orderedAgendas.map((agenda) => {
-                      return <button key={agenda.name} style={{fontSize: responsivePixels(14)}} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
+                      return <button key={agenda.name} className={agenda.resolved ? "faded" : ""} style={{fontSize: responsivePixels(14)}} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                     })}
                   </div>
                 </HoverMenu>
@@ -428,7 +420,7 @@ export default function AgendaPhase() {
               </LabeledDiv>
             : "Re-voting on miscounted agenda"}
           </div>
-          <div className='flexColumn' style={{gap: "4px"}}>
+          <div className='flexColumn' style={{gap: responsivePixels(4)}}>
           {/* {agenda ? 
             <LabeledDiv label="AGENDA" style={{width: "auto"}}>
               <AgendaRow agenda={agenda} removeAgenda={() => {setAgenda(null); setFactionVotes({});}} />
@@ -446,7 +438,7 @@ export default function AgendaPhase() {
         </NumberedItem>
         {currentAgenda && currentAgenda.name === "Covert Legislation" ? 
           <NumberedItem>
-            <div className="flexRow mediumFont" style={{justifyContent: "flex-start", gap: "8px", whiteSpace: "nowrap"}}>
+            <div className="flexRow mediumFont" style={{justifyContent: "flex-start", whiteSpace: "nowrap"}}>
 
             {subState.outcome ? 
               <LabeledDiv label="ELIGIBLE OUTCOMES">
@@ -469,7 +461,7 @@ export default function AgendaPhase() {
             </NumberedItem>
           : null}
         <NumberedItem>In Speaker Order:
-        <div className="flexColumn largeFont" style={{paddingLeft: "8px", gap: "4px", alignItems: "flex-start"}}>
+        <div className="flexColumn largeFont" style={{paddingLeft: responsivePixels(8), gap: responsivePixels(4), alignItems: "flex-start"}}>
           <div>Perform any <i>When an Agenda is revealed</i> actions</div>
           <div>Perform any <i>After an Agenda is revealed</i> actions</div>
         </div>
@@ -478,7 +470,7 @@ export default function AgendaPhase() {
         <NumberedItem>
           In Voting Order: Cast votes (or abstain)
           {votes && Object.keys(votes).length > 0 ? 
-          <div className={flexDirection} style={{marginTop: "12px", gap: "4px", padding: "8px 20px", alignItems: "flex-start", width: "100%", border: "1px solid #555", borderRadius: "10px"}}>
+          <div className={flexDirection} style={{marginTop: responsivePixels(12), gap: responsivePixels(4), padding: `${responsivePixels(8)} ${responsivePixels(20)}`, alignItems: "flex-start", width: "100%", border: `${responsivePixels(1)} solid #555`, borderRadius: responsivePixels(10)}}>
           {Object.entries(votes).map(([target, voteCount]) => {
             return <div key={target}>{target}: {voteCount}</div>
           })}
@@ -546,12 +538,12 @@ export default function AgendaPhase() {
             : <AgendaRow agenda={agendas[subState.subAgenda]} removeAgenda={() => selectSubAgenda(null)} />
           : null}
           {!isTie && selectedTargets.length > 0 ? 
-            <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
+            <div className="flexColumn" style={{paddingTop: responsivePixels(8), width: "100%"}}>
               <button onClick={completeAgenda}>Resolve with target: {selectedTargets[0]}</button>
             </div>
           : null}
           {isTie && subState.tieBreak && (selectedTargets.length === 0 || selectedTargets.includes(subState.tieBreak)) ? 
-            <div className="flexColumn" style={{paddingTop: "8px", width: "100%"}}>
+            <div className="flexColumn" style={{paddingTop: responsivePixels(8), width: "100%"}}>
               <button onClick={completeAgenda}>Resolve with target: {subState.tieBreak}</button>
             </div>
           : null}
@@ -560,9 +552,9 @@ export default function AgendaPhase() {
         {currentAgenda === 1 ? <NumberedItem>Repeat Steps 1 to 6</NumberedItem> : null}
         <NumberedItem>Ready all planets</NumberedItem>
     </ol>}
-      <button style={{marginTop: "12px", fontSize: "24px"}} onClick={() => nextPhase()}>Start Next Round</button>
+      <button style={{marginTop: responsivePixels(12), fontSize: responsivePixels(24)}} onClick={() => nextPhase()}>Start Next Round</button>
     </div>
-    <div className="flexColumn" style={{flexBasis: "30%", maxWidth: "400px"}}>
+    <div className="flexColumn" style={{flexBasis: "30%", maxWidth: responsivePixels(400)}}>
       <SummaryColumn />
     </div>
   </div>

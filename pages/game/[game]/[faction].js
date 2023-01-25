@@ -33,7 +33,7 @@ import { SelectableRow } from "../../../src/SelectableRow";
 import { ObjectiveRow } from "../../../src/ObjectiveRow";
 import { scoreObjective, unscoreObjective } from "../../../src/util/api/objectives";
 import { AgendaRow } from "../../../src/AgendaRow";
-import { getTargets, VoteCount } from "../../../src/VoteCount";
+import { canFactionVote, getTargets, VoteCount } from "../../../src/VoteCount";
 import { computeVotes } from "../../../src/main/AgendaPhase";
 import { repealAgenda, resolveAgenda } from "../../../src/util/api/agendas";
 import { updateCastVotes } from "../../../src/util/api/factions";
@@ -413,6 +413,9 @@ function PhaseSection() {
           <div className="flexColumn" style={{alignItems: "stretch", width: "100%"}}>
             <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
               {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Target</div>}> */}
+              {!canFactionVote(factionName, agendas, state, factions) ? 
+              <div className="flexRow">Cannot Vote</div> :
+              <React.Fragment>
               <div className="flexRow" style={{width: "100%", justifyContent: "center"}}>
                 Target:
           <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"}>
@@ -425,7 +428,6 @@ function PhaseSection() {
                 </div>
               </HoverMenu>
               </div>
-            {/* </LabeledDiv> */}
             <div className="flexRow" style={{width: '100%', justifyContent: "center", alignItems: "center"}}>
               Available Votes: 
               {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Available Votes</div>}> */}
@@ -452,6 +454,7 @@ function PhaseSection() {
             {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
           </div>
           </div>
+          </React.Fragment>}
           <LabeledLine />
             {/* </LabeledDiv> */}
             {/* </div> */}

@@ -188,6 +188,9 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
     if ((planet.owners ?? []).includes(activeFaction.name)) {
       return false;
     }
+    if (planet.locked) {
+      return false;
+    }
     if (claimedPlanets.includes(planet.name)) {
       return false;
     }

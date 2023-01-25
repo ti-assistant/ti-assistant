@@ -73,6 +73,22 @@ switch (agenda.elect) {
   return [];
 }
 
+export function canFactionVote(factionName, agendas, state, factions) {
+  if (factionName === "Nekro Virus") {
+    return false;
+  }
+  if (factionName === "Xxcha Kingdom" && factions[factionName].commander === "unlocked") {
+    return true;
+  }
+  const publicExecution = agendas['Public Execution'] ?? {};
+  if (publicExecution.resolved &&
+      publicExecution.target === factionName &&
+      publicExecution.activeRound === state.round) {
+    return false;
+  }
+  return true;
+}
+
 export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -152,7 +168,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
       if (options.expansions.includes("codex-three") &&
           factionName === "Xxcha Kingdom" &&
           faction.hero === "unlocked") {
-        influence += Math.max(planet.resources, planet.influence);
+        influence += planet.resources + planet.influence;
       } else {
         influence += planet.influence;
       }
@@ -221,7 +237,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
             <BasicFactionTile faction={faction} speaker={state.speaker === faction.name} menuButtons={menuButtons} opts={{fontSize: "16px"}} />
           </div>
         : null} */}
-        {factionName === "Nekro Virus" ? 
+        {!canFactionVote(factionName, agendas, state, factions) ? 
           "Cannot Vote"
         : 
         <React.Fragment>

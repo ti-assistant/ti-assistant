@@ -74,23 +74,41 @@ export function FullPlanetSymbol({ type, faction, size }) {
   </div>
 }
 
-function LegendaryPlanetIcon() {
+function InfoContent({ability}) {
+  const description = ability.replaceAll("\\n", "\n");
   return (
-    <div style={{display: "flex", alignItems: "flex-start", borderRadius: responsivePixels(22), height: responsivePixels(16), width: responsivePixels(16), paddingTop: responsivePixels(2), paddingLeft: responsivePixels(2), boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
-      <div style={{position: "relative", width: responsivePixels(14), height: responsivePixels(14)}}>
-      <Image src="/images/legendary_planet.svg" alt="Legendary Planet Icon" layout="fill" objectFit='contain'/>
-      </div>
-    </div>);
+    <div className="myriadPro" style={{width: "100%", padding: responsivePixels(4), whiteSpace: "pre-line", textAlign: "center", fontSize: responsivePixels(32)}}>
+      {description}
+    </div>
+  );
 }
 
-export function PlanetAttributes({ attributes }) {
+function LegendaryPlanetIcon({planetName, ability}) {
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
+  const cursor = ability ? "pointer" : "auto";
+  return (
+    <React.Fragment>
+      {!!ability ? <Modal closeMenu={() => setShowInfoModal(false)} level={2} visible={showInfoModal} title={<div style={{fontSize: responsivePixels(40)}}>{planetName}</div>} content={
+        <InfoContent ability={ability} />
+      } top="30%" /> : null}
+      <div onClick={() => setShowInfoModal(true)} 
+        style={{cursor: cursor, display: "flex", alignItems: "flex-start", borderRadius: responsivePixels(22), height: responsivePixels(16), width: responsivePixels(16), paddingTop: responsivePixels(2), paddingLeft: responsivePixels(2), boxShadow: "0px 0px 2px 1px purple", backgroundColor: "black"}}>
+        <div style={{position: "relative", width: responsivePixels(14), height: responsivePixels(14)}}>
+        <Image src="/images/legendary_planet.svg" alt="Legendary Planet Icon" layout="fill" objectFit='contain'/>
+        </div>
+      </div>
+    </React.Fragment>);
+}
+
+export function PlanetAttributes({ planetName, attributes, ability }) {
   if (attributes.length === 0) {
     return null;
   }
   function getAttributeIcon(attribute) {
     switch (attribute) {
       case "legendary":
-        return <LegendaryPlanetIcon />;
+        return <LegendaryPlanetIcon planetName={planetName} ability={ability} />;
       case "red-skip":
         return <Image src="/images/red_tech.webp" alt="Red Tech Skip" layout="fill" objectFit='contain'/>;
       case "yellow-skip":
@@ -289,8 +307,8 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
   return (
     <SelectableRow
       itemName={planet.name}
-      selectItem={addPlanet}
-      removeItem={removePlanet} 
+      selectItem={planet.locked ? null : addPlanet}
+      removeItem={planet.locked ? null : removePlanet} 
       content={
         <div className="flexRow hiddenButtonParent" style={{width: "100%", alignItems: "center", justifyContent: "space-between", paddingTop: responsivePixels(4), boxSizing: "border-box"}}>
       {claimed ? 
@@ -333,7 +351,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
           width: responsivePixels(24)
         }}
       >
-        <PlanetAttributes attributes={planet.attributes ?? []} />
+        <PlanetAttributes planetName={planet.name} attributes={planet.attributes ?? []} ability={planet.ability} />
       </div>
       {/* {updatePlanet !== undefined ? 
         <div className="flexRow">

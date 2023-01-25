@@ -835,8 +835,8 @@ export function PlanetSummary({ planets, faction, options = {} }) {
       if (gameOptions.expansions.includes('codex-three') &&
           faction.name === "Xxcha Kingdom" &&
           faction.hero === "unlocked") {
-        resources += Math.max(planet.resources, planet.influence);
-        influence += Math.max(planet.resources, planet.influence);
+        resources += (planet.resources + planet.influence);
+        influence += (planet.resources + planet.influence);
       } else {
         resources += planet.resources;
         influence += planet.influence;

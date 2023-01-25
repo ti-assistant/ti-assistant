@@ -1,6 +1,7 @@
 import { fetchAgendas } from '../../../server/util/fetch';
 
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
+import { createResolvedAgenda } from '../../../src/util/api/agendas';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,28 +20,51 @@ export default async function handler(req, res) {
   }
 
   const timestampString = `updates.agendas.timestamp`;
+  const timestamp = Timestamp.fromMillis(data.timestamp);
   switch (data.action) {
-    case "PASS_AGENDA": {
-      const passedString = `agendas.${data.agenda}.passed`;
-      const targetString = `agendas.${data.agenda}.target`;
-      await db.collection('games').doc(gameid).update({
-        [passedString]: true,
-        [targetString]: data.target,
-        [timestampString]: Timestamp.fromMillis(data.timestamp),
-      });
-      break;
-    }
     case "RESOLVE_AGENDA": {
-      const passedString = `agendas.${data.agenda}.passed`;
-      const passed = (data.target !== "Against");
-      const resolvedString = `agendas.${data.agenda}.resolved`;
-      const targetString = `agendas.${data.agenda}.target`;
-      await db.collection('games').doc(gameid).update({
-        [passedString]: passed,
-        [resolvedString]: true,
-        [targetString]: data.target,
-        [timestampString]: Timestamp.fromMillis(data.timestamp),
-      });
+      const agendaString = `agendas.${data.agenda}`;
+      const agenda = createResolvedAgenda(data.agenda, data.target);
+      switch (data.agenda) {
+        case "Anti-Intellectual Revolution": {
+          if (data.target === "Against") {
+            agenda.activeRound = gameRef.data().state.round + 1;
+          }
+          break;
+        }
+        case "Arms Reduction": {
+          if (data.target === "Against") {
+            agenda.activeRound = gameRef.data().state.round + 1;
+          }
+          break;
+        }
+        // TODO: Implement the result of these agendas.
+        case "Checks and Balances": {
+          if (data.target === "Against") {
+            agenda.activeRound = gameRef.data().state.round;
+          }
+          break;
+        }
+        case "New Constitution": {
+          if (data.target === "For") {
+            agenda.activeRound = gameRef.data().state.round + 1;
+          }
+          break;
+        }
+        case "Public Execution": {
+          agenda.activeRound = gameRef.data().state.round;
+          break;
+        }
+        case "Representative Government": {
+          agenda.activeRound = gameRef.data().state.round + 1;
+          // TODO: Get the list of users that voted on this.
+          break;
+        }
+      }
+      const updates = {
+        [agendaString]: {...((gameRef.data().agendas ?? [])[data.agenda] ?? {}), ...agenda},
+      };
+      await db.collection('games').doc(gameid).update(updates);
       break;
     }
     case "REPEAL_AGENDA": {

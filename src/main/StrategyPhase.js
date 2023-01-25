@@ -20,7 +20,7 @@ import { NumberedItem } from '../NumberedItem';
 
 function InfoContent({content}) {
   return (
-    <div className="myriadPro" style={{maxWidth: "400px", minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: "32px"}}>
+    <div className="myriadPro" style={{minWidth: "320px", padding: "4px", whiteSpace: "pre-line", textAlign: "center", fontSize: responsivePixels(32)}}>
       {content}
     </div>
   );
@@ -61,6 +61,7 @@ export default function StrategyPhase() {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
+  const { data: agendas } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: strategyCards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
@@ -127,6 +128,28 @@ export default function StrategyPhase() {
 
   function getStartOfStrategyPhaseAbilities() {
     let abilities = {};
+    abilities['Every Player'] = [];
+    const aiRevolution = agendas['Anti-Intellectual Revolution'] ?? {};
+    if (aiRevolution.resolved &&
+        aiRevolution.target === "Against" &&
+        aiRevolution.activeRound === state.round) {
+      abilities['Every Player'].push({
+        name: "Anti-Intellectual Revolution [Against]",
+        description: "Choose and exhaust 1 planet for each technology you own.",
+      });
+    }
+    const armsReduction = agendas['Arms Reduction'] ?? {};
+    if (armsReduction.resolved &&
+        armsReduction.target === "Against" &&
+        armsReduction.activeRound === state.round) {
+      abilities['Every Player'].push({
+        name: "Arms Reduction [Against]",
+        description: "Exhaust each of your planets that have a technology specialty.",
+      });
+    }
+    if (abilities['Every Player'].length === 0) {
+      delete abilities['Every Player'];
+    }
     for (const [name, faction] of Object.entries(factions)) {
       abilities[name] = [];
       if (name === "Council Keleres") {
@@ -244,15 +267,16 @@ export default function StrategyPhase() {
       {hasStartOfStrategyPhaseAbilities() ? 
         <div className="flexColumn">
           Start of Strategy Phase
-          <ol>
+          <ol className="flexColumn" style={{alignItems: "stretch"}}>
           {Object.entries(getStartOfStrategyPhaseAbilities()).map(([factionName, abilities]) => {
             if (abilities.length === 0) {
               return null;
             }
+            const label = !factions[factionName] ? factionName : getFactionName(factions[factionName]); 
             return (
             <NumberedItem key={factionName}>
-              <LabeledDiv label={getFactionName(factions[factionName])} color={getFactionColor(factions[factionName])}>
-                <div className="flexColumn">
+              <LabeledDiv label={label} color={getFactionColor(factions[factionName])}>
+                <div className="flexColumn" style={{width: "100%", alignItems: "flex-start"}}>
                   {abilities.map((ability) => {
                     return (
                       <div className="flexRow">

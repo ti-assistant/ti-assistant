@@ -1,22 +1,12 @@
 import { fetcher, poster } from './util'
 
-export function passAgenda(mutate, gameid, agendas, agendaName, target) {
-  const data = {
-    action: "PASS_AGENDA",
-    agenda: agendaName,
-    target: target,
-  };
+export function createResolvedAgenda(agendaName, target) {
+  const updatedAgenda = {};
+  updatedAgenda.passed = (target !== "Against");
+  updatedAgenda.resolved = true;
+  updatedAgenda.target = target;
 
-  const updatedAgendas = {...agendas};
-
-  updatedAgendas[agendaName].passed = true;
-  updatedAgendas[agendaName].target = target;
-  
-  const options = {
-    optimisticData: updatedAgendas,
-  };
-
-  mutate(`/api/${gameid}/agendas`, poster(`/api/${gameid}/agendaUpdate`, data), options);
+  return updatedAgenda;
 }
 
 export function resolveAgenda(mutate, gameid, agendas, agendaName, target) {
@@ -28,10 +18,8 @@ export function resolveAgenda(mutate, gameid, agendas, agendaName, target) {
 
   const updatedAgendas = {...agendas};
 
-  updatedAgendas[agendaName].passed = target !== "Against";
-  updatedAgendas[agendaName].resolved = true;
-  updatedAgendas[agendaName].target = target;
-  
+  updatedAgendas[agendaName] = {...agendas[agendaName], ...createResolvedAgenda(agendaName, target)};
+
   const options = {
     optimisticData: updatedAgendas,
   };

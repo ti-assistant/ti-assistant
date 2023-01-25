@@ -114,6 +114,13 @@ button:disabled {
   cursor: default;
 }
 
+button.faded {
+  background-color: #222;
+  color: #555;
+  box-sizing: border-box;
+  border: var(--one-pixel) solid #333;
+}
+
 button.selected {
   border: var(--one-pixel) solid #eee;
   background-color: #444;
