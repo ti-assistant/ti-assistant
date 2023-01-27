@@ -310,7 +310,7 @@ export function PlanetRow({planet, factionName, updatePlanet, removePlanet, addP
       selectItem={planet.locked ? null : addPlanet}
       removeItem={planet.locked ? null : removePlanet} 
       content={
-        <div className="flexRow hiddenButtonParent" style={{width: "100%", alignItems: "center", justifyContent: "space-between", paddingTop: responsivePixels(4), boxSizing: "border-box"}}>
+        <div className="flexRow hiddenButtonParent" style={{gap: 0, width: "100%", alignItems: "center", justifyContent: "space-between", paddingTop: responsivePixels(4), boxSizing: "border-box"}}>
       {claimed ? 
         <div style={{fontFamily: "Myriad Pro",
         position: "absolute",

@@ -36,7 +36,7 @@ const usePaused = () => {
   };
 };
 
-const useSharedPause = () => useBetween(usePaused);
+export const useSharedPause = () => useBetween(usePaused);
 
 export function TimerDisplay({ time, style }) {
   const hours = Math.floor(time / 3600);
@@ -59,7 +59,7 @@ export function AgendaTimer({}) {
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
   const { data: timers = {} } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
-  const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
+  const { data: state = {} } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
 
 
   const [ firstAgendaTimer, setFirstAgendaTimer ] = useState(0);
@@ -67,7 +67,7 @@ export function AgendaTimer({}) {
   const { currentAgenda, advanceAgendaPhase } = useSharedCurrentAgenda();
   const { paused } = useSharedPause();
 
-  const agendaNum = subState.agendaNum ?? 1;
+  const agendaNum = state.agendaNum ?? 1;
 
   function updateTime() {
     if (paused) {

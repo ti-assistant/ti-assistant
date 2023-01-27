@@ -90,6 +90,7 @@ export default async function handler(req, res) {
         "state.phase": "STRATEGY",
         "state.activeplayer": state.speaker,
         "state.round": state.round + 1,
+        "state.agendaNum": 1,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       });
       break;
@@ -145,6 +146,14 @@ export default async function handler(req, res) {
       const updates = {
         "state.finalPhase": FieldValue.delete(),
         "state.phase": state.finalPhase,
+        [timestampString]: Timestamp.fromMillis(data.timestamp),
+      };
+      await db.collection('games').doc(gameid).update(updates);
+      break;
+    }
+    case "SET_AGENDA_NUM": {
+      const updates = {
+        "state.agendaNum": data.agendaNum,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
       await db.collection('games').doc(gameid).update(updates);

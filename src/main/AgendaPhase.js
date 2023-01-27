@@ -21,6 +21,7 @@ import { responsivePixels } from '../util/util';
 import { NumberedItem } from '../NumberedItem';
 import { resetAgendaTimers } from '../util/api/timers';
 import { resetStrategyCards } from '../util/api/cards';
+import { setAgendaNum } from '../util/api/state';
 
 function AgendaSelectModal({ visible, onComplete, filter }) {
   const router = useRouter();
@@ -147,6 +148,7 @@ export function startNextRound(mutate, gameid, factions, timers, state, subState
   state.phase = "STRATEGY";
   state.activeplayer = state.speaker;
   state.round = state.round + 1;
+  state.agendaNum = 1;
 
   const options = {
     optimisticData: updatedState,
@@ -154,6 +156,12 @@ export function startNextRound(mutate, gameid, factions, timers, state, subState
 
   mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
   finalizeSubState(mutate, gameid, subState);
+}
+
+function agendaUpdates(agendaName) {
+  switch (agendaName) {
+    
+  }
 }
 
 export default function AgendaPhase() {
@@ -192,7 +200,7 @@ export default function AgendaPhase() {
   }
 
   let currentAgenda = null;
-  const agendaNum = subState.agendaNum ?? 1;
+  const agendaNum = state.agendaNum ?? 1;
   if (subState.agenda) {
     currentAgenda = agendas[subState.agenda];
   }
@@ -231,6 +239,7 @@ export default function AgendaPhase() {
     setSubStateOther(mutate, gameid, subState, "tieBreak", tieBreak);
   }
 
+
   async function completeAgenda() {
     const target = isTie ? subState.tieBreak : selectedTargets[0];
     let activeAgenda = subState.agenda;
@@ -238,18 +247,19 @@ export default function AgendaPhase() {
       activeAgenda = subState.subAgenda;
       resolveAgenda(mutate, gameid, agendas, subState.agenda, subState.subAgenda);
     }
+    agendaUpdates(mutate, gameid, activeAgenda);
     resolveAgenda(mutate, gameid, agendas, activeAgenda, target);
 
     updateCastVotes(mutate, gameid, factions, subState.factions);
     hideSubStateAgenda(mutate, gameid, subState, "");
-    // await finalizeSubState(mutate, gameid, subState);
     if (activeAgenda === "Miscount Disclosed") {
       repealAgenda(mutate, gameid, agendas, target);
       revealSubStateAgenda(mutate, gameid, subState, target);
       setSubStateOther(mutate, gameid, subState, "miscount", true);
     } else {
-      const agendaNum = subState.agendaNum ?? 1;
-      setSubStateOther(mutate, gameid, subState, "agendaNum", agendaNum + 1);
+      finalizeSubState(mutate, gameid, subState);
+      const agendaNum = state.agendaNum ?? 1;
+      setAgendaNum(mutate, gameid, state, agendaNum + 1);
     }
   }
 
@@ -378,6 +388,8 @@ export default function AgendaPhase() {
   const label = !!subState.miscount ? "Re-voting on Miscounted Agenda" : agendaNum === 1 ? "FIRST AGENDA" : "SECOND AGENDA";
 
   const numFactions = votingOrder.length;
+
+  const checksAndBalances = agendas['Checks and Balances'] ?? {};
 
   return (
   <div className="flexRow" style={{gap: responsivePixels(40), height: "100vh", width: "100%", alignItems: "flex-start", justifyContent: "space-between"}}>
@@ -550,7 +562,11 @@ export default function AgendaPhase() {
           </div>
         </NumberedItem>
         {currentAgenda === 1 ? <NumberedItem>Repeat Steps 1 to 6</NumberedItem> : null}
-        <NumberedItem>Ready all planets</NumberedItem>
+        {checksAndBalances.resolved &&
+         checksAndBalances.target === "Against" &&
+         checksAndBalances.activeRound === state.round ?
+         <NumberedItem>Ready three planets</NumberedItem>
+         : <NumberedItem>Ready all planets</NumberedItem>}
     </ol>}
       <button style={{marginTop: responsivePixels(12), fontSize: responsivePixels(24)}} onClick={() => nextPhase()}>Start Next Round</button>
     </div>

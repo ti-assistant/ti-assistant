@@ -89,6 +89,86 @@ export function canFactionVote(factionName, agendas, state, factions) {
   return true;
 }
 
+function isValidVoteCount(numVotes, factionName, factions, planets, attachments, options) {
+
+}
+
+function computeRemainingVotes(factionName, factions, planets, attachments, options) {
+  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
+
+  const orderedPlanets = updatedPlanets.sort((a, b) => {
+    const aRatio = a.resources > 0 ? a.influence / a.resources : Number.MAX_SAFE_INTEGER;
+    const bRatio = b.resources > 0 ? b.influence / b.resources : Number.MAX_SAFE_INTEGER;
+    if (aRatio !== bRatio) {
+      return bRatio - aRatio;
+    }
+    if (a.influence !== b.influence) {
+      return b.influence - a.influence;
+    }
+    if ((a.attributes ?? []).length !== (b.attributes ?? []).length) {
+      return (a.attributes ?? []).length - (b.attributes ?? []).length;
+    }
+    return 0;
+  });
+
+  let influenceNeeded = factions[factionName].votes ?? 0;
+  if (factionName === "Argent Flight") {
+    influenceNeeded = Math.max(influenceNeeded - Object.keys(factions).length, 0);
+  }
+  let planetCount = 0;
+  let remainingVotes = 0;
+  for (const planet of orderedPlanets) {
+    let planetInfluence = planet.influence;
+    if (factionName === "Xxcha Kingdom") {
+      if (options.expansions.includes("codex-three") &&
+          factions[factionName].hero === "unlocked") {
+            console.log("Adding");
+        planetInfluence += planet.resources;
+      }
+      if (factions[factionName].commander === "unlocked") {
+        console.log("Double Add");
+        planetInfluence += 1;
+      }
+    }
+    if (influenceNeeded > 0 && planetInfluence <= influenceNeeded) {
+      influenceNeeded -= planetInfluence;
+      console.log(`Using ${planet.name} for ${planetInfluence} votes`);
+      continue;
+    }
+    if (factionName === "Xxcha Kingdom" && factions[factionName].commander === "unlocked") {
+      planetInfluence -= 1;
+    }
+    planetCount++;
+
+    remainingVotes += planetInfluence;
+  }
+
+  console.log(influenceNeeded);
+
+  // Player cast an invalid number of votes. Forcibly adjust.
+  if (influenceNeeded > 0) {
+    remainingVotes = Math.max(remainingVotes - influenceNeeded, 0);
+  }
+
+  let extraVotes = 0;
+  if (factionName === "Argent Flight") {
+    extraVotes += Object.keys(factions).length;
+  }
+  if (factionName === "Xxcha Kingdom" && factions[factionName].commander === "unlocked") {
+    extraVotes += planetCount;
+  }
+  const hasPredictiveIntelligence = hasTech(factions[factionName], "Predictive Intelligence");
+  if (hasPredictiveIntelligence) {
+    extraVotes += 3;
+  }
+
+  return {
+    influence: remainingVotes,
+    extraVotes: extraVotes,
+  };
+}
+
 export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -101,7 +181,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options = {} } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: subState } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
+  const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const [ usingPredictiveIntelligence, setUsingPredictiveIntelligence ] = useState(true);
   // const [ castVotes, setCastVotes ] = useState(0);
   const [ target, setTarget ] = useState(null);
@@ -159,30 +239,32 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   const faction = factions[factionName] ?? null;
 
 
-  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
-  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
+  const {influence, extraVotes} = computeRemainingVotes(factionName, factions, planets, attachments, options);
 
-  let influence = 0;
-  for (const planet of updatedPlanets) {
-    if (planet.ready || opts.total) {
-      if (options.expansions.includes("codex-three") &&
-          factionName === "Xxcha Kingdom" &&
-          faction.hero === "unlocked") {
-        influence += planet.resources + planet.influence;
-      } else {
-        influence += planet.influence;
-      }
-    }
-  }
-  influence -= Math.min(factions[factionName].votes ?? 0, influence);
+  // const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+  // const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
-  let extraVotes = 0;
-  if (factionName === "Argent Flight") {
-    extraVotes += Object.keys(factions).length;
-  }
-  if (factionName === "Xxcha Kingdom" && faction.commander === "unlocked") {
-    extraVotes += updatedPlanets.length;
-  }
+  // let influence = 0;
+  // for (const planet of updatedPlanets) {
+  //   if (planet.ready || opts.total) {
+  //     if (options.expansions.includes("codex-three") &&
+  //         factionName === "Xxcha Kingdom" &&
+  //         faction.hero === "unlocked") {
+  //       influence += planet.resources + planet.influence;
+  //     } else {
+  //       influence += planet.influence;
+  //     }
+  //   }
+  // }
+  // influence -= Math.min(factions[factionName].votes ?? 0, influence);
+
+  // let extraVotes = 0;
+  // if (factionName === "Argent Flight") {
+  //   extraVotes += Object.keys(factions).length;
+  // }
+  // if (factionName === "Xxcha Kingdom" && faction.commander === "unlocked") {
+  //   extraVotes += updatedPlanets.length;
+  // }
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
   const menuButtons = [];
   if (factionName !== state.speaker) {
@@ -192,9 +274,6 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
     });
   }
   if (hasPredictiveIntelligence) {
-    if (usingPredictiveIntelligence) {
-      extraVotes += 3;
-    }
     menuButtons.push({
       text: usingPredictiveIntelligence ? "Cancel Predictive Intelligence" : "Use Predictive Intelligence",
       action: () => setUsingPredictiveIntelligence(!usingPredictiveIntelligence),

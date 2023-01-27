@@ -2,7 +2,10 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { useBetween } from "use-between";
+import { Modal } from "./Modal";
+import { useSharedPause } from "./Timer";
 import { fetcher } from "./util/api/util";
+import { responsivePixels } from "./util/util";
 
 let updateObject = {};
 
@@ -11,7 +14,17 @@ const setUpdateTime = (endpoint, time) => {
     ...updateObject,
     [endpoint]: time,
   };
+  (updateObject.callbacks ?? []).forEach((callback) => {
+    callback(updateObject);
+  });
 };
+
+function registerUpdateCallback(fn) {
+  if (!updateObject.callbacks) {
+    updateObject.callbacks = [];
+  }
+  updateObject.callbacks.push(fn);
+}
 
 export const useSharedUpdateTimes = () => {
   return { updateObject, setUpdateTime };
@@ -32,18 +45,34 @@ export const useSharedUpdateTimes = () => {
 //   };
 // };
 
+export function getLatestUpdate(updates = {}) {
+  let latestTime = 0;
+  Object.entries(updates).forEach(([type, item]) => {
+    // Ignore timers to get the actual latest update.
+    if (type === "timers") {
+      return;
+    }
+    const time = item.timestamp ?? 0;
+    latestTime = Math.max(time, latestTime);
+  });
+  return latestTime;
+}
+
 // export const useSharedUpdateTimes = () => useBetween(useUpdater);
+
+const INITIAL_FREQUENCY = 5000;
 
 export function Updater({}) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
-  const { data: updates } = useSWR(gameid ? `/api/${gameid}/updates` : null, fetcher, {
-    refreshInterval: 2000,
-  });
-  const { updateObject, setUpdateTime } = useSharedUpdateTimes();
+  const { data: updates } = useSWR(gameid ? `/api/${gameid}/updates` : null, fetcher);
+  const { setUpdateTime } = useSharedUpdateTimes();
+  const { paused, pause, unpause } = useSharedPause();
 
   const [ initialLoad, setInitialLoad ] = useState(true);
+
+  const [ localUpdateObject, setLocalUpdateObject ] = useState({});
 
   const [ localAgendas, setLocalAgendas ] = useState(0);
   const [ localAttachments, setLocalAttachments ] = useState(0);
@@ -55,6 +84,10 @@ export function Updater({}) {
   const [ localSubState, setLocalSubState ] = useState(0);
   const [ localStrategyCards, setLocalStrategyCards ] = useState(0);
   const [ localTimers, setLocalTimers ] = useState(0);
+
+  const [ shouldUpdate, setShouldUpdate ] = useState(true);
+  const [ updateFrequency, setUpdateFrequency ] = useState(INITIAL_FREQUENCY);
+  const [ latestLocalActivity, setLatestLocalActivity ] = useState(0);
 
   const localUpdates = updates ?? {};
   const agendasUpdate = (localUpdates.agendas ?? {}).timestamp ?? 0;
@@ -68,38 +101,82 @@ export function Updater({}) {
   const subStateUpdate = (localUpdates.substate ?? {}).timestamp ?? 0;
   const timersUpdate = (localUpdates.timers ?? {}).timestamp ?? 0;
 
+  function pauseUpdates() {
+    pause();
+    setShouldUpdate(false);
+  }
+
+  function restartUpdates() {
+    unpause();
+    setShouldUpdate(true);
+    setUpdateFrequency(INITIAL_FREQUENCY);
+    setLatestLocalActivity(Date.now());
+  }
+
+  function checkForUpdates() {
+    if (!gameid || !updates) {
+      return;
+    }
+
+    const latestUpdateMillis = getLatestUpdate(updates);
+    if (shouldUpdate && latestUpdateMillis !== 0 && latestLocalActivity !== 0) {
+      const elapsedMillis = Date.now() - latestUpdateMillis;
+      const minutes = Math.floor(elapsedMillis / 60000);
+      const localMillis = Date.now() - latestLocalActivity;
+      const localMinutes = Math.floor(localMillis / 60000);
+      if (minutes >= 15 && localMinutes >= 15) {
+        pauseUpdates();
+        return;
+      }
+    }
+
+    mutate(`/api/${gameid}/updates`, fetcher(`/api/${gameid}/updates`));
+    setTimeout(checkForUpdates, updateFrequency);
+  }
+
   useEffect(() => {
-    if (updateObject.agendas > localAgendas) {
-      setLocalAgendas(updateObject.agendas);
+    registerUpdateCallback(setLocalUpdateObject);
+  }, []);
+
+  useEffect(() => {
+    if (!shouldUpdate) {
+      return;
     }
-    if (updateObject.attachments > localAttachments) {
-      setLocalAttachments(updateObject.attachments);
+    setTimeout(checkForUpdates, updateFrequency);
+  }, [initialLoad, shouldUpdate]);
+
+  useEffect(() => {
+    if (localUpdateObject.agendas > localAgendas) {
+      setLocalAgendas(localUpdateObject.agendas);
     }
-    if (updateObject.objectives > localObjectives) {
-      setLocalObjectives(updateObject.objectives);
+    if (localUpdateObject.attachments > localAttachments) {
+      setLocalAttachments(localUpdateObject.attachments);
     }
-    if (updateObject.options > localOptions) {
-      setLocalOptions(updateObject.options);
+    if (localUpdateObject.objectives > localObjectives) {
+      setLocalObjectives(localUpdateObject.objectives);
     }
-    if (updateObject.planets > localPlanets) {
-      setLocalPlanets(updateObject.planets);
+    if (localUpdateObject.options > localOptions) {
+      setLocalOptions(localUpdateObject.options);
     }
-    if (updateObject.factions > localFactions) {
-      setLocalFactions(updateObject.factions);
+    if (localUpdateObject.planets > localPlanets) {
+      setLocalPlanets(localUpdateObject.planets);
     }
-    if (updateObject.state > localState) {
-      setLocalState(updateObject.state);
+    if (localUpdateObject.factions > localFactions) {
+      setLocalFactions(localUpdateObject.factions);
     }
-    if (updateObject.subState > localSubState) {
-      setLocalSubState(updateObject.subState);
+    if (localUpdateObject.state > localState) {
+      setLocalState(localUpdateObject.state);
     }
-    if (updateObject.strategycards > localStrategyCards) {
-      setLocalStrategyCards(updateObject.strategycards);
+    if (localUpdateObject.subState > localSubState) {
+      setLocalSubState(localUpdateObject.subState);
     }
-    if (updateObject.timers > localTimers) {
-      setLocalTimers(updateObject.timers);
+    if (localUpdateObject.strategycards > localStrategyCards) {
+      setLocalStrategyCards(localUpdateObject.strategycards);
     }
-  }, [updateObject]);
+    if (localUpdateObject.timers > localTimers) {
+      setLocalTimers(localUpdateObject.timers);
+    }
+  }, [localUpdateObject]);
 
   useEffect(() => {
     if (agendasUpdate > localAgendas) {
@@ -216,7 +293,10 @@ export function Updater({}) {
     setLocalSubState(subStateUpdate);
     setLocalTimers(timersUpdate);
     setInitialLoad(false);
+    setLatestLocalActivity(Date.now());
   }
 
-  return null;
+  return <Modal closeMenu={restartUpdates} level={2} visible={!shouldUpdate} title={<div style={{fontSize: responsivePixels(40)}}>Updates Paused</div>} content={
+    <div className="flexRow" style={{width: "100%", fontSize: responsivePixels(24)}}>Close to continue</div>
+  } top="30%" />;
 }

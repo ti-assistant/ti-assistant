@@ -17,6 +17,8 @@ import { useSharedUpdateTimes } from '../Updater';
 import { LabeledDiv } from '../LabeledDiv';
 import { getFactionColor, getFactionName } from '../util/factions';
 import { NumberedItem } from '../NumberedItem';
+import { hasTech } from '../util/api/techs';
+import { repealAgenda } from '../util/api/agendas';
 
 function InfoContent({content}) {
   return (
@@ -135,7 +137,7 @@ export default function StrategyPhase() {
         aiRevolution.activeRound === state.round) {
       abilities['Every Player'].push({
         name: "Anti-Intellectual Revolution [Against]",
-        description: "Choose and exhaust 1 planet for each technology you own.",
+        description: aiRevolution.failedText,
       });
     }
     const armsReduction = agendas['Arms Reduction'] ?? {};
@@ -144,7 +146,16 @@ export default function StrategyPhase() {
         armsReduction.activeRound === state.round) {
       abilities['Every Player'].push({
         name: "Arms Reduction [Against]",
-        description: "Exhaust each of your planets that have a technology specialty.",
+        description: armsReduction.failedText,
+      });
+    }
+    const newConstitution = agendas['New Constitution'] ?? {};
+    if (newConstitution.resolved &&
+        newConstitution.target === "For" &&
+        newConstitution.activeRound === state.round) {
+      abilities['Every Player'].push({
+        name: "New Constitution [For]",
+        description: newConstitution.passedText,
       });
     }
     if (abilities['Every Player'].length === 0) {
@@ -245,6 +256,14 @@ export default function StrategyPhase() {
 
   function publicDisgrace(cardName) {
     unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
+  }
+
+  function imperialArbiterFn(factionName) {
+    const imperialArbiter = agendas['Imperial Arbiter'].target;
+    const factionCard = Object.values(strategyCards).find((card) => card.faction === factionName);
+    const arbiterCard = Object.values(strategyCards).find((card) => card.faction === imperialArbiter);
+    swapStrategyCards(mutate, gameid, strategyCards, factionCard, arbiterCard);
+    repealAgenda(mutate, gameid, agendas, "Imperial Arbiter");
   }
 
   function quantumDatahubNode(factionName) {
@@ -370,7 +389,9 @@ export default function StrategyPhase() {
               });
             }
             if (haveAllFactionsPicked()) {
-              if (factions['Emirates of Hacan'] && card.faction !== "Emirates of Hacan") {
+              if (factions['Emirates of Hacan'] &&
+                  card.faction !== "Emirates of Hacan" &&
+                  hasTech(factions['Emirates of Hacan'], "Quantum Datahub Node")) {
                 factionActions.push({
                   text: "Quantum Datahub Node",
                   action: () => quantumDatahubNode(card.faction),
@@ -380,6 +401,14 @@ export default function StrategyPhase() {
                 factionActions.push({
                   text: "Gift of Prescience",
                   action: () => giftOfPrescience(name),
+                });
+              }
+              const imperialArbiter = agendas['Imperial Arbiter'];
+              if (imperialArbiter.resolved &&
+                  card.faction !== imperialArbiter.target) {
+                factionActions.push({
+                  text: "Imperial Arbiter",
+                  action: () => imperialArbiterFn(card.faction),
                 });
               }
             }

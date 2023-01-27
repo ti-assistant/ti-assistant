@@ -25,7 +25,7 @@ import { startNextRound } from './AgendaPhase';
 
 function InfoContent({content}) {
   return (
-    <div className="myriadPro" style={{maxWidth: responsivePixels(600), minWidth: responsivePixels(320), padding: responsivePixels(4), whiteSpace: "pre-line", textAlign: "center", fontSize: responsivePixels(32)}}>
+    <div className="myriadPro" style={{width: "100%", minWidth: responsivePixels(320), padding: responsivePixels(4), whiteSpace: "pre-line", textAlign: "center", fontSize: responsivePixels(32)}}>
       {content}
     </div>
   );
@@ -35,6 +35,7 @@ export function MiddleColumn() {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { mutate } = useSWRConfig();
+  const { data: agendas = {} } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: strategyCards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
@@ -136,6 +137,13 @@ export function MiddleColumn() {
       abilities["Bioplasmosis"] = {
         factions: bioplasmosisFactions,
         description: "You may remove any number of Infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems",
+      };
+    }
+    const ministerOfPolicy = agendas['Minister of Policy'];
+    if (ministerOfPolicy.resolved) {
+      abilities["Minister of Policy"] = {
+        factions: [ministerOfPolicy.target],
+        description: ministerOfPolicy.passedText,
       };
     }
     return abilities;
@@ -261,7 +269,7 @@ export function MiddleColumn() {
             </SelectableRow>
             </LabeledDiv>
             : <HoverMenu label="Score Secret">
-            <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: responsivePixels(300), flexWrap: "wrap", whiteSpace: "nowrap", padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
+            <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: responsivePixels(230), flexWrap: "wrap", whiteSpace: "nowrap", padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
             {secrets.map((objective) => {
               return <button style={{fontSize: responsivePixels(14)}} onClick={() => scoreObj(card.faction, objective)}>{objective.name}</button>
             })}

@@ -24,7 +24,7 @@ import { Updater, useSharedUpdateTimes } from "../../../src/Updater";
 import { LabeledDiv, LabeledLine } from "../../../src/LabeledDiv";
 import { StrategyCard } from "../../../src/StrategyCard";
 import { assignStrategyCard } from "../../../src/util/api/cards";
-import { nextPlayer } from "../../../src/util/api/state";
+import { nextPlayer, setAgendaNum } from "../../../src/util/api/state";
 import { ActivePlayerColumn, AdditionalActions, advanceToStatusPhase, FactionActionButtons, FactionActions, NextPlayerButtons } from "../../../src/main/ActionPhase";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { HoverMenu } from "../../../src/HoverMenu";
@@ -112,7 +112,7 @@ function PhaseSection() {
     outcomes.add(agenda.elect);
   });
   let currentAgenda = null;
-  const agendaNum = subState.agendaNum ?? 1;
+  const agendaNum = state.agendaNum ?? 1;
   if (agendaNum > 2) {
     return null;
   }
@@ -171,8 +171,8 @@ function PhaseSection() {
       revealSubStateAgenda(mutate, gameid, subState, target);
       setSubStateOther(mutate, gameid, subState, "miscount", true);
     } else {
-      const agendaNum = subState.agendaNum ?? 1;
-      setSubStateOther(mutate, gameid, subState, "agendaNum", agendaNum + 1);
+      const agendaNum = state.agendaNum ?? 1;
+      setAgendaNum(mutate, gameid, state, agendaNum + 1);
     }
   }
   function castVotes(target, votes) {

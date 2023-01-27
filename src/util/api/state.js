@@ -79,3 +79,18 @@ export async function continueGame(mutate, gameid, state) {
   };
   return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
 }
+
+export async function setAgendaNum(mutate, gameid, state, agendaNum) {
+  const data = {
+    action: "SET_AGENDA_NUM",
+    agendaNum: agendaNum,
+  };
+
+  const updatedState = {...state};
+  updatedState.agendaNum = agendaNum;
+
+  const options = {
+    optimisticData: updatedState,
+  };
+  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+}

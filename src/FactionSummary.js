@@ -18,7 +18,8 @@ import { ObjectiveRow } from "./ObjectiveRow";
 import { removeObjective, revealObjective, scoreObjective, unscoreObjective } from "./util/api/objectives";
 import { useSharedUpdateTimes } from "./Updater";
 import React from "react";
-import { getFactionName } from "./util/factions";
+import { getFactionColor, getFactionName } from "./util/factions";
+import { LabeledDiv } from "./LabeledDiv";
 
 function TechList({ techs }) {
   return <div className="flexColumn" style={{ alignItems: "stretch", padding: "4px 8px", backgroundColor: "#222", boxShadow: "1px 1px 4px black", whiteSpace: "nowrap", gap: "4px", border: `2px solid #333`, borderRadius: "5px" }}>
@@ -592,9 +593,6 @@ export function UpdatePlanets({ }) {
   const { data: planets } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
 
-  const [groupBySystem, setGroupBySystem] = useState(false);
-  const [showFactionSelect, setShowFactionSelect] = useState(false);
-
   const [factionName, setFactionName] = useState(null);
 
 
@@ -610,13 +608,6 @@ export function UpdatePlanets({ }) {
       setFactionName(state.speaker);
     }
     return null;
-  }
-
-  function updateFaction(factionName) {
-    if (factions[factionName]) {
-      setFactionName(factionName);
-    }
-    setShowFactionSelect(false);
   }
 
   const updatedPlanets = applyAllPlanetAttachments(Object.values(planets ?? {}), attachments);
@@ -654,6 +645,14 @@ export function UpdatePlanets({ }) {
 
   const orderedFactionNames = Object.keys(factions).sort();
 
+  const unownedPlanets = planetsArr.filter((planet) => {
+    return !planet.locked && !(planet.owners ?? []).includes(factionName);
+  });
+
+  const half = Math.ceil(unownedPlanets.length / 2);   
+  const middlePlanetCol = unownedPlanets.slice(0, half);
+  const lastPlanetCol = unownedPlanets.slice(half);
+
   return (
     <div className="flexColumn" style={{ width: "100%", height: "100%"}}>
       <div style={{ fontSize: responsivePixels(24), marginTop: responsivePixels(8) }}>Update planets for {getFactionName(factions[factionName])}</div>
@@ -671,29 +670,27 @@ export function UpdatePlanets({ }) {
           );
         })}
       </div>
-      <div className="flexRow" style={{ flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch", overflowY: "scroll", boxSizing: "border-box", padding: `0 ${responsivePixels(8)}`}}>
-        {groupBySystem ?
-          planetsBySystem.map((system, systemName) => {
-            let allControlled = true;
-            system.forEach((planet) => {
-              if (!(planet.owners ?? []).includes(factionName)) {
-                allControlled = false;
-              }
-            });
-            if (allControlled) {
-              return <div key={systemName} className="flexColumn" style={{ alignItems: "flex-start", flex: "0 0 33%", borderBottom: "1px solid #777" }}><SystemRow factionName={factionName} planets={system} removePlanet={removePlanet} /></div>;
-            } else {
-              return <div key={systemName} className="flexColumn" style={{ alignItems: "flex-start", flex: "0 0 33%", borderBottom: "1px solid #777" }}><SystemRow factionName={factionName} planets={system} addPlanet={addPlanet} /></div>;
+      <div className="flexRow" style={{alignItems: "flex-start", width: "100%", height: "100%", boxSizing: "border-box", overflowY: "auto", padding: responsivePixels(8)}}>
+        <LabeledDiv noBlur={true} label={`Owned by ${getFactionName(factions[factionName])}`} color={getFactionColor(factions[factionName])} style={{flex: "0 0 32%"}}>
+        <div className="flexColumn" style={{width: "100%", alignItems: "stretch"}}>
+          {planetsArr.map((planet) => {
+            if (!(planet.owners ?? []).includes(factionName)) {
+              return null;
             }
-          }) :
-          planetsArr.map((planet) => {
-            if ((planet.owners ?? []).includes(factionName)) {
-              return <div key={planet.name} style={{ flex: "0 0 32%" }}><PlanetRow factionName={factionName} planet={planet} removePlanet={removePlanet} updatePlanet={() => { }} opts={{ showSelfOwned: true }} /></div>;
-            } else {
-              return <div key={planet.name} style={{ flex: "0 0 32%" }}><PlanetRow factionName={factionName} planet={planet} addPlanet={addPlanet} updatePlanet={() => { }} opts={{ showSelfOwned: true }} /></div>;
-            }
-          })
-        }
+            return <div key={planet.name}><PlanetRow factionName={factionName} planet={planet} removePlanet={removePlanet} updatePlanet={() => { }} /></div>;
+          })}
+        </div>
+        </LabeledDiv>
+        <div className="flexColumn" style={{ flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch", boxSizing: "border-box", padding: `0 ${responsivePixels(8)}`}}>
+          {middlePlanetCol.map((planet) => {
+            return <div key={planet.name} style={{ flex: "0 0 32%" }}><PlanetRow factionName={factionName} planet={planet} addPlanet={addPlanet} updatePlanet={() => { }} opts={{ showSelfOwned: true }} /></div>;
+          })}
+        </div>
+        <div className="flexColumn" style={{ flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch", boxSizing: "border-box", padding: `0 ${responsivePixels(8)}`}}>
+          {lastPlanetCol.map((planet) => {
+            return <div key={planet.name} style={{ flex: "0 0 32%" }}><PlanetRow factionName={factionName} planet={planet} addPlanet={addPlanet} updatePlanet={() => { }} opts={{ showSelfOwned: true }} /></div>;
+          })}
+        </div>
       </div>
     </div>
   );

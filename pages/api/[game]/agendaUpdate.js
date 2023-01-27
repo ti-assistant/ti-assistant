@@ -38,7 +38,6 @@ export default async function handler(req, res) {
           }
           break;
         }
-        // TODO: Implement the result of these agendas.
         case "Checks and Balances": {
           if (data.target === "Against") {
             agenda.activeRound = gameRef.data().state.round;
