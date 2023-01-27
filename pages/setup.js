@@ -14,6 +14,100 @@ export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function MobileOptions({ updatePlayerCount, toggleOption, toggleExpansion, options, numFactions, maxFactions, isCouncil }) {
+  const mapStringRef = useRef(null)
+
+  useEffect(() => {
+    if (options['map-string'] === "") {
+      mapStringRef.current.value = "";
+    }
+  }, [options['map-string']]);
+
+  let mapStyles;
+  switch (numFactions) {
+    case 3:
+      mapStyles = ["standard"];
+      break;
+    case 4:
+      mapStyles = ["standard"];
+      break;
+    case 5:
+      mapStyles = ["standard", "warp", "skinny"];
+      break;
+    case 6:
+      mapStyles = ["standard", "large"];
+      break;
+    case 7:
+      mapStyles = ["standard", "warp"];
+      break;
+    case 8:
+      mapStyles = ["standard", "warp"];
+      break;
+  }
+
+  const rowOrColumn = window.innerWidth < 900 ? "flexColumn" : "flexRow";
+  
+return <div className="flexColumn" style={{width: "100%"}}>
+  <label>Player Count</label>
+  <div className='flexRow'>
+    {[...Array(maxFactions - 2)].map((e, index) => {
+      const number = index + 3;
+      return (
+        <button key={number} onClick={() => updatePlayerCount(number)} className={numFactions === number ? "selected" : ""}>{number}</button>
+      );
+    })}
+  </div>
+  <div className="flexRow" style={{width: "100%", justifyContent: "flex-start"}}>
+  <HoverMenu label="Options">
+<div style={{width: "90vw", overflowX: "scroll"}}>
+  <div className="flexColumn" style={{alignItems: "flex-start", padding: `${responsivePixels(8)} ${responsivePixels(16)} 0 ${responsivePixels(16)}`}}>
+  <div className="flexColumn" style={{alignItems: "flex-start"}}>
+    Victory Points:
+    <div className="flexRow" style={{justifyContent: "flex-start", padding: `0 ${responsivePixels(20)}`}}>
+      <button className={options['victory-points'] === 10 ? "selected" : ""} onClick={()=>{toggleOption(10, "victory-points")}}>10</button>
+      <button className={options['victory-points'] === 14 ? "selected" : ""} onClick={()=>{toggleOption(14, "victory-points")}}>14</button>
+    </div>
+  </div>
+  <div className="flexColumn" style={{alignItems: "flex-start"}}>
+    Expansions:
+    <div className={rowOrColumn} style={{alignItems: "flex-start", justifyContent: "flex-start", padding: `0 ${responsivePixels(20)}`}}>
+      <button className={options.expansions.has("pok") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("pok"), "pok")}>Prophecy of Kings</button>
+      <button className={options.expansions.has("codex-one") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-one"), "codex-one")}>Codex I</button>
+      <button className={options.expansions.has("codex-two") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-two"), "codex-two")}>Codex II</button>
+      <button className={options.expansions.has("codex-three") ? "selected" : ""} onClick={() => toggleExpansion(!options.expansions.has("codex-three"), "codex-three")}>Codex III</button>
+    </div>
+  </div>
+  <div>
+    Map:
+    <div className="flexColumn" style={{fontFamily: "Myriad Pro", padding: `${responsivePixels(8)} ${responsivePixels(16)}`, alignItems: "flex-start", whiteSpace: "pre-wrap"}}>
+      {mapStyles.length > 1 ?
+      <React.Fragment>
+        Map Type:
+        <div className="flexRow" style={{paddingLeft: `${responsivePixels(16)}`}}>
+          {mapStyles.map((style) => {
+            return <button key={style} className={options['map-style'] === style ? "selected" : ""} onClick={() => toggleOption(style, "map-style")}>{capitalizeFirstLetter(style)}</button>
+          })}
+        </div>
+      </React.Fragment> : null}
+      Map String:<input ref={mapStringRef} type="textbox" className="mediumFont" style={{width: "100%"}} onChange={(event)=> toggleOption(event.target.value, "map-string")}></input>
+      Used to filter out planets that are not claimable.
+    </div>
+  </div>
+  {isCouncil ? 
+  <div>
+    Council Keleres:
+    <div className="flexColumn" style={{alignItems: "flex-start", padding: `${responsivePixels(8)} ${responsivePixels(20)}`}}>
+      <button className={options['allow-double-council'] ? "selected" : ""} onClick={() => toggleOption(!options['allow-double-council'], "allow-double-council")}>Allow selecting a duplicate sub-faction</button>
+    </div>
+  </div>
+  : null}
+  </div>
+</div>
+</HoverMenu>
+</div>
+</div>
+}
+
 function Options({ updatePlayerCount, toggleOption, toggleExpansion, options, numFactions, maxFactions, isCouncil }) {
   const mapStringRef = useRef(null)
 
@@ -182,14 +276,14 @@ function getFactionIndex(numFactions, position, options) {
   return null;
 }
 
-function FactionSelect({ factions, position, speaker, setFaction, setColor, setSpeaker, setPlayerName, options }) {
+function FactionSelect({ factions, position, mobile = false, speaker, setFaction, setColor, setSpeaker, setPlayerName, options }) {
   const nameRef = useRef(null);
   const [showFactionModal, setShowFactionModal] = useState(false);
   const [showColorModal, setShowColorModal] = useState(false);
   const { data: availableFactions, error: factionError } = useSWR("/api/factions", fetcher);
   const { data: colors, error: colorError } = useSWR("/api/colors", fetcher);
 
-  const factionIndex = getFactionIndex(factions.length, position, options);
+  const factionIndex = mobile ? position : getFactionIndex(factions.length, position, options);
 
   useEffect(() => {
     if (nameRef && nameRef.current && !factions[factionIndex].playerName) {
@@ -311,19 +405,21 @@ function FactionSelect({ factions, position, speaker, setFaction, setColor, setS
   </React.Fragment>
 
   return (
-    <LabeledDiv label={label} color={getFactionColor(faction)} style={{width: "22vw"}}>
-    <div className="flexColumn" style={{width: "100%", alignItems: "flex-start", whiteSpace: "nowrap", gap: responsivePixels(4)}}>
+    <LabeledDiv label={label} color={getFactionColor(faction)} style={{width: mobile ? "100%" : "22vw"}}>
+    <div className="flexColumn" style={{width: "100%", alignItems: "flex-start", whiteSpace: "nowrap", gap: responsivePixels(4), padding: responsivePixels(8), boxSizing: "border-box"}}>
         <div className="flexColumn" style={{whiteSpace: "nowrap", alignItems: "flex-start", overflow: "visible", width: "100%"}}>
         <HoverMenu label={faction.name ? faction.name : "Pick Faction"}>
           <div className="flexRow" style={{padding: `${responsivePixels(8)}`,
     flexWrap: "wrap",
-    maxHeight: `${responsivePixels(284)}`,
+    maxHeight: "44vh", // `${responsivePixels(284)}`,
+    maxWidth: "80vw",
+    overflowX: "auto",
     alignItems: "stretch",
     gap: `${responsivePixels(4)}`,
     writingMode: "vertical-lr",
     justifyContent: "flex-start"}}>
           {filteredFactions.map(([factionName, local]) => {
-            return <button key={local.name} className={"mediumFont" + (faction.name === factionName ? " selected" : "")} style={{width: `${responsivePixels(140)}`, fontSize: "1vw"}} onClick={() => selectFaction(factionName)}>{local.name}</button>
+            return <button key={local.name} className={"mediumFont" + (faction.name === factionName ? " selected" : "")} style={{width: `${responsivePixels(140)}`, fontSize: responsivePixels(14)}} onClick={() => selectFaction(factionName)}>{local.name}</button>
           })}
           </div>
         </HoverMenu>
@@ -1313,7 +1409,8 @@ export default function SetupPage() {
   return (
     <React.Fragment>
       <Header />
-      <div className="flexRow" style={{alignItems: "flex-start", justifyContent: "center", margin: `${responsivePixels(48)} 0`, width: "100%"}}>
+      {/* Large Screen */}
+      <div className="flexRow nonMobile" style={{alignItems: "flex-start", justifyContent: "center", margin: `${responsivePixels(48)} 0`, width: "100%"}}>
         <div className="flexColumn" style={{height: "100%", justifyContent: "flex-start"}}>
           <Options updatePlayerCount={updatePlayerCount} toggleOption={toggleOption} toggleExpansion={toggleExpansion} options={options} numFactions={factions.length} maxFactions={maxFactions} isCouncil={isCouncilInGame()} />
           <LeftTopGapDiv />
@@ -1441,6 +1538,52 @@ export default function SetupPage() {
           </div>
         </div>
       </div>
+      {/* Mobile Screen */}
+      <div className="flexColumn mobileOnly" style={{width: "100%", paddingTop: responsivePixels(56), boxSizing: "border-box", overflow: "hidden"}}>
+        <div className="flexColumn" style={{alignItems: "flex-start", gap: responsivePixels(12), width: "100%", justifyContent: "flex-start", height: "92vh", overflowY: "auto"}}>
+          <div className="flexRow" style={{width: "100%", fontSize: responsivePixels(20)}}>Setup Game</div>
+          <MobileOptions updatePlayerCount={updatePlayerCount} toggleOption={toggleOption} toggleExpansion={toggleExpansion} options={options} numFactions={factions.length} maxFactions={maxFactions} isCouncil={isCouncilInGame()} />
+          {factions.map((faction, index) => {
+            return <FactionSelect
+            factions={factions}
+            position={index}
+            mobile={true}
+            speaker={speaker}
+            setFaction={updatePlayerFaction}
+            setColor={updatePlayerColor}
+            setSpeaker={setSpeaker}
+            setPlayerName={updatePlayerName}
+            options={options} />
+          })}
+          <div className="flexColumn" style={{width: "100%"}}>
+            <LabeledDiv label="Randomize">
+              <div className="flexRow" style={{whiteSpace: "nowrap", width: "100%"}}>
+              <button style={{textAlign: "center"}} onClick={randomSpeaker}>Speaker</button>
+              <button style={{textAlign: "center"}} 
+                onClick={randomFactions}
+                disabled={disableRandomizeFactionButton()}
+              >
+                Factions
+              </button>
+              <button style={{textAlign: "center"}} onClick={randomColors}
+              disabled={disableRandomizeColorsButton()}
+              >Colors</button>
+              </div>
+              </LabeledDiv>
+            <button onClick={reset}>Reset</button>
+
+            {/* </div> */}
+          </div>
+          <div className="flexColumn" style={{width: "100%"}}>
+            <button style={{fontSize: `${responsivePixels(40)}`, fontFamily: "Slider"}} onClick={startGame} disabled={disableNextButton()}>
+              Start Game
+            </button>
+            {disableNextButton() ?
+              <div style={{color: "darkred"}}>Select all factions and colors</div>
+            : null}
+          </div>
+        </div>
+      </div>
     </React.Fragment>);
 }
 
@@ -1463,6 +1606,7 @@ function Header() {
     </Head>
     <Sidebar side="left" content={`SETUP GAME`} />
     <Sidebar side="right" content={`SETUP GAME`} />
-    <div className="extraLargeFont" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: `${responsivePixels(12)}`, left: `${responsivePixels(150)}`}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
+    <div className="nonMobile extraLargeFont" style={{cursor: "pointer", position: "fixed", backgroundColor: "#222", top: `${responsivePixels(12)}`, left: `${responsivePixels(150)}`}} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
+    <div className="flexColumn extraLargeFont mobileOnly" style={{ cursor: "pointer", position: "fixed", backgroundColor: "#222", textAlign: "center", paddingTop: `${responsivePixels(20)}`, width: "100%" }} onClick={() => router.push("/")}>Twilight Imperium Assistant</div>
   </div>
 }
