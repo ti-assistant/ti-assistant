@@ -1540,7 +1540,7 @@ export default function SetupPage() {
       </div>
       {/* Mobile Screen */}
       <div className="flexColumn mobileOnly" style={{width: "100%", paddingTop: responsivePixels(56), boxSizing: "border-box", overflow: "hidden"}}>
-        <div className="flexColumn" style={{alignItems: "flex-start", gap: responsivePixels(12), width: "100%", justifyContent: "flex-start", height: "92vh", overflowY: "auto"}}>
+        <div className="flexColumn" style={{alignItems: "flex-start", gap: responsivePixels(12), width: "100%", justifyContent: "flex-start", height: "88vh", overflowY: "auto"}}>
           <div className="flexRow" style={{width: "100%", fontSize: responsivePixels(20)}}>Setup Game</div>
           <MobileOptions updatePlayerCount={updatePlayerCount} toggleOption={toggleOption} toggleExpansion={toggleExpansion} options={options} numFactions={factions.length} maxFactions={maxFactions} isCouncil={isCouncilInGame()} />
           {factions.map((faction, index) => {
