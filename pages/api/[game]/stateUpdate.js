@@ -1,6 +1,6 @@
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
-import { fetchStrategyCards } from '../../../server/util/fetch';
+import { fetchComponents, fetchStrategyCards } from '../../../server/util/fetch';
 import { getOnDeckFaction } from '../../../src/util/helpers';
 
 function getNextFaction(factions, nextorder) {
@@ -86,13 +86,22 @@ export default async function handler(req, res) {
       break;
     case "START_NEXT_ROUND": {
       const state = gameRef.data().state;
-      await db.collection('games').doc(gameid).update({
+      const updates = {
         "state.phase": "STRATEGY",
         "state.activeplayer": state.speaker,
         "state.round": state.round + 1,
         "state.agendaNum": 1,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
-      });
+      };
+      // Un-exhaust all exhausted components.
+      const components = await fetchComponents(gameid);
+      for (const [componentName, component] of Object.entries(components ?? {})) {
+        if (component.state === "exhausted") {
+          updates[`components.${componentName}.state`] = FieldValue.delete();
+          updates[`updates.components.timestamp`] = Timestamp.fromMillis(data.timestamp);
+        }
+      }
+      await db.collection('games').doc(gameid).update(updates);
       break;
     }
     case "ADVANCE_PLAYER":

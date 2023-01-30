@@ -1,8 +1,32 @@
 import { getFirestore, FieldValue, Timestamp } from 'firebase-admin/firestore';
 
-import { fetchComponents, fetchObjectives, fetchStrategyCards } from '../../../server/util/fetch';
+import { fetchAttachments, fetchComponents, fetchObjectives, fetchPlanets, fetchStrategyCards } from '../../../server/util/fetch';
 import { computeVotes } from '../../../src/main/AgendaPhase';
 import { getOnDeckFaction } from '../../../src/util/helpers';
+import { shouldUnlockXxchaCommander } from './planetUpdate';
+
+function usedComponentState(component) {
+  switch (component.type) {
+    case "card":
+      return "used";
+    case "leader":
+      return component.leader === "hero" ? "purged" : "exhausted";
+    case "tech":
+      return "exhausted";
+    case "relic":
+      if (component.name === "JR-XS455-O") {
+        return "exhausted";
+      }
+      if (component.name === "Enigmatic Device") {
+        if (component.state === "one-left") {
+          return "purged";
+        }
+        return "one-left";
+      }
+      return "purged";
+  }
+  return "active";
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -198,6 +222,8 @@ export default async function handler(req, res) {
       const gameLog = gameRef.data().gameLog ?? [];
       gameLog.push(subState);
       const gameObjectives = await fetchObjectives(gameid, req.cookies.secret);
+      const gamePlanets = await fetchPlanets(gameid);
+      const attachments = await fetchAttachments(gameid);
       const components = await fetchComponents(gameid);
       updates = {
         "subState": FieldValue.delete(),
@@ -220,6 +246,11 @@ export default async function handler(req, res) {
       }
       if (subState.component) {
         const component = components[subState.component];
+        const futureState = usedComponentState(component);
+        if (futureState !== "active") {
+          updates[`components.${subState.component}.state`] = futureState;
+          updates[`updates.components.timestamp`] = timestamp;
+        }
         if (component.type === "leader" && component.leader === "hero") {
           updates[`factions.${component.faction}.hero`] = "purged";
           updates[`updates.factions.timestamp`] = timestamp;
@@ -233,8 +264,12 @@ export default async function handler(req, res) {
         updates[`objectives.${objective}.selected`] = true;
         updates[`updates.objectives.timestamp`] = timestamp;
       });
-      Object.entries(subState.factions ?? {}).forEach(([factionName, value]) => {
+      for (const [factionName, value] of Object.entries(subState.factions ?? {})) {
         (value.techs ?? []).forEach((tech) => {
+          if (tech === "IIHQ Modernization") {
+            updates[`planets.Custodia Vigilia.owners`] = [factionName];
+            updates[`updates.planets.timestamp`] = timestamp;
+          }
           updates[`factions.${factionName}.techs.${tech}.ready`] = true;
           updates[`updates.factions.timestamp`] = timestamp;
         });
@@ -242,13 +277,22 @@ export default async function handler(req, res) {
           updates[`factions.${factionName}.techs.${tech}`] = FieldValue.delete();
           updates[`updates.factions.timestamp`] = timestamp;
         });
-        (value.planets ?? []).forEach((planet) => {
+        for (const planet of (value.planets ?? [])) {
           const planetName = planet === "[0.0.0]" ? "000" : planet;
           updates[`planets.${factionName}.planets.${planetName}.ready`] = true;
           updates[`planets.${planetName}.owners`] = [factionName];
           updates[`updates.planets.timestamp`] = timestamp;
           updates[`updates.factions.timestamp`] = timestamp;
-        });
+          const pseudoData = {
+            action: "ADD_PLANET",
+            planet: planetName,
+          };
+          if (await shouldUnlockXxchaCommander(pseudoData, gameRef, gamePlanets, attachments)) {
+            updates[`factions.Xxcha Kingdom.commander`] = "unlocked";
+            updates[`updates.factions.timestamp`] = timestamp
+
+          }
+        }
         (value.objectives ?? []).forEach((objective) => {
           updates[`objectives.${objective}.selected`] = true;
           updates[`objectives.${objective}.scorers`] = FieldValue.arrayUnion(factionName);
@@ -265,7 +309,7 @@ export default async function handler(req, res) {
             updates[`updates.factions.timestamp`] = Timestamp.fromMillis(data.timestamp);
           }
         }
-      });
+      }
     }
     break;
   }

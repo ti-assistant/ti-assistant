@@ -66,14 +66,14 @@ function ComponentSelect({ components, selectComponent }) {
     <HoverMenu label="Action Cards">
       <div className="flexRow" style={innerStyle}>
       {actionCards.map((component) => {
-        return <button key={component.name} onClick={() => selectComponent(component.name)}>{component.name}</button>
+        return <button key={component.name} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>
     </HoverMenu>
     {techs.length > 0 ? <HoverMenu label="Techs">
       <div className="flexRow" style={innerStyle}>
       {techs.map((component) => {
-        return <button key={component.name} onClick={() => selectComponent(component.name)}>{component.name}</button>
+        return <button key={component.name} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>
     </HoverMenu> : null}
@@ -82,7 +82,7 @@ function ComponentSelect({ components, selectComponent }) {
       {leaders.map((component) => {
         return <div className="flexColumn" key={component.name}>
           <LabeledDiv noBlur={true}  label={capitalizeFirstLetter(component.leader)}>
-            <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+            <button className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
           </LabeledDiv>
         </div>
       })}
@@ -91,7 +91,7 @@ function ComponentSelect({ components, selectComponent }) {
     {exploration.length > 0 ? <HoverMenu label="Exploration/Relic">
       <div className="flexRow" style={innerStyle}>
       {exploration.map((component) => {
-        return <button key={component.name} onClick={() => selectComponent(component.name)}>{component.name}</button>
+        return <button key={component.name} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>
     </HoverMenu> : null}
@@ -100,7 +100,7 @@ function ComponentSelect({ components, selectComponent }) {
       {promissory.map((component) => {
         return <div className="flexColumn" key={component.name}>
           <LabeledDiv noBlur={true} label={capitalizeFirstLetter(component.faction)}>
-          <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+          <button className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
         </LabeledDiv>
         </div>
         return <div className="flexColumn" style={{gap: responsivePixels(4)}}>{capitalizeFirstLetter(component.faction)}:
@@ -115,7 +115,7 @@ function ComponentSelect({ components, selectComponent }) {
         if (component.type === "flagship") {
           return <div className="flexColumn" key={component.name}>
           <LabeledDiv noBlur={true} label={capitalizeFirstLetter(component.type)}>
-          <button onClick={() => selectComponent(component.name)}>{component.name}</button>
+          <button className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
         </LabeledDiv>
         </div>
         }
@@ -363,6 +363,10 @@ export function ComponentAction({ factionName }) {
       }
 
       if (component.type === "tech" && !hasTech(faction, component.name)) {
+        return false;
+      }
+
+      if (component.state === "purged") {
         return false;
       }
 

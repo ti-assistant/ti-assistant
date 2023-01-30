@@ -3,7 +3,7 @@ import { applyPlanetAttachments } from '../../../src/util/planets';
 
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
 
-async function shouldUnlockXxchaCommander(data, gameRef, gamePlanets, attachments) {
+export async function shouldUnlockXxchaCommander(data, gameRef, gamePlanets, attachments) {
   const factionName = "Xxcha Kingdom";
   if (!gameRef.data().factions[factionName] || gameRef.data().factions[factionName].commander === "unlocked") {
     return false;

@@ -8,7 +8,7 @@ import { fetcher } from './util/api/util';
 import { useBetween } from 'use-between';
 import { useSharedUpdateTimes } from './Updater';
 import { saveAgendaTimer, saveFactionTimer, saveGameTimer } from './util/api/timers';
-import { responsivePixels } from './util/util';
+import { responsivePixels, useInterval } from './util/util';
 
 const useCurrentAgenda = () => {
   const [currentAgenda, setCurrentAgenda] = useState(1);
@@ -88,10 +88,6 @@ export function AgendaTimer({}) {
   }
 
   function setStartingTime() {
-    if (!timers) {
-      const timeout = setTimeout(setStartingTime, 1000);
-      return;
-    }
     if (timers.firstAgenda && timers.firstAgenda > firstAgendaTimer) {
       setFirstAgendaTimer(timers.firstAgenda);
     }
@@ -101,20 +97,24 @@ export function AgendaTimer({}) {
   }
 
   useEffect(() => {
-    const timeout = setTimeout(setStartingTime, 1000);
-    return () => clearTimeout(timeout);
-  }, [timers]);
-
-  useEffect(() => {
-    if (paused) {
+    if (!timers) {
       return;
     }
-    const timeout = setTimeout(() => {
-      updateTime();
-    }, 1000);
+    setStartingTime();
+  }, [timers]);
 
-    return () => clearTimeout(timeout);
-  }, [firstAgendaTimer, secondAgendaTimer, paused]);
+  useInterval(updateTime, paused ? null : 1000);
+
+  // useEffect(() => {
+  //   if (paused) {
+  //     return;
+  //   }
+  //   const timeout = setTimeout(() => {
+  //     updateTime();
+  //   }, 1000);
+
+  //   return () => clearTimeout(timeout);
+  // }, [firstAgendaTimer, secondAgendaTimer, paused]);
 
   // const totalTimer = firstAgendaTimer + secondAgendaTimer;
 
@@ -155,7 +155,7 @@ export function GameTimer({ frozen = false }) {
   
 
 
-  useEffect(() => {
+  useInterval(() => {
     if (paused || frozen) {
       return;
     }
@@ -164,26 +164,20 @@ export function GameTimer({ frozen = false }) {
       saveGameTimer(mutate, gameid, timers, gameTimer);
     }
 
-    const timeout = setTimeout(() => {
-      setGameTimer(gameTimer + 1);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, [gameTimer, paused, frozen]);
+    setGameTimer(gameTimer + 1);
+  }, paused || frozen ? null : 1000);
 
   function setStartingTime() {
-    if (!timers) {
-      const timeout = setTimeout(setStartingTime, 1000);
-      return;
-    }
     if (timers.game && timers.game > gameTimer) {
       setGameTimer(timers.game);
     }
   }
 
   useEffect(() => {
-    const timeout = setTimeout(setStartingTime, 1000);
-    return () => clearTimeout(timeout);
+    if (!timers) {
+      return;
+    }
+    setStartingTime();
   }, [timers]);
 
   function togglePause() {
@@ -217,7 +211,6 @@ export function StaticFactionTimer({ factionName, style }) {
 
   function setStartingTime() {
     if (!timers) {
-      setTimeout(setStartingTime, 1000);
       return;
     }
     if ((timers[factionName] && timers[factionName] > factionTimer) || prevFactionName !== factionName) {
@@ -248,7 +241,7 @@ export function FactionTimer({ factionName, style }) {
   
 
 
-  useEffect(() => {
+  useInterval(() => {
     if (paused) {
       return;
     }
@@ -257,16 +250,11 @@ export function FactionTimer({ factionName, style }) {
       saveFactionTimer(mutate, gameid, timers, factionName, factionTimer);
     }
 
-    const timeout = setTimeout(() => {
-      setFactionTimer(factionTimer + 1);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, [factionTimer, paused]);
+    setFactionTimer(factionTimer + 1);
+  }, 1000);
 
   function setStartingTime() {
     if (!timers) {
-      const timeout = setTimeout(setStartingTime, 1000);
       return;
     }
     if ((timers[factionName] && timers[factionName] > factionTimer) || factionName !== prevFactionName) {

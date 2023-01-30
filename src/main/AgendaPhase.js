@@ -160,7 +160,7 @@ export function startNextRound(mutate, gameid, factions, timers, state, subState
 
 function agendaUpdates(agendaName) {
   switch (agendaName) {
-    
+
   }
 }
 
@@ -543,7 +543,7 @@ export default function AgendaPhase() {
               <div className="flexRow" style={{gap: responsivePixels(4), writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: responsivePixels(8), maxHeight: responsivePixels(240), flexWrap: "wrap"}}>
                 {Object.values(agendas ?? {}).filter((agenda) => agenda.elect === outcome)
                 .map((agenda) => {
-                  return <button style={{fontSize: responsivePixels(14)}} onClick={() => selectSubAgenda(agenda.name)}>{agenda.name}</button>;
+                  return <button key={agenda.name} style={{fontSize: responsivePixels(14)}} className={agenda.resolved ? "faded" : ""} onClick={() => selectSubAgenda(agenda.name)}>{agenda.name}</button>;
                 })}
               </div>
             </HoverMenu>

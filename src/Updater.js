@@ -5,7 +5,7 @@ import { useBetween } from "use-between";
 import { Modal } from "./Modal";
 import { useSharedPause } from "./Timer";
 import { fetcher } from "./util/api/util";
-import { responsivePixels } from "./util/util";
+import { responsivePixels, useInterval } from "./util/util";
 
 let updateObject = {};
 
@@ -14,6 +14,9 @@ const setUpdateTime = (endpoint, time) => {
     ...updateObject,
     [endpoint]: time,
   };
+  if (endpoint === "timers") {
+    return;
+  }
   (updateObject.callbacks ?? []).forEach((callback) => {
     callback(updateObject);
   });
@@ -45,22 +48,10 @@ export const useSharedUpdateTimes = () => {
 //   };
 // };
 
-export function getLatestUpdate(updates = {}) {
-  let latestTime = 0;
-  Object.entries(updates).forEach(([type, item]) => {
-    // Ignore timers to get the actual latest update.
-    if (type === "timers") {
-      return;
-    }
-    const time = item.timestamp ?? 0;
-    latestTime = Math.max(time, latestTime);
-  });
-  return latestTime;
-}
-
 // export const useSharedUpdateTimes = () => useBetween(useUpdater);
 
 const INITIAL_FREQUENCY = 5000;
+const TIMEOUT_MINUTES = 15;
 
 export function Updater({}) {
   const router = useRouter();
@@ -68,7 +59,7 @@ export function Updater({}) {
   const { mutate } = useSWRConfig();
   const { data: updates } = useSWR(gameid ? `/api/${gameid}/updates` : null, fetcher);
   const { setUpdateTime } = useSharedUpdateTimes();
-  const { paused, pause, unpause } = useSharedPause();
+  const { pause, unpause } = useSharedPause();
 
   const [ initialLoad, setInitialLoad ] = useState(true);
 
@@ -76,6 +67,7 @@ export function Updater({}) {
 
   const [ localAgendas, setLocalAgendas ] = useState(0);
   const [ localAttachments, setLocalAttachments ] = useState(0);
+  const [ localComponents, setLocalComponents ] = useState(0);
   const [ localOptions, setLocalOptions ] = useState(0);
   const [ localPlanets, setLocalPlanets ] = useState(0);
   const [ localFactions, setLocalFactions ] = useState(0);
@@ -92,6 +84,7 @@ export function Updater({}) {
   const localUpdates = updates ?? {};
   const agendasUpdate = (localUpdates.agendas ?? {}).timestamp ?? 0;
   const attachmentsUpdate = (localUpdates.attachments ?? {}).timestamp ?? 0;
+  const componentsUpdate = (localUpdates.components ?? {}).timestamp ?? 0;
   const factionsUpdate = (localUpdates.factions ?? {}).timestamp ?? 0;
   const objectivesUpdate = (localUpdates.objectives ?? {}).timestamp ?? 0;
   const optionsUpdate = (localUpdates.options ?? {}).timestamp ?? 0;
@@ -113,37 +106,40 @@ export function Updater({}) {
     setLatestLocalActivity(Date.now());
   }
 
+  function localUpdate(updatedObject) {
+    setLatestLocalActivity(Date.now());
+    setLocalUpdateObject(updatedObject);
+  }
+
   function checkForUpdates() {
     if (!gameid || !updates) {
       return;
     }
 
-    const latestUpdateMillis = getLatestUpdate(updates);
-    if (shouldUpdate && latestUpdateMillis !== 0 && latestLocalActivity !== 0) {
-      const elapsedMillis = Date.now() - latestUpdateMillis;
-      const minutes = Math.floor(elapsedMillis / 60000);
+    if (shouldUpdate && latestLocalActivity !== 0) {
       const localMillis = Date.now() - latestLocalActivity;
       const localMinutes = Math.floor(localMillis / 60000);
-      if (minutes >= 15 && localMinutes >= 15) {
+      if (localMinutes >= TIMEOUT_MINUTES) {
         pauseUpdates();
         return;
       }
     }
 
     mutate(`/api/${gameid}/updates`, fetcher(`/api/${gameid}/updates`));
-    setTimeout(checkForUpdates, updateFrequency);
   }
 
   useEffect(() => {
-    registerUpdateCallback(setLocalUpdateObject);
+    registerUpdateCallback(localUpdate);
   }, []);
 
-  useEffect(() => {
-    if (!shouldUpdate) {
-      return;
-    }
-    setTimeout(checkForUpdates, updateFrequency);
-  }, [initialLoad, shouldUpdate]);
+  useInterval(checkForUpdates, shouldUpdate ? updateFrequency : null);
+
+  // useEffect(() => {
+  //   if (!shouldUpdate || initialLoad) {
+  //     return;
+  //   }
+  //   setTimeout(checkForUpdates, updateFrequency);
+  // }, [initialLoad, shouldUpdate]);
 
   useEffect(() => {
     if (localUpdateObject.agendas > localAgendas) {
@@ -151,6 +147,9 @@ export function Updater({}) {
     }
     if (localUpdateObject.attachments > localAttachments) {
       setLocalAttachments(localUpdateObject.attachments);
+    }
+    if (localUpdateObject.components > localComponents) {
+      setLocalComponents(localUpdateObject.components);
     }
     if (localUpdateObject.objectives > localObjectives) {
       setLocalObjectives(localUpdateObject.objectives);
@@ -196,6 +195,16 @@ export function Updater({}) {
       setUpdateTime("attachments", attachmentsUpdate);
     }
   }, [attachmentsUpdate]);
+  
+  useEffect(() => {
+    if (componentsUpdate > localComponents) {
+      setLocalComponents(componentsUpdate);
+      if (!initialLoad) {
+        mutate(`/api/${gameid}/components`, fetcher(`/api/${gameid}/components`));
+      }
+      setUpdateTime("components", componentsUpdate);
+    }
+  }, [componentsUpdate]);
 
   useEffect(() => {
     if (planetsUpdate > localPlanets) {
@@ -284,6 +293,7 @@ export function Updater({}) {
   if (initialLoad) {
     setLocalAgendas(agendasUpdate);
     setLocalAttachments(attachmentsUpdate);
+    setLocalComponents(componentsUpdate);
     setLocalPlanets(planetsUpdate);
     setLocalFactions(factionsUpdate);
     setLocalObjectives(objectivesUpdate);

@@ -740,7 +740,7 @@ export default function ActionPhase() {
           : null} */}
         </div>
         {!activeFaction ? 
-          <button onClick={() => nextPhase()}>Advance to Status Phase</button>
+          <button onClick={() => advanceToStatusPhase(mutate, gameid, strategyCards, state, factions)}>Advance to Status Phase</button>
         : null}
       </div>
       <div className="flexColumn" style={{height: "100vh", flexShrink: 0,  width: responsivePixels(280)}}>
