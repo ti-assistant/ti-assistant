@@ -14,11 +14,8 @@ const setUpdateTime = (endpoint, time) => {
     ...updateObject,
     [endpoint]: time,
   };
-  if (endpoint === "timers") {
-    return;
-  }
   (updateObject.callbacks ?? []).forEach((callback) => {
-    callback(updateObject);
+    callback(updateObject, endpoint);
   });
 };
 
@@ -106,8 +103,10 @@ export function Updater({}) {
     setLatestLocalActivity(Date.now());
   }
 
-  function localUpdate(updatedObject) {
-    setLatestLocalActivity(Date.now());
+  function localUpdate(updatedObject, endpoint) {
+    if (endpoint !== "timers") {
+      setLatestLocalActivity(Date.now());
+    }
     setLocalUpdateObject(updatedObject);
   }
 
@@ -227,7 +226,7 @@ export function Updater({}) {
   }, [factionsUpdate]);
 
   useEffect(() => {
-    if (objectivesUpdate > localOptions) {
+    if (objectivesUpdate > localObjectives) {
       setLocalObjectives(objectivesUpdate);
       if (!initialLoad) {
         mutate(`/api/${gameid}/objectives`, fetcher(`/api/${gameid}/objectives`));
