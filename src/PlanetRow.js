@@ -120,6 +120,8 @@ export function PlanetAttributes({ planetName, attributes, ability }) {
         return <Image src="/images/tomb_symbol.webp" alt="Tomb of Emphidia" layout="fill" objectFit='contain' />;
       case "space-cannon":
         return <div style={{ width: responsivePixels(36), height: responsivePixels(22) }}>✹✹✹</div>
+      case "all-types":
+        return <FullPlanetSymbol type="all" />
       default:
         return null;
     }
@@ -146,7 +148,7 @@ export function PlanetAttributes({ planetName, attributes, ability }) {
 function AttachMenu({ planet, attachments, visible, closeMenu }) {
   return (<Modal closeMenu={closeMenu} visible={visible} level={2} title={"Attachments for " + planet.name}
     content={
-      <div className="flexColumn" style={{ boxSizing: "border-box", padding: responsivePixels(4), width: "100%" }}>
+      <div className="flexColumn" style={{ boxSizing: "border-box", padding: responsivePixels(4), overflowY: "auto" , width: "100%", maxHeight: "75vh" }}>
         {Object.entries(attachments).map(([name, attachment]) => {
           return <AttachRow key={name} attachment={attachment} currentPlanet={planet.name} />
         })}
