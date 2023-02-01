@@ -1410,7 +1410,7 @@ export default function SetupPage() {
     <React.Fragment>
       <Header />
       {/* Large Screen */}
-      <div className="flexRow nonMobile" style={{alignItems: "flex-start", justifyContent: "center", margin: `${responsivePixels(48)} 0`, width: "100%"}}>
+      <div className="flexRow nonMobile" style={{alignItems: "flex-start", justifyContent: "center", margin: `${responsivePixels(48)} 0 0 0`, width: "100%"}}>
         <div className="flexColumn" style={{height: "100%", justifyContent: "flex-start"}}>
           <Options updatePlayerCount={updatePlayerCount} toggleOption={toggleOption} toggleExpansion={toggleExpansion} options={options} numFactions={factions.length} maxFactions={maxFactions} isCouncil={isCouncilInGame()} />
           <LeftTopGapDiv />
