@@ -1532,8 +1532,11 @@ export default function SetupPage() {
             <button style={{fontSize: `${responsivePixels(40)}`, fontFamily: "Slider"}} onClick={startGame} disabled={disableNextButton()}>
               Start Game
             </button>
-            {disableNextButton() ?
+            {disableNextButton() && !invalidCouncil() ?
               <div style={{color: "darkred"}}>Select all factions and colors</div>
+            : null}
+            {invalidCouncil() ?
+              <div style={{color: "darkred"}}>No sub-factions available for Council Keleres</div>
             : null}
           </div>
         </div>
@@ -1578,8 +1581,11 @@ export default function SetupPage() {
             <button style={{fontSize: `${responsivePixels(40)}`, fontFamily: "Slider"}} onClick={startGame} disabled={disableNextButton()}>
               Start Game
             </button>
-            {disableNextButton() ?
+            {disableNextButton() && !invalidCouncil() ?
               <div style={{color: "darkred"}}>Select all factions and colors</div>
+            : null}
+            {invalidCouncil() ?
+              <div style={{color: "darkred"}}>No sub-factions available for Council Keleres</div>
             : null}
           </div>
         </div>
