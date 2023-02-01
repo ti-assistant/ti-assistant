@@ -70,7 +70,7 @@ export default async function handler(req, res) {
       const objectiveString = `objectives.${data.objective}.scorers`;
       const revealedString = `objectives.${data.objective}.selected`;
       let updateValue = FieldValue.arrayUnion(data.faction);
-      if (data.objective === "Support for the Throne" || data.objective === "Imperial Point") {
+      if (gameObjectives[data.objective].repeatable) {
         const scorers = gameRef.data().objectives[data.objective].scorers ?? [];
         scorers.push(data.faction);
         updateValue = scorers;
@@ -96,8 +96,8 @@ export default async function handler(req, res) {
     case "UNSCORE_OBJECTIVE": {
       const objectiveString = `objectives.${data.objective}.scorers`;
       const revealedString = `objectives.${data.objective}.selected`;
-      let updateValue = FieldValue.arrayRemove(data.faction)
-      if (data.objective === "Support for the Throne" || data.objective === "Imperial Point") {
+      let updateValue = FieldValue.arrayRemove(data.faction);
+      if (gameObjectives[data.objective].repeatable) {
         const scorers = gameRef.data().objectives[data.objective].scorers ?? [];
         const lastIndex = scorers.lastIndexOf(data.faction);
         scorers.splice(lastIndex, 1);
