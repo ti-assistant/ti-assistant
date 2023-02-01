@@ -11,7 +11,6 @@ import { TechRow } from "../../TechRow";
 import { addSubStateTech, clearAddedSubStateTech, clearRemovedSubStateTech, clearSubState, removeRepealedSubStateAgenda, removeSubStateTech, repealSubStateAgenda, setSubStateOther, setSubStateSelectedAction } from "../../util/api/subState";
 import { hasTech } from "../../util/api/techs";
 import { fetcher } from "../../util/api/util";
-import { getFactionColor, getFactionName } from "../../util/factions";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize, responsivePixels } from "../../util/util";
 import { TechSelectHoverMenu } from "./TechSelectHoverMenu";

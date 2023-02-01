@@ -1,34 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import { AddPlanetList } from "/src/AddPlanetList.js";
 import { AddTechList } from "/src/AddTechList.js";
-import { Resources } from "/src/Resources.js";
-import { PlanetRow, PlanetAttributes, PlanetSymbol } from "/src/PlanetRow.js";
+import { PlanetRow } from "/src/PlanetRow.js";
 import { TechRow } from "/src/TechRow.js";
 import { Tab, TabBody } from "/src/Tab.js";
 import { Modal } from "/src/Modal.js";
 import useSWR, { useSWRConfig } from 'swr'
 import { ObjectiveList } from "/src/ObjectiveList";
-import { fetcher, poster, setGameId } from '../../../src/util/api/util';
-import { pluralize, responsivePixels } from "../../../src/util/util";
+import { fetcher, setGameId } from '../../../src/util/api/util';
+import { responsivePixels } from "../../../src/util/util";
 import { hasTech, lockTech, unlockTech } from "../../../src/util/api/techs";
 import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
 import { FactionCard, StartingComponents } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
-import { TechIcon } from "../../../src/TechRow";
 import { FactionSummary } from "../../../src/FactionSummary";
-import { FactionTimer, StaticFactionTimer } from "../../../src/Timer";
+import { StaticFactionTimer } from "../../../src/Timer";
 import { applyAllPlanetAttachments, filterToClaimedPlanets } from "../../../src/util/planets";
-import { filterToOwnedTechs, filterToUnownedTechs, sortTechs } from "../../../src/util/techs";
-import { Updater, useSharedUpdateTimes } from "../../../src/Updater";
+import { filterToOwnedTechs, filterToUnownedTechs } from "../../../src/util/techs";
+import { Updater } from "../../../src/Updater";
 import { LabeledDiv, LabeledLine } from "../../../src/LabeledDiv";
 import { StrategyCard } from "../../../src/StrategyCard";
 import { assignStrategyCard } from "../../../src/util/api/cards";
 import { nextPlayer, setAgendaNum } from "../../../src/util/api/state";
-import { ActivePlayerColumn, AdditionalActions, advanceToStatusPhase, FactionActionButtons, FactionActions, NextPlayerButtons } from "../../../src/main/ActionPhase";
-import { getFactionColor, getFactionName } from "../../../src/util/factions";
+import { AdditionalActions, advanceToStatusPhase, FactionActionButtons, FactionActions, NextPlayerButtons } from "../../../src/main/ActionPhase";
 import { HoverMenu } from "../../../src/HoverMenu";
-import { castSubStateVotes, finalizeSubState, hideSubStateAgenda, hideSubStateObjective, revealSubStateAgenda, revealSubStateObjective, scoreSubStateObjective, setSubStateOther, unscoreSubStateObjective } from "../../../src/util/api/subState";
+import { castSubStateVotes, hideSubStateAgenda, hideSubStateObjective, revealSubStateAgenda, revealSubStateObjective, scoreSubStateObjective, setSubStateOther, unscoreSubStateObjective } from "../../../src/util/api/subState";
 import { SelectableRow } from "../../../src/SelectableRow";
 import { ObjectiveRow } from "../../../src/ObjectiveRow";
 import { scoreObjective, unscoreObjective } from "../../../src/util/api/objectives";
@@ -57,11 +54,11 @@ function PhaseSection() {
   const { game: gameid, faction: factionName } = router.query;
   const { data: agendas = {} } = useSWR(gameid ? `/api/${gameid}/agendas` : null, fetcher);
   const { data: attachments = {} } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
-  const { data: factions = {}, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: factions = {} } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: planets = {} } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
   const { data: objectives = {} } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
-  const { data: state = {}, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: subState = {}, error: subStateError } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
+  const { data: state = {} } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: timers = {} } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
 
@@ -120,8 +117,8 @@ function PhaseSection() {
     currentAgenda = agendas[subState.agenda];
   }
   const factionSubState = ((subState.factions ?? {})[factionName] ?? {});
-  
-  const localAgenda = {...currentAgenda};
+
+  const localAgenda = { ...currentAgenda };
   if (subState.outcome) {
     localAgenda.elect = subState.outcome;
   }
@@ -183,7 +180,6 @@ function PhaseSection() {
     }
   }
 
-  const isSpeaker = state.speaker === factionName;
   let phaseName = `${state.phase} PHASE`;
   let phaseContent = null;
   switch (state.phase) {
@@ -193,56 +189,56 @@ function PhaseSection() {
         return objective.type === "stage-one" && !revealedObjectiveNames.includes(objective.name);
       });
       phaseName = "SETUP PHASE"
-      phaseContent = 
-      <React.Fragment>
-              <LabeledDiv label="Speaker Actions">
-          {(subState.objectives ?? []).length > 0 ? 
+      phaseContent =
+        <React.Fragment>
+          <LabeledDiv label="Speaker Actions">
+            {(subState.objectives ?? []).length > 0 ?
               <LabeledDiv label="REVEALED OBJECTIVES">
                 {(subState.objectives ?? []).map((objectiveName) => {
                   return <ObjectiveRow key={objectiveName} objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
                 })}
               </LabeledDiv>
-            : null}
-        {(subState.objectives ?? []).length < 2 ? 
-          <HoverMenu label="Reveal Objective">
-            <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll"}}>
-              {Object.values(availableObjectives).filter((objective) => {
-                return objective.type === "stage-one"
-              })
-                .map((objective) => {
-                  return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
-                })}
+              : null}
+            {(subState.objectives ?? []).length < 2 ?
+              <HoverMenu label="Reveal Objective">
+                <div className="flexRow" style={{ writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll" }}>
+                  {Object.values(availableObjectives).filter((objective) => {
+                    return objective.type === "stage-one"
+                  })
+                    .map((objective) => {
+                      return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
+                    })}
+                </div>
+              </HoverMenu>
+              : null}
+          </LabeledDiv>
+          <LabeledDiv label="Starting Components">
+            <div style={{ fontSize: "16px", whiteSpace: "nowrap" }}>
+              <StartingComponents faction={factions[factionName]} />
             </div>
-          </HoverMenu>
-        : null}
-        </LabeledDiv>
-        <LabeledDiv label="Starting Components">
-          <div style={{fontSize: "16px", whiteSpace: "nowrap"}}>
-            <StartingComponents faction={factions[factionName]} />
-          </div>
-        </LabeledDiv>
-        {setupPhaseComplete(factions, subState) ?
-        <button onClick={() => startFirstRound(mutate, gameid, subState, factions, planets, objectives, state, options)}>Start Game</button> : null}
-      </React.Fragment>;
+          </LabeledDiv>
+          {setupPhaseComplete(factions, subState) ?
+            <button onClick={() => startFirstRound(mutate, gameid, subState, factions, planets, objectives, state, options)}>Start Game</button> : null}
+        </React.Fragment>;
       break;
     }
     case "STRATEGY":
       if (factionName === state.activeplayer) {
         phaseName = "SELECT STRATEGY CARD";
-        phaseContent = 
-          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
-          {Object.values(strategyCards).filter((card) => !card.faction)
-            .map((card) => {
-              return <StrategyCard key={card.name} card={card} active={true} onClick={() => assignCard(card)} />;
-            })}
+        phaseContent =
+          <div className="flexColumn" style={{ alignItems: "stretch", width: "100%", gap: "4px" }}>
+            {Object.values(strategyCards).filter((card) => !card.faction)
+              .map((card) => {
+                return <StrategyCard key={card.name} card={card} active={true} onClick={() => assignCard(card)} />;
+              })}
           </div>;
       }
       if (state.activeplayer === "None") {
         phaseName = "END OF STRATEGY PHASE";
-        phaseContent = 
-          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
+        phaseContent =
+          <div className="flexColumn" style={{ alignItems: "stretch", width: "100%", gap: "4px" }}>
             <div className="flexRow">
-            <button onClick={() => advanceToActionPhase(mutate, gameid, strategyCards, state, factions)}>Advance to Action Phase</button>
+              <button onClick={() => advanceToActionPhase(mutate, gameid, strategyCards, state, factions)}>Advance to Action Phase</button>
             </div>
           </div>;
       }
@@ -250,40 +246,35 @@ function PhaseSection() {
     case "ACTION":
       if (factionName === state.activeplayer) {
         phaseName = "ACTION PHASE";
-        phaseContent = 
+        phaseContent =
           <React.Fragment>
             <FactionActionButtons factionName={factionName} />
-            <div className="flexColumn" style={{width: "95%", alignItems: "flex-start"}}>
-            <AdditionalActions
-              factionName={factionName}
-              visible={!!subState.selectedAction}
-              style={{width: "100%", alignItems: "flex-start"}}
-              hoverMenuStyle={{overflowX: "auto", maxWidth: "85vw"}} 
-              factionOnly={true} />
-              </div>
-            {subState.selectedAction ? <div className="flexRow" style={{width: "100%"}}>
-              <NextPlayerButtons factionName={factionName} buttonStyle={{fontSize: "20px"}} />
+            <div className="flexColumn" style={{ width: "95%", alignItems: "flex-start" }}>
+              <AdditionalActions
+                factionName={factionName}
+                visible={!!subState.selectedAction}
+                style={{ width: "100%", alignItems: "flex-start" }}
+                hoverMenuStyle={{ overflowX: "auto", maxWidth: "85vw" }}
+                factionOnly={true} />
+            </div>
+            {subState.selectedAction ? <div className="flexRow" style={{ width: "100%" }}>
+              <NextPlayerButtons factionName={factionName} buttonStyle={{ fontSize: "20px" }} />
             </div> : null}
           </React.Fragment>;
-          // <React.Fragment>
-
-          //   <AdditionalActions visible={!!subState.selectedAction} />
-          // </React.Fragment>;
       } else if (subState.selectedAction === "Technology") {
-        // TODO: Let faction select technology.
         phaseContent = <AdditionalActions
           factionName={factionName}
           visible={!!subState.selectedAction}
-          style={{width: "100%"}}
-          hoverMenuStyle={{overflowX: "auto", maxWidth: "85vw"}} 
+          style={{ width: "100%" }}
+          hoverMenuStyle={{ overflowX: "auto", maxWidth: "85vw" }}
           factionOnly={true} />
       }
       if (state.activeplayer === "None") {
         phaseName = "END OF ACTION PHASE";
-        phaseContent = 
-          <div className="flexColumn" style={{alignItems: "stretch", width: "100%", gap: "4px"}}>
+        phaseContent =
+          <div className="flexColumn" style={{ alignItems: "stretch", width: "100%", gap: "4px" }}>
             <div className="flexRow">
-            <button onClick={() => advanceToStatusPhase(mutate, gameid, strategyCards, state, factions)}>Advance to Status Phase</button>
+              <button onClick={() => advanceToStatusPhase(mutate, gameid, strategyCards, state, factions)}>Advance to Status Phase</button>
             </div>
           </div>;
       }
@@ -309,188 +300,179 @@ function PhaseSection() {
       });
       phaseName = "STATUS PHASE";
       phaseContent =
-        // <LabeledDiv label="SCORE OBJECTIVES">
         <React.Fragment>
-        <div className='flexColumn' style={{gap: "4px", padding: "8px", flexWrap: "wrap", width: "100%", alignItems: "flex-start"}}>
-        {scoredPublics.length > 0 ?
-          <LabeledDiv label="SCORED PUBLIC" style={{whiteSpace: "nowrap"}}>
-            <SelectableRow itemName={scoredPublics[0]} removeItem={() => unscoreObj(factionName, scoredPublics[0])}>
-              {scoredPublics[0]}
-            </SelectableRow>
-          </LabeledDiv>
-        : <HoverMenu label="Score Public Objective">
-          <div className="flexColumn" style={{whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch"}}>
-          {availableObjectives.length === 0 ? "No unscored public objectives" : null}
-          {availableObjectives.map((objective) => {
-            return <button key={objective.name} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
-          })}
-          </div> 
-        </HoverMenu>}
-        {scoredSecrets.length > 0 ? 
-          <LabeledDiv label="SCORED SECRET" style={{whiteSpace: "nowrap"}}>
-          <SelectableRow itemName={scoredSecrets[0]} removeItem={() => unscoreObj(factionName, scoredSecrets[0])}>
-            {scoredSecrets[0]}
-          </SelectableRow>
-          </LabeledDiv>
-          : <HoverMenu label="Score Secret Objective">
-          <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll"}}>
-          {secrets.map((objective) => {
-            return <button key={objective.name} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
-          })}
-          </div>
-        </HoverMenu>}
-        </div>
-          <LabeledDiv label="Speaker Actions">
-          {(subState.objectives ?? []).length > 0 ? 
-            <LabeledDiv label="REVEALED OBJECTIVE"><ObjectiveRow objective={objectives[subState.objectives[0]]} removeObjective={() => removeObj(subState.objectives[0])} viewing={true} /></LabeledDiv>
-          :
-          <div className='flexRow' style={{whiteSpace: "nowrap"}}>
-            {(subState.objectives ?? []).map((objective) => {
-              return <ObjectiveRow objective={objectives[objective]} removeObjective={() => removeObj(objective.name)} viewing={true} />;
-            })}
-            {(subState.objectives ?? []).length < 1 ? 
-              <HoverMenu label={`Reveal one Stage ${state.round > 3 ? "II" : "I"} objective`} style={{maxHeight: "400px"}}>
-                <div className='flexRow' style={{maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
-                  {Object.values(revealableObjectives).filter((objective) => {
-                    return objective.type === (state.round > 3 ? "stage-two" : "stage-one");
-                  })
-                    .map((objective) => {
-                      return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
-                    })}
+          <div className='flexColumn' style={{ gap: "4px", padding: "8px", flexWrap: "wrap", width: "100%", alignItems: "flex-start" }}>
+            {scoredPublics.length > 0 ?
+              <LabeledDiv label="SCORED PUBLIC" style={{ whiteSpace: "nowrap" }}>
+                <SelectableRow itemName={scoredPublics[0]} removeItem={() => unscoreObj(factionName, scoredPublics[0])}>
+                  {scoredPublics[0]}
+                </SelectableRow>
+              </LabeledDiv>
+              : <HoverMenu label="Score Public Objective">
+                <div className="flexColumn" style={{ whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch" }}>
+                  {availableObjectives.length === 0 ? "No unscored public objectives" : null}
+                  {availableObjectives.map((objective) => {
+                    return <button key={objective.name} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
+                  })}
                 </div>
-              </HoverMenu>
-            : null}
-            </div>}
+              </HoverMenu>}
+            {scoredSecrets.length > 0 ?
+              <LabeledDiv label="SCORED SECRET" style={{ whiteSpace: "nowrap" }}>
+                <SelectableRow itemName={scoredSecrets[0]} removeItem={() => unscoreObj(factionName, scoredSecrets[0])}>
+                  {scoredSecrets[0]}
+                </SelectableRow>
+              </LabeledDiv>
+              : <HoverMenu label="Score Secret Objective">
+                <div className="flexRow" style={{ writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll" }}>
+                  {secrets.map((objective) => {
+                    return <button key={objective.name} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
+                  })}
+                </div>
+              </HoverMenu>}
+          </div>
+          <LabeledDiv label="Speaker Actions">
+            {(subState.objectives ?? []).length > 0 ?
+              <LabeledDiv label="REVEALED OBJECTIVE"><ObjectiveRow objective={objectives[subState.objectives[0]]} removeObjective={() => removeObj(subState.objectives[0])} viewing={true} /></LabeledDiv>
+              :
+              <div className='flexRow' style={{ whiteSpace: "nowrap" }}>
+                {(subState.objectives ?? []).map((objective) => {
+                  return <ObjectiveRow objective={objectives[objective]} removeObjective={() => removeObj(objective.name)} viewing={true} />;
+                })}
+                {(subState.objectives ?? []).length < 1 ?
+                  <HoverMenu label={`Reveal one Stage ${state.round > 3 ? "II" : "I"} objective`} style={{ maxHeight: "400px" }}>
+                    <div className='flexRow' style={{ maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+                      {Object.values(revealableObjectives).filter((objective) => {
+                        return objective.type === (state.round > 3 ? "stage-two" : "stage-one");
+                      })
+                        .map((objective) => {
+                          return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
+                        })}
+                    </div>
+                  </HoverMenu>
+                  : null}
+              </div>}
           </LabeledDiv>
-          {statusPhaseComplete(subState) ? 
-          <React.Fragment>
-          {!state.agendaUnlocked ? <button onClick={() => startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards)}>Start Next Round</button>: null}
-          <button onClick={() => advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions)}>Advance to Agenda Phase</button>
-          </React.Fragment>
-          : null}
+          {statusPhaseComplete(subState) ?
+            <React.Fragment>
+              {!state.agendaUnlocked ? <button onClick={() => startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards)}>Start Next Round</button> : null}
+              <button onClick={() => advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions)}>Advance to Agenda Phase</button>
+            </React.Fragment>
+            : null}
         </React.Fragment>;
-        break;
+      break;
     }
     case "AGENDA": {
       phaseName = "AGENDA PHASE";
       phaseContent = <React.Fragment>
-            {!currentAgenda ?
-                    <LabeledDiv label="Speaker Actions" style={{marginTop: "4px", paddingTop: "12 px"}}>
-                    <HoverMenu label="Reveal and Read one Agenda">
-            <div className='flexRow' style={{maxWidth: "85vw", gap: "4px", maxHeight: "400px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
-              {orderedAgendas.map((agenda) => {
+        {!currentAgenda ?
+          <LabeledDiv label="Speaker Actions" style={{ marginTop: "4px", paddingTop: "12 px" }}>
+            <HoverMenu label="Reveal and Read one Agenda">
+              <div className='flexRow' style={{ maxWidth: "85vw", gap: "4px", maxHeight: "400px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+                {orderedAgendas.map((agenda) => {
                   return <button key={agenda.name} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                 })}
               </div>
             </HoverMenu>
-            </LabeledDiv> :
-            <React.Fragment>
-              <div className="largeFont" style={{width: "100%"}}>
+          </LabeledDiv> :
+          <React.Fragment>
+            <div className="largeFont" style={{ width: "100%" }}>
               <LabeledDiv label={label}>
-                <AgendaRow agenda={currentAgenda} removeAgenda={() => {hideAgenda(currentAgenda.name)}} />
+                <AgendaRow agenda={currentAgenda} removeAgenda={() => { hideAgenda(currentAgenda.name) }} />
               </LabeledDiv>
-              </div>
-              {currentAgenda.name === "Covert Legislation" ?
-                (subState.outcome ? 
-                  <LabeledDiv label="ELIGIBLE OUTCOMES" style={{paddingTop: "8px"}}>
+            </div>
+            {currentAgenda.name === "Covert Legislation" ?
+              (subState.outcome ?
+                <LabeledDiv label="ELIGIBLE OUTCOMES" style={{ paddingTop: "8px" }}>
                   <SelectableRow itemName={subState.outcome} content={
-                    <div style={{display: "flex", fontSize: "18px"}}>
+                    <div style={{ display: "flex", fontSize: "18px" }}>
                       {subState.outcome}
                     </div>} removeItem={() => selectEligibleOutcome(null)} />
-                  </LabeledDiv> :
-                  <LabeledDiv label="Speaker Actions" style={{marginTop: "4px", paddingTop: "12px"}}>
-                <HoverMenu label="Reveal Eligible Outcomes">
-                  <div className='flexColumn' style={{padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: 'flex-start'}}>
-                  {Array.from(outcomes).map((outcome) => {
-                    return <button key={outcome} onClick={() => selectEligibleOutcome(outcome)}>{outcome}</button>
-                  })}
-                  </div>
-                </HoverMenu>
-                  </LabeledDiv>)
+                </LabeledDiv> :
+                <LabeledDiv label="Speaker Actions" style={{ marginTop: "4px", paddingTop: "12px" }}>
+                  <HoverMenu label="Reveal Eligible Outcomes">
+                    <div className='flexColumn' style={{ padding: "8px", gap: "4px", alignItems: "stretch", justifyContent: 'flex-start' }}>
+                      {Array.from(outcomes).map((outcome) => {
+                        return <button key={outcome} onClick={() => selectEligibleOutcome(outcome)}>{outcome}</button>
+                      })}
+                    </div>
+                  </HoverMenu>
+                </LabeledDiv>)
               : null}
-            </React.Fragment>}
-        {currentAgenda ? 
-          <div className="flexColumn" style={{alignItems: "stretch", width: "100%"}}>
+          </React.Fragment>}
+        {currentAgenda ?
+          <div className="flexColumn" style={{ alignItems: "stretch", width: "100%" }}>
             <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
-              {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Target</div>}> */}
-              {!canFactionVote(factionName, agendas, state, factions) ? 
+            {!canFactionVote(factionName, agendas, state, factions) ?
               <div className="flexRow">Cannot Vote</div> :
               <React.Fragment>
-              <div className="flexRow" style={{width: "100%", justifyContent: "center"}}>
-                Target:
-          <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"}>
-            <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
-                  {targets.map((target) => {
-                    return (
-                      <button key={target} onClick={() => {castVotes(target, 0)}}>{target}</button>
-                    );
-                  })}
+                <div className="flexRow" style={{ width: "100%", justifyContent: "center" }}>
+                  Target:
+                  <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"}>
+                    <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+                      {targets.map((target) => {
+                        return (
+                          <button key={target} onClick={() => { castVotes(target, 0) }}>{target}</button>
+                        );
+                      })}
+                    </div>
+                  </HoverMenu>
                 </div>
-              </HoverMenu>
-              </div>
-            <div className="flexRow" style={{width: '100%', justifyContent: "center", alignItems: "center"}}>
-              Available Votes: 
-              {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Available Votes</div>}> */}
-                
-        <div className="votingBlock">
-              <div className="influenceSymbol">
-                &#x2B21;
-              </div>
-              <div className="influenceTextWrapper">
-                {influence}
-              </div>
-              <div style={{fontSize: "16px"}}>
-            + {extraVotes}
-            </div>
-            </div>
-            </div>
-              {/* </LabeledDiv> */}
-            {/* <LabeledDiv label={<div style={{fontFamily: "Myriad Pro"}}>Cast Votes</div>}> */}
-            <div className="flexRow" style={{width: '100%', justifyContent: "center", alignItems: "center"}}>
-            Cast Votes:
-            <div className="flexRow" style={{justifyContent: "flex-start", flexShrink: 0, gap: "12px", fontSize: "24px", paddingLeft: "12px"}}>
-            {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{width: "12px"}}></div>}
-            <div className="flexRow" style={{width: "32px"}}>{factionSubState.votes ?? 0}</div>
-            {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
-          </div>
-          </div>
-          </React.Fragment>}
-          <LabeledLine />
-            {/* </LabeledDiv> */}
-            {/* </div> */}
-          {isTie ?
+                <div className="flexRow" style={{ width: '100%', justifyContent: "center", alignItems: "center" }}>
+                  Available Votes:
+                  <div className="votingBlock">
+                    <div className="influenceSymbol">
+                      &#x2B21;
+                    </div>
+                    <div className="influenceTextWrapper">
+                      {influence}
+                    </div>
+                    <div style={{ fontSize: "16px" }}>
+                      + {extraVotes}
+                    </div>
+                  </div>
+                </div>
+                <div className="flexRow" style={{ width: '100%', justifyContent: "center", alignItems: "center" }}>
+                  Cast Votes:
+                  <div className="flexRow" style={{ justifyContent: "flex-start", flexShrink: 0, gap: "12px", fontSize: "24px", paddingLeft: "12px" }}>
+                    {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{ width: "12px" }}></div>}
+                    <div className="flexRow" style={{ width: "32px" }}>{factionSubState.votes ?? 0}</div>
+                    {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
+                  </div>
+                </div>
+              </React.Fragment>}
+            <LabeledLine />
+            {isTie ?
               (!subState.tieBreak ?
-                <LabeledDiv label="Speaker Actions" style={{paddingTop: "12px"}}>
+                <LabeledDiv label="Speaker Actions" style={{ paddingTop: "12px" }}>
 
-              <HoverMenu label="Choose outcome (vote tied)">
-                <div className="flexRow" style={{maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll"}}>
-                  {selectedTargets.length > 0 ? selectedTargets.map((target) => {
-                    return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
-                  }) : 
-                  targets.map((target) => {
-                    if (target === "Abstain") {
-                      return null;
-                    }
-                    return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
-                  })}
-                </div>
-              </HoverMenu></LabeledDiv> : 
-            <LabeledDiv label="SPEAKER TIE BREAK" style={{paddingTop: "8px"}}>
-              <SelectableRow itemName={subState.tieBreak} removeItem={() => selectSpeakerTieBreak(null)}>
-                {subState.tieBreak}
-              </SelectableRow>
-            </LabeledDiv>
-          
+                  <HoverMenu label="Choose outcome (vote tied)">
+                    <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+                      {selectedTargets.length > 0 ? selectedTargets.map((target) => {
+                        return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                      }) :
+                        targets.map((target) => {
+                          if (target === "Abstain") {
+                            return null;
+                          }
+                          return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                        })}
+                    </div>
+                  </HoverMenu></LabeledDiv> :
+                <LabeledDiv label="SPEAKER TIE BREAK" style={{ paddingTop: "8px" }}>
+                  <SelectableRow itemName={subState.tieBreak} removeItem={() => selectSpeakerTieBreak(null)}>
+                    {subState.tieBreak}
+                  </SelectableRow>
+                </LabeledDiv>
+
               )
-          : null}
-          {(selectedTargets.length === 1 || subState.tieBreak) ? 
-            <div className="flexRow" style={{width: "100%", justifyContent: "center"}}>
-              <button onClick={completeAgenda}>Resolve with target: {selectedTargets.length === 1 ? selectedTargets[0] : subState.tieBreak}</button>
-            </div>
-          : null}
+              : null}
+            {(selectedTargets.length === 1 || subState.tieBreak) ?
+              <div className="flexRow" style={{ width: "100%", justifyContent: "center" }}>
+                <button onClick={completeAgenda}>Resolve with target: {selectedTargets.length === 1 ? selectedTargets[0] : subState.tieBreak}</button>
+              </div>
+              : null}
           </div>
-          // <VoteCount factionName={factionName} agenda={currentAgenda} />
-        : null}
+          : null}
         <button onClick={() => startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards)}>Start Next Round</button>
       </React.Fragment>;
       break;
@@ -504,9 +486,6 @@ function PhaseSection() {
       <LabeledLine label={phaseName} />
       {phaseContent}
     </div>
-    // <LabeledDiv label={phaseName}>
-    //   {phaseContent}
-    // </LabeledDiv>
   )
 }
 
@@ -517,37 +496,16 @@ function FactionContent() {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { game: gameid, faction: playerFaction } = router.query;
-  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const { data: attachments, error: attachmentsError } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
-  const { data: objectives, objectivesError } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
-  const { data: planets, error: planetsError } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
-  const { data: techs, error: techsError } = useSWR(gameid && playerFaction ? `/api/${gameid}/techs` : null, fetcher);
-  const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
-  const { data: options, error: optionsError } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
-  const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: factions = {} } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: attachments = {} } = useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher);
+  const { data: objectives = {} } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+  const { data: planets = {} } = useSWR(gameid ? `/api/${gameid}/planets` : null, fetcher);
+  const { data: techs = {} } = useSWR(gameid ? `/api/${gameid}/techs` : null, fetcher);
+  const { data: options = {} } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
 
-
-  if (attachmentsError) {
-    return (<div>Failed to load attachments</div>);
+  if (!factions) {
+    return null;
   }
-  if (factionsError) {
-    return (<div>Failed to load factions</div>);
-  }
-  if (objectivesError) {
-    return (<div>Failed to load objectives</div>);
-  }
-  if (planetsError) {
-    return (<div>Failed to load planets</div>);
-  }
-  if (techsError) {
-    return (<div>Failed to load technologies</div>);
-  }
-  if (cardsError) {
-    return (<div>Failed to load cards</div>);
-  }
-  // if (!strategyCards || !attachments || !factions || !objectives || !planets || !technologies) {
-  //   return (<div>Loading...</div>);
-  // }
 
   if (!factions[playerFaction]) {
     router.push(`/game/${gameid}`);
@@ -575,7 +533,7 @@ function FactionContent() {
   function addPlanet(toAdd) {
     claimPlanet(mutate, gameid, planets, toAdd, playerFaction, options);
   }
-  
+
   function removeTech(toRemove) {
     lockTech(mutate, gameid, factions, playerFaction, toRemove);
   }
@@ -584,24 +542,6 @@ function FactionContent() {
     unlockTech(mutate, gameid, factions, playerFaction, toAdd);
   }
 
-  function readyAll() {
-    const planetNames = ownedPlanets.map((planet) => planet.name);
-    readyPlanets(mutate, gameid, planets, planetNames, playerFaction);
-  }
-
-  function exhaustAll() {
-    const planetNames = ownedPlanets.map((planet) => planet.name);
-    exhaustPlanets(mutate, gameid, planets, planetNames, playerFaction);
-  }
-
-  function updatePlanet(name, updatedPlanet) {
-    if (updatedPlanet.ready) {
-      readyPlanets(mutate, gameid, planets, [name], playerFaction);
-    } else {
-      exhaustPlanets(mutate, gameid, planets, [name], playerFaction);
-    }
-  }
-  
   const faction = factions[playerFaction];
 
   const techsObj = {};
@@ -622,7 +562,6 @@ function FactionContent() {
       }
     });
   }
-
 
   const ownedTechs = filterToOwnedTechs(techsObj, faction);
   ownedTechs.sort((a, b) => {
@@ -652,134 +591,95 @@ function FactionContent() {
     }
   }
 
-  function remainingResources() {
-    return updatedPlanets.reduce((prev, current) => {
-      if (!current.ready) {
-        return prev;
-      }
-      return prev + current.resources;
-    }, 0);
-  }
-  function remainingInfluence() {
-    return updatedPlanets.reduce((prev, current) => {
-      if (!current.ready) {
-        return prev;
-      }
-      return prev + current.influence;
-    }, 0);
-  }
-
-  function allPlanetsExhausted() {
-    for (const planet of updatedPlanets) {
-      if (planet.ready) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function allPlanetsReady() {
-    for (const planet of updatedPlanets) {
-      if (!planet.ready) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  const orderedFactions = Object.values(factions ?? {}).sort((a, b) => a.order - b.order);
-
   function toggleAddPlanetMenu() {
     setShowAddPlanet(!showAddPlanet);
   }
 
   const maxHeight = screen.height - 420;
-  return (<div className="flexColumn" style={{gap: "8px", width: "100%"}}>
-          <Modal closeMenu={toggleAddTechMenu} visible={showAddTech} title="Research Tech"
-        content={
-          <AddTechList techs={remainingTechs} addTech={addTech} />
-        } />
-      <Modal closeMenu={toggleAddPlanetMenu} visible={showAddPlanet} title="Add Planet"
-        content={
-          <AddPlanetList planets={planets} addPlanet={addPlanet} />
+  return (<div className="flexColumn" style={{ gap: "8px", width: "100%" }}>
+    <Modal closeMenu={toggleAddTechMenu} visible={showAddTech} title="Research Tech"
+      content={
+        <AddTechList techs={remainingTechs} addTech={addTech} />
       } />
-  <FactionSummary factionName={playerFaction} VPs={VPs} ownedTechs={ownedTechs} ownedPlanets={updatedPlanets} options={{showIcon: true}} />
-  <div
-    style={{
-      width: "100%",
-      maxWidth: "800px",
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center"
-    }}
-  >
+    <Modal closeMenu={toggleAddPlanetMenu} visible={showAddPlanet} title="Add Planet"
+      content={
+        <AddPlanetList planets={planets} addPlanet={addPlanet} />
+      } />
+    <FactionSummary factionName={playerFaction} VPs={VPs} ownedTechs={ownedTechs} ownedPlanets={updatedPlanets} options={{ showIcon: true }} />
     <div
       style={{
+        width: "100%",
+        maxWidth: "800px",
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        flexBasis: "100%"
+        flexDirection: "row",
+        alignItems: "center"
       }}
     >
       <div
-        className="flexColumn"
-        style={{ width: "100%", alignItems: "stretch", padding: "0px 8px"}}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          flexBasis: "100%"
+        }}
       >
-      <PhaseSection />
-      <LabeledLine label="FACTION DETAILS" />
-      <div className="flexColumn" style={{gap: 0, alignItems: "stretch"}}>
-        {/* Tabs */}
-        <div className="flexRow" style={{ width: "100%", margin: "0px 4px"}}>
-          <Tab selectTab={toggleTabShown} id="techs" selectedId={tabShown} content="Techs" />
-          <Tab selectTab={toggleTabShown} id="planets" selectedId={tabShown} content="Planets" />
-          <Tab selectTab={toggleTabShown} id="objectives" selectedId={tabShown} content="Objectives" />
-        </div>
-        <TabBody id="techs" selectedId={tabShown} content={
-        <div>
-        <LabeledLine />
-          <div className="flexRow" style={{height: "32px"}}>
-            <button onClick={toggleAddTechMenu}>Research Tech</button>
-          </div>
-          <div className="flexColumn largeFont" style={{gap: "8px", maxHeight: `${maxHeight}px`, padding: "6px", overflow: "auto", justifyContent: "space-between", alignItems: "stretch"}}>
-            {ownedTechs.map((tech) => {
-              return <TechRow key={tech.name} tech={tech} removeTech={removeTech} />
-            })}
-          </div>
-        </div>} />
-        <TabBody id="planets" selectedId={tabShown} content={
-        <div>
-        <LabeledLine />
-        <div className="flexRow" style={{height: "40px"}}>
-          <button onClick={toggleAddPlanetMenu}>Add Planet</button>
-          {/* <button onClick={readyAll} disabled={allPlanetsReady()}>Ready All</button>
-          <button onClick={exhaustAll} disabled={allPlanetsExhausted()}>Exhaust All</button> */}
-        </div>
-        <div className="largeFont" style={{maxHeight: `${maxHeight}px`, boxSizing: "border-box", overflow: "auto", paddingBottom: "4px"}}>
-          {updatedPlanets.map((planet) => {
-            return <PlanetRow key={planet.name} factionName={playerFaction} planet={planet} updatePlanet={updatePlanet} removePlanet={removePlanet} />;
-          })}
-        </div>
-        </div>} />
+        <div
+          className="flexColumn"
+          style={{ width: "100%", alignItems: "stretch", padding: "0px 8px" }}
+        >
+          <PhaseSection />
+          <LabeledLine label="FACTION DETAILS" />
+          <div className="flexColumn" style={{ gap: 0, alignItems: "stretch" }}>
+            {/* Tabs */}
+            <div className="flexRow" style={{ width: "100%", margin: "0px 4px" }}>
+              <Tab selectTab={toggleTabShown} id="techs" selectedId={tabShown} content="Techs" />
+              <Tab selectTab={toggleTabShown} id="planets" selectedId={tabShown} content="Planets" />
+              <Tab selectTab={toggleTabShown} id="objectives" selectedId={tabShown} content="Objectives" />
+            </div>
+            <TabBody id="techs" selectedId={tabShown} content={
+              <div>
+                <LabeledLine />
+                <div className="flexRow" style={{ height: "32px" }}>
+                  <button onClick={toggleAddTechMenu}>Research Tech</button>
+                </div>
+                <div className="flexColumn largeFont" style={{ gap: "8px", maxHeight: `${maxHeight}px`, padding: "6px", overflow: "auto", justifyContent: "space-between", alignItems: "stretch" }}>
+                  {ownedTechs.map((tech) => {
+                    return <TechRow key={tech.name} tech={tech} removeTech={removeTech} />
+                  })}
+                </div>
+              </div>} />
+            <TabBody id="planets" selectedId={tabShown} content={
+              <div>
+                <LabeledLine />
+                <div className="flexRow" style={{ height: "40px" }}>
+                  <button onClick={toggleAddPlanetMenu}>Add Planet</button>
+                </div>
+                <div className="largeFont" style={{ maxHeight: `${maxHeight}px`, boxSizing: "border-box", overflow: "auto", paddingBottom: "4px" }}>
+                  {updatedPlanets.map((planet) => {
+                    return <PlanetRow key={planet.name} factionName={playerFaction} planet={planet} removePlanet={removePlanet} />;
+                  })}
+                </div>
+              </div>} />
 
-        <TabBody id="objectives" selectedId={tabShown} content={
-          <React.Fragment>
-        <LabeledLine />
-          <ObjectiveList objectives={objectives} faction={factions[playerFaction]} />
-          </React.Fragment>
-        } />
+            <TabBody id="objectives" selectedId={tabShown} content={
+              <React.Fragment>
+                <LabeledLine />
+                <ObjectiveList objectives={objectives} faction={factions[playerFaction]} />
+              </React.Fragment>
+            } />
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-  </div>
-</div>);
+  </div>);
 }
 
 export default function GamePage() {
   const router = useRouter();
   const { game: gameid, faction: playerFaction } = router.query;
-  const { data: factions, error: factionsError } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
-  const { data: state, error: stateError } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
-  const { data: strategyCards, error: cardsError } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
+  const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+  const { data: strategyCards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
 
   useEffect(() => {
     if (!!gameid) {
@@ -787,9 +687,6 @@ export default function GamePage() {
     }
   }, [gameid]);
 
-  if (factionsError || cardsError || stateError) {
-    return (<div>Failed to load factions</div>);
-  }
   if (!factions || !strategyCards || !state) {
     return (<div>Loading...</div>);
   }
@@ -798,7 +695,7 @@ export default function GamePage() {
     router.push(`/game/${gameid}`);
     return
   }
-  
+
   function swapToFaction(factionName) {
     router.push(`/game/${gameid}/${factionName}`);
     return;
@@ -809,7 +706,6 @@ export default function GamePage() {
   switch (state.phase) {
     case "SETUP":
     case "STRATEGY":
-    case "AGENDA":
       orderTitle = "Speaker Order";
       orderedFactions = Object.values(factions).sort((a, b) => a.order - b.order);
       break;
@@ -823,6 +719,24 @@ export default function GamePage() {
         }
       }
       break;
+    case "AGENDA":
+      orderTitle = "Voting Order";
+      orderedFactions = Object.values(factions).sort((a, b) => {
+        if (a.name === "Argent Flight") {
+          return -1;
+        }
+        if (b.name === "Argent Flight") {
+          return 1;
+        }
+        if (a.name === state.speaker) {
+          return 1;
+        }
+        if (b.name === state.speaker) {
+          return -1;
+        }
+        return a.order - b.order;
+      });
+      break;
   }
 
   return (
@@ -834,41 +748,33 @@ export default function GamePage() {
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
       <Updater />
-      <div className="flexColumn" style={{width: "100%", maxWidth: "800px"}}>
-      {/* TODO: Uncomment after putting in server-side functionality for adding/removing prompts */}
-      {/* <Modal closeMenu={ignorePrompt} visible={validPrompts.length > 0} title={validPrompts[0].title}
-        content={
-          <Prompt prompt={validPrompts[0]} faction={faction} />
-        } /> */}
-      <h2
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          margin: "8px 0",
-          fontWeight: "normal",
-          cursor: "pointer",
-        }}
-        onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}
-      >
-        Twilight Imperium Assistant
-      </h2>
-  <div className="flexColumn" style={{ height: "60px", width: "100%", gap: "4px", fontSize: "18px", marginBottom: "8px"}}>
-    {orderTitle}
-    <div className="flexRow" style={{width: "100%", alignItems: "space-evenly"}}>
-      {orderedFactions.map((faction) => {
-        return <BasicFactionTile key={faction.name} faction={faction} onClick={() => swapToFaction(faction.name)} opts={{hideName: true, iconSize: 28}} />
-      })}
-    </div>
-  </div>
-      <div style={{width: "100%", margin: "4px"}}>
-        {/* <LabeledDiv>
-          <FactionContent />
-        </LabeledDiv> */}
-        <FactionCard faction={factions[playerFaction]} style={{width: "100%"}} rightLabel={<StaticFactionTimer factionName={playerFaction} style={{fontSize: responsivePixels(16), width: "auto"}} />} opts={{hideTitle: true}}>
-          <FactionContent />
-        </FactionCard>
-      </div>
+      <div className="flexColumn" style={{ width: "100%", maxWidth: "800px" }}>
+        <h2
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            margin: "8px 0",
+            fontWeight: "normal",
+            cursor: "pointer",
+          }}
+          onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}
+        >
+          Twilight Imperium Assistant
+        </h2>
+        <div className="flexColumn" style={{ height: "60px", width: "100%", gap: "4px", fontSize: "18px", marginBottom: "8px" }}>
+          {orderTitle}
+          <div className="flexRow" style={{ width: "100%", alignItems: "space-evenly" }}>
+            {orderedFactions.map((faction) => {
+              return <BasicFactionTile key={faction.name} faction={faction} onClick={() => swapToFaction(faction.name)} opts={{ hideName: true, iconSize: 28 }} />
+            })}
+          </div>
+        </div>
+        <div style={{ width: "100%", margin: "4px" }}>
+          <FactionCard faction={factions[playerFaction]} style={{ width: "100%" }} rightLabel={<StaticFactionTimer factionName={playerFaction} style={{ fontSize: responsivePixels(16), width: "auto" }} />} opts={{ hideTitle: true }}>
+            <FactionContent />
+          </FactionCard>
+        </div>
       </div>
     </div>);
 }
