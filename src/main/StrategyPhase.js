@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
 import { StrategyCard } from '../StrategyCard';
 import { getOnDeckFaction } from '../util/helpers';
-import { strategyCardOrder, unassignStrategyCard, swapStrategyCards, setFirstStrategyCard } from '../util/api/cards';
+import { strategyCardOrder, unassignStrategyCard, swapStrategyCards, setFirstStrategyCard, assignStrategyCard } from '../util/api/cards';
 import { readyAllFactions } from '../util/api/factions';
 import { getNextIndex, responsivePixels } from '../util/util';
 import { fetcher, poster } from '../util/api/util';
@@ -19,6 +19,7 @@ import { getFactionColor, getFactionName } from '../util/factions';
 import { NumberedItem } from '../NumberedItem';
 import { hasTech } from '../util/api/techs';
 import { repealAgenda } from '../util/api/agendas';
+import { nextPlayer } from '../util/api/state';
 
 function InfoContent({content}) {
   return (
@@ -32,7 +33,6 @@ export function advanceToActionPhase(mutate, gameid, strategyCards, state, facti
   const data = {
     action: "ADVANCE_PHASE",
   };
-  const phase = "ACTION";
   let minCard = {
     order: Number.MAX_SAFE_INTEGER,
   };
@@ -44,19 +44,21 @@ export function advanceToActionPhase(mutate, gameid, strategyCards, state, facti
   if (!minCard.faction) {
     throw Error("Transition to ACTION phase w/o selecting cards?");
   }
-  const activeFactionName = minCard.faction;
 
-  const updatedState = {...state};
-  state.phase = phase;
-  state.activeplayer = activeFactionName;
+  mutate(`/api/${gameid}/state`, async () =>
+    await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
 
-  const options = {
-    optimisticData: updatedState,
-  };
+      updatedState.phase = "ACTION";
+      updatedState.activeplayer = minCard.faction;
 
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+      return updatedState;
+    },
+    revalidate: false,
+  });
 
-  readyAllFactions(mutate, gameid, factions);
+  readyAllFactions(mutate, gameid);
 }
 
 export default function StrategyPhase() {
@@ -81,21 +83,6 @@ export default function StrategyPhase() {
     advanceToActionPhase(mutate, gameid, strategyCards, state, factions);
   }
 
-  async function nextPlayer() {
-    const data = {
-      action: "ADVANCE_PLAYER",
-    };
-    
-    const updatedState = {...state};
-    const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
-    state.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
-
-    const options = {
-      optimisticData: updatedState,
-    };
-    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-  }
-
   function showInfoModal(title, content) {
     setInfoModal({
       show: true,
@@ -103,29 +90,9 @@ export default function StrategyPhase() {
       content: content,
     });
   }
-  async function assignStrategyCard(card, faction) {
-    const data = {
-      action: "ASSIGN_STRATEGY_CARD",
-      card: card.name,
-      faction: faction.name,
-    };
-
-    const updatedCards = {...strategyCards};
-    updatedCards[card.name].faction = faction.name;
-    for (const [name, card] of Object.entries(updatedCards)) {
-      if (card.invalid) {
-        delete updatedCards[name].invalid;
-      }
-    }
-    if (faction.name === "Naalu Collective") {
-      updatedCards[card.name].order = 0;
-    }
-
-    const options = {
-      optimisticData: updatedCards,
-    };
-    await nextPlayer();
-    mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+  function pickStrategyCard(card, faction) {
+    assignStrategyCard(mutate, gameid, card.name, faction.name);
+    nextPlayer(mutate, gameid, factions, strategyCards);
   }
 
   function getStartOfStrategyPhaseAbilities() {
@@ -251,29 +218,29 @@ export default function StrategyPhase() {
         }
       }
     });
-    unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
+    unassignStrategyCard(mutate, gameid, cardName);
   }
 
   function publicDisgrace(cardName) {
-    unassignStrategyCard(mutate, gameid, strategyCards, cardName, state);
+    unassignStrategyCard(mutate, gameid, cardName);
   }
 
   function imperialArbiterFn(factionName) {
     const imperialArbiter = agendas['Imperial Arbiter'].target;
     const factionCard = Object.values(strategyCards).find((card) => card.faction === factionName);
     const arbiterCard = Object.values(strategyCards).find((card) => card.faction === imperialArbiter);
-    swapStrategyCards(mutate, gameid, strategyCards, factionCard, arbiterCard);
-    repealAgenda(mutate, gameid, agendas, "Imperial Arbiter");
+    swapStrategyCards(mutate, gameid, factionCard, arbiterCard);
+    repealAgenda(mutate, gameid, "Imperial Arbiter");
   }
 
   function quantumDatahubNode(factionName) {
     const factionCard = Object.values(strategyCards).find((card) => card.faction === factionName);
     const hacanCard = Object.values(strategyCards).find((card) => card.faction === "Emirates of Hacan");
-    swapStrategyCards(mutate, gameid, strategyCards, factionCard, hacanCard);
+    swapStrategyCards(mutate, gameid, factionCard, hacanCard);
   }
 
   function giftOfPrescience(cardName) {
-    setFirstStrategyCard(mutate, gameid, strategyCards, cardName);
+    setFirstStrategyCard(mutate, gameid, cardName);
   }
 
   const orderedStrategyCards = Object.entries(strategyCards).sort((a, b) => strategyCardOrder[a[0]] - strategyCardOrder[b[0]]);
@@ -355,7 +322,7 @@ export default function StrategyPhase() {
         </div> : null}
         {/* <LawsInEffect /> */}
       </div>
-      <div className="flexColumn" style={{justifyContent: "flex-start", marginTop: responsivePixels(56)}}>
+      <div className="flexColumn" style={{justifyContent: "flex-start", marginTop: responsivePixels(28)}}>
         <div className="flexRow" style={{position: "relative", maxWidth: "100%"}}>
           {activefaction ?
             <div className="flexColumn" style={{alignItems: "center"}}>
@@ -399,7 +366,7 @@ export default function StrategyPhase() {
               }
               if (factions['Naalu Collective'] && card.faction !== "Naalu Collective") {
                 factionActions.push({
-                  text: "Gift of Prescience",
+                  text: (card.order === 0 ? "Undo Gift of Prescience" : "Gift of Prescience"),
                   action: () => giftOfPrescience(name),
                 });
               }
@@ -414,7 +381,7 @@ export default function StrategyPhase() {
             }
           }
           return (
-            <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => assignStrategyCard(card, activefaction)} factionActions={factionActions} />);
+            <StrategyCard key={name} card={card} active={card.faction || !activefaction || card.invalid ? false : true} onClick={card.faction || !activefaction || card.invalid ? null : () => pickStrategyCard(card, activefaction)} factionActions={factionActions} />);
         })}
       </div>
       {!activefaction || activefaction.name !== state.speaker ?

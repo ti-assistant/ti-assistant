@@ -114,7 +114,7 @@ export function TechSummary({ techs }) {
           </div>
         </div>
       </div>
-      <div className="flexRow hoverParent" style={{ width: "100%", fontSize: responsivePixels(14) }}>
+      <div className="flexRow hoverParent" style={{ width: "100%", minWidth: responsivePixels(80), fontSize: responsivePixels(14) }}>
         {upgradeTechs.length} {pluralize("Upgrade", upgradeTechs.length)}
       </div>
     </div>
@@ -150,18 +150,18 @@ export function UpdateObjectives({ }) {
   function scoreObj(objectiveName, score) {
     if (score) {
       addObjective(objectiveName);
-      scoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+      scoreObjective(mutate, gameid, factionName, objectiveName);
     } else {
-      unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+      unscoreObjective(mutate, gameid, factionName, objectiveName);
     }
   }
 
   function addObjective(objectiveName) {
-    revealObjective(mutate, gameid, objectives, factionName, objectiveName);
+    revealObjective(mutate, gameid, factionName, objectiveName);
   }
 
   function removeObj(objectiveName) {
-    removeObjective(mutate, gameid, objectives, factionName, objectiveName);
+    removeObjective(mutate, gameid, factionName, objectiveName);
   }
 
   const orderedFactionNames = Object.keys(factions ?? {}).sort();
@@ -290,18 +290,18 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   function scoreObj(objectiveName, score) {
     if (score) {
       addObjective(objectiveName);
-      scoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+      scoreObjective(mutate, gameid, factionName, objectiveName);
     } else {
-      unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
+      unscoreObjective(mutate, gameid, factionName, objectiveName);
     }
   }
 
   function addObjective(objectiveName) {
-    revealObjective(mutate, gameid, objectives, factionName, objectiveName);
+    revealObjective(mutate, gameid, factionName, objectiveName);
   }
 
   function removeObj(objectiveName) {
-    removeObjective(mutate, gameid, objectives, factionName, objectiveName);
+    removeObjective(mutate, gameid, factionName, objectiveName);
   }
 
   const orderedFactionNames = Object.keys(factions ?? {}).sort();
@@ -474,11 +474,11 @@ export function UpdateTechs({ }) {
   const upgradeTechs = techArr.filter((tech) => tech.type === "upgrade");
 
   function addTech(toAdd) {
-    unlockTech(mutate, gameid, factions, factionName, toAdd);
+    unlockTech(mutate, gameid, factionName, toAdd);
   }
 
   function removeTech(toRemove) {
-    lockTech(mutate, gameid, factions, factionName, toRemove);
+    lockTech(mutate, gameid, factionName, toRemove);
   }
 
   function getTechRow(tech) {
@@ -636,11 +636,11 @@ export function UpdatePlanets({ }) {
   });
 
   function removePlanet(toRemove) {
-    unclaimPlanet(mutate, gameid, planets, toRemove, factionName);
+    unclaimPlanet(mutate, gameid, toRemove, factionName);
   }
 
   function addPlanet(toAdd) {
-    claimPlanet(mutate, gameid, planets, toAdd, factionName, options);
+    claimPlanet(mutate, gameid, toAdd, factionName);
   }
 
   const orderedFactionNames = Object.keys(factions).sort();
@@ -653,6 +653,7 @@ export function UpdatePlanets({ }) {
   const middlePlanetCol = unownedPlanets.slice(0, half);
   const lastPlanetCol = unownedPlanets.slice(half);
 
+  console.log("Re-render");
   return (
     <div className="flexColumn" style={{ width: "100%", height: "100%"}}>
       <div style={{ fontSize: responsivePixels(24), marginTop: responsivePixels(8) }}>Update planets for {getFactionName(factions[factionName])}</div>
@@ -755,11 +756,11 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
   });
 
   function removePlanet(toRemove) {
-    unclaimPlanet(mutate, gameid, planets, toRemove, factionName);
+    unclaimPlanet(mutate, gameid, toRemove, factionName);
   }
 
   function addPlanet(toAdd) {
-    claimPlanet(mutate, gameid, planets, toAdd, factionName, options);
+    claimPlanet(mutate, gameid, toAdd, factionName);
   }
 
   const orderedFactionNames = Object.keys(factions).sort();
@@ -939,7 +940,7 @@ export function FactionSummary({ factionName, options = {} }) {
 
   function manualVpAdjust(increase) {
     const value = increase ? 1 : -1;
-    manualVPUpdate(mutate, gameid, factions, factionName, value);
+    manualVPUpdate(mutate, gameid, factionName, value);
   }
 
   const editable = state.phase !== "END";

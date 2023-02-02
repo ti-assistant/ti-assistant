@@ -1,131 +1,97 @@
-import { fetcher, poster } from './util'
+import { poster } from './util'
 
-export async function readyPlanets(mutate, gameid, planets, toReady, factionName) {
-  const data = {
-    action: "TOGGLE_PLANET",
-    faction: factionName,
-    planets: toReady,
-    ready: true,
-  };
-
-  let updatedPlanets = {...planets};
-
-  for (const planetName of toReady) {
-    updatedPlanets[planetName].ready = true;
-  }
-
-  const options = {
-    optimisticData: updatedPlanets,
-  };
-
-  return mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
-}
-
-export async function exhaustPlanets(mutate, gameid, planets, toExhaust, factionName) {
-  const data = {
-    action: "TOGGLE_PLANET",
-    faction: factionName,
-    planets: toExhaust,
-    ready: false,
-  };
-
-  let updatedPlanets = {...planets};
-
-  for (const planetName of toExhaust) {
-    updatedPlanets[planetName].ready = false;
-  }
-
-  const options = {
-    optimisticData: updatedPlanets,
-  };
-
-  return mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
-}
-
-export async function claimPlanet(mutate, gameid, planets, planet, factionName, gameOptions = {}) {
+export function claimPlanet(mutate, gameid, planet, factionName) {
   const data = {
     action: "ADD_PLANET",
     faction: factionName,
     planet: planet,
   };
 
-  const updatedPlanets = {...planets};
+  mutate(`/api/${gameid}/planets`, async () => await poster(`/api/${gameid}/planetUpdate`, data), {
+    optimisticData: planets => {
+      const updatedPlanets = structuredClone(planets);
 
-  if (!updatedPlanets[planet].owners) {
-    updatedPlanets[planet].owners = [];
-  }
-  if (gameOptions['multiple-planet-owners']) {
-    updatedPlanets[planet].owners.push(factionName);
-  } else {
-    updatedPlanets[planet].owners = [factionName];
-  }
-  updatedPlanets[planet].ready = true;
+      if (!updatedPlanets[planet]) {
+        updatedPlanets[planet] = {};
+      }
 
-  const options = {
-    optimisticData: updatedPlanets,
-  };
-
-  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
+      updatedPlanets[planet].owners = [factionName];
+      updatedPlanets[planet].ready = true;
+      return updatedPlanets;
+    },
+    revalidate: false,
+  });
 }
 
-export async function unclaimPlanet(mutate, gameid, planets, planet, factionName) {
+export function unclaimPlanet(mutate, gameid, planet, factionName) {
   const data = {
     action: "REMOVE_PLANET",
     faction: factionName,
     planet: planet,
   };
 
-  const updatedPlanets = {...planets};
+  mutate(`/api/${gameid}/planets`, async () => await poster(`/api/${gameid}/planetUpdate`, data), {
+    optimisticData: planets => {
+      const updatedPlanets = structuredClone(planets);
 
-  const ownerSet = new Set(updatedPlanets[planet].owners ?? []);
-  ownerSet.delete(factionName);
-  updatedPlanets[planet].owners = Array.from(ownerSet);
+      if (!updatedPlanets[planet]) {
+        updatedPlanets[planet] = {};
+      }
 
-  const options = {
-    optimisticData: updatedPlanets,
-  };
+      updatedPlanets[planet].owners = [];
 
-  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
+      return updatedPlanets;
+    },
+    revalidate: false,
+  });
 }
 
-export function addAttachment(mutate, gameid, planets, planetName, attachmentName) {
+export function addAttachment(mutate, gameid, planetName, attachmentName) {
   const data = {
     action: "ADD_ATTACHMENT",
     attachment: attachmentName,
     planet: planetName,
   };
 
-  const updatedPlanets = {...planets};
+  mutate(`/api/${gameid}/planets`, async () => await poster(`/api/${gameid}/planetUpdate`, data), {
+    optimisticData: planets => {
+      const updatedPlanets = structuredClone(planets);
 
-  updatedPlanets[planetName].attachments.push(attachmentName);
+      // Remove attachment from other planets.
+      Object.values(planets).forEach((planet) => {
+        if ((planet.attachments.includes(attachmentName))) {
+          updatedPlanets[planet.name].attachments = updatedPlanets[planet.name].attachments.filter((attachment) => attachment !== attachmentName);
+        }
+      });
 
-  Object.values(planets).forEach((planet) => {
-    if ((planet.attachments.includes(attachmentName))) {
-      updatedPlanets[planet.name].attachments = updatedPlanets[planet.name].attachments.filter((attachment) => attachment !== attachmentName);
-    }
+      // Add attachment to planet.
+      const planetAttachments = [...((planets[planetName] ?? {}).attachments ?? [])];
+      planetAttachments.push(attachmentName);
+      updatedPlanets[planetName].attachments = planetAttachments;
+
+      return updatedPlanets;
+    },
+    revalidate: false,
   });
-
-  const options = {
-    optimisticData: updatedPlanets,
-  };
-
-  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
 }
 
-export function removeAttachment(mutate, gameid, planets, planetName, attachmentName) {
+export function removeAttachment(mutate, gameid, planetName, attachmentName) {
   const data = {
     action: "REMOVE_ATTACHMENT",
     attachment: attachmentName,
     planet: planetName,
   };
 
-  const updatedPlanets = {...planets};
+  mutate(`/api/${gameid}/planets`, async () => await poster(`/api/${gameid}/planetUpdate`, data), {
+    optimisticData: planets => {
+      const updatedPlanets = structuredClone(planets);
 
-  updatedPlanets[planetName].attachments = updatedPlanets[planetName].attachments.filter((attachment) => attachment !== attachmentName);
+      // Add attachment to planet.
+      const planetAttachments = [...((planets[planetName] ?? {}).attachments ?? [])];
+      updatedPlanets[planetName].attachments = planetAttachments.filter((attachment) => attachment !== attachmentName);
 
-  const options = {
-    optimisticData: updatedPlanets,
-  };
-
-  mutate(`/api/${gameid}/planets`, poster(`/api/${gameid}/planetUpdate`, data), options);
+      return updatedPlanets;
+    },
+    revalidate: false,
+  });
 }

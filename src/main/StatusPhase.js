@@ -10,7 +10,7 @@ import { fetcher, poster } from '../util/api/util';
 import { ObjectiveModal } from '../ObjectiveModal';
 import { BasicFactionTile } from '../FactionTile';
 import { ObjectiveRow } from '../ObjectiveRow';
-import { removeObjective, revealObjective, scoreObjective, unscoreObjective } from '../util/api/objectives';
+import { scoreObjective, unscoreObjective } from '../util/api/objectives';
 import { Modal } from "/src/Modal.js";
 import SummaryColumn from './SummaryColumn';
 import { LawsInEffect } from '../LawsInEffect';
@@ -47,7 +47,7 @@ export function MiddleColumn() {
   });
 
   if (subState && !subState.currentStep) {
-    setSubStateOther(mutate, gameid, subState, "currentStep", 1);
+    setSubStateOther(mutate, gameid, "currentStep", 1);
     return null;
   }
 
@@ -68,30 +68,30 @@ export function MiddleColumn() {
   }
 
   function reverseCurrentStep() {
-    setSubStateOther(mutate, gameid, subState, "currentStep", subState.currentStep - 1);
+    setSubStateOther(mutate, gameid, "currentStep", subState.currentStep - 1);
   }
   function advanceCurrentStep() {
-    setSubStateOther(mutate, gameid, subState, "currentStep", subState.currentStep + 1);
+    setSubStateOther(mutate, gameid, "currentStep", subState.currentStep + 1);
   }
   function jumpToStep(step) {
-    setSubStateOther(mutate, gameid, subState, "currentStep", step);
+    setSubStateOther(mutate, gameid, "currentStep", step);
   }
 
   function addObj(objective) {
-    revealSubStateObjective(mutate, gameid, subState, objective.name);
+    revealSubStateObjective(mutate, gameid, objective.name);
   }
 
   function removeObj(objectiveName) {
-    hideSubStateObjective(mutate, gameid, subState, objectiveName);
+    hideSubStateObjective(mutate, gameid, objectiveName);
   }
 
   function scoreObj(factionName, objective) {
-    scoreObjective(mutate, gameid, objectives, factionName, objective.name);
-    scoreSubStateObjective(mutate, gameid, subState, factionName, objective.name);
+    scoreObjective(mutate, gameid, factionName, objective.name);
+    scoreSubStateObjective(mutate, gameid, factionName, objective.name);
   }
   function unscoreObj(factionName, objectiveName) {
-    unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
-    unscoreSubStateObjective(mutate, gameid, subState, factionName, objectiveName);
+    unscoreObjective(mutate, gameid, factionName, objectiveName);
+    unscoreSubStateObjective(mutate, gameid, factionName, objectiveName);
   }
 
   function getStartOfStatusPhaseAbilities() {
@@ -322,12 +322,12 @@ export function MiddleColumn() {
               if (!hasTech(faction, "Neural Motivator")) {
                 menuButtons.push({
                   text: "Add Neural Motivator",
-                  action: () => unlockTech(mutate, gameid, factions, faction.name, "Neural Motivator"),
+                  action: () => unlockTech(mutate, gameid, faction.name, "Neural Motivator"),
                 });
               } else {
                 menuButtons.push({
                   text: "Remove Neural Motivator",
-                  action: () => lockTech(mutate, gameid, factions, faction.name, "Neural Motivator"),
+                  action: () => lockTech(mutate, gameid, faction.name, "Neural Motivator"),
                 });
               }
               return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} menuButtons={menuButtons} opts={{fontSize: responsivePixels(16), menuSide: "bottom"}}/>
@@ -359,12 +359,12 @@ export function MiddleColumn() {
               if (!hasTech(faction, "Hyper Metabolism")) {
                 menuButtons.push({
                   text: "Add Hyper Metabolism",
-                  action: () => unlockTech(mutate, gameid, factions, faction.name, "Hyper Metabolism"),
+                  action: () => unlockTech(mutate, gameid, faction.name, "Hyper Metabolism"),
                 });
               } else {
                 menuButtons.push({
                   text: "Remove Hyper Metabolism",
-                  action: () => lockTech(mutate, gameid, factions, faction.name, "Hyper Metabolism"),
+                  action: () => lockTech(mutate, gameid, faction.name, "Hyper Metabolism"),
                 });
               }
               return <BasicFactionTile key={faction.name} faction={faction} speaker={faction.name === state.speaker} menuButtons={menuButtons} opts={{fontSize: responsivePixels(16), menuSide: "bottom"}}/>
@@ -450,24 +450,27 @@ export function MiddleColumn() {
 
 
 export function advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions) {
-  finalizeSubState(mutate, gameid, subState);
+  finalizeSubState(mutate, gameid, subState, factions);
   const data = {
     action: "ADVANCE_PHASE",
   };
-  resetStrategyCards(mutate, gameid, strategyCards);
 
-  const updatedState = {...state};
-  state.phase = "AGENDA";
-  state.activeplayer = state.speaker;
-  state.agendaUnlocked = true;
+  mutate(`/api/${gameid}/state`, async () =>
+    await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
 
-  const options = {
-    optimisticData: updatedState,
-  };
+      updatedState.phase = "AGENDA";
+      updatedState.activeplayer = state.speaker;
+      updatedState.agendaUnlocked = true;
 
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+      return updatedState;
+    },
+    revalidate: false,
+  });
 
-  readyAllFactions(mutate, gameid, factions);
+  resetStrategyCards(mutate, gameid);
+  readyAllFactions(mutate, gameid);
 }
 
 export function statusPhaseComplete(subState) {
@@ -484,7 +487,6 @@ export default function StatusPhase() {
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
-  const { data: timers = {} } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
   const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
   const [ revealedObjectives, setRevealedObjectives ] = useState([]);
   const [ infoModal, setInfoModal ] = useState({
@@ -501,25 +503,25 @@ export default function StatusPhase() {
       advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions);
       return;
     }
-    startNextRound(mutate, gameid, factions, timers, state, subState);
+    startNextRound(mutate, gameid, state, subState, factions);
   }
 
 
   function addObj(objective) {
-    revealSubStateObjective(mutate, gameid, subState, objective.name);
+    revealSubStateObjective(mutate, gameid, objective.name);
   }
 
   function removeObj(objectiveName) {
-    hideSubStateObjective(mutate, gameid, subState, objectiveName);
+    hideSubStateObjective(mutate, gameid, objectiveName);
   }
 
   function scoreObj(factionName, objective) {
-    scoreObjective(mutate, gameid, objectives, factionName, objective.name);
-    scoreSubStateObjective(mutate, gameid, subState, factionName, objective.name);
+    scoreObjective(mutate, gameid, factionName, objective.name);
+    scoreSubStateObjective(mutate, gameid, factionName, objective.name);
   }
   function unscoreObj(factionName, objectiveName) {
-    unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
-    unscoreSubStateObjective(mutate, gameid, subState, factionName, objectiveName);
+    unscoreObjective(mutate, gameid, factionName, objectiveName);
+    unscoreSubStateObjective(mutate, gameid, factionName, objectiveName);
   }
 
   function showInfoModal(title, content) {

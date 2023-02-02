@@ -124,7 +124,7 @@ export function Updater({}) {
       }
     }
 
-    mutate(`/api/${gameid}/updates`, fetcher(`/api/${gameid}/updates`));
+    mutate(`/api/${gameid}/updates`);
   }
 
   useEffect(() => {
@@ -180,7 +180,7 @@ export function Updater({}) {
     if (agendasUpdate > localAgendas) {
       setLocalAgendas(agendasUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/agendas`, fetcher(`/api/${gameid}/agendas`));
+        mutate(`/api/${gameid}/agendas`);
       }
     }
   }, [agendasUpdate]);
@@ -189,7 +189,7 @@ export function Updater({}) {
     if (attachmentsUpdate > localAttachments) {
       setLocalAttachments(attachmentsUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/attachments`, fetcher(`/api/${gameid}/attachments`));
+        mutate(`/api/${gameid}/attachments`);
       }
       setUpdateTime("attachments", attachmentsUpdate);
     }
@@ -199,7 +199,7 @@ export function Updater({}) {
     if (componentsUpdate > localComponents) {
       setLocalComponents(componentsUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/components`, fetcher(`/api/${gameid}/components`));
+        mutate(`/api/${gameid}/components`);
       }
       setUpdateTime("components", componentsUpdate);
     }
@@ -209,7 +209,7 @@ export function Updater({}) {
     if (planetsUpdate > localPlanets) {
       setLocalPlanets(planetsUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/planets`, fetcher(`/api/${gameid}/planets`));
+        mutate(`/api/${gameid}/planets`);
       }
       setUpdateTime("planets", planetsUpdate);
     }
@@ -219,7 +219,7 @@ export function Updater({}) {
     if (factionsUpdate > localFactions) {
       setLocalFactions(factionsUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`));
+        mutate(`/api/${gameid}/factions`);
       }
       setUpdateTime("factions", factionsUpdate);
     }
@@ -229,7 +229,7 @@ export function Updater({}) {
     if (objectivesUpdate > localObjectives) {
       setLocalObjectives(objectivesUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/objectives`, fetcher(`/api/${gameid}/objectives`));
+        mutate(`/api/${gameid}/objectives`);
       }
       setUpdateTime("objectives", objectivesUpdate);
     }
@@ -239,7 +239,7 @@ export function Updater({}) {
     if (optionsUpdate > localOptions) {
       setLocalOptions(optionsUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/options`, fetcher(`/api/${gameid}/options`));
+        mutate(`/api/${gameid}/options`);
       }
       setUpdateTime("options", optionsUpdate);
     }
@@ -249,7 +249,7 @@ export function Updater({}) {
     if (strategycardsUpdate > localStrategyCards) {
       setLocalStrategyCards(strategycardsUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/strategycards`, fetcher(`/api/${gameid}/strategycards`));
+        mutate(`/api/${gameid}/strategycards`);
       }
       setUpdateTime("strategycards", strategycardsUpdate);
     }
@@ -259,7 +259,7 @@ export function Updater({}) {
     if (stateUpdate > localState) {
       setLocalState(stateUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/state`, fetcher(`/api/${gameid}/state`));
+        mutate(`/api/${gameid}/state`);
       }
       setUpdateTime("state", stateUpdate);
     }
@@ -269,7 +269,7 @@ export function Updater({}) {
     if (subStateUpdate > localSubState) {
       setLocalSubState(subStateUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/subState`, fetcher(`/api/${gameid}/subState`));
+        mutate(`/api/${gameid}/subState`);
       }
       setUpdateTime("subState", subStateUpdate);
     }
@@ -279,7 +279,7 @@ export function Updater({}) {
     if (timersUpdate > localTimers) {
       setLocalTimers(timersUpdate);
       if (!initialLoad) {
-        mutate(`/api/${gameid}/timers`, fetcher(`/api/${gameid}/timers`));
+        mutate(`/api/${gameid}/timers`);
       }
       setUpdateTime("timers", timersUpdate);
     }

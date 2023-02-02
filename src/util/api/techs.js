@@ -13,111 +13,123 @@ export function hasTech(faction, tech) {
   return !!faction.techs[techName];
 }
 
-export async function unlockTech(mutate, gameid, factions, factionName, tech) {
+export async function unlockTech(mutate, gameid, factionName, tech) {
   const data = {
     action: "ADD_TECH",
     faction: factionName,
     tech: tech,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
-  const techString = tech.replace(" Ω", "");
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+      
+      const techString = tech.replace(/\//g,"")
+        .replace(/\./g,"")
+        .replace(" Ω", "");
 
-  updatedFactions[factionName].techs[techString] = {
-    ready: true,
-  };
+      updatedFactions[factionName].techs[techString] = {
+        ready: true,
+      };
 
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }
 
-export async function lockTech(mutate, gameid, factions, factionName, tech) {
+export async function lockTech(mutate, gameid, factionName, tech) {
   const data = {
     action: "REMOVE_TECH",
     faction: factionName,
     tech: tech,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
-  const techString = tech.replace(/\//g,"")
-    .replace(/\./g,"")
-    .replace(" Ω", "");
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+      
+      const techString = tech.replace(/\//g,"")
+        .replace(/\./g,"")
+        .replace(" Ω", "");
 
-  delete updatedFactions[factionName].techs[techString];
+      delete updatedFactions[factionName].techs[techString];
 
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }
 
-export async function chooseStartingTech(mutate, gameid, factions, factionName, tech) {
+export async function chooseStartingTech(mutate, gameid, factionName, tech) {
   const data = {
     action: "CHOOSE_STARTING_TECH",
     faction: factionName,
     tech: tech,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+      
+      const techString = tech.replace(/\//g,"")
+        .replace(/\./g,"")
+        .replace(" Ω", "");
 
-  updatedFactions[factionName].startswith.techs = [
-    ...(updatedFactions[factionName].startswith.techs ?? []),
-    tech,
-  ];
-  if (updatedFactions["Council Keleres"]) {
-    const councilChoice = new Set(updatedFactions["Council Keleres"].startswith.choice.options);
-    councilChoice.add(tech);
-    updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
-  }
+      updatedFactions[factionName].startswith.techs = [
+        ...(updatedFactions[factionName].startswith.techs ?? []),
+        techString,
+      ];
+      if (factions["Council Keleres"]) {
+        const councilChoice = new Set(updatedFactions["Council Keleres"].startswith.choice.options);
+        councilChoice.add(techString);
+        updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
+      }
 
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  await mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }
 
-export async function removeStartingTech(mutate, gameid, factions, factionName, tech) {
+export async function removeStartingTech(mutate, gameid, factionName, tech) {
   const data = {
     action: "REMOVE_STARTING_TECH",
     faction: factionName,
     tech: tech,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+      
+      const techString = tech.replace(/\//g,"")
+        .replace(/\./g,"")
+        .replace(" Ω", "");
 
-  updatedFactions[factionName].startswith.techs = (updatedFactions[factionName].startswith.techs ?? []).filter((startingTech) => startingTech !== tech);
-  
-  if (updatedFactions["Council Keleres"]) {
-    const councilChoice = new Set();
-    for (const [name, faction] of Object.entries(factions)) {
-      if (name === "Council Keleres") {
-        continue;
+      updatedFactions[factionName].startswith.techs = (updatedFactions[factionName].startswith.techs ?? []).filter((startingTech) => startingTech !== techString);
+
+      if (factions["Council Keleres"]) {
+        const councilChoice = new Set();
+        for (const [name, faction] of Object.entries(factions)) {
+          if (name === "Council Keleres") {
+            continue;
+          }
+          (faction.startswith.techs ?? []).forEach((tech) => {
+            councilChoice.add(tech);
+          });
+        }
+        updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
+        for (const [index, tech] of (factions["Council Keleres"].startswith.techs ?? []).entries()) {
+          if (!councilChoice.has(tech)) {
+            delete updatedFactions["Council Keleres"].techs[tech];
+            factions["Council Keleres"].startswith.techs.splice(index, 1);
+          }
+        }
       }
-      (faction.startswith.techs ?? []).forEach((tech) => {
-        councilChoice.add(tech);
-      });
-    }
-    updatedFactions["Council Keleres"].startswith.choice.options = Array.from(councilChoice);
-    for (const [index, tech] of (factions["Council Keleres"].startswith.techs ?? []).entries()) {
-      if (!councilChoice.has(tech)) {
-        delete updatedFactions["Council Keleres"].techs[tech];
-        factions["Council Keleres"].startswith.techs.splice(index, 1);
-      }
-    }
-  }
 
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }

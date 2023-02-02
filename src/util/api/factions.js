@@ -1,136 +1,136 @@
 import { fetcher, poster } from './util'
 
-export async function passFaction(mutate, gameid, factions, factionName) {
+export async function passFaction(mutate, gameid, factionName) {
   const data = {
     action: "PASS",
     faction: factionName,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  return mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+    
+      updatedFactions[factionName].passed = true;
 
-  updatedFactions[factionName].passed = true;
-
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  return mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }
 
-export function readyAllFactions(mutate, gameid, factions) {
+export function readyAllFactions(mutate, gameid) {
   const data = {
     action: "READY_ALL",
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+    
+      for (const factionName of Object.keys(factions)) {
+        updatedFactions[factionName].passed = false;
+      }
 
-  for (const factionName of Object.keys(updatedFactions)) {
-    updatedFactions[factionName].passed = false;
-  }
-
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }
 
-export function manualVPUpdate(mutate, gameid, factions, factionName, value) {
+export function manualVPUpdate(mutate, gameid, factionName, value) {
   const data = {
     action: "MANUAL_VP_ADJUST",
     faction: factionName,
     vps: value,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+    
+      updatedFactions[factionName].vps = (factions[factionName].vps ?? 0) + value;
 
-  updatedFactions[factionName].vps = (updatedFactions[factionName].vps ?? 0) + value;
-
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }
 
-export function updateCastVotes(mutate, gameid, factions, subStateFactions = {}) {
+export function updateCastVotes(mutate, gameid, subStateFactions = {}) {
   const data = {
     action: "UPDATE_CAST_VOTES",
     factions: subStateFactions,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+    
+      for (const [factionName, votes] of Object.entries(subStateFactions)) {
+        updatedFactions[factionName].castVotes += votes;
+      }
 
-  Object.entries(subStateFactions).forEach(([factionName, votes]) => {
-    updatedFactions[factionName].castVotes += votes;
+      return updatedFactions;
+    },
+    revalidate: false,
   });
-
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }
 
-export function resetCastVotes(mutate, gameid, factions) {
+export function resetCastVotes(mutate, gameid) {
   const data = {
     action: "RESET_CAST_VOTES",
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
+    
+      for (const factionName of Object.keys(factions)) {
+        updatedFactions[factionName].castVotes = 0;
+      }
 
-  Object.keys(factions).forEach((factionName) => {
-    updatedFactions[factionName].castVotes = 0;
+      return updatedFactions;
+    },
+    revalidate: false,
   });
-
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
 }
 
-export function chooseSubFaction(mutate, gameid, factions, factionName, subFactionName) {
+export function chooseSubFaction(mutate, gameid, factionName, subFactionName) {
   const data = {
     action: "CHOOSE_SUB_FACTION",
     faction: factionName,
     subFaction: subFactionName,
-    returnAll: true,
   };
 
-  const updatedFactions = {...factions};
+  mutate(`/api/${gameid}/factions`, async () => await poster(`/api/${gameid}/factionUpdate`, data), {
+    optimisticData: factions => {
+      const updatedFactions = structuredClone(factions);
 
-  updatedFactions[factionName].startswith.faction = subFactionName;
+      updatedFactions[factionName].startswith.faction = subFactionName;
 
-  switch (subFactionName) {
-    case "Argent Flight":
-      updatedFactions[factionName].startswith.planets = [
-        "Avar",
-        "Valk",
-        "Ylir",
-      ];
-      break;
-    case "Mentak Coalition":
-      updatedFactions[factionName].startswith.planets = [
-        "Moll Primus",
-      ];
-      break;
-    case "Xxcha Kingdom":
-      updatedFactions[factionName].startswith.planets = [
-        "Archon Ren",
-        "Archon Tau",
-      ];
-      break;
-  }
+      switch (subFactionName) {
+        case "Argent Flight":
+          updatedFactions[factionName].startswith.planets = [
+            "Avar",
+            "Valk",
+            "Ylir",
+          ];
+          break;
+        case "Mentak Coalition":
+          updatedFactions[factionName].startswith.planets = [
+            "Moll Primus",
+          ];
+          break;
+        case "Xxcha Kingdom":
+          updatedFactions[factionName].startswith.planets = [
+            "Archon Ren",
+            "Archon Tau",
+          ];
+          break;
+      }
 
-  const options = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, poster(`/api/${gameid}/factionUpdate`, data), options);
+      return updatedFactions;
+    },
+    revalidate: false,
+  });
 }

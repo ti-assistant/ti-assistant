@@ -150,7 +150,7 @@ function AttachMenu({ planet, attachments, visible, closeMenu }) {
     content={
       <div className="flexColumn" style={{ boxSizing: "border-box", padding: responsivePixels(4), overflowY: "auto" , width: "100%", maxHeight: "75vh" }}>
         {Object.entries(attachments).map(([name, attachment]) => {
-          return <AttachRow key={name} attachment={attachment} currentPlanet={planet.name} />
+          return <AttachRow key={name} attachment={attachment} planet={planet} />
         })}
       </div>
     } />);

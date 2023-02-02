@@ -11,151 +11,153 @@ export const strategyCardOrder = {
   "Imperial": 8,
 };
 
-export function useStrategyCard(mutate, gameid, strategyCards, cardName) {
+export function useStrategyCard(mutate, gameid, cardName) {
   const data = {
     action: "USE_STRATEGY_CARD",
     card: cardName,
   };
 
-  const updatedCards = {...strategyCards};
+  mutate(`/api/${gameid}/strategycards`, async () => await poster(`/api/${gameid}/cardUpdate`, data), {
+    optimisticData: strategyCards => {
+      const updatedCards = structuredClone(strategyCards);
 
-  updatedCards[cardName].used = true;
+      updatedCards[cardName].used = true;
 
-  const options = {
-    optimisticData: updatedCards,
-  };
-
-  return mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+      return updatedCards;
+    },
+    revalidate: false,
+  });
 }
 
-export function resetStrategyCards(mutate, gameid, strategyCards) {
+export function resetStrategyCards(mutate, gameid) {
   const data = {
     action: "CLEAR_STRATEGY_CARDS",
   };
 
-  const updatedCards = {...strategyCards};
-  for (const name of Object.keys(updatedCards)) {
-    delete updatedCards[name].faction;
-    updatedCards[name].order = strategyCardOrder[name];
-    delete updatedCards[name].used;
-  }
+  mutate(`/api/${gameid}/strategycards`, async () => await poster(`/api/${gameid}/cardUpdate`, data), {
+    optimisticData: strategyCards => {
+      const updatedCards = structuredClone(strategyCards);
 
-  const options = {
-    optimisticData: updatedCards,
-  };
+      for (const name of Object.keys(strategyCards)) {
+        delete updatedCards[name].faction;
+        updatedCards[name].order = strategyCardOrder[name];
+        delete updatedCards[name].used;
+      }
 
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+      return updatedCards;
+    },
+    revalidate: false,
+  });
 }
 
-export function swapStrategyCards(mutate, gameid, strategyCards, cardOne, cardTwo) {
+export function swapStrategyCards(mutate, gameid, cardOne, cardTwo) {
   const data = {
     action: "SWAP_STRATEGY_CARDS",
     cardOne: cardOne.name,
     cardTwo: cardTwo.name,
   };
 
-  const updatedCards = {...strategyCards};
-  updatedCards[cardOne.name].faction = cardTwo.faction;
-  updatedCards[cardTwo.name].faction = cardOne.faction;
-  if (cardOne.order === 0) {
-    updatedCards[cardTwo.name].order = 0;
-    updatedCards[cardOne.name].order = strategyCardOrder[cardOne.name];
-  } else if (cardTwo.order === 0) {
-    updatedCards[cardTwo.name].order = strategyCardOrder[cardTwo.name];
-    updatedCards[cardOne.name].order = 0;
-  }
+  mutate(`/api/${gameid}/strategycards`, async () => await poster(`/api/${gameid}/cardUpdate`, data), {
+    optimisticData: strategyCards => {
+      const updatedCards = structuredClone(strategyCards);
 
-  const options = {
-    optimisticData: updatedCards,
-  };
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+      updatedCards[cardOne.name].faction = cardTwo.faction;
+      updatedCards[cardTwo.name].faction = cardOne.faction;
+      if (cardOne.order === 0) {
+        updatedCards[cardTwo.name].order = 0;
+        updatedCards[cardOne.name].order = strategyCardOrder[cardOne.name];
+      } else if (cardTwo.order === 0) {
+        updatedCards[cardTwo.name].order = strategyCardOrder[cardTwo.name];
+        updatedCards[cardOne.name].order = 0;
+      }
+
+      return updatedCards;
+    },
+    revalidate: false,
+  });
 }
 
-export function setFirstStrategyCard(mutate, gameid, strategyCards, cardName) {
+export function setFirstStrategyCard(mutate, gameid, cardName) {
   const data = {
     action: "GIFT_OF_PRESCIENCE",
     card: cardName,
   };
 
-  const updatedCards = {...strategyCards};
-  updatedCards[cardName].order = 0;
-  Object.entries(updatedCards).forEach(([name, card]) => {
-    if (card.order === 0) {
-      updatedCards[name].order = strategyCardOrder[name];
-    }
-  });
+  mutate(`/api/${gameid}/strategycards`, async () => await poster(`/api/${gameid}/cardUpdate`, data), {
+    optimisticData: strategyCards => {
+      const updatedCards = structuredClone(strategyCards);
 
-  const options = {
-    optimisticData: updatedCards,
-  };
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+      updatedCards[cardName].order = 0;
+      Object.entries(updatedCards).forEach(([name, card]) => {
+        if (card.order === 0) {
+          updatedCards[name].order = strategyCardOrder[name];
+        }
+      });
+
+      return updatedCards;
+    },
+    revalidate: false,
+  });
 }
 
-export async function unassignStrategyCard(mutate, gameid, strategyCards, cardName, state) {
+export async function unassignStrategyCard(mutate, gameid, cardName) {
   const data = {
     action: "PUBLIC_DISGRACE",
     card: cardName,
   };
 
-  const factionName = strategyCards[cardName].faction;
-  if (!factionName) {
-    return;
-  }
+  let factionName = null;
 
-  const updatedCards = {...strategyCards};
-  let numPickedCards = 0;
-  for (const [name, card] of Object.entries(strategyCards)) {
-    if (card.invalid && name !== data.card) {
-      delete updatedCards[cardName].invalid;
-    }
-    if (card.faction) {
-      numPickedCards++;
-    }
-  }
-  // if (numPickedCards < 8) {
-  //   updatedCards[cardName].invalid = true;
-  // }
-  delete updatedCards[cardName].faction;
-  // Need to reset the card order
-  // if (factionName === "Naalu Collective") {
-    updatedCards[cardName].order = strategyCardOrder[cardName];
-  // }
+  mutate(`/api/${gameid}/strategycards`, async () => await poster(`/api/${gameid}/cardUpdate`, data), {
+    optimisticData: strategyCards => {
+      const updatedCards = structuredClone(strategyCards);
 
-  const options = {
-    optimisticData: updatedCards,
-  };
-  await mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+      factionName = strategyCards[cardName].faction;
 
-  const updatedState = {...state};
-  updatedState.activeplayer = factionName;
+      if (!factionName) {
+        return updatedCards;
+      }
 
-  const opts = {
-    optimisticData: updatedState,
-  };
-  await mutate(`/api/${gameid}/state`, fetcher(`/api/${gameid}/state`), opts);
+      delete updatedCards[cardName].faction;
+      updatedCards[cardName].order = strategyCardOrder[cardName];
+
+      return updatedCards;
+    },
+    revalidate: false,
+  });
+
+  // TODO: Consider whether there's a better option.
+  // Maybe split the backend changes to have separate updates?
+  mutate(`/api/${gameid}/state`, state => {
+    return {
+      ...structuredClone(state),
+      activeplayer: factionName,
+    };
+  }, {
+    revalidate: false,
+  });
 }
 
-export function assignStrategyCard(mutate, gameid, strategyCards, cardName, factionName) {
+export function assignStrategyCard(mutate, gameid, cardName, factionName) {
   const data = {
     action: "ASSIGN_STRATEGY_CARD",
     card: cardName,
     faction: factionName,
   };
 
-  const updatedCards = {...strategyCards};
-  updatedCards[cardName].faction = factionName;
-  for (const [name, card] of Object.entries(updatedCards)) {
-    if (card.invalid) {
-      delete updatedCards[name].invalid;
-    }
-  }
-  if (factionName === "Naalu Collective") {
-    updatedCards[cardName].order = 0;
-  }
+  mutate(`/api/${gameid}/strategycards`, async () => await poster(`/api/${gameid}/cardUpdate`, data), {
+    optimisticData: strategyCards => {
+      const updatedCards = structuredClone(strategyCards);
 
-  const options = {
-    optimisticData: updatedCards,
-  };
-  mutate(`/api/${gameid}/strategycards`, poster(`/api/${gameid}/cardUpdate`, data), options);
+      updatedCards[cardName].faction = factionName;
+
+      if (factionName === "Naalu Collective") {
+        updatedCards[cardName].order = 0;
+      }
+
+      return updatedCards;
+    },
+    revalidate: false,
+  });
 }
 

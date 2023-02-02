@@ -17,7 +17,7 @@ export function LawsInEffect({}) {
 
 
   function removeAgenda(agendaName) {
-    repealAgenda(mutate, gameid, agendas, agendaName);
+    repealAgenda(mutate, gameid, agendaName);
   } 
 
   const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {

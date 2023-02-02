@@ -12,8 +12,9 @@ import { computeVPs, UpdateObjectives, UpdatePlanets, UpdateTechs, UpdateTechsMo
 import React from "react";
 import { AgendaRow } from "./AgendaRow";
 import { repealAgenda } from "./util/api/agendas";
-import { continueGame, finishGame } from "./util/api/state";
+import { continueGame, finishGame, setSpeaker } from "./util/api/state";
 import Head from "next/head";
+import { getFactionName } from "./util/factions";
 
 export function Sidebar({ side, content }) {
   const className = `${side}Sidebar`;
@@ -78,11 +79,11 @@ export function Header() {
   // </div>
 
   function endGame() {
-    finishGame(mutate, gameid, state);
+    finishGame(mutate, gameid);
   }
 
   function backToGame() {
-    continueGame(mutate, gameid, state);
+    continueGame(mutate, gameid);
   }
 
   const mapOrderedFactions = Object.values(factions).sort((a, b) => a.mapPosition - b.mapPosition);
@@ -98,7 +99,7 @@ export function Header() {
     return agenda.passed && agenda.type === "law";
   });
   function removeAgenda(agendaName) {
-    repealAgenda(mutate, gameid, agendas, agendaName);
+    repealAgenda(mutate, gameid, agendaName);
   }
 
   let gameFinished = false;
@@ -183,6 +184,8 @@ export function Header() {
 export function Footer({ }) {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { mutate } = useSWRConfig();
+  const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const [qrCode, setQrCode] = useState(null);
 
@@ -190,25 +193,39 @@ export function Footer({ }) {
     return null;
   }
 
+  const orderedFactions = Object.values(factions ?? {}).sort((a, b) => a.order - b.order);
+
   return <div className="flex" style={{ bottom: 0, width: "100vw", position: "fixed", justifyContent: "space-between" }}>
     {state.phase !== "SETUP" && state.phase !== "END" ? <div style={{position: "fixed", bottom: responsivePixels(12), left: responsivePixels(108)}}>
     <LabeledDiv label="Update">
-      <div className="flexRow" style={{width: "100%", alignItems: "stretch"}}>
-        <HoverMenu label="Techs">
-          <div className="flexColumn" style={{height: "90vh", width: "82vw"}}>
-            <UpdateTechs />
+      <div className="flexColumn" style={{alignItems: "flex-start"}}>
+        <HoverMenu label="Speaker">
+          <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
+            {orderedFactions.map((faction) => {
+              return <button disabled={state.speaker === faction.name}
+                onClick={() => setSpeaker(mutate, gameid, faction.name, factions)}>
+                {getFactionName(faction)}
+              </button>
+            })}
           </div>
         </HoverMenu>
-        <HoverMenu label="Objectives" shift={{left: 78}}>
-          <div className="flexColumn" style={{height: "90vh", width: "82vw"}}>
-            <UpdateObjectives />
-          </div>
-        </HoverMenu>
-        <HoverMenu label="Planets" shift={{left: 195}}>
-          <div className="flexColumn largeFont" style={{height: "90vh", width: "82vw"}}>
-            <UpdatePlanets />
-          </div>
-        </HoverMenu>
+        <div className="flexRow" style={{width: "100%", alignItems: "stretch"}}>
+          <HoverMenu label="Techs">
+            <div className="flexColumn" style={{height: "90vh", width: "82vw"}}>
+              <UpdateTechs />
+            </div>
+          </HoverMenu>
+          <HoverMenu label="Objectives" shift={{left: 78}}>
+            <div className="flexColumn" style={{height: "90vh", width: "82vw"}}>
+              <UpdateObjectives />
+            </div>
+          </HoverMenu>
+          <HoverMenu label="Planets" shift={{left: 195}}>
+            <div className="flexColumn largeFont" style={{height: "90vh", width: "82vw"}}>
+              <UpdatePlanets />
+            </div>
+          </HoverMenu>
+        </div>
       </div>
     </LabeledDiv>
     </div> : null}

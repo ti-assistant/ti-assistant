@@ -230,20 +230,20 @@ export default async function handler(req, res) {
         "gameLog": gameLog,
         [timestampString]: timestamp,
       };
-      if (subState.speaker) {
-        updates[`state.speaker`] = subState.speaker;
-        updates[`updates.state.timestamp`] = timestamp;
-        updates[`updates.factions.timestamp`] = timestamp;
-        const currentOrder = gameRef.data().factions[subState.speaker].order;
-        for (const [name, faction] of Object.entries(gameRef.data().factions)) {
-          let factionOrder = faction.order - currentOrder + 1;
-          if (factionOrder < 1) {
-            factionOrder += Object.keys(gameRef.data().factions).length;
-          }
-          const factionString = `factions.${name}.order`;
-          updates[factionString] = factionOrder;
-        }
-      }
+      // if (subState.speaker) {
+      //   updates[`state.speaker`] = subState.speaker;
+      //   updates[`updates.state.timestamp`] = timestamp;
+      //   updates[`updates.factions.timestamp`] = timestamp;
+      //   const currentOrder = gameRef.data().factions[subState.speaker].order;
+      //   for (const [name, faction] of Object.entries(gameRef.data().factions)) {
+      //     let factionOrder = faction.order - currentOrder + 1;
+      //     if (factionOrder < 1) {
+      //       factionOrder += Object.keys(gameRef.data().factions).length;
+      //     }
+      //     const factionString = `factions.${name}.order`;
+      //     updates[factionString] = factionOrder;
+      //   }
+      // }
       if (subState.component) {
         const component = components[subState.component];
         const futureState = usedComponentState(component);
@@ -256,33 +256,33 @@ export default async function handler(req, res) {
           updates[`updates.factions.timestamp`] = timestamp;
         }
       }
-      if (subState.repealedAgenda) {
-        updates[`agendas.${subState.repealedAgenda}`] = FieldValue.delete();
-        updates[`updates.agendas.timestamp`] = timestamp;
-      }
-      (subState.objectives ?? []).forEach((objective) => {
-        updates[`objectives.${objective}.selected`] = true;
-        updates[`updates.objectives.timestamp`] = timestamp;
-      });
+      // if (subState.repealedAgenda) {
+      //   updates[`agendas.${subState.repealedAgenda}`] = FieldValue.delete();
+      //   updates[`updates.agendas.timestamp`] = timestamp;
+      // }
+      // (subState.objectives ?? []).forEach((objective) => {
+      //   updates[`objectives.${objective}.selected`] = true;
+      //   updates[`updates.objectives.timestamp`] = timestamp;
+      // });
       for (const [factionName, value] of Object.entries(subState.factions ?? {})) {
-        (value.techs ?? []).forEach((tech) => {
-          if (tech === "IIHQ Modernization") {
-            updates[`planets.Custodia Vigilia.owners`] = [factionName];
-            updates[`updates.planets.timestamp`] = timestamp;
-          }
-          updates[`factions.${factionName}.techs.${tech}.ready`] = true;
-          updates[`updates.factions.timestamp`] = timestamp;
-        });
-        (value.removeTechs ?? []).forEach((tech) => {
-          updates[`factions.${factionName}.techs.${tech}`] = FieldValue.delete();
-          updates[`updates.factions.timestamp`] = timestamp;
-        });
+        // (value.techs ?? []).forEach((tech) => {
+        //   if (tech === "IIHQ Modernization") {
+        //     updates[`planets.Custodia Vigilia.owners`] = [factionName];
+        //     updates[`updates.planets.timestamp`] = timestamp;
+        //   }
+        //   updates[`factions.${factionName}.techs.${tech}.ready`] = true;
+        //   updates[`updates.factions.timestamp`] = timestamp;
+        // });
+        // (value.removeTechs ?? []).forEach((tech) => {
+        //   updates[`factions.${factionName}.techs.${tech}`] = FieldValue.delete();
+        //   updates[`updates.factions.timestamp`] = timestamp;
+        // });
         for (const planet of (value.planets ?? [])) {
           const planetName = planet === "[0.0.0]" ? "000" : planet;
-          updates[`planets.${factionName}.planets.${planetName}.ready`] = true;
-          updates[`planets.${planetName}.owners`] = [factionName];
-          updates[`updates.planets.timestamp`] = timestamp;
-          updates[`updates.factions.timestamp`] = timestamp;
+          // updates[`planets.${factionName}.planets.${planetName}.ready`] = true;
+          // updates[`planets.${planetName}.owners`] = [factionName];
+          // updates[`updates.planets.timestamp`] = timestamp;
+          // updates[`updates.factions.timestamp`] = timestamp;
           const pseudoData = {
             action: "ADD_PLANET",
             planet: planetName,
@@ -293,11 +293,11 @@ export default async function handler(req, res) {
 
           }
         }
-        (value.objectives ?? []).forEach((objective) => {
-          updates[`objectives.${objective}.selected`] = true;
-          updates[`objectives.${objective}.scorers`] = FieldValue.arrayUnion(factionName);
-          updates[`updates.objectives.timestamp`] = timestamp;
-        });
+        // (value.objectives ?? []).forEach((objective) => {
+        //   updates[`objectives.${objective}.selected`] = true;
+        //   updates[`objectives.${objective}.scorers`] = FieldValue.arrayUnion(factionName);
+        //   updates[`updates.objectives.timestamp`] = timestamp;
+        // });
         if ((value.objectives ?? []).length > 0 && 
             gameRef.data().factions[factionName].hero === "locked") {
           const scoredObjectives = Object.entries(gameObjectives).filter(([objectiveID, objective]) => {

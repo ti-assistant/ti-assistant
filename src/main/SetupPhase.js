@@ -7,7 +7,7 @@ import { ObjectiveModal } from '../ObjectiveModal';
 import { BasicFactionTile } from '../FactionTile';
 import { ObjectiveRow } from '../ObjectiveRow';
 import { removeObjective, revealObjective } from '../util/api/objectives';
-import { claimPlanet, readyPlanets } from '../util/api/planets';
+import { claimPlanet } from '../util/api/planets';
 import { useSharedUpdateTimes } from '../Updater';
 import { HoverMenu } from '../HoverMenu';
 import { LabeledDiv } from '../LabeledDiv';
@@ -17,31 +17,28 @@ import { responsivePixels } from '../util/util';
 import { NumberedItem } from '../NumberedItem';
 
 export function startFirstRound(mutate, gameid, subState, factions, planets, objectives, state, options) {
-  finalizeSubState(mutate, gameid, subState);
+  finalizeSubState(mutate, gameid, subState, factions);
   const data = {
     action: "ADVANCE_PHASE",
   };
   if (factions['Council Keleres']) {
     for (const planet of factions['Council Keleres'].startswith.planets) {
-      claimPlanet(mutate, gameid, planets, planet, "Council Keleres", options);
+      claimPlanet(mutate, gameid, planet, "Council Keleres");
     }
-    readyPlanets(mutate, gameid, planets, factions['Council Keleres'].startswith.planets, "Council Keleres");
   }
-  (subState.objectives ?? []).forEach((objectiveName) => {
-    revealObjective(mutate, gameid, objectives, null, objectiveName);
+
+  mutate(`/api/${gameid}/state`, async () =>
+    await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
+
+      updatedState.phase = "STRATEGY";
+      updatedState.activeplayer = state.speaker;
+
+      return updatedState;
+    },
+    revalidate: false,
   });
-  const activeFactionName = state.speaker;
-  const phase = "STRATEGY";
-
-  const updatedState = {...state};
-  state.phase = phase;
-  state.activeplayer = activeFactionName;
-
-  const updateOptions = {
-    optimisticData: updatedState,
-  };
-
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), updateOptions);
 }
 
 function factionTechChoicesComplete(factions) {
@@ -109,7 +106,7 @@ export default function SetupPhase() {
 
 
   function addObj(objective) {
-    revealSubStateObjective(mutate, gameid, subState, objective.name);
+    revealSubStateObjective(mutate, gameid, objective.name);
     // setSubState({
     //   ...subState,
     //   objectives: [...(subState.objectives ?? []), objective],
@@ -117,13 +114,12 @@ export default function SetupPhase() {
   }
 
   function removeObj(objectiveName) {
-    hideSubStateObjective(mutate, gameid, subState, objectiveName);
+    hideSubStateObjective(mutate, gameid, objectiveName);
     // setSubState({
     //   ...subState,
     //   objectives: (subState.objectives ?? []).filter((objective) => objective.name !== objectiveName),
     // });
     // setRevealedObjectives(revealedObjectives.filter((objective) => objective.name !== objectiveName));
-    // removeObjective(mutate, gameid, objectives, null, objectiveName);
   }
 
   const stageOneObjectives = Object.values(objectives ?? {}).filter((objective) => objective.type === "stage-one");

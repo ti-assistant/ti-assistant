@@ -11,7 +11,7 @@ import { ObjectiveList } from "/src/ObjectiveList";
 import { fetcher, setGameId } from '../../../src/util/api/util';
 import { responsivePixels } from "../../../src/util/util";
 import { hasTech, lockTech, unlockTech } from "../../../src/util/api/techs";
-import { claimPlanet, exhaustPlanets, readyPlanets, unclaimPlanet } from "../../../src/util/api/planets";
+import { claimPlanet, unclaimPlanet } from "../../../src/util/api/planets";
 import { FactionCard, StartingComponents } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { FactionSummary } from "../../../src/FactionSummary";
@@ -60,7 +60,6 @@ function PhaseSection() {
   const { data: state = {} } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
   const { data: strategyCards = {} } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
-  const { data: timers = {} } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
 
 
   if (!state) {
@@ -68,34 +67,34 @@ function PhaseSection() {
   }
 
   function assignCard(card) {
-    assignStrategyCard(mutate, gameid, strategyCards, card.name, factionName);
-    nextPlayer(mutate, gameid, state, factions, strategyCards);
+    assignStrategyCard(mutate, gameid, card.name, factionName);
+    nextPlayer(mutate, gameid, factions, strategyCards);
   }
   function addObj(objective) {
-    revealSubStateObjective(mutate, gameid, subState, objective.name);
+    revealSubStateObjective(mutate, gameid, objective.name);
   }
   function removeObj(objectiveName) {
-    hideSubStateObjective(mutate, gameid, subState, objectiveName);
+    hideSubStateObjective(mutate, gameid, objectiveName);
   }
   function scoreObj(factionName, objective) {
-    scoreObjective(mutate, gameid, objectives, factionName, objective.name);
-    scoreSubStateObjective(mutate, gameid, subState, factionName, objective.name);
+    scoreObjective(mutate, gameid, factionName, objective.name);
+    scoreSubStateObjective(mutate, gameid, factionName, objective.name);
   }
   function unscoreObj(factionName, objectiveName) {
-    unscoreObjective(mutate, gameid, objectives, factionName, objectiveName);
-    unscoreSubStateObjective(mutate, gameid, subState, factionName, objectiveName);
+    unscoreObjective(mutate, gameid, factionName, objectiveName);
+    unscoreSubStateObjective(mutate, gameid, factionName, objectiveName);
   }
   function selectAgenda(agendaName) {
-    revealSubStateAgenda(mutate, gameid, subState, agendaName);
+    revealSubStateAgenda(mutate, gameid, agendaName);
   }
   function hideAgenda(agendaName) {
-    hideSubStateAgenda(mutate, gameid, subState, agendaName);
+    hideSubStateAgenda(mutate, gameid);
   }
   function selectEligibleOutcome(outcome) {
-    setSubStateOther(mutate, gameid, subState, "outcome", outcome);
+    setSubStateOther(mutate, gameid, "outcome", outcome);
   }
   function selectSpeakerTieBreak(tieBreak) {
-    setSubStateOther(mutate, gameid, subState, "tieBreak", tieBreak);
+    setSubStateOther(mutate, gameid, "tieBreak", tieBreak);
   }
   const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
     if (a.name < b.name) {
@@ -156,27 +155,27 @@ function PhaseSection() {
     let activeAgenda = subState.agenda;
     if (subState.subAgenda) {
       activeAgenda = subState.subAgenda;
-      resolveAgenda(mutate, gameid, agendas, subState.agenda, subState.subAgenda);
+      resolveAgenda(mutate, gameid, subState.agenda, subState.subAgenda);
     }
-    resolveAgenda(mutate, gameid, agendas, activeAgenda, target);
+    resolveAgenda(mutate, gameid, activeAgenda, target);
 
-    updateCastVotes(mutate, gameid, factions, subState.factions);
-    hideSubStateAgenda(mutate, gameid, subState);
+    updateCastVotes(mutate, gameid, subState.factions);
+    hideSubStateAgenda(mutate, gameid);
     // await finalizeSubState(mutate, gameid, subState);
     if (activeAgenda === "Miscount Disclosed") {
-      repealAgenda(mutate, gameid, agendas, target);
-      revealSubStateAgenda(mutate, gameid, subState, target);
-      setSubStateOther(mutate, gameid, subState, "miscount", true);
+      repealAgenda(mutate, gameid, target);
+      revealSubStateAgenda(mutate, gameid, target);
+      setSubStateOther(mutate, gameid, "miscount", true);
     } else {
       const agendaNum = state.agendaNum ?? 1;
-      setAgendaNum(mutate, gameid, state, agendaNum + 1);
+      setAgendaNum(mutate, gameid, agendaNum + 1);
     }
   }
   function castVotes(target, votes) {
     if (!target || target === "Abstain") {
-      castSubStateVotes(mutate, gameid, subState, factionName, "Abstain", 0);
+      castSubStateVotes(mutate, gameid, factionName, "Abstain", 0);
     } else {
-      castSubStateVotes(mutate, gameid, subState, factionName, target, votes);
+      castSubStateVotes(mutate, gameid, factionName, target, votes);
     }
   }
 
@@ -354,7 +353,7 @@ function PhaseSection() {
           </LabeledDiv>
           {statusPhaseComplete(subState) ?
             <React.Fragment>
-              {!state.agendaUnlocked ? <button onClick={() => startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards)}>Start Next Round</button> : null}
+              {!state.agendaUnlocked ? <button onClick={() => startNextRound(mutate, gameid, state, subState, factions)}>Start Next Round</button> : null}
               <button onClick={() => advanceToAgendaPhase(mutate, gameid, subState, state, strategyCards, factions)}>Advance to Agenda Phase</button>
             </React.Fragment>
             : null}
@@ -473,7 +472,7 @@ function PhaseSection() {
               : null}
           </div>
           : null}
-        <button onClick={() => startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards)}>Start Next Round</button>
+        <button onClick={() => startNextRound(mutate, gameid, state, subState, factions)}>Start Next Round</button>
       </React.Fragment>;
       break;
     }
@@ -527,19 +526,19 @@ function FactionContent() {
   }
 
   function removePlanet(toRemove) {
-    unclaimPlanet(mutate, gameid, planets, toRemove, playerFaction);
+    unclaimPlanet(mutate, gameid, toRemove, playerFaction);
   }
 
   function addPlanet(toAdd) {
-    claimPlanet(mutate, gameid, planets, toAdd, playerFaction, options);
+    claimPlanet(mutate, gameid, toAdd, playerFaction);
   }
 
   function removeTech(toRemove) {
-    lockTech(mutate, gameid, factions, playerFaction, toRemove);
+    lockTech(mutate, gameid, playerFaction, toRemove);
   }
 
   function addTech(toAdd) {
-    unlockTech(mutate, gameid, factions, playerFaction, toAdd);
+    unlockTech(mutate, gameid, playerFaction, toAdd);
   }
 
   const faction = factions[playerFaction];

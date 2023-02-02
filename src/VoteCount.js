@@ -219,9 +219,9 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
 
   function castVotes(target, votes) {
     if (!target || target === "Abstain") {
-      castSubStateVotes(mutate, gameid, subState, factionName, "Abstain", 0);
+      castSubStateVotes(mutate, gameid, factionName, "Abstain", 0);
     } else {
-      castSubStateVotes(mutate, gameid, subState, factionName, target, votes);
+      castSubStateVotes(mutate, gameid, factionName, target, votes);
     }
   }
 
@@ -270,7 +270,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
   if (factionName !== state.speaker) {
     menuButtons.push({
         text: "Set Speaker",
-        action: () => setSpeaker(mutate, gameid, state, factionName, factions),
+        action: () => setSpeaker(mutate, gameid, factionName, factions),
     });
   }
   if (hasPredictiveIntelligence) {

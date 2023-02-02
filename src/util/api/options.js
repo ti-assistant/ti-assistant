@@ -1,19 +1,20 @@
 import { poster } from './util'
 
-export async function updateOption(mutate, gameid, options, optionName, value) {
+export async function updateOption(mutate, gameid, optionName, value) {
   const data = {
     action: "SET_OPTION",
     option: optionName,
     value: value,
   };
 
-  const updatedOptions = {...options};
+  mutate(`/api/${gameid}/options`, async () => await poster(`/api/${gameid}/optionUpdate`, data), {
+    optimisticData: options => {
+      const updatedOptions = structuredClone(options);
 
-  updatedOptions[optionName] = value;
+      updatedOptions[optionName] = value;
 
-  const updateOptions = {
-    optimisticData: updatedOptions,
-  };
-
-  await mutate(`/api/${gameid}/options`, poster(`/api/${gameid}/optionUpdate`, data), updateOptions);
+      return updatedObjectives;
+    },
+    revalidate: false,
+  });
 }

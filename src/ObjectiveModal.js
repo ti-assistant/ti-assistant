@@ -40,7 +40,7 @@ export function ObjectiveModal({ type, visible, onComplete }) {
   }
 
   function selectObjective(objectiveName) {
-    revealObjective(mutate, gameid, objectives, null, objectiveName);
+    revealObjective(mutate, gameid, null, objectiveName);
     onComplete(objectiveName);
   }
 

@@ -41,17 +41,17 @@ function SecretTab() {
   }
 
   function addObj(objective) {
-    revealObjective(mutate, gameid, objectives, factionName, objective);
+    revealObjective(mutate, gameid, factionName, objective);
     setEditMode(false);
   }
   function removeObj(objective) {
-    removeObjective(mutate, gameid, objectives, factionName, objective);
+    removeObjective(mutate, gameid, factionName, objective);
   }
   function scoreObj(objective, add) {
     if (add) {
-      scoreObjective(mutate, gameid, objectives, factionName, objective);
+      scoreObjective(mutate, gameid, factionName, objective);
     } else {
-      unscoreObjective(mutate, gameid, objectives, factionName, objective);
+      unscoreObjective(mutate, gameid, factionName, objective);
     }
   }
 
@@ -124,17 +124,17 @@ export function ObjectiveList() {
   }
 
   function addObj(objective) {
-    revealObjective(mutate, gameid, objectives, factionName, objective);
+    revealObjective(mutate, gameid, factionName, objective);
     setEditMode(false);
   }
   function removeObj(objective) {
-    removeObjective(mutate, gameid, objectives, factionName, objective);
+    removeObjective(mutate, gameid, factionName, objective);
   }
   function scoreObj(objective, add) {
     if (add) {
-      scoreObjective(mutate, gameid, objectives, factionName, objective);
+      scoreObjective(mutate, gameid, factionName, objective);
     } else {
-      unscoreObjective(mutate, gameid, objectives, factionName, objective);
+      unscoreObjective(mutate, gameid, factionName, objective);
     }
   }
 

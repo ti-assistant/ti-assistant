@@ -68,7 +68,7 @@ export default function SummaryColumn({order, subOrder}) {
   const showPlanets = options['faction-summary-show-planets'] ?? true;
   
   function setOption(optionName, value) {
-    updateOption(mutate, gameid, options, optionName, value);
+    updateOption(mutate, gameid, optionName, value);
   }
 
   let maxSummaryWidth = responsivePixels(800);

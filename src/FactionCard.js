@@ -211,15 +211,15 @@ export function StartingComponents({ faction }) {
   });
 
   function addTech(tech) {
-    chooseStartingTech(mutate, gameid, factions, faction.name, tech);
+    chooseStartingTech(mutate, gameid, faction.name, tech);
   }
 
   function removeTech(tech) {
-    removeStartingTech(mutate, gameid, factions, faction.name, tech);
+    removeStartingTech(mutate, gameid, faction.name, tech);
   }
 
   function selectSubFaction(subFaction) {
-    chooseSubFaction(mutate, gameid, factions, faction.name, subFaction);
+    chooseSubFaction(mutate, gameid, faction.name, subFaction);
   }
 
   let numToChoose = !startswith.choice ? 0 : startswith.choice.select - (startswith.techs ?? []).length;
@@ -318,7 +318,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
 
   function setFactionToSpeaker() {
     hideMenu();
-    setSpeaker(mutate, gameid, state, faction.name, factions);
+    setSpeaker(mutate, gameid, faction.name, factions);
     console.log("setting speaker");
   }
 
@@ -326,7 +326,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
     hideMenu();
     console.log("Public Disgrace!");
     const card = Object.values(strategyCards).find((card) => card.faction === faction.name);
-    unassignStrategyCard(mutate, gameid, strategyCards, card.name, state);
+    unassignStrategyCard(mutate, gameid, card.name);
   }
 
   function quantumDatahubNode() {
@@ -334,14 +334,14 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
     console.log("Quantum");
     const factionCard = Object.values(strategyCards).find((card) => card.faction === faction.name);
     const hacanCard = Object.values(strategyCards).find((card) => card.faction === "Emirates of Hacan");
-    swapStrategyCards(mutate, gameid, strategyCards, factionCard, hacanCard);
+    swapStrategyCards(mutate, gameid, factionCard, hacanCard);
   }
 
   function giftOfPrescience() {
     hideMenu();
     console.log("Gift");
     const factionCard = Object.values(strategyCards).find((card) => card.faction === faction.name);
-    setFirstStrategyCard(mutate, gameid, strategyCards, factionCard.name);
+    setFirstStrategyCard(mutate, gameid, factionCard.name);
   }
 
   // NOTE: Only works for Strategy phase. Other phases are not deterministic.
@@ -418,7 +418,7 @@ export function FactionTile({ faction, onClick, menu, opts = {} }) {
           }
           if (Object.keys(factions).includes("Naalu Collective") && faction.name !== "Naalu Collective") {
             buttons.push(<div key="Gift of Prescience" style={{position: "relative", cursor: "pointer", gap: "4px", padding: "4px 8px", boxShadow: "1px 1px 4px black", backgroundColor: "#222", border: `2px solid ${color}`, borderRadius: "5px", fontSize: opts.fontSize ?? "24px"}} onClick={giftOfPrescience}>
-              Gift of Prescience
+              {card.order === 0 ? "Undo Gift of Prescience" : "Gift of Prescience"}
             </div>)
           }
         }

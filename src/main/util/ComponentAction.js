@@ -167,22 +167,22 @@ function ComponentDetails({ factionName }) {
   }
 
   function addTech(tech) {
-    addSubStateTech(mutate, gameid, subState, factionName, tech.name);
+    addSubStateTech(mutate, gameid, factionName, tech.name);
   }
   function removeTech(techName) {
-    clearAddedSubStateTech(mutate, gameid, subState, factionName, techName);
+    clearAddedSubStateTech(mutate, gameid, factionName, techName);
   }
   function addRemoveTech(tech) {
-    removeSubStateTech(mutate, gameid, subState, factionName, tech.name);
+    removeSubStateTech(mutate, gameid, factionName, tech.name);
   }
   function clearAddedTech(techName) {
-    clearRemovedSubStateTech(mutate, gameid, subState, factionName, techName);
+    clearRemovedSubStateTech(mutate, gameid, factionName, techName);
   }
   function repealLaw(lawName) {
-    repealSubStateAgenda(mutate, gameid, subState, lawName);
+    repealSubStateAgenda(mutate, gameid, lawName);
   }
   function removeRepealedAgenda(agendaName) {
-    removeRepealedSubStateAgenda(mutate, gameid, subState);
+    removeRepealedSubStateAgenda(mutate, gameid);
   }
 
   const updatedPlanets = applyAllPlanetAttachments(Object.values(planets), attachments);
@@ -333,11 +333,11 @@ export function ComponentAction({ factionName }) {
 
   async function selectComponent(componentName) {
     if (componentName === null) {
-      await clearSubState(mutate, gameid, subState);
-      setSubStateSelectedAction(mutate, gameid, subState, "Component");
+      await clearSubState(mutate, gameid);
+      setSubStateSelectedAction(mutate, gameid, "Component");
     } else {
       const updatedName = componentName.replace(/\./g,"");
-      setSubStateOther(mutate, gameid, subState, "component", updatedName);
+      setSubStateOther(mutate, gameid, "component", updatedName);
     }
   }
 

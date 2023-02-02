@@ -1,96 +1,110 @@
 import { getOnDeckFaction } from '../helpers';
 import { fetcher, poster } from './util'
 
-export function setSpeaker(mutate, gameid, state, speaker, factions) {
+export function setSpeaker(mutate, gameid, speaker, factions) {
   const data = {
     action: "SET_SPEAKER",
     speaker: speaker,
   };
 
-  const updatedState = {...state};
-  updatedState.speaker = speaker;
+  mutate(`/api/${gameid}/state`, async () => await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
 
-  const options = {
-    optimisticData: updatedState,
-  };
+      updatedState.speaker = speaker;
 
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+      return updatedState;
+    },
+    revalidate: false,
+  });
 
   const currentOrder = factions[speaker].order;
 
-  const updatedFactions = {...factions};
+  // TODO: Consider whether there's a better option.
+  // Maybe split the backend changes to have separate updates?
+  mutate(`/api/${gameid}/factions`, factions => {
+    const updatedFactions = structuredClone(factions);
+
+    const numFactions = Object.keys(factions).length;
   
-  Object.entries(updatedFactions).forEach(([name, faction]) => {
-    let factionOrder = faction.order - currentOrder + 1;
-    if (factionOrder < 1) {
-      factionOrder += Object.keys(updatedFactions).length;
+    for (const name of Object.keys(factions)) {
+      let factionOrder = updatedFactions[name].order - currentOrder + 1;
+      if (factionOrder < 1) {
+        factionOrder += numFactions;
+      }
+      updatedFactions[name].order = factionOrder;
     }
-    updatedFactions[name].order = factionOrder;
+
+    return updatedFactions;
+  }, {
+    revalidate: false,
   });
-
-  const opts = {
-    optimisticData: updatedFactions,
-  };
-
-  mutate(`/api/${gameid}/factions`, fetcher(`/api/${gameid}/factions`), opts);
 }
 
-export async function nextPlayer(mutate, gameid, state, factions, strategyCards) {
+export async function nextPlayer(mutate, gameid, factions, strategyCards) {
   const data = {
     action: "ADVANCE_PLAYER",
   };
-  
-  const updatedState = {...state};
-  const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
-  state.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
 
-  const options = {
-    optimisticData: updatedState,
-  };
-  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+  mutate(`/api/${gameid}/state`, async () => await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
+      return {
+        ...structuredClone(state),
+        activeplayer: onDeckFaction ? onDeckFaction.name : "None",
+      };
+    },
+    revalidate: false,
+  });
 }
 
-export async function finishGame(mutate, gameid, state) {
+export async function finishGame(mutate, gameid) {
   const data = {
     action: "END_GAME",
   };
 
-  const updatedState = {...state};
-  updatedState.finalPhase = state.phase;
-  updatedState.phase = "END";
+  mutate(`/api/${gameid}/state`, async () => await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
 
-  const options = {
-    optimisticData: updatedState,
-  };
-  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+      updatedState.phase = "END";
+
+      return updatedState;
+    },
+    revalidate: false,
+  });
 }
 
-export async function continueGame(mutate, gameid, state) {
+export async function continueGame(mutate, gameid) {
   const data = {
     action: "CONTINUE_GAME",
   };
 
-  const updatedState = {...state};
-  updatedState.phase = state.finalPhase;
-  delete updatedState.finalPhase;
+  mutate(`/api/${gameid}/state`, async () => await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
 
-  const options = {
-    optimisticData: updatedState,
-  };
-  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+
+      return updatedState;
+    },
+    revalidate: false,
+  });
 }
 
-export async function setAgendaNum(mutate, gameid, state, agendaNum) {
+export async function setAgendaNum(mutate, gameid, agendaNum) {
   const data = {
     action: "SET_AGENDA_NUM",
     agendaNum: agendaNum,
   };
 
-  const updatedState = {...state};
-  updatedState.agendaNum = agendaNum;
+  mutate(`/api/${gameid}/state`, async () => await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
 
-  const options = {
-    optimisticData: updatedState,
-  };
-  return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
+      updatedState.agendaNum = agendaNum;
+
+      return updatedState;
+    },
+    revalidate: false,
+  });
 }

@@ -25,6 +25,7 @@ import { addSubStatePlanet, addSubStateTech, clearAddedSubStateTech, clearSubSta
 import { responsivePixels } from '../util/util.js';
 import { applyPlanetAttachments } from '../util/planets.js';
 import { ComponentAction } from './util/ComponentAction.js';
+import { nextPlayer } from '../util/api/state.js';
 
 export function FactionActionButtons({ factionName, buttonStyle }) {
   const router = useRouter();
@@ -49,9 +50,9 @@ export function FactionActionButtons({ factionName, buttonStyle }) {
 
   function toggleAction(action) {
     if (subState.selectedAction === action) {
-      clearSubState(mutate, gameid, subState);
+      clearSubState(mutate, gameid);
     } else {
-      setSubStateSelectedAction(mutate, gameid, subState, action);
+      setSubStateSelectedAction(mutate, gameid, action);
     }
   }
 
@@ -141,34 +142,34 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
   const researchableTechs = getResearchableTechs(activeFaction);
 
   function removePlanet(factionName, toRemove) {
-    removeSubStatePlanet(mutate, gameid, subState, factionName, toRemove);
+    removeSubStatePlanet(mutate, gameid, factionName, toRemove);
   }
 
   function addPlanet(factionName, toAdd) {
-    addSubStatePlanet(mutate, gameid, subState, factionName, toAdd.name);
+    addSubStatePlanet(mutate, gameid, factionName, toAdd.name);
   }
 
   function addObjective(factionName, toScore) {
-    scoreSubStateObjective(mutate, gameid, subState, factionName, toScore.name);
+    scoreSubStateObjective(mutate, gameid, factionName, toScore.name);
   }
 
   function undoObjective(factionName, toRemove) {
-    unscoreSubStateObjective(mutate, gameid, subState, factionName, toRemove);
+    unscoreSubStateObjective(mutate, gameid, factionName, toRemove);
   }
 
   function removeTech(factionName, toRemove) {
-    clearAddedSubStateTech(mutate, gameid, subState, factionName, toRemove);
+    clearAddedSubStateTech(mutate, gameid, factionName, toRemove);
   }
 
   function addTech(factionName, tech) {
-    addSubStateTech(mutate, gameid, subState, factionName, tech.name);
+    addSubStateTech(mutate, gameid, factionName, tech.name);
   }
 
   function selectSpeaker(factionName) {
-    setSubStateSpeaker(mutate, gameid, subState, factionName);
+    setSubStateSpeaker(mutate, gameid, factionName);
   }
   function resetSpeaker() {
-    undoSubStateSpeaker(mutate, gameid, subState);
+    undoSubStateSpeaker(mutate, gameid);
   }
 
   function lastFaction() {
@@ -556,43 +557,27 @@ export function NextPlayerButtons({ factionName, buttonStyle }) {
   const { mutate } = useSWRConfig();
   const { data: factions } = useSWR(gameid ? `/api/${gameid}/factions` : null, fetcher);
   const { data: strategyCards } = useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
-  const { data: state = {} } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
-
-  async function nextPlayer() {
-    const data = {
-      action: "ADVANCE_PLAYER",
-    };
-
-    const updatedState = { ...state };
-    const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
-    updatedState.activeplayer = onDeckFaction ? onDeckFaction.name : "None";
-
-    const options = {
-      optimisticData: updatedState,
-    };
-    return mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-  }
 
   async function completeActions(fleetLogistics = false) {
     if (subState.selectedAction === null) {
       return;
     }
     await finalizeAction();
-    nextPlayer();
+    nextPlayer(mutate, gameid, factions, strategyCards);
   }
 
   async function finalizeAction() {
     if (subState.selectedAction === null) {
       return;
     }
-    finalizeSubState(mutate, gameid, subState);
+    finalizeSubState(mutate, gameid, subState, factions);
 
     if (strategyCards[subState.selectedAction]) {
-      useStrategyCard(mutate, gameid, strategyCards, subState.selectedAction);
+      useStrategyCard(mutate, gameid, subState.selectedAction);
     }
     if (subState.selectedAction === "Pass") {
-      await passFaction(mutate, gameid, factions, factionName);
+      await passFaction(mutate, gameid, factionName);
     }
   }
 
@@ -663,31 +648,19 @@ export function advanceToStatusPhase(mutate, gameid, strategyCards, state, facti
   const data = {
     action: "ADVANCE_PHASE",
   };
-  const phase = "STATUS";
-  let minCard = {
-    order: Number.MAX_SAFE_INTEGER,
-  };
-  for (const strategyCard of Object.values(strategyCards)) {
-    if (strategyCard.faction && strategyCard.order < minCard.order) {
-      minCard = strategyCard;
-    }
-  }
-  if (!minCard.faction) {
-    throw Error("Transition to STATUS phase w/o selecting cards?");
-  }
-  const activeFactionName = minCard.faction;
 
-  const updatedState = { ...state };
-  state.phase = phase;
-  state.activeplayer = activeFactionName;
+  mutate(`/api/${gameid}/state`, async () =>
+    await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      return {
+        ...state,
+        phase: "STATUS",
+      }
+    },
+    revalidate: false,
+  });
 
-  const options = {
-    optimisticData: updatedState,
-  };
-
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-
-  readyAllFactions(mutate, gameid, factions);
+  readyAllFactions(mutate, gameid);
 }
 
 export default function ActionPhase() {

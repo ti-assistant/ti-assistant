@@ -28,7 +28,7 @@ export function SpeakerModal({ forceSelection, visible, onComplete }) {
   }
 
   function selectSpeaker(name) {
-    setSpeaker(mutate, gameid, state, name, factions);
+    setSpeaker(mutate, gameid, name, factions);
     onComplete(true);
   }
 

@@ -76,12 +76,12 @@ export function AgendaTimer({}) {
     
     if (agendaNum === 1) {
       if (timers && firstAgendaTimer % 15 === 0) {
-        saveAgendaTimer(mutate, gameid, timers, firstAgendaTimer, agendaNum);
+        saveAgendaTimer(mutate, gameid, firstAgendaTimer, agendaNum);
       }
       setFirstAgendaTimer(firstAgendaTimer + 1);
     } else if (agendaNum === 2) {
       if (timers && secondAgendaTimer % 15 === 0) {
-        saveAgendaTimer(mutate, gameid, timers, secondAgendaTimer, agendaNum);
+        saveAgendaTimer(mutate, gameid, secondAgendaTimer, agendaNum);
       }
       setSecondAgendaTimer(secondAgendaTimer + 1);
     }
@@ -161,7 +161,7 @@ export function GameTimer({ frozen = false }) {
     }
 
     if (timers && gameTimer % 15 === 0) {
-      saveGameTimer(mutate, gameid, timers, gameTimer);
+      saveGameTimer(mutate, gameid, gameTimer);
     }
 
     setGameTimer(gameTimer + 1);
@@ -247,7 +247,7 @@ export function FactionTimer({ factionName, style }) {
     }
 
     if (timers && factionTimer % 5 === 0) {
-      saveFactionTimer(mutate, gameid, timers, factionName, factionTimer);
+      saveFactionTimer(mutate, gameid, factionName, factionTimer);
     }
 
     setFactionTimer(factionTimer + 1);

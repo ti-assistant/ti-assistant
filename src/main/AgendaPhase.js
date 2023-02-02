@@ -52,26 +52,30 @@ export function computeVotes(agenda, subStateFactions = {}) {
   return orderedVotes;
 }
 
-export function startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards) {
-  resetCastVotes(mutate, gameid, factions);
-  resetAgendaTimers(mutate, gameid, timers);
-  resetStrategyCards(mutate, gameid, strategyCards);
+export function startNextRound(mutate, gameid, state, subState, factions) {
+  resetCastVotes(mutate, gameid);
+  resetAgendaTimers(mutate, gameid);
+  resetStrategyCards(mutate, gameid);
   const data = {
     action: "START_NEXT_ROUND",
   };
 
-  const updatedState = { ...state };
-  state.phase = "STRATEGY";
-  state.activeplayer = state.speaker;
-  state.round = state.round + 1;
-  state.agendaNum = 1;
+  mutate(`/api/${gameid}/state`, async () =>
+    await poster(`/api/${gameid}/stateUpdate`, data), {
+    optimisticData: state => {
+      const updatedState = structuredClone(state);
 
-  const options = {
-    optimisticData: updatedState,
-  };
+      updatedState.phase = "STRATEGY";
+      updatedState.activeplayer = state.speaker;
+      updatedState.round = state.round + 1;
+      updatedState.agendaNum = 1;
 
-  mutate(`/api/${gameid}/state`, poster(`/api/${gameid}/stateUpdate`, data), options);
-  finalizeSubState(mutate, gameid, subState);
+      return updatedState;
+    },
+    revalidate: false,
+  });
+
+  finalizeSubState(mutate, gameid, subState, factions);
 }
 
 export default function AgendaPhase() {
@@ -85,7 +89,6 @@ export default function AgendaPhase() {
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
-  const { data: timers } = useSWR(gameid ? `/api/${gameid}/timers` : null, fetcher);
 
   const [factionVotes, setFactionVotes] = useState({});
 
@@ -122,7 +125,7 @@ export default function AgendaPhase() {
   const allTargets = getTargets(localAgenda, factions, strategyCards, planets, agendas, objectives);
 
   function selectSpeakerTieBreak(tieBreak) {
-    setSubStateOther(mutate, gameid, subState, "tieBreak", tieBreak);
+    setSubStateOther(mutate, gameid, "tieBreak", tieBreak);
   }
 
 
@@ -131,39 +134,39 @@ export default function AgendaPhase() {
     let activeAgenda = subState.agenda;
     if (subState.subAgenda) {
       activeAgenda = subState.subAgenda;
-      resolveAgenda(mutate, gameid, agendas, subState.agenda, subState.subAgenda);
+      resolveAgenda(mutate, gameid, subState.agenda, subState.subAgenda);
     }
-    resolveAgenda(mutate, gameid, agendas, activeAgenda, target);
+    resolveAgenda(mutate, gameid, activeAgenda, target);
 
-    updateCastVotes(mutate, gameid, factions, subState.factions);
-    hideSubStateAgenda(mutate, gameid, subState, "");
+    updateCastVotes(mutate, gameid, subState.factions);
+    hideSubStateAgenda(mutate, gameid);
     if (activeAgenda === "Miscount Disclosed") {
-      repealAgenda(mutate, gameid, agendas, target);
-      revealSubStateAgenda(mutate, gameid, subState, target);
-      setSubStateOther(mutate, gameid, subState, "miscount", true);
+      repealAgenda(mutate, gameid, target);
+      revealSubStateAgenda(mutate, gameid, target);
+      setSubStateOther(mutate, gameid, "miscount", true);
     } else {
-      finalizeSubState(mutate, gameid, subState);
+      finalizeSubState(mutate, gameid, subState, factions);
       const agendaNum = state.agendaNum ?? 1;
-      setAgendaNum(mutate, gameid, state, agendaNum + 1);
+      setAgendaNum(mutate, gameid, agendaNum + 1);
     }
   }
 
   function nextPhase() {
-    startNextRound(mutate, gameid, factions, timers, state, subState, strategyCards);
+    startNextRound(mutate, gameid, state, subState, factions);
   }
 
   function selectAgenda(agendaName) {
-    revealSubStateAgenda(mutate, gameid, subState, agendaName);
+    revealSubStateAgenda(mutate, gameid, agendaName);
   }
   function hideAgenda(agendaName) {
-    hideSubStateAgenda(mutate, gameid, subState, agendaName);
+    hideSubStateAgenda(mutate, gameid);
   }
 
   function selectSubAgenda(agendaName) {
-    setSubStateOther(mutate, gameid, subState, "subAgenda", agendaName);
+    setSubStateOther(mutate, gameid, "subAgenda", agendaName);
   }
   function selectEligibleOutcome(outcome) {
-    setSubStateOther(mutate, gameid, subState, "outcome", outcome);
+    setSubStateOther(mutate, gameid, "outcome", outcome);
     setFactionVotes({});
   }
 

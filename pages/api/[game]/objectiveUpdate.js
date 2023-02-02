@@ -48,19 +48,15 @@ export default async function handler(req, res) {
         const secret = req.cookies.secret;
         const objectiveString = `${secret}.objectives.${data.objective}.selected`;
         const factionString = `${secret}.objectives.${data.objective}.factions`;
-        const scorersString = `objectives.${data.objective}.scorers`;
         await db.collection('games').doc(gameid).update({
           [objectiveString]: false,
-          [scorersString]: [],
           [factionString]: FieldValue.arrayRemove(data.faction),
           [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       } else {
         const objectiveString = `objectives.${data.objective}.selected`;
-        const scorersString = `objectives.${data.objective}.scorers`;
         await db.collection('games').doc(gameid).update({
           [objectiveString]: false,
-          [scorersString]: [],
           [timestampString]: Timestamp.fromMillis(data.timestamp),
         });
       }
