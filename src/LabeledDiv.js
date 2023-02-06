@@ -121,7 +121,7 @@ export function LabeledLine({leftLabel, label, rightLabel, style = {}, color = "
   };
   return (
     <div style={divStyle}>
-      <hr style={{width: "100%", border: `${responsivePixels(1)} solid ${color}`, marginTop: responsivePixels(8), marginBottom: responsivePixels(8)}} />
+      <hr style={{width: "100%", border: `1px solid ${color}`, marginTop: responsivePixels(8), marginBottom: responsivePixels(8)}} />
       {!!leftLabel ? <div className="mediumFont leftLabel" style={{color: color === "Black" ? "#999" : color}}
       >{leftLabel}</div> : null}
       

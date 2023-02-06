@@ -246,8 +246,7 @@ export default function AgendaPhase() {
           <ol className='flexColumn' style={{ alignItems: "flex-start", margin: "0", padding: "0", fontSize: responsivePixels(18), alignItems: "stretch" }}>
             <NumberedItem>
               <div className="flexRow mediumFont" style={{ justifyContent: "flex-start", whiteSpace: "nowrap" }}>
-                {!subState.miscount ?
-                  !currentAgenda ? <div className="flexRow" style={{ justifyContent: "flex-start" }}>
+                {!currentAgenda ? <div className="flexRow" style={{ justifyContent: "flex-start" }}>
                     <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
                       <HoverMenu label="Reveal and Read one Agenda">
                         <div className="flexRow" style={{ padding: responsivePixels(8), gap: responsivePixels(4), writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", maxHeight: responsivePixels(400), flexWrap: "wrap" }}>
@@ -259,9 +258,8 @@ export default function AgendaPhase() {
                     </LabeledDiv>
                   </div> :
                     <LabeledDiv label={label}>
-                      <AgendaRow agenda={currentAgenda} removeAgenda={() => hideAgenda(currentAgenda.name)} />
-                    </LabeledDiv>
-                  : "Re-voting on miscounted agenda"}
+                      <AgendaRow agenda={currentAgenda} removeAgenda={subState.miscount ? null : () => hideAgenda(currentAgenda.name)} />
+                    </LabeledDiv>}
               </div>
             </NumberedItem>
             {currentAgenda && currentAgenda.name === "Covert Legislation" ?
@@ -288,17 +286,15 @@ export default function AgendaPhase() {
                 </div>
               </NumberedItem>
               : null}
-            <NumberedItem>In Speaker Order:
-              <div className="flexColumn largeFont" style={{ paddingLeft: responsivePixels(8), gap: responsivePixels(4), alignItems: "flex-start" }}>
-                <div>Perform any <i>When an Agenda is revealed</i> actions</div>
-                <div>Perform any <i>After an Agenda is revealed</i> actions</div>
-              </div>
+            <NumberedItem>
+              <div className="mediumFont">Perform any <i>When an Agenda is revealed</i> actions</div>
+              <div className="mediumFont">Perform any <i>After an Agenda is revealed</i> actions</div>
             </NumberedItem>
             <NumberedItem>Discuss</NumberedItem>
             <NumberedItem>
               In Voting Order: Cast votes (or abstain)
               {votes && Object.keys(votes).length > 0 ?
-                <div className={flexDirection} style={{ marginTop: responsivePixels(12), gap: responsivePixels(4), padding: `${responsivePixels(8)} ${responsivePixels(20)}`, alignItems: "flex-start", width: "100%", border: `${responsivePixels(1)} solid #555`, borderRadius: responsivePixels(10) }}>
+                <div className={flexDirection} style={{ marginTop: responsivePixels(12), gap: responsivePixels(4), padding: `${responsivePixels(8)} ${responsivePixels(20)}`, alignItems: "flex-start", border: `${responsivePixels(1)} solid #555`, borderRadius: responsivePixels(10) }}>
                   {Object.entries(votes).map(([target, voteCount]) => {
                     return <div key={target}>{target}: {voteCount}</div>
                   })}

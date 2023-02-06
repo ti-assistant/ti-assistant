@@ -199,7 +199,7 @@ export function Footer({ }) {
     {state.phase !== "SETUP" && state.phase !== "END" ? <div style={{position: "fixed", bottom: responsivePixels(12), left: responsivePixels(108)}}>
     <LabeledDiv label="Update">
       <div className="flexColumn" style={{alignItems: "flex-start"}}>
-        <HoverMenu label="Speaker">
+        {orderedFactions.length < 7 ? <HoverMenu label="Speaker">
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
             {orderedFactions.map((faction) => {
               return <button disabled={state.speaker === faction.name}
@@ -208,7 +208,7 @@ export function Footer({ }) {
               </button>
             })}
           </div>
-        </HoverMenu>
+        </HoverMenu> : null}
         <div className="flexRow" style={{width: "100%", alignItems: "stretch"}}>
           <HoverMenu label="Techs">
             <div className="flexColumn" style={{height: "90vh", width: "82vw"}}>
@@ -225,6 +225,16 @@ export function Footer({ }) {
               <UpdatePlanets />
             </div>
           </HoverMenu>
+          {orderedFactions.length > 6 ? <HoverMenu label="Speaker">
+          <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
+            {orderedFactions.map((faction) => {
+              return <button disabled={state.speaker === faction.name}
+                onClick={() => setSpeaker(mutate, gameid, faction.name, factions)}>
+                {getFactionName(faction)}
+              </button>
+            })}
+          </div>
+        </HoverMenu> : null}
         </div>
       </div>
     </LabeledDiv>
