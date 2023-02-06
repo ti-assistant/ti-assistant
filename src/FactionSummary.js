@@ -657,7 +657,6 @@ export function UpdatePlanets({ }) {
   const middlePlanetCol = unownedPlanets.slice(0, half);
   const lastPlanetCol = unownedPlanets.slice(half);
 
-  console.log("Re-render");
   return (
     <div className="flexColumn" style={{ width: "100%", height: "100%"}}>
       <div style={{ fontSize: responsivePixels(24), marginTop: responsivePixels(8) }}>Update planets for {getFactionName(factions[factionName])}</div>

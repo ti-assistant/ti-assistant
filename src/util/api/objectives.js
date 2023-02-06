@@ -77,7 +77,6 @@ export function unscoreObjective(mutate, gameid, factionName, objectiveName) {
     optimisticData: objectives => {
       const updatedObjectives = structuredClone(objectives);
 
-      console.log(objectiveName);
       const factionIndex = (updatedObjectives[objectiveName].scorers ?? []).lastIndexOf(factionName);
       if (factionIndex !== -1) {
         updatedObjectives[objectiveName].scorers.splice(factionIndex, 1);

@@ -161,12 +161,12 @@ export function MiddleColumn() {
   const numberOfActionCards = {1: [], 2: [], 3: []};
   Object.values(filteredStrategyCards).forEach((card) => {
     let number = 1;
-    if (card.faction === "Yssaril Tribes") {
-      ++number;
-    }
     const faction = factions[card.faction];
     if (hasTech(faction, "Neural Motivator")) {
       ++number;
+    }
+    if (card.faction === "Yssaril Tribes") {
+      number = 3;
     }
     numberOfActionCards[number].push(faction);
   });
@@ -307,15 +307,19 @@ export function MiddleColumn() {
   } </div>
         break;
     case 4:
-      innerContent = <div className="flexColumn" style={{justifyContent: "flex-start", alignItems: "stretch", gap: responsivePixels(2)}}>
+      innerContent = <div className="flexColumn" style={{justifyContent: "flex-start", alignItems: "stretch"}}>
       {Object.entries(numberOfActionCards).map(([number, localFactions]) => {
         const num = parseInt(number);
         if (localFactions.length === 0) {
           return null;
         }
+        let displayNum = num;
+        if (num === 3 && !hasTech(factions['Yssaril Tribes'], "Neural Motivator")) {
+          displayNum = 2;
+        }
         return (
-          <div key={num} className="flexColumn" style={{alignItems: "flex-start", gap: responsivePixels(4), paddingLeft: responsivePixels(8)}}>
-            <LabeledDiv labelSize={20} label={`Draw ${num} ${pluralize("Action Card", num)}${num === 3 ? " and discard any one" : ""}`}>
+          <div key={num} className="flexColumn" style={{alignItems: "flex-start", paddingLeft: responsivePixels(8)}}>
+            <LabeledDiv labelSize={20} label={`Draw ${displayNum} ${pluralize("Action Card", num)}${num === 3 ? " and discard any 1" : ""}`}>
             <div className="flexRow" style={{flexWrap: "wrap", justifyContent: "flex-start"}}>
             {localFactions.map((faction) => {
               let menuButtons = [];
@@ -539,12 +543,12 @@ export default function StatusPhase() {
   const numberOfActionCards = {1: [], 2: [], 3: []};
   Object.values(filteredStrategyCards).forEach((card) => {
     let number = 1;
-    if (card.faction === "Yssaril Tribes") {
-      ++number;
-    }
     const faction = factions[card.faction];
     if (hasTech(faction, "Neural Motivator")) {
       ++number;
+    }
+    if (card.faction === "Yssaril Tribes") {
+      number = 3;
     }
     numberOfActionCards[number].push(faction);
   });
