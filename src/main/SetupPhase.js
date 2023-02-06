@@ -197,15 +197,15 @@ export default function SetupPhase() {
         </NumberedItem>
       </ol>
       {!setupPhaseComplete(factions, subState) ? 
-        <div style={{color: "indianred", fontFamily: "Myriad Pro", fontWeight: "bold"}}>Select all faction choices and reveal 2 objectives</div>
+        <div style={{color: "firebrick", fontFamily: "Myriad Pro", fontWeight: "bold"}}>Select all faction choices and reveal 2 objectives</div>
       : null}
       {/* {!factionTechChoicesComplete() ?
-        <div style={{color: "darkred"}}>Select all faction tech choices</div> :
+        <div style={{color: "firebrick"}}>Select all faction tech choices</div> :
         null}
       {!factionSubFactionChoicesComplete() ?
-        <div style={{color: "darkred"}}>Select Council Keleres sub-faction</div> :
+        <div style={{color: "firebrick"}}>Select Council Keleres sub-faction</div> :
         null}
-      {(subState.objectives ?? []).length < 2 ? <div style={{color: "darkred"}}>Reveal two stage one objectives</div> : null} */}
+      {(subState.objectives ?? []).length < 2 ? <div style={{color: "firebrick"}}>Reveal two stage one objectives</div> : null} */}
       <button disabled={!setupPhaseComplete(factions, subState)} style={{fontSize: responsivePixels(40)}} onClick={() => nextPhase()}>Start Game</button>
     </div>
   );

@@ -232,7 +232,7 @@ export function PlanetRow({ planet, factionName, updatePlanet, removePlanet, add
         claimed = owner;
       } else {
         claimed = "Multiple Players";
-        claimedColor = "darkred";
+        claimedColor = "firebrick";
       }
     }
   });

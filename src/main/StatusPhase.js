@@ -907,7 +907,7 @@ export default function StatusPhase() {
         {/* })} */}
       {/* </ol> */}
       {!statusPhaseComplete(subState) ? 
-        <div style={{color: "darkred"}}>Reveal one Stage {round > 3 ? "II" : "I"} objective</div>
+        <div style={{color: "firebrick"}}>Reveal one Stage {round > 3 ? "II" : "I"} objective</div>
       : null}
       <div className="flexRow">
       {!state.agendaUnlocked ? 

@@ -37,7 +37,7 @@ export function SystemRow({planets, factionName, addPlanet, removePlanet}) {
         style={{
           position: "relative",
           lineHeight: "32px",
-          color: "darkred",
+          color: "firebrick",
           cursor: "pointer",
           fontSize: "32px",
           zIndex: 100,
