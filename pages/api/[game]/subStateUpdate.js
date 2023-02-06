@@ -14,6 +14,9 @@ function usedComponentState(component) {
     case "tech":
       return "exhausted";
     case "relic":
+      if (component.name === "Gain Relic") {
+        return "active";
+      }
       if (component.name === "JR-XS455-O") {
         return "exhausted";
       }
