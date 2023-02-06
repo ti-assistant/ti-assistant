@@ -294,7 +294,7 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   function scoreObj(objectiveName, score) {
     if (score) {
       addObjective(objectiveName);
-      scoreObjective(mutate, gameid, factionName, objectiveName);
+      scoreObjective(mutate, gameid, fa ctionName, objectiveName);
     } else {
       unscoreObjective(mutate, gameid, factionName, objectiveName);
     }
@@ -676,7 +676,7 @@ export function UpdatePlanets({ }) {
         })}
       </div>
       <div className="flexRow" style={{alignItems: "flex-start", width: "100%", height: "100%", boxSizing: "border-box", overflowY: "auto", padding: responsivePixels(8)}}>
-        <LabeledDiv noBlur={true} label={`Owned by ${getFactionName(factions[factionName])}`} color={getFactionColor(factions[factionName])} style={{flex: "0 0 32%"}}>
+        <LabeledDiv noBlur={true} label={`Controlled by ${getFactionName(factions[factionName])}`} color={getFactionColor(factions[factionName])} style={{flex: "0 0 32%"}}>
         <div className="flexColumn" style={{width: "100%", alignItems: "stretch"}}>
           {planetsArr.map((planet) => {
             if (!(planet.owners ?? []).includes(factionName)) {
