@@ -231,7 +231,7 @@ export default function AgendaPhase() {
         {numFactions < 7 ? <div className="flexRow" style={{ alignItems: "flex-end" }}>
           <div style={{ textAlign: "center", width: responsivePixels(80) }}>Available Votes</div>
           <div style={{ textAlign: "center", width: responsivePixels(40) }}>Cast Votes</div>
-          <div style={{ textAlign: "center", width: responsivePixels(120) }}>Target</div>
+          <div style={{ textAlign: "center", width: responsivePixels(120) }}>Outcome</div>
         </div> : null}
         {votingOrder.map((faction) => {
           return <VoteCount key={faction.name} factionName={faction.name} changeVote={changeVote} agenda={localAgenda} />

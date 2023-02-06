@@ -405,7 +405,7 @@ function PhaseSection() {
               <div className="flexRow">Cannot Vote</div> :
               <React.Fragment>
                 <div className="flexRow" style={{ width: "100%", justifyContent: "center" }}>
-                  Target:
+                  Outcome:
                   <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"}>
                     <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
                       {targets.map((target) => {
