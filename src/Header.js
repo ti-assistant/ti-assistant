@@ -6,7 +6,6 @@ import { responsiveNegativePixels, responsivePixels } from "./util/util";
 import { fetcher } from "./util/api/util";
 import { GameTimer } from "./Timer";
 import { HoverMenu } from "./HoverMenu";
-import { Map } from "../pages/setup";
 import { LabeledDiv } from "./LabeledDiv";
 import { computeVPs, UpdateObjectives, UpdatePlanets, UpdateTechs, UpdateTechsModal } from "./FactionSummary";
 import React from "react";
@@ -15,6 +14,7 @@ import { repealAgenda } from "./util/api/agendas";
 import { continueGame, finishGame, setSpeaker } from "./util/api/state";
 import Head from "next/head";
 import { getFactionName } from "./util/factions";
+import { Map } from "./util/Map";
 
 export function Sidebar({ side, content }) {
   const className = `${side}Sidebar`;
