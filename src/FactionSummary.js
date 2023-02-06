@@ -294,7 +294,7 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
   function scoreObj(objectiveName, score) {
     if (score) {
       addObjective(objectiveName);
-      scoreObjective(mutate, gameid, fa ctionName, objectiveName);
+      scoreObjective(mutate, gameid, factionName, objectiveName);
     } else {
       unscoreObjective(mutate, gameid, factionName, objectiveName);
     }

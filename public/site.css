@@ -13,7 +13,7 @@
   --eighteen-pixel: max( calc(18px + (36 - 18) * ((100vw - 1280px) / (2560 - 1280))), 18px);
   --twenty-pixel: max( calc(20px + (40 - 20) * ((100vw - 1280px) / (2560 - 1280))), 20px);
   --twenty-four-pixel: max( calc(24px + (48 - 24) * ((100vw - 1280px) / (2560 - 1280))), 24px);
-  --thirty-two-pixel: max( calc(30px + (60 - 30) * ((100vw - 1280px) / (2560 - 1280))), 30px);
+  --thirty-pixel: max( calc(30px + (60 - 30) * ((100vw - 1280px) / (2560 - 1280))), 30px);
   --thirty-two-pixel: max( calc(32px + (64 - 32) * ((100vw - 1280px) / (2560 - 1280))), 32px);
   --thirty-six-pixel: max( calc(36px + (72 - 36) * ((100vw - 1280px) / (2560 - 1280))), 36px);
   --forty-pixel: max( calc(40px + (80 - 40) * ((100vw - 1280px) / (2560 - 1280))), 40px);
