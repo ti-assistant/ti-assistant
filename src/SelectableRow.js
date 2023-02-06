@@ -23,7 +23,7 @@ export function SelectableRow({itemName, children, content, selectItem, removeIt
           style={iconStyle}
           onClick={() => selectItem(itemName)}
         >
-          &#x2713;
+        	+
         </div>
       : null}
       {removeItem ? 

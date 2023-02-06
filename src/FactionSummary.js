@@ -213,8 +213,9 @@ export function UpdateObjectives({ }) {
       <div className="flexRow smallFont" style={{ boxSizing: "border-box", padding: responsivePixels(8), alignItems: "flex-start", justifyContent: "space-between", height: "100%", width: "100%", overflowY: "scroll" }}>
         <div className="flexColumn" style={{ flex: "0 0 24%", gap: responsivePixels(8), justifyItems: "flex-start", alignItems: "stretch" }}>
           {stageOneObjectives.map((obj) => {
+            const scorers = obj.scorers ?? [];
             if (obj.selected) {
-              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={scorers.length === 0 ? () => removeObj(obj.name) : null} />
             }
             if (transition['stage-one'] && !obj.selected) {
               transition['stage-one'] = false;
@@ -225,8 +226,9 @@ export function UpdateObjectives({ }) {
         </div>
         <div className="flexColumn" style={{ flex: "0 0 24%", justifyItems: "flex-start", alignItems: "stretch" }}>
           {stageTwoObjectives.map((obj) => {
+            const scorers = obj.scorers ?? [];
             if (obj.selected) {
-              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={scorers.length === 0 ? () => removeObj(obj.name) : null} />
             }
             if (transition['stage-two'] && !obj.selected) {
               transition['stage-two'] = false;
@@ -237,8 +239,9 @@ export function UpdateObjectives({ }) {
         </div>
         <div className="flexColumn" style={{ flex: "0 0 24%", justifyItems: "flex-start", alignItems: "stretch" }}>
           {secretObjectives.map((obj) => {
+            const scorers = obj.scorers ?? [];
             if (obj.selected) {
-              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={scorers.length === 0 ? () => removeObj(obj.name) : null} />
             }
             if (transition['secret'] && !obj.selected) {
               transition['secret'] = false;
@@ -249,8 +252,9 @@ export function UpdateObjectives({ }) {
         </div>
         <div className="flexColumn" style={{ flex: "0 0 24%", justifyItems: "flex-start", alignItems: "stretch" }}>
           {otherObjectives.map((obj) => {
+            const scorers = obj.scorers ?? [];
             if (obj.selected) {
-              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={() => removeObj(obj.name)} />
+              return <ObjectiveRow key={obj.name} objective={obj} scoreObjective={(name, score) => scoreObj(name, score)} faction={factionName} removeObjective={scorers.length === 0 ? () => removeObj(obj.name) : null} />
             }
             if (transition['other'] && !obj.selected) {
               transition['other'] = false;

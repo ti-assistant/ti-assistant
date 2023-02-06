@@ -508,7 +508,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
       const conqueredPlanets = ((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? [];
       return (
         <div className="flexColumn largeFont" style={{ ...style }}>
-          {conqueredPlanets.length > 0 ? <LabeledDiv label="CONQUERED PLANETS">
+          {conqueredPlanets.length > 0 ? <LabeledDiv label="NEWLY CONTROLLED PLANETS">
             <React.Fragment>
               <div className='flexColumn' style={{ alignItems: "stretch", width: "100%" }}>
                 {conqueredPlanets.map((planet) => {
@@ -519,7 +519,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
             </React.Fragment>
           </LabeledDiv> : null}
           {claimablePlanets.length > 0 ?
-            <HoverMenu label="Conquer Planet" content={
+            <HoverMenu label="Take Control of Planet" content={
               <div className="flexRow" style={targetButtonStyle}>
                 {claimablePlanets.map((planet) => {
                   return (
