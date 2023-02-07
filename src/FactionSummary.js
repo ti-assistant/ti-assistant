@@ -210,7 +210,7 @@ export function UpdateObjectives({ }) {
         <div className="flexColumn" style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}>Secret</div>
         <div className="flexColumn" style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}>Other</div>
       </div>
-      <div className="flexRow smallFont" style={{ boxSizing: "border-box", padding: responsivePixels(8), alignItems: "flex-start", justifyContent: "space-between", height: "100%", width: "100%", overflowY: "scroll" }}>
+      <div className="flexRow smallFont" style={{ boxSizing: "border-box", padding: responsivePixels(8), alignItems: "flex-start", justifyContent: "space-between", height: "100%", width: "100%", overflowY: "auto" }}>
         <div className="flexColumn" style={{ flex: "0 0 24%", gap: responsivePixels(8), justifyItems: "flex-start", alignItems: "stretch" }}>
           {stageOneObjectives.map((obj) => {
             const scorers = obj.scorers ?? [];
@@ -355,7 +355,7 @@ export function UpdateObjectivesModal({ visible, onComplete }) {
         <div className="flexColumn" style={{ flex: "0 0 24%", fontSize: "24px" }}>Secret</div>
         <div className="flexColumn" style={{ flex: "0 0 24%", fontSize: "24px" }}>Other</div>
       </div>
-      <div className="flexRow" style={{ width: "1500px", paddingBottom: "8px", alignItems: "flex-start", justifyContent: "space-between", height: "100%", overflowY: "scroll" }}>
+      <div className="flexRow" style={{ width: "1500px", paddingBottom: "8px", alignItems: "flex-start", justifyContent: "space-between", height: "100%", overflowY: "auto" }}>
         <div className="flexColumn" style={{ flex: "0 0 24%", gap: "4px", justifyItems: "flex-start", alignItems: "stretch" }}>
           {stageOneObjectives.map((obj) => {
             if (obj.selected) {
@@ -515,7 +515,7 @@ export function UpdateTechs({ }) {
           );
         })}
       </div>
-      <div className="flexRow" style={{ alignItems: "stretch", justifyContent: "space-between", width: "100%", height: "100%", boxSizing: "border-box", overflowY: "scroll", padding: responsivePixels(8) }}>
+      <div className="flexRow" style={{ alignItems: "stretch", justifyContent: "space-between", width: "100%", height: "100%", boxSizing: "border-box", overflowY: "auto", padding: responsivePixels(8) }}>
         <div className="flexColumn" style={{ alignItems: "stretch", justifyContent: "flex-start" }}>
           <div className="flexColumn" style={{ alignItems: "stretch", justifyContent: "flex-start" }}>
             <div className="flexRow" style={{ justifyContent: "center", fontSize: responsivePixels(20) }}>
@@ -788,7 +788,7 @@ export function UpdatePlanetsModal({ visible, onComplete }) {
           </button>
         </div>
       </div>
-      <div className="flexRow" style={{ width: "1600px", flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch", overflowY: "scroll" }}>
+      <div className="flexRow" style={{ width: "1600px", flexWrap: "wrap", alignItems: "stretch", justifyContent: "stretch", alignContent: "stretch", overflowY: "auto" }}>
         {groupBySystem ?
           planetsBySystem.map((system, systemName) => {
             let allControlled = true;
