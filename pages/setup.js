@@ -420,12 +420,12 @@ function FactionSelect({ factions, position, mobile = false, speaker, setFaction
     writingMode: "vertical-lr",
     justifyContent: "flex-start"}}>
           {filteredFactions.map(([factionName, local]) => {
-            return <button key={local.name} className={"mediumFont" + (faction.name === factionName ? " selected" : "")} style={{width: `${responsivePixels(140)}`, fontSize: responsivePixels(14)}} onClick={() => selectFaction(factionName)}>{local.name}</button>
+            return <button key={local.name} className={"mediumFont" + (faction.name === factionName ? " selected" : "")} style={{width: `${responsivePixels(140)}`, writingMode: "horizontal-tb", fontSize: responsivePixels(14)}} onClick={() => selectFaction(factionName)}>{local.name}</button>
           })}
           </div>
         </HoverMenu>
         <div className="flexRow" style={{width: "100%", justifyContent: "space-between"}}>
-        <HoverMenu label={faction.color ? "Change Color" : "Pick Color"} style={{minWidth: responsivePixels(92)}}>
+        <HoverMenu label={faction.color ? "Change Color" : "Pick Color"}>
         <div className="flexRow" style={{padding: `${responsivePixels(8)}`,
     flexWrap: "wrap",
     maxHeight: `${responsivePixels(122)}`,
@@ -436,7 +436,7 @@ function FactionSelect({ factions, position, mobile = false, speaker, setFaction
           {filteredColors.map((color) => {
               const factionColor = getFactionColor({color: color});
               return (
-                <button key={color} style={{width: `${responsivePixels(60)}`, backgroundColor: factionColor, color: factionColor}} className={faction.color === color ? "selected" : ""} onClick={() => selectColor(color)}>{color}</button>
+                <button key={color} style={{width: `${responsivePixels(60)}`, writingMode: "horizontal-tb", backgroundColor: factionColor, color: factionColor}} className={faction.color === color ? "selected" : ""} onClick={() => selectColor(color)}>{color}</button>
               );
             })}
             </div>

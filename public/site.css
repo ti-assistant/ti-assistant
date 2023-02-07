@@ -252,12 +252,20 @@ input[type=text] {
   transform: scale(1);
 }
 
+.hoverInfo.down {
+  clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+}
+
 .hoverInfo.up {
   clip-path: polygon(0% 101%, 0% 101%, 0% 101%, 0% 101%);
 }
 
 .hoverInfo.left {
   clip-path: polygon(101% 0%, 101% 0%, 101% 0%, 101% 0%);
+}
+
+.hoverInfo.down.left {
+  clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
 }
 
 .hoverInfo.up.left {

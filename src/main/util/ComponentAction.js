@@ -65,14 +65,14 @@ function ComponentSelect({ components, selectComponent }) {
     <HoverMenu label="Action Cards">
       <div className="flexRow" style={innerStyle}>
       {actionCards.map((component) => {
-        return <button key={component.name} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
+        return <button key={component.name} style={{writingMode: "horizontal-tb"}} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>
     </HoverMenu>
     {techs.length > 0 ? <HoverMenu label="Techs">
       <div className="flexRow" style={innerStyle}>
       {techs.map((component) => {
-        return <button key={component.name} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
+        return <button key={component.name} style={{writingMode: "horizontal-tb"}} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>
     </HoverMenu> : null}
@@ -90,7 +90,7 @@ function ComponentSelect({ components, selectComponent }) {
     {exploration.length > 0 ? <HoverMenu label="Exploration/Relic">
       <div className="flexRow" style={innerStyle}>
       {exploration.map((component) => {
-        return <button key={component.name} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
+        return <button key={component.name} style={{writingMode: "horizontal-tb"}} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>
     </HoverMenu> : null}
@@ -266,7 +266,7 @@ function ComponentDetails({ factionName }) {
         : passedLaws.length > 0 ? <HoverMenu label="Repeal Law">
             <div className="flexRow" style={selectStyle}>
             {passedLaws.map((law) => {
-              return <button key={law.name} onClick={() => repealLaw(law.name)}>{law.name}</button>
+              return <button key={law.name} style={{writingMode: "horizontal-tb"}} onClick={() => repealLaw(law.name)}>{law.name}</button>
             })}
             </div>
           </HoverMenu> : "No laws to repeal"}

@@ -205,7 +205,7 @@ function PhaseSection() {
                     return objective.type === "stage-one"
                   })
                     .map((objective) => {
-                      return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
+                      return <button key={objective.name} style={{writingMode: "horizontal-tb"}} onClick={() => addObj(objective)}>{objective.name}</button>
                     })}
                 </div>
               </HoverMenu>
@@ -324,7 +324,7 @@ function PhaseSection() {
               : <HoverMenu label="Score Secret Objective">
                 <div className="flexRow" style={{ writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll" }}>
                   {secrets.map((objective) => {
-                    return <button key={objective.name} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
+                    return <button key={objective.name} style={{writingMode: "horizontal-tb"}} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
                   })}
                 </div>
               </HoverMenu>}
@@ -344,7 +344,7 @@ function PhaseSection() {
                         return objective.type === (state.round > 3 ? "stage-two" : "stage-one");
                       })
                         .map((objective) => {
-                          return <button key={objective.name} onClick={() => addObj(objective)}>{objective.name}</button>
+                          return <button key={objective.name} style={{writingMode: "horizontal-tb"}} onClick={() => addObj(objective)}>{objective.name}</button>
                         })}
                     </div>
                   </HoverMenu>
@@ -368,7 +368,7 @@ function PhaseSection() {
             <HoverMenu label="Reveal and Read one Agenda">
               <div className='flexRow' style={{ maxWidth: "85vw", gap: "4px", maxHeight: "400px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
                 {orderedAgendas.map((agenda) => {
-                  return <button key={agenda.name} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
+                  return <button key={agenda.name} style={{writingMode: "horizontal-tb"}} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                 })}
               </div>
             </HoverMenu>
@@ -410,7 +410,7 @@ function PhaseSection() {
                     <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
                       {targets.map((target) => {
                         return (
-                          <button key={target} onClick={() => { castVotes(target, 0) }}>{target}</button>
+                          <button key={target} style={{writingMode: "horizontal-tb"}} onClick={() => { castVotes(target, 0) }}>{target}</button>
                         );
                       })}
                     </div>
@@ -447,13 +447,13 @@ function PhaseSection() {
                   <HoverMenu label="Choose outcome (vote tied)">
                     <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
                       {selectedTargets.length > 0 ? selectedTargets.map((target) => {
-                        return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                        return <button key={target} style={{writingMode: "horizontal-tb"}} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                       }) :
                         targets.map((target) => {
                           if (target === "Abstain") {
                             return null;
                           }
-                          return <button key={target} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                          return <button key={target} style={{writingMode: "horizontal-tb"}} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                         })}
                     </div>
                   </HoverMenu></LabeledDiv> :

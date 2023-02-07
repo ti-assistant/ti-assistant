@@ -386,7 +386,7 @@ export function VoteCount({ factionName, agenda, changeVote, opts = {} }) {
             <div className="flexRow" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch", justifyContent: "flex-start", writingMode: "vertical-lr", maxHeight: responsivePixels(300), flexWrap: "wrap"}}>
               {targets.map((target) => {
                 return (
-                  <button key={target} style={{fontSize: responsivePixels(14)}} onClick={() => {castVotes(target, 0)}}>{target}</button>
+                  <button key={target} style={{writingMode: "horizontal-tb", fontSize: responsivePixels(14)}} onClick={() => {castVotes(target, 0)}}>{target}</button>
                 );
               })}
             </div>

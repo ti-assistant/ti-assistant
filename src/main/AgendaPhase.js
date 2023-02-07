@@ -251,7 +251,7 @@ export default function AgendaPhase() {
                       <HoverMenu label="Reveal and Read one Agenda">
                         <div className="flexRow" style={{ padding: responsivePixels(8), gap: responsivePixels(4), writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", maxHeight: responsivePixels(400), flexWrap: "wrap" }}>
                           {orderedAgendas.map((agenda) => {
-                            return <button key={agenda.name} className={agenda.resolved ? "faded" : ""} style={{ fontSize: responsivePixels(14) }} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
+                            return <button key={agenda.name} className={agenda.resolved ? "faded" : ""} style={{ fontSize: responsivePixels(14), writingMode: "horizontal-tb" }} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                           })}
                         </div>
                       </HoverMenu>
@@ -308,13 +308,13 @@ export default function AgendaPhase() {
                     <HoverMenu label="Choose outcome if tied">
                       <div className="flexRow" style={{ alignItems: "stretch", justifyContent: "flex-start", gap: responsivePixels(4), padding: responsivePixels(8), writingMode: "vertical-lr", maxHeight: responsivePixels(320), flexWrap: "wrap" }}>
                         {selectedTargets.length > 0 ? selectedTargets.map((target) => {
-                          return <button key={target} style={{ fontSize: responsivePixels(14) }} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                          return <button key={target} style={{ fontSize: responsivePixels(14), writingMode: "horizontal-tb" }} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                         }) :
                           allTargets.map((target) => {
                             if (target === "Abstain") {
                               return null;
                             }
-                            return <button key={target} style={{ fontSize: responsivePixels(14) }} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
+                            return <button key={target} style={{ fontSize: responsivePixels(14), writingMode: "horizontal-tb" }} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                           })}
                       </div>
                     </HoverMenu>
@@ -336,7 +336,7 @@ export default function AgendaPhase() {
                       <div className="flexRow" style={{ gap: responsivePixels(4), writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: responsivePixels(8), maxHeight: responsivePixels(240), flexWrap: "wrap" }}>
                         {Object.values(agendas ?? {}).filter((agenda) => agenda.elect === subState.outcome)
                           .map((agenda) => {
-                            return <button key={agenda.name} style={{ fontSize: responsivePixels(14) }} className={agenda.resolved ? "faded" : ""} onClick={() => selectSubAgenda(agenda.name)}>{agenda.name}</button>;
+                            return <button key={agenda.name} style={{ writingMode: "horizontal-tb", fontSize: responsivePixels(14) }} className={agenda.resolved ? "faded" : ""} onClick={() => selectSubAgenda(agenda.name)}>{agenda.name}</button>;
                           })}
                       </div>
                     </HoverMenu>

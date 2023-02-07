@@ -271,7 +271,7 @@ export function MiddleColumn() {
             : <HoverMenu label="Score Secret">
             <div className="flexRow" style={{writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: responsivePixels(230), flexWrap: "wrap", whiteSpace: "nowrap", padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
             {secrets.map((objective) => {
-              return <button style={{fontSize: responsivePixels(14)}} onClick={() => scoreObj(card.faction, objective)}>{objective.name}</button>
+              return <button style={{writingMode: "horizontal-tb", fontSize: responsivePixels(14)}} onClick={() => scoreObj(card.faction, objective)}>{objective.name}</button>
             })}
             </div>
           </HoverMenu>}
@@ -297,7 +297,7 @@ export function MiddleColumn() {
                 return objective.type === (round > 3 ? "stage-two" : "stage-one");
               })
                 .map((objective) => {
-                  return <button style={{fontSize: responsivePixels(16)}} onClick={() => addObj(objective)}>{objective.name}</button>
+                  return <button style={{writingMode: "horizontal-tb", fontSize: responsivePixels(16)}} onClick={() => addObj(objective)}>{objective.name}</button>
                 })}
             </div>
           </HoverMenu>

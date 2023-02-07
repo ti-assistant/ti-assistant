@@ -4,6 +4,7 @@ import { getResponsiveFormula, responsiveNegativePixels, responsivePixels } from
 export function HoverMenu({label, style, borderless, shift = {}, buttonStyle = {}, children, content, directin = "down", borderColor = "#aaa"}) {
   const menu = useRef(null);
   const innerMenu = useRef(null);
+  const [ forceRefresh, setForceRefresh ] = useState(false);
   const [ direction, setDirection ] = useState("down");
   const [ side, setSide ] = useState("right");
 
@@ -20,6 +21,11 @@ export function HoverMenu({label, style, borderless, shift = {}, buttonStyle = {
       setSide("left");
     } else {
       setSide("right");
+    }
+    // Seems to be required to get Firefox to treat this correctly.
+    if (!forceRefresh) {
+      setForceRefresh(true);
+      setDirection("up");
     }
   });
 

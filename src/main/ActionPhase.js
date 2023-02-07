@@ -353,7 +353,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                       return null;
                     }
                     return (
-                      <button key={faction.name} onClick={() => selectSpeaker(faction.name)}>{getFactionName(faction)}</button>);
+                      <button key={faction.name} style={{ writingMode: "horizontal-tb"}} onClick={() => selectSpeaker(faction.name)}>{getFactionName(faction)}</button>);
                   })}
                 </div>
               </HoverMenu>}
@@ -378,7 +378,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                     <div className="flexRow" style={targetButtonStyle}>
                       {claimablePlanets.map((planet) => {
                         return (
-                          <button key={planet.name} style={{ width: responsivePixels(90) }} onClick={() => addPlanet(activeFaction.name, planet)}>{planet.name}</button>);
+                          <button key={planet.name} style={{ writingMode: "horizontal-tb", width: responsivePixels(90) }} onClick={() => addPlanet(activeFaction.name, planet)}>{planet.name}</button>);
                       })}
                     </div>} /> : null}
               </React.Fragment>}
@@ -421,7 +421,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
                     <div className="flexRow" style={targetButtonStyle}>
                       {nonXxchaPlanets.map((planet) => {
                         return (
-                          <button key={planet.name} style={{ width: responsivePixels(90) }} onClick={() => addPlanet("Xxcha Kingdom", planet)}>{planet.name}</button>);
+                          <button key={planet.name} style={{ writingMode: "horizontal-tb", width: responsivePixels(90) }} onClick={() => addPlanet("Xxcha Kingdom", planet)}>{planet.name}</button>);
                       })}
                     </div>} /> : null}
               </React.Fragment>
@@ -523,7 +523,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
               <div className="flexRow" style={targetButtonStyle}>
                 {claimablePlanets.map((planet) => {
                   return (
-                    <button key={planet.name} style={{ width: responsivePixels(90) }} onClick={() => addPlanet(activeFaction.name, planet)}>{planet.name}</button>);
+                    <button key={planet.name} style={{ writingMode: "horizontal-tb", width: responsivePixels(90) }} onClick={() => addPlanet(activeFaction.name, planet)}>{planet.name}</button>);
                 })}
               </div>} /> : null}
           {scoredObjectives.length > 0 ? <LabeledDiv label="SCORED SECRETS">

@@ -183,7 +183,7 @@ export default function SetupPhase() {
                 return objective.type === "stage-one"
               })
                 .map((objective) => {
-                  return <button onClick={() => addObj(objective)}>{objective.name}</button>
+                  return <button style={{writingMode: "horizontal-tb"}} onClick={() => addObj(objective)}>{objective.name}</button>
                 })}
             </div>
           </HoverMenu>
