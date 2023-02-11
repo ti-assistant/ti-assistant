@@ -85,6 +85,5 @@ export async function poster(url, data) {
   if (res.status !== 200) {
     throw new Error(val.message);
   }
-  console.log(val);
   return val;
 }

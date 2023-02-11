@@ -475,7 +475,7 @@ export function setSubStateOther(mutate, gameid, fieldName, value) {
 
   mutate(`/api/${gameid}/subState`, async () => await poster(`/api/${gameid}/subStateUpdate`, data), {
     optimisticData: subState => {
-      const updatedSubState = structuredClone(subState);
+      const updatedSubState = structuredClone(subState) ?? {};
 
       updatedSubState[fieldName] = value;
 

@@ -8,6 +8,7 @@
   --five-pixel: max( calc(5px + (10 - 5) * ((100vw - 1280px) / (2560 - 1280))), 5px);
   --six-pixel: max( calc(6px + (12 - 6) * ((100vw - 1280px) / (2560 - 1280))), 6px);
   --eight-pixel: max( calc(8px + (16 - 8) * ((100vw - 1280px) / (2560 - 1280))), 8px);
+  --ten-pixel: max( calc(10px + (20 - 10) * ((100vw - 1280px) / (2560 - 1280))), 10px);
   --fourteen-pixel: max( calc(14px + (28 - 14) * ((100vw - 1280px) / (2560 - 1280))), 14px);
   --sixteen-pixel: max( calc(16px + (32 - 16) * ((100vw - 1280px) / (2560 - 1280))), 16px);
   --eighteen-pixel: max( calc(18px + (36 - 18) * ((100vw - 1280px) / (2560 - 1280))), 18px);

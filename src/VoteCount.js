@@ -133,7 +133,6 @@ function computeRemainingVotes(factionName, factions, planets, attachments, opti
     }
     if (influenceNeeded > 0 && planetInfluence <= influenceNeeded) {
       influenceNeeded -= planetInfluence;
-      console.log(`Using ${planet.name} for ${planetInfluence} votes`);
       continue;
     }
     if (factionName === "Xxcha Kingdom" && factions[factionName].commander === "unlocked") {
@@ -143,8 +142,6 @@ function computeRemainingVotes(factionName, factions, planets, attachments, opti
 
     remainingVotes += planetInfluence;
   }
-
-  console.log(influenceNeeded);
 
   // Player cast an invalid number of votes. Forcibly adjust.
   if (influenceNeeded > 0) {
