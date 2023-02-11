@@ -310,6 +310,13 @@ input[type=text] {
   clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
 }
 
+/* Firefox will have a degraded animation experience, but this will ensure functionality. */
+@supports not selector(:has(.hoverParent:hover)) {
+  .hoverParent:hover > .hoverInfo {
+    clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
+  }
+}
+
 /* .hoverInfo:has(.hoverParent.hover) {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
 } */
