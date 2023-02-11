@@ -217,7 +217,7 @@ function PhaseSection() {
             </div>
           </LabeledDiv>
           {setupPhaseComplete(factions, subState) ?
-            <button onClick={() => startFirstRound(mutate, gameid, subState, factions, planets, objectives, state, options)}>Start Game</button> : null}
+            <button onClick={() => startFirstRound(mutate, gameid, subState, factions)}>Start Game</button> : null}
         </React.Fragment>;
       break;
     }
