@@ -118,6 +118,14 @@ export default async function handler(req, res) {
         "state.speaker": data.speaker,
         [timestampString]: Timestamp.fromMillis(data.timestamp),
       };
+      switch (gameRef.data().state.phase) {
+        case "STRATEGY":
+          if (gameRef.data().state.speaker === gameRef.data().state.activeplayer) {
+            updates['state.activeplayer'] = data.speaker;
+          }
+          break;
+      }
+        
       const currentOrder = gameRef.data().factions[data.speaker].order;
       for (const [name, faction] of Object.entries(gameRef.data().factions)) {
         let factionOrder = faction.order - currentOrder + 1;

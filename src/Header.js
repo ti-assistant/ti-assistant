@@ -193,13 +193,21 @@ export function Footer({ }) {
     return null;
   }
 
+  function shouldBlockSpeakerUpdates() {
+    if (state.phase !== "STRATEGY") {
+      return false;
+    }
+
+    return state.activeplayer !== state.speaker && state.activeplayer !== "None";
+  }
+
   const orderedFactions = Object.values(factions ?? {}).sort((a, b) => a.order - b.order);
 
   return <div className="flex" style={{ bottom: 0, width: "100vw", position: "fixed", justifyContent: "space-between" }}>
     {state.phase !== "SETUP" && state.phase !== "END" ? <div style={{position: "fixed", bottom: responsivePixels(12), left: responsivePixels(108)}}>
     <LabeledDiv label="Update">
       <div className="flexColumn" style={{alignItems: "flex-start"}}>
-        {orderedFactions.length < 7 ? <HoverMenu label="Speaker">
+        {orderedFactions.length < 7 && !shouldBlockSpeakerUpdates() ? <HoverMenu label="Speaker">
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
             {orderedFactions.map((faction) => {
               return <button disabled={state.speaker === faction.name}
@@ -225,7 +233,7 @@ export function Footer({ }) {
               <UpdatePlanets />
             </div>
           </HoverMenu>
-          {orderedFactions.length > 6 ? <HoverMenu label="Speaker">
+          {orderedFactions.length > 6 && !shouldBlockSpeakerUpdates() ? <HoverMenu label="Speaker">
           <div className="flexColumn" style={{padding: responsivePixels(8), gap: responsivePixels(4), alignItems: "stretch"}}>
             {orderedFactions.map((faction) => {
               return <button disabled={state.speaker === faction.name}

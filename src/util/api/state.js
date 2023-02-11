@@ -11,6 +11,14 @@ export function setSpeaker(mutate, gameid, speaker, factions) {
     optimisticData: state => {
       const updatedState = structuredClone(state);
 
+      switch (state.phase) {
+        case "STRATEGY":
+          if (state.speaker === state.activeplayer) {
+            updatedState.activeplayer = speaker;
+          }
+          break;
+      }
+
       updatedState.speaker = speaker;
 
       return updatedState;
