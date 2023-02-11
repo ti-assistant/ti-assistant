@@ -225,6 +225,16 @@ export default function AgendaPhase() {
 
   const checksAndBalances = agendas['Checks and Balances'] ?? {};
 
+  let items = (selectedTargets ?? []).length;
+  if (items === 0) {
+    items = (allTargets ?? []).length;
+  }
+  if (items > 10) {
+    items = 10; 
+  }
+
+  const possibleSubAgendas = Object.values(agendas ?? {}).filter((agenda) => agenda.elect === subState.outcome);
+
   return (
     <div className="flexRow" style={{ gap: responsivePixels(40), height: "100vh", width: "100%", alignItems: "flex-start", justifyContent: "space-between" }}>
       <div className="flexColumn" style={{ paddingTop: responsivePixels(140), gap: numFactions > 7 ? 0 : responsivePixels(8), alignItems: "stretch", width: responsivePixels(300) }}>
@@ -249,7 +259,7 @@ export default function AgendaPhase() {
                 {!currentAgenda ? <div className="flexRow" style={{ justifyContent: "flex-start" }}>
                     <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
                       <HoverMenu label="Reveal and Read one Agenda">
-                        <div className="flexRow" style={{ padding: responsivePixels(8), gap: responsivePixels(4), writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", maxHeight: responsivePixels(400), flexWrap: "wrap" }}>
+                        <div className="flexRow" style={{ padding: responsivePixels(8), gap: responsivePixels(4), display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(13, auto)", alignItems: 'stretch', justifyContent: "flex-start"   }}>
                           {orderedAgendas.map((agenda) => {
                             return <button key={agenda.name} className={agenda.resolved ? "faded" : ""} style={{ fontSize: responsivePixels(14), writingMode: "horizontal-tb" }} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                           })}
@@ -306,7 +316,7 @@ export default function AgendaPhase() {
                 <div>
                   {!subState.tieBreak ? <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])} style={{ width: "auto" }}>
                     <HoverMenu label="Choose outcome if tied">
-                      <div className="flexRow" style={{ alignItems: "stretch", justifyContent: "flex-start", gap: responsivePixels(4), padding: responsivePixels(8), writingMode: "vertical-lr", maxHeight: responsivePixels(320), flexWrap: "wrap" }}>
+                      <div className="flexRow" style={{ alignItems: "stretch", justifyContent: "flex-start", gap: responsivePixels(4), padding: responsivePixels(8), display: "grid", gridAutoFlow: "column", gridTemplateRows: `repeat(${items}, auto)` }}>
                         {selectedTargets.length > 0 ? selectedTargets.map((target) => {
                           return <button key={target} style={{ fontSize: responsivePixels(14), writingMode: "horizontal-tb" }} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                         }) :
@@ -333,8 +343,8 @@ export default function AgendaPhase() {
                 {currentAgenda && currentAgenda.name === "Covert Legislation" ?
                   !subState.subAgenda ?
                     <HoverMenu label="Reveal Covert Legislation Agenda">
-                      <div className="flexRow" style={{ gap: responsivePixels(4), writingMode: "vertical-lr", alignItems: 'stretch', justifyContent: "flex-start", padding: responsivePixels(8), maxHeight: responsivePixels(240), flexWrap: "wrap" }}>
-                        {Object.values(agendas ?? {}).filter((agenda) => agenda.elect === subState.outcome)
+                      <div className="flexRow" style={{ gap: responsivePixels(4), alignItems: 'stretch', justifyContent: "flex-start", padding: responsivePixels(8), display: "grid", gridAutoFlow: "column", gridTemplateRows: `repeat(${Math.min(possibleSubAgendas.length, 13)}, auto)` }}>
+                        {possibleSubAgendas
                           .map((agenda) => {
                             return <button key={agenda.name} style={{ writingMode: "horizontal-tb", fontSize: responsivePixels(14) }} className={agenda.resolved ? "faded" : ""} onClick={() => selectSubAgenda(agenda.name)}>{agenda.name}</button>;
                           })}

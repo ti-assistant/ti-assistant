@@ -219,11 +219,10 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
   const targetButtonStyle = {
     fontFamily: "Myriad Pro",
     padding: responsivePixels(8),
-    flexWrap: "wrap",
-    alignItems: "stretch",
+    display: "grid",
+    gridAutoFlow: "column",
+    gridTemplateRows: "repeat(14, auto)",
     gap: responsivePixels(4),
-    maxHeight: responsivePixels(404),
-    writingMode: "vertical-lr",
     justifyContent: "flex-start",
     ...hoverMenuStyle,
   };
@@ -347,7 +346,7 @@ export function AdditionalActions({ factionName, visible, style, hoverMenuStyle 
               </LabeledDiv>
               :
               <HoverMenu label="Select Speaker">
-                <div className="flexRow" style={targetButtonStyle}>
+                <div className="flexColumn" style={{...secretButtonStyle }}>
                   {orderedFactions.map((faction) => {
                     if (state.speaker === faction.name) {
                       return null;

@@ -120,7 +120,7 @@ export function LabeledLine({leftLabel, label, rightLabel, style = {}, color = "
     color: `${color === "Black" ? "#999" : color}`
   };
   return (
-    <div style={divStyle}>
+    <div className="flexColumn" style={divStyle}>
       <hr style={{width: "100%", border: `1px solid ${color}`, marginTop: responsivePixels(8), marginBottom: responsivePixels(8)}} />
       {!!leftLabel ? <div className="mediumFont leftLabel" style={{color: color === "Black" ? "#999" : color}}
       >{leftLabel}</div> : null}

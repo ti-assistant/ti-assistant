@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR, { useSWRConfig } from 'swr'
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { FactionCard, FactionSymbol, FullFactionSymbol, StartingComponents } from '../FactionCard';
 import { fetcher, poster } from '../util/api/util';
 import { ObjectiveModal } from '../ObjectiveModal';
@@ -79,10 +79,10 @@ export default function SetupPhase() {
   const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: options } = useSWR(gameid ? `/api/${gameid}/options` : null, fetcher);
   const { data: subState = {} } = useSWR(gameid ? `/api/${gameid}/subState` : null, fetcher);
-  const [ showObjectiveModal, setShowObjectiveModal ] = useState(false);
+  const [showObjectiveModal, setShowObjectiveModal] = useState(false);
   // const [ subState, setSubState ] = useState({});
-  const [ revealedObjectives, setRevealedObjectives ] = useState([]);
-  
+  const [revealedObjectives, setRevealedObjectives] = useState([]);
+
 
 
   if (!state || !planets || !factions || !objectives || !options) {
@@ -133,61 +133,62 @@ export default function SetupPhase() {
   });
 
   return (
-    <div className="flexColumn" style={{alignItems: "center", justifyContent: "flex-start", marginTop: responsivePixels(100)}}>
+    <div className="flexColumn" style={{ alignItems: "center", justifyContent: "flex-start", marginTop: responsivePixels(100) }}>
       {/* <ObjectiveModal visible={showObjectiveModal} type="stage-one" onComplete={() => setShowObjectiveModal(false)} /> */}
-      <ol className='flexColumn' style={{alignItems: "flex-start", margin: 0, padding: 0, fontSize: responsivePixels(24), margin: `0 ${responsivePixels(20)} 0 ${responsivePixels(40)}`}}>
+      <ol className='flexColumn' style={{ alignItems: "flex-start", margin: 0, padding: 0, fontSize: responsivePixels(24), margin: `0 ${responsivePixels(20)} 0 ${responsivePixels(40)}` }}>
         <NumberedItem>Build the galaxy</NumberedItem>
         <NumberedItem>Shuffle decks</NumberedItem>
         <NumberedItem><LabeledDiv label="Gather starting components">
-        <div className="flexRow" style={{position: "relative", flexWrap: "wrap", alignItems:"flex-start", justifyContent: "space-evenly"}}>
-          {orderedFactions.map(([name, faction]) => {
-            return (
-            <HoverMenu key={name} label={name} borderColor={getFactionColor(faction)}>
-              <div style={{padding: `0 ${responsivePixels(8)} ${responsivePixels(8)} ${responsivePixels(8)}`}}>
-                <StartingComponents faction={faction} />
-              </div>
-            </HoverMenu>
-            // <FactionCard key={name} faction={faction} opts={{
-            //   displayStartingComponents: true,
-            //   fontSize: "16px",
-            //   iconSize: "60%"
-            // }} />
-            );
-          })}
-        </div></LabeledDiv>
+          <div className="flexRow" style={{ position: "relative", flexWrap: "wrap", alignItems: "flex-start", justifyContent: "space-evenly" }}>
+            {orderedFactions.map(([name, faction]) => {
+              return (
+                <HoverMenu key={name} label={name} borderColor={getFactionColor(faction)}>
+                  <div style={{ padding: `0 ${responsivePixels(8)} ${responsivePixels(8)} ${responsivePixels(8)}` }}>
+                    <StartingComponents faction={faction} />
+                  </div>
+                </HoverMenu>
+                // <FactionCard key={name} faction={faction} opts={{
+                //   displayStartingComponents: true,
+                //   fontSize: "16px",
+                //   iconSize: "60%"
+                // }} />
+              );
+            })}
+          </div></LabeledDiv>
         </NumberedItem>
         <NumberedItem>Draw 2 secret objectives and keep one</NumberedItem>
         <NumberedItem>Re-shuffle secret objectives</NumberedItem>
         <NumberedItem>
           <LabeledDiv label={`Speaker: ${getFactionName(factions[state.speaker])}`} color={getFactionColor(factions[state.speaker])}>
             Draw 5 stage one objectives and reveal 2
-            {(subState.objectives ?? []).length > 0 ? 
+            {(subState.objectives ?? []).length > 0 ?
               <LabeledDiv label="Revealed Objectives">
-                <div className="flexColumn" style={{alignItems: "stretch"}}>
-                {(subState.objectives ?? []).map((objectiveName) => {
-                  return <ObjectiveRow key={objectiveName} objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
-                })}
+                <div className="flexColumn" style={{ alignItems: "stretch" }}>
+                  {(subState.objectives ?? []).map((objectiveName) => {
+                    return <ObjectiveRow key={objectiveName} objective={objectives[objectiveName]} removeObjective={() => removeObj(objectiveName)} viewing={true} />;
+                  })}
                 </div>
               </LabeledDiv>
-            : null}
-        {(subState.objectives ?? []).length < 2 ? 
-          <HoverMenu label="Reveal Objective" direction="up">
-            <div className='flexRow' style={{padding: `${responsivePixels(8)}`,
-    flexWrap: "wrap",
-    maxHeight: `${responsivePixels(140)}`,
-    alignItems: "stretch",
-    gap: `${responsivePixels(4)}`,
-    writingMode: "vertical-lr",
-    justifyContent: "flex-start"}}>
-              {Object.values(availableObjectives).filter((objective) => {
-                return objective.type === "stage-one"
-              })
-                .map((objective) => {
-                  return <button style={{writingMode: "horizontal-tb"}} onClick={() => addObj(objective)}>{objective.name}</button>
-                })}
-            </div>
-          </HoverMenu>
-        : null}
+              : null}
+            {(subState.objectives ?? []).length < 2 ?
+              <HoverMenu label="Reveal Objective" direction="up">
+                <div className='flexRow' style={{
+                  padding: `${responsivePixels(8)}`,
+                  display: "grid",
+                  gridAutoFlow: "column",
+                  gridTemplateRows: "repeat(5, auto)",
+                  justifyContent: "flex-start",
+                  gap: `${responsivePixels(4)}`
+                }}>
+                  {Object.values(availableObjectives).filter((objective) => {
+                    return objective.type === "stage-one"
+                  })
+                    .map((objective) => {
+                      return <button key={objective.name} style={{ writingMode: "horizontal-tb" }} onClick={() => addObj(objective)}>{objective.name}</button>
+                    })}
+                </div>
+              </HoverMenu>
+              : null}
           </LabeledDiv>
         </NumberedItem>
         <NumberedItem>
@@ -196,9 +197,9 @@ export default function SetupPhase() {
           </LabeledDiv>
         </NumberedItem>
       </ol>
-      {!setupPhaseComplete(factions, subState) ? 
-        <div style={{color: "firebrick", fontFamily: "Myriad Pro", fontWeight: "bold"}}>Select all faction choices and reveal 2 objectives</div>
-      : null}
+      {!setupPhaseComplete(factions, subState) ?
+        <div style={{ color: "firebrick", fontFamily: "Myriad Pro", fontWeight: "bold" }}>Select all faction choices and reveal 2 objectives</div>
+        : null}
       {/* {!factionTechChoicesComplete() ?
         <div style={{color: "firebrick"}}>Select all faction tech choices</div> :
         null}
@@ -206,7 +207,7 @@ export default function SetupPhase() {
         <div style={{color: "firebrick"}}>Select Council Keleres sub-faction</div> :
         null}
       {(subState.objectives ?? []).length < 2 ? <div style={{color: "firebrick"}}>Reveal two stage one objectives</div> : null} */}
-      <button disabled={!setupPhaseComplete(factions, subState)} style={{fontSize: responsivePixels(40)}} onClick={() => nextPhase()}>Start Game</button>
+      <button disabled={!setupPhaseComplete(factions, subState)} style={{ fontSize: responsivePixels(40) }} onClick={() => nextPhase()}>Start Game</button>
     </div>
   );
 }

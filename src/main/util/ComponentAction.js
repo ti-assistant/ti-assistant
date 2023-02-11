@@ -45,13 +45,12 @@ function ComponentSelect({ components, selectComponent }) {
   const innerStyle = {
     fontFamily: "Myriad Pro",
     padding: responsivePixels(8),
-    flexWrap: "wrap",
-    alignItems: "stretch",
+    display: "grid",
+    gridAutoFlow: "column",
+    gridTemplateRows: "repeat(10, auto)",
     gap: responsivePixels(4),
-    maxHeight: responsivePixels(400),
     maxWidth: "85vw",
     overflowX: "auto",
-    writingMode: "vertical-lr",
     justifyContent: "flex-start"};
 
   const className = window.innerWidth < 900 ? "flexColumn" : "flexRow";
@@ -88,9 +87,9 @@ function ComponentSelect({ components, selectComponent }) {
       </div>
     </HoverMenu> : null}
     {exploration.length > 0 ? <HoverMenu label="Exploration/Relic">
-      <div className="flexRow" style={innerStyle}>
+      <div className="flexColumn" style={{gap: responsivePixels(4), alignItems: "stretch", padding: responsivePixels(8)}}>
       {exploration.map((component) => {
-        return <button key={component.name} style={{writingMode: "horizontal-tb"}} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
+        return <button key={component.name} className={component.state === "exhausted" || component.state === "used" ? "faded" : ""} onClick={() => selectComponent(component.name)}>{component.name}</button>
       })}
       </div>
     </HoverMenu> : null}
@@ -249,13 +248,12 @@ function ComponentDetails({ factionName }) {
       const selectStyle = {
         fontFamily: "Myriad Pro",
         padding: responsivePixels(8),
-        flexWrap: "wrap",
-        alignItems: "stretch",
+        display: "grid",
+        gridAutoFlow: "column",
+        gridTemplateRows: "repeat(14, auto)",
         gap: responsivePixels(4),
-        maxHeight: responsivePixels(400),
         maxWidth: "85vw",
         overflowX: "auto",
-        writingMode: "vertical-lr",
         justifyContent: "flex-start"};
 
       innerContent = <div className="flexColumn" style={{width: "100%"}}>
@@ -388,7 +386,7 @@ export function ComponentAction({ factionName }) {
         <InfoContent component={component} />
       } top="35%" level={2} />
     <div className="flexColumn largeFont" style={{width: "100%", justifyContent: "flex-start"}}>
-      <LabeledDiv label="COMPONENT" style={{width: "90%"}}> 
+      <LabeledDiv label="Component" style={{width: "90%"}}> 
         <SelectableRow removeItem={() => selectComponent(null)}>
           {component.name}
           <div className="popupIcon" onClick={displayInfo} style={{fontSize: responsivePixels(16)}}>&#x24D8;</div>

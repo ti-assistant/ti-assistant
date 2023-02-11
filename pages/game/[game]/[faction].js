@@ -200,7 +200,7 @@ function PhaseSection() {
               : null}
             {(subState.objectives ?? []).length < 2 ?
               <HoverMenu label="Reveal Objective">
-                <div className="flexRow" style={{ writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll" }}>
+                <div className="flexRow" style={{display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(10, auto)", justifyContent: "flex-start", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "auto" }}>
                   {Object.values(availableObjectives).filter((objective) => {
                     return objective.type === "stage-one"
                   })
@@ -300,7 +300,7 @@ function PhaseSection() {
       phaseName = "STATUS PHASE";
       phaseContent =
         <React.Fragment>
-          <div className='flexColumn' style={{ gap: "4px", padding: "8px", flexWrap: "wrap", width: "100%", alignItems: "flex-start" }}>
+          <div className='flexColumn' style={{ padding: "0 8px", flexWrap: "wrap", width: "100%", alignItems: "flex-start" }}>
             {scoredPublics.length > 0 ?
               <LabeledDiv label="SCORED PUBLIC" style={{ whiteSpace: "nowrap" }}>
                 <SelectableRow itemName={scoredPublics[0]} removeItem={() => unscoreObj(factionName, scoredPublics[0])}>
@@ -322,7 +322,7 @@ function PhaseSection() {
                 </SelectableRow>
               </LabeledDiv>
               : <HoverMenu label="Score Secret Objective">
-                <div className="flexRow" style={{ writingMode: "vertical-lr", justifyContent: "flex-start", maxHeight: "400px", flexWrap: "wrap", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "scroll" }}>
+                <div className="flexRow" style={{ display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(9, auto)", justifyContent: "flex-start", whiteSpace: "nowrap", padding: "8px", gap: "4px", alignItems: "stretch", maxWidth: "85vw", overflowX: "auto" }}>
                   {secrets.map((objective) => {
                     return <button key={objective.name} style={{writingMode: "horizontal-tb"}} onClick={() => scoreObj(factionName, objective)}>{objective.name}</button>
                   })}
@@ -339,7 +339,7 @@ function PhaseSection() {
                 })}
                 {(subState.objectives ?? []).length < 1 ?
                   <HoverMenu label={`Reveal one Stage ${state.round > 3 ? "II" : "I"} objective`} style={{ maxHeight: "400px" }}>
-                    <div className='flexRow' style={{ maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+                    <div className='flexRow' style={{ maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(10, auto)", alignItems: "stretch", justifyContent: "flex-start", overflowX: "auto" }}>
                       {Object.values(revealableObjectives).filter((objective) => {
                         return objective.type === (state.round > 3 ? "stage-two" : "stage-one");
                       })
@@ -361,12 +361,13 @@ function PhaseSection() {
       break;
     }
     case "AGENDA": {
+      const items = Math.min((targets ?? []).length, 12);
       phaseName = "AGENDA PHASE";
       phaseContent = <React.Fragment>
         {!currentAgenda ?
           <LabeledDiv label="Speaker Actions" style={{ marginTop: "4px", paddingTop: "12 px" }}>
             <HoverMenu label="Reveal and Read one Agenda">
-              <div className='flexRow' style={{ maxWidth: "85vw", gap: "4px", maxHeight: "400px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+              <div className='flexRow' style={{ maxWidth: "85vw", gap: "4px", display: "grid", gridAutoFlow: "column", gridTemplateRows: "repeat(10, auto)", whiteSpace: "nowrap", padding: "8px", alignItems: "stretch", justifyContent: "flex-start", overflowX: "auto" }}>
                 {orderedAgendas.map((agenda) => {
                   return <button key={agenda.name} style={{writingMode: "horizontal-tb"}} onClick={() => selectAgenda(agenda.name)}>{agenda.name}</button>
                 })}
@@ -404,10 +405,10 @@ function PhaseSection() {
             {!canFactionVote(factionName, agendas, state, factions) ?
               <div className="flexRow">Cannot Vote</div> :
               <React.Fragment>
-                <div className="flexRow" style={{ width: "100%", justifyContent: "center" }}>
+                <div className="flexColumn" style={{ paddingLeft: "8px", width: "100%", alignItems: "flex-start" }}>
                   Outcome:
-                  <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"}>
-                    <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+                  <HoverMenu label={factionSubState.target ? factionSubState.target : "Select Vote Target"} buttonStyle={{paddingLeft: "8px"}}>
+                    <div className="flexRow" style={{ maxWidth: "80vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", display: "grid", gridAutoFlow: "column", gridTemplateRows: `repeat(${items}, auto)`, alignItems: "stretch", justifyContent: "flex-start", overflowX: "auto" }}>
                       {targets.map((target) => {
                         return (
                           <button key={target} style={{writingMode: "horizontal-tb"}} onClick={() => { castVotes(target, 0) }}>{target}</button>
@@ -415,8 +416,7 @@ function PhaseSection() {
                       })}
                     </div>
                   </HoverMenu>
-                </div>
-                <div className="flexRow" style={{ width: '100%', justifyContent: "center", alignItems: "center" }}>
+                <div className="flexRow" style={{ width: '100%', justifyContent: "flex-start", alignItems: "center" }}>
                   Available Votes:
                   <div className="votingBlock">
                     <div className="influenceSymbol">
@@ -430,7 +430,7 @@ function PhaseSection() {
                     </div>
                   </div>
                 </div>
-                <div className="flexRow" style={{ width: '100%', justifyContent: "center", alignItems: "center" }}>
+                <div className="flexRow" style={{ width: '100%', justifyContent: "flex-start", alignItems: "center" }}>
                   Cast Votes:
                   <div className="flexRow" style={{ justifyContent: "flex-start", flexShrink: 0, gap: "12px", fontSize: "24px", paddingLeft: "12px" }}>
                     {factionSubState.votes > 0 ? <div className="arrowDown" onClick={() => castVotes(factionSubState.target, factionSubState.votes - 1)}></div> : <div style={{ width: "12px" }}></div>}
@@ -438,6 +438,7 @@ function PhaseSection() {
                     {factionSubState.target && factionSubState.target !== "Abstain" ? <div className="arrowUp" onClick={() => castVotes(factionSubState.target, factionSubState.votes + 1)}></div> : null}
                   </div>
                 </div>
+              </div>
               </React.Fragment>}
             <LabeledLine />
             {isTie ?
@@ -445,7 +446,7 @@ function PhaseSection() {
                 <LabeledDiv label="Speaker Actions" style={{ paddingTop: "12px" }}>
 
                   <HoverMenu label="Choose outcome (vote tied)">
-                    <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", maxHeight: "320px", whiteSpace: "nowrap", padding: "8px", flexWrap: "wrap", alignItems: "stretch", writingMode: "vertical-lr", justifyContent: "flex-start", overflowX: "scroll" }}>
+                    <div className="flexRow" style={{ maxWidth: "85vw", gap: "4px", whiteSpace: "nowrap", padding: "8px", alignItems: "stretch", display: "grid", gridAutoFlow: "column", gridTemplateRows: `repeat(${items}, auto)`, justifyContent: "flex-start", overflowX: "auto" }}>
                       {selectedTargets.length > 0 ? selectedTargets.map((target) => {
                         return <button key={target} style={{writingMode: "horizontal-tb"}} className={subState.tieBreak === target ? "selected" : ""} onClick={() => selectSpeakerTieBreak(target)}>{target}</button>;
                       }) :

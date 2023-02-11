@@ -10,11 +10,17 @@ import StatusPhase from '../../../src/main/StatusPhase';
 import { Updater } from '../../../src/Updater';
 import { Footer, Header } from '../../../src/Header';
 import ResultsPhase from '../../../src/main/ResultsPhase';
+import { responsivePixels } from '../../../src/util/util';
 
 export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { data: objectives } = useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
   const { data: state } = useSWR(gameid ? `/api/${gameid}/state` : null, fetcher);
+
+  const availableObjectives = Object.values(objectives ?? {}).filter((objective) => {
+    return objective.type === "stage-one";
+  });
 
   useEffect(() => {
     if (!!gameid) {
