@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Server stats</title>
     <style>
-      table, td {
+      table,
+      td {
         border: 1px solid #333;
       }
 
@@ -42,7 +43,7 @@
       </tbody>
     </table>
     <button onclick="startGame()">New Game</button>
-    
+
     <button onclick="joinGame()">New Game</button>
     <script>
       const ws = new WebSocket(`ws://localhost:8080`);
@@ -50,10 +51,10 @@
         console.log("connection");
         ws.send("Starting Game");
       }
-      (function() {
-        ws.onmessage = function(event) {
+      (function () {
+        ws.onmessage = function (event) {
           console.log(event.data);
-        }
+        };
       })();
     </script>
   </body>

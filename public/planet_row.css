@@ -10,16 +10,7 @@
 
 .planetRow.exhausted {
   background-color: #111;
-  color: #666;  
-}
-
-.systemRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 4px;
-  padding-right: 4px;
-  position: relative;
+  color: #666;
 }
 
 .techRow {
@@ -86,7 +77,8 @@
 .icon.negative {
   color: firebrick;
   font-size: 80%;
-  margin: var(--three-pixel) var(--ten-pixel) var(--three-pixel) var(--three-pixel);
+  margin: var(--three-pixel) var(--ten-pixel) var(--three-pixel)
+    var(--three-pixel);
 }
 
 .checkmark {
