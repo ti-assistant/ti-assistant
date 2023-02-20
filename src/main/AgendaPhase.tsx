@@ -1,12 +1,10 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate, useSWRConfig } from "swr";
-import { useState } from "react";
+import useSWR, { mutate } from "swr";
 import SummaryColumn from "./SummaryColumn";
-import { AgendaTimer, useSharedCurrentAgenda } from "../Timer";
+import { AgendaTimer } from "../Timer";
 import { fetcher, poster } from "../util/api/util";
 import { getTargets, VoteCount } from "../VoteCount";
 import { AgendaRow } from "../AgendaRow";
-import { Modal } from "../Modal";
 import {
   Agenda,
   OutcomeType,

@@ -10,8 +10,6 @@ import StatusPhase from "../../../src/main/StatusPhase";
 import { Updater } from "../../../src/Updater";
 import { Footer, Header } from "../../../src/Header";
 import ResultsPhase from "../../../src/main/ResultsPhase";
-import { responsivePixels } from "../../../src/util/util";
-import { Objective } from "../../../src/util/api/objectives";
 import { GameState } from "../../../src/util/api/state";
 
 export default function SelectFactionPage() {

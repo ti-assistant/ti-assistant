@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate, useSWRConfig } from "swr";
+import useSWR, { mutate } from "swr";
 import React, { CSSProperties } from "react";
 import { FactionCard } from "../FactionCard";
 import { SmallStrategyCard } from "../StrategyCard";

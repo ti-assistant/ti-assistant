@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Faction } from "./api/factions";
 
 function FactionSystemImage({
   className,

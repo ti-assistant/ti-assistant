@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
-import { BasicFactionTile } from "./FactionTile";
-import { hasTech } from "./util/api/techs";
+import useSWR from "swr";
 
 import { fetcher } from "./util/api/util";
 import { useBetween } from "use-between";

@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import { ClientOnlyHoverMenu } from "./HoverMenu";
 import { LabeledDiv } from "./LabeledDiv";
-import { useSharedCurrentAgenda } from "./Timer";
 import { Agenda } from "./util/api/agendas";
 import { Attachment } from "./util/api/attachments";
 import { StrategyCard } from "./util/api/cards";

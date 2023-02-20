@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate, useSWRConfig } from "swr";
+import useSWR, { mutate } from "swr";
 import { StrategyCardElement } from "../StrategyCard";
 import { getOnDeckFaction } from "../util/helpers";
 import {

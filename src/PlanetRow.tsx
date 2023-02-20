@@ -5,7 +5,6 @@ import useSWR from "swr";
 
 import { AttachRow } from "./AttachRow";
 import { Modal } from "./Modal";
-import { FactionSymbol } from "./FactionCard";
 import { fetcher } from "./util/api/util";
 import { SelectableRow } from "./SelectableRow";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";

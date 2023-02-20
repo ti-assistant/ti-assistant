@@ -27,7 +27,6 @@ import { fetcher } from "./util/api/util";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { getNextIndex, responsivePixels } from "./util/util";
-import { TechRow } from "./TechRow";
 import { Options } from "./util/api/options";
 import { GameState } from "./util/api/state";
 
