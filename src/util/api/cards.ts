@@ -266,10 +266,6 @@ export function assignStrategyCard(
 
         card.faction = factionName;
 
-        if (factionName === "Naalu Collective") {
-          card.order = 0;
-        }
-
         return updatedCards;
       },
       revalidate: false,

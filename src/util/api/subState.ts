@@ -1,6 +1,10 @@
 import { mutate } from "swr";
 import { repealAgenda } from "./agendas";
-import { assignStrategyCard, StrategyCardName } from "./cards";
+import {
+  assignStrategyCard,
+  setFirstStrategyCard,
+  StrategyCardName,
+} from "./cards";
 import { revealObjective, scoreObjective } from "./objectives";
 import { claimPlanet } from "./planets";
 import { setSpeaker } from "./state";
@@ -69,6 +73,7 @@ export interface SubState {
   strategyCards?: {
     cardName: StrategyCardName;
     factionName: string;
+    orderMod?: number;
   }[];
   [key: string]: any;
 }
@@ -769,7 +774,18 @@ export function finalizeSubState(gameid: string, subState: SubState) {
     revealObjective(gameid, undefined, objectiveName);
   }
 
+  let firstCard = true;
+  const gift = subState["Gift of Prescience"];
   for (const strategyCard of subState.strategyCards ?? []) {
+    if (firstCard) {
+      if (
+        (gift && strategyCard.factionName === gift) ||
+        (!gift && strategyCard.factionName === "Naalu Collective")
+      ) {
+        setFirstStrategyCard(gameid, strategyCard.cardName);
+        firstCard = false;
+      }
+    }
     assignStrategyCard(gameid, strategyCard.cardName, strategyCard.factionName);
   }
 

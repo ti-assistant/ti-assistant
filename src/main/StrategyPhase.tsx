@@ -33,6 +33,7 @@ import {
 import {
   finalizeSubState,
   pickSubStateStrategyCard,
+  setSubStateOther,
   SubState,
   undoSubStateStrategyCard,
 } from "../util/api/subState";
@@ -243,49 +244,9 @@ export default function StrategyPhase() {
     return false;
   }
 
-  function didFactionJustGo(factionName: string) {
-    const numFactions = Object.keys(factions ?? {}).length;
-    const faction = factions ? factions[factionName] : undefined;
-    if (!faction) {
-      return false;
-    }
-    if (numFactions === 3 || numFactions === 4) {
-      let numPicked = 0;
-      for (const card of Object.values(strategyCards ?? {})) {
-        if (card.faction) {
-          ++numPicked;
-        }
-      }
-      if (numPicked === numFactions) {
-        return faction.order === numFactions;
-      }
-      if (numPicked > numFactions) {
-        const nextOrder = numFactions - (numPicked - numFactions) + 1;
-        return faction.order === nextOrder;
-      }
-    }
-    if (state?.activeplayer === "None") {
-      return faction.order === numFactions;
-    }
-    const activeFaction = factions
-      ? factions[state?.activeplayer ?? ""]
-      : undefined;
-    if (!activeFaction) {
-      return;
-    }
-    return (
-      getNextIndex(faction.order, numFactions + 1, 1) === activeFaction.order
-    );
-  }
-
   function haveAllFactionsPicked() {
     const numFactions = Object.keys(factions ?? {}).length;
-    let numPicked = 0;
-    for (const card of Object.values(strategyCards ?? {})) {
-      if (card.faction) {
-        ++numPicked;
-      }
-    }
+    let numPicked = (subState.strategyCards ?? []).length;
     if (numFactions === 3 || numFactions === 4) {
       return numFactions * 2 === numPicked;
     }
@@ -306,8 +267,6 @@ export default function StrategyPhase() {
     subState
   );
 
-  console.log(subState);
-
   function undoPick() {
     if (!gameid) {
       return;
@@ -326,7 +285,6 @@ export default function StrategyPhase() {
     }
     undoSubStateStrategyCard(gameid);
     prevPlayer(gameid, factions ?? {}, subState);
-    // unassignStrategyCard(gameid, cardName);
   }
 
   function imperialArbiterFn(factionName: string) {
@@ -368,12 +326,18 @@ export default function StrategyPhase() {
     swapStrategyCards(gameid, factionCard, hacanCard);
   }
 
-  function giftOfPrescience(cardName: string) {
+  function giftOfPrescience(factionName: string) {
     if (!gameid) {
       return;
     }
-    setFirstStrategyCard(gameid, cardName);
+    if (subState["Gift of Prescience"] === factionName) {
+      setSubStateOther(gameid, "Gift of Prescience", undefined);
+    } else {
+      setSubStateOther(gameid, "Gift of Prescience", factionName);
+    } // setFirstStrategyCard(gameid, cardName);
   }
+
+  let firstCard = true;
 
   const updatedStrategyCards = Object.values(strategyCards ?? {}).map(
     (card) => {
@@ -383,6 +347,7 @@ export default function StrategyPhase() {
           updatedCard.faction = cardObj.factionName;
         }
       }
+
       return updatedCard;
     }
   );
@@ -390,6 +355,22 @@ export default function StrategyPhase() {
   const orderedStrategyCards = updatedStrategyCards.sort(
     (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
   );
+
+  const finalStrategyCards = orderedStrategyCards.map((card) => {
+    const naalu = (factions ?? {})["Naalu Collective"];
+    if (naalu && haveAllFactionsPicked() && firstCard) {
+      const gift = subState["Gift of Prescience"];
+      if (
+        (gift && card.faction === gift) ||
+        (!gift && card.faction === "Naalu Collective")
+      ) {
+        card.order = 0;
+        firstCard = false;
+      }
+    }
+    return card;
+  });
+
   return (
     <div
       className="flexRow"
@@ -617,7 +598,7 @@ export default function StrategyPhase() {
             width: responsivePixels(420),
           }}
         >
-          {orderedStrategyCards.map((card) => {
+          {finalStrategyCards.map((card) => {
             const factionActions = [];
             if (card.faction) {
               const numPickedCards = (subState.strategyCards ?? []).length;
@@ -652,14 +633,21 @@ export default function StrategyPhase() {
                 const naalu = factions
                   ? factions["Naalu Collective"]
                   : undefined;
-                if (naalu && card.faction !== "Naalu Collective") {
-                  factionActions.push({
-                    text:
-                      card.order === 0
-                        ? "Undo Gift of Prescience"
-                        : "Gift of Prescience",
-                    action: () => giftOfPrescience(card.name),
-                  });
+                if (naalu) {
+                  if (card.faction !== "Naalu Collective") {
+                    factionActions.push({
+                      text:
+                        subState["Gift of Prescience"] === card.faction
+                          ? "Undo Gift of Prescience"
+                          : "Gift of Prescience",
+                      action: () => {
+                        if (!card.faction) {
+                          return;
+                        }
+                        giftOfPrescience(card.faction);
+                      },
+                    });
+                  }
                 }
                 const imperialArbiter = agendas
                   ? agendas["Imperial Arbiter"]

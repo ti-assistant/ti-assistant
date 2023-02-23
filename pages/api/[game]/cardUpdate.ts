@@ -61,10 +61,6 @@ export default async function handler(
           updates[invalidString] = FieldValue.delete();
         }
       }
-      if (data.faction === "Naalu Collective") {
-        const orderString = `strategycards.${data.card}.order`;
-        updates[orderString] = 0;
-      }
       await db.collection("games").doc(gameId).update(updates);
       break;
     }
