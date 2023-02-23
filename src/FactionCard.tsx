@@ -29,6 +29,7 @@ import { getTechColor } from "./util/techs";
 import { getNextIndex, responsivePixels } from "./util/util";
 import { Options } from "./util/api/options";
 import { GameState } from "./util/api/state";
+import { getDefaultStrategyCards } from "./util/api/defaults";
 
 export interface FactionSymbolProps {
   faction: string;
@@ -447,15 +448,19 @@ export function FactionTile({
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
   );
   const [showMenu, setShowMenu] = useState(false);
 
-  const card = Object.values(strategyCards ?? {}).find(
+  const card = Object.values(strategyCards).find(
     (card) => card.faction === faction.name
   );
 
@@ -483,7 +488,7 @@ export function FactionTile({
       return;
     }
     hideMenu();
-    const hacanCard = Object.values(strategyCards ?? {}).find(
+    const hacanCard = Object.values(strategyCards).find(
       (card) => card.faction === "Emirates of Hacan"
     );
     if (!card || !hacanCard) {
@@ -511,7 +516,7 @@ export function FactionTile({
     const numFactions = Object.keys(factions ?? {}).length;
     if (numFactions === 3 || numFactions === 4) {
       let numPicked = 0;
-      for (const card of Object.values(strategyCards ?? {})) {
+      for (const card of Object.values(strategyCards)) {
         if (card.faction) {
           ++numPicked;
         }
@@ -536,7 +541,7 @@ export function FactionTile({
   function haveAllFactionsPicked() {
     const numFactions = Object.keys(factions ?? {}).length;
     let numPicked = 0;
-    for (const card of Object.values(strategyCards ?? {})) {
+    for (const card of Object.values(strategyCards)) {
       if (card.faction) {
         ++numPicked;
       }

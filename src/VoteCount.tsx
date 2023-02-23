@@ -6,6 +6,7 @@ import { LabeledDiv } from "./LabeledDiv";
 import { Agenda } from "./util/api/agendas";
 import { Attachment } from "./util/api/attachments";
 import { StrategyCard } from "./util/api/cards";
+import { getDefaultStrategyCards } from "./util/api/defaults";
 import { Faction } from "./util/api/factions";
 import { Objective } from "./util/api/objectives";
 import { Options } from "./util/api/options";
@@ -252,8 +253,12 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     gameid ? `/api/${gameid}/attachments` : null,
     fetcher
   );
-  const { data: strategycards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategycards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
     fetcher
@@ -329,7 +334,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
   const targets = getTargets(
     agenda,
     factions,
-    strategycards ?? {},
+    strategycards,
     planets ?? {},
     agendas ?? {},
     objectives ?? {}

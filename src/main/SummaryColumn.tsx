@@ -11,6 +11,7 @@ import { Faction } from "../util/api/factions";
 import { Objective } from "../util/api/objectives";
 import { Options } from "../util/api/options";
 import { StrategyCard } from "../util/api/cards";
+import { getDefaultStrategyCards } from "../util/api/defaults";
 
 function sortByOrder(a: [string, Faction], b: [string, Faction]) {
   if (a[1].order > b[1].order) {
@@ -38,8 +39,12 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
     gameid ? `/api/${gameid}/options` : null,
     fetcher
   );
-  const { data: strategyCards = {} }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
 
   if (!options || !factions) {
     return <div>Loading...</div>;

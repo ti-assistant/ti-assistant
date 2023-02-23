@@ -89,6 +89,7 @@ import { Tab, TabBody } from "../../../src/Tab";
 import { TechRow } from "../../../src/TechRow";
 import { PlanetRow } from "../../../src/PlanetRow";
 import { ObjectiveList } from "../../../src/ObjectiveList";
+import { getDefaultStrategyCards } from "../../../src/util/api/defaults";
 
 const techOrder = ["green", "blue", "yellow", "red", "upgrade"];
 
@@ -122,8 +123,12 @@ function PhaseSection() {
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
   );
-  const { data: strategyCards = {} }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
 
   function assignCard(cardName: string) {
     if (!gameid || !factionName) {
@@ -1357,8 +1362,12 @@ export default function GamePage() {
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
 
   useEffect(() => {
     if (!!gameid) {
@@ -1395,7 +1404,7 @@ export default function GamePage() {
     case "ACTION":
     case "STATUS":
       orderTitle = "Initiative Order";
-      const orderedCards = Object.values(strategyCards ?? {}).sort(
+      const orderedCards = Object.values(strategyCards).sort(
         (a, b) => a.order - b.order
       );
       for (const card of orderedCards) {

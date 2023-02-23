@@ -37,6 +37,7 @@ import {
   SubState,
   undoSubStateStrategyCard,
 } from "../util/api/subState";
+import { getDefaultStrategyCards } from "../util/api/defaults";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -117,8 +118,12 @@ export default function StrategyPhase() {
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
@@ -135,7 +140,7 @@ export default function StrategyPhase() {
     if (!gameid) {
       return;
     }
-    advanceToActionPhase(gameid, strategyCards ?? {}, subState);
+    advanceToActionPhase(gameid, strategyCards, subState);
   }
 
   function showInfoModal(title: string, content: ReactNode) {
@@ -151,7 +156,7 @@ export default function StrategyPhase() {
     }
     pickSubStateStrategyCard(gameid, card.name, faction.name);
     // assignStrategyCard(gameid, card.name, faction.name);
-    nextPlayer(gameid, factions ?? {}, strategyCards ?? {}, subState);
+    nextPlayer(gameid, factions ?? {}, strategyCards, subState);
   }
 
   interface Ability {
@@ -263,7 +268,7 @@ export default function StrategyPhase() {
   const onDeckFaction = getOnDeckFaction(
     state,
     factions ?? {},
-    strategyCards ?? {},
+    strategyCards,
     subState
   );
 
@@ -297,10 +302,10 @@ export default function StrategyPhase() {
     if (!imperialArbiter) {
       return;
     }
-    const factionCard = Object.values(strategyCards ?? {}).find(
+    const factionCard = Object.values(strategyCards).find(
       (card) => card.faction === factionName
     );
-    const arbiterCard = Object.values(strategyCards ?? {}).find(
+    const arbiterCard = Object.values(strategyCards).find(
       (card) => card.faction === imperialArbiter
     );
     if (!factionCard || !arbiterCard) {
@@ -314,10 +319,10 @@ export default function StrategyPhase() {
     if (!gameid) {
       return;
     }
-    const factionCard = Object.values(strategyCards ?? {}).find(
+    const factionCard = Object.values(strategyCards).find(
       (card) => card.faction === factionName
     );
-    const hacanCard = Object.values(strategyCards ?? {}).find(
+    const hacanCard = Object.values(strategyCards).find(
       (card) => card.faction === "Emirates of Hacan"
     );
     if (!factionCard || !hacanCard) {
@@ -339,18 +344,16 @@ export default function StrategyPhase() {
 
   let firstCard = true;
 
-  const updatedStrategyCards = Object.values(strategyCards ?? {}).map(
-    (card) => {
-      const updatedCard = structuredClone(card);
-      for (const cardObj of subState?.strategyCards ?? []) {
-        if (cardObj.cardName === card.name) {
-          updatedCard.faction = cardObj.factionName;
-        }
+  const updatedStrategyCards = Object.values(strategyCards).map((card) => {
+    const updatedCard = structuredClone(card);
+    for (const cardObj of subState?.strategyCards ?? []) {
+      if (cardObj.cardName === card.name) {
+        updatedCard.faction = cardObj.factionName;
       }
-
-      return updatedCard;
     }
-  );
+
+    return updatedCard;
+  });
 
   const orderedStrategyCards = updatedStrategyCards.sort(
     (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
@@ -443,20 +446,6 @@ export default function StrategyPhase() {
                           })}
                         </div>
                       </LabeledDiv>
-                      {/* <div className="flexRow">
-                <BasicFactionTile faction={factions[factionName]} speaker={factionName === state.speaker} opts={{fontSize: responsivePixels(16)}}/>
-                <div className="flexColumn">
-                {abilities.map((ability) => {
-                  return (
-                    <div className="flexRow">
-                      {ability.name}
-                      <div className="popupIcon" onClick={() => showInfoModal(ability.name, ability.description)}>
-                        &#x24D8;
-                      </div>
-                    </div>);
-                })}
-                </div>
-              </div> */}
                     </NumberedItem>
                   );
                 }

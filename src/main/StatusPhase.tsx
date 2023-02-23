@@ -34,6 +34,7 @@ import { startNextRound } from "./AgendaPhase";
 import { GameState, StateUpdateData } from "../util/api/state";
 import { Options } from "../util/api/options";
 import { Agenda } from "../util/api/agendas";
+import { getDefaultStrategyCards } from "../util/api/defaults";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -64,8 +65,12 @@ export function MiddleColumn() {
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
@@ -236,7 +241,7 @@ export function MiddleColumn() {
 
   const round = state?.round ?? 1;
   const type = round < 4 ? "stage-one" : "stage-two";
-  const orderedStrategyCards = Object.values(strategyCards ?? {})
+  const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
   const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
@@ -1028,8 +1033,12 @@ export default function StatusPhase() {
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: factions } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
@@ -1059,7 +1068,7 @@ export default function StatusPhase() {
   }
 
   const round = state?.round;
-  const orderedStrategyCards = Object.values(strategyCards ?? {})
+  const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
 

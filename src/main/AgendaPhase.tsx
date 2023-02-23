@@ -31,6 +31,7 @@ import { resetStrategyCards, StrategyCard } from "../util/api/cards";
 import { GameState, setAgendaNum, StateUpdateData } from "../util/api/state";
 import { Planet } from "../util/api/planets";
 import { Objective } from "../util/api/objectives";
+import { getDefaultStrategyCards } from "../util/api/defaults";
 
 export function computeVotes(
   agenda: Agenda | undefined,
@@ -120,8 +121,12 @@ export default function AgendaPhase() {
     gameid ? `/api/${gameid}/planets` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
     fetcher
@@ -168,7 +173,7 @@ export default function AgendaPhase() {
   const allTargets = getTargets(
     localAgenda,
     factions ?? {},
-    strategyCards ?? {},
+    strategyCards,
     planets ?? {},
     agendas ?? {},
     objectives ?? {}

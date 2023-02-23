@@ -39,7 +39,7 @@ export default async function handler(
   const timestamp = Timestamp.fromMillis(data.timestamp);
   switch (data.action) {
     case "SET_GAME_TIMER": {
-      if (!data.timer) {
+      if (data.timer == undefined) {
         res.status(422);
         return;
       }
@@ -56,7 +56,7 @@ export default async function handler(
       break;
     }
     case "SAVE_FACTION_TIMER": {
-      if (!data.timer || !data.faction) {
+      if (data.timer == undefined || !data.faction) {
         res.status(422);
         return;
       }
@@ -74,7 +74,7 @@ export default async function handler(
       break;
     }
     case "SAVE_AGENDA_TIMER": {
-      if (!data.timer) {
+      if (data.timer == undefined) {
         res.status(422);
         return;
       }

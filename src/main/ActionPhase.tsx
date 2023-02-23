@@ -41,6 +41,7 @@ import { GameState, nextPlayer, StateUpdateData } from "../util/api/state";
 import { Attachment } from "../util/api/attachments";
 import { Planet } from "../util/api/planets";
 import { Objective } from "../util/api/objectives";
+import { getDefaultStrategyCards } from "../util/api/defaults";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -57,8 +58,12 @@ export function FactionActionButtons({
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: subState }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
@@ -69,10 +74,7 @@ export function FactionActionButtons({
   }
 
   function canFactionPass(factionName: string) {
-    for (const card of getStrategyCardsForFaction(
-      strategyCards ?? {},
-      factionName
-    )) {
+    for (const card of getStrategyCardsForFaction(strategyCards, factionName)) {
       if (!card.used) {
         return false;
       }
@@ -96,7 +98,7 @@ export function FactionActionButtons({
     return null;
   }
 
-  const orderedStrategyCards = Object.values(strategyCards ?? {})
+  const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
 
@@ -110,7 +112,7 @@ export function FactionActionButtons({
         flexWrap: "wrap",
       }}
     >
-      {getStrategyCardsForFaction(strategyCards ?? {}, activeFaction.name).map(
+      {getStrategyCardsForFaction(strategyCards, activeFaction.name).map(
         (card) => {
           if (card.used) {
             return null;
@@ -1016,8 +1018,12 @@ export function NextPlayerButtons({
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
@@ -1028,11 +1034,11 @@ export function NextPlayerButtons({
       return;
     }
     await finalizeAction();
-    nextPlayer(gameid, factions ?? {}, strategyCards ?? {}, subState);
+    nextPlayer(gameid, factions ?? {}, strategyCards, subState);
   }
 
   async function finalizeAction() {
-    if (!gameid || !strategyCards || subState.selectedAction === null) {
+    if (!gameid || subState.selectedAction === null) {
       return;
     }
     finalizeSubState(gameid, subState);
@@ -1206,14 +1212,18 @@ export default function ActionPhase() {
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
   );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
   );
 
-  if (!factions || !state || !strategyCards) {
+  if (!factions || !state) {
     return <div>Loading...</div>;
   }
 
