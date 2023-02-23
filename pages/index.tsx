@@ -112,7 +112,7 @@ function Header() {
       </Head>
       <div className="mobileTitle">TWILIGHT IMPERIUM ASSISTANT</div>
       <Sidebar side="left">TI ASSISTANT</Sidebar>
-      <Sidebar side="right">TI ASSISTANT`</Sidebar>
+      <Sidebar side="right">TI ASSISTANT</Sidebar>
     </div>
   );
 }

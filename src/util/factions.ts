@@ -1,3 +1,4 @@
+import { Loader } from "../Loader";
 import { Faction } from "./api/factions";
 
 export function getFactionColor(faction: Faction | undefined) {
@@ -27,7 +28,7 @@ export function convertToFactionColor(color: string | undefined) {
 
 export function getFactionName(faction: Faction | undefined) {
   if (!faction) {
-    return "Loading...";
+    return "Faction";
   }
   if (faction.playerName) {
     return faction.playerName + " - " + faction.shortname;

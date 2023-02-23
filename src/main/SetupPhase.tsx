@@ -19,6 +19,8 @@ import { NumberedItem } from "../NumberedItem";
 import { Faction } from "../util/api/factions";
 import { GameState, StateUpdateData } from "../util/api/state";
 import { Objective } from "../util/api/objectives";
+import { SelectableRow } from "../SelectableRow";
+import { Loader } from "../Loader";
 
 export function startFirstRound(
   gameid: string,
@@ -127,9 +129,7 @@ export default function SetupPhase() {
     });
   }, [subState?.objectives, objectives]);
 
-  if (!gameid || !state || !factions || !objectives || !subState) {
-    return <div>Loading...</div>;
-  }
+  const speaker = (factions ?? {})[state?.speaker ?? ""];
 
   return (
     <div
@@ -188,25 +188,41 @@ export default function SetupPhase() {
         <NumberedItem>Re-shuffle secret objectives</NumberedItem>
         <NumberedItem>
           <LabeledDiv
-            label={`Speaker: ${getFactionName(factions[state.speaker])}`}
-            color={getFactionColor(factions[state.speaker])}
+            label={`Speaker: ${getFactionName(speaker)}`}
+            color={getFactionColor(speaker)}
           >
             Draw 5 stage one objectives and reveal 2
-            {(subState.objectives ?? []).length > 0 ? (
+            {(subState?.objectives ?? []).length > 0 ? (
               <LabeledDiv label="Revealed Objectives">
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  {(subState.objectives ?? []).map((objectiveName) => {
-                    const objective = objectives[objectiveName];
+                  {(subState?.objectives ?? []).map((objectiveName) => {
+                    const objective = (objectives ?? {})[objectiveName];
                     if (!objective) {
-                      return null;
+                      return (
+                        <SelectableRow
+                          key={objectiveName}
+                          itemName={objectiveName}
+                          removeItem={() => {
+                            if (!gameid) {
+                              return;
+                            }
+                            hideSubStateObjective(gameid, objectiveName);
+                          }}
+                        >
+                          {objectiveName}
+                        </SelectableRow>
+                      );
                     }
                     return (
                       <ObjectiveRow
                         key={objectiveName}
                         objective={objective}
-                        removeObjective={() =>
-                          hideSubStateObjective(gameid, objectiveName)
-                        }
+                        removeObjective={() => {
+                          if (!gameid) {
+                            return;
+                          }
+                          hideSubStateObjective(gameid, objectiveName);
+                        }}
                         viewing={true}
                       />
                     );
@@ -214,7 +230,7 @@ export default function SetupPhase() {
                 </div>
               </LabeledDiv>
             ) : null}
-            {(subState.objectives ?? []).length < 2 ? (
+            {(subState?.objectives ?? []).length < 2 ? (
               <ClientOnlyHoverMenu label="Reveal Objective">
                 <div
                   className="flexRow"
@@ -236,9 +252,12 @@ export default function SetupPhase() {
                         <button
                           key={objective.name}
                           style={{ writingMode: "horizontal-tb" }}
-                          onClick={() =>
-                            revealSubStateObjective(gameid, objective.name)
-                          }
+                          onClick={() => {
+                            if (!gameid) {
+                              return;
+                            }
+                            revealSubStateObjective(gameid, objective.name);
+                          }}
                         >
                           {objective.name}
                         </button>
@@ -251,14 +270,14 @@ export default function SetupPhase() {
         </NumberedItem>
         <NumberedItem>
           <LabeledDiv
-            label={`Speaker: ${getFactionName(factions[state.speaker])}`}
-            color={getFactionColor(factions[state.speaker])}
+            label={`Speaker: ${getFactionName(speaker)}`}
+            color={getFactionColor(speaker)}
           >
             Draw 5 stage two objectives
           </LabeledDiv>
         </NumberedItem>
       </ol>
-      {!setupPhaseComplete(factions, subState) ? (
+      {!setupPhaseComplete(factions ?? {}, subState ?? {}) ? (
         <div
           style={{
             color: "firebrick",
@@ -270,9 +289,14 @@ export default function SetupPhase() {
         </div>
       ) : null}
       <button
-        disabled={!setupPhaseComplete(factions, subState)}
+        disabled={!setupPhaseComplete(factions ?? {}, subState ?? {})}
         style={{ fontSize: responsivePixels(40) }}
-        onClick={() => startFirstRound(gameid, subState, factions)}
+        onClick={() => {
+          if (!gameid) {
+            return;
+          }
+          startFirstRound(gameid, subState ?? {}, factions ?? {});
+        }}
       >
         Start Game
       </button>

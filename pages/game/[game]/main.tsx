@@ -11,8 +11,9 @@ import { Updater } from "../../../src/Updater";
 import { Footer, Header } from "../../../src/Header";
 import ResultsPhase from "../../../src/main/ResultsPhase";
 import { GameState } from "../../../src/util/api/state";
+import { FullScreenLoader } from "../../../src/Loader";
 
-export default function SelectFactionPage() {
+export default function MainScreenPage() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
@@ -29,7 +30,7 @@ export default function SelectFactionPage() {
   // Consider combining things into a single thing, with separate values for each column.
   // This will allow re-using the right column, which will usually be the summary.
 
-  let innerContent = <div>Loading...</div>;
+  let innerContent = <FullScreenLoader />;
   switch (state?.phase) {
     case "SETUP":
       innerContent = <SetupPhase />;
