@@ -29,6 +29,7 @@ import { Options } from "./util/api/options";
 import { Faction } from "./util/api/factions";
 import { Objective } from "./util/api/objectives";
 import { Planet } from "./util/api/planets";
+import { SubState } from "./util/api/subState";
 
 export interface SidebarProps {
   side: string;
@@ -356,18 +357,29 @@ export function Footer({}) {
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
+  const { data: subState }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher
+  );
 
   function shouldBlockSpeakerUpdates() {
     if (state?.phase !== "STRATEGY") {
       return false;
     }
 
-    return state?.activeplayer !== state?.speaker;
+    return (subState?.strategyCards ?? []).length !== 0;
   }
 
   const orderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.order - b.order
   );
+
+  const speakerButtonPosition =
+    state?.phase === "STRATEGY"
+      ? "top"
+      : orderedFactions.length === 4 || orderedFactions.length > 7
+      ? "bottom"
+      : "top";
 
   return (
     <div
@@ -389,7 +401,8 @@ export function Footer({}) {
         >
           <LabeledDiv label="Update">
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-              {orderedFactions.length < 7 && !shouldBlockSpeakerUpdates() ? (
+              {speakerButtonPosition === "top" &&
+              !shouldBlockSpeakerUpdates() ? (
                 <ClientOnlyHoverMenu label="Speaker">
                   <div
                     className="flexColumn"
@@ -446,7 +459,8 @@ export function Footer({}) {
                     <UpdatePlanets />
                   </div>
                 </ClientOnlyHoverMenu>
-                {orderedFactions.length > 6 && !shouldBlockSpeakerUpdates() ? (
+                {speakerButtonPosition === "bottom" &&
+                !shouldBlockSpeakerUpdates() ? (
                   <ClientOnlyHoverMenu label="Speaker">
                     <div
                       className="flexColumn"

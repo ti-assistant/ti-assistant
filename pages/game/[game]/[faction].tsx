@@ -130,7 +130,7 @@ function PhaseSection() {
       return;
     }
     assignStrategyCard(gameid, cardName, factionName);
-    nextPlayer(gameid, factions, strategyCards);
+    nextPlayer(gameid, factions, strategyCards, subState);
   }
   function addObj(objectiveName: string) {
     if (!gameid) {
@@ -423,7 +423,7 @@ function PhaseSection() {
                   if (!gameid) {
                     return;
                   }
-                  advanceToActionPhase(gameid, strategyCards);
+                  advanceToActionPhase(gameid, strategyCards, subState);
                 }}
               >
                 Advance to Action Phase

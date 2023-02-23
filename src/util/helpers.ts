@@ -1,12 +1,14 @@
 import { StrategyCard } from "./api/cards";
 import { Faction } from "./api/factions";
 import { GameState } from "./api/state";
+import { SubState } from "./api/subState";
 import { getNextIndex } from "./util";
 
 export function getOnDeckFaction(
   state: GameState,
   factions: Record<string, Faction>,
-  strategyCards: Record<string, StrategyCard>
+  strategyCards: Record<string, StrategyCard>,
+  subState: SubState
 ): Faction | undefined {
   switch (state.phase) {
     case "SETUP":
@@ -23,10 +25,8 @@ export function getOnDeckFaction(
       }
       const numFactions = Object.keys(factions).length;
       if (numFactions === 3 || numFactions === 4) {
-        const strategyCardsWithOwners = Object.values(strategyCards).filter(
-          (card) => !!card.faction
-        );
-        switch (strategyCardsWithOwners.length) {
+        const numPickedCards = (subState.strategyCards ?? []).length;
+        switch (numPickedCards) {
           // Last player is currently picking.
           case numFactions - 1:
             return currentFaction;
@@ -35,7 +35,7 @@ export function getOnDeckFaction(
             return undefined;
         }
         // Reverse after all players have selected once.
-        if (strategyCardsWithOwners.length >= numFactions) {
+        if (numPickedCards >= numFactions) {
           let nextOrder = currentFaction.order - 1;
           if (nextOrder === 0) {
             nextOrder = numFactions;
@@ -46,12 +46,9 @@ export function getOnDeckFaction(
         }
       }
       let nextOrder = currentFaction.order + 1;
-      if (nextOrder > numFactions) {
-        nextOrder = 1;
-      }
       const faction = Object.values(factions).find(
         (faction) => faction.order === nextOrder
-      );  
+      );
       if (!faction) {
         return undefined;
       }
@@ -162,6 +159,40 @@ export function getOnDeckFaction(
       );
     }
   }
+}
+
+export function getPreviousFaction(
+  state: GameState,
+  factions: Record<string, Faction>,
+  subState: SubState
+) {
+  if (state.phase !== "STRATEGY") {
+    return undefined;
+  }
+  if (!state.activeplayer) {
+    return undefined;
+  }
+  const numFactions = Object.keys(factions).length;
+  // At the end of order - if 3/4 players, speaker was last to go - otherwise last player.
+  if (state.activeplayer === "None") {
+    if (numFactions < 5) {
+      return factions[state.speaker];
+    }
+    return Object.values(factions).find(
+      (faction) => faction.order === numFactions
+    );
+  }
+
+  if (!subState.strategyCards) {
+    return undefined;
+  }
+
+  const lastPick = subState.strategyCards[subState.strategyCards.length - 1];
+
+  if (!lastPick) {
+    return undefined;
+  }
+  return factions[lastPick.factionName];
 }
 
 /**

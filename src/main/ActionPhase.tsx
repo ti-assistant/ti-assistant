@@ -1028,7 +1028,7 @@ export function NextPlayerButtons({
       return;
     }
     await finalizeAction();
-    nextPlayer(gameid, factions ?? {}, strategyCards ?? {});
+    nextPlayer(gameid, factions ?? {}, strategyCards ?? {}, subState);
   }
 
   async function finalizeAction() {
@@ -1202,6 +1202,10 @@ export default function ActionPhase() {
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher
+  );
   const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
     useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
@@ -1214,7 +1218,12 @@ export default function ActionPhase() {
   }
 
   const activeFaction = factions[state.activeplayer ?? ""] ?? null;
-  const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
+  const onDeckFaction = getOnDeckFaction(
+    state,
+    factions,
+    strategyCards,
+    subState
+  );
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);

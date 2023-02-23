@@ -1127,7 +1127,7 @@ export default function StatusPhase() {
         </div>
         {!statusPhaseComplete(subState) ? (
           <div style={{ color: "firebrick" }}>
-            Reveal one Stage {round ?? 1 > 3 ? "II" : "I"} objective
+            Reveal one Stage {(round ?? 1) > 3 ? "II" : "I"} objective
           </div>
         ) : null}
         <div className="flexRow">

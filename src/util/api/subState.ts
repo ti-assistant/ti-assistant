@@ -1,5 +1,6 @@
 import { mutate } from "swr";
 import { repealAgenda } from "./agendas";
+import { assignStrategyCard, StrategyCardName } from "./cards";
 import { revealObjective, scoreObjective } from "./objectives";
 import { claimPlanet } from "./planets";
 import { setSpeaker } from "./state";
@@ -26,6 +27,8 @@ export type SubStateUpdateAction =
   | "HIDE_AGENDA"
   | "REPEAL_AGENDA"
   | "REMOVE_REPEALED_AGENDA"
+  | "PICK_STRATEGY_CARD"
+  | "UNDO_STRATEGY_CARD"
   | "SET_OTHER_FIELD"
   | "FINALIZE_SUB_STATE";
 
@@ -33,6 +36,7 @@ export interface SubStateUpdateData {
   action?: SubStateUpdateAction;
   actionName?: string;
   agendaName?: string;
+  cardName?: StrategyCardName;
   factionName?: string;
   fieldName?: string;
   numVotes?: number;
@@ -62,6 +66,10 @@ export interface SubState {
   outcome?: string;
   repealedAgenda?: string;
   subAgenda?: string;
+  strategyCards?: {
+    cardName: StrategyCardName;
+    factionName: string;
+  }[];
   [key: string]: any;
 }
 
@@ -658,6 +666,61 @@ export function removeRepealedSubStateAgenda(gameid: string) {
   );
 }
 
+export function pickSubStateStrategyCard(
+  gameid: string,
+  cardName: StrategyCardName,
+  factionName: string
+) {
+  const data: SubStateUpdateData = {
+    action: "PICK_STRATEGY_CARD",
+    cardName: cardName,
+    factionName: factionName,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        if (!updatedSubState.strategyCards) {
+          updatedSubState.strategyCards = [];
+        }
+
+        updatedSubState.strategyCards.push({
+          cardName: cardName,
+          factionName: factionName,
+        });
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function undoSubStateStrategyCard(gameid: string) {
+  const data: SubStateUpdateData = {
+    action: "UNDO_STRATEGY_CARD",
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        (updatedSubState.strategyCards ?? []).pop();
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
 export function setSubStateOther(
   gameid: string,
   fieldName: string,
@@ -704,6 +767,10 @@ export function finalizeSubState(gameid: string, subState: SubState) {
 
   for (const objectiveName of subState.objectives ?? []) {
     revealObjective(gameid, undefined, objectiveName);
+  }
+
+  for (const strategyCard of subState.strategyCards ?? []) {
+    assignStrategyCard(gameid, strategyCard.cardName, strategyCard.factionName);
   }
 
   for (const [factionName, updates] of Object.entries(

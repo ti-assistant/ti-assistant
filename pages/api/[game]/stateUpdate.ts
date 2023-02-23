@@ -9,7 +9,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { fetchFactions, fetchStrategyCards } from "../../../server/util/fetch";
 import { StateUpdateData } from "../../../src/util/api/state";
 import { GameData } from "../../../src/util/api/util";
-import { getOnDeckFaction } from "../../../src/util/helpers";
+import {
+  getOnDeckFaction,
+  getPreviousFaction,
+} from "../../../src/util/helpers";
 
 export default async function handler(
   req: NextApiRequest,
@@ -61,7 +64,13 @@ export default async function handler(
           let minCard = Number.MAX_SAFE_INTEGER;
           let minFaction: string | undefined;
           const strategyCards = await fetchStrategyCards(gameId);
+          const subState = gameData.subState ?? {};
           for (const strategyCard of Object.values(strategyCards)) {
+            for (const cardObj of subState.strategyCards ?? []) {
+              if (cardObj.cardName === strategyCard.name) {
+                strategyCard.faction = cardObj.factionName;
+              }
+            }
             if (strategyCard.faction && strategyCard.order < minCard) {
               minCard = strategyCard.order;
               minFaction = strategyCard.faction;
@@ -137,16 +146,36 @@ export default async function handler(
     case "ADVANCE_PLAYER": {
       const factions = await fetchFactions(gameId);
       const strategyCards = await fetchStrategyCards(gameId);
+      const subState = gameData.subState ?? {};
       const onDeckFaction = getOnDeckFaction(
         gameData.state,
         factions,
-        strategyCards
+        strategyCards,
+        subState
       );
       await db
         .collection("games")
         .doc(gameId)
         .update({
           "state.activeplayer": onDeckFaction ? onDeckFaction.name : "None",
+          [timestampString]: timestamp,
+        });
+      break;
+    }
+    case "PREVIOUS_PLAYER": {
+      const factions = await fetchFactions(gameId);
+      // const strategyCards = await fetchStrategyCards(gameId);
+      const subState = gameData.subState ?? {};
+      const prevFaction = getPreviousFaction(
+        gameData.state,
+        factions,
+        subState
+      );
+      await db
+        .collection("games")
+        .doc(gameId)
+        .update({
+          "state.activeplayer": prevFaction ? prevFaction.name : "None",
           [timestampString]: timestamp,
         });
       break;

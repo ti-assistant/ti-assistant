@@ -1,7 +1,8 @@
 import { mutate } from "swr";
-import { getOnDeckFaction } from "../helpers";
+import { getOnDeckFaction, getPreviousFaction } from "../helpers";
 import { StrategyCard } from "./cards";
 import { Faction } from "./factions";
+import { SubState } from "./subState";
 import { poster } from "./util";
 
 export type Phase =
@@ -16,6 +17,7 @@ export type StateUpdateAction =
   | "ADVANCE_PHASE"
   | "START_NEXT_ROUND"
   | "ADVANCE_PLAYER"
+  | "PREVIOUS_PLAYER"
   | "SET_SPEAKER"
   | "END_GAME"
   | "CONTINUE_GAME"
@@ -107,7 +109,8 @@ export function setSpeaker(gameid: string, speaker: string) {
 export async function nextPlayer(
   gameid: string,
   factions: Record<string, Faction>,
-  strategyCards: Record<string, StrategyCard>
+  strategyCards: Record<string, StrategyCard>,
+  subState: SubState
 ) {
   const data: StateUpdateData = {
     action: "ADVANCE_PLAYER",
@@ -118,10 +121,41 @@ export async function nextPlayer(
     async () => await poster(`/api/${gameid}/stateUpdate`, data),
     {
       optimisticData: (state: GameState) => {
-        const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
+        const onDeckFaction = getOnDeckFaction(
+          state,
+          factions,
+          strategyCards,
+          subState
+        );
         return {
           ...structuredClone(state),
           activeplayer: onDeckFaction ? onDeckFaction.name : "None",
+        };
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export async function prevPlayer(
+  gameid: string,
+  factions: Record<string, Faction>,
+  subState: SubState
+) {
+  const data: StateUpdateData = {
+    action: "PREVIOUS_PLAYER",
+  };
+
+  mutate(
+    `/api/${gameid}/state`,
+    async () => await poster(`/api/${gameid}/stateUpdate`, data),
+    {
+      optimisticData: (state: GameState) => {
+        const prevFaction = getPreviousFaction(state, factions, subState);
+
+        return {
+          ...structuredClone(state),
+          activeplayer: prevFaction ? prevFaction.name : "None",
         };
       },
       revalidate: false,

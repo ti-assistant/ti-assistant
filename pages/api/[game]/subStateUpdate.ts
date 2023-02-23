@@ -309,6 +309,31 @@ export default async function handler(
       };
       break;
     }
+    case "PICK_STRATEGY_CARD": {
+      if (!data.cardName || !data.factionName) {
+        res.status(422);
+        return;
+      }
+      const strategyCards = gameData.subState?.strategyCards ?? [];
+      strategyCards.push({
+        cardName: data.cardName,
+        factionName: data.factionName,
+      });
+      updates = {
+        "subState.strategyCards": strategyCards,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "UNDO_STRATEGY_CARD": {
+      const strategyCards = gameData.subState?.strategyCards ?? [];
+      strategyCards.pop();
+      updates = {
+        "subState.strategyCards": strategyCards,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "SET_OTHER_FIELD": {
       if (!data.fieldName || !data.value) {
         res.status(422);

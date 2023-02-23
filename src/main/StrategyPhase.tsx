@@ -24,7 +24,18 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { NumberedItem } from "../NumberedItem";
 import { hasTech } from "../util/api/techs";
 import { Agenda, repealAgenda } from "../util/api/agendas";
-import { GameState, nextPlayer, StateUpdateData } from "../util/api/state";
+import {
+  GameState,
+  nextPlayer,
+  prevPlayer,
+  StateUpdateData,
+} from "../util/api/state";
+import {
+  finalizeSubState,
+  pickSubStateStrategyCard,
+  SubState,
+  undoSubStateStrategyCard,
+} from "../util/api/subState";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -45,8 +56,11 @@ function InfoContent({ children }: PropsWithChildren) {
 
 export function advanceToActionPhase(
   gameid: string,
-  strategyCards: Record<string, StrategyCard>
+  strategyCards: Record<string, StrategyCard>,
+  subState: SubState
 ) {
+  finalizeSubState(gameid, subState);
+
   const data: StateUpdateData = {
     action: "ADVANCE_PHASE",
   };
@@ -54,8 +68,14 @@ export function advanceToActionPhase(
     order: Number.MAX_SAFE_INTEGER,
   };
   for (const strategyCard of Object.values(strategyCards)) {
-    if (strategyCard.faction && strategyCard.order < minCard.order) {
-      minCard = strategyCard;
+    const updatedCard = structuredClone(strategyCard);
+    for (const cardObj of subState.strategyCards ?? []) {
+      if (cardObj.cardName === strategyCard.name) {
+        updatedCard.faction = cardObj.factionName;
+      }
+    }
+    if (updatedCard.faction && updatedCard.order < minCard.order) {
+      minCard = updatedCard;
     }
   }
   if (!minCard.faction) {
@@ -92,6 +112,10 @@ export default function StrategyPhase() {
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher
+  );
   const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
     useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
@@ -110,7 +134,7 @@ export default function StrategyPhase() {
     if (!gameid) {
       return;
     }
-    advanceToActionPhase(gameid, strategyCards ?? {});
+    advanceToActionPhase(gameid, strategyCards ?? {}, subState);
   }
 
   function showInfoModal(title: string, content: ReactNode) {
@@ -124,8 +148,9 @@ export default function StrategyPhase() {
     if (!gameid) {
       return;
     }
-    assignStrategyCard(gameid, card.name, faction.name);
-    nextPlayer(gameid, factions ?? {}, strategyCards ?? {});
+    pickSubStateStrategyCard(gameid, card.name, faction.name);
+    // assignStrategyCard(gameid, card.name, faction.name);
+    nextPlayer(gameid, factions ?? {}, strategyCards ?? {}, subState);
   }
 
   interface Ability {
@@ -277,33 +302,31 @@ export default function StrategyPhase() {
   const onDeckFaction = getOnDeckFaction(
     state,
     factions ?? {},
-    strategyCards ?? {}
+    strategyCards ?? {},
+    subState
   );
+
+  console.log(subState);
 
   function undoPick() {
     if (!gameid) {
       return;
     }
-    let cardName;
-
-    orderedStrategyCards.map(([name, card]) => {
-      if (card.faction) {
-        if (didFactionJustGo(card.faction)) {
-          cardName = name;
-        }
-      }
-    });
-    if (!cardName) {
-      return;
-    }
-    unassignStrategyCard(gameid, cardName);
+    undoSubStateStrategyCard(gameid);
+    prevPlayer(gameid, factions ?? {}, subState);
   }
 
-  function publicDisgrace(cardName: string) {
+  function canUndo() {
+    return (subState.strategyCards ?? []).length > 0;
+  }
+
+  function publicDisgrace() {
     if (!gameid) {
       return;
     }
-    unassignStrategyCard(gameid, cardName);
+    undoSubStateStrategyCard(gameid);
+    prevPlayer(gameid, factions ?? {}, subState);
+    // unassignStrategyCard(gameid, cardName);
   }
 
   function imperialArbiterFn(factionName: string) {
@@ -352,8 +375,20 @@ export default function StrategyPhase() {
     setFirstStrategyCard(gameid, cardName);
   }
 
-  const orderedStrategyCards = Object.entries(strategyCards ?? {}).sort(
-    (a, b) => strategyCardOrder[a[1].name] - strategyCardOrder[b[1].name]
+  const updatedStrategyCards = Object.values(strategyCards ?? {}).map(
+    (card) => {
+      const updatedCard = structuredClone(card);
+      for (const cardObj of subState?.strategyCards ?? []) {
+        if (cardObj.cardName === card.name) {
+          updatedCard.faction = cardObj.factionName;
+        }
+      }
+      return updatedCard;
+    }
+  );
+
+  const orderedStrategyCards = updatedStrategyCards.sort(
+    (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
   );
   return (
     <div
@@ -582,13 +617,17 @@ export default function StrategyPhase() {
             width: responsivePixels(420),
           }}
         >
-          {orderedStrategyCards.map(([name, card]) => {
+          {orderedStrategyCards.map((card) => {
             const factionActions = [];
             if (card.faction) {
-              if (didFactionJustGo(card.faction)) {
+              const numPickedCards = (subState.strategyCards ?? []).length;
+              const lastPickedCard = (subState.strategyCards ?? [])[
+                numPickedCards - 1
+              ];
+              if (lastPickedCard && lastPickedCard.cardName === card.name) {
                 factionActions.push({
                   text: "Public Disgrace",
-                  action: () => publicDisgrace(name),
+                  action: () => publicDisgrace(),
                 });
               }
               if (haveAllFactionsPicked()) {
@@ -619,7 +658,7 @@ export default function StrategyPhase() {
                       card.order === 0
                         ? "Undo Gift of Prescience"
                         : "Gift of Prescience",
-                    action: () => giftOfPrescience(name),
+                    action: () => giftOfPrescience(card.name),
                   });
                 }
                 const imperialArbiter = agendas
@@ -644,7 +683,7 @@ export default function StrategyPhase() {
             }
             return (
               <StrategyCardElement
-                key={name}
+                key={card.name}
                 card={card}
                 active={
                   card.faction || !activefaction || card.invalid ? false : true
@@ -659,9 +698,7 @@ export default function StrategyPhase() {
             );
           })}
         </div>
-        {!activefaction || activefaction.name !== state.speaker ? (
-          <button onClick={() => undoPick()}>Undo</button>
-        ) : null}
+        {canUndo() ? <button onClick={() => undoPick()}>Undo</button> : null}
         {activefaction ? null : (
           <button
             style={{ fontSize: responsivePixels(20) }}
