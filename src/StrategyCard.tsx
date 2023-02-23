@@ -170,11 +170,13 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
         >
           {cards.map((card) => {
             const textColor = !card.used ? "#eee" : "#555";
-            return <div style={{ color: textColor }}>{card.name}</div>;
+            return (
+              <div key={card.name} style={{ color: textColor }}>
+                {card.name}
+              </div>
+            );
           })}
-          {/* <div style={{color: textColor}}>{card</div> */}
         </div>
-        {/* <div style={{ flexBasis: "40%", color: textColor }}>{card.name}</div> */}
       </div>
     </LabeledDiv>
   );
