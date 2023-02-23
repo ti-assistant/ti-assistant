@@ -1228,7 +1228,18 @@ export default function ActionPhase() {
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
 
-  const numCards = orderedStrategyCards.length;
+  const cardsByFaction: Record<string, StrategyCard[]> = {};
+  orderedStrategyCards.forEach((card) => {
+    if (!card.faction) {
+      return;
+    }
+    if (!cardsByFaction[card.faction]) {
+      cardsByFaction[card.faction] = [];
+    }
+    cardsByFaction[card.faction]?.push(card);
+  });
+
+  const numFactions = Object.keys(factions).length;
 
   return (
     <div
@@ -1249,18 +1260,30 @@ export default function ActionPhase() {
           paddingTop: responsivePixels(140),
           boxSizing: "border-box",
           height: "100%",
-          gap: numCards > 7 ? 0 : responsivePixels(8),
+          gap: numFactions > 7 ? 0 : responsivePixels(8),
         }}
       >
         {/* <div className="flexRow">Initiative Order</div> */}
-        {orderedStrategyCards.map((card) => {
+        {Object.values(cardsByFaction).map((cards) => {
           return (
             <SmallStrategyCard
-              key={card.name}
-              card={card}
-              active={!card.used}
+              key={cards[0] ? cards[0].name : "Error"}
+              cards={cards}
             />
           );
+          // if (cards.length === 1 && cards[0]) {
+          //   return (
+          //     <SmallStrategyCard
+          //       key={cards[0].name}
+          //       cards={cards}
+          //       // card={cards[0]}
+          //       // active={!cards[0].used}
+          //     />
+          //   );
+          // }
+          // return <SmallStrategyCard
+          //   key={cards[0].name}
+          //   cards
         })}
       </div>
       <div className="flexColumn" style={{ gap: responsivePixels(16) }}>

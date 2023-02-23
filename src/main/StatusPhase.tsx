@@ -491,7 +491,7 @@ export function MiddleColumn() {
                                   key={objective.name}
                                   style={{ fontSize: responsivePixels(14) }}
                                   onClick={() => {
-                                    if (!card.faction || !scoredPublics[0]) {
+                                    if (!card.faction) {
                                       return;
                                     }
                                     scoreObj(card.faction, objective);
@@ -1062,16 +1062,19 @@ export default function StatusPhase() {
   const orderedStrategyCards = Object.values(strategyCards ?? {})
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
-  const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
-    return (
-      card.faction &&
-      orderedStrategyCards.findIndex(
-        (othercard) => card.faction === othercard.faction
-      ) === index
-    );
+
+  const cardsByFaction: Record<string, StrategyCard[]> = {};
+  orderedStrategyCards.forEach((card) => {
+    if (!card.faction) {
+      return;
+    }
+    if (!cardsByFaction[card.faction]) {
+      cardsByFaction[card.faction] = [];
+    }
+    cardsByFaction[card.faction]?.push(card);
   });
 
-  const numCards = orderedStrategyCards.length;
+  const numFactions = Object.keys(factions).length;
 
   return (
     <div
@@ -1092,15 +1095,14 @@ export default function StatusPhase() {
           paddingTop: responsivePixels(140),
           boxSizing: "border-box",
           height: "100%",
-          gap: numCards > 7 ? 0 : responsivePixels(8),
+          gap: numFactions > 7 ? 0 : responsivePixels(8),
         }}
       >
-        {orderedStrategyCards.map((card) => {
+        {Object.values(cardsByFaction).map((cards) => {
           return (
             <SmallStrategyCard
-              key={card.name}
-              card={card}
-              active={!card.used}
+              key={cards[0] ? cards[0].name : "Error"}
+              cards={cards}
             />
           );
         })}

@@ -229,7 +229,7 @@ export default async function handler(
       break;
     }
     case "CAST_VOTES": {
-      if (!data.factionName || !data.numVotes || !data.target) {
+      if (!data.factionName || data.numVotes == undefined || !data.target) {
         res.status(422);
         return;
       }

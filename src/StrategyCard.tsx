@@ -101,11 +101,12 @@ export function StrategyCardElement({
 }
 
 export interface SmallStrategyCardProps {
-  card: StrategyCard;
-  active?: boolean;
+  // card: StrategyCard;
+  cards: StrategyCard[];
+  // active?: boolean;
 }
 
-export function SmallStrategyCard({ card, active }: SmallStrategyCardProps) {
+export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
   const router = useRouter();
   const { game: gameid } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
@@ -113,10 +114,23 @@ export function SmallStrategyCard({ card, active }: SmallStrategyCardProps) {
     fetcher
   );
 
-  const faction = card.faction && factions ? factions[card.faction] : undefined;
+  if (!cards[0]) {
+    return null;
+  }
+
+  const initiative = cards.reduce(
+    (lowestInitiative, card) => Math.min(lowestInitiative, card.order),
+    Number.MAX_SAFE_INTEGER
+  );
+
+  const faction =
+    cards[0] && cards[0].faction && factions
+      ? factions[cards[0].faction]
+      : undefined;
+
+  const height = cards.length === 1 ? responsivePixels(54) : "auto";
 
   const borderColor = !faction?.passed ? getFactionColor(faction) : "#555";
-  const textColor = active ? "#eee" : "#555";
   return (
     <LabeledDiv
       label={getFactionName(faction)}
@@ -125,7 +139,7 @@ export function SmallStrategyCard({ card, active }: SmallStrategyCardProps) {
         display: "flex",
         flexDirection: "column",
         fontSize: responsivePixels(24),
-        height: responsivePixels(54),
+        height: height,
       }}
     >
       <div
@@ -145,12 +159,22 @@ export function SmallStrategyCard({ card, active }: SmallStrategyCardProps) {
             fontSize: responsivePixels(32),
             display: "flex",
             justifyContent: "center",
-            color: textColor,
+            color: faction?.passed ? "#555" : "#eee",
           }}
         >
-          {card.order}
+          {initiative}
         </div>
-        <div style={{ flexBasis: "40%", color: textColor }}>{card.name}</div>
+        <div
+          className="flexColumn"
+          style={{ flexBasis: "40%", alignItems: "flex-start" }}
+        >
+          {cards.map((card) => {
+            const textColor = !card.used ? "#eee" : "#555";
+            return <div style={{ color: textColor }}>{card.name}</div>;
+          })}
+          {/* <div style={{color: textColor}}>{card</div> */}
+        </div>
+        {/* <div style={{ flexBasis: "40%", color: textColor }}>{card.name}</div> */}
       </div>
     </LabeledDiv>
   );

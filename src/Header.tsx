@@ -377,7 +377,7 @@ export function Footer({}) {
   const speakerButtonPosition =
     state?.phase === "STRATEGY"
       ? "top"
-      : orderedFactions.length === 4 || orderedFactions.length > 7
+      : orderedFactions.length > 7
       ? "bottom"
       : "top";
 

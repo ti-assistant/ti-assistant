@@ -277,6 +277,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     if (!gameid) {
       return;
     }
+    console.log(target);
     if (!target || target === "Abstain") {
       castSubStateVotes(gameid, factionName, "Abstain", 0);
     } else {
@@ -411,7 +412,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
                   onClick={() =>
                     castVotes(
                       factionSubState?.target,
-                      factionSubState?.votes ?? 0 - 1
+                      (factionSubState?.votes ?? 0) - 1
                     )
                   }
                 ></div>
@@ -428,7 +429,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
                   onClick={() =>
                     castVotes(
                       factionSubState.target,
-                      factionSubState?.votes ?? 0 + 1
+                      (factionSubState?.votes ?? 0) + 1
                     )
                   }
                 ></div>
