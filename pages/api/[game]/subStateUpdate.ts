@@ -334,6 +334,44 @@ export default async function handler(
       };
       break;
     }
+    case "SWAP_STRATEGY_CARDS": {
+      if (!data.cardOneName || !data.cardTwoName) {
+        res.status(422);
+        return;
+      }
+      const strategyCards = gameData.subState?.strategyCards ?? [];
+      // let factionOne: string | undefined;
+      // let factionTwo: string | undefined;
+      strategyCards.forEach((card) => {
+        if (!data.cardOneName || !data.cardTwoName) {
+          return;
+        }
+        if (card.cardName === data.cardOneName) {
+          card.cardName = data.cardTwoName;
+        } else if (card.cardName === data.cardTwoName) {
+          card.cardName = data.cardOneName;
+        }
+      });
+
+      // if (!factionOne || !factionTwo) {
+      //   res.status(422);
+      //   return;
+      // }
+
+      // strategyCards.forEach((card) => {
+      //   if (factionTwo && card.cardName === data.cardOneName) {
+      //     card.factionName = factionTwo;
+      //   }
+      //   if (factionOne && card.cardName === data.cardTwoName) {
+      //     card.factionName = factionOne;
+      //   }
+      // });
+      updates = {
+        "subState.strategyCards": strategyCards,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "SET_OTHER_FIELD": {
       if (!data.fieldName || !data.value) {
         res.status(422);

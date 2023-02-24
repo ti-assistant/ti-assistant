@@ -3,6 +3,7 @@ import { repealAgenda } from "./agendas";
 import {
   assignStrategyCard,
   setFirstStrategyCard,
+  StrategyCard,
   StrategyCardName,
 } from "./cards";
 import { revealObjective, scoreObjective } from "./objectives";
@@ -33,6 +34,7 @@ export type SubStateUpdateAction =
   | "REMOVE_REPEALED_AGENDA"
   | "PICK_STRATEGY_CARD"
   | "UNDO_STRATEGY_CARD"
+  | "SWAP_STRATEGY_CARDS"
   | "SET_OTHER_FIELD"
   | "FINALIZE_SUB_STATE";
 
@@ -41,6 +43,8 @@ export interface SubStateUpdateData {
   actionName?: string;
   agendaName?: string;
   cardName?: StrategyCardName;
+  cardOneName?: StrategyCardName;
+  cardTwoName?: StrategyCardName;
   factionName?: string;
   fieldName?: string;
   numVotes?: number;
@@ -53,11 +57,11 @@ export interface SubStateUpdateData {
 }
 
 export interface SubStateFaction {
-  objectives: string[];
-  planets: string[];
-  removeTechs: string[];
+  objectives?: string[];
+  planets?: string[];
+  removeTechs?: string[];
   target?: string;
-  techs: string[];
+  techs?: string[];
   votes?: number;
 }
 
@@ -76,15 +80,6 @@ export interface SubState {
     orderMod?: number;
   }[];
   [key: string]: any;
-}
-
-function createEmptySubStateFaction(): SubStateFaction {
-  return {
-    objectives: [],
-    planets: [],
-    removeTechs: [],
-    techs: [],
-  };
 }
 
 export function clearSubState(gameid: string) {
@@ -188,8 +183,10 @@ export function addSubStateTech(
         if (!updatedSubState.factions) {
           updatedSubState.factions = {};
         }
-        if (!updatedSubState.factions[factionName]) {
-          updatedSubState.factions[factionName] = createEmptySubStateFaction();
+        const faction = updatedSubState.factions[factionName] ?? {};
+
+        if (!faction.techs) {
+          faction.techs = [];
         }
 
         const techString = techName
@@ -197,7 +194,9 @@ export function addSubStateTech(
           .replace(/\./g, "")
           .replace(" Ω", "");
 
-        updatedSubState.factions[factionName]?.techs.push(techString);
+        faction.techs.push(techString);
+
+        updatedSubState.factions[factionName] = faction;
 
         return updatedSubState;
       },
@@ -237,7 +236,7 @@ export function clearAddedSubStateTech(
           .replace(" Ω", "");
 
         const updatedFaction = updatedSubState.factions[factionName];
-        if (!updatedFaction) {
+        if (!updatedFaction || !updatedFaction.techs) {
           return updatedSubState;
         }
 
@@ -273,16 +272,20 @@ export function removeSubStateTech(
         if (!updatedSubState.factions) {
           updatedSubState.factions = {};
         }
-        if (!updatedSubState.factions[factionName]) {
-          updatedSubState.factions[factionName] = createEmptySubStateFaction();
-        }
+        const faction = updatedSubState.factions[factionName] ?? {};
 
         const techString = techName
           .replace(/\//g, "")
           .replace(/\./g, "")
           .replace(" Ω", "");
 
-        updatedSubState.factions[factionName]?.removeTechs.push(techString);
+        if (!faction.removeTechs) {
+          faction.removeTechs = [];
+        }
+
+        faction.removeTechs.push(techString);
+
+        updatedSubState.factions[factionName] = faction;
 
         return updatedSubState;
       },
@@ -322,7 +325,7 @@ export function clearRemovedSubStateTech(
           .replace(" Ω", "");
 
         const updatedFaction = updatedSubState.factions[factionName];
-        if (!updatedFaction) {
+        if (!updatedFaction || !updatedFaction.removeTechs) {
           return updatedSubState;
         }
 
@@ -358,11 +361,15 @@ export function addSubStatePlanet(
         if (!updatedSubState.factions) {
           updatedSubState.factions = {};
         }
-        if (!updatedSubState.factions[factionName]) {
-          updatedSubState.factions[factionName] = createEmptySubStateFaction();
+        const faction = updatedSubState.factions[factionName] ?? {};
+
+        if (!faction.planets) {
+          faction.planets = [];
         }
 
-        updatedSubState.factions[factionName]?.planets.push(planetName);
+        faction.planets.push(planetName);
+
+        updatedSubState.factions[factionName] = faction;
 
         return updatedSubState;
       },
@@ -397,7 +404,7 @@ export function removeSubStatePlanet(
         }
 
         const updatedFaction = updatedSubState.factions[factionName];
-        if (!updatedFaction) {
+        if (!updatedFaction || !updatedFaction.planets) {
           return updatedSubState;
         }
 
@@ -433,11 +440,15 @@ export function scoreSubStateObjective(
         if (!updatedSubState.factions) {
           updatedSubState.factions = {};
         }
-        if (!updatedSubState.factions[factionName]) {
-          updatedSubState.factions[factionName] = createEmptySubStateFaction();
+        const faction = updatedSubState.factions[factionName] ?? {};
+
+        if (!faction.objectives) {
+          faction.objectives = [];
         }
 
-        updatedSubState.factions[factionName]?.objectives.push(objectiveName);
+        faction.objectives.push(objectiveName);
+
+        updatedSubState.factions[factionName] = faction;
 
         return updatedSubState;
       },
@@ -464,15 +475,12 @@ export function unscoreSubStateObjective(
       optimisticData: (subState: SubState) => {
         const updatedSubState = structuredClone(subState);
 
-        if (
-          !updatedSubState.factions ||
-          !updatedSubState.factions[factionName]
-        ) {
+        if (!updatedSubState.factions) {
           return updatedSubState;
         }
 
         const updatedFaction = updatedSubState.factions[factionName];
-        if (!updatedFaction) {
+        if (!updatedFaction || !updatedFaction.objectives) {
           return updatedSubState;
         }
 
@@ -510,17 +518,16 @@ export function castSubStateVotes(
         if (!updatedSubState.factions) {
           updatedSubState.factions = {};
         }
-        if (!updatedSubState.factions[factionName]) {
-          updatedSubState.factions[factionName] = createEmptySubStateFaction();
-        }
+        const faction = updatedSubState.factions[factionName] ?? {};
 
-        const updatedFaction = updatedSubState.factions[factionName];
-        if (!updatedFaction) {
+        if (!faction) {
           return updatedSubState;
         }
 
-        updatedFaction.votes = numVotes;
-        updatedFaction.target = target;
+        faction.votes = numVotes;
+        faction.target = target;
+
+        updatedSubState.factions[factionName] = faction;
 
         return updatedSubState;
       },
@@ -718,6 +725,39 @@ export function undoSubStateStrategyCard(gameid: string) {
         const updatedSubState = structuredClone(subState);
 
         (updatedSubState.strategyCards ?? []).pop();
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function swapSubStateStrategyCards(
+  gameid: string,
+  cardOne: StrategyCard,
+  cardTwo: StrategyCard
+) {
+  const data: SubStateUpdateData = {
+    action: "SWAP_STRATEGY_CARDS",
+    cardOneName: cardOne.name,
+    cardTwoName: cardTwo.name,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        (updatedSubState.strategyCards ?? []).forEach((card) => {
+          if (cardTwo.name && card.cardName === cardOne.name) {
+            card.cardName = cardTwo.name;
+          } else if (cardOne.name && card.cardName === cardTwo.name) {
+            card.cardName = cardOne.name;
+          }
+        });
 
         return updatedSubState;
       },

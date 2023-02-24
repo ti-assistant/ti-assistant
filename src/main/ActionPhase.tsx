@@ -374,7 +374,7 @@ export function AdditionalActions({
     padding: responsivePixels(8),
     display: "grid",
     gridAutoFlow: "column",
-    gridTemplateRows: "repeat(14, auto)",
+    gridTemplateRows: "repeat(12, auto)",
     gap: responsivePixels(4),
     justifyContent: "flex-start",
     ...ClientOnlyHoverMenuStyle,
@@ -659,6 +659,9 @@ export function AdditionalActions({
         const nonXxchaPlanets = Object.values(planets ?? {}).filter(
           (planet) => {
             if ((planet.owners ?? []).includes("Xxcha Kingdom")) {
+              return false;
+            }
+            if (planet.locked) {
               return false;
             }
             if (claimedPlanets.includes(planet.name)) {

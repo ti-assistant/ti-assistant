@@ -4,20 +4,22 @@ import { StrategyCardElement } from "../StrategyCard";
 import { getOnDeckFaction } from "../util/helpers";
 import {
   strategyCardOrder,
-  unassignStrategyCard,
   swapStrategyCards,
-  setFirstStrategyCard,
-  assignStrategyCard,
   StrategyCard,
 } from "../util/api/cards";
 import { Faction, readyAllFactions } from "../util/api/factions";
-import { getNextIndex, responsivePixels } from "../util/util";
+import { responsivePixels } from "../util/util";
 import { fetcher, poster } from "../util/api/util";
 import { BasicFactionTile } from "../FactionTile";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import { FactionCard } from "../FactionCard";
 import { Modal } from "../Modal";
-import React, { PropsWithChildren, ReactNode, useState } from "react";
+import React, {
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import SummaryColumn from "./SummaryColumn";
 import { LabeledDiv } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -35,9 +37,239 @@ import {
   pickSubStateStrategyCard,
   setSubStateOther,
   SubState,
+  swapSubStateStrategyCards,
   undoSubStateStrategyCard,
 } from "../util/api/subState";
 import { getDefaultStrategyCards } from "../util/api/defaults";
+import { HoverMenu } from "../HoverMenu";
+import { Selector } from "../Selector";
+
+function QuantumDatahubNode({
+  faction,
+  strategyCards,
+}: {
+  faction: Faction | undefined;
+  strategyCards: StrategyCard[];
+}) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const [quantum, setQuantum] = useState<{
+    mainCard: string | undefined;
+    otherCard: string | undefined;
+  }>({
+    mainCard: undefined,
+    otherCard: undefined,
+  });
+
+  function quantumDatahubNode() {
+    if (!gameid || !quantum.mainCard || !quantum.otherCard) {
+      return;
+    }
+
+    const cardOne = strategyCards.find(
+      (card) => card.name === quantum.mainCard
+    );
+    const cardTwo = strategyCards.find(
+      (card) => card.name === quantum.otherCard
+    );
+    if (!cardOne || !cardTwo) {
+      return;
+    }
+
+    swapSubStateStrategyCards(gameid, cardOne, cardTwo);
+  }
+
+  if (!faction || !hasTech(faction, "Quantum Datahub Node")) {
+    return null;
+  }
+
+  return (
+    <LabeledDiv
+      label={getFactionName(faction)}
+      color={getFactionColor(faction)}
+    >
+      <HoverMenu label="Quantum Datahub Node">
+        <div
+          className="flexColumn"
+          style={{
+            padding: responsivePixels(8),
+            gap: responsivePixels(4),
+            boxSizing: "border-box",
+            alignItems: "flex-start",
+            width: "100%",
+          }}
+        >
+          Swap
+          <Selector
+            hoverMenuLabel="Strategy Card"
+            options={strategyCards
+              .filter((card) => card.faction === faction.name)
+              .map((card) => card.name)}
+            selectItem={(cardName) => {
+              setQuantum((quantum) => {
+                return { ...quantum, mainCard: cardName };
+              });
+            }}
+            selectedItem={quantum.mainCard}
+          />
+          for
+          <Selector
+            hoverMenuLabel="Strategy Card"
+            options={strategyCards
+              .filter((card) => card.faction && card.faction !== faction.name)
+              .map((card) => card.name)}
+            selectItem={(cardName) => {
+              setQuantum((quantum) => {
+                return { ...quantum, otherCard: cardName };
+              });
+            }}
+            selectedItem={quantum.otherCard}
+          />
+          <div
+            className="flexColumn"
+            style={{
+              paddingTop: responsivePixels(4),
+              boxSizing: "border-box",
+              width: "100%",
+            }}
+          >
+            <button
+              disabled={!quantum.mainCard || !quantum.otherCard}
+              onClick={() => {
+                quantumDatahubNode();
+                setQuantum({
+                  mainCard: undefined,
+                  otherCard: undefined,
+                });
+              }}
+            >
+              Confirm Swap
+            </button>
+          </div>
+        </div>
+      </HoverMenu>
+    </LabeledDiv>
+  );
+}
+
+function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const { data: agendas = {} }: { data?: Record<string, Agenda> } = useSWR(
+    gameid ? `/api/${gameid}/agendas` : null,
+    fetcher
+  );
+  const { data: factions = {} }: { data?: Record<string, Faction> } = useSWR(
+    gameid ? `/api/${gameid}/factions` : null,
+    fetcher
+  );
+  const [quantum, setQuantum] = useState<{
+    mainCard: string | undefined;
+    otherCard: string | undefined;
+  }>({
+    mainCard: undefined,
+    otherCard: undefined,
+  });
+
+  function quantumDatahubNode() {
+    if (!gameid || !quantum.mainCard || !quantum.otherCard) {
+      return;
+    }
+
+    const cardOne = strategyCards.find(
+      (card) => card.name === quantum.mainCard
+    );
+    const cardTwo = strategyCards.find(
+      (card) => card.name === quantum.otherCard
+    );
+    if (!cardOne || !cardTwo) {
+      return;
+    }
+
+    swapSubStateStrategyCards(gameid, cardOne, cardTwo);
+    repealAgenda(gameid, "Imperial Arbiter");
+  }
+
+  const arbiter = agendas["Imperial Arbiter"];
+
+  if (!arbiter || !arbiter.resolved) {
+    return null;
+  }
+
+  const faction = factions[arbiter.target ?? ""];
+
+  if (!faction) {
+    return null;
+  }
+
+  return (
+    <LabeledDiv
+      label={getFactionName(faction)}
+      color={getFactionColor(faction)}
+    >
+      <HoverMenu label="Imperial Arbiter">
+        <div
+          className="flexColumn"
+          style={{
+            padding: responsivePixels(8),
+            gap: responsivePixels(4),
+            alignItems: "flex-start",
+            boxSizing: "border-box",
+            width: "100%",
+          }}
+        >
+          Swap
+          <Selector
+            hoverMenuLabel="Strategy Card"
+            options={strategyCards
+              .filter((card) => card.faction === faction.name)
+              .map((card) => card.name)}
+            selectItem={(cardName) => {
+              setQuantum((quantum) => {
+                return { ...quantum, mainCard: cardName };
+              });
+            }}
+            selectedItem={quantum.mainCard}
+          />
+          for
+          <Selector
+            hoverMenuLabel="Strategy Card"
+            options={strategyCards
+              .filter((card) => card.faction && card.faction !== faction.name)
+              .map((card) => card.name)}
+            selectItem={(cardName) => {
+              setQuantum((quantum) => {
+                return { ...quantum, otherCard: cardName };
+              });
+            }}
+            selectedItem={quantum.otherCard}
+          />
+          <div
+            className="flexColumn"
+            style={{
+              paddingTop: responsivePixels(4),
+              boxSizing: "border-box",
+              width: "100%",
+            }}
+          >
+            <button
+              disabled={!quantum.mainCard || !quantum.otherCard}
+              onClick={() => {
+                quantumDatahubNode();
+                setQuantum({
+                  mainCard: undefined,
+                  otherCard: undefined,
+                });
+              }}
+            >
+              Discard to Swap
+            </button>
+          </div>
+        </div>
+      </HoverMenu>
+    </LabeledDiv>
+  );
+}
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -69,6 +301,7 @@ export function advanceToActionPhase(
   let minCard: { order: number; faction?: string } = {
     order: Number.MAX_SAFE_INTEGER,
   };
+  let naalu = false;
   for (const strategyCard of Object.values(strategyCards)) {
     const updatedCard = structuredClone(strategyCard);
     for (const cardObj of subState.strategyCards ?? []) {
@@ -76,12 +309,23 @@ export function advanceToActionPhase(
         updatedCard.faction = cardObj.factionName;
       }
     }
+    if (updatedCard.faction === "Naalu Collective") {
+      naalu = true;
+    }
     if (updatedCard.faction && updatedCard.order < minCard.order) {
       minCard = updatedCard;
     }
   }
   if (!minCard.faction) {
     throw Error("Transition to ACTION phase w/o selecting cards?");
+  }
+
+  if (naalu) {
+    if (subState["Gift of Prescience"]) {
+      minCard.faction = subState["Gift of Prescience"];
+    } else {
+      minCard.faction = "Naalu Collective";
+    }
   }
 
   mutate(
@@ -155,7 +399,6 @@ export default function StrategyPhase() {
       return;
     }
     pickSubStateStrategyCard(gameid, card.name, faction.name);
-    // assignStrategyCard(gameid, card.name, faction.name);
     nextPlayer(gameid, factions ?? {}, strategyCards, subState);
   }
 
@@ -232,19 +475,27 @@ export default function StrategyPhase() {
     return false;
   }
 
-  function getEndOfStrategyPhaseAbilities() {
-    let abilities: Record<string, Ability[]> = {};
-    for (const factionName of Object.keys(factions ?? {})) {
-      abilities[factionName] = [];
-    }
-    return abilities;
-  }
-
   function hasEndOfStrategyPhaseAbilities() {
-    for (const abilities of Object.values(getEndOfStrategyPhaseAbilities())) {
-      if (abilities.length > 0) {
-        return true;
-      }
+    if (!factions) {
+      return false;
+    }
+    if (factions["Naalu Collective"]) {
+      return true;
+    }
+    const hacan = factions["Emirates of Hacan"];
+    if (hacan && hasTech(hacan, "Quantum Datahub Node")) {
+      return true;
+    }
+    const nekro = factions["Nekro Virus"];
+    if (nekro && hasTech(nekro, "Quantum Datahub Node")) {
+      return true;
+    }
+    if (!agendas) {
+      return false;
+    }
+    const arbiter = agendas["Imperial Arbiter"];
+    if (arbiter && arbiter.resolved && arbiter.target) {
+      return true;
     }
     return false;
   }
@@ -284,62 +535,15 @@ export default function StrategyPhase() {
     return (subState.strategyCards ?? []).length > 0;
   }
 
-  function publicDisgrace() {
+  function giftOfPrescience(factionName: string | undefined) {
     if (!gameid) {
       return;
     }
-    undoSubStateStrategyCard(gameid);
-    prevPlayer(gameid, factions ?? {}, subState);
-  }
-
-  function imperialArbiterFn(factionName: string) {
-    if (!gameid) {
-      return;
-    }
-    const imperialArbiter = agendas
-      ? agendas["Imperial Arbiter"]?.target
-      : undefined;
-    if (!imperialArbiter) {
-      return;
-    }
-    const factionCard = Object.values(strategyCards).find(
-      (card) => card.faction === factionName
-    );
-    const arbiterCard = Object.values(strategyCards).find(
-      (card) => card.faction === imperialArbiter
-    );
-    if (!factionCard || !arbiterCard) {
-      return;
-    }
-    swapStrategyCards(gameid, factionCard, arbiterCard);
-    repealAgenda(gameid, "Imperial Arbiter");
-  }
-
-  function quantumDatahubNode(factionName: string) {
-    if (!gameid) {
-      return;
-    }
-    const factionCard = Object.values(strategyCards).find(
-      (card) => card.faction === factionName
-    );
-    const hacanCard = Object.values(strategyCards).find(
-      (card) => card.faction === "Emirates of Hacan"
-    );
-    if (!factionCard || !hacanCard) {
-      return;
-    }
-    swapStrategyCards(gameid, factionCard, hacanCard);
-  }
-
-  function giftOfPrescience(factionName: string) {
-    if (!gameid) {
-      return;
-    }
-    if (subState["Gift of Prescience"] === factionName) {
+    if (!factionName || subState["Gift of Prescience"] === factionName) {
       setSubStateOther(gameid, "Gift of Prescience", undefined);
     } else {
       setSubStateOther(gameid, "Gift of Prescience", factionName);
-    } // setFirstStrategyCard(gameid, cardName);
+    }
   }
 
   let firstCard = true;
@@ -453,52 +657,29 @@ export default function StrategyPhase() {
             </ol>
           </div>
         ) : null}
-        {hasEndOfStrategyPhaseAbilities() ? (
+        {haveAllFactionsPicked() && hasEndOfStrategyPhaseAbilities() ? (
           <div className="flexColumn">
             End of Strategy Phase
-            <ol>
-              {Object.entries(getEndOfStrategyPhaseAbilities()).map(
-                ([factionName, abilities]) => {
-                  if (abilities.length === 0) {
-                    return null;
-                  }
-                  const faction = factions ? factions[factionName] : undefined;
-                  if (!faction) {
-                    return null;
-                  }
-                  return (
-                    <li key={factionName}>
-                      <div className="flexRow">
-                        <BasicFactionTile
-                          faction={faction}
-                          opts={{ fontSize: responsivePixels(16) }}
-                        />
-                        <div className="flexColumn">
-                          {abilities.map((ability) => {
-                            return (
-                              <div key={ability.name} className="flexRow">
-                                {ability.name}
-                                <div
-                                  className="popupIcon"
-                                  onClick={() =>
-                                    showInfoModal(
-                                      ability.name,
-                                      ability.description
-                                    )
-                                  }
-                                >
-                                  &#x24D8;
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </li>
-                  );
-                }
-              )}
-            </ol>
+            {factions && factions["Naalu Collective"] ? (
+              <Selector
+                hoverMenuLabel="Gift of Prescience"
+                selectedLabel="Gift of Prescience"
+                options={Object.values(factions ?? {})
+                  .map((faction) => faction.name)
+                  .filter((name) => name !== "Naalu Collective")}
+                selectItem={giftOfPrescience}
+                selectedItem={subState["Gift of Prescience"]}
+              />
+            ) : null}
+            <QuantumDatahubNode
+              faction={(factions ?? {})["Emirates of Hacan"]}
+              strategyCards={finalStrategyCards}
+            />
+            <QuantumDatahubNode
+              faction={(factions ?? {})["Nekro Virus"]}
+              strategyCards={finalStrategyCards}
+            />
+            <ImperialArbiter strategyCards={finalStrategyCards} />
           </div>
         ) : null}
       </div>
@@ -588,76 +769,6 @@ export default function StrategyPhase() {
           }}
         >
           {finalStrategyCards.map((card) => {
-            const factionActions = [];
-            if (card.faction) {
-              const numPickedCards = (subState.strategyCards ?? []).length;
-              const lastPickedCard = (subState.strategyCards ?? [])[
-                numPickedCards - 1
-              ];
-              if (lastPickedCard && lastPickedCard.cardName === card.name) {
-                factionActions.push({
-                  text: "Public Disgrace",
-                  action: () => publicDisgrace(),
-                });
-              }
-              if (haveAllFactionsPicked()) {
-                const hacan = factions
-                  ? factions["Emirates of Hacan"]
-                  : undefined;
-                if (
-                  hacan &&
-                  card.faction !== "Emirates of Hacan" &&
-                  hasTech(hacan, "Quantum Datahub Node")
-                ) {
-                  factionActions.push({
-                    text: "Quantum Datahub Node",
-                    action: () => {
-                      if (!card.faction) {
-                        return;
-                      }
-                      quantumDatahubNode(card.faction);
-                    },
-                  });
-                }
-                const naalu = factions
-                  ? factions["Naalu Collective"]
-                  : undefined;
-                if (naalu) {
-                  if (card.faction !== "Naalu Collective") {
-                    factionActions.push({
-                      text:
-                        subState["Gift of Prescience"] === card.faction
-                          ? "Undo Gift of Prescience"
-                          : "Gift of Prescience",
-                      action: () => {
-                        if (!card.faction) {
-                          return;
-                        }
-                        giftOfPrescience(card.faction);
-                      },
-                    });
-                  }
-                }
-                const imperialArbiter = agendas
-                  ? agendas["Imperial Arbiter"]
-                  : undefined;
-                if (
-                  imperialArbiter &&
-                  imperialArbiter.resolved &&
-                  card.faction !== imperialArbiter.target
-                ) {
-                  factionActions.push({
-                    text: "Imperial Arbiter",
-                    action: () => {
-                      if (!card.faction) {
-                        return;
-                      }
-                      imperialArbiterFn(card.faction);
-                    },
-                  });
-                }
-              }
-            }
             return (
               <StrategyCardElement
                 key={card.name}
@@ -670,12 +781,13 @@ export default function StrategyPhase() {
                     ? undefined
                     : () => pickStrategyCard(card, activefaction)
                 }
-                factionActions={factionActions}
               />
             );
           })}
         </div>
-        {canUndo() ? <button onClick={() => undoPick()}>Undo</button> : null}
+        {canUndo() ? (
+          <button onClick={() => undoPick()}>Undo SC Pick</button>
+        ) : null}
         {activefaction ? null : (
           <button
             style={{ fontSize: responsivePixels(20) }}

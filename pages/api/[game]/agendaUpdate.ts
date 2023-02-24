@@ -98,12 +98,14 @@ export default async function handler(
       break;
     }
     case "REPEAL_AGENDA": {
-      const agendaString = `agendas.${data.agenda}`;
+      const passedString = `agendas.${data.agenda}.passed`;
+      const targetString = `agendas.${data.agenda}.target`;
       await db
         .collection("games")
         .doc(gameId)
         .update({
-          [agendaString]: FieldValue.delete(),
+          [passedString]: FieldValue.delete(),
+          [targetString]: FieldValue.delete(),
           [timestampString]: timestamp,
         });
       break;
