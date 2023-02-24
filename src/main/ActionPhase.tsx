@@ -42,6 +42,7 @@ import { Attachment } from "../util/api/attachments";
 import { Planet } from "../util/api/planets";
 import { Objective } from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
+import { FullScreenLoader } from "../Loader";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -1092,13 +1093,6 @@ export function ActivePlayerColumn({
   activeFaction,
   onDeckFaction,
 }: ActivePlayerColumnProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher
-  );
-
   return (
     <div
       className="flexColumn"
@@ -1211,26 +1205,22 @@ export default function ActionPhase() {
     gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
+  const { data: subState }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
   );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
-  );
+  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
+    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
     fetcher
   );
 
-  if (!factions || !state) {
-    return <div>Loading...</div>;
+  if (!factions || !state || !subState || !strategyCards) {
+    return <FullScreenLoader />;
   }
 
-  const activeFaction = factions[state.activeplayer ?? ""] ?? null;
+  const activeFaction = factions[state.activeplayer ?? ""];
   const onDeckFaction = getOnDeckFaction(
     state,
     factions,

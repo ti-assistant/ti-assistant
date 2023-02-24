@@ -45,7 +45,8 @@ export function LabeledDiv({
     backgroundColor: "#222",
     borderRadius: responsivePixels(5),
     padding: `${responsivePixels(2)} ${responsivePixels(4)}`,
-    color: `${color === "Black" ? "#999" : color}`,
+    color: `${color}`,
+    textShadow: color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
   };
   const rightLabelStyle: CSSProperties = {
     position: "absolute",
@@ -55,7 +56,8 @@ export function LabeledDiv({
     backgroundColor: "#222",
     borderRadius: responsivePixels(5),
     padding: `${responsivePixels(2)} ${responsivePixels(4)}`,
-    color: `${color === "Black" ? "#999" : color}`,
+    color: `${color}`,
+    textShadow: color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
   };
   return (
     <div className="flexColumn" style={divStyle} onClick={onClick}>

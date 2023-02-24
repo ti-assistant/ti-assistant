@@ -29,12 +29,12 @@ import {
   SubState,
   unscoreSubStateObjective,
 } from "../util/api/subState";
-import { NumberedItem } from "../NumberedItem";
 import { startNextRound } from "./AgendaPhase";
 import { GameState, StateUpdateData } from "../util/api/state";
 import { Options } from "../util/api/options";
 import { Agenda } from "../util/api/agendas";
 import { getDefaultStrategyCards } from "../util/api/defaults";
+import { getInitiativeForFaction } from "../util/helpers";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -165,35 +165,33 @@ export function MiddleColumn() {
   }
 
   interface Ability {
-    factions: string[];
+    name: string;
     description: string;
   }
 
-  function getStartOfStatusPhaseAbilities(): Record<string, Ability> {
+  function getStartOfStatusPhaseAbilities(): Record<string, Ability[]> {
     if (!factions) {
       return {};
     }
-    let abilities: Record<string, Ability> = {};
-    if (factions["Arborec"]) {
-      abilities["Mitosis"] = {
-        factions: ["Arborec"],
-        description:
-          "Place 1 Infantry from your reinforcements on any planet you control",
-      };
-    }
-    if (!options?.expansions.includes("codex-one")) {
-      let wormholeFactions = [];
-      for (const [name, faction] of Object.entries(factions)) {
-        if (hasTech(faction, "Wormhole Generator")) {
-          wormholeFactions.push(name);
-        }
+    let abilities: Record<string, Ability[]> = {};
+    for (const faction of Object.values(factions ?? {})) {
+      const factionAbilities: Ability[] = [];
+      if (faction.name === "Arborec") {
+        factionAbilities.push({
+          name: "Mitosis",
+          description:
+            "Place 1 Infantry from your reinforcements on any planet you control",
+        });
       }
-      if (wormholeFactions.length > 0) {
-        abilities["Wormhole Generator"] = {
-          factions: wormholeFactions,
+      if (hasTech(faction, "Wormhole Generator")) {
+        factionAbilities.push({
+          name: "Wormhole Generator",
           description:
             "Place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships",
-        };
+        });
+      }
+      if (factionAbilities.length > 0) {
+        abilities[faction.name] = factionAbilities;
       }
     }
     return abilities;
@@ -203,38 +201,38 @@ export function MiddleColumn() {
     if (!factions || !agendas) {
       return {};
     }
-    let abilities: Record<string, Ability> = {};
-    if (factions["Federation of Sol"]) {
-      abilities["Genesis"] = {
-        factions: ["Federation of Sol"],
-        description:
-          "If your flagship is on the game board, place 1 Infantry from your reinforcements in its system's space area",
-      };
-    }
-    let bioplasmosisFactions = [];
-    for (const [name, faction] of Object.entries(factions)) {
-      if (hasTech(faction, "Bioplasmosis")) {
-        bioplasmosisFactions.push(name);
+    let abilities: Record<string, Ability[]> = {};
+    for (const faction of Object.values(factions ?? {})) {
+      const factionAbilities: Ability[] = [];
+      if (faction.name === "Federation of Sol") {
+        factionAbilities.push({
+          name: "Flagship: Genesis",
+          description:
+            "If your flagship is on the game board, place 1 Infantry from your reinforcements in its system's space area",
+        });
       }
-    }
-    if (bioplasmosisFactions.length > 0) {
-      abilities["Bioplasmosis"] = {
-        factions: bioplasmosisFactions,
-        description:
-          "You may remove any number of Infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems",
-      };
-    }
-    const ministerOfPolicy = agendas["Minister of Policy"];
-    if (
-      ministerOfPolicy &&
-      ministerOfPolicy.resolved &&
-      ministerOfPolicy.target
-    ) {
-      abilities["Minister of Policy"] = {
-        factions: [ministerOfPolicy.target],
-        description:
-          ministerOfPolicy.passedText ?? ministerOfPolicy.description,
-      };
+      if (hasTech(faction, "Bioplasmosis")) {
+        factionAbilities.push({
+          name: "Bioplasmosis",
+          description:
+            "You may remove any number of Infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems",
+        });
+      }
+      const ministerOfPolicy = agendas["Minister of Policy"];
+      if (
+        ministerOfPolicy &&
+        ministerOfPolicy.resolved &&
+        ministerOfPolicy.target == faction.name
+      ) {
+        factionAbilities.push({
+          name: "Minister of Policy",
+          description:
+            ministerOfPolicy.passedText ?? ministerOfPolicy.description,
+        });
+      }
+      if (factionAbilities.length > 0) {
+        abilities[faction.name] = factionAbilities;
+      }
     }
     return abilities;
   }
@@ -325,48 +323,63 @@ export function MiddleColumn() {
       }
       innerContent = (
         <React.Fragment>
-          <ol
+          <div
             className="flexColumn"
             style={{ width: "100%", alignItems: "flex-start" }}
           >
-            {Object.entries(getStartOfStatusPhaseAbilities()).map(
-              ([abilityName, ability]) => {
-                return (
-                  <NumberedItem key={abilityName}>
-                    <LabeledDiv label={abilityName}>
-                      <div
-                        className="flexRow mediumFont"
-                        style={{ width: "100%" }}
-                      >
-                        {ability.factions.map((factionName) => {
-                          if (!factions) {
-                            return null;
-                          }
-                          return (
-                            <LabeledDiv
-                              key={factionName}
-                              color={getFactionColor(factions[factionName])}
-                              style={{ width: "auto" }}
-                            >
-                              {getFactionName(factions[factionName])}
-                            </LabeledDiv>
-                          );
-                        })}
-                        <div
-                          className="popupIcon"
-                          onClick={() =>
-                            showInfoModal(abilityName, ability.description)
-                          }
-                        >
-                          &#x24D8;
-                        </div>
-                      </div>
-                    </LabeledDiv>
-                  </NumberedItem>
+            Start of Status Phase Abilities
+            {Object.entries(getStartOfStatusPhaseAbilities())
+              .sort((a, b) => {
+                if (!factions) {
+                  return 0;
+                }
+                const initiativeA = getInitiativeForFaction(
+                  strategyCards,
+                  a[0]
                 );
-              }
-            )}
-          </ol>
+                const initiativeB = getInitiativeForFaction(
+                  strategyCards,
+                  b[0]
+                );
+                if (initiativeA > initiativeB) {
+                  return 1;
+                }
+                return -1;
+              })
+              .map(([factionName, abilities]) => {
+                if (!factions) {
+                  return null;
+                }
+                return (
+                  <LabeledDiv
+                    key={factionName}
+                    label={getFactionName(factions[factionName])}
+                    color={getFactionColor(factions[factionName])}
+                  >
+                    <div
+                      className="flexColumn"
+                      style={{ alignItems: "flex-start" }}
+                    >
+                      {abilities.map((ability) => {
+                        return (
+                          <div key={ability.name} className="flexRow">
+                            {ability.name}
+                            <div
+                              className="popupIcon"
+                              onClick={() =>
+                                showInfoModal(ability.name, ability.description)
+                              }
+                            >
+                              &#x24D8;
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </LabeledDiv>
+                );
+              })}
+          </div>
         </React.Fragment>
       );
       break;
@@ -885,48 +898,57 @@ export function MiddleColumn() {
       break;
     case 10:
       innerContent = (
-        <ol
+        <div
           className="flexColumn"
           style={{ width: "100%", alignItems: "flex-start" }}
         >
-          {Object.entries(getEndOfStatusPhaseAbilities()).map(
-            ([abilityName, ability]) => {
+          End of Status Phase Abilities
+          {Object.entries(getEndOfStatusPhaseAbilities())
+            .sort((a, b) => {
+              if (!factions) {
+                return 0;
+              }
+              const initiativeA = getInitiativeForFaction(strategyCards, a[0]);
+              const initiativeB = getInitiativeForFaction(strategyCards, b[0]);
+              if (initiativeA > initiativeB) {
+                return 1;
+              }
+              return -1;
+            })
+            .map(([factionName, abilities]) => {
+              if (!factions) {
+                return null;
+              }
               return (
-                <NumberedItem key={abilityName}>
-                  <LabeledDiv label={abilityName}>
-                    <div
-                      className="flexRow mediumFont"
-                      style={{ width: "100%" }}
-                    >
-                      {ability.factions.map((factionName) => {
-                        if (!factions) {
-                          return null;
-                        }
-                        return (
-                          <LabeledDiv
-                            key={factionName}
-                            color={getFactionColor(factions[factionName])}
-                            style={{ width: "auto" }}
+                <LabeledDiv
+                  key={factionName}
+                  label={getFactionName(factions[factionName])}
+                  color={getFactionColor(factions[factionName])}
+                >
+                  <div
+                    className="flexColumn"
+                    style={{ width: "100%", alignItems: "flex-start" }}
+                  >
+                    {abilities.map((ability) => {
+                      return (
+                        <div key={ability.name} className="flexRow">
+                          {ability.name}
+                          <div
+                            className="popupIcon"
+                            onClick={() =>
+                              showInfoModal(ability.name, ability.description)
+                            }
                           >
-                            {getFactionName(factions[factionName])}
-                          </LabeledDiv>
-                        );
-                      })}
-                      <div
-                        className="popupIcon"
-                        onClick={() =>
-                          showInfoModal(abilityName, ability.description)
-                        }
-                      >
-                        &#x24D8;
-                      </div>
-                    </div>
-                  </LabeledDiv>
-                </NumberedItem>
+                            &#x24D8;
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </LabeledDiv>
               );
-            }
-          )}
-        </ol>
+            })}
+        </div>
       );
       break;
   }
@@ -1041,14 +1063,6 @@ export default function StatusPhase() {
   );
   const { data: factions } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
-  );
-  const { data: options }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
     fetcher
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(

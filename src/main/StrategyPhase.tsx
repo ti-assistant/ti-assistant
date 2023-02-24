@@ -2,24 +2,14 @@ import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { StrategyCardElement } from "../StrategyCard";
 import { getOnDeckFaction } from "../util/helpers";
-import {
-  strategyCardOrder,
-  swapStrategyCards,
-  StrategyCard,
-} from "../util/api/cards";
+import { strategyCardOrder, StrategyCard } from "../util/api/cards";
 import { Faction, readyAllFactions } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
 import { fetcher, poster } from "../util/api/util";
-import { BasicFactionTile } from "../FactionTile";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import { FactionCard } from "../FactionCard";
 import { Modal } from "../Modal";
-import React, {
-  PropsWithChildren,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import React, { PropsWithChildren, ReactNode, useState } from "react";
 import SummaryColumn from "./SummaryColumn";
 import { LabeledDiv } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -451,16 +441,16 @@ export default function StrategyPhase() {
     if (abilities["Every Player"].length === 0) {
       delete abilities["Every Player"];
     }
-    for (const factionName of Object.keys(factions ?? {})) {
+    for (const faction of Object.values(factions ?? {})) {
       const factionAbilities: Ability[] = [];
-      if (factionName === "Council Keleres") {
+      if (faction.name === "Council Keleres") {
         factionAbilities.push({
           name: "Council Patronage",
           description: "Replenish your commodities, then gain 1 trade good",
         });
       }
       if (factionAbilities.length > 0) {
-        abilities[factionName] = factionAbilities;
+        abilities[getFactionName(faction)] = factionAbilities;
       }
     }
     return abilities;

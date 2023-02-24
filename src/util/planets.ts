@@ -44,7 +44,7 @@ export function applyPlanetAttachments(
   planet: Planet,
   attachments: Record<string, Attachment>
 ) {
-  let updatedPlanet = structuredClone(planet);
+  let updatedPlanet = { ...planet };
   if (!attachments) {
     return updatedPlanet;
   }
