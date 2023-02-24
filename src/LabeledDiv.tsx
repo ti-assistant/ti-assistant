@@ -33,6 +33,8 @@ export function LabeledDiv({
     alignItems: "flex-start",
     cursor: onClick ? "pointer" : "cursor",
     marginTop: !!label ? responsivePixels(4) : 0,
+    boxShadow:
+      color === "Black" ? "0 0 3px #999, 0 0 3px #999 inset" : undefined,
     ...style,
   };
   const labelStyle: CSSProperties = {
