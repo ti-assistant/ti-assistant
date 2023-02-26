@@ -1,4 +1,11 @@
-import React, { CSSProperties, PropsWithChildren, ReactNode } from "react";
+import React, {
+  CSSProperties,
+  PropsWithChildren,
+  ReactNode,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
 
 export interface LabeledDivProps {
@@ -19,6 +26,13 @@ export function LabeledDiv({
   style = {},
   color = "#999",
 }: PropsWithChildren<LabeledDivProps>) {
+  const [minWidth, setMinWidth] = useState<number | undefined>();
+  const labelRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    setMinWidth((labelRef.current?.clientWidth ?? 0) + 16);
+  }, [labelRef.current]);
+
   const padding = `${
     !!label ? responsivePixels(10) : responsivePixels(6)
   } ${responsivePixels(6)} ${responsivePixels(6)} ${responsivePixels(6)}`;
@@ -28,6 +42,7 @@ export function LabeledDiv({
     border: `${responsivePixels(2)} solid ${color}`,
     borderRadius: responsivePixels(5),
     width: "100%",
+    minWidth: minWidth,
     boxSizing: "border-box",
     padding: `${padding}`,
     alignItems: "flex-start",
@@ -77,7 +92,7 @@ export function LabeledDiv({
         ></div>
       )}
       {!!label ? (
-        <div className="mediumFont" style={labelStyle}>
+        <div className="mediumFont" ref={labelRef} style={labelStyle}>
           {label}
         </div>
       ) : null}
@@ -120,6 +135,8 @@ export function LabeledLine({
         style={{
           width: "100%",
           border: `1px solid ${color}`,
+          boxShadow:
+            color === "Black" ? "0 0 3px #999, 0 0 3px #999 inset" : undefined,
           marginTop: responsivePixels(8),
           marginBottom: responsivePixels(8),
         }}
@@ -127,7 +144,11 @@ export function LabeledLine({
       {!!leftLabel ? (
         <div
           className="mediumFont leftLabel"
-          style={{ color: color === "Black" ? "#999" : color }}
+          style={{
+            color: color,
+            textShadow:
+              color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+          }}
         >
           {leftLabel}
         </div>
@@ -137,7 +158,11 @@ export function LabeledLine({
         <div className="flexRow" style={{ width: "100%" }}>
           <div
             className="mediumFont centerLabel"
-            style={{ color: color === "Black" ? "#999" : color }}
+            style={{
+              color: color,
+              textShadow:
+                color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+            }}
           >
             {label}
           </div>

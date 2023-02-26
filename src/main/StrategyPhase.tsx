@@ -573,7 +573,7 @@ export default function StrategyPhase() {
       className="flexRow"
       style={{
         alignItems: "center",
-        height: "100vh",
+        height: "100svh",
         width: "100%",
         justifyContent: "space-between",
         gap: responsivePixels(20),
@@ -789,7 +789,7 @@ export default function StrategyPhase() {
       </div>
       <div
         className="flexColumn"
-        style={{ height: "100vh", width: responsivePixels(280) }}
+        style={{ height: "100svh", width: responsivePixels(280) }}
       >
         <SummaryColumn />
       </div>

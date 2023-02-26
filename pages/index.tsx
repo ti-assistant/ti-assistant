@@ -56,7 +56,7 @@ export default function HomePage() {
         style={{
           alignItems: "stretch",
           textAlign: "center",
-          height: "100vh",
+          height: "100svh",
           gap: "20px",
         }}
       >

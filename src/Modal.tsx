@@ -39,7 +39,7 @@ export function Modal({
           left: "0px",
           top: "0px",
           width: "100vw",
-          height: "100vh",
+          height: "100svh",
           display: "none",
           zIndex: zIndex + 3,
           flexDirection: "column",
@@ -51,7 +51,7 @@ export function Modal({
           style={{
             position: "absolute",
             width: "100vw",
-            height: "100vh",
+            height: "100svh",
             backgroundColor: "black",
             opacity: "50%",
           }}

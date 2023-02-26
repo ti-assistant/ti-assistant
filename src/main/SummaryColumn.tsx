@@ -105,7 +105,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
       style={{
         width: "100%",
         alignItems: "stretch",
-        height: "100vh",
+        height: "100svh",
         maxWidth: responsivePixels(800),
         gap: numFactions < 8 ? responsivePixels(12) : responsivePixels(4),
       }}

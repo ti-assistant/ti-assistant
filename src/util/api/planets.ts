@@ -81,6 +81,8 @@ export function claimPlanet(
 
         updatedPlanet.owners = [factionName];
 
+        updatedPlanets[planet] = updatedPlanet;
+
         return updatedPlanets;
       },
       revalidate: false,
@@ -113,6 +115,8 @@ export function unclaimPlanet(
         }
 
         updatedPlanet.owners = [];
+
+        updatedPlanets[planet] = updatedPlanet;
 
         return updatedPlanets;
       },

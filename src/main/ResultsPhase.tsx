@@ -19,7 +19,7 @@ export default function ResultsPhase() {
       className="flexRow"
       style={{
         gap: responsivePixels(20),
-        height: "100vh",
+        height: "100svh",
         width: "100%",
         alignItems: "flex-start",
         justifyContent: "center",
@@ -27,7 +27,11 @@ export default function ResultsPhase() {
     >
       <div
         className="flexColumn"
-        style={{ height: "100vh", flexShrink: 0, width: responsivePixels(280) }}
+        style={{
+          height: "100svh",
+          flexShrink: 0,
+          width: responsivePixels(280),
+        }}
       >
         <SummaryColumn
           order="VICTORY_POINTS"

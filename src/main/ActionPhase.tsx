@@ -1097,7 +1097,7 @@ export function ActivePlayerColumn({
     <div
       className="flexColumn"
       style={{
-        height: "100vh",
+        height: "100svh",
         boxSizing: "border-box",
         paddingTop: responsivePixels(74),
         justifyContent: "flex-start",
@@ -1249,7 +1249,7 @@ export default function ActionPhase() {
       className="flexRow"
       style={{
         gap: responsivePixels(20),
-        height: "100vh",
+        height: "100svh",
         width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
@@ -1317,7 +1317,11 @@ export default function ActionPhase() {
       </div>
       <div
         className="flexColumn"
-        style={{ height: "100vh", flexShrink: 0, width: responsivePixels(280) }}
+        style={{
+          height: "100svh",
+          flexShrink: 0,
+          width: responsivePixels(280),
+        }}
       >
         <SummaryColumn />
       </div>

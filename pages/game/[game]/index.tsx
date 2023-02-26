@@ -64,7 +64,7 @@ export default function SelectFactionPage() {
   return (
     <div
       className="flexColumn"
-      style={{ alignItems: "center", height: "100vh" }}
+      style={{ alignItems: "center", height: "100svh" }}
     >
       <Header />
       <div

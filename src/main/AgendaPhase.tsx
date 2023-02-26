@@ -316,7 +316,7 @@ export default function AgendaPhase() {
       className="flexRow"
       style={{
         gap: responsivePixels(40),
-        height: "100vh",
+        height: "100svh",
         width: "100%",
         alignItems: "flex-start",
         justifyContent: "space-between",

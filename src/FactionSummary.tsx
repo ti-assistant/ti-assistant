@@ -1061,7 +1061,6 @@ export function UpdatePlanets({}) {
     }
     claimPlanet(gameid, toAdd, factionName);
   }
-
   const orderedFactionNames = Object.keys(factions ?? {}).sort();
 
   const unownedPlanets = planetsArr.filter((planet) => {
