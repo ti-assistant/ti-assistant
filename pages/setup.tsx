@@ -11,6 +11,9 @@ import { Map } from "../src/util/Map";
 import { Expansion, Options } from "../src/util/api/options";
 import { MapStyle, SetupFaction, SetupOptions } from "../src/util/api/setup";
 import { BaseFaction } from "../src/util/api/factions";
+import { Selector } from "../src/Selector";
+import { FullFactionSymbol } from "../src/FactionCard";
+import { SelectableRow } from "../src/SelectableRow";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -600,8 +603,8 @@ interface FactionSelectProps {
   position: number;
   mobile?: boolean;
   speaker: number;
-  setFaction: (index: number, factionName: string) => void;
-  setColor: (index: number, colorName: string) => void;
+  setFaction: (index: number, factionName: string | undefined) => void;
+  setColor: (index: number, colorName: string | undefined) => void;
   setSpeaker: (index: number) => void;
   setPlayerName: (index: number, playerName: string) => void;
   options: SetupOptions;
@@ -657,14 +660,14 @@ function FactionSelect({
     return true;
   });
 
-  function selectFaction(factionName: string) {
+  function selectFaction(factionName: string | undefined) {
     if (factionIndex == undefined) {
       return;
     }
     setFaction(factionIndex, factionName);
   }
 
-  function selectColor(color: string) {
+  function selectColor(color: string | undefined) {
     if (factionIndex == undefined) {
       return;
     }
@@ -708,6 +711,24 @@ function FactionSelect({
       color={convertToFactionColor(faction.color)}
       style={{ width: mobile ? "100%" : "22vw" }}
     >
+      {faction.name ? (
+        <div
+          className="flexColumn"
+          style={{ position: "absolute", width: "100%", zIndex: -1 }}
+        >
+          <div
+            className="flexRow"
+            style={{
+              position: "relative",
+              opacity: 0.5,
+              width: responsivePixels(80),
+              height: responsivePixels(80),
+            }}
+          >
+            <FullFactionSymbol faction={faction.name} />
+          </div>
+        </div>
+      ) : null}
       <div
         className="flexColumn"
         style={{
@@ -720,7 +741,7 @@ function FactionSelect({
         }}
       >
         <div
-          className="flexColumn"
+          className="flexColumn largeFont"
           style={{
             whiteSpace: "nowrap",
             alignItems: "flex-start",
@@ -728,82 +749,65 @@ function FactionSelect({
             width: "100%",
           }}
         >
-          <ClientOnlyHoverMenu
-            label={faction.name ? faction.name : "Pick Faction"}
-          >
-            <div
-              className="flexRow"
-              style={{
-                padding: `${responsivePixels(8)}`,
-                display: "grid",
-                gridAutoFlow: "column",
-                gridTemplateRows: "repeat(9, auto)",
-                maxWidth: "80vw",
-                overflowX: "auto",
-                gap: `${responsivePixels(4)}`,
-                justifyContent: "flex-start",
-              }}
-            >
-              {filteredFactions.map(([factionName, local]) => {
-                return (
-                  <button
-                    key={local.name}
-                    className={
-                      "mediumFont" +
-                      (faction.name === factionName ? " selected" : "")
-                    }
-                    style={{
-                      width: `${responsivePixels(140)}`,
-                      writingMode: "horizontal-tb",
-                      fontSize: responsivePixels(14),
-                    }}
-                    onClick={() => selectFaction(factionName)}
-                  >
-                    {local.name}
-                  </button>
-                );
-              })}
-            </div>
-          </ClientOnlyHoverMenu>
+          <Selector
+            hoverMenuLabel="Pick Faction"
+            options={filteredFactions.map(
+              ([factionName, local]) => factionName
+            )}
+            selectedItem={faction.name}
+            toggleItem={(factionName, add) => {
+              if (add) {
+                selectFaction(factionName);
+              } else {
+                selectFaction(undefined);
+              }
+            }}
+          />
           <div
             className="flexRow"
             style={{ width: "100%", justifyContent: "space-between" }}
           >
             <ClientOnlyHoverMenu
-              label={faction.color ? "Change Color" : "Pick Color"}
-            >
-              <div
-                className="flexRow"
-                style={{
-                  padding: `${responsivePixels(8)}`,
-                  display: "grid",
-                  gridAutoFlow: "column",
-                  gridTemplateRows: "repeat(3, auto)",
-                  overflowX: "auto",
-                  gap: `${responsivePixels(4)}`,
-                  justifyContent: "flex-start",
-                }}
-              >
-                {filteredColors.map((color) => {
-                  const factionColor = convertToFactionColor(color);
-                  return (
-                    <button
-                      key={color}
-                      style={{
-                        width: `${responsivePixels(60)}`,
-                        writingMode: "horizontal-tb",
-                        backgroundColor: factionColor,
-                        color: factionColor,
-                      }}
-                      className={faction.color === color ? "selected" : ""}
-                      onClick={() => selectColor(color)}
-                    >
-                      {color}
-                    </button>
-                  );
-                })}
-              </div>
-            </ClientOnlyHoverMenu>
+              label={faction.color ? "Color" : "Color"}
+              renderProps={(closeFn) => {
+                return (
+                  <div
+                    className="flexRow"
+                    style={{
+                      padding: `${responsivePixels(8)}`,
+                      display: "grid",
+                      gridAutoFlow: "column",
+                      gridTemplateRows: "repeat(3, auto)",
+                      overflowX: "auto",
+                      gap: `${responsivePixels(4)}`,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    {filteredColors.map((color) => {
+                      const factionColor = convertToFactionColor(color);
+                      return (
+                        <button
+                          key={color}
+                          style={{
+                            width: `${responsivePixels(60)}`,
+                            writingMode: "horizontal-tb",
+                            backgroundColor: factionColor,
+                            color: factionColor,
+                          }}
+                          className={faction.color === color ? "selected" : ""}
+                          onClick={() => {
+                            closeFn();
+                            selectColor(color);
+                          }}
+                        >
+                          {color}
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              }}
+            ></ClientOnlyHoverMenu>
             {isSpeaker ? null : (
               <button onClick={() => setSpeaker(factionIndex)}>
                 Make Speaker
@@ -898,7 +902,7 @@ export default function SetupPage() {
         if (index === i) {
           return { ...faction, name: factionName };
         }
-        if (faction.name === factionName) {
+        if (factionName && faction.name === factionName) {
           return { ...faction, name: prevValue };
         }
         return faction;
@@ -917,7 +921,7 @@ export default function SetupPage() {
         if (index === i) {
           return { ...faction, color: color };
         }
-        if (faction.color === color) {
+        if (color && faction.color === color) {
           return { ...faction, color: prevValue };
         }
         return faction;

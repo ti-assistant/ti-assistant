@@ -18,6 +18,10 @@ export interface SelectorProps {
     itemName: string,
     toggleItem: (itemName: string, add: boolean) => void
   ) => ReactNode;
+  renderButton?: (
+    itemName: string,
+    toggleItem: (itemName: string, add: boolean) => void
+  ) => ReactNode;
   selectedItem?: string;
   selectedLabel?: ReactNode;
   style?: CSSProperties;
@@ -30,6 +34,7 @@ export function Selector({
   toggleItem,
   selectedItem,
   renderItem,
+  renderButton,
   style,
 }: SelectorProps) {
   // useEffect(() => {
@@ -80,6 +85,9 @@ export function Selector({
     <ClientOnlyHoverMenu label={hoverMenuLabel}>
       <div className="flexColumn" style={innerStyle}>
         {options.map((option) => {
+          if (renderButton) {
+            return renderButton(option, toggleItem);
+          }
           return (
             <button
               key={option}

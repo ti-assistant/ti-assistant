@@ -164,7 +164,7 @@ export function MiddleColumn() {
   let innerContent = (
     <div className="flexColumn" style={{ width: "100%" }}>
       {!subStateObjective ? (
-        <LabeledDiv label="Score Objectives">
+        <LabeledDiv label="Score Objectives" noBlur={true}>
           <div
             className="flexColumn"
             style={{

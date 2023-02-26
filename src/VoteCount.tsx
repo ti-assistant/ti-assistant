@@ -455,40 +455,42 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
             }
             buttonStyle={{ fontSize: responsivePixels(14) }}
             style={{ minWidth: "100%" }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                padding: responsivePixels(8),
-                gap: responsivePixels(4),
-                alignItems: "stretch",
-                justifyContent: "flex-start",
-                display: "grid",
-                gridAutoFlow: "column",
-                gridTemplateRows: `repeat(${Math.min(
-                  targets.length,
-                  11
-                )}, auto)`,
-              }}
-            >
-              {targets.map((target) => {
-                return (
-                  <button
-                    key={target}
-                    style={{
-                      writingMode: "horizontal-tb",
-                      fontSize: responsivePixels(14),
-                    }}
-                    onClick={() => {
-                      castVotes(target, 0);
-                    }}
-                  >
-                    {target}
-                  </button>
-                );
-              })}
-            </div>
-          </ClientOnlyHoverMenu>
+            renderProps={(closeFn) => (
+              <div
+                className="flexRow"
+                style={{
+                  padding: responsivePixels(8),
+                  gap: responsivePixels(4),
+                  alignItems: "stretch",
+                  justifyContent: "flex-start",
+                  display: "grid",
+                  gridAutoFlow: "column",
+                  gridTemplateRows: `repeat(${Math.min(
+                    targets.length,
+                    11
+                  )}, auto)`,
+                }}
+              >
+                {targets.map((target) => {
+                  return (
+                    <button
+                      key={target}
+                      style={{
+                        writingMode: "horizontal-tb",
+                        fontSize: responsivePixels(14),
+                      }}
+                      onClick={() => {
+                        closeFn();
+                        castVotes(target, 0);
+                      }}
+                    >
+                      {target}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          ></ClientOnlyHoverMenu>
         </div>
       </div>
     </LabeledDiv>

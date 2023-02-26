@@ -40,7 +40,11 @@ import { ComponentAction } from "./util/ComponentAction";
 import { GameState, nextPlayer, StateUpdateData } from "../util/api/state";
 import { Attachment } from "../util/api/attachments";
 import { Planet } from "../util/api/planets";
-import { Objective } from "../util/api/objectives";
+import {
+  Objective,
+  scoreObjective,
+  unscoreObjective,
+} from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
 import { FullScreenLoader } from "../Loader";
 
@@ -275,6 +279,7 @@ export function AdditionalActions({
     if (!gameid) {
       return;
     }
+    scoreObjective(gameid, factionName, toScore);
     scoreSubStateObjective(gameid, factionName, toScore);
   }
 
@@ -282,6 +287,7 @@ export function AdditionalActions({
     if (!gameid) {
       return;
     }
+    unscoreObjective(gameid, factionName, toRemove);
     unscoreSubStateObjective(gameid, factionName, toRemove);
   }
 
@@ -375,7 +381,7 @@ export function AdditionalActions({
     padding: responsivePixels(8),
     display: "grid",
     gridAutoFlow: "column",
-    gridTemplateRows: "repeat(12, auto)",
+    gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
     gap: responsivePixels(4),
     justifyContent: "flex-start",
     ...ClientOnlyHoverMenuStyle,
@@ -465,30 +471,42 @@ export function AdditionalActions({
             >
               <LabeledLine leftLabel="PRIMARY" />
 
-              {researchedTech.length > 0 ? (
-                <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  {researchedTech.map((tech) => {
-                    const techObj = techs[tech];
-                    if (!techObj) {
-                      return null;
-                    }
-                    return (
-                      <TechRow
-                        key={tech}
-                        tech={techObj}
-                        removeTech={() => removeTech(activeFaction.name, tech)}
-                      />
-                    );
-                  })}
-                </div>
-              ) : null}
-              {researchedTech.length < 2 ? (
-                <TechSelectHoverMenu
-                  techs={researchableTechs}
-                  selectTech={(tech) => addTech(activeFaction.name, tech)}
-                  direction="horizontal"
-                />
-              ) : null}
+              <div style={{ width: "fit-content" }}>
+                <LabeledDiv
+                  label={getFactionName(activeFaction)}
+                  color={getFactionColor(activeFaction)}
+                >
+                  {researchedTech.length > 0 ? (
+                    <div
+                      className="flexColumn"
+                      style={{ alignItems: "stretch" }}
+                    >
+                      {researchedTech.map((tech) => {
+                        const techObj = techs[tech];
+                        if (!techObj) {
+                          return null;
+                        }
+                        return (
+                          <TechRow
+                            key={tech}
+                            tech={techObj}
+                            removeTech={() =>
+                              removeTech(activeFaction.name, tech)
+                            }
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                  {researchedTech.length < 2 ? (
+                    <TechSelectHoverMenu
+                      techs={researchableTechs}
+                      selectTech={(tech) => addTech(activeFaction.name, tech)}
+                      direction="horizontal"
+                    />
+                  ) : null}
+                </LabeledDiv>
+              </div>
             </div>
           ) : null}
           <div
@@ -937,24 +955,30 @@ export function AdditionalActions({
             </LabeledDiv>
           ) : null}
           {claimablePlanets.length > 0 ? (
-            <ClientOnlyHoverMenu label="Take Control of Planet">
-              <div className="flexRow" style={targetButtonStyle}>
-                {claimablePlanets.map((planet) => {
-                  return (
-                    <button
-                      key={planet.name}
-                      style={{
-                        writingMode: "horizontal-tb",
-                        width: responsivePixels(90),
-                      }}
-                      onClick={() => addPlanet(activeFaction.name, planet)}
-                    >
-                      {planet.name}
-                    </button>
-                  );
-                })}
-              </div>
-            </ClientOnlyHoverMenu>
+            <ClientOnlyHoverMenu
+              label="Take Control of Planet"
+              renderProps={(closeFn) => (
+                <div className="flexRow" style={targetButtonStyle}>
+                  {claimablePlanets.map((planet) => {
+                    return (
+                      <button
+                        key={planet.name}
+                        style={{
+                          writingMode: "horizontal-tb",
+                          width: responsivePixels(90),
+                        }}
+                        onClick={() => {
+                          closeFn();
+                          addPlanet(activeFaction.name, planet);
+                        }}
+                      >
+                        {planet.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
           ) : null}
           {scoredObjectives.length > 0 ? (
             <LabeledDiv label="SCORED SECRETS">
@@ -971,6 +995,7 @@ export function AdditionalActions({
                     return (
                       <ObjectiveRow
                         key={objective}
+                        hideScorers={true}
                         objective={objectiveObj}
                         removeObjective={() =>
                           undoObjective(activeFaction.name, objective)
@@ -983,22 +1008,26 @@ export function AdditionalActions({
             </LabeledDiv>
           ) : null}
           {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
-            <ClientOnlyHoverMenu label="Score Secret Objective">
-              <div className="flexColumn" style={{ ...secretButtonStyle }}>
-                {scorableObjectives.map((objective) => {
-                  return (
-                    <button
-                      key={objective.name}
-                      onClick={() =>
-                        addObjective(activeFaction.name, objective.name)
-                      }
-                    >
-                      {objective.name}
-                    </button>
-                  );
-                })}
-              </div>
-            </ClientOnlyHoverMenu>
+            <ClientOnlyHoverMenu
+              label="Score Secret Objective"
+              renderProps={(closeFn) => (
+                <div className="flexColumn" style={{ ...secretButtonStyle }}>
+                  {scorableObjectives.map((objective) => {
+                    return (
+                      <button
+                        key={objective.name}
+                        onClick={() => {
+                          closeFn();
+                          addObjective(activeFaction.name, objective.name);
+                        }}
+                      >
+                        {objective.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
           ) : null}
         </div>
       );

@@ -42,148 +42,179 @@ export function TechSelectHoverMenu({
   sortTechsByName(unitUpgrades);
 
   return (
-    <ClientOnlyHoverMenu label={label} style={{ whiteSpace: "nowrap" }}>
-      <div
-        className={direction === "horizontal" ? "flexRow" : "flexColumn"}
-        style={{
-          padding: responsivePixels(8),
-          alignItems: "flex-start",
-          overflow: "visible",
-        }}
-      >
-        {redTechs.length > 0 ? (
-          <ClientOnlyHoverMenu
-            label="Warfare"
-            borderColor={getTechTypeColor("red")}
-          >
-            <div
-              className="flexColumn"
-              style={{
-                padding: responsivePixels(8),
-                gap: responsivePixels(4),
-                alignItems: "stretch",
-              }}
-            >
-              {redTechs.map((tech) => {
-                return (
-                  <button
-                    key={tech.name}
-                    onClick={() => selectTech(tech)}
-                    style={{ fontSize: responsivePixels(16) }}
-                  >
-                    {tech.name}
-                  </button>
-                );
-              })}
-            </div>
-          </ClientOnlyHoverMenu>
-        ) : null}
-        {blueTechs.length > 0 ? (
-          <ClientOnlyHoverMenu
-            label="Propulsion"
-            borderColor={getTechTypeColor("blue")}
-          >
-            <div
-              className="flexColumn"
-              style={{
-                padding: responsivePixels(8),
-                gap: responsivePixels(4),
-                alignItems: "stretch",
-              }}
-            >
-              {blueTechs.map((tech) => {
-                return (
-                  <button
-                    key={tech.name}
-                    onClick={() => selectTech(tech)}
-                    style={{ fontSize: responsivePixels(16) }}
-                  >
-                    {tech.name}
-                  </button>
-                );
-              })}
-            </div>
-          </ClientOnlyHoverMenu>
-        ) : null}
-        {yellowTechs.length > 0 ? (
-          <ClientOnlyHoverMenu
-            label="Cybernetic"
-            borderColor={getTechTypeColor("yellow")}
-          >
-            <div
-              className="flexColumn"
-              style={{
-                padding: responsivePixels(8),
-                gap: responsivePixels(4),
-                alignItems: "stretch",
-              }}
-            >
-              {yellowTechs.map((tech) => {
-                return (
-                  <button
-                    key={tech.name}
-                    onClick={() => selectTech(tech)}
-                    style={{ fontSize: responsivePixels(16) }}
-                  >
-                    {tech.name}
-                  </button>
-                );
-              })}
-            </div>
-          </ClientOnlyHoverMenu>
-        ) : null}
-        {greenTechs.length > 0 ? (
-          <ClientOnlyHoverMenu
-            label="Biotic"
-            borderColor={getTechTypeColor("green")}
-          >
-            <div
-              className="flexColumn"
-              style={{
-                padding: responsivePixels(8),
-                gap: responsivePixels(4),
-                alignItems: "stretch",
-              }}
-            >
-              {greenTechs.map((tech) => {
-                return (
-                  <button
-                    key={tech.name}
-                    onClick={() => selectTech(tech)}
-                    style={{ fontSize: responsivePixels(16) }}
-                  >
-                    {tech.name}
-                  </button>
-                );
-              })}
-            </div>
-          </ClientOnlyHoverMenu>
-        ) : null}
-        {unitUpgrades.length > 0 ? (
-          <ClientOnlyHoverMenu label="Unit Upgrades">
-            <div
-              className="flexColumn"
-              style={{
-                padding: responsivePixels(8),
-                gap: responsivePixels(4),
-                alignItems: "stretch",
-              }}
-            >
-              {unitUpgrades.map((tech) => {
-                return (
-                  <button
-                    key={tech.name}
-                    onClick={() => selectTech(tech)}
-                    style={{ fontSize: responsivePixels(16) }}
-                  >
-                    {tech.name}
-                  </button>
-                );
-              })}
-            </div>
-          </ClientOnlyHoverMenu>
-        ) : null}
-      </div>
-    </ClientOnlyHoverMenu>
+    <ClientOnlyHoverMenu
+      label={label}
+      style={{ whiteSpace: "nowrap" }}
+      renderProps={(outerCloseFn) => (
+        <div
+          className={direction === "horizontal" ? "flexRow" : "flexColumn"}
+          style={{
+            padding: responsivePixels(8),
+            alignItems: "flex-start",
+            overflow: "visible",
+          }}
+        >
+          {redTechs.length > 0 ? (
+            <ClientOnlyHoverMenu
+              label="Warfare"
+              borderColor={getTechTypeColor("red")}
+              renderProps={(innerCloseFn) => (
+                <div
+                  className="flexColumn"
+                  style={{
+                    padding: responsivePixels(8),
+                    gap: responsivePixels(4),
+                    alignItems: "stretch",
+                  }}
+                >
+                  {redTechs.map((tech) => {
+                    return (
+                      <button
+                        key={tech.name}
+                        onClick={() => {
+                          innerCloseFn();
+                          outerCloseFn();
+                          selectTech(tech);
+                        }}
+                        style={{ fontSize: responsivePixels(16) }}
+                      >
+                        {tech.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
+          ) : null}
+          {blueTechs.length > 0 ? (
+            <ClientOnlyHoverMenu
+              label="Propulsion"
+              borderColor={getTechTypeColor("blue")}
+              renderProps={(innerCloseFn) => (
+                <div
+                  className="flexColumn"
+                  style={{
+                    padding: responsivePixels(8),
+                    gap: responsivePixels(4),
+                    alignItems: "stretch",
+                  }}
+                >
+                  {blueTechs.map((tech) => {
+                    return (
+                      <button
+                        key={tech.name}
+                        onClick={() => {
+                          innerCloseFn();
+                          outerCloseFn();
+                          selectTech(tech);
+                        }}
+                        style={{ fontSize: responsivePixels(16) }}
+                      >
+                        {tech.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
+          ) : null}
+          {yellowTechs.length > 0 ? (
+            <ClientOnlyHoverMenu
+              label="Cybernetic"
+              borderColor={getTechTypeColor("yellow")}
+              renderProps={(innerCloseFn) => (
+                <div
+                  className="flexColumn"
+                  style={{
+                    padding: responsivePixels(8),
+                    gap: responsivePixels(4),
+                    alignItems: "stretch",
+                  }}
+                >
+                  {yellowTechs.map((tech) => {
+                    return (
+                      <button
+                        key={tech.name}
+                        onClick={() => {
+                          innerCloseFn();
+                          outerCloseFn();
+                          selectTech(tech);
+                        }}
+                        style={{ fontSize: responsivePixels(16) }}
+                      >
+                        {tech.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
+          ) : null}
+          {greenTechs.length > 0 ? (
+            <ClientOnlyHoverMenu
+              label="Biotic"
+              borderColor={getTechTypeColor("green")}
+              renderProps={(innerCloseFn) => (
+                <div
+                  className="flexColumn"
+                  style={{
+                    padding: responsivePixels(8),
+                    gap: responsivePixels(4),
+                    alignItems: "stretch",
+                  }}
+                >
+                  {greenTechs.map((tech) => {
+                    return (
+                      <button
+                        key={tech.name}
+                        onClick={() => {
+                          innerCloseFn();
+                          outerCloseFn();
+                          selectTech(tech);
+                        }}
+                        style={{ fontSize: responsivePixels(16) }}
+                      >
+                        {tech.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
+          ) : null}
+          {unitUpgrades.length > 0 ? (
+            <ClientOnlyHoverMenu
+              label="Unit Upgrades"
+              renderProps={(innerCloseFn) => (
+                <div
+                  className="flexColumn"
+                  style={{
+                    padding: responsivePixels(8),
+                    gap: responsivePixels(4),
+                    alignItems: "stretch",
+                  }}
+                >
+                  {unitUpgrades.map((tech) => {
+                    return (
+                      <button
+                        key={tech.name}
+                        onClick={() => {
+                          innerCloseFn();
+                          outerCloseFn();
+                          selectTech(tech);
+                        }}
+                        style={{ fontSize: responsivePixels(16) }}
+                      >
+                        {tech.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
+          ) : null}
+        </div>
+      )}
+    ></ClientOnlyHoverMenu>
   );
 }

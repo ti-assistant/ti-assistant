@@ -231,40 +231,44 @@ export default function SetupPhase() {
               </LabeledDiv>
             ) : null}
             {(subState?.objectives ?? []).length < 2 ? (
-              <ClientOnlyHoverMenu label="Reveal Objective">
-                <div
-                  className="flexRow"
-                  style={{
-                    padding: `${responsivePixels(8)}`,
-                    display: "grid",
-                    gridAutoFlow: "column",
-                    gridTemplateRows: "repeat(5, auto)",
-                    justifyContent: "flex-start",
-                    gap: `${responsivePixels(4)}`,
-                  }}
-                >
-                  {Object.values(availableObjectives)
-                    .filter((objective) => {
-                      return objective.type === "stage-one";
-                    })
-                    .map((objective) => {
-                      return (
-                        <button
-                          key={objective.name}
-                          style={{ writingMode: "horizontal-tb" }}
-                          onClick={() => {
-                            if (!gameid) {
-                              return;
-                            }
-                            revealSubStateObjective(gameid, objective.name);
-                          }}
-                        >
-                          {objective.name}
-                        </button>
-                      );
-                    })}
-                </div>
-              </ClientOnlyHoverMenu>
+              <ClientOnlyHoverMenu
+                label="Reveal Objective"
+                renderProps={(closeFn) => (
+                  <div
+                    className="flexRow"
+                    style={{
+                      padding: `${responsivePixels(8)}`,
+                      display: "grid",
+                      gridAutoFlow: "column",
+                      gridTemplateRows: "repeat(5, auto)",
+                      justifyContent: "flex-start",
+                      gap: `${responsivePixels(4)}`,
+                    }}
+                  >
+                    {Object.values(availableObjectives)
+                      .filter((objective) => {
+                        return objective.type === "stage-one";
+                      })
+                      .map((objective) => {
+                        return (
+                          <button
+                            key={objective.name}
+                            style={{ writingMode: "horizontal-tb" }}
+                            onClick={() => {
+                              if (!gameid) {
+                                return;
+                              }
+                              closeFn();
+                              revealSubStateObjective(gameid, objective.name);
+                            }}
+                          >
+                            {objective.name}
+                          </button>
+                        );
+                      })}
+                  </div>
+                )}
+              ></ClientOnlyHoverMenu>
             ) : null}
           </LabeledDiv>
         </NumberedItem>

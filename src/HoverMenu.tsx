@@ -16,6 +16,7 @@ export function ClientOnlyHoverMenu({
   shift = {},
   buttonStyle = {},
   children,
+  renderProps,
   borderColor = "#aaa",
 }: PropsWithChildren<HoverMenuProps>) {
   const [onClient, setOnClient] = useState(false);
@@ -52,6 +53,7 @@ export function ClientOnlyHoverMenu({
       shift={shift}
       buttonStyle={buttonStyle}
       borderColor={borderColor}
+      renderProps={renderProps}
     >
       {children}
     </HoverMenu>
@@ -64,6 +66,7 @@ interface Shift {
 }
 
 export interface HoverMenuProps {
+  renderProps?: (closeFn: () => void) => ReactNode;
   label?: ReactNode;
   style?: CSSProperties;
   borderless?: boolean;
@@ -79,6 +82,7 @@ export function HoverMenu({
   shift = {},
   buttonStyle = {},
   children,
+  renderProps,
   borderColor = "#aaa",
 }: PropsWithChildren<HoverMenuProps>) {
   const menu = useRef<HTMLDivElement>(null);
@@ -113,6 +117,13 @@ export function HoverMenu({
       setSide("right");
     }
   }, [rect, innerHeight, innerWidth]);
+
+  function closeFn() {
+    if (!menu.current) {
+      return;
+    }
+    menu.current.classList.remove("hover");
+  }
 
   const hoverMenuStyle: CSSProperties = {
     position: "absolute",
@@ -186,7 +197,7 @@ export function HoverMenu({
             {label}
           </div>
         ) : null}
-        {children}
+        {renderProps ? renderProps(closeFn) : children}
         {direction === "up" ? (
           <div
             style={{
