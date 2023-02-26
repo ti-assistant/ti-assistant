@@ -14,10 +14,7 @@ export interface SelectorProps {
   numToSelect?: number;
   options: string[];
   toggleItem: (itemName: string, add: boolean) => void;
-  renderItem?: (
-    itemName: string,
-    toggleItem: (itemName: string, add: boolean) => void
-  ) => ReactNode;
+  renderItem?: (itemName: string) => ReactNode;
   renderButton?: (
     itemName: string,
     toggleItem: (itemName: string, add: boolean) => void
@@ -44,9 +41,7 @@ export function Selector({
   // }, [options, selectItem]);
 
   if (selectedItem) {
-    const renderedItem = renderItem
-      ? renderItem(selectedItem, toggleItem)
-      : undefined;
+    const renderedItem = renderItem ? renderItem(selectedItem) : undefined;
     if (renderedItem) {
       return <React.Fragment>{renderedItem}</React.Fragment>;
     }

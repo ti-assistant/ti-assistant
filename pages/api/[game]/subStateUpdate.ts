@@ -54,7 +54,7 @@ export default async function handler(
   const gameId = req.query.game;
 
   if (typeof gameId !== "string") {
-    res.status(422);
+    res.status(422).send({ message: "Game ID required" });
     return;
   }
   const db = getFirestore();
@@ -62,7 +62,7 @@ export default async function handler(
   const gameRef = await db.collection("games").doc(gameId).get();
 
   if (!gameRef.exists) {
-    res.status(404);
+    res.status(404).send({ message: "Valid Game ID required" });
     return;
   }
 
@@ -71,7 +71,7 @@ export default async function handler(
   const data = req.body as SubStateUpdateData;
 
   if (!data.action || !data.timestamp) {
-    res.status(422);
+    res.status(422).send({ message: "Missing Action" });
     return;
   }
 
@@ -87,7 +87,7 @@ export default async function handler(
     }
     case "SET_ACTION": {
       if (!data.actionName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Action Name" });
         return;
       }
       updates = {
@@ -100,7 +100,7 @@ export default async function handler(
     }
     case "SET_SPEAKER": {
       if (!data.factionName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Faction Name" });
         return;
       }
       updates = {
@@ -118,7 +118,7 @@ export default async function handler(
     }
     case "ADD_TECH": {
       if (!data.factionName || !data.techName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Faction Name or Tech Name" });
         return;
       }
       const tech = data.techName
@@ -134,7 +134,7 @@ export default async function handler(
     }
     case "CLEAR_ADDED_TECH": {
       if (!data.factionName || !data.techName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Faction Name or Tech Name" });
         return;
       }
       const tech = data.techName
@@ -150,7 +150,7 @@ export default async function handler(
     }
     case "REMOVE_TECH": {
       if (!data.factionName || !data.techName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Faction Name or Tech Name" });
         return;
       }
       const tech = data.techName
@@ -166,7 +166,7 @@ export default async function handler(
     }
     case "CLEAR_REMOVED_TECH": {
       if (!data.factionName || !data.techName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Faction Name or Tech Name" });
         return;
       }
       const tech = data.techName
@@ -182,7 +182,9 @@ export default async function handler(
     }
     case "ADD_PLANET": {
       if (!data.factionName || !data.planetName) {
-        res.status(422);
+        res
+          .status(422)
+          .send({ message: "Missing Faction Name or Planet Name" });
         return;
       }
       const planetString = `subState.factions.${data.factionName}.planets`;
@@ -194,7 +196,9 @@ export default async function handler(
     }
     case "REMOVE_PLANET": {
       if (!data.factionName || !data.planetName) {
-        res.status(422);
+        res
+          .status(422)
+          .send({ message: "Missing Faction Name or Planet Name" });
         return;
       }
       const planetString = `subState.factions.${data.factionName}.planets`;
@@ -206,7 +210,9 @@ export default async function handler(
     }
     case "SCORE_OBJECTIVE": {
       if (!data.factionName || !data.objectiveName) {
-        res.status(422);
+        res
+          .status(422)
+          .send({ message: "Missing Faction Name or Objective Name" });
         return;
       }
       const objectiveString = `subState.factions.${data.factionName}.objectives`;
@@ -218,7 +224,9 @@ export default async function handler(
     }
     case "UNSCORE_OBJECTIVE": {
       if (!data.factionName || !data.objectiveName) {
-        res.status(422);
+        res
+          .status(422)
+          .send({ message: "Missing Faction Name or Objective Name" });
         return;
       }
       const objectiveString = `subState.factions.${data.factionName}.objectives`;
@@ -229,15 +237,15 @@ export default async function handler(
       break;
     }
     case "CAST_VOTES": {
-      if (!data.factionName || data.numVotes == undefined || !data.target) {
-        res.status(422);
+      if (!data.factionName || data.numVotes == undefined) {
+        res.status(422).send({ message: "Missing Faction Name or Num Votes" });
         return;
       }
       const voteString = `subState.factions.${data.factionName}.votes`;
       const targetString = `subState.factions.${data.factionName}.target`;
       updates = {
         [voteString]: data.numVotes,
-        [targetString]: data.target,
+        [targetString]: data.target ?? FieldValue.delete(),
         [timestampString]: timestamp,
         "subState.tieBreak": FieldValue.delete(),
       };
@@ -245,7 +253,7 @@ export default async function handler(
     }
     case "REVEAL_OBJECTIVE": {
       if (!data.objectiveName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Objective Name" });
         return;
       }
       updates = {
@@ -256,7 +264,7 @@ export default async function handler(
     }
     case "HIDE_OBJECTIVE": {
       if (!data.objectiveName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Objective Name" });
         return;
       }
       updates = {
@@ -267,7 +275,7 @@ export default async function handler(
     }
     case "REVEAL_AGENDA": {
       if (!data.agendaName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Agenda Name" });
         return;
       }
       updates = {
@@ -293,7 +301,7 @@ export default async function handler(
     }
     case "REPEAL_AGENDA": {
       if (!data.agendaName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Agenda Name" });
         return;
       }
       updates = {
@@ -311,7 +319,7 @@ export default async function handler(
     }
     case "PICK_STRATEGY_CARD": {
       if (!data.cardName || !data.factionName) {
-        res.status(422);
+        res.status(422).send({ message: "Missing Faction Name or Card Name" });
         return;
       }
       const strategyCards = gameData.subState?.strategyCards ?? [];
@@ -336,7 +344,9 @@ export default async function handler(
     }
     case "SWAP_STRATEGY_CARDS": {
       if (!data.cardOneName || !data.cardTwoName) {
-        res.status(422);
+        res
+          .status(422)
+          .send({ message: "Missing Card Name or Other Card Name" });
         return;
       }
       const strategyCards = gameData.subState?.strategyCards ?? [];
@@ -373,13 +383,12 @@ export default async function handler(
       break;
     }
     case "SET_OTHER_FIELD": {
-      if (!data.fieldName || !data.value) {
-        res.status(422);
-        return;
+      if (!data.fieldName) {
+        res.status(422).send({ message: "Missing Field Name " });
       }
       const newFieldString = `subState.${data.fieldName}`;
       updates = {
-        [newFieldString]: data.value,
+        [newFieldString]: data.value ?? FieldValue.delete(),
         [timestampString]: timestamp,
       };
       break;

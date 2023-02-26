@@ -129,14 +129,14 @@ export function AgendaTimer({}) {
       >
         <div
           className="flexColumn"
-          style={{ alignItems: "center", justifyContent: "center" }}
+          style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
         >
           <div style={{ fontSize: responsivePixels(18) }}>First Agenda</div>
           <TimerDisplay time={firstAgendaTimer} />
         </div>
         <div
           className="flexColumn"
-          style={{ alignItems: "center", justifyContent: "center" }}
+          style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
         >
           <div style={{ fontSize: responsivePixels(18) }}>Second Agenda</div>
           <TimerDisplay time={secondAgendaTimer} />

@@ -65,6 +65,7 @@ export function Modal({
               maxWidth: "85%",
               maxHeight: "90vh",
               overflow: "hidden",
+              borderRadius: responsivePixels(10),
             }}
           >
             <div

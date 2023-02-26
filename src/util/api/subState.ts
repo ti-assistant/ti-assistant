@@ -498,7 +498,7 @@ export function unscoreSubStateObjective(
 export function castSubStateVotes(
   gameid: string,
   factionName: string,
-  target: string,
+  target: string | undefined,
   numVotes: number
 ) {
   const data: SubStateUpdateData = {
@@ -849,9 +849,9 @@ export function finalizeSubState(gameid: string, subState: SubState) {
       claimPlanet(gameid, planetName, factionName);
     }
     // Scored objectives
-    for (const objectiveName of updates.objectives ?? []) {
-      scoreObjective(gameid, factionName, objectiveName);
-    }
+    // for (const objectiveName of updates.objectives ?? []) {
+    //   scoreObjective(gameid, factionName, objectiveName);
+    // }
   }
 
   mutate(

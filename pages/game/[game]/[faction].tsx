@@ -836,7 +836,13 @@ function PhaseSection() {
               style={{ alignItems: "stretch", width: "100%" }}
             >
               <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
-              {!canFactionVote(factionName, agendas, state, factions) ? (
+              {!canFactionVote(
+                factionName,
+                agendas,
+                state,
+                subState,
+                factions
+              ) ? (
                 <div className="flexRow">Cannot Vote</div>
               ) : (
                 <React.Fragment>

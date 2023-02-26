@@ -18,7 +18,9 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import {
   finalizeSubState,
   hideSubStateAgenda,
+  hideSubStateObjective,
   revealSubStateAgenda,
+  revealSubStateObjective,
   setSubStateOther,
   SubState,
   SubStateFaction,
@@ -32,6 +34,23 @@ import { GameState, setAgendaNum, StateUpdateData } from "../util/api/state";
 import { Planet } from "../util/api/planets";
 import { Objective } from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
+import React from "react";
+import { Selector } from "../Selector";
+import { ObjectiveRow } from "../ObjectiveRow";
+
+const RIDERS = [
+  "Construction Rider",
+  "Diplomacy Rider",
+  "Imperial Rider",
+  "Leadership Rider",
+  "Politics Rider",
+  "Technology Rider",
+  "Trade Rider",
+  "Warfare Rider",
+  "Sanction",
+  "Keleres Rider",
+  "Galactic Threat",
+];
 
 export function computeVotes(
   agenda: Agenda | undefined,
@@ -104,6 +123,575 @@ export function startNextRound(gameid: string, subState: SubState) {
   );
 
   finalizeSubState(gameid, subState);
+}
+
+export function getSelectedOutcome(
+  selectedTargets: string[],
+  subState: SubState
+) {
+  if (selectedTargets.length === 1) {
+    return selectedTargets[0];
+  }
+  return subState["tieBreak"];
+}
+
+function AgendaDetails() {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
+    gameid ? `/api/${gameid}/agendas` : null,
+    fetcher
+  );
+  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
+    gameid ? `/api/${gameid}/objectives` : null,
+    fetcher
+  );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher
+  );
+
+  const agendaName =
+    subState.agenda === "Covert Legislation"
+      ? subState.subAgenda
+      : subState.agenda;
+
+  const votes = computeVotes(
+    (agendas ?? {})[agendaName ?? ""],
+    subState.factions
+  );
+  const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
+    return Math.max(maxVotes, voteCount);
+  }, 0);
+  const selectedTargets = Object.entries(votes)
+    .filter(([_, voteCount]) => {
+      return voteCount === maxVotes;
+    })
+    .map(([target, _]) => {
+      return target;
+    });
+
+  const selectedOutcome = getSelectedOutcome(selectedTargets, subState);
+
+  switch (agendaName) {
+    case "Incentive Program":
+      const type = selectedOutcome === "For" ? "stage-one" : "stage-two";
+      const availableObjectives = Object.values(objectives ?? {}).filter(
+        (objective) => {
+          return objective.type === type && !objective.selected;
+        }
+      );
+      return (
+        <Selector
+          hoverMenuLabel={`Reveal Stage ${
+            type === "stage-one" ? "I" : "II"
+          } Objective`}
+          options={availableObjectives.map((objective) => objective.name)}
+          renderItem={(objectiveName) => {
+            const objective = (objectives ?? {})[objectiveName];
+            if (!objective || !gameid) {
+              return null;
+            }
+            return (
+              <LabeledDiv
+                label={`Revealed Stage ${
+                  type === "stage-one" ? "I" : "II"
+                } Objective`}
+              >
+                <ObjectiveRow
+                  objective={objective}
+                  removeObjective={() =>
+                    hideSubStateObjective(gameid, objectiveName)
+                  }
+                  hideScorers={true}
+                />
+              </LabeledDiv>
+            );
+          }}
+          selectedItem={(subState.objectives ?? [])[0]}
+          toggleItem={(objectiveName, add) => {
+            if (!gameid) {
+              return;
+            }
+            if (add) {
+              revealSubStateObjective(gameid, objectiveName);
+            } else {
+              hideSubStateObjective(gameid, objectiveName);
+            }
+          }}
+        />
+      );
+  }
+
+  return null;
+}
+
+function AgendaSteps() {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
+    gameid ? `/api/${gameid}/agendas` : null,
+    fetcher
+  );
+  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
+    gameid ? `/api/${gameid}/factions` : null,
+    fetcher
+  );
+  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
+    gameid ? `/api/${gameid}/planets` : null,
+    fetcher
+  );
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
+  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
+    gameid ? `/api/${gameid}/objectives` : null,
+    fetcher
+  );
+  const { data: state }: { data?: GameState } = useSWR(
+    gameid ? `/api/${gameid}/state` : null,
+    fetcher
+  );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher
+  );
+
+  let currentAgenda: Agenda | undefined;
+  const agendaNum = state?.agendaNum ?? 1;
+  if (subState.agenda) {
+    currentAgenda = (agendas ?? {})[subState.agenda];
+  }
+
+  const votes = computeVotes(currentAgenda, subState.factions);
+  const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
+    return Math.max(maxVotes, voteCount);
+  }, 0);
+  const selectedTargets = Object.entries(votes)
+    .filter(([_, voteCount]) => {
+      return voteCount === maxVotes;
+    })
+    .map(([target, _]) => {
+      return target;
+    });
+  const isTie = selectedTargets.length !== 1;
+
+  function selectSpeakerTieBreak(tieBreak: string | null) {
+    if (!gameid) {
+      return;
+    }
+    setSubStateOther(gameid, "tieBreak", tieBreak);
+  }
+
+  async function completeAgenda() {
+    if (!gameid || !subState.agenda) {
+      return;
+    }
+    const target = isTie ? subState.tieBreak : selectedTargets[0];
+    if (!target) {
+      return;
+    }
+    let activeAgenda = subState.agenda;
+    if (subState.subAgenda) {
+      activeAgenda = subState.subAgenda;
+      resolveAgenda(gameid, subState.agenda, subState.subAgenda);
+    }
+    resolveAgenda(gameid, activeAgenda, target);
+
+    updateCastVotes(gameid, subState.factions);
+    hideSubStateAgenda(gameid);
+    if (activeAgenda === "Miscount Disclosed") {
+      repealAgenda(gameid, target);
+      revealSubStateAgenda(gameid, target);
+      setSubStateOther(gameid, "miscount", true);
+    } else {
+      finalizeSubState(gameid, subState);
+      const agendaNum = state?.agendaNum ?? 1;
+      setAgendaNum(gameid, agendaNum + 1);
+    }
+  }
+
+  function nextPhase() {
+    if (!gameid) {
+      return;
+    }
+    startNextRound(gameid, subState);
+  }
+
+  function selectAgenda(agendaName: string) {
+    if (!gameid) {
+      return;
+    }
+    revealSubStateAgenda(gameid, agendaName);
+  }
+  function hideAgenda() {
+    if (!gameid) {
+      return;
+    }
+    hideSubStateAgenda(gameid);
+  }
+
+  function selectSubAgenda(agendaName: string | null) {
+    if (!gameid) {
+      return;
+    }
+    setSubStateOther(gameid, "subAgenda", agendaName);
+  }
+  function selectEligibleOutcome(outcome: OutcomeType | null) {
+    if (!gameid) {
+      return;
+    }
+    setSubStateOther(gameid, "outcome", outcome);
+  }
+
+  const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 1;
+  });
+  const outcomes = new Set<OutcomeType>();
+  Object.values(agendas ?? {}).forEach((agenda) => {
+    if (agenda.target || agenda.elect === "???") return;
+    outcomes.add(agenda.elect);
+  });
+
+  const votingOrder = Object.values(factions ?? {}).sort((a, b) => {
+    if (a.name === "Argent Flight") {
+      return -1;
+    }
+    if (b.name === "Argent Flight") {
+      return 1;
+    }
+    if (a.order === 1) {
+      return 1;
+    }
+    if (b.order === 1) {
+      return -1;
+    }
+    return subState["Hack Election"] ? b.order - a.order : a.order - b.order;
+  });
+
+  const flexDirection =
+    currentAgenda && currentAgenda.elect === "For/Against"
+      ? "flexRow"
+      : "flexColumn";
+  const label = !!subState.miscount
+    ? "Re-voting on Miscounted Agenda"
+    : agendaNum === 1
+    ? "First Agenda"
+    : "Second Agenda";
+
+  const localAgenda = currentAgenda
+    ? structuredClone(currentAgenda)
+    : undefined;
+  if (subState.outcome && localAgenda) {
+    localAgenda.elect = subState.outcome as OutcomeType;
+  }
+
+  const allTargets = getTargets(
+    localAgenda,
+    factions ?? {},
+    strategyCards,
+    planets ?? {},
+    agendas ?? {},
+    objectives ?? {}
+  );
+  const numFactions = votingOrder.length;
+
+  const checksAndBalances = (agendas ?? {})["Checks and Balances"];
+
+  const committeeFormation = (agendas ?? {})["Committee Formation"];
+
+  let items = (selectedTargets ?? []).length;
+  if (items === 0) {
+    items = allTargets.length;
+  }
+  if (items > 10) {
+    items = 10;
+  }
+
+  const possibleSubAgendas = Object.values(agendas ?? {}).filter(
+    (agenda) => agenda.elect === subState.outcome
+  );
+
+  const subAgenda = (agendas ?? {})[subState.subAgenda ?? ""];
+
+  const speaker = (factions ?? {})[state?.speaker ?? ""];
+
+  const vetoText = (factions ?? {})["Xxcha Kingom"]
+    ? "Veto"
+    : "Veto/Quash/Political Favor";
+
+  function haveVotesBeenCast() {
+    if (subState["tieBreak"]) {
+      return true;
+    }
+    for (const subStateFaction of Object.values(subState.factions ?? {})) {
+      if (subStateFaction.votes && subStateFaction.votes !== 0) {
+        return true;
+      }
+      if (subStateFaction.target) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function readyToResolve() {
+    if (!currentAgenda || !getSelectedOutcome(selectedTargets, subState)) {
+      return false;
+    }
+    const localAgenda =
+      currentAgenda.name === "Covert Legislation" ? subAgenda : currentAgenda;
+    if (!localAgenda) {
+      return false;
+    }
+    return true;
+  }
+
+  return (
+    <React.Fragment>
+      <AgendaTimer />
+      {agendaNum > 2 ? (
+        <div
+          style={{
+            fontSize: responsivePixels(40),
+            textAlign: "center",
+            marginTop: responsivePixels(120),
+            width: "100%",
+          }}
+        >
+          Agenda Phase Complete
+        </div>
+      ) : (
+        <div
+          className="flexColumn"
+          style={{
+            margin: "0",
+            padding: "0",
+            fontSize: responsivePixels(18),
+            alignItems: "stretch",
+          }}
+        >
+          <div
+            className="flexRow mediumFont"
+            style={{ justifyContent: "flex-start", whiteSpace: "nowrap" }}
+          >
+            {!currentAgenda ? (
+              <div className="flexRow" style={{ justifyContent: "flex-start" }}>
+                <LabeledDiv
+                  label={`Speaker: ${getFactionName(speaker)}`}
+                  color={getFactionColor(speaker)}
+                >
+                  <ClientOnlyHoverMenu label="Reveal and Read one Agenda">
+                    <div
+                      className="flexRow"
+                      style={{
+                        padding: responsivePixels(8),
+                        gap: responsivePixels(4),
+                        display: "grid",
+                        gridAutoFlow: "column",
+                        gridTemplateRows: "repeat(13, auto)",
+                        alignItems: "stretch",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      {orderedAgendas.map((agenda) => {
+                        return (
+                          <button
+                            key={agenda.name}
+                            className={agenda.resolved ? "faded" : ""}
+                            style={{
+                              fontSize: responsivePixels(14),
+                              writingMode: "horizontal-tb",
+                            }}
+                            onClick={() => selectAgenda(agenda.name)}
+                          >
+                            {agenda.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </ClientOnlyHoverMenu>
+                </LabeledDiv>
+              </div>
+            ) : (
+              <LabeledDiv label={label}>
+                <AgendaRow
+                  agenda={currentAgenda}
+                  removeAgenda={
+                    subState.miscount ? undefined : () => hideAgenda()
+                  }
+                />
+                {currentAgenda.name === "Covert Legislation" ? (
+                  <Selector
+                    hoverMenuLabel="Reveal Eligible Outcomes"
+                    selectedLabel="Eligible Outcomes"
+                    options={Array.from(outcomes)}
+                    selectedItem={subState.outcome}
+                    toggleItem={(outcome, add) => {
+                      if (add) {
+                        selectEligibleOutcome(outcome as OutcomeType);
+                      } else {
+                        selectEligibleOutcome(null);
+                      }
+                    }}
+                  />
+                ) : null}
+              </LabeledDiv>
+            )}
+          </div>
+          {currentAgenda && !haveVotesBeenCast() ? (
+            <div className="flexRow">
+              <button onClick={() => hideAgenda()}>{vetoText}</button>
+            </div>
+          ) : null}
+          {currentAgenda && !haveVotesBeenCast() ? (
+            <LabeledDiv label="After an Agenda is Revealed">
+              <div
+                className="flexColumn"
+                style={{
+                  alignItems: "flex-start",
+                  paddingTop: subState["Assassinate Representative"]
+                    ? responsivePixels(4)
+                    : 0,
+                }}
+              >
+                <Selector
+                  hoverMenuLabel="Assassinate Representative"
+                  selectedLabel="Assassinated Representative"
+                  options={Object.keys(factions ?? {})}
+                  selectedItem={subState["Assassinate Representative"]}
+                  toggleItem={(itemName, add) => {
+                    if (!gameid) {
+                      return;
+                    }
+                    if (add) {
+                      setSubStateOther(
+                        gameid,
+                        "Assassinate Representative",
+                        itemName
+                      );
+                    } else {
+                      setSubStateOther(
+                        gameid,
+                        "Assassinate Representative",
+                        undefined
+                      );
+                    }
+                  }}
+                />
+                <button
+                  className={subState["Hack Election"] ? "selected" : ""}
+                  onClick={() => {
+                    if (!gameid) {
+                      return;
+                    }
+                    setSubStateOther(
+                      gameid,
+                      "Hack Election",
+                      !subState["Hack Election"]
+                    );
+                  }}
+                >
+                  Hack Election
+                </button>
+                <ClientOnlyHoverMenu label="Predict Outcome">
+                  <div
+                    className="flexColumn"
+                    style={{ padding: responsivePixels(8) }}
+                  >
+                    Work in Progress
+                  </div>
+                </ClientOnlyHoverMenu>
+              </div>
+            </LabeledDiv>
+          ) : null}
+          Cast votes (or abstain)
+          {(votes && Object.keys(votes).length > 0) ||
+          getSelectedOutcome(selectedTargets, subState) ? (
+            <LabeledDiv label="Results">
+              {votes && Object.keys(votes).length > 0 ? (
+                <div
+                  className={flexDirection}
+                  style={{
+                    gap: responsivePixels(4),
+                    padding: `${responsivePixels(8)} ${responsivePixels(20)}`,
+                    alignItems: "flex-start",
+                    border: `${responsivePixels(1)} solid #555`,
+                    borderRadius: responsivePixels(10),
+                  }}
+                >
+                  {Object.entries(votes).map(([target, voteCount]) => {
+                    return (
+                      <div key={target}>
+                        {target}: {voteCount}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
+              {getSelectedOutcome(selectedTargets, subState) ? (
+                currentAgenda && currentAgenda.name === "Covert Legislation" ? (
+                  <Selector
+                    hoverMenuLabel="Covert Agenda"
+                    options={possibleSubAgendas.map((agenda) => agenda.name)}
+                    selectedItem={subAgenda?.name}
+                    renderItem={(agendaName) => {
+                      const agenda = (agendas ?? {})[agendaName];
+                      if (!agenda) {
+                        return null;
+                      }
+                      return (
+                        <LabeledDiv label="Covert Agenda">
+                          <AgendaRow
+                            agenda={agenda}
+                            removeAgenda={() => selectSubAgenda(null)}
+                          />
+                        </LabeledDiv>
+                      );
+                    }}
+                    toggleItem={(agendaName, add) => {
+                      if (add) {
+                        selectSubAgenda(agendaName);
+                      } else {
+                        selectSubAgenda(null);
+                      }
+                    }}
+                  />
+                ) : null
+              ) : null}
+              <AgendaDetails />
+              {readyToResolve() ? (
+                <div
+                  className="flexColumn"
+                  style={{ paddingTop: responsivePixels(8), width: "100%" }}
+                >
+                  <button onClick={completeAgenda}>
+                    Resolve with target:{" "}
+                    {getSelectedOutcome(selectedTargets, subState)}
+                  </button>
+                </div>
+              ) : null}
+            </LabeledDiv>
+          ) : null}
+        </div>
+      )}
+      <button
+        style={{
+          marginTop: responsivePixels(12),
+          fontSize: responsivePixels(24),
+        }}
+        onClick={() => nextPhase()}
+      >
+        Start Next Round
+      </button>
+    </React.Fragment>
+  );
 }
 
 export default function AgendaPhase() {
@@ -260,7 +848,7 @@ export default function AgendaPhase() {
     if (b.order === 1) {
       return -1;
     }
-    return a.order - b.order;
+    return subState["Hack Election"] ? b.order - a.order : a.order - b.order;
   });
 
   const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
@@ -290,8 +878,8 @@ export default function AgendaPhase() {
   const label = !!subState.miscount
     ? "Re-voting on Miscounted Agenda"
     : agendaNum === 1
-    ? "FIRST AGENDA"
-    : "SECOND AGENDA";
+    ? "First Agenda"
+    : "Second Agenda";
 
   const numFactions = votingOrder.length;
 
@@ -311,6 +899,8 @@ export default function AgendaPhase() {
 
   const subAgenda = agendas[subState.subAgenda ?? ""];
 
+  const speaker = (factions ?? {})[state?.speaker ?? ""];
+
   return (
     <div
       className="flexRow"
@@ -322,28 +912,31 @@ export default function AgendaPhase() {
         justifyContent: "space-between",
       }}
     >
+      <div className="flexColumn" style={{ paddingTop: responsivePixels(140) }}>
+        <AgendaSteps />
+      </div>
       <div
         className="flexColumn"
         style={{
-          paddingTop: responsivePixels(140),
+          paddingTop: responsivePixels(80),
           gap: numFactions > 7 ? 0 : responsivePixels(8),
           alignItems: "stretch",
-          width: responsivePixels(300),
         }}
       >
-        {numFactions < 7 ? (
-          <div className="flexRow" style={{ alignItems: "flex-end" }}>
-            <div style={{ textAlign: "center", width: responsivePixels(80) }}>
-              Available Votes
-            </div>
-            <div style={{ textAlign: "center", width: responsivePixels(40) }}>
-              Cast Votes
-            </div>
-            <div style={{ textAlign: "center", width: responsivePixels(120) }}>
-              Outcome
-            </div>
+        <div
+          className="flexRow"
+          style={{ paddingBottom: responsivePixels(8), alignItems: "flex-end" }}
+        >
+          <div style={{ textAlign: "center", width: responsivePixels(80) }}>
+            Available Votes
           </div>
-        ) : null}
+          <div style={{ textAlign: "center", width: responsivePixels(40) }}>
+            Cast Votes
+          </div>
+          <div style={{ textAlign: "center", width: responsivePixels(120) }}>
+            Outcome
+          </div>
+        </div>
         {votingOrder.map((faction) => {
           return (
             <VoteCount
@@ -353,365 +946,80 @@ export default function AgendaPhase() {
             />
           );
         })}
-      </div>
-      <div
-        className="flexColumn"
-        style={{ flexBasis: "30%", paddingTop: responsivePixels(80) }}
-      >
-        <AgendaTimer />
-        {agendaNum > 2 ? (
-          <div
-            style={{
-              fontSize: responsivePixels(40),
-              textAlign: "center",
-              marginTop: responsivePixels(120),
-              width: "100%",
-            }}
-          >
-            Agenda Phase Complete
-          </div>
-        ) : (
-          <ol
-            className="flexColumn"
-            style={{
-              margin: "0",
-              padding: "0",
-              fontSize: responsivePixels(18),
-              alignItems: "stretch",
-            }}
-          >
-            <NumberedItem>
-              <div
-                className="flexRow mediumFont"
-                style={{ justifyContent: "flex-start", whiteSpace: "nowrap" }}
-              >
-                {!currentAgenda ? (
-                  <div
-                    className="flexRow"
-                    style={{ justifyContent: "flex-start" }}
-                  >
-                    <LabeledDiv
-                      label={`Speaker: ${getFactionName(
-                        factions[state?.speaker ?? ""]
-                      )}`}
-                      color={getFactionColor(factions[state?.speaker ?? ""])}
-                    >
-                      <ClientOnlyHoverMenu label="Reveal and Read one Agenda">
-                        <div
-                          className="flexRow"
-                          style={{
-                            padding: responsivePixels(8),
-                            gap: responsivePixels(4),
-                            display: "grid",
-                            gridAutoFlow: "column",
-                            gridTemplateRows: "repeat(13, auto)",
-                            alignItems: "stretch",
-                            justifyContent: "flex-start",
-                          }}
-                        >
-                          {orderedAgendas.map((agenda) => {
-                            return (
-                              <button
-                                key={agenda.name}
-                                className={agenda.resolved ? "faded" : ""}
-                                style={{
-                                  fontSize: responsivePixels(14),
-                                  writingMode: "horizontal-tb",
-                                }}
-                                onClick={() => selectAgenda(agenda.name)}
-                              >
-                                {agenda.name}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </ClientOnlyHoverMenu>
-                    </LabeledDiv>
-                  </div>
-                ) : (
-                  <LabeledDiv label={label}>
-                    <AgendaRow
-                      agenda={currentAgenda}
-                      removeAgenda={
-                        subState.miscount ? undefined : () => hideAgenda()
-                      }
-                    />
-                  </LabeledDiv>
-                )}
-              </div>
-            </NumberedItem>
-            {currentAgenda && currentAgenda.name === "Covert Legislation" ? (
-              <NumberedItem>
+        {currentAgenda && isTie ? (
+          !subState.tieBreak ? (
+            <LabeledDiv
+              label={`Speaker: ${getFactionName(speaker)}`}
+              color={getFactionColor(speaker)}
+              style={{ width: "auto" }}
+            >
+              <ClientOnlyHoverMenu label="Choose outcome if tied">
                 <div
-                  className="flexRow mediumFont"
-                  style={{ justifyContent: "flex-start", whiteSpace: "nowrap" }}
-                >
-                  {subState.outcome ? (
-                    <LabeledDiv label="ELIGIBLE OUTCOMES">
-                      <SelectableRow
-                        itemName={subState.outcome}
-                        removeItem={() => selectEligibleOutcome(null)}
-                      >
-                        <div style={{ display: "flex" }}>
-                          {subState.outcome}
-                        </div>
-                      </SelectableRow>
-                    </LabeledDiv>
-                  ) : (
-                    <LabeledDiv
-                      label={`Speaker: ${getFactionName(
-                        factions[state?.speaker ?? ""]
-                      )}`}
-                      color={getFactionColor(factions[state?.speaker ?? ""])}
-                    >
-                      <ClientOnlyHoverMenu label="Reveal Eligible Outcomes">
-                        <div
-                          className="flexColumn"
-                          style={{
-                            padding: responsivePixels(8),
-                            gap: responsivePixels(4),
-                            alignItems: "stretch",
-                            justifyContent: "flex-start",
-                          }}
-                        >
-                          {Array.from(outcomes).map((outcome) => {
-                            return (
-                              <button
-                                key={outcome}
-                                style={{ fontSize: responsivePixels(14) }}
-                                onClick={() => selectEligibleOutcome(outcome)}
-                              >
-                                {outcome}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </ClientOnlyHoverMenu>
-                    </LabeledDiv>
-                  )}
-                </div>
-              </NumberedItem>
-            ) : null}
-            <NumberedItem>
-              <div className="mediumFont">
-                Perform any <i>When an Agenda is revealed</i> actions
-              </div>
-              <div className="mediumFont">
-                Perform any <i>After an Agenda is revealed</i> actions
-              </div>
-            </NumberedItem>
-            <NumberedItem>Discuss</NumberedItem>
-            <NumberedItem>
-              In Voting Order: Cast votes (or abstain)
-              {votes && Object.keys(votes).length > 0 ? (
-                <div
-                  className={flexDirection}
+                  className="flexRow"
                   style={{
-                    marginTop: responsivePixels(12),
+                    alignItems: "stretch",
+                    justifyContent: "flex-start",
                     gap: responsivePixels(4),
-                    padding: `${responsivePixels(8)} ${responsivePixels(20)}`,
-                    alignItems: "flex-start",
-                    border: `${responsivePixels(1)} solid #555`,
-                    borderRadius: responsivePixels(10),
+                    padding: responsivePixels(8),
+                    display: "grid",
+                    gridAutoFlow: "column",
+                    gridTemplateRows: `repeat(${items}, auto)`,
                   }}
                 >
-                  {Object.entries(votes).map(([target, voteCount]) => {
-                    return (
-                      <div key={target}>
-                        {target}: {voteCount}
-                      </div>
-                    );
-                  })}
+                  {selectedTargets.length > 0
+                    ? selectedTargets.map((target) => {
+                        return (
+                          <button
+                            key={target}
+                            style={{
+                              fontSize: responsivePixels(14),
+                              writingMode: "horizontal-tb",
+                            }}
+                            className={
+                              subState.tieBreak === target ? "selected" : ""
+                            }
+                            onClick={() => selectSpeakerTieBreak(target)}
+                          >
+                            {target}
+                          </button>
+                        );
+                      })
+                    : allTargets.map((target) => {
+                        if (target === "Abstain") {
+                          return null;
+                        }
+                        return (
+                          <button
+                            key={target}
+                            style={{
+                              fontSize: responsivePixels(14),
+                              writingMode: "horizontal-tb",
+                            }}
+                            className={
+                              subState.tieBreak === target ? "selected" : ""
+                            }
+                            onClick={() => selectSpeakerTieBreak(target)}
+                          >
+                            {target}
+                          </button>
+                        );
+                      })}
                 </div>
-              ) : null}
-            </NumberedItem>
-            {currentAgenda && isTie ? (
-              <NumberedItem>
-                <div>
-                  {!subState.tieBreak ? (
-                    <LabeledDiv
-                      label={`Speaker: ${getFactionName(
-                        factions[state?.speaker ?? ""]
-                      )}`}
-                      color={getFactionColor(factions[state?.speaker ?? ""])}
-                      style={{ width: "auto" }}
-                    >
-                      <ClientOnlyHoverMenu label="Choose outcome if tied">
-                        <div
-                          className="flexRow"
-                          style={{
-                            alignItems: "stretch",
-                            justifyContent: "flex-start",
-                            gap: responsivePixels(4),
-                            padding: responsivePixels(8),
-                            display: "grid",
-                            gridAutoFlow: "column",
-                            gridTemplateRows: `repeat(${items}, auto)`,
-                          }}
-                        >
-                          {selectedTargets.length > 0
-                            ? selectedTargets.map((target) => {
-                                return (
-                                  <button
-                                    key={target}
-                                    style={{
-                                      fontSize: responsivePixels(14),
-                                      writingMode: "horizontal-tb",
-                                    }}
-                                    className={
-                                      subState.tieBreak === target
-                                        ? "selected"
-                                        : ""
-                                    }
-                                    onClick={() =>
-                                      selectSpeakerTieBreak(target)
-                                    }
-                                  >
-                                    {target}
-                                  </button>
-                                );
-                              })
-                            : allTargets.map((target) => {
-                                if (target === "Abstain") {
-                                  return null;
-                                }
-                                return (
-                                  <button
-                                    key={target}
-                                    style={{
-                                      fontSize: responsivePixels(14),
-                                      writingMode: "horizontal-tb",
-                                    }}
-                                    className={
-                                      subState.tieBreak === target
-                                        ? "selected"
-                                        : ""
-                                    }
-                                    onClick={() =>
-                                      selectSpeakerTieBreak(target)
-                                    }
-                                  >
-                                    {target}
-                                  </button>
-                                );
-                              })}
-                        </div>
-                      </ClientOnlyHoverMenu>
-                    </LabeledDiv>
-                  ) : (
-                    <LabeledDiv label="SPEAKER SELECTED OPTION">
-                      <SelectableRow
-                        itemName={subState.tieBreak}
-                        removeItem={() => selectSpeakerTieBreak(null)}
-                      >
-                        {subState.tieBreak}
-                      </SelectableRow>
-                    </LabeledDiv>
-                  )}
-                </div>
-              </NumberedItem>
-            ) : null}
-            <NumberedItem>
-              Resolve agenda outcome
-              <div
-                className="flexColumn mediumFont"
-                style={{ width: "100%", paddingTop: responsivePixels(4) }}
+              </ClientOnlyHoverMenu>
+            </LabeledDiv>
+          ) : (
+            <LabeledDiv label="Speaker Tie Break">
+              <SelectableRow
+                itemName={subState.tieBreak}
+                removeItem={() => selectSpeakerTieBreak(null)}
               >
-                {currentAgenda &&
-                currentAgenda.name === "Covert Legislation" ? (
-                  !subAgenda ? (
-                    <ClientOnlyHoverMenu label="Reveal Covert Legislation Agenda">
-                      <div
-                        className="flexRow"
-                        style={{
-                          gap: responsivePixels(4),
-                          alignItems: "stretch",
-                          justifyContent: "flex-start",
-                          padding: responsivePixels(8),
-                          display: "grid",
-                          gridAutoFlow: "column",
-                          gridTemplateRows: `repeat(${Math.min(
-                            possibleSubAgendas.length,
-                            13
-                          )}, auto)`,
-                        }}
-                      >
-                        {possibleSubAgendas.map((agenda) => {
-                          return (
-                            <button
-                              key={agenda.name}
-                              style={{
-                                writingMode: "horizontal-tb",
-                                fontSize: responsivePixels(14),
-                              }}
-                              className={agenda.resolved ? "faded" : ""}
-                              onClick={() => selectSubAgenda(agenda.name)}
-                            >
-                              {agenda.name}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </ClientOnlyHoverMenu>
-                  ) : (
-                    <AgendaRow
-                      agenda={subAgenda}
-                      removeAgenda={() => selectSubAgenda(null)}
-                    />
-                  )
-                ) : null}
-                {!isTie && selectedTargets.length > 0 ? (
-                  <div
-                    className="flexColumn"
-                    style={{ paddingTop: responsivePixels(8), width: "100%" }}
-                  >
-                    <button onClick={completeAgenda}>
-                      Resolve with target: {selectedTargets[0]}
-                    </button>
-                  </div>
-                ) : null}
-                {isTie &&
-                subState.tieBreak &&
-                (selectedTargets.length === 0 ||
-                  selectedTargets.includes(subState.tieBreak)) ? (
-                  <div
-                    className="flexColumn"
-                    style={{ paddingTop: responsivePixels(8), width: "100%" }}
-                  >
-                    <button onClick={completeAgenda}>
-                      Resolve with target: {subState.tieBreak}
-                    </button>
-                  </div>
-                ) : null}
-              </div>
-            </NumberedItem>
-            {agendaNum === 1 ? (
-              <NumberedItem>Repeat Steps 1 to 6</NumberedItem>
-            ) : null}
-            {checksAndBalances &&
-            checksAndBalances.resolved &&
-            checksAndBalances.target === "Against" &&
-            checksAndBalances.activeRound === state?.round ? (
-              <NumberedItem>Ready three planets</NumberedItem>
-            ) : (
-              <NumberedItem>Ready all planets</NumberedItem>
-            )}
-          </ol>
-        )}
-        <button
-          style={{
-            marginTop: responsivePixels(12),
-            fontSize: responsivePixels(24),
-          }}
-          onClick={() => nextPhase()}
-        >
-          Start Next Round
-        </button>
+                {subState.tieBreak}
+              </SelectableRow>
+            </LabeledDiv>
+          )
+        ) : null}
       </div>
-      <div
-        className="flexColumn"
-        style={{ flexBasis: "30%", maxWidth: responsivePixels(400) }}
-      >
+      <div className="flexColumn" style={{ width: responsivePixels(280) }}>
         <SummaryColumn />
       </div>
     </div>

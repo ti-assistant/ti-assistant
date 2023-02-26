@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useSWR from "swr";
 import { ClientOnlyHoverMenu } from "./HoverMenu";
 import { LabeledDiv } from "./LabeledDiv";
+import { Selector } from "./Selector";
 import { Agenda } from "./util/api/agendas";
 import { Attachment } from "./util/api/attachments";
 import { StrategyCard } from "./util/api/cards";
@@ -109,6 +110,7 @@ export function canFactionVote(
   factionName: string,
   agendas: Record<string, Agenda>,
   state: GameState,
+  subState: SubState,
   factions: Record<string, Faction>
 ) {
   const faction = factions[factionName];
@@ -121,6 +123,9 @@ export function canFactionVote(
     faction.commander === "unlocked"
   ) {
     return true;
+  }
+  if (subState["Assassinate Representative"] === factionName) {
+    return false;
   }
   const publicExecution = agendas["Public Execution"];
   if (
@@ -139,8 +144,17 @@ function computeRemainingVotes(
   factions: Record<string, Faction>,
   planets: Record<string, Planet>,
   attachments: Record<string, Attachment>,
+  agendas: Record<string, Agenda>,
   options: Options
 ) {
+  const representativeGovernment = agendas["Representative Government"];
+
+  if (representativeGovernment && representativeGovernment.passed) {
+    return {
+      influence: 0,
+      extraVotes: 1,
+    };
+  }
   const ownedPlanets = filterToClaimedPlanets(planets, factionName);
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
@@ -234,6 +248,7 @@ export interface VoteCountProps {
 }
 
 export function VoteCount({ factionName, agenda }: VoteCountProps) {
+  const voteRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
 
@@ -282,8 +297,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     if (!gameid) {
       return;
     }
-    console.log(target);
-    if (!target || target === "Abstain") {
+    if (target === "Abstain") {
       castSubStateVotes(gameid, factionName, "Abstain", 0);
     } else {
       castSubStateVotes(gameid, factionName, target, votes);
@@ -305,6 +319,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     factions,
     planets ?? {},
     attachments ?? {},
+    agendas ?? {},
     options
   );
 
@@ -341,6 +356,20 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
   );
   const factionSubState = (subState?.factions ?? {})[factionName];
 
+  function saveCastVotes(element: HTMLDivElement) {
+    if (element.innerText !== "") {
+      const numerical = parseInt(element.innerText);
+      if (!isNaN(numerical)) {
+        castVotes(factionSubState?.target, numerical);
+        element.innerText = numerical.toString();
+      }
+    }
+    element.innerText = factionSubState?.votes?.toString() ?? "0";
+  }
+
+  const hasVotableTarget =
+    !!factionSubState?.target && factionSubState?.target !== "Abstain";
+
   return (
     <LabeledDiv
       label={getFactionName(faction)}
@@ -355,8 +384,19 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
           alignItems: "center",
         }}
       >
-        {!canFactionVote(factionName, agendas ?? {}, state, factions) ? (
-          "Cannot Vote"
+        {!canFactionVote(
+          factionName,
+          agendas ?? {},
+          state,
+          subState ?? {},
+          factions
+        ) ? (
+          <div
+            className="flexRow"
+            style={{ boxSizing: "border-box", width: "100%" }}
+          >
+            Cannot Vote
+          </div>
         ) : (
           <React.Fragment>
             <div
@@ -424,7 +464,20 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
               ) : (
                 <div style={{ width: responsivePixels(12) }}></div>
               )}
-              <div className="flexRow" style={{ width: responsivePixels(24) }}>
+              <div
+                className="flexRow"
+                ref={voteRef}
+                contentEditable={hasVotableTarget}
+                suppressContentEditableWarning={true}
+                onClick={(e) => {
+                  if (!hasVotableTarget) {
+                    return;
+                  }
+                  e.currentTarget.innerText = "";
+                }}
+                onBlur={(e) => saveCastVotes(e.currentTarget)}
+                style={{ width: responsivePixels(24) }}
+              >
                 {factionSubState?.votes ?? 0}
               </div>
               {factionSubState?.target &&
@@ -442,10 +495,21 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
                 <div style={{ width: responsivePixels(12) }}></div>
               )}
             </div>
+            <Selector
+              hoverMenuLabel="Select"
+              options={targets}
+              selectedItem={factionSubState?.target}
+              toggleItem={(itemName, add) => {
+                if (add) {
+                  castVotes(itemName, 0);
+                } else {
+                  castVotes(undefined, 0);
+                }
+              }}
+            />
           </React.Fragment>
         )}
-        <div style={{ flexGrow: 4 }}>
-          <ClientOnlyHoverMenu
+        {/* <ClientOnlyHoverMenu
             label={
               factionSubState?.target
                 ? factions[factionSubState.target]
@@ -490,8 +554,8 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
                 })}
               </div>
             )}
-          ></ClientOnlyHoverMenu>
-        </div>
+          ></ClientOnlyHoverMenu> */}
+        {/* </div> */}
       </div>
     </LabeledDiv>
   );
