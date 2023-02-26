@@ -29,9 +29,10 @@ export function LabeledDiv({
   const [minWidth, setMinWidth] = useState<number | undefined>();
   const labelRef = useRef<HTMLDivElement>(null);
 
+  const labelWidth = labelRef.current?.clientWidth;
   useLayoutEffect(() => {
-    setMinWidth((labelRef.current?.clientWidth ?? 0) + 16);
-  }, [labelRef.current]);
+    setMinWidth((labelWidth ?? 0) + 16);
+  }, [labelWidth]);
 
   const padding = `${
     !!label ? responsivePixels(10) : responsivePixels(6)

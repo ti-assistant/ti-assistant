@@ -231,12 +231,11 @@ export function MiddleColumn() {
                 return objectiveObj.type === "secret";
               });
               return (
-                <div style={{ width: "100%", position: "relative" }}>
-                  <LabeledLine
-                    key={card.name}
-                    label={factionName}
-                    color={factionColor}
-                  />
+                <div
+                  key={card.name}
+                  style={{ width: "100%", position: "relative" }}
+                >
+                  <LabeledLine label={factionName} color={factionColor} />
                   <div
                     className="flexRow"
                     style={{

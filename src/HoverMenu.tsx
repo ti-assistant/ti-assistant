@@ -34,7 +34,6 @@ export function ClientOnlyHoverMenu({
               : `${responsivePixels(2)} solid ${borderColor}`,
             borderRadius: responsivePixels(5),
             padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-            cursor: "pointer",
             whiteSpace: "nowrap",
             backgroundColor: "#222",
           }}
@@ -169,7 +168,6 @@ export function HoverMenu({
             : `${responsivePixels(2)} solid ${borderColor}`,
           borderRadius: responsivePixels(5),
           padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-          cursor: "pointer",
           whiteSpace: "nowrap",
           backgroundColor: "#222",
         }}
@@ -181,7 +179,6 @@ export function HoverMenu({
           <div
             style={{
               padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              cursor: "pointer",
               marginLeft: shift.left ? responsivePixels(shift.left) : 0,
               marginRight: shift.right ? responsivePixels(shift.right) : 0,
             }}
@@ -194,7 +191,6 @@ export function HoverMenu({
           <div
             style={{
               padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              cursor: "pointer",
               marginLeft: shift.left ? responsivePixels(shift.left) : 0,
               marginRight: shift.right ? responsivePixels(shift.right) : 0,
             }}

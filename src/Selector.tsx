@@ -4,7 +4,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { HoverMenu } from "./HoverMenu";
+import { ClientOnlyHoverMenu, HoverMenu } from "./HoverMenu";
 import { LabeledDiv } from "./LabeledDiv";
 import { SelectableRow } from "./SelectableRow";
 import { responsivePixels } from "./util/util";
@@ -77,7 +77,7 @@ export function Selector({
   }
 
   return (
-    <HoverMenu label={hoverMenuLabel}>
+    <ClientOnlyHoverMenu label={hoverMenuLabel}>
       <div className="flexColumn" style={innerStyle}>
         {options.map((option) => {
           return (
@@ -91,6 +91,6 @@ export function Selector({
           );
         })}
       </div>
-    </HoverMenu>
+    </ClientOnlyHoverMenu>
   );
 }

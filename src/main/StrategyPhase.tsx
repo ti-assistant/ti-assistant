@@ -31,7 +31,7 @@ import {
   undoSubStateStrategyCard,
 } from "../util/api/subState";
 import { getDefaultStrategyCards } from "../util/api/defaults";
-import { HoverMenu } from "../HoverMenu";
+import { ClientOnlyHoverMenu, HoverMenu } from "../HoverMenu";
 import { Selector } from "../Selector";
 
 function QuantumDatahubNode({
@@ -78,7 +78,7 @@ function QuantumDatahubNode({
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
     >
-      <HoverMenu label="Quantum Datahub Node">
+      <ClientOnlyHoverMenu label="Quantum Datahub Node">
         <div
           className="flexColumn"
           style={{
@@ -95,9 +95,10 @@ function QuantumDatahubNode({
             options={strategyCards
               .filter((card) => card.faction === faction.name)
               .map((card) => card.name)}
-            selectItem={(cardName) => {
+            toggleItem={(cardName, add) => {
+              const localCardName = add ? cardName : undefined;
               setQuantum((quantum) => {
-                return { ...quantum, mainCard: cardName };
+                return { ...quantum, mainCard: localCardName };
               });
             }}
             selectedItem={quantum.mainCard}
@@ -108,9 +109,10 @@ function QuantumDatahubNode({
             options={strategyCards
               .filter((card) => card.faction && card.faction !== faction.name)
               .map((card) => card.name)}
-            selectItem={(cardName) => {
+            toggleItem={(cardName, add) => {
+              const localCardName = add ? cardName : undefined;
               setQuantum((quantum) => {
-                return { ...quantum, otherCard: cardName };
+                return { ...quantum, otherCard: localCardName };
               });
             }}
             selectedItem={quantum.otherCard}
@@ -137,7 +139,7 @@ function QuantumDatahubNode({
             </button>
           </div>
         </div>
-      </HoverMenu>
+      </ClientOnlyHoverMenu>
     </LabeledDiv>
   );
 }
@@ -197,7 +199,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
     >
-      <HoverMenu label="Imperial Arbiter">
+      <ClientOnlyHoverMenu label="Imperial Arbiter">
         <div
           className="flexColumn"
           style={{
@@ -214,9 +216,10 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
             options={strategyCards
               .filter((card) => card.faction === faction.name)
               .map((card) => card.name)}
-            selectItem={(cardName) => {
+            toggleItem={(cardName, add) => {
+              const localCardName = add ? cardName : undefined;
               setQuantum((quantum) => {
-                return { ...quantum, mainCard: cardName };
+                return { ...quantum, mainCard: localCardName };
               });
             }}
             selectedItem={quantum.mainCard}
@@ -227,9 +230,10 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
             options={strategyCards
               .filter((card) => card.faction && card.faction !== faction.name)
               .map((card) => card.name)}
-            selectItem={(cardName) => {
+            toggleItem={(cardName, add) => {
+              const localCardName = add ? cardName : undefined;
               setQuantum((quantum) => {
-                return { ...quantum, otherCard: cardName };
+                return { ...quantum, otherCard: localCardName };
               });
             }}
             selectedItem={quantum.otherCard}
@@ -256,7 +260,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
             </button>
           </div>
         </div>
-      </HoverMenu>
+      </ClientOnlyHoverMenu>
     </LabeledDiv>
   );
 }
@@ -657,7 +661,10 @@ export default function StrategyPhase() {
                 options={Object.values(factions ?? {})
                   .map((faction) => faction.name)
                   .filter((name) => name !== "Naalu Collective")}
-                selectItem={giftOfPrescience}
+                toggleItem={(factionName, add) => {
+                  const localFactionName = add ? factionName : undefined;
+                  giftOfPrescience(localFactionName);
+                }}
                 selectedItem={subState["Gift of Prescience"]}
               />
             ) : null}
