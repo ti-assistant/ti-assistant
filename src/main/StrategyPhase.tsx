@@ -162,6 +162,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
     mainCard: undefined,
     otherCard: undefined,
   });
+  const arbiter = agendas["Imperial Arbiter"];
 
   function quantumDatahubNode() {
     if (!gameid || !quantum.mainCard || !quantum.otherCard) {
@@ -179,10 +180,8 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
     }
 
     swapSubStateStrategyCards(gameid, cardOne, cardTwo);
-    repealAgenda(gameid, "Imperial Arbiter");
+    repealAgenda(gameid, arbiter);
   }
-
-  const arbiter = agendas["Imperial Arbiter"];
 
   if (!arbiter || !arbiter.resolved) {
     return null;
@@ -607,9 +606,10 @@ export default function StrategyPhase() {
                   if (abilities.length === 0) {
                     return null;
                   }
-                  const label = factions
-                    ? getFactionName(factions[factionName])
-                    : factionName;
+                  const label =
+                    factions && factionName !== "Every Player"
+                      ? getFactionName(factions[factionName])
+                      : factionName;
                   return (
                     <NumberedItem key={factionName}>
                       <LabeledDiv

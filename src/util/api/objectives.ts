@@ -9,13 +9,15 @@ export type ObjectiveUpdateAction =
   | "REVEAL_OBJECTIVE"
   | "REMOVE_OBJECTIVE"
   | "SCORE_OBJECTIVE"
-  | "UNSCORE_OBJECTIVE";
+  | "UNSCORE_OBJECTIVE"
+  | "CHANGE_OBJECTIVE_TYPE";
 
 export interface ObjectiveUpdateData {
   action?: ObjectiveUpdateAction;
   faction?: string;
   objective?: string;
   timestamp?: number;
+  type?: ObjectiveType;
 }
 
 export interface BaseObjective {
@@ -181,6 +183,38 @@ export function unscoreObjective(
         if (factionIndex !== -1) {
           objective.scorers.splice(factionIndex, 1);
         }
+
+        return updatedObjectives;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function changeObjectiveType(
+  gameId: string,
+  objectiveName: string,
+  type: ObjectiveType
+) {
+  const data: ObjectiveUpdateData = {
+    action: "CHANGE_OBJECTIVE_TYPE",
+    objective: objectiveName,
+    type: type,
+  };
+
+  mutate(
+    `/api/${gameId}/objectives`,
+    async () => await poster(`/api/${gameId}/objectiveUpdate`, data),
+    {
+      optimisticData: (objectives: Record<string, Objective>) => {
+        const updatedObjectives = structuredClone(objectives);
+
+        const objective = updatedObjectives[objectiveName];
+
+        if (!objective) {
+          return updatedObjectives;
+        }
+        objective.type = type;
 
         return updatedObjectives;
       },

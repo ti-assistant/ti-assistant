@@ -1,5 +1,5 @@
 import { mutate } from "swr";
-import { repealAgenda } from "./agendas";
+import { Agenda, repealAgenda } from "./agendas";
 import {
   assignStrategyCard,
   setFirstStrategyCard,
@@ -35,6 +35,8 @@ export type SubStateUpdateAction =
   | "PICK_STRATEGY_CARD"
   | "UNDO_STRATEGY_CARD"
   | "SWAP_STRATEGY_CARDS"
+  | "PLAY_RIDER"
+  | "UNDO_RIDER"
   | "SET_OTHER_FIELD"
   | "FINALIZE_SUB_STATE";
 
@@ -49,7 +51,9 @@ export interface SubStateUpdateData {
   fieldName?: string;
   numVotes?: number;
   objectiveName?: string;
+  outcome?: string;
   planetName?: string;
+  riderName?: string;
   target?: string;
   techName?: string;
   timestamp?: number;
@@ -79,6 +83,13 @@ export interface SubState {
     factionName: string;
     orderMod?: number;
   }[];
+  riders?: Record<
+    string,
+    {
+      factionName?: string;
+      outcome?: string;
+    }
+  >;
   [key: string]: any;
 }
 
@@ -627,6 +638,7 @@ export function hideSubStateAgenda(gameid: string) {
         delete updatedSubState.tieBreak;
         delete updatedSubState.outcome;
         delete updatedSubState.factions;
+        delete updatedSubState.riders;
 
         return updatedSubState;
       },
@@ -766,6 +778,68 @@ export function swapSubStateStrategyCards(
   );
 }
 
+export function addSubStateRider(
+  gameid: string,
+  riderName: string,
+  factionName: string | undefined,
+  outcome: string | undefined
+) {
+  const data: SubStateUpdateData = {
+    action: "PLAY_RIDER",
+    riderName: riderName,
+    factionName: factionName,
+    outcome: outcome,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        if (!updatedSubState.riders) {
+          updatedSubState.riders = {};
+        }
+
+        updatedSubState.riders[riderName] = {
+          factionName: factionName,
+          outcome: outcome,
+        };
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function removeSubStateRider(gameid: string, riderName: string) {
+  const data: SubStateUpdateData = {
+    action: "UNDO_RIDER",
+    riderName: riderName,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        if (!updatedSubState.riders) {
+          return updatedSubState;
+        }
+
+        delete updatedSubState.riders[riderName];
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
 export function setSubStateOther(
   gameid: string,
   fieldName: string,
@@ -793,6 +867,29 @@ export function setSubStateOther(
   );
 }
 
+export function resolveRiders(
+  gameid: string,
+  subState: SubState,
+  electedOutcome: string
+) {
+  for (const [riderName, rider] of Object.entries(subState.riders ?? {})) {
+    if (!rider.outcome || !rider.factionName) {
+      continue;
+    }
+    if (rider.outcome !== electedOutcome) {
+      continue;
+    }
+    switch (riderName) {
+      case "Politics Rider":
+        setSpeaker(gameid, rider.factionName);
+        break;
+      case "Imperial Rider":
+        scoreObjective(gameid, rider.factionName, "Imperial Rider");
+        break;
+    }
+  }
+}
+
 export function finalizeSubState(gameid: string, subState: SubState) {
   const data: SubStateUpdateData = {
     action: "FINALIZE_SUB_STATE",
@@ -806,9 +903,9 @@ export function finalizeSubState(gameid: string, subState: SubState) {
     // TODO: Handle compoents.
   }
 
-  if (subState.repealedAgenda) {
-    repealAgenda(gameid, subState.repealedAgenda);
-  }
+  // if (subState.repealedAgenda) {
+  //   repealAgenda(gameid, subState.repealedAgenda);
+  // }
 
   for (const objectiveName of subState.objectives ?? []) {
     revealObjective(gameid, undefined, objectiveName);

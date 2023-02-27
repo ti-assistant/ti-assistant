@@ -281,7 +281,7 @@ function PhaseSection() {
     updateCastVotes(gameid, subState.factions);
     hideSubStateAgenda(gameid);
     if (activeAgenda === "Miscount Disclosed") {
-      repealAgenda(gameid, target);
+      repealAgenda(gameid, agendas[target]);
       revealSubStateAgenda(gameid, target);
       setSubStateOther(gameid, "miscount", true);
     } else {

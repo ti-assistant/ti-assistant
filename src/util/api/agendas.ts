@@ -2,6 +2,7 @@ import { poster } from "./util";
 import { mutate } from "swr";
 
 import { Expansion } from "./options";
+import { resolveAgendaRepeal } from "../../main/AgendaPhase";
 
 export type OutcomeType =
   | "For/Against"
@@ -82,10 +83,15 @@ export function resolveAgenda(
   );
 }
 
-export function repealAgenda(gameid: string, agendaName: string) {
+export function repealAgenda(gameid: string, agenda: Agenda | undefined) {
+  if (!agenda) {
+    return;
+  }
+  resolveAgendaRepeal(gameid, agenda);
+
   const data: AgendaUpdateData = {
     action: "REPEAL_AGENDA",
-    agenda: agendaName,
+    agenda: agenda.name,
   };
 
   mutate(
@@ -95,14 +101,14 @@ export function repealAgenda(gameid: string, agendaName: string) {
       optimisticData: (agendas: Record<string, Agenda>) => {
         const updatedAgendas = structuredClone(agendas);
 
-        const agenda = updatedAgendas[agendaName];
+        const updatedAgenda = updatedAgendas[agenda.name];
 
-        if (!agenda) {
+        if (!updatedAgenda) {
           return updatedAgendas;
         }
 
-        delete agenda.passed;
-        delete agenda.target;
+        delete updatedAgenda.passed;
+        delete updatedAgenda.target;
 
         return updatedAgendas;
       },

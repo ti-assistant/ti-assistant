@@ -377,18 +377,18 @@ function ComponentDetails({ factionName }: { factionName: string }) {
     }
     clearRemovedSubStateTech(gameid, factionName, techName);
   }
-  function repealLaw(lawName: string) {
-    if (!gameid) {
-      return;
-    }
-    repealSubStateAgenda(gameid, lawName);
-  }
-  function removeRepealedAgenda() {
-    if (!gameid) {
-      return;
-    }
-    removeRepealedSubStateAgenda(gameid);
-  }
+  // function repealLaw(lawName: string) {
+  //   if (!gameid) {
+  //     return;
+  //   }
+  //   repealSubStateAgenda(gameid, lawName);
+  // }
+  // function removeRepealedAgenda() {
+  //   if (!gameid) {
+  //     return;
+  //   }
+  //   removeRepealedSubStateAgenda(gameid);
+  // }
 
   const updatedPlanets = applyAllPlanetAttachments(
     Object.values(planets ?? {}),
@@ -529,59 +529,59 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       );
       break;
     }
-    case "Repeal Law": {
-      if (!agendas) {
-        break;
-      }
-      const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
-        return agenda.passed && agenda.type === "law";
-      });
-      const selectStyle: CSSProperties = {
-        fontFamily: "Myriad Pro",
-        padding: responsivePixels(8),
-        display: "grid",
-        gridAutoFlow: "column",
-        gridTemplateRows: "repeat(14, auto)",
-        gap: responsivePixels(4),
-        maxWidth: "85vw",
-        overflowX: "auto",
-        justifyContent: "flex-start",
-      };
+    // case "Repeal Law": {
+    //   if (!agendas) {
+    //     break;
+    //   }
+    //   const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
+    //     return agenda.passed && agenda.type === "law";
+    //   });
+    //   const selectStyle: CSSProperties = {
+    //     fontFamily: "Myriad Pro",
+    //     padding: responsivePixels(8),
+    //     display: "grid",
+    //     gridAutoFlow: "column",
+    //     gridTemplateRows: "repeat(14, auto)",
+    //     gap: responsivePixels(4),
+    //     maxWidth: "85vw",
+    //     overflowX: "auto",
+    //     justifyContent: "flex-start",
+    //   };
 
-      const repealedAgenda = agendas[subState.repealedAgenda ?? ""];
+    //   const repealedAgenda = agendas[subState.repealedAgenda ?? ""];
 
-      innerContent = (
-        <div className="flexColumn" style={{ width: "100%" }}>
-          {repealedAgenda ? (
-            <LabeledDiv label="Repealed Law">
-              <AgendaRow
-                agenda={repealedAgenda}
-                removeAgenda={removeRepealedAgenda}
-              />
-            </LabeledDiv>
-          ) : passedLaws.length > 0 ? (
-            <ClientOnlyHoverMenu label="Repeal Law">
-              <div className="flexRow" style={selectStyle}>
-                {passedLaws.map((law) => {
-                  return (
-                    <button
-                      key={law.name}
-                      style={{ writingMode: "horizontal-tb" }}
-                      onClick={() => repealLaw(law.name)}
-                    >
-                      {law.name}
-                    </button>
-                  );
-                })}
-              </div>
-            </ClientOnlyHoverMenu>
-          ) : (
-            "No laws to repeal"
-          )}
-        </div>
-      );
-      break;
-    }
+    //   innerContent = (
+    //     <div className="flexColumn" style={{ width: "100%" }}>
+    //       {repealedAgenda ? (
+    //         <LabeledDiv label="Repealed Law">
+    //           <AgendaRow
+    //             agenda={repealedAgenda}
+    //             removeAgenda={removeRepealedAgenda}
+    //           />
+    //         </LabeledDiv>
+    //       ) : passedLaws.length > 0 ? (
+    //         <ClientOnlyHoverMenu label="Repeal Law">
+    //           <div className="flexRow" style={selectStyle}>
+    //             {passedLaws.map((law) => {
+    //               return (
+    //                 <button
+    //                   key={law.name}
+    //                   style={{ writingMode: "horizontal-tb" }}
+    //                   onClick={() => repealLaw(law.name)}
+    //                 >
+    //                   {law.name}
+    //                 </button>
+    //               );
+    //             })}
+    //           </div>
+    //         </ClientOnlyHoverMenu>
+    //       ) : (
+    //         "No laws to repeal"
+    //       )}
+    //     </div>
+    //   );
+    //   break;
+    // }
     case "Industrial Initiative": {
       const numIndustrialPlanets = updatedPlanets.filter((planet) => {
         if (!(planet.owners ?? []).includes(factionName)) {

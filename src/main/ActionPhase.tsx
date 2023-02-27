@@ -47,6 +47,7 @@ import {
 } from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
 import { FullScreenLoader } from "../Loader";
+import { Agenda } from "../util/api/agendas";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -1057,6 +1058,10 @@ export function NextPlayerButtons({
     gameid ? `/api/${gameid}/strategycards` : null,
     fetcher
   );
+  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
+    gameid ? `/api/${gameid}/agendas` : null,
+    fetcher
+  );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
@@ -1074,7 +1079,7 @@ export function NextPlayerButtons({
     if (!gameid || subState.selectedAction === null) {
       return;
     }
-    finalizeSubState(gameid, subState);
+    finalizeSubState(gameid, subState, agendas);
 
     if (strategyCards[subState.selectedAction]) {
       markStrategyCardUsed(gameid, subState.selectedAction);

@@ -290,6 +290,9 @@ export default async function handler(
         [timestampString]: timestamp,
         "subState.tieBreak": FieldValue.delete(),
         "subState.outcome": FieldValue.delete(),
+        "subState.riders": FieldValue.delete(),
+        "subState.Assassinate Representative": FieldValue.delete(),
+        "subState.Hack Election": FieldValue.delete(),
       };
       Object.keys(gameData.factions).forEach((factionName) => {
         const voteString = `subState.factions.${factionName}.votes`;
@@ -378,6 +381,39 @@ export default async function handler(
       // });
       updates = {
         "subState.strategyCards": strategyCards,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "PLAY_RIDER": {
+      if (!data.riderName) {
+        res
+          .status(422)
+          .send({ message: "Missing Faction Name or Rider Name or Outcome" });
+        return;
+      }
+
+      const rider: { factionName?: string; outcome?: string } = {};
+      if (data.factionName) {
+        rider.factionName = data.factionName;
+      }
+      if (data.outcome) {
+        rider.outcome = data.outcome;
+      }
+
+      updates = {
+        [`subState.riders.${data.riderName}`]: rider,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "UNDO_RIDER": {
+      if (!data.riderName) {
+        res.status(422).send({ message: "Missing Rider Name" });
+        return;
+      }
+      updates = {
+        [`subState.riders.${data.riderName}`]: FieldValue.delete(),
         [timestampString]: timestamp,
       };
       break;

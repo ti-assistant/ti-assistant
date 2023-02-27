@@ -127,6 +127,11 @@ export function canFactionVote(
   if (subState["Assassinate Representative"] === factionName) {
     return false;
   }
+  for (const rider of Object.values(subState.riders ?? {})) {
+    if (rider.factionName === factionName) {
+      return false;
+    }
+  }
   const publicExecution = agendas["Public Execution"];
   if (
     publicExecution &&

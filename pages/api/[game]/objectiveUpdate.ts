@@ -226,6 +226,21 @@ export default async function handler(
       await db.collection("games").doc(gameId).update(updates);
       break;
     }
+    case "CHANGE_OBJECTIVE_TYPE": {
+      if (!data.type) {
+        res.status(422);
+        return;
+      }
+      const typeString = `objectives.${data.objective}.type`;
+      const revealedString = `objectives.${data.objective}.selected`;
+      const updates: UpdateData<any> = {
+        [revealedString]: true,
+        [typeString]: data.type,
+        [timestampString]: timestamp,
+      };
+      await db.collection("games").doc(gameId).update(updates);
+      break;
+    }
   }
 
   const objectives = await fetchObjectives(gameId, secret ?? "");

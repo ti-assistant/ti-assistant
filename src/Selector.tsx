@@ -45,11 +45,12 @@ export function Selector({
     if (renderedItem) {
       return <React.Fragment>{renderedItem}</React.Fragment>;
     }
+
+    const removeItem =
+      options.length === 1 ? undefined : () => toggleItem(selectedItem, false);
+
     const innerValue = (
-      <SelectableRow
-        itemName={selectedItem}
-        removeItem={() => toggleItem(selectedItem, false)}
-      >
+      <SelectableRow itemName={selectedItem} removeItem={removeItem}>
         {selectedItem}
       </SelectableRow>
     );
@@ -77,23 +78,29 @@ export function Selector({
   }
 
   return (
-    <ClientOnlyHoverMenu label={hoverMenuLabel}>
-      <div className="flexColumn" style={innerStyle}>
-        {options.map((option) => {
-          if (renderButton) {
-            return renderButton(option, toggleItem);
-          }
-          return (
-            <button
-              key={option}
-              style={{ fontSize: responsivePixels(14) }}
-              onClick={() => toggleItem(option, true)}
-            >
-              {option}
-            </button>
-          );
-        })}
-      </div>
-    </ClientOnlyHoverMenu>
+    <ClientOnlyHoverMenu
+      label={hoverMenuLabel}
+      renderProps={(closeFn) => (
+        <div className="flexColumn" style={innerStyle}>
+          {options.map((option) => {
+            if (renderButton) {
+              return renderButton(option, toggleItem);
+            }
+            return (
+              <button
+                key={option}
+                style={{ fontSize: responsivePixels(14) }}
+                onClick={() => {
+                  closeFn();
+                  toggleItem(option, true);
+                }}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    ></ClientOnlyHoverMenu>
   );
 }

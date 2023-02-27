@@ -138,7 +138,7 @@ export function Header() {
     if (!gameid) {
       return;
     }
-    repealAgenda(gameid, agendaName);
+    repealAgenda(gameid, (agendas ?? {})[agendaName]);
   }
 
   let gameFinished = false;
