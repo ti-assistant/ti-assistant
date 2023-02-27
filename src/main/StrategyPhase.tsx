@@ -149,6 +149,7 @@ function QuantumDatahubNode({
           Swap
           <Selector
             hoverMenuLabel="Strategy Card"
+            autoSelect={true}
             options={strategyCards
               .filter((card) => card.faction === faction.name)
               .map((card) => card.name)}
@@ -269,6 +270,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
           Swap
           <Selector
             hoverMenuLabel="Strategy Card"
+            autoSelect={true}
             options={strategyCards
               .filter((card) => card.faction === faction.name)
               .map((card) => card.name)}

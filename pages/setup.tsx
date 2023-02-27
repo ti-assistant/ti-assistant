@@ -751,9 +751,7 @@ function FactionSelect({
         >
           <Selector
             hoverMenuLabel="Pick Faction"
-            options={filteredFactions.map(
-              ([factionName, local]) => factionName
-            )}
+            options={filteredFactions.map(([factionName, _]) => factionName)}
             selectedItem={faction.name}
             toggleItem={(factionName, add) => {
               if (add) {

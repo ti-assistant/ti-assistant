@@ -16,10 +16,12 @@ import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LabeledDiv } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
 import {
+  addSubStatePlanet,
   addSubStateRider,
   finalizeSubState,
   hideSubStateAgenda,
   hideSubStateObjective,
+  removeSubStatePlanet,
   removeSubStateRider,
   resolveRiders,
   revealSubStateAgenda,
@@ -46,7 +48,7 @@ import {
   unscoreObjective,
 } from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Selector } from "../Selector";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { computeVPs } from "../FactionSummary";
@@ -155,6 +157,10 @@ function AgendaDetails() {
     gameid ? `/api/${gameid}/agendas` : null,
     fetcher
   );
+  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
+    gameid ? `/api/${gameid}/factions` : null,
+    fetcher
+  );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
     fetcher
@@ -186,8 +192,12 @@ function AgendaDetails() {
 
   const selectedOutcome = getSelectedOutcome(selectedTargets, subState);
 
+  if (!selectedOutcome) {
+    return null;
+  }
+
   switch (agendaName) {
-    case "Incentive Program":
+    case "Incentive Program": {
       const type = selectedOutcome === "For" ? "stage-one" : "stage-two";
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
@@ -234,6 +244,52 @@ function AgendaDetails() {
           }}
         />
       );
+    }
+    case "Colonial Redistribution": {
+      const minVPs = Object.keys(factions ?? {}).reduce(
+        (minVal, factionName) => {
+          return Math.min(
+            minVal,
+            computeVPs(factions ?? {}, factionName, objectives ?? {})
+          );
+        },
+        Number.MAX_SAFE_INTEGER
+      );
+      const availableFactions = Object.keys(factions ?? {}).filter(
+        (factionName) => {
+          return (
+            computeVPs(factions ?? {}, factionName, objectives ?? {}) === minVPs
+          );
+        }
+      );
+      const selectedFaction = Object.entries(subState.factions ?? {}).find(
+        ([factionName, faction]) => {
+          if (faction.planets && faction.planets.includes(selectedOutcome)) {
+            return true;
+          }
+          return false;
+        }
+      );
+      return (
+        <Selector
+          hoverMenuLabel={`Give Planet to Faction`}
+          options={availableFactions}
+          autoSelect={true}
+          selectedLabel="Faction Gaining Control of Planet"
+          selectedItem={selectedFaction?.[0]}
+          toggleItem={(factionName, add) => {
+            if (!gameid) {
+              return;
+            }
+            if (add) {
+              addSubStatePlanet(gameid, factionName, selectedOutcome);
+            } else {
+              removeSubStatePlanet(gameid, factionName, selectedOutcome);
+            }
+          }}
+        />
+      );
+    }
   }
 
   return null;

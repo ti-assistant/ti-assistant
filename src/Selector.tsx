@@ -10,6 +10,7 @@ import { SelectableRow } from "./SelectableRow";
 import { responsivePixels } from "./util/util";
 
 export interface SelectorProps {
+  autoSelect?: boolean;
   hoverMenuLabel: ReactNode;
   numToSelect?: number;
   options: string[];
@@ -25,6 +26,7 @@ export interface SelectorProps {
 }
 
 export function Selector({
+  autoSelect,
   hoverMenuLabel,
   selectedLabel,
   options,
@@ -34,11 +36,15 @@ export function Selector({
   renderButton,
   style,
 }: SelectorProps) {
-  // useEffect(() => {
-  //   if (options.length === 1) {
-  //     selectItem(options[0]);
-  //   }
-  // }, [options, selectItem]);
+  useEffect(() => {
+    if (autoSelect && options.length === 1) {
+      const option = options[0];
+      if (!option) {
+        return;
+      }
+      toggleItem(option, true);
+    }
+  }, [options, toggleItem, autoSelect ]);
 
   if (selectedItem) {
     const renderedItem = renderItem ? renderItem(selectedItem) : undefined;
