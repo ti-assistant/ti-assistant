@@ -556,6 +556,7 @@ export default function StatusPhase() {
   }>({
     show: false,
   });
+  const [lockedButton, setLockedButton] = useState(true);
 
   function showInfoModal(title: string, content: ReactNode) {
     setInfoModal({
@@ -954,16 +955,31 @@ export default function StatusPhase() {
             </div>
           ) : null}
           <div className="flexRow">
+            {lockedButton ? (
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() => setLockedButton(false)}
+              >
+                &#128274;
+              </div>
+            ) : (
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() => setLockedButton(true)}
+              >
+                &#128275;
+              </div>
+            )}
             {!state?.agendaUnlocked ? (
               <button
-                disabled={!statusPhaseComplete(subState)}
+                disabled={lockedButton && !statusPhaseComplete(subState)}
                 onClick={() => nextPhase(true)}
               >
                 Start Next Round
               </button>
             ) : null}
             <button
-              disabled={!statusPhaseComplete(subState)}
+              disabled={lockedButton && !statusPhaseComplete(subState)}
               onClick={() => nextPhase()}
             >
               Advance to Agenda Phase

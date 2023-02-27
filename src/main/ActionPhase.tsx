@@ -1324,30 +1324,30 @@ export default function ActionPhase() {
         })}
       </div>
       <div className="flexColumn" style={{ gap: responsivePixels(16) }}>
-        <div className="flexRow" style={{ width: "100%" }}>
+        <div className="flexColumn" style={{ width: "100%" }}>
           {activeFaction && onDeckFaction ? (
             <ActivePlayerColumn
               activeFaction={activeFaction}
               onDeckFaction={onDeckFaction}
             />
           ) : (
-            <div style={{ fontSize: responsivePixels(42) }}>
-              Action Phase Complete
-            </div>
+            <React.Fragment>
+              <div style={{ fontSize: responsivePixels(42) }}>
+                Action Phase Complete
+              </div>
+              <button
+                onClick={() => {
+                  if (!gameid) {
+                    return;
+                  }
+                  advanceToStatusPhase(gameid);
+                }}
+              >
+                Advance to Status Phase
+              </button>
+            </React.Fragment>
           )}
         </div>
-        {!activeFaction ? (
-          <button
-            onClick={() => {
-              if (!gameid) {
-                return;
-              }
-              advanceToStatusPhase(gameid);
-            }}
-          >
-            Advance to Status Phase
-          </button>
-        ) : null}
       </div>
       <div
         className="flexColumn"

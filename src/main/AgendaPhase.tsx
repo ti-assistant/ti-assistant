@@ -1055,6 +1055,7 @@ export default function AgendaPhase() {
     gameid ? `/api/${gameid}/subState` : null,
     fetcher
   );
+  const [lockedButton, setLockedButton] = useState(true);
 
   if (!agendas || !factions) {
     return null;
@@ -1344,6 +1345,38 @@ export default function AgendaPhase() {
                 </LabeledDiv>
               )
             ) : null}
+            <div
+              className="flexRow"
+              style={{
+                marginTop: responsivePixels(12),
+                justifyContent: "center",
+              }}
+            >
+              {lockedButton ? (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setLockedButton(false)}
+                >
+                  &#128274;
+                </div>
+              ) : (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setLockedButton(true)}
+                >
+                  &#128275;
+                </div>
+              )}
+              <button
+                disabled={lockedButton}
+                style={{
+                  fontSize: responsivePixels(24),
+                }}
+                onClick={() => nextPhase()}
+              >
+                Start Next Round
+              </button>
+            </div>
           </React.Fragment>
         )}
       </div>

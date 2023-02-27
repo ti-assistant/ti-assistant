@@ -91,7 +91,7 @@ export function setSpeaker(gameid: string, speaker: string) {
         if (!updatedFaction) {
           continue;
         }
-        let factionOrder = updatedFaction.order ?? 1 - currentOrder + 1;
+        let factionOrder = updatedFaction.order - currentOrder + 1;
         if (factionOrder < 1) {
           factionOrder += numFactions;
         }
