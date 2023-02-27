@@ -1079,7 +1079,7 @@ export function NextPlayerButtons({
     if (!gameid || subState.selectedAction === null) {
       return;
     }
-    finalizeSubState(gameid, subState, agendas);
+    finalizeSubState(gameid, subState);
 
     if (strategyCards[subState.selectedAction]) {
       markStrategyCardUsed(gameid, subState.selectedAction);
