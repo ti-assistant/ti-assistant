@@ -187,12 +187,15 @@ export function getPreviousFaction(
     return undefined;
   }
 
-  const lastPick = subState.strategyCards[subState.strategyCards.length - 1];
+  let lookingForOrder = subState.strategyCards.length;
 
-  if (!lastPick) {
-    return undefined;
+  if (lookingForOrder > numFactions) {
+    lookingForOrder = numFactions * 2 - lookingForOrder + 1;
   }
-  return factions[lastPick.factionName];
+
+  return Object.values(factions).find(
+    (faction) => faction.order === lookingForOrder
+  );
 }
 
 /**

@@ -240,6 +240,7 @@ export function MiddleColumn() {
                     className="flexRow"
                     style={{
                       justifyContent: "space-between",
+                      height: responsivePixels(36),
                     }}
                   >
                     {!scoredPublics[0] && availableObjectives.length === 0 ? (

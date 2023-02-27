@@ -34,6 +34,63 @@ import { getDefaultStrategyCards } from "../util/api/defaults";
 import { ClientOnlyHoverMenu, HoverMenu } from "../HoverMenu";
 import { Selector } from "../Selector";
 
+function ChecksAndBalancesMenu({
+  faction,
+  factions,
+  strategyCards,
+  agendas,
+  onSelect,
+}: {
+  faction: Faction | undefined;
+  factions: Record<string, Faction>;
+  strategyCards: StrategyCard[];
+  agendas: Record<string, Agenda>;
+  onSelect: (factionName: string) => void;
+}) {
+  const checksAndBalances = agendas["Checks and Balances"];
+  if (!faction || !checksAndBalances || !checksAndBalances.passed) {
+    return null;
+  }
+
+  const numPlayers = Object.keys(factions).length;
+
+  const cardsPerFaction: Record<string, number> = {};
+  strategyCards.forEach((card) => {
+    if (!card.faction) {
+      return;
+    }
+    if (!cardsPerFaction[card.faction]) {
+      cardsPerFaction[card.faction] = 0;
+    }
+    cardsPerFaction[card.faction] += 1;
+  });
+  const otherFactions = Object.keys(factions).filter((factionName) => {
+    if (faction.name === factionName) {
+      return false;
+    }
+    const numCards = cardsPerFaction[factionName] ?? 0;
+    if (numPlayers > 4) {
+      return numCards < 1;
+    }
+    return numCards < 2;
+  });
+
+  // If no other factions remaining, allow picking it yourself
+  if (otherFactions.length === 0) {
+    otherFactions.push(faction.name);
+  }
+
+  return (
+    <Selector
+      hoverMenuLabel="Give to Faction"
+      options={otherFactions}
+      toggleItem={(factionName, _) => {
+        onSelect(factionName);
+      }}
+    />
+  );
+}
+
 function QuantumDatahubNode({
   faction,
   strategyCards,
@@ -516,6 +573,10 @@ export default function StrategyPhase() {
     subState
   );
 
+  const cab = (agendas ?? {})["Checks and Balances"];
+
+  const checksAndBalances = !!cab && !!cab.passed;
+
   function undoPick() {
     if (!gameid) {
       return;
@@ -774,11 +835,28 @@ export default function StrategyPhase() {
                   card.faction || !activefaction || card.invalid ? false : true
                 }
                 onClick={
-                  card.faction || !activefaction || card.invalid
+                  checksAndBalances ||
+                  card.faction ||
+                  !activefaction ||
+                  card.invalid
                     ? undefined
                     : () => pickStrategyCard(card, activefaction)
                 }
-              />
+              >
+                <ChecksAndBalancesMenu
+                  faction={activefaction}
+                  factions={factions ?? {}}
+                  strategyCards={finalStrategyCards}
+                  agendas={agendas ?? {}}
+                  onSelect={(factionName) => {
+                    const faction = (factions ?? {})[factionName];
+                    if (!faction) {
+                      return;
+                    }
+                    pickStrategyCard(card, faction);
+                  }}
+                />
+              </StrategyCardElement>
             );
           })}
         </div>

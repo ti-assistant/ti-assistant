@@ -471,13 +471,6 @@ function AgendaSteps() {
     }
   }
 
-  function nextPhase() {
-    if (!gameid) {
-      return;
-    }
-    startNextRound(gameid, subState);
-  }
-
   function selectAgenda(agendaName: string) {
     if (!gameid) {
       return;
@@ -620,6 +613,10 @@ function AgendaSteps() {
   const remainingRiders = RIDERS.filter((rider) => {
     return !(subState.riders ?? {})[rider];
   });
+
+  if (agendaNum > 2) {
+    return null;
+  }
 
   return (
     <React.Fragment>
@@ -895,7 +892,7 @@ function AgendaSteps() {
               </div>
             </LabeledDiv>
           ) : null}
-          Cast votes (or abstain)
+          {currentAgenda ? "Cast votes (or abstain)" : null}
           {(votes && Object.keys(votes).length > 0) ||
           getSelectedOutcome(selectedTargets, subState) ? (
             <LabeledDiv label="Results">
@@ -965,15 +962,6 @@ function AgendaSteps() {
           ) : null}
         </div>
       )}
-      <button
-        style={{
-          marginTop: responsivePixels(12),
-          fontSize: responsivePixels(24),
-        }}
-        onClick={() => nextPhase()}
-      >
-        Start Next Round
-      </button>
     </React.Fragment>
   );
 }
@@ -1124,6 +1112,13 @@ export default function AgendaPhase() {
 
   const speaker = (factions ?? {})[state?.speaker ?? ""];
 
+  function nextPhase() {
+    if (!gameid) {
+      return;
+    }
+    startNextRound(gameid, subState);
+  }
+
   return (
     <div
       className="flexRow"
@@ -1141,106 +1136,160 @@ export default function AgendaPhase() {
       <div
         className="flexColumn"
         style={{
-          paddingTop: responsivePixels(80),
+          paddingTop:
+            agendaNum > 2 ? responsivePixels(160) : responsivePixels(80),
           gap: numFactions > 7 ? 0 : responsivePixels(8),
           alignItems: "stretch",
         }}
       >
-        <div
-          className="flexRow"
-          style={{ paddingBottom: responsivePixels(8), alignItems: "flex-end" }}
-        >
-          <div style={{ textAlign: "center", width: responsivePixels(80) }}>
-            Available Votes
-          </div>
-          <div style={{ textAlign: "center", width: responsivePixels(40) }}>
-            Cast Votes
-          </div>
-          <div style={{ textAlign: "center", width: responsivePixels(120) }}>
-            Outcome
-          </div>
-        </div>
-        {votingOrder.map((faction) => {
-          return (
-            <VoteCount
-              key={faction.name}
-              factionName={faction.name}
-              agenda={localAgenda}
-            />
-          );
-        })}
-        {currentAgenda && isTie ? (
-          !subState.tieBreak ? (
-            <LabeledDiv
-              label={`Speaker: ${getFactionName(speaker)}`}
-              color={getFactionColor(speaker)}
-              style={{ width: "auto" }}
+        {agendaNum > 2 ? (
+          <div className="flexColumn" style={{ height: "100%" }}>
+            <AgendaTimer />
+            <div
+              style={{
+                fontSize: responsivePixels(40),
+                textAlign: "center",
+                marginTop: responsivePixels(120),
+              }}
             >
-              <ClientOnlyHoverMenu label="Choose outcome if tied">
-                <div
-                  className="flexRow"
-                  style={{
-                    alignItems: "stretch",
-                    justifyContent: "flex-start",
-                    gap: responsivePixels(4),
-                    padding: responsivePixels(8),
-                    display: "grid",
-                    gridAutoFlow: "column",
-                    gridTemplateRows: `repeat(${items}, auto)`,
-                  }}
-                >
-                  {selectedTargets.length > 0
-                    ? selectedTargets.map((target) => {
-                        return (
-                          <button
-                            key={target}
-                            style={{
-                              fontSize: responsivePixels(14),
-                              writingMode: "horizontal-tb",
-                            }}
-                            className={
-                              subState.tieBreak === target ? "selected" : ""
-                            }
-                            onClick={() => selectSpeakerTieBreak(target)}
-                          >
-                            {target}
-                          </button>
-                        );
-                      })
-                    : allTargets.map((target) => {
-                        if (target === "Abstain") {
-                          return null;
-                        }
-                        return (
-                          <button
-                            key={target}
-                            style={{
-                              fontSize: responsivePixels(14),
-                              writingMode: "horizontal-tb",
-                            }}
-                            className={
-                              subState.tieBreak === target ? "selected" : ""
-                            }
-                            onClick={() => selectSpeakerTieBreak(target)}
-                          >
-                            {target}
-                          </button>
-                        );
-                      })}
-                </div>
-              </ClientOnlyHoverMenu>
-            </LabeledDiv>
-          ) : (
-            <LabeledDiv label="Speaker Tie Break">
-              <SelectableRow
-                itemName={subState.tieBreak}
-                removeItem={() => selectSpeakerTieBreak(null)}
+              Agenda Phase Complete
+            </div>
+            {checksAndBalances &&
+            checksAndBalances.resolved &&
+            !checksAndBalances.passed &&
+            checksAndBalances.activeRound === state?.round ? (
+              <div
+                style={{
+                  fontSize: responsivePixels(28),
+                  marginTop: responsivePixels(20),
+                }}
               >
-                {subState.tieBreak}
-              </SelectableRow>
-            </LabeledDiv>
-          )
-        ) : null}
+                Ready 3 planets, then
+              </div>
+            ) : (
+              <div
+                style={{
+                  fontSize: responsivePixels(28),
+                  marginTop: responsivePixels(20),
+                }}
+              >
+                Ready all planets, then
+              </div>
+            )}
+            <button
+              style={{
+                marginTop: responsivePixels(12),
+                fontSize: responsivePixels(24),
+              }}
+              onClick={() => nextPhase()}
+            >
+              Start Next Round
+            </button>
+          </div>
+        ) : (
+          <React.Fragment>
+            <div
+              className="flexRow"
+              style={{
+                paddingBottom: responsivePixels(8),
+                alignItems: "flex-end",
+              }}
+            >
+              <div style={{ textAlign: "center", width: responsivePixels(80) }}>
+                Available Votes
+              </div>
+              <div style={{ textAlign: "center", width: responsivePixels(40) }}>
+                Cast Votes
+              </div>
+              <div
+                style={{ textAlign: "center", width: responsivePixels(120) }}
+              >
+                Outcome
+              </div>
+            </div>
+            {votingOrder.map((faction) => {
+              return (
+                <VoteCount
+                  key={faction.name}
+                  factionName={faction.name}
+                  agenda={localAgenda}
+                />
+              );
+            })}
+            {currentAgenda && isTie ? (
+              !subState.tieBreak ? (
+                <LabeledDiv
+                  label={`Speaker: ${getFactionName(speaker)}`}
+                  color={getFactionColor(speaker)}
+                  style={{ width: "auto" }}
+                >
+                  <ClientOnlyHoverMenu label="Choose outcome if tied">
+                    <div
+                      className="flexRow"
+                      style={{
+                        alignItems: "stretch",
+                        justifyContent: "flex-start",
+                        gap: responsivePixels(4),
+                        padding: responsivePixels(8),
+                        display: "grid",
+                        gridAutoFlow: "column",
+                        gridTemplateRows: `repeat(${items}, auto)`,
+                      }}
+                    >
+                      {selectedTargets.length > 0
+                        ? selectedTargets.map((target) => {
+                            return (
+                              <button
+                                key={target}
+                                style={{
+                                  fontSize: responsivePixels(14),
+                                  writingMode: "horizontal-tb",
+                                }}
+                                className={
+                                  subState.tieBreak === target ? "selected" : ""
+                                }
+                                onClick={() => selectSpeakerTieBreak(target)}
+                              >
+                                {target}
+                              </button>
+                            );
+                          })
+                        : allTargets.map((target) => {
+                            if (target === "Abstain") {
+                              return null;
+                            }
+                            return (
+                              <button
+                                key={target}
+                                style={{
+                                  fontSize: responsivePixels(14),
+                                  writingMode: "horizontal-tb",
+                                }}
+                                className={
+                                  subState.tieBreak === target ? "selected" : ""
+                                }
+                                onClick={() => selectSpeakerTieBreak(target)}
+                              >
+                                {target}
+                              </button>
+                            );
+                          })}
+                    </div>
+                  </ClientOnlyHoverMenu>
+                </LabeledDiv>
+              ) : (
+                <LabeledDiv label="Speaker Tie Break">
+                  <SelectableRow
+                    itemName={subState.tieBreak}
+                    removeItem={() => selectSpeakerTieBreak(null)}
+                  >
+                    {subState.tieBreak}
+                  </SelectableRow>
+                </LabeledDiv>
+              )
+            ) : null}
+          </React.Fragment>
+        )}
       </div>
       <div className="flexColumn" style={{ width: responsivePixels(280) }}>
         <SummaryColumn />

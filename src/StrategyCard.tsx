@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
+import { PropsWithChildren } from "react";
 import useSWR from "swr";
 import { BasicFactionTile, MenuButton } from "./FactionTile";
+import { ClientOnlyHoverMenu } from "./HoverMenu";
 import { LabeledDiv } from "./LabeledDiv";
+import { Agenda } from "./util/api/agendas";
 import { StrategyCard } from "./util/api/cards";
 import { Faction } from "./util/api/factions";
 import { GameState } from "./util/api/state";
@@ -27,10 +30,11 @@ export interface StrategyCardProps {
 export function StrategyCardElement({
   active,
   card,
+  children,
   factionActions,
   onClick,
   opts = {},
-}: StrategyCardProps) {
+}: PropsWithChildren<StrategyCardProps>) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
@@ -94,7 +98,9 @@ export function StrategyCardElement({
               opts={{ fontSize: responsivePixels(16), iconSize: 32 }}
             />
           </div>
-        ) : null}
+        ) : (
+          children
+        )}
       </div>
     </div>
   );
