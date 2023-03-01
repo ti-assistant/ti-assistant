@@ -28,11 +28,10 @@ import {
 } from "../../../src/util/techs";
 import { Updater } from "../../../src/Updater";
 import { LabeledDiv, LabeledLine } from "../../../src/LabeledDiv";
-import { StrategyCardElement } from "../../../src/StrategyCard";
-import { assignStrategyCard, StrategyCard } from "../../../src/util/api/cards";
+import { StrategyCard } from "../../../src/util/api/cards";
 import {
   GameState,
-  nextPlayer,
+  prevPlayer,
   setAgendaNum,
 } from "../../../src/util/api/state";
 import {
@@ -51,6 +50,7 @@ import {
   scoreSubStateObjective,
   setSubStateOther,
   SubState,
+  undoSubStateStrategyCard,
   unscoreSubStateObjective,
 } from "../../../src/util/api/subState";
 import { SelectableRow } from "../../../src/SelectableRow";
@@ -70,7 +70,10 @@ import {
   resolveAgenda,
 } from "../../../src/util/api/agendas";
 import { Faction, updateCastVotes } from "../../../src/util/api/factions";
-import { advanceToActionPhase } from "../../../src/main/StrategyPhase";
+import {
+  advanceToActionPhase,
+  StrategyCardSelectList,
+} from "../../../src/main/StrategyPhase";
 import {
   setupPhaseComplete,
   startFirstRound,
@@ -130,13 +133,6 @@ function PhaseSection() {
     fetcher
   );
 
-  function assignCard(cardName: string) {
-    if (!gameid || !factionName) {
-      return;
-    }
-    assignStrategyCard(gameid, cardName, factionName);
-    nextPlayer(gameid, factions, strategyCards, subState);
-  }
   function addObj(objectiveName: string) {
     if (!gameid) {
       return;
@@ -393,27 +389,42 @@ function PhaseSection() {
       break;
     }
     case "STRATEGY":
+      function canUndo() {
+        const numPicked = (subState.strategyCards ?? []).length;
+        if (numPicked === 0) {
+          return false;
+        }
+        const lastCard = (subState.strategyCards ?? [])[numPicked - 1];
+        if (!lastCard) {
+          return false;
+        }
+        return lastCard.factionName === factionName;
+      }
+      function undoPick() {
+        if (!gameid) {
+          return;
+        }
+        undoSubStateStrategyCard(gameid);
+        prevPlayer(gameid, factions ?? {}, subState);
+      }
       if (factionName === state.activeplayer) {
         phaseName = "SELECT STRATEGY CARD";
         phaseContent = (
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", width: "100%", gap: "4px" }}
-          >
-            {Object.values(strategyCards)
-              .filter((card) => !card.faction)
-              .map((card) => {
-                return (
-                  <StrategyCardElement
-                    key={card.name}
-                    card={card}
-                    active={true}
-                    onClick={() => assignCard(card.name)}
-                  />
-                );
-              })}
+          <div className="flexColumn" style={{ width: "100%" }}>
+            <div
+              className="flexColumn "
+              style={{ alignItems: "stretch", width: "100%", gap: "4px" }}
+            >
+              <StrategyCardSelectList mobile={true} />
+            </div>
+            {canUndo() ? (
+              <button onClick={() => undoPick()}>Undo SC Pick</button>
+            ) : null}
           </div>
         );
+      } else if (canUndo()) {
+        phaseName = "STRATEGY PHASE";
+        phaseContent = <button onClick={() => undoPick()}>Undo SC Pick</button>;
       }
       if (state.activeplayer === "None") {
         phaseName = "END OF STRATEGY PHASE";
@@ -1413,14 +1424,19 @@ export default function GamePage() {
       const orderedCards = Object.values(strategyCards).sort(
         (a, b) => a.order - b.order
       );
+      const orderedNames: string[] = [];
       for (const card of orderedCards) {
-        if (card.faction) {
-          const faction = factions[card.faction];
-          if (!faction) {
-            return;
-          }
-          orderedFactions.push(faction);
+        if (card.faction && !orderedNames.includes(card.faction)) {
+          orderedNames.push(card.faction);
         }
+      }
+
+      for (const factionName of orderedNames) {
+        const faction = factions[factionName];
+        if (!faction) {
+          continue;
+        }
+        orderedFactions.push(faction);
       }
       break;
     case "AGENDA":

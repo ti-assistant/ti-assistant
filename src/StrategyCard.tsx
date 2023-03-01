@@ -23,6 +23,7 @@ export interface StrategyCardProps {
   active?: boolean;
   card: StrategyCard;
   factionActions?: MenuButton[];
+  fontSize: number;
   onClick?: () => void;
   opts?: StrategyCardOpts;
 }
@@ -32,6 +33,7 @@ export function StrategyCardElement({
   card,
   children,
   factionActions,
+  fontSize,
   onClick,
   opts = {},
 }: PropsWithChildren<StrategyCardProps>) {
@@ -39,10 +41,6 @@ export function StrategyCardElement({
   const { game: gameid }: { game?: string } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
 
@@ -58,7 +56,7 @@ export function StrategyCardElement({
         display: "flex",
         flexDirection: "column",
         border: `${responsivePixels(3)} solid ${color}`,
-        fontSize: opts.fontSize ?? responsivePixels(24),
+        fontSize: responsivePixels(fontSize),
         position: "relative",
         cursor: onClick ? "pointer" : "auto",
         height: responsivePixels(48),
@@ -78,8 +76,8 @@ export function StrategyCardElement({
         <div
           style={{
             flexBasis: "14%",
-            minWidth: responsivePixels(32),
-            fontSize: responsivePixels(32),
+            minWidth: responsivePixels(fontSize + 8),
+            fontSize: responsivePixels(fontSize + 8),
             display: "flex",
             justifyContent: "center",
             color: textColor,

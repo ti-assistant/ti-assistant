@@ -11,6 +11,7 @@ import { responsivePixels } from "./util/util";
 
 export interface SelectorProps {
   autoSelect?: boolean;
+  buttonStyle?: CSSProperties;
   hoverMenuLabel: ReactNode;
   numToSelect?: number;
   options: string[];
@@ -27,6 +28,7 @@ export interface SelectorProps {
 
 export function Selector({
   autoSelect,
+  buttonStyle = {},
   hoverMenuLabel,
   selectedLabel,
   options,
@@ -70,7 +72,7 @@ export function Selector({
     return innerValue;
   }
 
-  const innerStyle = {
+  const innerStyle: CSSProperties = {
     padding: responsivePixels(8),
     gap: responsivePixels(4),
     alignItems: "stretch",
@@ -88,6 +90,7 @@ export function Selector({
 
   return (
     <ClientOnlyHoverMenu
+      buttonStyle={buttonStyle}
       label={hoverMenuLabel}
       renderProps={(closeFn) => (
         <div className="flexColumn" style={innerStyle}>

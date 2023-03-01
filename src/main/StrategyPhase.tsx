@@ -40,12 +40,14 @@ function ChecksAndBalancesMenu({
   strategyCards,
   agendas,
   onSelect,
+  mobile,
 }: {
   faction: Faction | undefined;
   factions: Record<string, Faction>;
   strategyCards: StrategyCard[];
   agendas: Record<string, Agenda>;
   onSelect: (factionName: string) => void;
+  mobile: boolean;
 }) {
   const checksAndBalances = agendas["Checks and Balances"];
   if (!faction || !checksAndBalances || !checksAndBalances.passed) {
@@ -82,6 +84,7 @@ function ChecksAndBalancesMenu({
 
   return (
     <Selector
+      buttonStyle={mobile ? { fontSize: responsivePixels(16) } : {}}
       hoverMenuLabel="Give to Faction"
       options={otherFactions}
       toggleItem={(factionName, _) => {
@@ -340,6 +343,131 @@ function InfoContent({ children }: PropsWithChildren) {
   );
 }
 
+export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
+    gameid ? `/api/${gameid}/agendas` : null,
+    fetcher
+  );
+  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
+    gameid ? `/api/${gameid}/factions` : null,
+    fetcher
+  );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher
+  );
+  const { data: state }: { data?: GameState } = useSWR(
+    gameid ? `/api/${gameid}/state` : null,
+    fetcher
+  );
+  const {
+    data: strategyCards = getDefaultStrategyCards(),
+  }: { data?: Record<string, StrategyCard> } = useSWR(
+    gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
+
+  function haveAllFactionsPicked() {
+    const numFactions = Object.keys(factions ?? {}).length;
+    let numPicked = (subState.strategyCards ?? []).length;
+    if (numFactions === 3 || numFactions === 4) {
+      return numFactions * 2 === numPicked;
+    }
+    return numFactions === numPicked;
+  }
+  function pickStrategyCard(card: StrategyCard, faction: Faction) {
+    if (!gameid) {
+      return;
+    }
+    pickSubStateStrategyCard(
+      gameid,
+      card.name,
+      faction.name,
+      Object.keys(factions ?? {}).length
+    );
+    nextPlayer(gameid, factions ?? {}, strategyCards, subState);
+  }
+
+  const updatedStrategyCards = Object.values(strategyCards).map((card) => {
+    const updatedCard = structuredClone(card);
+    for (const cardObj of subState?.strategyCards ?? []) {
+      if (cardObj.cardName === card.name) {
+        updatedCard.faction = cardObj.factionName;
+      }
+    }
+
+    return updatedCard;
+  });
+  const orderedStrategyCards = updatedStrategyCards.sort(
+    (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
+  );
+
+  let firstCard = true;
+  const finalStrategyCards = orderedStrategyCards.map((card) => {
+    const naalu = (factions ?? {})["Naalu Collective"];
+    if (naalu && haveAllFactionsPicked() && firstCard) {
+      const gift = subState["Gift of Prescience"];
+      if (
+        (gift && card.faction === gift) ||
+        (!gift && card.faction === "Naalu Collective")
+      ) {
+        card.order = 0;
+        firstCard = false;
+      }
+    }
+    return card;
+  });
+
+  const activefaction = factions
+    ? factions[state?.activeplayer ?? ""]
+    : undefined;
+  const cab = (agendas ?? {})["Checks and Balances"];
+
+  const checksAndBalances = !!cab && !!cab.passed;
+
+  return (
+    <React.Fragment>
+      {finalStrategyCards.map((card) => {
+        return (
+          <StrategyCardElement
+            key={card.name}
+            card={card}
+            active={
+              card.faction || !activefaction || card.invalid ? false : true
+            }
+            onClick={
+              checksAndBalances ||
+              card.faction ||
+              !activefaction ||
+              card.invalid
+                ? undefined
+                : () => pickStrategyCard(card, activefaction)
+            }
+            fontSize={mobile ? 20 : 24}
+          >
+            <ChecksAndBalancesMenu
+              faction={activefaction}
+              factions={factions ?? {}}
+              strategyCards={finalStrategyCards}
+              mobile={mobile}
+              agendas={agendas ?? {}}
+              onSelect={(factionName) => {
+                const faction = (factions ?? {})[factionName];
+                if (!faction) {
+                  return;
+                }
+                pickStrategyCard(card, faction);
+              }}
+            />
+          </StrategyCardElement>
+        );
+      })}
+    </React.Fragment>
+  );
+}
+
 export function advanceToActionPhase(
   gameid: string,
   strategyCards: Record<string, StrategyCard>,
@@ -445,13 +573,6 @@ export default function StrategyPhase() {
       title: title,
       content: content,
     });
-  }
-  function pickStrategyCard(card: StrategyCard, faction: Faction) {
-    if (!gameid) {
-      return;
-    }
-    pickSubStateStrategyCard(gameid, card.name, faction.name);
-    nextPlayer(gameid, factions ?? {}, strategyCards, subState);
   }
 
   interface Ability {
@@ -574,10 +695,6 @@ export default function StrategyPhase() {
     strategyCards,
     subState
   );
-
-  const cab = (agendas ?? {})["Checks and Balances"];
-
-  const checksAndBalances = !!cab && !!cab.passed;
 
   function undoPick() {
     if (!gameid) {
@@ -828,39 +945,7 @@ export default function StrategyPhase() {
             width: responsivePixels(420),
           }}
         >
-          {finalStrategyCards.map((card) => {
-            return (
-              <StrategyCardElement
-                key={card.name}
-                card={card}
-                active={
-                  card.faction || !activefaction || card.invalid ? false : true
-                }
-                onClick={
-                  checksAndBalances ||
-                  card.faction ||
-                  !activefaction ||
-                  card.invalid
-                    ? undefined
-                    : () => pickStrategyCard(card, activefaction)
-                }
-              >
-                <ChecksAndBalancesMenu
-                  faction={activefaction}
-                  factions={factions ?? {}}
-                  strategyCards={finalStrategyCards}
-                  agendas={agendas ?? {}}
-                  onSelect={(factionName) => {
-                    const faction = (factions ?? {})[factionName];
-                    if (!faction) {
-                      return;
-                    }
-                    pickStrategyCard(card, faction);
-                  }}
-                />
-              </StrategyCardElement>
-            );
-          })}
+          <StrategyCardSelectList mobile={false} />
         </div>
         {canUndo() ? (
           <button onClick={() => undoPick()}>Undo SC Pick</button>
