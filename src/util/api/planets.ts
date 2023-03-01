@@ -1,4 +1,5 @@
 import { mutate } from "swr";
+import { Expansion } from "./options";
 import { poster } from "./util";
 
 export type PlanetAttribute =
@@ -34,6 +35,7 @@ export interface PlanetUpdateData {
 }
 
 export interface BasePlanet {
+  expansion: Expansion;
   ability?: string;
   attributes: PlanetAttribute[];
   faction?: string;

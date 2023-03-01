@@ -326,6 +326,20 @@ export default async function handler(
         return;
       }
       const strategyCards = gameData.subState?.strategyCards ?? [];
+      // Make sure we don't assign too many cards to the same faction.
+      const numSelected = strategyCards.reduce((count, card) => {
+        if (card.factionName === data.factionName) {
+          return count + 1;
+        }
+        return count;
+      }, 0);
+      const numFactions = Object.keys(gameData.factions).length;
+      if (numSelected > 0 && numFactions > 4) {
+        break;
+      }
+      if (numSelected > 1) {
+        break;
+      }
       strategyCards.push({
         cardName: data.cardName,
         factionName: data.factionName,

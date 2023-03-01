@@ -693,7 +693,8 @@ export function removeRepealedSubStateAgenda(gameid: string) {
 export function pickSubStateStrategyCard(
   gameid: string,
   cardName: StrategyCardName,
-  factionName: string
+  factionName: string,
+  numFactions: number
 ) {
   const data: SubStateUpdateData = {
     action: "PICK_STRATEGY_CARD",
@@ -710,6 +711,22 @@ export function pickSubStateStrategyCard(
 
         if (!updatedSubState.strategyCards) {
           updatedSubState.strategyCards = [];
+        }
+
+        const numPickedCards = updatedSubState.strategyCards.reduce(
+          (count, card) => {
+            if (card.factionName === factionName) {
+              return count + 1;
+            }
+            return count;
+          },
+          0
+        );
+        if (numPickedCards > 0 && numFactions > 4) {
+          return updatedSubState; 
+        }
+        if (numPickedCards > 1) {
+          return updatedSubState;
         }
 
         updatedSubState.strategyCards.push({

@@ -173,6 +173,7 @@ export async function fetchPlanets(
 
   const gamePlanets = gameData.planets ?? {};
   const gameFactions = gameData.factions ?? {};
+  const expansions = gameData.options?.expansions ?? [];
 
   const gameOptions: Partial<Options> = gameData.options ?? {};
   const mapString = gameOptions["map-string"] ?? "";
@@ -207,7 +208,15 @@ export async function fetchPlanets(
       planet.expansion !== "nonpok" &&
       !expansions.includes(planet.expansion)
     ) {
-      return;
+      // Check for Argent Flight. Might be able to remedy this in some other way.
+      if (
+        !gameFactions["Council Keleres"] ||
+        !(gameFactions["Council Keleres"]?.startswith?.planets ?? []).includes(
+          planet.name
+        )
+      ) {
+        return;
+      }
     }
 
     planet = {
@@ -295,6 +304,15 @@ export async function fetchComponents(
       component.expansion !== "nonpok" &&
       !expansions.includes(component.expansion)
     ) {
+      return;
+    }
+
+    // Filter out Codex Two relics if not using PoK.
+    if (!expansions.includes("pok") && component.type === "relic") {
+      return;
+    }
+    // Filter out leaders if not using PoK.
+    if (!expansions.includes("pok") && component.type === "leader") {
       return;
     }
     // Filter out components that are removed by PoK.
