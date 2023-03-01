@@ -54,7 +54,7 @@ export function responsiveNegativePixels(number: number) {
   } - ${number} ) * ( ( 100vw - 1280px ) / ( 2560 - 1280 ) ) ), ${number}px )`;
 }
 
-export function useInterval(callback: () => void, delay?: number) {
+export function useInterval(callback: () => void, delay: number | null) {
   const savedCallback = useRef<() => void>(() => {});
 
   // Remember the latest callback.

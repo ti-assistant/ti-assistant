@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Modal } from "./Modal";
-import { useSharedPause } from "./Timer";
+import { useSharedPause, useSharedTimer } from "./Timer";
 import { fetcher } from "./util/api/util";
 import { responsivePixels, useInterval } from "./util/util";
 
@@ -50,7 +50,7 @@ export function Updater({}) {
   const { data: updates }: { data?: Record<string, { timestamp: number }> } =
     useSWR(gameid ? `/api/${gameid}/updates` : null, fetcher);
   const { setUpdateTime } = getSharedUpdateTimes();
-  const { pause, unpause } = useSharedPause();
+  const { setPaused } = useSharedTimer();
 
   const [initialLoad, setInitialLoad] = useState(true);
 
@@ -86,12 +86,12 @@ export function Updater({}) {
   const timersUpdate = (localUpdates.timers ?? {}).timestamp ?? 0;
 
   function pauseUpdates() {
-    pause();
+    setPaused(true);
     setShouldUpdate(false);
   }
 
   function restartUpdates() {
-    unpause();
+    setPaused(false);
     setShouldUpdate(true);
     setUpdateFrequency(INITIAL_FREQUENCY);
     setLatestLocalActivity(Date.now());
@@ -125,7 +125,7 @@ export function Updater({}) {
     registerUpdateCallback(localUpdate);
   }, []);
 
-  useInterval(checkForUpdates, shouldUpdate ? updateFrequency : undefined);
+  useInterval(checkForUpdates, shouldUpdate ? updateFrequency : null);
 
   // useEffect(() => {
   //   if (!shouldUpdate || initialLoad) {

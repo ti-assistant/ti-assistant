@@ -17,7 +17,7 @@ import {
 import { FactionCard, StartingComponents } from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { FactionSummary } from "../../../src/FactionSummary";
-import { StaticFactionTimer } from "../../../src/Timer";
+import { GameTimer, StaticFactionTimer } from "../../../src/Timer";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
@@ -1408,6 +1408,15 @@ export default function GamePage() {
     return;
   }
 
+  function isActivePlayer() {
+    switch (state?.phase) {
+      case "STRATEGY":
+      case "ACTION":
+        return playerFaction === state?.activeplayer;
+    }
+    return false;
+  }
+
   let orderedFactions: Faction[] = [];
   let orderTitle = "";
   switch (state?.phase) {
@@ -1515,8 +1524,12 @@ export default function GamePage() {
             style={{ width: "100%" }}
             rightLabel={
               <StaticFactionTimer
+                isActive={isActivePlayer()}
                 factionName={playerFaction}
-                style={{ fontSize: responsivePixels(16), width: "auto" }}
+                style={{
+                  fontSize: responsivePixels(16),
+                  width: responsivePixels(80),
+                }}
               />
             }
             opts={{ hideTitle: true }}

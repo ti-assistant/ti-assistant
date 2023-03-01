@@ -925,10 +925,11 @@ export default function StrategyPhase() {
                   }}
                 >
                   <StaticFactionTimer
+                    isActive={false}
                     factionName={onDeckFaction.name}
                     style={{
                       fontSize: responsivePixels(18),
-                      width: responsivePixels(140),
+                      width: responsivePixels(96),
                     }}
                   />
                 </div>

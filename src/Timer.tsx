@@ -44,26 +44,111 @@ const usePaused = () => {
 
 export const useSharedPause = () => useBetween(usePaused);
 
+function makeid(length: number) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
+const useTimer = () => {
+  const [paused, setPaused] = useState(false);
+
+  const savedCallbacks = useRef<Record<string, () => void>>({});
+
+  useInterval(updateSubscribers, paused ? null : 1000);
+
+  function addSubscriber(subscriber: () => void) {
+    let id = makeid(12);
+    while (savedCallbacks.current[id]) {
+      id = makeid(12);
+    }
+    savedCallbacks.current[id] = subscriber;
+    return id;
+  }
+
+  function removeSubscriber(id: string) {
+    delete savedCallbacks.current[id];
+  }
+
+  function updateSubscribers() {
+    for (const subscriber of Object.values(savedCallbacks.current)) {
+      subscriber();
+    }
+  }
+
+  return {
+    paused,
+    setPaused,
+    addSubscriber,
+    removeSubscriber,
+  };
+};
+
+export const useSharedTimer = () => useBetween(useTimer);
+
 export interface TimerDisplayProps {
   time: number;
   style?: CSSProperties;
 }
 
 export function TimerDisplay({ time, style = {} }: TimerDisplayProps) {
-  const hours = Math.floor(time / 3600);
+  let hours = Math.min(Math.floor(time / 3600), 99);
   const minutes = Math.floor((time % 3600) / 60);
   const seconds = time % 60;
 
+  let template =
+    "repeat(2, minmax(0, 2fr)) minmax(0, 1fr) repeat(2, minmax(0, 2fr)) minmax(0, 1fr) repeat(2, minmax(0, 2fr))";
+
+  const tenHours = Math.floor(hours / 10);
+
+  if (tenHours === 0) {
+    template =
+      "minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr) repeat(2, minmax(0, 2fr)) minmax(0, 1fr) repeat(2, minmax(0, 2fr)) minmax(0, 1fr)";
+  }
+
   const timerStyle = {
-    width: responsivePixels(160),
+    width: responsivePixels(152),
     fontSize: responsivePixels(24),
+    gap: responsivePixels(0),
+    fontFamily: "Slider",
+    justifyContent: "center",
+    display: "grid",
+    gridTemplateColumns: template,
     ...style,
+  };
+  const oneHours = hours % 10;
+  const tenMinutes = Math.floor(minutes / 10);
+  const oneMinutes = minutes % 10;
+  const tenSeconds = Math.floor(seconds / 10);
+  const oneSeconds = seconds % 10;
+
+  const numberStyle: CSSProperties = {
+    textAlign: "center",
   };
 
   return (
     <div className="flexRow" style={timerStyle}>
-      {hours} : {minutes < 10 ? `0${minutes}` : minutes} :{" "}
-      {seconds < 10 ? `0${seconds}` : seconds}
+      {tenHours > 0 ? (
+        <span style={numberStyle}>{tenHours}</span>
+      ) : (
+        <span></span>
+      )}
+      <span style={numberStyle}>{oneHours}</span>
+      <span style={numberStyle}>:</span>
+      <span style={numberStyle}>{tenMinutes}</span>
+      <span style={numberStyle}>{oneMinutes}</span>
+      <span style={numberStyle}>:</span>
+      <span style={numberStyle}>{tenSeconds}</span>
+      <span style={numberStyle}>{oneSeconds}</span>
+
+      {tenHours === 0 ? <span></span> : null}
     </div>
   );
 }
@@ -82,27 +167,34 @@ export function AgendaTimer({}) {
 
   const [firstAgendaTimer, setFirstAgendaTimer] = useState(0);
   const [secondAgendaTimer, setSecondAgendaTimer] = useState(0);
-  const { paused } = useSharedPause();
+  const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
 
   const agendaNum = state?.agendaNum ?? 1;
 
-  function updateTime() {
+  const updateTime = useCallback(() => {
     if (paused || !gameid) {
       return;
     }
 
     if (agendaNum === 1) {
-      if (timers && firstAgendaTimer % 15 === 0) {
+      if (firstAgendaTimer > 0 && firstAgendaTimer % 15 === 0) {
         saveAgendaTimer(gameid, firstAgendaTimer, agendaNum);
       }
       setFirstAgendaTimer(firstAgendaTimer + 1);
     } else if (agendaNum === 2) {
-      if (timers && secondAgendaTimer % 15 === 0) {
+      if (secondAgendaTimer > 0 && secondAgendaTimer % 15 === 0) {
         saveAgendaTimer(gameid, secondAgendaTimer, agendaNum);
       }
       setSecondAgendaTimer(secondAgendaTimer + 1);
     }
-  }
+  }, [paused, gameid, agendaNum, firstAgendaTimer, secondAgendaTimer]);
+
+  useEffect(() => {
+    const id = addSubscriber(updateTime);
+    return () => {
+      removeSubscriber(id);
+    };
+  }, [updateTime, addSubscriber, removeSubscriber]);
 
   useEffect(() => {
     function setStartingTime() {
@@ -119,8 +211,6 @@ export function AgendaTimer({}) {
     setStartingTime();
   }, [timers, firstAgendaTimer, secondAgendaTimer]);
 
-  useInterval(updateTime, paused ? undefined : 1000);
-
   return (
     <div className="flexColumn" style={{ width: "100%" }}>
       <div
@@ -132,14 +222,20 @@ export function AgendaTimer({}) {
           style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
         >
           <div style={{ fontSize: responsivePixels(18) }}>First Agenda</div>
-          <TimerDisplay time={firstAgendaTimer} />
+          <TimerDisplay
+            time={firstAgendaTimer}
+            style={{ width: responsivePixels(132) }}
+          />
         </div>
         <div
           className="flexColumn"
           style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
         >
           <div style={{ fontSize: responsivePixels(18) }}>Second Agenda</div>
-          <TimerDisplay time={secondAgendaTimer} />
+          <TimerDisplay
+            time={secondAgendaTimer}
+            style={{ width: responsivePixels(132) }}
+          />
         </div>
       </div>
     </div>
@@ -150,28 +246,30 @@ export function GameTimer({ frozen = false }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const [gameTimer, setGameTimer] = useState(0);
-  // const [ paused, setPaused ] = useState(false);
-  const { paused, pause, unpause } = useSharedPause();
+  const { paused, setPaused, addSubscriber, removeSubscriber } =
+    useSharedTimer();
 
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
     fetcher
   );
 
-  useInterval(
-    () => {
-      if (paused || frozen || !gameid) {
-        return;
-      }
+  const updateTime = useCallback(() => {
+    if (paused || frozen || !gameid) {
+      return;
+    }
+    if (gameTimer > 0 && gameTimer % 15 === 0) {
+      saveGameTimer(gameid, gameTimer);
+    }
+    setGameTimer(gameTimer + 1);
+  }, [gameTimer, paused, frozen, gameid]);
 
-      if (timers && gameTimer % 15 === 0) {
-        saveGameTimer(gameid, gameTimer);
-      }
-
-      setGameTimer(gameTimer + 1);
-    },
-    paused || frozen ? undefined : 1000
-  );
+  useEffect(() => {
+    const id = addSubscriber(updateTime);
+    return () => {
+      removeSubscriber(id);
+    };
+  }, [updateTime, addSubscriber, removeSubscriber]);
 
   useEffect(() => {
     function setStartingTime() {
@@ -187,9 +285,9 @@ export function GameTimer({ frozen = false }) {
 
   function togglePause() {
     if (paused) {
-      unpause();
+      setPaused(false);
     } else {
-      pause();
+      setPaused(true);
     }
   }
 
@@ -203,7 +301,6 @@ export function GameTimer({ frozen = false }) {
           gap: responsivePixels(4),
         }}
       >
-        {/* <div style={{fontSize: responsivePixels(18)}}>Game Time</div> */}
         <TimerDisplay
           time={!timers ? 0 : gameTimer}
           style={{ fontSize: responsivePixels(28) }}
@@ -220,19 +317,40 @@ export function GameTimer({ frozen = false }) {
 
 export interface FactionTimerProps {
   factionName: string;
+  isActive?: boolean;
   style?: CSSProperties;
 }
 
-export function StaticFactionTimer({ factionName, style }: FactionTimerProps) {
+export function StaticFactionTimer({
+  isActive,
+  factionName,
+  style,
+}: FactionTimerProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const [factionTimer, setFactionTimer] = useState(0);
-  const [prevFactionName, setPrevFactionName] = useState(factionName);
-  // const [ paused, setPaused ] = useState(false);
+  const prevFaction = useRef<string>();
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
     fetcher
   );
+
+  const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
+
+  const updateTime = useCallback(() => {
+    if (paused || !isActive) {
+      return;
+    }
+
+    setFactionTimer(factionTimer + 1);
+  }, [factionTimer, paused, isActive]);
+
+  useEffect(() => {
+    const id = addSubscriber(updateTime);
+    return () => {
+      removeSubscriber(id);
+    };
+  }, [updateTime, addSubscriber, removeSubscriber]);
 
   useEffect(() => {
     function setStartingTime() {
@@ -240,13 +358,16 @@ export function StaticFactionTimer({ factionName, style }: FactionTimerProps) {
         return;
       }
       const value = timers[factionName];
-      if ((value && value > factionTimer) || prevFactionName !== factionName) {
-        setPrevFactionName(factionName);
+      if (
+        (value && value > factionTimer) ||
+        prevFaction.current !== factionName
+      ) {
+        prevFaction.current = factionName;
         setFactionTimer(value ?? 0);
       }
     }
     setStartingTime();
-  }, [timers, factionName, prevFactionName, factionTimer]);
+  }, [timers, factionName, factionTimer]);
 
   return <TimerDisplay time={!timers ? 0 : factionTimer} style={style} />;
 }
@@ -255,25 +376,32 @@ export function FactionTimer({ factionName, style }: FactionTimerProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const [factionTimer, setFactionTimer] = useState(0);
-  const [prevFactionName, setPrevFactionName] = useState(factionName);
+  const prevFaction = useRef<string>();
 
-  const { paused } = useSharedPause();
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
     fetcher
   );
+  const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
 
-  useInterval(() => {
+  const updateTime = useCallback(() => {
     if (paused || !gameid) {
       return;
     }
 
-    if (timers && factionTimer % 5 === 0) {
+    if (factionTimer > 0 && factionTimer % 5 === 0) {
       saveFactionTimer(gameid, factionName, factionTimer);
     }
 
     setFactionTimer(factionTimer + 1);
-  }, 1000);
+  }, [factionTimer, paused, gameid, factionName]);
+
+  useEffect(() => {
+    const id = addSubscriber(updateTime);
+    return () => {
+      removeSubscriber(id);
+    };
+  }, [updateTime, addSubscriber, removeSubscriber]);
 
   useEffect(() => {
     function setStartingTime() {
@@ -281,13 +409,16 @@ export function FactionTimer({ factionName, style }: FactionTimerProps) {
         return;
       }
       const value = timers[factionName];
-      if ((value && value > factionTimer) || factionName !== prevFactionName) {
-        setPrevFactionName(factionName);
+      if (
+        (value && value > factionTimer) ||
+        factionName !== prevFaction.current
+      ) {
+        prevFaction.current = factionName;
         setFactionTimer(value ?? 0);
       }
     }
     setStartingTime();
-  }, [timers, factionName, prevFactionName, factionTimer]);
+  }, [timers, factionName, factionTimer]);
 
   return <TimerDisplay time={!timers ? 0 : factionTimer} style={style} />;
 }

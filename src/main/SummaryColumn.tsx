@@ -12,6 +12,7 @@ import { Objective } from "../util/api/objectives";
 import { Options } from "../util/api/options";
 import { StrategyCard } from "../util/api/cards";
 import { getDefaultStrategyCards } from "../util/api/defaults";
+import { GameState } from "../util/api/state";
 
 function sortByOrder(a: [string, Faction], b: [string, Faction]) {
   if (a[1].order > b[1].order) {
@@ -43,6 +44,10 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
+    fetcher
+  );
+  const { data: state }: { data?: GameState } = useSWR(
+    gameid ? `/api/${gameid}/state` : null,
     fetcher
   );
 
@@ -99,6 +104,15 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
 
   const numFactions = Object.keys(factions).length;
 
+  function isActiveFaction(factionName: string) {
+    switch (state?.phase) {
+      case "STRATEGY":
+      case "ACTION":
+        return state?.activeplayer === factionName;
+    }
+    return false;
+  }
+
   return (
     <div
       className="flexColumn"
@@ -119,8 +133,12 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
               label={getFactionName(faction)}
               rightLabel={
                 <StaticFactionTimer
+                  isActive={isActiveFaction(faction.name)}
                   factionName={name}
-                  style={{ fontSize: responsivePixels(16), width: "auto" }}
+                  style={{
+                    fontSize: responsivePixels(16),
+                    width: responsivePixels(84),
+                  }}
                 />
               }
               color={getFactionColor(faction)}

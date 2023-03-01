@@ -244,7 +244,12 @@ export function MiddleColumn() {
                     }}
                   >
                     {!scoredPublics[0] && availableObjectives.length === 0 ? (
-                      "No unscored Public Objectives"
+                      <div
+                        className="smallFont"
+                        style={{ textAlign: "center", width: "40%" }}
+                      >
+                        No unscored Public Objectives
+                      </div>
                     ) : (
                       <div
                         className="flexColumn smallFont"

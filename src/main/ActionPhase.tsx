@@ -1191,15 +1191,17 @@ export function ActivePlayerColumn({
               className="flexColumn"
               style={{
                 height: "100%",
+                width: responsivePixels(160),
                 paddingBottom: responsivePixels(4),
                 fontSize: responsivePixels(12),
               }}
             >
               <StaticFactionTimer
+                isActive={false}
                 factionName={onDeckFaction.name}
                 style={{
                   fontSize: responsivePixels(24),
-                  width: responsivePixels(180),
+                  width: responsivePixels(132),
                 }}
               />
             </div>
