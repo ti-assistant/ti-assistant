@@ -602,6 +602,7 @@ interface FactionSelectProps {
   factions: SetupFaction[];
   position: number;
   mobile?: boolean;
+  numFactions: number;
   speaker: number;
   setFaction: (index: number, factionName: string | undefined) => void;
   setColor: (index: number, colorName: string | undefined) => void;
@@ -614,6 +615,7 @@ function FactionSelect({
   factions,
   position,
   mobile = false,
+  numFactions,
   speaker,
   setFaction,
   setColor,
@@ -628,7 +630,7 @@ function FactionSelect({
 
   const factionIndex = mobile
     ? position
-    : getFactionIndex(factions.length, position, options);
+    : getFactionIndex(numFactions, position, options);
   const faction = factions[factionIndex] ?? {};
   const playerName = faction.playerName;
   const currentNameRef = nameRef?.current;
@@ -692,24 +694,22 @@ function FactionSelect({
   const factionColor = convertToFactionColor(faction.color);
 
   const label = (
-    <React.Fragment>
-      <span
-        ref={nameRef}
-        spellCheck={false}
-        contentEditable={true}
-        suppressContentEditableWarning={true}
-        onClick={(e) => (e.currentTarget.innerText = "")}
-        onBlur={(e) => savePlayerName(e.currentTarget)}
-      >
-        Enter Player Name...
-      </span>
-      {isSpeaker ? " - Speaker" : null}
-    </React.Fragment>
+    <span
+      ref={nameRef}
+      spellCheck={false}
+      contentEditable={true}
+      suppressContentEditableWarning={true}
+      onClick={(e) => (e.currentTarget.innerText = "")}
+      onBlur={(e) => savePlayerName(e.currentTarget)}
+    >
+      Enter Player Name...
+    </span>
   );
 
   return (
     <LabeledDiv
       label={label}
+      rightLabel={isSpeaker ? "Speaker" : undefined}
       color={factionColor}
       style={{ width: mobile ? "100%" : "22vw" }}
     >
@@ -821,7 +821,7 @@ function FactionSelect({
   );
 }
 
-const INITIAL_FACTIONS: SetupFaction[] = [{}, {}, {}, {}, {}, {}];
+const INITIAL_FACTIONS: SetupFaction[] = [{}, {}, {}, {}, {}, {}, {}, {}];
 
 const INITIAL_OPTIONS: SetupOptions = {
   expansions: new Set<Expansion>([
@@ -843,6 +843,7 @@ export default function SetupPage() {
     ...INITIAL_OPTIONS,
     expansions: new Set(INITIAL_OPTIONS.expansions),
   });
+  const [numFactions, setNumFactions] = useState(6);
 
   const router = useRouter();
 
@@ -857,36 +858,17 @@ export default function SetupPage() {
       expansions: new Set(INITIAL_OPTIONS.expansions),
     });
     setSpeaker(0);
+    setNumFactions(6);
   }
 
   function updatePlayerCount(count: number) {
-    if (count === factions.length) {
+    if (count === numFactions) {
       return;
     }
-    if (count > factions.length) {
-      const newPlayers = [];
-      for (let i = factions.length; i < count; i++) {
-        newPlayers.push({});
-      }
-      setFactions([...factions, ...newPlayers]);
-    }
-    if (count < factions.length) {
-      for (let i = count; i < factions.length; i++) {
-        const faction = factions[i];
-        if (!faction) {
-          continue;
-        }
-        if (faction.name) {
-          updatePlayerFaction(i, undefined);
-        }
-        if (faction.color) {
-          updatePlayerColor(i, undefined);
-        }
-      }
-      setFactions(factions.slice(0, count));
-    }
-    toggleOption("standard", "map-style");
-    if (speaker >= count) {
+
+    setNumFactions(count);
+
+    if (speaker > count) {
       setSpeaker(0);
     }
   }
@@ -941,12 +923,12 @@ export default function SetupPage() {
   }
 
   function randomSpeaker() {
-    setSpeaker(Math.floor(Math.random() * factions.length));
+    setSpeaker(Math.floor(Math.random() * numFactions));
   }
 
   function randomFactions() {
     let selectedFactions: string[] = [];
-    for (let index = 0; index < factions.length; index++) {
+    for (let index = 0; index < numFactions; index++) {
       const faction = factions[index];
       if (!faction) {
         continue;
@@ -956,7 +938,7 @@ export default function SetupPage() {
       }
     }
     const filteredFactions = Object.entries(availableFactions ?? {}).filter(
-      ([name, faction]) => {
+      ([_, faction]) => {
         if (faction.game === "base") {
           return true;
         }
@@ -966,8 +948,8 @@ export default function SetupPage() {
         return true;
       }
     );
-    const factionKeys = filteredFactions.map(([name, faction]) => name);
-    for (let index = 0; index < factions.length; index++) {
+    const factionKeys = filteredFactions.map(([name, _]) => name);
+    for (let index = 0; index < numFactions; index++) {
       const faction = factions[index];
       if (!faction) {
         continue;
@@ -986,7 +968,10 @@ export default function SetupPage() {
       factions.map((faction, index) => {
         const factionName: string | undefined = selectedFactions[index];
         if (!factionName) {
-          return faction;
+          if (selectedFactions.includes(faction?.name ?? "")) {
+            return { ...faction, name: undefined };
+          }
+          return { ...faction };
         }
         return { ...faction, name: factionName };
       })
@@ -995,7 +980,7 @@ export default function SetupPage() {
 
   function randomColors() {
     let selectedColors: string[] = [];
-    for (let index = 0; index < factions.length; index++) {
+    for (let index = 0; index < numFactions; index++) {
       const faction = factions[index];
       if (!faction) {
         continue;
@@ -1012,7 +997,7 @@ export default function SetupPage() {
       }
       return true;
     });
-    for (let index = 0; index < factions.length; index++) {
+    for (let index = 0; index < numFactions; index++) {
       const faction = factions[index];
       if (!faction) {
         continue;
@@ -1031,12 +1016,18 @@ export default function SetupPage() {
       factions.map((faction, index) => {
         const color = selectedColors[index];
         if (!color) {
-          return faction;
+          if (selectedColors.includes(faction?.color ?? "")) {
+            return { ...faction, color: undefined };
+          }
+          return { ...faction };
         }
         return { ...faction, color: color };
       })
     );
   }
+
+  const activeFactions = [...factions];
+  activeFactions.splice(numFactions);
 
   async function startGame() {
     const expansions = Array.from(options.expansions);
@@ -1045,18 +1036,14 @@ export default function SetupPage() {
       expansions: expansions,
     };
 
-    // TODO: Consider just leaving gaps in the factions array to avoid this nonsense.
-    const factionsToSend = factions;
-    const speakerToSend = speaker;
-
     const res = await fetch("/api/create-game", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        factions: factionsToSend,
-        speaker: speakerToSend,
+        factions: activeFactions,
+        speaker: speaker,
         options: optionsToSend,
       }),
     });
@@ -1065,8 +1052,9 @@ export default function SetupPage() {
   }
 
   function disableRandomizeFactionButton() {
-    for (let faction of factions) {
-      if (!faction.name) {
+    for (let i = 0; i < numFactions; i++) {
+      const faction = factions[i];
+      if (!faction?.name) {
         return false;
       }
     }
@@ -1074,8 +1062,9 @@ export default function SetupPage() {
   }
 
   function disableRandomizeColorsButton() {
-    for (let faction of factions) {
-      if (!faction.color) {
+    for (let i = 0; i < numFactions; i++) {
+      const faction = factions[i];
+      if (!faction?.color) {
         return false;
       }
     }
@@ -1086,8 +1075,9 @@ export default function SetupPage() {
     if (speaker === -1) {
       return true;
     }
-    for (let faction of factions) {
-      if (!faction.color || !faction.name) {
+    for (let i = 0; i < numFactions; i++) {
+      const faction = factions[i];
+      if (!faction?.color || !faction?.name) {
         return true;
       }
     }
@@ -1098,8 +1088,9 @@ export default function SetupPage() {
   }
 
   function isCouncilInGame() {
-    for (let faction of factions) {
-      if (faction.name === "Council Keleres") {
+    for (let i = 0; i < numFactions; i++) {
+      const faction = factions[i];
+      if (faction?.name === "Council Keleres") {
         return true;
       }
     }
@@ -1111,12 +1102,13 @@ export default function SetupPage() {
       return false;
     }
     let factionCount = options.expansions.has("pok") ? 0 : 1;
-    for (let faction of factions) {
+    for (let i = 0; i < numFactions; i++) {
+      const faction = factions[i];
       if (
-        faction.name === "Xxcha Kingdom" ||
-        faction.name === "Argent Flight" ||
-        faction.name === "Mentak Coalition" ||
-        faction.name === "Council Keleres"
+        faction?.name === "Xxcha Kingdom" ||
+        faction?.name === "Argent Flight" ||
+        faction?.name === "Mentak Coalition" ||
+        faction?.name === "Council Keleres"
       ) {
         ++factionCount;
       }
@@ -1138,7 +1130,7 @@ export default function SetupPage() {
     } else {
       currentOptions.expansions.delete(expansion);
       setFactions(
-        factions.map((faction, index) => {
+        factions.map((faction, _) => {
           const tempFaction: SetupFaction = { ...faction };
           if (
             !currentOptions.expansions.has("pok") &&
@@ -1157,7 +1149,7 @@ export default function SetupPage() {
         })
       );
       if (!currentOptions.expansions.has("pok")) {
-        if (factions.length > 6) {
+        if (numFactions > 6) {
           updatePlayerCount(6);
         }
       }
@@ -1167,7 +1159,7 @@ export default function SetupPage() {
 
   function MiddleTopGapDiv({}) {
     let height = "0";
-    switch (factions.length) {
+    switch (numFactions) {
       case 3:
         height = responsivePixels(98);
         break;
@@ -1184,7 +1176,7 @@ export default function SetupPage() {
 
   function RightTopGapDiv({}) {
     let height = responsivePixels(80);
-    switch (factions.length) {
+    switch (numFactions) {
       case 3:
         height = responsivePixels(60);
         break;
@@ -1209,7 +1201,7 @@ export default function SetupPage() {
 
   function SideGapDiv({}) {
     let height = responsivePixels(80);
-    switch (factions.length) {
+    switch (numFactions) {
       default:
         return null;
       case 5:
@@ -1226,7 +1218,7 @@ export default function SetupPage() {
 
   function LeftTopGapDiv({}) {
     let height = responsivePixels(80);
-    switch (factions.length) {
+    switch (numFactions) {
       case 3:
         height = responsivePixels(60);
         break;
@@ -1246,7 +1238,7 @@ export default function SetupPage() {
   }
   function LeftBottomGapDiv({}) {
     let height = responsivePixels(80);
-    switch (factions.length) {
+    switch (numFactions) {
       case 3:
       case 4:
       case 5:
@@ -1259,7 +1251,7 @@ export default function SetupPage() {
   }
   function RightBottomGapDiv({}) {
     let height = responsivePixels(80);
-    switch (factions.length) {
+    switch (numFactions) {
       case 3:
         height = responsivePixels(242);
         break;
@@ -1306,7 +1298,7 @@ export default function SetupPage() {
             toggleOption={toggleOption}
             toggleExpansion={toggleExpansion}
             options={options}
-            numFactions={factions.length}
+            numFactions={numFactions}
             maxFactions={maxFactions}
             isCouncil={isCouncilInGame()}
           />
@@ -1314,6 +1306,7 @@ export default function SetupPage() {
           <FactionSelect
             factions={factions}
             position={7}
+            numFactions={numFactions}
             speaker={speaker}
             setFaction={updatePlayerFaction}
             setColor={updatePlayerColor}
@@ -1322,10 +1315,11 @@ export default function SetupPage() {
             options={options}
           />
           <SideGapDiv />
-          {factions.length > 4 ? (
+          {numFactions > 4 ? (
             <FactionSelect
               factions={factions}
               position={6}
+              numFactions={numFactions}
               speaker={speaker}
               setFaction={updatePlayerFaction}
               setColor={updatePlayerColor}
@@ -1335,10 +1329,11 @@ export default function SetupPage() {
             />
           ) : null}
           <SideGapDiv />
-          {factions.length > 6 ? (
+          {numFactions > 6 ? (
             <FactionSelect
               factions={factions}
               position={5}
+              numFactions={numFactions}
               speaker={speaker}
               setFaction={updatePlayerFaction}
               setColor={updatePlayerColor}
@@ -1358,11 +1353,12 @@ export default function SetupPage() {
           }}
         >
           <MiddleTopGapDiv />
-          {factions.length > 3 &&
-          !(factions.length === 5 && options["map-style"] !== "warp") ? (
+          {numFactions > 3 &&
+          !(numFactions === 5 && options["map-style"] !== "warp") ? (
             <FactionSelect
               factions={factions}
               position={0}
+              numFactions={numFactions}
               speaker={speaker}
               setFaction={updatePlayerFaction}
               setColor={updatePlayerColor}
@@ -1390,14 +1386,15 @@ export default function SetupPage() {
               mapStyle={options["map-style"]}
               mapString={options["map-string"]}
               mallice={options["expansions"].has("pok") ? "A" : undefined}
-              factions={factions}
+              factions={activeFactions}
             />
           </div>
-          {!(factions.length === 5 && options["map-style"] === "warp") &&
-          !(factions.length === 7 && options["map-style"] !== "warp") ? (
+          {!(numFactions === 5 && options["map-style"] === "warp") &&
+          !(numFactions === 7 && options["map-style"] !== "warp") ? (
             <FactionSelect
               factions={factions}
               position={4}
+              numFactions={numFactions}
               speaker={speaker}
               setFaction={updatePlayerFaction}
               setColor={updatePlayerColor}
@@ -1451,6 +1448,7 @@ export default function SetupPage() {
           <FactionSelect
             factions={factions}
             position={1}
+            numFactions={numFactions}
             speaker={speaker}
             setFaction={updatePlayerFaction}
             setColor={updatePlayerColor}
@@ -1459,10 +1457,11 @@ export default function SetupPage() {
             options={options}
           />
           <SideGapDiv />
-          {factions.length > 4 ? (
+          {numFactions > 4 ? (
             <FactionSelect
               factions={factions}
               position={2}
+              numFactions={numFactions}
               speaker={speaker}
               setFaction={updatePlayerFaction}
               setColor={updatePlayerColor}
@@ -1472,11 +1471,12 @@ export default function SetupPage() {
             />
           ) : null}
           <SideGapDiv />
-          {(factions.length > 6 && options["map-style"] === "standard") ||
-          factions.length > 7 ? (
+          {(numFactions > 6 && options["map-style"] === "standard") ||
+          numFactions > 7 ? (
             <FactionSelect
               factions={factions}
               position={3}
+              numFactions={numFactions}
               speaker={speaker}
               setFaction={updatePlayerFaction}
               setColor={updatePlayerColor}
@@ -1542,16 +1542,20 @@ export default function SetupPage() {
             toggleOption={toggleOption}
             toggleExpansion={toggleExpansion}
             options={options}
-            numFactions={factions.length}
+            numFactions={numFactions}
             maxFactions={maxFactions}
             isCouncil={isCouncilInGame()}
           />
           {factions.map((faction, index) => {
+            if (index >= numFactions) {
+              return null;
+            }
             return (
               <FactionSelect
                 key={index}
                 factions={factions}
                 position={index}
+                numFactions={numFactions}
                 mobile={true}
                 speaker={speaker}
                 setFaction={updatePlayerFaction}
