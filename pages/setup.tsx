@@ -634,7 +634,7 @@ function FactionSelect({
   const currentNameRef = nameRef?.current;
   useEffect(() => {
     if (currentNameRef && !playerName) {
-      currentNameRef.innerText = "Player Name";
+      currentNameRef.innerText = "Enter Player Name...";
     }
   }, [playerName, currentNameRef]);
 
@@ -685,9 +685,11 @@ function FactionSelect({
       if (!faction) {
         return;
       }
-      element.innerText = faction.playerName ?? "Player Name";
+      element.innerText = faction.playerName ?? "Enter Player Name...";
     }
   }
+
+  const factionColor = convertToFactionColor(faction.color);
 
   const label = (
     <React.Fragment>
@@ -699,7 +701,7 @@ function FactionSelect({
         onClick={(e) => (e.currentTarget.innerText = "")}
         onBlur={(e) => savePlayerName(e.currentTarget)}
       >
-        Player Name
+        Enter Player Name...
       </span>
       {isSpeaker ? " - Speaker" : null}
     </React.Fragment>
@@ -708,13 +710,13 @@ function FactionSelect({
   return (
     <LabeledDiv
       label={label}
-      color={convertToFactionColor(faction.color)}
+      color={factionColor}
       style={{ width: mobile ? "100%" : "22vw" }}
     >
       {faction.name ? (
         <div
           className="flexColumn"
-          style={{ position: "absolute", width: "100%", zIndex: -1 }}
+          style={{ position: "absolute", left: 0, width: "100%", zIndex: -1 }}
         >
           <div
             className="flexRow"
@@ -1525,7 +1527,7 @@ export default function SetupPage() {
             gap: responsivePixels(12),
             width: "100%",
             justifyContent: "flex-start",
-            height: "88vh",
+            height: "88svh",
             overflowY: "auto",
           }}
         >

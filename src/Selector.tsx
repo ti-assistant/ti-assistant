@@ -44,7 +44,7 @@ export function Selector({
       }
       toggleItem(option, true);
     }
-  }, [options, toggleItem, autoSelect ]);
+  }, [options, toggleItem, autoSelect]);
 
   if (selectedItem) {
     const renderedItem = renderItem ? renderItem(selectedItem) : undefined;
@@ -74,6 +74,9 @@ export function Selector({
     padding: responsivePixels(8),
     gap: responsivePixels(4),
     alignItems: "stretch",
+    justifyContent: "flex-start",
+    maxWidth: "88vw",
+    overflowX: "auto",
     ...(style ?? {}),
   };
 

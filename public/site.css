@@ -89,6 +89,13 @@
   );
 }
 
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 @font-face {
   font-family: "Slider";
   src: url("Slider.eot");
