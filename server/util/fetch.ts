@@ -201,6 +201,14 @@ export async function fetchPlanets(
     ) {
       return;
     }
+    // Maybe filter out PoK agendas.
+    if (
+      planet.expansion !== "base" &&
+      planet.expansion !== "nonpok" &&
+      !expansions.includes(planet.expansion)
+    ) {
+      return;
+    }
 
     planet = {
       ...planet,
