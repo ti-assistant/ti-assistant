@@ -57,12 +57,18 @@ export function getTargets(
         .filter((planet) => {
           return planet.type === "Cultural";
         })
+        .filter((planet) => {
+          return (planet.owners ?? []).length > 0;
+        })
         .map((planet) => planet.name);
       return [...culturalPlanets, "Abstain"];
     case "Hazardous Planet":
       const hazardousPlanets = Object.values(planets)
         .filter((planet) => {
           return planet.type === "Hazardous";
+        })
+        .filter((planet) => {
+          return (planet.owners ?? []).length > 0;
         })
         .map((planet) => planet.name);
       return [...hazardousPlanets, "Abstain"];
@@ -71,16 +77,18 @@ export function getTargets(
         .filter((planet) => {
           return planet.type === "Industrial";
         })
+        .filter((planet) => {
+          return (planet.owners ?? []).length > 0;
+        })
         .map((planet) => planet.name);
       return [...industrialPlanets, "Abstain"];
     case "Non-Home Planet Other Than Mecatol Rex":
       const electablePlanets = Object.values(planets)
         .filter((planet) => {
-          return (
-            (planet.owners ?? []).length > 0 &&
-            !planet.home &&
-            planet.name !== "Mecatol Rex"
-          );
+          return !planet.home && planet.name !== "Mecatol Rex";
+        })
+        .filter((planet) => {
+          return (planet.owners ?? []).length > 0;
         })
         .map((planet) => planet.name);
       return [...electablePlanets, "Abstain"];

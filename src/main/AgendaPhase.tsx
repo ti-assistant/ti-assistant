@@ -52,6 +52,7 @@ import React, { useEffect, useState } from "react";
 import { Selector } from "../Selector";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { computeVPs } from "../FactionSummary";
+import { Options } from "../util/api/options";
 
 const RIDERS = [
   "Galactic Threat",
@@ -354,6 +355,10 @@ function AgendaSteps() {
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
+    fetcher
+  );
+  const { data: options }: { data?: Options } = useSWR(
+    gameid ? `/api/${gameid}/options` : null,
     fetcher
   );
 
@@ -667,6 +672,19 @@ function AgendaSteps() {
   });
 
   const remainingRiders = RIDERS.filter((rider) => {
+    if (rider === "Keleres Rider" && factions && !factions["Council Keleres"]) {
+      return false;
+    }
+    if (rider === "Galactic Threat" && factions && !factions["Nekro Virus"]) {
+      return false;
+    }
+    if (
+      rider === "Sanction" &&
+      options &&
+      !options.expansions.includes("codex-one")
+    ) {
+      return false;
+    }
     return !(subState.riders ?? {})[rider];
   });
 
@@ -924,9 +942,7 @@ function AgendaSteps() {
                 {remainingRiders.length !== 0 ? (
                   <Selector
                     hoverMenuLabel="Predict Outcome"
-                    options={RIDERS.filter((rider) => {
-                      return !(subState.riders ?? {})[rider];
-                    })}
+                    options={remainingRiders}
                     selectedItem={undefined}
                     toggleItem={(itemName, add) => {
                       if (!gameid) {
