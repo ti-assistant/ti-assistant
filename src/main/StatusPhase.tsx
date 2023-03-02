@@ -960,7 +960,7 @@ export default function StatusPhase() {
             </div>
           ) : null}
           <div className="flexRow">
-            {lockedButton ? (
+            {!statusPhaseComplete(subState) ? (lockedButton ? (
               <div
                 style={{ cursor: "pointer" }}
                 onClick={() => setLockedButton(false)}
@@ -974,7 +974,7 @@ export default function StatusPhase() {
               >
                 &#128275;
               </div>
-            )}
+            )): null}
             {!state?.agendaUnlocked ? (
               <button
                 disabled={lockedButton && !statusPhaseComplete(subState)}
