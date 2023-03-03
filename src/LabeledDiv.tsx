@@ -2,7 +2,7 @@ import React, {
   CSSProperties,
   PropsWithChildren,
   ReactNode,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -30,7 +30,7 @@ export function LabeledDiv({
   const labelRef = useRef<HTMLDivElement>(null);
 
   const labelWidth = labelRef.current?.clientWidth;
-  useEffect(() => {
+  useLayoutEffect(() => {
     setMinWidth((labelWidth ?? 0) + 16);
   }, [labelWidth]);
 

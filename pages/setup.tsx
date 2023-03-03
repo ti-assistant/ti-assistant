@@ -625,8 +625,12 @@ function FactionSelect({
 }: FactionSelectProps) {
   const nameRef = useRef<HTMLSpanElement>(null);
   const { data: availableFactions }: { data?: Record<string, BaseFaction> } =
-    useSWR("/api/factions", fetcher);
-  const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher);
+    useSWR("/api/factions", fetcher, {
+      revalidateIfStale: false,
+    });
+  const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher, {
+    revalidateIfStale: false,
+  });
 
   const factionIndex = mobile
     ? position
@@ -848,8 +852,12 @@ export default function SetupPage() {
   const router = useRouter();
 
   const { data: availableFactions }: { data?: Record<string, BaseFaction> } =
-    useSWR("/api/factions", fetcher);
-  const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher);
+    useSWR("/api/factions", fetcher, {
+      revalidateIfStale: false,
+    });
+  const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher, {
+    revalidateIfStale: false,
+  });
 
   function reset() {
     setFactions([...INITIAL_FACTIONS]);

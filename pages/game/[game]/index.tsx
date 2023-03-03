@@ -16,7 +16,10 @@ export default function SelectFactionPage() {
   const { game: gameid }: { game?: string } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const [qrCode, setQrCode] = useState<string | undefined>();
@@ -141,7 +144,10 @@ function Header() {
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [qrCode, setQrCode] = useState<string | undefined>();
   const [qrCodeSize, setQrCodeSize] = useState(164);

@@ -29,7 +29,10 @@ function SecretTab({ factionName }: { factionName: string }) {
   const { game: gameid }: { game?: string; faction?: string } = router.query;
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [editMode, setEditMode] = useState(false);
 
@@ -161,7 +164,10 @@ export function ObjectiveList() {
   }: { game?: string; faction?: string } = router.query;
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [tabShown, setTabShown] = useState("stage-one");
   const [editMode, setEditMode] = useState(false);

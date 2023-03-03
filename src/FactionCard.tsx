@@ -177,15 +177,24 @@ export function StartingComponents({ faction }: StartingComponentsProps) {
   const { game: gameid }: { game?: string } = router.query;
   const { data: techs }: { data?: Record<string, Tech> } = useSWR(
     gameid ? `/api/${gameid}/techs` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: options }: { data?: Options } = useSWR(
     gameid ? `/api/${gameid}/options` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const startswith = faction.startswith;
@@ -446,17 +455,26 @@ export function FactionTile({
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [showMenu, setShowMenu] = useState(false);
 
@@ -776,7 +794,10 @@ export function FactionCard({
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const speaker = faction.name === state?.speaker;

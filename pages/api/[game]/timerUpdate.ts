@@ -106,6 +106,16 @@ export default async function handler(
         });
       break;
     }
+    case "SET_TIMER_PAUSE": {
+      if (data.paused == undefined) {
+        res.status(422).send({ message: "No value specified" });
+        return;
+      }
+      await db.collection("games").doc(gameId).update({
+        "timers.paused": data.paused,
+      });
+      break;
+    }
   }
 
   const responseRef = await db.collection("games").doc(gameId).get();

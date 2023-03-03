@@ -32,23 +32,37 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
   const { game: gameid }: { game?: string } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives = {} }: { data?: Record<string, Objective> } =
-    useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher);
+    useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, {
+      revalidateIfStale: false,
+    });
   const { data: options }: { data?: Options } = useSWR(
     gameid ? `/api/${gameid}/options` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   if (!options || !factions) {
@@ -133,7 +147,6 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
               label={getFactionName(faction)}
               rightLabel={
                 <StaticFactionTimer
-                  isActive={isActiveFaction(faction.name)}
                   factionName={name}
                   style={{
                     fontSize: responsivePixels(16),

@@ -41,7 +41,10 @@ export function StrategyCardElement({
   const { game: gameid }: { game?: string } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const faction = card.faction && factions ? factions[card.faction] : undefined;
@@ -115,7 +118,10 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
   const { game: gameid } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   if (!cards[0]) {

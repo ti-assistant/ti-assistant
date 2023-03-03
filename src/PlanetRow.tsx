@@ -446,11 +446,17 @@ export function PlanetRow({
   const { game: gameid } = router.query;
   const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
     gameid ? `/api/${gameid}/attachments` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [showAttachModal, setShowAttachModal] = useState(false);
 

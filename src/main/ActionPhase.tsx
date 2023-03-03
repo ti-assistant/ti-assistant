@@ -62,17 +62,26 @@ export function FactionActionButtons({
   const { game: gameid }: { game?: string } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   if (!factions) {
@@ -194,31 +203,52 @@ export function AdditionalActions({
   const { game: gameid }: { game?: string } = router.query;
   const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
     gameid ? `/api/${gameid}/attachments` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: techs }: { data?: Record<string, Tech> } = useSWR(
     gameid ? `/api/${gameid}/techs` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: planets = {} }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   if (!factions || !techs) {
@@ -1050,21 +1080,26 @@ export function NextPlayerButtons({
   const { game: gameid }: { game?: string } = router.query;
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
-  );
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   async function completeActions() {
@@ -1197,7 +1232,6 @@ export function ActivePlayerColumn({
               }}
             >
               <StaticFactionTimer
-                isActive={false}
                 factionName={onDeckFaction.name}
                 style={{
                   fontSize: responsivePixels(24),
@@ -1239,17 +1273,28 @@ export default function ActionPhase() {
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher);
+    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, {
+      revalidateIfStale: false,
+    });
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   if (!factions || !state || !subState || !strategyCards) {

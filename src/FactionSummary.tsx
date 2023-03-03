@@ -227,23 +227,24 @@ export function UpdateObjectives({}) {
   const { game: gameid }: { game?: string } = router.query;
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher
-  );
-  const { data: options }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const [factionName, setFactionName] = useState("");
@@ -668,7 +669,10 @@ export function UpdateObjectivesModal({
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const [factionName, setFactionName] = useState("");
@@ -700,15 +704,24 @@ export function UpdateTechs({}) {
   const { game: gameid }: { game?: string } = router.query;
   const { data: techs }: { data?: Record<string, Tech> } = useSWR(
     gameid ? `/api/${gameid}/techs` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const [factionName, setFactionName] = useState("");
@@ -976,7 +989,10 @@ export function UpdateTechsModal({
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const [factionName, setFactionName] = useState("");
@@ -1008,19 +1024,31 @@ export function UpdatePlanets({}) {
   const { game: gameid }: { game?: string } = router.query;
   const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
     gameid ? `/api/${gameid}/attachments` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const [factionName, setFactionName] = useState("");
@@ -1231,7 +1259,10 @@ export function UpdatePlanetsModal({
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const [factionName, setFactionName] = useState("");
@@ -1275,7 +1306,10 @@ export function PlanetSummary({
   const { game: gameid }: { game?: string } = router.query;
   const { data: gameOptions }: { data?: Options } = useSWR(
     gameid ? `/api/${gameid}/options` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   let resources = 0;
@@ -1408,27 +1442,45 @@ export function FactionSummary({
   const { game: gameid }: { game?: string } = router.query;
   const { data: attachments } = useSWR(
     gameid ? `/api/${gameid}/attachments` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: techs }: { data?: Record<string, Tech> } = useSWR(
     gameid ? `/api/${gameid}/techs` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const faction = factions ? factions[factionName] : undefined;

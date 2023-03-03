@@ -156,19 +156,31 @@ function AgendaDetails() {
   const { game: gameid }: { game?: string } = router.query;
   const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
     gameid ? `/api/${gameid}/agendas` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const agendaName =
@@ -329,37 +341,61 @@ function AgendaSteps() {
   const { game: gameid }: { game?: string } = router.query;
   const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
     gameid ? `/api/${gameid}/agendas` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: options }: { data?: Options } = useSWR(
     gameid ? `/api/${gameid}/options` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   let currentAgenda: Agenda | undefined;
@@ -694,7 +730,15 @@ function AgendaSteps() {
 
   return (
     <React.Fragment>
-      <AgendaTimer />
+      <div className="flexColumn" style={{ width: "100%" }}>
+        <div
+          className="flexRow"
+          style={{ width: "100%", justifyContent: "space-evenly" }}
+        >
+          <AgendaTimer agendaNum={1} />
+          <AgendaTimer agendaNum={2} />
+        </div>
+      </div>
       {agendaNum > 2 ? (
         <div
           style={{
@@ -1043,33 +1087,54 @@ export default function AgendaPhase() {
   const { game: gameid }: { game?: string } = router.query;
   const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
     gameid ? `/api/${gameid}/agendas` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [lockedButton, setLockedButton] = useState(true);
 
@@ -1217,7 +1282,15 @@ export default function AgendaPhase() {
       >
         {agendaNum > 2 ? (
           <div className="flexColumn" style={{ height: "100%" }}>
-            <AgendaTimer />
+            <div className="flexColumn" style={{ width: "100%" }}>
+              <div
+                className="flexRow"
+                style={{ width: "100%", justifyContent: "space-evenly" }}
+              >
+                <AgendaTimer agendaNum={1} />
+                <AgendaTimer agendaNum={2} />
+              </div>
+            </div>
             <div
               style={{
                 fontSize: responsivePixels(40),

@@ -8,6 +8,9 @@ import {
   saveAgendaTimer,
   saveFactionTimer,
   saveGameTimer,
+  updateLocalAgendaTimer,
+  updateLocalFactionTimer,
+  updateLocalGameTimer,
 } from "./util/api/timers";
 import { responsivePixels, useInterval } from "./util/util";
 import { GameState } from "./util/api/state";
@@ -153,41 +156,50 @@ export function TimerDisplay({ time, style = {} }: TimerDisplayProps) {
   );
 }
 
-export function AgendaTimer({}) {
+export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
-  const [firstAgendaTimer, setFirstAgendaTimer] = useState(0);
-  const [secondAgendaTimer, setSecondAgendaTimer] = useState(0);
+  const [agendaTimer, setAgendaTimer] = useState(0);
   const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
 
-  const agendaNum = state?.agendaNum ?? 1;
+  const timerRef = useRef(0);
+  const lastUpdate = useRef(0);
 
-  const updateTime = useCallback(() => {
-    if (paused || !gameid) {
+  useInterval(() => {
+    if (!gameid) {
       return;
     }
-
-    if (agendaNum === 1) {
-      if (firstAgendaTimer > 0 && firstAgendaTimer % 15 === 0) {
-        saveAgendaTimer(gameid, firstAgendaTimer, agendaNum);
-      }
-      setFirstAgendaTimer(firstAgendaTimer + 1);
-    } else if (agendaNum === 2) {
-      if (secondAgendaTimer > 0 && secondAgendaTimer % 15 === 0) {
-        saveAgendaTimer(gameid, secondAgendaTimer, agendaNum);
-      }
-      setSecondAgendaTimer(secondAgendaTimer + 1);
+    if (lastUpdate.current < timerRef.current) {
+      lastUpdate.current = timerRef.current;
+      saveAgendaTimer(gameid, timerRef.current, agendaNum);
     }
-  }, [paused, gameid, agendaNum, firstAgendaTimer, secondAgendaTimer]);
+  }, 15000);
+
+  const isActive = state?.agendaNum === agendaNum;
+
+  const updateTime = useCallback(() => {
+    if (!gameid || paused || !isActive) {
+      return;
+    }
+    timerRef.current += 1;
+    updateLocalAgendaTimer(gameid, timerRef.current, agendaNum);
+    setAgendaTimer(timerRef.current);
+  }, [paused, isActive, gameid, agendaNum]);
 
   useEffect(() => {
     const id = addSubscriber(updateTime);
@@ -196,48 +208,28 @@ export function AgendaTimer({}) {
     };
   }, [updateTime, addSubscriber, removeSubscriber]);
 
+  const localAgendaTimer =
+    agendaNum === 1 ? timers?.firstAgenda : timers?.secondAgenda;
   useEffect(() => {
-    function setStartingTime() {
-      if (!timers) {
-        return;
-      }
-      if (timers.firstAgenda && timers.firstAgenda > firstAgendaTimer) {
-        setFirstAgendaTimer(timers.firstAgenda);
-      }
-      if (timers.secondAgenda && timers.secondAgenda > secondAgendaTimer) {
-        setSecondAgendaTimer(timers.secondAgenda);
-      }
+    if (localAgendaTimer && localAgendaTimer > timerRef.current) {
+      timerRef.current = localAgendaTimer;
+      lastUpdate.current = localAgendaTimer;
+      setAgendaTimer(localAgendaTimer);
     }
-    setStartingTime();
-  }, [timers, firstAgendaTimer, secondAgendaTimer]);
+  }, [localAgendaTimer]);
 
   return (
-    <div className="flexColumn" style={{ width: "100%" }}>
-      <div
-        className="flexRow"
-        style={{ width: "100%", justifyContent: "space-evenly" }}
-      >
-        <div
-          className="flexColumn"
-          style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
-        >
-          <div style={{ fontSize: responsivePixels(18) }}>First Agenda</div>
-          <TimerDisplay
-            time={firstAgendaTimer}
-            style={{ width: responsivePixels(132) }}
-          />
-        </div>
-        <div
-          className="flexColumn"
-          style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
-        >
-          <div style={{ fontSize: responsivePixels(18) }}>Second Agenda</div>
-          <TimerDisplay
-            time={secondAgendaTimer}
-            style={{ width: responsivePixels(132) }}
-          />
-        </div>
+    <div
+      className="flexColumn"
+      style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
+    >
+      <div style={{ fontSize: responsivePixels(18) }}>
+        {agendaNum === 2 ? "Second" : "First"} Agenda
       </div>
+      <TimerDisplay
+        time={agendaTimer}
+        style={{ width: responsivePixels(132) }}
+      />
     </div>
   );
 }
@@ -249,20 +241,35 @@ export function GameTimer({ frozen = false }) {
   const { paused, setPaused, addSubscriber, removeSubscriber } =
     useSharedTimer();
 
+  const timerRef = useRef(0);
+  const lastUpdate = useRef(0);
+
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
-  const updateTime = useCallback(() => {
-    if (paused || frozen || !gameid) {
+  useInterval(() => {
+    if (!gameid) {
       return;
     }
-    if (gameTimer > 0 && gameTimer % 15 === 0) {
-      saveGameTimer(gameid, gameTimer);
+    if (lastUpdate.current < timerRef.current) {
+      lastUpdate.current = timerRef.current;
+      saveGameTimer(gameid, timerRef.current);
     }
-    setGameTimer(gameTimer + 1);
-  }, [gameTimer, paused, frozen, gameid]);
+  }, 15000);
+
+  const updateTime = useCallback(() => {
+    if (!gameid || paused || frozen) {
+      return;
+    }
+    timerRef.current += 1;
+    updateLocalGameTimer(gameid, timerRef.current);
+    setGameTimer(timerRef.current);
+  }, [paused, frozen, gameid]);
 
   useEffect(() => {
     const id = addSubscriber(updateTime);
@@ -271,17 +278,14 @@ export function GameTimer({ frozen = false }) {
     };
   }, [updateTime, addSubscriber, removeSubscriber]);
 
+  const localGameTimer = timers?.game;
   useEffect(() => {
-    function setStartingTime() {
-      if (!timers) {
-        return;
-      }
-      if (timers.game && timers.game > gameTimer) {
-        setGameTimer(timers.game);
-      }
+    if (localGameTimer && localGameTimer > timerRef.current) {
+      timerRef.current = localGameTimer;
+      lastUpdate.current = localGameTimer;
+      setGameTimer(localGameTimer);
     }
-    setStartingTime();
-  }, [timers, gameTimer]);
+  }, [localGameTimer, gameTimer]);
 
   function togglePause() {
     if (paused) {
@@ -317,59 +321,25 @@ export function GameTimer({ frozen = false }) {
 
 export interface FactionTimerProps {
   factionName: string;
-  isActive?: boolean;
   style?: CSSProperties;
 }
 
-export function StaticFactionTimer({
-  isActive,
-  factionName,
-  style,
-}: FactionTimerProps) {
+export function StaticFactionTimer({ factionName, style }: FactionTimerProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const [factionTimer, setFactionTimer] = useState(0);
-  const prevFaction = useRef<string>();
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
-  const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
+  const localFactionTimer = (timers ?? {})[factionName];
 
-  const updateTime = useCallback(() => {
-    if (paused || !isActive) {
-      return;
-    }
-
-    setFactionTimer(factionTimer + 1);
-  }, [factionTimer, paused, isActive]);
-
-  useEffect(() => {
-    const id = addSubscriber(updateTime);
-    return () => {
-      removeSubscriber(id);
-    };
-  }, [updateTime, addSubscriber, removeSubscriber]);
-
-  useEffect(() => {
-    function setStartingTime() {
-      if (!timers) {
-        return;
-      }
-      const value = timers[factionName];
-      if (
-        (value && value > factionTimer) ||
-        prevFaction.current !== factionName
-      ) {
-        prevFaction.current = factionName;
-        setFactionTimer(value ?? 0);
-      }
-    }
-    setStartingTime();
-  }, [timers, factionName, factionTimer]);
-
-  return <TimerDisplay time={!timers ? 0 : factionTimer} style={style} />;
+  return (
+    <TimerDisplay time={!timers ? 0 : localFactionTimer ?? 0} style={style} />
+  );
 }
 
 export function FactionTimer({ factionName, style }: FactionTimerProps) {
@@ -378,23 +348,55 @@ export function FactionTimer({ factionName, style }: FactionTimerProps) {
   const [factionTimer, setFactionTimer] = useState(0);
   const prevFaction = useRef<string>();
 
+  const timerRef = useRef(0);
+  const lastUpdate = useRef(0);
+
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
+
+  useEffect(() => {
+    return () => {
+      if (!gameid) {
+        return;
+      }
+      if (
+        prevFaction.current == factionName &&
+        lastUpdate.current < timerRef.current
+      ) {
+        lastUpdate.current = timerRef.current;
+        saveFactionTimer(gameid, factionName, timerRef.current);
+      }
+    };
+  }, [factionName, gameid]);
+
+  useInterval(() => {
+    if (!gameid) {
+      return;
+    }
+    if (
+      prevFaction.current == factionName &&
+      lastUpdate.current < factionTimer
+    ) {
+      lastUpdate.current = factionTimer;
+      saveFactionTimer(gameid, factionName, factionTimer);
+    }
+  }, 5000);
 
   const updateTime = useCallback(() => {
     if (paused || !gameid) {
       return;
     }
 
-    if (factionTimer > 0 && factionTimer % 5 === 0) {
-      saveFactionTimer(gameid, factionName, factionTimer);
-    }
-
-    setFactionTimer(factionTimer + 1);
-  }, [factionTimer, paused, gameid, factionName]);
+    timerRef.current += 1;
+    updateLocalFactionTimer(gameid, factionName, timerRef.current);
+    setFactionTimer(timerRef.current);
+  }, [paused, gameid, factionName]);
 
   useEffect(() => {
     const id = addSubscriber(updateTime);
@@ -403,22 +405,19 @@ export function FactionTimer({ factionName, style }: FactionTimerProps) {
     };
   }, [updateTime, addSubscriber, removeSubscriber]);
 
+  const localFactionTimer = (timers ?? {})[factionName];
+
   useEffect(() => {
-    function setStartingTime() {
-      if (!timers) {
-        return;
-      }
-      const value = timers[factionName];
-      if (
-        (value && value > factionTimer) ||
-        factionName !== prevFaction.current
-      ) {
-        prevFaction.current = factionName;
-        setFactionTimer(value ?? 0);
-      }
+    if (
+      (localFactionTimer && localFactionTimer > timerRef.current) ||
+      factionName !== prevFaction.current
+    ) {
+      prevFaction.current = factionName;
+      timerRef.current = localFactionTimer ?? 0;
+      lastUpdate.current = localFactionTimer ?? 0;
+      setFactionTimer(localFactionTimer ?? 0);
     }
-    setStartingTime();
-  }, [timers, factionName, factionTimer]);
+  }, [localFactionTimer, factionName, factionTimer]);
 
   return <TimerDisplay time={!timers ? 0 : factionTimer} style={style} />;
 }

@@ -241,6 +241,18 @@ export default async function handler(
       await db.collection("games").doc(gameId).update(updates);
       break;
     }
+    case "SET_GLOBAL_PAUSE": {
+      if (data.paused == undefined) {
+        res.status(422).send({ message: "Missing info" });
+        return;
+      }
+      const updates = {
+        "state.paused": data.paused,
+        [timestampString]: timestamp,
+      };
+      await db.collection("games").doc(gameId).update(updates);
+      break;
+    }
   }
 
   const responseRef = await db.collection("games").doc(gameId).get();

@@ -21,11 +21,13 @@ export type StateUpdateAction =
   | "SET_SPEAKER"
   | "END_GAME"
   | "CONTINUE_GAME"
-  | "SET_AGENDA_NUM";
+  | "SET_AGENDA_NUM"
+  | "SET_GLOBAL_PAUSE";
 
 export interface StateUpdateData {
   action?: StateUpdateAction;
   agendaNum?: number;
+  paused?: boolean;
   skipAgenda?: boolean;
   speaker?: string;
   timestamp?: number;
@@ -36,6 +38,7 @@ export interface GameState {
   agendaNum?: number;
   agendaUnlocked?: boolean;
   finalPhase?: Phase;
+  paused?: boolean;
   phase: Phase;
   round: number;
   speaker: string;
@@ -220,6 +223,28 @@ export async function setAgendaNum(gameid: string, agendaNum: number) {
         const updatedState = structuredClone(state);
 
         updatedState.agendaNum = agendaNum;
+
+        return updatedState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function setGlobalPause(gameid: string, paused: boolean) {
+  const data: StateUpdateData = {
+    action: "SET_GLOBAL_PAUSE",
+    paused: paused,
+  };
+
+  mutate(
+    `/api/${gameid}/state`,
+    async () => await poster(`/api/${gameid}/stateUpdate`, data),
+    {
+      optimisticData: (state: GameState) => {
+        const updatedState = structuredClone(state);
+
+        updatedState.paused = paused;
 
         return updatedState;
       },

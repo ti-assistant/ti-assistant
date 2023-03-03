@@ -295,29 +295,40 @@ function ComponentSelect({
 function ComponentDetails({ factionName }: { factionName: string }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher
-  );
   const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
     gameid ? `/api/${gameid}/attachments` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: techs }: { data?: Record<string, Tech> } = useSWR(
     gameid ? `/api/${gameid}/techs` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   if (!factions) {
@@ -643,14 +654,22 @@ export function ComponentAction({ factionName }: { factionName: string }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const { data: components = {} }: { data?: Record<string, Component> } =
-    useSWR(gameid ? `/api/${gameid}/components` : null, fetcher);
+    useSWR(gameid ? `/api/${gameid}/components` : null, fetcher, {
+      revalidateIfStale: false,
+    });
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [showInfoModal, setShowInfoModal] = useState(false);
 

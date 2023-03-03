@@ -60,19 +60,31 @@ export function MiddleColumn() {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
@@ -530,29 +542,47 @@ export default function StatusPhase() {
   const { game: gameid }: { game?: string } = router.query;
   const { data: state }: { data?: GameState } = useSWR(
     gameid ? `/api/${gameid}/state` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
     gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
     gameid ? `/api/${gameid}/agendas` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
   );
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
@@ -960,21 +990,23 @@ export default function StatusPhase() {
             </div>
           ) : null}
           <div className="flexRow">
-            {!statusPhaseComplete(subState) ? (lockedButton ? (
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => setLockedButton(false)}
-              >
-                &#128274;
-              </div>
-            ) : (
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => setLockedButton(true)}
-              >
-                &#128275;
-              </div>
-            )): null}
+            {!statusPhaseComplete(subState) ? (
+              lockedButton ? (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setLockedButton(false)}
+                >
+                  &#128274;
+                </div>
+              ) : (
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setLockedButton(true)}
+                >
+                  &#128275;
+                </div>
+              )
+            ) : null}
             {!state?.agendaUnlocked ? (
               <button
                 disabled={lockedButton && !statusPhaseComplete(subState)}
