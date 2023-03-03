@@ -139,7 +139,7 @@ function SecondaryCheck({
                         width: "100%",
                         fontSize: responsivePixels(32),
                         lineHeight: responsivePixels(30),
-                        zIndex: 1,
+                        zIndex: 0,
                         textAlign: "center",
                       }}
                     >
@@ -154,14 +154,23 @@ function SecondaryCheck({
                         width: "100%",
                         fontSize: responsivePixels(34),
                         lineHeight: responsivePixels(26),
-                        zIndex: 1,
+                        zIndex: 0,
                         textAlign: "center",
                       }}
                     >
                       ⤬
                     </div>
                   ) : null}
-                  <FullFactionSymbol faction={faction.name} />
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "28px",
+                      height: "28px",
+                      zIndex: -1,
+                    }}
+                  >
+                    <FullFactionSymbol faction={faction.name} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -623,12 +632,15 @@ export function AdditionalActions({
                 />
               ) : null}
               {isActive ? (
-                <SecondaryCheck
-                  activeFactionName={activeFaction.name}
-                  gameid={gameid ?? ""}
-                  orderedFactions={orderedFactions}
-                  subState={subState}
-                />
+                <React.Fragment>
+                  <LabeledLine leftLabel="Secondary" />
+                  <SecondaryCheck
+                    activeFactionName={activeFaction.name}
+                    gameid={gameid ?? ""}
+                    orderedFactions={orderedFactions}
+                    subState={subState}
+                  />
+                </React.Fragment>
               ) : null}
             </React.Fragment>
           </div>
@@ -689,12 +701,6 @@ export function AdditionalActions({
             style={{ gap: responsivePixels(4), width: "100%" }}
           >
             <LabeledLine leftLabel="Secondary" />
-            <SecondaryCheck
-              activeFactionName={activeFaction.name}
-              gameid={gameid ?? ""}
-              orderedFactions={orderedFactions}
-              subState={subState}
-            />
             <div
               className="flexRow mediumFont"
               style={{
@@ -763,6 +769,12 @@ export function AdditionalActions({
                   </LabeledDiv>
                 );
               })}
+              <SecondaryCheck
+                activeFactionName={activeFaction.name}
+                gameid={gameid ?? ""}
+                orderedFactions={orderedFactions}
+                subState={subState}
+              />
             </div>
           </div>
         </div>
@@ -770,7 +782,10 @@ export function AdditionalActions({
     case "Politics":
       const selectedSpeaker = factions[subState.speaker ?? ""];
       return (
-        <div className="flexColumn" style={{ gap: "4px", ...style }}>
+        <div
+          className="flexColumn"
+          style={{ gap: "4px", width: "100%", ...style }}
+        >
           <React.Fragment>
             <LabeledLine leftLabel="Primary" />
             {selectedSpeaker ? (
@@ -818,8 +833,8 @@ export function AdditionalActions({
       if (activeFaction.name === "Xxcha Kingdom") {
         return (
           <div className="flexColumn largeFont" style={{ ...style }}>
-            <LabeledLine leftLabel="PRIMARY" />
-            <LabeledDiv label="PEACE ACCORDS">
+            <LabeledLine leftLabel="Primary" />
+            <LabeledDiv label="Peace Accords">
               <React.Fragment>
                 {claimedPlanets.length > 0 ? (
                   <div className="flexColumn" style={{ alignItems: "stretch" }}>
@@ -869,6 +884,13 @@ export function AdditionalActions({
                 ) : null}
               </React.Fragment>
             </LabeledDiv>
+            <LabeledLine leftLabel="Secondary" />
+            <SecondaryCheck
+              activeFactionName={activeFaction.name}
+              gameid={gameid ?? ""}
+              orderedFactions={orderedFactions}
+              subState={subState}
+            />
           </div>
         );
       } else if (factions["Xxcha Kingdom"]) {
@@ -900,8 +922,17 @@ export function AdditionalActions({
           }
         );
         return (
-          <div className="flexColumn largeFont" style={{ ...style }}>
-            <LabeledLine leftLabel="SECONDARY" />
+          <div
+            className="flexColumn largeFont"
+            style={{ width: "100%", ...style }}
+          >
+            <LabeledLine leftLabel="Secondary" />
+            <SecondaryCheck
+              activeFactionName={activeFaction.name}
+              gameid={gameid ?? ""}
+              orderedFactions={orderedFactions}
+              subState={subState}
+            />
             <LabeledDiv
               label={`${getFactionName(
                 factions["Xxcha Kingdom"]
@@ -958,13 +989,23 @@ export function AdditionalActions({
           </div>
         );
       }
-      return null;
+      return (
+        <div className="flexColumn" style={{ width: "100%" }}>
+          <LabeledLine leftLabel="Secondary" />
+          <SecondaryCheck
+            activeFactionName={activeFaction.name}
+            gameid={gameid ?? ""}
+            orderedFactions={orderedFactions}
+            subState={subState}
+          />
+        </div>
+      );
     case "Leadership":
     case "Construction":
     case "Trade":
     case "Warfare":
       return (
-        <div className="flexColumn">
+        <div className="flexColumn" style={{ width: "100%" }}>
           <LabeledLine leftLabel="Secondary" />
           <SecondaryCheck
             activeFactionName={activeFaction.name}
@@ -1007,7 +1048,10 @@ export function AdditionalActions({
         );
       });
       return (
-        <div className="flexColumn largeFont" style={{ ...style }}>
+        <div
+          className="flexColumn largeFont"
+          style={{ width: "100%", ...style }}
+        >
           <LabeledLine leftLabel="Primary" />
           <LabeledDiv label="Imperial Point ?">
             <div
