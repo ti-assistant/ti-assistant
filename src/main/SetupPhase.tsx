@@ -20,7 +20,7 @@ import { Faction } from "../util/api/factions";
 import { GameState, StateUpdateData } from "../util/api/state";
 import { Objective } from "../util/api/objectives";
 import { SelectableRow } from "../SelectableRow";
-import { Loader } from "../Loader";
+import { LockedButtons } from "../LockedButton";
 
 export function startFirstRound(
   gameid: string,
@@ -304,18 +304,21 @@ export default function SetupPhase() {
           Select all faction choices and reveal 2 objectives
         </div>
       ) : null}
-      <button
-        disabled={!setupPhaseComplete(factions ?? {}, subState ?? {})}
-        style={{ fontSize: responsivePixels(40) }}
-        onClick={() => {
-          if (!gameid) {
-            return;
-          }
-          startFirstRound(gameid, subState ?? {}, factions ?? {});
-        }}
-      >
-        Start Game
-      </button>
+      <LockedButtons
+        unlocked={setupPhaseComplete(factions ?? {}, subState ?? {})}
+        buttons={[
+          {
+            text: "Start Game",
+            onClick: () => {
+              if (!gameid) {
+                return;
+              }
+              startFirstRound(gameid, subState ?? {}, factions ?? {});
+            },
+            style: { fontSize: responsivePixels(40) },
+          },
+        ]}
+      />
     </div>
   );
 }

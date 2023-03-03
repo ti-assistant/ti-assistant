@@ -53,6 +53,7 @@ import { Selector } from "../Selector";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { computeVPs } from "../FactionSummary";
 import { Options } from "../util/api/options";
+import { LockedButtons } from "../LockedButton";
 
 const RIDERS = [
   "Galactic Threat",
@@ -1434,38 +1435,22 @@ export default function AgendaPhase() {
                 </LabeledDiv>
               )
             ) : null}
-            <div
-              className="flexRow"
+            <LockedButtons
+              unlocked={false}
               style={{
                 marginTop: responsivePixels(12),
                 justifyContent: "center",
               }}
-            >
-              {lockedButton ? (
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setLockedButton(false)}
-                >
-                  &#128274;
-                </div>
-              ) : (
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setLockedButton(true)}
-                >
-                  &#128275;
-                </div>
-              )}
-              <button
-                disabled={lockedButton}
-                style={{
-                  fontSize: responsivePixels(24),
-                }}
-                onClick={() => nextPhase()}
-              >
-                Start Next Round
-              </button>
-            </div>
+              buttons={[
+                {
+                  text: "Start Next Round",
+                  style: {
+                    fontSize: responsivePixels(24),
+                  },
+                  onClick: nextPhase,
+                },
+              ]}
+            />
           </React.Fragment>
         )}
       </div>

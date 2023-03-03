@@ -128,6 +128,7 @@ export function LabeledLine({
     width: "100%",
     alignItems: "flex-start",
     marginTop: !!label ? responsivePixels(4) : 0,
+    gap: 0,
     ...style,
   };
   return (
@@ -158,7 +159,7 @@ export function LabeledLine({
       {!!label ? (
         <div className="flexRow" style={{ width: "100%" }}>
           <div
-            className="mediumFont centerLabel"
+            className="flexRow mediumFont centerLabel"
             style={{
               color: color,
               textShadow:
@@ -167,6 +168,18 @@ export function LabeledLine({
           >
             {label}
           </div>
+        </div>
+      ) : null}
+      {!!rightLabel ? (
+        <div
+          className="mediumFont rightLabel"
+          style={{
+            color: color,
+            textShadow:
+              color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+          }}
+        >
+          {rightLabel}
         </div>
       ) : null}
     </div>

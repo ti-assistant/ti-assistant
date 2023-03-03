@@ -34,6 +34,7 @@ import { getInitiativeForFaction } from "../util/helpers";
 import { FullFactionSymbol } from "../FactionCard";
 import { NumberedItem } from "../NumberedItem";
 import { Selector } from "../Selector";
+import { LockedButtons } from "../LockedButton";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -591,7 +592,6 @@ export default function StatusPhase() {
   }>({
     show: false,
   });
-  const [lockedButton, setLockedButton] = useState(true);
 
   function showInfoModal(title: string, content: ReactNode) {
     setInfoModal({
@@ -740,6 +740,19 @@ export default function StatusPhase() {
     }
     hideSubStateObjective(gameid, objectiveName);
   }
+
+  const nextPhaseButtons = [];
+  if (!state?.agendaUnlocked) {
+    nextPhaseButtons.push({
+      text: "Start Next Round",
+      onClick: () => nextPhase(true),
+    });
+  }
+  nextPhaseButtons.push({
+    text: "Advance to Agenda Phase",
+    onClick: () => nextPhase(false),
+  });
+
   return (
     <React.Fragment>
       <Modal
@@ -989,39 +1002,10 @@ export default function StatusPhase() {
               Reveal one Stage {(round ?? 1) > 3 ? "II" : "I"} objective
             </div>
           ) : null}
-          <div className="flexRow">
-            {!statusPhaseComplete(subState) ? (
-              lockedButton ? (
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setLockedButton(false)}
-                >
-                  &#128274;
-                </div>
-              ) : (
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setLockedButton(true)}
-                >
-                  &#128275;
-                </div>
-              )
-            ) : null}
-            {!state?.agendaUnlocked ? (
-              <button
-                disabled={lockedButton && !statusPhaseComplete(subState)}
-                onClick={() => nextPhase(true)}
-              >
-                Start Next Round
-              </button>
-            ) : null}
-            <button
-              disabled={lockedButton && !statusPhaseComplete(subState)}
-              onClick={() => nextPhase()}
-            >
-              Advance to Agenda Phase
-            </button>
-          </div>
+          <LockedButtons
+            unlocked={statusPhaseComplete(subState)}
+            buttons={nextPhaseButtons}
+          />
         </div>
         <div
           className="flexColumn"

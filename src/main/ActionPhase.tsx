@@ -48,6 +48,7 @@ import {
 import { getDefaultStrategyCards } from "../util/api/defaults";
 import { FullScreenLoader } from "../Loader";
 import { Agenda } from "../util/api/agendas";
+import { LockedButtons } from "../LockedButton";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -1162,11 +1163,13 @@ export function ActivePlayerColumn({
   activeFaction,
   onDeckFaction,
 }: ActivePlayerColumnProps) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+
   return (
     <div
       className="flexColumn"
       style={{
-        height: "100svh",
         boxSizing: "border-box",
         paddingTop: responsivePixels(74),
         justifyContent: "flex-start",
@@ -1242,6 +1245,21 @@ export function ActivePlayerColumn({
           </FactionCard>
         </CSSTransition>
       </SwitchTransition>
+      <LockedButtons
+        unlocked={!activeFaction}
+        style={{ marginTop: responsivePixels(12) }}
+        buttons={[
+          {
+            text: "Advance to Status Phase",
+            onClick: () => {
+              if (!gameid) {
+                return;
+              }
+              advanceToStatusPhase(gameid);
+            },
+          },
+        ]}
+      />
     </div>
   );
 }
@@ -1330,9 +1348,8 @@ export default function ActionPhase() {
       className="flexRow"
       style={{
         gap: responsivePixels(20),
-        height: "100svh",
         width: "100%",
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "space-between",
       }}
     >
@@ -1347,7 +1364,6 @@ export default function ActionPhase() {
           gap: numFactions > 7 ? 0 : responsivePixels(8),
         }}
       >
-        {/* <div className="flexRow">Initiative Order</div> */}
         {Object.values(cardsByFaction).map((cards) => {
           return (
             <SmallStrategyCard
@@ -1355,19 +1371,6 @@ export default function ActionPhase() {
               cards={cards}
             />
           );
-          // if (cards.length === 1 && cards[0]) {
-          //   return (
-          //     <SmallStrategyCard
-          //       key={cards[0].name}
-          //       cards={cards}
-          //       // card={cards[0]}
-          //       // active={!cards[0].used}
-          //     />
-          //   );
-          // }
-          // return <SmallStrategyCard
-          //   key={cards[0].name}
-          //   cards
         })}
       </div>
       <div className="flexColumn" style={{ gap: responsivePixels(16) }}>
@@ -1382,16 +1385,20 @@ export default function ActionPhase() {
               <div style={{ fontSize: responsivePixels(42) }}>
                 Action Phase Complete
               </div>
-              <button
-                onClick={() => {
-                  if (!gameid) {
-                    return;
-                  }
-                  advanceToStatusPhase(gameid);
-                }}
-              >
-                Advance to Status Phase
-              </button>
+              <LockedButtons
+                unlocked={true}
+                buttons={[
+                  {
+                    text: "Advance to Status Phase",
+                    onClick: () => {
+                      if (!gameid) {
+                        return;
+                      }
+                      advanceToStatusPhase(gameid);
+                    },
+                  },
+                ]}
+              />
             </React.Fragment>
           )}
         </div>

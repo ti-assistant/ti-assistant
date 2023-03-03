@@ -14,7 +14,11 @@ import {
   Planet,
   unclaimPlanet,
 } from "../../../src/util/api/planets";
-import { FactionCard, StartingComponents } from "../../../src/FactionCard";
+import {
+  FactionCard,
+  FullFactionSymbol,
+  StartingComponents,
+} from "../../../src/FactionCard";
 import { BasicFactionTile } from "../../../src/FactionTile";
 import { FactionSummary } from "../../../src/FactionSummary";
 import { StaticFactionTimer } from "../../../src/Timer";
@@ -93,6 +97,8 @@ import { TechRow } from "../../../src/TechRow";
 import { PlanetRow } from "../../../src/PlanetRow";
 import { ObjectiveList } from "../../../src/ObjectiveList";
 import { getDefaultStrategyCards } from "../../../src/util/api/defaults";
+import { LockedButtons } from "../../../src/LockedButton";
+import { getFactionColor } from "../../../src/util/factions";
 
 const techOrder = ["green", "blue", "yellow", "red", "upgrade"];
 
@@ -318,7 +324,7 @@ function PhaseSection() {
     }
   }
 
-  let phaseName = `${state?.phase} PHASE`;
+  let phaseName: string | null = `${state?.phase} PHASE`;
   let phaseContent = null;
   switch (state?.phase) {
     case "SETUP": {
@@ -331,9 +337,14 @@ function PhaseSection() {
           );
         }
       );
-      phaseName = "SETUP PHASE";
+      phaseName = null;
       phaseContent = (
         <React.Fragment>
+          <LabeledDiv label="Starting Components">
+            <div style={{ fontSize: "16px", whiteSpace: "nowrap" }}>
+              <StartingComponents faction={faction} />
+            </div>
+          </LabeledDiv>
           <LabeledDiv label="Speaker Actions">
             {(subState.objectives ?? []).length > 0 ? (
               <LabeledDiv label="REVEALED OBJECTIVES">
@@ -389,23 +400,20 @@ function PhaseSection() {
               </ClientOnlyHoverMenu>
             ) : null}
           </LabeledDiv>
-          <LabeledDiv label="Starting Components">
-            <div style={{ fontSize: "16px", whiteSpace: "nowrap" }}>
-              <StartingComponents faction={faction} />
-            </div>
-          </LabeledDiv>
-          {setupPhaseComplete(factions, subState) ? (
-            <button
-              onClick={() => {
-                if (!gameid) {
-                  return;
-                }
-                startFirstRound(gameid, subState, factions);
-              }}
-            >
-              Start Game
-            </button>
-          ) : null}
+          <LockedButtons
+            unlocked={setupPhaseComplete(factions, subState)}
+            buttons={[
+              {
+                text: "Start Game",
+                onClick: () => {
+                  if (!gameid) {
+                    return;
+                  }
+                  startFirstRound(gameid, subState, factions);
+                },
+              },
+            ]}
+          />
         </React.Fragment>
       );
       break;
@@ -448,32 +456,10 @@ function PhaseSection() {
         phaseName = "STRATEGY PHASE";
         phaseContent = <button onClick={() => undoPick()}>Undo SC Pick</button>;
       }
-      if (state.activeplayer === "None") {
-        phaseName = "END OF STRATEGY PHASE";
-        phaseContent = (
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", width: "100%", gap: "4px" }}
-          >
-            <div className="flexRow">
-              <button
-                onClick={() => {
-                  if (!gameid) {
-                    return;
-                  }
-                  advanceToActionPhase(gameid, strategyCards, subState);
-                }}
-              >
-                Advance to Action Phase
-              </button>
-            </div>
-          </div>
-        );
-      }
       break;
     case "ACTION":
       if (factionName === state.activeplayer) {
-        phaseName = "ACTION PHASE";
+        phaseName = "SELECT ACTION";
         phaseContent = (
           <React.Fragment>
             <FactionActionButtons factionName={factionName} />
@@ -573,7 +559,7 @@ function PhaseSection() {
       );
       const subStateObjective = (subState.objectives ?? [])[0];
       const subStateObjectiveObj = objectives[subStateObjective ?? ""];
-      phaseName = "STATUS PHASE";
+      phaseName = "SCORE OBJECTIVES";
       phaseContent = (
         <React.Fragment>
           <div
@@ -1104,7 +1090,7 @@ function PhaseSection() {
   }
   return (
     <div className="flexColumn largeFont">
-      <LabeledLine label={phaseName} />
+      {phaseName ? <LabeledLine label={phaseName} /> : null}
       {phaseContent}
     </div>
   );
@@ -1429,6 +1415,13 @@ export default function GamePage() {
       revalidateIfStale: false,
     }
   );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
 
   useEffect(() => {
     if (!!gameid) {
@@ -1450,15 +1443,6 @@ export default function GamePage() {
   function swapToFaction(factionName: string) {
     router.push(`/game/${gameid}/${factionName}`);
     return;
-  }
-
-  function isActivePlayer() {
-    switch (state?.phase) {
-      case "STRATEGY":
-      case "ACTION":
-        return playerFaction === state?.activeplayer;
-    }
-    return false;
   }
 
   let orderedFactions: Faction[] = [];
@@ -1512,6 +1496,107 @@ export default function GamePage() {
       break;
   }
 
+  function NextPhaseButtons({}) {
+    switch (state?.phase) {
+      case "SETUP":
+        return (
+          <LockedButtons
+            unlocked={setupPhaseComplete(factions ?? {}, subState)}
+            buttons={[
+              {
+                text: "Start Game",
+                onClick: () => {
+                  if (!gameid) {
+                    return;
+                  }
+                  startFirstRound(gameid, subState, factions ?? {});
+                },
+              },
+            ]}
+          />
+        );
+      case "STRATEGY":
+        if (state?.activeplayer === "None") {
+          return (
+            <button
+              onClick={() => {
+                if (!gameid) {
+                  return;
+                }
+                advanceToActionPhase(gameid, strategyCards, subState);
+              }}
+            >
+              Advance to Action Phase
+            </button>
+          );
+        }
+        return null;
+      case "ACTION":
+        return (
+          <LockedButtons
+            unlocked={state?.activeplayer === "None"}
+            buttons={[
+              {
+                text: "Advance to Status Phase",
+                onClick: () => {
+                  if (!gameid) {
+                    return;
+                  }
+                  advanceToStatusPhase(gameid);
+                },
+              },
+            ]}
+          />
+        );
+      case "STATUS":
+        let buttons = [];
+        if (!state?.agendaUnlocked) {
+          buttons.push({
+            text: "Start Next Round",
+            onClick: () => {
+              if (!gameid) {
+                return;
+              }
+              startNextRound(gameid, subState);
+            },
+          });
+        }
+        buttons.push({
+          text: "Advance to Agenda Phase",
+          onClick: () => {
+            if (!gameid) {
+              return;
+            }
+            advanceToAgendaPhase(gameid, subState);
+          },
+        });
+        return (
+          <LockedButtons
+            unlocked={statusPhaseComplete(subState)}
+            buttons={buttons}
+          />
+        );
+      case "AGENDA":
+        return (
+          <LockedButtons
+            unlocked={state?.agendaNum === 3}
+            buttons={[
+              {
+                text: "Start Next Round",
+                onClick: () => {
+                  if (!gameid) {
+                    return;
+                  }
+                  startNextRound(gameid, subState);
+                },
+              },
+            ]}
+          />
+        );
+    }
+    return null;
+  }
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -1538,28 +1623,63 @@ export default function GamePage() {
         <div
           className="flexColumn"
           style={{
-            height: "60px",
             width: "100%",
             gap: "4px",
             fontSize: "18px",
-            marginBottom: "8px",
           }}
         >
+          <LabeledLine
+            leftLabel={state?.phase + " PHASE"}
+            rightLabel={"ROUND " + state?.round}
+          />
           {orderTitle}
           <div
             className="flexRow"
-            style={{ width: "100%", alignItems: "space-evenly" }}
+            style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
           >
             {orderedFactions.map((faction) => {
+              const color = getFactionColor(faction);
               return (
-                <BasicFactionTile
-                  key={faction.name}
-                  faction={faction}
+                <div
+                  className="flexRow"
+                  style={{
+                    position: "relative",
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "8px",
+                    border: `3px solid ${color}`,
+                    boxShadow:
+                      color === "Black"
+                        ? "0 0 3px #999, 0 0 3px #999 inset"
+                        : undefined,
+                  }}
                   onClick={() => swapToFaction(faction.name)}
-                  opts={{ hideName: true, iconSize: 28 }}
-                />
+                >
+                  <div
+                    className="flexRow"
+                    style={{
+                      position: "relative",
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "28px",
+                        height: "28px",
+                      }}
+                    >
+                      <FullFactionSymbol faction={faction.name} />
+                    </div>
+                  </div>
+                </div>
               );
             })}
+          </div>
+          <div className="flexColumn" style={{ marginTop: "8px" }}>
+            <NextPhaseButtons />
           </div>
         </div>
         <div style={{ width: "100%", margin: "4px" }}>

@@ -495,6 +495,15 @@ input[type="text"] {
   border-radius: var(--five-pixel);
   padding: var(--two-pixel) var(--four-pixel);
 }
+.rightLabel {
+  position: absolute;
+  white-space: nowrap;
+  right: var(--six-pixel);
+  top: var(--negative-two-pixel);
+  background-color: #222;
+  border-radius: var(--five-pixel);
+  padding: var(--two-pixel) var(--four-pixel);
+}
 
 @media only screen and (max-width: 900px) {
   body {
@@ -520,11 +529,14 @@ input[type="text"] {
     font-size: 24px;
     text-align: center;
   }
-
+/* 
   .leftLabel {
     top: var(--negative-four-pixel);
   }
   .centerLabel {
     top: var(--negative-two-pixel);
   }
+  .rightLabel {
+    top: var(--negative-four-pixel);
+  } */
 }

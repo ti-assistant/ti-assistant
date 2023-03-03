@@ -840,6 +840,7 @@ export function FactionCard({
                 zIndex: -1,
                 opacity: "40%",
                 position: "absolute",
+                top: 0,
                 width: opts.iconSize ? opts.iconSize : "100%",
                 height: opts.iconSize ? opts.iconSize : "100%",
               }}
