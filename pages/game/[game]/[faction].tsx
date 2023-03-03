@@ -49,6 +49,7 @@ import {
   castSubStateVotes,
   hideSubStateAgenda,
   hideSubStateObjective,
+  markSecondary,
   revealSubStateAgenda,
   revealSubStateObjective,
   scoreSubStateObjective,
@@ -101,6 +102,49 @@ import { LockedButtons } from "../../../src/LockedButton";
 import { getFactionColor } from "../../../src/util/factions";
 
 const techOrder = ["green", "blue", "yellow", "red", "upgrade"];
+
+function SecondaryCheck({
+  factionName,
+  gameid,
+  subState,
+}: {
+  factionName: string;
+  gameid: string;
+  subState: SubState;
+}) {
+  const secondaryState =
+    (subState.factions ?? {})[factionName]?.secondary ?? "PENDING";
+  return (
+    <div className="flexRow">
+      {secondaryState === "PENDING" ? (
+        <React.Fragment>
+          <button
+            onClick={() => {
+              markSecondary(gameid, factionName, "SKIPPED");
+            }}
+          >
+            Skip
+          </button>
+          <button
+            onClick={() => {
+              markSecondary(gameid, factionName, "DONE");
+            }}
+          >
+            Mark Completed
+          </button>
+        </React.Fragment>
+      ) : (
+        <button
+          onClick={() => {
+            markSecondary(gameid, factionName, "PENDING");
+          }}
+        >
+          Not Done Yet
+        </button>
+      )}
+    </div>
+  );
+}
 
 function PhaseSection() {
   const router = useRouter();
@@ -324,7 +368,8 @@ function PhaseSection() {
     }
   }
 
-  let phaseName: string | null = `${state?.phase} PHASE`;
+  let leftLabel: string | undefined;
+  let centerLabel: string | undefined;
   let phaseContent = null;
   switch (state?.phase) {
     case "SETUP": {
@@ -337,7 +382,7 @@ function PhaseSection() {
           );
         }
       );
-      phaseName = null;
+      centerLabel = undefined;
       phaseContent = (
         <React.Fragment>
           <LabeledDiv label="Starting Components">
@@ -438,7 +483,7 @@ function PhaseSection() {
         prevPlayer(gameid, factions ?? {}, subState);
       }
       if (factionName === state.activeplayer) {
-        phaseName = "SELECT STRATEGY CARD";
+        centerLabel = "SELECT STRATEGY CARD";
         phaseContent = (
           <div className="flexColumn" style={{ width: "100%" }}>
             <div
@@ -453,13 +498,13 @@ function PhaseSection() {
           </div>
         );
       } else if (canUndo()) {
-        phaseName = "STRATEGY PHASE";
+        centerLabel = "STRATEGY PHASE";
         phaseContent = <button onClick={() => undoPick()}>Undo SC Pick</button>;
       }
       break;
     case "ACTION":
       if (factionName === state.activeplayer) {
-        phaseName = "SELECT ACTION";
+        centerLabel = "SELECT ACTION";
         phaseContent = (
           <React.Fragment>
             <FactionActionButtons factionName={factionName} />
@@ -474,7 +519,7 @@ function PhaseSection() {
                   overflowX: "auto",
                   maxWidth: "85vw",
                 }}
-                factionOnly={true}
+                primaryOnly={true}
               />
             </div>
             {subState.selectedAction ? (
@@ -487,18 +532,95 @@ function PhaseSection() {
             ) : null}
           </React.Fragment>
         );
-      } else if (subState.selectedAction === "Technology") {
-        phaseContent = (
-          <AdditionalActions
-            factionName={factionName}
-            style={{ width: "100%" }}
-            ClientOnlyHoverMenuStyle={{ overflowX: "auto", maxWidth: "85vw" }}
-            factionOnly={true}
-          />
-        );
+      } else {
+        switch (subState.selectedAction) {
+          case "Leadership":
+            leftLabel = "Leadership Secondary";
+            phaseContent = (
+              <SecondaryCheck
+                factionName={factionName}
+                gameid={gameid ?? ""}
+                subState={subState}
+              />
+            );
+            break;
+          case "Diplomacy":
+            leftLabel = "Diplomacy Secondary";
+            phaseContent = (
+              <SecondaryCheck
+                factionName={factionName}
+                gameid={gameid ?? ""}
+                subState={subState}
+              />
+            );
+            break;
+          case "Politics":
+            leftLabel = "Politics Secondary";
+            phaseContent = (
+              <SecondaryCheck
+                factionName={factionName}
+                gameid={gameid ?? ""}
+                subState={subState}
+              />
+            );
+            break;
+          case "Construction":
+            leftLabel = "Construction Secondary";
+            phaseContent = (
+              <SecondaryCheck
+                factionName={factionName}
+                gameid={gameid ?? ""}
+                subState={subState}
+              />
+            );
+            break;
+          case "Trade":
+            leftLabel = "Trade Secondary";
+            phaseContent = (
+              <SecondaryCheck
+                factionName={factionName}
+                gameid={gameid ?? ""}
+                subState={subState}
+              />
+            );
+            break;
+          case "Warfare":
+            leftLabel = "Warfare Secondary";
+            phaseContent = (
+              <SecondaryCheck
+                factionName={factionName}
+                gameid={gameid ?? ""}
+                subState={subState}
+              />
+            );
+            break;
+          case "Technology":
+            phaseContent = (
+              <AdditionalActions
+                factionName={factionName}
+                style={{ width: "100%" }}
+                ClientOnlyHoverMenuStyle={{
+                  overflowX: "auto",
+                  maxWidth: "85vw",
+                }}
+                secondaryOnly={true}
+              />
+            );
+            break;
+          case "Imperial":
+            leftLabel = "Imperial Secondary";
+            phaseContent = (
+              <SecondaryCheck
+                factionName={factionName}
+                gameid={gameid ?? ""}
+                subState={subState}
+              />
+            );
+            break;
+        }
       }
       if (state.activeplayer === "None") {
-        phaseName = "END OF ACTION PHASE";
+        centerLabel = "END OF ACTION PHASE";
         phaseContent = (
           <div
             className="flexColumn"
@@ -559,7 +681,7 @@ function PhaseSection() {
       );
       const subStateObjective = (subState.objectives ?? [])[0];
       const subStateObjectiveObj = objectives[subStateObjective ?? ""];
-      phaseName = "SCORE OBJECTIVES";
+      centerLabel = "SCORE OBJECTIVES";
       phaseContent = (
         <React.Fragment>
           <div
@@ -757,7 +879,7 @@ function PhaseSection() {
     }
     case "AGENDA": {
       const items = Math.min((targets ?? []).length, 12);
-      phaseName = "AGENDA PHASE";
+      centerLabel = "AGENDA PHASE";
       phaseContent = (
         <React.Fragment>
           {!currentAgenda ? (
@@ -1088,9 +1210,14 @@ function PhaseSection() {
   if (!phaseContent) {
     return null;
   }
+
+  const hasLabel = !!leftLabel || !!centerLabel;
+
   return (
     <div className="flexColumn largeFont">
-      {phaseName ? <LabeledLine label={phaseName} /> : null}
+      {hasLabel ? (
+        <LabeledLine label={centerLabel} leftLabel={leftLabel} />
+      ) : null}
       {phaseContent}
     </div>
   );
@@ -1642,6 +1769,7 @@ export default function GamePage() {
               return (
                 <div
                   className="flexRow"
+                  key={faction.name}
                   style={{
                     position: "relative",
                     width: "36px",

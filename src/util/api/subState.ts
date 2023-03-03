@@ -12,6 +12,8 @@ import { setSpeaker } from "./state";
 import { lockTech, unlockTech } from "./techs";
 import { poster } from "./util";
 
+export type Secondary = "PENDING" | "DONE" | "SKIPPED";
+
 export type SubStateUpdateAction =
   | "CLEAR_SUB_STATE"
   | "SET_ACTION"
@@ -37,6 +39,7 @@ export type SubStateUpdateAction =
   | "SWAP_STRATEGY_CARDS"
   | "PLAY_RIDER"
   | "UNDO_RIDER"
+  | "MARK_SECONDARY"
   | "SET_OTHER_FIELD"
   | "FINALIZE_SUB_STATE";
 
@@ -53,6 +56,7 @@ export interface SubStateUpdateData {
   objectiveName?: string;
   outcome?: string;
   planetName?: string;
+  secondary?: Secondary;
   riderName?: string;
   target?: string;
   techName?: string;
@@ -61,6 +65,7 @@ export interface SubStateUpdateData {
 }
 
 export interface SubStateFaction {
+  secondary?: Secondary;
   objectives?: string[];
   planets?: string[];
   removeTechs?: string[];
@@ -723,7 +728,7 @@ export function pickSubStateStrategyCard(
           0
         );
         if (numPickedCards > 0 && numFactions > 4) {
-          return updatedSubState; 
+          return updatedSubState;
         }
         if (numPickedCards > 1) {
           return updatedSubState;
@@ -849,6 +854,41 @@ export function removeSubStateRider(gameid: string, riderName: string) {
         }
 
         delete updatedSubState.riders[riderName];
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function markSecondary(
+  gameid: string,
+  factionName: string,
+  secondary: Secondary
+) {
+  const data: SubStateUpdateData = {
+    action: "MARK_SECONDARY",
+    factionName: factionName,
+    secondary: secondary,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState) ?? {};
+
+        if (!updatedSubState.factions) {
+          updatedSubState.factions = {};
+        }
+
+        const updatedFaction = updatedSubState.factions[factionName] ?? {};
+
+        updatedFaction.secondary = secondary;
+
+        updatedSubState.factions[factionName] = updatedFaction;
 
         return updatedSubState;
       },

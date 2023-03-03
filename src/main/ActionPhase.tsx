@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import React, { CSSProperties } from "react";
-import { FactionCard } from "../FactionCard";
+import { FactionCard, FullFactionSymbol } from "../FactionCard";
 import { SmallStrategyCard } from "../StrategyCard";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
 import { hasTech, Tech } from "../util/api/techs";
@@ -26,8 +26,10 @@ import {
   clearAddedSubStateTech,
   clearSubState,
   finalizeSubState,
+  markSecondary,
   removeSubStatePlanet,
   scoreSubStateObjective,
+  Secondary,
   setSubStateSelectedAction,
   setSubStateSpeaker,
   SubState,
@@ -53,6 +55,122 @@ import { LockedButtons } from "../LockedButton";
 export interface FactionActionButtonsProps {
   factionName: string;
   buttonStyle?: CSSProperties;
+}
+
+function SecondaryCheck({
+  activeFactionName,
+  gameid,
+  orderedFactions,
+  subState,
+}: {
+  activeFactionName: string;
+  gameid: string;
+  orderedFactions: Faction[];
+  subState: SubState;
+}) {
+  let allCompleted = true;
+  return (
+    <div className="flexColumn hugeFont">
+      <div className="flexRow">
+        {orderedFactions.map((faction) => {
+          if (faction.name === activeFactionName) {
+            return null;
+          }
+          const secondaryState =
+            (subState.factions ?? {})[faction.name]?.secondary ?? "PENDING";
+          const color = getFactionColor(faction);
+          if (secondaryState === "PENDING") {
+            allCompleted = false;
+          }
+          return (
+            <div
+              className="flexRow"
+              key={faction.name}
+              style={{
+                position: "relative",
+                width: "36px",
+                height: "36px",
+                borderRadius: "8px",
+                border: `3px solid ${color}`,
+                cursor: "pointer",
+                boxShadow:
+                  color === "Black"
+                    ? "0 0 3px #999, 0 0 3px #999 inset"
+                    : undefined,
+              }}
+              onClick={() => {
+                if (!gameid) {
+                  return;
+                }
+                let nextState: Secondary = "DONE";
+                switch (secondaryState) {
+                  case "DONE":
+                    nextState = "SKIPPED";
+                    break;
+                  case "SKIPPED":
+                    nextState = "PENDING";
+                    break;
+                }
+
+                markSecondary(gameid, faction.name, nextState);
+              }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "6px",
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: "28px",
+                    height: "28px",
+                  }}
+                >
+                  {secondaryState === "DONE" ? (
+                    <div
+                      style={{
+                        position: "absolute",
+                        color: "#eee",
+                        width: "100%",
+                        fontSize: responsivePixels(32),
+                        lineHeight: responsivePixels(30),
+                        zIndex: 1,
+                        textAlign: "center",
+                      }}
+                    >
+                      ✓
+                    </div>
+                  ) : null}
+                  {secondaryState === "SKIPPED" ? (
+                    <div
+                      style={{
+                        position: "absolute",
+                        color: "#eee",
+                        width: "100%",
+                        fontSize: responsivePixels(34),
+                        lineHeight: responsivePixels(26),
+                        zIndex: 1,
+                        textAlign: "center",
+                      }}
+                    >
+                      ⤬
+                    </div>
+                  ) : null}
+                  <FullFactionSymbol faction={faction.name} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {allCompleted ? "Secondaries completed" : null}
+    </div>
+  );
 }
 
 export function FactionActionButtons({
@@ -191,14 +309,16 @@ export interface AdditionalActionsProps {
   factionName: string;
   style?: CSSProperties;
   ClientOnlyHoverMenuStyle?: CSSProperties;
-  factionOnly?: boolean;
+  primaryOnly?: boolean;
+  secondaryOnly?: boolean;
 }
 
 export function AdditionalActions({
   factionName,
   style = {},
   ClientOnlyHoverMenuStyle = {},
-  factionOnly = false,
+  primaryOnly = false,
+  secondaryOnly = false,
 }: AdditionalActionsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
@@ -448,15 +568,12 @@ export function AdditionalActions({
     case "Technology":
       const researchedTech =
         ((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? [];
-      if (!!factionOnly) {
+      if (!!primaryOnly || !!secondaryOnly) {
         const isActive = state?.activeplayer === factionName;
         const numTechs =
           isActive || factionName === "Universities of Jol-Nar" ? 2 : 1;
         return activeFaction.name !== "Nekro Virus" ? (
-          <div
-            className="flexColumn largeFont"
-            style={{ width: "100%", gap: responsivePixels(4) }}
-          >
+          <div className="flexColumn largeFont" style={{ width: "100%" }}>
             <LabeledLine
               leftLabel={
                 isActive ? "Technology Primary" : "Technology Secondary"
@@ -474,7 +591,16 @@ export function AdditionalActions({
                       <TechRow
                         key={tech}
                         tech={techObj}
-                        removeTech={() => removeTech(activeFaction.name, tech)}
+                        removeTech={() => {
+                          if (gameid && !isActive) {
+                            markSecondary(
+                              gameid,
+                              activeFaction.name,
+                              "PENDING"
+                            );
+                          }
+                          removeTech(activeFaction.name, tech);
+                        }}
                       />
                     );
                   })}
@@ -483,8 +609,25 @@ export function AdditionalActions({
               {researchedTech.length < numTechs ? (
                 <TechSelectHoverMenu
                   techs={researchableTechs}
-                  selectTech={(tech) => addTech(activeFaction.name, tech)}
+                  selectTech={(tech) => {
+                    if (
+                      gameid &&
+                      !isActive &&
+                      researchedTech.length + 1 === numTechs
+                    ) {
+                      markSecondary(gameid, activeFaction.name, "DONE");
+                    }
+                    addTech(activeFaction.name, tech);
+                  }}
                   direction="vertical"
+                />
+              ) : null}
+              {isActive ? (
+                <SecondaryCheck
+                  activeFactionName={activeFaction.name}
+                  gameid={gameid ?? ""}
+                  orderedFactions={orderedFactions}
+                  subState={subState}
                 />
               ) : null}
             </React.Fragment>
@@ -501,7 +644,7 @@ export function AdditionalActions({
               className="flexColumn"
               style={{ gap: responsivePixels(4), width: "100%" }}
             >
-              <LabeledLine leftLabel="PRIMARY" />
+              <LabeledLine leftLabel="Primary" />
 
               <div style={{ width: "fit-content" }}>
                 <LabeledDiv
@@ -545,7 +688,13 @@ export function AdditionalActions({
             className="flexColumn"
             style={{ gap: responsivePixels(4), width: "100%" }}
           >
-            <LabeledLine leftLabel="SECONDARY" />
+            <LabeledLine leftLabel="Secondary" />
+            <SecondaryCheck
+              activeFactionName={activeFaction.name}
+              gameid={gameid ?? ""}
+              orderedFactions={orderedFactions}
+              subState={subState}
+            />
             <div
               className="flexRow mediumFont"
               style={{
@@ -586,7 +735,12 @@ export function AdditionalActions({
                           <TechRow
                             key={tech}
                             tech={techObj}
-                            removeTech={() => removeTech(faction.name, tech)}
+                            removeTech={() => {
+                              if (gameid) {
+                                markSecondary(gameid, faction.name, "PENDING");
+                              }
+                              removeTech(faction.name, tech);
+                            }}
                             opts={{ hideSymbols: true }}
                           />
                         );
@@ -594,7 +748,15 @@ export function AdditionalActions({
                       {researchedTechs.length < maxTechs ? (
                         <TechSelectHoverMenu
                           techs={availableTechs}
-                          selectTech={(tech) => addTech(faction.name, tech)}
+                          selectTech={(tech) => {
+                            if (
+                              gameid &&
+                              researchedTechs.length + 1 === maxTechs
+                            ) {
+                              markSecondary(gameid, faction.name, "DONE");
+                            }
+                            addTech(faction.name, tech);
+                          }}
                         />
                       ) : null}
                     </React.Fragment>
@@ -610,6 +772,7 @@ export function AdditionalActions({
       return (
         <div className="flexColumn" style={{ gap: "4px", ...style }}>
           <React.Fragment>
+            <LabeledLine leftLabel="Primary" />
             {selectedSpeaker ? (
               <LabeledDiv label="NEW SPEAKER" style={{ width: "90%" }}>
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
@@ -619,9 +782,6 @@ export function AdditionalActions({
                   >
                     <BasicFactionTile faction={selectedSpeaker} />
                   </SelectableRow>
-                  {/* {(subState.speaker ?? []).map((planet) => {
-                return <PlanetRow key={planet.name} planet={planet} removePlanet={removePlanet} />
-              })} */}
                 </div>
               </LabeledDiv>
             ) : (
@@ -645,6 +805,13 @@ export function AdditionalActions({
               </ClientOnlyHoverMenu>
             )}
           </React.Fragment>
+          <LabeledLine leftLabel="Secondary" />
+          <SecondaryCheck
+            activeFactionName={activeFaction.name}
+            gameid={gameid ?? ""}
+            orderedFactions={orderedFactions}
+            subState={subState}
+          />
         </div>
       );
     case "Diplomacy":
@@ -796,7 +963,17 @@ export function AdditionalActions({
     case "Construction":
     case "Trade":
     case "Warfare":
-      return null;
+      return (
+        <div className="flexColumn">
+          <LabeledLine leftLabel="Secondary" />
+          <SecondaryCheck
+            activeFactionName={activeFaction.name}
+            gameid={gameid ?? ""}
+            orderedFactions={orderedFactions}
+            subState={subState}
+          />
+        </div>
+      );
     case "Imperial":
       let hasImperialPoint = false;
       scoredObjectives.forEach((objective) => {
@@ -831,7 +1008,8 @@ export function AdditionalActions({
       });
       return (
         <div className="flexColumn largeFont" style={{ ...style }}>
-          <LabeledDiv label="IMPERIAL POINT ?">
+          <LabeledLine leftLabel="Primary" />
+          <LabeledDiv label="Imperial Point ?">
             <div
               className="flexRow"
               style={{ width: "100%", justifyContent: "space-evenly" }}
@@ -856,7 +1034,7 @@ export function AdditionalActions({
               </button>
             </div>
           </LabeledDiv>
-          <LabeledDiv label="SCORED PUBLIC">
+          <LabeledDiv label="Score Public Objective ?">
             <React.Fragment>
               {scoredPublics.length > 0 ? (
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
@@ -881,27 +1059,40 @@ export function AdditionalActions({
                   })}
                 </div>
               ) : null}
-              {availablePublicObjectives.length > 0 &&
-              scoredPublics.length < 1 ? (
-                <ClientOnlyHoverMenu label="Score Public Objective">
-                  <div className="flexColumn" style={{ ...secretButtonStyle }}>
-                    {availablePublicObjectives.map((objective) => {
-                      return (
-                        <button
-                          key={objective.name}
-                          onClick={() =>
-                            addObjective(activeFaction.name, objective.name)
-                          }
-                        >
-                          {objective.name}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </ClientOnlyHoverMenu>
+              {scoredPublics.length < 1 ? (
+                availablePublicObjectives.length > 0 ? (
+                  <ClientOnlyHoverMenu label="Score Public Objective">
+                    <div
+                      className="flexColumn"
+                      style={{ ...secretButtonStyle }}
+                    >
+                      {availablePublicObjectives.map((objective) => {
+                        return (
+                          <button
+                            key={objective.name}
+                            onClick={() =>
+                              addObjective(activeFaction.name, objective.name)
+                            }
+                          >
+                            {objective.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </ClientOnlyHoverMenu>
+                ) : (
+                  "No unscored public objectives"
+                )
               ) : null}
             </React.Fragment>
           </LabeledDiv>
+          <LabeledLine leftLabel="Secondary" />
+          <SecondaryCheck
+            activeFactionName={activeFaction.name}
+            gameid={gameid ?? ""}
+            orderedFactions={orderedFactions}
+            subState={subState}
+          />
         </div>
       );
     // TODO: Display buttons for various actions.

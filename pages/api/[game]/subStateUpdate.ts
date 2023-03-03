@@ -432,6 +432,17 @@ export default async function handler(
       };
       break;
     }
+    case "MARK_SECONDARY": {
+      if (!data.factionName || !data.secondary) {
+        res.status(422).send({ message: "Missing values" });
+        return;
+      }
+      updates = {
+        [`subState.factions.${data.factionName}.secondary`]: data.secondary,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "SET_OTHER_FIELD": {
       if (!data.fieldName) {
         res.status(422).send({ message: "Missing Field Name " });
