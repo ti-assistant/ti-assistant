@@ -8,7 +8,7 @@ import { Tech } from "./util/api/techs";
 export function sortTechsByPreReqAndExpansion(techs: Tech[]) {
   techs.sort((a, b) => {
     if (a.prereqs.length === b.prereqs.length) {
-      if (a.game > b.game) {
+      if (a.expansion > b.expansion) {
         return 1;
       }
       return -1;
