@@ -93,6 +93,7 @@ function SecondaryCheck({
                 borderRadius: "8px",
                 border: `3px solid ${color}`,
                 cursor: "pointer",
+                backdropFilter: "blur(4px)",
                 boxShadow:
                   color === "Black"
                     ? "0 0 3px #999, 0 0 3px #999 inset"
@@ -542,7 +543,7 @@ export function AdditionalActions({
     padding: responsivePixels(8),
     display: "grid",
     gridAutoFlow: "column",
-    gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
+    gridTemplateRows: `repeat(${Math.min(14, claimablePlanets.length)}, auto)`,
     gap: responsivePixels(4),
     justifyContent: "flex-start",
     ...ClientOnlyHoverMenuStyle,

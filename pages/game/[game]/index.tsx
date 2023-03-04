@@ -10,6 +10,8 @@ import { FullFactionSymbol } from "../../../src/FactionCard";
 import Head from "next/head";
 import { Faction } from "../../../src/util/api/factions";
 import { GameState } from "../../../src/util/api/state";
+import Link from "next/link";
+import { FullScreenLoader, Loader } from "../../../src/Loader";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -48,12 +50,10 @@ export default function SelectFactionPage() {
     }
   }, [gameid]);
 
-  function selectFaction(factionName: string) {
-    router.push(`/game/${gameid}/${factionName}`);
-  }
-
-  function goToMainPage() {
-    router.push(`/game/${gameid}/main`);
+  if (factions && Object.keys(factions).length === 0) {
+    setGameId("");
+    router.push("/");
+    return;
   }
 
   const orderedFactions = Object.entries(factions ?? {}).sort((a, b) => {
@@ -70,62 +70,74 @@ export default function SelectFactionPage() {
       style={{ alignItems: "center", height: "100svh" }}
     >
       <Header />
-      <div
-        className="flexColumn"
-        style={{
-          alignItems: "stretch",
-          maxWidth: `${responsivePixels(500)}`,
-          width: "100%",
-        }}
-      >
+      {!factions ? (
+        <FullScreenLoader />
+      ) : (
         <div
-          onClick={goToMainPage}
+          className="flexColumn"
           style={{
-            border: `${responsivePixels(3)} solid grey`,
-            borderRadius: responsivePixels(5),
-            height: `10vh`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: `${responsivePixels(24)}`,
-            cursor: "pointer",
+            alignItems: "stretch",
+            maxWidth: `${responsivePixels(500)}`,
+            width: "100%",
           }}
         >
-          Main Screen
+          <Link href={`/game/${gameid}/main`}>
+            <a>
+              <div
+                style={{
+                  border: `${responsivePixels(3)} solid grey`,
+                  borderRadius: responsivePixels(5),
+                  height: `10vh`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: `${responsivePixels(24)}`,
+                  cursor: "pointer",
+                }}
+              >
+                Main Screen
+              </div>
+            </a>
+          </Link>
+          {orderedFactions.map(([name, faction]) => {
+            return (
+              <Link href={`/game/${gameid}/${name}`} key={faction.name}>
+                <a>
+                  <LabeledDiv
+                    color={getFactionColor(faction)}
+                    // onClick={() => selectFaction(name)}
+                  >
+                    <div
+                      className="flexRow"
+                      style={{
+                        zIndex: 0,
+                        opacity: "40%",
+                        position: "absolute",
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    >
+                      <FullFactionSymbol faction={faction.name} />
+                    </div>
+                    <div
+                      className="flexColumn"
+                      style={{
+                        height: "5vh",
+                        fontSize: responsivePixels(20),
+                        width: "100%",
+                        zIndex: 1,
+                      }}
+                    >
+                      {getFactionName(faction)}
+                    </div>
+                  </LabeledDiv>
+                </a>
+              </Link>
+            );
+          })}
         </div>
-        {orderedFactions.map(([name, faction]) => {
-          return (
-            <LabeledDiv
-              key={faction.name}
-              color={getFactionColor(faction)}
-              onClick={() => selectFaction(name)}
-            >
-              <div
-                className="flexRow"
-                style={{
-                  zIndex: -1,
-                  opacity: "40%",
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <FullFactionSymbol faction={faction.name} />
-              </div>
-              <div
-                className="flexColumn"
-                style={{
-                  height: "5vh",
-                  fontSize: responsivePixels(20),
-                  width: "100%",
-                }}
-              >
-                {getFactionName(faction)}
-              </div>
-            </LabeledDiv>
-          );
-        })}
-      </div>
+      )}
     </div>
   );
 }
@@ -160,6 +172,7 @@ function Header() {
       )
     );
   }, []);
+
   if (!qrCode && gameid) {
     QRCode.toDataURL(
       `https://ti-assistant.com/game/${gameid}`,
@@ -199,33 +212,40 @@ function Header() {
       </Head>
       <Sidebar side="left">{state ? "SELECT FACTION" : "LOADING..."}</Sidebar>
       <Sidebar side="right">{round}</Sidebar>
-      <div
-        className="extraLargeFont nonMobile"
-        style={{
-          cursor: "pointer",
-          position: "fixed",
-          backgroundColor: "#222",
-          top: `${responsivePixels(12)}`,
-          left: `${responsivePixels(150)}`,
-        }}
-        onClick={() => router.push("/")}
-      >
-        Twilight Imperium Assistant
-      </div>
-      <div
-        className="flexColumn extraLargeFont mobileOnly"
-        style={{
-          cursor: "pointer",
-          position: "fixed",
-          backgroundColor: "#222",
-          textAlign: "center",
-          top: `${responsivePixels(12)}`,
-          width: "100%",
-        }}
-        onClick={() => router.push("/")}
-      >
-        Twilight Imperium Assistant
-      </div>
+
+      <Link className="nonMobile" href={`/`}>
+        <a>
+          <div
+            className="extraLargeFont nonMobile"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              backgroundColor: "#222",
+              top: `${responsivePixels(12)}`,
+              left: `${responsivePixels(150)}`,
+            }}
+          >
+            Twilight Imperium Assistant
+          </div>
+        </a>
+      </Link>
+      <Link className="mobileOnly" href={`/`}>
+        <a>
+          <div
+            className="flexColumn extraLargeFont mobileOnly"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              backgroundColor: "#222",
+              textAlign: "center",
+              top: `${responsivePixels(12)}`,
+              width: "100%",
+            }}
+          >
+            Twilight Imperium Assistant
+          </div>
+        </a>
+      </Link>
       <div
         className="flexColumn nonMobile"
         style={{

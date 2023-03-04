@@ -14,6 +14,7 @@ import { BaseFaction } from "../src/util/api/factions";
 import { Selector } from "../src/Selector";
 import { FullFactionSymbol } from "../src/FactionCard";
 import { SelectableRow } from "../src/SelectableRow";
+import Link from "next/link";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1659,33 +1660,39 @@ function Header() {
       </Head>
       <Sidebar side="left">SETUP GAME</Sidebar>
       <Sidebar side="right">SETUP GAME</Sidebar>
-      <div
-        className="nonMobile extraLargeFont"
-        style={{
-          cursor: "pointer",
-          position: "fixed",
-          backgroundColor: "#222",
-          top: `${responsivePixels(12)}`,
-          left: `${responsivePixels(150)}`,
-        }}
-        onClick={() => router.push("/")}
-      >
-        Twilight Imperium Assistant
-      </div>
-      <div
-        className="flexColumn extraLargeFont mobileOnly"
-        style={{
-          cursor: "pointer",
-          position: "fixed",
-          backgroundColor: "#222",
-          textAlign: "center",
-          paddingTop: `${responsivePixels(20)}`,
-          width: "100%",
-        }}
-        onClick={() => router.push("/")}
-      >
-        Twilight Imperium Assistant
-      </div>
+      <Link className="nonMobile" href={"/"}>
+        <a>
+          <div
+            className="extraLargeFont"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              backgroundColor: "#222",
+              top: `${responsivePixels(12)}`,
+              left: `${responsivePixels(150)}`,
+            }}
+          >
+            Twilight Imperium Assistant
+          </div>
+        </a>
+      </Link>
+      <Link className="mobileOnly" href={"/"}>
+        <a>
+          <div
+            className="flexColumn extraLargeFont"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              backgroundColor: "#222",
+              textAlign: "center",
+              paddingTop: `${responsivePixels(20)}`,
+              width: "100%",
+            }}
+          >
+            Twilight Imperium Assistant
+          </div>
+        </a>
+      </Link>
     </div>
   );
 }

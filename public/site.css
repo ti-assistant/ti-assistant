@@ -156,6 +156,21 @@ body {
   font-size: var(--twenty-four-pixel);
 }
 
+a {
+  all: unset;
+  cursor: pointer;
+}
+
+a:hover {
+  text-shadow: 0 0 4px #eee, 0 0 4px #eee;
+  color: #111;
+}
+
+a:hover > div {
+  background-color: #282828;
+  /* box-shadow: 2px 2px 4px #000; */
+}
+
 button {
   all: unset;
   font-size: var(--eighteen-pixel);

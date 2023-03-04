@@ -3,6 +3,8 @@ import React, { PropsWithChildren, useEffect, useState } from "react";
 import { getGameId } from "../src/util/api/util";
 import { responsivePixels } from "../src/util/util";
 import Head from "next/head";
+import Link from "next/link";
+import { LabeledDiv } from "../src/LabeledDiv";
 
 export default function HomePage() {
   const [gameId, setGameId] = useState("Game ID");
@@ -18,19 +20,6 @@ export default function HomePage() {
       setCurrentGame(prevGameId);
     }
   }, [prevGameId]);
-
-  function startGame() {
-    router.push("/setup");
-  }
-
-  function joinGame() {
-    // TODO: Check for game's existence before allowing to join.
-    router.push(`/game/${gameId}`);
-  }
-
-  function continueGame() {
-    router.push(`/game/${getGameId()}`);
-  }
 
   function maybeClearGameId() {
     if (gameId === "Game ID") {
@@ -60,21 +49,72 @@ export default function HomePage() {
           gap: "20px",
         }}
       >
-        <button style={{ fontSize: responsivePixels(54) }} onClick={startGame}>
-          New Game
-        </button>
+        <Link href={"/setup"}>
+          <a>
+            <LabeledDiv>
+              <div
+                className="flexColumn"
+                style={{
+                  width: "100%",
+                  fontSize: responsivePixels(44),
+                }}
+              >
+                New Game
+              </div>
+            </LabeledDiv>
+          </a>
+        </Link>
         {!!currentGame ? (
-          <button
-            style={{ fontSize: responsivePixels(36) }}
-            onClick={() => continueGame()}
-          >
-            Continue Game
-          </button>
+          <Link href={`/game/${getGameId()}`}>
+            <a>
+              <LabeledDiv>
+                <div
+                  className="flexColumn"
+                  style={{
+                    width: "100%",
+                    fontSize: responsivePixels(32),
+                  }}
+                >
+                  Continue Game
+                </div>
+              </LabeledDiv>
+            </a>
+          </Link>
         ) : null}
+
         <div className="flexRow" style={{ gap: "8px" }}>
-          <button onClick={joinGame} disabled={!validGameId()}>
-            Join Game
-          </button>
+          {validGameId() ? (
+            <Link href={validGameId() ? `/game/${gameId}` : {}}>
+              <a
+                onClick={(event) =>
+                  !validGameId() ? event.preventDefault() : null
+                }
+              >
+                <LabeledDiv>
+                  <div
+                    className="flexColumn"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    Join Game
+                  </div>
+                </LabeledDiv>
+              </a>
+            </Link>
+          ) : (
+            <LabeledDiv color="#555">
+              <div
+                className="flexColumn"
+                style={{
+                  width: "100%",
+                  color: "#555",
+                }}
+              >
+                Join Game
+              </div>
+            </LabeledDiv>
+          )}
           <input
             value={gameId}
             onFocus={maybeClearGameId}

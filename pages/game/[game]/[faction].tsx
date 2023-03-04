@@ -100,6 +100,7 @@ import { ObjectiveList } from "../../../src/ObjectiveList";
 import { getDefaultStrategyCards } from "../../../src/util/api/defaults";
 import { LockedButtons } from "../../../src/LockedButton";
 import { getFactionColor } from "../../../src/util/factions";
+import Link from "next/link";
 
 const techOrder = ["green", "blue", "yellow", "red", "upgrade"];
 
@@ -1734,19 +1735,22 @@ export default function GamePage() {
       </Head>
       <Updater />
       <div className="flexColumn" style={{ width: "100%", maxWidth: "800px" }}>
-        <h2
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            margin: "8px 0",
-            fontWeight: "normal",
-            cursor: "pointer",
-          }}
-          onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}
-        >
-          Twilight Imperium Assistant
-        </h2>
+        <Link href={"/"}>
+          <a>
+            <h2
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                margin: "8px 0",
+                fontWeight: "normal",
+                cursor: "pointer",
+              }}
+            >
+              Twilight Imperium Assistant
+            </h2>
+          </a>
+        </Link>
         <div
           className="flexColumn"
           style={{

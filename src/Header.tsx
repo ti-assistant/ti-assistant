@@ -30,6 +30,7 @@ import { Faction } from "./util/api/factions";
 import { Objective } from "./util/api/objectives";
 import { Planet } from "./util/api/planets";
 import { SubState } from "./util/api/subState";
+import Link from "next/link";
 
 export interface SidebarProps {
   side: string;
@@ -318,19 +319,22 @@ export function Header() {
             : `${state.phase} PHASE`}
         </Sidebar>
         <Sidebar side="right">{round}</Sidebar>
-        <div
-          className="extraLargeFont nonMobile"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            backgroundColor: "#222",
-            top: `${responsivePixels(20)}`,
-            left: `${responsivePixels(120)}`,
-          }}
-          onClick={() => router.push(gameid ? `/game/${gameid}` : "/")}
-        >
-          Twilight Imperium Assistant
-        </div>
+        <Link className="nonMobile" href={"/"}>
+          <a>
+            <div
+              className="extraLargeFont nonMobile"
+              style={{
+                cursor: "pointer",
+                position: "fixed",
+                backgroundColor: "#222",
+                top: `${responsivePixels(20)}`,
+                left: `${responsivePixels(120)}`,
+              }}
+            >
+              Twilight Imperium Assistant
+            </div>
+          </a>
+        </Link>
         {state && state.phase !== "SETUP" ? (
           <div
             className="flexRow nonMobile"
@@ -345,20 +349,23 @@ export function Header() {
             <GameTimer frozen={state.phase === "END"} />
           </div>
         ) : null}
-        <div
-          className="flexColumn extraLargeFont mobileOnly"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            backgroundColor: "#222",
-            textAlign: "center",
-            top: `${responsivePixels(20)}`,
-            width: "100%",
-          }}
-          onClick={() => router.push("/")}
-        >
-          Twilight Imperium Assistant
-        </div>
+        <Link className="mobileOnly" href={"/"}>
+          <a>
+            <div
+              className="flexColumn extraLargeFont mobileOnly"
+              style={{
+                cursor: "pointer",
+                position: "fixed",
+                backgroundColor: "#222",
+                textAlign: "center",
+                top: `${responsivePixels(20)}`,
+                width: "100%",
+              }}
+            >
+              Twilight Imperium Assistant
+            </div>
+          </a>
+        </Link>
       </div>
     </React.Fragment>
   );
