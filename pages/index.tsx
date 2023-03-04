@@ -11,8 +11,6 @@ export default function HomePage() {
 
   const [currentGame, setCurrentGame] = useState<string | null>(null);
 
-  const router = useRouter();
-
   const prevGameId = getGameId();
 
   useEffect(() => {
@@ -120,6 +118,53 @@ export default function HomePage() {
             onFocus={maybeClearGameId}
             onInput={(e) => setGameId(e.currentTarget.value)}
           />
+        </div>
+        <div className="flexColumn" style={{ width: "100%" }}>
+          <div
+            className="flexColumn"
+            style={{ width: "75%", alignItems: "stretch" }}
+          >
+            <Link href={`/help`}>
+              <a>
+                <LabeledDiv>
+                  <div
+                    className="flexColumn mediumFont"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    Help
+                  </div>
+                </LabeledDiv>
+              </a>
+            </Link>
+            <Link href={`/FAQ`}>
+              <a>
+                <LabeledDiv>
+                  <div
+                    className="flexColumn mediumFont"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    FAQ
+                  </div>
+                </LabeledDiv>
+              </a>
+            </Link>
+            <a href={`https://patreon.com/TIAssistant`}>
+              <LabeledDiv>
+                <div
+                  className="flexColumn mediumFont"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  Donate Trade Goods
+                </div>
+              </LabeledDiv>
+            </a>
+          </div>
         </div>
       </div>
     </div>
