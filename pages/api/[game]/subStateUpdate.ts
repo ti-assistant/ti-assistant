@@ -22,7 +22,7 @@ function usedComponentState(component: Component) {
     case "card":
       return "used";
     case "leader":
-      return component.leader === "hero" ? "purged" : "exhausted";
+      return component.leader === "HERO" ? "purged" : "exhausted";
     case "tech":
       return "exhausted";
     case "relic":
@@ -479,7 +479,7 @@ export default async function handler(
               updates[`components.${subState.component}.state`] = futureState;
               updates[`updates.components.timestamp`] = timestamp;
             }
-            if (component.type === "leader" && component.leader === "hero") {
+            if (component.type === "leader" && component.leader === "HERO") {
               updates[`factions.${component.faction}.hero`] = "purged";
               updates[`updates.factions.timestamp`] = timestamp;
             }

@@ -1321,7 +1321,7 @@ export function PlanetSummary({
   for (const planet of planets) {
     if (planet.ready || options.total) {
       if (
-        (gameOptions?.expansions ?? []).includes("codex-three") &&
+        (gameOptions?.expansions ?? []).includes("CODEX THREE") &&
         faction.name === "Xxcha Kingdom" &&
         faction.hero === "unlocked"
       ) {

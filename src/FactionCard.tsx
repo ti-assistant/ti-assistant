@@ -257,7 +257,7 @@ export function StartingComponents({ faction }: StartingComponentsProps) {
           if (typeDiff !== 0) {
             return typeDiff;
           }
-          const prereqDiff = a.prereqs.length - b.prereqs.length;
+          const prereqDiff: number = a.prereqs.length - b.prereqs.length;
           if (prereqDiff !== 0) {
             return prereqDiff;
           }
@@ -324,7 +324,7 @@ export function StartingComponents({ faction }: StartingComponentsProps) {
             }
             if (
               faction === "Argent Flight" &&
-              !options.expansions.includes("pok")
+              !options.expansions.includes("POK")
             ) {
               return null;
             }

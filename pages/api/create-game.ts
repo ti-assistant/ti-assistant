@@ -101,7 +101,7 @@ export default async function handler(
       speakerName = faction.name;
     }
     const localFaction = { ...faction };
-    if (faction.name === "Winnu" && !options.expansions.includes("pok")) {
+    if (faction.name === "Winnu" && !options.expansions.includes("POK")) {
       localFaction.startswith.choice = {
         select: 1,
         options: [

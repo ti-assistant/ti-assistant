@@ -14,8 +14,8 @@ export interface UnitStats {
 
 export interface BaseTech {
   description: string;
+  expansion: Expansion;
   faction?: string;
-  game: Expansion;
   name: string;
   omega?: {
     description: string;

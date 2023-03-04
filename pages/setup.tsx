@@ -154,21 +154,21 @@ function MobileOptions({
                   }}
                 >
                   <button
-                    className={options.expansions.has("pok") ? "selected" : ""}
+                    className={options.expansions.has("POK") ? "selected" : ""}
                     onClick={() =>
-                      toggleExpansion(!options.expansions.has("pok"), "pok")
+                      toggleExpansion(!options.expansions.has("POK"), "POK")
                     }
                   >
                     Prophecy of Kings
                   </button>
                   <button
                     className={
-                      options.expansions.has("codex-one") ? "selected" : ""
+                      options.expansions.has("CODEX ONE") ? "selected" : ""
                     }
                     onClick={() =>
                       toggleExpansion(
-                        !options.expansions.has("codex-one"),
-                        "codex-one"
+                        !options.expansions.has("CODEX ONE"),
+                        "CODEX ONE"
                       )
                     }
                   >
@@ -176,12 +176,12 @@ function MobileOptions({
                   </button>
                   <button
                     className={
-                      options.expansions.has("codex-two") ? "selected" : ""
+                      options.expansions.has("CODEX TWO") ? "selected" : ""
                     }
                     onClick={() =>
                       toggleExpansion(
-                        !options.expansions.has("codex-two"),
-                        "codex-two"
+                        !options.expansions.has("CODEX TWO"),
+                        "CODEX TWO"
                       )
                     }
                   >
@@ -189,12 +189,12 @@ function MobileOptions({
                   </button>
                   <button
                     className={
-                      options.expansions.has("codex-three") ? "selected" : ""
+                      options.expansions.has("CODEX THREE") ? "selected" : ""
                     }
                     onClick={() =>
                       toggleExpansion(
-                        !options.expansions.has("codex-three"),
-                        "codex-three"
+                        !options.expansions.has("CODEX THREE"),
+                        "CODEX THREE"
                       )
                     }
                   >
@@ -389,21 +389,21 @@ function Options({
                 }}
               >
                 <button
-                  className={options.expansions.has("pok") ? "selected" : ""}
+                  className={options.expansions.has("POK") ? "selected" : ""}
                   onClick={() =>
-                    toggleExpansion(!options.expansions.has("pok"), "pok")
+                    toggleExpansion(!options.expansions.has("POK"), "POK")
                   }
                 >
                   Prophecy of Kings
                 </button>
                 <button
                   className={
-                    options.expansions.has("codex-one") ? "selected" : ""
+                    options.expansions.has("CODEX ONE") ? "selected" : ""
                   }
                   onClick={() =>
                     toggleExpansion(
-                      !options.expansions.has("codex-one"),
-                      "codex-one"
+                      !options.expansions.has("CODEX ONE"),
+                      "CODEX ONE"
                     )
                   }
                 >
@@ -411,12 +411,12 @@ function Options({
                 </button>
                 <button
                   className={
-                    options.expansions.has("codex-two") ? "selected" : ""
+                    options.expansions.has("CODEX TWO") ? "selected" : ""
                   }
                   onClick={() =>
                     toggleExpansion(
-                      !options.expansions.has("codex-two"),
-                      "codex-two"
+                      !options.expansions.has("CODEX TWO"),
+                      "CODEX TWO"
                     )
                   }
                 >
@@ -424,12 +424,12 @@ function Options({
                 </button>
                 <button
                   className={
-                    options.expansions.has("codex-three") ? "selected" : ""
+                    options.expansions.has("CODEX THREE") ? "selected" : ""
                   }
                   onClick={() =>
                     toggleExpansion(
-                      !options.expansions.has("codex-three"),
-                      "codex-three"
+                      !options.expansions.has("CODEX THREE"),
+                      "CODEX THREE"
                     )
                   }
                 >
@@ -648,10 +648,10 @@ function FactionSelect({
 
   const filteredFactions = Object.entries(availableFactions ?? {}).filter(
     ([_, faction]) => {
-      if (faction.game === "base") {
+      if (faction.expansion === "BASE") {
         return true;
       }
-      if (!options.expansions.has(faction.game)) {
+      if (!options.expansions.has(faction.expansion)) {
         return false;
       }
       return true;
@@ -659,7 +659,7 @@ function FactionSelect({
   );
   const filteredColors = (colors ?? []).filter((color) => {
     if (color === "Magenta" || color === "Orange") {
-      if (!options.expansions.has("pok")) {
+      if (!options.expansions.has("POK")) {
         return false;
       }
     }
@@ -829,10 +829,10 @@ const INITIAL_FACTIONS: SetupFaction[] = [{}, {}, {}, {}, {}, {}, {}, {}];
 
 const INITIAL_OPTIONS: SetupOptions = {
   expansions: new Set<Expansion>([
-    "pok",
-    "codex-one",
-    "codex-two",
-    "codex-three",
+    "POK",
+    "CODEX ONE",
+    "CODEX TWO",
+    "CODEX THREE",
   ]),
   "allow-double-council": false,
   "map-style": "standard",
@@ -947,10 +947,10 @@ export default function SetupPage() {
     }
     const filteredFactions = Object.entries(availableFactions ?? {}).filter(
       ([_, faction]) => {
-        if (faction.game === "base") {
+        if (faction.expansion === "BASE") {
           return true;
         }
-        if (!options.expansions.has(faction.game)) {
+        if (!options.expansions.has(faction.expansion)) {
           return false;
         }
         return true;
@@ -999,7 +999,7 @@ export default function SetupPage() {
     }
     const filteredColors = (colors ?? []).filter((color) => {
       if (color === "Magenta" || color === "Orange") {
-        if (!options.expansions.has("pok")) {
+        if (!options.expansions.has("POK")) {
           return false;
         }
       }
@@ -1109,7 +1109,7 @@ export default function SetupPage() {
     if (options["allow-double-council"]) {
       return false;
     }
-    let factionCount = options.expansions.has("pok") ? 0 : 1;
+    let factionCount = options.expansions.has("POK") ? 0 : 1;
     for (let i = 0; i < numFactions; i++) {
       const faction = factions[i];
       if (
@@ -1141,22 +1141,22 @@ export default function SetupPage() {
         factions.map((faction, _) => {
           const tempFaction: SetupFaction = { ...faction };
           if (
-            !currentOptions.expansions.has("pok") &&
+            !currentOptions.expansions.has("POK") &&
             (tempFaction.color === "Magenta" || tempFaction.color === "Orange")
           ) {
             delete tempFaction.color;
           }
           const currFaction = (availableFactions ?? {})[tempFaction.name ?? ""];
-          if (!currFaction || currFaction.game === "base") {
+          if (!currFaction || currFaction.expansion === "BASE") {
             return tempFaction;
           }
-          if (!currentOptions.expansions.has(currFaction.game)) {
+          if (!currentOptions.expansions.has(currFaction.expansion)) {
             delete tempFaction.name;
           }
           return tempFaction;
         })
       );
-      if (!currentOptions.expansions.has("pok")) {
+      if (!currentOptions.expansions.has("POK")) {
         if (numFactions > 6) {
           updatePlayerCount(6);
         }
@@ -1282,7 +1282,7 @@ export default function SetupPage() {
     return <div style={{ height: height }}></div>;
   }
 
-  const maxFactions = options.expansions.has("pok") ? 8 : 6;
+  const maxFactions = options.expansions.has("POK") ? 8 : 6;
   // const mapSize = (Math.min(window.innerHeight, window.innerWidth * .5) - 96) * .6;
   return (
     <React.Fragment>
@@ -1393,7 +1393,7 @@ export default function SetupPage() {
             <Map
               mapStyle={options["map-style"]}
               mapString={options["map-string"]}
-              mallice={options["expansions"].has("pok") ? "A" : undefined}
+              mallice={options["expansions"].has("POK") ? "A" : undefined}
               factions={activeFactions}
             />
           </div>

@@ -13,7 +13,11 @@ import {
 import { Options } from "../../src/util/api/options";
 import { Attachment, BaseAttachment } from "../../src/util/api/attachments";
 import { Agenda, BaseAgenda } from "../../src/util/api/agendas";
-import { BaseComponent, Component } from "../../src/util/api/components";
+import {
+  BaseComponent,
+  BaseLeader,
+  Component,
+} from "../../src/util/api/components";
 import { BaseFaction, Faction } from "../../src/util/api/factions";
 
 async function getGameData(gameId: string): Promise<Partial<GameData>> {
@@ -77,11 +81,11 @@ export async function fetchObjectives(
     const objectiveId = val.id;
 
     // Maybe filter out PoK objectives.
-    if (!expansions.includes("pok") && objective.game === "pok") {
+    if (!expansions.includes("POK") && objective.expansion === "POK") {
       return;
     }
     // Filter out objectives that are removed by PoK.
-    if (expansions.includes("pok") && objective.game === "non-pok") {
+    if (expansions.includes("POK") && objective.expansion === "BASE ONLY") {
       return;
     }
 
@@ -126,11 +130,15 @@ export async function fetchAttachments(
     const attachmentId = val.id;
 
     // Maybe filter out PoK objectives.
-    if (attachment.game !== "base" && !expansions.includes(attachment.game)) {
+    if (
+      attachment.expansion !== "BASE" &&
+      attachment.expansion !== "BASE ONLY" &&
+      !expansions.includes(attachment.expansion)
+    ) {
       return;
     }
     // Filter out objectives that are removed by PoK.
-    if (expansions.includes("pok") && attachment.game === "non-pok") {
+    if (expansions.includes("POK") && attachment.expansion === "BASE ONLY") {
       return;
     }
 
@@ -204,8 +212,8 @@ export async function fetchPlanets(
     }
     // Maybe filter out PoK agendas.
     if (
-      planet.expansion !== "base" &&
-      planet.expansion !== "nonpok" &&
+      planet.expansion !== "BASE" &&
+      planet.expansion !== "BASE ONLY" &&
       !expansions.includes(planet.expansion)
     ) {
       // Check for Argent Flight. Might be able to remedy this in some other way.
@@ -257,14 +265,14 @@ export async function fetchAgendas(
 
     // Maybe filter out PoK agendas.
     if (
-      agenda.expansion !== "base" &&
-      agenda.expansion !== "nonpok" &&
+      agenda.expansion !== "BASE" &&
+      agenda.expansion !== "BASE ONLY" &&
       !expansions.includes(agenda.expansion)
     ) {
       return;
     }
     // Filter out agendas that are removed by PoK.
-    if (expansions.includes("pok") && agenda.expansion === "nonpok") {
+    if (expansions.includes("POK") && agenda.expansion === "BASE ONLY") {
       return;
     }
 
@@ -293,30 +301,30 @@ export async function fetchComponents(
   const expansions = gameData.options?.expansions ?? [];
 
   let components: Record<string, Component> = {};
-  componentsRef.forEach(async (val) => {
+  componentsRef.forEach((val) => {
     let component = val.data() as BaseComponent;
     const componentId = val.id;
 
     // Maybe filter out PoK components.
     if (
       component.expansion &&
-      component.expansion !== "base" &&
-      component.expansion !== "nonpok" &&
+      component.expansion !== "BASE" &&
+      component.expansion !== "BASE ONLY" &&
       !expansions.includes(component.expansion)
     ) {
       return;
     }
 
     // Filter out Codex Two relics if not using PoK.
-    if (!expansions.includes("pok") && component.type === "relic") {
+    if (!expansions.includes("POK") && component.type === "relic") {
       return;
     }
     // Filter out leaders if not using PoK.
-    if (!expansions.includes("pok") && component.type === "leader") {
+    if (!expansions.includes("POK") && component.type === "leader") {
       return;
     }
     // Filter out components that are removed by PoK.
-    if (expansions.includes("pok") && component.expansion === "nonpok") {
+    if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
       return;
     }
 
@@ -324,6 +332,48 @@ export async function fetchComponents(
       ...component,
       ...(gameComponents[componentId] ?? {}),
     };
+  });
+
+  const leadersRef = await db
+    .collectionGroup("leaders")
+    .where("timing", "in", ["COMPONENT ACTION", "MULTIPLE"])
+    .get();
+
+  let isYssarilComponent = false;
+  leadersRef.forEach((val) => {
+    let leader = val.data() as BaseLeader;
+    const componentId = val.id;
+
+    // Filter out factions that are not in the game.
+    if (leader.faction && !(gameData.factions ?? {})[leader.faction]) {
+      console.log("Filtered out " + componentId);
+      return;
+    }
+
+    // Filter out unused expansions.
+    if (!expansions.includes(leader.expansion)) {
+      return;
+    }
+
+    if (leader.type === "AGENT") {
+      isYssarilComponent = true;
+    }
+
+    components[componentId] = {
+      ...leader,
+      type: "leader",
+      leader: leader.type,
+    };
+  });
+
+  if (!isYssarilComponent) {
+    delete components["Ssruu"];
+  }
+
+  Object.values(components).forEach((component) => {
+    if (component.replaces) {
+      delete components[component.replaces];
+    }
   });
 
   return components;

@@ -209,7 +209,7 @@ function computeRemainingVotes(
     let planetInfluence = planet.influence;
     if (factionName === "Xxcha Kingdom") {
       if (
-        options.expansions.includes("codex-three") &&
+        options.expansions.includes("CODEX THREE") &&
         faction.hero === "unlocked"
       ) {
         console.log("Adding");

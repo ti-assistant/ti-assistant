@@ -2,13 +2,12 @@ import { mutate } from "swr";
 import { poster } from "./util";
 
 export type Expansion =
-  | "pok"
-  | "codex-one"
-  | "codex-two"
-  | "codex-three"
-  | "base"
-  | "non-pok"
-  | "nonpok";
+  | "BASE"
+  | "POK"
+  | "CODEX ONE"
+  | "CODEX TWO"
+  | "CODEX THREE"
+  | "BASE ONLY";
 
 export type OptionUpdateAction = "SET_OPTION";
 

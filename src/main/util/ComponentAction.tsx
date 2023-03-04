@@ -65,10 +65,10 @@ function ComponentSelect({
   const leaders = components
     .filter((component) => component.type === "leader")
     .sort((a, b) => {
-      if (a.leader === "agent") {
+      if (a.leader === "AGENT") {
         return -1;
       }
-      if (a.leader === "hero") {
+      if (a.leader === "HERO") {
         return 1;
       }
       return 0;
@@ -732,7 +732,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
         return false;
       }
 
-      if (component.leader === "hero" && faction.hero !== "unlocked") {
+      if (component.leader === "HERO" && faction.hero !== "unlocked") {
         return false;
       }
 

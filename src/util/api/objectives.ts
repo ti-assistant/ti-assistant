@@ -22,7 +22,7 @@ export interface ObjectiveUpdateData {
 
 export interface BaseObjective {
   description: string;
-  game: string;
+  expansion: Expansion;
   name: string;
   points: number;
   type: ObjectiveType;

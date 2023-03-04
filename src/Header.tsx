@@ -142,7 +142,7 @@ export function Header() {
     (a, b) => a.mapPosition - b.mapPosition
   );
   let mallice;
-  if (options && (options["expansions"] ?? []).includes("pok")) {
+  if (options && (options["expansions"] ?? []).includes("POK")) {
     mallice = "A";
     if (planets && ((planets["Mallice"] ?? {}).owners ?? []).length > 0) {
       mallice = "B";

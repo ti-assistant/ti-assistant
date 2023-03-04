@@ -718,7 +718,7 @@ function AgendaSteps() {
     if (
       rider === "Sanction" &&
       options &&
-      !options.expansions.includes("codex-one")
+      !options.expansions.includes("CODEX ONE")
     ) {
       return false;
     }

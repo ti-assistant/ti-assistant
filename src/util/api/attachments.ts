@@ -11,7 +11,7 @@ export interface AttachmentUpdateData {
 }
 
 export interface BaseAttachment {
-  game: Expansion;
+  expansion: Expansion;
   name: string;
   required: {
     home: boolean;

@@ -47,7 +47,7 @@ export interface StartsWith {
 export interface BaseFaction {
   colors: Record<string, number>;
   commodities: number;
-  game: Expansion;
+  expansion: Expansion;
   name: string;
   shortname: string;
   startswith: StartsWith;
