@@ -493,7 +493,7 @@ export function AdditionalActions({
     if (!planets) {
       return false;
     }
-    if ((planet.owners ?? []).includes(activeFaction.name)) {
+    if (planet.owner === activeFaction.name) {
       return false;
     }
     if (planet.locked) {
@@ -899,7 +899,7 @@ export function AdditionalActions({
           ((subState.factions ?? {})["Xxcha Kingdom"] ?? {}).planets ?? [];
         const nonXxchaPlanets = Object.values(planets ?? {}).filter(
           (planet) => {
-            if ((planet.owners ?? []).includes("Xxcha Kingdom")) {
+            if (planet.owner === "Xxcha Kingdom") {
               return false;
             }
             if (planet.locked) {

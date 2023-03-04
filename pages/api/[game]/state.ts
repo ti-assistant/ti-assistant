@@ -30,7 +30,7 @@ export default async function handler(
   if (!state.agendaUnlocked) {
     const planets = await fetchPlanets(gameId);
     const mecatolRex = planets["Mecatol Rex"];
-    if (mecatolRex && (mecatolRex.owners ?? []).length > 0) {
+    if (mecatolRex && mecatolRex.owner) {
       state.agendaUnlocked = true;
     }
   }

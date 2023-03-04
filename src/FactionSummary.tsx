@@ -1092,7 +1092,7 @@ export function UpdatePlanets({}) {
   const orderedFactionNames = Object.keys(factions ?? {}).sort();
 
   const unownedPlanets = planetsArr.filter((planet) => {
-    return !planet.locked && !(planet.owners ?? []).includes(factionName);
+    return !planet.locked && planet.owner !== factionName;
   });
 
   const half = Math.ceil(unownedPlanets.length / 2);
@@ -1178,7 +1178,7 @@ export function UpdatePlanets({}) {
             style={{ width: "100%", alignItems: "stretch" }}
           >
             {planetsArr.map((planet) => {
-              if (!(planet.owners ?? []).includes(factionName)) {
+              if (planet.owner !== factionName) {
                 return null;
               }
               return (

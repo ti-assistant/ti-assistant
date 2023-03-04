@@ -8,8 +8,8 @@ export function filterToClaimedPlanets(
   planets: Record<string, Planet>,
   factionName: string
 ) {
-  return Object.values(planets).filter((planet) =>
-    (planet.owners ?? []).includes(factionName)
+  return Object.values(planets).filter(
+    (planet) => planet.owner === factionName
   );
 }
 

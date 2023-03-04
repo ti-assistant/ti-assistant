@@ -145,7 +145,7 @@ export function Header() {
   let mallice;
   if (options && (options["expansions"] ?? []).includes("POK")) {
     mallice = "A";
-    if (planets && ((planets["Mallice"] ?? {}).owners ?? []).length > 0) {
+    if (planets && (planets["Mallice"] ?? {}).owner) {
       mallice = "B";
     }
   }

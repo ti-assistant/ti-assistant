@@ -50,7 +50,6 @@ export interface BasePlanet {
 
 export interface GamePlanet {
   owner?: string;
-  owners?: string[]; // DEPRECATED
   ready?: boolean;
   attachments?: string[];
 }
@@ -81,7 +80,7 @@ export function claimPlanet(
           return updatedPlanets;
         }
 
-        updatedPlanet.owners = [factionName];
+        updatedPlanet.owner = factionName;
 
         updatedPlanets[planet] = updatedPlanet;
 
@@ -116,7 +115,7 @@ export function unclaimPlanet(
           return updatedPlanets;
         }
 
-        updatedPlanet.owners = [];
+        delete updatedPlanet.owner;
 
         updatedPlanets[planet] = updatedPlanet;
 

@@ -40,7 +40,7 @@ export async function shouldUnlockXxchaCommander(
       }
       planet.attachments.push(data.attachment);
     }
-    if ((planet.owners ?? []).includes(factionName)) {
+    if (planet.owner === factionName) {
       const updatedPlanet = applyPlanetAttachments(planet, attachments);
       return count + updatedPlanet.influence;
     }
@@ -89,10 +89,8 @@ export default async function handler(
         res.status(422);
         return;
       }
-      const gamePlanetString = `planets.${data.planet}.owners`;
       const ownerString = `planets.${data.planet}.owner`;
       const updates: UpdateData<any> = {
-        [gamePlanetString]: [data.faction],
         [ownerString]: data.faction,
         [timestampString]: timestamp,
       };
@@ -119,13 +117,11 @@ export default async function handler(
         res.status(422);
         return;
       }
-      const gamePlanetString = `planets.${data.planet}.owners`;
       const ownerString = `planets.${data.planet}.owner`;
       await db
         .collection("games")
         .doc(gameId)
         .update({
-          [gamePlanetString]: FieldValue.arrayRemove(data.faction),
           [ownerString]: FieldValue.delete(),
           [timestampString]: timestamp,
         });

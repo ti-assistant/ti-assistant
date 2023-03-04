@@ -117,7 +117,6 @@ export default async function handler(
       basePlanets[name] = {
         ...planet,
         owner: faction.name,
-        owners: [faction.name],
       };
     });
   });

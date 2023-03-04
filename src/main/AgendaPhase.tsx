@@ -277,7 +277,7 @@ function AgendaDetails() {
         }
       );
       const selectedFaction = Object.entries(subState.factions ?? {}).find(
-        ([factionName, faction]) => {
+        ([_, faction]) => {
           if (faction.planets && faction.planets.includes(selectedOutcome)) {
             return true;
           }

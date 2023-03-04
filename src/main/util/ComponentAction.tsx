@@ -595,7 +595,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
     // }
     case "Industrial Initiative": {
       const numIndustrialPlanets = updatedPlanets.filter((planet) => {
-        if (!(planet.owners ?? []).includes(factionName)) {
+        if (planet.owner !== factionName) {
           return false;
         }
         return planet.type === "all" || planet.type === "Industrial";
@@ -616,7 +616,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       let bestPlanet = null;
       updatedPlanets
         .filter((planet) => {
-          if (!(planet.owners ?? []).includes(factionName)) {
+          if (planet.owner !== factionName) {
             return false;
           }
           return true;

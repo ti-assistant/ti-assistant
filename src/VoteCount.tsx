@@ -49,54 +49,36 @@ export function getTargets(
       return [...Object.keys(strategycards), "Abstain"];
     case "Planet":
       const ownedPlanetNames = Object.values(planets)
-        .filter((planet) => (planet.owners ?? []).length > 0)
+        .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...ownedPlanetNames, "Abstain"];
     case "Cultural Planet":
       const culturalPlanets = Object.values(planets)
-        .filter((planet) => {
-          return planet.type === "Cultural";
-        })
-        .filter((planet) => {
-          return (planet.owners ?? []).length > 0;
-        })
+        .filter((planet) => planet.type === "Cultural")
+        .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...culturalPlanets, "Abstain"];
     case "Hazardous Planet":
       const hazardousPlanets = Object.values(planets)
-        .filter((planet) => {
-          return planet.type === "Hazardous";
-        })
-        .filter((planet) => {
-          return (planet.owners ?? []).length > 0;
-        })
+        .filter((planet) => planet.type === "Hazardous")
+        .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...hazardousPlanets, "Abstain"];
     case "Industrial Planet":
       const industrialPlanets = Object.values(planets)
-        .filter((planet) => {
-          return planet.type === "Industrial";
-        })
-        .filter((planet) => {
-          return (planet.owners ?? []).length > 0;
-        })
+        .filter((planet) => planet.type === "Industrial")
+        .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...industrialPlanets, "Abstain"];
     case "Non-Home Planet Other Than Mecatol Rex":
       const electablePlanets = Object.values(planets)
-        .filter((planet) => {
-          return !planet.home && planet.name !== "Mecatol Rex";
-        })
-        .filter((planet) => {
-          return (planet.owners ?? []).length > 0;
-        })
+        .filter((planet) => !planet.home && planet.name !== "Mecatol Rex")
+        .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...electablePlanets, "Abstain"];
     case "Law":
       const passedLaws = Object.values(agendas)
-        .filter((agenda) => {
-          return agenda.type === "law" && agenda.passed;
-        })
+        .filter((agenda) => agenda.type === "law" && agenda.passed)
         .map((law) => law.name);
       return [...passedLaws, "Abstain"];
     case "Scored Secret Objective":

@@ -523,19 +523,11 @@ export function PlanetRow({
     setShowAttachModal(!showAttachModal);
   }
 
-  let claimed: string | undefined;
-  let claimedColor = "#999";
-  (planet.owners ?? []).forEach((owner) => {
-    if (opts.showSelfOwned || owner !== factionName) {
-      if (!claimed) {
-        claimed = owner;
-        claimedColor = getFactionColor(factions[owner]);
-      } else {
-        claimed = "Multiple Players";
-        claimedColor = "firebrick";
-      }
-    }
-  });
+  let claimed: string | undefined =
+    planet.owner !== factionName || opts.showSelfOwned
+      ? planet.owner
+      : undefined;
+  let claimedColor = getFactionColor(factions[planet.owner ?? ""]);
 
   return (
     <SelectableRow

@@ -41,7 +41,7 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
   }
 
   const remainingPlanets = Object.values(planets).filter((planet) => {
-    if ((planet.owners ?? []).includes(playerFaction)) {
+    if (planet.owner === playerFaction) {
       return false;
     }
     if (planet.locked) {
