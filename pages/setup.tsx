@@ -15,6 +15,8 @@ import { Selector } from "../src/Selector";
 import { FullFactionSymbol } from "../src/FactionCard";
 import { SelectableRow } from "../src/SelectableRow";
 import Link from "next/link";
+import Image from "next/image";
+import { NonGameHeader } from "../src/Header";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1287,7 +1289,7 @@ export default function SetupPage() {
   // const mapSize = (Math.min(window.innerHeight, window.innerWidth * .5) - 96) * .6;
   return (
     <React.Fragment>
-      <Header />
+      <NonGameHeader />
       {/* Large Screen */}
       <div
         className="flexRow nonMobile"
@@ -1524,7 +1526,7 @@ export default function SetupPage() {
         className="flexColumn mobileOnly"
         style={{
           width: "100%",
-          paddingTop: responsivePixels(56),
+          marginTop: responsivePixels(56),
           boxSizing: "border-box",
           overflow: "hidden",
         }}
@@ -1629,70 +1631,5 @@ export default function SetupPage() {
         </div>
       </div>
     </React.Fragment>
-  );
-}
-
-function Sidebar({ side, children }: PropsWithChildren<{ side: string }>) {
-  const className = `${side}Sidebar`;
-  return (
-    <div className={className} style={{ letterSpacing: responsivePixels(3) }}>
-      {children}
-    </div>
-  );
-}
-
-function Header() {
-  const router = useRouter();
-
-  return (
-    <div
-      className="flexRow"
-      style={{
-        top: 0,
-        position: "fixed",
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-      }}
-    >
-      <Head>
-        <title>Twilight Imperium Assistant</title>
-        <link rel="shortcut icon" href="/images/favicon.ico"></link>
-      </Head>
-      <Sidebar side="left">SETUP GAME</Sidebar>
-      <Sidebar side="right">SETUP GAME</Sidebar>
-      <Link className="nonMobile" href={"/"}>
-        <a>
-          <div
-            className="extraLargeFont"
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              backgroundColor: "#222",
-              top: `${responsivePixels(12)}`,
-              left: `${responsivePixels(150)}`,
-            }}
-          >
-            Twilight Imperium Assistant
-          </div>
-        </a>
-      </Link>
-      <Link className="mobileOnly" href={"/"}>
-        <a>
-          <div
-            className="flexColumn extraLargeFont"
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              backgroundColor: "#222",
-              textAlign: "center",
-              paddingTop: `${responsivePixels(20)}`,
-              width: "100%",
-            }}
-          >
-            Twilight Imperium Assistant
-          </div>
-        </a>
-      </Link>
-    </div>
   );
 }

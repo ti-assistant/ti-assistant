@@ -5,6 +5,8 @@ import { responsivePixels } from "../src/util/util";
 import Head from "next/head";
 import Link from "next/link";
 import { LabeledDiv } from "../src/LabeledDiv";
+import Image from "next/image";
+import { NonGameHeader } from "../src/Header";
 
 export default function HomePage() {
   const [gameId, setGameId] = useState("Game ID");
@@ -37,13 +39,31 @@ export default function HomePage() {
 
   return (
     <div className="flexColumn" style={{ gap: "16px" }}>
-      <Header />
+      <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="TI ASSISTANT" />
+      {/* <div
+        className="flexColumn"
+        style={{
+          position: "absolute",
+          opacity: 0.2,
+          width: "100vw",
+          height: "100svh",
+          zIndex: -1,
+        }}
+      >
+        <Image
+          src="/images/android-chrome-512x512.png"
+          alt="Background Image"
+          width="256px"
+          height="256px"
+        />
+      </div> */}
       <div
         className="flexColumn"
         style={{
           alignItems: "stretch",
           textAlign: "center",
-          height: "100svh",
+          marginTop: "10svh",
+          height: "80svh",
           gap: "20px",
         }}
       >
@@ -187,7 +207,6 @@ function Header() {
       style={{
         top: 0,
         position: "fixed",
-        alignItems: "flex-start",
         justifyContent: "flex-start",
       }}
     >
@@ -195,7 +214,48 @@ function Header() {
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
-      <div className="mobileTitle">TWILIGHT IMPERIUM ASSISTANT</div>
+      <Link href={"/"}>
+        <a
+          className="nonMobile flexRow extraLargeFont"
+          style={{
+            cursor: "pointer",
+            position: "fixed",
+            textAlign: "center",
+            justifyContent: "center",
+            marginTop: `${responsivePixels(20)}`,
+            width: "100%",
+          }}
+        >
+          <Image
+            src="/images/android-chrome-512x512.png"
+            alt="Background Image"
+            width="32px"
+            height="32px"
+          />
+          Twilight Imperium Assistant
+        </a>
+      </Link>
+      <Link href={"/"}>
+        <a
+          className="mobileOnly flexRow hugeFont"
+          style={{
+            cursor: "pointer",
+            position: "fixed",
+            textAlign: "center",
+            justifyContent: "center",
+            marginTop: `${responsivePixels(20)}`,
+            width: "100%",
+          }}
+        >
+          <Image
+            src="/images/android-chrome-512x512.png"
+            alt="Background Image"
+            width="28px"
+            height="28px"
+          />
+          Twilight Imperium Assistant
+        </a>
+      </Link>
       <Sidebar side="left">TI ASSISTANT</Sidebar>
       <Sidebar side="right">TI ASSISTANT</Sidebar>
     </div>

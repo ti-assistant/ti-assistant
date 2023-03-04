@@ -31,6 +31,7 @@ import { Objective } from "./util/api/objectives";
 import { Planet } from "./util/api/planets";
 import { SubState } from "./util/api/subState";
 import Link from "next/link";
+import Image from "next/image";
 
 export interface SidebarProps {
   side: string;
@@ -41,6 +42,91 @@ export function Sidebar({ side, children }: PropsWithChildren<SidebarProps>) {
   return (
     <div className={className} style={{ letterSpacing: responsivePixels(3) }}>
       {children}
+    </div>
+  );
+}
+
+export function NonGameHeader({
+  leftSidebar,
+  rightSidebar,
+}: {
+  leftSidebar?: string;
+  rightSidebar?: string;
+}) {
+  return (
+    <div
+      className="flexRow"
+      style={{
+        top: 0,
+        position: "fixed",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+        zIndex: 1,
+      }}
+    >
+      <Head>
+        <title>Twilight Imperium Assistant</title>
+        <link rel="shortcut icon" href="/images/favicon.ico"></link>
+      </Head>
+      <div
+        className="flex"
+        style={{
+          top: 0,
+          width: "100vw",
+          position: "fixed",
+          justifyContent: "space-between",
+        }}
+      >
+        {leftSidebar ? <Sidebar side="left">{leftSidebar}</Sidebar> : null}
+        {rightSidebar ? <Sidebar side="right">{rightSidebar}</Sidebar> : null}
+
+        <Link href={"/"}>
+          <a
+            className="flexRow extraLargeFont nonMobile"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              justifyContent: "center",
+              top: responsivePixels(12),
+              left: responsivePixels(120),
+            }}
+          >
+            <Image
+              src="/images/android-chrome-512x512.png"
+              alt="Background Image"
+              width="32px"
+              height="32px"
+            />
+            Twilight Imperium Assistant
+          </a>
+        </Link>
+        <Link href={"/"}>
+          <a
+            className="flexRow hugeFont mobileOnly"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              textAlign: "center",
+              justifyContent: "center",
+              zIndex: 4,
+              paddingTop: responsivePixels(12),
+              paddingBottom: responsivePixels(12),
+              width: "100%",
+              left: 0,
+              backgroundColor: "#222",
+              boxSizing: "border-box",
+            }}
+          >
+            <Image
+              src="/images/android-chrome-512x512.png"
+              alt="Background Image"
+              width="28px"
+              height="28px"
+            />
+            Twilight Imperium Assistant
+          </a>
+        </Link>
+      </div>
     </div>
   );
 }
@@ -184,7 +270,7 @@ export function Header() {
           buttonStyle={{
             position: "fixed",
             top: responsivePixels(state.phase === "SETUP" ? 60 : 100),
-            left: `${responsivePixels(120)}`,
+            left: responsivePixels(120),
           }}
         >
           <div
@@ -214,13 +300,13 @@ export function Header() {
             className="flexRow nonMobile"
             style={{
               position: "fixed",
-              top: `${responsivePixels(20)}`,
-              right: `${responsivePixels(120)}`,
+              top: responsivePixels(12),
+              right: responsivePixels(120),
               alignItems: "flex-start",
               justifyContent: "center",
             }}
           >
-            <div style={{ marginTop: `${responsivePixels(16)}` }}>
+            <div style={{ marginTop: responsivePixels(16) }}>
               Game ID: {gameid}
             </div>
             {qrCode ? (
@@ -306,7 +392,6 @@ export function Header() {
         style={{
           top: 0,
           width: "100vw",
-          paddingTop: responsivePixels(20),
           position: "fixed",
           justifyContent: "space-between",
         }}
@@ -319,20 +404,25 @@ export function Header() {
             : `${state.phase} PHASE`}
         </Sidebar>
         <Sidebar side="right">{round}</Sidebar>
-        <Link className="nonMobile" href={"/"}>
-          <a>
-            <div
-              className="extraLargeFont nonMobile"
-              style={{
-                cursor: "pointer",
-                position: "fixed",
-                backgroundColor: "#222",
-                top: `${responsivePixels(20)}`,
-                left: `${responsivePixels(120)}`,
-              }}
-            >
-              Twilight Imperium Assistant
-            </div>
+        <Link href={"/"}>
+          <a
+            className="extraLargeFont flexRow nonMobile"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              justifyContent: "center",
+              backgroundColor: "#222",
+              top: responsivePixels(12),
+              left: responsivePixels(120),
+            }}
+          >
+            <Image
+              src="/images/android-chrome-512x512.png"
+              alt="Background Image"
+              width="32px"
+              height="32px"
+            />
+            Twilight Imperium Assistant
           </a>
         </Link>
         {state && state.phase !== "SETUP" ? (
@@ -349,21 +439,30 @@ export function Header() {
             <GameTimer frozen={state.phase === "END"} />
           </div>
         ) : null}
-        <Link className="mobileOnly" href={"/"}>
-          <a>
-            <div
-              className="flexColumn extraLargeFont mobileOnly"
-              style={{
-                cursor: "pointer",
-                position: "fixed",
-                backgroundColor: "#222",
-                textAlign: "center",
-                top: `${responsivePixels(20)}`,
-                width: "100%",
-              }}
-            >
-              Twilight Imperium Assistant
-            </div>
+        <Link href={"/"}>
+          <a
+            className="flexRow hugeFont mobileOnly"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              backgroundColor: "#222",
+              textAlign: "center",
+              zIndex: 4,
+              justifyContent: "center",
+              paddingTop: responsivePixels(12),
+              paddingBottom: responsivePixels(12),
+              left: 0,
+              width: "100%",
+              boxSizing: "border-box",
+            }}
+          >
+            <Image
+              src="/images/android-chrome-512x512.png"
+              alt="Background Image"
+              width="28px"
+              height="28px"
+            />
+            Twilight Imperium Assistant
           </a>
         </Link>
       </div>

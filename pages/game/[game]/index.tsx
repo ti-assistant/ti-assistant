@@ -12,6 +12,7 @@ import { Faction } from "../../../src/util/api/factions";
 import { GameState } from "../../../src/util/api/state";
 import Link from "next/link";
 import { FullScreenLoader, Loader } from "../../../src/Loader";
+import Image from "next/image";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -213,37 +214,46 @@ function Header() {
       <Sidebar side="left">{state ? "SELECT FACTION" : "LOADING..."}</Sidebar>
       <Sidebar side="right">{round}</Sidebar>
 
-      <Link className="nonMobile" href={`/`}>
-        <a>
-          <div
-            className="extraLargeFont nonMobile"
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              backgroundColor: "#222",
-              top: `${responsivePixels(12)}`,
-              left: `${responsivePixels(150)}`,
-            }}
-          >
-            Twilight Imperium Assistant
-          </div>
+      <Link href={`/`}>
+        <a
+          className="flexRow extraLargeFont nonMobile"
+          style={{
+            cursor: "pointer",
+            position: "fixed",
+            justifyContent: "center",
+            top: `${responsivePixels(12)}`,
+            left: `${responsivePixels(120)}`,
+          }}
+        >
+          <Image
+            src="/images/android-chrome-512x512.png"
+            alt="Background Image"
+            width="32px"
+            height="32px"
+          />
+          Twilight Imperium Assistant
         </a>
       </Link>
-      <Link className="mobileOnly" href={`/`}>
-        <a>
-          <div
-            className="flexColumn extraLargeFont mobileOnly"
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              backgroundColor: "#222",
-              textAlign: "center",
-              top: `${responsivePixels(12)}`,
-              width: "100%",
-            }}
-          >
-            Twilight Imperium Assistant
-          </div>
+      <Link href={`/`}>
+        <a
+          className="flexRow hugeFont mobileOnly"
+          style={{
+            cursor: "pointer",
+            position: "fixed",
+            justifyContent: "center",
+            textAlign: "center",
+            left: 0,
+            paddingTop: `${responsivePixels(12)}`,
+            width: "100%",
+          }}
+        >
+          <Image
+            src="/images/android-chrome-512x512.png"
+            alt="Background Image"
+            width="28px"
+            height="28px"
+          />
+          Twilight Imperium Assistant
         </a>
       </Link>
       <div
@@ -251,7 +261,7 @@ function Header() {
         style={{
           position: "fixed",
           top: `${responsivePixels(12)}`,
-          right: `${responsivePixels(150)}`,
+          right: `${responsivePixels(120)}`,
           alignItems: "center",
           justifyContent: "center",
         }}

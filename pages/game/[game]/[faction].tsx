@@ -101,6 +101,8 @@ import { getDefaultStrategyCards } from "../../../src/util/api/defaults";
 import { LockedButtons } from "../../../src/LockedButton";
 import { getFactionColor } from "../../../src/util/factions";
 import Link from "next/link";
+import Image from "next/image";
+import { Header, NonGameHeader } from "../../../src/Header";
 
 const techOrder = ["green", "blue", "yellow", "red", "upgrade"];
 
@@ -886,7 +888,7 @@ function PhaseSection() {
           {!currentAgenda ? (
             <LabeledDiv
               label="Speaker Actions"
-              style={{ marginTop: "4px", paddingTop: "12 px" }}
+              style={{ marginTop: "4px", paddingTop: "12px" }}
             >
               <ClientOnlyHoverMenu label="Reveal and Read one Agenda">
                 <div
@@ -896,7 +898,7 @@ function PhaseSection() {
                     gap: "4px",
                     display: "grid",
                     gridAutoFlow: "column",
-                    gridTemplateRows: "repeat(10, auto)",
+                    gridTemplateRows: "repeat(8, auto)",
                     whiteSpace: "nowrap",
                     padding: "8px",
                     alignItems: "stretch",
@@ -1193,16 +1195,6 @@ function PhaseSection() {
               ) : null}
             </div>
           ) : null}
-          <button
-            onClick={() => {
-              if (!gameid) {
-                return;
-              }
-              startNextRound(gameid, subState);
-            }}
-          >
-            Start Next Round
-          </button>
         </React.Fragment>
       );
       break;
@@ -1367,7 +1359,6 @@ function FactionContent() {
     setShowAddPlanet(!showAddPlanet);
   }
 
-  const maxHeight = screen.height - 420;
   return (
     <div className="flexColumn" style={{ gap: "8px", width: "100%" }}>
       <Modal
@@ -1452,7 +1443,6 @@ function FactionContent() {
                     className="flexColumn largeFont"
                     style={{
                       gap: "8px",
-                      maxHeight: `${maxHeight}px`,
                       padding: "6px",
                       overflow: "auto",
                       justifyContent: "space-between",
@@ -1480,9 +1470,7 @@ function FactionContent() {
                   <div
                     className="largeFont"
                     style={{
-                      maxHeight: `${maxHeight}px`,
                       boxSizing: "border-box",
-                      overflow: "auto",
                       paddingBottom: "4px",
                     }}
                   >
@@ -1727,30 +1715,51 @@ export default function GamePage() {
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100svh",
+      }}
     >
-      <Head>
+      <NonGameHeader />
+      {/* <Head>
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
       <Updater />
-      <div className="flexColumn" style={{ width: "100%", maxWidth: "800px" }}>
         <Link href={"/"}>
           <a>
             <h2
+              className="flexRow"
               style={{
-                display: "flex",
-                flexDirection: "column",
                 alignItems: "center",
+                justifyContent: "center",
                 margin: "8px 0",
                 fontWeight: "normal",
                 cursor: "pointer",
               }}
             >
+              <Image
+                src="/images/android-chrome-512x512.png"
+                alt="Background Image"
+                width="32px"
+                height="32px"
+              />
               Twilight Imperium Assistant
             </h2>
           </a>
-        </Link>
+        </Link> */}
+      <div
+        className="flexColumn"
+        style={{
+          position: "relative",
+          zIndex: 0,
+          width: "100%",
+          maxWidth: "800px",
+          marginTop: responsivePixels(48),
+        }}
+      >
         <div
           className="flexColumn"
           style={{
