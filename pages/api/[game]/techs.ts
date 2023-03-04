@@ -35,7 +35,7 @@ export default async function handler(
     const techId = val.id;
 
     // Maybe filter out PoK technologies.
-    if (!options.expansions.includes("pok") && tech.game === "pok") {
+    if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
     }
 
