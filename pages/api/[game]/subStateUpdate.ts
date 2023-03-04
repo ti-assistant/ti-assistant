@@ -12,6 +12,7 @@ import {
   fetchObjectives,
   fetchPlanets,
 } from "../../../server/util/fetch";
+import { writeLogEntry } from "../../../server/util/write";
 import { Component } from "../../../src/util/api/components";
 import { SubStateUpdateData } from "../../../src/util/api/subState";
 import { GameData } from "../../../src/util/api/util";
@@ -457,8 +458,8 @@ export default async function handler(
     case "FINALIZE_SUB_STATE":
       {
         const subState = gameData.subState ?? {};
-        const gameLog = gameData.gameLog ?? [];
-        gameLog.push(subState);
+        writeLogEntry(gameId, subState);
+
         const gameObjectives = await fetchObjectives(
           gameId,
           req.cookies.secret ?? ""
@@ -468,7 +469,6 @@ export default async function handler(
         const components = await fetchComponents(gameId);
         updates = {
           subState: FieldValue.delete(),
-          gameLog: gameLog,
           [timestampString]: timestamp,
         };
         if (subState.component) {

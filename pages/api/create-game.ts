@@ -149,7 +149,7 @@ export default async function handler(
     },
     factions: baseFactions,
     planets: basePlanets,
-    options: options, 
+    options: options,
     objectives: baseObjectives,
     deleteAt: Timestamp.fromDate(currentDate),
   };

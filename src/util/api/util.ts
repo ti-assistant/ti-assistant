@@ -18,7 +18,6 @@ export interface GameData {
   attachments?: Record<string, GameAttachment>;
   components?: Record<string, GameComponent>;
   factions: Record<string, GameFaction>;
-  gameLog?: Object[];
   objectives?: Record<string, GameObjective>;
   options: Options;
   planets: Record<string, GamePlanet>;

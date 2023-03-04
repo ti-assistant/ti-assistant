@@ -20,7 +20,10 @@ import {
 } from "../../src/util/api/components";
 import { BaseFaction, Faction } from "../../src/util/api/factions";
 
-async function getGameData(gameId: string): Promise<Partial<GameData>> {
+/**
+ * Returns the game data for a given game.
+ */
+export async function getGameData(gameId: string): Promise<Partial<GameData>> {
   const db = getFirestore();
 
   const gameRef = await db.collection("games").doc(gameId).get();
@@ -346,7 +349,6 @@ export async function fetchComponents(
 
     // Filter out factions that are not in the game.
     if (leader.faction && !(gameData.factions ?? {})[leader.faction]) {
-      console.log("Filtered out " + componentId);
       return;
     }
 
