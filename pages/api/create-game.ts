@@ -1,4 +1,4 @@
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import { BaseFaction, GameFaction } from "../../src/util/api/factions";
 import { GameObjective } from "../../src/util/api/objectives";
@@ -138,6 +138,9 @@ export default async function handler(
     throw new Error("No speaker selected.");
   }
 
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 180);
+
   const gameState: GameData = {
     state: {
       speaker: speakerName,
@@ -146,8 +149,9 @@ export default async function handler(
     },
     factions: baseFactions,
     planets: basePlanets,
-    options: options,
+    options: options, 
     objectives: baseObjectives,
+    deleteAt: Timestamp.fromDate(currentDate),
   };
 
   let gameid = makeid(6);
