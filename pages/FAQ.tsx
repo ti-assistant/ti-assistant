@@ -28,8 +28,8 @@ export default function FAQPage() {
                 marginLeft: responsivePixels(8),
               }}
             >
-              Nope! There's a couple bits of information that are required to
-              run the assistant, but everything else is optional. The more
+              Nope! There&apos;s a couple bits of information that are required
+              to run the assistant, but everything else is optional. The more
               information you put in, the more helpful the assistant will be and
               the more information will be present in the game log.
             </div>
@@ -46,8 +46,8 @@ export default function FAQPage() {
               }}
             >
               The assistant locks the button to prevent accidental clicks before
-              the phase is completed. If you'd like to move on without recording
-              what happened, click the &#128274; to unlock the button.
+              the phase is completed. If you&apos;d like to move on without
+              recording what happened, click the &#128274; to unlock the button.
             </div>
           </div>
         </div>
@@ -62,10 +62,10 @@ export default function FAQPage() {
               marginLeft: responsivePixels(8),
             }}
           >
-            If you're in the middle of a game, try refreshing the page to see if
-            that fixes it. Regardless of whether it does or not, file a bug
-            report or ask a question on GitHub - TODO: Add working link, and
-            I'll get back to you as soon as I can.
+            If you&apos;re in the middle of a game, try refreshing the page to
+            see if that fixes it. Regardless of whether it does or not, file a
+            bug report or ask a question on GitHub - TODO: Add working link, and
+            I&apos;ll get back to you as soon as I can.
           </div>
         </div>
         More Coming Soon
