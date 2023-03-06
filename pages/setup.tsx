@@ -1063,6 +1063,12 @@ export default function SetupPage() {
   }
 
   function disableRandomizeFactionButton() {
+    if (
+      !availableFactions ||
+      Object.keys(availableFactions).length < numFactions
+    ) {
+      return true;
+    }
     for (let i = 0; i < numFactions; i++) {
       const faction = factions[i];
       if (!faction?.name) {
@@ -1073,6 +1079,9 @@ export default function SetupPage() {
   }
 
   function disableRandomizeColorsButton() {
+    if (!colors || colors.length < numFactions) {
+      return true;
+    }
     for (let i = 0; i < numFactions; i++) {
       const faction = factions[i];
       if (!faction?.color) {

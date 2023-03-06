@@ -13,6 +13,7 @@ import { GameState } from "../../../src/util/api/state";
 import Link from "next/link";
 import { FullScreenLoader, Loader } from "../../../src/Loader";
 import Image from "next/image";
+import { Preloads } from "../../../src/Preloads";
 
 export default function SelectFactionPage() {
   const router = useRouter();
