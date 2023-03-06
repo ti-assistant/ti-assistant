@@ -1289,7 +1289,7 @@ export default function SetupPage() {
   // const mapSize = (Math.min(window.innerHeight, window.innerWidth * .5) - 96) * .6;
   return (
     <React.Fragment>
-      <NonGameHeader />
+      <NonGameHeader leftSidebar="SETUP GAME" rightSidebar="SETUP GAME" />
       {/* Large Screen */}
       <div
         className="flexRow nonMobile"

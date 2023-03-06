@@ -32,6 +32,7 @@ import { Planet } from "./util/api/planets";
 import { SubState } from "./util/api/subState";
 import Link from "next/link";
 import Image from "next/image";
+import { Preloads } from "./Preloads";
 
 export interface SidebarProps {
   side: string;
@@ -67,6 +68,7 @@ export function NonGameHeader({
       <Head>
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
+        <Preloads />
       </Head>
       <div
         className="flex"
@@ -263,6 +265,7 @@ export function Header() {
       <Head>
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
+        <Preloads />
       </Head>
       {((options ?? {})["map-string"] ?? []).length > 0 && state ? (
         <ClientOnlyHoverMenu
