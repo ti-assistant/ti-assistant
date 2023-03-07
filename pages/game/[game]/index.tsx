@@ -210,7 +210,6 @@ function Header() {
       <Head>
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
-        <Preloads />
       </Head>
       <Sidebar side="left">{state ? "SELECT FACTION" : "LOADING..."}</Sidebar>
       <Sidebar side="right">{round}</Sidebar>

@@ -1,6 +1,7 @@
 import React from "react";
 
 export function Preloads({}) {
+  return null;
   return (
     <React.Fragment>
       {/* Factions */}

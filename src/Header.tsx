@@ -32,7 +32,8 @@ import { Planet } from "./util/api/planets";
 import { SubState } from "./util/api/subState";
 import Link from "next/link";
 import Image from "next/image";
-import { Preloads } from "./Preloads";
+
+import Logo from "../public/images/android-chrome-512x512.png";
 
 export interface SidebarProps {
   side: string;
@@ -68,7 +69,6 @@ export function NonGameHeader({
       <Head>
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
-        <Preloads />
       </Head>
       <div
         className="flex"
@@ -93,12 +93,7 @@ export function NonGameHeader({
               left: responsivePixels(120),
             }}
           >
-            <Image
-              src="/images/android-chrome-512x512.png"
-              alt="Background Image"
-              width="32px"
-              height="32px"
-            />
+            <Image src={Logo} alt="" width="32px" height="32px" />
             Twilight Imperium Assistant
           </a>
         </Link>
@@ -119,12 +114,7 @@ export function NonGameHeader({
               boxSizing: "border-box",
             }}
           >
-            <Image
-              src="/images/android-chrome-512x512.png"
-              alt="Background Image"
-              width="28px"
-              height="28px"
-            />
+            <Image src={Logo} alt="" width="28px" height="28px" />
             Twilight Imperium Assistant
           </a>
         </Link>
@@ -265,7 +255,6 @@ export function Header() {
       <Head>
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
-        <Preloads />
       </Head>
       {((options ?? {})["map-string"] ?? []).length > 0 && state ? (
         <ClientOnlyHoverMenu
@@ -419,12 +408,7 @@ export function Header() {
               left: responsivePixels(120),
             }}
           >
-            <Image
-              src="/images/android-chrome-512x512.png"
-              alt="Background Image"
-              width="32px"
-              height="32px"
-            />
+            <Image src={Logo} alt="" width="32px" height="32px" />
             Twilight Imperium Assistant
           </a>
         </Link>
@@ -459,12 +443,7 @@ export function Header() {
               boxSizing: "border-box",
             }}
           >
-            <Image
-              src="/images/android-chrome-512x512.png"
-              alt="Background Image"
-              width="28px"
-              height="28px"
-            />
+            <Image src={Logo} alt="" width="28px" height="28px" />
             Twilight Imperium Assistant
           </a>
         </Link>

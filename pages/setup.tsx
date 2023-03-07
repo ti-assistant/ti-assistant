@@ -878,6 +878,7 @@ export default function SetupPage() {
     }
 
     setNumFactions(count);
+    toggleOption("standard", "map-style");
 
     if (speaker > count) {
       setSpeaker(0);

@@ -1,12 +1,32 @@
-import Image from "next/image";
+import NextImage, { StaticImageData } from "next/image";
+
+import ST_0 from "../../public/images/systems/ST_0.png";
+import Mecatol from "../../public/images/systems/Mecatol Rex.png";
+import Hexagon from "../../public/images/systems/Hexagon.png";
+import { useEffect, useState } from "react";
 
 function FactionSystemImage({
   className,
   factionName,
 }: {
   className?: string;
-  factionName: string;
+  factionName: string | StaticImageData;
 }) {
+  if (typeof factionName === "object") {
+    return (
+      <div
+        className="flexRow"
+        style={{ position: "relative", width: "100%", height: "100%" }}
+      >
+        <NextImage
+          src={factionName}
+          alt={`System Tile`}
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
+    );
+  }
   if (
     !factionName ||
     factionName === "Council Keleres" ||
@@ -17,8 +37,8 @@ function FactionSystemImage({
         className="flexRow"
         style={{ position: "relative", width: "100%", height: "100%" }}
       >
-        <Image
-          src="/images/systems/ST_0.png"
+        <NextImage
+          src={ST_0}
           alt={`Faction Tile`}
           layout="fill"
           objectFit="contain"
@@ -32,7 +52,7 @@ function FactionSystemImage({
       className={`flexRow ${className}`}
       style={{ position: "relative", width: "100%", height: "100%" }}
     >
-      <Image
+      <NextImage
         src={`/images/systems/${adjustedFactionName}.png`}
         alt={`${factionName}'s Home System`}
         layout="fill"
@@ -66,9 +86,9 @@ function SystemImage({ systemNumber }: { systemNumber: string | undefined }) {
         className="flexRow"
         style={{ position: "relative", width: "100%", height: "100%" }}
       >
-        <Image
+        <NextImage
           style={{ opacity: "10%" }}
-          src="/images/systems/Hexagon.png"
+          src={Hexagon}
           alt={`System Tile`}
           layout="fill"
           objectFit="contain"
@@ -83,7 +103,7 @@ function SystemImage({ systemNumber }: { systemNumber: string | undefined }) {
         className="flexRow"
         style={{ position: "relative", width: "100%", height: "100%" }}
       >
-        <Image
+        <NextImage
           src={`/images/systems/ST_${checkForA[0]}A.png`}
           alt={`System ${systemNumber} Tile`}
           layout="fill"
@@ -99,7 +119,7 @@ function SystemImage({ systemNumber }: { systemNumber: string | undefined }) {
         className="flexRow"
         style={{ position: "relative", width: "100%", height: "100%" }}
       >
-        <Image
+        <NextImage
           src={`/images/systems/ST_${checkForB[0]}A.png`}
           alt={`System ${systemNumber} Tile`}
           layout="fill"
@@ -114,9 +134,9 @@ function SystemImage({ systemNumber }: { systemNumber: string | undefined }) {
         className="flexRow"
         style={{ position: "relative", width: "100%", height: "100%" }}
       >
-        <Image
+        <NextImage
           style={{ opacity: "10%" }}
-          src="/images/systems/Hexagon.png"
+          src={Hexagon}
           alt={`System Tile`}
           layout="fill"
           objectFit="contain"
@@ -129,7 +149,7 @@ function SystemImage({ systemNumber }: { systemNumber: string | undefined }) {
       className="flexRow"
       style={{ position: "relative", width: "100%", height: "100%" }}
     >
-      <Image
+      <NextImage
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         layout="fill"
@@ -157,8 +177,124 @@ export interface MapProps {
   }[];
 }
 
+const IMAGES_TO_PRELOAD = [
+  // Systems
+  "/images/systems/Mecatol Rex.png",
+  "/images/systems/Hexagon.png",
+  "/images/systems/ST_0.png",
+  "/images/systems/ST_19.png",
+  "/images/systems/ST_20.png",
+  "/images/systems/ST_21.png",
+  "/images/systems/ST_22.png",
+  "/images/systems/ST_23.png",
+  "/images/systems/ST_24.png",
+  "/images/systems/ST_25.png",
+  "/images/systems/ST_26.png",
+  "/images/systems/ST_27.png",
+  "/images/systems/ST_28.png",
+  "/images/systems/ST_29.png",
+  "/images/systems/ST_30.png",
+  "/images/systems/ST_31.png",
+  "/images/systems/ST_32.png",
+  "/images/systems/ST_33.png",
+  "/images/systems/ST_34.png",
+  "/images/systems/ST_35.png",
+  "/images/systems/ST_36.png",
+  "/images/systems/ST_37.png",
+  "/images/systems/ST_38.png",
+  "/images/systems/ST_39.png",
+  "/images/systems/ST_40.png",
+  "/images/systems/ST_41.png",
+  "/images/systems/ST_42.png",
+  "/images/systems/ST_43.png",
+  "/images/systems/ST_44.png",
+  "/images/systems/ST_45.png",
+  "/images/systems/ST_46.png",
+  "/images/systems/ST_47.png",
+  "/images/systems/ST_48.png",
+  "/images/systems/ST_49.png",
+  "/images/systems/ST_50.png",
+  "/images/systems/ST_51.png",
+  "/images/systems/ST_59.png",
+  "/images/systems/ST_60.png",
+  "/images/systems/ST_61.png",
+  "/images/systems/ST_62.png",
+  "/images/systems/ST_63.png",
+  "/images/systems/ST_64.png",
+  "/images/systems/ST_65.png",
+  "/images/systems/ST_66.png",
+  "/images/systems/ST_67.png",
+  "/images/systems/ST_68.png",
+  "/images/systems/ST_69.png",
+  "/images/systems/ST_70.png",
+  "/images/systems/ST_71.png",
+  "/images/systems/ST_72.png",
+  "/images/systems/ST_73.png",
+  "/images/systems/ST_74.png",
+  "/images/systems/ST_75.png",
+  "/images/systems/ST_76.png",
+  "/images/systems/ST_77.png",
+  "/images/systems/ST_78.png",
+  "/images/systems/ST_79.png",
+  "/images/systems/ST_80.png",
+  "/images/systems/ST_81.png",
+  "/images/systems/ST_82A.png",
+  "/images/systems/ST_82B.png",
+  "/images/systems/ST_83A.png",
+  "/images/systems/ST_83B.png",
+  "/images/systems/ST_84A.png",
+  "/images/systems/ST_84B.png",
+  "/images/systems/ST_85A.png",
+  "/images/systems/ST_85B.png",
+  "/images/systems/ST_86A.png",
+  "/images/systems/ST_86B.png",
+  "/images/systems/ST_87A.png",
+  "/images/systems/ST_87B.png",
+  "/images/systems/ST_88A.png",
+  "/images/systems/ST_88B.png",
+  "/images/systems/ST_89A.png",
+  "/images/systems/ST_89B.png",
+  "/images/systems/ST_90A.png",
+  "/images/systems/ST_90B.png",
+  "/images/systems/ST_91A.png",
+  "/images/systems/ST_91B.png",
+  // Factions
+  "/images/systems/Arborec.png",
+  "/images/systems/Argent Flight.png",
+  "/images/systems/Barony of Letnev.png",
+  "/images/systems/Clan of Saar.png",
+  "/images/systems/Creuss Home.png",
+  "/images/systems/Embers of Muaat.png",
+  "/images/systems/Emirates of Hacan.png",
+  "/images/systems/Empyrean.png",
+  "/images/systems/Federation of Sol.png",
+  "/images/systems/Ghosts of Creuss.png",
+  "/images/systems/L1Z1X Mindnet.png",
+  "/images/systems/Mahact Gene-Sorcerers.png",
+  "/images/systems/Mentak Coalition.png",
+  "/images/systems/Naalu Collective.png",
+  "/images/systems/Naaz-Rokha Alliance.png",
+  "/images/systems/Nekro Virus.png",
+  "/images/systems/Nomad.png",
+  "/images/systems/Sardakk Norr.png",
+  "/images/systems/Titans of Ul.png",
+  "/images/systems/Universities of Jol-Nar.png",
+  "/images/systems/VuilRaith Cabal.png",
+  "/images/systems/Winnu.png",
+  "/images/systems/Xxcha Kingdom.png",
+  "/images/systems/Yin Brotherhood.png",
+  "/images/systems/Yssaril Tribes.png",
+];
+
 export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
   const systemTiles = mapString.split(" ");
+
+  useEffect(() => {
+    for (const img of IMAGES_TO_PRELOAD) {
+      let image = new Image();
+      image.src = img;
+    }
+  }, []);
 
   let numColumns = 7;
   if (factions.length > 6 || mapStyle === "large") {
@@ -292,7 +428,7 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
     return faction;
   });
 
-  type SystemValue = number | string | null;
+  type SystemValue = number | string | null | StaticImageData;
 
   type Columns = [
     [SystemValue, SystemValue, SystemValue, SystemValue, SystemValue],
@@ -369,7 +505,7 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
     [57, 33, 32, 31, 30, 51],
     [58, 34, 16, 15, 14, 29, 50],
     [59, 35, 17, 5, 4, 13, 28, 49],
-    [36, 18, 6, 0, "Mecatol Rex", 3, 12, 27, 48],
+    [36, 18, 6, 0, Mecatol, 3, 12, 27, 48],
     [37, 19, 7, 1, 2, 11, 26, 47],
     [38, 20, 8, 9, 10, 25, 46],
     [39, 21, 22, 23, 24, 45],
@@ -705,6 +841,9 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
                     factionName={tileNum}
                   />
                 );
+              }
+              if (typeof tileNum === "object") {
+                return <FactionSystemImage key={key} factionName={tileNum} />;
               }
               // if (systemTiles[tileNum]) {
               return (
