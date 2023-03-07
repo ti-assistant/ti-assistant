@@ -769,6 +769,17 @@ function FactionSelect({
                 selectFaction(undefined);
               }
             }}
+            renderItem={(factionName) => {
+              return (
+                <SelectableRow
+                  itemName={factionName}
+                  removeItem={() => selectFaction(undefined)}
+                  style={{ height: responsivePixels(32.67) }}
+                >
+                  {factionName}
+                </SelectableRow>
+              );
+            }}
           />
           <div
             className="flexRow"
