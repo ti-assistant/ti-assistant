@@ -14,6 +14,7 @@ import Link from "next/link";
 import { FullScreenLoader, Loader } from "../../../src/Loader";
 import Image from "next/image";
 import { Preloads } from "../../../src/Preloads";
+import { ResponsiveLogo } from "../../../src/Header";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -221,16 +222,11 @@ function Header() {
             cursor: "pointer",
             position: "fixed",
             justifyContent: "center",
-            top: `${responsivePixels(12)}`,
-            left: `${responsivePixels(120)}`,
+            top: `${responsivePixels(16)}`,
+            left: `${responsivePixels(96)}`,
           }}
         >
-          <Image
-            src="/images/android-chrome-512x512.png"
-            alt="Background Image"
-            width="32px"
-            height="32px"
-          />
+          <ResponsiveLogo size={32} />
           Twilight Imperium Assistant
         </a>
       </Link>
@@ -247,12 +243,7 @@ function Header() {
             width: "100%",
           }}
         >
-          <Image
-            src="/images/android-chrome-512x512.png"
-            alt="Background Image"
-            width="28px"
-            height="28px"
-          />
+          <ResponsiveLogo size={28} />
           Twilight Imperium Assistant
         </a>
       </Link>

@@ -894,7 +894,8 @@ export default function StrategyPhase() {
       <div
         className="flexColumn"
         style={{
-          marginTop: responsivePixels(80),
+          marginTop: "40px",
+          height: "calc(100svh - 40px)",
         }}
       >
         <div
@@ -989,12 +990,6 @@ export default function StrategyPhase() {
           </button>
         )}
       </div>
-      {/* <div
-        className="flexColumn"
-        style={{ height: "100svh", width: responsivePixels(280) }}
-      >
-        <SummaryColumn />
-      </div> */}
     </React.Fragment>
   );
 }

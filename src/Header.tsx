@@ -35,6 +35,21 @@ import Image from "next/image";
 
 import Logo from "../public/images/android-chrome-512x512.png";
 
+export function ResponsiveLogo({ size }: { size: number }) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: responsivePixels(size),
+        height: responsivePixels(size),
+        borderRadius: "100%",
+      }}
+    >
+      <Image src={Logo} alt="" layout="fill" objectFit="contain" />
+    </div>
+  );
+}
+
 export interface SidebarProps {
   side: string;
 }
@@ -89,11 +104,12 @@ export function NonGameHeader({
               cursor: "pointer",
               position: "fixed",
               justifyContent: "center",
-              top: responsivePixels(12),
-              left: responsivePixels(120),
+              top: responsivePixels(16),
+              left: responsivePixels(96),
             }}
           >
-            <Image src={Logo} alt="" width="32px" height="32px" />
+            <ResponsiveLogo size={32} />
+            {/* <Image src={Logo} alt="" width="32px" height="32px" /> */}
             Twilight Imperium Assistant
           </a>
         </Link>
@@ -114,7 +130,8 @@ export function NonGameHeader({
               boxSizing: "border-box",
             }}
           >
-            <Image src={Logo} alt="" width="28px" height="28px" />
+            <ResponsiveLogo size={28} />
+            {/* <Image src={Logo} alt="" width="28px" height="28px" /> */}
             Twilight Imperium Assistant
           </a>
         </Link>
@@ -261,8 +278,8 @@ export function Header() {
           label="View Map"
           buttonStyle={{
             position: "fixed",
-            top: responsivePixels(state.phase === "SETUP" ? 60 : 100),
-            left: responsivePixels(120),
+            top: responsivePixels(state.phase === "SETUP" ? 64 : 104),
+            left: responsivePixels(96),
           }}
         >
           <div
@@ -292,8 +309,8 @@ export function Header() {
             className="flexRow nonMobile"
             style={{
               position: "fixed",
-              top: responsivePixels(12),
-              right: responsivePixels(120),
+              top: responsivePixels(16),
+              right: responsivePixels(96),
               alignItems: "flex-start",
               justifyContent: "center",
             }}
@@ -310,8 +327,8 @@ export function Header() {
             label="View QR Code"
             buttonStyle={{
               position: "fixed",
-              top: responsivePixels(60),
-              left: responsivePixels(120),
+              top: responsivePixels(64),
+              left: responsivePixels(96),
             }}
           >
             <div
@@ -319,10 +336,16 @@ export function Header() {
               style={{
                 position: "relative",
                 zIndex: 10000,
-                marginTop: responsivePixels(16),
+                marginTop: responsivePixels(8),
               }}
             >
-              Game ID: {gameid}
+              <div
+                style={{
+                  margin: `0 ${responsivePixels(8)}`,
+                }}
+              >
+                Game ID: {gameid}
+              </div>
               {qrCode ? (
                 <img src={qrCode} alt="QR Code for joining game" />
               ) : null}
@@ -335,7 +358,7 @@ export function Header() {
           className="flexRow extraLargeFont"
           style={{
             position: "fixed",
-            top: responsivePixels(20),
+            top: responsivePixels(16),
             left: responsivePixels(490),
           }}
         >
@@ -361,7 +384,7 @@ export function Header() {
           label="Laws in Effect"
           buttonStyle={{
             position: "fixed",
-            top: responsivePixels(20),
+            top: responsivePixels(16),
             right: responsivePixels(440),
           }}
         >
@@ -404,11 +427,12 @@ export function Header() {
               position: "fixed",
               justifyContent: "center",
               backgroundColor: "#222",
-              top: responsivePixels(12),
-              left: responsivePixels(120),
+              top: responsivePixels(16),
+              left: responsivePixels(96),
             }}
           >
-            <Image src={Logo} alt="" width="32px" height="32px" />
+            <ResponsiveLogo size={32} />
+            {/* <Image src={Logo} alt="" width="32px" height="32px" /> */}
             Twilight Imperium Assistant
           </a>
         </Link>
@@ -417,8 +441,8 @@ export function Header() {
             className="flexRow nonMobile"
             style={{
               position: "fixed",
-              top: responsivePixels(60),
-              left: responsivePixels(280),
+              top: responsivePixels(64),
+              left: responsivePixels(256),
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -443,7 +467,8 @@ export function Header() {
               boxSizing: "border-box",
             }}
           >
-            <Image src={Logo} alt="" width="28px" height="28px" />
+            <ResponsiveLogo size={28} />
+            {/* <Image src={Logo} alt="" width="28px" height="28px" /> */}
             Twilight Imperium Assistant
           </a>
         </Link>
@@ -510,8 +535,8 @@ export function Footer({}) {
         <div
           style={{
             position: "fixed",
-            bottom: responsivePixels(12),
-            left: responsivePixels(108),
+            bottom: responsivePixels(16),
+            left: responsivePixels(96),
           }}
         >
           <LabeledDiv label="Update">

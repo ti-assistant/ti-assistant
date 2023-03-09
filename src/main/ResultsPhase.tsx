@@ -2,8 +2,6 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import React from "react";
 import { fetcher } from "../util/api/util";
-import SummaryColumn from "./SummaryColumn";
-import { responsivePixels } from "../util/util";
 import { GameState } from "../util/api/state";
 
 export default function ResultsPhase() {
@@ -25,35 +23,6 @@ export default function ResultsPhase() {
       <div className="flexColumn" style={{ height: "100svh" }}>
         Game Over
       </div>
-
-      {/* <div
-        className="flexRow"
-        style={{
-          gap: responsivePixels(20),
-          height: "100svh",
-          width: "100%",
-          alignItems: "flex-start",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            height: "100svh",
-            flexShrink: 0,
-            width: responsivePixels(280),
-          }}
-        >
-          <SummaryColumn
-            order="VICTORY_POINTS"
-            subOrder={
-              state?.finalPhase === "ACTION" || state?.finalPhase === "STATUS"
-                ? "INITIATIVE"
-                : "SPEAKER"
-            }
-          />
-        </div>
-      </div> */}
     </React.Fragment>
   );
 }

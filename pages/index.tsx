@@ -6,7 +6,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { LabeledDiv } from "../src/LabeledDiv";
 import Image from "next/image";
-import { NonGameHeader } from "../src/Header";
+import { NonGameHeader, ResponsiveLogo } from "../src/Header";
 
 export default function HomePage() {
   const [gameId, setGameId] = useState("Game ID");
@@ -40,23 +40,6 @@ export default function HomePage() {
   return (
     <div className="flexColumn" style={{ gap: "16px" }}>
       <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="TI ASSISTANT" />
-      {/* <div
-        className="flexColumn"
-        style={{
-          position: "absolute",
-          opacity: 0.2,
-          width: "100vw",
-          height: "100svh",
-          zIndex: -1,
-        }}
-      >
-        <Image
-          src="/images/android-chrome-512x512.png"
-          alt="Background Image"
-          width="256px"
-          height="256px"
-        />
-      </div> */}
       <div
         className="flexColumn"
         style={{
@@ -222,16 +205,11 @@ function Header() {
             position: "fixed",
             textAlign: "center",
             justifyContent: "center",
-            marginTop: `${responsivePixels(20)}`,
+            marginTop: `${responsivePixels(16)}`,
             width: "100%",
           }}
         >
-          <Image
-            src="/images/android-chrome-512x512.png"
-            alt="Background Image"
-            width="32px"
-            height="32px"
-          />
+          <ResponsiveLogo size={32} />
           Twilight Imperium Assistant
         </a>
       </Link>
@@ -243,16 +221,11 @@ function Header() {
             position: "fixed",
             textAlign: "center",
             justifyContent: "center",
-            marginTop: `${responsivePixels(20)}`,
+            marginTop: `${responsivePixels(12)}`,
             width: "100%",
           }}
         >
-          <Image
-            src="/images/android-chrome-512x512.png"
-            alt="Background Image"
-            width="28px"
-            height="28px"
-          />
+          <ResponsiveLogo size={28} />
           Twilight Imperium Assistant
         </a>
       </Link>

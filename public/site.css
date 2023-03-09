@@ -39,6 +39,10 @@
     calc(10px + (20 - 10) * ((100vw - 1280px) / (2560 - 1280))),
     10px
   );
+  --twelve-pixel: max(
+    calc(12px + (24 - 12) * ((100vw - 1280px) / (2560 - 1280))),
+    12px
+  );
   --fourteen-pixel: max(
     calc(14px + (28 - 14) * ((100vw - 1280px) / (2560 - 1280))),
     14px
@@ -79,9 +83,13 @@
     calc(48px + (96 - 48) * ((100vw - 1280px) / (2560 - 1280))),
     48px
   );
-  --one-oh-eight-pixel: max(
+  --eighty-pixel: max(
     calc(108px + (216 - 108) * ((100vw - 1280px) / (2560 - 1280))),
     108px
+  );
+  --ninety-six-pixel: max(
+    calc(96px + (192 - 96) * ((100vw - 1280px) / (2560 - 1280))),
+    96px
   );
   --one-twenty-pixel: max(
     calc(120px + (240 - 120) * ((100vw - 1280px) / (2560 - 1280))),
@@ -121,7 +129,7 @@ html {
 body {
   font-family: "slider";
   font-size: var(--sixteen-pixel);
-  margin: 0px var(--one-twenty-pixel);
+  margin: 0px var(--ninety-six-pixel);
   background-color: #222;
   color: #eee;
 }
@@ -225,33 +233,33 @@ input[type="text"] {
 .leftSidebar {
   position: fixed;
   transform: rotate(-90deg);
-  left: var(--twenty-four-pixel);
+  left: var(--sixteen-pixel);
   width: 100svh;
   text-align: center;
   top: 100%;
   background-color: #333;
   color: #eee;
   box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
-  padding-bottom: var(--fourteen-pixel);
-  padding-top: var(--fourteen-pixel);
+  padding: var(--twelve-pixel) 0;
   font-size: var(--thirty-six-pixel);
   transform-origin: 0px 0px;
+  line-height: var(--thirty-six-pixel);
 }
 
 .rightSidebar {
   position: fixed;
   transform: rotate(90deg);
-  right: var(--twenty-four-pixel);
+  right: var(--sixteen-pixel);
   width: 100svh;
   text-align: center;
   top: 100%;
   background-color: #333;
   color: #eee;
   box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
-  padding-bottom: var(--fourteen-pixel);
-  padding-top: var(--fourteen-pixel);
+  padding: var(--twelve-pixel) 0;
   font-size: var(--thirty-six-pixel);
   transform-origin: 100% 0px;
+  line-height: var(--thirty-six-pixel);
 }
 
 @media only screen and (max-width: 900px) {

@@ -1249,21 +1249,21 @@ export default function SetupPage() {
   }
 
   function LeftTopGapDiv({}) {
-    let height = responsivePixels(80);
+    let height = responsivePixels(68);
     switch (numFactions) {
       case 3:
-        height = responsivePixels(60);
+        height = responsivePixels(48);
         break;
       case 4:
-        height = responsivePixels(160);
+        height = responsivePixels(148);
         break;
       case 5:
       case 6:
-        height = responsivePixels(60);
+        height = responsivePixels(44);
         break;
       case 7:
       case 8:
-        height = responsivePixels(20);
+        height = responsivePixels(8);
         break;
     }
     return <div style={{ height: height }}></div>;
@@ -1323,7 +1323,11 @@ export default function SetupPage() {
       >
         <div
           className="flexColumn"
-          style={{ height: "100%", justifyContent: "flex-start" }}
+          style={{
+            height: "100%",
+            justifyContent: "flex-start",
+            marginTop: responsivePixels(12),
+          }}
         >
           <Options
             updatePlayerCount={updatePlayerCount}

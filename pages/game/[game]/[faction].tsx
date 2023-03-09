@@ -1723,33 +1723,6 @@ export default function GamePage() {
       }}
     >
       <NonGameHeader />
-      {/* <Head>
-        <title>Twilight Imperium Assistant</title>
-        <link rel="shortcut icon" href="/images/favicon.ico"></link>
-      </Head>
-      <Updater />
-        <Link href={"/"}>
-          <a>
-            <h2
-              className="flexRow"
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "8px 0",
-                fontWeight: "normal",
-                cursor: "pointer",
-              }}
-            >
-              <Image
-                src="/images/android-chrome-512x512.png"
-                alt="Background Image"
-                width="32px"
-                height="32px"
-              />
-              Twilight Imperium Assistant
-            </h2>
-          </a>
-        </Link> */}
       <div
         className="flexColumn"
         style={{
@@ -1761,7 +1734,7 @@ export default function GamePage() {
       >
         <div
           className="flexColumn"
-        style={{
+          style={{
             width: "100%",
             gap: "4px",
             fontSize: "18px",

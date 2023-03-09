@@ -4,7 +4,7 @@ import Link from "next/link";
 import { responsivePixels } from "../src/util/util";
 import { LabeledDiv, LabeledLine } from "../src/LabeledDiv";
 import Image from "next/image";
-import { NonGameHeader } from "../src/Header";
+import { NonGameHeader, ResponsiveLogo } from "../src/Header";
 
 export default function FAQPage() {
   return (
@@ -127,12 +127,7 @@ function Header() {
             width: "100%",
           }}
         >
-          <Image
-            src="/images/android-chrome-512x512.png"
-            alt="Background Image"
-            width="32px"
-            height="32px"
-          />
+          <ResponsiveLogo size={32} />
           Twilight Imperium Assistant
         </a>
       </Link>
@@ -148,12 +143,7 @@ function Header() {
             width: "100%",
           }}
         >
-          <Image
-            src="/images/android-chrome-512x512.png"
-            alt="Background Image"
-            width="28px"
-            height="28px"
-          />
+          <ResponsiveLogo size={28} />
           Twilight Imperium Assistant
         </a>
       </Link>
