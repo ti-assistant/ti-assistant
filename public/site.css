@@ -79,6 +79,10 @@
     calc(48px + (96 - 48) * ((100vw - 1280px) / (2560 - 1280))),
     48px
   );
+  --one-oh-eight-pixel: max(
+    calc(108px + (216 - 108) * ((100vw - 1280px) / (2560 - 1280))),
+    108px
+  );
   --one-twenty-pixel: max(
     calc(120px + (240 - 120) * ((100vw - 1280px) / (2560 - 1280))),
     120px
@@ -554,4 +558,8 @@ input[type="text"] {
   .rightLabel {
     top: var(--negative-four-pixel);
   } */
+}
+
+.centered {
+  text-align: center;
 }

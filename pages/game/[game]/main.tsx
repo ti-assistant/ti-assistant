@@ -12,6 +12,7 @@ import { Footer, Header } from "../../../src/Header";
 import ResultsPhase from "../../../src/main/ResultsPhase";
 import { GameState } from "../../../src/util/api/state";
 import { FullScreenLoader } from "../../../src/Loader";
+import SummaryColumn from "../../../src/main/SummaryColumn";
 
 export default function MainScreenPage() {
   const router = useRouter();
@@ -34,6 +35,8 @@ export default function MainScreenPage() {
   // This will allow re-using the right column, which will usually be the summary.
 
   let innerContent = <FullScreenLoader />;
+  let order: "SPEAKER" | "VICTORY_POINTS" = "SPEAKER";
+  let subOrder: "SPEAKER" | "INITIATIVE" = "SPEAKER";
   switch (state?.phase) {
     case "SETUP":
       innerContent = <SetupPhase />;
@@ -52,13 +55,26 @@ export default function MainScreenPage() {
       break;
     case "END":
       innerContent = <ResultsPhase />;
+      order = "VICTORY_POINTS";
+      subOrder =
+        state.finalPhase === "ACTION" || state.finalPhase === "STATUS"
+          ? "INITIATIVE"
+          : "SPEAKER";
       break;
   }
   return (
-    <div className="flexColumn" style={{ alignItems: "center" }}>
+    <div
+      className="flexColumn"
+      style={{ height: "100%", alignItems: "center" }}
+    >
       <Updater />
       <Header />
-      {innerContent}
+      <div className="mainPage">
+        {innerContent}
+        {state?.phase && state.phase !== "SETUP" ? (
+          <SummaryColumn order={order} subOrder={subOrder} />
+        ) : null}
+      </div>
       <Footer />
     </div>
   );

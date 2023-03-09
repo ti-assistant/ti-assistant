@@ -1,0 +1,54 @@
+
+.summaryColumn {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100svh;
+  justify-content: center;
+}
+
+.factionSummary {
+  display: grid;
+  gap: var(--four-pixel);
+  grid-template-columns: repeat(3, 1fr);
+  isolation: isolate;
+  justify-items: center;
+  padding: 0 var(--eight-pixel);
+  position: relative;
+  width: 100%;
+}
+
+.planetTypeGrid {
+  display: grid;
+  font-size: var(--fourteen-pixel);
+  gap: var(--four-pixel);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.vpGrid {
+  align-items: center;
+  display: grid;
+  font-size: var(--twenty-eight-pixel);
+  justify-items: center;
+}
+
+.vpGrid :last-child {
+  grid-column: 1 / 4;
+}
+
+.techSummaryGrid {
+  display: grid;
+  font-size: var(--fourteen-pixel);
+  gap: var(--four-pixel);
+  grid-template-columns: repeat(5, 1fr);
+  width: min-content;
+}
+
+.techSummaryGrid .innerGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.techSummaryGrid > :last-child {
+  grid-column: 2 / 5;
+}

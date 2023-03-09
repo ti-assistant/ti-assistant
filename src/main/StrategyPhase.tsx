@@ -788,16 +788,7 @@ export default function StrategyPhase() {
   });
 
   return (
-    <div
-      className="flexRow"
-      style={{
-        alignItems: "center",
-        height: "100svh",
-        width: "100%",
-        justifyContent: "space-between",
-        gap: responsivePixels(20),
-      }}
-    >
+    <React.Fragment>
       <Modal
         closeMenu={() => setInfoModal({ show: false })}
         visible={infoModal.show}
@@ -811,7 +802,11 @@ export default function StrategyPhase() {
       </Modal>
       <div
         className="flexColumn"
-        style={{ alignItems: "center", width: responsivePixels(280) }}
+        style={{
+          alignItems: "center",
+          width: responsivePixels(280),
+          height: "100svh",
+        }}
       >
         {hasStartOfStrategyPhaseAbilities() ? (
           <div className="flexColumn">
@@ -899,8 +894,7 @@ export default function StrategyPhase() {
       <div
         className="flexColumn"
         style={{
-          justifyContent: "flex-start",
-          marginTop: responsivePixels(28),
+          marginTop: responsivePixels(80),
         }}
       >
         <div
@@ -914,7 +908,7 @@ export default function StrategyPhase() {
                 faction={activefaction}
                 style={{ height: responsivePixels(80) }}
                 opts={{
-                  iconSize: responsivePixels(68),
+                  iconSize: responsivePixels(60),
                   fontSize: responsivePixels(24),
                 }}
               >
@@ -947,7 +941,7 @@ export default function StrategyPhase() {
               On Deck
               <FactionCard
                 faction={onDeckFaction}
-                style={{ height: responsivePixels(50) }}
+                style={{ height: responsivePixels(64) }}
                 opts={{
                   iconSize: responsivePixels(44),
                   fontSize: responsivePixels(24),
@@ -995,12 +989,12 @@ export default function StrategyPhase() {
           </button>
         )}
       </div>
-      <div
+      {/* <div
         className="flexColumn"
         style={{ height: "100svh", width: responsivePixels(280) }}
       >
         <SummaryColumn />
-      </div>
-    </div>
+      </div> */}
+    </React.Fragment>
   );
 }

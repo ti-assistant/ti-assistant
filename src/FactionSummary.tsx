@@ -3,7 +3,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { FullFactionSymbol } from "./FactionCard";
 import { Modal } from "./Modal";
-import { FullPlanetSymbol, PlanetRow } from "./PlanetRow";
+import { FullPlanetSymbol, LegendaryPlanetIcon, PlanetRow } from "./PlanetRow";
 import { ResponsiveResources } from "./Resources";
 import { FullTechIcon, TechRow, WrappedTechIcon } from "./TechRow";
 import { Faction, manualVPUpdate } from "./util/api/factions";
@@ -88,7 +88,7 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
     if (typeDiff !== 0) {
       return typeDiff;
     }
-    const prereqDiff = a.prereqs.length - b.prereqs.length;
+    const prereqDiff: number = a.prereqs.length - b.prereqs.length;
     if (prereqDiff !== 0) {
       return prereqDiff;
     }
@@ -100,124 +100,19 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
   });
 
   return (
-    <div
-      className="flexColumn"
-      style={{
-        gap: responsivePixels(4),
-        fontSize: responsivePixels(12),
-        justifyContent: "space-evenly",
-      }}
-    >
-      <div className="flexRow" style={{ width: "100%" }}>
-        <div
-          className="flexRow hoverParent"
-          style={{
-            gap: responsivePixels(3),
-            flexBasis: "50%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div
-            className="flexColumn"
-            style={{ flexBasis: "30%", fontSize: responsivePixels(14) }}
-          >
-            {redTechs.length}
-          </div>
-          <div
-            style={{
-              position: "relative",
-              height: responsivePixels(16),
-              width: responsivePixels(18),
-            }}
-          >
-            <FullTechIcon type={"red"} />
-          </div>
-        </div>
-        <div
-          className="flexRow hoverParent"
-          style={{
-            gap: responsivePixels(3),
-            flexBasis: "50%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div
-            className="flexColumn"
-            style={{ flexBasis: "30%", fontSize: responsivePixels(14) }}
-          >
-            {greenTechs.length}
-          </div>
-          <div
-            style={{
-              position: "relative",
-              height: responsivePixels(16),
-              width: responsivePixels(18),
-            }}
-          >
-            <FullTechIcon type={"green"} />
-          </div>
-        </div>
-      </div>
-      <div className="flexRow" style={{ width: "100%" }}>
-        <div
-          className="flexRow hoverParent"
-          style={{
-            gap: responsivePixels(3),
-            flexBasis: "50%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div
-            className="flexColumn"
-            style={{ flexBasis: "30%", fontSize: responsivePixels(14) }}
-          >
-            {blueTechs.length}
-          </div>
-          <div
-            style={{
-              position: "relative",
-              height: responsivePixels(16),
-              width: responsivePixels(18),
-            }}
-          >
-            <FullTechIcon type={"blue"} />
-          </div>
-        </div>
-        <div
-          className="flexRow hoverParent"
-          style={{
-            gap: responsivePixels(3),
-            flexBasis: "50%",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div
-            className="flexColumn"
-            style={{ flexBasis: "30%", fontSize: responsivePixels(14) }}
-          >
-            {yellowTechs.length}
-          </div>
-          <div
-            style={{
-              position: "relative",
-              height: responsivePixels(16),
-              width: responsivePixels(18),
-            }}
-          >
-            <FullTechIcon type={"yellow"} />
-          </div>
-        </div>
-      </div>
-      <div
-        className="flexRow hoverParent"
-        style={{
-          width: "100%",
-          minWidth: responsivePixels(80),
-          fontSize: responsivePixels(14),
-        }}
-      >
-        {upgradeTechs.length} {pluralize("Upgrade", upgradeTechs.length)}
-      </div>
+    <div className="techSummaryGrid">
+      <div className="centered">{redTechs.length || "-"}</div>
+      <WrappedTechIcon type={"red"} size={16} />
+      <div>&nbsp;</div>
+      <div className="centered">{greenTechs.length || "-"}</div>
+      <WrappedTechIcon type={"green"} size={16} />
+      <div className="centered">{blueTechs.length || "-"}</div>
+      <WrappedTechIcon type={"blue"} size={16} />
+      <div>&nbsp;</div>
+      <div className="centered">{yellowTechs.length || "-"}</div>
+      <WrappedTechIcon type={"yellow"} size={16} />
+      <div className="centered">{upgradeTechs.length || "-"}</div>
+      <div>{pluralize("Upgrade", upgradeTechs.length)}</div>
     </div>
   );
 }
@@ -1317,6 +1212,7 @@ export function PlanetSummary({
   let cultural = 0;
   let hazardous = 0;
   let industrial = 0;
+  let legendary = 0;
   const skips = [];
   for (const planet of planets) {
     if (planet.ready || options.total) {
@@ -1334,6 +1230,9 @@ export function PlanetSummary({
       for (const attribute of planet.attributes) {
         if (attribute.includes("skip")) {
           skips.push(attribute);
+        }
+        if (attribute === "legendary") {
+          ++legendary;
         }
       }
     }
@@ -1356,43 +1255,17 @@ export function PlanetSummary({
   }
 
   return (
-    <div
-      className="flexRow"
-      style={{
-        gap: responsivePixels(12),
-        flexBasis: "30%",
-        maxWidth: responsivePixels(80),
-      }}
-    >
+    <div className="flexRow">
       <div className="flexRow">
         <ResponsiveResources resources={resources} influence={influence} />
-        {/* <PlanetAttributes attributes={skips} /> */}
       </div>
-      <div
-        className="flexColumn"
-        style={{ gap: responsivePixels(4), fontSize: responsivePixels(14) }}
-      >
-        <div
-          className="flexRow"
-          style={{ gap: responsivePixels(4), flexBasis: "33%" }}
-        >
-          <div className="flexColumn">{cultural}</div>
-          <FullPlanetSymbol type={"Cultural"} size={16} />
-        </div>
-        <div
-          className="flexRow"
-          style={{ gap: responsivePixels(4), flexBasis: "33%" }}
-        >
-          <div>{hazardous}</div>
-          <FullPlanetSymbol type={"Hazardous"} size={16} />
-        </div>
-        <div
-          className="flexRow"
-          style={{ gap: responsivePixels(4), flexBasis: "33%" }}
-        >
-          <div>{industrial}</div>
-          <FullPlanetSymbol type={"Industrial"} size={16} />
-        </div>
+      <div className="planetTypeGrid">
+        <div className="centered">{cultural || "-"}</div>
+        <FullPlanetSymbol type={"Cultural"} size={16} />
+        <div className="centered">{hazardous || "-"}</div>
+        <FullPlanetSymbol type={"Hazardous"} size={16} />
+        <div className="centered">{industrial || "-"}</div>
+        <FullPlanetSymbol type={"Industrial"} size={16} />
       </div>
     </div>
   );
@@ -1507,15 +1380,7 @@ export function FactionSummary({
   const editable = state?.phase !== "END";
 
   return (
-    <div
-      className="flexRow"
-      style={{
-        height: "100%",
-        width: "100%",
-        maxWidth: responsivePixels(800),
-        position: "relative",
-      }}
-    >
+    <div className="factionSummary">
       {options.showIcon ? (
         <div
           className="flexColumn"
@@ -1524,6 +1389,8 @@ export function FactionSummary({
             zIndex: -1,
             width: "100%",
             height: "100%",
+            top: 0,
+            left: 0,
           }}
         >
           <div
@@ -1541,7 +1408,7 @@ export function FactionSummary({
         </div>
       ) : null}
       {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
-      <div className="flexColumn" style={{ gap: 0 }}>
+      <div className="vpGrid">
         <div
           className="flexRow"
           style={{
@@ -1567,7 +1434,7 @@ export function FactionSummary({
             <div style={{ width: responsivePixels(12) }}></div>
           )}
         </div>
-        <div style={{ fontSize: responsivePixels(20) }}>
+        <div className="centered" style={{ fontSize: responsivePixels(20) }}>
           {pluralize("VP", VPs)}
         </div>
       </div>

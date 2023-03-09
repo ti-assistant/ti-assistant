@@ -18,33 +18,42 @@ export default function ResultsPhase() {
   );
 
   return (
-    <div
-      className="flexRow"
-      style={{
-        gap: responsivePixels(20),
-        height: "100svh",
-        width: "100%",
-        alignItems: "flex-start",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        className="flexColumn"
+    <React.Fragment>
+      <div className="flexColumn" style={{ height: "100svh" }}>
+        Game Log
+      </div>
+      <div className="flexColumn" style={{ height: "100svh" }}>
+        Game Over
+      </div>
+
+      {/* <div
+        className="flexRow"
         style={{
+          gap: responsivePixels(20),
           height: "100svh",
-          flexShrink: 0,
-          width: responsivePixels(280),
+          width: "100%",
+          alignItems: "flex-start",
+          justifyContent: "center",
         }}
       >
-        <SummaryColumn
-          order="VICTORY_POINTS"
-          subOrder={
-            state?.finalPhase === "ACTION" || state?.finalPhase === "STATUS"
-              ? "INITIATIVE"
-              : "SPEAKER"
-          }
-        />
-      </div>
-    </div>
+        <div
+          className="flexColumn"
+          style={{
+            height: "100svh",
+            flexShrink: 0,
+            width: responsivePixels(280),
+          }}
+        >
+          <SummaryColumn
+            order="VICTORY_POINTS"
+            subOrder={
+              state?.finalPhase === "ACTION" || state?.finalPhase === "STATUS"
+                ? "INITIATIVE"
+                : "SPEAKER"
+            }
+          />
+        </div>
+      </div> */}
+    </React.Fragment>
   );
 }

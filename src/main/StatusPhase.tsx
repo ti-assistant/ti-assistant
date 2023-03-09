@@ -305,6 +305,7 @@ export function MiddleColumn() {
                         style={{
                           position: "relative",
                           opacity: 0.5,
+                          top: responsivePixels(2),
                           width: responsivePixels(40),
                           height: responsivePixels(40),
                         }}
@@ -763,7 +764,7 @@ export default function StatusPhase() {
       >
         <InfoContent>{infoModal.content}</InfoContent>
       </Modal>
-      <div
+      {/* <div
         className="flexRow"
         style={{
           gap: responsivePixels(20),
@@ -772,252 +773,235 @@ export default function StatusPhase() {
           alignItems: "flex-start",
           justifyContent: "space-between",
         }}
+      > */}
+      <ol
+        className="flexColumn largeFont"
+        style={{
+          alignItems: "flex-start",
+          justifyContent: "center",
+          boxSizing: "border-box",
+          height: "100svh",
+          margin: 0,
+          paddingLeft: responsivePixels(20),
+        }}
       >
-        <ol
-          className="flexColumn largeFont "
-          style={{
-            alignItems: "flex-start",
-            justifyContent: "center",
-            boxSizing: "border-box",
-            height: "95%",
-            paddingLeft: responsivePixels(20),
-          }}
-        >
-          {!hasStartOfStatusPhaseAbilities() ? null : (
-            <NumberedItem>
-              <ClientOnlyHoverMenu
-                label="
-            Start of Status Phase Abilities"
-              >
-                <div
-                  className="flexColumn"
-                  style={{ padding: responsivePixels(8) }}
-                >
-                  {Object.entries(getStartOfStatusPhaseAbilities())
-                    .sort((a, b) => {
-                      if (!factions) {
-                        return 0;
-                      }
-                      const initiativeA = getInitiativeForFaction(
-                        strategyCards,
-                        a[0]
-                      );
-                      const initiativeB = getInitiativeForFaction(
-                        strategyCards,
-                        b[0]
-                      );
-                      if (initiativeA > initiativeB) {
-                        return 1;
-                      }
-                      return -1;
-                    })
-                    .map(([factionName, abilities]) => {
-                      if (!factions) {
-                        return null;
-                      }
-                      return (
-                        <LabeledDiv
-                          key={factionName}
-                          label={getFactionName(factions[factionName])}
-                          color={getFactionColor(factions[factionName])}
-                        >
-                          <div
-                            className="flexColumn"
-                            style={{ alignItems: "flex-start" }}
-                          >
-                            {abilities.map((ability) => {
-                              return (
-                                <div key={ability.name} className="flexRow">
-                                  {ability.name}
-                                  <div
-                                    className="popupIcon"
-                                    onClick={() =>
-                                      showInfoModal(
-                                        ability.name,
-                                        ability.description
-                                      )
-                                    }
-                                  >
-                                    &#x24D8;
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </LabeledDiv>
-                      );
-                    })}
-                </div>
-              </ClientOnlyHoverMenu>
-            </NumberedItem>
-          )}
-          <NumberedItem>Score Objectives</NumberedItem>
+        {!hasStartOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
-            <div className="largeFont">
-              {subStateObjectiveObj ? (
-                <LabeledDiv
-                  label={`Revealed Stage ${round < 4 ? "I" : "II"} Objective`}
-                >
-                  <ObjectiveRow
-                    objective={subStateObjectiveObj}
-                    removeObjective={() => removeObj(subStateObjectiveObj.name)}
-                    viewing={true}
-                  />
-                </LabeledDiv>
-              ) : (
-                <LabeledDiv
-                  label={`Speaker: ${getFactionName(
-                    (factions ?? {})[state?.speaker ?? ""]
-                  )}`}
-                  color={getFactionColor(
-                    (factions ?? {})[state?.speaker ?? ""]
-                  )}
-                  style={{ width: "100%" }}
-                >
-                  <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
-                    {(subState.objectives ?? []).map((objective) => {
-                      const objectiveObj = (objectives ?? {})[objective];
-                      if (!objectiveObj) {
-                        return null;
-                      }
-                      return (
-                        <ObjectiveRow
-                          key={objective}
-                          objective={objectiveObj}
-                          removeObjective={() => removeObj(objective)}
-                          viewing={true}
-                        />
-                      );
-                    })}
-                    <Selector
-                      hoverMenuLabel={`Reveal one Stage ${
-                        round > 3 ? "II" : "I"
-                      } objective`}
-                      selectedItem={(subState.objectives ?? [])[0]}
-                      options={Object.values(availableObjectives)
-                        .filter((objective) => {
-                          return (
-                            objective.type ===
-                            (round > 3 ? "stage-two" : "stage-one")
-                          );
-                        })
-                        .map((obj) => obj.name)}
-                      toggleItem={(objectiveName, add) => {
-                        if (add) {
-                          addObj(objectiveName);
-                        } else {
-                          removeObj(objectiveName);
-                        }
-                      }}
-                    />
-                  </div>
-                </LabeledDiv>
-              )}{" "}
-            </div>
-          </NumberedItem>
-          <NumberedItem>Draw Action Cards</NumberedItem>
-          <NumberedItem>Remove Command Tokens</NumberedItem>
-          <NumberedItem>Gain and Redistribute Tokens</NumberedItem>
-          <NumberedItem>Ready Cards</NumberedItem>
-          <NumberedItem>Repair Units</NumberedItem>
-          <NumberedItem>Return Strategy Cards</NumberedItem>
-          {!hasEndOfStatusPhaseAbilities() ? null : (
-            <NumberedItem>
-              <ClientOnlyHoverMenu label="End of Status Phase Abilities">
-                <div
-                  className="flexColumn"
-                  style={{ padding: responsivePixels(8) }}
-                >
-                  {Object.entries(getEndOfStatusPhaseAbilities())
-                    .sort((a, b) => {
-                      if (!factions) {
-                        return 0;
-                      }
-                      const initiativeA = getInitiativeForFaction(
-                        strategyCards,
-                        a[0]
-                      );
-                      const initiativeB = getInitiativeForFaction(
-                        strategyCards,
-                        b[0]
-                      );
-                      if (initiativeA > initiativeB) {
-                        return 1;
-                      }
-                      return -1;
-                    })
-                    .map(([factionName, abilities]) => {
-                      if (!factions) {
-                        return null;
-                      }
-                      return (
-                        <LabeledDiv
-                          key={factionName}
-                          label={getFactionName(factions[factionName])}
-                          color={getFactionColor(factions[factionName])}
+            <ClientOnlyHoverMenu
+              label="
+            Start of Status Phase Abilities"
+            >
+              <div
+                className="flexColumn"
+                style={{ padding: responsivePixels(8) }}
+              >
+                {Object.entries(getStartOfStatusPhaseAbilities())
+                  .sort((a, b) => {
+                    if (!factions) {
+                      return 0;
+                    }
+                    const initiativeA = getInitiativeForFaction(
+                      strategyCards,
+                      a[0]
+                    );
+                    const initiativeB = getInitiativeForFaction(
+                      strategyCards,
+                      b[0]
+                    );
+                    if (initiativeA > initiativeB) {
+                      return 1;
+                    }
+                    return -1;
+                  })
+                  .map(([factionName, abilities]) => {
+                    if (!factions) {
+                      return null;
+                    }
+                    return (
+                      <LabeledDiv
+                        key={factionName}
+                        label={getFactionName(factions[factionName])}
+                        color={getFactionColor(factions[factionName])}
+                      >
+                        <div
+                          className="flexColumn"
+                          style={{ alignItems: "flex-start" }}
                         >
-                          <div
-                            className="flexColumn"
-                            style={{ width: "100%", alignItems: "flex-start" }}
-                          >
-                            {abilities.map((ability) => {
-                              return (
-                                <div key={ability.name} className="flexRow">
-                                  {ability.name}
-                                  <div
-                                    className="popupIcon"
-                                    onClick={() =>
-                                      showInfoModal(
-                                        ability.name,
-                                        ability.description
-                                      )
-                                    }
-                                  >
-                                    &#x24D8;
-                                  </div>
+                          {abilities.map((ability) => {
+                            return (
+                              <div key={ability.name} className="flexRow">
+                                {ability.name}
+                                <div
+                                  className="popupIcon"
+                                  onClick={() =>
+                                    showInfoModal(
+                                      ability.name,
+                                      ability.description
+                                    )
+                                  }
+                                >
+                                  &#x24D8;
                                 </div>
-                              );
-                            })}
-                          </div>
-                        </LabeledDiv>
-                      );
-                    })}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </LabeledDiv>
+                    );
+                  })}
+              </div>
+            </ClientOnlyHoverMenu>
+          </NumberedItem>
+        )}
+        <NumberedItem>Score Objectives</NumberedItem>
+        <NumberedItem>
+          <div className="largeFont">
+            {subStateObjectiveObj ? (
+              <LabeledDiv
+                label={`Revealed Stage ${round < 4 ? "I" : "II"} Objective`}
+              >
+                <ObjectiveRow
+                  objective={subStateObjectiveObj}
+                  removeObjective={() => removeObj(subStateObjectiveObj.name)}
+                  viewing={true}
+                />
+              </LabeledDiv>
+            ) : (
+              <LabeledDiv
+                label={`Speaker: ${getFactionName(
+                  (factions ?? {})[state?.speaker ?? ""]
+                )}`}
+                color={getFactionColor((factions ?? {})[state?.speaker ?? ""])}
+                style={{ width: "100%" }}
+              >
+                <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
+                  {(subState.objectives ?? []).map((objective) => {
+                    const objectiveObj = (objectives ?? {})[objective];
+                    if (!objectiveObj) {
+                      return null;
+                    }
+                    return (
+                      <ObjectiveRow
+                        key={objective}
+                        objective={objectiveObj}
+                        removeObjective={() => removeObj(objective)}
+                        viewing={true}
+                      />
+                    );
+                  })}
+                  <Selector
+                    hoverMenuLabel={`Reveal one Stage ${
+                      round > 3 ? "II" : "I"
+                    } objective`}
+                    selectedItem={(subState.objectives ?? [])[0]}
+                    options={Object.values(availableObjectives)
+                      .filter((objective) => {
+                        return (
+                          objective.type ===
+                          (round > 3 ? "stage-two" : "stage-one")
+                        );
+                      })
+                      .map((obj) => obj.name)}
+                    toggleItem={(objectiveName, add) => {
+                      if (add) {
+                        addObj(objectiveName);
+                      } else {
+                        removeObj(objectiveName);
+                      }
+                    }}
+                  />
                 </div>
-              </ClientOnlyHoverMenu>
-            </NumberedItem>
-          )}
-        </ol>
-        <div
-          className="flexColumn"
-          style={{
-            width: "100%",
-            paddingTop: responsivePixels(60),
-            height: "90svh",
-            justifyContent: "center",
-          }}
-        >
-          <MiddleColumn />
-          {!statusPhaseComplete(subState) ? (
-            <div style={{ color: "firebrick" }}>
-              Reveal one Stage {(round ?? 1) > 3 ? "II" : "I"} objective
-            </div>
-          ) : null}
-          <LockedButtons
-            unlocked={statusPhaseComplete(subState)}
-            buttons={nextPhaseButtons}
-          />
-        </div>
-        <div
-          className="flexColumn"
-          style={{
-            height: "100svh",
-            flexShrink: 0,
-            width: responsivePixels(280),
-          }}
-        >
-          <SummaryColumn />
-        </div>
+              </LabeledDiv>
+            )}{" "}
+          </div>
+        </NumberedItem>
+        <NumberedItem>Draw Action Cards</NumberedItem>
+        <NumberedItem>Remove Command Tokens</NumberedItem>
+        <NumberedItem>Gain and Redistribute Tokens</NumberedItem>
+        <NumberedItem>Ready Cards</NumberedItem>
+        <NumberedItem>Repair Units</NumberedItem>
+        <NumberedItem>Return Strategy Cards</NumberedItem>
+        {!hasEndOfStatusPhaseAbilities() ? null : (
+          <NumberedItem>
+            <ClientOnlyHoverMenu label="End of Status Phase Abilities">
+              <div
+                className="flexColumn"
+                style={{ padding: responsivePixels(8) }}
+              >
+                {Object.entries(getEndOfStatusPhaseAbilities())
+                  .sort((a, b) => {
+                    if (!factions) {
+                      return 0;
+                    }
+                    const initiativeA = getInitiativeForFaction(
+                      strategyCards,
+                      a[0]
+                    );
+                    const initiativeB = getInitiativeForFaction(
+                      strategyCards,
+                      b[0]
+                    );
+                    if (initiativeA > initiativeB) {
+                      return 1;
+                    }
+                    return -1;
+                  })
+                  .map(([factionName, abilities]) => {
+                    if (!factions) {
+                      return null;
+                    }
+                    return (
+                      <LabeledDiv
+                        key={factionName}
+                        label={getFactionName(factions[factionName])}
+                        color={getFactionColor(factions[factionName])}
+                      >
+                        <div
+                          className="flexColumn"
+                          style={{ width: "100%", alignItems: "flex-start" }}
+                        >
+                          {abilities.map((ability) => {
+                            return (
+                              <div key={ability.name} className="flexRow">
+                                {ability.name}
+                                <div
+                                  className="popupIcon"
+                                  onClick={() =>
+                                    showInfoModal(
+                                      ability.name,
+                                      ability.description
+                                    )
+                                  }
+                                >
+                                  &#x24D8;
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </LabeledDiv>
+                    );
+                  })}
+              </div>
+            </ClientOnlyHoverMenu>
+          </NumberedItem>
+        )}
+      </ol>
+      <div
+        className="flexColumn"
+        style={{
+          width: "100%",
+          height: "100svh",
+          justifyContent: "center",
+        }}
+      >
+        <MiddleColumn />
+        <LockedButtons
+          unlocked={statusPhaseComplete(subState)}
+          buttons={nextPhaseButtons}
+        />
       </div>
+      {/* </div> */}
     </React.Fragment>
   );
 }

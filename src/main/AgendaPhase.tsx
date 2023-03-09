@@ -1259,16 +1259,7 @@ export default function AgendaPhase() {
   }
 
   return (
-    <div
-      className="flexRow"
-      style={{
-        gap: responsivePixels(40),
-        height: "100svh",
-        width: "100%",
-        alignItems: "flex-start",
-        justifyContent: "space-between",
-      }}
-    >
+    <React.Fragment>
       <div className="flexColumn" style={{ paddingTop: responsivePixels(140) }}>
         <AgendaSteps />
       </div>
@@ -1454,9 +1445,6 @@ export default function AgendaPhase() {
           </React.Fragment>
         )}
       </div>
-      <div className="flexColumn" style={{ width: responsivePixels(280) }}>
-        <SummaryColumn />
-      </div>
-    </div>
+    </React.Fragment>
   );
 }

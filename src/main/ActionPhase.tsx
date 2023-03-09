@@ -1580,15 +1580,7 @@ export default function ActionPhase() {
   const numFactions = Object.keys(factions).length;
 
   return (
-    <div
-      className="flexRow"
-      style={{
-        gap: responsivePixels(20),
-        width: "100%",
-        alignItems: "flex-start",
-        justifyContent: "space-between",
-      }}
-    >
+    <React.Fragment>
       <div
         className="flexColumn"
         style={{
@@ -1617,8 +1609,12 @@ export default function ActionPhase() {
               onDeckFaction={onDeckFaction}
             />
           ) : (
-            <React.Fragment>
-              <div style={{ fontSize: responsivePixels(42) }}>
+            <div className="flexColumn" style={{ height: "100svh" }}>
+              <div
+                style={{
+                  fontSize: responsivePixels(42),
+                }}
+              >
                 Action Phase Complete
               </div>
               <LockedButtons
@@ -1635,20 +1631,10 @@ export default function ActionPhase() {
                   },
                 ]}
               />
-            </React.Fragment>
+            </div>
           )}
         </div>
       </div>
-      <div
-        className="flexColumn"
-        style={{
-          height: "100svh",
-          flexShrink: 0,
-          width: responsivePixels(280),
-        }}
-      >
-        <SummaryColumn />
-      </div>
-    </div>
+    </React.Fragment>
   );
 }

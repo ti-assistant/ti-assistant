@@ -1754,7 +1754,6 @@ export default function GamePage() {
         className="flexColumn"
         style={{
           position: "relative",
-          zIndex: 0,
           width: "100%",
           maxWidth: "800px",
           marginTop: responsivePixels(48),
@@ -1762,7 +1761,7 @@ export default function GamePage() {
       >
         <div
           className="flexColumn"
-          style={{
+        style={{
             width: "100%",
             gap: "4px",
             fontSize: "18px",

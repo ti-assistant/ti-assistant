@@ -129,12 +129,8 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
 
   return (
     <div
-      className="flexColumn"
+      className="summaryColumn"
       style={{
-        width: "100%",
-        alignItems: "stretch",
-        height: "100svh",
-        maxWidth: responsivePixels(800),
         gap: numFactions < 8 ? responsivePixels(12) : responsivePixels(4),
       }}
     >
@@ -142,7 +138,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
 
       {orderedFactions.map(([name, faction]) => {
         return (
-          <div key={name} style={{ flex: `${responsivePixels(72)} 0 0` }}>
+          <div key={name}>
             <LabeledDiv
               label={getFactionName(faction)}
               rightLabel={
@@ -155,7 +151,6 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
                 />
               }
               color={getFactionColor(faction)}
-              style={{ height: "100%" }}
             >
               <FactionSummary
                 factionName={name}

@@ -203,7 +203,7 @@ function InfoContent({ ability }: { ability: string }) {
   );
 }
 
-function LegendaryPlanetIcon({
+export function LegendaryPlanetIcon({
   planetName,
   ability,
 }: {
@@ -245,8 +245,8 @@ function LegendaryPlanetIcon({
         <div
           style={{
             position: "relative",
-            width: responsivePixels(14),
-            height: responsivePixels(14),
+            width: responsivePixels(12),
+            height: responsivePixels(12),
           }}
         >
           <Image
