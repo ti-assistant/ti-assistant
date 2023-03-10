@@ -178,7 +178,7 @@ export default function SetupPhase() {
                 return (
                   <ClientOnlyHoverMenu
                     key={name}
-                    label={name}
+                    label={getFactionName(faction)}
                     borderColor={getFactionColor(faction)}
                   >
                     <div
@@ -255,6 +255,8 @@ export default function SetupPhase() {
                       gridTemplateRows: "repeat(5, auto)",
                       justifyContent: "flex-start",
                       gap: `${responsivePixels(4)}`,
+                      maxWidth: "80vw",
+                      overflowX: "auto",
                     }}
                   >
                     {Object.values(availableObjectives)
