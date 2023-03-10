@@ -2,7 +2,11 @@ import { useRouter } from "next/router";
 import { PropsWithChildren, useEffect, useState } from "react";
 import QRCode from "qrcode";
 import useSWR from "swr";
-import { responsiveNegativePixels, responsivePixels } from "./util/util";
+import {
+  responsiveNegativePixels,
+  responsivePixels,
+  validateMapString,
+} from "./util/util";
 import { fetcher } from "./util/api/util";
 import { GameTimer } from "./Timer";
 import { ClientOnlyHoverMenu } from "./HoverMenu";
@@ -273,7 +277,7 @@ export function Header() {
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
-      {((options ?? {})["map-string"] ?? []).length > 0 && state ? (
+      {validateMapString((options ?? {})["map-string"] ?? "") && state ? (
         <ClientOnlyHoverMenu
           label="View Map"
           buttonStyle={{
