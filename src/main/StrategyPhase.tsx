@@ -959,8 +959,8 @@ export default function StrategyPhase() {
                     factionName={onDeckFaction.name}
                     style={{
                       fontSize: responsivePixels(18),
-                      width: responsivePixels(96),
                     }}
+                    width={96}
                   />
                 </div>
               </FactionCard>

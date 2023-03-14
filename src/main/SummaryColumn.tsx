@@ -146,8 +146,8 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
                   factionName={name}
                   style={{
                     fontSize: responsivePixels(16),
-                    width: responsivePixels(84),
                   }}
+                  width={84}
                 />
               }
               color={getFactionColor(faction)}

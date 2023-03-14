@@ -496,7 +496,7 @@ export function PlanetRow({
           }
         }
         if (attachment.required.home !== undefined) {
-          if (attachment.required.home !== planet.home) {
+          if (attachment.required.home !== (planet.home ?? false)) {
             return false;
           }
         }
@@ -552,6 +552,7 @@ export function PlanetRow({
               fontFamily: "Myriad Pro",
               position: "absolute",
               color: claimedColor === "Black" ? "#aaa" : claimedColor,
+              backgroundColor: "#222",
               borderRadius: responsivePixels(5),
               border: `${responsivePixels(1)} solid ${claimedColor}`,
               padding: `0 ${responsivePixels(4)}`,
@@ -560,7 +561,7 @@ export function PlanetRow({
               left: responsivePixels(24),
             }}
           >
-            Claimed by {claimed}
+            Controlled by {claimed}
           </div>
         ) : null}
         <div

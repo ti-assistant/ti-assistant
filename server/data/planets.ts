@@ -230,7 +230,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
-    name: "ARNOR",
+    name: "Arnor",
     resources: 2,
     system: 36,
     type: "INDUSTRIAL",

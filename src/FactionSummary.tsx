@@ -1062,38 +1062,48 @@ export function UpdatePlanets({}) {
           width: "100%",
           height: "100%",
           boxSizing: "border-box",
+          outline: "3px solid blue",
           overflowY: "auto",
           padding: responsivePixels(8),
         }}
       >
-        <LabeledDiv
-          noBlur={true}
-          label={`Controlled by ${
-            factions ? getFactionName(factions[factionName]) : factionName
-          }`}
-          color={factions ? getFactionColor(factions[factionName]) : "#555"}
-          style={{ flex: "0 0 32%" }}
+        <div
+          style={{
+            position: "sticky",
+            zIndex: 1, // Required to make the attach menu show up over other elements.
+            top: 0,
+            flex: "0 0 32%",
+          }}
         >
-          <div
-            className="flexColumn"
-            style={{ width: "100%", alignItems: "stretch" }}
+          <LabeledDiv
+            noBlur={true}
+            label={`Controlled by ${
+              factions ? getFactionName(factions[factionName]) : factionName
+            }`}
+            color={factions ? getFactionColor(factions[factionName]) : "#555"}
           >
-            {planetsArr.map((planet) => {
-              if (planet.owner !== factionName) {
-                return null;
-              }
-              return (
-                <div key={planet.name}>
-                  <PlanetRow
-                    factionName={factionName}
-                    planet={planet}
-                    removePlanet={removePlanet}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </LabeledDiv>
+            <div
+              className="flexColumn"
+              style={{ width: "100%", alignItems: "stretch" }}
+            >
+              {planetsArr.map((planet) => {
+                if (planet.owner !== factionName) {
+                  return null;
+                }
+                return (
+                  <div key={planet.name}>
+                    <PlanetRow
+                      factionName={factionName}
+                      planet={planet}
+                      removePlanet={removePlanet}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </LabeledDiv>
+        </div>
+        {/* </div> */}
         <div
           className="flexColumn"
           style={{

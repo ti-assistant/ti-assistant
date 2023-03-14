@@ -1,5 +1,5 @@
 import { Expansion } from "./options";
-import { PlanetAttribute } from "./planets";
+import { PlanetAttribute, PlanetType } from "./planets";
 
 export type AttachmentUpdateAction = "ATTACH_TO_PLANET" | "REMOVE_FROM_PLANET";
 
@@ -16,7 +16,7 @@ export interface BaseAttachment {
   required: {
     home: boolean;
     legendary?: boolean;
-    type?: string;
+    type?: PlanetType;
     name?: string;
   };
 

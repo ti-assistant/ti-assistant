@@ -98,10 +98,15 @@ export const useSharedTimer = () => useBetween(useTimer);
 
 export interface TimerDisplayProps {
   time: number;
+  width?: number;
   style?: CSSProperties;
 }
 
-export function TimerDisplay({ time, style = {} }: TimerDisplayProps) {
+export function TimerDisplay({
+  time,
+  width = 152,
+  style = {},
+}: TimerDisplayProps) {
   let hours = Math.min(Math.floor(time / 3600), 99);
   const minutes = Math.floor((time % 3600) / 60);
   const seconds = time % 60;
@@ -113,11 +118,12 @@ export function TimerDisplay({ time, style = {} }: TimerDisplayProps) {
 
   if (tenHours === 0) {
     template =
-      "minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr) repeat(2, minmax(0, 2fr)) minmax(0, 1fr) repeat(2, minmax(0, 2fr)) minmax(0, 1fr)";
+      "minmax(0, 2fr) minmax(0, 1fr) repeat(2, minmax(0, 2fr)) minmax(0, 1fr) repeat(2, minmax(0, 2fr))";
+    width = Math.floor((width * 9) / 10);
   }
 
   const timerStyle = {
-    width: responsivePixels(152),
+    width: responsivePixels(width),
     fontSize: responsivePixels(24),
     gap: responsivePixels(0),
     fontFamily: "Slider",
@@ -138,11 +144,7 @@ export function TimerDisplay({ time, style = {} }: TimerDisplayProps) {
 
   return (
     <div className="flexRow" style={timerStyle}>
-      {tenHours > 0 ? (
-        <span style={numberStyle}>{tenHours}</span>
-      ) : (
-        <span></span>
-      )}
+      {tenHours > 0 ? <span style={numberStyle}>{tenHours}</span> : null}
       <span style={numberStyle}>{oneHours}</span>
       <span style={numberStyle}>:</span>
       <span style={numberStyle}>{tenMinutes}</span>
@@ -151,7 +153,7 @@ export function TimerDisplay({ time, style = {} }: TimerDisplayProps) {
       <span style={numberStyle}>{tenSeconds}</span>
       <span style={numberStyle}>{oneSeconds}</span>
 
-      {tenHours === 0 ? <span></span> : null}
+      {tenHours === 0 ? null : null}
     </div>
   );
 }
@@ -226,10 +228,7 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
       <div style={{ fontSize: responsivePixels(18) }}>
         {agendaNum === 2 ? "Second" : "First"} Agenda
       </div>
-      <TimerDisplay
-        time={agendaTimer}
-        style={{ width: responsivePixels(132) }}
-      />
+      <TimerDisplay time={agendaTimer} width={132} />
     </div>
   );
 }
@@ -322,9 +321,14 @@ export function GameTimer({ frozen = false }) {
 export interface FactionTimerProps {
   factionName: string;
   style?: CSSProperties;
+  width?: number;
 }
 
-export function StaticFactionTimer({ factionName, style }: FactionTimerProps) {
+export function StaticFactionTimer({
+  factionName,
+  style,
+  width,
+}: FactionTimerProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const { data: timers }: { data?: Record<string, number> } = useSWR(
@@ -338,7 +342,11 @@ export function StaticFactionTimer({ factionName, style }: FactionTimerProps) {
   const localFactionTimer = (timers ?? {})[factionName];
 
   return (
-    <TimerDisplay time={!timers ? 0 : localFactionTimer ?? 0} style={style} />
+    <TimerDisplay
+      time={!timers ? 0 : localFactionTimer ?? 0}
+      style={style}
+      width={width}
+    />
   );
 }
 

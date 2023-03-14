@@ -33,7 +33,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Research Team: Biotic",
     required: {
       home: false,
-      type: "Industrial",
+      type: "INDUSTRIAL",
     },
     resources: 1,
   },
@@ -43,7 +43,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Core Mining",
     required: {
       home: false,
-      type: "Hazardous",
+      type: "HAZARDOUS",
     },
     resources: 2,
   },
@@ -55,7 +55,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Research Team: Cybernetic",
     required: {
       home: false,
-      type: "Industrial",
+      type: "INDUSTRIAL",
     },
     resources: 1,
   },
@@ -66,7 +66,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Demilitarized Zone",
     required: {
       home: false,
-      type: "Cultural",
+      type: "CULTURAL",
     },
     resources: 0,
   },
@@ -77,7 +77,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Holy Planet of Ixth",
     required: {
       home: false,
-      type: "Cultural",
+      type: "CULTURAL",
     },
     resources: 2,
   },
@@ -88,7 +88,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Holy Planet of Ixth",
     required: {
       home: false,
-      type: "Cultural",
+      type: "CULTURAL",
     },
     resources: 0,
   },
@@ -98,7 +98,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Lazax Survivors",
     required: {
       home: false,
-      type: "Hazardous",
+      type: "HAZARDOUS",
     },
     resources: 1,
   },
@@ -109,7 +109,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Core Mining",
     required: {
       home: false,
-      type: "Hazardous",
+      type: "HAZARDOUS",
     },
     resources: 2,
   },
@@ -131,7 +131,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Senate Sanctuary",
     required: {
       home: false,
-      type: "Cultural",
+      type: "CULTURAL",
     },
     resources: 0,
   },
@@ -143,7 +143,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Research Team: Propulsion",
     required: {
       home: false,
-      type: "Industrial",
+      type: "INDUSTRIAL",
     },
     resources: 1,
   },
@@ -154,7 +154,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Research Team: Biotic",
     required: {
       home: false,
-      type: "Industrial",
+      type: "INDUSTRIAL",
     },
     resources: 0,
   },
@@ -165,7 +165,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Research Team: Cybernetic",
     required: {
       home: false,
-      type: "Industrial",
+      type: "INDUSTRIAL",
     },
     resources: 0,
   },
@@ -176,7 +176,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Research Team: Propulsion",
     required: {
       home: false,
-      type: "Industrial",
+      type: "INDUSTRIAL",
     },
     resources: 0,
   },
@@ -187,7 +187,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Research Team: Warfare",
     required: {
       home: false,
-      type: "Hazardous",
+      type: "HAZARDOUS",
     },
     resources: 0,
   },
@@ -198,7 +198,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Terraforming Initiative",
     required: {
       home: false,
-      type: "Hazardous",
+      type: "HAZARDOUS",
     },
     resources: 1,
   },
@@ -208,7 +208,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Senate Sanctuary",
     required: {
       home: false,
-      type: "Cultural",
+      type: "CULTURAL",
     },
     resources: 0,
   },
@@ -228,7 +228,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Terraforming Initiative",
     required: {
       home: false,
-      type: "Hazardous",
+      type: "HAZARDOUS",
     },
     resources: 1,
   },
@@ -239,7 +239,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     name: "Tomb of Emphidia",
     required: {
       home: false,
-      type: "Cultural",
+      type: "CULTURAL",
     },
     resources: 0,
   },
@@ -262,7 +262,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     replaces: "Research Team: Warfare",
     required: {
       home: false,
-      type: "Hazardous",
+      type: "HAZARDOUS",
     },
     resources: 1,
   },

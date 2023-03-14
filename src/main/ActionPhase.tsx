@@ -1474,8 +1474,8 @@ export function ActivePlayerColumn({
                 factionName={onDeckFaction.name}
                 style={{
                   fontSize: responsivePixels(24),
-                  width: responsivePixels(132),
                 }}
+                width={132}
               />
             </div>
           </FactionCard>

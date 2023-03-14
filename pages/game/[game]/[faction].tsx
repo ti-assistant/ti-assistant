@@ -1826,9 +1826,9 @@ export default function GamePage() {
             rightLabel={
               <StaticFactionTimer
                 factionName={playerFaction}
+                width={80}
                 style={{
                   fontSize: responsivePixels(16),
-                  width: responsivePixels(80),
                 }}
               />
             }
