@@ -170,10 +170,12 @@ export async function fetchPlanets(
 
   let planets = {} as Record<string, Planet>;
   Object.entries(BASE_PLANETS).forEach(([planetId, planet]) => {
-    if (planet.home && planet.faction && !gameFactions[planet.faction]) {
+    if (planet.faction && !gameFactions[planet.faction]) {
+      if (!gameFactions["Council Keleres"]) {
+        return;
+      }
       if (
-        !gameFactions["Council Keleres"] ||
-        !(gameFactions["Council Keleres"]?.startswith?.planets ?? []).includes(
+        !gameFactions["Council Keleres"].startswith.planets?.includes(
           planet.name
         )
       ) {

@@ -659,6 +659,26 @@ function PhaseSection() {
           );
         }
       );
+      const canScoreObjectives = Object.values(planets ?? {}).reduce(
+        (canScore, planet) => {
+          if (faction.name === "Clan of Saar") {
+            return true;
+          }
+          let planetFaction = faction.name;
+          if (faction.name === "Council Keleres") {
+            planetFaction = faction.startswith.faction ?? planetFaction;
+          }
+          if (
+            planet.home &&
+            planet.faction === planetFaction &&
+            planet.owner !== faction.name
+          ) {
+            return false;
+          }
+          return canScore;
+        },
+        true
+      );
       const secrets = Object.values(objectives ?? {}).filter((objective) => {
         return (
           objective.type === "SECRET" &&
@@ -710,6 +730,8 @@ function PhaseSection() {
                   {scoredPublics[0]}
                 </SelectableRow>
               </LabeledDiv>
+            ) : !canScoreObjectives ? (
+              "Cannot score public objectives"
             ) : (
               <ClientOnlyHoverMenu label="Score Public Objective">
                 <div

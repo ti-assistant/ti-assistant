@@ -35,6 +35,7 @@ import { FullFactionSymbol } from "../FactionCard";
 import { NumberedItem } from "../NumberedItem";
 import { Selector } from "../Selector";
 import { LockedButtons } from "../LockedButton";
+import { Planet } from "../util/api/planets";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -75,6 +76,13 @@ export function MiddleColumn() {
   );
   const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
     gameid ? `/api/${gameid}/objectives` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
+    gameid ? `/api/${gameid}/planets` : null,
     fetcher,
     {
       revalidateIfStale: false,
@@ -188,6 +196,26 @@ export function MiddleColumn() {
             }}
           >
             {filteredStrategyCards.map((card) => {
+              const canScoreObjectives = Object.values(planets ?? {}).reduce(
+                (canScore, planet) => {
+                  if (card.faction === "Clan of Saar") {
+                    return true;
+                  }
+                  let planetFaction = card.faction;
+                  if (card.faction === "Council Keleres") {
+                    planetFaction = factions[card.faction]?.startswith.faction;
+                  }
+                  if (
+                    planet.home &&
+                    planet.faction === planetFaction &&
+                    planet.owner !== card.faction
+                  ) {
+                    return false;
+                  }
+                  return canScore;
+                },
+                true
+              );
               const availableObjectives = Object.values(
                 objectives ?? {}
               ).filter((objective) => {
@@ -256,7 +284,15 @@ export function MiddleColumn() {
                       height: responsivePixels(36),
                     }}
                   >
-                    {!scoredPublics[0] && availableObjectives.length === 0 ? (
+                    {!canScoreObjectives ? (
+                      <div
+                        className="smallFont"
+                        style={{ textAlign: "center", width: "40%" }}
+                      >
+                        Cannot score public objectives
+                      </div>
+                    ) : !scoredPublics[0] &&
+                      availableObjectives.length === 0 ? (
                       <div
                         className="smallFont"
                         style={{ textAlign: "center", width: "40%" }}
