@@ -1640,53 +1640,59 @@ export default function GamePage() {
     switch (state?.phase) {
       case "SETUP":
         return (
-          <LockedButtons
-            unlocked={setupPhaseComplete(factions ?? {}, subState)}
-            buttons={[
-              {
-                text: "Start Game",
-                onClick: () => {
-                  if (!gameid) {
-                    return;
-                  }
-                  startFirstRound(gameid, subState, factions ?? {});
+          <div className="flexColumn" style={{ marginTop: "8px" }}>
+            <LockedButtons
+              unlocked={setupPhaseComplete(factions ?? {}, subState)}
+              buttons={[
+                {
+                  text: "Start Game",
+                  onClick: () => {
+                    if (!gameid) {
+                      return;
+                    }
+                    startFirstRound(gameid, subState, factions ?? {});
+                  },
                 },
-              },
-            ]}
-          />
+              ]}
+            />
+          </div>
         );
       case "STRATEGY":
         if (state?.activeplayer === "None") {
           return (
-            <button
-              onClick={() => {
-                if (!gameid) {
-                  return;
-                }
-                advanceToActionPhase(gameid, strategyCards, subState);
-              }}
-            >
-              Advance to Action Phase
-            </button>
+            <div className="flexColumn" style={{ marginTop: "8px" }}>
+              <button
+                onClick={() => {
+                  if (!gameid) {
+                    return;
+                  }
+                  advanceToActionPhase(gameid, strategyCards, subState);
+                }}
+              >
+                Advance to Action Phase
+              </button>
+            </div>
           );
         }
         return null;
       case "ACTION":
         return (
-          <LockedButtons
-            unlocked={state?.activeplayer === "None"}
-            buttons={[
-              {
-                text: "Advance to Status Phase",
-                onClick: () => {
-                  if (!gameid) {
-                    return;
-                  }
-                  advanceToStatusPhase(gameid);
+          <div className="flexColumn" style={{ marginTop: "8px" }}>
+            <LockedButtons
+              unlocked={state?.activeplayer === "None"}
+              buttons={[
+                {
+                  text: "Advance to Status Phase",
+                  onClick: () => {
+                    if (!gameid) {
+                      return;
+                    }
+                    advanceToStatusPhase(gameid);
+                  },
                 },
-              },
-            ]}
-          />
+              ]}
+            />
+          </div>
         );
       case "STATUS":
         let buttons = [];
@@ -1711,27 +1717,31 @@ export default function GamePage() {
           },
         });
         return (
-          <LockedButtons
-            unlocked={statusPhaseComplete(subState)}
-            buttons={buttons}
-          />
+          <div className="flexColumn" style={{ marginTop: "8px" }}>
+            <LockedButtons
+              unlocked={statusPhaseComplete(subState)}
+              buttons={buttons}
+            />
+          </div>
         );
       case "AGENDA":
         return (
-          <LockedButtons
-            unlocked={state?.agendaNum === 3}
-            buttons={[
-              {
-                text: "Start Next Round",
-                onClick: () => {
-                  if (!gameid) {
-                    return;
-                  }
-                  startNextRound(gameid, subState);
+          <div className="flexColumn" style={{ marginTop: "8px" }}>
+            <LockedButtons
+              unlocked={state?.agendaNum === 3}
+              buttons={[
+                {
+                  text: "Start Next Round",
+                  onClick: () => {
+                    if (!gameid) {
+                      return;
+                    }
+                    startNextRound(gameid, subState);
+                  },
                 },
-              },
-            ]}
-          />
+              ]}
+            />
+          </div>
         );
     }
     return null;
@@ -1815,9 +1825,7 @@ export default function GamePage() {
               );
             })}
           </div>
-          <div className="flexColumn" style={{ marginTop: "8px" }}>
-            <NextPhaseButtons />
-          </div>
+          <NextPhaseButtons />
         </div>
         <div style={{ width: "100%", margin: "4px" }}>
           <FactionCard
