@@ -531,7 +531,7 @@ export function AdditionalActions({
       ) {
         return false;
       }
-      return objective.type === "secret" && objective.phase === "action";
+      return objective.type === "SECRET" && objective.phase === "ACTION";
     }
   );
 
@@ -1032,7 +1032,7 @@ export function AdditionalActions({
             return false;
           }
           return (
-            objective.type === "stage-one" || objective.type === "stage-two"
+            objective.type === "STAGE ONE" || objective.type === "STAGE TWO"
           );
         }
       );
@@ -1045,7 +1045,7 @@ export function AdditionalActions({
           return false;
         }
         return (
-          objectiveObj.type === "stage-one" || objectiveObj.type === "stage-two"
+          objectiveObj.type === "STAGE ONE" || objectiveObj.type === "STAGE TWO"
         );
       });
       return (

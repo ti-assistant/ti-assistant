@@ -54,19 +54,19 @@ export function getTargets(
       return [...ownedPlanetNames, "Abstain"];
     case "Cultural Planet":
       const culturalPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "Cultural")
+        .filter((planet) => planet.type === "CULTURAL")
         .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...culturalPlanets, "Abstain"];
     case "Hazardous Planet":
       const hazardousPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "Hazardous")
+        .filter((planet) => planet.type === "HAZARDOUS")
         .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...hazardousPlanets, "Abstain"];
     case "Industrial Planet":
       const industrialPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "Industrial")
+        .filter((planet) => planet.type === "INDUSTRIAL")
         .filter((planet) => !!planet.owner)
         .map((planet) => planet.name);
       return [...industrialPlanets, "Abstain"];
@@ -78,12 +78,12 @@ export function getTargets(
       return [...electablePlanets, "Abstain"];
     case "Law":
       const passedLaws = Object.values(agendas)
-        .filter((agenda) => agenda.type === "law" && agenda.passed)
+        .filter((agenda) => agenda.type === "LAW" && agenda.passed)
         .map((law) => law.name);
       return [...passedLaws, "Abstain"];
     case "Scored Secret Objective":
       const secrets = Object.values(objectives).filter((objective) => {
-        return objective.type === "secret";
+        return objective.type === "SECRET";
       });
       const scoredSecrets = secrets.filter((objective) => {
         return (objective.scorers ?? []).length > 0;

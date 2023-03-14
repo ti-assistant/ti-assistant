@@ -1,5 +1,7 @@
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
+import { BASE_FACTIONS, FactionId } from "../../server/data/factions";
+import { BASE_PLANETS } from "../../server/data/planets";
 import { BaseFaction, GameFaction } from "../../src/util/api/factions";
 import { GameObjective } from "../../src/util/api/objectives";
 import { Options } from "../../src/util/api/options";
@@ -47,28 +49,20 @@ export default async function handler(
 
     // Get home planets for each faction.
     // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
-    const homePlanetsRef = await db
-      .collection("planets")
-      .where("faction", "==", faction.name)
-      .get();
+    const homeBasePlanets = Object.entries(BASE_PLANETS).filter(
+      ([_, planet]) => planet.faction === faction.name
+    );
     const homePlanets: Record<string, { ready: boolean }> = {};
-    homePlanetsRef.forEach((planet) => {
-      homePlanets[planet.id] = {
+    homeBasePlanets.forEach(([planetId, _]) => {
+      homePlanets[planetId] = {
         ready: true,
       };
     });
 
     // Get starting techs for each faction.
-    // TODO(jboman): Handle factions that have a choice in starting techs.
-    const factionRef = await db.collection("factions").doc(faction.name).get();
-    const factionData: BaseFaction | undefined = factionRef.data() as
-      | BaseFaction
-      | undefined;
-    if (!factionData) {
-      throw new Error("Failed to fetch faction.");
-    }
+    const baseFaction = BASE_FACTIONS[faction.name as FactionId];
     const startingTechs: Record<string, { ready: boolean }> = {};
-    (factionData.startswith.techs ?? []).forEach((tech) => {
+    (baseFaction.startswith.techs ?? []).forEach((tech) => {
       startingTechs[tech] = {
         ready: true,
       };
@@ -84,7 +78,7 @@ export default async function handler(
       // Faction specific values
       planets: homePlanets,
       techs: startingTechs,
-      startswith: factionData.startswith,
+      startswith: baseFaction.startswith,
       // State values
       hero: "locked",
       commander: "locked",

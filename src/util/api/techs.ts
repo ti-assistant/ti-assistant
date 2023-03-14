@@ -3,7 +3,7 @@ import { Faction, FactionUpdateData } from "./factions";
 import { Expansion } from "./options";
 import { poster } from "./util";
 
-export type TechType = "red" | "blue" | "yellow" | "green" | "upgrade";
+export type TechType = "RED" | "BLUE" | "YELLOW" | "GREEN" | "UPGRADE";
 
 export interface UnitStats {
   capacity?: number;

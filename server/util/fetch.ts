@@ -2,23 +2,27 @@ import { getFirestore } from "firebase-admin/firestore";
 
 import { validateMapString } from "../../src/util/util";
 
-import { BasePlanet, Planet } from "../../src/util/api/planets";
+import { Planet } from "../../src/util/api/planets";
 import { GameData } from "../../src/util/api/util";
-import { BaseStrategyCard, StrategyCard } from "../../src/util/api/cards";
-import {
-  BaseObjective,
-  GameObjective,
-  Objective,
-} from "../../src/util/api/objectives";
+import { StrategyCard } from "../../src/util/api/cards";
+import { GameObjective, Objective } from "../../src/util/api/objectives";
 import { Options } from "../../src/util/api/options";
-import { Attachment, BaseAttachment } from "../../src/util/api/attachments";
-import { Agenda, BaseAgenda } from "../../src/util/api/agendas";
+import { Attachment } from "../../src/util/api/attachments";
+import { Agenda } from "../../src/util/api/agendas";
 import {
   BaseComponent,
   BaseLeader,
   Component,
 } from "../../src/util/api/components";
 import { BaseFaction, Faction } from "../../src/util/api/factions";
+import { BASE_AGENDAS } from "../data/agendas";
+import { BASE_FACTIONS } from "../data/factions";
+import { BASE_ATTACHMENTS } from "../data/attachments";
+import { BASE_OBJECTIVES } from "../data/objectives";
+import { BASE_PLANETS } from "../data/planets";
+import { BASE_STRATEGY_CARDS } from "../data/strategyCards";
+import { BASE_COMPONENTS } from "../data/components";
+import { BASE_LEADERS } from "../data/leaders";
 
 /**
  * Returns the game data for a given game.
@@ -36,24 +40,15 @@ export async function getGameData(gameId: string): Promise<Partial<GameData>> {
 export async function fetchStrategyCards(
   gameId: string
 ): Promise<Record<string, StrategyCard>> {
-  const db = getFirestore();
-
-  const strategiesRef = await db
-    .collection("strategycards")
-    .orderBy("order")
-    .get();
-
   const gameData = await getGameData(gameId);
 
   const strategyCards = gameData.strategycards ?? {};
 
   const cards: Record<string, StrategyCard> = {};
-  strategiesRef.forEach(async (val) => {
-    const card = val.data() as BaseStrategyCard;
-
-    cards[val.id] = {
+  Object.entries(BASE_STRATEGY_CARDS).forEach(([cardId, card]) => {
+    cards[cardId] = {
       ...card,
-      ...(strategyCards[val.id] ?? {}),
+      ...(strategyCards[cardId] ?? {}),
     };
   });
 
@@ -67,10 +62,6 @@ export async function fetchObjectives(
   gameId: string,
   secret: string
 ): Promise<Record<string, Objective>> {
-  const db = getFirestore();
-
-  const objectivesRef = await db.collection("objectives").get();
-
   const gameData = await getGameData(gameId);
 
   const gameObjectives = gameData.objectives ?? {};
@@ -79,10 +70,7 @@ export async function fetchObjectives(
   const expansions = gameData.options?.expansions ?? [];
 
   const objectives: Record<string, Objective> = {};
-  objectivesRef.forEach(async (val) => {
-    let objective = val.data() as BaseObjective;
-    const objectiveId = val.id;
-
+  Object.entries(BASE_OBJECTIVES).forEach(([objectiveId, objective]) => {
     // Maybe filter out PoK objectives.
     if (!expansions.includes("POK") && objective.expansion === "POK") {
       return;
@@ -118,20 +106,13 @@ export async function fetchObjectives(
 export async function fetchAttachments(
   gameId: string
 ): Promise<Record<string, Attachment>> {
-  const db = getFirestore();
-
-  const attachmentsRef = await db.collection("attachments").get();
-
   const gameData = await getGameData(gameId);
 
   const gameAttachments = gameData.attachments ?? {};
   const expansions = gameData.options?.expansions ?? [];
 
   const attachments: Record<string, Attachment> = {};
-  attachmentsRef.forEach(async (val) => {
-    const attachment = val.data() as BaseAttachment;
-    const attachmentId = val.id;
-
+  Object.entries(BASE_ATTACHMENTS).forEach(([attachmentId, attachment]) => {
     // Maybe filter out PoK objectives.
     if (
       attachment.expansion !== "BASE" &&
@@ -147,7 +128,7 @@ export async function fetchAttachments(
 
     attachments[attachmentId] = {
       ...attachment,
-      ...(gameAttachments[val.id] ?? {}),
+      ...(gameAttachments[attachmentId] ?? {}),
     };
   });
 
@@ -176,10 +157,6 @@ export async function fetchAttachments(
 export async function fetchPlanets(
   gameId: string
 ): Promise<Record<string, Planet>> {
-  const db = getFirestore();
-
-  const planetsRef = await db.collection("planets").get();
-
   const gameData = await getGameData(gameId);
 
   const gamePlanets = gameData.planets ?? {};
@@ -192,10 +169,7 @@ export async function fetchPlanets(
   const inGameSystems = mapString.split(" ").map((system) => parseInt(system));
 
   let planets = {} as Record<string, Planet>;
-  planetsRef.forEach(async (val) => {
-    let planet = val.data() as BasePlanet;
-    let id = val.id;
-
+  Object.entries(BASE_PLANETS).forEach(([planetId, planet]) => {
     if (planet.home && planet.faction && !gameFactions[planet.faction]) {
       if (
         !gameFactions["Council Keleres"] ||
@@ -232,13 +206,12 @@ export async function fetchPlanets(
 
     planet = {
       ...planet,
-      ...(gamePlanets[id] ?? {}),
+      ...(gamePlanets[planetId] ?? {}),
     };
 
-    if (id === "000") {
-      id = "[0.0.0]";
-    }
-    planets[id] = planet;
+    const clientId = planetId === "000" ? "[0.0.0]" : planetId;
+
+    planets[clientId] = planet;
   });
 
   return planets;
@@ -250,22 +223,13 @@ export async function fetchPlanets(
 export async function fetchAgendas(
   gameId: string
 ): Promise<Record<string, Agenda>> {
-  const db = getFirestore();
-
-  const agendasRef = await db.collection("agendas").get();
-
   const gameData = await getGameData(gameId);
 
   const gameAgendas = gameData.agendas ?? {};
   const expansions = gameData.options?.expansions ?? [];
 
   const agendas: Record<string, Agenda> = {};
-  agendasRef.forEach(async (val) => {
-    let agenda = val.data() as BaseAgenda;
-
-    // Remove POK from Representative Government
-    let agendaId = val.id.replace(" POK", "");
-
+  Object.entries(BASE_AGENDAS).forEach(([agendaId, agenda]) => {
     // Maybe filter out PoK agendas.
     if (
       agenda.expansion !== "BASE" &&
@@ -296,18 +260,13 @@ export async function fetchComponents(
 ): Promise<Record<string, Component>> {
   const db = getFirestore();
 
-  const componentsRef = await db.collection("components").get();
-
   const gameData = await getGameData(gameId);
 
   const gameComponents = gameData.components ?? {};
   const expansions = gameData.options?.expansions ?? [];
 
   let components: Record<string, Component> = {};
-  componentsRef.forEach((val) => {
-    let component = val.data() as BaseComponent;
-    const componentId = val.id;
-
+  Object.entries(BASE_COMPONENTS).forEach(([componentId, component]) => {
     // Maybe filter out PoK components.
     if (
       component.expansion &&
@@ -319,11 +278,11 @@ export async function fetchComponents(
     }
 
     // Filter out Codex Two relics if not using PoK.
-    if (!expansions.includes("POK") && component.type === "relic") {
+    if (!expansions.includes("POK") && component.type === "RELIC") {
       return;
     }
     // Filter out leaders if not using PoK.
-    if (!expansions.includes("POK") && component.type === "leader") {
+    if (!expansions.includes("POK") && component.type === "LEADER") {
       return;
     }
     // Filter out components that are removed by PoK.
@@ -337,33 +296,48 @@ export async function fetchComponents(
     };
   });
 
-  const leadersRef = await db
-    .collectionGroup("leaders")
-    .where("timing", "in", ["COMPONENT ACTION", "MULTIPLE"])
-    .get();
+  const componentLeaders = Object.entries(BASE_LEADERS)
+    // Filter out leaders that are not in the game.
+    .filter(([_, leader]) => {
+      if (leader.faction && !(gameData.factions ?? {})[leader.faction]) {
+        return false;
+      }
+      if (!expansions.includes(leader.expansion)) {
+        return false;
+      }
+      return true;
+    })
+    // Update leaders with omega versions if applicable.
+    .map(([leaderId, leader]): [string, BaseLeader] => {
+      const updatedLeader: BaseLeader = { ...leader };
+      if (leader.omega && expansions.includes(leader.omega.expansion)) {
+        if (leader.omega.abilityName) {
+          updatedLeader.abilityName = leader.omega.abilityName;
+        }
+        updatedLeader.description = leader.omega.description;
+        updatedLeader.name = leader.omega.name;
+        if (leader.omega.timing) {
+          updatedLeader.timing = leader.omega.timing;
+        }
+      }
+      return [leaderId, updatedLeader];
+    })
+    // Filter out leaders that have the wrong timing.
+    .filter(([_, leader]) => {
+      return (
+        leader.timing === "COMPONENT ACTION" || leader.timing === "MULTIPLE"
+      );
+    });
 
   let isYssarilComponent = false;
-  leadersRef.forEach((val) => {
-    let leader = val.data() as BaseLeader;
-    const componentId = val.id;
-
-    // Filter out factions that are not in the game.
-    if (leader.faction && !(gameData.factions ?? {})[leader.faction]) {
-      return;
-    }
-
-    // Filter out unused expansions.
-    if (!expansions.includes(leader.expansion)) {
-      return;
-    }
-
+  componentLeaders.forEach(([componentId, leader]) => {
     if (leader.type === "AGENT") {
       isYssarilComponent = true;
     }
 
     components[componentId] = {
       ...leader,
-      type: "leader",
+      type: "LEADER",
       leader: leader.type,
     };
   });
@@ -387,15 +361,10 @@ export async function fetchComponents(
 export async function fetchFactions(
   gameId: string
 ): Promise<Record<string, Faction>> {
-  const db = getFirestore();
-
   const gameData = await getGameData(gameId);
 
-  const factionsRef = await db.collection("factions").get();
   const baseFactions: Record<string, BaseFaction> = {};
-  factionsRef.forEach((val) => {
-    const faction = val.data() as BaseFaction;
-    const factionId = val.id;
+  Object.entries(BASE_FACTIONS).forEach(([factionId, faction]) => {
     baseFactions[factionId] = faction;
   });
 

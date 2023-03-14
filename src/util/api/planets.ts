@@ -11,14 +11,15 @@ export type PlanetAttribute =
   | "demilitarized"
   | "tomb"
   | "space-cannon"
-  | "all-types";
+  | "all-types"
+  | "victory-point";
 
 export type PlanetType =
-  | "Industrial"
-  | "Cultural"
-  | "Hazardous"
-  | "all"
-  | "none";
+  | "INDUSTRIAL"
+  | "CULTURAL"
+  | "HAZARDOUS"
+  | "ALL"
+  | "NONE";
 
 export type PlanetUpdateAction =
   | "ADD_PLANET"
@@ -39,7 +40,7 @@ export interface BasePlanet {
   ability?: string;
   attributes: PlanetAttribute[];
   faction?: string;
-  home: boolean;
+  home?: boolean;
   influence: number;
   locked?: boolean;
   name: string;

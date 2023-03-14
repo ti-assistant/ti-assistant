@@ -212,7 +212,7 @@ function AgendaDetails() {
 
   switch (agendaName) {
     case "Incentive Program": {
-      const type = selectedOutcome === "For" ? "stage-one" : "stage-two";
+      const type = selectedOutcome === "For" ? "STAGE ONE" : "STAGE TWO";
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           return objective.type === type && !objective.selected;
@@ -221,7 +221,7 @@ function AgendaDetails() {
       return (
         <Selector
           hoverMenuLabel={`Reveal Stage ${
-            type === "stage-one" ? "I" : "II"
+            type === "STAGE ONE" ? "I" : "II"
           } Objective`}
           options={availableObjectives.map((objective) => objective.name)}
           renderItem={(objectiveName) => {
@@ -232,7 +232,7 @@ function AgendaDetails() {
             return (
               <LabeledDiv
                 label={`Revealed Stage ${
-                  type === "stage-one" ? "I" : "II"
+                  type === "STAGE ONE" ? "I" : "II"
                 } Objective`}
               >
                 <ObjectiveRow
@@ -315,7 +315,7 @@ export function resolveAgendaRepeal(gameid: string, agenda: Agenda) {
   }
   switch (agenda.name) {
     case "Classified Document Leaks": {
-      changeObjectiveType(gameid, agenda.target, "secret");
+      changeObjectiveType(gameid, agenda.target, "SECRET");
       break;
     }
     case "Core Mining":
@@ -431,7 +431,7 @@ function AgendaSteps() {
     }
     switch (agendaName) {
       case "Classified Document Leaks": {
-        changeObjectiveType(gameid, target, "stage-one");
+        changeObjectiveType(gameid, target, "STAGE ONE");
         break;
       }
       case "Core Mining":
@@ -515,7 +515,7 @@ function AgendaSteps() {
       }
       case "New Constitution": {
         const toRepeal = Object.values(agendas ?? {}).filter((agenda) => {
-          return agenda.type === "law" && agenda.passed;
+          return agenda.type === "LAW" && agenda.passed;
         });
         for (const agenda of toRepeal) {
           repealAgenda(gameid, agenda);

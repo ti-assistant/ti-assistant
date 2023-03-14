@@ -17,7 +17,7 @@ export type OutcomeType =
   | "Non-Home Planet Other Than Mecatol Rex"
   | "???";
 
-export type AgendaType = "law" | "directive";
+export type AgendaType = "LAW" | "DIRECTIVE";
 
 export type AgendaUpdateAction = "RESOLVE_AGENDA" | "REPEAL_AGENDA";
 
@@ -33,6 +33,10 @@ export interface BaseAgenda {
   elect: OutcomeType;
   expansion: Expansion;
   name: string;
+  omega?: {
+    description: string;
+    expansion: Expansion;
+  };
   passedText?: string;
   failedText?: string;
   type: AgendaType;

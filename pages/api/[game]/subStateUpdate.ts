@@ -20,13 +20,13 @@ import { shouldUnlockXxchaCommander } from "./planetUpdate";
 
 function usedComponentState(component: Component) {
   switch (component.type) {
-    case "card":
+    case "CARD":
       return "used";
-    case "leader":
+    case "LEADER":
       return component.leader === "HERO" ? "purged" : "exhausted";
-    case "tech":
+    case "TECH":
       return "exhausted";
-    case "relic":
+    case "RELIC":
       if (component.name === "Gain Relic") {
         return "active";
       }
@@ -479,7 +479,7 @@ export default async function handler(
               updates[`components.${subState.component}.state`] = futureState;
               updates[`updates.components.timestamp`] = timestamp;
             }
-            if (component.type === "leader" && component.leader === "HERO") {
+            if (component.type === "LEADER" && component.leader === "HERO") {
               updates[`factions.${component.faction}.hero`] = "purged";
               updates[`updates.factions.timestamp`] = timestamp;
             }
@@ -515,7 +515,7 @@ export default async function handler(
             const scoredObjectives = Object.entries(gameObjectives).filter(
               ([objectiveID, objective]) => {
                 return (
-                  objective.type !== "other" &&
+                  objective.type !== "OTHER" &&
                   ((objective.scorers ?? []).includes(factionName) ||
                     (value.objectives ?? []).includes(objectiveID))
                 );

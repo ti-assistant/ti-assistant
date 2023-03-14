@@ -16,7 +16,7 @@ export interface TechIconProps {
 
 export function TechIcon({ type, width, height }: TechIconProps) {
   switch (type) {
-    case "red":
+    case "RED":
       return (
         <Image
           src="/images/red_tech.webp"
@@ -25,7 +25,7 @@ export function TechIcon({ type, width, height }: TechIconProps) {
           height={height}
         />
       );
-    case "yellow":
+    case "YELLOW":
       return (
         <Image
           src="/images/yellow_tech.webp"
@@ -34,7 +34,7 @@ export function TechIcon({ type, width, height }: TechIconProps) {
           height={height}
         />
       );
-    case "blue":
+    case "BLUE":
       return (
         <Image
           src="/images/blue_tech.webp"
@@ -43,7 +43,7 @@ export function TechIcon({ type, width, height }: TechIconProps) {
           height={height}
         />
       );
-    case "green":
+    case "GREEN":
       return (
         <Image
           src="/images/green_tech.webp"
@@ -77,7 +77,7 @@ export interface FullTechIconProps {
 
 export function FullTechIcon({ type }: FullTechIconProps) {
   switch (type) {
-    case "red":
+    case "RED":
       return (
         <Image
           src="/images/red_tech.webp"
@@ -86,7 +86,7 @@ export function FullTechIcon({ type }: FullTechIconProps) {
           objectFit="contain"
         />
       );
-    case "yellow":
+    case "YELLOW":
       return (
         <Image
           src="/images/yellow_tech.webp"
@@ -95,7 +95,7 @@ export function FullTechIcon({ type }: FullTechIconProps) {
           objectFit="contain"
         />
       );
-    case "blue":
+    case "BLUE":
       return (
         <Image
           src="/images/blue_tech.webp"
@@ -104,7 +104,7 @@ export function FullTechIcon({ type }: FullTechIconProps) {
           objectFit="contain"
         />
       );
-    case "green":
+    case "GREEN":
       return (
         <Image
           src="/images/green_tech.webp"

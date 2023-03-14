@@ -2,8 +2,9 @@ import { mutate } from "swr";
 import { poster } from "./util";
 
 import { Expansion } from "./options";
+import { Phase } from "./state";
 
-export type ObjectiveType = "stage-one" | "stage-two" | "secret" | "other";
+export type ObjectiveType = "STAGE ONE" | "STAGE TWO" | "SECRET" | "OTHER";
 
 export type ObjectiveUpdateAction =
   | "REVEAL_OBJECTIVE"
@@ -32,7 +33,7 @@ export interface BaseObjective {
     description: string;
     expansion: Expansion;
   };
-  phase?: string;
+  phase?: Phase;
   repeatable?: boolean;
   replaces?: string;
 }
@@ -70,7 +71,7 @@ export function revealObjective(
         }
 
         objective.selected = true;
-        if (objective.type === "secret" && factionName) {
+        if (objective.type === "SECRET" && factionName) {
           if (!objective.factions) {
             objective.factions = [];
           }
@@ -109,7 +110,7 @@ export function removeObjective(
         }
 
         objective.selected = false;
-        if (objective.type === "secret") {
+        if (objective.type === "SECRET") {
           objective.factions = (objective.factions ?? []).filter(
             (faction) => faction !== factionName
           );

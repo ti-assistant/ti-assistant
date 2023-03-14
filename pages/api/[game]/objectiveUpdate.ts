@@ -12,6 +12,7 @@ import {
   BaseObjective,
   ObjectiveUpdateData,
 } from "../../../src/util/api/objectives";
+import { BASE_OBJECTIVES, ObjectiveId } from "../../../server/data/objectives";
 
 export default async function handler(
   req: NextApiRequest,
@@ -51,14 +52,9 @@ export default async function handler(
   const timestamp = Timestamp.fromMillis(data.timestamp);
   switch (data.action) {
     case "REVEAL_OBJECTIVE": {
-      const objective = await db
-        .collection("objectives")
-        .doc(data.objective)
-        .get();
+      const objective = BASE_OBJECTIVES[data.objective as ObjectiveId];
 
-      const baseObjective = objective.data() as BaseObjective | undefined;
-
-      if (baseObjective && baseObjective.type === "secret") {
+      if (objective && objective.type === "SECRET") {
         if (!data.faction) {
           res.status(422);
           return;
@@ -90,14 +86,8 @@ export default async function handler(
       break;
     }
     case "REMOVE_OBJECTIVE": {
-      const objective = await db
-        .collection("objectives")
-        .doc(data.objective)
-        .get();
-
-      const baseObjective = objective.data() as BaseObjective | undefined;
-
-      if (baseObjective && baseObjective.type === "secret") {
+      const objective = BASE_OBJECTIVES[data.objective as ObjectiveId];
+      if (objective && objective.type === "SECRET") {
         if (!data.faction) {
           res.status(422);
           return;
@@ -132,18 +122,14 @@ export default async function handler(
         res.status(422);
         return;
       }
-      const objective = await db
-        .collection("objectives")
-        .doc(data.objective)
-        .get();
-      const baseObjective = objective.data() as BaseObjective | undefined;
+      const objective = BASE_OBJECTIVES[data.objective as ObjectiveId];
 
       const objectiveString = `objectives.${data.objective}.scorers`;
       const revealedString = `objectives.${data.objective}.selected`;
       let updateValue: FieldValue | string[] = FieldValue.arrayUnion(
         data.faction
       );
-      if (baseObjective?.repeatable) {
+      if (objective?.repeatable) {
         const scorers =
           (gameData.objectives ?? {})[data.objective]?.scorers ?? [];
         scorers.push(data.faction);
@@ -162,7 +148,7 @@ export default async function handler(
               return false;
             }
             return (
-              objective.type !== "other" &&
+              objective.type !== "OTHER" &&
               ((objective.scorers ?? []).includes(data.faction) ||
                 data.objective === objectiveID)
             );
@@ -181,18 +167,14 @@ export default async function handler(
         res.status(422);
         return;
       }
-      const objective = await db
-        .collection("objectives")
-        .doc(data.objective)
-        .get();
-      const baseObjective = objective.data() as BaseObjective | undefined;
+      const objective = BASE_OBJECTIVES[data.objective as ObjectiveId];
 
       const objectiveString = `objectives.${data.objective}.scorers`;
       const revealedString = `objectives.${data.objective}.selected`;
       let updateValue: FieldValue | string[] = FieldValue.arrayRemove(
         data.faction
       );
-      if (baseObjective?.repeatable) {
+      if (objective?.repeatable) {
         const scorers =
           (gameData.objectives ?? {})[data.objective]?.scorers ?? [];
         const lastIndex = scorers.lastIndexOf(data.faction);
@@ -212,7 +194,7 @@ export default async function handler(
               return false;
             }
             return (
-              objective.type !== "other" &&
+              objective.type !== "OTHER" &&
               (objective.scorers ?? []).includes(data.faction) &&
               data.objective !== objectiveID
             );

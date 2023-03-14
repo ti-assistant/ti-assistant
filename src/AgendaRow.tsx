@@ -61,8 +61,6 @@ export function AgendaRow({ agenda, addAgenda, removeAgenda }: AgendaRowProps) {
     setShowInfoModal(true);
   }
 
-  const type = agenda.type === "law" ? "LAW" : "DIRECTIVE";
-
   const textColor = addAgenda && agenda.resolved ? "#777" : "#eee";
 
   return (
@@ -81,7 +79,7 @@ export function AgendaRow({ agenda, addAgenda, removeAgenda }: AgendaRowProps) {
               style={{ fontSize: responsivePixels(40) }}
             >
               {agenda.name}
-              <div style={{ fontSize: "24px" }}>[{type}]</div>
+              <div style={{ fontSize: "24px" }}>[{agenda.type}]</div>
             </div>
           }
           level={2}

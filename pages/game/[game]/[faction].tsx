@@ -7,6 +7,7 @@ import {
   hasTech,
   lockTech,
   Tech,
+  TechType,
   unlockTech,
 } from "../../../src/util/api/techs";
 import {
@@ -62,6 +63,7 @@ import { SelectableRow } from "../../../src/SelectableRow";
 import { ObjectiveRow } from "../../../src/ObjectiveRow";
 import {
   Objective,
+  ObjectiveType,
   scoreObjective,
   unscoreObjective,
 } from "../../../src/util/api/objectives";
@@ -104,7 +106,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Header, NonGameHeader } from "../../../src/Header";
 
-const techOrder = ["green", "blue", "yellow", "red", "upgrade"];
+const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
 function SecondaryCheck({
   factionName,
@@ -380,7 +382,7 @@ function PhaseSection() {
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           return (
-            objective.type === "stage-one" &&
+            objective.type === "STAGE ONE" &&
             !revealedObjectiveNames.includes(objective.name)
           );
         }
@@ -431,7 +433,7 @@ function PhaseSection() {
                 >
                   {Object.values(availableObjectives)
                     .filter((objective) => {
-                      return objective.type === "stage-one";
+                      return objective.type === "STAGE ONE";
                     })
                     .map((objective) => {
                       return (
@@ -646,36 +648,36 @@ function PhaseSection() {
       }
       break;
     case "STATUS": {
-      const type = state.round < 4 ? "stage-one" : "stage-two";
+      const type: ObjectiveType = state.round < 4 ? "STAGE ONE" : "STAGE TWO";
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           return (
             objective.selected &&
-            (objective.type === "stage-one" ||
-              objective.type === "stage-two") &&
+            (objective.type === "STAGE ONE" ||
+              objective.type === "STAGE TWO") &&
             !(objective.scorers ?? []).includes(factionName)
           );
         }
       );
       const secrets = Object.values(objectives ?? {}).filter((objective) => {
         return (
-          objective.type === "secret" &&
+          objective.type === "SECRET" &&
           !(objective.scorers ?? []).includes(factionName) &&
-          objective.phase === "status"
+          objective.phase === "STATUS"
         );
       });
       const scoredPublics = (
         ((subState.factions ?? {})[factionName] ?? {}).objectives ?? []
       ).filter((objective) => {
         return (
-          (objectives[objective] ?? {}).type === "stage-one" ||
-          (objectives[objective] ?? {}).type === "stage-two"
+          (objectives[objective] ?? {}).type === "STAGE ONE" ||
+          (objectives[objective] ?? {}).type === "STAGE TWO"
         );
       });
       const scoredSecrets = (
         ((subState.factions ?? {})[factionName] ?? {}).objectives ?? []
       ).filter((objective) => {
-        return (objectives[objective] ?? {}).type === "secret";
+        return (objectives[objective] ?? {}).type === "SECRET";
       });
       const revealableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
@@ -830,7 +832,7 @@ function PhaseSection() {
                         .filter((objective) => {
                           return (
                             objective.type ===
-                            (state.round > 3 ? "stage-two" : "stage-one")
+                            (state.round > 3 ? "STAGE TWO" : "STAGE ONE")
                           );
                         })
                         .map((objective) => {

@@ -15,7 +15,13 @@ import {
 } from "./util/planets";
 import { filterToOwnedTechs, getTechColor, sortTechs } from "./util/techs";
 import { pluralize, responsivePixels } from "./util/util";
-import { hasTech, lockTech, Tech, unlockTech } from "./util/api/techs";
+import {
+  hasTech,
+  lockTech,
+  Tech,
+  TechType,
+  unlockTech,
+} from "./util/api/techs";
 import { ObjectiveRow } from "./ObjectiveRow";
 import {
   Objective,
@@ -63,25 +69,25 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
   let upgradeTechs = [];
   for (const tech of techs) {
     switch (tech.type) {
-      case "red":
+      case "RED":
         redTechs.push(tech);
         break;
-      case "yellow":
+      case "YELLOW":
         yellowTechs.push(tech);
         break;
-      case "green":
+      case "GREEN":
         greenTechs.push(tech);
         break;
-      case "blue":
+      case "BLUE":
         blueTechs.push(tech);
         break;
-      case "upgrade":
+      case "UPGRADE":
         upgradeTechs.push(tech);
         break;
     }
   }
 
-  const techOrder = ["red", "green", "blue", "yellow", "upgrade"];
+  const techOrder: TechType[] = ["RED", "GREEN", "BLUE", "YELLOW", "UPGRADE"];
 
   techs.sort((a, b) => {
     const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
@@ -102,15 +108,15 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
   return (
     <div className="techSummaryGrid">
       <div className="centered">{redTechs.length || "-"}</div>
-      <WrappedTechIcon type={"red"} size={16} />
+      <WrappedTechIcon type={"RED"} size={16} />
       <div>&nbsp;</div>
       <div className="centered">{greenTechs.length || "-"}</div>
-      <WrappedTechIcon type={"green"} size={16} />
+      <WrappedTechIcon type={"GREEN"} size={16} />
       <div className="centered">{blueTechs.length || "-"}</div>
-      <WrappedTechIcon type={"blue"} size={16} />
+      <WrappedTechIcon type={"BLUE"} size={16} />
       <div>&nbsp;</div>
       <div className="centered">{yellowTechs.length || "-"}</div>
-      <WrappedTechIcon type={"yellow"} size={16} />
+      <WrappedTechIcon type={"YELLOW"} size={16} />
       <div className="centered">{upgradeTechs.length || "-"}</div>
       <div>{pluralize("Upgrade", upgradeTechs.length)}</div>
     </div>
@@ -194,16 +200,16 @@ export function UpdateObjectives({}) {
   });
 
   const stageOneObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "stage-one"
+    (obj) => obj.type === "STAGE ONE"
   );
   const stageTwoObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "stage-two"
+    (obj) => obj.type === "STAGE TWO"
   );
   const secretObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "secret"
+    (obj) => obj.type === "SECRET"
   );
   const otherObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "other"
+    (obj) => obj.type === "OTHER"
   );
 
   let transition = {
@@ -666,11 +672,11 @@ export function UpdateTechs({}) {
 
   const techArr = Object.values(techsObj);
   sortTechs(techArr);
-  const greenTechs = techArr.filter((tech) => tech.type === "green");
-  const blueTechs = techArr.filter((tech) => tech.type === "blue");
-  const yellowTechs = techArr.filter((tech) => tech.type === "yellow");
-  const redTechs = techArr.filter((tech) => tech.type === "red");
-  const upgradeTechs = techArr.filter((tech) => tech.type === "upgrade");
+  const greenTechs = techArr.filter((tech) => tech.type === "GREEN");
+  const blueTechs = techArr.filter((tech) => tech.type === "BLUE");
+  const yellowTechs = techArr.filter((tech) => tech.type === "YELLOW");
+  const redTechs = techArr.filter((tech) => tech.type === "RED");
+  const upgradeTechs = techArr.filter((tech) => tech.type === "UPGRADE");
 
   function addTech(toAdd: string) {
     if (!gameid) {
@@ -791,9 +797,9 @@ export function UpdateTechs({}) {
                 fontSize: responsivePixels(20),
               }}
             >
-              <WrappedTechIcon type="green" size={20} />
+              <WrappedTechIcon type="GREEN" size={20} />
               Biotic
-              <WrappedTechIcon type="green" size={20} />{" "}
+              <WrappedTechIcon type="GREEN" size={20} />{" "}
             </div>
             <div>{greenTechs.map(getTechRow)}</div>
           </div>
@@ -808,9 +814,9 @@ export function UpdateTechs({}) {
                 fontSize: responsivePixels(20),
               }}
             >
-              <WrappedTechIcon type="red" size={20} />
+              <WrappedTechIcon type="RED" size={20} />
               Warfare
-              <WrappedTechIcon type="red" size={20} />
+              <WrappedTechIcon type="RED" size={20} />
             </div>
             <div>{redTechs.map(getTechRow)}</div>
           </div>
@@ -830,9 +836,9 @@ export function UpdateTechs({}) {
                 fontSize: responsivePixels(20),
               }}
             >
-              <WrappedTechIcon type="blue" size={20} />
+              <WrappedTechIcon type="BLUE" size={20} />
               Propulsion
-              <WrappedTechIcon type="blue" size={20} />
+              <WrappedTechIcon type="BLUE" size={20} />
             </div>
             <div>{blueTechs.map(getTechRow)}</div>
           </div>
@@ -847,9 +853,9 @@ export function UpdateTechs({}) {
                 fontSize: responsivePixels(20),
               }}
             >
-              <WrappedTechIcon type="yellow" size={20} />
+              <WrappedTechIcon type="YELLOW" size={20} />
               Cybernetic
-              <WrappedTechIcon type="yellow" size={20} />
+              <WrappedTechIcon type="YELLOW" size={20} />
             </div>
             <div>{yellowTechs.map(getTechRow)}</div>
           </div>
@@ -1237,13 +1243,13 @@ export function PlanetSummary({
       }
     }
     switch (planet.type) {
-      case "Cultural":
+      case "CULTURAL":
         ++cultural;
         break;
-      case "Industrial":
+      case "INDUSTRIAL":
         ++industrial;
         break;
-      case "Hazardous":
+      case "HAZARDOUS":
         ++hazardous;
         break;
     }
@@ -1261,11 +1267,11 @@ export function PlanetSummary({
       </div>
       <div className="planetTypeGrid">
         <div className="centered">{cultural || "-"}</div>
-        <FullPlanetSymbol type={"Cultural"} size={16} />
+        <FullPlanetSymbol type={"CULTURAL"} size={16} />
         <div className="centered">{hazardous || "-"}</div>
-        <FullPlanetSymbol type={"Hazardous"} size={16} />
+        <FullPlanetSymbol type={"HAZARDOUS"} size={16} />
         <div className="centered">{industrial || "-"}</div>
-        <FullPlanetSymbol type={"Industrial"} size={16} />
+        <FullPlanetSymbol type={"INDUSTRIAL"} size={16} />
       </div>
     </div>
   );

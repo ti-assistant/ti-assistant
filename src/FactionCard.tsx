@@ -22,6 +22,7 @@ import {
   hasTech,
   removeStartingTech,
   Tech,
+  TechType,
 } from "./util/api/techs";
 import { fetcher } from "./util/api/util";
 import { getFactionColor, getFactionName } from "./util/factions";
@@ -166,7 +167,7 @@ const unitOrder = [
   "PDS",
 ];
 
-const techOrder = ["red", "green", "blue", "yellow", "upgrade"];
+const techOrder: TechType[] = ["RED", "GREEN", "BLUE", "YELLOW", "UPGRADE"];
 
 export interface StartingComponentsProps {
   faction: Faction;

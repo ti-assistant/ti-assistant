@@ -1,5 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
+import { BASE_TECHS } from "../../../server/data/techs";
 import { BaseTech, Tech } from "../../../src/util/api/techs";
 import { GameData } from "../../../src/util/api/util";
 
@@ -16,8 +17,6 @@ export default async function handler(
 
   const db = getFirestore();
 
-  const techsRef = await db.collection("techs").orderBy("name").get();
-
   const gameRef = await db.collection("games").doc(gameId).get();
 
   if (!gameRef.exists) {
@@ -30,10 +29,7 @@ export default async function handler(
   const options = gameData.options;
 
   const techs: Record<string, Tech> = {};
-  techsRef.forEach(async (val) => {
-    const tech = val.data() as BaseTech;
-    const techId = val.id;
-
+  Object.entries(BASE_TECHS).forEach(([techId, tech]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;

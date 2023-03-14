@@ -250,7 +250,7 @@ export function Header() {
   }
 
   const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
-    return agenda.passed && agenda.type === "law";
+    return agenda.passed && agenda.type === "LAW";
   });
   function removeAgenda(agendaName: string) {
     if (!gameid) {

@@ -21,23 +21,23 @@ export function TechSelectHoverMenu({
   direction = "horizontal",
 }: TechSelectHoverMenuProps) {
   const blueTechs = techs.filter((tech) => {
-    return tech.type === "blue";
+    return tech.type === "BLUE";
   });
   sortTechsByPreReqAndExpansion(blueTechs);
   const greenTechs = techs.filter((tech) => {
-    return tech.type === "green";
+    return tech.type === "GREEN";
   });
   sortTechsByPreReqAndExpansion(greenTechs);
   const yellowTechs = techs.filter((tech) => {
-    return tech.type === "yellow";
+    return tech.type === "YELLOW";
   });
   sortTechsByPreReqAndExpansion(yellowTechs);
   const redTechs = techs.filter((tech) => {
-    return tech.type === "red";
+    return tech.type === "RED";
   });
   sortTechsByPreReqAndExpansion(redTechs);
   const unitUpgrades = techs.filter((tech) => {
-    return tech.type === "upgrade";
+    return tech.type === "UPGRADE";
   });
   sortTechsByName(unitUpgrades);
 
@@ -57,7 +57,7 @@ export function TechSelectHoverMenu({
           {redTechs.length > 0 ? (
             <ClientOnlyHoverMenu
               label="Warfare"
-              borderColor={getTechTypeColor("red")}
+              borderColor={getTechTypeColor("RED")}
               renderProps={(innerCloseFn) => (
                 <div
                   className="flexColumn"
@@ -89,7 +89,7 @@ export function TechSelectHoverMenu({
           {blueTechs.length > 0 ? (
             <ClientOnlyHoverMenu
               label="Propulsion"
-              borderColor={getTechTypeColor("blue")}
+              borderColor={getTechTypeColor("BLUE")}
               renderProps={(innerCloseFn) => (
                 <div
                   className="flexColumn"
@@ -121,7 +121,7 @@ export function TechSelectHoverMenu({
           {yellowTechs.length > 0 ? (
             <ClientOnlyHoverMenu
               label="Cybernetic"
-              borderColor={getTechTypeColor("yellow")}
+              borderColor={getTechTypeColor("YELLOW")}
               renderProps={(innerCloseFn) => (
                 <div
                   className="flexColumn"
@@ -153,7 +153,7 @@ export function TechSelectHoverMenu({
           {greenTechs.length > 0 ? (
             <ClientOnlyHoverMenu
               label="Biotic"
-              borderColor={getTechTypeColor("green")}
+              borderColor={getTechTypeColor("GREEN")}
               renderProps={(innerCloseFn) => (
                 <div
                   className="flexColumn"

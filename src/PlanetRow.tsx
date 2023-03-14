@@ -28,7 +28,7 @@ export function PlanetSymbol({
   size = "36px",
 }: PlanetSymbolProps) {
   switch (type) {
-    case "Industrial":
+    case "INDUSTRIAL":
       return (
         <Image
           src="/images/industrial_icon.svg"
@@ -37,7 +37,7 @@ export function PlanetSymbol({
           height={size}
         />
       );
-    case "Cultural":
+    case "CULTURAL":
       return (
         <Image
           src="/images/cultural_icon.svg"
@@ -46,7 +46,7 @@ export function PlanetSymbol({
           height={size}
         />
       );
-    case "Hazardous":
+    case "HAZARDOUS":
       return (
         <Image
           src="/images/hazardous_icon.svg"
@@ -55,7 +55,7 @@ export function PlanetSymbol({
           height={size}
         />
       );
-    case "all":
+    case "ALL":
       return (
         <div style={{ marginLeft: "8px", width: "36px", height: "36px" }}>
           <Image
@@ -78,7 +78,7 @@ export function PlanetSymbol({
           />
         </div>
       );
-    case "none":
+    case "NONE":
       if (faction === undefined) {
         return null;
       }
@@ -101,7 +101,7 @@ export function FullPlanetSymbol({
 }: FullPlanetSymbolProps) {
   let image;
   switch (type) {
-    case "Industrial":
+    case "INDUSTRIAL":
       image = (
         <Image
           src="/images/industrial_icon.svg"
@@ -111,7 +111,7 @@ export function FullPlanetSymbol({
         />
       );
       break;
-    case "Cultural":
+    case "CULTURAL":
       image = (
         <Image
           src="/images/cultural_icon.svg"
@@ -121,7 +121,7 @@ export function FullPlanetSymbol({
         />
       );
       break;
-    case "Hazardous":
+    case "HAZARDOUS":
       image = (
         <Image
           src="/images/hazardous_icon.svg"
@@ -131,7 +131,7 @@ export function FullPlanetSymbol({
         />
       );
       break;
-    case "all":
+    case "ALL":
       return (
         <div style={{ marginLeft: "8px", width: "36px", height: "36px" }}>
           <Image
@@ -154,7 +154,7 @@ export function FullPlanetSymbol({
           />
         </div>
       );
-    case "none":
+    case "NONE":
       if (faction === undefined || !size) {
         return null;
       }
@@ -347,7 +347,7 @@ export function PlanetAttributes({
           </div>
         );
       case "all-types":
-        return <FullPlanetSymbol type="all" size={16} />;
+        return <FullPlanetSymbol type="ALL" size={16} />;
       default:
         return null;
     }
@@ -485,7 +485,7 @@ export function PlanetRow({
         if (attachment.required.type !== undefined) {
           if (
             attachment.required.type !== planet.type &&
-            planet.type !== "all"
+            planet.type !== "ALL"
           ) {
             return false;
           }

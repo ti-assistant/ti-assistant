@@ -65,7 +65,7 @@ export function applyPlanetAttachments(
         updatedPlanet.attributes.push(attribute);
       }
     } else if (attribute === "all-types") {
-      updatedPlanet.type = "all";
+      updatedPlanet.type = "ALL";
       updatedPlanet.resources += attachment.resources ?? 1;
       updatedPlanet.influence += attachment.influence ?? 1;
     } else {

@@ -37,7 +37,7 @@ function SecretTab({ factionName }: { factionName: string }) {
   const [editMode, setEditMode] = useState(false);
 
   const secretObjectives = Object.values(objectives ?? {}).filter((obj) => {
-    return obj.type === "secret";
+    return obj.type === "SECRET";
   });
   sortObjectivesByName(secretObjectives);
 
@@ -169,7 +169,7 @@ export function ObjectiveList() {
       revalidateIfStale: false,
     }
   );
-  const [tabShown, setTabShown] = useState("stage-one");
+  const [tabShown, setTabShown] = useState("STAGE ONE");
   const [editMode, setEditMode] = useState(false);
 
   if (!gameid || !factionName) {
@@ -207,19 +207,19 @@ export function ObjectiveList() {
   sortObjectivesByName(filteredObjectives);
 
   const stageOneObjectives = filteredObjectives.filter((obj) => {
-    return obj.type === "stage-one";
+    return obj.type === "STAGE ONE";
   });
 
   const stageTwoObjectives = filteredObjectives.filter((obj) => {
-    return obj.type === "stage-two";
+    return obj.type === "STAGE TWO";
   });
 
   const secretObjectives = filteredObjectives.filter((obj) => {
-    return obj.type === "secret";
+    return obj.type === "SECRET";
   });
 
   const otherObjectives = filteredObjectives.filter((obj) => {
-    return obj.type === "other";
+    return obj.type === "OTHER";
   });
 
   function toggleEditMode() {
@@ -231,7 +231,7 @@ export function ObjectiveList() {
       return <button onClick={toggleEditMode}>Done</button>;
     }
     switch (stage) {
-      case "stage-one":
+      case "STAGE ONE":
         if (stageOneObjectives.length < 5) {
           return <button onClick={toggleEditMode}>Reveal Objective</button>;
         } else if (
@@ -245,7 +245,7 @@ export function ObjectiveList() {
           );
         }
         return null;
-      case "stage-two":
+      case "STAGE TWO":
         if (stageTwoObjectives.length < 5) {
           return <button onClick={toggleEditMode}>Reveal Objective</button>;
         } else if (
@@ -259,7 +259,7 @@ export function ObjectiveList() {
           );
         }
         return null;
-      case "secret":
+      case "SECRET":
         if (secretObjectives.length < 3) {
           return (
             <div className="flexColumn" style={{ gap: "4px" }}>
@@ -275,7 +275,7 @@ export function ObjectiveList() {
           );
         }
         return null;
-      case "other":
+      case "OTHER":
         return <button onClick={toggleEditMode}>Select Objective</button>;
     }
   }
@@ -303,10 +303,10 @@ export function ObjectiveList() {
           padding: "4px 4px 0px 4px",
         }}
       >
-        <Tab selectTab={changeTab} id="stage-one" selectedId={tabShown}>
+        <Tab selectTab={changeTab} id="STAGE ONE" selectedId={tabShown}>
           Stage I
         </Tab>
-        <Tab selectTab={changeTab} id="stage-two" selectedId={tabShown}>
+        <Tab selectTab={changeTab} id="STAGE TWO" selectedId={tabShown}>
           Stage II
         </Tab>
         <Tab selectTab={changeTab} id="secret" selectedId={tabShown}>
@@ -316,7 +316,7 @@ export function ObjectiveList() {
           Other
         </Tab>
       </div>
-      <TabBody id="stage-one" selectedId={tabShown}>
+      <TabBody id="STAGE ONE" selectedId={tabShown}>
         <div className="largeFont">
           <LabeledLine />
           {stageOneObjectives.length !== 0 ? (
@@ -347,14 +347,14 @@ export function ObjectiveList() {
               })}
             </div>
           ) : null}
-          {editModeButton("stage-one") ? (
+          {editModeButton("STAGE ONE") ? (
             <div className="flexRow" style={{ padding: "8px 0px" }}>
-              {editModeButton("stage-one")}
+              {editModeButton("STAGE ONE")}
             </div>
           ) : null}
         </div>
       </TabBody>
-      <TabBody id="stage-two" selectedId={tabShown}>
+      <TabBody id="STAGE TWO" selectedId={tabShown}>
         <div className="largeFont">
           <LabeledLine />
           {stageTwoObjectives.length !== 0 ? (
@@ -385,9 +385,9 @@ export function ObjectiveList() {
               })}
             </div>
           ) : null}
-          {editModeButton("stage-two") ? (
+          {editModeButton("STAGE TWO") ? (
             <div className="flexRow" style={{ padding: "8px 0px" }}>
-              {editModeButton("stage-two")}
+              {editModeButton("STAGE TWO")}
             </div>
           ) : null}
         </div>
@@ -426,9 +426,9 @@ export function ObjectiveList() {
               })}
             </div>
           ) : null}
-          {editModeButton("other") ? (
+          {editModeButton("OTHER") ? (
             <div className="flexRow" style={{ padding: "8px 0px" }}>
-              {editModeButton("other")}
+              {editModeButton("OTHER")}
             </div>
           ) : null}
         </div>

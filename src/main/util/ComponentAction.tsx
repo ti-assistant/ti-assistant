@@ -59,11 +59,11 @@ function ComponentSelect({
   selectComponent: (componentName: string) => void;
 }) {
   const actionCards = components.filter(
-    (component) => component.type === "card"
+    (component) => component.type === "CARD"
   );
-  const techs = components.filter((component) => component.type === "tech");
+  const techs = components.filter((component) => component.type === "TECH");
   const leaders = components
-    .filter((component) => component.type === "leader")
+    .filter((component) => component.type === "LEADER")
     .sort((a, b) => {
       if (a.leader === "AGENT") {
         return -1;
@@ -74,18 +74,18 @@ function ComponentSelect({
       return 0;
     });
   const exploration = components.filter(
-    (component) => component.type === "relic"
+    (component) => component.type === "RELIC"
   );
   const promissory = components.filter(
-    (component) => component.type === "promissory"
+    (component) => component.type === "PROMISSORY"
   );
   const others = components.filter(
     (component) =>
-      component.type !== "leader" &&
-      component.type !== "tech" &&
-      component.type !== "card" &&
-      component.type !== "relic" &&
-      component.type !== "promissory"
+      component.type !== "LEADER" &&
+      component.type !== "TECH" &&
+      component.type !== "CARD" &&
+      component.type !== "RELIC" &&
+      component.type !== "PROMISSORY"
   );
 
   const innerStyle: CSSProperties = {
@@ -254,7 +254,7 @@ function ComponentSelect({
             style={{ alignItems: "stretch", padding: responsivePixels(8) }}
           >
             {others.map((component) => {
-              if (component.type === "flagship") {
+              if (component.type === "FLAGSHIP") {
                 return (
                   <div className="flexColumn" key={component.name}>
                     <LabeledDiv
@@ -465,7 +465,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
           if (!techObj) {
             return false;
           }
-          return !techObj.faction && techObj.type !== "upgrade";
+          return !techObj.faction && techObj.type !== "UPGRADE";
         })
         .map((tech) => techs[tech] as Tech);
       const researchedTech =
@@ -598,7 +598,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         if (planet.owner !== factionName) {
           return false;
         }
-        return planet.type === "all" || planet.type === "Industrial";
+        return planet.type === "ALL" || planet.type === "INDUSTRIAL";
       }).length;
 
       innerContent = (
@@ -703,7 +703,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
 
   if (!component) {
     const filteredComponents = Object.values(components).filter((component) => {
-      if (component.type === "promissory") {
+      if (component.type === "PROMISSORY") {
         if (
           component.faction &&
           (!factions[component.faction] || component.faction === faction.name)
@@ -711,7 +711,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
           return false;
         }
       }
-      if (component.faction && component.type !== "promissory") {
+      if (component.faction && component.type !== "PROMISSORY") {
         if (component.faction !== faction.name) {
           return false;
         }
@@ -724,7 +724,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
         return false;
       }
 
-      if (component.type === "tech" && !hasTech(faction, component.name)) {
+      if (component.type === "TECH" && !hasTech(faction, component.name)) {
         return false;
       }
 

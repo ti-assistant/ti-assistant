@@ -135,7 +135,7 @@ export default function SetupPhase() {
   const availableObjectives = useMemo(() => {
     return Object.values(objectives ?? {}).filter((objective) => {
       return (
-        objective.type === "stage-one" &&
+        objective.type === "STAGE ONE" &&
         !subState?.objectives?.includes(objective.name)
       );
     });
@@ -261,7 +261,7 @@ export default function SetupPhase() {
                   >
                     {Object.values(availableObjectives)
                       .filter((objective) => {
-                        return objective.type === "stage-one";
+                        return objective.type === "STAGE ONE";
                       })
                       .map((objective) => {
                         return (

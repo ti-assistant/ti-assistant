@@ -1,14 +1,21 @@
 import { Expansion } from "./options";
 
 export type ComponentType =
-  | "card"
-  | "flagship"
-  | "tech"
-  | "leader"
-  | "relic"
-  | "promissory";
+  | "ABILITY"
+  | "CARD"
+  | "FLAGSHIP"
+  | "LEADER"
+  | "PROMISSORY"
+  | "RELIC"
+  | "TECH";
 
 export type ComponentState = "exhausted" | "purged" | "used" | "one-left";
+
+export type Timing =
+  | "AGENDA PHASE"
+  | "COMPONENT ACTION"
+  | "MULTIPLE"
+  | "PASSIVE";
 
 export type LeaderType = "AGENT" | "COMMANDER" | "HERO";
 
@@ -18,8 +25,16 @@ export interface BaseLeader {
   expansion: Expansion;
   faction?: string;
   name: string;
+  omega?: {
+    abilityName?: string;
+    description: string;
+    expansion: Expansion;
+    name: string;
+    timing?: Timing;
+  };
   replaces?: string;
   subFaction?: string;
+  timing: Timing;
   type: LeaderType;
   unlock?: string;
 }

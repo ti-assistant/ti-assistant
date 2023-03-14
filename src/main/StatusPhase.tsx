@@ -196,8 +196,8 @@ export function MiddleColumn() {
                 }
                 return (
                   objective.selected &&
-                  (objective.type === "stage-one" ||
-                    objective.type === "stage-two") &&
+                  (objective.type === "STAGE ONE" ||
+                    objective.type === "STAGE TWO") &&
                   !(objective.scorers ?? []).includes(card.faction)
                 );
               });
@@ -207,9 +207,9 @@ export function MiddleColumn() {
                     return null;
                   }
                   return (
-                    objective.type === "secret" &&
+                    objective.type === "SECRET" &&
                     !(objective.scorers ?? []).includes(card.faction) &&
-                    objective.phase === "status"
+                    objective.phase === "STATUS"
                   );
                 }
               );
@@ -228,8 +228,8 @@ export function MiddleColumn() {
                   return false;
                 }
                 return (
-                  objectiveObj.type === "stage-one" ||
-                  objectiveObj.type === "stage-two"
+                  objectiveObj.type === "STAGE ONE" ||
+                  objectiveObj.type === "STAGE TWO"
                 );
               });
               const scoredSecrets = (
@@ -241,7 +241,7 @@ export function MiddleColumn() {
                 if (!objectiveObj) {
                   return false;
                 }
-                return objectiveObj.type === "secret";
+                return objectiveObj.type === "SECRET";
               });
               return (
                 <div
@@ -722,7 +722,7 @@ export default function StatusPhase() {
 
   const subStateObjective = (subState.objectives ?? [])[0];
   const subStateObjectiveObj = (objectives ?? {})[subStateObjective ?? ""];
-  const type = round < 4 ? "stage-one" : "stage-two";
+  const type = round < 4 ? "STAGE ONE" : "STAGE TWO";
   const availableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
       return objective.type === type && !objective.selected;
@@ -898,7 +898,7 @@ export default function StatusPhase() {
                       .filter((objective) => {
                         return (
                           objective.type ===
-                          (round > 3 ? "stage-two" : "stage-one")
+                          (round > 3 ? "STAGE TWO" : "STAGE ONE")
                         );
                       })
                       .map((obj) => obj.name)}

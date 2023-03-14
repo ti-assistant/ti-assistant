@@ -38,23 +38,23 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
   const [tabShown, setTabShown] = useState("blue");
 
   const blueTechs = techs.filter((tech) => {
-    return tech.type === "blue";
+    return tech.type === "BLUE";
   });
   sortTechsByPreReqAndExpansion(blueTechs);
   const greenTechs = techs.filter((tech) => {
-    return tech.type === "green";
+    return tech.type === "GREEN";
   });
   sortTechsByPreReqAndExpansion(greenTechs);
   const yellowTechs = techs.filter((tech) => {
-    return tech.type === "yellow";
+    return tech.type === "YELLOW";
   });
   sortTechsByPreReqAndExpansion(yellowTechs);
   const redTechs = techs.filter((tech) => {
-    return tech.type === "red";
+    return tech.type === "RED";
   });
   sortTechsByPreReqAndExpansion(redTechs);
   const unitUpgrades = techs.filter((tech) => {
-    return tech.type === "upgrade";
+    return tech.type === "UPGRADE";
   });
   sortTechsByName(unitUpgrades);
 
