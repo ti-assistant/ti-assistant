@@ -34,14 +34,15 @@ export default async function handler(
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
     }
+    const techCopy = { ...tech };
 
     // Maybe update techs for codices.
     if (tech.omega && options.expansions.includes(tech.omega.expansion)) {
-      tech.name += " Ω";
-      tech.description = tech.omega.description;
+      techCopy.name += " Ω";
+      techCopy.description = tech.omega.description;
     }
 
-    techs[techId] = tech;
+    techs[techId] = techCopy;
   });
 
   res.status(200).json(techs);
