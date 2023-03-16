@@ -1,10 +1,8 @@
-import React, { PropsWithChildren } from "react";
-import Head from "next/head";
+import React from "react";
 import Link from "next/link";
 import { responsivePixels } from "../src/util/util";
 import { LabeledDiv, LabeledLine } from "../src/LabeledDiv";
-import Image from "next/image";
-import { NonGameHeader, ResponsiveLogo } from "../src/Header";
+import { NonGameHeader } from "../src/Header";
 
 export default function FAQPage() {
   return (
@@ -21,7 +19,7 @@ export default function FAQPage() {
         <div className="flexRow largeFont">Frequently Asked Questions</div>
         <div className="flexColumn">
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-            <LabeledLine leftLabel="Q: Do I have to record everything during a game?" />
+            <LabeledLine leftLabel="Q: Do I have to record everything during a game ?" />
             <div
               style={{
                 fontFamily: "Myriad Pro",
@@ -36,7 +34,9 @@ export default function FAQPage() {
           </div>
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
             <LabeledLine
-              leftLabel={'Q: Why can\'t I click the "Advance to Phase" button?'}
+              leftLabel={
+                'Q: Why can\'t I click the "Advance to Phase" button ?'
+              }
             />
 
             <div
@@ -64,8 +64,14 @@ export default function FAQPage() {
           >
             If you&apos;re in the middle of a game, try refreshing the page to
             see if that fixes it. Regardless of whether it does or not, file a
-            bug report or ask a question on GitHub - TODO: Add working link, and
-            I&apos;ll get back to you as soon as I can.
+            bug report or ask a question on{" "}
+            <a
+              href="https://github.com/ti-assistant/issues/issues"
+              style={{ textDecoration: "underline", fontWeight: "bold" }}
+            >
+              GitHub
+            </a>
+            , and I&apos;ll get back to you as soon as I can.
           </div>
         </div>
         More Coming Soon
@@ -83,81 +89,6 @@ export default function FAQPage() {
             </LabeledDiv>
           </a>
         </Link>
-      </div>
-    </div>
-  );
-}
-
-function Sidebar({ side, children }: PropsWithChildren<{ side: string }>) {
-  const className = `${side}Sidebar`;
-  return (
-    <div className={className} style={{ letterSpacing: "3px" }}>
-      {children}
-    </div>
-  );
-}
-
-function Header() {
-  return (
-    <div
-      className="flexRow"
-      style={{
-        top: 0,
-        left: 0,
-        position: "fixed",
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-      }}
-    >
-      <Head>
-        <title>Twilight Imperium Assistant</title>
-        <link rel="shortcut icon" href="/images/favicon.ico"></link>
-      </Head>
-      <Sidebar side="left">TI ASSISTANT</Sidebar>
-      <Sidebar side="right">FAQ</Sidebar>
-      <Link href={"/"}>
-        <a
-          className="nonMobile flexRow extraLargeFont"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            textAlign: "center",
-            justifyContent: "center",
-            marginTop: `${responsivePixels(20)}`,
-            width: "100%",
-          }}
-        >
-          <ResponsiveLogo size={32} />
-          Twilight Imperium Assistant
-        </a>
-      </Link>
-      <Link href={"/"}>
-        <a
-          className="mobileOnly flexRow hugeFont"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            textAlign: "center",
-            justifyContent: "center",
-            marginTop: `${responsivePixels(20)}`,
-            width: "100%",
-          }}
-        >
-          <ResponsiveLogo size={28} />
-          Twilight Imperium Assistant
-        </a>
-      </Link>
-      <div
-        className="flexRow largeFont"
-        style={{
-          position: "fixed",
-          textAlign: "center",
-          justifyContent: "center",
-          marginTop: `${responsivePixels(100)}`,
-          width: "100%",
-        }}
-      >
-        Frequently Asked Questions
       </div>
     </div>
   );

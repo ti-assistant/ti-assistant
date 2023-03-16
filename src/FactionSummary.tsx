@@ -1062,7 +1062,6 @@ export function UpdatePlanets({}) {
           width: "100%",
           height: "100%",
           boxSizing: "border-box",
-          outline: "3px solid blue",
           overflowY: "auto",
           padding: responsivePixels(8),
         }}
@@ -1231,25 +1230,23 @@ export function PlanetSummary({
   let legendary = 0;
   const skips = [];
   for (const planet of planets) {
-    if (planet.ready || options.total) {
-      if (
-        (gameOptions?.expansions ?? []).includes("CODEX THREE") &&
-        faction.name === "Xxcha Kingdom" &&
-        faction.hero === "unlocked"
-      ) {
-        resources += planet.resources + planet.influence;
-        influence += planet.resources + planet.influence;
-      } else {
-        resources += planet.resources;
-        influence += planet.influence;
+    if (
+      (gameOptions?.expansions ?? []).includes("CODEX THREE") &&
+      faction.name === "Xxcha Kingdom" &&
+      faction.hero === "unlocked"
+    ) {
+      resources += planet.resources + planet.influence;
+      influence += planet.resources + planet.influence;
+    } else {
+      resources += planet.resources;
+      influence += planet.influence;
+    }
+    for (const attribute of planet.attributes) {
+      if (attribute.includes("skip")) {
+        skips.push(attribute);
       }
-      for (const attribute of planet.attributes) {
-        if (attribute.includes("skip")) {
-          skips.push(attribute);
-        }
-        if (attribute === "legendary") {
-          ++legendary;
-        }
+      if (attribute === "legendary") {
+        ++legendary;
       }
     }
     switch (planet.type) {

@@ -167,6 +167,18 @@ export default function HomePage() {
                 </div>
               </LabeledDiv>
             </a>
+            <a href={`https://github.com/ti-assistant/issues/issues`}>
+              <LabeledDiv>
+                <div
+                  className="flexColumn mediumFont"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  Report Issue
+                </div>
+              </LabeledDiv>
+            </a>
           </div>
         </div>
       </div>
