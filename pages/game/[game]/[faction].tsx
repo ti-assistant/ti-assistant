@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher, setGameId } from "../../../src/util/api/util";
@@ -105,6 +105,7 @@ import { getFactionColor } from "../../../src/util/factions";
 import Link from "next/link";
 import Image from "next/image";
 import { Header, NonGameHeader } from "../../../src/Header";
+import { Selector } from "../../../src/Selector";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -209,6 +210,7 @@ function PhaseSection() {
       revalidateIfStale: false,
     }
   );
+  const voteRef = useRef<HTMLDivElement>(null);
 
   function addObj(objectiveName: string) {
     if (!gameid) {
@@ -314,9 +316,7 @@ function PhaseSection() {
 
   let influence = 0;
   for (const planet of updatedPlanets) {
-    if (planet.ready) {
-      influence += planet.influence;
-    }
+    influence += planet.influence;
   }
   const faction = factions[factionName];
   if (!faction) {
@@ -366,11 +366,21 @@ function PhaseSection() {
     if (!gameid || !factionName) {
       return;
     }
-    if (!target || target === "Abstain") {
+    if (target === "Abstain") {
       castSubStateVotes(gameid, factionName, "Abstain", 0);
     } else {
       castSubStateVotes(gameid, factionName, target, votes);
     }
+  }
+  function saveCastVotes(element: HTMLDivElement) {
+    if (element.innerText !== "") {
+      const numerical = parseInt(element.innerText);
+      if (!isNaN(numerical)) {
+        castVotes(factionSubState?.target, numerical);
+        element.innerText = numerical.toString();
+      }
+    }
+    element.innerText = factionSubState?.votes?.toString() ?? "0";
   }
 
   let leftLabel: string | undefined;
@@ -857,6 +867,8 @@ function PhaseSection() {
       break;
     }
     case "AGENDA": {
+      const hasVotableTarget =
+        !!factionSubState?.target && factionSubState?.target !== "Abstain";
       const items = Math.min((targets ?? []).length, 12);
       centerLabel = "AGENDA PHASE";
       phaseContent = (
@@ -974,45 +986,19 @@ function PhaseSection() {
                       alignItems: "flex-start",
                     }}
                   >
-                    Outcome:
-                    <ClientOnlyHoverMenu
-                      label={
-                        factionSubState?.target
-                          ? factionSubState?.target
-                          : "Select Vote Outcome"
-                      }
-                      buttonStyle={{ paddingLeft: "8px" }}
-                    >
-                      <div
-                        className="flexRow"
-                        style={{
-                          maxWidth: "80vw",
-                          gap: "4px",
-                          whiteSpace: "nowrap",
-                          padding: "8px",
-                          display: "grid",
-                          gridAutoFlow: "column",
-                          gridTemplateRows: `repeat(${items}, auto)`,
-                          alignItems: "stretch",
-                          justifyContent: "flex-start",
-                          overflowX: "auto",
-                        }}
-                      >
-                        {targets.map((target) => {
-                          return (
-                            <button
-                              key={target}
-                              style={{ writingMode: "horizontal-tb" }}
-                              onClick={() => {
-                                castVotes(target, 0);
-                              }}
-                            >
-                              {target}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </ClientOnlyHoverMenu>
+                    <Selector
+                      hoverMenuLabel="Select Vote Outcome"
+                      selectedLabel="Selected Outcome"
+                      options={targets}
+                      selectedItem={factionSubState?.target}
+                      toggleItem={(itemName, add) => {
+                        if (add) {
+                          castVotes(itemName, 0);
+                        } else {
+                          castVotes(undefined, 0);
+                        }
+                      }}
+                    />
                     <div
                       className="flexRow"
                       style={{
@@ -1053,14 +1039,27 @@ function PhaseSection() {
                             onClick={() =>
                               castVotes(
                                 factionSubState?.target,
-                                factionSubState?.votes ?? 0 - 1
+                                (factionSubState?.votes ?? 0) - 1
                               )
                             }
                           ></div>
                         ) : (
                           <div style={{ width: "12px" }}></div>
                         )}
-                        <div className="flexRow" style={{ width: "32px" }}>
+                        <div
+                          className="flexRow"
+                          ref={voteRef}
+                          contentEditable={hasVotableTarget}
+                          suppressContentEditableWarning={true}
+                          onClick={(e) => {
+                            if (!hasVotableTarget) {
+                              return;
+                            }
+                            e.currentTarget.innerText = "";
+                          }}
+                          onBlur={(e) => saveCastVotes(e.currentTarget)}
+                          style={{ width: "32px" }}
+                        >
                           {factionSubState?.votes ?? 0}
                         </div>
                         {factionSubState?.target &&
@@ -1070,7 +1069,7 @@ function PhaseSection() {
                             onClick={() =>
                               castVotes(
                                 factionSubState.target,
-                                factionSubState?.votes ?? 0 + 1
+                                (factionSubState?.votes ?? 0) + 1
                               )
                             }
                           ></div>
