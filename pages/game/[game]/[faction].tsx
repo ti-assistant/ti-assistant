@@ -450,20 +450,6 @@ function PhaseSection() {
               </ClientOnlyHoverMenu>
             ) : null}
           </LabeledDiv>
-          <LockedButtons
-            unlocked={setupPhaseComplete(factions, subState)}
-            buttons={[
-              {
-                text: "Start Game",
-                onClick: () => {
-                  if (!gameid) {
-                    return;
-                  }
-                  startFirstRound(gameid, subState, factions);
-                },
-              },
-            ]}
-          />
         </React.Fragment>
       );
       break;
@@ -600,17 +586,28 @@ function PhaseSection() {
             );
             break;
           case "Technology":
-            phaseContent = (
-              <AdditionalActions
-                factionName={factionName}
-                style={{ width: "100%" }}
-                ClientOnlyHoverMenuStyle={{
-                  overflowX: "auto",
-                  maxWidth: "85vw",
-                }}
-                secondaryOnly={true}
-              />
-            );
+            if (factionName === "Nekro Virus") {
+              leftLabel = "Technology Secondary";
+              phaseContent = (
+                <SecondaryCheck
+                  factionName={factionName}
+                  gameid={gameid ?? ""}
+                  subState={subState}
+                />
+              );
+            } else {
+              phaseContent = (
+                <AdditionalActions
+                  factionName={factionName}
+                  style={{ width: "100%" }}
+                  ClientOnlyHoverMenuStyle={{
+                    overflowX: "auto",
+                    maxWidth: "85vw",
+                  }}
+                  secondaryOnly={true}
+                />
+              );
+            }
             break;
           case "Imperial":
             leftLabel = "Imperial Secondary";
@@ -625,26 +622,7 @@ function PhaseSection() {
         }
       }
       if (state.activeplayer === "None") {
-        centerLabel = "END OF ACTION PHASE";
-        phaseContent = (
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", width: "100%", gap: "4px" }}
-          >
-            <div className="flexRow">
-              <button
-                onClick={() => {
-                  if (!gameid) {
-                    return;
-                  }
-                  advanceToStatusPhase(gameid);
-                }}
-              >
-                Advance to Status Phase
-              </button>
-            </div>
-          </div>
-        );
+        return null;
       }
       break;
     case "STATUS": {
@@ -874,32 +852,6 @@ function PhaseSection() {
               </div>
             )}
           </LabeledDiv>
-          {statusPhaseComplete(subState) ? (
-            <React.Fragment>
-              {!state.agendaUnlocked ? (
-                <button
-                  onClick={() => {
-                    if (!gameid) {
-                      return;
-                    }
-                    startNextRound(gameid, subState);
-                  }}
-                >
-                  Start Next Round
-                </button>
-              ) : null}
-              <button
-                onClick={() => {
-                  if (!gameid) {
-                    return;
-                  }
-                  advanceToAgendaPhase(gameid, subState);
-                }}
-              >
-                Advance to Agenda Phase
-              </button>
-            </React.Fragment>
-          ) : null}
         </React.Fragment>
       );
       break;
@@ -1784,7 +1736,7 @@ export default function GamePage() {
             style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
           >
             {orderedFactions.map((faction) => {
-              const color = getFactionColor(faction);
+              const color = faction.passed ? "#555" : getFactionColor(faction);
               return (
                 <div
                   className="flexRow"

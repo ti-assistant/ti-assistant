@@ -118,6 +118,37 @@ export function HoverMenu({
     }
   }, [rect, innerHeight, innerWidth]);
 
+  useEffect(() => {
+    function determineDirection() {
+      // For some reason, need to grab the current here rather than using the
+      // "cached version" above.
+      const menuCurrent = menu.current as HTMLDivElement;
+      const innerCurrent = innerMenu.current as HTMLDivElement;
+      const rect = menuCurrent.getBoundingClientRect();
+      if (
+        rect.top + innerCurrent.clientHeight > window.innerHeight - 4 &&
+        rect.bottom - innerCurrent.clientHeight > 0
+      ) {
+        setDirection("up");
+      } else {
+        setDirection("down");
+      }
+      if (
+        rect.left + innerCurrent.clientWidth > window.innerWidth - 4 &&
+        rect.right - innerCurrent.clientWidth > 0
+      ) {
+        setSide("left");
+      } else {
+        setSide("right");
+      }
+    }
+    window.addEventListener("resize", determineDirection);
+
+    return () => {
+      window.removeEventListener("resize", determineDirection);
+    };
+  }, []);
+
   function closeFn() {
     if (!menu.current) {
       return;

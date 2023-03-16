@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { fetcher } from "../src/util/api/util";
 import { convertToFactionColor } from "../src/util/factions";
 import { ClientOnlyHoverMenu } from "../src/HoverMenu";
-import { LabeledDiv } from "../src/LabeledDiv";
+import { LabeledDiv, LabeledLine } from "../src/LabeledDiv";
 import { responsivePixels } from "../src/util/util";
 import Head from "next/head";
 import { Map } from "../src/util/Map";
@@ -730,8 +730,8 @@ function FactionSelect({
             style={{
               position: "relative",
               opacity: 0.5,
-              width: responsivePixels(80),
-              height: responsivePixels(80),
+              width: mobile ? responsivePixels(52) : responsivePixels(80),
+              height: mobile ? responsivePixels(52) : responsivePixels(80),
             }}
           >
             <FullFactionSymbol faction={faction.name} />
@@ -750,11 +750,11 @@ function FactionSelect({
         }}
       >
         <div
-          className="flexColumn largeFont"
+          className={mobile ? "flexRow largeFont" : "flexColumn largeFont"}
           style={{
-            whiteSpace: "nowrap",
+            whiteSpace: "pre-line",
             alignItems: "flex-start",
-            overflow: "visible",
+            justifyContent: "space-between",
             width: "100%",
           }}
         >
@@ -783,7 +783,10 @@ function FactionSelect({
           />
           <div
             className="flexRow"
-            style={{ width: "100%", justifyContent: "space-between" }}
+            style={{
+              width: mobile ? "auto" : "100%",
+              justifyContent: "space-between",
+            }}
           >
             <ClientOnlyHoverMenu
               label={faction.color ? "Color" : "Color"}
@@ -826,7 +829,7 @@ function FactionSelect({
                 );
               }}
             ></ClientOnlyHoverMenu>
-            {isSpeaker ? null : (
+            {mobile || isSpeaker ? null : (
               <button onClick={() => setSpeaker(factionIndex)}>
                 Make Speaker
               </button>
