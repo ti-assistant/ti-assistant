@@ -1410,7 +1410,7 @@ export function ActivePlayerColumn({
         paddingTop: responsivePixels(74),
         justifyContent: "flex-start",
         alignItems: "center",
-        marginLeft: responsivePixels(64),
+        marginLeft: responsivePixels(40),
       }}
     >
       Active Player
