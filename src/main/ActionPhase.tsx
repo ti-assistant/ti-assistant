@@ -393,6 +393,24 @@ export function AdditionalActions({
   }
 
   function getResearchableTechs(faction: Faction) {
+    if (faction.name === "Nekro Virus") {
+      const nekroTechs = new Set<string>();
+      Object.values(factions ?? {}).forEach((otherFaction) => {
+        Object.keys(otherFaction.techs).forEach((techName) => {
+          if (
+            !hasTech(faction, techName) &&
+            !((subState.factions ?? {})["Nekro Virus"]?.techs ?? []).includes(
+              techName
+            )
+          ) {
+            nekroTechs.add(techName);
+          }
+        });
+      });
+      return Array.from(nekroTechs).map(
+        (techName) => (techs ?? {})[techName] as Tech
+      );
+    }
     const replaces: string[] = [];
     const availableTechs = Object.values(techs ?? {}).filter((tech) => {
       if (hasTech(faction, tech.name)) {
@@ -1189,6 +1207,8 @@ export function AdditionalActions({
     case "Tactical":
       const conqueredPlanets =
         ((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? [];
+      const nekroTechs =
+        ((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? [];
       return (
         <div className="flexColumn largeFont" style={{ ...style }}>
           {conqueredPlanets.length > 0 ? (
@@ -1296,6 +1316,39 @@ export function AdditionalActions({
                 </div>
               )}
             ></ClientOnlyHoverMenu>
+          ) : null}
+          {activeFaction.name === "Nekro Virus" &&
+          (nekroTechs.length > 0 || researchableTechs.length > 0) ? (
+            <React.Fragment>
+              {nekroTechs.length > 0 ? (
+                <LabeledDiv label="TECHNOLOGICAL SINGULARITY">
+                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
+                    {nekroTechs.map((tech) => {
+                      const techObj = techs[tech];
+                      if (!techObj) {
+                        return null;
+                      }
+                      return (
+                        <TechRow
+                          key={tech}
+                          tech={techObj}
+                          removeTech={() =>
+                            removeTech(activeFaction.name, tech)
+                          }
+                        />
+                      );
+                    })}
+                  </div>
+                </LabeledDiv>
+              ) : null}
+              {nekroTechs.length < 4 && researchableTechs.length > 0 ? (
+                <TechSelectHoverMenu
+                  label="Technological Singularity"
+                  techs={researchableTechs}
+                  selectTech={(tech) => addTech(activeFaction.name, tech)}
+                />
+              ) : null}
+            </React.Fragment>
           ) : null}
         </div>
       );
