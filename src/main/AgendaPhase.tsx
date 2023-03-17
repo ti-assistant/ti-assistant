@@ -18,6 +18,8 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import {
   addSubStatePlanet,
   addSubStateRider,
+  addSubStateTech,
+  clearAddedSubStateTech,
   finalizeSubState,
   hideSubStateAgenda,
   hideSubStateObjective,
@@ -54,6 +56,8 @@ import { ObjectiveRow } from "../ObjectiveRow";
 import { computeVPs } from "../FactionSummary";
 import { Options } from "../util/api/options";
 import { LockedButtons } from "../LockedButton";
+import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
+import { Tech } from "../util/api/techs";
 
 const RIDERS = [
   "Galactic Threat",
@@ -150,6 +154,145 @@ export function getSelectedOutcome(
     return selectedTargets[0];
   }
   return subState["tieBreak"];
+}
+
+function PredictionDetails() {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
+    gameid ? `/api/${gameid}/agendas` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
+    gameid ? `/api/${gameid}/factions` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: techs }: { data?: Record<string, Tech> } = useSWR(
+    gameid ? `/api/${gameid}/techs` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
+    gameid ? `/api/${gameid}/objectives` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+
+  const agendaName =
+    subState.agenda === "Covert Legislation"
+      ? subState.subAgenda
+      : subState.agenda;
+
+  const votes = computeVotes(
+    (agendas ?? {})[agendaName ?? ""],
+    subState.factions
+  );
+  const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
+    return Math.max(maxVotes, voteCount);
+  }, 0);
+  const selectedTargets = Object.entries(votes)
+    .filter(([_, voteCount]) => {
+      return voteCount === maxVotes;
+    })
+    .map(([target, _]) => {
+      return target;
+    });
+
+  const selectedOutcome = getSelectedOutcome(selectedTargets, subState);
+
+  if (!selectedOutcome) {
+    return null;
+  }
+
+  const galacticThreat = (subState.riders ?? {})["Galactic Threat"];
+  if (!galacticThreat) {
+    return null;
+  }
+
+  if (selectedOutcome !== galacticThreat.outcome) {
+    return null;
+  }
+
+  const techOptions = new Set<string>();
+
+  Object.entries(subState.factions ?? {}).forEach(
+    ([factionName, subStateFaction]) => {
+      if (!subStateFaction.target || !subStateFaction.votes) {
+        return;
+      }
+      if (subStateFaction.target !== selectedOutcome) {
+        return;
+      }
+
+      const factionTechs = (factions ?? {})[factionName]?.techs ?? {};
+      Object.keys(factionTechs).forEach((techName) => {
+        techOptions.add(techName);
+      });
+    }
+  );
+
+  const nekroTechs = (factions ?? {})["Nekro Virus"]?.techs ?? {};
+  Object.keys(nekroTechs).forEach((techName) => {
+    techOptions.delete(techName);
+  });
+
+  if (techOptions.size === 0) {
+    return null;
+  }
+
+  const availableTechs = Array.from(techOptions).map(
+    (techName) => (techs ?? {})[techName] as Tech
+  );
+
+  const gainedTech = ((subState.factions ?? {})["Nekro Virus"]?.techs ?? [])[0];
+
+  if (gainedTech) {
+    return (
+      <Selector
+        hoverMenuLabel="error"
+        autoSelect={false}
+        options={["1", "2"]}
+        toggleItem={() => {
+          if (!gameid) {
+            return;
+          }
+          clearAddedSubStateTech(gameid, "Nekro Virus", gainedTech);
+        }}
+        selectedItem={gainedTech}
+        selectedLabel="Galactic Threat"
+      />
+    );
+  }
+
+  return (
+    <TechSelectHoverMenu
+      techs={availableTechs}
+      selectTech={(techName) => {
+        if (!gameid) {
+          return;
+        }
+        addSubStateTech(gameid, "Nekro Virus", techName.name);
+      }}
+      label="Galactic Threat"
+    />
+  );
 }
 
 function AgendaDetails() {
@@ -1022,6 +1165,7 @@ function AgendaSteps() {
                     alignItems: "flex-start",
                     border: `${responsivePixels(1)} solid #555`,
                     borderRadius: responsivePixels(10),
+                    width: "100%",
                   }}
                 >
                   {Object.entries(votes).map(([target, voteCount]) => {
@@ -1064,6 +1208,7 @@ function AgendaSteps() {
                 ) : null
               ) : null}
               <AgendaDetails />
+              <PredictionDetails />
               {readyToResolve() ? (
                 <div
                   className="flexColumn"
