@@ -42,7 +42,6 @@ export interface BaseLeader {
 export interface BaseComponent {
   abilityName?: string;
   description: string;
-  details?: boolean;
   expansion: Expansion;
   faction?: string;
   leader?: LeaderType;

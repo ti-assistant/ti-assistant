@@ -6,7 +6,11 @@ import {
 } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { fetchFactions, fetchStrategyCards } from "../../../server/util/fetch";
+import {
+  fetchFactions,
+  fetchPlanets,
+  fetchStrategyCards,
+} from "../../../server/util/fetch";
 import { StateUpdateData } from "../../../src/util/api/state";
 import { GameData } from "../../../src/util/api/util";
 import {
@@ -258,6 +262,15 @@ export default async function handler(
   const responseRef = await db.collection("games").doc(gameId).get();
 
   const responseData = responseRef.data() as GameData;
+  const state = responseData.state;
 
-  return res.status(200).json(responseData.state);
+  if (!state.agendaUnlocked) {
+    const planets = await fetchPlanets(gameId);
+    const mecatolRex = planets["Mecatol Rex"];
+    if (mecatolRex && mecatolRex.owner) {
+      state.agendaUnlocked = true;
+    }
+  }
+
+  return res.status(200).json(state);
 }

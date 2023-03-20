@@ -32,7 +32,11 @@ import {
   filterToUnownedTechs,
 } from "../../../src/util/techs";
 import { Updater } from "../../../src/Updater";
-import { LabeledDiv, LabeledLine } from "../../../src/LabeledDiv";
+import {
+  BLACK_BORDER_GLOW,
+  LabeledDiv,
+  LabeledLine,
+} from "../../../src/LabeledDiv";
 import { StrategyCard } from "../../../src/util/api/cards";
 import {
   GameState,
@@ -1747,9 +1751,7 @@ export default function GamePage() {
                     borderRadius: "8px",
                     border: `3px solid ${color}`,
                     boxShadow:
-                      color === "Black"
-                        ? "0 0 3px #999, 0 0 3px #999 inset"
-                        : undefined,
+                      color === "Black" ? BLACK_BORDER_GLOW : undefined,
                   }}
                   onClick={() => swapToFaction(faction.name)}
                 >

@@ -38,15 +38,17 @@ export function Selector({
   renderButton,
   style,
 }: SelectorProps) {
+  const shouldAutoSelect = !!autoSelect && options.length <= 1;
+
   useEffect(() => {
-    if (autoSelect && options.length === 1) {
+    if (shouldAutoSelect) {
       const option = options[0];
       if (!option) {
         return;
       }
       toggleItem(option, true);
     }
-  }, [options, toggleItem, autoSelect]);
+  }, [options, toggleItem, shouldAutoSelect]);
 
   if (selectedItem) {
     const renderedItem = renderItem ? renderItem(selectedItem) : undefined;
@@ -54,8 +56,9 @@ export function Selector({
       return <React.Fragment>{renderedItem}</React.Fragment>;
     }
 
-    const removeItem =
-      options.length === 1 ? undefined : () => toggleItem(selectedItem, false);
+    const removeItem = shouldAutoSelect
+      ? undefined
+      : () => toggleItem(selectedItem, false);
 
     const innerValue = (
       <SelectableRow itemName={selectedItem} removeItem={removeItem}>

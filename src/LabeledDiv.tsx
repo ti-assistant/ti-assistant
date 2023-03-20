@@ -8,6 +8,11 @@ import React, {
 } from "react";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
 
+const BLACK_GLOW_COLOR = "#fff";
+const BLACK_LINE_GLOW = `0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR}`;
+export const BLACK_BORDER_GLOW = `0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR} inset`;
+export const BLACK_TEXT_GLOW = `0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR}`;
+
 export interface LabeledDivProps {
   label?: ReactNode;
   noBlur?: boolean;
@@ -49,8 +54,7 @@ export function LabeledDiv({
     alignItems: "flex-start",
     cursor: onClick ? "pointer" : "cursor",
     marginTop: !!label ? responsivePixels(4) : 0,
-    boxShadow:
-      color === "Black" ? "0 0 3px #999, 0 0 3px #999 inset" : undefined,
+    boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
     ...style,
   };
   const labelStyle: CSSProperties = {
@@ -62,7 +66,7 @@ export function LabeledDiv({
     borderRadius: responsivePixels(5),
     padding: `${responsivePixels(2)} ${responsivePixels(4)}`,
     color: `${color}`,
-    textShadow: color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+    textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
   };
   const rightLabelStyle: CSSProperties = {
     position: "absolute",
@@ -73,7 +77,7 @@ export function LabeledDiv({
     borderRadius: responsivePixels(5),
     padding: `${responsivePixels(2)} ${responsivePixels(4)}`,
     color: `${color}`,
-    textShadow: color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+    textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
   };
   return (
     <div className="flexColumn" style={divStyle} onClick={onClick}>
@@ -137,8 +141,7 @@ export function LabeledLine({
         style={{
           width: "100%",
           border: `1px solid ${color}`,
-          boxShadow:
-            color === "Black" ? "0 0 3px #999, 0 0 3px #999 inset" : undefined,
+          boxShadow: color === "Black" ? BLACK_LINE_GLOW : undefined,
           marginTop: responsivePixels(8),
           marginBottom: responsivePixels(8),
         }}
@@ -148,8 +151,7 @@ export function LabeledLine({
           className="mediumFont leftLabel"
           style={{
             color: color,
-            textShadow:
-              color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+            textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
           }}
         >
           {leftLabel}
@@ -162,8 +164,7 @@ export function LabeledLine({
             className="flexRow mediumFont centerLabel"
             style={{
               color: color,
-              textShadow:
-                color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+              textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
             }}
           >
             {label}
@@ -175,8 +176,7 @@ export function LabeledLine({
           className="mediumFont rightLabel"
           style={{
             color: color,
-            textShadow:
-              color === "Black" ? "0 0 3px #999, 0 0 3px #999" : undefined,
+            textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
           }}
         >
           {rightLabel}

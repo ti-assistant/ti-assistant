@@ -63,7 +63,10 @@ export function ObjectiveRow({
     if (!scoreObjective || viewing || !factionName) {
       return false;
     }
-    if (objective.max && (objective.scorers ?? []).length === objective.max) {
+    if (objective.max && (objective.scorers ?? []).length >= objective.max) {
+      return false;
+    }
+    if (objective.type === "SECRET" && (objective.scorers ?? []).length > 0) {
       return false;
     }
     return (

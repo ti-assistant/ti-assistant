@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, ReactNode, useState } from "react";
 import useSWR from "swr";
 import { capitalizeFirstLetter } from "../../../pages/setup";
 import { AgendaRow } from "../../AgendaRow";
@@ -79,6 +79,15 @@ function ComponentSelect({
   const promissory = components.filter(
     (component) => component.type === "PROMISSORY"
   );
+  const promissoryByFaction: Record<string, Component[]> = {};
+  promissory.forEach((component) => {
+    if (!component.faction) {
+      return;
+    }
+    const factionComponents = promissoryByFaction[component.faction] ?? [];
+    factionComponents.push(component);
+    promissoryByFaction[component.faction] = factionComponents;
+  });
   const others = components.filter(
     (component) =>
       component.type !== "LEADER" &&
@@ -222,28 +231,31 @@ function ComponentSelect({
             className="flexColumn"
             style={{ alignItems: "stretch", padding: responsivePixels(8) }}
           >
-            {promissory.map((component) => {
-              return (
-                <div className="flexColumn" key={component.name}>
-                  <LabeledDiv
-                    noBlur={true}
-                    label={capitalizeFirstLetter(component.faction ?? "")}
-                  >
-                    <button
-                      className={
-                        component.state === "exhausted" ||
-                        component.state === "used"
-                          ? "faded"
-                          : ""
-                      }
-                      onClick={() => selectComponent(component.name)}
-                    >
-                      {component.name}
-                    </button>
-                  </LabeledDiv>
-                </div>
-              );
-            })}
+            {Object.entries(promissoryByFaction).map(
+              ([factionName, components]) => {
+                return (
+                  <div className="flexColumn" key={factionName}>
+                    <LabeledDiv noBlur={true} label={factionName}>
+                      {components.map((component) => {
+                        return (
+                          <button
+                            className={
+                              component.state === "exhausted" ||
+                              component.state === "used"
+                                ? "faded"
+                                : ""
+                            }
+                            onClick={() => selectComponent(component.name)}
+                          >
+                            {component.name}
+                          </button>
+                        );
+                      })}
+                    </LabeledDiv>
+                  </div>
+                );
+              }
+            )}
           </div>
         </ClientOnlyHoverMenu>
       ) : null}
@@ -407,11 +419,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
   );
 
   let label = "Details";
-  let innerContent = (
-    <div className="flexRow" style={{ width: "100%" }}>
-      Work in Progress
-    </div>
-  );
+  let innerContent: ReactNode | undefined;
   switch (subState?.component) {
     case "Enigmatic Device":
     case "Focused Research": {
@@ -637,6 +645,9 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       break;
     }
   }
+  if (!innerContent) {
+    return null;
+  }
   return (
     <div
       className="flexColumn"
@@ -685,7 +696,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
       await clearSubState(gameid);
       setSubStateSelectedAction(gameid, "Component");
     } else {
-      const updatedName = componentName.replace(/\./g, "");
+      const updatedName = componentName.replace(/\./g, "").replace(/,/g, "");
       setSubStateOther(gameid, "component", updatedName);
     }
   }
@@ -784,9 +795,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
               &#x24D8;
             </div>
           </SelectableRow>
-          {component.details ? (
-            <ComponentDetails factionName={factionName} />
-          ) : null}
+          <ComponentDetails factionName={factionName} />
         </LabeledDiv>
       </div>
     </React.Fragment>

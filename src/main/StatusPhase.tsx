@@ -224,6 +224,7 @@ export function MiddleColumn() {
                 }
                 return (
                   objective.selected &&
+                  (!objective.phase || objective.phase === "STATUS") &&
                   (objective.type === "STAGE ONE" ||
                     objective.type === "STAGE TWO") &&
                   !(objective.scorers ?? []).includes(card.faction)
@@ -236,7 +237,7 @@ export function MiddleColumn() {
                   }
                   return (
                     objective.type === "SECRET" &&
-                    !(objective.scorers ?? []).includes(card.faction) &&
+                    (objective.scorers ?? []).length === 0 &&
                     objective.phase === "STATUS"
                   );
                 }
@@ -244,8 +245,9 @@ export function MiddleColumn() {
               if (!factions || !card.faction) {
                 return null;
               }
-              const factionColor = getFactionColor(factions[card.faction]);
-              const factionName = getFactionName(factions[card.faction]);
+              const faction = factions[card.faction];
+              const factionColor = getFactionColor(faction);
+              const factionName = getFactionName(faction);
               const scoredPublics = (
                 ((subState.factions ?? {})[card.faction] ?? {}).objectives ?? []
               ).filter((objective) => {
@@ -346,7 +348,9 @@ export function MiddleColumn() {
                           height: responsivePixels(40),
                         }}
                       >
-                        <FullFactionSymbol faction={factionName} />
+                        {faction ? (
+                          <FullFactionSymbol faction={faction.name} />
+                        ) : null}
                       </div>
                     </div>
                     <div

@@ -15,6 +15,7 @@ import { Planet, PlanetAttribute, PlanetType } from "./util/api/planets";
 import { Faction } from "./util/api/factions";
 import { Attachment } from "./util/api/attachments";
 import { getFactionColor } from "./util/factions";
+import { BLACK_BORDER_GLOW, BLACK_TEXT_GLOW } from "./LabeledDiv";
 
 export interface PlanetSymbolProps {
   type: PlanetType;
@@ -528,6 +529,9 @@ export function PlanetRow({
       ? planet.owner
       : undefined;
   let claimedColor = getFactionColor(factions[planet.owner ?? ""]);
+  if (claimedColor === "Black") {
+    claimedColor = "#999";
+  }
 
   return (
     <SelectableRow
@@ -551,7 +555,7 @@ export function PlanetRow({
             style={{
               fontFamily: "Myriad Pro",
               position: "absolute",
-              color: claimedColor === "Black" ? "#aaa" : claimedColor,
+              color: claimedColor,
               backgroundColor: "#222",
               borderRadius: responsivePixels(5),
               border: `${responsivePixels(1)} solid ${claimedColor}`,

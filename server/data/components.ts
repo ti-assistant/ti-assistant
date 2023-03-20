@@ -2,7 +2,10 @@ import { BaseComponent } from "../../src/util/api/components";
 
 export type ComponentId =
   | "Archaeological Expedition"
+  | "Black Market Forgery"
+  | "Blood Pact"
   | "Cripple Defenses"
+  | "Dark Pact"
   | "Divert Funding"
   | "Dynamis Core"
   | "Economic Initiative"
@@ -43,6 +46,7 @@ export type ComponentId =
   | "Stellar Converter"
   | "Stymie"
   | "Tactical Bombardment"
+  | "Terraform"
   | "The Codex"
   | "The Inferno"
   | "Trade Convoys"
@@ -62,11 +66,35 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     name: "Archaeological Expedition",
     type: "CARD",
   },
+  "Black Market Forgery": {
+    description:
+      "Purge 2 of your relic fragments of the same type to gain 1 relic.\n\nThen return this card to the Naaz-Rokha player.",
+    expansion: "POK",
+    faction: "Naaz-Rokha Alliance",
+    name: "Black Market Forgery",
+    type: "PROMISSORY",
+  },
+  "Blood Pact": {
+    description:
+      "Place this card face up in your play area.\n\nWhen you and the Empyrean player cast votes for the same outcome, cast 4 additional votes for that outcome.\n\nIf you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
+    expansion: "POK",
+    faction: "Empyrean",
+    name: "Blood Pact",
+    type: "PROMISSORY",
+  },
   "Cripple Defenses": {
     description: "Choose 1 planet. Destroy each PDS on that planet",
     expansion: "BASE",
     name: "Cripple Defenses",
     type: "CARD",
+  },
+  "Dark Pact": {
+    description:
+      "Place this card face up in your play area.\n\nWhen you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good.\n\nIf you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
+    expansion: "POK",
+    faction: "Empyrean",
+    name: "Dark Pact",
+    type: "PROMISSORY",
   },
   "Divert Funding": {
     description:
@@ -350,6 +378,14 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     expansion: "BASE",
     name: "Tactical Bombardment",
     type: "CARD",
+  },
+  Terraform: {
+    description:
+      "Attach this card to a non-home planet you control other than Mecatol Rex.\n\nIts resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial).",
+    expansion: "POK",
+    faction: "Titans of Ul",
+    name: "Terraform",
+    type: "PROMISSORY",
   },
   "The Codex": {
     description:

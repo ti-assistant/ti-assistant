@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect } from "react";
 import { FactionCard, FullFactionSymbol } from "../FactionCard";
 import { SmallStrategyCard } from "../StrategyCard";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
@@ -13,7 +13,7 @@ import SummaryColumn from "./SummaryColumn";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { PlanetRow } from "../PlanetRow";
 import { ObjectiveRow } from "../ObjectiveRow";
-import { LabeledDiv, LabeledLine } from "../LabeledDiv";
+import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../LabeledDiv";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { TechRow } from "../TechRow";
 import { BasicFactionTile } from "../FactionTile";
@@ -36,7 +36,7 @@ import {
   undoSubStateSpeaker,
   unscoreSubStateObjective,
 } from "../util/api/subState";
-import { responsivePixels } from "../util/util";
+import { pluralize, responsivePixels } from "../util/util";
 import { applyPlanetAttachments } from "../util/planets";
 import { ComponentAction } from "./util/ComponentAction";
 import { GameState, nextPlayer, StateUpdateData } from "../util/api/state";
@@ -71,7 +71,13 @@ function SecondaryCheck({
   let allCompleted = true;
   return (
     <div className="flexColumn hugeFont">
-      <div className="flexRow">
+      <div
+        className="flexRow"
+        style={{
+          justifyContent: "center",
+          flexWrap: "wrap",
+        }}
+      >
         {orderedFactions.map((faction) => {
           if (faction.name === activeFactionName) {
             return null;
@@ -88,16 +94,13 @@ function SecondaryCheck({
               key={faction.name}
               style={{
                 position: "relative",
-                width: "36px",
-                height: "36px",
-                borderRadius: "8px",
-                border: `3px solid ${color}`,
+                width: responsivePixels(48),
+                height: responsivePixels(48),
+                borderRadius: responsivePixels(12),
+                border: `${responsivePixels(3)} solid ${color}`,
                 cursor: "pointer",
                 backdropFilter: "blur(4px)",
-                boxShadow:
-                  color === "Black"
-                    ? "0 0 3px #999, 0 0 3px #999 inset"
-                    : undefined,
+                boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
               }}
               onClick={() => {
                 if (!gameid) {
@@ -120,16 +123,17 @@ function SecondaryCheck({
                 className="flexRow"
                 style={{
                   position: "relative",
-                  width: "32px",
-                  height: "32px",
+                  width: responsivePixels(44),
+                  height: responsivePixels(44),
                   borderRadius: "6px",
                 }}
               >
                 <div
                   style={{
                     position: "relative",
-                    width: "28px",
-                    height: "28px",
+                    width: responsivePixels(36),
+                    height: responsivePixels(36),
+                    userSelect: "none",
                   }}
                 >
                   {secondaryState === "DONE" ? (
@@ -138,8 +142,8 @@ function SecondaryCheck({
                         position: "absolute",
                         color: "#eee",
                         width: "100%",
-                        fontSize: responsivePixels(32),
-                        lineHeight: responsivePixels(30),
+                        fontSize: responsivePixels(40),
+                        lineHeight: responsivePixels(38),
                         zIndex: 0,
                         textAlign: "center",
                       }}
@@ -153,8 +157,8 @@ function SecondaryCheck({
                         position: "absolute",
                         color: "#eee",
                         width: "100%",
-                        fontSize: responsivePixels(34),
-                        lineHeight: responsivePixels(26),
+                        fontSize: responsivePixels(48),
+                        lineHeight: responsivePixels(32),
                         zIndex: 0,
                         textAlign: "center",
                       }}
@@ -165,8 +169,8 @@ function SecondaryCheck({
                   <div
                     style={{
                       position: "relative",
-                      width: "28px",
-                      height: "28px",
+                      width: responsivePixels(36),
+                      height: responsivePixels(36),
                       zIndex: -1,
                     }}
                   >
@@ -196,6 +200,13 @@ export function FactionActionButtons({
       revalidateIfStale: false,
     }
   );
+  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
+    gameid ? `/api/${gameid}/planets` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
   const {
     data: strategyCards = getDefaultStrategyCards(),
   }: { data?: Record<string, StrategyCard> } = useSWR(
@@ -213,6 +224,32 @@ export function FactionActionButtons({
     }
   );
 
+  useEffect(() => {
+    if (!subState || !planets) {
+      return;
+    }
+    const ownerOfMecatol = planets["Mecatol Rex"]?.owner;
+    const selectedAction = subState.selectedAction;
+    const hasImperialPoint = (
+      (subState.factions ?? {})[factionName]?.objectives ?? []
+    ).includes("Imperial Point");
+    if (
+      hasImperialPoint &&
+      (selectedAction !== "Imperial" || factionName !== ownerOfMecatol)
+    ) {
+      undoObjective(factionName, "Imperial Point");
+      return;
+    }
+    if (
+      !hasImperialPoint &&
+      selectedAction === "Imperial" &&
+      factionName === ownerOfMecatol
+    ) {
+      addObjective(factionName, "Imperial Point");
+      return;
+    }
+  }, [factionName, planets, subState]);
+
   if (!factions) {
     return null;
   }
@@ -226,14 +263,48 @@ export function FactionActionButtons({
     return true;
   }
 
+  function addObjective(factionName: string, toScore: string) {
+    if (!gameid) {
+      return;
+    }
+    scoreObjective(gameid, factionName, toScore);
+    scoreSubStateObjective(gameid, factionName, toScore);
+  }
+
+  function undoObjective(factionName: string, toRemove: string) {
+    if (!gameid) {
+      return;
+    }
+    unscoreObjective(gameid, factionName, toRemove);
+    unscoreSubStateObjective(gameid, factionName, toRemove);
+  }
+
   function toggleAction(action: string) {
     if (!gameid || !subState) {
       return;
     }
     if (subState.selectedAction === action) {
       clearSubState(gameid);
+      if (subState.selectedAction === "Imperial") {
+        const mecatol = (planets ?? {})["Mecatol Rex"];
+        if (mecatol && mecatol.owner === factionName) {
+          undoObjective(factionName, "Imperial Point");
+        }
+      }
     } else {
       setSubStateSelectedAction(gameid, action);
+      if (subState.selectedAction === "Imperial") {
+        const mecatol = (planets ?? {})["Mecatol Rex"];
+        if (mecatol && mecatol.owner === factionName) {
+          undoObjective(factionName, "Imperial Point");
+        }
+      }
+      if (action === "Imperial") {
+        const mecatol = (planets ?? {})["Mecatol Rex"];
+        if (mecatol && mecatol.owner === factionName) {
+          addObjective(factionName, "Imperial Point");
+        }
+      }
     }
   }
 
@@ -537,7 +608,8 @@ export function AdditionalActions({
     ((subState.factions ?? {})[activeFaction.name] ?? {}).objectives ?? [];
   const scorableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
-      if ((objective.scorers ?? []).includes(activeFaction.name)) {
+      const scorers = objective.scorers ?? [];
+      if (scorers.includes(activeFaction.name)) {
         return false;
       }
       if (scoredObjectives.includes(objective.name)) {
@@ -549,7 +621,10 @@ export function AdditionalActions({
       ) {
         return false;
       }
-      return objective.type === "SECRET" && objective.phase === "ACTION";
+      if (objective.type === "SECRET" && scorers.length > 0) {
+        return false;
+      }
+      return objective.phase === "ACTION";
     }
   );
 
@@ -561,7 +636,7 @@ export function AdditionalActions({
     padding: responsivePixels(8),
     display: "grid",
     gridAutoFlow: "column",
-    gridTemplateRows: `repeat(${Math.min(14, claimablePlanets.length)}, auto)`,
+    gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
     gap: responsivePixels(4),
     justifyContent: "flex-start",
     ...ClientOnlyHoverMenuStyle,
@@ -946,12 +1021,6 @@ export function AdditionalActions({
             style={{ width: "100%", ...style }}
           >
             <LabeledLine leftLabel="Secondary" />
-            <SecondaryCheck
-              activeFactionName={activeFaction.name}
-              gameid={gameid ?? ""}
-              orderedFactions={orderedFactions}
-              subState={subState}
-            />
             <LabeledDiv
               label={`${getFactionName(
                 factions["Xxcha Kingdom"]
@@ -960,7 +1029,10 @@ export function AdditionalActions({
             >
               <React.Fragment>
                 {xxchaPlanets.length > 0 ? (
-                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
+                  <div
+                    className="flexColumn"
+                    style={{ alignItems: "stretch", width: "100%" }}
+                  >
                     {xxchaPlanets.map((planet) => {
                       const planetObj = planets[planet];
                       if (!planetObj) {
@@ -975,9 +1047,12 @@ export function AdditionalActions({
                           key={planet}
                           factionName={"Xxcha Kingdom"}
                           planet={adjustedPlanet}
-                          removePlanet={() =>
-                            removePlanet("Xxcha Kingdom", planet)
-                          }
+                          removePlanet={() => {
+                            if (gameid) {
+                              markSecondary(gameid, "Xxcha Kingdom", "PENDING");
+                            }
+                            removePlanet("Xxcha Kingdom", planet);
+                          }}
                         />
                       );
                     })}
@@ -994,7 +1069,12 @@ export function AdditionalActions({
                               writingMode: "horizontal-tb",
                               width: responsivePixels(90),
                             }}
-                            onClick={() => addPlanet("Xxcha Kingdom", planet)}
+                            onClick={() => {
+                              if (gameid) {
+                                markSecondary(gameid, "Xxcha Kingdom", "DONE");
+                              }
+                              addPlanet("Xxcha Kingdom", planet);
+                            }}
                           >
                             {planet.name}
                           </button>
@@ -1005,6 +1085,12 @@ export function AdditionalActions({
                 ) : null}
               </React.Fragment>
             </LabeledDiv>
+            <SecondaryCheck
+              activeFactionName={activeFaction.name}
+              gameid={gameid ?? ""}
+              orderedFactions={orderedFactions}
+              subState={subState}
+            />
           </div>
         );
       }
@@ -1072,31 +1158,16 @@ export function AdditionalActions({
           style={{ width: "100%", ...style }}
         >
           <LabeledLine leftLabel="Primary" />
-          <LabeledDiv label="Imperial Point ?">
-            <div
-              className="flexRow"
-              style={{ width: "100%", justifyContent: "space-evenly" }}
-            >
-              <button
-                className={hasImperialPoint ? "selected" : ""}
-                style={{ fontSize: responsivePixels(20) }}
-                onClick={() =>
-                  addObjective(activeFaction.name, "Imperial Point")
-                }
-              >
-                Yes
-              </button>
-              <button
-                className={!hasImperialPoint ? "selected" : ""}
-                style={{ fontSize: responsivePixels(20) }}
-                onClick={() =>
-                  undoObjective(activeFaction.name, "Imperial Point")
-                }
-              >
-                No
-              </button>
-            </div>
-          </LabeledDiv>
+          <div
+            style={{
+              backdropFilter: "blur(4px)",
+              padding: `${responsivePixels(2)} 0`,
+            }}
+          >
+            {hasImperialPoint
+              ? "+1 VP for controlling Mecatol Rex"
+              : "Draw 1 secret objective"}
+          </div>
           <LabeledDiv label="Score Public Objective ?">
             <React.Fragment>
               {scoredPublics.length > 0 ? (
@@ -1162,15 +1233,35 @@ export function AdditionalActions({
     case "Component":
       return <ComponentAction factionName={activeFaction.name} />;
     case "Pass":
-      if (!lastFaction()) {
-        return null;
-      }
       let hasProveEndurance = false;
       scoredObjectives.forEach((objective) => {
         if (objective === "Prove Endurance") {
           hasProveEndurance = true;
         }
       });
+      function canProveEndurance() {
+        if (hasProveEndurance) {
+          return true;
+        }
+        if (!lastFaction()) {
+          return false;
+        }
+        const proveEndurance = (objectives ?? {})["Prove Endurance"];
+        if (!proveEndurance) {
+          return false;
+        }
+        const scorers = proveEndurance.scorers ?? [];
+        if (scorers.includes(factionName)) {
+          return false;
+        }
+        if (proveEndurance.type === "SECRET" && scorers.length !== 0) {
+          return false;
+        }
+        return true;
+      }
+      if (!canProveEndurance()) {
+        return null;
+      }
       return (
         <LabeledDiv label="PROVE ENDURANCE?" style={{ gap: "4px", ...style }}>
           <div
@@ -1269,7 +1360,12 @@ export function AdditionalActions({
             ></ClientOnlyHoverMenu>
           ) : null}
           {scoredObjectives.length > 0 ? (
-            <LabeledDiv label="SCORED SECRETS">
+            <LabeledDiv
+              label={`Scored Action Phase ${pluralize(
+                "Objective",
+                scoredObjectives.length
+              )}`}
+            >
               <React.Fragment>
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
                   {scoredObjectives.map((objective) => {
@@ -1297,7 +1393,7 @@ export function AdditionalActions({
           ) : null}
           {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
             <ClientOnlyHoverMenu
-              label="Score Secret Objective"
+              label="Score Action Phase Objective"
               renderProps={(closeFn) => (
                 <div className="flexColumn" style={{ ...secretButtonStyle }}>
                   {scorableObjectives.map((objective) => {
