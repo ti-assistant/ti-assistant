@@ -239,6 +239,7 @@ function ComponentSelect({
                       {components.map((component) => {
                         return (
                           <button
+                            key={component.name}
                             className={
                               component.state === "exhausted" ||
                               component.state === "used"

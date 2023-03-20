@@ -225,7 +225,7 @@ export function FactionActionButtons({
   );
 
   useEffect(() => {
-    if (!subState || !planets) {
+    if (!gameid || !subState || !planets) {
       return;
     }
     const ownerOfMecatol = planets["Mecatol Rex"]?.owner;
@@ -237,7 +237,8 @@ export function FactionActionButtons({
       hasImperialPoint &&
       (selectedAction !== "Imperial" || factionName !== ownerOfMecatol)
     ) {
-      undoObjective(factionName, "Imperial Point");
+      unscoreObjective(gameid, factionName, "Imperial Point");
+      unscoreSubStateObjective(gameid, factionName, "Imperial Point");
       return;
     }
     if (
@@ -245,10 +246,11 @@ export function FactionActionButtons({
       selectedAction === "Imperial" &&
       factionName === ownerOfMecatol
     ) {
-      addObjective(factionName, "Imperial Point");
+      scoreObjective(gameid, factionName, "Imperial Point");
+      scoreSubStateObjective(gameid, factionName, "Imperial Point");
       return;
     }
-  }, [factionName, planets, subState]);
+  }, [factionName, planets, subState, gameid]);
 
   if (!factions) {
     return null;
