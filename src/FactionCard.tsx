@@ -110,7 +110,7 @@ export function FactionSymbol({ faction, size }: FactionSymbolProps) {
     case "Titans of Ul":
       width = height * 0.984;
       break;
-    case "Vuil'Raith Cabal":
+    case "Vuil'raith Cabal":
       width = height * 0.974;
       break;
     case "Council Keleres":

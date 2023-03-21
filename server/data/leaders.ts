@@ -132,7 +132,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     description:
       "Each other player rolls a die for each of their non-fighter ships that are in or adjacent to a system that contains a dimensional tear; on a 1-3, capture that unit. If this causes a player's ground forces or fighters to be removed, also capture those units\n\nThen, purge this card",
     expansion: "POK",
-    faction: "Vuil'Raith Cabal",
+    faction: "Vuil'raith Cabal",
     name: "It Feeds on Carrion",
     timing: "COMPONENT ACTION",
     type: "HERO",

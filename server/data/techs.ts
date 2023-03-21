@@ -257,7 +257,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder\n\nUp to 12 fighters in this system do not count against your ships' capacity\n\nPRODUCTION 7",
     expansion: "POK",
-    faction: "Vuil'Raith Cabal",
+    faction: "Vuil'raith Cabal",
     name: "Dimensional Tear II",
     prereqs: ["YELLOW", "YELLOW"],
     replaces: "Space Dock II",
@@ -854,7 +854,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements",
     expansion: "POK",
-    faction: "Vuil'Raith Cabal",
+    faction: "Vuil'raith Cabal",
     name: "Vortex",
     prereqs: ["RED"],
     type: "RED",

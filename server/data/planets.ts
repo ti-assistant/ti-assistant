@@ -143,7 +143,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
   Acheron: {
     attributes: [],
     expansion: "POK",
-    faction: "Vuil'Raith Cabal",
+    faction: "Vuil'raith Cabal",
     home: true,
     influence: 0,
     name: "Acheron",

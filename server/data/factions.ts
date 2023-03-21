@@ -21,7 +21,7 @@ export type FactionId =
   | "Sardakk N'orr"
   | "Titans of Ul"
   | "Universities of Jol-Nar"
-  | "Vuil'Raith Cabal"
+  | "Vuil'raith Cabal"
   | "Winnu"
   | "Xxcha Kingdom"
   | "Yin Brotherhood"
@@ -87,7 +87,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     commodities: 2,
     expansion: "BASE",
     name: "Barony of Letnev",
-    shortname: "Barony",
+    shortname: "Letnev",
     startswith: {
       planets: ["Arc Prime", "Wren Terra"],
       techs: ["Antimass Deflectors", "Plasma Scoring"],
@@ -423,7 +423,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     commodities: 3,
     expansion: "BASE",
     name: "Sardakk N'orr",
-    shortname: "Sardakk",
+    shortname: "N'orr",
     startswith: {
       planets: ["Quinarra", "Tren'lak"],
       techs: [],
@@ -483,7 +483,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
       },
     },
   },
-  "Vuil'Raith Cabal": {
+  "Vuil'raith Cabal": {
     colors: {
       Black: 0.4,
       Magenta: 0.1,
@@ -491,8 +491,8 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "POK",
-    name: "Vuil'Raith Cabal",
-    shortname: "Vuil'Raith",
+    name: "Vuil'raith Cabal",
+    shortname: "Vuil'raith",
     startswith: {
       planets: ["Acheron"],
       techs: ["Self Assembly Routines"],

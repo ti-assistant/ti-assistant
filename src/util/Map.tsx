@@ -158,7 +158,7 @@ function SystemImage({ systemNumber }: { systemNumber: string | undefined }) {
       {/* TODO: Display planet owners on map.
     <div className="flexRow" style={{position: "absolute", backgroundColor: "#222", borderRadius: "100%", left: "10px", top: "25px", width: "18px", height: "18px", border: "1px solid red"}}>
       <div className="flexRow" style={{position: "relative", width: "90%", height: "90%"}}>
-        <FullFactionSymbol faction={"Vuil'Raith Cabal"} />
+        <FullFactionSymbol faction={"Vuil'raith Cabal"} />
       </div>
     </div> */}
     </div>

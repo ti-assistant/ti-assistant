@@ -435,7 +435,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     description:
       "Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements",
     expansion: "POK",
-    faction: "Vuil'Raith Cabal",
+    faction: "Vuil'raith Cabal",
     name: "Vortex",
     type: "TECH",
   },
