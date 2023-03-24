@@ -110,10 +110,7 @@ html {
 
 @font-face {
   font-family: "Slider";
-  src: url("Slider.eot");
-  src: url("Slider.eot?#iefix") format("embedded-opentype"),
-    url("Slider.woff2") format("woff2"), url("Slider.woff") format("woff"),
-    url("Slider.ttf") format("truetype"), url("Slider.svg#Slider") format("svg");
+  src: url("Slider_Updated.ttf") format("truetype");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
