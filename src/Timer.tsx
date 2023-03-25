@@ -13,7 +13,7 @@ import {
   updateLocalGameTimer,
 } from "./util/api/timers";
 import { responsivePixels, useInterval } from "./util/util";
-import { GameState } from "./util/api/state";
+import { GameState, setGlobalPause } from "./util/api/state";
 
 const useCurrentAgenda = () => {
   const [currentAgenda, setCurrentAgenda] = useState(1);
@@ -177,7 +177,7 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   );
 
   const [agendaTimer, setAgendaTimer] = useState(0);
-  const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
+  const { addSubscriber, removeSubscriber } = useSharedTimer();
 
   const timerRef = useRef(0);
   const lastUpdate = useRef(0);
@@ -193,6 +193,7 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   }, 15000);
 
   const isActive = state?.agendaNum === agendaNum;
+  const paused = state?.paused;
 
   const updateTime = useCallback(() => {
     if (!gameid || paused || !isActive) {
@@ -237,14 +238,20 @@ export function GameTimer({ frozen = false }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const [gameTimer, setGameTimer] = useState(0);
-  const { paused, setPaused, addSubscriber, removeSubscriber } =
-    useSharedTimer();
+  const { setPaused, addSubscriber, removeSubscriber } = useSharedTimer();
 
   const timerRef = useRef(0);
   const lastUpdate = useRef(0);
 
   const { data: timers }: { data?: Record<string, number> } = useSWR(
     gameid ? `/api/${gameid}/timers` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: state }: { data?: GameState } = useSWR(
+    gameid ? `/api/${gameid}/state` : null,
     fetcher,
     {
       revalidateIfStale: false,
@@ -260,6 +267,8 @@ export function GameTimer({ frozen = false }) {
       saveGameTimer(gameid, timerRef.current);
     }
   }, 15000);
+
+  const paused = state?.paused;
 
   const updateTime = useCallback(() => {
     if (!gameid || paused || frozen) {
@@ -287,10 +296,15 @@ export function GameTimer({ frozen = false }) {
   }, [localGameTimer, gameTimer]);
 
   function togglePause() {
+    if (!gameid) {
+      return;
+    }
     if (paused) {
-      setPaused(false);
+      // setPaused(false);
+      setGlobalPause(gameid, false);
     } else {
-      setPaused(true);
+      // setPaused(true);
+      setGlobalPause(gameid, true);
     }
   }
 
@@ -366,7 +380,14 @@ export function FactionTimer({ factionName, style }: FactionTimerProps) {
       revalidateIfStale: false,
     }
   );
-  const { paused, addSubscriber, removeSubscriber } = useSharedTimer();
+  const { data: state }: { data?: GameState } = useSWR(
+    gameid ? `/api/${gameid}/state` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { addSubscriber, removeSubscriber } = useSharedTimer();
 
   useEffect(() => {
     return () => {
@@ -395,6 +416,8 @@ export function FactionTimer({ factionName, style }: FactionTimerProps) {
       saveFactionTimer(gameid, factionName, factionTimer);
     }
   }, 5000);
+
+  const paused = state?.paused;
 
   const updateTime = useCallback(() => {
     if (paused || !gameid) {

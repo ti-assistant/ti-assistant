@@ -8,7 +8,7 @@ import {
 } from "./cards";
 import { revealObjective, scoreObjective } from "./objectives";
 import { claimPlanet } from "./planets";
-import { setSpeaker } from "./state";
+import { setGlobalPause, setSpeaker } from "./state";
 import { lockTech, unlockTech } from "./techs";
 import { poster } from "./util";
 
@@ -124,6 +124,8 @@ export function clearSubState(gameid: string) {
 }
 
 export function setSubStateSelectedAction(gameid: string, actionName: string) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "SET_ACTION",
     actionName: actionName,
@@ -144,6 +146,8 @@ export function setSubStateSelectedAction(gameid: string, actionName: string) {
 }
 
 export function setSubStateSpeaker(gameid: string, factionName: string) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "SET_SPEAKER",
     factionName: factionName,
@@ -166,6 +170,8 @@ export function setSubStateSpeaker(gameid: string, factionName: string) {
 }
 
 export function undoSubStateSpeaker(gameid: string) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "UNDO_SPEAKER",
   };
@@ -191,6 +197,8 @@ export function addSubStateTech(
   factionName: string,
   techName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "ADD_TECH",
     factionName: factionName,
@@ -234,6 +242,8 @@ export function clearAddedSubStateTech(
   factionName: string,
   techName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "CLEAR_ADDED_TECH",
     factionName: factionName,
@@ -280,6 +290,8 @@ export function removeSubStateTech(
   factionName: string,
   techName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "REMOVE_TECH",
     factionName: factionName,
@@ -323,6 +335,8 @@ export function clearRemovedSubStateTech(
   factionName: string,
   techName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "CLEAR_REMOVED_TECH",
     factionName: factionName,
@@ -369,6 +383,8 @@ export function addSubStatePlanet(
   factionName: string,
   planetName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "ADD_PLANET",
     factionName: factionName,
@@ -407,6 +423,8 @@ export function removeSubStatePlanet(
   factionName: string,
   planetName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "REMOVE_PLANET",
     factionName: factionName,
@@ -448,6 +466,8 @@ export function scoreSubStateObjective(
   factionName: string,
   objectiveName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "SCORE_OBJECTIVE",
     factionName: factionName,
@@ -486,6 +506,8 @@ export function unscoreSubStateObjective(
   factionName: string,
   objectiveName: string
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "UNSCORE_OBJECTIVE",
     factionName: factionName,
@@ -525,6 +547,8 @@ export function castSubStateVotes(
   target: string | undefined,
   numVotes: number
 ) {
+  setGlobalPause(gameid, false);
+
   const data: SubStateUpdateData = {
     action: "CAST_VOTES",
     factionName: factionName,
@@ -561,6 +585,7 @@ export function castSubStateVotes(
 }
 
 export function revealSubStateObjective(gameid: string, objectiveName: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "REVEAL_OBJECTIVE",
     objectiveName: objectiveName,
@@ -586,6 +611,7 @@ export function revealSubStateObjective(gameid: string, objectiveName: string) {
 }
 
 export function hideSubStateObjective(gameid: string, objectiveName: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "HIDE_OBJECTIVE",
     objectiveName: objectiveName,
@@ -614,6 +640,7 @@ export function hideSubStateObjective(gameid: string, objectiveName: string) {
 }
 
 export function revealSubStateAgenda(gameid: string, agendaName: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "REVEAL_AGENDA",
     agendaName: agendaName,
@@ -636,6 +663,7 @@ export function revealSubStateAgenda(gameid: string, agendaName: string) {
 }
 
 export function hideSubStateAgenda(gameid: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "HIDE_AGENDA",
   };
@@ -661,6 +689,7 @@ export function hideSubStateAgenda(gameid: string) {
 }
 
 export function repealSubStateAgenda(gameid: string, agendaName: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "REPEAL_AGENDA",
     agendaName: agendaName,
@@ -683,6 +712,7 @@ export function repealSubStateAgenda(gameid: string, agendaName: string) {
 }
 
 export function removeRepealedSubStateAgenda(gameid: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "REMOVE_REPEALED_AGENDA",
   };
@@ -708,6 +738,7 @@ export function pickSubStateStrategyCard(
   cardEvent: AssignStrategyCardEvent,
   numFactions: number
 ) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "PICK_STRATEGY_CARD",
     cardEvent: cardEvent,
@@ -750,6 +781,7 @@ export function pickSubStateStrategyCard(
 }
 
 export function undoSubStateStrategyCard(gameid: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "UNDO_STRATEGY_CARD",
   };
@@ -775,6 +807,7 @@ export function swapSubStateStrategyCards(
   cardOne: StrategyCard,
   cardTwo: StrategyCard
 ) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "SWAP_STRATEGY_CARDS",
     cardOneName: cardOne.name,
@@ -809,6 +842,7 @@ export function addSubStateRider(
   factionName: string | undefined,
   outcome: string | undefined
 ) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "PLAY_RIDER",
     riderName: riderName,
@@ -840,6 +874,7 @@ export function addSubStateRider(
 }
 
 export function removeSubStateRider(gameid: string, riderName: string) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "UNDO_RIDER",
     riderName: riderName,
@@ -870,6 +905,7 @@ export function markSecondary(
   factionName: string,
   secondary: Secondary
 ) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "MARK_SECONDARY",
     factionName: factionName,
@@ -905,6 +941,7 @@ export function setSubStateOther(
   fieldName: string,
   value: any
 ) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "SET_OTHER_FIELD",
     fieldName: fieldName,
@@ -932,6 +969,7 @@ export function resolveRiders(
   subState: SubState,
   electedOutcome: string
 ) {
+  setGlobalPause(gameid, false);
   for (const [riderName, rider] of Object.entries(subState.riders ?? {})) {
     if (!rider.outcome || !rider.factionName) {
       continue;
@@ -951,6 +989,7 @@ export function resolveRiders(
 }
 
 export function finalizeSubState(gameid: string, subState: SubState) {
+  setGlobalPause(gameid, false);
   const data: SubStateUpdateData = {
     action: "FINALIZE_SUB_STATE",
   };

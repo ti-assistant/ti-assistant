@@ -115,6 +115,8 @@ export async function nextPlayer(
   strategyCards: Record<string, StrategyCard>,
   subState: SubState
 ) {
+  setGlobalPause(gameid, false);
+
   const data: StateUpdateData = {
     action: "ADVANCE_PLAYER",
   };
@@ -145,6 +147,8 @@ export async function prevPlayer(
   factions: Record<string, Faction>,
   subState: SubState
 ) {
+  setGlobalPause(gameid, false);
+
   const data: StateUpdateData = {
     action: "PREVIOUS_PLAYER",
   };
@@ -188,6 +192,8 @@ export async function finishGame(gameid: string) {
 }
 
 export async function continueGame(gameid: string) {
+  setGlobalPause(gameid, false);
+
   const data: StateUpdateData = {
     action: "CONTINUE_GAME",
   };
