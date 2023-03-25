@@ -672,7 +672,8 @@ function PhaseSection() {
         );
       });
       const scoredPublics = (
-        ((subState.factions ?? {})[factionName] ?? {}).objectives ?? []
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).objectives ??
+        []
       ).filter((objective) => {
         return (
           (objectives[objective] ?? {}).type === "STAGE ONE" ||
@@ -680,7 +681,8 @@ function PhaseSection() {
         );
       });
       const scoredSecrets = (
-        ((subState.factions ?? {})[factionName] ?? {}).objectives ?? []
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).objectives ??
+        []
       ).filter((objective) => {
         return (objectives[objective] ?? {}).type === "SECRET";
       });

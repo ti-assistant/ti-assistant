@@ -92,7 +92,7 @@ export default async function handler(
         return;
       }
       updates = {
-        subState: {
+        "subState.turnData": {
           selectedAction: data.actionName,
         },
         [timestampString]: timestamp,
@@ -105,14 +105,25 @@ export default async function handler(
         return;
       }
       updates = {
-        "subState.speaker": data.factionName,
+        "subState.turnData.speaker": data.factionName,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "SELECT_COMPONENT": {
+      if (!data.componentName) {
+        res.status(422).send({ message: "Missing Component Name" });
+        return;
+      }
+      updates = {
+        "subState.turnData.component.name": data.componentName,
         [timestampString]: timestamp,
       };
       break;
     }
     case "UNDO_SPEAKER": {
       updates = {
-        "subState.speaker": FieldValue.delete(),
+        "subState.turnData.speaker": FieldValue.delete(),
         [timestampString]: timestamp,
       };
       break;
@@ -126,7 +137,7 @@ export default async function handler(
         .replace(/\//g, "")
         .replace(/\./g, "")
         .replace(" Ω", "");
-      const techString = `subState.factions.${data.factionName}.techs`;
+      const techString = `subState.turnData.factions.${data.factionName}.techs`;
       updates = {
         [techString]: FieldValue.arrayUnion(tech),
         [timestampString]: timestamp,
@@ -142,7 +153,7 @@ export default async function handler(
         .replace(/\//g, "")
         .replace(/\./g, "")
         .replace(" Ω", "");
-      const techString = `subState.factions.${data.factionName}.techs`;
+      const techString = `subState.turnData.factions.${data.factionName}.techs`;
       updates = {
         [techString]: FieldValue.arrayRemove(tech),
         [timestampString]: timestamp,
@@ -158,7 +169,7 @@ export default async function handler(
         .replace(/\//g, "")
         .replace(/\./g, "")
         .replace(" Ω", "");
-      const techString = `subState.factions.${data.factionName}.removeTechs`;
+      const techString = `subState.turnData.factions.${data.factionName}.removeTechs`;
       updates = {
         [techString]: FieldValue.arrayUnion(tech),
         [timestampString]: timestamp,
@@ -174,7 +185,7 @@ export default async function handler(
         .replace(/\//g, "")
         .replace(/\./g, "")
         .replace(" Ω", "");
-      const techString = `subState.factions.${data.factionName}.removeTechs`;
+      const techString = `subState.turnData.factions.${data.factionName}.removeTechs`;
       updates = {
         [techString]: FieldValue.arrayRemove(tech),
         [timestampString]: timestamp,
@@ -188,7 +199,7 @@ export default async function handler(
           .send({ message: "Missing Faction Name or Planet Name" });
         return;
       }
-      const planetString = `subState.factions.${data.factionName}.planets`;
+      const planetString = `subState.turnData.factions.${data.factionName}.planets`;
       updates = {
         [planetString]: FieldValue.arrayUnion(data.planetName),
         [timestampString]: timestamp,
@@ -202,7 +213,7 @@ export default async function handler(
           .send({ message: "Missing Faction Name or Planet Name" });
         return;
       }
-      const planetString = `subState.factions.${data.factionName}.planets`;
+      const planetString = `subState.turnData.factions.${data.factionName}.planets`;
       updates = {
         [planetString]: FieldValue.arrayRemove(data.planetName),
         [timestampString]: timestamp,
@@ -216,7 +227,7 @@ export default async function handler(
           .send({ message: "Missing Faction Name or Objective Name" });
         return;
       }
-      const objectiveString = `subState.factions.${data.factionName}.objectives`;
+      const objectiveString = `subState.turnData.factions.${data.factionName}.objectives`;
       updates = {
         [objectiveString]: FieldValue.arrayUnion(data.objectiveName),
         [timestampString]: timestamp,
@@ -230,7 +241,7 @@ export default async function handler(
           .send({ message: "Missing Faction Name or Objective Name" });
         return;
       }
-      const objectiveString = `subState.factions.${data.factionName}.objectives`;
+      const objectiveString = `subState.turnData.factions.${data.factionName}.objectives`;
       updates = {
         [objectiveString]: FieldValue.arrayRemove(data.objectiveName),
         [timestampString]: timestamp,
@@ -436,7 +447,8 @@ export default async function handler(
         return;
       }
       updates = {
-        [`subState.factions.${data.factionName}.secondary`]: data.secondary,
+        [`subState.turnData.factions.${data.factionName}.secondary`]:
+          data.secondary,
         [timestampString]: timestamp,
       };
       break;
@@ -483,7 +495,7 @@ export default async function handler(
           }
         }
         for (const [factionName, value] of Object.entries(
-          subState.factions ?? {}
+          subState.turnData?.factions ?? {}
         )) {
           // NOTE: Pretty sure this won't actually work properly...
           for (const planet of value.planets ?? []) {

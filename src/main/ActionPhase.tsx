@@ -5,7 +5,11 @@ import { FactionCard, FullFactionSymbol } from "../FactionCard";
 import { SmallStrategyCard } from "../StrategyCard";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
 import { hasTech, Tech } from "../util/api/techs";
-import { markStrategyCardUsed, StrategyCard } from "../util/api/cards";
+import {
+  markStrategyCardUsed,
+  StrategyCard,
+  StrategyCardName,
+} from "../util/api/cards";
 import { Faction, passFaction, readyAllFactions } from "../util/api/factions";
 import { fetcher, poster } from "../util/api/util";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
@@ -21,6 +25,7 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
 import { SelectableRow } from "../SelectableRow";
 import {
+  Action,
   addSubStatePlanet,
   addSubStateTech,
   clearAddedSubStateTech,
@@ -83,7 +88,8 @@ function SecondaryCheck({
             return null;
           }
           const secondaryState =
-            (subState.factions ?? {})[faction.name]?.secondary ?? "PENDING";
+            (subState.turnData?.factions ?? {})[faction.name]?.secondary ??
+            "PENDING";
           const color = getFactionColor(faction);
           if (secondaryState === "PENDING") {
             allCompleted = false;
@@ -232,9 +238,9 @@ export function FactionActionButtons({
       return;
     }
     const ownerOfMecatol = planets["Mecatol Rex"]?.owner;
-    const selectedAction = subState.selectedAction;
+    const selectedAction = subState.turnData?.selectedAction;
     const hasImperialPoint = (
-      (subState.factions ?? {})[factionName]?.objectives ?? []
+      (subState.turnData?.factions ?? {})[factionName]?.objectives ?? []
     ).includes("Imperial Point");
     if (
       hasImperialPoint &&
@@ -284,13 +290,13 @@ export function FactionActionButtons({
     unscoreSubStateObjective(gameid, factionName, toRemove);
   }
 
-  function toggleAction(action: string) {
+  function toggleAction(action: Action) {
     if (!gameid || !subState) {
       return;
     }
-    if (subState.selectedAction === action) {
+    if (subState.turnData?.selectedAction === action) {
       clearSubState(gameid);
-      if (subState.selectedAction === "Imperial") {
+      if (subState.turnData?.selectedAction === "Imperial") {
         const mecatol = (planets ?? {})["Mecatol Rex"];
         if (mecatol && mecatol.owner === factionName) {
           undoObjective(factionName, "Imperial Point");
@@ -298,7 +304,7 @@ export function FactionActionButtons({
       }
     } else {
       setSubStateSelectedAction(gameid, action);
-      if (subState.selectedAction === "Imperial") {
+      if (subState.turnData?.selectedAction === "Imperial") {
         const mecatol = (planets ?? {})["Mecatol Rex"];
         if (mecatol && mecatol.owner === factionName) {
           undoObjective(factionName, "Imperial Point");
@@ -341,7 +347,9 @@ export function FactionActionButtons({
             <button
               key={card.name}
               className={
-                subState?.selectedAction === card.name ? "selected" : ""
+                subState?.turnData?.selectedAction === card.name
+                  ? "selected"
+                  : ""
               }
               style={buttonStyle}
               onClick={() => toggleAction(card.name)}
@@ -352,14 +360,18 @@ export function FactionActionButtons({
         }
       )}
       <button
-        className={subState?.selectedAction === "Tactical" ? "selected" : ""}
+        className={
+          subState?.turnData?.selectedAction === "Tactical" ? "selected" : ""
+        }
         style={buttonStyle}
         onClick={() => toggleAction("Tactical")}
       >
         Tactical
       </button>
       <button
-        className={subState?.selectedAction === "Component" ? "selected" : ""}
+        className={
+          subState?.turnData?.selectedAction === "Component" ? "selected" : ""
+        }
         style={buttonStyle}
         onClick={() => toggleAction("Component")}
       >
@@ -367,7 +379,9 @@ export function FactionActionButtons({
       </button>
       {canFactionPass(activeFaction.name) ? (
         <button
-          className={subState?.selectedAction === "Pass" ? "selected" : ""}
+          className={
+            subState?.turnData?.selectedAction === "Pass" ? "selected" : ""
+          }
           style={buttonStyle}
           disabled={!canFactionPass(activeFaction.name)}
           onClick={() => toggleAction("Pass")}
@@ -475,9 +489,9 @@ export function AdditionalActions({
         Object.keys(otherFaction.techs).forEach((techName) => {
           if (
             !hasTech(faction, techName) &&
-            !((subState.factions ?? {})["Nekro Virus"]?.techs ?? []).includes(
-              techName
-            )
+            !(
+              (subState.turnData?.factions ?? {})["Nekro Virus"]?.techs ?? []
+            ).includes(techName)
           ) {
             nekroTechs.add(techName);
           }
@@ -500,7 +514,7 @@ export function AdditionalActions({
         return false;
       }
       const researchedTechs =
-        ((subState.factions ?? {})[faction.name] ?? {}).techs ?? [];
+        ((subState.turnData?.factions ?? {})[faction.name] ?? {}).techs ?? [];
       if (researchedTechs.includes(tech.name)) {
         return false;
       }
@@ -582,7 +596,8 @@ export function AdditionalActions({
     return numFactions - 1 === numPassed;
   }
   const claimedPlanets =
-    ((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? [];
+    ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {}).planets ??
+    [];
   const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
     if (!planets) {
       return false;
@@ -610,7 +625,8 @@ export function AdditionalActions({
     return true;
   });
   const scoredObjectives =
-    ((subState.factions ?? {})[activeFaction.name] ?? {}).objectives ?? [];
+    ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {})
+      .objectives ?? [];
   const scorableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
       const scorers = objective.scorers ?? [];
@@ -651,6 +667,9 @@ export function AdditionalActions({
     fontFamily: "Myriad Pro",
     padding: responsivePixels(8),
     alignItems: "stretch",
+    display: "grid",
+    gridAutoFlow: "column",
+    gridTemplateRows: `repeat(8, auto)`,
     gap: responsivePixels(4),
   };
 
@@ -672,10 +691,11 @@ export function AdditionalActions({
     }
     return -1;
   });
-  switch (subState.selectedAction) {
+  switch (subState.turnData?.selectedAction) {
     case "Technology":
       const researchedTech =
-        ((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? [];
+        ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {}).techs ??
+        [];
       if (!!primaryOnly || !!secondaryOnly) {
         const isActive = state?.activeplayer === factionName;
         const numTechs =
@@ -821,7 +841,8 @@ export function AdditionalActions({
                   // TODO: Add ability for people to copy them.
                 }
                 const researchedTechs =
-                  ((subState.factions ?? {})[faction.name] ?? {}).techs ?? [];
+                  ((subState.turnData?.factions ?? {})[faction.name] ?? {})
+                    .techs ?? [];
                 const availableTechs = getResearchableTechs(faction);
                 return (
                   <LabeledDiv
@@ -879,7 +900,7 @@ export function AdditionalActions({
         </div>
       );
     case "Politics":
-      const selectedSpeaker = factions[subState.speaker ?? ""];
+      const selectedSpeaker = factions[subState.turnData.speaker ?? ""];
       return (
         <div
           className="flexColumn"
@@ -891,7 +912,7 @@ export function AdditionalActions({
               <LabeledDiv label="NEW SPEAKER" style={{ width: "90%" }}>
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
                   <SelectableRow
-                    itemName={subState.speaker ?? ""}
+                    itemName={subState.turnData.speaker ?? ""}
                     removeItem={resetSpeaker}
                   >
                     <BasicFactionTile faction={selectedSpeaker} />
@@ -994,7 +1015,8 @@ export function AdditionalActions({
         );
       } else if (factions["Xxcha Kingdom"]) {
         const xxchaPlanets =
-          ((subState.factions ?? {})["Xxcha Kingdom"] ?? {}).planets ?? [];
+          ((subState.turnData?.factions ?? {})["Xxcha Kingdom"] ?? {})
+            .planets ?? [];
         const nonXxchaPlanets = Object.values(planets ?? {}).filter(
           (planet) => {
             if (planet.owner === "Xxcha Kingdom") {
@@ -1302,9 +1324,11 @@ export function AdditionalActions({
       return null;
     case "Tactical":
       const conqueredPlanets =
-        ((subState.factions ?? {})[activeFaction.name] ?? {}).planets ?? [];
+        ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {})
+          .planets ?? [];
       const nekroTechs =
-        ((subState.factions ?? {})[activeFaction.name] ?? {}).techs ?? [];
+        ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {}).techs ??
+        [];
       return (
         <div className="flexColumn largeFont" style={{ ...style }}>
           {conqueredPlanets.length > 0 ? (
@@ -1494,7 +1518,7 @@ export function NextPlayerButtons({
   );
 
   async function completeActions() {
-    if (!gameid || subState.selectedAction === null) {
+    if (!gameid || subState.turnData?.selectedAction === null) {
       return;
     }
     await finalizeAction();
@@ -1502,25 +1526,28 @@ export function NextPlayerButtons({
   }
 
   async function finalizeAction() {
-    if (!gameid || subState.selectedAction === null) {
+    if (!gameid || !subState.turnData?.selectedAction) {
       return;
     }
     finalizeSubState(gameid, subState);
 
-    if (strategyCards[subState.selectedAction]) {
-      markStrategyCardUsed(gameid, subState.selectedAction);
+    if (strategyCards[subState.turnData?.selectedAction]) {
+      markStrategyCardUsed(
+        gameid,
+        subState.turnData?.selectedAction as StrategyCardName
+      );
     }
-    if (subState.selectedAction === "Pass") {
+    if (subState.turnData?.selectedAction === "Pass") {
       await passFaction(gameid, factionName);
     }
   }
 
   function isTurnComplete() {
-    switch (subState.selectedAction) {
+    switch (subState.turnData?.selectedAction) {
       case "Politics":
-        return !!subState.speaker;
+        return !!subState.turnData.speaker;
     }
-    return !!subState.selectedAction;
+    return !!subState.turnData?.selectedAction;
   }
 
   if (!isTurnComplete()) {
@@ -1531,7 +1558,7 @@ export function NextPlayerButtons({
         <button onClick={completeActions} style={buttonStyle}>
           End Turn
         </button>
-        {subState.selectedAction !== "Pass" ? (
+        {subState.turnData?.selectedAction !== "Pass" ? (
           <React.Fragment>
             <div style={{ fontSize: "16px" }}>OR</div>
             <button onClick={finalizeAction} style={buttonStyle}>

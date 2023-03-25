@@ -249,7 +249,8 @@ export function MiddleColumn() {
               const factionColor = getFactionColor(faction);
               const factionName = getFactionName(faction);
               const scoredPublics = (
-                ((subState.factions ?? {})[card.faction] ?? {}).objectives ?? []
+                ((subState.turnData?.factions ?? {})[card.faction] ?? {})
+                  .objectives ?? []
               ).filter((objective) => {
                 const objectiveObj = objectives
                   ? objectives[objective]
@@ -263,7 +264,8 @@ export function MiddleColumn() {
                 );
               });
               const scoredSecrets = (
-                ((subState.factions ?? {})[card.faction] ?? {}).objectives ?? []
+                ((subState.turnData?.factions ?? {})[card.faction] ?? {})
+                  .objectives ?? []
               ).filter((objective) => {
                 const objectiveObj = objectives
                   ? objectives[objective]

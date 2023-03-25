@@ -21,6 +21,7 @@ import {
   removeRepealedSubStateAgenda,
   removeSubStateTech,
   repealSubStateAgenda,
+  selectSubStateComponent,
   setSubStateOther,
   setSubStateSelectedAction,
   SubState,
@@ -429,7 +430,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         break;
       }
       const researchedTech =
-        ((subState.factions ?? {})[factionName] ?? {}).techs ?? [];
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).techs ?? [];
       const availableTechs = getResearchableTechs(faction);
 
       if (researchedTech.length > 0) {
@@ -467,7 +468,8 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         break;
       }
       const returnedTechs =
-        ((subState.factions ?? {})[factionName] ?? {}).removeTechs ?? [];
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).removeTechs ??
+        [];
       const canReturnTechs = Object.keys(faction.techs ?? {})
         .filter((tech) => {
           const techObj = techs[tech];
@@ -478,7 +480,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         })
         .map((tech) => techs[tech] as Tech);
       const researchedTech =
-        ((subState.factions ?? {})[factionName] ?? {}).techs ?? [];
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).techs ?? [];
       const availableTechs = getResearchableTechs(faction);
 
       innerContent = (
@@ -694,11 +696,10 @@ export function ComponentAction({ factionName }: { factionName: string }) {
       return;
     }
     if (!componentName) {
-      await clearSubState(gameid);
       setSubStateSelectedAction(gameid, "Component");
     } else {
       const updatedName = componentName.replace(/\./g, "").replace(/,/g, "");
-      setSubStateOther(gameid, "component", updatedName);
+      selectSubStateComponent(gameid, updatedName);
     }
   }
 
@@ -706,7 +707,8 @@ export function ComponentAction({ factionName }: { factionName: string }) {
     return null;
   }
 
-  const component = components[subState.component] ?? null;
+  const component =
+    components[subState.turnData?.component?.name ?? ""] ?? null;
   const faction = factions[factionName];
 
   if (!faction) {

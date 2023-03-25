@@ -199,14 +199,6 @@ button:hover {
   background-color: #444;
 }
 
-button:disabled {
-  background-color: #222;
-  color: #555;
-  box-shadow: none;
-  box-sizing: border-box;
-  border: var(--one-pixel) solid #333;
-  cursor: default;
-}
 
 button.faded {
   background-color: #222;
@@ -219,6 +211,24 @@ button.selected {
   border: var(--one-pixel) solid #eee;
   background-color: #444;
   color: #fff;
+}
+
+button:disabled {
+  background-color: #222;
+  color: #555;
+  box-shadow: none;
+  box-sizing: border-box;
+  border: var(--one-pixel) solid #333;
+  cursor: default;
+}
+
+button:disabled.selected {
+  background-color: #222;
+  color: #fff;
+  box-shadow: none;
+  box-sizing: border-box;
+  border: var(--one-pixel) solid #eee;
+  cursor: default;
 }
 
 input[type="text"] {
