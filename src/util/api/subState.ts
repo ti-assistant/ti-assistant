@@ -43,10 +43,17 @@ export type SubStateUpdateAction =
   | "SET_OTHER_FIELD"
   | "FINALIZE_SUB_STATE";
 
+export interface AssignStrategyCardEvent {
+  assignedTo: string;
+  name: StrategyCardName;
+  pickedBy: string;
+}
+
 export interface SubStateUpdateData {
   action?: SubStateUpdateAction;
   actionName?: string;
   agendaName?: string;
+  cardEvent?: AssignStrategyCardEvent;
   cardName?: StrategyCardName;
   cardOneName?: StrategyCardName;
   cardTwoName?: StrategyCardName;
@@ -83,11 +90,12 @@ export interface SubState {
   outcome?: string;
   repealedAgenda?: string;
   subAgenda?: string;
-  strategyCards?: {
-    cardName: StrategyCardName;
-    factionName: string;
-    orderMod?: number;
-  }[];
+  strategyCards?: AssignStrategyCardEvent[];
+  // strategyCards?: {
+  //   cardName: StrategyCardName;
+  //   factionName: string;
+  //   orderMod?: number;
+  // }[];
   riders?: Record<
     string,
     {
@@ -697,14 +705,12 @@ export function removeRepealedSubStateAgenda(gameid: string) {
 
 export function pickSubStateStrategyCard(
   gameid: string,
-  cardName: StrategyCardName,
-  factionName: string,
+  cardEvent: AssignStrategyCardEvent,
   numFactions: number
 ) {
   const data: SubStateUpdateData = {
     action: "PICK_STRATEGY_CARD",
-    cardName: cardName,
-    factionName: factionName,
+    cardEvent: cardEvent,
   };
 
   mutate(
@@ -720,7 +726,7 @@ export function pickSubStateStrategyCard(
 
         const numPickedCards = updatedSubState.strategyCards.reduce(
           (count, card) => {
-            if (card.factionName === factionName) {
+            if (card.assignedTo === cardEvent.assignedTo) {
               return count + 1;
             }
             return count;
@@ -734,10 +740,7 @@ export function pickSubStateStrategyCard(
           return updatedSubState;
         }
 
-        updatedSubState.strategyCards.push({
-          cardName: cardName,
-          factionName: factionName,
-        });
+        updatedSubState.strategyCards.push(cardEvent);
 
         return updatedSubState;
       },
@@ -786,10 +789,10 @@ export function swapSubStateStrategyCards(
         const updatedSubState = structuredClone(subState);
 
         (updatedSubState.strategyCards ?? []).forEach((card) => {
-          if (cardTwo.name && card.cardName === cardOne.name) {
-            card.cardName = cardTwo.name;
-          } else if (cardOne.name && card.cardName === cardTwo.name) {
-            card.cardName = cardOne.name;
+          if (cardTwo.name && card.name === cardOne.name) {
+            card.name = cardTwo.name;
+          } else if (cardOne.name && card.name === cardTwo.name) {
+            card.name = cardOne.name;
           }
         });
 
@@ -973,14 +976,14 @@ export function finalizeSubState(gameid: string, subState: SubState) {
   for (const strategyCard of subState.strategyCards ?? []) {
     if (firstCard) {
       if (
-        (gift && strategyCard.factionName === gift) ||
-        (!gift && strategyCard.factionName === "Naalu Collective")
+        (gift && strategyCard.assignedTo === gift) ||
+        (!gift && strategyCard.assignedTo === "Naalu Collective")
       ) {
-        setFirstStrategyCard(gameid, strategyCard.cardName);
+        setFirstStrategyCard(gameid, strategyCard.name);
         firstCard = false;
       }
     }
-    assignStrategyCard(gameid, strategyCard.cardName, strategyCard.factionName);
+    assignStrategyCard(gameid, strategyCard.name, strategyCard.assignedTo);
   }
 
   for (const [factionName, updates] of Object.entries(

@@ -398,14 +398,21 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
     }
     return numFactions === numPicked;
   }
-  function pickStrategyCard(card: StrategyCard, faction: Faction) {
+  function pickStrategyCard(
+    card: StrategyCard,
+    faction: Faction,
+    pickedBy: string
+  ) {
     if (!gameid) {
       return;
     }
     pickSubStateStrategyCard(
       gameid,
-      card.name,
-      faction.name,
+      {
+        assignedTo: faction.name,
+        name: card.name,
+        pickedBy: pickedBy,
+      },
       Object.keys(factions ?? {}).length
     );
     nextPlayer(gameid, factions ?? {}, strategyCards, subState);
@@ -414,8 +421,8 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const updatedStrategyCards = Object.values(strategyCards).map((card) => {
     const updatedCard = structuredClone(card);
     for (const cardObj of subState?.strategyCards ?? []) {
-      if (cardObj.cardName === card.name) {
-        updatedCard.faction = cardObj.factionName;
+      if (cardObj.name === card.name) {
+        updatedCard.faction = cardObj.assignedTo;
       }
     }
 
@@ -464,7 +471,8 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
               !activefaction ||
               card.invalid
                 ? undefined
-                : () => pickStrategyCard(card, activefaction)
+                : () =>
+                    pickStrategyCard(card, activefaction, activefaction.name)
             }
             fontSize={mobile ? 20 : 24}
           >
@@ -476,10 +484,10 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
               agendas={agendas ?? {}}
               onSelect={(factionName) => {
                 const faction = (factions ?? {})[factionName];
-                if (!faction) {
+                if (!faction || !activefaction) {
                   return;
                 }
-                pickStrategyCard(card, faction);
+                pickStrategyCard(card, faction, activefaction.name);
               }}
             />
           </StrategyCardElement>
@@ -506,8 +514,8 @@ export function advanceToActionPhase(
   for (const strategyCard of Object.values(strategyCards)) {
     const updatedCard = structuredClone(strategyCard);
     for (const cardObj of subState.strategyCards ?? []) {
-      if (cardObj.cardName === strategyCard.name) {
-        updatedCard.faction = cardObj.factionName;
+      if (cardObj.name === strategyCard.name) {
+        updatedCard.faction = cardObj.assignedTo;
       }
     }
     if (updatedCard.faction === "Naalu Collective") {
@@ -760,8 +768,8 @@ export default function StrategyPhase() {
   const updatedStrategyCards = Object.values(strategyCards).map((card) => {
     const updatedCard = structuredClone(card);
     for (const cardObj of subState?.strategyCards ?? []) {
-      if (cardObj.cardName === card.name) {
-        updatedCard.faction = cardObj.factionName;
+      if (cardObj.name === card.name) {
+        updatedCard.faction = cardObj.assignedTo;
       }
     }
 

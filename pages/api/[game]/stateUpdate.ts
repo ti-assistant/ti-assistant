@@ -71,8 +71,8 @@ export default async function handler(
           const subState = gameData.subState ?? {};
           for (const strategyCard of Object.values(strategyCards)) {
             for (const cardObj of subState.strategyCards ?? []) {
-              if (cardObj.cardName === strategyCard.name) {
-                strategyCard.faction = cardObj.factionName;
+              if (cardObj.name === strategyCard.name) {
+                strategyCard.faction = cardObj.assignedTo;
               }
             }
             if (strategyCard.faction && strategyCard.order < minCard) {

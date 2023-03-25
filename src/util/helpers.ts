@@ -166,36 +166,22 @@ export function getPreviousFaction(
   factions: Record<string, Faction>,
   subState: SubState
 ) {
+  // TODO: Add ability to get previous faction in action phase.
   if (state.phase !== "STRATEGY") {
     return undefined;
-  }
-  if (!state.activeplayer) {
-    return undefined;
-  }
-  const numFactions = Object.keys(factions).length;
-  // At the end of order - if 3/4 players, speaker was last to go - otherwise last player.
-  if (state.activeplayer === "None") {
-    if (numFactions < 5) {
-      return factions[state.speaker];
-    }
-    return Object.values(factions).find(
-      (faction) => faction.order === numFactions
-    );
   }
 
   if (!subState.strategyCards) {
     return undefined;
   }
 
-  let lookingForOrder = subState.strategyCards.length;
+  const lastPicked = subState.strategyCards[subState.strategyCards.length - 1];
 
-  if (lookingForOrder > numFactions) {
-    lookingForOrder = numFactions * 2 - lookingForOrder + 1;
+  if (!lastPicked) {
+    return undefined;
   }
 
-  return Object.values(factions).find(
-    (faction) => faction.order === lookingForOrder
-  );
+  return factions[lastPicked.pickedBy];
 }
 
 /**

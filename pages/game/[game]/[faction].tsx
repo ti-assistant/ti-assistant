@@ -471,7 +471,7 @@ function PhaseSection() {
         if (!lastCard) {
           return false;
         }
-        return lastCard.factionName === factionName;
+        return lastCard.pickedBy === factionName;
       }
       function undoPick() {
         if (!gameid) {

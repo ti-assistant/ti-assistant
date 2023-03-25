@@ -322,14 +322,14 @@ export default async function handler(
       break;
     }
     case "PICK_STRATEGY_CARD": {
-      if (!data.cardName || !data.factionName) {
-        res.status(422).send({ message: "Missing Faction Name or Card Name" });
+      if (!data.cardEvent) {
+        res.status(422).send({ message: "Missing card event" });
         return;
       }
       const strategyCards = gameData.subState?.strategyCards ?? [];
       // Make sure we don't assign too many cards to the same faction.
       const numSelected = strategyCards.reduce((count, card) => {
-        if (card.factionName === data.factionName) {
+        if (card.assignedTo === data.cardEvent?.assignedTo) {
           return count + 1;
         }
         return count;
@@ -341,10 +341,7 @@ export default async function handler(
       if (numSelected > 1) {
         break;
       }
-      strategyCards.push({
-        cardName: data.cardName,
-        factionName: data.factionName,
-      });
+      strategyCards.push(data.cardEvent);
       updates = {
         "subState.strategyCards": strategyCards,
         [timestampString]: timestamp,
@@ -374,10 +371,10 @@ export default async function handler(
         if (!data.cardOneName || !data.cardTwoName) {
           return;
         }
-        if (card.cardName === data.cardOneName) {
-          card.cardName = data.cardTwoName;
-        } else if (card.cardName === data.cardTwoName) {
-          card.cardName = data.cardOneName;
+        if (card.name === data.cardOneName) {
+          card.name = data.cardTwoName;
+        } else if (card.name === data.cardTwoName) {
+          card.name = data.cardOneName;
         }
       });
 
