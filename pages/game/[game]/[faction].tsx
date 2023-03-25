@@ -130,13 +130,6 @@ function SecondaryCheck({
         <React.Fragment>
           <button
             onClick={() => {
-              markSecondary(gameid, factionName, "SKIPPED");
-            }}
-          >
-            Skip
-          </button>
-          <button
-            onClick={() => {
               markSecondary(gameid, factionName, "DONE");
             }}
           >

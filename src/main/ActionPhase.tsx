@@ -109,7 +109,10 @@ function SecondaryCheck({
                 let nextState: Secondary = "DONE";
                 switch (secondaryState) {
                   case "DONE":
-                    nextState = "SKIPPED";
+                    nextState = "PENDING";
+                    break;
+                  case "PENDING":
+                    nextState = "DONE";
                     break;
                   case "SKIPPED":
                     nextState = "PENDING";
