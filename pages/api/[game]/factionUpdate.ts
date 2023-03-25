@@ -58,10 +58,6 @@ export default async function handler(
         [readyString]: true,
         [timestampString]: timestamp,
       };
-      if (tech === "IIHQ Modernization") {
-        updates[`planets.Custodia Vigilia.owner`] = data.faction;
-        updates[`updates.planets.timestamp`] = timestamp;
-      }
       await db.collection("games").doc(gameId).update(updates);
       break;
     }
@@ -79,10 +75,6 @@ export default async function handler(
         [playerTechString]: FieldValue.delete(),
         [timestampString]: timestamp,
       };
-      if (tech === "IIHQ Modernization") {
-        updates[`planets.Custodia Vigilia.owner`] = FieldValue.delete();
-        updates[`updates.planets.timestamp`] = timestamp;
-      }
       await db.collection("games").doc(gameId).update(updates);
       break;
     }

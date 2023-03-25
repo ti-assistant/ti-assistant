@@ -142,6 +142,14 @@ function rewindSubStateFaction(
       unscoreObjective(gameId, factionName, objective);
     }
   }
+  // Techs
+  for (const techName of faction.techs ?? []) {
+    lockTech(gameId, factionName, techName);
+  }
+  // Locked Techs
+  for (const techName of faction.removeTechs ?? []) {
+    unlockTech(gameId, factionName, techName);
+  }
 }
 
 export function clearSubState(gameid: string) {
@@ -275,6 +283,7 @@ export function addSubStateTech(
   techName: string
 ) {
   setGlobalPause(gameid, false);
+  unlockTech(gameid, factionName, techName);
 
   const data: SubStateUpdateData = {
     action: "ADD_TECH",
@@ -323,6 +332,7 @@ export function clearAddedSubStateTech(
   techName: string
 ) {
   setGlobalPause(gameid, false);
+  lockTech(gameid, factionName, techName);
 
   const data: SubStateUpdateData = {
     action: "CLEAR_ADDED_TECH",
@@ -372,6 +382,7 @@ export function removeSubStateTech(
   techName: string
 ) {
   setGlobalPause(gameid, false);
+  lockTech(gameid, factionName, techName);
 
   const data: SubStateUpdateData = {
     action: "REMOVE_TECH",
@@ -421,6 +432,7 @@ export function clearRemovedSubStateTech(
   techName: string
 ) {
   setGlobalPause(gameid, false);
+  unlockTech(gameid, factionName, techName);
 
   const data: SubStateUpdateData = {
     action: "CLEAR_REMOVED_TECH",
@@ -1095,7 +1107,7 @@ export function finalizeSubState(gameid: string, subState: SubState) {
     setSpeaker(gameid, subState.turnData.speaker);
   }
 
-  if (subState.component) {
+  if (subState.turnData?.component) {
     // TODO: Handle compoents.
   }
 
@@ -1125,16 +1137,6 @@ export function finalizeSubState(gameid: string, subState: SubState) {
   for (const [factionName, faction] of Object.entries(
     subState.turnData?.factions ?? {}
   )) {
-    for (const techName of faction.techs ?? []) {
-      if (techName === "IIHQ Modernization") {
-        claimPlanet(gameid, "Custodia Vigilia", factionName);
-      }
-      unlockTech(gameid, factionName, techName);
-    }
-    // Locked techs
-    for (const techName of faction.removeTechs ?? []) {
-      lockTech(gameid, factionName, techName);
-    }
     // Conquered planets
     for (let planetName of faction.planets ?? []) {
       planetName = planetName === "[0.0.0]" ? "000" : planetName;
@@ -1145,17 +1147,6 @@ export function finalizeSubState(gameid: string, subState: SubState) {
   for (const [factionName, updates] of Object.entries(
     subState.factions ?? {}
   )) {
-    // Unlocked techs
-    for (const techName of updates.techs ?? []) {
-      if (techName === "IIHQ Modernization") {
-        claimPlanet(gameid, "Custodia Vigilia", factionName);
-      }
-      unlockTech(gameid, factionName, techName);
-    }
-    // Locked techs
-    for (const techName of updates.removeTechs ?? []) {
-      lockTech(gameid, factionName, techName);
-    }
     // Conquered planets
     for (let planetName of updates.planets ?? []) {
       planetName = planetName === "[0.0.0]" ? "000" : planetName;

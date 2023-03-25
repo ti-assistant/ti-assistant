@@ -261,7 +261,8 @@ function PredictionDetails() {
     (techName) => (techs ?? {})[techName] as Tech
   );
 
-  const gainedTech = ((subState.factions ?? {})["Nekro Virus"]?.techs ?? [])[0];
+  const gainedTech = ((subState.turnData?.factions ?? {})["Nekro Virus"]
+    ?.techs ?? [])[0];
 
   if (gainedTech) {
     return (

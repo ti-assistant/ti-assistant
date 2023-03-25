@@ -1,6 +1,7 @@
 import { mutate } from "swr";
 import { Faction, FactionUpdateData } from "./factions";
 import { Expansion } from "./options";
+import { claimPlanet, unclaimPlanet } from "./planets";
 import { poster } from "./util";
 
 export type TechType = "RED" | "BLUE" | "YELLOW" | "GREEN" | "UPGRADE";
@@ -49,6 +50,9 @@ export async function unlockTech(
   factionName: string,
   tech: string
 ) {
+  if (tech === "I.I.H.Q. Modernization" && factionName === "Council Keleres") {
+    claimPlanet(gameid, "Custodia Vigilia", factionName);
+  }
   const data: FactionUpdateData = {
     action: "ADD_TECH",
     faction: factionName,
@@ -92,6 +96,9 @@ export async function lockTech(
   factionName: string,
   tech: string
 ) {
+  if (tech === "I.I.H.Q. Modernization" && factionName === "Council Keleres") {
+    unclaimPlanet(gameid, "Custodia Vigilia", factionName);
+  }
   const data: FactionUpdateData = {
     action: "REMOVE_TECH",
     faction: factionName,

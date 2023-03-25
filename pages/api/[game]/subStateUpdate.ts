@@ -480,12 +480,14 @@ export default async function handler(
           subState: FieldValue.delete(),
           [timestampString]: timestamp,
         };
-        if (subState.component) {
-          const component = components[subState.component];
+        if (subState.turnData?.component?.name) {
+          const component = components[subState.turnData?.component?.name];
           if (component) {
             const futureState = usedComponentState(component);
             if (futureState !== "active") {
-              updates[`components.${subState.component}.state`] = futureState;
+              updates[
+                `components.${subState.turnData?.component?.name}.state`
+              ] = futureState;
               updates[`updates.components.timestamp`] = timestamp;
             }
             if (component.type === "LEADER" && component.leader === "HERO") {

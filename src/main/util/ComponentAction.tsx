@@ -355,6 +355,9 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       if (hasTech(faction, tech.name)) {
         return false;
       }
+      if (!factions || (tech.faction && !factions[tech.faction])) {
+        return false;
+      }
       if (
         faction.name !== "Nekro Virus" &&
         tech.faction &&
@@ -422,11 +425,15 @@ function ComponentDetails({ factionName }: { factionName: string }) {
 
   let label = "Details";
   let innerContent: ReactNode | undefined;
-  switch (subState?.component) {
+  switch (subState?.turnData?.component?.name) {
     case "Enigmatic Device":
     case "Focused Research": {
       const faction = factions[factionName];
       if (!faction) {
+        break;
+      }
+      if (factionName === "Nekro Virus") {
+        innerContent = "Gain 3 command tokens";
         break;
       }
       const researchedTech =
@@ -521,11 +528,13 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                     );
                   })}
                 </LabeledDiv>
-              ) : (
+              ) : factionName !== "Nekro Virus" ? (
                 <TechSelectHoverMenu
                   techs={availableTechs}
                   selectTech={addTech}
                 />
+              ) : (
+                "Gain 3 command tokens"
               )}
             </React.Fragment>
           ) : (
