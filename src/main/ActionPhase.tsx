@@ -1767,7 +1767,7 @@ export default function ActionPhase() {
         style={{
           alignItems: "stretch",
           justifyContent: "flex-start",
-          paddingTop: responsivePixels(140),
+          paddingTop: responsivePixels(148),
           boxSizing: "border-box",
           height: "100%",
           gap: numFactions > 7 ? 0 : responsivePixels(8),
