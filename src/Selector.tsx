@@ -11,6 +11,7 @@ import { responsivePixels } from "./util/util";
 
 export interface SelectorProps {
   autoSelect?: boolean;
+  borderColor?: string;
   buttonStyle?: CSSProperties;
   hoverMenuLabel: ReactNode;
   numToSelect?: number;
@@ -30,6 +31,7 @@ export function Selector({
   autoSelect,
   buttonStyle = {},
   hoverMenuLabel,
+  borderColor,
   selectedLabel,
   options,
   toggleItem,
@@ -94,6 +96,7 @@ export function Selector({
   return (
     <ClientOnlyHoverMenu
       buttonStyle={buttonStyle}
+      borderColor={borderColor}
       label={hoverMenuLabel}
       renderProps={(closeFn) => (
         <div className="flexColumn" style={innerStyle}>

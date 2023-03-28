@@ -535,12 +535,22 @@ export function AdditionalActions({
     if (!gameid) {
       return;
     }
+    if (toRemove === "Mecatol Rex") {
+      if (!(planets ?? {})["Mecatol Rex"]?.owner) {
+        undoObjective(factionName, "Custodians Token");
+      }
+    }
     removeSubStatePlanet(gameid, factionName, toRemove);
   }
 
   function addPlanet(factionName: string, toAdd: Planet) {
     if (!gameid) {
       return;
+    }
+    if (toAdd.name === "Mecatol Rex") {
+      if (!(planets ?? {})["Mecatol Rex"]?.owner) {
+        addObjective(factionName, "Custodians Token");
+      }
     }
     addSubStatePlanet(gameid, factionName, toAdd.name);
   }

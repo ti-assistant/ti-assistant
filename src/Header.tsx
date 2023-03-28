@@ -38,6 +38,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import Logo from "../public/images/android-chrome-512x512.png";
+import { ObjectivePanel } from "./ObjectivePanel";
 
 export function ResponsiveLogo({ size }: { size: number }) {
   return (
@@ -507,6 +508,9 @@ export function Footer({}) {
   );
 
   function shouldBlockSpeakerUpdates() {
+    if (state?.phase === "END") {
+      return true;
+    }
     if (state?.phase !== "STRATEGY") {
       return false;
     }
@@ -535,7 +539,7 @@ export function Footer({}) {
         justifyContent: "space-between",
       }}
     >
-      {state && state.phase !== "SETUP" && state.phase !== "END" ? (
+      {state && state.phase !== "SETUP" ? (
         <div
           style={{
             position: "fixed",
@@ -543,7 +547,7 @@ export function Footer({}) {
             left: responsivePixels(96),
           }}
         >
-          <LabeledDiv label="Update">
+          <LabeledDiv label={state.phase === "END" ? "View" : "Update"}>
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
               {speakerButtonPosition === "top" &&
               !shouldBlockSpeakerUpdates() ? (
@@ -592,7 +596,7 @@ export function Footer({}) {
                     className="flexColumn"
                     style={{ height: "90vh", width: "82vw" }}
                   >
-                    <UpdateObjectives />
+                    <ObjectivePanel />
                   </div>
                 </ClientOnlyHoverMenu>
                 <ClientOnlyHoverMenu label="Planets" shift={{ left: 195 }}>

@@ -64,7 +64,6 @@ export function Modal({
               backgroundColor: "#222",
               maxWidth: "85%",
               maxHeight: "90vh",
-              overflow: "hidden",
               borderRadius: responsivePixels(10),
             }}
           >
@@ -79,6 +78,9 @@ export function Modal({
                 position: "sticky",
                 top: 0,
                 backgroundColor: "#222",
+                borderRadius: `${responsivePixels(10)} ${responsivePixels(
+                  10
+                )} 0 0`,
               }}
             >
               {closeMenu ? (

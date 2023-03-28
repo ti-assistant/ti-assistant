@@ -349,6 +349,17 @@ input[type="text"] {
   clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
 }
 
+.hoverRadio {
+  transform-origin: top left;
+  position: absolute;
+  transition: clip-path 200ms;
+  box-sizing: border-box;
+  clip-path: polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%);
+}
+.hoverRadio.left {
+  clip-path: polygon(100% 0%, 100% 100%, 100% 100%, 100% 0%);
+}
+
 .hoverZoom {
   transition: transform 200ms;
   transform: scale(1);
@@ -392,6 +403,13 @@ input[type="text"] {
 }
 
 .hoverParent.hover > .hoverInfo {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+  /* clip-path: polygon(101% 101%, 0% 101%, 0% 0%, 101% 0%); */
+  clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
+}
+.hoverParent.hover > .hoverRadio {
   display: flex;
   position: absolute;
   z-index: 1000;
@@ -577,4 +595,15 @@ input[type="text"] {
 
 .centered {
   text-align: center;
+}
+
+.factionSelect {
+  position: relative;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.factionSelect:hover {
+  background-color: #333;
+
 }

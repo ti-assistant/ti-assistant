@@ -105,9 +105,7 @@ export function ObjectiveRow({
               flexGrow: 2,
             }}
           >
-            <div
-              style={{ whiteSpace: "normal", display: "flex", flex: "2 0 50%" }}
-            >
+            <div style={{ display: "flex", flex: "2 0 50%" }}>
               {objective.name}
             </div>
             <div

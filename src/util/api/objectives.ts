@@ -9,6 +9,7 @@ export type ObjectiveType = "STAGE ONE" | "STAGE TWO" | "SECRET" | "OTHER";
 export type ObjectiveUpdateAction =
   | "REVEAL_OBJECTIVE"
   | "REMOVE_OBJECTIVE"
+  | "TAKE_OBJECTIVE"
   | "SCORE_OBJECTIVE"
   | "UNSCORE_OBJECTIVE"
   | "CHANGE_OBJECTIVE_TYPE";
@@ -16,6 +17,8 @@ export type ObjectiveUpdateAction =
 export interface ObjectiveUpdateData {
   action?: ObjectiveUpdateAction;
   faction?: string;
+  prevFaction?: string;
+  key?: string;
   objective?: string;
   timestamp?: number;
   type?: ObjectiveType;
@@ -42,6 +45,8 @@ export interface GameObjective {
   factions?: string[];
   scorers?: string[];
   selected?: boolean;
+  keyedScorers?: Record<string, string[]>;
+  revealOrder?: number;
 }
 
 export type Objective = BaseObjective & GameObjective;
@@ -70,7 +75,12 @@ export function revealObjective(
           return updatedObjectives;
         }
 
+        const maxOrder = Object.values(objectives).reduce((maxOrder, obj) => {
+          return Math.max(maxOrder, obj.revealOrder ?? 0);
+        }, 0);
+
         objective.selected = true;
+        objective.revealOrder = maxOrder + 1;
         if (objective.type === "SECRET" && factionName) {
           if (!objective.factions) {
             objective.factions = [];
@@ -87,7 +97,7 @@ export function revealObjective(
 
 export function removeObjective(
   gameId: string,
-  factionName: string,
+  factionName: string | undefined,
   objectiveName: string
 ) {
   const data: ObjectiveUpdateData = {
@@ -109,7 +119,8 @@ export function removeObjective(
           return updatedObjectives;
         }
 
-        objective.selected = false;
+        delete objective.selected;
+        delete objective.revealOrder;
         if (objective.type === "SECRET") {
           objective.factions = (objective.factions ?? []).filter(
             (faction) => faction !== factionName
@@ -126,12 +137,14 @@ export function removeObjective(
 export function scoreObjective(
   gameId: string,
   factionName: string,
-  objectiveName: string
+  objectiveName: string,
+  key?: string
 ) {
   const data: ObjectiveUpdateData = {
     action: "SCORE_OBJECTIVE",
     objective: objectiveName,
     faction: factionName,
+    key: key,
   };
 
   mutate(
@@ -147,6 +160,12 @@ export function scoreObjective(
           return updatedObjectives;
         }
 
+        if (key) {
+          const updatedScorers = objective.keyedScorers ?? {};
+          updatedScorers[key] = [...(updatedScorers[key] ?? []), factionName];
+          objective.keyedScorers = updatedScorers;
+        }
+
         objective.scorers = [...(objective.scorers ?? []), factionName];
 
         return updatedObjectives;
@@ -159,15 +178,17 @@ export function scoreObjective(
 export function unscoreObjective(
   gameId: string,
   factionName: string,
-  objectiveName: string
+  objectiveName: string,
+  key?: string
 ) {
   const data: ObjectiveUpdateData = {
     action: "UNSCORE_OBJECTIVE",
     objective: objectiveName,
     faction: factionName,
+    key: key,
   };
 
-  mutate(
+  return mutate(
     `/api/${gameId}/objectives`,
     async () => await poster(`/api/${gameId}/objectiveUpdate`, data),
     {
@@ -180,9 +201,76 @@ export function unscoreObjective(
           return updatedObjectives;
         }
 
+        if (key && objective.keyedScorers) {
+          const updatedScorers = objective.keyedScorers[key];
+          if (updatedScorers) {
+            const keyedIndex = updatedScorers.lastIndexOf(factionName);
+            if (keyedIndex !== -1) {
+              updatedScorers.splice(keyedIndex, 1);
+              objective.keyedScorers[key] = updatedScorers;
+            }
+          }
+        }
+
         const factionIndex = objective.scorers.lastIndexOf(factionName);
         if (factionIndex !== -1) {
           objective.scorers.splice(factionIndex, 1);
+        }
+
+        return updatedObjectives;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function takeObjective(
+  gameId: string,
+  objectiveName: string,
+  factionName: string,
+  prevFaction: string,
+  key?: string
+) {
+  const data: ObjectiveUpdateData = {
+    action: "TAKE_OBJECTIVE",
+    objective: objectiveName,
+    faction: factionName,
+    prevFaction: prevFaction,
+    key: key,
+  };
+
+  return mutate(
+    `/api/${gameId}/objectives`,
+    async () => await poster(`/api/${gameId}/objectiveUpdate`, data),
+    {
+      optimisticData: (objectives: Record<string, Objective>) => {
+        const updatedObjectives = structuredClone(objectives);
+
+        const objective = updatedObjectives[objectiveName];
+
+        if (!objective || !objective.scorers) {
+          return updatedObjectives;
+        }
+
+        if (key && objective.keyedScorers) {
+          const updatedScorers = objective.keyedScorers[key];
+          if (updatedScorers) {
+            const keyedIndex = updatedScorers.lastIndexOf(prevFaction);
+            if (keyedIndex !== -1) {
+              updatedScorers[keyedIndex] = factionName;
+              objective.keyedScorers[key] = updatedScorers;
+            } else {
+              updatedScorers.push(factionName);
+              objective.keyedScorers[key] = updatedScorers;
+            }
+          }
+        }
+
+        const factionIndex = objective.scorers.lastIndexOf(prevFaction);
+        if (factionIndex !== -1) {
+          objective.scorers[factionIndex] = factionName;
+        } else {
+          objective.scorers.push(factionName);
         }
 
         return updatedObjectives;
