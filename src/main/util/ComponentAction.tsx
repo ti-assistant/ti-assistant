@@ -4,27 +4,43 @@ import useSWR from "swr";
 import { capitalizeFirstLetter } from "../../../pages/setup";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
+import { InfoRow } from "../../InfoRow";
 import { LabeledDiv, LabeledLine } from "../../LabeledDiv";
 import { Modal } from "../../Modal";
+import { PlanetRow } from "../../PlanetRow";
 import { SelectableRow } from "../../SelectableRow";
+import { Selector } from "../../Selector";
 import { TechRow } from "../../TechRow";
 import { Agenda } from "../../util/api/agendas";
 import { Attachment } from "../../util/api/attachments";
 import { Component } from "../../util/api/components";
 import { Faction } from "../../util/api/factions";
-import { Planet } from "../../util/api/planets";
 import {
+  addAttachment,
+  Planet,
+  purgePlanet,
+  removeAttachment,
+  unclaimPlanet,
+  unpurgePlanet,
+} from "../../util/api/planets";
+import { gainRelic, loseRelic, Relic } from "../../util/api/relics";
+import {
+  addSubStatePlanet,
   addSubStateTech,
   clearAddedSubStateTech,
   clearRemovedSubStateTech,
   clearSubState,
+  destroySubStatePlanet,
   removeRepealedSubStateAgenda,
+  removeSubStatePlanet,
   removeSubStateTech,
   repealSubStateAgenda,
   selectSubStateComponent,
   setSubStateOther,
   setSubStateSelectedAction,
   SubState,
+  toggleSubStateAttachment,
+  toggleSubStateRelic,
 } from "../../util/api/subState";
 import { hasTech, Tech } from "../../util/api/techs";
 import { fetcher } from "../../util/api/util";
@@ -74,9 +90,15 @@ function ComponentSelect({
       }
       return 0;
     });
-  const exploration = components.filter(
-    (component) => component.type === "RELIC"
-  );
+  const exploration = components.filter((component) => {
+    if (component.type === "EXPLORATION") {
+      return true;
+    }
+    if (component.type !== "RELIC") {
+      return false;
+    }
+    return true;
+  });
   const promissory = components.filter(
     (component) => component.type === "PROMISSORY"
   );
@@ -95,7 +117,8 @@ function ComponentSelect({
       component.type !== "TECH" &&
       component.type !== "CARD" &&
       component.type !== "RELIC" &&
-      component.type !== "PROMISSORY"
+      component.type !== "PROMISSORY" &&
+      component.type !== "EXPLORATION"
   );
 
   const innerStyle: CSSProperties = {
@@ -337,6 +360,13 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       revalidateIfStale: false,
     }
   );
+  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
+    gameid ? `/api/${gameid}/relics` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
   const { data: subState }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
     fetcher,
@@ -404,6 +434,69 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       return;
     }
     clearRemovedSubStateTech(gameid, factionName, techName);
+  }
+  function addRelic(relicName: string) {
+    if (!gameid) {
+      return;
+    }
+    gainRelic(gameid, relicName, factionName);
+    toggleSubStateRelic(gameid, relicName, factionName);
+  }
+  function removeRelic(relicName: string) {
+    if (!gameid) {
+      return;
+    }
+    loseRelic(gameid, relicName, factionName);
+    toggleSubStateRelic(gameid, undefined, factionName);
+  }
+  function destroyPlanet(planetName: string) {
+    if (!gameid) {
+      return;
+    }
+    const prevOwner = (planets ?? {})[planetName]?.owner;
+
+    purgePlanet(gameid, planetName);
+    destroySubStatePlanet(gameid, planetName, prevOwner);
+  }
+  function undestroyPlanet(planetName: string) {
+    if (!gameid) {
+      return;
+    }
+    let prevOwner = subState?.turnData?.destroyedPlanet?.prevOwner;
+    unpurgePlanet(gameid, planetName);
+    destroySubStatePlanet(gameid, undefined, prevOwner);
+  }
+  function toggleAttachment(
+    planetName: string,
+    attachmentName: string,
+    add: boolean
+  ) {
+    if (!gameid) {
+      return;
+    }
+
+    if (add) {
+      addAttachment(gameid, planetName, attachmentName);
+    } else {
+      removeAttachment(gameid, planetName, attachmentName);
+    }
+    toggleSubStateAttachment(
+      gameid,
+      add ? planetName : undefined,
+      attachmentName
+    );
+  }
+  function gainPlanet(planetName: string) {
+    if (!gameid) {
+      return;
+    }
+    addSubStatePlanet(gameid, factionName, planetName);
+  }
+  function losePlanet(planetName: string) {
+    if (!gameid) {
+      return;
+    }
+    removeSubStatePlanet(gameid, factionName, planetName);
   }
   // function repealLaw(lawName: string) {
   //   if (!gameid) {
@@ -560,6 +653,292 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       );
       break;
     }
+    case "Gain Relic":
+    case "Black Market Forgery":
+    case "Fabrication": {
+      const unownedRelics = Object.values(relics ?? {})
+        .filter((relic) => !relic.owner)
+        .map((relic) => relic.name);
+      label = "Gained Relic";
+      innerContent =
+        unownedRelics.length > 0 ? (
+          <Selector
+            hoverMenuLabel="Gain Relic"
+            options={unownedRelics}
+            renderItem={(itemName) => {
+              const relic = (relics ?? {})[itemName];
+              if (!relic) {
+                return null;
+              }
+              return (
+                <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
+                  <SelectableRow itemName={relic.name} removeItem={removeRelic}>
+                    <InfoRow
+                      infoTitle={relic.name}
+                      infoContent={relic.description}
+                    >
+                      {relic.name}
+                    </InfoRow>
+                  </SelectableRow>
+                  {relic.name === "Shard of the Throne" ? (
+                    <div>+1 VP</div>
+                  ) : null}
+                </div>
+              );
+            }}
+            selectedItem={
+              (
+                ((subState.turnData ?? {}).factions ?? {})[factionName]
+                  ?.relic ?? {}
+              ).name
+            }
+            toggleItem={(relicName, add) => {
+              if (add) {
+                addRelic(relicName);
+              } else {
+                removeRelic(relicName);
+              }
+            }}
+          />
+        ) : (
+          "No Relics remaining"
+        );
+      break;
+    }
+    case "Stellar Converter": {
+      const nonHomeNonLegendaryNonMecatolPlanets = updatedPlanets.filter(
+        (planet) => {
+          return (
+            !planet.home &&
+            !planet.attributes.includes("legendary") &&
+            planet.name !== "Mecatol Rex"
+          );
+        }
+      );
+      const destroyedPlanet = (subState.turnData ?? {}).destroyedPlanet?.name;
+      if (destroyedPlanet) {
+        label = "Destroyed Planet";
+      }
+      innerContent = (
+        <div
+          className="flexColumn"
+          style={{ width: "100%", alignItems: "flex-start" }}
+        >
+          <Selector
+            hoverMenuLabel="Destroy Planet"
+            options={nonHomeNonLegendaryNonMecatolPlanets.map(
+              (planet) => planet.name
+            )}
+            selectedItem={destroyedPlanet}
+            toggleItem={(planetName, add) => {
+              if (add) {
+                destroyPlanet(planetName);
+              } else {
+                undestroyPlanet(planetName);
+              }
+            }}
+          />
+        </div>
+      );
+      break;
+    }
+    case "Nano-Forge": {
+      const ownedNonHomeNonLegendaryPlanets = updatedPlanets.filter(
+        (planet) => {
+          return (
+            planet.owner === factionName &&
+            !planet.home &&
+            !planet.attributes.includes("legendary")
+          );
+        }
+      );
+      let nanoForgedPlanet: string | undefined;
+      Object.entries((subState.turnData ?? {}).attachments ?? {}).forEach(
+        ([attachmentName, planetName]) => {
+          if (attachmentName === "Nano-Forge") {
+            nanoForgedPlanet = planetName;
+          }
+        }
+      );
+      if (nanoForgedPlanet) {
+        label = "Attached to";
+      }
+      innerContent = (
+        <div
+          className="flexColumn"
+          style={{ width: "100%", alignItems: "flex-start" }}
+        >
+          <Selector
+            hoverMenuLabel="Attach to Planet"
+            options={ownedNonHomeNonLegendaryPlanets.map(
+              (planet) => planet.name
+            )}
+            renderItem={(planetName) => {
+              const planet = updatedPlanets.find(
+                (planet) => planet.name === planetName
+              );
+              if (!planet) {
+                return null;
+              }
+              return (
+                <PlanetRow
+                  planet={planet}
+                  factionName={factionName}
+                  removePlanet={() =>
+                    toggleAttachment(planetName, "Nano-Forge", false)
+                  }
+                />
+              );
+            }}
+            selectedItem={nanoForgedPlanet}
+            toggleItem={(planetName, add) => {
+              toggleAttachment(planetName, "Nano-Forge", add);
+            }}
+          />
+        </div>
+      );
+      break;
+    }
+    case "Terraform": {
+      const ownedNonHomeNonLegendaryNonMecatolPlanets = updatedPlanets.filter(
+        (planet) => {
+          return (
+            planet.owner === factionName &&
+            !planet.home &&
+            !planet.attributes.includes("legendary") &&
+            planet.name !== "Mecatol Rex"
+          );
+        }
+      );
+      let terraformedPlanet: string | undefined;
+      Object.entries((subState.turnData ?? {}).attachments ?? {}).forEach(
+        ([attachmentName, planetName]) => {
+          if (attachmentName === "Terraform") {
+            terraformedPlanet = planetName;
+          }
+        }
+      );
+      if (terraformedPlanet) {
+        label = "Attached to";
+      }
+      innerContent = (
+        <div
+          className="flexColumn"
+          style={{ width: "100%", alignItems: "flex-start" }}
+        >
+          <Selector
+            hoverMenuLabel="Attach to Planet"
+            options={ownedNonHomeNonLegendaryNonMecatolPlanets.map(
+              (planet) => planet.name
+            )}
+            selectedItem={terraformedPlanet}
+            renderItem={(planetName) => {
+              const planet = updatedPlanets.find(
+                (planet) => planet.name === planetName
+              );
+              if (!planet) {
+                return null;
+              }
+              return (
+                <PlanetRow
+                  planet={planet}
+                  factionName={factionName}
+                  removePlanet={() =>
+                    toggleAttachment(planetName, "Terraform", false)
+                  }
+                />
+              );
+            }}
+            toggleItem={(planetName, add) => {
+              toggleAttachment(planetName, "Terraform", add);
+            }}
+          />
+        </div>
+      );
+      break;
+    }
+    case "Dannel of the Tenth": {
+      const nonHomeUnownedPlanets = updatedPlanets.filter((planet) => {
+        return !planet.home && !planet.locked && planet.owner !== factionName;
+      });
+      const targetButtonStyle = {
+        fontFamily: "Myriad Pro",
+        padding: responsivePixels(8),
+        display: "grid",
+        gridAutoFlow: "column",
+        gridTemplateRows: `repeat(${Math.min(
+          12,
+          nonHomeUnownedPlanets.length
+        )}, auto)`,
+        gap: responsivePixels(4),
+        justifyContent: "flex-start",
+      };
+      const conqueredPlanets =
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).planets ?? [];
+      const destroyedPlanet = (subState.turnData ?? {}).destroyedPlanet?.name;
+      if (destroyedPlanet) {
+        label = "Destroyed Planet";
+      }
+      if (conqueredPlanets.length > 0) {
+        label = "Newly Controlled Planets";
+      }
+      innerContent = (
+        <div className="flexColumn largeFont" style={{ width: "100%" }}>
+          {conqueredPlanets.length > 0 ? (
+            <React.Fragment>
+              <div
+                className="flexColumn"
+                style={{ alignItems: "stretch", width: "100%" }}
+              >
+                {conqueredPlanets.map((planetName) => {
+                  const planet = updatedPlanets.find(
+                    (planet) => planet.name === planetName
+                  );
+                  if (!planet) {
+                    return null;
+                  }
+                  return (
+                    <PlanetRow
+                      key={planetName}
+                      factionName={factionName}
+                      planet={planet}
+                      removePlanet={() => losePlanet(planetName)}
+                    />
+                  );
+                })}
+              </div>
+            </React.Fragment>
+          ) : null}
+          {nonHomeUnownedPlanets.length > 0 && conqueredPlanets.length < 3 ? (
+            <ClientOnlyHoverMenu
+              label="Take Control of Planet"
+              renderProps={(closeFn) => (
+                <div className="flexRow" style={targetButtonStyle}>
+                  {nonHomeUnownedPlanets.map((planet) => {
+                    return (
+                      <button
+                        key={planet.name}
+                        style={{
+                          writingMode: "horizontal-tb",
+                          width: responsivePixels(90),
+                        }}
+                        onClick={() => {
+                          closeFn();
+                          gainPlanet(planet.name);
+                        }}
+                      >
+                        {planet.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
+          ) : null}
+        </div>
+      );
+      break;
+    }
     // case "Repeal Law": {
     //   if (!agendas) {
     //     break;
@@ -676,12 +1055,22 @@ function ComponentDetails({ factionName }: { factionName: string }) {
 export function ComponentAction({ factionName }: { factionName: string }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: components = {} }: { data?: Record<string, Component> } =
-    useSWR(gameid ? `/api/${gameid}/components` : null, fetcher, {
+  const { data: components }: { data?: Record<string, Component> } = useSWR(
+    gameid ? `/api/${gameid}/components` : null,
+    fetcher,
+    {
       revalidateIfStale: false,
-    });
+    }
+  );
   const { data: factions }: { data?: Record<string, Faction> } = useSWR(
     gameid ? `/api/${gameid}/factions` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
+    gameid ? `/api/${gameid}/relics` : null,
     fetcher,
     {
       revalidateIfStale: false,
@@ -700,6 +1089,9 @@ export function ComponentAction({ factionName }: { factionName: string }) {
     setShowInfoModal(true);
   }
 
+  const component =
+    (components ?? {})[subState.turnData?.component?.name ?? ""] ?? null;
+
   async function selectComponent(componentName: string | undefined) {
     if (!gameid) {
       return;
@@ -707,8 +1099,16 @@ export function ComponentAction({ factionName }: { factionName: string }) {
     if (!componentName) {
       setSubStateSelectedAction(gameid, "Component");
     } else {
-      const updatedName = componentName.replace(/\./g, "").replace(/,/g, "");
+      const updatedName = componentName
+        .replace(/\./g, "")
+        .replace(/,/g, "")
+        .replace(/ Ω/g, "");
+      console.log(updatedName);
       selectSubStateComponent(gameid, updatedName);
+      if (componentName === "Ul The Progenitor") {
+        addAttachment(gameid, "Elysium", "Ul the Progenitor");
+        toggleSubStateAttachment(gameid, "Elysium", "Ul the Progenitor");
+      }
     }
   }
 
@@ -716,51 +1116,77 @@ export function ComponentAction({ factionName }: { factionName: string }) {
     return null;
   }
 
-  const component =
-    components[subState.turnData?.component?.name ?? ""] ?? null;
   const faction = factions[factionName];
 
   if (!faction) {
     return null;
   }
 
+  const unownedRelics = Object.values(relics ?? {})
+    .filter((relic) => !relic.owner)
+    .map((relic) => relic.name);
+
   if (!component) {
-    const filteredComponents = Object.values(components).filter((component) => {
-      if (component.type === "PROMISSORY") {
+    console.log("Re-render time");
+    const filteredComponents = Object.values(components ?? {}).filter(
+      (component) => {
+        if (component.type === "PROMISSORY") {
+          if (
+            component.faction &&
+            (!factions[component.faction] || component.faction === faction.name)
+          ) {
+            return false;
+          }
+        }
+        if (component.faction && component.type !== "PROMISSORY") {
+          if (component.faction !== faction.name) {
+            return false;
+          }
+        }
+
         if (
-          component.faction &&
-          (!factions[component.faction] || component.faction === faction.name)
+          unownedRelics.length === 0 &&
+          (component.name === "Gain Relic" ||
+            component.name === "Black Market Forgery")
         ) {
           return false;
         }
-      }
-      if (component.faction && component.type !== "PROMISSORY") {
-        if (component.faction !== faction.name) {
+
+        if (
+          component.subFaction &&
+          component.subFaction !== faction.startswith.faction
+        ) {
           return false;
         }
-      }
 
-      if (
-        component.subFaction &&
-        component.subFaction !== faction.startswith.faction
-      ) {
-        return false;
-      }
+        if (component.type === "RELIC") {
+          const relic = (relics ?? {})[component.name];
+          if (!relic) {
+            return false;
+          }
+          if (relic.owner !== factionName) {
+            return false;
+          }
+        }
 
-      if (component.type === "TECH" && !hasTech(faction, component.name)) {
-        return false;
-      }
+        if (component.type === "TECH" && !hasTech(faction, component.name)) {
+          return false;
+        }
 
-      if (component.state === "purged") {
-        return false;
-      }
+        if (component.name === "Terraform") {
+          console.log(component);
+        }
+        if (component.state === "purged") {
+          return false;
+        }
 
-      if (component.leader === "HERO" && faction.hero !== "unlocked") {
-        return false;
-      }
+        if (component.leader === "HERO" && faction.hero !== "unlocked") {
+          return false;
+        }
 
-      return true;
-    });
+        return true;
+      }
+    );
 
     return (
       <ClientOnlyHoverMenu label="Select Component">

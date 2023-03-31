@@ -11,7 +11,8 @@ import {
   scoreObjective,
   unscoreObjective,
 } from "./objectives";
-import { claimPlanet } from "./planets";
+import { claimPlanet, removeAttachment, unpurgePlanet } from "./planets";
+import { gainRelic } from "./relics";
 import { setGlobalPause, setSpeaker } from "./state";
 import { lockTech, unlockTech } from "./techs";
 import { poster } from "./util";
@@ -30,6 +31,8 @@ export type SubStateUpdateAction =
   | "CLEAR_REMOVED_TECH"
   | "ADD_PLANET"
   | "REMOVE_PLANET"
+  | "DESTROY_PLANET"
+  | "TOGGLE_ATTACHMENT"
   | "SCORE_OBJECTIVE"
   | "UNSCORE_OBJECTIVE"
   | "CAST_VOTES"
@@ -44,6 +47,7 @@ export type SubStateUpdateAction =
   | "SWAP_STRATEGY_CARDS"
   | "PLAY_RIDER"
   | "UNDO_RIDER"
+  | "TOGGLE_RELIC"
   | "MARK_SECONDARY"
   | "SET_OTHER_FIELD"
   | "FINALIZE_SUB_STATE";
@@ -64,12 +68,15 @@ export interface TurnData {
     name: string;
     factions?: Record<string, SubStateFaction>;
   };
+  destroyedPlanet?: PlanetEvent;
+  attachments?: Record<string, string>;
 }
 
 export interface SubStateUpdateData {
   action?: SubStateUpdateAction;
   actionName?: Action;
   agendaName?: string;
+  attachmentName?: string;
   cardEvent?: AssignStrategyCardEvent;
   cardName?: StrategyCardName;
   cardOneName?: StrategyCardName;
@@ -81,6 +88,7 @@ export interface SubStateUpdateData {
   objectiveName?: string;
   outcome?: string;
   planetName?: string;
+  relicName?: string;
   secondary?: Secondary;
   riderName?: string;
   target?: string;
@@ -89,10 +97,21 @@ export interface SubStateUpdateData {
   value?: any;
 }
 
+export interface RelicEvent {
+  name: string;
+  prevOwner?: string;
+}
+
+export interface PlanetEvent {
+  name: string;
+  prevOwner?: string;
+}
+
 export interface SubStateFaction {
   secondary?: Secondary;
   objectives?: string[];
   planets?: string[];
+  relic?: RelicEvent;
   removeTechs?: string[];
   target?: string;
   techs?: string[];
@@ -101,6 +120,7 @@ export interface SubStateFaction {
 
 export interface SubState {
   agenda?: string;
+  component?: string;
   speaker?: string;
   factions?: Record<string, SubStateFaction>;
   objectives?: string[];
@@ -127,6 +147,14 @@ function rewindTurnData(gameid: string, turnData: TurnData | undefined) {
   Object.entries(turnData?.component?.factions ?? {}).forEach(
     ([factionName, faction]) => {
       rewindSubStateFaction(gameid, factionName, faction);
+    }
+  );
+  if (turnData?.destroyedPlanet) {
+    unpurgePlanet(gameid, turnData?.destroyedPlanet.name);
+  }
+  Object.entries(turnData?.attachments ?? {}).forEach(
+    ([attachmentName, planetName]) => {
+      removeAttachment(gameid, planetName, attachmentName);
     }
   );
 }
@@ -838,6 +866,130 @@ export function removeRepealedSubStateAgenda(gameid: string) {
   );
 }
 
+export function toggleSubStateRelic(
+  gameid: string,
+  relicName: string | undefined,
+  factionName: string
+) {
+  setGlobalPause(gameid, false);
+
+  const data: SubStateUpdateData = {
+    action: "TOGGLE_RELIC",
+    factionName: factionName,
+    relicName: relicName,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        if (!updatedSubState.factions) {
+          updatedSubState.factions = {};
+        }
+
+        const updatedFaction = updatedSubState.factions[factionName] ?? {};
+
+        if (relicName) {
+          updatedFaction.relic = {
+            name: relicName,
+          };
+        } else {
+          delete updatedFaction.relic;
+        }
+
+        updatedSubState.factions[factionName] = updatedFaction;
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function destroySubStatePlanet(
+  gameid: string,
+  planetName: string | undefined,
+  prevOwner: string | undefined
+) {
+  setGlobalPause(gameid, false);
+
+  const data: SubStateUpdateData = {
+    action: "DESTROY_PLANET",
+    planetName: planetName,
+    factionName: prevOwner,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        if (!updatedSubState.turnData) {
+          updatedSubState.turnData = {};
+        }
+
+        if (planetName) {
+          updatedSubState.turnData.destroyedPlanet = {
+            name: planetName,
+            prevOwner: prevOwner,
+          };
+        } else {
+          delete updatedSubState.turnData.destroyedPlanet;
+        }
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function toggleSubStateAttachment(
+  gameid: string,
+  planetName: string | undefined,
+  attachmentName: string
+) {
+  setGlobalPause(gameid, false);
+
+  const data: SubStateUpdateData = {
+    action: "TOGGLE_ATTACHMENT",
+    attachmentName: attachmentName,
+    planetName: planetName,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        if (!updatedSubState.turnData) {
+          updatedSubState.turnData = {};
+        }
+
+        const updatedAttachments = updatedSubState.turnData.attachments ?? {};
+
+        if (planetName) {
+          updatedAttachments[attachmentName] = planetName;
+        } else {
+          delete updatedAttachments[attachmentName];
+        }
+
+        updatedSubState.turnData.attachments = updatedAttachments;
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
 export function pickSubStateStrategyCard(
   gameid: string,
   cardEvent: AssignStrategyCardEvent,
@@ -1107,7 +1259,7 @@ export function finalizeSubState(gameid: string, subState: SubState) {
     setSpeaker(gameid, subState.turnData.speaker);
   }
 
-  if (subState.turnData?.component) {
+  if (subState.turnData?.component?.name) {
     // TODO: Handle compoents.
   }
 

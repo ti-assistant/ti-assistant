@@ -37,7 +37,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Mahact Gene-Sorcerers",
     name: "Airo Shir Aur",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Ahk-Syl Siven": {
@@ -47,7 +47,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Nomad",
     name: "Ahk-Syl Siven",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Conservator Procyon": {
@@ -57,7 +57,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Empyrean",
     name: "Conservator Procyon",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Dannel of the Tenth": {
@@ -74,7 +74,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
       expansion: "CODEX THREE",
       name: "Dannel of the Tenth Ω",
     },
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Darktalon Treilla": {
@@ -84,7 +84,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Barony of Letnev",
     name: "Darktalon Treilla",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Ggrocuto Rinn": {
@@ -93,7 +93,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Xxcha Kingdom",
     name: "Ggrocuto Rinn",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "AGENT",
   },
   "Gurno Aggero": {
@@ -103,7 +103,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Clan of Saar",
     name: "Gurno Aggero",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Harka Leeds": {
@@ -114,7 +114,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     faction: "Council Keleres",
     name: "Harka Leeds",
     subFaction: "Mentak Coalition",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Hesh and Prit": {
@@ -124,7 +124,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Naaz-Rokha Alliance",
     name: "Hesh and Prit",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "It Feeds on Carrion": {
@@ -134,7 +134,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Vuil'raith Cabal",
     name: "It Feeds on Carrion",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Jace X 4th Air Legion": {
@@ -144,7 +144,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Federation of Sol",
     name: "Jace X. 4th Air Legion",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Kyver Blade and Key": {
@@ -154,7 +154,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Yssaril Tribes",
     name: "Kyver, Blade and Key",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Letani Miasmiala": {
@@ -164,7 +164,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Arborec",
     name: "Letani Miasmiala",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Letani Ospha": {
@@ -173,7 +173,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Arborec",
     name: "Letani Ospha",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "AGENT",
   },
   "Mathis Mathinus": {
@@ -183,7 +183,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Winnu",
     name: "Mathis Mathinus",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Mirik Aun Sissiri": {
@@ -193,7 +193,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Argent Flight",
     name: "Mirik Aun Sissiri",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Rin The Master's Legacy": {
@@ -203,7 +203,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Universities of Jol-Nar",
     name: "Rin, The Master's Legacy",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Riftwalker Meian": {
@@ -213,7 +213,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Ghosts of Creuss",
     name: "Riftwalker Meian",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   Ssruu: {
@@ -232,7 +232,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "L1Z1X Mindnet",
     name: "The Helmsman",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Ul The Progenitor": {
@@ -242,7 +242,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Titans of Ul",
     name: "Ul The Progenitor",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   Umbat: {
@@ -251,7 +251,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Embers of Muaat",
     name: "Umbat",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "AGENT",
   },
   UNITDSGNFLAYESH: {
@@ -261,7 +261,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     expansion: "POK",
     faction: "Nekro Virus",
     name: "UNIT.DSGN.FLAYESH",
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Xxekir Grom": {
@@ -279,7 +279,7 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
       name: "Xxekir Grom Ω",
       timing: "PASSIVE",
     },
-    timing: "COMPONENT ACTION",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   "Z'eu": {
@@ -293,9 +293,9 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
         "Exhaust this card and choose a player; that player may perform a tactical action in a non-home system without placing a command token; that system still counts as being activated",
       expansion: "CODEX THREE",
       name: "Z'eu Ω",
-      timing: "COMPONENT ACTION",
+      timing: "COMPONENT_ACTION",
     },
-    timing: "AGENDA PHASE",
+    timing: "AGENDA_PHASE",
     type: "AGENT",
   },
 };

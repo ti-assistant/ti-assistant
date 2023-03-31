@@ -113,7 +113,7 @@ export default async function handler(
       break;
     }
     case "REMOVE_PLANET": {
-      if (!data.planet || !data.faction) {
+      if (!data.planet) {
         res.status(422);
         return;
       }
@@ -123,6 +123,36 @@ export default async function handler(
         .doc(gameId)
         .update({
           [ownerString]: FieldValue.delete(),
+          [timestampString]: timestamp,
+        });
+      break;
+    }
+    case "PURGE_PLANET": {
+      if (!data.planet) {
+        res.status(422);
+        return;
+      }
+      const stateString = `planets.${data.planet}.state`;
+      await db
+        .collection("games")
+        .doc(gameId)
+        .update({
+          [stateString]: "PURGED",
+          [timestampString]: timestamp,
+        });
+      break;
+    }
+    case "UNPURGE_PLANET": {
+      if (!data.planet) {
+        res.status(422);
+        return;
+      }
+      const stateString = `planets.${data.planet}.state`;
+      await db
+        .collection("games")
+        .doc(gameId)
+        .update({
+          [stateString]: "READY",
           [timestampString]: timestamp,
         });
       break;

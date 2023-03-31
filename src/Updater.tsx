@@ -63,6 +63,7 @@ export function Updater({}) {
   const [localPlanets, setLocalPlanets] = useState(0);
   const [localFactions, setLocalFactions] = useState(0);
   const [localObjectives, setLocalObjectives] = useState(0);
+  const [localRelics, setLocalRelics] = useState(0);
   const [localState, setLocalState] = useState(0);
   const [localSubState, setLocalSubState] = useState(0);
   const [localStrategyCards, setLocalStrategyCards] = useState(0);
@@ -80,6 +81,7 @@ export function Updater({}) {
   const objectivesUpdate = (localUpdates.objectives ?? {}).timestamp ?? 0;
   const optionsUpdate = (localUpdates.options ?? {}).timestamp ?? 0;
   const planetsUpdate = (localUpdates.planets ?? {}).timestamp ?? 0;
+  const relicsUpdate = (localUpdates.relics ?? {}).timestamp ?? 0;
   const strategycardsUpdate = (localUpdates.strategycards ?? {}).timestamp ?? 0;
   const stateUpdate = (localUpdates.state ?? {}).timestamp ?? 0;
   const subStateUpdate = (localUpdates.substate ?? {}).timestamp ?? 0;
@@ -156,6 +158,9 @@ export function Updater({}) {
     if (localUpdateObject.factions > localFactions) {
       setLocalFactions(localUpdateObject.factions);
     }
+    if (localUpdateObject.relics > localRelics) {
+      setLocalRelics(localUpdateObject.relics);
+    }
     if (localUpdateObject.state > localState) {
       setLocalState(localUpdateObject.state);
     }
@@ -177,6 +182,7 @@ export function Updater({}) {
     localOptions,
     localPlanets,
     localFactions,
+    localRelics,
     localState,
     localSubState,
     localStrategyCards,
@@ -253,6 +259,16 @@ export function Updater({}) {
   }, [optionsUpdate, localOptions, gameid, initialLoad, setUpdateTime]);
 
   useEffect(() => {
+    if (relicsUpdate > localRelics) {
+      setLocalRelics(relicsUpdate);
+      if (!initialLoad) {
+        mutate(`/api/${gameid}/relics`);
+      }
+      setUpdateTime("relics", relicsUpdate);
+    }
+  }, [relicsUpdate, localRelics, gameid, initialLoad, setUpdateTime]);
+
+  useEffect(() => {
     if (strategycardsUpdate > localStrategyCards) {
       setLocalStrategyCards(strategycardsUpdate);
       if (!initialLoad) {
@@ -310,6 +326,7 @@ export function Updater({}) {
     setLocalFactions(factionsUpdate);
     setLocalObjectives(objectivesUpdate);
     setLocalOptions(optionsUpdate);
+    setLocalRelics(relicsUpdate);
     setLocalStrategyCards(strategycardsUpdate);
     setLocalState(stateUpdate);
     setLocalSubState(subStateUpdate);

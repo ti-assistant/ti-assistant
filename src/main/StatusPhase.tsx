@@ -36,6 +36,7 @@ import { NumberedItem } from "../NumberedItem";
 import { Selector } from "../Selector";
 import { LockedButtons } from "../LockedButton";
 import { Planet } from "../util/api/planets";
+import { Relic } from "../util/api/relics";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -621,8 +622,22 @@ export default function StatusPhase() {
       revalidateIfStale: false,
     }
   );
+  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
+    gameid ? `/api/${gameid}/planets` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
+    gameid ? `/api/${gameid}/relics` : null,
     fetcher,
     {
       revalidateIfStale: false,
@@ -697,7 +712,41 @@ export default function StatusPhase() {
     return abilities;
   }
 
+  const crownOfEmphidia = (relics ?? {})["The Crown of Emphidia"];
+
+  let crownScorer: string | undefined;
+  if (crownOfEmphidia && crownOfEmphidia.owner) {
+    const crownObjective = (objectives ?? {})["Tomb + Crown of Emphidia"];
+    if (
+      crownObjective &&
+      !crownObjective.scorers?.includes(crownOfEmphidia.owner)
+    ) {
+      for (const planet of Object.values(planets ?? {})) {
+        if (
+          planet.owner === crownOfEmphidia.owner &&
+          planet.attachments?.includes("Tomb of Emphidia")
+        ) {
+          crownScorer = crownOfEmphidia.owner;
+          break;
+        }
+      }
+    }
+  }
+  let scoredCrown: string | undefined;
+  for (const [factionName, faction] of Object.entries(
+    subState.turnData?.factions ?? {}
+  )) {
+    if (faction.objectives?.includes("Tomb + Crown of Emphidia")) {
+      scoredCrown = factionName;
+    }
+  }
+
+  const crownFaction = crownScorer || scoredCrown;
+
   function hasEndOfStatusPhaseAbilities() {
+    if (crownScorer || scoredCrown) {
+      return true;
+    }
     for (const ability of Object.values(getEndOfStatusPhaseAbilities())) {
       if (ability.length > 0) {
         return true;
@@ -711,6 +760,7 @@ export default function StatusPhase() {
       return {};
     }
     let abilities: Record<string, Ability[]> = {};
+    const ministerOfPolicy = agendas["Minister of Policy"];
     for (const faction of Object.values(factions ?? {})) {
       const factionAbilities: Ability[] = [];
       if (faction.name === "Federation of Sol") {
@@ -727,7 +777,6 @@ export default function StatusPhase() {
             "You may remove any number of Infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems",
         });
       }
-      const ministerOfPolicy = agendas["Minister of Policy"];
       if (
         ministerOfPolicy &&
         ministerOfPolicy.resolved &&
@@ -1024,6 +1073,78 @@ export default function StatusPhase() {
                       </LabeledDiv>
                     );
                   })}
+                {crownFaction ? (
+                  <LabeledDiv
+                    key={crownFaction}
+                    label={getFactionName((factions ?? {})[crownFaction])}
+                    color={getFactionColor((factions ?? {})[crownFaction])}
+                  >
+                    <div className="flexRow">
+                      Purge Crown of Emphidia to score 1 VP?
+                      <div
+                        key={crownFaction}
+                        className="flexRow hiddenButtonParent"
+                        style={{
+                          position: "relative",
+                          width: responsivePixels(32),
+                          height: responsivePixels(32),
+                        }}
+                      >
+                        <FullFactionSymbol faction={crownFaction} />
+                        <div
+                          className="flexRow"
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "#222",
+                            cursor: "pointer",
+                            borderRadius: "100%",
+                            marginLeft: "60%",
+                            marginTop: "60%",
+                            boxShadow: `${responsivePixels(
+                              1
+                            )} ${responsivePixels(1)} ${responsivePixels(
+                              4
+                            )} black`,
+                            width: responsivePixels(20),
+                            height: responsivePixels(20),
+                            zIndex: 2,
+                            color: scoredCrown ? "green" : "red",
+                          }}
+                          onClick={() => {
+                            if (!gameid) {
+                              return;
+                            }
+                            if (scoredCrown) {
+                              unscoreSubStateObjective(
+                                gameid,
+                                crownFaction,
+                                "Tomb + Crown of Emphidia"
+                              );
+                              unscoreObjective(
+                                gameid,
+                                crownFaction,
+                                "Tomb + Crown of Emphidia"
+                              );
+                            } else {
+                              scoreSubStateObjective(
+                                gameid,
+                                crownFaction,
+                                "Tomb + Crown of Emphidia"
+                              );
+                              scoreObjective(
+                                gameid,
+                                crownFaction,
+                                "Tomb + Crown of Emphidia"
+                              );
+                            }
+                          }}
+                        >
+                          {scoredCrown ? "✓" : "⤬"}
+                        </div>
+                      </div>
+                    </div>
+                  </LabeledDiv>
+                ) : null}
               </div>
             </ClientOnlyHoverMenu>
           </NumberedItem>

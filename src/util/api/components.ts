@@ -3,6 +3,7 @@ import { Expansion } from "./options";
 export type ComponentType =
   | "ABILITY"
   | "CARD"
+  | "EXPLORATION"
   | "FLAGSHIP"
   | "LEADER"
   | "PROMISSORY"
@@ -12,10 +13,13 @@ export type ComponentType =
 export type ComponentState = "exhausted" | "purged" | "used" | "one-left";
 
 export type Timing =
-  | "AGENDA PHASE"
-  | "COMPONENT ACTION"
+  | "AGENDA_PHASE"
+  | "AGENDA_PHASE_START"
+  | "COMPONENT_ACTION"
   | "MULTIPLE"
-  | "PASSIVE";
+  | "PASSIVE"
+  | "STATUS_PHASE_END"
+  | "TACTICAL_ACTION";
 
 export type LeaderType = "AGENT" | "COMMANDER" | "HERO";
 

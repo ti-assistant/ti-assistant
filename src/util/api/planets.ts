@@ -21,11 +21,15 @@ export type PlanetType =
   | "ALL"
   | "NONE";
 
+export type PlanetState = "READY" | "EXHAUSTED" | "PURGED";
+
 export type PlanetUpdateAction =
   | "ADD_PLANET"
   | "REMOVE_PLANET"
   | "ADD_ATTACHMENT"
-  | "REMOVE_ATTACHMENT";
+  | "REMOVE_ATTACHMENT"
+  | "PURGE_PLANET"
+  | "UNPURGE_PLANET";
 
 export interface PlanetUpdateData {
   action?: PlanetUpdateAction;
@@ -52,6 +56,7 @@ export interface BasePlanet {
 export interface GamePlanet {
   owner?: string;
   ready?: boolean;
+  state?: PlanetState;
   attachments?: string[];
 }
 
@@ -117,6 +122,66 @@ export function unclaimPlanet(
         }
 
         delete updatedPlanet.owner;
+
+        updatedPlanets[planet] = updatedPlanet;
+
+        return updatedPlanets;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function purgePlanet(gameId: string, planet: string) {
+  const data: PlanetUpdateData = {
+    action: "PURGE_PLANET",
+    planet: planet,
+  };
+
+  mutate(
+    `/api/${gameId}/planets`,
+    async () => await poster(`/api/${gameId}/planetUpdate`, data),
+    {
+      optimisticData: (planets: Record<string, Planet>) => {
+        const updatedPlanets = structuredClone(planets);
+
+        const updatedPlanet = updatedPlanets[planet];
+
+        if (!updatedPlanet) {
+          return updatedPlanets;
+        }
+
+        updatedPlanet.state = "PURGED";
+
+        updatedPlanets[planet] = updatedPlanet;
+
+        return updatedPlanets;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function unpurgePlanet(gameId: string, planet: string) {
+  const data: PlanetUpdateData = {
+    action: "UNPURGE_PLANET",
+    planet: planet,
+  };
+
+  mutate(
+    `/api/${gameId}/planets`,
+    async () => await poster(`/api/${gameId}/planetUpdate`, data),
+    {
+      optimisticData: (planets: Record<string, Planet>) => {
+        const updatedPlanets = structuredClone(planets);
+
+        const updatedPlanet = updatedPlanets[planet];
+
+        if (!updatedPlanet) {
+          return updatedPlanets;
+        }
+
+        updatedPlanet.state = "READY";
 
         updatedPlanets[planet] = updatedPlanet;
 

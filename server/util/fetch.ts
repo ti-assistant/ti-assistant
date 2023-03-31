@@ -9,11 +9,7 @@ import { GameObjective, Objective } from "../../src/util/api/objectives";
 import { Options } from "../../src/util/api/options";
 import { Attachment } from "../../src/util/api/attachments";
 import { Agenda } from "../../src/util/api/agendas";
-import {
-  BaseComponent,
-  BaseLeader,
-  Component,
-} from "../../src/util/api/components";
+import { BaseLeader, Component } from "../../src/util/api/components";
 import { BaseFaction, Faction } from "../../src/util/api/factions";
 import { BASE_AGENDAS } from "../data/agendas";
 import { BASE_FACTIONS } from "../data/factions";
@@ -23,6 +19,8 @@ import { BASE_PLANETS } from "../data/planets";
 import { BASE_STRATEGY_CARDS } from "../data/strategyCards";
 import { BASE_COMPONENTS } from "../data/components";
 import { BASE_LEADERS } from "../data/leaders";
+import { BASE_RELICS } from "../data/relics";
+import { Relic } from "../../src/util/api/relics";
 
 /**
  * Returns the game data for a given game.
@@ -206,6 +204,10 @@ export async function fetchPlanets(
       }
     }
 
+    if (gamePlanets[planetId] && gamePlanets[planetId]?.state === "PURGED") {
+      return;
+    }
+
     planet = {
       ...planet,
       ...(gamePlanets[planetId] ?? {}),
@@ -327,7 +329,7 @@ export async function fetchComponents(
     // Filter out leaders that have the wrong timing.
     .filter(([_, leader]) => {
       return (
-        leader.timing === "COMPONENT ACTION" || leader.timing === "MULTIPLE"
+        leader.timing === "COMPONENT_ACTION" || leader.timing === "MULTIPLE"
       );
     });
 
@@ -347,6 +349,26 @@ export async function fetchComponents(
   if (!isYssarilComponent) {
     delete components["Ssruu"];
   }
+
+  const gameRelics = gameData.relics ?? {};
+  Object.entries(BASE_RELICS)
+    .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
+    .forEach(([relicId, relic]) => {
+      if (!expansions.includes("POK")) {
+        return;
+      }
+      // Maybe filter out Codex Two relics.
+      if (!expansions.includes(relic.expansion)) {
+        return;
+      }
+
+      components[relicId] = {
+        ...relic,
+        ...(gameComponents[relicId] ?? {}),
+        ...(gameRelics[relicId] ?? {}),
+        type: "RELIC",
+      };
+    });
 
   Object.values(components).forEach((component) => {
     if (component.replaces) {
@@ -396,4 +418,31 @@ export async function fetchFactions(
   }
 
   return factionsToReturn;
+}
+
+/**
+ * Fetches the relics associated with a game.
+ */
+export async function fetchRelics(
+  gameId: string
+): Promise<Record<string, Relic>> {
+  const gameData = await getGameData(gameId);
+
+  const gameRelics = gameData.relics ?? {};
+  const expansions = gameData.options?.expansions ?? [];
+
+  const relics: Record<string, Relic> = {};
+  Object.entries(BASE_RELICS).forEach(([relicId, relic]) => {
+    // Maybe filter out Codex relics.
+    if (!expansions.includes("POK") || !expansions.includes(relic.expansion)) {
+      return;
+    }
+
+    relics[relicId] = {
+      ...relic,
+      ...(gameRelics[relicId] ?? {}),
+    };
+  });
+
+  return relics;
 }

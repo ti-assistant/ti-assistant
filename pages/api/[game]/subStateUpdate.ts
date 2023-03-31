@@ -4,6 +4,7 @@ import {
   Timestamp,
   UpdateData,
 } from "firebase-admin/firestore";
+import { defaultAppStore } from "firebase-admin/lib/app/lifecycle";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import {
@@ -14,7 +15,11 @@ import {
 } from "../../../server/util/fetch";
 import { writeLogEntry } from "../../../server/util/write";
 import { Component } from "../../../src/util/api/components";
-import { SubStateUpdateData } from "../../../src/util/api/subState";
+import {
+  PlanetEvent,
+  RelicEvent,
+  SubStateUpdateData,
+} from "../../../src/util/api/subState";
 import { GameData } from "../../../src/util/api/util";
 import { shouldUnlockXxchaCommander } from "./planetUpdate";
 
@@ -40,6 +45,10 @@ function usedComponentState(component: Component) {
         return "one-left";
       }
       return "purged";
+    case "PROMISSORY":
+      if (component.name === "Terraform") {
+        return "purged";
+      }
   }
   return "active";
 }
@@ -437,6 +446,61 @@ export default async function handler(
       }
       updates = {
         [`subState.riders.${data.riderName}`]: FieldValue.delete(),
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "TOGGLE_RELIC": {
+      if (!data.factionName) {
+        res.status(422).send({ message: "Missing faction name" });
+        return;
+      }
+      const relicString = `subState.turnData.factions.${data.factionName}.relic`;
+      let updateValue: FieldValue | RelicEvent = FieldValue.delete();
+      if (data.relicName) {
+        const prevOwner = (gameData.relics ?? {})[data.relicName]?.owner;
+        updateValue = {
+          name: data.relicName,
+        };
+        if (prevOwner) {
+          updateValue.prevOwner = prevOwner;
+        }
+      }
+      updates = {
+        [relicString]: updateValue,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "DESTROY_PLANET": {
+      const planetString = `subState.turnData.destroyedPlanet`;
+      let updateValue: FieldValue | PlanetEvent = FieldValue.delete();
+      if (data.planetName) {
+        updateValue = {
+          name: data.planetName,
+        };
+        if (data.factionName) {
+          updateValue.prevOwner = data.factionName;
+        }
+      }
+      updates = {
+        [planetString]: updateValue,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
+    case "TOGGLE_ATTACHMENT": {
+      if (!data.attachmentName) {
+        res.status(422).send({ message: "Missing attachment name" });
+        return;
+      }
+      const attachmentString = `subState.turnData.attachments.${data.attachmentName}`;
+      let updateValue: FieldValue | string = FieldValue.delete();
+      if (data.planetName) {
+        updateValue = data.planetName;
+      }
+      updates = {
+        [attachmentString]: updateValue,
         [timestampString]: timestamp,
       };
       break;

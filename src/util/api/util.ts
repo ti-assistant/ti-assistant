@@ -12,6 +12,7 @@ import { GameStrategyCard } from "./cards";
 import { SubState } from "./subState";
 import { GameState } from "./state";
 import { Timestamp } from "firebase-admin/firestore";
+import { GameRelic } from "./relics";
 
 export interface GameData {
   agendas?: Record<string, GameAgenda>;
@@ -21,6 +22,7 @@ export interface GameData {
   objectives?: Record<string, GameObjective>;
   options: Options;
   planets: Record<string, GamePlanet>;
+  relics?: Record<string, GameRelic>;
   state: GameState;
   strategycards?: Record<string, GameStrategyCard>;
   subState?: SubState;

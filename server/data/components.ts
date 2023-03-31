@@ -7,7 +7,6 @@ export type ComponentId =
   | "Cripple Defenses"
   | "Dark Pact"
   | "Divert Funding"
-  | "Dynamis Core"
   | "Economic Initiative"
   | "Enigmatic Device"
   | "Exploration Probe"
@@ -21,12 +20,10 @@ export type ComponentId =
   | "Impersonation"
   | "Industrial Initiative"
   | "Insubordination"
-  | "JR-XS455-O"
   | "Lazax Gate Folding"
   | "Lucky Shot"
   | "Mageon Implants"
   | "Mining Initiative"
-  | "Nano-Forge"
   | "Orbital Drop"
   | "Plagiarize"
   | "Plague"
@@ -43,11 +40,9 @@ export type ComponentId =
   | "Spy"
   | "Stall Tactics"
   | "Star Forge"
-  | "Stellar Converter"
   | "Stymie"
   | "Tactical Bombardment"
   | "Terraform"
-  | "The Codex"
   | "The Inferno"
   | "Trade Convoys"
   | "Unexpected Action"
@@ -103,13 +98,6 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     name: "Divert Funding",
     type: "CARD",
   },
-  "Dynamis Core": {
-    description:
-      "Purge this card to gain trade goods equal to your printed commodity value +2",
-    expansion: "CODEX TWO",
-    name: "Dynamis Core",
-    type: "RELIC",
-  },
   "Economic Initiative": {
     description: "Ready each cultural planet you control",
     expansion: "BASE",
@@ -121,7 +109,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
       "You may spend 6 resources and purge this card to research 1 technology",
     expansion: "POK",
     name: "Enigmatic Device",
-    type: "RELIC",
+    type: "EXPLORATION",
   },
   "Exploration Probe": {
     description:
@@ -171,7 +159,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
       "Purge 3 of your relic fragments of the same type to gain 1 Relic",
     expansion: "POK",
     name: "Gain Relic",
-    type: "RELIC",
+    type: "EXPLORATION",
   },
   "Ghost Ship": {
     description:
@@ -198,13 +186,6 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     expansion: "BASE",
     name: "Insubordination",
     type: "CARD",
-  },
-  "JR-XS455-O": {
-    description:
-      "Exhaust this agent and choose a player; that player may spend 3 resources to place a structure on a planet they control. If they do not, they gain 1 trade good",
-    expansion: "CODEX TWO",
-    name: "JR-XS455-O",
-    type: "RELIC",
   },
   "Lazax Gate Folding": {
     description:
@@ -235,13 +216,6 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     expansion: "BASE",
     name: "Mining Initiative",
     type: "CARD",
-  },
-  "Nano-Forge": {
-    description:
-      "Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet",
-    expansion: "CODEX TWO",
-    name: "Nano-Forge",
-    type: "RELIC",
   },
   "Orbital Drop": {
     description:
@@ -357,13 +331,6 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     name: "Star Forge",
     type: "ABILITY",
   },
-  "Stellar Converter": {
-    description:
-      "Choose 1 non-home, non-legendary planet other than Mecatol Rex in a system that is adjacent to 1 or more of your units that have BOMBARDMENT; destroy all units on that planet and purge its attachments and its planet card. Then, place the destroyed planet token on that planet and purge this card",
-    expansion: "POK",
-    name: "Stellar Converter",
-    type: "RELIC",
-  },
   Stymie: {
     description:
       "Place this card face up in your play area\n\nWhile this card is in your play area, the Arborec player cannot produce units in or adjacent to non-home systems that contain 1 or more of your units\n\nIf you activate a system that contains 1 or more of the Arborec player's units, return this card to the Arborec player",
@@ -386,13 +353,6 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     faction: "Titans of Ul",
     name: "Terraform",
     type: "PROMISSORY",
-  },
-  "The Codex": {
-    description:
-      "Purge this card to take up to 3 action cards of your choice from the action card discard pile",
-    expansion: "POK",
-    name: "The Codex",
-    type: "RELIC",
   },
   "The Inferno": {
     description:
