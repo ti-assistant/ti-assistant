@@ -51,6 +51,10 @@ export interface GameObjective {
 
 export type Objective = BaseObjective & GameObjective;
 
+export function hasScoredObjective(factionName: string, objective: Objective) {
+  return (objective.scorers ?? []).includes(factionName);
+}
+
 export function revealObjective(
   gameId: string,
   factionName: string | undefined,

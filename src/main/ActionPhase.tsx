@@ -18,7 +18,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { PlanetRow } from "../PlanetRow";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../LabeledDiv";
-import { ClientOnlyHoverMenu } from "../HoverMenu";
+import { ClientOnlyHoverMenu, FactionSelectHoverMenu } from "../HoverMenu";
 import { TechRow } from "../TechRow";
 import { BasicFactionTile } from "../FactionTile";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -48,8 +48,10 @@ import { GameState, nextPlayer, StateUpdateData } from "../util/api/state";
 import { Attachment } from "../util/api/attachments";
 import { Planet } from "../util/api/planets";
 import {
+  hasScoredObjective,
   Objective,
   scoreObjective,
+  takeObjective,
   unscoreObjective,
 } from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
@@ -1339,6 +1341,46 @@ export function AdditionalActions({
       const nekroTechs =
         ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {}).techs ??
         [];
+      // TODO: Handle case where multiple players can become martyrs
+      const currentMartyrs = [];
+      for (const [factionName, faction] of Object.entries(
+        subState.turnData?.factions ?? {}
+      )) {
+        if (faction.objectives?.includes("Become a Martyr")) {
+          currentMartyrs.push(factionName);
+        }
+      }
+      const possibleMartyrs = new Set<string>(currentMartyrs);
+      const becomeAMartyr = (objectives ?? {})["Become a Martyr"];
+      if (
+        becomeAMartyr &&
+        (currentMartyrs.length > 0 ||
+          (becomeAMartyr.scorers ?? []).length === 0 ||
+          becomeAMartyr.type === "STAGE ONE")
+      ) {
+        const scorers = becomeAMartyr.scorers ?? [];
+        for (const planetName of conqueredPlanets) {
+          const planet = (planets ?? {})[planetName];
+          if (!planet) {
+            continue;
+          }
+          if (
+            planet.home &&
+            planet.owner &&
+            planet.owner !== factionName &&
+            !scorers.includes(planet.owner)
+          ) {
+            possibleMartyrs.add(planet.owner);
+          }
+        }
+      }
+      console.log(possibleMartyrs);
+      const orderedMartyrs = Array.from(possibleMartyrs).sort((a, b) => {
+        if (a > b) {
+          return 1;
+        }
+        return -1;
+      });
       return (
         <div className="flexColumn largeFont" style={{ ...style }}>
           {conqueredPlanets.length > 0 ? (
@@ -1484,6 +1526,87 @@ export function AdditionalActions({
                 />
               ) : null}
             </React.Fragment>
+          ) : null}
+          {becomeAMartyr && possibleMartyrs.size > 0 ? (
+            <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
+              <LabeledLine leftLabel="Other Factions" />
+              <div className="flexRow">
+                <ObjectiveRow objective={becomeAMartyr} hideScorers />
+                {becomeAMartyr.type === "SECRET" ||
+                possibleMartyrs.size === 1 ? (
+                  <FactionSelectHoverMenu
+                    onSelect={(factionName, prevFaction) => {
+                      console.log(prevFaction);
+                      if (factionName && prevFaction) {
+                        if (!gameid) {
+                          return;
+                        }
+                        undoObjective(prevFaction, "Become a Martyr");
+                        addObjective(factionName, "Become a Martyr");
+                      } else if (prevFaction) {
+                        undoObjective(prevFaction, "Become a Martyr");
+                      } else if (factionName) {
+                        addObjective(factionName, "Become a Martyr");
+                      }
+                    }}
+                    selectedFaction={currentMartyrs[0]}
+                    options={orderedMartyrs}
+                  />
+                ) : (
+                  orderedMartyrs.map((factionName) => {
+                    const current = hasScoredObjective(
+                      factionName,
+                      becomeAMartyr
+                    );
+                    return (
+                      <div
+                        key={factionName}
+                        className="flexRow hiddenButtonParent"
+                        style={{
+                          position: "relative",
+                          width: responsivePixels(32),
+                          height: responsivePixels(32),
+                        }}
+                      >
+                        <FullFactionSymbol faction={factionName} />
+                        <div
+                          className="flexRow"
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "#222",
+                            cursor: "pointer",
+                            borderRadius: "100%",
+                            marginLeft: "60%",
+                            marginTop: "60%",
+                            boxShadow: `${responsivePixels(
+                              1
+                            )} ${responsivePixels(1)} ${responsivePixels(
+                              4
+                            )} black`,
+                            width: responsivePixels(20),
+                            height: responsivePixels(20),
+                            zIndex: 2,
+                            color: current ? "green" : "red",
+                          }}
+                          onClick={() => {
+                            if (!gameid) {
+                              return;
+                            }
+                            if (current) {
+                              undoObjective(factionName, "Become a Martyr");
+                            } else {
+                              addObjective(factionName, "Become a Martyr");
+                            }
+                          }}
+                        >
+                          {current ? "✓" : "⤬"}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
           ) : null}
         </div>
       );

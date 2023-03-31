@@ -255,7 +255,10 @@ export interface FactionSelectProps {
   direction?: "up" | "down" | "left" | "right";
   selectedFaction?: string;
   options: string[];
-  onSelect: (factionName: string | undefined) => void;
+  onSelect: (
+    factionName: string | undefined,
+    prevFaction: string | undefined
+  ) => void;
   size?: number;
   tag?: ReactNode;
   borderColor?: string;
@@ -394,7 +397,7 @@ export function FactionSelectHoverMenu({
             }}
             onClick={() => {
               closeFn();
-              onSelect(undefined);
+              onSelect(undefined, selectedFaction);
             }}
           >
             None
@@ -463,7 +466,7 @@ export function FactionSelectHoverMenu({
               }}
               onClick={() => {
                 closeFn();
-                onSelect(factionName);
+                onSelect(factionName, selectedFaction);
               }}
             >
               <div
@@ -488,7 +491,7 @@ export function FactionSelectHoverMenu({
             }}
             onClick={() => {
               closeFn();
-              onSelect(undefined);
+              onSelect(undefined, selectedFaction);
             }}
           >
             None
