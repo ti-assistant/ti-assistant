@@ -71,6 +71,27 @@ export function WrappedTechIcon({ type, size }: WrappedTechIconProps) {
   );
 }
 
+export function TechSkipIcon({ size }: { size: number }) {
+  const width = responsivePixels(size);
+  const height = responsivePixels(size);
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)",
+        width: width,
+        height: height,
+        rowGap: responsivePixels(1),
+      }}
+    >
+      <WrappedTechIcon type="RED" size={size / 2} />
+      <WrappedTechIcon type="GREEN" size={size / 2} />
+      <WrappedTechIcon type="BLUE" size={size / 2} />
+      <WrappedTechIcon type="YELLOW" size={size / 2} />
+    </div>
+  );
+}
+
 export interface FullTechIconProps {
   type: TechType;
 }

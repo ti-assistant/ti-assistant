@@ -1549,6 +1549,9 @@ export function AdditionalActions({
                         addObjective(factionName, "Become a Martyr");
                       }
                     }}
+                    borderColor={getFactionColor(
+                      factions[currentMartyrs[0] ?? ""]
+                    )}
                     selectedFaction={currentMartyrs[0]}
                     options={orderedMartyrs}
                   />

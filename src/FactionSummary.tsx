@@ -5,7 +5,12 @@ import { FullFactionSymbol } from "./FactionCard";
 import { Modal } from "./Modal";
 import { FullPlanetSymbol, LegendaryPlanetIcon, PlanetRow } from "./PlanetRow";
 import { ResponsiveResources } from "./Resources";
-import { FullTechIcon, TechRow, WrappedTechIcon } from "./TechRow";
+import {
+  FullTechIcon,
+  TechRow,
+  TechSkipIcon,
+  WrappedTechIcon,
+} from "./TechRow";
 import { Faction, manualVPUpdate } from "./util/api/factions";
 import { claimPlanet, Planet, unclaimPlanet } from "./util/api/planets";
 import { fetcher } from "./util/api/util";
@@ -1222,14 +1227,17 @@ export function PlanetSummary({
     }
   );
 
+  let numPlanets = 0;
   let resources = 0;
   let influence = 0;
   let cultural = 0;
   let hazardous = 0;
   let industrial = 0;
   let legendary = 0;
-  const skips = [];
+  let techSkips = 0;
+  let attachments = 0;
   for (const planet of planets) {
+    numPlanets++;
     if (
       (gameOptions?.expansions ?? []).includes("CODEX THREE") &&
       faction.name === "Xxcha Kingdom" &&
@@ -1241,13 +1249,17 @@ export function PlanetSummary({
       resources += planet.resources;
       influence += planet.influence;
     }
+    let hasSkip = false;
     for (const attribute of planet.attributes) {
       if (attribute.includes("skip")) {
-        skips.push(attribute);
+        hasSkip = true;
       }
       if (attribute === "legendary") {
         ++legendary;
       }
+    }
+    if (hasSkip) {
+      ++techSkips;
     }
     switch (planet.type) {
       case "CULTURAL":
@@ -1265,20 +1277,65 @@ export function PlanetSummary({
       ++industrial;
       ++hazardous;
     }
+    if ((planet.attachments ?? []).length > 0) {
+      ++attachments;
+    }
   }
 
   return (
-    <div className="flexRow">
-      <div className="flexRow">
+    <div className="flexRow" style={{ gap: responsivePixels(2) }}>
+      <div
+        className="flexRow"
+        style={{
+          width: responsivePixels(50),
+          height: "100%",
+          paddingBottom: responsivePixels(2),
+          alignItems: "flex-end",
+          justifyContent: "flex-start",
+          position: "relative",
+        }}
+      >
         <ResponsiveResources resources={resources} influence={influence} />
+        <div
+          className="flexColumn"
+          style={{
+            textAlign: "center",
+            position: "absolute",
+            width: responsivePixels(30),
+            height: responsivePixels(30),
+            right: 0,
+            top: 0,
+            border: `${responsivePixels(1)} solid #444`,
+            zIndex: -1,
+            backgroundColor: "#222",
+            borderRadius: "100%",
+            gap: 0,
+            fontSize: responsivePixels(18),
+          }}
+        >
+          {numPlanets}
+        </div>
       </div>
-      <div className="planetTypeGrid">
-        <div className="centered">{cultural || "-"}</div>
-        <FullPlanetSymbol type={"CULTURAL"} size={16} />
-        <div className="centered">{hazardous || "-"}</div>
-        <FullPlanetSymbol type={"HAZARDOUS"} size={16} />
-        <div className="centered">{industrial || "-"}</div>
-        <FullPlanetSymbol type={"INDUSTRIAL"} size={16} />
+      <div className="flexRow">
+        <div className="planetTypeGrid">
+          <div className="centered">{cultural || "-"}</div>
+          <FullPlanetSymbol type={"CULTURAL"} size={16} />
+          <div></div>
+          <LegendaryPlanetIcon />
+          <div className="centered">{legendary || "-"}</div>
+          <div className="centered">{hazardous || "-"}</div>
+          <FullPlanetSymbol type={"HAZARDOUS"} size={16} />
+          <div></div>
+          <TechSkipIcon size={16} />
+          <div className="centered">{techSkips || "-"}</div>
+          <div className="centered">{industrial || "-"}</div>
+          <FullPlanetSymbol type={"INDUSTRIAL"} size={16} />
+          <div></div>
+          <div className="centered" style={{ textShadow: "4px solid #333" }}>
+            🗍
+          </div>
+          <div className="centered">{attachments || "-"}</div>
+        </div>
       </div>
     </div>
   );
@@ -1394,34 +1451,34 @@ export function FactionSummary({
 
   return (
     <div className="factionSummary">
-      {options.showIcon ? (
-        <div
-          className="flexColumn"
-          style={{
-            position: "absolute",
-            zIndex: -1,
-            width: "100%",
-            height: "100%",
-            top: 0,
-            left: 0,
-          }}
-        >
+      {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
+      <div className="vpGrid">
+        {options.showIcon ? (
           <div
             className="flexColumn"
             style={{
               position: "absolute",
               zIndex: -1,
-              opacity: 0.5,
-              width: responsivePixels(60),
-              height: responsivePixels(60),
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0,
             }}
           >
-            <FullFactionSymbol faction={factionName} />
+            <div
+              className="flexColumn"
+              style={{
+                position: "absolute",
+                zIndex: -1,
+                opacity: 0.5,
+                width: responsivePixels(60),
+                height: responsivePixels(60),
+              }}
+            >
+              <FullFactionSymbol faction={factionName} />
+            </div>
           </div>
-        </div>
-      ) : null}
-      {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
-      <div className="vpGrid">
+        ) : null}
         <div
           className="flexRow"
           style={{
