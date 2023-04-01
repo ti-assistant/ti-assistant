@@ -20,7 +20,9 @@
   display: grid;
   font-size: var(--fourteen-pixel);
   gap: var(--four-pixel);
-  grid-template-columns: repeat(2, 2fr) var(--two-pixel) repeat(2, 2fr);
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+  align-items: center;
 }
 
 .vpGrid {

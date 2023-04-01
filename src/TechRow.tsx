@@ -84,10 +84,10 @@ export function TechSkipIcon({ size }: { size: number }) {
         rowGap: responsivePixels(1),
       }}
     >
-      <WrappedTechIcon type="RED" size={size / 2} />
-      <WrappedTechIcon type="GREEN" size={size / 2} />
-      <WrappedTechIcon type="BLUE" size={size / 2} />
-      <WrappedTechIcon type="YELLOW" size={size / 2} />
+      <WrappedTechIcon type="RED" size={size / 2 - 2} />
+      <WrappedTechIcon type="GREEN" size={size / 2 - 2} />
+      <WrappedTechIcon type="BLUE" size={size / 2 - 2} />
+      <WrappedTechIcon type="YELLOW" size={size / 2 - 2} />
     </div>
   );
 }

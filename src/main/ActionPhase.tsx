@@ -1767,37 +1767,88 @@ export function ActivePlayerColumn({
         factionName={activeFaction.name}
         buttonStyle={{ fontSize: responsivePixels(24) }}
       />
-      On Deck
-      <SwitchTransition>
-        <CSSTransition key={onDeckFaction.name} timeout={500} classNames="fade">
-          <FactionCard
-            faction={onDeckFaction}
-            style={{ width: "auto", height: responsivePixels(100) }}
-            opts={{
-              iconSize: responsivePixels(80),
-              fontSize: responsivePixels(24),
-            }}
+      <div
+        className="flexRow"
+        style={{ width: "100%", justifyContent: "center" }}
+      >
+        {" "}
+        <SwitchTransition>
+          <CSSTransition
+            key={onDeckFaction.name}
+            timeout={500}
+            classNames="fade"
           >
-            <div
-              className="flexColumn"
+            <LabeledDiv
+              label="On Deck"
+              rightLabel={
+                <StaticFactionTimer
+                  factionName={onDeckFaction.name}
+                  style={{
+                    fontSize: responsivePixels(16),
+                  }}
+                  width={84}
+                />
+              }
+              color={getFactionColor(onDeckFaction)}
               style={{
-                height: "100%",
-                width: responsivePixels(160),
-                paddingBottom: responsivePixels(4),
-                fontSize: responsivePixels(12),
+                width: "fit-content",
+                minWidth: responsivePixels(200),
+                fontSize: responsivePixels(24),
               }}
             >
-              <StaticFactionTimer
-                factionName={onDeckFaction.name}
+              <div
+                className="flexColumn"
                 style={{
-                  fontSize: responsivePixels(24),
+                  width: "100%",
+                  height: responsivePixels(44),
+                  whiteSpace: "nowrap",
+                  gap: responsivePixels(4),
                 }}
-                width={132}
-              />
-            </div>
-          </FactionCard>
-        </CSSTransition>
-      </SwitchTransition>
+              >
+                {getFactionName(onDeckFaction)}
+                <div
+                  className="flexRow"
+                  style={{
+                    position: "absolute",
+                    width: responsivePixels(44),
+                    height: responsivePixels(44),
+                    zIndex: -1,
+                    opacity: 0.7,
+                  }}
+                >
+                  <FullFactionSymbol faction={onDeckFaction.name} />
+                </div>
+              </div>
+              {/* <FactionCard
+              faction={onDeckFaction}
+              style={{ width: "auto", height: responsivePixels(100) }}
+              opts={{
+                iconSize: responsivePixels(80),
+                fontSize: responsivePixels(24),
+              }}
+            >
+              <div
+                className="flexColumn"
+                style={{
+                  height: "100%",
+                  width: responsivePixels(160),
+                  paddingBottom: responsivePixels(4),
+                  fontSize: responsivePixels(12),
+                }}
+              >
+                <StaticFactionTimer
+                  factionName={onDeckFaction.name}
+                  style={{
+                    fontSize: responsivePixels(24),
+                  }}
+                  width={132}
+                />
+              </div>
+            </FactionCard> */}
+            </LabeledDiv>
+          </CSSTransition>
+        </SwitchTransition>
+      </div>
       <LockedButtons
         unlocked={!activeFaction}
         style={{ marginTop: responsivePixels(12) }}

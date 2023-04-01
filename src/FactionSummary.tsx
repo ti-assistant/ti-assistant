@@ -19,7 +19,11 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import { filterToOwnedTechs, getTechColor, sortTechs } from "./util/techs";
-import { pluralize, responsivePixels } from "./util/util";
+import {
+  pluralize,
+  responsiveNegativePixels,
+  responsivePixels,
+} from "./util/util";
 import {
   hasTech,
   lockTech,
@@ -1272,7 +1276,7 @@ export function PlanetSummary({
         ++hazardous;
         break;
     }
-    if (planet.attributes.includes("all-types")) {
+    if (planet.attachments?.includes("Terraform")) {
       ++cultural;
       ++industrial;
       ++hazardous;
@@ -1316,22 +1320,29 @@ export function PlanetSummary({
           {numPlanets}
         </div>
       </div>
-      <div className="flexRow">
+      <div className="flexRow" style={{ gap: responsivePixels(8) }}>
         <div className="planetTypeGrid">
           <div className="centered">{cultural || "-"}</div>
           <FullPlanetSymbol type={"CULTURAL"} size={16} />
-          <div></div>
-          <LegendaryPlanetIcon />
-          <div className="centered">{legendary || "-"}</div>
           <div className="centered">{hazardous || "-"}</div>
           <FullPlanetSymbol type={"HAZARDOUS"} size={16} />
-          <div></div>
-          <TechSkipIcon size={16} />
-          <div className="centered">{techSkips || "-"}</div>
           <div className="centered">{industrial || "-"}</div>
           <FullPlanetSymbol type={"INDUSTRIAL"} size={16} />
-          <div></div>
-          <div className="centered" style={{ textShadow: "4px solid #333" }}>
+        </div>
+        <div className="planetTypeGrid">
+          <LegendaryPlanetIcon />
+          <div className="centered">{legendary || "-"}</div>
+          <TechSkipIcon size={16} />
+          <div className="centered">{techSkips || "-"}</div>
+          <div
+            className="centered"
+            style={{
+              textShadow: "4px solid #333",
+              fontSize: responsivePixels(16),
+              marginTop: responsiveNegativePixels(-10),
+              height: responsivePixels(16),
+            }}
+          >
             🗍
           </div>
           <div className="centered">{attachments || "-"}</div>
