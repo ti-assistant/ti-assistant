@@ -114,6 +114,9 @@ export function canFactionVote(
   ) {
     return true;
   }
+  if ((subState.turnData?.factions ?? {})[factionName]?.politicalSecret) {
+    return false;
+  }
   if (subState["Assassinate Representative"] === factionName) {
     return false;
   }

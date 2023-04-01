@@ -31,6 +31,7 @@ import {
   setSubStateOther,
   SubState,
   SubStateFaction,
+  toggleSubStatePoliticalSecret,
 } from "../util/api/subState";
 import { Faction, resetCastVotes, updateCastVotes } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
@@ -58,6 +59,7 @@ import { Options } from "../util/api/options";
 import { LockedButtons } from "../LockedButton";
 import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
 import { Tech } from "../util/api/techs";
+import { FullFactionSymbol } from "../FactionCard";
 
 const RIDERS = [
   "Galactic Threat",
@@ -814,7 +816,7 @@ function AgendaSteps() {
 
   const speaker = (factions ?? {})[state?.speaker ?? ""];
 
-  const vetoText = (factions ?? {})["Xxcha Kingom"]
+  const vetoText = !(factions ?? {})["Xxcha Kingom"]
     ? "Veto"
     : "Veto/Quash/Political Favor";
 
@@ -857,6 +859,12 @@ function AgendaSteps() {
       return false;
     }
     if (rider === "Galactic Threat" && factions && !factions["Nekro Virus"]) {
+      return false;
+    }
+    if (
+      rider === "Galactic Threat" &&
+      (subState.turnData?.factions ?? {})["Nekro Virus"]?.politicalSecret
+    ) {
       return false;
     }
     if (
@@ -986,7 +994,17 @@ function AgendaSteps() {
                         const faction = (factions ?? {})[
                           rider.factionName ?? ""
                         ];
-                        let possibleFactions = Object.keys(factions ?? {});
+                        let possibleFactions = Object.keys(
+                          factions ?? {}
+                        ).filter((faction) => {
+                          if (
+                            (subState.turnData?.factions ?? {})[faction]
+                              ?.politicalSecret
+                          ) {
+                            return false;
+                          }
+                          return true;
+                        });
                         if (riderName === "Galactic Threat") {
                           possibleFactions = ["Nekro Virus"];
                         }
@@ -1074,9 +1092,64 @@ function AgendaSteps() {
             )}
           </div>
           {currentAgenda && !haveVotesBeenCast() ? (
-            <div className="flexRow">
-              <button onClick={() => hideAgenda()}>{vetoText}</button>
-            </div>
+            <>
+              <div className="flexRow">
+                <button onClick={() => hideAgenda()}>{vetoText}</button>
+              </div>
+              <LabeledDiv label="Political Secret">
+                <div className="flexRow">
+                  {votingOrder.map((faction) => {
+                    const politicalSecret = ((subState.turnData ?? {})
+                      .factions ?? {})[faction.name]?.politicalSecret;
+                    return (
+                      <div
+                        key={faction.name}
+                        className="flexRow hiddenButtonParent"
+                        style={{
+                          position: "relative",
+                          width: responsivePixels(32),
+                          height: responsivePixels(32),
+                        }}
+                      >
+                        <FullFactionSymbol faction={faction.name} />
+                        <div
+                          className="flexRow"
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "#222",
+                            borderRadius: "100%",
+                            marginLeft: "60%",
+                            cursor: "pointer",
+                            marginTop: "60%",
+                            boxShadow: `${responsivePixels(
+                              1
+                            )} ${responsivePixels(1)} ${responsivePixels(
+                              4
+                            )} black`,
+                            width: responsivePixels(20),
+                            height: responsivePixels(20),
+                            zIndex: 2,
+                            color: politicalSecret ? "green" : "red",
+                          }}
+                          onClick={() => {
+                            if (!gameid) {
+                              return;
+                            }
+                            toggleSubStatePoliticalSecret(
+                              gameid,
+                              faction.name,
+                              !politicalSecret
+                            );
+                          }}
+                        >
+                          {politicalSecret ? "✓" : "⤬"}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </LabeledDiv>
+            </>
           ) : null}
           {currentAgenda && !haveVotesBeenCast() ? (
             <LabeledDiv label="After an Agenda is Revealed">

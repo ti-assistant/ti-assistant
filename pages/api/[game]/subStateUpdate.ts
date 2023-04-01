@@ -505,6 +505,22 @@ export default async function handler(
       };
       break;
     }
+    case "TOGGLE_POLITICAL_SECRET": {
+      if (!data.factionName) {
+        res.status(422).send({ message: "Missing faction name" });
+        return;
+      }
+      const attachmentString = `subState.turnData.factions.${data.factionName}.politicalSecret`;
+      let updateValue: FieldValue | boolean = FieldValue.delete();
+      if (data.add) {
+        updateValue = true;
+      }
+      updates = {
+        [attachmentString]: updateValue,
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "MARK_SECONDARY": {
       if (!data.factionName || !data.secondary) {
         res.status(422).send({ message: "Missing values" });

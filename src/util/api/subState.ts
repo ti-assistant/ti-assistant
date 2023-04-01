@@ -49,6 +49,7 @@ export type SubStateUpdateAction =
   | "UNDO_RIDER"
   | "TOGGLE_RELIC"
   | "MARK_SECONDARY"
+  | "TOGGLE_POLITICAL_SECRET"
   | "SET_OTHER_FIELD"
   | "FINALIZE_SUB_STATE";
 
@@ -75,6 +76,7 @@ export interface TurnData {
 export interface SubStateUpdateData {
   action?: SubStateUpdateAction;
   actionName?: Action;
+  add?: boolean;
   agendaName?: string;
   attachmentName?: string;
   cardEvent?: AssignStrategyCardEvent;
@@ -116,6 +118,7 @@ export interface SubStateFaction {
   target?: string;
   techs?: string[];
   votes?: number;
+  politicalSecret?: boolean;
 }
 
 export interface SubState {
@@ -901,6 +904,51 @@ export function toggleSubStateRelic(
         }
 
         updatedSubState.factions[factionName] = updatedFaction;
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function toggleSubStatePoliticalSecret(
+  gameid: string,
+  factionName: string,
+  add: boolean
+) {
+  setGlobalPause(gameid, false);
+
+  const data: SubStateUpdateData = {
+    action: "TOGGLE_POLITICAL_SECRET",
+    factionName: factionName,
+    add: add,
+  };
+  console.log(data);
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState);
+
+        if (!updatedSubState.turnData) {
+          updatedSubState.turnData = {};
+        }
+
+        if (!updatedSubState.turnData.factions) {
+          updatedSubState.turnData.factions = {};
+        }
+        const faction = updatedSubState.turnData.factions[factionName] ?? {};
+
+        if (add) {
+          faction.politicalSecret = true;
+        } else {
+          delete faction.politicalSecret;
+        }
+
+        updatedSubState.turnData.factions[factionName] = faction;
 
         return updatedSubState;
       },
