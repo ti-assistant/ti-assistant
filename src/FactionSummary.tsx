@@ -45,6 +45,7 @@ import { LabeledDiv } from "./LabeledDiv";
 import { GameState } from "./util/api/state";
 import { Options } from "./util/api/options";
 import { Attachment } from "./util/api/attachments";
+import Image from "next/image";
 
 function TechList({ techs }: { techs: Tech[] }) {
   return (
@@ -1338,12 +1339,12 @@ export function PlanetSummary({
             className="centered"
             style={{
               textShadow: "4px solid #333",
-              fontSize: responsivePixels(16),
-              marginTop: responsiveNegativePixels(-10),
+              fontSize: responsivePixels(22),
+              marginTop: responsiveNegativePixels(-8),
               height: responsivePixels(16),
             }}
           >
-            🗍
+            ⎗
           </div>
           <div className="centered">{attachments || "-"}</div>
         </div>
