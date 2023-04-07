@@ -1,8 +1,15 @@
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { StrategyCardElement } from "../StrategyCard";
-import { getOnDeckFaction } from "../util/helpers";
-import { strategyCardOrder, StrategyCard } from "../util/api/cards";
+import { getLastPickedCard, getOnDeckFaction } from "../util/helpers";
+import {
+  strategyCardOrder,
+  StrategyCard,
+  assignStrategyCard,
+  unassignStrategyCard,
+  setFirstStrategyCard,
+  swapStrategyCards,
+} from "../util/api/cards";
 import { Faction, readyAllFactions } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
 import { fetcher, poster } from "../util/api/util";
@@ -126,6 +133,7 @@ function QuantumDatahubNode({
       return;
     }
 
+    swapStrategyCards(gameid, cardOne, cardTwo);
     swapSubStateStrategyCards(gameid, cardOne, cardTwo);
   }
 
@@ -415,38 +423,16 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
       },
       Object.keys(factions ?? {}).length
     );
+    assignStrategyCard(gameid, card.name, faction.name);
+    if (faction.name === "Naalu Collective") {
+      setFirstStrategyCard(gameid, card.name);
+    }
     nextPlayer(gameid, factions ?? {}, strategyCards, subState);
   }
 
-  const updatedStrategyCards = Object.values(strategyCards).map((card) => {
-    const updatedCard = structuredClone(card);
-    for (const cardObj of subState?.strategyCards ?? []) {
-      if (cardObj.name === card.name) {
-        updatedCard.faction = cardObj.assignedTo;
-      }
-    }
-
-    return updatedCard;
-  });
-  const orderedStrategyCards = updatedStrategyCards.sort(
+  const orderedStrategyCards = Object.values(strategyCards).sort(
     (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
   );
-
-  let firstCard = true;
-  const finalStrategyCards = orderedStrategyCards.map((card) => {
-    const naalu = (factions ?? {})["Naalu Collective"];
-    if (naalu && haveAllFactionsPicked() && firstCard) {
-      const gift = subState["Gift of Prescience"];
-      if (
-        (gift && card.faction === gift) ||
-        (!gift && card.faction === "Naalu Collective")
-      ) {
-        card.order = 0;
-        firstCard = false;
-      }
-    }
-    return card;
-  });
 
   const activefaction = factions
     ? factions[state?.activeplayer ?? ""]
@@ -457,7 +443,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
 
   return (
     <React.Fragment>
-      {finalStrategyCards.map((card) => {
+      {orderedStrategyCards.map((card) => {
         return (
           <StrategyCardElement
             key={card.name}
@@ -479,7 +465,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
             <ChecksAndBalancesMenu
               faction={activefaction}
               factions={factions ?? {}}
-              strategyCards={finalStrategyCards}
+              strategyCards={orderedStrategyCards}
               mobile={mobile}
               agendas={agendas ?? {}}
               onSelect={(factionName) => {
@@ -741,37 +727,28 @@ export default function StrategyPhase() {
   );
 
   function undoPick() {
-    if (!gameid) {
+    if (!gameid || !state) {
+      return;
+    }
+    const lastPickedCard = getLastPickedCard(state, subState);
+    if (!lastPickedCard) {
       return;
     }
     undoSubStateStrategyCard(gameid);
+    unassignStrategyCard(gameid, lastPickedCard.name);
     prevPlayer(gameid, factions ?? {}, subState);
   }
 
   function canUndo() {
     return (subState.strategyCards ?? []).length > 0;
   }
-
-  function giftOfPrescience(factionName: string | undefined) {
-    if (!gameid) {
-      return;
-    }
-    if (!factionName || subState["Gift of Prescience"] === factionName) {
-      setSubStateOther(gameid, "Gift of Prescience", undefined);
-    } else {
-      setSubStateOther(gameid, "Gift of Prescience", factionName);
-    }
-  }
-
-  let firstCard = true;
-
   const updatedStrategyCards = Object.values(strategyCards).map((card) => {
     const updatedCard = structuredClone(card);
-    for (const cardObj of subState?.strategyCards ?? []) {
-      if (cardObj.name === card.name) {
-        updatedCard.faction = cardObj.assignedTo;
-      }
-    }
+    // for (const cardObj of subState?.strategyCards ?? []) {
+    //   if (cardObj.name === card.name) {
+    //     updatedCard.faction = cardObj.assignedTo;
+    //   }
+    // }
 
     return updatedCard;
   });
@@ -780,20 +757,33 @@ export default function StrategyPhase() {
     (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
   );
 
-  const finalStrategyCards = orderedStrategyCards.map((card) => {
-    const naalu = (factions ?? {})["Naalu Collective"];
-    if (naalu && haveAllFactionsPicked() && firstCard) {
-      const gift = subState["Gift of Prescience"];
-      if (
-        (gift && card.faction === gift) ||
-        (!gift && card.faction === "Naalu Collective")
-      ) {
-        card.order = 0;
-        firstCard = false;
+  function getFirstCardForFaction(factionName: string) {
+    for (const strategyCard of orderedStrategyCards) {
+      if (strategyCard.faction === factionName) {
+        return strategyCard;
       }
     }
-    return card;
-  });
+    return undefined;
+  }
+
+  function giftOfPrescience(factionName: string | undefined) {
+    if (!gameid) {
+      return;
+    }
+    if (!factionName || subState["Gift of Prescience"] === factionName) {
+      const naaluCard = getFirstCardForFaction("Naalu Collective");
+      if (naaluCard) {
+        setFirstStrategyCard(gameid, naaluCard.name);
+      }
+      setSubStateOther(gameid, "Gift of Prescience", undefined);
+    } else {
+      const zeroCard = getFirstCardForFaction(factionName);
+      if (zeroCard) {
+        setFirstStrategyCard(gameid, zeroCard.name);
+      }
+      setSubStateOther(gameid, "Gift of Prescience", factionName);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -889,13 +879,13 @@ export default function StrategyPhase() {
             ) : null}
             <QuantumDatahubNode
               faction={(factions ?? {})["Emirates of Hacan"]}
-              strategyCards={finalStrategyCards}
+              strategyCards={orderedStrategyCards}
             />
             <QuantumDatahubNode
               faction={(factions ?? {})["Nekro Virus"]}
-              strategyCards={finalStrategyCards}
+              strategyCards={orderedStrategyCards}
             />
-            <ImperialArbiter strategyCards={finalStrategyCards} />
+            <ImperialArbiter strategyCards={orderedStrategyCards} />
           </div>
         ) : null}
       </div>

@@ -1319,21 +1319,6 @@ export function finalizeSubState(gameid: string, subState: SubState) {
     revealObjective(gameid, undefined, objectiveName);
   }
 
-  let firstCard = true;
-  const gift = subState["Gift of Prescience"];
-  for (const strategyCard of subState.strategyCards ?? []) {
-    if (firstCard) {
-      if (
-        (gift && strategyCard.assignedTo === gift) ||
-        (!gift && strategyCard.assignedTo === "Naalu Collective")
-      ) {
-        setFirstStrategyCard(gameid, strategyCard.name);
-        firstCard = false;
-      }
-    }
-    assignStrategyCard(gameid, strategyCard.name, strategyCard.assignedTo);
-  }
-
   for (const [factionName, faction] of Object.entries(
     subState.turnData?.factions ?? {}
   )) {

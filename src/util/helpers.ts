@@ -161,6 +161,17 @@ export function getOnDeckFaction(
   }
 }
 
+export function getLastPickedCard(state: GameState, subState: SubState) {
+  if (state.phase !== "STRATEGY") {
+    return undefined;
+  }
+
+  if (!subState.strategyCards) {
+    return undefined;
+  }
+  return subState.strategyCards[subState.strategyCards.length - 1];
+}
+
 export function getPreviousFaction(
   state: GameState,
   factions: Record<string, Faction>,
