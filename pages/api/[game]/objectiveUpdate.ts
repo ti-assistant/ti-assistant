@@ -291,10 +291,18 @@ export default async function handler(
             res.status(422);
             return;
           }
+          const maxOrder = Object.values(gameData.objectives ?? {}).reduce(
+            (maxOrder, obj) => {
+              return Math.max(maxOrder, obj.revealOrder ?? 0);
+            },
+            0
+          );
+          const orderString = `objectives.${data.objective}.revealOrder`;
           const typeString = `objectives.${data.objective}.type`;
           const revealedString = `objectives.${data.objective}.selected`;
           const updates: UpdateData<any> = {
             [revealedString]: true,
+            [orderString]: maxOrder + 1,
             [typeString]: data.type,
             [timestampString]: timestamp,
           };

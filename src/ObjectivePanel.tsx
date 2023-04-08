@@ -23,7 +23,7 @@ import { Options } from "./util/api/options";
 import { GameState } from "./util/api/state";
 import { fetcher } from "./util/api/util";
 import { getFactionColor, getFactionName } from "./util/factions";
-import { responsivePixels } from "./util/util";
+import { responsiveNegativePixels, responsivePixels } from "./util/util";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -118,6 +118,7 @@ function ObjectiveColumn({
             height: "100%",
             justifyContent: "space-between",
             gap: responsivePixels(2),
+            position: "relative",
           }}
         >
           {numScorers === 0 ? (
@@ -543,82 +544,6 @@ export function ObjectivePanel({}) {
               zIndex: -1,
               opacity: 0.5,
               height: "100%",
-              gridColumn: `3 / ${numStageOneObjectives + 3}`,
-              gridRow: "2 / 11",
-              borderRadius: "100%",
-              fontSize: responsivePixels(80),
-            }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                border: `${responsivePixels(5)} solid orange`,
-                width:
-                  numStageOneObjectives === 1
-                    ? responsivePixels(80)
-                    : responsivePixels(120),
-                height:
-                  numStageOneObjectives === 1
-                    ? responsivePixels(80)
-                    : responsivePixels(120),
-                borderRadius: "100%",
-                fontSize:
-                  numStageOneObjectives === 1
-                    ? responsivePixels(60)
-                    : responsivePixels(80),
-              }}
-            >
-              I
-            </div>
-          </div>
-          {numStageTwoObjectives !== 0 ? (
-            <div
-              className="flexRow"
-              style={{
-                position: "absolute",
-                width: "100%",
-                zIndex: -2,
-                opacity: 0.5,
-                height: "100%",
-                gridColumn: `${3 + numStageOneObjectives} / ${
-                  3 + numStageOneObjectives + numStageTwoObjectives
-                }`,
-                gridRow: "2 / 11",
-                borderRadius: "100%",
-                fontSize: responsivePixels(80),
-              }}
-            >
-              <div
-                className="flexRow"
-                style={{
-                  border: `${responsivePixels(5)} solid royalblue`,
-                  width:
-                    numStageTwoObjectives === 1
-                      ? responsivePixels(80)
-                      : responsivePixels(120),
-                  height:
-                    numStageTwoObjectives === 1
-                      ? responsivePixels(80)
-                      : responsivePixels(120),
-                  borderRadius: "100%",
-                  fontSize:
-                    numStageTwoObjectives === 1
-                      ? responsivePixels(60)
-                      : responsivePixels(80),
-                }}
-              >
-                II
-              </div>
-            </div>
-          ) : null}
-          <div
-            className="flexRow"
-            style={{
-              position: "absolute",
-              width: "100%",
-              zIndex: -1,
-              opacity: 0.5,
-              height: "100%",
               gridColumn: `${
                 3 + numStageOneObjectives + numStageTwoObjectives
               } / ${3 + numStageOneObjectives + numStageTwoObjectives + 1}`,
@@ -649,10 +574,23 @@ export function ObjectivePanel({}) {
               height: "100%",
               gridColumn: `3 / ${numStageOneObjectives + 3}`,
               gridRow: `2 / ${numRows + 1}`,
-              borderLeft: `${responsivePixels(1)} solid grey`,
-              borderRight: `${responsivePixels(1)} solid grey`,
+              borderLeft: `${responsivePixels(1)} solid orange`,
             }}
-          ></div>
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: responsiveNegativePixels(-36),
+                transform: "rotate(270deg)",
+                transformOrigin: "center center",
+                backgroundColor: "#222",
+                padding: `0 ${responsivePixels(4)}`,
+                color: "orange",
+              }}
+            >
+              Stage I
+            </div>
+          </div>
           <div
             className="flexRow"
             style={{
@@ -664,9 +602,23 @@ export function ObjectivePanel({}) {
                 numStageOneObjectives + numStageTwoObjectives + 3
               }`,
               gridRow: `2 / ${numRows + 1}`,
-              borderRight: `${responsivePixels(1)} solid grey`,
+              borderLeft: `${responsivePixels(1)} solid royalblue`,
             }}
-          ></div>
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: responsiveNegativePixels(-38),
+                transform: "rotate(270deg)",
+                transformOrigin: "center center",
+                backgroundColor: "#222",
+                padding: `0 ${responsivePixels(4)}`,
+                color: "royalblue",
+              }}
+            >
+              Stage II
+            </div>
+          </div>
           <div
             className="flexRow"
             style={{
@@ -678,9 +630,24 @@ export function ObjectivePanel({}) {
                 numStageOneObjectives + numStageTwoObjectives + 3
               } / ${numStageOneObjectives + numStageTwoObjectives + 4}`,
               gridRow: `2 / ${numRows + 1}`,
+              borderLeft: `${responsivePixels(1)} solid red`,
               borderRight: `${responsivePixels(1)} solid grey`,
             }}
-          ></div>
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: responsiveNegativePixels(-38),
+                transform: "rotate(270deg)",
+                transformOrigin: "center center",
+                backgroundColor: "#222",
+                padding: `0 ${responsivePixels(4)}`,
+                color: "red",
+              }}
+            >
+              Secrets
+            </div>
+          </div>
           {selectedStageTwoObjectives.map((objective) => {
             return (
               <ObjectiveColumn
@@ -703,6 +670,7 @@ export function ObjectivePanel({}) {
                   position: "relative",
                   width: "100%",
                   height: "100%",
+                  padding: `0 ${responsivePixels(8)}`,
                 }}
                 onClick={() => {
                   setFactionName(name);
