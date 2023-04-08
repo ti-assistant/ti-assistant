@@ -434,6 +434,7 @@ export interface PlanetRowProps {
   addPlanet?: (planetName: string) => void;
   removePlanet?: (planetName: string) => void;
   opts?: PlanetRowOpts;
+  prevOwner?: string;
 }
 
 export function PlanetRow({
@@ -442,6 +443,7 @@ export function PlanetRow({
   removePlanet,
   addPlanet,
   opts = {},
+  prevOwner,
 }: PlanetRowProps) {
   const router = useRouter();
   const { game: gameid } = router.query;
@@ -524,11 +526,12 @@ export function PlanetRow({
     setShowAttachModal(!showAttachModal);
   }
 
+  const previousOwner = prevOwner ?? planet.owner;
   let claimed: string | undefined =
-    planet.owner !== factionName || opts.showSelfOwned
-      ? planet.owner
+    previousOwner !== factionName || opts.showSelfOwned
+      ? previousOwner
       : undefined;
-  let claimedColor = getFactionColor(factions[planet.owner ?? ""]);
+  let claimedColor = getFactionColor(factions[previousOwner ?? ""]);
   if (claimedColor === "Black") {
     claimedColor = "#999";
   }

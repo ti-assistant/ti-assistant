@@ -43,7 +43,13 @@ import {
   setSpeaker,
   StateUpdateData,
 } from "../util/api/state";
-import { addAttachment, Planet, removeAttachment } from "../util/api/planets";
+import {
+  addAttachment,
+  claimPlanet,
+  Planet,
+  removeAttachment,
+  unclaimPlanet,
+} from "../util/api/planets";
 import {
   changeObjectiveType,
   Objective,
@@ -322,6 +328,13 @@ function AgendaDetails() {
       revalidateIfStale: false,
     }
   );
+  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
+    gameid ? `/api/${gameid}/planets` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
     fetcher,
@@ -422,10 +435,16 @@ function AgendaDetails() {
           );
         }
       );
+      let prevOwner: string | undefined;
       const selectedFaction = Object.entries(subState.factions ?? {}).find(
         ([_, faction]) => {
-          if (faction.planets && faction.planets.includes(selectedOutcome)) {
-            return true;
+          if (faction.planets) {
+            for (const claimedPlanet of faction.planets) {
+              if (claimedPlanet.name === selectedOutcome) {
+                prevOwner = claimedPlanet.prevOwner;
+                return true;
+              }
+            }
           }
           return false;
         }
@@ -442,8 +461,20 @@ function AgendaDetails() {
               return;
             }
             if (add) {
-              addSubStatePlanet(gameid, factionName, selectedOutcome);
+              claimPlanet(gameid, factionName, selectedOutcome);
+              const prevOwner = (planets ?? {})[selectedOutcome]?.owner;
+              addSubStatePlanet(
+                gameid,
+                factionName,
+                selectedOutcome,
+                prevOwner
+              );
             } else {
+              if (prevOwner) {
+                claimPlanet(gameid, prevOwner, selectedOutcome);
+              } else {
+                unclaimPlanet(gameid, selectedOutcome, factionName);
+              }
               removeSubStatePlanet(gameid, factionName, selectedOutcome);
             }
           }}

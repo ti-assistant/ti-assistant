@@ -17,6 +17,7 @@ import { Component } from "../../util/api/components";
 import { Faction } from "../../util/api/factions";
 import {
   addAttachment,
+  claimPlanet,
   Planet,
   purgePlanet,
   removeAttachment,
@@ -490,11 +491,17 @@ function ComponentDetails({ factionName }: { factionName: string }) {
     if (!gameid) {
       return;
     }
+    claimPlanet(gameid, planetName, factionName);
     addSubStatePlanet(gameid, factionName, planetName);
   }
-  function losePlanet(planetName: string) {
+  function losePlanet(planetName: string, prevOwner: string | undefined) {
     if (!gameid) {
       return;
+    }
+    if (prevOwner) {
+      claimPlanet(gameid, planetName, prevOwner);
+    } else {
+      unclaimPlanet(gameid, planetName, factionName);
     }
     removeSubStatePlanet(gameid, factionName, planetName);
   }
@@ -890,19 +897,24 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                 className="flexColumn"
                 style={{ alignItems: "stretch", width: "100%" }}
               >
-                {conqueredPlanets.map((planetName) => {
+                {conqueredPlanets.map((conqueredPlanet) => {
                   const planet = updatedPlanets.find(
-                    (planet) => planet.name === planetName
+                    (planet) => planet.name === conqueredPlanet.name
                   );
                   if (!planet) {
                     return null;
                   }
                   return (
                     <PlanetRow
-                      key={planetName}
+                      key={conqueredPlanet.name}
                       factionName={factionName}
                       planet={planet}
-                      removePlanet={() => losePlanet(planetName)}
+                      removePlanet={() =>
+                        losePlanet(
+                          conqueredPlanet.name,
+                          conqueredPlanet.prevOwner
+                        )
+                      }
                     />
                   );
                 })}

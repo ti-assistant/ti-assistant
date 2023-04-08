@@ -32,6 +32,7 @@ import {
   clearSubState,
   finalizeSubState,
   markSecondary,
+  PlanetEvent,
   removeSubStatePlanet,
   scoreSubStateObjective,
   Secondary,
@@ -46,7 +47,7 @@ import { applyPlanetAttachments } from "../util/planets";
 import { ComponentAction } from "./util/ComponentAction";
 import { GameState, nextPlayer, StateUpdateData } from "../util/api/state";
 import { Attachment } from "../util/api/attachments";
-import { Planet } from "../util/api/planets";
+import { claimPlanet, Planet, unclaimPlanet } from "../util/api/planets";
 import {
   hasScoredObjective,
   Objective,
@@ -533,28 +534,35 @@ export function AdditionalActions({
 
   const researchableTechs = getResearchableTechs(activeFaction);
 
-  function removePlanet(factionName: string, toRemove: string) {
+  function removePlanet(factionName: string, toRemove: PlanetEvent) {
     if (!gameid) {
       return;
     }
-    if (toRemove === "Mecatol Rex") {
-      if (!(planets ?? {})["Mecatol Rex"]?.owner) {
+    if (toRemove.name === "Mecatol Rex") {
+      if (!toRemove.prevOwner) {
         undoObjective(factionName, "Custodians Token");
       }
     }
-    removeSubStatePlanet(gameid, factionName, toRemove);
+    if (toRemove.prevOwner) {
+      claimPlanet(gameid, toRemove.name, toRemove.prevOwner);
+    } else {
+      unclaimPlanet(gameid, toRemove.name, factionName);
+    }
+    removeSubStatePlanet(gameid, factionName, toRemove.name);
   }
 
   function addPlanet(factionName: string, toAdd: Planet) {
     if (!gameid) {
       return;
     }
+    const prevOwner = toAdd.owner;
     if (toAdd.name === "Mecatol Rex") {
-      if (!(planets ?? {})["Mecatol Rex"]?.owner) {
+      if (!prevOwner) {
         addObjective(factionName, "Custodians Token");
       }
     }
-    addSubStatePlanet(gameid, factionName, toAdd.name);
+    claimPlanet(gameid, toAdd.name, factionName);
+    addSubStatePlanet(gameid, factionName, toAdd.name, prevOwner);
   }
 
   function addObjective(factionName: string, toScore: string) {
@@ -620,11 +628,13 @@ export function AdditionalActions({
     if (planet.locked) {
       return false;
     }
-    if (claimedPlanets.includes(planet.name)) {
-      return false;
+    for (const claimedPlanet of claimedPlanets) {
+      if (claimedPlanet.name === planet.name) {
+        return false;
+      }
     }
     if (claimedPlanets.length > 0) {
-      const claimedPlanetName = claimedPlanets[0];
+      const claimedPlanetName = claimedPlanets[0]?.name;
       const claimedPlanet = planets[claimedPlanetName ?? ""];
       if (claimedPlanet?.system) {
         return planet.system === claimedPlanet.system;
@@ -971,7 +981,7 @@ export function AdditionalActions({
                 {claimedPlanets.length > 0 ? (
                   <div className="flexColumn" style={{ alignItems: "stretch" }}>
                     {claimedPlanets.map((planet) => {
-                      const planetObj = planets[planet];
+                      const planetObj = planets[planet.name];
                       if (!planetObj) {
                         return null;
                       }
@@ -981,7 +991,7 @@ export function AdditionalActions({
                       );
                       return (
                         <PlanetRow
-                          key={planet}
+                          key={planet.name}
                           factionName={activeFaction.name}
                           planet={adjustedPlanet}
                           removePlanet={() =>
@@ -1037,11 +1047,13 @@ export function AdditionalActions({
             if (planet.locked) {
               return false;
             }
-            if (claimedPlanets.includes(planet.name)) {
-              return false;
+            for (const claimedPlanet of claimedPlanets) {
+              if (claimedPlanet.name === planet.name) {
+                return false;
+              }
             }
             if (claimedPlanets.length > 0) {
-              const claimedPlanetName = claimedPlanets[0];
+              const claimedPlanetName = claimedPlanets[0]?.name;
               const claimedPlanet = planets[claimedPlanetName ?? ""];
               if (claimedPlanet?.system) {
                 return planet.system === claimedPlanet.system;
@@ -1073,7 +1085,7 @@ export function AdditionalActions({
                     style={{ alignItems: "stretch", width: "100%" }}
                   >
                     {xxchaPlanets.map((planet) => {
-                      const planetObj = planets[planet];
+                      const planetObj = planets[planet.name];
                       if (!planetObj) {
                         return null;
                       }
@@ -1083,7 +1095,7 @@ export function AdditionalActions({
                       );
                       return (
                         <PlanetRow
-                          key={planet}
+                          key={planet.name}
                           factionName={"Xxcha Kingdom"}
                           planet={adjustedPlanet}
                           removePlanet={() => {
@@ -1359,8 +1371,8 @@ export function AdditionalActions({
           becomeAMartyr.type === "STAGE ONE")
       ) {
         const scorers = becomeAMartyr.scorers ?? [];
-        for (const planetName of conqueredPlanets) {
-          const planet = (planets ?? {})[planetName];
+        for (const conqueredPlanet of conqueredPlanets) {
+          const planet = (planets ?? {})[conqueredPlanet.name];
           if (!planet) {
             continue;
           }
@@ -1391,7 +1403,7 @@ export function AdditionalActions({
                   style={{ alignItems: "stretch", width: "100%" }}
                 >
                   {conqueredPlanets.map((planet) => {
-                    const planetObj = planets[planet];
+                    const planetObj = planets[planet.name];
                     if (!planetObj) {
                       return null;
                     }
@@ -1401,12 +1413,13 @@ export function AdditionalActions({
                     );
                     return (
                       <PlanetRow
-                        key={planet}
+                        key={planet.name}
                         factionName={activeFaction.name}
                         planet={adjustedPlanet}
                         removePlanet={() =>
                           removePlanet(activeFaction.name, planet)
                         }
+                        prevOwner={planet.prevOwner}
                       />
                     );
                   })}

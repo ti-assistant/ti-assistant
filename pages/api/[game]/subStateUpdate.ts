@@ -209,8 +209,14 @@ export default async function handler(
         return;
       }
       const planetString = `subState.turnData.factions.${data.factionName}.planets`;
+      const updateValue: PlanetEvent = {
+        name: data.planetName,
+      };
+      if (data.prevOwner) {
+        updateValue.prevOwner = data.prevOwner;
+      }
       updates = {
-        [planetString]: FieldValue.arrayUnion(data.planetName),
+        [planetString]: FieldValue.arrayUnion(updateValue),
         [timestampString]: timestamp,
       };
       break;
@@ -222,9 +228,17 @@ export default async function handler(
           .send({ message: "Missing Faction Name or Planet Name" });
         return;
       }
+      const planets = (gameData.subState?.turnData?.factions ?? {})[
+        data.factionName
+      ]?.planets;
+      if (!planets) {
+        break;
+      }
       const planetString = `subState.turnData.factions.${data.factionName}.planets`;
       updates = {
-        [planetString]: FieldValue.arrayRemove(data.planetName),
+        [planetString]: planets.filter(
+          (planet) => planet.name !== data.planetName
+        ),
         [timestampString]: timestamp,
       };
       break;
@@ -580,25 +594,25 @@ export default async function handler(
           subState.turnData?.factions ?? {}
         )) {
           // NOTE: Pretty sure this won't actually work properly...
-          for (const planet of value.planets ?? []) {
-            const planetName = planet === "[0.0.0]" ? "000" : planet;
-            if (factionName === "Xxcha Kingdom") {
-              if (
-                await shouldUnlockXxchaCommander(
-                  {
-                    action: "ADD_PLANET",
-                    planet: planetName,
-                  },
-                  gameData,
-                  gamePlanets,
-                  attachments
-                )
-              ) {
-                updates[`factions.Xxcha Kingdom.commander`] = "unlocked";
-                updates[`updates.factions.timestamp`] = timestamp;
-              }
-            }
-          }
+          // for (const planet of value.planets ?? []) {
+          //   const planetName = planet === "[0.0.0]" ? "000" : planet;
+          //   if (factionName === "Xxcha Kingdom") {
+          //     if (
+          //       await shouldUnlockXxchaCommander(
+          //         {
+          //           action: "ADD_PLANET",
+          //           planet: planetName,
+          //         },
+          //         gameData,
+          //         gamePlanets,
+          //         attachments
+          //       )
+          //     ) {
+          //       updates[`factions.Xxcha Kingdom.commander`] = "unlocked";
+          //       updates[`updates.factions.timestamp`] = timestamp;
+          //     }
+          //   }
+          // }
           if (
             (value.objectives ?? []).length > 0 &&
             gameData.factions[factionName]?.hero === "locked"

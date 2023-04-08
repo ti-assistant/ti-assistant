@@ -11,7 +11,12 @@ import {
   scoreObjective,
   unscoreObjective,
 } from "./objectives";
-import { claimPlanet, removeAttachment, unpurgePlanet } from "./planets";
+import {
+  claimPlanet,
+  removeAttachment,
+  unclaimPlanet,
+  unpurgePlanet,
+} from "./planets";
 import { gainRelic } from "./relics";
 import { setGlobalPause, setSpeaker } from "./state";
 import { lockTech, unlockTech } from "./techs";
@@ -90,6 +95,7 @@ export interface SubStateUpdateData {
   objectiveName?: string;
   outcome?: string;
   planetName?: string;
+  prevOwner?: string;
   relicName?: string;
   secondary?: Secondary;
   riderName?: string;
@@ -112,7 +118,7 @@ export interface PlanetEvent {
 export interface SubStateFaction {
   secondary?: Secondary;
   objectives?: string[];
-  planets?: string[];
+  planets?: PlanetEvent[];
   relic?: RelicEvent;
   removeTechs?: string[];
   target?: string;
@@ -167,6 +173,14 @@ function rewindSubStateFaction(
   factionName: string,
   faction: SubStateFaction
 ) {
+  // Planets
+  for (const planet of faction.planets ?? []) {
+    if (planet.prevOwner) {
+      claimPlanet(gameId, planet.name, planet.prevOwner);
+    } else {
+      unclaimPlanet(gameId, planet.name, factionName);
+    }
+  }
   // Objectives
   for (const objective of faction.objectives ?? []) {
     if (objective !== "Imperial Point") {
@@ -510,7 +524,8 @@ export function clearRemovedSubStateTech(
 export function addSubStatePlanet(
   gameid: string,
   factionName: string,
-  planetName: string
+  planetName: string,
+  prevOwner?: string
 ) {
   setGlobalPause(gameid, false);
 
@@ -518,6 +533,7 @@ export function addSubStatePlanet(
     action: "ADD_PLANET",
     factionName: factionName,
     planetName: planetName,
+    prevOwner: prevOwner,
   };
 
   mutate(
@@ -539,7 +555,7 @@ export function addSubStatePlanet(
           faction.planets = [];
         }
 
-        faction.planets.push(planetName);
+        faction.planets.push({ name: planetName, prevOwner: prevOwner });
 
         updatedSubState.turnData.factions[factionName] = faction;
 
@@ -584,7 +600,7 @@ export function removeSubStatePlanet(
         }
 
         updatedFaction.planets = updatedFaction.planets.filter(
-          (planet) => planet !== planetName
+          (planet) => planet.name !== planetName
         );
 
         return updatedSubState;
@@ -1323,20 +1339,20 @@ export function finalizeSubState(gameid: string, subState: SubState) {
     subState.turnData?.factions ?? {}
   )) {
     // Conquered planets
-    for (let planetName of faction.planets ?? []) {
-      planetName = planetName === "[0.0.0]" ? "000" : planetName;
-      claimPlanet(gameid, planetName, factionName);
-    }
+    // for (let planetName of faction.planets ?? []) {
+    //   planetName = planetName === "[0.0.0]" ? "000" : planetName;
+    //   claimPlanet(gameid, planetName, factionName);
+    // }
   }
 
   for (const [factionName, updates] of Object.entries(
     subState.factions ?? {}
   )) {
     // Conquered planets
-    for (let planetName of updates.planets ?? []) {
-      planetName = planetName === "[0.0.0]" ? "000" : planetName;
-      claimPlanet(gameid, planetName, factionName);
-    }
+    // for (let planetName of updates.planets ?? []) {
+    //   planetName = planetName === "[0.0.0]" ? "000" : planetName;
+    //   claimPlanet(gameid, planetName, factionName);
+    // }
     // Scored objectives
     // for (const objectiveName of updates.objectives ?? []) {
     //   scoreObjective(gameid, factionName, objectiveName);
