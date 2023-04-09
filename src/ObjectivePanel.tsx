@@ -21,6 +21,10 @@ import {
 } from "./util/api/objectives";
 import { Options } from "./util/api/options";
 import { GameState } from "./util/api/state";
+import {
+  hideSubStateObjective,
+  revealSubStateObjective,
+} from "./util/api/subState";
 import { fetcher } from "./util/api/util";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
@@ -128,6 +132,7 @@ function ObjectiveColumn({
                 if (!gameid) {
                   return;
                 }
+                hideSubStateObjective(gameid, objective.name);
                 removeObjective(gameid, undefined, objective.name);
               }}
             >
@@ -474,6 +479,7 @@ export function ObjectivePanel({}) {
               gridRow: "1 / 2",
               height: "100%",
               alignItems: "center",
+              justifyContent: "flex-end",
               width: "100%",
             }}
           >
@@ -484,6 +490,7 @@ export function ObjectivePanel({}) {
                 flexDirection: "row",
                 width: "min-content",
                 alignItems: "stretch",
+                gridRow: "1 / 2",
               }}
             >
               <Selector
@@ -494,6 +501,7 @@ export function ObjectivePanel({}) {
                     return;
                   }
                   if (add) {
+                    revealSubStateObjective(gameid, objectiveName);
                     revealObjective(gameid, undefined, objectiveName);
                   } else {
                     removeObjective(gameid, undefined, objectiveName);
@@ -508,6 +516,7 @@ export function ObjectivePanel({}) {
                     return;
                   }
                   if (add) {
+                    revealSubStateObjective(gameid, objectiveName);
                     revealObjective(gameid, undefined, objectiveName);
                   } else {
                     removeObjective(gameid, undefined, objectiveName);
@@ -580,12 +589,14 @@ export function ObjectivePanel({}) {
             <div
               style={{
                 position: "absolute",
-                left: responsiveNegativePixels(-36),
+                left: 0,
+                marginBottom: responsiveNegativePixels(-68),
                 transform: "rotate(270deg)",
-                transformOrigin: "center center",
+                transformOrigin: "left center",
                 backgroundColor: "#222",
                 padding: `0 ${responsivePixels(4)}`,
                 color: "orange",
+                whiteSpace: "nowrap",
               }}
             >
               Stage I
@@ -608,12 +619,14 @@ export function ObjectivePanel({}) {
             <div
               style={{
                 position: "absolute",
-                left: responsiveNegativePixels(-38),
+                left: 0,
+                marginBottom: responsiveNegativePixels(-72),
                 transform: "rotate(270deg)",
-                transformOrigin: "center center",
+                transformOrigin: "left center",
                 backgroundColor: "#222",
                 padding: `0 ${responsivePixels(4)}`,
                 color: "royalblue",
+                whiteSpace: "nowrap",
               }}
             >
               Stage II
@@ -637,9 +650,10 @@ export function ObjectivePanel({}) {
             <div
               style={{
                 position: "absolute",
-                left: responsiveNegativePixels(-38),
+                left: 0,
+                marginBottom: responsiveNegativePixels(-68),
                 transform: "rotate(270deg)",
-                transformOrigin: "center center",
+                transformOrigin: "left center",
                 backgroundColor: "#222",
                 padding: `0 ${responsivePixels(4)}`,
                 color: "red",

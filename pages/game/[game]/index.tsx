@@ -102,6 +102,24 @@ export default function SelectFactionPage() {
               </div>
             </a>
           </Link>
+          <Link href={`/game/${gameid}/objectives`}>
+            <a>
+              <div
+                style={{
+                  border: `${responsivePixels(3)} solid grey`,
+                  borderRadius: responsivePixels(5),
+                  height: `8vh`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: `${responsivePixels(24)}`,
+                  cursor: "pointer",
+                }}
+              >
+                Objective View
+              </div>
+            </a>
+          </Link>
           {orderedFactions.map(([name, faction]) => {
             return (
               <Link href={`/game/${gameid}/${name}`} key={faction.name}>

@@ -228,7 +228,7 @@ export function setSubStateSelectedAction(gameid: string, actionName: Action) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
         rewindTurnData(gameid, subState.turnData);
 
         updatedSubState.turnData = {};
@@ -255,7 +255,7 @@ export function selectSubStateComponent(gameid: string, componentName: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -284,7 +284,7 @@ export function setSubStateSpeaker(gameid: string, factionName: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -311,7 +311,7 @@ export function undoSubStateSpeaker(gameid: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         delete updatedSubState.speaker;
 
@@ -341,7 +341,7 @@ export function addSubStateTech(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -390,7 +390,7 @@ export function clearAddedSubStateTech(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (
           !updatedSubState.turnData ||
@@ -440,7 +440,7 @@ export function removeSubStateTech(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -490,7 +490,7 @@ export function clearRemovedSubStateTech(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (
           !updatedSubState.turnData ||
@@ -541,7 +541,7 @@ export function addSubStatePlanet(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -584,7 +584,7 @@ export function removeSubStatePlanet(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (
           !updatedSubState.turnData ||
@@ -628,7 +628,7 @@ export function scoreSubStateObjective(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -671,7 +671,7 @@ export function unscoreSubStateObjective(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData || !updatedSubState.turnData.factions) {
           return updatedSubState;
@@ -713,7 +713,7 @@ export function castSubStateVotes(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.factions) {
           updatedSubState.factions = {};
@@ -748,7 +748,7 @@ export function revealSubStateObjective(gameid: string, objectiveName: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.objectives) {
           updatedSubState.objectives = [];
@@ -774,7 +774,7 @@ export function hideSubStateObjective(gameid: string, objectiveName: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.objectives) {
           return updatedSubState;
@@ -803,7 +803,7 @@ export function revealSubStateAgenda(gameid: string, agendaName: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         updatedSubState.agenda = agendaName;
 
@@ -825,7 +825,7 @@ export function hideSubStateAgenda(gameid: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         delete updatedSubState.agenda;
         delete updatedSubState.tieBreak;
@@ -852,7 +852,7 @@ export function repealSubStateAgenda(gameid: string, agendaName: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         updatedSubState.repealedAgenda = agendaName;
 
@@ -874,7 +874,7 @@ export function removeRepealedSubStateAgenda(gameid: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         delete updatedSubState.repealedAgenda;
 
@@ -903,7 +903,7 @@ export function toggleSubStateRelic(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.factions) {
           updatedSubState.factions = {};
@@ -947,7 +947,7 @@ export function toggleSubStatePoliticalSecret(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -991,7 +991,7 @@ export function destroySubStatePlanet(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -1031,7 +1031,7 @@ export function toggleSubStateAttachment(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -1070,7 +1070,7 @@ export function pickSubStateStrategyCard(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.strategyCards) {
           updatedSubState.strategyCards = [];
@@ -1112,7 +1112,7 @@ export function undoSubStateStrategyCard(gameid: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         (updatedSubState.strategyCards ?? []).pop();
 
@@ -1140,7 +1140,7 @@ export function swapSubStateStrategyCards(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         (updatedSubState.strategyCards ?? []).forEach((card) => {
           if (cardTwo.name && card.name === cardOne.name) {
@@ -1176,7 +1176,7 @@ export function addSubStateRider(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.riders) {
           updatedSubState.riders = {};
@@ -1206,7 +1206,7 @@ export function removeSubStateRider(gameid: string, riderName: string) {
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState);
+        const updatedSubState = structuredClone(subState ?? {});
 
         if (!updatedSubState.riders) {
           return updatedSubState;
@@ -1238,7 +1238,7 @@ export function markSecondary(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState) ?? {};
+        const updatedSubState = structuredClone(subState ?? {}) ?? {};
 
         if (!updatedSubState.turnData) {
           updatedSubState.turnData = {};
@@ -1278,7 +1278,7 @@ export function setSubStateOther(
     async () => await poster(`/api/${gameid}/subStateUpdate`, data),
     {
       optimisticData: (subState: SubState) => {
-        const updatedSubState = structuredClone(subState) ?? {};
+        const updatedSubState = structuredClone(subState ?? {}) ?? {};
 
         updatedSubState[fieldName] = value;
 

@@ -87,7 +87,7 @@ export function setupPhaseComplete(
   return (
     factionSubFactionChoicesComplete(factions) &&
     factionTechChoicesComplete(factions) &&
-    (subState.objectives ?? []).length > 1
+    (subState.objectives ?? []).length === 2
   );
 }
 

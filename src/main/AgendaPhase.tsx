@@ -1128,7 +1128,7 @@ function AgendaSteps() {
                 <button onClick={() => hideAgenda()}>{vetoText}</button>
               </div>
               <LabeledDiv label="Political Secret">
-                <div className="flexRow">
+                <div className="flexRow" style={{ width: "100%" }}>
                   {votingOrder.map((faction) => {
                     const politicalSecret = ((subState.turnData ?? {})
                       .factions ?? {})[faction.name]?.politicalSecret;

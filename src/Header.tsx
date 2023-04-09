@@ -71,10 +71,43 @@ export function Sidebar({ side, children }: PropsWithChildren<SidebarProps>) {
 export function NonGameHeader({
   leftSidebar,
   rightSidebar,
+  gameId,
 }: {
   leftSidebar?: string;
   rightSidebar?: string;
+  gameId?: string;
 }) {
+  const [qrCode, setQrCode] = useState<string>();
+  const [qrCodeSize, setQrCodeSize] = useState(164);
+
+  useEffect(() => {
+    setQrCodeSize(
+      Math.max(
+        164 + (328 - 164) * ((window.innerWidth - 1280) / (2560 - 1280)),
+        164
+      )
+    );
+  }, []);
+
+  if (!qrCode && gameId) {
+    QRCode.toDataURL(
+      `https://ti-assistant.com/game/${gameId}`,
+      {
+        color: {
+          dark: "#eeeeeeff",
+          light: "#222222ff",
+        },
+        width: qrCodeSize,
+        margin: 4,
+      },
+      (err, url) => {
+        if (err) {
+          throw err;
+        }
+        setQrCode(url);
+      }
+    );
+  }
   return (
     <div
       className="flexRow"
@@ -140,6 +173,34 @@ export function NonGameHeader({
             Twilight Imperium Assistant
           </a>
         </Link>
+
+        {gameId ? (
+          <Link href={`/game/${gameId}`}>
+            <a>
+              <ClientOnlyHoverMenu
+                label={`Game: ${gameId}`}
+                buttonStyle={{
+                  position: "fixed",
+                  top: responsivePixels(64),
+                  left: responsivePixels(96),
+                }}
+              >
+                <div
+                  className="flexColumn"
+                  style={{
+                    position: "relative",
+                    zIndex: 10000,
+                    marginTop: responsivePixels(8),
+                  }}
+                >
+                  {qrCode ? (
+                    <img src={qrCode} alt="QR Code for joining game" />
+                  ) : null}
+                </div>
+              </ClientOnlyHoverMenu>
+            </a>
+          </Link>
+        ) : null}
       </div>
     </div>
   );
@@ -328,34 +389,31 @@ export function Header() {
             ) : null}
           </div>
         ) : (
-          <ClientOnlyHoverMenu
-            label="View QR Code"
-            buttonStyle={{
-              position: "fixed",
-              top: responsivePixels(64),
-              left: responsivePixels(96),
-            }}
-          >
-            <div
-              className="flexColumn"
-              style={{
-                position: "relative",
-                zIndex: 10000,
-                marginTop: responsivePixels(8),
-              }}
-            >
-              <div
-                style={{
-                  margin: `0 ${responsivePixels(8)}`,
+          <Link href={`/game/${gameid}`}>
+            <a>
+              <ClientOnlyHoverMenu
+                label={`Game: ${gameid}`}
+                buttonStyle={{
+                  position: "fixed",
+                  top: responsivePixels(64),
+                  left: responsivePixels(96),
                 }}
               >
-                Game ID: {gameid}
-              </div>
-              {qrCode ? (
-                <img src={qrCode} alt="QR Code for joining game" />
-              ) : null}
-            </div>
-          </ClientOnlyHoverMenu>
+                <div
+                  className="flexColumn"
+                  style={{
+                    position: "relative",
+                    zIndex: 10000,
+                    marginTop: responsivePixels(8),
+                  }}
+                >
+                  {qrCode ? (
+                    <img src={qrCode} alt="QR Code for joining game" />
+                  ) : null}
+                </div>
+              </ClientOnlyHoverMenu>
+            </a>
+          </Link>
         )
       ) : null}
       {gameFinished || state?.phase === "END" ? (
