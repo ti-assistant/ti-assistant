@@ -1331,10 +1331,6 @@ export function finalizeSubState(gameid: string, subState: SubState) {
   //   repealAgenda(gameid, subState.repealedAgenda);
   // }
 
-  for (const objectiveName of subState.objectives ?? []) {
-    revealObjective(gameid, undefined, objectiveName);
-  }
-
   for (const [factionName, faction] of Object.entries(
     subState.turnData?.factions ?? {}
   )) {

@@ -53,6 +53,8 @@ import {
 import {
   changeObjectiveType,
   Objective,
+  removeObjective,
+  revealObjective,
   scoreObjective,
   unscoreObjective,
 } from "../util/api/objectives";
@@ -411,8 +413,10 @@ function AgendaDetails() {
             }
             if (add) {
               revealSubStateObjective(gameid, objectiveName);
+              revealObjective(gameid, undefined, objectiveName);
             } else {
               hideSubStateObjective(gameid, objectiveName);
+              removeObjective(gameid, undefined, objectiveName);
             }
           }}
         />

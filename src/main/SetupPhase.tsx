@@ -18,7 +18,11 @@ import { responsivePixels } from "../util/util";
 import { NumberedItem } from "../NumberedItem";
 import { Faction } from "../util/api/factions";
 import { GameState, StateUpdateData } from "../util/api/state";
-import { Objective } from "../util/api/objectives";
+import {
+  Objective,
+  removeObjective,
+  revealObjective,
+} from "../util/api/objectives";
 import { SelectableRow } from "../SelectableRow";
 import { LockedButtons } from "../LockedButton";
 
@@ -219,6 +223,7 @@ export default function SetupPhase() {
                               return;
                             }
                             hideSubStateObjective(gameid, objectiveName);
+                            removeObjective(gameid, undefined, objectiveName);
                           }}
                         >
                           {objectiveName}
@@ -274,6 +279,11 @@ export default function SetupPhase() {
                               }
                               closeFn();
                               revealSubStateObjective(gameid, objective.name);
+                              revealObjective(
+                                gameid,
+                                undefined,
+                                objective.name
+                              );
                             }}
                           >
                             {objective.name}

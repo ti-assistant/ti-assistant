@@ -68,6 +68,8 @@ import { ObjectiveRow } from "../../../src/ObjectiveRow";
 import {
   Objective,
   ObjectiveType,
+  removeObjective,
+  revealObjective,
   scoreObjective,
   unscoreObjective,
 } from "../../../src/util/api/objectives";
@@ -214,12 +216,14 @@ function PhaseSection() {
       return;
     }
     revealSubStateObjective(gameid, objectiveName);
+    revealObjective(gameid, undefined, objectiveName);
   }
   function removeObj(objectiveName: string) {
     if (!gameid) {
       return;
     }
     hideSubStateObjective(gameid, objectiveName);
+    removeObjective(gameid, undefined, objectiveName);
   }
   function scoreObj(objectiveName: string) {
     if (!gameid || !factionName) {

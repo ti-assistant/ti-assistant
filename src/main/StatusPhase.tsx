@@ -10,6 +10,8 @@ import { fetcher, poster } from "../util/api/util";
 import { ObjectiveRow } from "../ObjectiveRow";
 import {
   Objective,
+  removeObjective,
+  revealObjective,
   scoreObjective,
   unscoreObjective,
 } from "../util/api/objectives";
@@ -824,6 +826,7 @@ export default function StatusPhase() {
       return;
     }
     revealSubStateObjective(gameid, objectiveName);
+    revealObjective(gameid, undefined, objectiveName);
   }
 
   function removeObj(objectiveName: string) {
@@ -831,6 +834,7 @@ export default function StatusPhase() {
       return;
     }
     hideSubStateObjective(gameid, objectiveName);
+    removeObjective(gameid, undefined, objectiveName);
   }
 
   const nextPhaseButtons = [];

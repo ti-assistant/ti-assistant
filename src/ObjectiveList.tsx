@@ -14,6 +14,10 @@ import {
   ObjectiveType,
 } from "./util/api/objectives";
 import { LabeledLine } from "./LabeledDiv";
+import {
+  hideSubStateObjective,
+  revealSubStateObjective,
+} from "./util/api/subState";
 
 function sortObjectivesByName(objectives: Objective[]) {
   objectives.sort((a, b) => {
@@ -49,12 +53,18 @@ function SecretTab({ factionName }: { factionName: string }) {
     if (!gameid || !factionName) {
       return;
     }
+    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
+      revealSubStateObjective(gameid, objectiveName);
+    }
     revealObjective(gameid, factionName, objectiveName);
     setEditMode(false);
   }
   function removeObj(objectiveName: string) {
     if (!gameid || !factionName) {
       return;
+    }
+    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
+      hideSubStateObjective(gameid, objectiveName);
     }
     removeObjective(gameid, factionName, objectiveName);
   }
@@ -180,12 +190,18 @@ export function ObjectiveList() {
     if (!gameid || !factionName) {
       return;
     }
+    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
+      revealSubStateObjective(gameid, objectiveName);
+    }
     revealObjective(gameid, factionName, objectiveName);
     setEditMode(false);
   }
   function removeObj(objectiveName: string) {
     if (!gameid || !factionName) {
       return;
+    }
+    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
+      hideSubStateObjective(gameid, objectiveName);
     }
     removeObjective(gameid, factionName, objectiveName);
   }
@@ -232,7 +248,13 @@ export function ObjectiveList() {
     }
     switch (stage) {
       case "STAGE ONE":
-        if (stageOneObjectives.length < 5) {
+        let maxStageOne = 6;
+        for (const objective of stageOneObjectives) {
+          if (objective.phase) {
+            maxStageOne = 7;
+          }
+        }
+        if (stageOneObjectives.length < maxStageOne) {
           return <button onClick={toggleEditMode}>Reveal Objective</button>;
         } else if (
           stageOneObjectives.length === 5 &&
@@ -339,7 +361,9 @@ export function ObjectiveList() {
                     objective={obj}
                     scoreObjective={scoreObj}
                     removeObjective={
-                      editMode ? undefined : () => removeObj(obj.name)
+                      editMode || (obj.scorers ?? []).length > 0
+                        ? undefined
+                        : () => removeObj(obj.name)
                     }
                     addObjective={editMode ? () => addObj(obj.name) : undefined}
                   />
