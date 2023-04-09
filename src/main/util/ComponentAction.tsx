@@ -662,6 +662,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
     }
     case "Gain Relic":
     case "Black Market Forgery":
+    case "Hesh and Prit":
     case "Fabrication": {
       const unownedRelics = Object.values(relics ?? {})
         .filter((relic) => !relic.owner)

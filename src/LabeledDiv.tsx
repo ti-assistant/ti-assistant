@@ -93,6 +93,7 @@ export function LabeledDiv({
             width: "100%",
             height: "100%",
             backdropFilter: "blur(4px)",
+            filter: "blur(0)",
           }}
         ></div>
       )}
