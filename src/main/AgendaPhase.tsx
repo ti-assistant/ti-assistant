@@ -32,6 +32,7 @@ import {
   SubState,
   SubStateFaction,
   toggleSubStatePoliticalSecret,
+  toggleSubStateRelic,
 } from "../util/api/subState";
 import { Faction, resetCastVotes, updateCastVotes } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
@@ -68,6 +69,8 @@ import { LockedButtons } from "../LockedButton";
 import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
 import { Tech } from "../util/api/techs";
 import { FullFactionSymbol } from "../FactionCard";
+import { gainRelic, loseRelic, Relic } from "../util/api/relics";
+import { InfoRow } from "../InfoRow";
 
 const RIDERS = [
   "Galactic Threat",
@@ -337,6 +340,13 @@ function AgendaDetails() {
       revalidateIfStale: false,
     }
   );
+  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
+    gameid ? `/api/${gameid}/relics` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
   const { data: subState = {} }: { data?: SubState } = useSWR(
     gameid ? `/api/${gameid}/subState` : null,
     fetcher,
@@ -344,6 +354,21 @@ function AgendaDetails() {
       revalidateIfStale: false,
     }
   );
+
+  function addRelic(relicName: string, factionName: string) {
+    if (!gameid) {
+      return;
+    }
+    gainRelic(gameid, relicName, factionName);
+    toggleSubStateRelic(gameid, relicName, factionName);
+  }
+  function removeRelic(relicName: string, factionName: string) {
+    if (!gameid) {
+      return;
+    }
+    loseRelic(gameid, relicName, factionName);
+    toggleSubStateRelic(gameid, undefined, factionName);
+  }
 
   const agendaName =
     subState.agenda === "Covert Legislation"
@@ -480,6 +505,58 @@ function AgendaDetails() {
                 unclaimPlanet(gameid, selectedOutcome, factionName);
               }
               removeSubStatePlanet(gameid, factionName, selectedOutcome);
+            }
+          }}
+        />
+      );
+    }
+    case "Minister of Antiques": {
+      const unownedRelics = Object.values(relics ?? {})
+        .filter((relic) => !relic.owner)
+        .map((relic) => relic.name);
+      return (
+        <Selector
+          hoverMenuLabel="Gain Relic"
+          options={unownedRelics}
+          renderItem={(itemName) => {
+            const relic = (relics ?? {})[itemName];
+            if (!relic) {
+              return null;
+            }
+            return (
+              <LabeledDiv label="Gained Relic">
+                <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
+                  <SelectableRow
+                    itemName={relic.name}
+                    removeItem={() => {
+                      removeRelic(relic.name, selectedOutcome);
+                    }}
+                  >
+                    <InfoRow
+                      infoTitle={relic.name}
+                      infoContent={relic.description}
+                    >
+                      {relic.name}
+                    </InfoRow>
+                  </SelectableRow>
+                  {relic.name === "Shard of the Throne" ? (
+                    <div>+1 VP</div>
+                  ) : null}
+                </div>
+              </LabeledDiv>
+            );
+          }}
+          selectedItem={
+            (
+              ((subState.turnData ?? {}).factions ?? {})[selectedOutcome]
+                ?.relic ?? {}
+            ).name
+          }
+          toggleItem={(relicName, add) => {
+            if (add) {
+              addRelic(relicName, selectedOutcome);
+            } else {
+              removeRelic(relicName, selectedOutcome);
             }
           }}
         />
@@ -804,10 +881,7 @@ function AgendaSteps() {
     return subState["Hack Election"] ? b.order - a.order : a.order - b.order;
   });
 
-  const flexDirection =
-    currentAgenda && currentAgenda.elect === "For/Against"
-      ? "flexRow"
-      : "flexColumn";
+  const flexDirection = "flexColumn";
   const label = !!subState.miscount
     ? "Re-voting on Miscounted Agenda"
     : agendaNum === 1
