@@ -79,6 +79,7 @@ export function FactionSelectHoverMenu({
         factionName={selectedFaction}
         tag={tag}
         tagBorderColor={tagBorderColor}
+        size={size}
       />
       <div
         className={`flexRow hoverRadio ${styles.hoverMenu} ` + direction}

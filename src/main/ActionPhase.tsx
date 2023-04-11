@@ -138,6 +138,7 @@ function SecondaryCheck({
                   </div>
                 )
               }
+              tagBorderColor={secondaryState === "DONE" ? "green" : "red"}
             >
               {/* {secondaryState === "DONE" ? (
                 <div
@@ -850,6 +851,15 @@ export function AdditionalActions({
                   ((subState.turnData?.factions ?? {})[faction.name] ?? {})
                     .techs ?? [];
                 const availableTechs = getResearchableTechs(faction);
+                const secondaryState =
+                  (subState.turnData?.factions ?? {})[faction.name]
+                    ?.secondary ?? "PENDING";
+                if (
+                  researchedTechs.length === 0 &&
+                  secondaryState === "SKIPPED"
+                ) {
+                  return null;
+                }
                 return (
                   <LabeledDiv
                     key={faction.name}
@@ -938,6 +948,7 @@ export function AdditionalActions({
                   .filter((faction) => faction.name !== state?.speaker)
                   .map((faction) => faction.name)}
                 selectedFaction={selectedSpeaker?.name}
+                size={52}
               />
             </div>
           </React.Fragment>
