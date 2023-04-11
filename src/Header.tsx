@@ -27,7 +27,7 @@ import {
   setSpeaker,
 } from "./util/api/state";
 import Head from "next/head";
-import { getFactionName } from "./util/factions";
+import { getFactionColor, getFactionName } from "./util/factions";
 import { Map } from "./util/Map";
 import { Options } from "./util/api/options";
 import { Faction } from "./util/api/factions";
@@ -39,6 +39,7 @@ import Image from "next/image";
 
 import Logo from "../public/images/android-chrome-512x512.png";
 import { ObjectivePanel } from "./ObjectivePanel";
+import { FactionSelectHoverMenu } from "./components/FactionSelect";
 
 export function ResponsiveLogo({ size }: { size: number }) {
   return (
@@ -609,37 +610,31 @@ export function Footer({}) {
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
               {speakerButtonPosition === "top" &&
               !shouldBlockSpeakerUpdates() ? (
-                <ClientOnlyHoverMenu label="Speaker">
-                  <div
-                    className="flexColumn"
-                    style={{
-                      padding: responsivePixels(8),
-                      gap: responsivePixels(4),
-                      alignItems: "stretch",
+                <div className="flexRow">
+                  Speaker:
+                  <FactionSelectHoverMenu
+                    allowNone={false}
+                    borderColor={
+                      state?.speaker
+                        ? getFactionColor((factions ?? {})[state.speaker])
+                        : undefined
+                    }
+                    selectedFaction={state?.speaker}
+                    options={orderedFactions
+                      .filter((faction) => faction.name !== state?.speaker)
+                      .map((faction) => faction.name)}
+                    onSelect={(factionName, _) => {
+                      if (!gameid || !factionName) {
+                        return;
+                      }
+                      setSpeaker(gameid, factionName);
                     }}
-                  >
-                    {orderedFactions.map((faction) => {
-                      return (
-                        <button
-                          key={faction.name}
-                          disabled={state?.speaker === faction.name}
-                          onClick={() => {
-                            if (!gameid) {
-                              return;
-                            }
-                            setSpeaker(gameid, faction.name);
-                          }}
-                        >
-                          {getFactionName(faction)}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </ClientOnlyHoverMenu>
+                  />
+                </div>
               ) : null}
               <div
                 className="flexRow"
-                style={{ width: "100%", alignItems: "stretch" }}
+                style={{ width: "100%", alignItems: "center" }}
               >
                 <ClientOnlyHoverMenu label="Techs">
                   <div
@@ -667,33 +662,27 @@ export function Footer({}) {
                 </ClientOnlyHoverMenu>
                 {speakerButtonPosition === "bottom" &&
                 !shouldBlockSpeakerUpdates() ? (
-                  <ClientOnlyHoverMenu label="Speaker">
-                    <div
-                      className="flexColumn"
-                      style={{
-                        padding: responsivePixels(8),
-                        gap: responsivePixels(4),
-                        alignItems: "stretch",
+                  <div className="flexRow">
+                    Speaker:
+                    <FactionSelectHoverMenu
+                      allowNone={false}
+                      borderColor={
+                        state?.speaker
+                          ? getFactionColor((factions ?? {})[state.speaker])
+                          : undefined
+                      }
+                      selectedFaction={state?.speaker}
+                      options={orderedFactions
+                        .filter((faction) => faction.name !== state?.speaker)
+                        .map((faction) => faction.name)}
+                      onSelect={(factionName, _) => {
+                        if (!gameid || !factionName) {
+                          return;
+                        }
+                        setSpeaker(gameid, factionName);
                       }}
-                    >
-                      {orderedFactions.map((faction) => {
-                        return (
-                          <button
-                            key={faction.name}
-                            disabled={state?.speaker === faction.name}
-                            onClick={() => {
-                              if (!gameid) {
-                                return;
-                              }
-                              setSpeaker(gameid, faction.name);
-                            }}
-                          >
-                            {getFactionName(faction)}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </ClientOnlyHoverMenu>
+                    />
+                  </div>
                 ) : null}
               </div>
             </div>

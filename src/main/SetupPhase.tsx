@@ -204,7 +204,7 @@ export default function SetupPhase() {
         <NumberedItem>Re-shuffle secret objectives</NumberedItem>
         <NumberedItem>
           <LabeledDiv
-            label={`Speaker: ${getFactionName(speaker)}`}
+            label={getFactionName(speaker)}
             color={getFactionColor(speaker)}
           >
             Draw 5 stage one objectives and reveal 2
@@ -298,7 +298,7 @@ export default function SetupPhase() {
         </NumberedItem>
         <NumberedItem>
           <LabeledDiv
-            label={`Speaker: ${getFactionName(speaker)}`}
+            label={getFactionName(speaker)}
             color={getFactionColor(speaker)}
           >
             Draw 5 stage two objectives

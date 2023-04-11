@@ -1029,7 +1029,7 @@ function AgendaSteps() {
             {!currentAgenda ? (
               <div className="flexRow" style={{ justifyContent: "flex-start" }}>
                 <LabeledDiv
-                  label={`Speaker: ${getFactionName(speaker)}`}
+                  label={getFactionName(speaker)}
                   color={getFactionColor(speaker)}
                 >
                   <ClientOnlyHoverMenu label="Reveal and Read one Agenda">
@@ -1685,7 +1685,7 @@ export default function AgendaPhase() {
             {currentAgenda && isTie ? (
               !subState.tieBreak ? (
                 <LabeledDiv
-                  label={`Speaker: ${getFactionName(speaker)}`}
+                  label={getFactionName(speaker)}
                   color={getFactionColor(speaker)}
                   style={{ width: "auto" }}
                 >

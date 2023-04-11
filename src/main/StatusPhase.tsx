@@ -963,9 +963,7 @@ export default function StatusPhase() {
               </LabeledDiv>
             ) : (
               <LabeledDiv
-                label={`Speaker: ${getFactionName(
-                  (factions ?? {})[state?.speaker ?? ""]
-                )}`}
+                label={getFactionName((factions ?? {})[state?.speaker ?? ""])}
                 color={getFactionColor((factions ?? {})[state?.speaker ?? ""])}
                 style={{ width: "100%" }}
               >

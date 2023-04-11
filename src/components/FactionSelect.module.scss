@@ -1,0 +1,40 @@
+
+.hoverMenu {
+  background-color: #222;
+  overflow: visible;
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: flex-start;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+
+@media only screen and (max-width: 900px) {
+  .hoverMenu {
+    flex-direction: column;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+  }
+}
+
+.tag {
+  position: absolute;
+  background-color: #222;
+  border-radius: 100%;
+  margin-top: 58%;
+  margin-left: 60%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.factionSelect {
+  position: relative;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+.factionSelect:hover {
+  background-color: #333;
+}

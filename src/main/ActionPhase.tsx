@@ -18,7 +18,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { PlanetRow } from "../PlanetRow";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../LabeledDiv";
-import { ClientOnlyHoverMenu, FactionSelectHoverMenu } from "../HoverMenu";
+import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { TechRow } from "../TechRow";
 import { BasicFactionTile } from "../FactionTile";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -59,6 +59,8 @@ import { getDefaultStrategyCards } from "../util/api/defaults";
 import { FullScreenLoader } from "../Loader";
 import { Agenda } from "../util/api/agendas";
 import { LockedButtons } from "../LockedButton";
+import { FactionSelectHoverMenu } from "../components/FactionSelect";
+import { FactionCircle } from "../components/FactionCircle";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -98,19 +100,12 @@ function SecondaryCheck({
             allCompleted = false;
           }
           return (
-            <div
-              className="flexRow"
+            <FactionCircle
               key={faction.name}
-              style={{
-                position: "relative",
-                width: responsivePixels(48),
-                height: responsivePixels(48),
-                borderRadius: responsivePixels(12),
-                border: `${responsivePixels(3)} solid ${color}`,
-                cursor: "pointer",
-                backdropFilter: "blur(4px)",
-                boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
-              }}
+              blur={true}
+              borderColor={color}
+              fade={secondaryState !== "PENDING"}
+              factionName={faction.name}
               onClick={() => {
                 if (!gameid) {
                   return;
@@ -118,7 +113,7 @@ function SecondaryCheck({
                 let nextState: Secondary = "DONE";
                 switch (secondaryState) {
                   case "DONE":
-                    nextState = "PENDING";
+                    nextState = "SKIPPED";
                     break;
                   case "PENDING":
                     nextState = "DONE";
@@ -127,70 +122,56 @@ function SecondaryCheck({
                     nextState = "PENDING";
                     break;
                 }
-
                 markSecondary(gameid, faction.name, nextState);
               }}
-            >
-              <div
-                className="flexRow"
-                style={{
-                  position: "relative",
-                  width: responsivePixels(44),
-                  height: responsivePixels(44),
-                  borderRadius: "6px",
-                }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    width: responsivePixels(36),
-                    height: responsivePixels(36),
-                    userSelect: "none",
-                  }}
-                >
-                  {secondaryState === "DONE" ? (
-                    <div
-                      style={{
-                        position: "absolute",
-                        color: "#eee",
-                        width: "100%",
-                        fontSize: responsivePixels(40),
-                        lineHeight: responsivePixels(38),
-                        zIndex: 0,
-                        textAlign: "center",
-                      }}
-                    >
-                      ✓
-                    </div>
-                  ) : null}
-                  {secondaryState === "SKIPPED" ? (
-                    <div
-                      style={{
-                        position: "absolute",
-                        color: "#eee",
-                        width: "100%",
-                        fontSize: responsivePixels(48),
-                        lineHeight: responsivePixels(32),
-                        zIndex: 0,
-                        textAlign: "center",
-                      }}
-                    >
-                      ⤬
-                    </div>
-                  ) : null}
+              size={52}
+              tag={
+                secondaryState === "PENDING" ? undefined : (
                   <div
+                    className="flexRow largeFont"
                     style={{
-                      position: "relative",
-                      width: responsivePixels(36),
-                      height: responsivePixels(36),
-                      zIndex: -1,
+                      color: secondaryState === "DONE" ? "green" : "red",
+                      fontWeight: "bold",
                     }}
                   >
-                    <FullFactionSymbol faction={faction.name} />
+                    {secondaryState === "DONE" ? "✓" : "⤬"}
                   </div>
+                )
+              }
+            >
+              {/* {secondaryState === "DONE" ? (
+                <div
+                  className="flexColumn centered"
+                  style={{
+                    position: "absolute",
+                    color: "#eee",
+                    width: "100%",
+                    fontSize: responsivePixels(40),
+                    zIndex: 0,
+                    textAlign: "center",
+                    height: responsivePixels(52),
+                  }}
+                >
+                  ✓
                 </div>
-              </div>
-            </div>
+              ) : null}
+              {secondaryState === "SKIPPED" ? (
+                <div
+                  className="flexColumn centered"
+                  style={{
+                    position: "absolute",
+                    color: "#eee",
+                    width: "100%",
+                    fontSize: responsivePixels(44),
+                    zIndex: 0,
+                    textAlign: "center",
+                    height: responsivePixels(52),
+                  }}
+                >
+                  ⤬
+                </div>
+              ) : null} */}
+            </FactionCircle>
           );
         })}
       </div>
@@ -685,12 +666,15 @@ export function AdditionalActions({
     ...ClientOnlyHoverMenuStyle,
   };
 
-  const secretButtonStyle = {
+  const secretButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
     padding: responsivePixels(8),
     alignItems: "stretch",
     display: "grid",
     gridAutoFlow: "column",
+    maxWidth: "85vw",
+    justifyContent: "flex-start",
+    overflowX: "scroll",
     gridTemplateRows: `repeat(8, auto)`,
     gap: responsivePixels(4),
   };
@@ -930,37 +914,32 @@ export function AdditionalActions({
         >
           <React.Fragment>
             <LabeledLine leftLabel="Primary" />
-            {selectedSpeaker ? (
-              <LabeledDiv label="NEW SPEAKER" style={{ width: "90%" }}>
-                <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  <SelectableRow
-                    itemName={subState.turnData.speaker ?? ""}
-                    removeItem={resetSpeaker}
-                  >
-                    <BasicFactionTile faction={selectedSpeaker} />
-                  </SelectableRow>
-                </div>
-              </LabeledDiv>
-            ) : (
-              <ClientOnlyHoverMenu label="Select Speaker">
-                <div className="flexColumn" style={{ ...secretButtonStyle }}>
-                  {orderedFactions.map((faction) => {
-                    if (state?.speaker === faction.name) {
-                      return null;
-                    }
-                    return (
-                      <button
-                        key={faction.name}
-                        style={{ writingMode: "horizontal-tb" }}
-                        onClick={() => selectSpeaker(faction.name)}
-                      >
-                        {getFactionName(faction)}
-                      </button>
-                    );
-                  })}
-                </div>
-              </ClientOnlyHoverMenu>
-            )}
+            <div
+              className="flexRow largeFont"
+              style={{
+                justifyContent: "flex-start",
+                paddingLeft: responsivePixels(24),
+                width: "100%",
+              }}
+            >
+              New Speaker:
+              <FactionSelectHoverMenu
+                borderColor={
+                  selectedSpeaker ? getFactionColor(selectedSpeaker) : undefined
+                }
+                onSelect={(factionName, _) => {
+                  if (factionName) {
+                    selectSpeaker(factionName);
+                  } else {
+                    resetSpeaker();
+                  }
+                }}
+                options={orderedFactions
+                  .filter((faction) => faction.name !== state?.speaker)
+                  .map((faction) => faction.name)}
+                selectedFaction={selectedSpeaker?.name}
+              />
+            </div>
           </React.Fragment>
           <LabeledLine leftLabel="Secondary" />
           <SecondaryCheck

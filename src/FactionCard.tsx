@@ -791,25 +791,9 @@ export function FactionCard({
   style = {},
   opts = {},
 }: PropsWithChildren<FactionCardProps>) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-
-  const speaker = faction.name === state?.speaker;
-
-  const label = speaker
-    ? `Speaker: ${getFactionName(faction)}`
-    : getFactionName(faction);
-
   return (
     <LabeledDiv
-      label={label}
+      label={getFactionName(faction)}
       rightLabel={rightLabel}
       color={getFactionColor(faction)}
       onClick={onClick}

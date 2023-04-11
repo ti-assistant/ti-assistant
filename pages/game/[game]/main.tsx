@@ -65,7 +65,7 @@ export default function MainScreenPage() {
   return (
     <div
       className="flexColumn"
-      style={{ height: "100%", alignItems: "center" }}
+      style={{ height: "100%", alignItems: "center", gap: 0 }}
     >
       <Updater />
       <Header />

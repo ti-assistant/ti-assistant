@@ -359,6 +359,10 @@ input[type="text"] {
 .hoverRadio.left {
   clip-path: polygon(100% 0%, 100% 100%, 100% 100%, 100% 0%);
 }
+.hoverRadio.down {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+
+}
 
 .hoverZoom {
   transition: transform 200ms;
@@ -595,15 +599,4 @@ input[type="text"] {
 
 .centered {
   text-align: center;
-}
-
-.factionSelect {
-  position: relative;
-  cursor: pointer;
-  border-radius: 100%;
-}
-
-.factionSelect:hover {
-  background-color: #333;
-
 }

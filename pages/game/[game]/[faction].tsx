@@ -125,7 +125,7 @@ function SecondaryCheck({
   subState: SubState;
 }) {
   const secondaryState =
-    (subState.factions ?? {})[factionName]?.secondary ?? "PENDING";
+    (subState.turnData?.factions ?? {})[factionName]?.secondary ?? "PENDING";
   return (
     <div className="flexRow">
       {secondaryState === "PENDING" ? (
@@ -136,6 +136,13 @@ function SecondaryCheck({
             }}
           >
             Mark Completed
+          </button>
+          <button
+            onClick={() => {
+              markSecondary(gameid, factionName, "SKIPPED");
+            }}
+          >
+            Skip
           </button>
         </React.Fragment>
       ) : (
@@ -286,7 +293,7 @@ function PhaseSection() {
   if (subState.agenda) {
     currentAgenda = agendas[subState.agenda];
   }
-  const factionSubState = (subState.factions ?? {})[factionName];
+  const factionSubState = (subState.turnData?.factions ?? {})[factionName];
 
   const localAgenda = structuredClone(currentAgenda);
   if (localAgenda && subState.outcome) {
@@ -300,7 +307,7 @@ function PhaseSection() {
     agendas,
     objectives
   );
-  const totalVotes = computeVotes(currentAgenda, subState.factions);
+  const totalVotes = computeVotes(currentAgenda, subState.turnData?.factions);
   const maxVotes = Object.values(totalVotes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -352,7 +359,7 @@ function PhaseSection() {
     }
     resolveAgenda(gameid, activeAgenda, target);
 
-    updateCastVotes(gameid, subState.factions);
+    updateCastVotes(gameid, subState.turnData?.factions);
     hideSubStateAgenda(gameid);
     if (activeAgenda === "Miscount Disclosed") {
       repealAgenda(gameid, agendas[target]);
@@ -524,7 +531,7 @@ function PhaseSection() {
                 primaryOnly={true}
               />
             </div>
-            {subState.selectedAction ? (
+            {subState.turnData?.selectedAction ? (
               <div className="flexRow" style={{ width: "100%" }}>
                 <NextPlayerButtons
                   factionName={factionName}
@@ -535,7 +542,7 @@ function PhaseSection() {
           </React.Fragment>
         );
       } else {
-        switch (subState.selectedAction) {
+        switch (subState.turnData?.selectedAction) {
           case "Leadership":
             leftLabel = "Leadership Secondary";
             phaseContent = (
