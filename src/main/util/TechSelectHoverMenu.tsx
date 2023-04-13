@@ -41,13 +41,14 @@ export function TechSelectHoverMenu({
   });
   sortTechsByName(unitUpgrades);
 
+  const className = window.innerWidth < 900 ? "flexColumn" : "flexRow";
   return (
     <ClientOnlyHoverMenu
       label={label}
       style={{ whiteSpace: "nowrap" }}
       renderProps={(outerCloseFn) => (
         <div
-          className={direction === "horizontal" ? "flexRow" : "flexColumn"}
+          className={className}
           style={{
             padding: responsivePixels(8),
             alignItems: "flex-start",

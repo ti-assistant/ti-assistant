@@ -169,7 +169,13 @@ function ComponentSelect({
       </ClientOnlyHoverMenu>
       {techs.length > 0 ? (
         <ClientOnlyHoverMenu label="Techs">
-          <div className="flexRow" style={innerStyle}>
+          <div
+            className="flexRow"
+            style={{
+              ...innerStyle,
+              gridTemplateRows: `repeat(${Math.min(techs.length, 10)}, auto)`,
+            }}
+          >
             {techs.map((component) => {
               return (
                 <button
@@ -883,10 +889,6 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       };
       const conqueredPlanets =
         ((subState.turnData?.factions ?? {})[factionName] ?? {}).planets ?? [];
-      const destroyedPlanet = (subState.turnData ?? {}).destroyedPlanet?.name;
-      if (destroyedPlanet) {
-        label = "Destroyed Planet";
-      }
       if (conqueredPlanets.length > 0) {
         label = "Newly Controlled Planets";
       }
@@ -952,6 +954,51 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       );
       break;
     }
+    case "UNITDSGNFLAYESH": {
+      const faction = factions[factionName];
+      if (!faction) {
+        break;
+      }
+      const researchedTech =
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).techs ?? [];
+      const availableTechs = getResearchableTechs(faction).filter((tech) => {
+        return !tech.faction && tech.type !== "UPGRADE";
+      });
+
+      if (researchedTech.length > 0) {
+        label = "Gained Tech";
+        innerContent = (
+          <React.Fragment>
+            {researchedTech.map((tech) => {
+              if (!techs) {
+                return null;
+              }
+              const techObj = techs[tech];
+              if (!techObj) {
+                return null;
+              }
+              return (
+                <TechRow
+                  key={tech}
+                  tech={techObj}
+                  removeTech={() => removeTech(tech)}
+                />
+              );
+            })}
+          </React.Fragment>
+        );
+      } else {
+        innerContent = (
+          <TechSelectHoverMenu
+            label="Gain Tech"
+            techs={availableTechs}
+            selectTech={addTech}
+          />
+        );
+      }
+      break;
+    }
+
     // case "Repeal Law": {
     //   if (!agendas) {
     //     break;
@@ -1058,7 +1105,10 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       style={{ width: "100%", gap: responsivePixels(4) }}
     >
       <LabeledLine leftLabel={label} />
-      <div className="flexColumn" style={{ width: "90%" }}>
+      <div
+        className="flexColumn"
+        style={{ alignItems: "flex-start", width: "100%" }}
+      >
         {innerContent}
       </div>
     </div>
