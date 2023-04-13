@@ -1151,7 +1151,11 @@ export function ComponentAction({ factionName }: { factionName: string }) {
             return false;
           }
         }
-        if (component.faction && component.type !== "PROMISSORY") {
+        if (
+          component.faction &&
+          component.type !== "PROMISSORY" &&
+          component.type !== "TECH"
+        ) {
           if (component.faction !== faction.name) {
             return false;
           }

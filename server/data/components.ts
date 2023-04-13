@@ -50,7 +50,7 @@ export type ComponentId =
   | "Uprising"
   | "Vortex"
   | "War Effort"
-  | "Wormhole Generator Ω"
+  | "Wormhole Generator"
   | "X-89 Bacterial Weapon";
 
 export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
@@ -406,7 +406,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     name: "War Effort",
     type: "CARD",
   },
-  "Wormhole Generator Ω": {
+  "Wormhole Generator": {
     description:
       "Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships",
     expansion: "CODEX ONE",
