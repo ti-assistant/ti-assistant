@@ -35,7 +35,8 @@ export function FactionCircle({
         border: `${responsivePixels(2)} solid ${borderColor}`,
         width: responsivePixels(size),
         height: responsivePixels(size),
-        fontSize: responsivePixels(14),
+        fontSize: responsivePixels(size - 8),
+        color: "#777",
         cursor: onClick ? "pointer" : undefined,
         boxShadow: borderColor === "Black" ? BLACK_BORDER_GLOW : undefined,
       }}
@@ -62,7 +63,7 @@ export function FactionCircle({
             <FullFactionSymbol faction={factionName} />
           </div>
         ) : (
-          "None"
+          "⤬"
         )}
         {children}
         {tag ? (

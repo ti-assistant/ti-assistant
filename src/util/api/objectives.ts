@@ -252,11 +252,14 @@ export function takeObjective(
 
         const objective = updatedObjectives[objectiveName];
 
+        console.log(objectiveName);
         if (!objective || !objective.scorers) {
           return updatedObjectives;
         }
 
+        console.log("Taking");
         if (key && objective.keyedScorers) {
+          console.log("Up");
           const updatedScorers = objective.keyedScorers[key];
           if (updatedScorers) {
             const keyedIndex = updatedScorers.lastIndexOf(prevFaction);

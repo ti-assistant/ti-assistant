@@ -260,8 +260,9 @@ export default async function handler(
               ((gameData.objectives ?? {})[data.objective]?.keyedScorers ?? {})[
                 data.key
               ] ?? [];
-            const lastIndex = keyedScorers.lastIndexOf(data.faction);
+            const lastIndex = keyedScorers.lastIndexOf(data.prevFaction);
             keyedScorers.splice(lastIndex, 1);
+            keyedScorers.push(data.faction);
             updates[keyString] = keyedScorers;
           }
           if (gameData.factions[data.faction]?.hero === "unlocked") {

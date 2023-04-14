@@ -92,14 +92,15 @@ export function FactionSelectHoverMenu({
             style={{
               width: responsivePixels(size - 4),
               height: responsivePixels(size - 4),
-              fontSize: responsivePixels(14),
+              fontSize: responsivePixels(size - 8),
+              color: "#777",
             }}
             onClick={() => {
               closeFn();
               onSelect(undefined, selectedFaction);
             }}
           >
-            None
+            ⤬
           </div>
         ) : null}
         {direction === "right" ? (
@@ -109,7 +110,8 @@ export function FactionSelectHoverMenu({
               position: "relative",
               width: responsivePixels(size - 4),
               height: responsivePixels(size - 4),
-              fontSize: responsivePixels(14),
+              fontSize: responsivePixels(size - 8),
+              color: "#777",
             }}
           >
             {selectedFaction ? (
@@ -124,7 +126,7 @@ export function FactionSelectHoverMenu({
                 <FullFactionSymbol faction={selectedFaction} />
               </div>
             ) : (
-              "None"
+              "⤬"
             )}
             {tag ? (
               <div
@@ -178,14 +180,15 @@ export function FactionSelectHoverMenu({
             style={{
               width: responsivePixels(size - 4),
               height: responsivePixels(size - 4),
-              fontSize: responsivePixels(14),
+              fontSize: responsivePixels(size - 8),
+              color: "#777",
             }}
             onClick={() => {
               closeFn();
               onSelect(undefined, selectedFaction);
             }}
           >
-            None
+            ⤬
           </div>
         ) : null}
         {direction === "left" ? (
@@ -195,7 +198,8 @@ export function FactionSelectHoverMenu({
               position: "relative",
               width: responsivePixels(size - 4),
               height: responsivePixels(size - 4),
-              fontSize: responsivePixels(14),
+              fontSize: responsivePixels(size - 8),
+              color: "#777",
             }}
           >
             {selectedFaction ? (
@@ -210,7 +214,7 @@ export function FactionSelectHoverMenu({
                 <FullFactionSymbol faction={selectedFaction} />
               </div>
             ) : (
-              "None"
+              "⤬"
             )}
             {tag ? (
               <div

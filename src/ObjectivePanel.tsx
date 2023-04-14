@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { PropsWithChildren, useState } from "react";
 import useSWR from "swr";
+import { FactionCircle } from "./components/FactionCircle";
 import { FactionSelectHoverMenu } from "./components/FactionSelect";
 import { FullFactionSymbol } from "./FactionCard";
 import { computeVPs } from "./FactionSummary";
@@ -838,9 +839,9 @@ export function ObjectivePanel({}) {
                         if (scorer && factionName) {
                           takeObjective(
                             gameid,
+                            "Support for the Throne",
                             factionName,
                             scorer,
-                            "Support for the Throne",
                             name
                           );
                         } else if (scorer) {
