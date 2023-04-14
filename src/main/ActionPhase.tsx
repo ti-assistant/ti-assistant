@@ -675,7 +675,7 @@ export function AdditionalActions({
     gridAutoFlow: "column",
     maxWidth: "85vw",
     justifyContent: "flex-start",
-    overflowX: "scroll",
+    overflowX: "auto",
     gridTemplateRows: `repeat(8, auto)`,
     gap: responsivePixels(4),
   };
@@ -1368,11 +1368,11 @@ export function AdditionalActions({
           }
           if (
             planet.home &&
-            planet.owner &&
-            planet.owner !== factionName &&
-            !scorers.includes(planet.owner)
+            conqueredPlanet.prevOwner &&
+            conqueredPlanet.prevOwner !== factionName &&
+            !scorers.includes(conqueredPlanet.prevOwner)
           ) {
-            possibleMartyrs.add(planet.owner);
+            possibleMartyrs.add(conqueredPlanet.prevOwner);
           }
         }
       }
