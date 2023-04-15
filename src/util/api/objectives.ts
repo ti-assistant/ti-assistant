@@ -12,7 +12,8 @@ export type ObjectiveUpdateAction =
   | "TAKE_OBJECTIVE"
   | "SCORE_OBJECTIVE"
   | "UNSCORE_OBJECTIVE"
-  | "CHANGE_OBJECTIVE_TYPE";
+  | "CHANGE_OBJECTIVE_TYPE"
+  | "CHANGE_OBJECTIVE_POINTS";
 
 export interface ObjectiveUpdateData {
   action?: ObjectiveUpdateAction;
@@ -22,6 +23,7 @@ export interface ObjectiveUpdateData {
   objective?: string;
   timestamp?: number;
   type?: ObjectiveType;
+  points?: number;
 }
 
 export interface BaseObjective {
@@ -47,6 +49,7 @@ export interface GameObjective {
   selected?: boolean;
   keyedScorers?: Record<string, string[]>;
   revealOrder?: number;
+  points?: number;
 }
 
 export type Objective = BaseObjective & GameObjective;
@@ -311,6 +314,38 @@ export function changeObjectiveType(
           return updatedObjectives;
         }
         objective.type = type;
+
+        return updatedObjectives;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function changeObjectivePoints(
+  gameId: string,
+  objectiveName: string,
+  points: number
+) {
+  const data: ObjectiveUpdateData = {
+    action: "CHANGE_OBJECTIVE_POINTS",
+    objective: objectiveName,
+    points: points,
+  };
+
+  mutate(
+    `/api/${gameId}/objectives`,
+    async () => await poster(`/api/${gameId}/objectiveUpdate`, data),
+    {
+      optimisticData: (objectives: Record<string, Objective>) => {
+        const updatedObjectives = structuredClone(objectives);
+
+        const objective = updatedObjectives[objectiveName];
+
+        if (!objective) {
+          return updatedObjectives;
+        }
+        objective.points = points;
 
         return updatedObjectives;
       },

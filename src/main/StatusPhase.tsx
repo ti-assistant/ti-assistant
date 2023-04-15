@@ -39,6 +39,7 @@ import { Selector } from "../Selector";
 import { LockedButtons } from "../LockedButton";
 import { Planet } from "../util/api/planets";
 import { Relic } from "../util/api/relics";
+import { Options } from "../util/api/options";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -624,6 +625,13 @@ export default function StatusPhase() {
       revalidateIfStale: false,
     }
   );
+  const { data: options }: { data?: Options } = useSWR(
+    gameid ? `/api/${gameid}/options` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
     fetcher,
@@ -700,7 +708,10 @@ export default function StatusPhase() {
             "Place 1 Infantry from your reinforcements on any planet you control",
         });
       }
-      if (hasTech(faction, "Wormhole Generator")) {
+      if (
+        !(options?.expansions ?? []).includes("POK") &&
+        hasTech(faction, "Wormhole Generator")
+      ) {
         factionAbilities.push({
           name: "Wormhole Generator",
           description:

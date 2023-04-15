@@ -28,11 +28,13 @@ import {
   resolveRiders,
   revealSubStateAgenda,
   revealSubStateObjective,
+  scoreSubStateObjective,
   setSubStateOther,
   SubState,
   SubStateFaction,
   toggleSubStatePoliticalSecret,
   toggleSubStateRelic,
+  unscoreSubStateObjective,
 } from "../util/api/subState";
 import { Faction, resetCastVotes, updateCastVotes } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
@@ -52,11 +54,14 @@ import {
   unclaimPlanet,
 } from "../util/api/planets";
 import {
+  changeObjectivePoints,
   changeObjectiveType,
+  hasScoredObjective,
   Objective,
   removeObjective,
   revealObjective,
   scoreObjective,
+  takeObjective,
   unscoreObjective,
 } from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
@@ -71,6 +76,8 @@ import { Tech } from "../util/api/techs";
 import { FullFactionSymbol } from "../FactionCard";
 import { gainRelic, loseRelic, Relic } from "../util/api/relics";
 import { InfoRow } from "../InfoRow";
+import { FactionCircle } from "../components/FactionCircle";
+import { FactionSelectHoverMenu } from "../components/FactionSelect";
 
 const RIDERS = [
   "Galactic Threat",
@@ -309,6 +316,32 @@ function PredictionDetails() {
   );
 }
 
+function canScoreObjective(
+  factionName: string,
+  objectiveName: string,
+  objectives: Record<string, Objective>,
+  subState: SubState
+) {
+  if (
+    (subState.turnData?.factions ?? {})[factionName]?.objectives?.includes(
+      objectiveName
+    )
+  ) {
+    return true;
+  }
+  const objective = objectives[objectiveName];
+  if (!objective) {
+    return false;
+  }
+  if (objective.type === "SECRET" && (objective.scorers ?? []).length > 0) {
+    return false;
+  }
+  if ((objective.scorers ?? []).includes(factionName)) {
+    return false;
+  }
+  return true;
+}
+
 function AgendaDetails() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
@@ -375,10 +408,9 @@ function AgendaDetails() {
       ? subState.subAgenda
       : subState.agenda;
 
-  const votes = computeVotes(
-    (agendas ?? {})[agendaName ?? ""],
-    subState.factions
-  );
+  const agenda = (agendas ?? {})[agendaName ?? ""];
+
+  const votes = computeVotes(agenda, subState.factions);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -396,6 +428,99 @@ function AgendaDetails() {
     return null;
   }
 
+  let driveSection = null;
+  let driveTheDebate: string | undefined;
+  switch (agenda?.elect) {
+    case "Player": {
+      driveTheDebate = selectedOutcome;
+      break;
+    }
+    case "Cultural Planet":
+    case "Hazardous Planet":
+    case "Planet":
+    case "Industrial Planet":
+    case "Non-Home Planet Other Than Mecatol Rex": {
+      const electedPlanet = (planets ?? {})[selectedOutcome];
+      if (!electedPlanet || !electedPlanet.owner) {
+        break;
+      }
+      driveTheDebate = electedPlanet.owner;
+      break;
+    }
+  }
+
+  function addObjective(factionName: string, toScore: string) {
+    if (!gameid) {
+      return;
+    }
+    scoreObjective(gameid, factionName, toScore);
+    scoreSubStateObjective(gameid, factionName, toScore);
+  }
+
+  function undoObjective(factionName: string, toRemove: string) {
+    if (!gameid) {
+      return;
+    }
+    unscoreObjective(gameid, factionName, toRemove);
+    unscoreSubStateObjective(gameid, factionName, toRemove);
+  }
+
+  const driveObj = (objectives ?? {})["Drive the Debate"];
+  if (driveTheDebate && driveObj) {
+    let canScoreDrive = canScoreObjective(
+      driveTheDebate,
+      "Drive the Debate",
+      objectives ?? {},
+      subState
+    );
+    if (canScoreDrive) {
+      const hasScoredDrive = (subState.turnData?.factions ?? {})[
+        driveTheDebate
+      ]?.objectives?.includes("Drive the Debate");
+      driveSection = (
+        <div
+          className="flexRow"
+          style={{
+            width: "100%",
+            justifyContent: "flex-start",
+            paddingLeft: responsivePixels(12),
+          }}
+        >
+          Drive the Debate:{" "}
+          <FactionCircle
+            blur={true}
+            borderColor={getFactionColor((factions ?? {})[driveTheDebate])}
+            factionName={driveTheDebate}
+            onClick={() => {
+              if (!gameid || !driveTheDebate) {
+                return;
+              }
+              if (hasScoredDrive) {
+                undoObjective(driveTheDebate, "Drive the Debate");
+              } else {
+                addObjective(driveTheDebate, "Drive the Debate");
+              }
+            }}
+            size={44}
+            tag={
+              <div
+                className="flexRow largeFont"
+                style={{
+                  color: hasScoredDrive ? "green" : "red",
+                  fontWeight: "bold",
+                }}
+              >
+                {hasScoredDrive ? "✓" : "⤬"}
+              </div>
+            }
+            tagBorderColor={hasScoredDrive ? "green" : "red"}
+          />
+        </div>
+      );
+    }
+  }
+
+  let agendaSelection = null;
   switch (agendaName) {
     case "Incentive Program": {
       const type = selectedOutcome === "For" ? "STAGE ONE" : "STAGE TWO";
@@ -404,7 +529,7 @@ function AgendaDetails() {
           return objective.type === type && !objective.selected;
         }
       );
-      return (
+      agendaSelection = (
         <Selector
           hoverMenuLabel={`Reveal Stage ${
             type === "STAGE ONE" ? "I" : "II"
@@ -446,6 +571,7 @@ function AgendaDetails() {
           }}
         />
       );
+      break;
     }
     case "Colonial Redistribution": {
       const minVPs = Object.keys(factions ?? {}).reduce(
@@ -465,24 +591,23 @@ function AgendaDetails() {
         }
       );
       let prevOwner: string | undefined;
-      const selectedFaction = Object.entries(subState.factions ?? {}).find(
-        ([_, faction]) => {
-          if (faction.planets) {
-            for (const claimedPlanet of faction.planets) {
-              if (claimedPlanet.name === selectedOutcome) {
-                prevOwner = claimedPlanet.prevOwner;
-                return true;
-              }
+      const selectedFaction = Object.entries(
+        subState.turnData?.factions ?? {}
+      ).find(([_, faction]) => {
+        if (faction.planets) {
+          for (const claimedPlanet of faction.planets) {
+            if (claimedPlanet.name === selectedOutcome) {
+              prevOwner = claimedPlanet.prevOwner;
+              return true;
             }
           }
-          return false;
         }
-      );
-      return (
+        return false;
+      });
+      agendaSelection = (
         <Selector
           hoverMenuLabel={`Give Planet to Faction`}
           options={availableFactions}
-          autoSelect={true}
           selectedLabel="Faction Gaining Control of Planet"
           selectedItem={selectedFaction?.[0]}
           toggleItem={(factionName, add) => {
@@ -509,12 +634,13 @@ function AgendaDetails() {
           }}
         />
       );
+      break;
     }
     case "Minister of Antiques": {
       const unownedRelics = Object.values(relics ?? {})
         .filter((relic) => !relic.owner)
         .map((relic) => relic.name);
-      return (
+      agendaSelection = (
         <Selector
           hoverMenuLabel="Gain Relic"
           options={unownedRelics}
@@ -561,10 +687,19 @@ function AgendaDetails() {
           }}
         />
       );
+      break;
     }
   }
+  if (!agendaSelection && !driveSection) {
+    return null;
+  }
 
-  return null;
+  return (
+    <>
+      {agendaSelection}
+      {driveSection}
+    </>
+  );
 }
 
 export function resolveAgendaRepeal(gameid: string, agenda: Agenda) {
@@ -717,13 +852,12 @@ function AgendaSteps() {
           })
           .map(([factionName, _]) => factionName);
         if (target === "For") {
-          for (const factionName of forFactions) {
-            scoreObjective(gameid, factionName, "Mutiny (For)");
-          }
+          changeObjectivePoints(gameid, "Mutiny", 1);
         } else {
-          for (const factionName of forFactions) {
-            scoreObjective(gameid, factionName, "Mutiny (Against)");
-          }
+          changeObjectivePoints(gameid, "Mutiny", -1);
+        }
+        for (const factionName of forFactions) {
+          scoreObjective(gameid, factionName, "Mutiny");
         }
         break;
       }
@@ -1237,7 +1371,6 @@ function AgendaSteps() {
                             )} black`,
                             width: responsivePixels(20),
                             height: responsivePixels(20),
-                            zIndex: 2,
                             color: politicalSecret ? "green" : "red",
                           }}
                           onClick={() => {
@@ -1408,6 +1541,167 @@ function AgendaSteps() {
         </div>
       )}
     </React.Fragment>
+  );
+}
+
+function DictatePolicy({}) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
+    gameid ? `/api/${gameid}/agendas` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
+    gameid ? `/api/${gameid}/factions` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
+    gameid ? `/api/${gameid}/objectives` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: subState = {} }: { data?: SubState } = useSWR(
+    gameid ? `/api/${gameid}/subState` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const numLawsInPlay = Object.values(agendas ?? {}).filter((agenda) => {
+    return agenda.passed && agenda.type === "LAW";
+  }).length;
+  const currentDictators = [];
+  for (const [factionName, faction] of Object.entries(
+    subState.turnData?.factions ?? {}
+  )) {
+    if (faction.objectives?.includes("Dictate Policy")) {
+      currentDictators.push(factionName);
+    }
+  }
+  const dictatePolicy = (objectives ?? {})["Dictate Policy"];
+  const possibleDictators = new Set(currentDictators);
+  if (
+    dictatePolicy &&
+    numLawsInPlay >= 3 &&
+    (currentDictators.length > 0 ||
+      (dictatePolicy.scorers ?? []).length === 0 ||
+      dictatePolicy.type === "STAGE ONE")
+  ) {
+    const scorers = dictatePolicy.scorers ?? [];
+    for (const factionName of Object.keys(factions ?? {})) {
+      if (!scorers.includes(factionName)) {
+        possibleDictators.add(factionName);
+      }
+    }
+  }
+  const orderedDictators = Array.from(possibleDictators).sort((a, b) => {
+    if (a > b) {
+      return 1;
+    }
+    return -1;
+  });
+  if (!dictatePolicy || orderedDictators.length < 1) {
+    return null;
+  }
+  return (
+    <div
+      className="flexRow"
+      style={{
+        justifyContent: "center",
+        marginTop: responsivePixels(12),
+      }}
+    >
+      <ObjectiveRow objective={dictatePolicy} hideScorers />
+      {dictatePolicy.type === "SECRET" ? (
+        <FactionSelectHoverMenu
+          onSelect={(factionName, prevFaction) => {
+            if (!gameid) {
+              return;
+            }
+            if (factionName && prevFaction) {
+              takeObjective(gameid, "Dictate Policy", factionName, prevFaction);
+              unscoreSubStateObjective(gameid, prevFaction, "Dictate Policy");
+              scoreSubStateObjective(gameid, factionName, "Dictate Policy");
+            } else if (prevFaction) {
+              unscoreObjective(gameid, prevFaction, "Dictate Policy");
+              unscoreSubStateObjective(gameid, prevFaction, "Dictate Policy");
+            } else if (factionName) {
+              scoreObjective(gameid, factionName, "Dictate Policy");
+              scoreSubStateObjective(gameid, factionName, "Dictate Policy");
+            }
+          }}
+          borderColor={getFactionColor(
+            (factions ?? {})[currentDictators[0] ?? ""]
+          )}
+          options={orderedDictators}
+          selectedFaction={currentDictators[0]}
+        />
+      ) : (
+        orderedDictators.map((factionName) => {
+          const current = hasScoredObjective(factionName, dictatePolicy);
+          return (
+            <div
+              key={factionName}
+              className="flexRow hiddenButtonParent"
+              style={{
+                position: "relative",
+                width: responsivePixels(32),
+                height: responsivePixels(32),
+              }}
+            >
+              <FullFactionSymbol faction={factionName} />
+              <div
+                className="flexRow"
+                style={{
+                  position: "absolute",
+                  backgroundColor: "#222",
+                  cursor: "pointer",
+                  borderRadius: "100%",
+                  marginLeft: "60%",
+                  marginTop: "60%",
+                  boxShadow: `${responsivePixels(1)} ${responsivePixels(
+                    1
+                  )} ${responsivePixels(4)} black`,
+                  width: responsivePixels(20),
+                  height: responsivePixels(20),
+                  color: current ? "green" : "red",
+                }}
+                onClick={() => {
+                  if (!gameid) {
+                    return;
+                  }
+                  if (current) {
+                    unscoreObjective(gameid, factionName, "Dictate Policy");
+                    unscoreSubStateObjective(
+                      gameid,
+                      factionName,
+                      "Dictate Policy"
+                    );
+                  } else {
+                    scoreObjective(gameid, factionName, "Dictate Policy");
+                    scoreSubStateObjective(
+                      gameid,
+                      factionName,
+                      "Dictate Policy"
+                    );
+                  }
+                }}
+              >
+                {current ? "✓" : "⤬"}
+              </div>
+            </div>
+          );
+        })
+      )}
+    </div>
   );
 }
 
@@ -1620,6 +1914,7 @@ export default function AgendaPhase() {
             >
               Agenda Phase Complete
             </div>
+            <DictatePolicy />
             {checksAndBalances &&
             checksAndBalances.resolved &&
             !checksAndBalances.passed &&
@@ -1627,7 +1922,6 @@ export default function AgendaPhase() {
               <div
                 style={{
                   fontSize: responsivePixels(28),
-                  marginTop: responsivePixels(20),
                 }}
               >
                 Ready 3 planets, then
@@ -1636,7 +1930,6 @@ export default function AgendaPhase() {
               <div
                 style={{
                   fontSize: responsivePixels(28),
-                  marginTop: responsivePixels(20),
                 }}
               >
                 Ready all planets, then
@@ -1754,6 +2047,7 @@ export default function AgendaPhase() {
                 </LabeledDiv>
               )
             ) : null}
+            <DictatePolicy />
             <LockedButtons
               unlocked={false}
               style={{

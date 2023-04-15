@@ -20,6 +20,7 @@ import {
   revealObjective,
   removeObjective,
   takeObjective,
+  changeObjectivePoints,
 } from "./util/api/objectives";
 import { Options } from "./util/api/options";
 import { GameState } from "./util/api/state";
@@ -281,7 +282,6 @@ export function ObjectivePanel({}) {
 
   const [factionName, setFactionName] = useState("");
   const [secretModal, setSecretModal] = useState(false);
-  const [mutinyDirection, setMutinyDirection] = useState("[For]");
 
   const includesPoK = ((options ?? {}).expansions ?? []).includes("POK");
 
@@ -378,6 +378,10 @@ export function ObjectivePanel({}) {
   const crownScorers = crown?.scorers ?? [];
 
   const imperialRider = (objectives ?? {})["Imperial Rider"];
+
+  const mutiny = (objectives ?? {})["Mutiny"];
+  const mutinyDirection = mutiny?.points === 1 ? "[For]" : "[Against]";
+  const mutinyScorers = mutiny?.scorers ?? [];
 
   return (
     <>
@@ -1064,17 +1068,24 @@ export function ObjectivePanel({}) {
               }}
             >
               <div
-                className="flexColumn"
-                style={{ gap: responsivePixels(2), flexGrow: 2 }}
+                className="flexRow"
+                style={{
+                  gap: responsivePixels(6),
+                  flexGrow: 2,
+                  justifyContent: "center",
+                }}
               >
                 Mutiny{" "}
                 <button
                   style={{ fontSize: responsivePixels(14) }}
                   onClick={() => {
+                    if (!gameid) {
+                      return;
+                    }
                     if (mutinyDirection === "[For]") {
-                      setMutinyDirection("[Against]");
+                      changeObjectivePoints(gameid, "Mutiny", -1);
                     } else {
-                      setMutinyDirection("[For]");
+                      changeObjectivePoints(gameid, "Mutiny", 1);
                     }
                   }}
                 >
@@ -1083,12 +1094,7 @@ export function ObjectivePanel({}) {
               </div>
               <div className="flexRow">
                 {orderedFactionNames.map((faction) => {
-                  const mutinyName =
-                    mutinyDirection === "[For]"
-                      ? "Mutiny (For)"
-                      : "Mutiny (Against)";
-                  const mutiny = (objectives ?? {})[mutinyName];
-                  const applies = (mutiny?.scorers ?? []).includes(faction);
+                  const applies = mutinyScorers.includes(faction);
                   return (
                     <div
                       key={faction}
@@ -1122,9 +1128,9 @@ export function ObjectivePanel({}) {
                             return;
                           }
                           if (applies) {
-                            unscoreObjective(gameid, faction, mutinyName);
+                            unscoreObjective(gameid, faction, "Mutiny");
                           } else {
-                            scoreObjective(gameid, faction, mutinyName);
+                            scoreObjective(gameid, faction, "Mutiny");
                           }
                         }}
                       >

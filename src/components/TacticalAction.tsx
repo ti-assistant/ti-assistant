@@ -451,7 +451,6 @@ export function TacticalAction({
                         )} ${responsivePixels(4)} black`,
                         width: responsivePixels(20),
                         height: responsivePixels(20),
-                        zIndex: 2,
                         color: current ? "green" : "red",
                       }}
                       onClick={() => {

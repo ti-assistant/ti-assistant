@@ -310,6 +310,19 @@ export default async function handler(
           t.update(gameRef, updates);
           break;
         }
+        case "CHANGE_OBJECTIVE_POINTS": {
+          if (!data.points) {
+            res.status(422);
+            return;
+          }
+          const pointsString = `objectives.${data.objective}.points`;
+          const updates: UpdateData<any> = {
+            [pointsString]: data.points,
+            [timestampString]: timestamp,
+          };
+          t.update(gameRef, updates);
+          break;
+        }
       }
     });
   } catch (e) {

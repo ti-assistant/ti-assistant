@@ -63,8 +63,7 @@ export type ObjectiveId =
   | "Mechanize the Military"
   | "Mine Rare Metals"
   | "Monopolize Production"
-  | "Mutiny (Against)"
-  | "Mutiny (For)"
+  | "Mutiny"
   | "Negotiate Trade Routes"
   | "Occupy the Fringe"
   | "Occupy the Seat of the Empire"
@@ -593,17 +592,11 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     points: 1,
     type: "SECRET",
   },
-  "Mutiny (Against)": {
-    description: "Vote for Mutiny and have the Agenda fail",
+  Mutiny: {
+    description:
+      'FOR: Each player who voted "For" gains 1 victory point.\n\nAGAINST: Each player who voted "For" loses 1 victory point.',
     expansion: "BASE",
-    name: "Mutiny (Against)",
-    points: -1,
-    type: "OTHER",
-  },
-  "Mutiny (For)": {
-    description: "Vote for Mutiny and have the Agenda pass",
-    expansion: "BASE",
-    name: "Mutiny (For)",
+    name: "Mutiny",
     points: 1,
     type: "OTHER",
   },
