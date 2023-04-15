@@ -3,6 +3,7 @@ import React, { CSSProperties, ReactNode, useState } from "react";
 import useSWR from "swr";
 import { capitalizeFirstLetter } from "../../../pages/setup";
 import { AgendaRow } from "../../AgendaRow";
+import { TacticalAction } from "../../components/TacticalAction";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";
 import { LabeledDiv, LabeledLine } from "../../LabeledDiv";
@@ -15,6 +16,7 @@ import { Agenda } from "../../util/api/agendas";
 import { Attachment } from "../../util/api/attachments";
 import { Component } from "../../util/api/components";
 import { Faction } from "../../util/api/factions";
+import { Objective } from "../../util/api/objectives";
 import {
   addAttachment,
   claimPlanet,
@@ -362,6 +364,13 @@ function ComponentDetails({ factionName }: { factionName: string }) {
   );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
+  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
+    gameid ? `/api/${gameid}/objectives` : null,
     fetcher,
     {
       revalidateIfStale: false,
@@ -889,68 +898,76 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       };
       const conqueredPlanets =
         ((subState.turnData?.factions ?? {})[factionName] ?? {}).planets ?? [];
-      if (conqueredPlanets.length > 0) {
-        label = "Newly Controlled Planets";
-      }
+      const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
+        if (planet.home || planet.locked || planet.owner === factionName) {
+          return false;
+        }
+        if (planet.owner === factionName) {
+          return false;
+        }
+        return true;
+      });
+      const scoredObjectives =
+        ((subState.turnData?.factions ?? {})[factionName] ?? {}).objectives ??
+        [];
+      const scorableObjectives = Object.values(objectives ?? {}).filter(
+        (objective) => {
+          const scorers = objective.scorers ?? [];
+          if (scorers.includes(factionName)) {
+            return false;
+          }
+          if (
+            objective.name === "Betray a Friend" ||
+            objective.name === "Become a Martyr" ||
+            objective.name === "Prove Endurance" ||
+            objective.name === "Darken the Skies" ||
+            objective.name === "Demonstrate Your Power" ||
+            objective.name === "Destroy Their Greatest Ship" ||
+            objective.name === "Fight With Precision" ||
+            objective.name === "Make an Example of Their World" ||
+            objective.name === "Turn Their Fleets to Dust" ||
+            objective.name === "Unveil Flagship"
+          ) {
+            return false;
+          }
+          if (objective.type === "SECRET" && scorers.length > 0) {
+            return false;
+          }
+          // TODO: Only show Brave the Void if they took a planet in an anomaly. Need to handle Vuil'raith docks...
+          // if (objective.name === "Brave the Void") {
+          //   for (const planetEvent of conqueredPlanets) {
+          //     if (
+          //       planetEvent.name === "Everra" ||
+          //       planetEvent.name === "Cormund" ||
+          //       planetEvent.name === "Mirage"
+          //     ) {
+          //       return true;
+          //     }
+          //   }
+          //   return false;
+          // }
+          // TODO: Only show Spark a Rebellion if they took a planet from the point leader
+          return objective.phase === "ACTION";
+        }
+      );
+      console.log(scorableObjectives);
+
       innerContent = (
-        <div className="flexColumn largeFont" style={{ width: "100%" }}>
-          {conqueredPlanets.length > 0 ? (
-            <React.Fragment>
-              <div
-                className="flexColumn"
-                style={{ alignItems: "stretch", width: "100%" }}
-              >
-                {conqueredPlanets.map((conqueredPlanet) => {
-                  const planet = updatedPlanets.find(
-                    (planet) => planet.name === conqueredPlanet.name
-                  );
-                  if (!planet) {
-                    return null;
-                  }
-                  return (
-                    <PlanetRow
-                      key={conqueredPlanet.name}
-                      factionName={factionName}
-                      planet={planet}
-                      removePlanet={() =>
-                        losePlanet(
-                          conqueredPlanet.name,
-                          conqueredPlanet.prevOwner
-                        )
-                      }
-                    />
-                  );
-                })}
-              </div>
-            </React.Fragment>
-          ) : null}
-          {nonHomeUnownedPlanets.length > 0 && conqueredPlanets.length < 3 ? (
-            <ClientOnlyHoverMenu
-              label="Take Control of Planet"
-              renderProps={(closeFn) => (
-                <div className="flexRow" style={targetButtonStyle}>
-                  {nonHomeUnownedPlanets.map((planet) => {
-                    return (
-                      <button
-                        key={planet.name}
-                        style={{
-                          writingMode: "horizontal-tb",
-                          width: responsivePixels(90),
-                        }}
-                        onClick={() => {
-                          closeFn();
-                          gainPlanet(planet.name);
-                        }}
-                      >
-                        {planet.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            ></ClientOnlyHoverMenu>
-          ) : null}
-        </div>
+        <TacticalAction
+          activeFactionName="Yin Brotherhood"
+          attachments={attachments ?? {}}
+          claimablePlanets={conqueredPlanets.length < 3 ? claimablePlanets : []}
+          conqueredPlanets={conqueredPlanets}
+          factions={factions ?? {}}
+          gameid={gameid ?? ""}
+          objectives={objectives ?? {}}
+          planets={planets ?? {}}
+          scoredObjectives={scoredObjectives}
+          scorableObjectives={scorableObjectives}
+          subState={subState ?? {}}
+          style={{ width: "100%" }}
+          techs={techs ?? {}}
+        />
       );
       break;
     }

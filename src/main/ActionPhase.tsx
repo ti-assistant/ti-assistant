@@ -61,6 +61,7 @@ import { Agenda } from "../util/api/agendas";
 import { LockedButtons } from "../LockedButton";
 import { FactionSelectHoverMenu } from "../components/FactionSelect";
 import { FactionCircle } from "../components/FactionCircle";
+import { TacticalAction } from "../components/TacticalAction";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -656,7 +657,7 @@ export function AdditionalActions({
   const numColumns = Math.ceil(claimablePlanets.length / 13);
   const width = numColumns * 102 + (numColumns - 1) * 4 + 16;
 
-  const targetButtonStyle = {
+  const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
     padding: responsivePixels(8),
     display: "grid",
@@ -664,7 +665,8 @@ export function AdditionalActions({
     gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
     gap: responsivePixels(4),
     justifyContent: "flex-start",
-    ...ClientOnlyHoverMenuStyle,
+    overflowX: "auto",
+    maxWidth: "85vw",
   };
 
   const secretButtonStyle: CSSProperties = {
@@ -1304,319 +1306,69 @@ export function AdditionalActions({
         return null;
       }
       return (
-        <LabeledDiv label="PROVE ENDURANCE?" style={{ gap: "4px", ...style }}>
-          <div
-            className="flexRow"
-            style={{
-              paddingTop: "8px",
-              width: "100%",
-              justifyContent: "space-evenly",
+        <div
+          className="flexRow largeFont"
+          style={{
+            justifyContent: "center",
+            paddingTop: responsivePixels(12),
+            width: "100%",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Prove Endurance:
+          <FactionCircle
+            key={activeFaction.name}
+            blur={true}
+            borderColor={getFactionColor(activeFaction)}
+            factionName={activeFaction.name}
+            onClick={() => {
+              if (!gameid) {
+                return;
+              }
+              if (hasProveEndurance) {
+                undoObjective(activeFaction.name, "Prove Endurance");
+              } else {
+                addObjective(activeFaction.name, "Prove Endurance");
+              }
             }}
-          >
-            <button
-              className={hasProveEndurance ? "selected" : ""}
-              style={{ fontSize: "20px" }}
-              onClick={() =>
-                addObjective(activeFaction.name, "Prove Endurance")
-              }
-            >
-              Yes
-            </button>
-            <button
-              className={!hasProveEndurance ? "selected" : ""}
-              style={{ fontSize: "20px" }}
-              onClick={() =>
-                undoObjective(activeFaction.name, "Prove Endurance")
-              }
-            >
-              No
-            </button>
-          </div>
-        </LabeledDiv>
+            size={52}
+            tag={
+              <div
+                className="flexRow largeFont"
+                style={{
+                  color: hasProveEndurance ? "green" : "red",
+                  fontWeight: "bold",
+                }}
+              >
+                {hasProveEndurance ? "✓" : "⤬"}
+              </div>
+            }
+            tagBorderColor={hasProveEndurance ? "green" : "red"}
+          />
+        </div>
       );
-      // TODO: Display option for Prove Endurance.
       return null;
     case "Tactical":
       const conqueredPlanets =
         ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {})
           .planets ?? [];
-      const nekroTechs =
-        ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {}).techs ??
-        [];
-      // TODO: Handle case where multiple players can become martyrs
-      const currentMartyrs = [];
-      for (const [factionName, faction] of Object.entries(
-        subState.turnData?.factions ?? {}
-      )) {
-        if (faction.objectives?.includes("Become a Martyr")) {
-          currentMartyrs.push(factionName);
-        }
-      }
-      const possibleMartyrs = new Set<string>(currentMartyrs);
-      const becomeAMartyr = (objectives ?? {})["Become a Martyr"];
-      if (
-        becomeAMartyr &&
-        (currentMartyrs.length > 0 ||
-          (becomeAMartyr.scorers ?? []).length === 0 ||
-          becomeAMartyr.type === "STAGE ONE")
-      ) {
-        const scorers = becomeAMartyr.scorers ?? [];
-        for (const conqueredPlanet of conqueredPlanets) {
-          const planet = (planets ?? {})[conqueredPlanet.name];
-          if (!planet) {
-            continue;
-          }
-          if (
-            planet.home &&
-            conqueredPlanet.prevOwner &&
-            conqueredPlanet.prevOwner !== factionName &&
-            !scorers.includes(conqueredPlanet.prevOwner)
-          ) {
-            possibleMartyrs.add(conqueredPlanet.prevOwner);
-          }
-        }
-      }
-      console.log(possibleMartyrs);
-      const orderedMartyrs = Array.from(possibleMartyrs).sort((a, b) => {
-        if (a > b) {
-          return 1;
-        }
-        return -1;
-      });
       return (
-        <div className="flexColumn largeFont" style={{ ...style }}>
-          {conqueredPlanets.length > 0 ? (
-            <LabeledDiv label="NEWLY CONTROLLED PLANETS">
-              <React.Fragment>
-                <div
-                  className="flexColumn"
-                  style={{ alignItems: "stretch", width: "100%" }}
-                >
-                  {conqueredPlanets.map((planet) => {
-                    const planetObj = planets[planet.name];
-                    if (!planetObj) {
-                      return null;
-                    }
-                    const adjustedPlanet = applyPlanetAttachments(
-                      planetObj,
-                      attachments ?? {}
-                    );
-                    return (
-                      <PlanetRow
-                        key={planet.name}
-                        factionName={activeFaction.name}
-                        planet={adjustedPlanet}
-                        removePlanet={() =>
-                          removePlanet(activeFaction.name, planet)
-                        }
-                        prevOwner={planet.prevOwner}
-                      />
-                    );
-                  })}
-                </div>
-              </React.Fragment>
-            </LabeledDiv>
-          ) : null}
-          {claimablePlanets.length > 0 ? (
-            <ClientOnlyHoverMenu
-              label="Take Control of Planet"
-              renderProps={(closeFn) => (
-                <div className="flexRow" style={targetButtonStyle}>
-                  {claimablePlanets.map((planet) => {
-                    return (
-                      <button
-                        key={planet.name}
-                        style={{
-                          writingMode: "horizontal-tb",
-                          width: responsivePixels(90),
-                        }}
-                        onClick={() => {
-                          closeFn();
-                          addPlanet(activeFaction.name, planet);
-                        }}
-                      >
-                        {planet.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            ></ClientOnlyHoverMenu>
-          ) : null}
-          {scoredObjectives.length > 0 ? (
-            <LabeledDiv
-              label={`Scored Action Phase ${pluralize(
-                "Objective",
-                scoredObjectives.length
-              )}`}
-            >
-              <React.Fragment>
-                <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  {scoredObjectives.map((objective) => {
-                    if (!objectives) {
-                      return null;
-                    }
-                    const objectiveObj = objectives[objective];
-                    if (!objectiveObj) {
-                      return null;
-                    }
-                    return (
-                      <ObjectiveRow
-                        key={objective}
-                        hideScorers={true}
-                        objective={objectiveObj}
-                        removeObjective={() =>
-                          undoObjective(activeFaction.name, objective)
-                        }
-                      />
-                    );
-                  })}
-                </div>
-              </React.Fragment>
-            </LabeledDiv>
-          ) : null}
-          {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
-            <ClientOnlyHoverMenu
-              label="Score Action Phase Objective"
-              renderProps={(closeFn) => (
-                <div className="flexColumn" style={{ ...secretButtonStyle }}>
-                  {scorableObjectives.map((objective) => {
-                    return (
-                      <button
-                        key={objective.name}
-                        onClick={() => {
-                          closeFn();
-                          addObjective(activeFaction.name, objective.name);
-                        }}
-                      >
-                        {objective.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            ></ClientOnlyHoverMenu>
-          ) : null}
-          {activeFaction.name === "Nekro Virus" &&
-          (nekroTechs.length > 0 || researchableTechs.length > 0) ? (
-            <React.Fragment>
-              {nekroTechs.length > 0 ? (
-                <LabeledDiv label="TECHNOLOGICAL SINGULARITY">
-                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                    {nekroTechs.map((tech) => {
-                      const techObj = techs[tech];
-                      if (!techObj) {
-                        return null;
-                      }
-                      return (
-                        <TechRow
-                          key={tech}
-                          tech={techObj}
-                          removeTech={() =>
-                            removeTech(activeFaction.name, tech)
-                          }
-                        />
-                      );
-                    })}
-                  </div>
-                </LabeledDiv>
-              ) : null}
-              {nekroTechs.length < 4 && researchableTechs.length > 0 ? (
-                <TechSelectHoverMenu
-                  label="Technological Singularity"
-                  techs={researchableTechs}
-                  selectTech={(tech) => addTech(activeFaction.name, tech)}
-                />
-              ) : null}
-            </React.Fragment>
-          ) : null}
-          {becomeAMartyr && possibleMartyrs.size > 0 ? (
-            <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
-              <LabeledLine leftLabel="Other Factions" />
-              <div className="flexRow">
-                <ObjectiveRow objective={becomeAMartyr} hideScorers />
-                {becomeAMartyr.type === "SECRET" ||
-                possibleMartyrs.size === 1 ? (
-                  <FactionSelectHoverMenu
-                    onSelect={(factionName, prevFaction) => {
-                      console.log(prevFaction);
-                      if (factionName && prevFaction) {
-                        if (!gameid) {
-                          return;
-                        }
-                        undoObjective(prevFaction, "Become a Martyr");
-                        addObjective(factionName, "Become a Martyr");
-                      } else if (prevFaction) {
-                        undoObjective(prevFaction, "Become a Martyr");
-                      } else if (factionName) {
-                        addObjective(factionName, "Become a Martyr");
-                      }
-                    }}
-                    borderColor={getFactionColor(
-                      factions[currentMartyrs[0] ?? ""]
-                    )}
-                    selectedFaction={currentMartyrs[0]}
-                    options={orderedMartyrs}
-                  />
-                ) : (
-                  orderedMartyrs.map((factionName) => {
-                    const current = hasScoredObjective(
-                      factionName,
-                      becomeAMartyr
-                    );
-                    return (
-                      <div
-                        key={factionName}
-                        className="flexRow hiddenButtonParent"
-                        style={{
-                          position: "relative",
-                          width: responsivePixels(32),
-                          height: responsivePixels(32),
-                        }}
-                      >
-                        <FullFactionSymbol faction={factionName} />
-                        <div
-                          className="flexRow"
-                          style={{
-                            position: "absolute",
-                            backgroundColor: "#222",
-                            cursor: "pointer",
-                            borderRadius: "100%",
-                            marginLeft: "60%",
-                            marginTop: "60%",
-                            boxShadow: `${responsivePixels(
-                              1
-                            )} ${responsivePixels(1)} ${responsivePixels(
-                              4
-                            )} black`,
-                            width: responsivePixels(20),
-                            height: responsivePixels(20),
-                            zIndex: 2,
-                            color: current ? "green" : "red",
-                          }}
-                          onClick={() => {
-                            if (!gameid) {
-                              return;
-                            }
-                            if (current) {
-                              undoObjective(factionName, "Become a Martyr");
-                            } else {
-                              addObjective(factionName, "Become a Martyr");
-                            }
-                          }}
-                        >
-                          {current ? "✓" : "⤬"}
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </div>
-          ) : null}
-        </div>
+        <TacticalAction
+          activeFactionName={activeFaction.name}
+          attachments={attachments ?? {}}
+          claimablePlanets={claimablePlanets}
+          conqueredPlanets={conqueredPlanets}
+          factions={factions ?? {}}
+          gameid={gameid ?? ""}
+          objectives={objectives ?? {}}
+          planets={planets ?? {}}
+          scorableObjectives={scorableObjectives}
+          scoredObjectives={scoredObjectives}
+          subState={subState ?? {}}
+          style={style}
+          techs={techs ?? {}}
+        />
       );
-    // TODO: Display tech section for Nekro
   }
   return null;
 }
