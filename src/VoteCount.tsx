@@ -143,7 +143,8 @@ function computeRemainingVotes(
   planets: Record<string, Planet>,
   attachments: Record<string, Attachment>,
   agendas: Record<string, Agenda>,
-  options: Options
+  options: Options,
+  state: GameState
 ) {
   const representativeGovernment = agendas["Representative Government"];
 
@@ -156,7 +157,16 @@ function computeRemainingVotes(
   const ownedPlanets = filterToClaimedPlanets(planets, factionName);
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
-  const orderedPlanets = updatedPlanets.sort((a, b) => {
+  const filteredPlanets = updatedPlanets.filter((planet) => {
+    if (factionName !== state?.ancientBurialSites) {
+      return true;
+    }
+    return (
+      planet.type !== "CULTURAL" && !planet.attributes.includes("all-types")
+    );
+  });
+
+  const orderedPlanets = filteredPlanets.sort((a, b) => {
     const aRatio =
       a.resources > 0 ? a.influence / a.resources : Number.MAX_SAFE_INTEGER;
     const bRatio =
@@ -345,7 +355,8 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     planets ?? {},
     attachments ?? {},
     agendas ?? {},
-    options
+    options,
+    state
   );
 
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");

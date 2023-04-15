@@ -41,6 +41,7 @@ import { responsivePixels } from "../util/util";
 import { resetAgendaTimers } from "../util/api/timers";
 import { resetStrategyCards, StrategyCard } from "../util/api/cards";
 import {
+  ancientBurialSites,
   GameState,
   setAgendaNum,
   setSpeaker,
@@ -1156,6 +1157,29 @@ function AgendaSteps() {
             alignItems: "stretch",
           }}
         >
+          {(!currentAgenda && agendaNum === 1) || state?.ancientBurialSites ? (
+            <LabeledDiv
+              label="Start of Agenda Phase"
+              style={{ paddingTop: responsivePixels(12) }}
+            >
+              <Selector
+                hoverMenuLabel="Ancient Burial Sites"
+                selectedLabel="Cultural Planets Exhausted"
+                options={Object.keys(factions ?? {})}
+                toggleItem={(factionName, add) => {
+                  if (!gameid) {
+                    return;
+                  }
+                  if (add) {
+                    ancientBurialSites(gameid, factionName);
+                  } else {
+                    ancientBurialSites(gameid, undefined);
+                  }
+                }}
+                selectedItem={state?.ancientBurialSites}
+              />
+            </LabeledDiv>
+          ) : null}
           <div
             className="flexRow mediumFont"
             style={{ justifyContent: "flex-start", whiteSpace: "nowrap" }}

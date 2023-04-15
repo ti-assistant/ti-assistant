@@ -133,6 +133,7 @@ export default async function handler(
         "state.activeplayer": gameData.state.speaker,
         "state.round": gameData.state.round + 1,
         "state.agendaNum": 1,
+        "state.ancientBurialSites": FieldValue.delete(),
         [timestampString]: timestamp,
       };
       // Un-exhaust all exhausted components.
@@ -240,6 +241,14 @@ export default async function handler(
       }
       const updates = {
         "state.agendaNum": data.agendaNum,
+        [timestampString]: timestamp,
+      };
+      await db.collection("games").doc(gameId).update(updates);
+      break;
+    }
+    case "ANCIENT_BURIAL_SITES": {
+      const updates = {
+        "state.ancientBurialSites": data.factionName ?? FieldValue.delete(),
         [timestampString]: timestamp,
       };
       await db.collection("games").doc(gameId).update(updates);

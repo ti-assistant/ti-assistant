@@ -22,11 +22,13 @@ export type StateUpdateAction =
   | "END_GAME"
   | "CONTINUE_GAME"
   | "SET_AGENDA_NUM"
+  | "ANCIENT_BURIAL_SITES" // Probably a better way to do this...
   | "SET_GLOBAL_PAUSE";
 
 export interface StateUpdateData {
   action?: StateUpdateAction;
   agendaNum?: number;
+  factionName?: string;
   paused?: boolean;
   skipAgenda?: boolean;
   speaker?: string;
@@ -35,6 +37,7 @@ export interface StateUpdateData {
 
 export interface GameState {
   activeplayer?: string;
+  ancientBurialSites?: string;
   agendaNum?: number;
   agendaUnlocked?: boolean;
   finalPhase?: Phase;
@@ -215,7 +218,7 @@ export async function continueGame(gameid: string) {
   );
 }
 
-export async function setAgendaNum(gameid: string, agendaNum: number) {
+export function setAgendaNum(gameid: string, agendaNum: number) {
   const data: StateUpdateData = {
     action: "SET_AGENDA_NUM",
     agendaNum: agendaNum,
@@ -229,6 +232,31 @@ export async function setAgendaNum(gameid: string, agendaNum: number) {
         const updatedState = structuredClone(state);
 
         updatedState.agendaNum = agendaNum;
+
+        return updatedState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function ancientBurialSites(
+  gameid: string,
+  factionName: string | undefined
+) {
+  const data: StateUpdateData = {
+    action: "ANCIENT_BURIAL_SITES",
+    factionName: factionName,
+  };
+
+  mutate(
+    `/api/${gameid}/state`,
+    async () => await poster(`/api/${gameid}/stateUpdate`, data),
+    {
+      optimisticData: (state: GameState) => {
+        const updatedState = structuredClone(state);
+
+        updatedState.ancientBurialSites = factionName;
 
         return updatedState;
       },
