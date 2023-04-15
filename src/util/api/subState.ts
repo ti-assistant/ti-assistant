@@ -134,6 +134,7 @@ export interface SubState {
   factions?: Record<string, SubStateFaction>;
   objectives?: string[];
   tieBreak?: string;
+  overwrite?: string;
   outcome?: string;
   repealedAgenda?: string;
   subAgenda?: string;
@@ -832,6 +833,7 @@ export function hideSubStateAgenda(gameid: string) {
         delete updatedSubState.outcome;
         delete updatedSubState.factions;
         delete updatedSubState.riders;
+        delete updatedSubState.overwrite;
 
         return updatedSubState;
       },

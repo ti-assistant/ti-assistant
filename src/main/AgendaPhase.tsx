@@ -171,6 +171,10 @@ export function getSelectedOutcome(
   selectedTargets: string[],
   subState: SubState
 ) {
+  if (subState.overwrite) {
+    return subState.overwrite;
+  }
+
   if (selectedTargets.length === 1) {
     return selectedTargets[0];
   }
@@ -934,8 +938,16 @@ function AgendaSteps() {
     if (!gameid || !subState.agenda) {
       return;
     }
-    const target = isTie ? subState.tieBreak : selectedTargets[0];
+    const target = getSelectedOutcome(selectedTargets, subState);
     if (!target) {
+      return;
+    }
+    if (target === "No Effect") {
+      updateCastVotes(gameid, subState.factions);
+      hideSubStateAgenda(gameid);
+      finalizeSubState(gameid, subState);
+      const agendaNum = state?.agendaNum ?? 1;
+      setAgendaNum(gameid, agendaNum + 1);
       return;
     }
     let activeAgenda = subState.agenda;
@@ -1358,7 +1370,9 @@ function AgendaSteps() {
               </LabeledDiv>
             )}
           </div>
-          {currentAgenda && !haveVotesBeenCast() ? (
+          {currentAgenda &&
+          !haveVotesBeenCast() &&
+          !getSelectedOutcome(selectedTargets, subState) ? (
             <>
               <div className="flexRow">
                 <button onClick={() => hideAgenda()}>{vetoText}</button>
@@ -1417,7 +1431,9 @@ function AgendaSteps() {
               </LabeledDiv>
             </>
           ) : null}
-          {currentAgenda && !haveVotesBeenCast() ? (
+          {currentAgenda &&
+          !haveVotesBeenCast() &&
+          !getSelectedOutcome(selectedTargets, subState) ? (
             <LabeledDiv label="After an Agenda is Revealed">
               <div
                 className="flexColumn"
@@ -1554,14 +1570,72 @@ function AgendaSteps() {
                   className="flexColumn"
                   style={{ paddingTop: responsivePixels(8), width: "100%" }}
                 >
+                  <Selector
+                    hoverMenuLabel="Overwrite Outcome"
+                    options={allTargets
+                      .filter((target) => {
+                        return (
+                          target !==
+                          getSelectedOutcome(selectedTargets, subState)
+                        );
+                      })
+                      .map((target) => {
+                        if (target === "Abstain") {
+                          return "No Effect";
+                        }
+                        return target;
+                      })}
+                    selectedLabel="Overwritten Outcome"
+                    selectedItem={subState.overwrite}
+                    toggleItem={(targetName, add) => {
+                      if (!gameid) {
+                        return;
+                      }
+                      setSubStateOther(
+                        gameid,
+                        "overwrite",
+                        add ? targetName : undefined
+                      );
+                    }}
+                  />
                   <button onClick={completeAgenda}>
-                    Resolve with target:{" "}
+                    Resolve with Outcome:{" "}
                     {getSelectedOutcome(selectedTargets, subState)}
                   </button>
                 </div>
               ) : null}
             </LabeledDiv>
-          ) : null}
+          ) : (
+            <div style={{ width: "fit-content" }}>
+              <Selector
+                hoverMenuLabel="Overwrite Outcome"
+                options={allTargets
+                  .filter((target) => {
+                    return (
+                      target !== getSelectedOutcome(selectedTargets, subState)
+                    );
+                  })
+                  .map((target) => {
+                    if (target === "Abstain") {
+                      return "No Effect";
+                    }
+                    return target;
+                  })}
+                selectedLabel="Overwritten Outcome"
+                selectedItem={subState.overwrite}
+                toggleItem={(targetName, add) => {
+                  if (!gameid) {
+                    return;
+                  }
+                  setSubStateOther(
+                    gameid,
+                    "overwrite",
+                    add ? targetName : undefined
+                  );
+                }}
+              />
+            </div>
+          )}
         </div>
       )}
     </React.Fragment>

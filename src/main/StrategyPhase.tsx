@@ -254,6 +254,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
       return;
     }
 
+    swapStrategyCards(gameid, cardOne, cardTwo);
     swapSubStateStrategyCards(gameid, cardOne, cardTwo);
     repealAgenda(gameid, arbiter);
   }
