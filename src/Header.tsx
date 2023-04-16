@@ -182,15 +182,14 @@ export function NonGameHeader({
                 label={`Game: ${gameId}`}
                 buttonStyle={{
                   position: "fixed",
-                  top: responsivePixels(64),
-                  left: responsivePixels(96),
+                  top: responsivePixels(24),
+                  right: responsivePixels(120),
                 }}
               >
                 <div
                   className="flexColumn"
                   style={{
                     position: "relative",
-                    zIndex: 10000,
                     marginTop: responsivePixels(8),
                   }}
                 >
