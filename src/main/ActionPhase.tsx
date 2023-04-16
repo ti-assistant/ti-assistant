@@ -402,7 +402,6 @@ export interface AdditionalActionsProps {
 export function AdditionalActions({
   factionName,
   style = {},
-  ClientOnlyHoverMenuStyle = {},
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
@@ -653,9 +652,6 @@ export function AdditionalActions({
       return objective.phase === "ACTION";
     }
   );
-
-  const numColumns = Math.ceil(claimablePlanets.length / 13);
-  const width = numColumns * 102 + (numColumns - 1) * 4 + 16;
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",

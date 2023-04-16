@@ -558,6 +558,17 @@ export default async function handler(
       };
       break;
     }
+    case "SET_COMPONENT_DETAILS": {
+      if (!data.fieldName) {
+        res.status(422).send({ message: "Missing Field Name " });
+      }
+      const newFieldString = `subState.turnData.component.${data.fieldName}`;
+      updates = {
+        [newFieldString]: data.value ?? FieldValue.delete(),
+        [timestampString]: timestamp,
+      };
+      break;
+    }
     case "FINALIZE_SUB_STATE":
       {
         const subState = gameData.subState ?? {};

@@ -538,7 +538,6 @@ input[type="text"] {
   position: absolute;
   white-space: nowrap;
   left: var(--six-pixel);
-  top: var(--negative-two-pixel);
   background-color: #222;
   border-radius: var(--five-pixel);
   padding: var(--two-pixel) var(--four-pixel);
@@ -555,7 +554,6 @@ input[type="text"] {
   position: absolute;
   white-space: nowrap;
   right: var(--six-pixel);
-  top: var(--negative-two-pixel);
   background-color: #222;
   border-radius: var(--five-pixel);
   padding: var(--two-pixel) var(--four-pixel);

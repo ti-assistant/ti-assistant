@@ -3,6 +3,7 @@ import React, { CSSProperties, ReactNode, useState } from "react";
 import useSWR from "swr";
 import { capitalizeFirstLetter } from "../../../pages/setup";
 import { AgendaRow } from "../../AgendaRow";
+import { FactionSelectHoverMenu } from "../../components/FactionSelect";
 import { TacticalAction } from "../../components/TacticalAction";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";
@@ -34,11 +35,13 @@ import {
   clearRemovedSubStateTech,
   clearSubState,
   destroySubStatePlanet,
+  hasStateChanged,
   removeRepealedSubStateAgenda,
   removeSubStatePlanet,
   removeSubStateTech,
   repealSubStateAgenda,
   selectSubStateComponent,
+  setSubStateComponentDetails,
   setSubStateOther,
   setSubStateSelectedAction,
   SubState,
@@ -47,6 +50,7 @@ import {
 } from "../../util/api/subState";
 import { hasTech, Tech } from "../../util/api/techs";
 import { fetcher } from "../../util/api/util";
+import { getFactionColor, getFactionName } from "../../util/factions";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize, responsivePixels } from "../../util/util";
 import { TechSelectHoverMenu } from "./TechSelectHoverMenu";
@@ -502,45 +506,28 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       attachmentName
     );
   }
-  function gainPlanet(planetName: string) {
-    if (!gameid) {
-      return;
-    }
-    claimPlanet(gameid, planetName, factionName);
-    addSubStatePlanet(gameid, factionName, planetName);
+
+  if (!subState) {
+    return null;
   }
-  function losePlanet(planetName: string, prevOwner: string | undefined) {
-    if (!gameid) {
-      return;
-    }
-    if (prevOwner) {
-      claimPlanet(gameid, planetName, prevOwner);
-    } else {
-      unclaimPlanet(gameid, planetName, factionName);
-    }
-    removeSubStatePlanet(gameid, factionName, planetName);
-  }
-  // function repealLaw(lawName: string) {
-  //   if (!gameid) {
-  //     return;
-  //   }
-  //   repealSubStateAgenda(gameid, lawName);
-  // }
-  // function removeRepealedAgenda() {
-  //   if (!gameid) {
-  //     return;
-  //   }
-  //   removeRepealedSubStateAgenda(gameid);
-  // }
 
   const updatedPlanets = applyAllPlanetAttachments(
     Object.values(planets ?? {}),
     attachments ?? {}
   );
 
-  let label = "Details";
+  let leftLabel: ReactNode | undefined = "Details";
+  let label: ReactNode | undefined;
+  let rightLabel: ReactNode | undefined;
+  let lineColor: string | undefined;
   let innerContent: ReactNode | undefined;
-  switch (subState?.turnData?.component?.name) {
+
+  let componentName = subState?.turnData?.component?.name;
+  if (componentName === "Ssruu") {
+    componentName = subState?.turnData?.component?.subComponent;
+  }
+
+  switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {
       const faction = factions[factionName];
@@ -556,7 +543,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       const availableTechs = getResearchableTechs(faction);
 
       if (researchedTech.length > 0) {
-        label = "Researched Tech";
+        leftLabel = "Researched Tech";
         innerContent = (
           <React.Fragment>
             {researchedTech.map((tech) => {
@@ -682,7 +669,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       const unownedRelics = Object.values(relics ?? {})
         .filter((relic) => !relic.owner)
         .map((relic) => relic.name);
-      label = "Gained Relic";
+      leftLabel = "Gained Relic";
       innerContent =
         unownedRelics.length > 0 ? (
           <Selector
@@ -740,7 +727,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       );
       const destroyedPlanet = (subState.turnData ?? {}).destroyedPlanet?.name;
       if (destroyedPlanet) {
-        label = "Destroyed Planet";
+        leftLabel = "Destroyed Planet";
       }
       innerContent = (
         <div
@@ -784,7 +771,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         }
       );
       if (nanoForgedPlanet) {
-        label = "Attached to";
+        leftLabel = "Attached to";
       }
       innerContent = (
         <div
@@ -842,7 +829,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         }
       );
       if (terraformedPlanet) {
-        label = "Attached to";
+        leftLabel = "Attached to";
       }
       innerContent = (
         <div
@@ -884,18 +871,6 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       const nonHomeUnownedPlanets = updatedPlanets.filter((planet) => {
         return !planet.home && !planet.locked && planet.owner !== factionName;
       });
-      const targetButtonStyle = {
-        fontFamily: "Myriad Pro",
-        padding: responsivePixels(8),
-        display: "grid",
-        gridAutoFlow: "column",
-        gridTemplateRows: `repeat(${Math.min(
-          12,
-          nonHomeUnownedPlanets.length
-        )}, auto)`,
-        gap: responsivePixels(4),
-        justifyContent: "flex-start",
-      };
       const conqueredPlanets =
         ((subState.turnData?.factions ?? {})[factionName] ?? {}).planets ?? [];
       const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
@@ -933,20 +908,6 @@ function ComponentDetails({ factionName }: { factionName: string }) {
           if (objective.type === "SECRET" && scorers.length > 0) {
             return false;
           }
-          // TODO: Only show Brave the Void if they took a planet in an anomaly. Need to handle Vuil'raith docks...
-          // if (objective.name === "Brave the Void") {
-          //   for (const planetEvent of conqueredPlanets) {
-          //     if (
-          //       planetEvent.name === "Everra" ||
-          //       planetEvent.name === "Cormund" ||
-          //       planetEvent.name === "Mirage"
-          //     ) {
-          //       return true;
-          //     }
-          //   }
-          //   return false;
-          // }
-          // TODO: Only show Spark a Rebellion if they took a planet from the point leader
           return objective.phase === "ACTION";
         }
       );
@@ -971,6 +932,111 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       );
       break;
     }
+    case "Z'eu": {
+      const selectedFaction = subState.turnData?.component?.selectedFaction;
+
+      const claimedPlanets =
+        ((subState.turnData?.factions ?? {})[selectedFaction ?? ""] ?? {})
+          .planets ?? [];
+      const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
+        if (!planets) {
+          return false;
+        }
+        if (planet.owner === selectedFaction) {
+          return false;
+        }
+        if (planet.locked) {
+          return false;
+        }
+        for (const claimedPlanet of claimedPlanets) {
+          if (claimedPlanet.name === planet.name) {
+            return false;
+          }
+        }
+        if (claimedPlanets.length > 0) {
+          const claimedPlanetName = claimedPlanets[0]?.name;
+          const claimedPlanet = planets[claimedPlanetName ?? ""];
+          if (claimedPlanet?.system) {
+            return planet.system === claimedPlanet.system;
+          }
+          if (claimedPlanet?.faction) {
+            return planet.faction === claimedPlanet.faction;
+          }
+          return false;
+        }
+        return true;
+      });
+      const scoredObjectives =
+        ((subState.turnData?.factions ?? {})[selectedFaction ?? ""] ?? {})
+          .objectives ?? [];
+      const scorableObjectives = Object.values(objectives ?? {}).filter(
+        (objective) => {
+          const scorers = objective.scorers ?? [];
+          if (scorers.includes(selectedFaction ?? "")) {
+            return false;
+          }
+          if (scoredObjectives.includes(objective.name)) {
+            return false;
+          }
+          if (
+            objective.name === "Become a Martyr" ||
+            objective.name === "Prove Endurance"
+          ) {
+            return false;
+          }
+          if (objective.type === "SECRET" && scorers.length > 0) {
+            return false;
+          }
+          return objective.phase === "ACTION";
+        }
+      );
+      leftLabel = undefined;
+      label = selectedFaction ? "Tactical Action" : "Select Faction";
+      rightLabel = (
+        <FactionSelectHoverMenu
+          allowNone={false}
+          selectedFaction={selectedFaction}
+          options={
+            hasStateChanged(subState) && selectedFaction
+              ? [selectedFaction]
+              : Object.keys(factions)
+          }
+          onSelect={(factionName, _) => {
+            if (!gameid) {
+              return;
+            }
+            setSubStateComponentDetails(gameid, "selectedFaction", factionName);
+          }}
+          size={44}
+          borderColor={getFactionColor(factions[selectedFaction ?? ""])}
+        />
+      );
+      lineColor = getFactionColor(factions[selectedFaction ?? ""]);
+      innerContent = (
+        <div style={{ width: "100%", minHeight: responsivePixels(12) }}>
+          {selectedFaction ? (
+            <div style={{ paddingTop: responsivePixels(12) }}>
+              <TacticalAction
+                activeFactionName={selectedFaction}
+                attachments={attachments ?? {}}
+                claimablePlanets={claimablePlanets}
+                conqueredPlanets={claimedPlanets}
+                factions={factions ?? {}}
+                gameid={gameid ?? ""}
+                objectives={objectives ?? {}}
+                planets={planets ?? {}}
+                scorableObjectives={scorableObjectives}
+                scoredObjectives={scoredObjectives}
+                subState={subState ?? {}}
+                style={{ width: "100%" }}
+                techs={techs ?? {}}
+              />
+            </div>
+          ) : null}
+        </div>
+      );
+      break;
+    }
     case "UNITDSGNFLAYESH": {
       const faction = factions[factionName];
       if (!faction) {
@@ -983,7 +1049,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       });
 
       if (researchedTech.length > 0) {
-        label = "Gained Tech";
+        leftLabel = "Gained Tech";
         innerContent = (
           <React.Fragment>
             {researchedTech.map((tech) => {
@@ -1121,7 +1187,12 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       className="flexColumn"
       style={{ width: "100%", gap: responsivePixels(4) }}
     >
-      <LabeledLine leftLabel={label} />
+      <LabeledLine
+        leftLabel={leftLabel}
+        label={label}
+        rightLabel={rightLabel}
+        color={lineColor}
+      />
       <div
         className="flexColumn"
         style={{ alignItems: "flex-start", width: "100%" }}
@@ -1207,7 +1278,6 @@ export function ComponentAction({ factionName }: { factionName: string }) {
     .map((relic) => relic.name);
 
   if (!component) {
-    console.log("Re-render time");
     const filteredComponents = Object.values(components ?? {}).filter(
       (component) => {
         if (component.type === "PROMISSORY") {
@@ -1282,6 +1352,21 @@ export function ComponentAction({ factionName }: { factionName: string }) {
     );
   }
 
+  const agentsForSsruu = Object.values(components ?? {})
+    .filter((component) => {
+      if (component.type !== "LEADER") {
+        return false;
+      }
+      if (component.leader !== "AGENT") {
+        return false;
+      }
+      if (component.name === "Ssruu") {
+        return false;
+      }
+      return true;
+    })
+    .map((component) => component.name);
+
   return (
     <React.Fragment>
       <Modal
@@ -1317,6 +1402,38 @@ export function ComponentAction({ factionName }: { factionName: string }) {
               &#x24D8;
             </div>
           </SelectableRow>
+          {component.name === "Ssruu" ? (
+            <div
+              className="flexRow"
+              style={{ paddingLeft: responsivePixels(16) }}
+            >
+              Using the ability of
+              <Selector
+                hoverMenuLabel="Select Agent"
+                options={agentsForSsruu}
+                selectedItem={subState.turnData?.component?.subComponent}
+                toggleItem={(agent, add) => {
+                  if (!gameid) {
+                    return;
+                  }
+                  const updatedName = agent
+                    .replace(/\./g, "")
+                    .replace(/,/g, "")
+                    .replace(/ Ω/g, "");
+                  setSubStateComponentDetails(
+                    gameid,
+                    "subComponent",
+                    add ? updatedName : undefined
+                  );
+                  setSubStateComponentDetails(
+                    gameid,
+                    "selectedFaction",
+                    undefined
+                  );
+                }}
+              />
+            </div>
+          ) : null}
           <ComponentDetails factionName={factionName} />
         </LabeledDiv>
       </div>

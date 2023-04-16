@@ -524,10 +524,6 @@ function PhaseSection() {
               <AdditionalActions
                 factionName={factionName}
                 style={{ width: "100%", alignItems: "flex-start" }}
-                ClientOnlyHoverMenuStyle={{
-                  overflowX: "auto",
-                  maxWidth: "85vw",
-                }}
                 primaryOnly={true}
               />
             </div>
@@ -618,10 +614,6 @@ function PhaseSection() {
                 <AdditionalActions
                   factionName={factionName}
                   style={{ width: "100%" }}
-                  ClientOnlyHoverMenuStyle={{
-                    overflowX: "auto",
-                    maxWidth: "85vw",
-                  }}
                   secondaryOnly={true}
                 />
               );

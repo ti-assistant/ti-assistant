@@ -56,6 +56,7 @@ export type SubStateUpdateAction =
   | "MARK_SECONDARY"
   | "TOGGLE_POLITICAL_SECRET"
   | "SET_OTHER_FIELD"
+  | "SET_COMPONENT_DETAILS"
   | "FINALIZE_SUB_STATE";
 
 export interface AssignStrategyCardEvent {
@@ -72,7 +73,9 @@ export interface TurnData {
   speaker?: string;
   component?: {
     name: string;
+    selectedFaction?: string;
     factions?: Record<string, SubStateFaction>;
+    [key: string]: any;
   };
   destroyedPlanet?: PlanetEvent;
   attachments?: Record<string, string>;
@@ -148,6 +151,39 @@ export interface SubState {
     }
   >;
   [key: string]: any;
+}
+
+export function hasStateChanged(subState: SubState) {
+  for (const faction of Object.values(subState.turnData?.factions ?? {})) {
+    if (faction.planets && faction.planets.length > 0) {
+      return true;
+    }
+    if (faction.objectives && faction.objectives.length > 0) {
+      return true;
+    }
+    if (faction.techs && faction.techs.length > 0) {
+      return true;
+    }
+    if (faction.relic) {
+      return true;
+    }
+    if (faction.removeTechs && faction.removeTechs.length > 0) {
+      return true;
+    }
+  }
+  if (subState.turnData?.destroyedPlanet) {
+    return true;
+  }
+  if (
+    subState.turnData?.attachments &&
+    Object.keys(subState.turnData.attachments).length > 0
+  ) {
+    return true;
+  }
+  if (subState.turnData?.speaker) {
+    return true;
+  }
+  return false;
 }
 
 function rewindTurnData(gameid: string, turnData: TurnData | undefined) {
@@ -264,6 +300,39 @@ export function selectSubStateComponent(gameid: string, componentName: string) {
         updatedSubState.turnData.component = {
           name: componentName,
         };
+
+        return updatedSubState;
+      },
+      revalidate: false,
+    }
+  );
+}
+
+export function setSubStateComponentDetails(
+  gameid: string,
+  fieldName: string,
+  value: any
+) {
+  setGlobalPause(gameid, false);
+
+  const data: SubStateUpdateData = {
+    action: "SET_COMPONENT_DETAILS",
+    fieldName: fieldName,
+    value: value,
+  };
+
+  mutate(
+    `/api/${gameid}/subState`,
+    async () => await poster(`/api/${gameid}/subStateUpdate`, data),
+    {
+      optimisticData: (subState: SubState) => {
+        const updatedSubState = structuredClone(subState ?? {});
+
+        if (!updatedSubState.turnData || !updatedSubState.turnData.component) {
+          return updatedSubState;
+        }
+
+        updatedSubState.turnData.component[fieldName] = value;
 
         return updatedSubState;
       },
