@@ -1569,6 +1569,35 @@ function AgendaSteps() {
                   />
                 ) : null
               ) : null}
+              {readyToResolve() ? (
+                <Selector
+                  hoverMenuLabel="Overwrite Outcome"
+                  options={allTargets
+                    .filter((target) => {
+                      return (
+                        target !== getSelectedOutcome(selectedTargets, subState)
+                      );
+                    })
+                    .map((target) => {
+                      if (target === "Abstain") {
+                        return "No Effect";
+                      }
+                      return target;
+                    })}
+                  selectedLabel="Overwritten Outcome"
+                  selectedItem={subState.overwrite}
+                  toggleItem={(targetName, add) => {
+                    if (!gameid) {
+                      return;
+                    }
+                    setSubStateOther(
+                      gameid,
+                      "overwrite",
+                      add ? targetName : undefined
+                    );
+                  }}
+                />
+              ) : null}
               <AgendaDetails />
               <PredictionDetails />
               {readyToResolve() ? (
@@ -1576,34 +1605,6 @@ function AgendaSteps() {
                   className="flexColumn"
                   style={{ paddingTop: responsivePixels(8), width: "100%" }}
                 >
-                  <Selector
-                    hoverMenuLabel="Overwrite Outcome"
-                    options={allTargets
-                      .filter((target) => {
-                        return (
-                          target !==
-                          getSelectedOutcome(selectedTargets, subState)
-                        );
-                      })
-                      .map((target) => {
-                        if (target === "Abstain") {
-                          return "No Effect";
-                        }
-                        return target;
-                      })}
-                    selectedLabel="Overwritten Outcome"
-                    selectedItem={subState.overwrite}
-                    toggleItem={(targetName, add) => {
-                      if (!gameid) {
-                        return;
-                      }
-                      setSubStateOther(
-                        gameid,
-                        "overwrite",
-                        add ? targetName : undefined
-                      );
-                    }}
-                  />
                   <button onClick={completeAgenda}>
                     Resolve with Outcome:{" "}
                     {getSelectedOutcome(selectedTargets, subState)}

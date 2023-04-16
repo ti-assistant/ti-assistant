@@ -144,6 +144,17 @@ function MobileOptions({
                   >
                     14
                   </button>
+                  <button
+                    className={
+                      options["victory-points"] === 14 ? "selected" : ""
+                    }
+                    onClick={() => {
+                      toggleOption(14, "victory-points");
+                    }}
+                  >
+                    Other
+                  </button>
+                  <input type="number" defaultValue={12} />
                 </div>
               </div>
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
@@ -296,6 +307,7 @@ function Options({
   isCouncil,
 }: OptionsProps) {
   const mapStringRef = useRef<HTMLInputElement>(null);
+  const otherPointsRef = useRef<HTMLDivElement>(null);
 
   const mapString = options["map-string"];
 
@@ -380,6 +392,48 @@ function Options({
                 >
                   14
                 </button>
+                <button
+                  className={
+                    options["victory-points"] !== 14 &&
+                    options["victory-points"] !== 10
+                      ? "selected"
+                      : ""
+                  }
+                  onClick={() => {
+                    toggleOption(
+                      parseInt(otherPointsRef.current?.innerText ?? "10"),
+                      "victory-points"
+                    );
+                  }}
+                >
+                  Other
+                </button>
+                <div
+                  ref={otherPointsRef}
+                  spellCheck={false}
+                  contentEditable={true}
+                  suppressContentEditableWarning={true}
+                  onClick={(e) => (e.currentTarget.innerText = "")}
+                  onBlur={(e) => {
+                    const victoryPoints = parseInt(e.target.innerText);
+                    if (isNaN(victoryPoints) || victoryPoints <= 0) {
+                      if (
+                        options["victory-points"] !== 10 &&
+                        options["victory-points"] !== 14
+                      ) {
+                        e.currentTarget.innerText =
+                          options["victory-points"].toString();
+                      } else {
+                        e.currentTarget.innerText = "12";
+                      }
+                    } else {
+                      toggleOption(victoryPoints, "victory-points");
+                      e.currentTarget.innerText = victoryPoints.toString();
+                    }
+                  }}
+                >
+                  12
+                </div>
               </div>
             </div>
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>

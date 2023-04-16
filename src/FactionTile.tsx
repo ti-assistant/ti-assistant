@@ -3,6 +3,7 @@ import { CSSProperties, useState } from "react";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { responsivePixels } from "./util/util";
 import { Faction } from "./util/api/factions";
+import { BLACK_BORDER_GLOW } from "./LabeledDiv";
 
 export interface MenuButton {
   text: string;
@@ -53,6 +54,7 @@ export function BasicFactionTile({
   const color = faction.passed ? "#555" : getFactionColor(faction);
   const name = faction.name ?? "Select Faction";
   const border = `${responsivePixels(3)} solid ${color}`;
+  const boxShadow = color === "Black" ? BLACK_BORDER_GLOW : undefined;
 
   const menuButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
@@ -102,6 +104,7 @@ export function BasicFactionTile({
           display: "flex",
           flexDirection: "column",
           border: border,
+          boxShadow: boxShadow,
           fontSize: opts.fontSize ?? responsivePixels(24),
           position: "relative",
           cursor:
