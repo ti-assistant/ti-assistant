@@ -3,6 +3,9 @@ import { poster } from "./util";
 
 import { Expansion } from "./options";
 import { Phase } from "./state";
+import { Planet } from "./planets";
+import { Agenda } from "./agendas";
+import { Tech } from "./techs";
 
 export type ObjectiveType = "STAGE ONE" | "STAGE TWO" | "SECRET" | "OTHER";
 

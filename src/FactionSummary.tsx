@@ -1256,7 +1256,7 @@ export function PlanetSummary({
     }
     let hasSkip = false;
     for (const attribute of planet.attributes) {
-      if (attribute.includes("skip")) {
+      if (attribute.endsWith("skip")) {
         hasSkip = true;
       }
       if (attribute === "legendary") {

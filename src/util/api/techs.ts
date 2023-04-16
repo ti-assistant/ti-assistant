@@ -136,10 +136,14 @@ export async function chooseStartingTech(
   factionName: string,
   tech: string
 ) {
+  const techString = tech
+    .replace(/\//g, "")
+    .replace(/\./g, "")
+    .replace(" Ω", "");
   const data: FactionUpdateData = {
     action: "CHOOSE_STARTING_TECH",
     faction: factionName,
-    tech: tech,
+    tech: techString,
   };
 
   mutate(
@@ -161,11 +165,6 @@ export async function chooseStartingTech(
             units: {},
           };
         }
-
-        const techString = tech
-          .replace(/\//g, "")
-          .replace(/\./g, "")
-          .replace(" Ω", "");
 
         if (!updatedFaction.startswith.techs) {
           updatedFaction.startswith.techs = [];
@@ -206,10 +205,14 @@ export async function removeStartingTech(
   factionName: string,
   tech: string
 ) {
+  const techString = tech
+    .replace(/\//g, "")
+    .replace(/\./g, "")
+    .replace(" Ω", "");
   const data: FactionUpdateData = {
     action: "REMOVE_STARTING_TECH",
     faction: factionName,
-    tech: tech,
+    tech: techString,
   };
 
   mutate(
@@ -218,11 +221,6 @@ export async function removeStartingTech(
     {
       optimisticData: (factions: Record<string, Faction>) => {
         const updatedFactions = structuredClone(factions);
-
-        const techString = tech
-          .replace(/\//g, "")
-          .replace(/\./g, "")
-          .replace(" Ω", "");
 
         const updatedFaction = updatedFactions[factionName];
         if (!updatedFaction) {

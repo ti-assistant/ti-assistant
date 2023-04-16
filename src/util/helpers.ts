@@ -25,7 +25,7 @@ export function getOnDeckFaction(
       }
       const numFactions = Object.keys(factions).length;
       const numPickedCards = (subState.strategyCards ?? []).length;
-      if (numFactions === 3 || numFactions === 4) {
+      if (numFactions === 3 || numFactions === 4) { 
         switch (numPickedCards) {
           // Last player is currently picking.
           case numFactions - 1:
