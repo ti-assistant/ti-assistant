@@ -834,7 +834,6 @@ function AgendaSteps() {
       }
       case "Core Mining":
       case "Demilitarized Zone":
-      case "Holy Planet of Ixth":
       case "Research Team: Biotic":
       case "Research Team: Cybernetic":
       case "Research Team: Propulsion":
@@ -844,6 +843,13 @@ function AgendaSteps() {
         addAttachment(gameid, target, agendaName);
         break;
       }
+      case "Holy Planet of Ixth":
+        addAttachment(gameid, target, agendaName);
+        const planetOwner = (planets ?? {})[target]?.owner;
+        if (planetOwner) {
+          scoreObjective(gameid, planetOwner, "Holy Planet of Ixth");
+        }
+        break;
       case "Shard of the Throne":
       case "The Crown of Emphidia":
       case "Political Censure": {
@@ -1605,7 +1611,7 @@ function AgendaSteps() {
                 </div>
               ) : null}
             </LabeledDiv>
-          ) : (
+          ) : currentAgenda ? (
             <div style={{ width: "fit-content" }}>
               <Selector
                 hoverMenuLabel="Overwrite Outcome"
@@ -1635,7 +1641,7 @@ function AgendaSteps() {
                 }}
               />
             </div>
-          )}
+          ) : null}
         </div>
       )}
     </React.Fragment>

@@ -1341,7 +1341,7 @@ function SimpleScorable({
               tag={
                 <div
                   className="popupIcon hoverParent"
-                  style={{ paddingRight: responsivePixels(8) }}
+                  style={{ paddingRight: responsivePixels(8), color: "#999" }}
                   onClick={() => setShowInfoModal(true)}
                 >
                   &#x24D8;

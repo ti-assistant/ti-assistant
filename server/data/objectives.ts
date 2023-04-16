@@ -221,7 +221,8 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Crown of Emphidia": {
     description: "Given to the current holder of the Crown of Emphidia",
     expansion: "BASE",
-    max: 1,
+    max: 2,
+    repeatable: true,
     name: "Crown of Emphidia",
     points: 1,
     type: "OTHER",
@@ -468,7 +469,8 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Holy Planet of Ixth": {
     description: "Given to the current owner of the Holy Planet of Ixth",
     expansion: "BASE ONLY",
-    max: 1,
+    max: 2,
+    repeatable: true,
     name: "Holy Planet of Ixth",
     points: 1,
     type: "OTHER",
@@ -726,7 +728,8 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Shard of the Throne": {
     description: "Given to the current holder of the Shard of the Throne",
     expansion: "BASE",
-    max: 1,
+    max: 2,
+    repeatable: true,
     name: "Shard of the Throne",
     points: 1,
     type: "OTHER",
