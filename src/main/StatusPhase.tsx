@@ -9,7 +9,6 @@ import { responsivePixels } from "../util/util";
 import { fetcher, poster } from "../util/api/util";
 import { ObjectiveRow } from "../ObjectiveRow";
 import {
-  meetsObjectiveRequirements,
   Objective,
   removeObjective,
   revealObjective,
