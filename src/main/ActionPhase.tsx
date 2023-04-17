@@ -132,7 +132,7 @@ function SecondaryCheck({
                     className="flexRow largeFont"
                     style={{
                       color: secondaryState === "DONE" ? "green" : "red",
-                      fontWeight: "bold",
+                      // fontWeight: "bold",
                     }}
                   >
                     {secondaryState === "DONE" ? "✓" : "⤬"}

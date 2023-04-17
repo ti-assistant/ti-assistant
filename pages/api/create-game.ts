@@ -50,7 +50,7 @@ export default async function handler(
     // Get home planets for each faction.
     // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
     const homeBasePlanets = Object.entries(BASE_PLANETS).filter(
-      ([_, planet]) => planet.faction === faction.name
+      ([_, planet]) => planet.faction === faction.name && planet.home
     );
     const homePlanets: Record<string, { ready: boolean }> = {};
     homeBasePlanets.forEach(([planetId, _]) => {

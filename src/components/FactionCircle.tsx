@@ -50,21 +50,17 @@ export function FactionCircle({
           height: responsivePixels(size - 4),
         }}
       >
-        {factionName ? (
-          <div
-            className="flexRow"
-            style={{
-              position: "relative",
-              width: responsivePixels(size - 10),
-              height: responsivePixels(size - 10),
-              opacity: fade ? 0.5 : undefined,
-            }}
-          >
-            <FullFactionSymbol faction={factionName} />
-          </div>
-        ) : (
-          "⤬"
-        )}
+        <div
+          className="flexRow"
+          style={{
+            position: "relative",
+            width: responsivePixels(size - 10),
+            height: responsivePixels(size - 10),
+            opacity: fade ? 0.5 : undefined,
+          }}
+        >
+          {factionName ? <FullFactionSymbol faction={factionName} /> : "⤬"}
+        </div>
         {children}
         {tag ? (
           <div

@@ -100,7 +100,16 @@ export function FactionSelectHoverMenu({
               onSelect(undefined, selectedFaction);
             }}
           >
-            ⤬
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: responsivePixels(size - 10),
+                height: responsivePixels(size - 10),
+              }}
+            >
+              ⤬
+            </div>
           </div>
         ) : null}
         {direction === "right" ? (
@@ -114,20 +123,21 @@ export function FactionSelectHoverMenu({
               color: "#777",
             }}
           >
-            {selectedFaction ? (
-              <div
-                className="flexRow"
-                style={{
-                  position: "relative",
-                  width: responsivePixels(size - 10),
-                  height: responsivePixels(size - 10),
-                }}
-              >
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: responsivePixels(size - 10),
+                height: responsivePixels(size - 10),
+              }}
+            >
+              {selectedFaction ? (
                 <FullFactionSymbol faction={selectedFaction} />
-              </div>
-            ) : (
-              "⤬"
-            )}
+              ) : (
+                "⤬"
+              )}
+            </div>
+
             {tag ? (
               <div
                 className={`flexRow ${styles.tag}`}
@@ -188,7 +198,16 @@ export function FactionSelectHoverMenu({
               onSelect(undefined, selectedFaction);
             }}
           >
-            ⤬
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: responsivePixels(size - 10),
+                height: responsivePixels(size - 10),
+              }}
+            >
+              ⤬
+            </div>
           </div>
         ) : null}
         {direction === "left" ? (
@@ -202,20 +221,20 @@ export function FactionSelectHoverMenu({
               color: "#777",
             }}
           >
-            {selectedFaction ? (
-              <div
-                className="flexRow"
-                style={{
-                  position: "relative",
-                  width: responsivePixels(size - 10),
-                  height: responsivePixels(size - 10),
-                }}
-              >
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: responsivePixels(size - 10),
+                height: responsivePixels(size - 10),
+              }}
+            >
+              {selectedFaction ? (
                 <FullFactionSymbol faction={selectedFaction} />
-              </div>
-            ) : (
-              "⤬"
-            )}
+              ) : (
+                "⤬"
+              )}
+            </div>
             {tag ? (
               <div
                 className={`flexRow ${styles.tag}`}
