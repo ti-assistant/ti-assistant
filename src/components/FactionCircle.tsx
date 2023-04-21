@@ -59,7 +59,19 @@ export function FactionCircle({
             opacity: fade ? 0.5 : undefined,
           }}
         >
-          {factionName ? <FullFactionSymbol faction={factionName} /> : "⤬"}
+          {factionName ? (
+            <FullFactionSymbol faction={factionName} />
+          ) : (
+            <div
+              className="symbol"
+              style={{
+                fontSize: responsivePixels(size - 8),
+                lineHeight: responsivePixels(size - 8),
+              }}
+            >
+              ⤬
+            </div>
+          )}
         </div>
         {children}
         {tag ? (

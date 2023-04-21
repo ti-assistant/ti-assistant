@@ -1134,7 +1134,27 @@ export function ObjectivePanel({}) {
                           }
                         }}
                       >
-                        {applies ? "✓" : "⤬"}
+                        {applies ? (
+                          <div
+                            className="symbol"
+                            style={{
+                              fontSize: responsivePixels(16),
+                              lineHeight: responsivePixels(16),
+                            }}
+                          >
+                            ✓
+                          </div>
+                        ) : (
+                          <div
+                            className="symbol"
+                            style={{
+                              fontSize: responsivePixels(16),
+                              lineHeight: responsivePixels(16),
+                            }}
+                          >
+                            ⤬
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
@@ -1211,7 +1231,27 @@ export function ObjectivePanel({}) {
                           }
                         }}
                       >
-                        {applies ? "✓" : "⤬"}
+                        {applies ? (
+                          <div
+                            className="symbol"
+                            style={{
+                              fontSize: responsivePixels(16),
+                              lineHeight: responsivePixels(16),
+                            }}
+                          >
+                            ✓
+                          </div>
+                        ) : (
+                          <div
+                            className="symbol"
+                            style={{
+                              fontSize: responsivePixels(16),
+                              lineHeight: responsivePixels(16),
+                            }}
+                          >
+                            ⤬
+                          </div>
+                        )}
                       </div>
                     </div>
                   );

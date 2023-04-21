@@ -123,12 +123,23 @@ html {
   src: local("Myriad Pro"), url("MYRIADPRO-REGULAR.woff") format("woff");
 }
 
+@font-face {
+  font-family: "Source Sans";
+  font-style: normal;
+  font-weight: normal;
+  src: url("SourceSans3-Regular.ttf") format("truetype");
+}
+
 body {
   font-family: "slider";
   font-size: var(--sixteen-pixel);
   margin: 0px var(--ninety-six-pixel);
   background-color: #222;
   color: #eee;
+}
+
+.symbol {
+  font-family: "Source Sans";
 }
 
 .mobileTitle {

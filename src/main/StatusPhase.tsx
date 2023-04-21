@@ -1152,7 +1152,27 @@ export default function StatusPhase() {
                             }
                           }}
                         >
-                          {scoredCrown ? "✓" : "⤬"}
+                          {scoredCrown ? (
+                            <div
+                              className="symbol"
+                              style={{
+                                fontSize: responsivePixels(18),
+                                lineHeight: responsivePixels(18),
+                              }}
+                            >
+                              ✓
+                            </div>
+                          ) : (
+                            <div
+                              className="symbol"
+                              style={{
+                                fontSize: responsivePixels(18),
+                                lineHeight: responsivePixels(18),
+                              }}
+                            >
+                              ⤬
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

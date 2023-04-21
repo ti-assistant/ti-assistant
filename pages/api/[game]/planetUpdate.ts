@@ -89,7 +89,9 @@ export default async function handler(
         res.status(422);
         return;
       }
-      const ownerString = `planets.${data.planet}.owner`;
+      const planetName = data.planet === "[0.0.0]" ? "000" : data.planet;
+
+      const ownerString = `planets.${planetName}.owner`;
       const updates: UpdateData<any> = {
         [ownerString]: data.faction,
         [timestampString]: timestamp,
@@ -117,7 +119,8 @@ export default async function handler(
         res.status(422);
         return;
       }
-      const ownerString = `planets.${data.planet}.owner`;
+      const planetName = data.planet === "[0.0.0]" ? "000" : data.planet;
+      const ownerString = `planets.${planetName}.owner`;
       await db
         .collection("games")
         .doc(gameId)

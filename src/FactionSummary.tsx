@@ -1336,15 +1336,13 @@ export function PlanetSummary({
           <TechSkipIcon size={16} />
           <div className="centered">{techSkips || "-"}</div>
           <div
-            className="centered"
+            className="flexRow"
             style={{
-              textShadow: "4px solid #333",
-              fontSize: responsivePixels(22),
-              marginTop: responsiveNegativePixels(-8),
-              height: responsivePixels(16),
+              fontSize: responsivePixels(20),
+              lineHeight: responsivePixels(16),
             }}
           >
-            ⎗
+            <div className="symbol">⎗</div>
           </div>
           <div className="centered">{attachments || "-"}</div>
         </div>

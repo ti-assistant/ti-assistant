@@ -135,7 +135,27 @@ function SecondaryCheck({
                       // fontWeight: "bold",
                     }}
                   >
-                    {secondaryState === "DONE" ? "✓" : "⤬"}
+                    {secondaryState === "DONE" ? (
+                      <div
+                        className="symbol"
+                        style={{
+                          fontSize: responsivePixels(18),
+                          lineHeight: responsivePixels(18),
+                        }}
+                      >
+                        ✓
+                      </div>
+                    ) : (
+                      <div
+                        className="symbol"
+                        style={{
+                          fontSize: responsivePixels(18),
+                          lineHeight: responsivePixels(18),
+                        }}
+                      >
+                        ⤬
+                      </div>
+                    )}
                   </div>
                 )
               }
@@ -1336,7 +1356,27 @@ export function AdditionalActions({
                   fontWeight: "bold",
                 }}
               >
-                {hasProveEndurance ? "✓" : "⤬"}
+                {hasProveEndurance ? (
+                  <div
+                    className="symbol"
+                    style={{
+                      fontSize: responsivePixels(18),
+                      lineHeight: responsivePixels(18),
+                    }}
+                  >
+                    ✓
+                  </div>
+                ) : (
+                  <div
+                    className="symbol"
+                    style={{
+                      fontSize: responsivePixels(18),
+                      lineHeight: responsivePixels(18),
+                    }}
+                  >
+                    ⤬
+                  </div>
+                )}
               </div>
             }
             tagBorderColor={hasProveEndurance ? "green" : "red"}

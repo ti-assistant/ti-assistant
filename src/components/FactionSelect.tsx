@@ -108,7 +108,15 @@ export function FactionSelectHoverMenu({
                 height: responsivePixels(size - 10),
               }}
             >
-              ⤬
+              <div
+                className="symbol"
+                style={{
+                  fontSize: responsivePixels(size - 8),
+                  lineHeight: responsivePixels(size - 8),
+                }}
+              >
+                ⤬
+              </div>
             </div>
           </div>
         ) : null}
@@ -134,7 +142,15 @@ export function FactionSelectHoverMenu({
               {selectedFaction ? (
                 <FullFactionSymbol faction={selectedFaction} />
               ) : (
-                "⤬"
+                <div
+                  className="symbol"
+                  style={{
+                    fontSize: responsivePixels(size - 8),
+                    lineHeight: responsivePixels(size - 8),
+                  }}
+                >
+                  ⤬
+                </div>
               )}
             </div>
 
@@ -206,7 +222,15 @@ export function FactionSelectHoverMenu({
                 height: responsivePixels(size - 10),
               }}
             >
-              ⤬
+              <div
+                className="symbol"
+                style={{
+                  fontSize: responsivePixels(size - 8),
+                  lineHeight: responsivePixels(size - 8),
+                }}
+              >
+                ⤬
+              </div>
             </div>
           </div>
         ) : null}
@@ -232,7 +256,15 @@ export function FactionSelectHoverMenu({
               {selectedFaction ? (
                 <FullFactionSymbol faction={selectedFaction} />
               ) : (
-                "⤬"
+                <div
+                  className="symbol"
+                  style={{
+                    fontSize: responsivePixels(size - 8),
+                    lineHeight: responsivePixels(size - 8),
+                  }}
+                >
+                  ⤬
+                </div>
               )}
             </div>
             {tag ? (

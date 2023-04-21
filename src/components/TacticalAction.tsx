@@ -464,7 +464,27 @@ export function TacticalAction({
                         }
                       }}
                     >
-                      {current ? "✓" : "⤬"}
+                      {current ? (
+                        <div
+                          className="symbol"
+                          style={{
+                            fontSize: responsivePixels(16),
+                            lineHeight: responsivePixels(16),
+                          }}
+                        >
+                          ✓
+                        </div>
+                      ) : (
+                        <div
+                          className="symbol"
+                          style={{
+                            fontSize: responsivePixels(16),
+                            lineHeight: responsivePixels(16),
+                          }}
+                        >
+                          ⤬
+                        </div>
+                      )}
                     </div>
                   </div>
                 );

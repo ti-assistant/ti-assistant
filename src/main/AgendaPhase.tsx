@@ -515,7 +515,27 @@ function AgendaDetails() {
                   fontWeight: "bold",
                 }}
               >
-                {hasScoredDrive ? "✓" : "⤬"}
+                {hasScoredDrive ? (
+                  <div
+                    className="symbol"
+                    style={{
+                      fontSize: responsivePixels(18),
+                      lineHeight: responsivePixels(18),
+                    }}
+                  >
+                    ✓
+                  </div>
+                ) : (
+                  <div
+                    className="symbol"
+                    style={{
+                      fontSize: responsivePixels(18),
+                      lineHeight: responsivePixels(18),
+                    }}
+                  >
+                    ⤬
+                  </div>
+                )}
               </div>
             }
             tagBorderColor={hasScoredDrive ? "green" : "red"}
@@ -1428,7 +1448,27 @@ function AgendaSteps() {
                             );
                           }}
                         >
-                          {politicalSecret ? "✓" : "⤬"}
+                          {politicalSecret ? (
+                            <div
+                              className="symbol"
+                              style={{
+                                fontSize: responsivePixels(18),
+                                lineHeight: responsivePixels(18),
+                              }}
+                            >
+                              ✓
+                            </div>
+                          ) : (
+                            <div
+                              className="symbol"
+                              style={{
+                                fontSize: responsivePixels(18),
+                                lineHeight: responsivePixels(18),
+                              }}
+                            >
+                              ⤬
+                            </div>
+                          )}
                         </div>
                       </div>
                     );
@@ -1800,7 +1840,27 @@ function DictatePolicy({}) {
                   }
                 }}
               >
-                {current ? "✓" : "⤬"}
+                {current ? (
+                  <div
+                    className="symbol"
+                    style={{
+                      fontSize: responsivePixels(18),
+                      lineHeight: responsivePixels(18),
+                    }}
+                  >
+                    ✓
+                  </div>
+                ) : (
+                  <div
+                    className="symbol"
+                    style={{
+                      fontSize: responsivePixels(18),
+                      lineHeight: responsivePixels(18),
+                    }}
+                  >
+                    ⤬
+                  </div>
+                )}
               </div>
             </div>
           );
