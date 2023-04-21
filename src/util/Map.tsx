@@ -433,6 +433,7 @@ function SystemImage({
 
         return (
           <div
+            key={planet.name}
             className="flexRow"
             style={{ position: "absolute", width: "100%", height: "100%" }}
           >
