@@ -48,6 +48,7 @@ export interface BasePlanet {
   influence: number;
   locked?: boolean;
   name: string;
+  position?: { x: number; y: number };
   resources: number;
   system?: number;
   type: PlanetType;

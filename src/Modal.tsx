@@ -2,10 +2,76 @@ import { PropsWithChildren, ReactNode } from "react";
 import { CSSTransition } from "react-transition-group";
 import { responsivePixels } from "./util/util";
 
+export function GenericModal({
+  children,
+  closeMenu,
+  level,
+  title,
+  visible,
+}: PropsWithChildren<ModalProps>) {
+  const zIndex = 900 * (level ?? 1);
+
+  function onExited(node: HTMLElement) {
+    node.style.display = "none";
+  }
+  function onEnter(node: HTMLElement) {
+    node.style.display = "flex";
+  }
+  return (
+    <CSSTransition
+      in={visible}
+      timeout={500}
+      classNames="fade"
+      onEnter={onEnter}
+      onExited={onExited}
+    >
+      <div
+        className={`flexColumn modal ${visible ? "shown" : ""}`}
+        style={{
+          position: "fixed",
+          left: "0px",
+          top: "0px",
+          width: "100vw",
+          height: "100dvh",
+          display: "none",
+          zIndex: zIndex + 3,
+          flexDirection: "column",
+          alignItems: "center",
+          color: "#eee",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            width: "100vw",
+            height: "100dvh",
+            backgroundColor: "black",
+            opacity: "50%",
+          }}
+          onClick={closeMenu}
+        ></div>
+        <CSSTransition in={visible} timeout={500} classNames="modal">
+          <div
+            className="flexRow"
+            style={{
+              position: "relative",
+              width: "100dvw",
+              height: "100dvh",
+            }}
+            onClick={closeMenu}
+          >
+            {children}
+          </div>
+        </CSSTransition>
+      </div>
+    </CSSTransition>
+  );
+}
+
 export interface ModalProps {
   closeMenu?: () => void;
   level?: number;
-  title: ReactNode;
+  title?: ReactNode;
   visible: boolean;
 }
 

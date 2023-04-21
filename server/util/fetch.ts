@@ -183,6 +183,10 @@ export async function fetchPlanets(
     if (
       isValidMapString &&
       planet.system &&
+      planet.name !== "Mirage" &&
+      planet.name !== "Mallice" &&
+      planet.name !== "Mecatol Rex" &&
+      !planet.faction &&
       !inGameSystems.includes(planet.system)
     ) {
       return;

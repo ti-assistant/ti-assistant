@@ -40,6 +40,7 @@ import Image from "next/image";
 import Logo from "../public/images/android-chrome-512x512.png";
 import { ObjectivePanel } from "./ObjectivePanel";
 import { FactionSelectHoverMenu } from "./components/FactionSelect";
+import { GenericModal } from "./Modal";
 
 export function ResponsiveLogo({ size }: { size: number }) {
   return (
@@ -255,6 +256,8 @@ export function Header() {
 
   const [qrCodeSize, setQrCodeSize] = useState(164);
 
+  const [showMap, setShowMap] = useState(false);
+
   useEffect(() => {
     setQrCodeSize(
       Math.max(
@@ -340,23 +343,23 @@ export function Header() {
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
       {validateMapString((options ?? {})["map-string"] ?? "") && state ? (
-        <ClientOnlyHoverMenu
-          label="View Map"
-          buttonStyle={{
-            position: "fixed",
-            top: responsivePixels(state.phase === "SETUP" ? 64 : 104),
-            left: responsivePixels(96),
-          }}
-        >
-          <div
-            className="flexRow"
-            style={{ zIndex: 10000, width: "81vw", height: "78vh" }}
+        <>
+          <button
+            style={{
+              position: "fixed",
+              top: responsivePixels(state.phase === "SETUP" ? 64 : 104),
+              left: responsivePixels(96),
+            }}
+            onClick={() => setShowMap(true)}
           >
+            View Map
+          </button>
+          <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
             <div
               style={{
-                marginTop: responsiveNegativePixels(-40),
-                width: "90vh",
-                height: "90vh",
+                position: "relative",
+                width: "min(100dvh, 100dvw)",
+                height: "min(100dvh, 100dvw)",
               }}
             >
               <Map
@@ -366,8 +369,8 @@ export function Header() {
                 mallice={mallice}
               />
             </div>
-          </div>
-        </ClientOnlyHoverMenu>
+          </GenericModal>
+        </>
       ) : null}
       {state ? (
         state.phase === "SETUP" ? (
