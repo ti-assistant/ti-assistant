@@ -3,7 +3,7 @@ import { Phase } from "../../src/util/api/state";
 import { GameData } from "../../src/util/api/util";
 import { getGameData } from "./fetch";
 
-interface LogEntry {
+export interface StoredLogEntry {
   activeFaction?: string;
   timestamp: Timestamp;
   gameSeconds?: number;
@@ -12,7 +12,10 @@ interface LogEntry {
 }
 
 function buildLogEntry(dataToWrite: Object, gameData: Partial<GameData>) {
-  const logEntry: LogEntry = { ...dataToWrite, timestamp: Timestamp.now() };
+  const logEntry: StoredLogEntry = {
+    ...dataToWrite,
+    timestamp: Timestamp.now(),
+  };
 
   if (!gameData.state) {
     return logEntry;

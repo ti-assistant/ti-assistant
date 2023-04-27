@@ -424,6 +424,7 @@ function AttachMenu({
 }
 
 export interface PlanetRowOpts {
+  hideAttachButton?: boolean;
   showAttachButton?: boolean;
   showSelfOwned?: boolean;
 }
@@ -468,7 +469,9 @@ export function PlanetRow({
   }
 
   function canAttach() {
-    return Object.keys(availableAttachments()).length !== 0;
+    return (
+      !opts.hideAttachButton && Object.keys(availableAttachments()).length !== 0
+    );
   }
 
   function availableAttachments() {

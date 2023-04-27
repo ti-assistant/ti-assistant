@@ -1,8 +1,11 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import React from "react";
+import React, { useState } from "react";
 import { fetcher } from "../util/api/util";
 import { GameState } from "../util/api/state";
+import { GameLog } from "../GameLog";
+import { responsivePixels } from "../util/util";
+import { LabeledDiv } from "../LabeledDiv";
 
 export default function ResultsPhase() {
   const router = useRouter();
@@ -14,14 +17,26 @@ export default function ResultsPhase() {
       revalidateIfStale: false,
     }
   );
+  const [viewing, setViewing] = useState("Game Log");
 
   return (
     <React.Fragment>
-      <div className="flexColumn" style={{ height: "100svh" }}>
-        Game Log
+      <div className="flexColumn" style={{ height: "100svh", width: "25%" }}>
+        <LabeledDiv label="View">
+          <button
+            className={viewing === "Game Log" ? "selected" : ""}
+            onClick={() => setViewing("Game Log")}
+          >
+            Game Log
+          </button>
+        </LabeledDiv>
       </div>
-      <div className="flexColumn" style={{ height: "100svh" }}>
-        Game Over
+      <div style={{ marginTop: responsivePixels(144), width: "100%" }}>
+        {viewing === "Game Log" ? (
+          <LabeledDiv label="Game Log (Beta)">
+            <GameLog />
+          </LabeledDiv>
+        ) : null}
       </div>
     </React.Fragment>
   );

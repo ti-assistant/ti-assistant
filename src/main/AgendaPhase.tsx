@@ -140,9 +140,12 @@ export function computeVotes(
 }
 
 export function startNextRound(gameid: string, subState: SubState) {
+  finalizeSubState(gameid, subState);
+
   resetCastVotes(gameid);
   resetAgendaTimers(gameid);
   resetStrategyCards(gameid);
+
   const data: StateUpdateData = {
     action: "START_NEXT_ROUND",
   };
@@ -164,8 +167,6 @@ export function startNextRound(gameid: string, subState: SubState) {
       revalidate: false,
     }
   );
-
-  finalizeSubState(gameid, subState);
 }
 
 export function getSelectedOutcome(
@@ -971,10 +972,10 @@ function AgendaSteps() {
     if (!target) {
       return;
     }
+    finalizeSubState(gameid, subState);
     if (target === "No Effect") {
       updateCastVotes(gameid, subState.factions);
       hideSubStateAgenda(gameid);
-      finalizeSubState(gameid, subState);
       const agendaNum = state?.agendaNum ?? 1;
       setAgendaNum(gameid, agendaNum + 1);
       return;
@@ -997,7 +998,6 @@ function AgendaSteps() {
       revealSubStateAgenda(gameid, target);
       setSubStateOther(gameid, "miscount", true);
     } else {
-      finalizeSubState(gameid, subState);
       const agendaNum = state?.agendaNum ?? 1;
       setAgendaNum(gameid, agendaNum + 1);
     }
