@@ -876,7 +876,7 @@ export function AdditionalActions({
                     key={faction.name}
                     label={getFactionName(faction)}
                     color={getFactionColor(faction)}
-                    style={{ width: "49%" }}
+                    style={{ width: "48%" }}
                   >
                     <React.Fragment>
                       {researchedTechs.map((tech) => {
