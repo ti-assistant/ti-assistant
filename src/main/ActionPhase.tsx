@@ -1345,8 +1345,9 @@ export function AdditionalActions({
               <div
                 className="flexRow largeFont"
                 style={{
+                  width: "100%",
+                  height: "100%",
                   color: hasProveEndurance ? "green" : "red",
-                  fontWeight: "bold",
                 }}
               >
                 {hasProveEndurance ? (
@@ -1360,7 +1361,15 @@ export function AdditionalActions({
                     ✓
                   </div>
                 ) : (
-                  <SymbolX />
+                  <div
+                    className="flexRow"
+                    style={{
+                      width: "80%",
+                      height: "80%",
+                    }}
+                  >
+                    <SymbolX color="red" />
+                  </div>
                 )}
               </div>
             }

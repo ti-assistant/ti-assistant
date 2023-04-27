@@ -512,6 +512,8 @@ function AgendaDetails() {
               <div
                 className="flexRow largeFont"
                 style={{
+                  width: "100%",
+                  height: "100%",
                   color: hasScoredDrive ? "green" : "red",
                   fontWeight: "bold",
                 }}
@@ -527,7 +529,15 @@ function AgendaDetails() {
                     ✓
                   </div>
                 ) : (
-                  <SymbolX />
+                  <div
+                    className="flexRow"
+                    style={{
+                      width: "80%",
+                      height: "80%",
+                    }}
+                  >
+                    <SymbolX color="red" />
+                  </div>
                 )}
               </div>
             }
@@ -1229,7 +1239,7 @@ function AgendaSteps() {
                         gap: responsivePixels(4),
                         display: "grid",
                         gridAutoFlow: "column",
-                        gridTemplateRows: "repeat(13, auto)",
+                        gridTemplateRows: "repeat(10, auto)",
                         alignItems: "stretch",
                         justifyContent: "flex-start",
                       }}
@@ -1452,7 +1462,15 @@ function AgendaSteps() {
                               ✓
                             </div>
                           ) : (
-                            <SymbolX />
+                            <div
+                              className="flexRow"
+                              style={{
+                                width: "80%",
+                                height: "80%",
+                              }}
+                            >
+                              <SymbolX color="red" />
+                            </div>
                           )}
                         </div>
                       </div>
@@ -1836,7 +1854,15 @@ function DictatePolicy({}) {
                     ✓
                   </div>
                 ) : (
-                  <SymbolX />
+                  <div
+                    className="flexRow"
+                    style={{
+                      width: "80%",
+                      height: "80%",
+                    }}
+                  >
+                    <SymbolX color="red" />
+                  </div>
                 )}
               </div>
             </div>

@@ -476,7 +476,15 @@ export function TacticalAction({
                           ✓
                         </div>
                       ) : (
-                        <SymbolX />
+                        <div
+                          className="flexRow"
+                          style={{
+                            width: "80%",
+                            height: "80%",
+                          }}
+                        >
+                          <SymbolX color="red" />
+                        </div>
                       )}
                     </div>
                   </div>
