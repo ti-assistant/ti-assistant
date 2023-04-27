@@ -8,7 +8,6 @@ import { getTechTypeColor } from "../../util/techs";
 import { responsivePixels } from "../../util/util";
 
 export interface TechSelectHoverMenuProps {
-  direction?: string;
   label?: string;
   techs: Tech[];
   selectTech: (tech: Tech) => void;
@@ -18,24 +17,20 @@ export function TechSelectHoverMenu({
   techs,
   label = "Research Tech",
   selectTech,
-  direction = "horizontal",
 }: TechSelectHoverMenuProps) {
+  sortTechsByPreReqAndExpansion(techs);
   const blueTechs = techs.filter((tech) => {
     return tech.type === "BLUE";
   });
-  sortTechsByPreReqAndExpansion(blueTechs);
   const greenTechs = techs.filter((tech) => {
     return tech.type === "GREEN";
   });
-  sortTechsByPreReqAndExpansion(greenTechs);
   const yellowTechs = techs.filter((tech) => {
     return tech.type === "YELLOW";
   });
-  sortTechsByPreReqAndExpansion(yellowTechs);
   const redTechs = techs.filter((tech) => {
     return tech.type === "RED";
   });
-  sortTechsByPreReqAndExpansion(redTechs);
   const unitUpgrades = techs.filter((tech) => {
     return tech.type === "UPGRADE";
   });

@@ -132,6 +132,8 @@ function SecondaryCheck({
                   <div
                     className="flexRow largeFont"
                     style={{
+                      width: "80%",
+                      height: "80%",
                       color: secondaryState === "DONE" ? "green" : "red",
                       // fontWeight: "bold",
                     }}
@@ -147,7 +149,7 @@ function SecondaryCheck({
                         ✓
                       </div>
                     ) : (
-                      <SymbolX />
+                      <SymbolX color="red" />
                     )}
                   </div>
                 )
@@ -765,7 +767,6 @@ export function AdditionalActions({
                     }
                     addTech(activeFaction.name, tech);
                   }}
-                  direction="vertical"
                 />
               ) : null}
               {isActive ? (
@@ -826,7 +827,6 @@ export function AdditionalActions({
                     <TechSelectHoverMenu
                       techs={researchableTechs}
                       selectTech={(tech) => addTech(activeFaction.name, tech)}
-                      direction="horizontal"
                     />
                   ) : null}
                 </LabeledDiv>
