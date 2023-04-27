@@ -31,6 +31,7 @@ import {
 import { fetcher } from "./util/api/util";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
+import { SymbolX } from "./icons/svgs";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -1145,15 +1146,7 @@ export function ObjectivePanel({}) {
                             ✓
                           </div>
                         ) : (
-                          <div
-                            className="symbol"
-                            style={{
-                              fontSize: responsivePixels(16),
-                              lineHeight: responsivePixels(16),
-                            }}
-                          >
-                            ⤬
-                          </div>
+                          <SymbolX />
                         )}
                       </div>
                     </div>
@@ -1242,15 +1235,7 @@ export function ObjectivePanel({}) {
                             ✓
                           </div>
                         ) : (
-                          <div
-                            className="symbol"
-                            style={{
-                              fontSize: responsivePixels(16),
-                              lineHeight: responsivePixels(16),
-                            }}
-                          >
-                            ⤬
-                          </div>
+                          <SymbolX />
                         )}
                       </div>
                     </div>

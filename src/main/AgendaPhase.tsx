@@ -79,6 +79,7 @@ import { gainRelic, loseRelic, Relic } from "../util/api/relics";
 import { InfoRow } from "../InfoRow";
 import { FactionCircle } from "../components/FactionCircle";
 import { FactionSelectHoverMenu } from "../components/FactionSelect";
+import { SymbolX } from "../icons/svgs";
 
 const RIDERS = [
   "Galactic Threat",
@@ -526,15 +527,7 @@ function AgendaDetails() {
                     ✓
                   </div>
                 ) : (
-                  <div
-                    className="symbol"
-                    style={{
-                      fontSize: responsivePixels(18),
-                      lineHeight: responsivePixels(18),
-                    }}
-                  >
-                    ⤬
-                  </div>
+                  <SymbolX />
                 )}
               </div>
             }
@@ -1459,15 +1452,7 @@ function AgendaSteps() {
                               ✓
                             </div>
                           ) : (
-                            <div
-                              className="symbol"
-                              style={{
-                                fontSize: responsivePixels(18),
-                                lineHeight: responsivePixels(18),
-                              }}
-                            >
-                              ⤬
-                            </div>
+                            <SymbolX />
                           )}
                         </div>
                       </div>
@@ -1851,15 +1836,7 @@ function DictatePolicy({}) {
                     ✓
                   </div>
                 ) : (
-                  <div
-                    className="symbol"
-                    style={{
-                      fontSize: responsivePixels(18),
-                      lineHeight: responsivePixels(18),
-                    }}
-                  >
-                    ⤬
-                  </div>
+                  <SymbolX />
                 )}
               </div>
             </div>

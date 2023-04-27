@@ -40,6 +40,7 @@ import { LockedButtons } from "../LockedButton";
 import { Planet } from "../util/api/planets";
 import { Relic } from "../util/api/relics";
 import { Options } from "../util/api/options";
+import { SymbolX } from "../icons/svgs";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -1163,15 +1164,7 @@ export default function StatusPhase() {
                               ✓
                             </div>
                           ) : (
-                            <div
-                              className="symbol"
-                              style={{
-                                fontSize: responsivePixels(18),
-                                lineHeight: responsivePixels(18),
-                              }}
-                            >
-                              ⤬
-                            </div>
+                            <SymbolX />
                           )}
                         </div>
                       </div>

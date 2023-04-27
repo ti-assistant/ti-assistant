@@ -10,6 +10,7 @@ import { BLACK_BORDER_GLOW } from "../LabeledDiv";
 import { responsivePixels } from "../util/util";
 import { FactionCircle } from "./FactionCircle";
 import styles from "./FactionSelect.module.scss";
+import { SymbolX } from "../icons/svgs";
 
 export interface FactionSelectProps {
   allowNone?: boolean;
@@ -108,15 +109,7 @@ export function FactionSelectHoverMenu({
                 height: responsivePixels(size - 10),
               }}
             >
-              <div
-                className="symbol"
-                style={{
-                  fontSize: responsivePixels(size - 8),
-                  lineHeight: responsivePixels(size - 8),
-                }}
-              >
-                ⤬
-              </div>
+              <SymbolX />
             </div>
           </div>
         ) : null}
@@ -142,15 +135,7 @@ export function FactionSelectHoverMenu({
               {selectedFaction ? (
                 <FullFactionSymbol faction={selectedFaction} />
               ) : (
-                <div
-                  className="symbol"
-                  style={{
-                    fontSize: responsivePixels(size - 8),
-                    lineHeight: responsivePixels(size - 8),
-                  }}
-                >
-                  ⤬
-                </div>
+                <SymbolX />
               )}
             </div>
 
@@ -222,15 +207,7 @@ export function FactionSelectHoverMenu({
                 height: responsivePixels(size - 10),
               }}
             >
-              <div
-                className="symbol"
-                style={{
-                  fontSize: responsivePixels(size - 8),
-                  lineHeight: responsivePixels(size - 8),
-                }}
-              >
-                ⤬
-              </div>
+              <SymbolX />
             </div>
           </div>
         ) : null}
@@ -256,15 +233,7 @@ export function FactionSelectHoverMenu({
               {selectedFaction ? (
                 <FullFactionSymbol faction={selectedFaction} />
               ) : (
-                <div
-                  className="symbol"
-                  style={{
-                    fontSize: responsivePixels(size - 8),
-                    lineHeight: responsivePixels(size - 8),
-                  }}
-                >
-                  ⤬
-                </div>
+                <SymbolX />
               )}
             </div>
             {tag ? (

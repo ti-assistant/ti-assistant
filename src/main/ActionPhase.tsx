@@ -62,6 +62,7 @@ import { LockedButtons } from "../LockedButton";
 import { FactionSelectHoverMenu } from "../components/FactionSelect";
 import { FactionCircle } from "../components/FactionCircle";
 import { TacticalAction } from "../components/TacticalAction";
+import { SymbolX } from "../icons/svgs";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -146,15 +147,7 @@ function SecondaryCheck({
                         ✓
                       </div>
                     ) : (
-                      <div
-                        className="symbol"
-                        style={{
-                          fontSize: responsivePixels(18),
-                          lineHeight: responsivePixels(18),
-                        }}
-                      >
-                        ⤬
-                      </div>
+                      <SymbolX />
                     )}
                   </div>
                 )
@@ -1367,15 +1360,7 @@ export function AdditionalActions({
                     ✓
                   </div>
                 ) : (
-                  <div
-                    className="symbol"
-                    style={{
-                      fontSize: responsivePixels(18),
-                      lineHeight: responsivePixels(18),
-                    }}
-                  >
-                    ⤬
-                  </div>
+                  <SymbolX />
                 )}
               </div>
             }

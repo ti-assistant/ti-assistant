@@ -34,6 +34,7 @@ import { getFactionColor } from "../util/factions";
 import { applyPlanetAttachments } from "../util/planets";
 import { responsivePixels, pluralize } from "../util/util";
 import { FactionSelectHoverMenu } from "./FactionSelect";
+import { SymbolX } from "../icons/svgs";
 
 export function TacticalAction({
   activeFactionName,
@@ -475,15 +476,7 @@ export function TacticalAction({
                           ✓
                         </div>
                       ) : (
-                        <div
-                          className="symbol"
-                          style={{
-                            fontSize: responsivePixels(16),
-                            lineHeight: responsivePixels(16),
-                          }}
-                        >
-                          ⤬
-                        </div>
+                        <SymbolX />
                       )}
                     </div>
                   </div>

@@ -4,6 +4,7 @@ import { FullFactionSymbol } from "../FactionCard";
 import { BLACK_BORDER_GLOW } from "../LabeledDiv";
 import { responsivePixels } from "../util/util";
 import styles from "./FactionSelect.module.scss";
+import { SymbolX } from "../icons/svgs";
 
 export function FactionCircle({
   blur = false,
@@ -62,15 +63,7 @@ export function FactionCircle({
           {factionName ? (
             <FullFactionSymbol faction={factionName} />
           ) : (
-            <div
-              className="symbol"
-              style={{
-                fontSize: responsivePixels(size - 8),
-                lineHeight: responsivePixels(size - 8),
-              }}
-            >
-              ⤬
-            </div>
+            <SymbolX />
           )}
         </div>
         {children}
