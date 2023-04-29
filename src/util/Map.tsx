@@ -11,6 +11,9 @@ import { Faction } from "./api/factions";
 import { fetcher } from "./api/util";
 import { Planet } from "./api/planets";
 import { LabeledDiv } from "../LabeledDiv";
+import { responsivePixels } from "./util";
+import { getFactionColor } from "./factions";
+import { FactionCircle } from "../components/FactionCircle";
 
 interface Cube {
   q: number;
@@ -296,6 +299,13 @@ function SystemImage({
 }) {
   const router = useRouter();
   const { game: gameid } = router.query;
+  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
+    gameid ? `/api/${gameid}/factions` : null,
+    fetcher,
+    {
+      revalidateIfStale: false,
+    }
+  );
   const { data: planets }: { data?: Record<string, Planet> } = useSWR(
     gameid ? `/api/${gameid}/planets` : null,
     fetcher,
@@ -408,12 +418,16 @@ function SystemImage({
             planet.name !== "Mallice" && planet.name !== "Creuss"
               ? `calc(24% * ${HEX_RATIO})`
               : "24%";
+
           ownerSymbol = (
             <div
               className="flexRow"
               style={{
                 position: "absolute",
                 backgroundColor: "#222",
+                border: `${responsivePixels(2)} solid ${getFactionColor(
+                  (factions ?? {})[planet.owner]
+                )}`,
                 borderRadius: "100%",
                 width: "24%",
                 height: height,
