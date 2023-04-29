@@ -3,6 +3,7 @@ import Link from "next/link";
 import { responsivePixels } from "../src/util/util";
 import { LabeledDiv, LabeledLine } from "../src/LabeledDiv";
 import { NonGameHeader } from "../src/Header";
+import { NumberedItem } from "../src/NumberedItem";
 
 export default function FAQPage() {
   return (
@@ -12,12 +13,61 @@ export default function FAQPage() {
         className="flexColumn"
         style={{
           maxWidth: responsivePixels(800),
-          marginTop: responsivePixels(60),
+          height: "100dvh",
           width: "100%",
         }}
       >
         <div className="flexRow largeFont">Frequently Asked Questions</div>
-        <div className="flexColumn">
+        <div className="flexColumn" style={{ gap: responsivePixels(16) }}>
+          <div
+            className="flexColumn"
+            style={{
+              width: "100%",
+              alignItems: "flex-start",
+            }}
+          >
+            <LabeledLine leftLabel="Q: I have a question that isn't answered here." />
+            <div
+              style={{
+                fontFamily: "Myriad Pro",
+                marginLeft: responsivePixels(8),
+              }}
+            >
+              Post the question on{" "}
+              <a
+                href="https://github.com/ti-assistant/issues/issues"
+                style={{ textDecoration: "underline", fontWeight: "bold" }}
+              >
+                GitHub
+              </a>{" "}
+              or send me a message on{" "}
+              <a
+                href="https://www.reddit.com/message/compose/?to=ti-assistant"
+                style={{ textDecoration: "underline", fontWeight: "bold" }}
+              >
+                Reddit
+              </a>{" "}
+              and I'll get back to you as soon as I can.
+            </div>
+          </div>
+          <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+            <LabeledLine leftLabel="Q: How do I use this app ?" />
+            <div
+              style={{
+                fontFamily: "Myriad Pro",
+                marginLeft: responsivePixels(8),
+              }}
+            >
+              Display the Main Screen or Objective View on a larger screen that
+              everyone at the table can view. All the players can join the game
+              by using the game ID or scanning the QR code.
+              <br />
+              <br />
+              Play the game, tracking information as you go. All information can
+              be input using the main screen, and players can input their
+              information on the various faction pages.
+            </div>
+          </div>
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
             <LabeledLine leftLabel="Q: Do I have to record everything during a game ?" />
             <div
@@ -74,7 +124,6 @@ export default function FAQPage() {
             , and I&apos;ll get back to you as soon as I can.
           </div>
         </div>
-        More Coming Soon
         <Link href={`/`}>
           <a style={{ marginTop: responsivePixels(12) }}>
             <LabeledDiv>

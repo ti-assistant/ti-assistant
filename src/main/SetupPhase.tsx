@@ -95,6 +95,23 @@ export function setupPhaseComplete(
   );
 }
 
+function getSetupPhaseText(
+  factions: Record<string, Faction>,
+  subState: SubState
+) {
+  const textSections = [];
+  if (
+    !factionSubFactionChoicesComplete(factions) ||
+    !factionTechChoicesComplete(factions)
+  ) {
+    textSections.push("Select all faction choices");
+  }
+  if ((subState.objectives ?? []).length !== 2) {
+    textSections.push("Reveal 2 objectives");
+  }
+  return textSections.join(" and ");
+}
+
 export default function SetupPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
@@ -313,7 +330,7 @@ export default function SetupPhase() {
             fontWeight: "bold",
           }}
         >
-          Select all faction choices and reveal 2 objectives
+          {getSetupPhaseText(factions ?? {}, subState ?? {})}
         </div>
       ) : null}
       <LockedButtons

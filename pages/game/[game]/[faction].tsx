@@ -37,7 +37,10 @@ import {
   LabeledDiv,
   LabeledLine,
 } from "../../../src/LabeledDiv";
-import { StrategyCard } from "../../../src/util/api/cards";
+import {
+  StrategyCard,
+  unassignStrategyCard,
+} from "../../../src/util/api/cards";
 import {
   GameState,
   prevPlayer,
@@ -112,6 +115,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Header, NonGameHeader } from "../../../src/Header";
 import { Selector } from "../../../src/Selector";
+import { getLastPickedCard } from "../../../src/util/helpers";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -485,10 +489,15 @@ function PhaseSection() {
         return lastCard.pickedBy === factionName;
       }
       function undoPick() {
-        if (!gameid) {
+        if (!gameid || !state) {
+          return;
+        }
+        const lastPickedCard = getLastPickedCard(state, subState);
+        if (!lastPickedCard) {
           return;
         }
         undoSubStateStrategyCard(gameid);
+        unassignStrategyCard(gameid, lastPickedCard.name);
         prevPlayer(gameid, factions ?? {}, subState);
       }
       if (factionName === state.activeplayer) {
@@ -1716,7 +1725,7 @@ export default function GamePage() {
           position: "relative",
           width: "100%",
           maxWidth: "800px",
-          marginTop: responsivePixels(48),
+          marginTop: responsivePixels(54),
         }}
       >
         <div
