@@ -190,7 +190,11 @@ export default function HomePage() {
         }}
       >
         Twilight Imperium Assistant is not affiliated with{" "}
-        <a target="_blank" href="https://www.fantasyflightgames.com/en/index/">
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.fantasyflightgames.com/en/index/"
+        >
           Fantasy Flight Games®
         </a>
       </div>
@@ -202,7 +206,11 @@ export default function HomePage() {
         }}
       >
         Twilight Imperium™ and all associated images are the property of{" "}
-        <a target="_blank" href="https://www.fantasyflightgames.com/en/index/">
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.fantasyflightgames.com/en/index/"
+        >
           Fantasy Flight Games®
         </a>
       </div>

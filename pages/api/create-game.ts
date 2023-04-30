@@ -11,7 +11,7 @@ import { GameData } from "../../src/util/api/util";
 
 function makeid(length: number) {
   var result = "";
-  var characters = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+  var characters = "BCDEFGHJKLMNPQRSTVWXYZbcdfghjkmnpqrstvwxyz23456789";
   var charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));

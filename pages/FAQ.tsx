@@ -47,7 +47,7 @@ export default function FAQPage() {
               >
                 Reddit
               </a>{" "}
-              and I'll get back to you as soon as I can.
+              and I&apos;ll get back to you as soon as I can.
             </div>
           </div>
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
