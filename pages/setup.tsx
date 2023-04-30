@@ -767,6 +767,8 @@ function FactionSelect({
     </span>
   );
 
+  const selectedColors = factions.map((faction) => faction.color);
+
   return (
     <LabeledDiv
       label={label}
@@ -860,6 +862,7 @@ function FactionSelect({
                   >
                     {filteredColors.map((color) => {
                       const factionColor = convertToFactionColor(color);
+                      const alreadySelected = selectedColors.includes(color);
                       return (
                         <button
                           key={color}
@@ -868,6 +871,10 @@ function FactionSelect({
                             writingMode: "horizontal-tb",
                             backgroundColor: factionColor,
                             color: factionColor,
+                            opacity:
+                              faction.color !== color && alreadySelected
+                                ? 0.25
+                                : undefined,
                           }}
                           className={faction.color === color ? "selected" : ""}
                           onClick={() => {
