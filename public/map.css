@@ -5,9 +5,18 @@
 }
 
 
+.rotateSixty {
+  transform: rotate(60deg);
+}
 .rotateOneTwenty {
   transform: rotate(120deg);
 }
 .rotateOneEighty {
   transform: rotate(180deg);
+}
+.rotateTwoForty {
+  transform: rotate(240deg);
+}
+.rotateThreeHundred {
+  transform: rotate(300deg);
 }

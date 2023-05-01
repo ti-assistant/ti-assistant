@@ -62,7 +62,7 @@ function MobileOptions({
       mapStyles = ["standard"];
       break;
     case 4:
-      mapStyles = ["standard"];
+      mapStyles = ["standard", "warp", "skinny"];
       break;
     case 5:
       mapStyles = ["standard", "warp", "skinny"];
@@ -323,7 +323,7 @@ function Options({
       mapStyles = ["standard"];
       break;
     case 4:
-      mapStyles = ["standard"];
+      mapStyles = ["standard", "warp", "skinny"];
       break;
     case 5:
       mapStyles = ["standard", "warp", "skinny"];
@@ -589,12 +589,17 @@ function getFactionIndex(
           return 1;
       }
     case 4:
+      const standard = options["map-style"] === "standard";
       switch (position) {
         case 7:
           return 3;
+        case 6:
+          return 2;
         case 0:
           return 0;
         case 1:
+          return standard ? 1 : 0;
+        case 2:
           return 1;
         case 4:
           return 2;
@@ -1257,13 +1262,20 @@ export default function SetupPage() {
     let height = "0";
     switch (numFactions) {
       case 3:
-        height = responsivePixels(98);
+        height = responsivePixels(114);
         break;
-      case 5:
-        if (options["map-style"] !== "warp") {
-          height = responsivePixels(98);
+      case 4:
+        if (options["map-style"] !== "standard") {
+          height = responsivePixels(114);
           break;
         }
+        return null;
+      case 5:
+        if (options["map-style"] !== "warp") {
+          height = responsivePixels(114);
+          break;
+        }
+        return null;
       default:
         return null;
     }
@@ -1277,7 +1289,10 @@ export default function SetupPage() {
         height = responsivePixels(60);
         break;
       case 4:
-        height = responsivePixels(110);
+        height =
+          options["map-style"] === "standard"
+            ? responsivePixels(110)
+            : responsivePixels(60);
         break;
       case 5:
       case 6:
@@ -1300,6 +1315,12 @@ export default function SetupPage() {
     switch (numFactions) {
       default:
         return null;
+      case 4:
+        height =
+          options["map-style"] === "standard"
+            ? responsivePixels(0)
+            : responsivePixels(36);
+        break;
       case 5:
       case 6:
         height = responsivePixels(36);
@@ -1319,7 +1340,10 @@ export default function SetupPage() {
         height = responsivePixels(48);
         break;
       case 4:
-        height = responsivePixels(148);
+        height =
+          options["map-style"] === "standard"
+            ? responsivePixels(148)
+            : responsivePixels(44);
         break;
       case 5:
       case 6:
@@ -1349,10 +1373,13 @@ export default function SetupPage() {
     let height = responsivePixels(80);
     switch (numFactions) {
       case 3:
-        height = responsivePixels(242);
+        height = responsivePixels(250);
         break;
       case 4:
-        height = responsivePixels(172);
+        height =
+          options["map-style"] === "standard"
+            ? responsivePixels(184)
+            : responsivePixels(41);
         break;
       case 5:
       case 6:
@@ -1415,7 +1442,8 @@ export default function SetupPage() {
             options={options}
           />
           <SideGapDiv />
-          {numFactions > 4 ? (
+          {numFactions > 3 &&
+          !(numFactions === 4 && options["map-style"] === "standard") ? (
             <FactionSelect
               factions={factions}
               position={6}
@@ -1454,6 +1482,7 @@ export default function SetupPage() {
         >
           <MiddleTopGapDiv />
           {numFactions > 3 &&
+          !(numFactions === 4 && options["map-style"] !== "standard") &&
           !(numFactions === 5 && options["map-style"] !== "warp") ? (
             <FactionSelect
               factions={factions}
@@ -1489,7 +1518,8 @@ export default function SetupPage() {
               factions={activeFactions}
             />
           </div>
-          {!(numFactions === 5 && options["map-style"] === "warp") &&
+          {!(numFactions === 4 && options["map-style"] !== "standard") &&
+          !(numFactions === 5 && options["map-style"] === "warp") &&
           !(numFactions === 7 && options["map-style"] !== "warp") ? (
             <FactionSelect
               factions={factions}
@@ -1557,7 +1587,8 @@ export default function SetupPage() {
             options={options}
           />
           <SideGapDiv />
-          {numFactions > 4 ? (
+          {numFactions > 3 &&
+          !(numFactions === 4 && options["map-style"] === "standard") ? (
             <FactionSelect
               factions={factions}
               position={2}

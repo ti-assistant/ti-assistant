@@ -6,14 +6,12 @@ import { MapStyle } from "./api/setup";
 import { FullFactionSymbol } from "../FactionCard";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { Attachment } from "./api/attachments";
 import { Faction } from "./api/factions";
 import { fetcher } from "./api/util";
 import { Planet } from "./api/planets";
 import { LabeledDiv } from "../LabeledDiv";
 import { responsivePixels } from "./util";
 import { getFactionColor } from "./factions";
-import { FactionCircle } from "../components/FactionCircle";
 
 interface Cube {
   q: number;
@@ -163,10 +161,49 @@ function getBaseSystemTiles(
       delete systemTiles[36];
       break;
     case 4:
-      systemTiles[36] = getFactionSystemNumber(factions[0]);
-      systemTiles[23] = getFactionSystemNumber(factions[1]);
-      systemTiles[27] = getFactionSystemNumber(factions[2]);
-      systemTiles[32] = getFactionSystemNumber(factions[3]);
+      switch (mapStyle) {
+        case "standard":
+          systemTiles[36] = getFactionSystemNumber(factions[0]);
+          systemTiles[23] = getFactionSystemNumber(factions[1]);
+          systemTiles[27] = getFactionSystemNumber(factions[2]);
+          systemTiles[32] = getFactionSystemNumber(factions[3]);
+          break;
+        case "skinny":
+          delete systemTiles[19];
+          systemTiles[21] = getFactionSystemNumber(factions[0]);
+          delete systemTiles[22];
+          delete systemTiles[23];
+          delete systemTiles[24];
+          delete systemTiles[25];
+          systemTiles[26] = getFactionSystemNumber(factions[1]);
+          delete systemTiles[28];
+          systemTiles[30] = getFactionSystemNumber(factions[2]);
+          delete systemTiles[31];
+          delete systemTiles[32];
+          delete systemTiles[33];
+          delete systemTiles[34];
+          systemTiles[35] = getFactionSystemNumber(factions[3]);
+
+          break;
+        case "warp":
+          systemTiles[1] = "rotateOneEighty:86A";
+          systemTiles[4] = "86A";
+          systemTiles[8] = "rotateOneEighty:87A";
+          systemTiles[12] = "88A";
+          systemTiles[14] = "87A";
+          systemTiles[18] = "rotateOneEighty:88A";
+          systemTiles[19] = "rotateOneEighty:85A";
+          systemTiles[20] = "rotateOneEighty:84A";
+          systemTiles[22] = getFactionSystemNumber(factions[0]);
+          systemTiles[25] = getFactionSystemNumber(factions[1]);
+          systemTiles[27] = "83A";
+          systemTiles[28] = "85A";
+          systemTiles[29] = "84A";
+          systemTiles[31] = getFactionSystemNumber(factions[2]);
+          systemTiles[34] = getFactionSystemNumber(factions[3]);
+          systemTiles[36] = "rotateOneEighty:83A";
+          break;
+      }
       break;
     case 5:
       switch (mapStyle) {
