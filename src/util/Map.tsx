@@ -711,16 +711,19 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
         case 4:
           switch (index) {
             case 0:
-              ghostsCorner = "top-right";
+              ghostsCorner = mapStyle === "standard" ? "top-left" : "top-right";
               break;
             case 1:
-              ghostsCorner = "bottom-right";
+              ghostsCorner =
+                mapStyle === "standard" ? "top-right" : "bottom-right";
               break;
             case 2:
-              ghostsCorner = "bottom-left";
+              ghostsCorner =
+                mapStyle === "standard" ? "bottom-right" : "bottom-left";
               break;
             case 3:
-              ghostsCorner = "top-left";
+              ghostsCorner =
+                mapStyle === "standard" ? "bottom-left" : "top-left";
               break;
           }
           break;
