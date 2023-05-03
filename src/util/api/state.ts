@@ -16,6 +16,7 @@ export type Phase =
 export type StateUpdateAction =
   | "ADVANCE_PHASE"
   | "START_NEXT_ROUND"
+  | "JUMP_TO_PLAYER"
   | "ADVANCE_PLAYER"
   | "PREVIOUS_PLAYER"
   | "SET_SPEAKER"
@@ -107,6 +108,29 @@ export function setSpeaker(gameid: string, speaker: string) {
       return updatedFactions;
     },
     {
+      revalidate: false,
+    }
+  );
+}
+
+export function jumpToPlayer(gameid: string, factionName: string) {
+  setGlobalPause(gameid, false);
+
+  const data: StateUpdateData = {
+    action: "JUMP_TO_PLAYER",
+    factionName: factionName,
+  };
+
+  mutate(
+    `/api/${gameid}/state`,
+    async () => await poster(`/api/${gameid}/stateUpdate`, data),
+    {
+      optimisticData: (state: GameState) => {
+        return {
+          ...structuredClone(state),
+          activeplayer: factionName,
+        };
+      },
       revalidate: false,
     }
   );

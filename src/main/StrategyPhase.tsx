@@ -1,7 +1,11 @@
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { StrategyCardElement } from "../StrategyCard";
-import { getLastPickedCard, getOnDeckFaction } from "../util/helpers";
+import {
+  findLastPickedCard,
+  getLastPickedCard,
+  getOnDeckFaction,
+} from "../util/helpers";
 import {
   strategyCardOrder,
   StrategyCard,
@@ -9,6 +13,7 @@ import {
   unassignStrategyCard,
   setFirstStrategyCard,
   swapStrategyCards,
+  resetStrategyCards,
 } from "../util/api/cards";
 import { Faction, readyAllFactions } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
@@ -25,11 +30,13 @@ import { hasTech } from "../util/api/techs";
 import { Agenda, repealAgenda } from "../util/api/agendas";
 import {
   GameState,
+  jumpToPlayer,
   nextPlayer,
   prevPlayer,
   StateUpdateData,
 } from "../util/api/state";
 import {
+  clearSubState,
   finalizeSubState,
   pickSubStateStrategyCard,
   setSubStateOther,
@@ -415,6 +422,13 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
     if (!gameid) {
       return;
     }
+
+    // Prevent faction from picking two in a row.
+    const lastPickedCard = findLastPickedCard(subState);
+    if (lastPickedCard && lastPickedCard.pickedBy === pickedBy) {
+      return;
+    }
+
     pickSubStateStrategyCard(
       gameid,
       {
@@ -740,6 +754,15 @@ export default function StrategyPhase() {
     prevPlayer(gameid, factions ?? {}, subState);
   }
 
+  function resetPhase() {
+    if (!gameid || !state) {
+      return;
+    }
+    jumpToPlayer(gameid, state.speaker);
+    clearSubState(gameid);
+    resetStrategyCards(gameid);
+  }
+
   function canUndo() {
     return (subState.strategyCards ?? []).length > 0;
   }
@@ -978,7 +1001,10 @@ export default function StrategyPhase() {
           <StrategyCardSelectList mobile={false} />
         </div>
         {canUndo() ? (
-          <button onClick={() => undoPick()}>Undo SC Pick</button>
+          <div className="flexRow" style={{ gap: responsivePixels(16) }}>
+            <button onClick={() => undoPick()}>Undo SC Pick</button>
+            <button onClick={() => resetPhase()}>Reset Phase</button>
+          </div>
         ) : null}
         {activefaction ? null : (
           <button

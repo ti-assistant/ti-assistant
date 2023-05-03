@@ -148,6 +148,20 @@ export default async function handler(
       await db.collection("games").doc(gameId).update(updates);
       break;
     }
+    case "JUMP_TO_PLAYER": {
+      if (!data.factionName) {
+        res.status(422).send({ message: "Missing factionName." });
+        return;
+      }
+      await db
+        .collection("games")
+        .doc(gameId)
+        .update({
+          "state.activeplayer": data.factionName,
+          [timestampString]: timestamp,
+        });
+      break;
+    }
     case "ADVANCE_PLAYER": {
       const factions = await fetchFactions(gameId);
       const strategyCards = await fetchStrategyCards(gameId);

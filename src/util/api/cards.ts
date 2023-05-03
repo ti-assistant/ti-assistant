@@ -68,7 +68,7 @@ export function markStrategyCardUsed(
     async () => await poster(`/api/${gameId}/cardUpdate`, data),
     {
       optimisticData: (strategyCards: Record<string, StrategyCard>) => {
-        const updatedCards = structuredClone(strategyCards);
+        const updatedCards = structuredClone(strategyCards ?? {});
 
         const card = updatedCards[cardName];
 
@@ -95,7 +95,7 @@ export function resetStrategyCards(gameId: string) {
     async () => await poster(`/api/${gameId}/cardUpdate`, data),
     {
       optimisticData: (strategyCards: Record<string, StrategyCard>) => {
-        const updatedCards = structuredClone(strategyCards);
+        const updatedCards = structuredClone(strategyCards ?? {});
 
         for (const card of Object.values(updatedCards)) {
           delete card.faction;
@@ -126,7 +126,7 @@ export function swapStrategyCards(
     async () => await poster(`/api/${gameId}/cardUpdate`, data),
     {
       optimisticData: (strategyCards: Record<string, StrategyCard>) => {
-        const updatedCards = structuredClone(strategyCards);
+        const updatedCards = structuredClone(strategyCards ?? {});
 
         const updatedCardOne = updatedCards[cardOne.name];
         const updatedCardTwo = updatedCards[cardTwo.name];
@@ -163,7 +163,7 @@ export function setFirstStrategyCard(gameId: string, cardName: string) {
     async () => await poster(`/api/${gameId}/cardUpdate`, data),
     {
       optimisticData: (strategyCards: Record<string, StrategyCard>) => {
-        const updatedCards = structuredClone(strategyCards);
+        const updatedCards = structuredClone(strategyCards ?? {});
 
         const card = updatedCards[cardName];
         if (!card) {
@@ -197,7 +197,7 @@ export async function unassignStrategyCard(gameId: string, cardName: string) {
     async () => await poster(`/api/${gameId}/cardUpdate`, data),
     {
       optimisticData: (strategyCards: Record<string, StrategyCard>) => {
-        const updatedCards = structuredClone(strategyCards);
+        const updatedCards = structuredClone(strategyCards ?? {});
 
         const card = updatedCards[cardName];
 
@@ -256,7 +256,7 @@ export function assignStrategyCard(
     async () => await poster(`/api/${gameId}/cardUpdate`, data),
     {
       optimisticData: (strategyCards: Record<string, StrategyCard>) => {
-        const updatedCards = structuredClone(strategyCards);
+        const updatedCards = structuredClone(strategyCards ?? {});
 
         const card = updatedCards[cardName];
 
