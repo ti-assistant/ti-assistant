@@ -21,6 +21,7 @@ import { gainRelic } from "./relics";
 import { setGlobalPause, setSpeaker } from "./state";
 import { lockTech, unlockTech } from "./techs";
 import { poster } from "./util";
+import { findLastPickedCard } from "../helpers";
 
 export type Secondary = "PENDING" | "DONE" | "SKIPPED";
 
@@ -1145,6 +1146,13 @@ export function pickSubStateStrategyCard(
 
         if (!updatedSubState.strategyCards) {
           updatedSubState.strategyCards = [];
+        }
+
+        // Prevent faction from selecting 2 in a row.
+        const lastPicked = findLastPickedCard(subState);
+
+        if (lastPicked && lastPicked.pickedBy === cardEvent.pickedBy) {
+          return updatedSubState;
         }
 
         const numPickedCards = updatedSubState.strategyCards.reduce(

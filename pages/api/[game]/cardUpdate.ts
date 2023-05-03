@@ -9,6 +9,7 @@ import {
 import { NextApiRequest, NextApiResponse } from "next";
 import { GameData } from "../../../src/util/api/util";
 import { StrategyCardUpdateData } from "../../../src/util/api/cards";
+import { findLastPickedCard } from "../../../src/util/helpers";
 
 export default async function handler(
   req: NextApiRequest,
@@ -50,6 +51,18 @@ export default async function handler(
         res.status(422);
         return;
       }
+      // Prevent faction from picking 2 in a row.
+      const lastPicked = findLastPickedCard(gameData.subState ?? {});
+
+      // NOTE: This doesn't handle checks and balances, but it shouldn't be possible to go fast enough to break that.
+      if (
+        lastPicked &&
+        lastPicked.pickedBy === data.faction &&
+        lastPicked.assignedTo === data.faction
+      ) {
+        break;
+      }
+
       const factionString = `strategycards.${data.card}.faction`;
       const updates: UpdateData<any> = {
         [factionString]: data.faction,

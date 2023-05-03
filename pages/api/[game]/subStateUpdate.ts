@@ -22,6 +22,7 @@ import {
 } from "../../../src/util/api/subState";
 import { GameData } from "../../../src/util/api/util";
 import { shouldUnlockXxchaCommander } from "./planetUpdate";
+import { findLastPickedCard } from "../../../src/util/helpers";
 
 function usedComponentState(component: Component) {
   switch (component.type) {
@@ -360,6 +361,14 @@ export default async function handler(
         res.status(422).send({ message: "Missing card event" });
         return;
       }
+
+      // Prevent faction from picking 2 in a row.
+      const lastPicked = findLastPickedCard(gameData.subState ?? {});
+
+      if (lastPicked && lastPicked.pickedBy === data.cardEvent.pickedBy) {
+        break;
+      }
+
       const strategyCards = gameData.subState?.strategyCards ?? [];
       // Make sure we don't assign too many cards to the same faction.
       const numSelected = strategyCards.reduce((count, card) => {

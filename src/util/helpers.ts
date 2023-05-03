@@ -25,20 +25,21 @@ export function getOnDeckFaction(
       }
       const numFactions = Object.keys(factions).length;
       const numPickedCards = (subState.strategyCards ?? []).length;
-      if (numFactions === 3 || numFactions === 4) { 
+      if (numFactions === 3 || numFactions === 4) {
         switch (numPickedCards) {
-          // Last player is currently picking.
-          case numFactions - 1:
-            return currentFaction;
-          // First player is currently picking their second card.
+          // Last player is currently picking their second card.
           case numFactions * 2 - 1:
             return undefined;
+          // Last player is currently picking their first card.
+          case numFactions - 1:
+            return factions[state.speaker];
         }
+        // Wrap around after all players have selected once.
         // Reverse after all players have selected once.
         if (numPickedCards >= numFactions) {
-          let nextOrder = currentFaction.order - 1;
-          if (nextOrder === 0) {
-            nextOrder = numFactions;
+          let nextOrder = currentFaction.order + 1;
+          if (nextOrder > numFactions) {
+            nextOrder = 1;
           }
           return Object.values(factions).find(
             (faction) => faction.order === nextOrder
@@ -163,6 +164,13 @@ export function getLastPickedCard(state: GameState, subState: SubState) {
   }
 
   if (!subState.strategyCards) {
+    return undefined;
+  }
+  return subState.strategyCards[subState.strategyCards.length - 1];
+}
+
+export function findLastPickedCard(subState: SubState) {
+  if (!subState.strategyCards || subState.strategyCards.length === 0) {
     return undefined;
   }
   return subState.strategyCards[subState.strategyCards.length - 1];
