@@ -26,8 +26,6 @@ export function validateMapString(mapString: string) {
     // 4 rings
     case 60:
       break;
-    default:
-      return false;
   }
   for (const system of systemArray) {
     if (isNaN(parseInt(system))) {
