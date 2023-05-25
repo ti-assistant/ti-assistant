@@ -1,6 +1,8 @@
 runtime: nodejs14
 env: standard
 service: default
+automatic_scaling:
+  max_idle_instances: 1
 handlers:
   - url: /.*
     secure: always
