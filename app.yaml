@@ -1,4 +1,4 @@
-runtime: nodejs14
+runtime: nodejs20
 env: standard
 service: default
 automatic_scaling:
