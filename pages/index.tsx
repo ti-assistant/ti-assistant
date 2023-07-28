@@ -127,7 +127,7 @@ export default function HomePage() {
             className="flexColumn"
             style={{ width: "75%", alignItems: "stretch" }}
           >
-            {/* <Link href={`/help`}>
+            <Link href={`/supporters`}>
               <a>
                 <LabeledDiv>
                   <div
@@ -136,11 +136,11 @@ export default function HomePage() {
                       width: "100%",
                     }}
                   >
-                    Help
+                    Supporters
                   </div>
                 </LabeledDiv>
               </a>
-            </Link> */}
+            </Link>
             <Link href={`/FAQ`}>
               <a>
                 <LabeledDiv>
