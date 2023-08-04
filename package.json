@@ -1,6 +1,6 @@
 {
   "name": "twilight-imperium",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "dependencies": {
     "firebase-admin": "^11.5.0",
     "js-cookie": "^3.0.1",
