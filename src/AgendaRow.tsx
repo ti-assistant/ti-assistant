@@ -52,9 +52,15 @@ export interface AgendaRowProps {
   agenda: Agenda;
   addAgenda?: (agendaName: string) => void;
   removeAgenda?: (agendaName: string) => void;
+  hideOutcome?: boolean;
 }
 
-export function AgendaRow({ agenda, addAgenda, removeAgenda }: AgendaRowProps) {
+export function AgendaRow({
+  agenda,
+  addAgenda,
+  removeAgenda,
+  hideOutcome,
+}: AgendaRowProps) {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   function displayInfo() {
@@ -96,7 +102,9 @@ export function AgendaRow({ agenda, addAgenda, removeAgenda }: AgendaRowProps) {
             }}
           >
             <div>{agenda.name}</div>
-            {agenda.target ? <div>[{agenda.target}]</div> : null}
+            {agenda.target && !hideOutcome ? (
+              <div>[{agenda.target}]</div>
+            ) : null}
           </div>
           <div
             className="popupIcon"

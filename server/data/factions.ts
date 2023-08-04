@@ -1,4 +1,5 @@
 import { BaseFaction } from "../../src/util/api/factions";
+import { DISCORDANT_STARS_FACTIONS } from "./discordantstars/factions";
 
 export type FactionId =
   | "Arborec"
@@ -25,7 +26,8 @@ export type FactionId =
   | "Winnu"
   | "Xxcha Kingdom"
   | "Yin Brotherhood"
-  | "Yssaril Tribes";
+  | "Yssaril Tribes"
+  | DiscordantStars.FactionId;
 
 export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
   Arborec: {
@@ -609,4 +611,5 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
       },
     },
   },
+  ...DISCORDANT_STARS_FACTIONS,
 };

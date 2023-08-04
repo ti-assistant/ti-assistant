@@ -1,23 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import useSWR from "swr";
-
-import { fetcher } from "./util/api/util";
 import { ObjectiveRow } from "./ObjectiveRow";
 import { Tab, TabBody } from "./Tab";
-import {
-  revealObjective,
-  removeObjective,
-  scoreObjective,
-  unscoreObjective,
-  Objective,
-  ObjectiveType,
-} from "./util/api/objectives";
+import { Objective, ObjectiveType } from "./util/api/objectives";
 import { LabeledLine } from "./LabeledDiv";
-import {
-  hideSubStateObjective,
-  revealSubStateObjective,
-} from "./util/api/subState";
+import { useGameData } from "./data/GameData";
+import { hideObjective, revealObjective } from "./util/api/revealObjective";
+import { scoreObjective, unscoreObjective } from "./util/api/scoreObjective";
 
 function sortObjectivesByName(objectives: Objective[]) {
   objectives.sort((a, b) => {
@@ -31,13 +20,9 @@ function sortObjectivesByName(objectives: Objective[]) {
 function SecretTab({ factionName }: { factionName: string }) {
   const router = useRouter();
   const { game: gameid }: { game?: string; faction?: string } = router.query;
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["objectives"]);
+  const objectives = gameData.objectives;
+
   const [editMode, setEditMode] = useState(false);
 
   const secretObjectives = Object.values(objectives ?? {}).filter((obj) => {
@@ -53,20 +38,14 @@ function SecretTab({ factionName }: { factionName: string }) {
     if (!gameid || !factionName) {
       return;
     }
-    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
-      revealSubStateObjective(gameid, objectiveName);
-    }
-    revealObjective(gameid, factionName, objectiveName);
+    revealObjective(gameid, objectiveName);
     setEditMode(false);
   }
   function removeObj(objectiveName: string) {
     if (!gameid || !factionName) {
       return;
     }
-    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
-      hideSubStateObjective(gameid, objectiveName);
-    }
-    removeObjective(gameid, factionName, objectiveName);
+    hideObjective(gameid, objectiveName);
   }
   function scoreObj(objectiveName: string, add: boolean) {
     if (!gameid || !factionName) {
@@ -172,13 +151,9 @@ export function ObjectiveList() {
     game: gameid,
     faction: factionName,
   }: { game?: string; faction?: string } = router.query;
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["objectives"]);
+  const objectives = gameData.objectives;
+
   const [tabShown, setTabShown] = useState("STAGE ONE");
   const [editMode, setEditMode] = useState(false);
 
@@ -190,20 +165,14 @@ export function ObjectiveList() {
     if (!gameid || !factionName) {
       return;
     }
-    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
-      revealSubStateObjective(gameid, objectiveName);
-    }
-    revealObjective(gameid, factionName, objectiveName);
+    revealObjective(gameid, objectiveName);
     setEditMode(false);
   }
   function removeObj(objectiveName: string) {
     if (!gameid || !factionName) {
       return;
     }
-    if ((objectives ?? {})[objectiveName]?.type !== "SECRET") {
-      hideSubStateObjective(gameid, objectiveName);
-    }
-    removeObjective(gameid, factionName, objectiveName);
+    hideObjective(gameid, objectiveName);
   }
   function scoreObj(objectiveName: string, add: boolean) {
     if (!gameid || !factionName) {

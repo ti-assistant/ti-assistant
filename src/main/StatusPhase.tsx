@@ -1,46 +1,31 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
 import React, { PropsWithChildren, ReactNode, useState } from "react";
-import { SmallStrategyCard } from "../StrategyCard";
-import { hasTech, lockTech, unlockTech } from "../util/api/techs";
-import { resetStrategyCards, StrategyCard } from "../util/api/cards";
-import { Faction, readyAllFactions } from "../util/api/factions";
+import { hasTech } from "../util/api/techs";
+import { StrategyCard } from "../util/api/cards";
+import { Faction } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
-import { fetcher, poster } from "../util/api/util";
+import { ActionLogEntry } from "../util/api/util";
 import { ObjectiveRow } from "../ObjectiveRow";
-import {
-  Objective,
-  removeObjective,
-  revealObjective,
-  scoreObjective,
-  unscoreObjective,
-} from "../util/api/objectives";
 import { Modal } from "../Modal";
-import SummaryColumn from "./SummaryColumn";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LabeledDiv, LabeledLine } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
-import {
-  finalizeSubState,
-  hideSubStateObjective,
-  revealSubStateObjective,
-  scoreSubStateObjective,
-  SubState,
-  unscoreSubStateObjective,
-} from "../util/api/subState";
 import { startNextRound } from "./AgendaPhase";
-import { GameState, StateUpdateData } from "../util/api/state";
-import { Agenda } from "../util/api/agendas";
 import { getDefaultStrategyCards } from "../util/api/defaults";
 import { getInitiativeForFaction } from "../util/helpers";
 import { FullFactionSymbol } from "../FactionCard";
 import { NumberedItem } from "../NumberedItem";
 import { Selector } from "../Selector";
 import { LockedButtons } from "../LockedButton";
-import { Planet } from "../util/api/planets";
-import { Relic } from "../util/api/relics";
-import { Options } from "../util/api/options";
 import { SymbolX } from "../icons/svgs";
+import { useGameData } from "../data/GameData";
+import { ScoreObjectiveData } from "../util/model/scoreObjective";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { RevealObjectiveData } from "../util/model/revealObjective";
+import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
+import { hideObjective, revealObjective } from "../util/api/revealObjective";
+import { advancePhase } from "../util/api/advancePhase";
+import { getObjectiveScorers } from "../util/actionLog";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -63,43 +48,20 @@ function InfoContent({ children }: PropsWithChildren) {
 export function MiddleColumn() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "factions",
+    "objectives",
+    "planets",
+    "strategycards",
+  ]);
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const planets = gameData.planets;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
     title?: string;
@@ -113,14 +75,12 @@ export function MiddleColumn() {
       return;
     }
     scoreObjective(gameid, factionName, objectiveName);
-    scoreSubStateObjective(gameid, factionName, objectiveName);
   }
   function unscoreObj(factionName: string, objectiveName: string) {
     if (!gameid) {
       return;
     }
     unscoreObjective(gameid, factionName, objectiveName);
-    unscoreSubStateObjective(gameid, factionName, objectiveName);
   }
 
   const orderedStrategyCards = Object.values(strategyCards)
@@ -185,11 +145,14 @@ export function MiddleColumn() {
   if (!objectives || !factions) {
     return null;
   }
-  const subStateObjective = (subState.objectives ?? [])[0];
+  const revealedObjectives = currentTurn
+    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+    .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
+  const revealedObjective = revealedObjectives[0];
 
   let innerContent = (
     <div className="flexColumn" style={{ width: "100%" }}>
-      {!subStateObjective ? (
+      {!revealedObjective ? (
         <LabeledDiv label="Score Objectives" noBlur={true}>
           <div
             className="flexColumn"
@@ -253,10 +216,17 @@ export function MiddleColumn() {
               const faction = factions[card.faction];
               const factionColor = getFactionColor(faction);
               const factionName = getFactionName(faction);
-              const scoredPublics = (
-                ((subState.turnData?.factions ?? {})[card.faction] ?? {})
-                  .objectives ?? []
-              ).filter((objective) => {
+              const scoredObjectives = currentTurn
+                .filter(
+                  (logEntry) =>
+                    logEntry.data.action === "SCORE_OBJECTIVE" &&
+                    logEntry.data.event.faction === card.faction
+                )
+                .map(
+                  (logEntry) =>
+                    (logEntry.data as ScoreObjectiveData).event.objective
+                );
+              const scoredPublics = scoredObjectives.filter((objective) => {
                 const objectiveObj = objectives
                   ? objectives[objective]
                   : undefined;
@@ -268,10 +238,7 @@ export function MiddleColumn() {
                   objectiveObj.type === "STAGE TWO"
                 );
               });
-              const scoredSecrets = (
-                ((subState.turnData?.factions ?? {})[card.faction] ?? {})
-                  .objectives ?? []
-              ).filter((objective) => {
+              const scoredSecrets = scoredObjectives.filter((objective) => {
                 const objectiveObj = objectives
                   ? objectives[objective]
                   : undefined;
@@ -507,33 +474,6 @@ export function MiddleColumn() {
               )}
             </div>
           </LabeledDiv>
-          {/* <LabeledDiv label="Return Strategy Cards">
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "flex-start",
-                alignItems: "stretch",
-                paddingTop: responsivePixels(4),
-              }}
-            >
-              <Selector
-                hoverMenuLabel="Political Stability"
-                selectedLabel="Political Stability - do not return strategy card(s)"
-                options={Object.keys(factions)}
-                selectedItem={subState["Political Stability"]}
-                toggleItem={(itemName, add) => {
-                  if (!gameid) {
-                    return;
-                  }
-                  if (add) {
-                    setSubStateOther(gameid, "Political Stability", itemName);
-                  } else {
-                    setSubStateOther(gameid, "Political Stability", undefined);
-                  }
-                }}
-              />
-            </div>
-          </LabeledDiv> */}
         </React.Fragment>
       )}
     </div>
@@ -555,105 +495,42 @@ export function MiddleColumn() {
   );
 }
 
-export function advanceToAgendaPhase(gameid: string, subState: SubState) {
-  finalizeSubState(gameid, subState);
-  const data: StateUpdateData = {
-    action: "ADVANCE_PHASE",
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.phase = "AGENDA";
-        updatedState.activeplayer = state.speaker;
-        updatedState.agendaUnlocked = true;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
-
-  resetStrategyCards(gameid);
-  readyAllFactions(gameid);
+export function advanceToAgendaPhase(gameid: string) {
+  advancePhase(gameid);
 }
 
-export function statusPhaseComplete(subState: SubState) {
-  return (subState.objectives ?? []).length === 1;
+export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
+  const revealedObjectives = currentTurn.filter(
+    (logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE"
+  );
+  return revealedObjectives.length === 1;
 }
 
 export default function StatusPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: options }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
-    gameid ? `/api/${gameid}/relics` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "factions",
+    "objectives",
+    "options",
+    "planets",
+    "relics",
+    "state",
+    "strategycards",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const options = gameData.options;
+  const planets = gameData.planets;
+  const relics = gameData.relics;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
     title?: string;
@@ -675,10 +552,10 @@ export default function StatusPhase() {
       return;
     }
     if (!skipAgenda) {
-      advanceToAgendaPhase(gameid, subState);
+      advanceToAgendaPhase(gameid);
       return;
     }
-    startNextRound(gameid, subState);
+    startNextRound(gameid);
   }
 
   interface Ability {
@@ -746,14 +623,10 @@ export default function StatusPhase() {
       }
     }
   }
-  let scoredCrown: string | undefined;
-  for (const [factionName, faction] of Object.entries(
-    subState.turnData?.factions ?? {}
-  )) {
-    if (faction.objectives?.includes("Tomb + Crown of Emphidia")) {
-      scoredCrown = factionName;
-    }
-  }
+  const scoredCrown = getObjectiveScorers(
+    currentTurn,
+    "Tomb + Crown of Emphidia"
+  )[0];
 
   const crownFaction = crownScorer || scoredCrown;
 
@@ -825,8 +698,11 @@ export default function StatusPhase() {
     cardsByFaction[card.faction]?.push(card);
   });
 
-  const subStateObjective = (subState.objectives ?? [])[0];
-  const subStateObjectiveObj = (objectives ?? {})[subStateObjective ?? ""];
+  const revealedObjectives = currentTurn
+    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+    .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
+  const revealedObjective = revealedObjectives[0];
+  const revealedObjectiveObj = (objectives ?? {})[revealedObjective ?? ""];
   const type = round < 4 ? "STAGE ONE" : "STAGE TWO";
   const availableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
@@ -837,16 +713,14 @@ export default function StatusPhase() {
     if (!gameid) {
       return;
     }
-    revealSubStateObjective(gameid, objectiveName);
-    revealObjective(gameid, undefined, objectiveName);
+    revealObjective(gameid, objectiveName);
   }
 
   function removeObj(objectiveName: string) {
     if (!gameid) {
       return;
     }
-    hideSubStateObjective(gameid, objectiveName);
-    removeObjective(gameid, undefined, objectiveName);
+    hideObjective(gameid, objectiveName);
   }
 
   const nextPhaseButtons = [];
@@ -871,16 +745,6 @@ export default function StatusPhase() {
       >
         <InfoContent>{infoModal.content}</InfoContent>
       </Modal>
-      {/* <div
-        className="flexRow"
-        style={{
-          gap: responsivePixels(20),
-          height: "100svh",
-          width: "100%",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-        }}
-      > */}
       <ol
         className="flexColumn largeFont"
         style={{
@@ -890,6 +754,7 @@ export default function StatusPhase() {
           height: "100svh",
           margin: 0,
           paddingLeft: responsivePixels(20),
+          whiteSpace: "nowrap",
         }}
       >
         {!hasStartOfStatusPhaseAbilities() ? null : (
@@ -963,13 +828,13 @@ export default function StatusPhase() {
         <NumberedItem>Score Objectives</NumberedItem>
         <NumberedItem>
           <div className="largeFont">
-            {subStateObjectiveObj ? (
+            {revealedObjectiveObj ? (
               <LabeledDiv
                 label={`Revealed Stage ${round < 4 ? "I" : "II"} Objective`}
               >
                 <ObjectiveRow
-                  objective={subStateObjectiveObj}
-                  removeObjective={() => removeObj(subStateObjectiveObj.name)}
+                  objective={revealedObjectiveObj}
+                  removeObjective={() => removeObj(revealedObjectiveObj.name)}
                   viewing={true}
                 />
               </LabeledDiv>
@@ -980,25 +845,11 @@ export default function StatusPhase() {
                 style={{ width: "100%" }}
               >
                 <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
-                  {(subState.objectives ?? []).map((objective) => {
-                    const objectiveObj = (objectives ?? {})[objective];
-                    if (!objectiveObj) {
-                      return null;
-                    }
-                    return (
-                      <ObjectiveRow
-                        key={objective}
-                        objective={objectiveObj}
-                        removeObjective={() => removeObj(objective)}
-                        viewing={true}
-                      />
-                    );
-                  })}
                   <Selector
                     hoverMenuLabel={`Reveal one Stage ${
                       round > 3 ? "II" : "I"
                     } objective`}
-                    selectedItem={(subState.objectives ?? [])[0]}
+                    selectedItem={undefined}
                     options={Object.values(availableObjectives)
                       .filter((objective) => {
                         return (
@@ -1129,22 +980,12 @@ export default function StatusPhase() {
                               return;
                             }
                             if (scoredCrown) {
-                              unscoreSubStateObjective(
-                                gameid,
-                                crownFaction,
-                                "Tomb + Crown of Emphidia"
-                              );
                               unscoreObjective(
                                 gameid,
                                 crownFaction,
                                 "Tomb + Crown of Emphidia"
                               );
                             } else {
-                              scoreSubStateObjective(
-                                gameid,
-                                crownFaction,
-                                "Tomb + Crown of Emphidia"
-                              );
                               scoreObjective(
                                 gameid,
                                 crownFaction,
@@ -1194,7 +1035,7 @@ export default function StatusPhase() {
       >
         <MiddleColumn />
         <LockedButtons
-          unlocked={statusPhaseComplete(subState)}
+          unlocked={statusPhaseComplete(currentTurn)}
           buttons={nextPhaseButtons}
         />
       </div>

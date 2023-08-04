@@ -2,12 +2,12 @@ import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import { BASE_FACTIONS, FactionId } from "../../server/data/factions";
 import { BASE_PLANETS } from "../../server/data/planets";
-import { BaseFaction, GameFaction } from "../../src/util/api/factions";
+import { GameFaction } from "../../src/util/api/factions";
 import { GameObjective } from "../../src/util/api/objectives";
 import { Options } from "../../src/util/api/options";
 import { GamePlanet } from "../../src/util/api/planets";
 import { SetupFaction } from "../../src/util/api/setup";
-import { GameData } from "../../src/util/api/util";
+import { StoredGameData } from "../../src/util/api/util";
 
 function makeid(length: number) {
   var result = "";
@@ -134,7 +134,7 @@ export default async function handler(
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 180);
 
-  const gameState: GameData = {
+  const gameState: StoredGameData = {
     state: {
       speaker: speakerName,
       phase: "SETUP",
@@ -156,7 +156,7 @@ export default async function handler(
   }
 
   await db.collection("games").doc(gameid).set(gameState);
+  await db.collection("timers").doc(gameid).set({});
 
-  // console.log(req.body);
   res.status(200).json({ gameid: gameid });
 }

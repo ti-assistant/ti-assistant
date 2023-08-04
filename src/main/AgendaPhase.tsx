@@ -1,85 +1,64 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
-import SummaryColumn from "./SummaryColumn";
 import { AgendaTimer } from "../Timer";
-import { fetcher, poster } from "../util/api/util";
 import { getTargets, VoteCount } from "../VoteCount";
 import { AgendaRow } from "../AgendaRow";
-import {
-  Agenda,
-  OutcomeType,
-  repealAgenda,
-  resolveAgenda,
-} from "../util/api/agendas";
+import { Agenda, OutcomeType } from "../util/api/agendas";
 import { SelectableRow } from "../SelectableRow";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LabeledDiv } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
-import {
-  addSubStatePlanet,
-  addSubStateRider,
-  addSubStateTech,
-  clearAddedSubStateTech,
-  finalizeSubState,
-  hideSubStateAgenda,
-  hideSubStateObjective,
-  removeSubStatePlanet,
-  removeSubStateRider,
-  resolveRiders,
-  revealSubStateAgenda,
-  revealSubStateObjective,
-  scoreSubStateObjective,
-  setSubStateOther,
-  SubState,
-  SubStateFaction,
-  toggleSubStatePoliticalSecret,
-  toggleSubStateRelic,
-  unscoreSubStateObjective,
-} from "../util/api/subState";
-import { Faction, resetCastVotes, updateCastVotes } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
-import { resetAgendaTimers } from "../util/api/timers";
-import { resetStrategyCards, StrategyCard } from "../util/api/cards";
-import {
-  ancientBurialSites,
-  GameState,
-  setAgendaNum,
-  setSpeaker,
-  StateUpdateData,
-} from "../util/api/state";
-import {
-  addAttachment,
-  claimPlanet,
-  Planet,
-  removeAttachment,
-  unclaimPlanet,
-} from "../util/api/planets";
-import {
-  changeObjectivePoints,
-  changeObjectiveType,
-  hasScoredObjective,
-  Objective,
-  removeObjective,
-  revealObjective,
-  scoreObjective,
-  takeObjective,
-  unscoreObjective,
-} from "../util/api/objectives";
+import { hasScoredObjective, Objective } from "../util/api/objectives";
 import { getDefaultStrategyCards } from "../util/api/defaults";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Selector } from "../Selector";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { computeVPs } from "../FactionSummary";
-import { Options } from "../util/api/options";
 import { LockedButtons } from "../LockedButton";
 import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
 import { Tech } from "../util/api/techs";
 import { FullFactionSymbol } from "../FactionCard";
-import { gainRelic, loseRelic, Relic } from "../util/api/relics";
 import { InfoRow } from "../InfoRow";
 import { FactionCircle } from "../components/FactionCircle";
 import { FactionSelectHoverMenu } from "../components/FactionSelect";
 import { SymbolX } from "../icons/svgs";
+import { useGameData } from "../data/GameData";
+import { advancePhase } from "../util/api/advancePhase";
+import { hideObjective, revealObjective } from "../util/api/revealObjective";
+import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
+import { hideAgenda, revealAgenda } from "../util/api/revealAgenda";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import {
+  getActionCardTargets,
+  getActiveAgenda,
+  getAllVotes,
+  getGainedRelic,
+  getNewOwner,
+  getObjectiveScorers,
+  getPlayedRiders,
+  getPromissoryTargets,
+  getResearchedTechs,
+  getRevealedObjectives,
+  getScoredObjectives,
+  getSelectedEligibleOutcomes,
+  getSelectedSubAgenda,
+  getSpeakerTieBreak,
+} from "../util/actionLog";
+import { ActionLogEntry } from "../util/api/util";
+import { CastVotesData } from "../util/model/castVotes";
+import { resolveAgenda } from "../util/api/resolveAgenda";
+import { playActionCard, unplayActionCard } from "../util/api/playActionCard";
+import {
+  playPromissoryNote,
+  unplayPromissoryNote,
+} from "../util/api/playPromissoryNote";
+import { gainRelic, loseRelic } from "../util/api/gainRelic";
+import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
+import { selectEligibleOutcomes } from "../util/api/selectEligibleOutcomes";
+import { playRider, unplayRider } from "../util/api/playRider";
+import { addTech, removeTech } from "../util/api/addTech";
+import { selectSubAgenda } from "../util/api/selectSubAgenda";
+import { speakerTieBreak } from "../util/api/speakerTieBreak";
 
 const RIDERS = [
   "Galactic Threat",
@@ -97,20 +76,21 @@ const RIDERS = [
 
 export function computeVotes(
   agenda: Agenda | undefined,
-  subStateFactions: Record<string, SubStateFaction> = {}
+  currentTurn: ActionLogEntry[]
 ) {
   const castVotes: { [key: string]: number } =
     agenda && agenda.elect === "For/Against" ? { For: 0, Against: 0 } : {};
-  Object.values(subStateFactions).forEach((faction) => {
+  const voteEvents = getAllVotes(currentTurn);
+  voteEvents.forEach((voteEvent) => {
     if (
-      faction.target &&
-      faction.target !== "Abstain" &&
-      (faction.votes ?? 0) > 0
+      voteEvent.target &&
+      voteEvent.target !== "Abstain" &&
+      (voteEvent.votes ?? 0) > 0
     ) {
-      if (!castVotes[faction.target]) {
-        castVotes[faction.target] = 0;
+      if (!castVotes[voteEvent.target]) {
+        castVotes[voteEvent.target] = 0;
       }
-      castVotes[faction.target] += faction.votes ?? 0;
+      castVotes[voteEvent.target] += voteEvent.votes ?? 0;
     }
   });
   const orderedVotes: {
@@ -139,98 +119,42 @@ export function computeVotes(
   return orderedVotes;
 }
 
-export function startNextRound(gameid: string, subState: SubState) {
-  finalizeSubState(gameid, subState);
-
-  resetCastVotes(gameid);
-  resetAgendaTimers(gameid);
-  resetStrategyCards(gameid);
-
-  const data: StateUpdateData = {
-    action: "START_NEXT_ROUND",
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.phase = "STRATEGY";
-        updatedState.activeplayer = state.speaker;
-        updatedState.round = state.round + 1;
-        updatedState.agendaNum = 1;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
+export function startNextRound(gameid: string) {
+  advancePhase(gameid, true);
 }
 
-export function getSelectedOutcome(
+function getSelectedOutcome(
   selectedTargets: string[],
-  subState: SubState
+  currentTurn: ActionLogEntry[]
 ) {
-  if (subState.overwrite) {
-    return subState.overwrite;
-  }
-
   if (selectedTargets.length === 1) {
     return selectedTargets[0];
   }
-  return subState["tieBreak"];
+  return getSpeakerTieBreak(currentTurn);
 }
 
 function PredictionDetails() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: techs }: { data?: Record<string, Tech> } = useSWR(
-    gameid ? `/api/${gameid}/techs` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "factions",
+    "techs",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const techs = gameData.techs;
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const revealedAgenda = getActiveAgenda(currentTurn);
 
   const agendaName =
-    subState.agenda === "Covert Legislation"
-      ? subState.subAgenda
-      : subState.agenda;
+    revealedAgenda === "Covert Legislation"
+      ? getSelectedSubAgenda(currentTurn)
+      : revealedAgenda;
 
-  const votes = computeVotes(
-    (agendas ?? {})[agendaName ?? ""],
-    subState.factions
-  );
+  const votes = computeVotes((agendas ?? {})[agendaName ?? ""], currentTurn);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -242,13 +166,19 @@ function PredictionDetails() {
       return target;
     });
 
-  const selectedOutcome = getSelectedOutcome(selectedTargets, subState);
+  const selectedOutcome = getSelectedOutcome(selectedTargets, currentTurn);
 
   if (!selectedOutcome) {
     return null;
   }
 
-  const galacticThreat = (subState.riders ?? {})["Galactic Threat"];
+  const riders = getPlayedRiders(currentTurn);
+  let galacticThreat;
+  for (const rider of riders) {
+    if (rider.rider === "Galactic Threat") {
+      galacticThreat = rider;
+    }
+  }
   if (!galacticThreat) {
     return null;
   }
@@ -259,21 +189,25 @@ function PredictionDetails() {
 
   const techOptions = new Set<string>();
 
-  Object.entries(subState.factions ?? {}).forEach(
-    ([factionName, subStateFaction]) => {
-      if (!subStateFaction.target || !subStateFaction.votes) {
-        return;
-      }
-      if (subStateFaction.target !== selectedOutcome) {
-        return;
-      }
+  const factionVotes = getAllVotes(currentTurn);
 
-      const factionTechs = (factions ?? {})[factionName]?.techs ?? {};
-      Object.keys(factionTechs).forEach((techName) => {
-        techOptions.add(techName);
-      });
+  factionVotes.forEach((voteEvent) => {
+    if (voteEvent.faction === "Nekro Virus") {
+      return;
     }
-  );
+    if (
+      !voteEvent.target ||
+      !voteEvent.votes ||
+      voteEvent.target !== selectedOutcome
+    ) {
+      return;
+    }
+
+    const factionTechs = (factions ?? {})[voteEvent.faction]?.techs ?? {};
+    Object.keys(factionTechs).forEach((techName) => {
+      techOptions.add(techName);
+    });
+  });
 
   const nekroTechs = (factions ?? {})["Nekro Virus"]?.techs ?? {};
   Object.keys(nekroTechs).forEach((techName) => {
@@ -288,8 +222,7 @@ function PredictionDetails() {
     (techName) => (techs ?? {})[techName] as Tech
   );
 
-  const gainedTech = ((subState.turnData?.factions ?? {})["Nekro Virus"]
-    ?.techs ?? [])[0];
+  const gainedTech = getResearchedTechs(currentTurn, "Nekro Virus")[0];
 
   if (gainedTech) {
     return (
@@ -301,7 +234,7 @@ function PredictionDetails() {
           if (!gameid) {
             return;
           }
-          clearAddedSubStateTech(gameid, "Nekro Virus", gainedTech);
+          addTech(gameid, "Nekro Virus", gainedTech);
         }}
         selectedItem={gainedTech}
         selectedLabel="Galactic Threat"
@@ -311,12 +244,13 @@ function PredictionDetails() {
 
   return (
     <TechSelectHoverMenu
+      factionName={"Nekro Virus"}
       techs={availableTechs}
       selectTech={(techName) => {
         if (!gameid) {
           return;
         }
-        addSubStateTech(gameid, "Nekro Virus", techName.name);
+        addTech(gameid, "Nekro Virus", techName.name);
       }}
       label="Galactic Threat"
     />
@@ -327,13 +261,10 @@ function canScoreObjective(
   factionName: string,
   objectiveName: string,
   objectives: Record<string, Objective>,
-  subState: SubState
+  currentTurn: ActionLogEntry[]
 ) {
-  if (
-    (subState.turnData?.factions ?? {})[factionName]?.objectives?.includes(
-      objectiveName
-    )
-  ) {
+  const scored = getScoredObjectives(currentTurn, factionName);
+  if (scored.includes(objectiveName)) {
     return true;
   }
   const objective = objectives[objectiveName];
@@ -352,72 +283,42 @@ function canScoreObjective(
 function AgendaDetails() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
-    gameid ? `/api/${gameid}/relics` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "factions",
+    "objectives",
+    "planets",
+    "relics",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const planets = gameData.planets;
+  const relics = gameData.relics;
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
 
   function addRelic(relicName: string, factionName: string) {
     if (!gameid) {
       return;
     }
-    gainRelic(gameid, relicName, factionName);
-    toggleSubStateRelic(gameid, relicName, factionName);
+    gainRelic(gameid, factionName, relicName);
   }
   function removeRelic(relicName: string, factionName: string) {
     if (!gameid) {
       return;
     }
-    loseRelic(gameid, relicName, factionName);
-    toggleSubStateRelic(gameid, undefined, factionName);
+    loseRelic(gameid, factionName, relicName);
   }
 
-  const agendaName =
-    subState.agenda === "Covert Legislation"
-      ? subState.subAgenda
-      : subState.agenda;
+  let agendaName = getActiveAgenda(currentTurn);
+  if (agendaName === "Covert Legislation") {
+    agendaName = getSelectedSubAgenda(currentTurn);
+  }
 
   const agenda = (agendas ?? {})[agendaName ?? ""];
 
-  const votes = computeVotes(agenda, subState.factions);
+  const votes = computeVotes(agenda, currentTurn);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -429,7 +330,7 @@ function AgendaDetails() {
       return target;
     });
 
-  const selectedOutcome = getSelectedOutcome(selectedTargets, subState);
+  const selectedOutcome = getSelectedOutcome(selectedTargets, currentTurn);
 
   if (!selectedOutcome) {
     return null;
@@ -461,7 +362,6 @@ function AgendaDetails() {
       return;
     }
     scoreObjective(gameid, factionName, toScore);
-    scoreSubStateObjective(gameid, factionName, toScore);
   }
 
   function undoObjective(factionName: string, toRemove: string) {
@@ -469,7 +369,6 @@ function AgendaDetails() {
       return;
     }
     unscoreObjective(gameid, factionName, toRemove);
-    unscoreSubStateObjective(gameid, factionName, toRemove);
   }
 
   const driveObj = (objectives ?? {})["Drive the Debate"];
@@ -478,12 +377,11 @@ function AgendaDetails() {
       driveTheDebate,
       "Drive the Debate",
       objectives ?? {},
-      subState
+      currentTurn
     );
     if (canScoreDrive) {
-      const hasScoredDrive = (subState.turnData?.factions ?? {})[
-        driveTheDebate
-      ]?.objectives?.includes("Drive the Debate");
+      const scored = getScoredObjectives(currentTurn, driveTheDebate);
+      const hasScoredDrive = scored.includes("Drive the Debate");
       driveSection = (
         <div
           className="flexRow"
@@ -577,25 +475,21 @@ function AgendaDetails() {
               >
                 <ObjectiveRow
                   objective={objective}
-                  removeObjective={() =>
-                    hideSubStateObjective(gameid, objectiveName)
-                  }
+                  removeObjective={() => hideObjective(gameid, objectiveName)}
                   hideScorers={true}
                 />
               </LabeledDiv>
             );
           }}
-          selectedItem={(subState.objectives ?? [])[0]}
+          selectedItem={getRevealedObjectives(currentTurn)[0]}
           toggleItem={(objectiveName, add) => {
             if (!gameid) {
               return;
             }
             if (add) {
-              revealSubStateObjective(gameid, objectiveName);
-              revealObjective(gameid, undefined, objectiveName);
+              revealObjective(gameid, objectiveName);
             } else {
-              hideSubStateObjective(gameid, objectiveName);
-              removeObjective(gameid, undefined, objectiveName);
+              hideObjective(gameid, objectiveName);
             }
           }}
         />
@@ -619,46 +513,21 @@ function AgendaDetails() {
           );
         }
       );
-      let prevOwner: string | undefined;
-      const selectedFaction = Object.entries(
-        subState.turnData?.factions ?? {}
-      ).find(([_, faction]) => {
-        if (faction.planets) {
-          for (const claimedPlanet of faction.planets) {
-            if (claimedPlanet.name === selectedOutcome) {
-              prevOwner = claimedPlanet.prevOwner;
-              return true;
-            }
-          }
-        }
-        return false;
-      });
+      const selectedFaction = getNewOwner(currentTurn, selectedOutcome);
       agendaSelection = (
         <Selector
           hoverMenuLabel={`Give Planet to Faction`}
           options={availableFactions}
           selectedLabel="Faction Gaining Control of Planet"
-          selectedItem={selectedFaction?.[0]}
+          selectedItem={selectedFaction}
           toggleItem={(factionName, add) => {
             if (!gameid) {
               return;
             }
             if (add) {
               claimPlanet(gameid, factionName, selectedOutcome);
-              const prevOwner = (planets ?? {})[selectedOutcome]?.owner;
-              addSubStatePlanet(
-                gameid,
-                factionName,
-                selectedOutcome,
-                prevOwner
-              );
             } else {
-              if (prevOwner) {
-                claimPlanet(gameid, prevOwner, selectedOutcome);
-              } else {
-                unclaimPlanet(gameid, selectedOutcome, factionName);
-              }
-              removeSubStatePlanet(gameid, factionName, selectedOutcome);
+              unclaimPlanet(gameid, factionName, selectedOutcome);
             }
           }}
         />
@@ -701,12 +570,7 @@ function AgendaDetails() {
               </LabeledDiv>
             );
           }}
-          selectedItem={
-            (
-              ((subState.turnData ?? {}).factions ?? {})[selectedOutcome]
-                ?.relic ?? {}
-            ).name
-          }
+          selectedItem={getGainedRelic(currentTurn)}
           toggleItem={(relicName, add) => {
             if (add) {
               addRelic(relicName, selectedOutcome);
@@ -731,103 +595,37 @@ function AgendaDetails() {
   );
 }
 
-export function resolveAgendaRepeal(gameid: string, agenda: Agenda) {
-  if (!agenda.target) {
-    return;
-  }
-  switch (agenda.name) {
-    case "Classified Document Leaks": {
-      changeObjectiveType(gameid, agenda.target, "SECRET");
-      break;
-    }
-    case "Core Mining":
-    case "Demilitarized Zone":
-    case "Holy Planet of Ixth":
-    case "Research Team: Biotic":
-    case "Research Team: Cybernetic":
-    case "Research Team: Propulsion":
-    case "Research Team: Warfare":
-    case "Senate Sanctuary":
-    case "Terraforming Initiative": {
-      removeAttachment(gameid, agenda.target, agenda.name);
-      break;
-    }
-    case "Political Censure": {
-      unscoreObjective(gameid, agenda.target, "Political Censure");
-      break;
-    }
-  }
-}
-
 function AgendaSteps() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: options }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "factions",
+    "objectives",
+    "options",
+    "planets",
+    "state",
+    "strategycards",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const options = gameData.options;
+  const planets = gameData.planets;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
 
   let currentAgenda: Agenda | undefined;
   const agendaNum = state?.agendaNum ?? 1;
-  if (subState.agenda) {
-    currentAgenda = (agendas ?? {})[subState.agenda];
+  const activeAgenda = getActiveAgenda(currentTurn);
+  if (activeAgenda) {
+    currentAgenda = (agendas ?? {})[activeAgenda];
   }
 
-  const votes = computeVotes(currentAgenda, subState.factions);
+  const votes = computeVotes(currentAgenda, currentTurn);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -840,193 +638,159 @@ function AgendaSteps() {
     });
   const isTie = selectedTargets.length !== 1;
 
-  function selectSpeakerTieBreak(tieBreak: string | null) {
-    if (!gameid) {
-      return;
-    }
-    setSubStateOther(gameid, "tieBreak", tieBreak);
-  }
-
-  function resolveAgendaOutcome(agendaName: string, target: string) {
-    if (!gameid) {
-      return;
-    }
-    switch (agendaName) {
-      case "Classified Document Leaks": {
-        changeObjectiveType(gameid, target, "STAGE ONE");
-        break;
-      }
-      case "Core Mining":
-      case "Demilitarized Zone":
-      case "Research Team: Biotic":
-      case "Research Team: Cybernetic":
-      case "Research Team: Propulsion":
-      case "Research Team: Warfare":
-      case "Senate Sanctuary":
-      case "Terraforming Initiative": {
-        addAttachment(gameid, target, agendaName);
-        break;
-      }
-      case "Holy Planet of Ixth":
-        addAttachment(gameid, target, agendaName);
-        const planetOwner = (planets ?? {})[target]?.owner;
-        if (planetOwner) {
-          scoreObjective(gameid, planetOwner, "Holy Planet of Ixth");
-        }
-        break;
-      case "Shard of the Throne":
-      case "The Crown of Emphidia":
-      case "Political Censure": {
-        scoreObjective(gameid, target, agendaName);
-        break;
-      }
-      case "Mutiny": {
-        const forFactions = Object.entries(subState.factions ?? {})
-          .filter(([_, faction]) => {
-            return (faction.votes ?? 0) > 0 && faction.target === "For";
-          })
-          .map(([factionName, _]) => factionName);
-        if (target === "For") {
-          changeObjectivePoints(gameid, "Mutiny", 1);
-        } else {
-          changeObjectivePoints(gameid, "Mutiny", -1);
-        }
-        for (const factionName of forFactions) {
-          scoreObjective(gameid, factionName, "Mutiny");
-        }
-        break;
-      }
-      case "Seed of an Empire": {
-        let targetVPs = 0;
-        if (target === "For") {
-          targetVPs = Object.keys(factions ?? {}).reduce(
-            (currentMax, factionName) => {
-              return Math.max(
-                currentMax,
-                computeVPs(factions ?? {}, factionName, objectives ?? {})
-              );
-            },
-            Number.MIN_SAFE_INTEGER
-          );
-        } else {
-          targetVPs = Object.keys(factions ?? {}).reduce(
-            (currentMin, factionName) => {
-              return Math.min(
-                currentMin,
-                computeVPs(factions ?? {}, factionName, objectives ?? {})
-              );
-            },
-            Number.MAX_SAFE_INTEGER
-          );
-        }
-        const forFactions = Object.keys(factions ?? {}).filter(
-          (factionName) => {
-            return (
-              computeVPs(factions ?? {}, factionName, objectives ?? {}) ===
-              targetVPs
-            );
-          }
-        );
-        for (const factionName of forFactions) {
-          scoreObjective(gameid, factionName, "Seed of an Empire");
-        }
-        break;
-      }
-      case "Colonial Redistribution": {
-        // TODO: Give planet to lowest VP player
-        break;
-      }
-      case "Judicial Abolishment": {
-        repealAgenda(gameid, (agendas ?? {})[target]);
-        break;
-      }
-      case "New Constitution": {
-        const toRepeal = Object.values(agendas ?? {}).filter((agenda) => {
-          return agenda.type === "LAW" && agenda.passed;
-        });
-        for (const agenda of toRepeal) {
-          repealAgenda(gameid, agenda);
-        }
-        break;
-      }
-      case "Public Execution": {
-        if (state?.speaker === target) {
-          const nextPlayer = Object.values(factions ?? {}).find(
-            (faction) => faction.order === 2
-          );
-          if (!nextPlayer) {
-            break;
-          }
-          setSpeaker(gameid, nextPlayer.name);
-        }
-        break;
-      }
-    }
-  }
+  // function resolveAgendaOutcome(agendaName: string, target: string) {
+  //   if (!gameid) {
+  //     return;
+  //   }
+  //   switch (agendaName) {
+  //     case "Classified Document Leaks": {
+  //       changeObjectiveType(gameid, target, "STAGE ONE");
+  //       break;
+  //     }
+  //     case "Core Mining":
+  //     case "Demilitarized Zone":
+  //     case "Research Team: Biotic":
+  //     case "Research Team: Cybernetic":
+  //     case "Research Team: Propulsion":
+  //     case "Research Team: Warfare":
+  //     case "Senate Sanctuary":
+  //     case "Terraforming Initiative": {
+  //       addAttachment(gameid, target, agendaName);
+  //       break;
+  //     }
+  //     case "Holy Planet of Ixth":
+  //       addAttachment(gameid, target, agendaName);
+  //       const planetOwner = (planets ?? {})[target]?.owner;
+  //       if (planetOwner) {
+  //         scoreObjective(gameid, planetOwner, "Holy Planet of Ixth");
+  //       }
+  //       break;
+  //     case "Shard of the Throne":
+  //     case "The Crown of Emphidia":
+  //     case "Political Censure": {
+  //       scoreObjective(gameid, target, agendaName);
+  //       break;
+  //     }
+  //     case "Mutiny": {
+  //       const forFactions = Object.entries(subState.factions ?? {})
+  //         .filter(([_, faction]) => {
+  //           return (faction.votes ?? 0) > 0 && faction.target === "For";
+  //         })
+  //         .map(([factionName, _]) => factionName);
+  //       if (target === "For") {
+  //         changeObjectivePoints(gameid, "Mutiny", 1);
+  //       } else {
+  //         changeObjectivePoints(gameid, "Mutiny", -1);
+  //       }
+  //       for (const factionName of forFactions) {
+  //         scoreObjective(gameid, factionName, "Mutiny");
+  //       }
+  //       break;
+  //     }
+  //     case "Seed of an Empire": {
+  //       let targetVPs = 0;
+  //       if (target === "For") {
+  //         targetVPs = Object.keys(factions ?? {}).reduce(
+  //           (currentMax, factionName) => {
+  //             return Math.max(
+  //               currentMax,
+  //               computeVPs(factions ?? {}, factionName, objectives ?? {})
+  //             );
+  //           },
+  //           Number.MIN_SAFE_INTEGER
+  //         );
+  //       } else {
+  //         targetVPs = Object.keys(factions ?? {}).reduce(
+  //           (currentMin, factionName) => {
+  //             return Math.min(
+  //               currentMin,
+  //               computeVPs(factions ?? {}, factionName, objectives ?? {})
+  //             );
+  //           },
+  //           Number.MAX_SAFE_INTEGER
+  //         );
+  //       }
+  //       const forFactions = Object.keys(factions ?? {}).filter(
+  //         (factionName) => {
+  //           return (
+  //             computeVPs(factions ?? {}, factionName, objectives ?? {}) ===
+  //             targetVPs
+  //           );
+  //         }
+  //       );
+  //       for (const factionName of forFactions) {
+  //         scoreObjective(gameid, factionName, "Seed of an Empire");
+  //       }
+  //       break;
+  //     }
+  //     case "Colonial Redistribution": {
+  //       // TODO: Give planet to lowest VP player
+  //       break;
+  //     }
+  //     case "Judicial Abolishment": {
+  //       repealAgenda(gameid, (agendas ?? {})[target]);
+  //       break;
+  //     }
+  //     case "New Constitution": {
+  //       const toRepeal = Object.values(agendas ?? {}).filter((agenda) => {
+  //         return agenda.type === "LAW" && agenda.passed;
+  //       });
+  //       for (const agenda of toRepeal) {
+  //         repealAgenda(gameid, agenda);
+  //       }
+  //       break;
+  //     }
+  //     case "Public Execution": {
+  //       if (state?.speaker === target) {
+  //         const nextPlayer = Object.values(factions ?? {}).find(
+  //           (faction) => faction.order === 2
+  //         );
+  //         if (!nextPlayer) {
+  //           break;
+  //         }
+  //         setSpeaker(gameid, nextPlayer.name);
+  //       }
+  //       break;
+  //     }
+  //   }
+  // }
 
   async function completeAgenda() {
-    if (!gameid || !subState.agenda) {
+    if (!gameid || !currentAgenda) {
       return;
     }
-    const target = getSelectedOutcome(selectedTargets, subState);
+    const target = getSelectedOutcome(selectedTargets, currentTurn);
     if (!target) {
       return;
     }
-    finalizeSubState(gameid, subState);
-    if (target === "No Effect") {
-      updateCastVotes(gameid, subState.factions);
-      hideSubStateAgenda(gameid);
-      const agendaNum = state?.agendaNum ?? 1;
-      setAgendaNum(gameid, agendaNum + 1);
-      return;
-    }
-    let activeAgenda = subState.agenda;
-    if (subState.subAgenda) {
-      activeAgenda = subState.subAgenda;
-      resolveAgenda(gameid, subState.agenda, subState.subAgenda);
-    }
 
-    resolveAgendaOutcome(activeAgenda, target);
-    resolveRiders(gameid, subState, target);
-
-    resolveAgenda(gameid, activeAgenda, target);
-
-    updateCastVotes(gameid, subState.factions);
-    hideSubStateAgenda(gameid);
-    if (activeAgenda === "Miscount Disclosed") {
-      repealAgenda(gameid, (agendas ?? {})[target]);
-      revealSubStateAgenda(gameid, target);
-      setSubStateOther(gameid, "miscount", true);
-    } else {
-      const agendaNum = state?.agendaNum ?? 1;
-      setAgendaNum(gameid, agendaNum + 1);
-    }
+    resolveAgenda(gameid, currentAgenda.name, target);
   }
 
   function selectAgenda(agendaName: string) {
     if (!gameid) {
       return;
     }
-    revealSubStateAgenda(gameid, agendaName);
+    revealAgenda(gameid, agendaName);
   }
-  function hideAgenda() {
-    if (!gameid) {
+  function hideAgendaLocal(agendaName?: string, veto?: boolean) {
+    if (!gameid || !agendaName) {
       return;
     }
-    hideSubStateAgenda(gameid);
+    hideAgenda(gameid, agendaName, veto);
   }
 
-  function selectSubAgenda(agendaName: string | null) {
+  function selectSubAgendaLocal(agendaName: string | null) {
     if (!gameid) {
       return;
     }
-    setSubStateOther(gameid, "subAgenda", agendaName);
+    selectSubAgenda(gameid, agendaName ?? "None");
   }
-  function selectEligibleOutcome(outcome: OutcomeType | null) {
+  function selectEligibleOutcome(outcome: OutcomeType | "None") {
     if (!gameid) {
       return;
     }
-    setSubStateOther(gameid, "outcome", outcome);
+    selectEligibleOutcomes(gameid, outcome);
   }
 
   const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
@@ -1041,6 +805,9 @@ function AgendaSteps() {
     outcomes.add(agenda.elect);
   });
 
+  const electionHacked =
+    getActionCardTargets(currentTurn, "Hack Election").length > 0;
+
   const votingOrder = Object.values(factions ?? {}).sort((a, b) => {
     if (a.name === "Argent Flight") {
       return -1;
@@ -1054,21 +821,22 @@ function AgendaSteps() {
     if (b.order === 1) {
       return -1;
     }
-    return subState["Hack Election"] ? b.order - a.order : a.order - b.order;
+    return electionHacked ? b.order - a.order : a.order - b.order;
   });
 
   const flexDirection = "flexColumn";
-  const label = !!subState.miscount
-    ? "Re-voting on Miscounted Agenda"
-    : agendaNum === 1
-    ? "First Agenda"
-    : "Second Agenda";
+  const label =
+    // !!subState.miscount
+    //   ? "Re-voting on Miscounted Agenda"
+    //   :
+    agendaNum === 1 ? "First Agenda" : "Second Agenda";
 
   const localAgenda = currentAgenda
     ? structuredClone(currentAgenda)
     : undefined;
-  if (subState.outcome && localAgenda) {
-    localAgenda.elect = subState.outcome as OutcomeType;
+  const eligibleOutcomes = getSelectedEligibleOutcomes(currentTurn);
+  if (eligibleOutcomes && eligibleOutcomes !== "None" && localAgenda) {
+    localAgenda.elect = eligibleOutcomes;
   }
 
   const allTargets = getTargets(
@@ -1094,10 +862,10 @@ function AgendaSteps() {
   }
 
   const possibleSubAgendas = Object.values(agendas ?? {}).filter(
-    (agenda) => agenda.elect === subState.outcome
+    (agenda) => agenda.elect === eligibleOutcomes
   );
 
-  const subAgenda = (agendas ?? {})[subState.subAgenda ?? ""];
+  const subAgenda = (agendas ?? {})[getSelectedSubAgenda(currentTurn) ?? ""];
 
   const speaker = (factions ?? {})[state?.speaker ?? ""];
 
@@ -1106,22 +874,14 @@ function AgendaSteps() {
     : "Veto/Quash/Political Favor";
 
   function haveVotesBeenCast() {
-    if (subState["tieBreak"]) {
-      return true;
-    }
-    for (const subStateFaction of Object.values(subState.factions ?? {})) {
-      if (subStateFaction.votes && subStateFaction.votes !== 0) {
-        return true;
-      }
-      if (subStateFaction.target) {
-        return true;
-      }
-    }
-    return false;
+    const castVotesActions = currentTurn.filter(
+      (logEntry) => logEntry.data.action === "CAST_VOTES"
+    );
+    return castVotesActions.length > 0;
   }
 
   function readyToResolve() {
-    if (!currentAgenda || !getSelectedOutcome(selectedTargets, subState)) {
+    if (!currentAgenda || !getSelectedOutcome(selectedTargets, currentTurn)) {
       return false;
     }
     const localAgenda =
@@ -1132,8 +892,9 @@ function AgendaSteps() {
     return true;
   }
 
-  const orderedRiders = Object.entries(subState.riders ?? {}).sort((a, b) => {
-    if (a[0] > b[0]) {
+  const riders = getPlayedRiders(currentTurn);
+  const orderedRiders = riders.sort((a, b) => {
+    if (a.rider > b.rider) {
       return 1;
     }
     return -1;
@@ -1146,10 +907,8 @@ function AgendaSteps() {
     if (rider === "Galactic Threat" && factions && !factions["Nekro Virus"]) {
       return false;
     }
-    if (
-      rider === "Galactic Threat" &&
-      (subState.turnData?.factions ?? {})["Nekro Virus"]?.politicalSecret
-    ) {
+    const secrets = getPromissoryTargets(currentTurn, "Political Secret");
+    if (rider === "Galactic Threat" && secrets.includes("Nekro Virus")) {
       return false;
     }
     if (
@@ -1159,13 +918,31 @@ function AgendaSteps() {
     ) {
       return false;
     }
-    return !(subState.riders ?? {})[rider];
+    const playedRiders = getPlayedRiders(currentTurn);
+    for (const playedRider of playedRiders) {
+      if (playedRider.rider === rider) {
+        return false;
+      }
+    }
+    return true;
   });
 
   if (agendaNum > 2) {
     return null;
   }
 
+  const ancientBurialSites = getActionCardTargets(
+    currentTurn,
+    "Ancient Burial Sites"
+  )[0];
+  const politicalSecrets = getPromissoryTargets(
+    currentTurn,
+    "Political Secret"
+  );
+  const assassinatedRep = getActionCardTargets(
+    currentTurn,
+    "Assassinate Representative"
+  )[0];
   return (
     <React.Fragment>
       <div className="flexColumn" style={{ width: "100%" }}>
@@ -1198,7 +975,7 @@ function AgendaSteps() {
             alignItems: "stretch",
           }}
         >
-          {(!currentAgenda && agendaNum === 1) || state?.ancientBurialSites ? (
+          {(!currentAgenda && agendaNum === 1) || ancientBurialSites ? (
             <LabeledDiv
               label="Start of Agenda Phase"
               style={{ paddingTop: responsivePixels(12) }}
@@ -1212,12 +989,16 @@ function AgendaSteps() {
                     return;
                   }
                   if (add) {
-                    ancientBurialSites(gameid, factionName);
+                    playActionCard(gameid, "Ancient Burial Sites", factionName);
                   } else {
-                    ancientBurialSites(gameid, undefined);
+                    unplayActionCard(
+                      gameid,
+                      "Ancient Burial Sites",
+                      factionName
+                    );
                   }
                 }}
-                selectedItem={state?.ancientBurialSites}
+                selectedItem={ancientBurialSites}
               />
             </LabeledDiv>
           ) : null}
@@ -1267,21 +1048,19 @@ function AgendaSteps() {
               <LabeledDiv label={label}>
                 <AgendaRow
                   agenda={currentAgenda}
-                  removeAgenda={
-                    subState.miscount ? undefined : () => hideAgenda()
-                  }
+                  removeAgenda={() => hideAgendaLocal(currentAgenda?.name)}
                 />
                 {currentAgenda.name === "Covert Legislation" ? (
                   <Selector
                     hoverMenuLabel="Reveal Eligible Outcomes"
                     selectedLabel="Eligible Outcomes"
                     options={Array.from(outcomes)}
-                    selectedItem={subState.outcome}
+                    selectedItem={eligibleOutcomes}
                     toggleItem={(outcome, add) => {
                       if (add) {
                         selectEligibleOutcome(outcome as OutcomeType);
                       } else {
-                        selectEligibleOutcome(null);
+                        selectEligibleOutcome("None");
                       }
                     }}
                   />
@@ -1298,97 +1077,89 @@ function AgendaSteps() {
                         flexWrap: "wrap",
                       }}
                     >
-                      {orderedRiders.map(([riderName, rider]) => {
-                        const faction = (factions ?? {})[
-                          rider.factionName ?? ""
-                        ];
+                      {orderedRiders.map((rider) => {
+                        const faction = (factions ?? {})[rider.faction ?? ""];
                         let possibleFactions = Object.keys(
                           factions ?? {}
                         ).filter((faction) => {
-                          if (
-                            (subState.turnData?.factions ?? {})[faction]
-                              ?.politicalSecret
-                          ) {
-                            return false;
-                          }
-                          return true;
+                          const secrets = getPromissoryTargets(
+                            currentTurn,
+                            "Political Secret"
+                          );
+                          return !secrets.includes(faction);
                         });
-                        if (riderName === "Galactic Threat") {
+                        if (rider.rider === "Galactic Threat") {
                           possibleFactions = ["Nekro Virus"];
                         }
-                        if (riderName === "Keleres Rider") {
+                        if (rider.rider === "Keleres Rider") {
                           possibleFactions.filter(
                             (faction) => faction !== "Council Keleres"
                           );
                         }
                         return (
                           <SelectableRow
-                            key={riderName}
-                            itemName={riderName}
+                            key={rider.rider}
+                            itemName={rider.rider}
                             removeItem={() => {
                               if (!gameid) {
                                 return;
                               }
-                              removeSubStateRider(gameid, riderName);
+                              unplayRider(gameid, rider.rider);
                             }}
                           >
                             <LabeledDiv
                               noBlur={true}
-                              label={riderName}
+                              label={rider.rider}
                               color={getFactionColor(faction)}
                             >
-                              <Selector
-                                hoverMenuLabel="Faction"
-                                selectedItem={rider.factionName}
-                                options={possibleFactions}
-                                toggleItem={(itemName, add) => {
-                                  if (!gameid) {
-                                    return;
-                                  }
-                                  if (add) {
-                                    addSubStateRider(
+                              <div className="flexRow">
+                                <FactionSelectHoverMenu
+                                  allowNone={possibleFactions.length > 1}
+                                  selectedFaction={rider.faction}
+                                  options={possibleFactions}
+                                  onSelect={(factionName) => {
+                                    if (!gameid) {
+                                      return;
+                                    }
+                                    playRider(
                                       gameid,
-                                      riderName,
-                                      itemName,
+                                      rider.rider,
+                                      factionName,
                                       rider.outcome
                                     );
-                                  } else {
-                                    addSubStateRider(
-                                      gameid,
-                                      riderName,
-                                      undefined,
-                                      rider.outcome
-                                    );
-                                  }
-                                }}
-                              />
-                              <Selector
-                                hoverMenuLabel="Outcome"
-                                selectedItem={rider.outcome}
-                                options={allTargets.filter(
-                                  (target) => target !== "Abstain"
-                                )}
-                                toggleItem={(itemName, add) => {
-                                  if (!gameid) {
-                                    return;
-                                  }
-                                  if (add) {
-                                    addSubStateRider(
-                                      gameid,
-                                      riderName,
-                                      rider.factionName,
-                                      itemName
-                                    );
-                                  } else {
-                                    addSubStateRider(
-                                      gameid,
-                                      riderName,
-                                      rider.factionName,
-                                      undefined
-                                    );
-                                  }
-                                }}
-                              />
+                                  }}
+                                  borderColor={getFactionColor(
+                                    factions[rider.faction ?? ""]
+                                  )}
+                                />
+                                <Selector
+                                  hoverMenuLabel="Outcome"
+                                  selectedItem={rider.outcome}
+                                  options={allTargets.filter(
+                                    (target) => target !== "Abstain"
+                                  )}
+                                  toggleItem={(itemName, add) => {
+                                    if (!gameid) {
+                                      return;
+                                    }
+                                    if (add) {
+                                      playRider(
+                                        gameid,
+                                        rider.rider,
+                                        rider.faction,
+                                        itemName as OutcomeType
+                                      );
+                                    } else {
+                                      playRider(
+                                        gameid,
+                                        rider.rider,
+                                        rider.faction,
+                                        undefined
+                                      );
+                                    }
+                                  }}
+                                />
+                              </div>
                             </LabeledDiv>
                           </SelectableRow>
                         );
@@ -1401,16 +1172,21 @@ function AgendaSteps() {
           </div>
           {currentAgenda &&
           !haveVotesBeenCast() &&
-          !getSelectedOutcome(selectedTargets, subState) ? (
+          !getSelectedOutcome(selectedTargets, currentTurn) ? (
             <>
               <div className="flexRow">
-                <button onClick={() => hideAgenda()}>{vetoText}</button>
+                <button
+                  onClick={() => hideAgendaLocal(currentAgenda?.name, true)}
+                >
+                  {vetoText}
+                </button>
               </div>
               <LabeledDiv label="Political Secret">
                 <div className="flexRow" style={{ width: "100%" }}>
                   {votingOrder.map((faction) => {
-                    const politicalSecret = ((subState.turnData ?? {})
-                      .factions ?? {})[faction.name]?.politicalSecret;
+                    const politicalSecret = politicalSecrets.includes(
+                      faction.name
+                    );
                     return (
                       <div
                         key={faction.name}
@@ -1444,11 +1220,19 @@ function AgendaSteps() {
                             if (!gameid) {
                               return;
                             }
-                            toggleSubStatePoliticalSecret(
-                              gameid,
-                              faction.name,
-                              !politicalSecret
-                            );
+                            if (politicalSecret) {
+                              unplayPromissoryNote(
+                                gameid,
+                                "Political Secret",
+                                faction.name
+                              );
+                            } else {
+                              playPromissoryNote(
+                                gameid,
+                                "Political Secret",
+                                faction.name
+                              );
+                            }
                           }}
                         >
                           {politicalSecret ? (
@@ -1482,52 +1266,27 @@ function AgendaSteps() {
           ) : null}
           {currentAgenda &&
           !haveVotesBeenCast() &&
-          !getSelectedOutcome(selectedTargets, subState) ? (
-            <LabeledDiv label="After an Agenda is Revealed">
+          !getSelectedOutcome(selectedTargets, currentTurn) ? (
+            <ClientOnlyHoverMenu label="After an Agenda is Revealed">
               <div
                 className="flexColumn"
                 style={{
                   alignItems: "flex-start",
-                  paddingTop: subState["Assassinate Representative"]
-                    ? responsivePixels(4)
-                    : 0,
+                  padding: responsivePixels(8),
+                  paddingTop: 0,
                 }}
               >
-                <Selector
-                  hoverMenuLabel="Assassinate Representative"
-                  selectedLabel="Assassinated Representative"
-                  options={Object.keys(factions ?? {})}
-                  selectedItem={subState["Assassinate Representative"]}
-                  toggleItem={(itemName, add) => {
-                    if (!gameid) {
-                      return;
-                    }
-                    if (add) {
-                      setSubStateOther(
-                        gameid,
-                        "Assassinate Representative",
-                        itemName
-                      );
-                    } else {
-                      setSubStateOther(
-                        gameid,
-                        "Assassinate Representative",
-                        undefined
-                      );
-                    }
-                  }}
-                />
                 <button
-                  className={subState["Hack Election"] ? "selected" : ""}
+                  className={electionHacked ? "selected" : ""}
                   onClick={() => {
                     if (!gameid) {
                       return;
                     }
-                    setSubStateOther(
-                      gameid,
-                      "Hack Election",
-                      !subState["Hack Election"]
-                    );
+                    if (electionHacked) {
+                      unplayActionCard(gameid, "Hack Election", "None");
+                    } else {
+                      playActionCard(gameid, "Hack Election", "None");
+                    }
                   }}
                 >
                   Hack Election
@@ -1545,21 +1304,40 @@ function AgendaSteps() {
                         itemName === "Galactic Threat"
                           ? "Nekro Virus"
                           : undefined;
-                      addSubStateRider(
-                        gameid,
-                        itemName,
-                        factionName,
-                        undefined
-                      );
+                      playRider(gameid, itemName, factionName, undefined);
                     }}
                   />
                 ) : null}
+                <Selector
+                  hoverMenuLabel="Assassinate Representative"
+                  selectedLabel="Assassinated Representative"
+                  options={Object.keys(factions ?? {})}
+                  selectedItem={assassinatedRep}
+                  toggleItem={(itemName, add) => {
+                    if (!gameid) {
+                      return;
+                    }
+                    if (add) {
+                      playActionCard(
+                        gameid,
+                        "Assassinate Representative",
+                        itemName
+                      );
+                    } else {
+                      unplayActionCard(
+                        gameid,
+                        "Assassinate Representative",
+                        itemName
+                      );
+                    }
+                  }}
+                />
               </div>
-            </LabeledDiv>
+            </ClientOnlyHoverMenu>
           ) : null}
           {currentAgenda ? "Cast votes (or abstain)" : null}
           {(votes && Object.keys(votes).length > 0) ||
-          getSelectedOutcome(selectedTargets, subState) ? (
+          getSelectedOutcome(selectedTargets, currentTurn) ? (
             <LabeledDiv label="Results">
               {votes && Object.keys(votes).length > 0 ? (
                 <div
@@ -1582,7 +1360,7 @@ function AgendaSteps() {
                   })}
                 </div>
               ) : null}
-              {getSelectedOutcome(selectedTargets, subState) ? (
+              {getSelectedOutcome(selectedTargets, currentTurn) ? (
                 currentAgenda && currentAgenda.name === "Covert Legislation" ? (
                   <Selector
                     hoverMenuLabel="Covert Agenda"
@@ -1597,29 +1375,27 @@ function AgendaSteps() {
                         <LabeledDiv label="Covert Agenda">
                           <AgendaRow
                             agenda={agenda}
-                            removeAgenda={() => selectSubAgenda(null)}
+                            removeAgenda={() => selectSubAgendaLocal(null)}
                           />
                         </LabeledDiv>
                       );
                     }}
                     toggleItem={(agendaName, add) => {
                       if (add) {
-                        selectSubAgenda(agendaName);
+                        selectSubAgendaLocal(agendaName);
                       } else {
-                        selectSubAgenda(null);
+                        selectSubAgendaLocal(null);
                       }
                     }}
                   />
                 ) : null
               ) : null}
-              {readyToResolve() ? (
+              {/* {readyToResolve() ? (
                 <Selector
                   hoverMenuLabel="Overwrite Outcome"
                   options={allTargets
                     .filter((target) => {
-                      return (
-                        target !== getSelectedOutcome(selectedTargets, subState)
-                      );
+                      return target !== getSelectedOutcome(selectedTargets);
                     })
                     .map((target) => {
                       if (target === "Abstain") {
@@ -1640,9 +1416,9 @@ function AgendaSteps() {
                     );
                   }}
                 />
-              ) : null}
+              ) : null} */}
               <AgendaDetails />
-              <PredictionDetails />
+              {/* <PredictionDetails /> */}
               {readyToResolve() ? (
                 <div
                   className="flexColumn"
@@ -1650,20 +1426,18 @@ function AgendaSteps() {
                 >
                   <button onClick={completeAgenda}>
                     Resolve with Outcome:{" "}
-                    {getSelectedOutcome(selectedTargets, subState)}
+                    {getSelectedOutcome(selectedTargets, currentTurn)}
                   </button>
                 </div>
               ) : null}
             </LabeledDiv>
           ) : currentAgenda ? (
             <div style={{ width: "fit-content" }}>
-              <Selector
+              {/* <Selector
                 hoverMenuLabel="Overwrite Outcome"
                 options={allTargets
                   .filter((target) => {
-                    return (
-                      target !== getSelectedOutcome(selectedTargets, subState)
-                    );
+                    return target !== getSelectedOutcome(selectedTargets);
                   })
                   .map((target) => {
                     if (target === "Abstain") {
@@ -1683,7 +1457,7 @@ function AgendaSteps() {
                     add ? targetName : undefined
                   );
                 }}
-              />
+              /> */}
             </div>
           ) : null}
         </div>
@@ -1695,45 +1469,21 @@ function AgendaSteps() {
 function DictatePolicy({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "factions",
+    "objectives",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+
   const numLawsInPlay = Object.values(agendas ?? {}).filter((agenda) => {
     return agenda.passed && agenda.type === "LAW";
   }).length;
-  const currentDictators = [];
-  for (const [factionName, faction] of Object.entries(
-    subState.turnData?.factions ?? {}
-  )) {
-    if (faction.objectives?.includes("Dictate Policy")) {
-      currentDictators.push(factionName);
-    }
-  }
+  const currentDictators = getObjectiveScorers(currentTurn, "Dictate Policy");
   const dictatePolicy = (objectives ?? {})["Dictate Policy"];
   const possibleDictators = new Set(currentDictators);
   if (
@@ -1774,16 +1524,11 @@ function DictatePolicy({}) {
             if (!gameid) {
               return;
             }
-            if (factionName && prevFaction) {
-              takeObjective(gameid, "Dictate Policy", factionName, prevFaction);
-              unscoreSubStateObjective(gameid, prevFaction, "Dictate Policy");
-              scoreSubStateObjective(gameid, factionName, "Dictate Policy");
-            } else if (prevFaction) {
+            if (prevFaction) {
               unscoreObjective(gameid, prevFaction, "Dictate Policy");
-              unscoreSubStateObjective(gameid, prevFaction, "Dictate Policy");
-            } else if (factionName) {
+            }
+            if (factionName) {
               scoreObjective(gameid, factionName, "Dictate Policy");
-              scoreSubStateObjective(gameid, factionName, "Dictate Policy");
             }
           }}
           borderColor={getFactionColor(
@@ -1828,18 +1573,8 @@ function DictatePolicy({}) {
                   }
                   if (current) {
                     unscoreObjective(gameid, factionName, "Dictate Policy");
-                    unscoreSubStateObjective(
-                      gameid,
-                      factionName,
-                      "Dictate Policy"
-                    );
                   } else {
                     scoreObjective(gameid, factionName, "Dictate Policy");
-                    scoreSubStateObjective(
-                      gameid,
-                      factionName,
-                      "Dictate Policy"
-                    );
                   }
                 }}
               >
@@ -1876,70 +1611,35 @@ function DictatePolicy({}) {
 export default function AgendaPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const [lockedButton, setLockedButton] = useState(true);
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "factions",
+    "objectives",
+    "planets",
+    "state",
+    "strategycards",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const planets = gameData.planets;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
 
   if (!agendas || !factions) {
     return null;
   }
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
 
   let currentAgenda: Agenda | undefined;
   const agendaNum = state?.agendaNum ?? 1;
-  if (subState.agenda) {
-    currentAgenda = agendas[subState.agenda];
+  const activeAgenda = getActiveAgenda(currentTurn);
+  if (activeAgenda) {
+    currentAgenda = agendas[activeAgenda];
   }
 
-  const votes = computeVotes(currentAgenda, subState.factions);
+  const votes = computeVotes(currentAgenda, currentTurn);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -1955,8 +1655,9 @@ export default function AgendaPhase() {
   const localAgenda = currentAgenda
     ? structuredClone(currentAgenda)
     : undefined;
-  if (subState.outcome && localAgenda) {
-    localAgenda.elect = subState.outcome as OutcomeType;
+  const eligibleOutcomes = getSelectedEligibleOutcomes(currentTurn);
+  if (eligibleOutcomes && eligibleOutcomes !== "None" && localAgenda) {
+    localAgenda.elect = eligibleOutcomes;
   }
 
   const allTargets = getTargets(
@@ -1972,8 +1673,11 @@ export default function AgendaPhase() {
     if (!gameid) {
       return;
     }
-    setSubStateOther(gameid, "tieBreak", tieBreak);
+    speakerTieBreak(gameid, tieBreak ?? "None");
   }
+
+  const electionHacked =
+    getActionCardTargets(currentTurn, "Hack Election").length > 0;
 
   const votingOrder = Object.values(factions ?? {}).sort((a, b) => {
     if (a.name === "Argent Flight") {
@@ -1988,7 +1692,7 @@ export default function AgendaPhase() {
     if (b.order === 1) {
       return -1;
     }
-    return subState["Hack Election"] ? b.order - a.order : a.order - b.order;
+    return electionHacked ? b.order - a.order : a.order - b.order;
   });
 
   const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
@@ -2015,11 +1719,11 @@ export default function AgendaPhase() {
     currentAgenda && currentAgenda.elect === "For/Against"
       ? "flexRow"
       : "flexColumn";
-  const label = !!subState.miscount
-    ? "Re-voting on Miscounted Agenda"
-    : agendaNum === 1
-    ? "First Agenda"
-    : "Second Agenda";
+  const label =
+    // !!subState.miscount
+    //   ? "Re-voting on Miscounted Agenda"
+    //   :
+    agendaNum === 1 ? "First Agenda" : "Second Agenda";
 
   const numFactions = votingOrder.length;
 
@@ -2033,19 +1737,15 @@ export default function AgendaPhase() {
     items = 10;
   }
 
-  const possibleSubAgendas = Object.values(agendas ?? {}).filter(
-    (agenda) => agenda.elect === subState.outcome
-  );
-
-  const subAgenda = agendas[subState.subAgenda ?? ""];
-
   const speaker = (factions ?? {})[state?.speaker ?? ""];
+
+  const tieBreak = getSpeakerTieBreak(currentTurn);
 
   function nextPhase() {
     if (!gameid) {
       return;
     }
-    startNextRound(gameid, subState);
+    startNextRound(gameid);
   }
 
   return (
@@ -2144,7 +1844,7 @@ export default function AgendaPhase() {
               );
             })}
             {currentAgenda && isTie ? (
-              !subState.tieBreak ? (
+              !tieBreak ? (
                 <LabeledDiv
                   label={getFactionName(speaker)}
                   color={getFactionColor(speaker)}
@@ -2172,9 +1872,6 @@ export default function AgendaPhase() {
                                   fontSize: responsivePixels(14),
                                   writingMode: "horizontal-tb",
                                 }}
-                                className={
-                                  subState.tieBreak === target ? "selected" : ""
-                                }
                                 onClick={() => selectSpeakerTieBreak(target)}
                               >
                                 {target}
@@ -2192,9 +1889,6 @@ export default function AgendaPhase() {
                                   fontSize: responsivePixels(14),
                                   writingMode: "horizontal-tb",
                                 }}
-                                className={
-                                  subState.tieBreak === target ? "selected" : ""
-                                }
                                 onClick={() => selectSpeakerTieBreak(target)}
                               >
                                 {target}
@@ -2207,10 +1901,10 @@ export default function AgendaPhase() {
               ) : (
                 <LabeledDiv label="Speaker Tie Break">
                   <SelectableRow
-                    itemName={subState.tieBreak}
+                    itemName={tieBreak}
                     removeItem={() => selectSpeakerTieBreak(null)}
                   >
-                    {subState.tieBreak}
+                    {tieBreak}
                   </SelectableRow>
                 </LabeledDiv>
               )

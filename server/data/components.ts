@@ -1,4 +1,9 @@
 import { BaseComponent } from "../../src/util/api/components";
+import { DISCORDANT_STARS_COMPONENTS } from "./discordantstars/components";
+
+declare namespace DiscordantStars {
+  type ComponentId = "Emergency Deployment";
+}
 
 export type ComponentId =
   | "Archaeological Expedition"
@@ -51,7 +56,8 @@ export type ComponentId =
   | "Vortex"
   | "War Effort"
   | "Wormhole Generator"
-  | "X-89 Bacterial Weapon";
+  | "X-89 Bacterial Weapon"
+  | DiscordantStars.ComponentId;
 
 export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
   "Archaeological Expedition": {
@@ -421,4 +427,5 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     name: "X-89 Bacterial Weapon",
     type: "TECH",
   },
+  ...DISCORDANT_STARS_COMPONENTS,
 };

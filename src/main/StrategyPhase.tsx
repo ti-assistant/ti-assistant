@@ -1,52 +1,26 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
 import { StrategyCardElement } from "../StrategyCard";
-import {
-  findLastPickedCard,
-  getLastPickedCard,
-  getOnDeckFaction,
-} from "../util/helpers";
-import {
-  strategyCardOrder,
-  StrategyCard,
-  assignStrategyCard,
-  unassignStrategyCard,
-  setFirstStrategyCard,
-  swapStrategyCards,
-  resetStrategyCards,
-} from "../util/api/cards";
-import { Faction, readyAllFactions } from "../util/api/factions";
+import { getOnDeckFaction } from "../util/helpers";
+import { strategyCardOrder, StrategyCard } from "../util/api/cards";
+import { Faction } from "../util/api/factions";
 import { responsivePixels } from "../util/util";
-import { fetcher, poster } from "../util/api/util";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import { FactionCard } from "../FactionCard";
 import { Modal } from "../Modal";
 import React, { PropsWithChildren, ReactNode, useState } from "react";
-import SummaryColumn from "./SummaryColumn";
 import { LabeledDiv } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { NumberedItem } from "../NumberedItem";
 import { hasTech } from "../util/api/techs";
-import { Agenda, repealAgenda } from "../util/api/agendas";
-import {
-  GameState,
-  jumpToPlayer,
-  nextPlayer,
-  prevPlayer,
-  StateUpdateData,
-} from "../util/api/state";
-import {
-  clearSubState,
-  finalizeSubState,
-  pickSubStateStrategyCard,
-  setSubStateOther,
-  SubState,
-  swapSubStateStrategyCards,
-  undoSubStateStrategyCard,
-} from "../util/api/subState";
+import { Agenda } from "../util/api/agendas";
 import { getDefaultStrategyCards } from "../util/api/defaults";
-import { ClientOnlyHoverMenu, HoverMenu } from "../HoverMenu";
+import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { Selector } from "../Selector";
+import { useGameData } from "../data/GameData";
+import { advancePhase } from "../util/api/advancePhase";
+import { assignStrategyCard } from "../util/api/assignStrategyCard";
+import { giftOfPrescience } from "../util/api/giftOfPrescience";
+import { swapStrategyCards } from "../util/api/swapStrategyCards";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -99,7 +73,7 @@ function ChecksAndBalancesMenu({
   return (
     <Selector
       buttonStyle={mobile ? { fontSize: responsivePixels(16) } : {}}
-      hoverMenuLabel="Give to Faction"
+      hoverMenuLabel="Give to"
       options={otherFactions}
       toggleItem={(factionName, _) => {
         onSelect(factionName);
@@ -140,8 +114,7 @@ function QuantumDatahubNode({
       return;
     }
 
-    swapStrategyCards(gameid, cardOne, cardTwo);
-    swapSubStateStrategyCards(gameid, cardOne, cardTwo);
+    swapStrategyCards(gameid, quantum.mainCard, quantum.otherCard);
   }
 
   if (!faction || !hasTech(faction, "Quantum Datahub Node")) {
@@ -223,20 +196,10 @@ function QuantumDatahubNode({
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas = {} }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions = {} }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["agendas", "factions"]);
+  const agendas = gameData.agendas ?? {};
+  const factions = gameData.factions;
+
   const [quantum, setQuantum] = useState<{
     mainCard: string | undefined;
     otherCard: string | undefined;
@@ -251,19 +214,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
       return;
     }
 
-    const cardOne = strategyCards.find(
-      (card) => card.name === quantum.mainCard
-    );
-    const cardTwo = strategyCards.find(
-      (card) => card.name === quantum.otherCard
-    );
-    if (!cardOne || !cardTwo) {
-      return;
-    }
-
-    swapStrategyCards(gameid, cardOne, cardTwo);
-    swapSubStateStrategyCards(gameid, cardOne, cardTwo);
-    repealAgenda(gameid, arbiter);
+    swapStrategyCards(gameid, quantum.mainCard, quantum.otherCard, true);
   }
 
   if (!arbiter || !arbiter.resolved) {
@@ -368,52 +319,17 @@ function InfoContent({ children }: PropsWithChildren) {
 export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "agendas",
+    "factions",
+    "state",
+    "strategycards",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
 
-  function haveAllFactionsPicked() {
-    const numFactions = Object.keys(factions ?? {}).length;
-    let numPicked = (subState.strategyCards ?? []).length;
-    if (numFactions === 3 || numFactions === 4) {
-      return numFactions * 2 === numPicked;
-    }
-    return numFactions === numPicked;
-  }
   function pickStrategyCard(
     card: StrategyCard,
     faction: Faction,
@@ -423,26 +339,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
       return;
     }
 
-    // Prevent faction from picking two in a row.
-    const lastPickedCard = findLastPickedCard(subState);
-    if (lastPickedCard && lastPickedCard.pickedBy === pickedBy) {
-      return;
-    }
-
-    pickSubStateStrategyCard(
-      gameid,
-      {
-        assignedTo: faction.name,
-        name: card.name,
-        pickedBy: pickedBy,
-      },
-      Object.keys(factions ?? {}).length
-    );
-    assignStrategyCard(gameid, card.name, faction.name);
-    if (faction.name === "Naalu Collective") {
-      setFirstStrategyCard(gameid, card.name);
-    }
-    nextPlayer(gameid, factions ?? {}, strategyCards, subState);
+    assignStrategyCard(gameid, faction.name, card.name, pickedBy);
   }
 
   const orderedStrategyCards = Object.values(strategyCards).sort(
@@ -498,105 +395,25 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   );
 }
 
-export function advanceToActionPhase(
-  gameid: string,
-  strategyCards: Record<string, StrategyCard>,
-  subState: SubState
-) {
-  finalizeSubState(gameid, subState);
-
-  const data: StateUpdateData = {
-    action: "ADVANCE_PHASE",
-  };
-  let minCard: { order: number; faction?: string } = {
-    order: Number.MAX_SAFE_INTEGER,
-  };
-  let naalu = false;
-  for (const strategyCard of Object.values(strategyCards)) {
-    const updatedCard = structuredClone(strategyCard);
-    for (const cardObj of subState.strategyCards ?? []) {
-      if (cardObj.name === strategyCard.name) {
-        updatedCard.faction = cardObj.assignedTo;
-      }
-    }
-    if (updatedCard.faction === "Naalu Collective") {
-      naalu = true;
-    }
-    if (updatedCard.faction && updatedCard.order < minCard.order) {
-      minCard = updatedCard;
-    }
-  }
-  if (!minCard.faction) {
-    throw Error("Transition to ACTION phase w/o selecting cards?");
-  }
-
-  if (naalu) {
-    if (subState["Gift of Prescience"]) {
-      minCard.faction = subState["Gift of Prescience"];
-    } else {
-      minCard.faction = "Naalu Collective";
-    }
-  }
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.phase = "ACTION";
-        updatedState.activeplayer = minCard.faction;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
-
-  readyAllFactions(gameid);
+export function advanceToActionPhase(gameid: string) {
+  advancePhase(gameid);
 }
 
 export default function StrategyPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "factions",
+    "state",
+    "strategycards",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
     title?: string;
@@ -609,7 +426,7 @@ export default function StrategyPhase() {
     if (!gameid) {
       return;
     }
-    advanceToActionPhase(gameid, strategyCards, subState);
+    advanceToActionPhase(gameid);
   }
 
   function showInfoModal(title: string, content: ReactNode) {
@@ -720,7 +537,12 @@ export default function StrategyPhase() {
 
   function haveAllFactionsPicked() {
     const numFactions = Object.keys(factions ?? {}).length;
-    let numPicked = (subState.strategyCards ?? []).length;
+    let numPicked = Object.values(strategyCards).reduce((num, card) => {
+      if (card.faction) {
+        return num + 1;
+      }
+      return num;
+    }, 0);
     if (numFactions === 3 || numFactions === 4) {
       return numFactions * 2 === numPicked;
     }
@@ -734,45 +556,13 @@ export default function StrategyPhase() {
   const activefaction = factions
     ? factions[state?.activeplayer ?? ""]
     : undefined;
-  const onDeckFaction = getOnDeckFaction(
-    state,
-    factions ?? {},
-    strategyCards,
-    subState
-  );
-
-  function undoPick() {
-    if (!gameid || !state) {
-      return;
-    }
-    const lastPickedCard = getLastPickedCard(state, subState);
-    if (!lastPickedCard) {
-      return;
-    }
-    undoSubStateStrategyCard(gameid);
-    unassignStrategyCard(gameid, lastPickedCard.name);
-    prevPlayer(gameid, factions ?? {}, subState);
-  }
-
-  function resetPhase() {
-    if (!gameid || !state) {
-      return;
-    }
-    jumpToPlayer(gameid, state.speaker);
-    clearSubState(gameid);
-    resetStrategyCards(gameid);
-  }
+  const onDeckFaction = getOnDeckFaction(state, factions ?? {}, strategyCards);
 
   function canUndo() {
-    return (subState.strategyCards ?? []).length > 0;
+    return (gameData.actionLog ?? []).length > 0;
   }
   const updatedStrategyCards = Object.values(strategyCards).map((card) => {
     const updatedCard = structuredClone(card);
-    // for (const cardObj of subState?.strategyCards ?? []) {
-    //   if (cardObj.name === card.name) {
-    //     updatedCard.faction = cardObj.assignedTo;
-    //   }
-    // }
 
     return updatedCard;
   });
@@ -790,24 +580,22 @@ export default function StrategyPhase() {
     return undefined;
   }
 
-  function giftOfPrescience(factionName: string | undefined) {
+  function gift(factionName: string | undefined) {
     if (!gameid) {
       return;
     }
-    if (!factionName || subState["Gift of Prescience"] === factionName) {
-      const naaluCard = getFirstCardForFaction("Naalu Collective");
-      if (naaluCard) {
-        setFirstStrategyCard(gameid, naaluCard.name);
-      }
-      setSubStateOther(gameid, "Gift of Prescience", undefined);
-    } else {
-      const zeroCard = getFirstCardForFaction(factionName);
-      if (zeroCard) {
-        setFirstStrategyCard(gameid, zeroCard.name);
-      }
-      setSubStateOther(gameid, "Gift of Prescience", factionName);
-    }
+    giftOfPrescience(gameid, factionName ?? "Naalu Collective");
   }
+
+  const giftFaction = Object.values(strategyCards).reduce(
+    (faction: string | undefined, card) => {
+      if (card.order === 0 && card.faction !== "Naalu Collective") {
+        return card.faction;
+      }
+      return faction;
+    },
+    undefined
+  );
 
   return (
     <React.Fragment>
@@ -896,9 +684,9 @@ export default function StrategyPhase() {
                   .filter((name) => name !== "Naalu Collective")}
                 toggleItem={(factionName, add) => {
                   const localFactionName = add ? factionName : undefined;
-                  giftOfPrescience(localFactionName);
+                  gift(localFactionName);
                 }}
-                selectedItem={subState["Gift of Prescience"]}
+                selectedItem={giftFaction}
               />
             ) : null}
             <QuantumDatahubNode
@@ -1000,12 +788,12 @@ export default function StrategyPhase() {
         >
           <StrategyCardSelectList mobile={false} />
         </div>
-        {canUndo() ? (
+        {/* {canUndo() ? (
           <div className="flexRow" style={{ gap: responsivePixels(16) }}>
             <button onClick={() => undoPick()}>Undo SC Pick</button>
             <button onClick={() => resetPhase()}>Reset Phase</button>
           </div>
-        ) : null}
+        ) : null} */}
         {activefaction ? null : (
           <button
             style={{ fontSize: responsivePixels(20) }}

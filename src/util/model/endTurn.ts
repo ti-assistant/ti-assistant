@@ -1,0 +1,146 @@
+import { ActionLogAction, Handler } from "../api/data";
+import { ActionLogEntry, StoredGameData } from "../api/util";
+import { getOnDeckFaction } from "../helpers";
+import { buildFactions, buildStrategyCards } from "../../data/GameData";
+import { Secondary } from "../api/subState";
+
+export interface EndTurnEvent {
+  samePlayer?: boolean;
+  // Set by server
+  prevFaction?: string;
+  selectedAction?: string;
+  secondaries?: Record<string, Secondary>;
+}
+
+export interface EndTurnData {
+  action: "END_TURN";
+  event: EndTurnEvent;
+}
+
+export interface UnendTurnData {
+  action: "UNEND_TURN";
+  event: EndTurnEvent;
+}
+
+export class EndTurnHandler implements Handler {
+  constructor(public gameData: StoredGameData, public data: EndTurnData) {}
+
+  validate(): boolean {
+    if (
+      this.data.event.selectedAction === "Pass" &&
+      this.data.event.samePlayer
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  getUpdates(): Record<string, any> {
+    const onDeckFaction = getOnDeckFaction(
+      this.gameData.state,
+      buildFactions(this.gameData),
+      buildStrategyCards(this.gameData)
+    );
+
+    const updates: Record<string, any> = {
+      [`state.paused`]: false,
+    };
+    if (!this.data.event.samePlayer) {
+      updates[`state.activeplayer`] = onDeckFaction
+        ? onDeckFaction.name
+        : "None";
+    }
+
+    for (const factionId of Object.keys(this.gameData.factions)) {
+      updates[`factions.${factionId}.secondary`] = "DELETE";
+    }
+
+    switch (this.data.event.selectedAction) {
+      case "Pass": {
+        updates[`factions.${this.data.event.prevFaction}.passed`] = true;
+        break;
+      }
+      case "Leadership":
+      case "Diplomacy":
+      case "Politics":
+      case "Construction":
+      case "Trade":
+      case "Warfare":
+      case "Technology":
+      case "Imperial": {
+        updates[`strategycards.${this.data.event.selectedAction}.used`] = true;
+        break;
+      }
+    }
+
+    return updates;
+  }
+
+  getLogEntry(): ActionLogEntry {
+    return {
+      timestampMillis: Date.now(),
+      data: this.data,
+    };
+  }
+
+  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+    return "IGNORE";
+  }
+}
+
+export class UnendTurnHandler implements Handler {
+  constructor(public gameData: StoredGameData, public data: UnendTurnData) {}
+
+  validate(): boolean {
+    return true;
+  }
+
+  getUpdates(): Record<string, any> {
+    const updates: Record<string, any> = {
+      [`state.paused`]: false,
+      [`state.activeplayer`]: this.data.event.prevFaction,
+    };
+
+    for (const factionId of Object.keys(this.gameData.factions)) {
+      const secondary = (this.data.event.secondaries ?? {})[factionId];
+      if (secondary) {
+        updates[`factions.${factionId}.secondary`] = secondary;
+      }
+    }
+
+    switch (this.data.event.selectedAction) {
+      case "Pass": {
+        updates[`factions.${this.data.event.prevFaction}.passed`] = "DELETE";
+        break;
+      }
+      case "Leadership":
+      case "Diplomacy":
+      case "Politics":
+      case "Construction":
+      case "Trade":
+      case "Warfare":
+      case "Technology":
+      case "Imperial": {
+        updates[`strategycards.${this.data.event.selectedAction}.used`] =
+          "DELETE";
+        break;
+      }
+    }
+
+    return updates;
+  }
+
+  getLogEntry(): ActionLogEntry {
+    return {
+      timestampMillis: Date.now(),
+      data: this.data,
+    };
+  }
+
+  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+    if (entry.data.action === "END_TURN") {
+      return "DELETE";
+    }
+    return "IGNORE";
+  }
+}

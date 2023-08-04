@@ -1,37 +1,33 @@
+import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import useSWR from "swr";
-import { PropsWithChildren, useEffect, useState } from "react";
 import QRCode from "qrcode";
-import { fetcher, setGameId } from "../../../src/util/api/util";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { FullFactionSymbol } from "../../../src/FactionCard";
+import { ResponsiveLogo } from "../../../src/Header";
 import { LabeledDiv } from "../../../src/LabeledDiv";
+import { FullScreenLoader } from "../../../src/Loader";
+import { useGameData } from "../../../src/data/GameData";
+import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { responsivePixels } from "../../../src/util/util";
-import { FullFactionSymbol } from "../../../src/FactionCard";
-import Head from "next/head";
-import { Faction } from "../../../src/util/api/factions";
-import { GameState } from "../../../src/util/api/state";
-import Link from "next/link";
-import { FullScreenLoader, Loader } from "../../../src/Loader";
-import Image from "next/image";
-import { Preloads } from "../../../src/Preloads";
-import { ResponsiveLogo } from "../../../src/Header";
+
+const BASE_URL =
+  process.env.GAE_SERVICE === "dev"
+    ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
+    : "https://ti-assistant.com";
 
 export default function SelectFactionPage() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["factions"]);
+  const factions = gameData.factions;
 
   const [qrCode, setQrCode] = useState<string | undefined>();
 
   if (!qrCode && gameid) {
     QRCode.toDataURL(
-      `https://ti-assistant.com/game/${gameid}`,
+      `${BASE_URL}/game/${gameid}`,
       {
         color: {
           dark: "#eeeeeeff",
@@ -53,9 +49,13 @@ export default function SelectFactionPage() {
     }
   }, [gameid]);
 
-  if (factions && Object.keys(factions).length === 0) {
-    setGameId("");
-    router.push("/");
+  if (
+    gameData.state.phase !== "UNKNOWN" &&
+    Object.keys(factions).length === 0
+  ) {
+    console.log("Forcing redirect!");
+    // setGameId("");
+    // router.push("/");
     return;
   }
 
@@ -73,7 +73,7 @@ export default function SelectFactionPage() {
       style={{ alignItems: "center", height: "100svh" }}
     >
       <Header />
-      {!factions ? (
+      {gameData.state.phase === "UNKNOWN" ? (
         <FullScreenLoader />
       ) : (
         <div
@@ -175,13 +175,9 @@ function Sidebar({ side, children }: PropsWithChildren<{ side: string }>) {
 function Header() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["state"]);
+  const state = gameData.state;
+
   const [qrCode, setQrCode] = useState<string | undefined>();
   const [qrCodeSize, setQrCodeSize] = useState(164);
 
@@ -196,7 +192,7 @@ function Header() {
 
   if (!qrCode && gameid) {
     QRCode.toDataURL(
-      `https://ti-assistant.com/game/${gameid}`,
+      `${BASE_URL}/game/${gameid}`,
       {
         color: {
           dark: "#eeeeeeff",

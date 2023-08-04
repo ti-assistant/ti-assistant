@@ -59,6 +59,10 @@
     calc(20px + (40 - 20) * ((100vw - 1280px) / (2560 - 1280))),
     20px
   );
+  --twenty-two-pixel: max(
+    calc(22px + (44 - 22) * ((100vw - 1280px) / (2560 - 1280))),
+    22px
+  );
   --twenty-four-pixel: max(
     calc(24px + (48 - 24) * ((100vw - 1280px) / (2560 - 1280))),
     24px
@@ -246,6 +250,14 @@ input[type="text"] {
   background-color: #333;
   color: #fff;
   box-sizing: border-box;
+}
+
+input[type="textbox"] {
+  background-color: #333;
+  color: #eee;
+  border: 2px solid #777;
+  border-radius: 4px;
+  outline: none;
 }
 
 .leftSidebar {
@@ -571,6 +583,21 @@ input[type="text"] {
   background-color: #222;
   border-radius: var(--five-pixel);
   padding: var(--two-pixel) var(--four-pixel);
+}
+
+.tabletOnly {
+  display: none;
+}
+
+
+@media only screen and (max-width: 1023px) {
+  .tabletOnly {
+    display: flex;
+  }
+
+  .nonTablet {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 900px) {

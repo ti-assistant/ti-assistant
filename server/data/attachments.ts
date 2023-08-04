@@ -1,4 +1,5 @@
 import { BaseAttachment } from "../../src/util/api/attachments";
+import { DISCORDANT_STARS_ATTACHMENTS } from "./discordantstars/attachments";
 
 export type AttachmentId =
   | "Biotic Research Facility"
@@ -215,6 +216,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   Terraform: {
     attribute: "all-types",
     expansion: "POK",
+    faction: "Titans of Ul",
     influence: 1,
     name: "Terraform",
     required: {
@@ -246,6 +248,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Ul the Progenitor": {
     attribute: "space-cannon",
     expansion: "POK",
+    faction: "Titans of Ul",
     influence: 3,
     name: "Ul the Progenitor",
     required: {
@@ -266,4 +269,5 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     },
     resources: 1,
   },
+  ...DISCORDANT_STARS_ATTACHMENTS,
 };

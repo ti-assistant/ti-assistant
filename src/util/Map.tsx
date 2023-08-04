@@ -5,13 +5,16 @@ import { ReactNode, useEffect, useState } from "react";
 import { MapStyle } from "./api/setup";
 import { FullFactionSymbol } from "../FactionCard";
 import { useRouter } from "next/router";
-import useSWR from "swr";
-import { Faction } from "./api/factions";
-import { fetcher } from "./api/util";
-import { Planet } from "./api/planets";
 import { LabeledDiv } from "../LabeledDiv";
 import { responsivePixels } from "./util";
 import { getFactionColor } from "./factions";
+import { useGameData } from "../data/GameData";
+import {
+  FullPlanetSymbol,
+  FullPlanetTypeSymbol,
+  LegendaryPlanetIcon,
+} from "../PlanetRow";
+import { applyAllPlanetAttachments, getPlanetTypeColor } from "./planets";
 
 interface Cube {
   q: number;
@@ -113,6 +116,40 @@ const FACTION_TO_SYSTEM_NUMBER: Record<string, string> = {
   Empyrean: "56",
   "Naaz-Rokha Alliance": "57",
   "Argent Flight": "58",
+  "Augurs of Ilyxum": "1001",
+  "Bentor Conglomerate": "1002",
+  "Berserkers of Kjalengard": "1003",
+  "Celdauri Trade Confederation": "1004",
+  "Cheiran Hordes": "1005",
+  "Dih-Mohn Flotilla": "1006",
+  "Edyn Mandate": "1007",
+  "Florzen Profiteers": "1008",
+  "Free Systems Compact": "1009",
+  "Ghemina Raiders": "1010",
+  "Ghoti Wayfarers": "1011",
+  "Gledge Union": "1012",
+  "Glimmer of Mortheus": "1013",
+  "Kollecc Society": "1014",
+  "Kortali Tribunal": "1015",
+  "Kyro Sodality": "1016",
+  "Lanefir Remnants": "1017",
+  "Li-Zho Dynasty": "1018",
+  "L'tokk Khrask": "1019",
+  "Mirveda Protectorate": "1020",
+  "Monks of Kolume": "1021",
+  "Myko-Mentori": "1022",
+  "Nivyn Star Kings": "1023",
+  "Nokar Sellships": "1024",
+  "Olradin League": "1025",
+  "Roh'Dhna Mechatronics": "1026",
+  "Savages of Cymiae": "1027",
+  "Shipwrights of Axis": "1028",
+  "Tnelis Syndicate": "1029",
+  "Vaden Banking Clans": "1030",
+  "Vaylerian Scourge": "1031",
+  "Veldyr Sovereignty": "1032",
+  "Zealots of Rhodun": "1033",
+  "Zelian Purifier": "1034",
 } as const;
 
 function getFactionSystemNumber(
@@ -321,35 +358,25 @@ function validSystemNumber(number: string) {
   if (isNaN(intVal)) {
     return false;
   }
-  if (intVal === 81 || intVal > 92) {
+  if (intVal === 81 || (intVal > 92 && intVal < 1001) || intVal > 1034) {
     return false;
   }
   return true;
 }
 
 function SystemImage({
-  showOwners,
+  showDetails,
   systemNumber,
 }: {
-  showOwners: boolean;
+  showDetails: Details;
   systemNumber: string | undefined;
 }) {
   const router = useRouter();
-  const { game: gameid } = router.query;
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const { game: gameid }: { game?: string } = router.query;
+  const gameData = useGameData(gameid, ["attachments", "factions", "planets"]);
+  const attachments = gameData.attachments ?? {};
+  const factions = gameData.factions;
+  const planets = gameData.planets;
 
   if (
     !systemNumber ||
@@ -408,7 +435,7 @@ function SystemImage({
     );
   }
 
-  const systemPlanets = Object.values(planets ?? {}).filter((planet) => {
+  let systemPlanets = Object.values(planets ?? {}).filter((planet) => {
     if (!systemNumber) {
       return false;
     }
@@ -417,6 +444,7 @@ function SystemImage({
     }
     return planet.system === parseInt(systemNumber);
   });
+  systemPlanets = applyAllPlanetAttachments(systemPlanets, attachments);
 
   return (
     <div
@@ -449,37 +477,102 @@ function SystemImage({
         objectFit="contain"
       />
       {systemPlanets.map((planet) => {
-        let ownerSymbol: ReactNode | null = null;
-        if (planet.owner && showOwners) {
-          const height =
-            planet.name !== "Mallice" && planet.name !== "Creuss"
-              ? `calc(24% * ${HEX_RATIO})`
-              : "24%";
+        let detailsSymbol: ReactNode | null = null;
+        const height =
+          planet.name !== "Mallice" && planet.name !== "Creuss"
+            ? `calc(24% * ${HEX_RATIO})`
+            : "24%";
+        switch (showDetails) {
+          case "OWNERS": {
+            if (!planet.owner) {
+              break;
+            }
 
-          ownerSymbol = (
-            <div
-              className="flexRow"
-              style={{
-                position: "absolute",
-                backgroundColor: "#222",
-                border: `${responsivePixels(2)} solid ${getFactionColor(
-                  (factions ?? {})[planet.owner]
-                )}`,
-                borderRadius: "100%",
-                width: "24%",
-                height: height,
-                marginLeft: `${planet.position?.x}%` ?? 0,
-                marginTop: `${planet.position?.y}%` ?? 0,
-              }}
-            >
+            detailsSymbol = (
               <div
                 className="flexRow"
-                style={{ position: "relative", width: "75%", height: "75%" }}
+                style={{
+                  position: "absolute",
+                  backgroundColor: "#222",
+                  border: `${responsivePixels(2)} solid ${getFactionColor(
+                    (factions ?? {})[planet.owner]
+                  )}`,
+                  borderRadius: "100%",
+                  width: "24%",
+                  height: height,
+                  marginLeft: `${planet.position?.x}%` ?? 0,
+                  marginTop: `${planet.position?.y}%` ?? 0,
+                }}
               >
-                <FullFactionSymbol faction={planet.owner} />
+                <div
+                  className="flexRow"
+                  style={{ position: "relative", width: "75%", height: "75%" }}
+                >
+                  <FullFactionSymbol faction={planet.owner} />
+                </div>
               </div>
-            </div>
-          );
+            );
+            break;
+          }
+          case "TYPES": {
+            if (planet.type === "NONE") {
+              break;
+            }
+
+            detailsSymbol = (
+              <div
+                className="flexRow"
+                style={{
+                  position: "absolute",
+                  backgroundColor: "#222",
+                  border: `${responsivePixels(2)} solid ${getPlanetTypeColor(
+                    planet.type
+                  )}`,
+                  borderRadius: "100%",
+                  width: "24%",
+                  height: height,
+                  marginLeft: `${planet.position?.x}%` ?? 0,
+                  marginTop: `${planet.position?.y}%` ?? 0,
+                }}
+              >
+                <div
+                  className="flexRow"
+                  style={{ position: "relative", width: "70%", height: "70%" }}
+                >
+                  <FullPlanetTypeSymbol type={planet.type} />
+                </div>
+              </div>
+            );
+            break;
+          }
+          case "ATTACHMENTS": {
+            if ((planet.attachments ?? []).length === 0) {
+              break;
+            }
+
+            detailsSymbol = (
+              <div
+                className="flexRow"
+                style={{
+                  position: "absolute",
+                  backgroundColor: "#222",
+                  border: `${responsivePixels(2)} solid ${"#eee"}`,
+                  borderRadius: "100%",
+                  width: "24%",
+                  height: height,
+                  marginLeft: `${planet.position?.x}%` ?? 0,
+                  marginTop: `${planet.position?.y}%` ?? 0,
+                }}
+              >
+                <div
+                  className="flexRow"
+                  style={{ position: "relative", width: "70%", height: "70%" }}
+                >
+                  <div className="symbol">⎗</div>
+                </div>
+              </div>
+            );
+          }
         }
 
         return (
@@ -488,7 +581,7 @@ function SystemImage({
             className="flexRow"
             style={{ position: "absolute", width: "100%", height: "100%" }}
           >
-            {ownerSymbol}
+            {detailsSymbol}
           </div>
         );
       })}
@@ -658,11 +751,13 @@ const IMAGES_TO_PRELOAD = [
   "/images/systems/ST_92.png",
 ];
 
+type Details = "NONE" | "ATTACHMENTS" | "OWNERS" | "TYPES";
+
 export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
   const router = useRouter();
   const { game: gameid } = router.query;
 
-  const [showOwners, setShowOwners] = useState(false);
+  const [showDetails, setShowDetails] = useState<Details>("NONE");
 
   useEffect(() => {
     for (const img of IMAGES_TO_PRELOAD) {
@@ -819,16 +914,40 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
             marginLeft: "-120%",
             width: "fit-content",
             backgroundColor: "#222",
+            justifyContent: "stretch",
+            alignItems: "stretch",
           }}
         >
           <button
-            className={showOwners ? "selected" : ""}
+            className={showDetails === "OWNERS" ? "selected" : ""}
             onClick={(e) => {
-              setShowOwners(!showOwners);
+              const newValue = showDetails === "OWNERS" ? "NONE" : "OWNERS";
+              setShowDetails(newValue);
               e.stopPropagation();
             }}
           >
-            Show Owners
+            Owners
+          </button>
+          <button
+            className={showDetails === "TYPES" ? "selected" : ""}
+            onClick={(e) => {
+              const newValue = showDetails === "TYPES" ? "NONE" : "TYPES";
+              setShowDetails(newValue);
+              e.stopPropagation();
+            }}
+          >
+            Types
+          </button>
+          <button
+            className={showDetails === "ATTACHMENTS" ? "selected" : ""}
+            onClick={(e) => {
+              const newValue =
+                showDetails === "ATTACHMENTS" ? "NONE" : "ATTACHMENTS";
+              setShowDetails(newValue);
+              e.stopPropagation();
+            }}
+          >
+            Attachments
           </button>
         </LabeledDiv>
       ) : null}
@@ -850,7 +969,7 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
               marginTop: `${point.y}%`,
             }}
           >
-            <SystemImage showOwners={showOwners} systemNumber={tile} />
+            <SystemImage showDetails={showDetails} systemNumber={tile} />
           </div>
         );
       })}
@@ -878,7 +997,7 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
             height: `${tilePercentage * HEX_RATIO}%`,
           }}
         >
-          <SystemImage showOwners={showOwners} systemNumber="51" />
+          <SystemImage showDetails={showDetails} systemNumber="51" />
         </div>
       ) : null}
       {mallice ? (
@@ -892,7 +1011,10 @@ export function Map({ mapString, mapStyle, mallice, factions }: MapProps) {
             height: `${tilePercentage * HEX_RATIO}%`,
           }}
         >
-          <SystemImage showOwners={showOwners} systemNumber={`82${mallice}`} />
+          <SystemImage
+            showDetails={showDetails}
+            systemNumber={`82${mallice}`}
+          />
         </div>
       ) : null}
     </div>

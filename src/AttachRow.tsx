@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import { PlanetAttributes } from "./PlanetRow";
 import { ResponsiveResources } from "./Resources";
 import { Attachment } from "./util/api/attachments";
-import { addAttachment, Planet, removeAttachment } from "./util/api/planets";
 import { responsivePixels } from "./util/util";
+import { addAttachment, removeAttachment } from "./util/api/addAttachment";
+import { Planet } from "./util/api/planets";
 
 export interface AttachRowProps {
   attachment: Attachment;

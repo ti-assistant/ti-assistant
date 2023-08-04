@@ -1,4 +1,5 @@
 import { BasePlanet } from "../../src/util/api/planets";
+import { DISCORDANT_STARS_PLANETS } from "./discordantstars/planets";
 
 export type PlanetId =
   | "000"
@@ -100,7 +101,8 @@ export type PlanetId =
   | "Xanhact"
   | "Xxehan"
   | "Ylir"
-  | "Zohbat";
+  | "Zohbat"
+  | DiscordantStars.PlanetId;
 
 const HOME_MIDDLE = { x: 0, y: -12 };
 const MIDDLE = { x: 0, y: 0 };
@@ -1192,4 +1194,5 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     system: 30,
     type: "HAZARDOUS",
   },
+  ...DISCORDANT_STARS_PLANETS,
 };

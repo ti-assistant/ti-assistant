@@ -206,6 +206,12 @@ export function HoverMenu({
         }
         menu.current.classList.remove("hover");
       }}
+      onTouchEnd={() => {
+        if (!menu.current) {
+          return;
+        }
+        menu.current.classList.toggle("hover");
+      }}
       ref={menu}
       style={buttonStyle}
     >

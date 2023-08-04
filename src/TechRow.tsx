@@ -208,6 +208,7 @@ function InfoContent({ tech }: { tech: Tech }) {
 }
 
 export interface TechRowProps {
+  className?: string;
   tech: Tech;
   removeTech?: (techName: string) => void;
   addTech?: (techName: string) => void;
@@ -218,9 +219,12 @@ export interface TechRowProps {
 export interface TechRowOptions {
   hideInfo?: boolean;
   hideSymbols?: boolean;
+  hideIcon?: boolean;
+  fade?: boolean;
 }
 
 export function TechRow({
+  className = "",
   tech,
   removeTech,
   addTech,
@@ -255,23 +259,28 @@ export function TechRow({
         </Modal>
         {leftContent ? <div>{leftContent}</div> : null}
         <div
+          className={className}
           style={{
             display: "flex",
             flexDirection: "row",
-            flexGrow: 2,
             alignItems: "center",
+            width: "100%",
+            opacity: opts.fade ? 0.25 : undefined,
           }}
         >
           <div
             style={{
               position: "relative",
-              display: "flex",
+              // display: "flex",
               color: getTechColor(tech),
               zIndex: 0,
+
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
             {tech.name}
-            {tech.faction ? (
+            {tech.faction && !opts.hideIcon ? (
               <div
                 style={{
                   position: "absolute",
@@ -301,7 +310,10 @@ export function TechRow({
               display: opts.hideInfo ? "none" : "block",
               fontSize: responsivePixels(16),
             }}
-            onClick={displayInfo}
+            onClick={(e) => {
+              e.stopPropagation();
+              displayInfo();
+            }}
           >
             &#x24D8;
           </div>

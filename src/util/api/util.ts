@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import { getSharedUpdateTimes } from "../../Updater";
 
 import { GameAgenda } from "./agendas";
 import { GameAttachment } from "./attachments";
@@ -9,12 +8,21 @@ import { GameObjective } from "./objectives";
 import { Options } from "./options";
 import { GamePlanet } from "./planets";
 import { GameStrategyCard } from "./cards";
-import { SubState } from "./subState";
-import { GameState } from "./state";
+import { AssignStrategyCardEvent, SetSpeakerEvent } from "./subState";
+import { GameState, GameUpdateData } from "./state";
 import { Timestamp } from "firebase-admin/firestore";
 import { GameRelic } from "./relics";
 
-export interface GameData {
+export type ActionLogEvent = AssignStrategyCardEvent | SetSpeakerEvent;
+
+export interface ActionLogEntry {
+  timestampMillis: number;
+  gameSeconds?: number;
+  data: GameUpdateData;
+}
+
+export interface StoredGameData {
+  actionLog?: ActionLogEntry[];
   agendas?: Record<string, GameAgenda>;
   attachments?: Record<string, GameAttachment>;
   components?: Record<string, GameComponent>;
@@ -25,8 +33,6 @@ export interface GameData {
   relics?: Record<string, GameRelic>;
   state: GameState;
   strategycards?: Record<string, GameStrategyCard>;
-  subState?: SubState;
-  timers?: Record<string, number>;
   updates?: Record<string, { timestamp: Timestamp }>;
   // Secrets
   [key: string]: any;
@@ -53,6 +59,18 @@ export function getGameId() {
   return Cookies.get("gameid");
 }
 
+export function arrayUnion<Type>(array: Type[], value: Type) {
+  const set = new Set(array);
+  set.add(value);
+  return Array.from(set);
+}
+
+export function arrayRemove<Type>(array: Type[], value: Type) {
+  const set = new Set(array);
+  set.delete(value);
+  return Array.from(set);
+}
+
 export async function fetcher(url: string) {
   if (!Cookies.get("secret")) {
     Cookies.set("secret", genCookie(16));
@@ -69,40 +87,8 @@ export async function fetcher(url: string) {
   return data;
 }
 
-function getUpdatedEndpoint(url: string): string {
-  const update = url.substring(url.lastIndexOf("/") + 1);
-  switch (update) {
-    case "agendaUpdate":
-      return "agendas";
-    case "attachmentUpdate":
-      return "attachments";
-    case "componentUpdate":
-      return "components";
-    case "cardUpdate":
-      return "strategycards";
-    case "factionUpdate":
-      return "factions";
-    case "objectiveUpdate":
-      return "objectives";
-    case "optionUpdate":
-      return "options";
-    case "planetUpdate":
-      return "planets";
-    case "subStateUpdate":
-      return "subState";
-    case "stateUpdate":
-      return "state";
-    case "timerUpdate":
-      return "timers";
-  }
-  console.log("Error");
-  return "";
-}
-
 export async function poster(url: string, data: any): Promise<any> {
   data.timestamp = Date.now();
-  const { setUpdateTime } = getSharedUpdateTimes();
-  setUpdateTime(getUpdatedEndpoint(url), data.timestamp);
   const res = await fetch(url, {
     method: "POST",
     headers: {

@@ -1,46 +1,31 @@
 import { useRouter } from "next/router";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import QRCode from "qrcode";
-import useSWR from "swr";
-import {
-  responsiveNegativePixels,
-  responsivePixels,
-  validateMapString,
-} from "./util/util";
-import { fetcher } from "./util/api/util";
+import { responsivePixels, validateMapString } from "./util/util";
 import { GameTimer } from "./Timer";
 import { ClientOnlyHoverMenu } from "./HoverMenu";
 import { LabeledDiv } from "./LabeledDiv";
-import {
-  computeVPs,
-  UpdateObjectives,
-  UpdatePlanets,
-  UpdateTechs,
-} from "./FactionSummary";
+import { computeVPs, UpdatePlanets } from "./FactionSummary";
 import React from "react";
 import { AgendaRow } from "./AgendaRow";
-import { Agenda, repealAgenda } from "./util/api/agendas";
-import {
-  continueGame,
-  finishGame,
-  GameState,
-  setSpeaker,
-} from "./util/api/state";
 import Head from "next/head";
-import { getFactionColor, getFactionName } from "./util/factions";
+import { getFactionColor } from "./util/factions";
 import { Map } from "./util/Map";
-import { Options } from "./util/api/options";
-import { Faction } from "./util/api/factions";
-import { Objective } from "./util/api/objectives";
-import { Planet } from "./util/api/planets";
-import { SubState } from "./util/api/subState";
 import Link from "next/link";
 import Image from "next/image";
-
 import Logo from "../public/images/android-chrome-512x512.png";
-import { ObjectivePanel } from "./ObjectivePanel";
 import { FactionSelectHoverMenu } from "./components/FactionSelect";
 import { GenericModal } from "./Modal";
+import { TechPanel } from "./components/TechPanel";
+import { ObjectivePanel } from "./components/ObjectivePanel";
+import { useGameData } from "./data/GameData";
+import { undo } from "./util/api/data";
+import { ActionLogEntry } from "./util/api/util";
+import { setSpeaker } from "./util/api/setSpeaker";
+import { continueGame, endGame } from "./util/api/endGame";
+import { repealAgenda } from "./util/api/resolveAgenda";
+import { getDefaultStrategyCards } from "./util/api/defaults";
+import { PlanetPanel } from "./components/PlanetPanel";
 
 export function ResponsiveLogo({ size }: { size: number }) {
   return (
@@ -57,6 +42,67 @@ export function ResponsiveLogo({ size }: { size: number }) {
   );
 }
 
+function getUndoButtonText(logEntry: ActionLogEntry) {
+  // switch (logEntry.data.action) {
+  //   case "ASSIGN_STRATEGY_CARD": {
+  //     return "Undo SC Pick";
+  //   }
+  //   case "SET_SPEAKER": {
+  //     return "Undo Speaker Change";
+  //   }
+  // }
+  return "Undo";
+}
+
+export function UndoButton({ gameId }: { gameId?: string }) {
+  const gameData = useGameData(gameId, ["actionLog"]);
+
+  const actionLog = gameData.actionLog;
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (!gameId || !actionLog || actionLog.length === 0) {
+        return;
+      }
+      if (event.ctrlKey && event.key === "z") {
+        undo(gameId);
+      }
+    },
+    [gameId, actionLog]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
+  if (!gameId || !actionLog || actionLog.length === 0) {
+    return null;
+  }
+
+  const latestEntry = actionLog.at(actionLog.length - 1);
+  if (!latestEntry) {
+    return null;
+  }
+
+  return (
+    <button
+      onKeyDown={(event) => {
+        if (event.ctrlKey && event.key === "z") {
+          undo(gameId);
+        }
+      }}
+      style={{ fontSize: responsivePixels(20) }}
+      onClick={() => undo(gameId)}
+    >
+      {getUndoButtonText(latestEntry)}
+    </button>
+  );
+}
+
 export interface SidebarProps {
   side: string;
 }
@@ -69,6 +115,11 @@ export function Sidebar({ side, children }: PropsWithChildren<SidebarProps>) {
     </div>
   );
 }
+
+const BASE_URL =
+  process.env.GAE_SERVICE === "dev"
+    ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
+    : "https://ti-assistant.com";
 
 export function NonGameHeader({
   leftSidebar,
@@ -93,7 +144,7 @@ export function NonGameHeader({
 
   if (!qrCode && gameId) {
     QRCode.toDataURL(
-      `https://ti-assistant.com/game/${gameId}`,
+      `${BASE_URL}/game/${gameId}`,
       {
         color: {
           dark: "#eeeeeeff",
@@ -210,48 +261,21 @@ export function NonGameHeader({
 export function Header() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: options }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "agendas",
+    "factions",
+    "objectives",
+    "options",
+    "planets",
+    "state",
+  ]);
+  const agendas = gameData.agendas;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const options = gameData.options;
+  const planets = gameData.planets;
+  const state = gameData.state;
+
   const [qrCode, setQrCode] = useState<string>();
 
   const [qrCodeSize, setQrCodeSize] = useState(164);
@@ -269,7 +293,7 @@ export function Header() {
 
   if (!qrCode && gameid) {
     QRCode.toDataURL(
-      `https://ti-assistant.com/game/${gameid}`,
+      `${BASE_URL}/game/${gameid}`,
       {
         color: {
           dark: "#eeeeeeff",
@@ -289,14 +313,14 @@ export function Header() {
 
   const round = state ? `ROUND ${state.round}` : "LOADING...";
 
-  function endGame() {
+  function endGameLocal() {
     if (!gameid) {
       return;
     }
-    finishGame(gameid);
+    endGame(gameid);
   }
 
-  function backToGame() {
+  function backToGameLocal() {
     if (!gameid) {
       return;
     }
@@ -321,7 +345,11 @@ export function Header() {
     if (!gameid) {
       return;
     }
-    repealAgenda(gameid, (agendas ?? {})[agendaName]);
+    const target = (agendas ?? {})[agendaName]?.target;
+    if (!target) {
+      return;
+    }
+    repealAgenda(gameid, agendaName, target);
   }
 
   let gameFinished = false;
@@ -419,39 +447,42 @@ export function Header() {
           </Link>
         )
       ) : null}
-      {gameFinished || state?.phase === "END" ? (
-        <div
-          className="flexRow extraLargeFont"
-          style={{
-            position: "fixed",
-            top: responsivePixels(16),
-            left: responsivePixels(490),
-          }}
-        >
-          {state?.phase === "END" ? (
+      {/* {gameFinished || state?.phase === "END" ? ( */}
+      <div
+        className="flexRow extraLargeFont"
+        style={{
+          position: "fixed",
+          top: responsivePixels(16),
+          left: responsivePixels(470),
+        }}
+      >
+        <UndoButton gameId={gameid} />
+        {gameFinished ? (
+          state?.phase === "END" ? (
             <button
               style={{ fontSize: responsivePixels(24) }}
-              onClick={backToGame}
+              onClick={backToGameLocal}
             >
               Back to Game
             </button>
           ) : (
             <button
               style={{ fontFamily: "Slider", fontSize: responsivePixels(32) }}
-              onClick={endGame}
+              onClick={endGameLocal}
             >
               End Game
             </button>
-          )}
-        </div>
-      ) : null}
+          )
+        ) : null}
+      </div>
+      {/* ) : null} */}
       {passedLaws.length > 0 ? (
         <ClientOnlyHoverMenu
           label="Laws in Effect"
           buttonStyle={{
             position: "fixed",
-            top: responsivePixels(16),
-            right: responsivePixels(440),
+            top: responsivePixels(20),
+            right: responsivePixels(420),
           }}
         >
           <div
@@ -546,27 +577,14 @@ export function Header() {
 export function Footer({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["factions", "state", "strategycards"]);
+  const factions = gameData.factions;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+
+  const [showTechModal, setShowTechModal] = useState(false);
+  const [showObjectiveModal, setShowObjectiveModal] = useState(false);
+  const [showPlanetModal, setShowPlanetModal] = useState(false);
 
   function shouldBlockSpeakerUpdates() {
     if (state?.phase === "END") {
@@ -576,7 +594,11 @@ export function Footer({}) {
       return false;
     }
 
-    return (subState?.strategyCards ?? []).length !== 0;
+    const selectedCards = Object.values(strategyCards).filter(
+      (card) => !!card.faction
+    );
+
+    return selectedCards.length !== 0;
   }
 
   const orderedFactions = Object.values(factions ?? {}).sort(
@@ -600,7 +622,7 @@ export function Footer({}) {
         justifyContent: "space-between",
       }}
     >
-      {state && state.phase !== "SETUP" ? (
+      {state ? (
         <div
           style={{
             position: "fixed",
@@ -638,30 +660,134 @@ export function Footer({}) {
                 className="flexRow"
                 style={{ width: "100%", alignItems: "center" }}
               >
-                <ClientOnlyHoverMenu label="Techs">
+                <GenericModal
+                  visible={showTechModal}
+                  closeMenu={() => setShowTechModal(false)}
+                >
                   <div
                     className="flexColumn"
-                    style={{ height: "90vh", width: "82vw" }}
+                    style={{
+                      justifyContent: "flex-start",
+                      maxHeight: "calc(100dvh - 24px)",
+                    }}
                   >
-                    <UpdateTechs />
+                    <div
+                      className="centered extraLargeFont"
+                      style={{
+                        backgroundColor: "#222",
+                        padding: `${responsivePixels(4)} ${responsivePixels(
+                          8
+                        )}`,
+                        borderRadius: responsivePixels(4),
+                        width: "min-content",
+                      }}
+                    >
+                      Techs
+                    </div>
+                    <div
+                      className="flexColumn largeFont"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        width: "clamp(80vw, 960px, calc(100vw - 24px))",
+                        justifyContent: "flex-start",
+                        overflow: "auto",
+                      }}
+                    >
+                      <TechPanel />
+                    </div>
                   </div>
-                </ClientOnlyHoverMenu>
-                <ClientOnlyHoverMenu label="Objectives" shift={{ left: 78 }}>
+                </GenericModal>
+                <button onClick={() => setShowTechModal(true)}>Techs</button>
+                <GenericModal
+                  visible={showObjectiveModal}
+                  closeMenu={() => setShowObjectiveModal(false)}
+                >
                   <div
                     className="flexColumn"
-                    style={{ height: "90vh", width: "82vw" }}
+                    style={{
+                      justifyContent: "flex-start",
+                      height: "calc(100dvh - 24px)",
+                    }}
                   >
-                    <ObjectivePanel />
+                    <div
+                      className="centered extraLargeFont"
+                      style={{
+                        backgroundColor: "#222",
+                        padding: `${responsivePixels(4)} ${responsivePixels(
+                          8
+                        )}`,
+                        borderRadius: responsivePixels(4),
+                        width: "min-content",
+                      }}
+                    >
+                      Objectives
+                    </div>
+                    <div
+                      className="flexColumn largeFont"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        width: "clamp(80vw, 1200px, calc(100vw - 24px))",
+                        justifyContent: "flex-start",
+                        overflow: "auto",
+                        height: "fit-content",
+                      }}
+                    >
+                      <ObjectivePanel />
+                    </div>
                   </div>
-                </ClientOnlyHoverMenu>
-                <ClientOnlyHoverMenu label="Planets" shift={{ left: 195 }}>
+                </GenericModal>
+                <button onClick={() => setShowObjectiveModal(true)}>
+                  Objectives
+                </button>
+                <GenericModal
+                  visible={showPlanetModal}
+                  closeMenu={() => setShowPlanetModal(false)}
+                >
+                  <div
+                    className="flexColumn"
+                    style={{
+                      justifyContent: "flex-start",
+                      maxHeight: "calc(100dvh - 24px)",
+                    }}
+                  >
+                    <div
+                      className="centered extraLargeFont"
+                      style={{
+                        backgroundColor: "#222",
+                        padding: `${responsivePixels(4)} ${responsivePixels(
+                          8
+                        )}`,
+                        borderRadius: responsivePixels(4),
+                        width: "min-content",
+                      }}
+                    >
+                      Planets
+                    </div>
+                    <div
+                      className="flexColumn largeFont"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        width: "clamp(80vw, 1200px, calc(100vw - 24px))",
+                        justifyContent: "flex-start",
+                        overflow: "auto",
+                        height: "100%",
+                      }}
+                    >
+                      <PlanetPanel />
+                    </div>
+                  </div>
+                </GenericModal>
+                <button onClick={() => setShowPlanetModal(true)}>
+                  Planets
+                </button>
+                {/* <ClientOnlyHoverMenu label="Planets" shift={{ left: 195 }}>
                   <div
                     className="flexColumn largeFont"
                     style={{ height: "90vh", width: "82vw" }}
                   >
                     <UpdatePlanets />
                   </div>
-                </ClientOnlyHoverMenu>
+                </ClientOnlyHoverMenu> */}
                 {speakerButtonPosition === "bottom" &&
                 !shouldBlockSpeakerUpdates() ? (
                   <div className="flexRow">

@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import React, { CSSProperties, ReactNode, useState } from "react";
-import useSWR from "swr";
 import { capitalizeFirstLetter } from "../../../pages/setup";
-import { AgendaRow } from "../../AgendaRow";
 import { FactionSelectHoverMenu } from "../../components/FactionSelect";
 import { TacticalAction } from "../../components/TacticalAction";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
@@ -13,47 +11,33 @@ import { PlanetRow } from "../../PlanetRow";
 import { SelectableRow } from "../../SelectableRow";
 import { Selector } from "../../Selector";
 import { TechRow } from "../../TechRow";
-import { Agenda } from "../../util/api/agendas";
-import { Attachment } from "../../util/api/attachments";
 import { Component } from "../../util/api/components";
 import { Faction } from "../../util/api/factions";
-import { Objective } from "../../util/api/objectives";
-import {
-  addAttachment,
-  claimPlanet,
-  Planet,
-  purgePlanet,
-  removeAttachment,
-  unclaimPlanet,
-  unpurgePlanet,
-} from "../../util/api/planets";
-import { gainRelic, loseRelic, Relic } from "../../util/api/relics";
-import {
-  addSubStatePlanet,
-  addSubStateTech,
-  clearAddedSubStateTech,
-  clearRemovedSubStateTech,
-  clearSubState,
-  destroySubStatePlanet,
-  hasStateChanged,
-  removeRepealedSubStateAgenda,
-  removeSubStatePlanet,
-  removeSubStateTech,
-  repealSubStateAgenda,
-  selectSubStateComponent,
-  setSubStateComponentDetails,
-  setSubStateOther,
-  setSubStateSelectedAction,
-  SubState,
-  toggleSubStateAttachment,
-  toggleSubStateRelic,
-} from "../../util/api/subState";
 import { hasTech, Tech } from "../../util/api/techs";
-import { fetcher } from "../../util/api/util";
-import { getFactionColor, getFactionName } from "../../util/factions";
+import { getFactionColor } from "../../util/factions";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize, responsivePixels } from "../../util/util";
 import { TechSelectHoverMenu } from "./TechSelectHoverMenu";
+import { useGameData } from "../../data/GameData";
+import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
+import { playComponent, unplayComponent } from "../../util/api/playComponent";
+import { PlayComponentData } from "../../util/model/playComponent";
+import {
+  getClaimedPlanets,
+  getGainedRelic,
+  getPurgedPlanet,
+  getReplacedTechs,
+  getResearchedTechs,
+  getScoredObjectives,
+  getSelectedFaction,
+  getSelectedSubComponent,
+} from "../../util/actionLog";
+import { addTech, removeTech } from "../../util/api/addTech";
+import { gainRelic, loseRelic } from "../../util/api/gainRelic";
+import { updatePlanetState } from "../../util/api/updatePlanetState";
+import { addAttachment, removeAttachment } from "../../util/api/addAttachment";
+import { selectFaction } from "../../util/api/selectFaction";
+import { selectSubComponent } from "../../util/api/selectSubComponent";
 
 function InfoContent({ component }: { component: Component }) {
   const description = component.description.replaceAll("\\n", "\n");
@@ -345,55 +329,23 @@ function ComponentSelect({
 function ComponentDetails({ factionName }: { factionName: string }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
-    gameid ? `/api/${gameid}/attachments` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: techs }: { data?: Record<string, Tech> } = useSWR(
-    gameid ? `/api/${gameid}/techs` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
-    gameid ? `/api/${gameid}/relics` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "attachments",
+    "factions",
+    "objectives",
+    "planets",
+    "relics",
+    "techs",
+  ]);
+  const attachments = gameData.attachments;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const planets = gameData.planets;
+  const relics = gameData.relics;
+  const techs = gameData.techs;
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
 
   if (!factions) {
     return null;
@@ -415,8 +367,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       ) {
         return false;
       }
-      const researchedTechs =
-        ((subState?.factions ?? {})[faction.name] ?? {}).techs ?? [];
+      const researchedTechs = getResearchedTechs(currentTurn, faction.name);
       if (researchedTechs.includes(tech.name)) {
         return false;
       }
@@ -431,60 +382,54 @@ function ComponentDetails({ factionName }: { factionName: string }) {
     return availableTechs;
   }
 
-  function addTech(tech: Tech) {
+  function addTechLocal(tech: Tech) {
     if (!gameid) {
       return;
     }
-    addSubStateTech(gameid, factionName, tech.name);
+    addTech(gameid, factionName, tech.name);
   }
-  function removeTech(techName: string) {
+  function removeTechLocal(techName: string) {
     if (!gameid) {
       return;
     }
-    clearAddedSubStateTech(gameid, factionName, techName);
+    removeTech(gameid, factionName, techName);
   }
   function addRemoveTech(tech: Tech) {
     if (!gameid) {
       return;
     }
-    removeSubStateTech(gameid, factionName, tech.name);
+    removeTech(gameid, factionName, tech.name);
   }
   function clearAddedTech(techName: string) {
     if (!gameid) {
       return;
     }
-    clearRemovedSubStateTech(gameid, factionName, techName);
+    addTech(gameid, factionName, techName);
   }
   function addRelic(relicName: string) {
     if (!gameid) {
       return;
     }
-    gainRelic(gameid, relicName, factionName);
-    toggleSubStateRelic(gameid, relicName, factionName);
+    gainRelic(gameid, factionName, relicName);
   }
   function removeRelic(relicName: string) {
     if (!gameid) {
       return;
     }
-    loseRelic(gameid, relicName, factionName);
-    toggleSubStateRelic(gameid, undefined, factionName);
+    loseRelic(gameid, factionName, relicName);
   }
   function destroyPlanet(planetName: string) {
     if (!gameid) {
       return;
     }
-    const prevOwner = (planets ?? {})[planetName]?.owner;
 
-    purgePlanet(gameid, planetName);
-    destroySubStatePlanet(gameid, planetName, prevOwner);
+    updatePlanetState(gameid, planetName, "PURGED");
   }
   function undestroyPlanet(planetName: string) {
     if (!gameid) {
       return;
     }
-    let prevOwner = subState?.turnData?.destroyedPlanet?.prevOwner;
-    unpurgePlanet(gameid, planetName);
-    destroySubStatePlanet(gameid, undefined, prevOwner);
+    updatePlanetState(gameid, planetName, "READIED");
   }
   function toggleAttachment(
     planetName: string,
@@ -500,15 +445,6 @@ function ComponentDetails({ factionName }: { factionName: string }) {
     } else {
       removeAttachment(gameid, planetName, attachmentName);
     }
-    toggleSubStateAttachment(
-      gameid,
-      add ? planetName : undefined,
-      attachmentName
-    );
-  }
-
-  if (!subState) {
-    return null;
   }
 
   const updatedPlanets = applyAllPlanetAttachments(
@@ -522,9 +458,12 @@ function ComponentDetails({ factionName }: { factionName: string }) {
   let lineColor: string | undefined;
   let innerContent: ReactNode | undefined;
 
-  let componentName = subState?.turnData?.component?.name;
+  let componentName = currentTurn
+    .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
+    .map((logEntry) => (logEntry.data as PlayComponentData).event.name)[0];
+
   if (componentName === "Ssruu") {
-    componentName = subState?.turnData?.component?.subComponent;
+    componentName = getSelectedSubComponent(currentTurn);
   }
 
   switch (componentName) {
@@ -538,8 +477,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         innerContent = "Gain 3 command tokens";
         break;
       }
-      const researchedTech =
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).techs ?? [];
+      const researchedTech = getResearchedTechs(currentTurn, factionName);
       const availableTechs = getResearchableTechs(faction);
 
       if (researchedTech.length > 0) {
@@ -558,7 +496,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                 <TechRow
                   key={tech}
                   tech={techObj}
-                  removeTech={() => removeTech(tech)}
+                  removeTech={() => removeTechLocal(tech)}
                 />
               );
             })}
@@ -566,7 +504,11 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         );
       } else {
         innerContent = (
-          <TechSelectHoverMenu techs={availableTechs} selectTech={addTech} />
+          <TechSelectHoverMenu
+            factionName={factionName}
+            techs={availableTechs}
+            selectTech={addTechLocal}
+          />
         );
       }
       break;
@@ -576,9 +518,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       if (!faction || !techs) {
         break;
       }
-      const returnedTechs =
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).removeTechs ??
-        [];
+      const returnedTechs = getReplacedTechs(currentTurn, factionName);
       const canReturnTechs = Object.keys(faction.techs ?? {})
         .filter((tech) => {
           const techObj = techs[tech];
@@ -588,8 +528,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
           return !techObj.faction && techObj.type !== "UPGRADE";
         })
         .map((tech) => techs[tech] as Tech);
-      const researchedTech =
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).techs ?? [];
+      const researchedTech = getResearchedTechs(currentTurn, factionName);
       const availableTechs = getResearchableTechs(faction);
 
       innerContent = (
@@ -607,7 +546,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                       key={tech}
                       tech={techObj}
                       removeTech={() => {
-                        researchedTech.forEach(removeTech);
+                        researchedTech.forEach(removeTechLocal);
                         clearAddedTech(tech);
                       }}
                     />
@@ -625,15 +564,16 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                       <TechRow
                         key={tech}
                         tech={techObj}
-                        removeTech={() => removeTech(tech)}
+                        removeTech={() => removeTechLocal(tech)}
                       />
                     );
                   })}
                 </LabeledDiv>
               ) : factionName !== "Nekro Virus" ? (
                 <TechSelectHoverMenu
+                  factionName={factionName}
                   techs={availableTechs}
-                  selectTech={addTech}
+                  selectTech={addTechLocal}
                 />
               ) : (
                 "Gain 3 command tokens"
@@ -641,6 +581,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
             </React.Fragment>
           ) : (
             <TechSelectHoverMenu
+              factionName={factionName}
               techs={canReturnTechs}
               label="Return Tech"
               selectTech={addRemoveTech}
@@ -696,12 +637,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                 </div>
               );
             }}
-            selectedItem={
-              (
-                ((subState.turnData ?? {}).factions ?? {})[factionName]
-                  ?.relic ?? {}
-              ).name
-            }
+            selectedItem={getGainedRelic(currentTurn)}
             toggleItem={(relicName, add) => {
               if (add) {
                 addRelic(relicName);
@@ -725,7 +661,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
           );
         }
       );
-      const destroyedPlanet = (subState.turnData ?? {}).destroyedPlanet?.name;
+      const destroyedPlanet = getPurgedPlanet(currentTurn);
       if (destroyedPlanet) {
         leftLabel = "Destroyed Planet";
       }
@@ -753,6 +689,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       break;
     }
     case "Nano-Forge": {
+      // TODO: Check if Mecatol can be Nano-Forged
       const ownedNonHomeNonLegendaryPlanets = updatedPlanets.filter(
         (planet) => {
           return (
@@ -763,13 +700,11 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         }
       );
       let nanoForgedPlanet: string | undefined;
-      Object.entries((subState.turnData ?? {}).attachments ?? {}).forEach(
-        ([attachmentName, planetName]) => {
-          if (attachmentName === "Nano-Forge") {
-            nanoForgedPlanet = planetName;
-          }
+      Object.values(planets).forEach((planet) => {
+        if ((planet.attachments ?? []).includes("Nano-Forge")) {
+          nanoForgedPlanet = planet.name;
         }
-      );
+      });
       if (nanoForgedPlanet) {
         leftLabel = "Attached to";
       }
@@ -821,13 +756,11 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         }
       );
       let terraformedPlanet: string | undefined;
-      Object.entries((subState.turnData ?? {}).attachments ?? {}).forEach(
-        ([attachmentName, planetName]) => {
-          if (attachmentName === "Terraform") {
-            terraformedPlanet = planetName;
-          }
+      Object.values(planets).forEach((planet) => {
+        if ((planet.attachments ?? []).includes("Terraform")) {
+          terraformedPlanet = planet.name;
         }
-      );
+      });
       if (terraformedPlanet) {
         leftLabel = "Attached to";
       }
@@ -871,8 +804,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       const nonHomeUnownedPlanets = updatedPlanets.filter((planet) => {
         return !planet.home && !planet.locked && planet.owner !== factionName;
       });
-      const conqueredPlanets =
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).planets ?? [];
+      const conqueredPlanets = getClaimedPlanets(currentTurn, factionName);
       const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
         if (planet.home || planet.locked || planet.owner === factionName) {
           return false;
@@ -882,9 +814,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         }
         return true;
       });
-      const scoredObjectives =
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).objectives ??
-        [];
+      const scoredObjectives = getScoredObjectives(currentTurn, factionName);
       const scorableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           const scorers = objective.scorers ?? [];
@@ -911,7 +841,6 @@ function ComponentDetails({ factionName }: { factionName: string }) {
           return objective.phase === "ACTION";
         }
       );
-      console.log(scorableObjectives);
 
       innerContent = (
         <TacticalAction
@@ -919,13 +848,13 @@ function ComponentDetails({ factionName }: { factionName: string }) {
           attachments={attachments ?? {}}
           claimablePlanets={conqueredPlanets.length < 3 ? claimablePlanets : []}
           conqueredPlanets={conqueredPlanets}
+          currentTurn={getCurrentTurnLogEntries(gameData.actionLog ?? [])}
           factions={factions ?? {}}
           gameid={gameid ?? ""}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
           scoredObjectives={scoredObjectives}
           scorableObjectives={scorableObjectives}
-          subState={subState ?? {}}
           style={{ width: "100%" }}
           techs={techs ?? {}}
         />
@@ -933,11 +862,11 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       break;
     }
     case "Z'eu": {
-      const selectedFaction = subState.turnData?.component?.selectedFaction;
+      const selectedFaction = getSelectedFaction(currentTurn);
 
-      const claimedPlanets =
-        ((subState.turnData?.factions ?? {})[selectedFaction ?? ""] ?? {})
-          .planets ?? [];
+      const claimedPlanets = selectedFaction
+        ? getClaimedPlanets(currentTurn, selectedFaction)
+        : [];
       const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
         if (!planets) {
           return false;
@@ -949,12 +878,12 @@ function ComponentDetails({ factionName }: { factionName: string }) {
           return false;
         }
         for (const claimedPlanet of claimedPlanets) {
-          if (claimedPlanet.name === planet.name) {
+          if (claimedPlanet.planet === planet.name) {
             return false;
           }
         }
         if (claimedPlanets.length > 0) {
-          const claimedPlanetName = claimedPlanets[0]?.name;
+          const claimedPlanetName = claimedPlanets[0]?.planet;
           const claimedPlanet = planets[claimedPlanetName ?? ""];
           if (claimedPlanet?.system) {
             return planet.system === claimedPlanet.system;
@@ -966,9 +895,9 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         }
         return true;
       });
-      const scoredObjectives =
-        ((subState.turnData?.factions ?? {})[selectedFaction ?? ""] ?? {})
-          .objectives ?? [];
+      const scoredObjectives = selectedFaction
+        ? getScoredObjectives(currentTurn, selectedFaction)
+        : [];
       const scorableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           const scorers = objective.scorers ?? [];
@@ -996,16 +925,12 @@ function ComponentDetails({ factionName }: { factionName: string }) {
         <FactionSelectHoverMenu
           allowNone={false}
           selectedFaction={selectedFaction}
-          options={
-            hasStateChanged(subState) && selectedFaction
-              ? [selectedFaction]
-              : Object.keys(factions)
-          }
+          options={Object.keys(factions)}
           onSelect={(factionName, _) => {
             if (!gameid) {
               return;
             }
-            setSubStateComponentDetails(gameid, "selectedFaction", factionName);
+            selectFaction(gameid, factionName ?? "None");
           }}
           size={44}
           borderColor={getFactionColor(factions[selectedFaction ?? ""])}
@@ -1021,13 +946,13 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                 attachments={attachments ?? {}}
                 claimablePlanets={claimablePlanets}
                 conqueredPlanets={claimedPlanets}
+                currentTurn={getCurrentTurnLogEntries(gameData.actionLog ?? [])}
                 factions={factions ?? {}}
                 gameid={gameid ?? ""}
                 objectives={objectives ?? {}}
                 planets={planets ?? {}}
                 scorableObjectives={scorableObjectives}
                 scoredObjectives={scoredObjectives}
-                subState={subState ?? {}}
                 style={{ width: "100%" }}
                 techs={techs ?? {}}
               />
@@ -1042,8 +967,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       if (!faction) {
         break;
       }
-      const researchedTech =
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).techs ?? [];
+      const researchedTech = getResearchedTechs(currentTurn, factionName);
       const availableTechs = getResearchableTechs(faction).filter((tech) => {
         return !tech.faction && tech.type !== "UPGRADE";
       });
@@ -1064,7 +988,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
                 <TechRow
                   key={tech}
                   tech={techObj}
-                  removeTech={() => removeTech(tech)}
+                  removeTech={() => removeTechLocal(tech)}
                 />
               );
             })}
@@ -1073,9 +997,10 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       } else {
         innerContent = (
           <TechSelectHoverMenu
+            factionName={factionName}
             label="Gain Tech"
             techs={availableTechs}
-            selectTech={addTech}
+            selectTech={addTechLocal}
           />
         );
       }
@@ -1101,7 +1026,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
     //     justifyContent: "flex-start",
     //   };
 
-    //   const repealedAgenda = agendas[subState.repealedAgenda ?? ""];
+    //   const repealedAgenda = getRepealedAgenda(currentTurn);
 
     //   innerContent = (
     //     <div className="flexColumn" style={{ width: "100%" }}>
@@ -1206,61 +1131,51 @@ function ComponentDetails({ factionName }: { factionName: string }) {
 export function ComponentAction({ factionName }: { factionName: string }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: components }: { data?: Record<string, Component> } = useSWR(
-    gameid ? `/api/${gameid}/components` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: relics }: { data?: Record<string, Relic> } = useSWR(
-    gameid ? `/api/${gameid}/relics` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "components",
+    "factions",
+    "relics",
+  ]);
+  const components = gameData.components;
+  const factions = gameData.factions;
+  const relics = gameData.relics;
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   function displayInfo() {
     setShowInfoModal(true);
   }
 
-  const component =
-    (components ?? {})[subState.turnData?.component?.name ?? ""] ?? null;
+  const playedComponent = currentTurn
+    .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
+    .map((logEntry) => (logEntry.data as PlayComponentData).event.name)[0];
 
-  async function selectComponent(componentName: string | undefined) {
+  const component = (components ?? {})[playedComponent ?? ""] ?? null;
+
+  async function selectComponent(componentName: string) {
     if (!gameid) {
       return;
     }
-    if (!componentName) {
-      setSubStateSelectedAction(gameid, "Component");
-    } else {
-      const updatedName = componentName
-        .replace(/\./g, "")
-        .replace(/,/g, "")
-        .replace(/ Ω/g, "");
-      console.log(updatedName);
-      selectSubStateComponent(gameid, updatedName);
-      if (componentName === "Ul The Progenitor") {
-        addAttachment(gameid, "Elysium", "Ul the Progenitor");
-        toggleSubStateAttachment(gameid, "Elysium", "Ul the Progenitor");
-      }
+    const updatedName = componentName
+      .replace(/\./g, "")
+      .replace(/,/g, "")
+      .replace(/ Ω/g, "");
+    playComponent(gameid, updatedName);
+  }
+
+  function unselectComponent(componentName: string) {
+    if (!gameid) {
+      return;
     }
+
+    const updatedName = componentName
+      .replace(/\./g, "")
+      .replace(/,/g, "")
+      .replace(/ Ω/g, "");
+    unplayComponent(gameid, updatedName);
   }
 
   if (!factions) {
@@ -1327,9 +1242,6 @@ export function ComponentAction({ factionName }: { factionName: string }) {
           return false;
         }
 
-        if (component.name === "Terraform") {
-          console.log(component);
-        }
         if (component.state === "purged") {
           return false;
         }
@@ -1391,7 +1303,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
         <LabeledDiv label="Component" style={{ width: "90%" }}>
           <SelectableRow
             itemName={component.name}
-            removeItem={() => selectComponent(undefined)}
+            removeItem={() => unselectComponent(component.name)}
           >
             {component.name}
             <div
@@ -1411,7 +1323,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
               <Selector
                 hoverMenuLabel="Select Agent"
                 options={agentsForSsruu}
-                selectedItem={subState.turnData?.component?.subComponent}
+                selectedItem={getSelectedSubComponent(currentTurn)}
                 toggleItem={(agent, add) => {
                   if (!gameid) {
                     return;
@@ -1420,16 +1332,7 @@ export function ComponentAction({ factionName }: { factionName: string }) {
                     .replace(/\./g, "")
                     .replace(/,/g, "")
                     .replace(/ Ω/g, "");
-                  setSubStateComponentDetails(
-                    gameid,
-                    "subComponent",
-                    add ? updatedName : undefined
-                  );
-                  setSubStateComponentDetails(
-                    gameid,
-                    "selectedFaction",
-                    undefined
-                  );
+                  selectSubComponent(gameid, add ? updatedName : "None");
                 }}
               />
             </div>

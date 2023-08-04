@@ -1,6 +1,4 @@
 import { useRouter } from "next/router";
-import useSWR from "swr";
-import { fetcher } from "../util/api/util";
 import { computeVPs, FactionSummary } from "../FactionSummary";
 import { LabeledDiv } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -8,11 +6,8 @@ import { responsivePixels } from "../util/util";
 import { StaticFactionTimer } from "../Timer";
 import { getInitiativeForFaction } from "../util/helpers";
 import { Faction } from "../util/api/factions";
-import { Objective } from "../util/api/objectives";
-import { Options } from "../util/api/options";
-import { StrategyCard } from "../util/api/cards";
 import { getDefaultStrategyCards } from "../util/api/defaults";
-import { GameState } from "../util/api/state";
+import { useGameData } from "../data/GameData";
 
 function sortByOrder(a: [string, Faction], b: [string, Faction]) {
   if (a[1].order > b[1].order) {
@@ -30,40 +25,18 @@ export interface SummaryColumnProps {
 export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives = {} }: { data?: Record<string, Objective> } =
-    useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, {
-      revalidateIfStale: false,
-    });
-  const { data: options }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "factions",
+    "objectives",
+    "options",
+    "state",
+    "strategycards",
+  ]);
+  const factions = gameData.factions;
+  const objectives = gameData.objectives ?? {};
+  const options = gameData.options;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
 
   if (!options || !factions) {
     return <div>Loading...</div>;

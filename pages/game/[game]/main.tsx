@@ -1,29 +1,23 @@
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import { useEffect } from "react";
-import { fetcher, setGameId } from "../../../src/util/api/util";
-import AgendaPhase from "../../../src/main/AgendaPhase";
-import SetupPhase from "../../../src/main/SetupPhase";
-import StrategyPhase from "../../../src/main/StrategyPhase";
-import ActionPhase from "../../../src/main/ActionPhase";
-import StatusPhase from "../../../src/main/StatusPhase";
-import { Updater } from "../../../src/Updater";
 import { Footer, Header } from "../../../src/Header";
-import ResultsPhase from "../../../src/main/ResultsPhase";
-import { GameState } from "../../../src/util/api/state";
 import { FullScreenLoader } from "../../../src/Loader";
+import { Updater } from "../../../src/Updater";
+import { useGameData } from "../../../src/data/GameData";
+import ActionPhase from "../../../src/main/ActionPhase";
+import AgendaPhase from "../../../src/main/AgendaPhase";
+import ResultsPhase from "../../../src/main/ResultsPhase";
+import SetupPhase from "../../../src/main/SetupPhase";
+import StatusPhase from "../../../src/main/StatusPhase";
+import StrategyPhase from "../../../src/main/StrategyPhase";
 import SummaryColumn from "../../../src/main/SummaryColumn";
+import { setGameId } from "../../../src/util/api/util";
 
 export default function MainScreenPage() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["state"]);
+  const state = gameData.state;
 
   useEffect(() => {
     if (!!gameid) {

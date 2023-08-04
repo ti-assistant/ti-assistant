@@ -1,14 +1,12 @@
 import { StrategyCard } from "./api/cards";
 import { Faction } from "./api/factions";
 import { GameState } from "./api/state";
-import { SubState } from "./api/subState";
 import { getNextIndex } from "./util";
 
 export function getOnDeckFaction(
   state: GameState,
   factions: Record<string, Faction>,
-  strategyCards: Record<string, StrategyCard>,
-  subState: SubState
+  strategyCards: Record<string, StrategyCard>
 ): Faction | undefined {
   switch (state.phase) {
     case "SETUP":
@@ -24,7 +22,15 @@ export function getOnDeckFaction(
         return undefined;
       }
       const numFactions = Object.keys(factions).length;
-      const numPickedCards = (subState.strategyCards ?? []).length;
+      const numPickedCards = Object.values(strategyCards).reduce(
+        (num, card) => {
+          if (card.faction) {
+            return num + 1;
+          }
+          return num;
+        },
+        0
+      );
       if (numFactions === 3 || numFactions === 4) {
         switch (numPickedCards) {
           // Last player is currently picking their second card.
@@ -156,47 +162,6 @@ export function getOnDeckFaction(
       );
     }
   }
-}
-
-export function getLastPickedCard(state: GameState, subState: SubState) {
-  if (state.phase !== "STRATEGY") {
-    return undefined;
-  }
-
-  if (!subState.strategyCards) {
-    return undefined;
-  }
-  return subState.strategyCards[subState.strategyCards.length - 1];
-}
-
-export function findLastPickedCard(subState: SubState) {
-  if (!subState.strategyCards || subState.strategyCards.length === 0) {
-    return undefined;
-  }
-  return subState.strategyCards[subState.strategyCards.length - 1];
-}
-
-export function getPreviousFaction(
-  state: GameState,
-  factions: Record<string, Faction>,
-  subState: SubState
-) {
-  // TODO: Add ability to get previous faction in action phase.
-  if (state.phase !== "STRATEGY") {
-    return undefined;
-  }
-
-  if (!subState.strategyCards) {
-    return undefined;
-  }
-
-  const lastPicked = subState.strategyCards[subState.strategyCards.length - 1];
-
-  if (!lastPicked) {
-    return undefined;
-  }
-
-  return factions[lastPicked.pickedBy];
 }
 
 /**

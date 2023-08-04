@@ -1,51 +1,29 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
-import useSWR from "swr";
+import { useEffect, useState } from "react";
 import { FullFactionSymbol } from "./FactionCard";
 import { Modal } from "./Modal";
 import { FullPlanetSymbol, LegendaryPlanetIcon, PlanetRow } from "./PlanetRow";
 import { ResponsiveResources } from "./Resources";
-import {
-  FullTechIcon,
-  TechRow,
-  TechSkipIcon,
-  WrappedTechIcon,
-} from "./TechRow";
-import { Faction, manualVPUpdate } from "./util/api/factions";
-import { claimPlanet, Planet, unclaimPlanet } from "./util/api/planets";
-import { fetcher } from "./util/api/util";
+import { TechSkipIcon, WrappedTechIcon } from "./TechRow";
+import { Faction } from "./util/api/factions";
+import { Planet } from "./util/api/planets";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { filterToOwnedTechs, getTechColor, sortTechs } from "./util/techs";
-import {
-  pluralize,
-  responsiveNegativePixels,
-  responsivePixels,
-} from "./util/util";
-import {
-  hasTech,
-  lockTech,
-  Tech,
-  TechType,
-  unlockTech,
-} from "./util/api/techs";
+import { filterToOwnedTechs, getTechColor } from "./util/techs";
+import { pluralize, responsivePixels } from "./util/util";
+import { Tech, TechType } from "./util/api/techs";
 import { ObjectiveRow } from "./ObjectiveRow";
-import {
-  Objective,
-  removeObjective,
-  revealObjective,
-  scoreObjective,
-  unscoreObjective,
-} from "./util/api/objectives";
 import React from "react";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { LabeledDiv } from "./LabeledDiv";
-import { GameState } from "./util/api/state";
-import { Options } from "./util/api/options";
-import { Attachment } from "./util/api/attachments";
-import Image from "next/image";
+import { useGameData } from "./data/GameData";
+import { claimPlanet, unclaimPlanet } from "./util/api/claimPlanet";
+import { hideObjective, revealObjective } from "./util/api/revealObjective";
+import { scoreObjective, unscoreObjective } from "./util/api/scoreObjective";
+import { Objective } from "./util/api/objectives";
+import { manualVPUpdate } from "./util/api/manualVPUpdate";
 
 function TechList({ techs }: { techs: Tech[] }) {
   return (
@@ -136,27 +114,10 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
 export function UpdateObjectives({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["factions", "objectives", "state"]);
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const state = gameData.state;
 
   const [factionName, setFactionName] = useState("");
 
@@ -174,7 +135,6 @@ export function UpdateObjectives({}) {
       return;
     }
     if (score) {
-      addObjective(objectiveName);
       scoreObjective(gameid, factionName, objectiveName);
     } else {
       unscoreObjective(gameid, factionName, objectiveName);
@@ -185,14 +145,14 @@ export function UpdateObjectives({}) {
     if (!gameid) {
       return;
     }
-    revealObjective(gameid, factionName, objectiveName);
+    revealObjective(gameid, objectiveName);
   }
 
   function removeObj(objectiveName: string) {
     if (!gameid) {
       return;
     }
-    removeObjective(gameid, factionName, objectiveName);
+    hideObjective(gameid, objectiveName);
   }
 
   const orderedFactionNames = Object.keys(factions ?? {}).sort();
@@ -578,13 +538,8 @@ export function UpdateObjectivesModal({
 }: UpdateObjectivesModalProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["state"]);
+  const state = gameData.state;
 
   const [factionName, setFactionName] = useState("");
 
@@ -610,370 +565,38 @@ export function UpdateObjectivesModal({
   );
 }
 
-export function UpdateTechs({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const { data: techs }: { data?: Record<string, Tech> } = useSWR(
-    gameid ? `/api/${gameid}/techs` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-
-  const [factionName, setFactionName] = useState("");
-
-  if (!state || !factions) {
-    return null;
-  }
-
-  if (factionName === "") {
-    if (state.activeplayer && state.activeplayer !== "None") {
-      setFactionName(state.activeplayer);
-    } else {
-      setFactionName(state.speaker);
-    }
-    return null;
-  }
-
-  const faction = factions[factionName];
-  if (!faction) {
-    return null;
-  }
-
-  const techsObj: Record<string, Tech> = {};
-  Object.values(techs ?? {}).forEach((tech) => {
-    if (!factions) {
-      return;
-    }
-    if (tech.faction) {
-      if (factionName === "Nekro Virus" && !factions[tech.faction]) {
-        return;
-      } else if (
-        factionName !== "Nekro Virus" &&
-        tech.faction !== factionName
-      ) {
-        return;
-      }
-    }
-    techsObj[tech.name] = tech;
-  });
-  if (factionName !== "Nekro Virus") {
-    Object.values(techsObj).forEach((tech) => {
-      if (tech.replaces) {
-        delete techsObj[tech.replaces];
-      }
-    });
-  }
-
-  const techArr = Object.values(techsObj);
-  sortTechs(techArr);
-  const greenTechs = techArr.filter((tech) => tech.type === "GREEN");
-  const blueTechs = techArr.filter((tech) => tech.type === "BLUE");
-  const yellowTechs = techArr.filter((tech) => tech.type === "YELLOW");
-  const redTechs = techArr.filter((tech) => tech.type === "RED");
-  const upgradeTechs = techArr.filter((tech) => tech.type === "UPGRADE");
-
-  function addTech(toAdd: string) {
-    if (!gameid) {
-      return;
-    }
-    unlockTech(gameid, factionName, toAdd);
-  }
-
-  function removeTech(toRemove: string) {
-    if (!gameid) {
-      return;
-    }
-    lockTech(gameid, factionName, toRemove);
-  }
-
-  function getTechRow(tech: Tech) {
-    if (!tech.name || !faction) {
-      return <div style={{ height: "10px" }}></div>;
-    }
-    if (hasTech(faction, tech.name)) {
-      return (
-        <div key={tech.name}>
-          <TechRow tech={tech} removeTech={removeTech} />
-        </div>
-      );
-    } else {
-      return (
-        <div key={tech.name}>
-          <TechRow tech={tech} addTech={addTech} />
-        </div>
-      );
-    }
-  }
-
-  const orderedFactionNames = Object.keys(factions).sort();
-
-  return (
-    <div
-      className="flexColumn"
-      style={{ justifyContent: "flex-start", width: "100%", height: "100%" }}
-    >
-      <div
-        style={{
-          fontSize: responsivePixels(24),
-          marginTop: responsivePixels(8),
-        }}
-      >
-        Update techs for {getFactionName(factions[factionName])}
-      </div>
-      <div
-        className="flexColumn"
-        style={{
-          top: 0,
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          zIndex: -1,
-          opacity: 0.2,
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            position: "relative",
-            height: responsivePixels(240),
-            width: responsivePixels(240),
-          }}
-        >
-          <FullFactionSymbol faction={factionName} />
-        </div>
-      </div>
-      <div
-        className="flexRow"
-        style={{
-          flexWrap: "wrap",
-          backgroundColor: "#222",
-          zIndex: 904,
-          fontSize: responsivePixels(14),
-        }}
-      >
-        {orderedFactionNames.map((name) => {
-          return (
-            <button
-              key={name}
-              className={name === factionName ? "selected" : ""}
-              style={{ fontSize: responsivePixels(14) }}
-              onClick={() => setFactionName(name)}
-            >
-              {name}
-            </button>
-          );
-        })}
-      </div>
-      <div
-        className="flexRow"
-        style={{
-          alignItems: "stretch",
-          justifyContent: "space-between",
-          width: "100%",
-          height: "100%",
-          boxSizing: "border-box",
-          overflowY: "auto",
-          padding: responsivePixels(8),
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{ alignItems: "stretch", justifyContent: "flex-start" }}
-        >
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", justifyContent: "flex-start" }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "center",
-                fontSize: responsivePixels(20),
-              }}
-            >
-              <WrappedTechIcon type="GREEN" size={20} />
-              Biotic
-              <WrappedTechIcon type="GREEN" size={20} />{" "}
-            </div>
-            <div>{greenTechs.map(getTechRow)}</div>
-          </div>
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", justifyContent: "flex-start" }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "center",
-                fontSize: responsivePixels(20),
-              }}
-            >
-              <WrappedTechIcon type="RED" size={20} />
-              Warfare
-              <WrappedTechIcon type="RED" size={20} />
-            </div>
-            <div>{redTechs.map(getTechRow)}</div>
-          </div>
-        </div>
-        <div
-          className="flexColumn"
-          style={{ alignItems: "stretch", justifyContent: "flex-start" }}
-        >
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", justifyContent: "flex-start" }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "center",
-                fontSize: responsivePixels(20),
-              }}
-            >
-              <WrappedTechIcon type="BLUE" size={20} />
-              Propulsion
-              <WrappedTechIcon type="BLUE" size={20} />
-            </div>
-            <div>{blueTechs.map(getTechRow)}</div>
-          </div>
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", justifyContent: "flex-start" }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "center",
-                fontSize: responsivePixels(20),
-              }}
-            >
-              <WrappedTechIcon type="YELLOW" size={20} />
-              Cybernetic
-              <WrappedTechIcon type="YELLOW" size={20} />
-            </div>
-            <div>{yellowTechs.map(getTechRow)}</div>
-          </div>
-        </div>
-        <div
-          className="flexColumn"
-          style={{ justifyContent: "flex-start", alignItems: "stretch" }}
-        >
-          <div
-            className="flexColumn"
-            style={{ fontSize: responsivePixels(20) }}
-          >
-            Unit Upgrades
-          </div>
-          <div>{upgradeTechs.map(getTechRow)}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export interface UpdateTechsModalProps {
-  visible: boolean;
-  onComplete: () => void;
-}
-
-export function UpdateTechsModal({
-  visible,
-  onComplete,
-}: UpdateTechsModalProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-
-  const [factionName, setFactionName] = useState("");
-
-  if (!state) {
-    return null;
-  }
-
-  if (factionName === "") {
-    setFactionName(state.speaker);
-    return null;
-  }
-
-  return (
-    <div>
-      <Modal
-        closeMenu={onComplete}
-        title={"Update Techs for " + factionName}
-        visible={visible}
-      >
-        <UpdateTechs />
-      </Modal>
-    </div>
-  );
-}
-
 export function UpdatePlanets({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
-    gameid ? `/api/${gameid}/attachments` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "attachments",
+    "factions",
+    "planets",
+    "state",
+  ]);
+  const attachments = gameData.attachments;
+  const factions = gameData.factions;
+  const planets = gameData.planets;
+  const state = gameData.state;
 
   const [factionName, setFactionName] = useState("");
 
-  if (!state) {
-    return null;
-  }
-
-  if (factionName === "") {
-    if (state.activeplayer && state.activeplayer !== "None") {
+  useEffect(() => {
+    if (
+      state.activeplayer &&
+      state.activeplayer !== "" &&
+      state.activeplayer !== "None"
+    ) {
       setFactionName(state.activeplayer);
-    } else {
-      setFactionName(state.speaker);
+      return;
     }
+    if (state.speaker && state.speaker !== "" && state.speaker !== "None") {
+      setFactionName(state.speaker);
+      return;
+    }
+  }, [state.activeplayer, state.speaker]);
+
+  if (!state) {
     return null;
   }
 
@@ -991,14 +614,14 @@ export function UpdatePlanets({}) {
     if (!gameid) {
       return;
     }
-    unclaimPlanet(gameid, toRemove, factionName);
+    unclaimPlanet(gameid, factionName, toRemove);
   }
 
   function addPlanet(toAdd: string) {
     if (!gameid) {
       return;
     }
-    claimPlanet(gameid, toAdd, factionName);
+    claimPlanet(gameid, factionName, toAdd);
   }
   const orderedFactionNames = Object.keys(factions ?? {}).sort();
 
@@ -1177,13 +800,8 @@ export function UpdatePlanetsModal({
 }: UpdatePlanetsModalProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["state"]);
+  const state = gameData.state;
 
   const [factionName, setFactionName] = useState("");
 
@@ -1224,13 +842,8 @@ export function PlanetSummary({
 }: PlanetSummaryProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: gameOptions }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["options"]);
+  const gameOptions = gameData.options;
 
   let numPlanets = 0;
   let resources = 0;
@@ -1373,7 +986,7 @@ export function computeVPs(
           }
           return count;
         }, 0);
-        return total + count * objective.points;
+        return Math.max(0, total + count * objective.points);
       }, 0)
   );
 }
@@ -1393,48 +1006,20 @@ export function FactionSummary({
 }: FactionSummaryProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: attachments } = useSWR(
-    gameid ? `/api/${gameid}/attachments` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: techs }: { data?: Record<string, Tech> } = useSWR(
-    gameid ? `/api/${gameid}/techs` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "attachments",
+    "factions",
+    "objectives",
+    "planets",
+    "state",
+    "techs",
+  ]);
+  const attachments = gameData.attachments ?? {};
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const planets = gameData.planets;
+  const state = gameData.state;
+  const techs = gameData.techs;
 
   const faction = factions ? factions[factionName] : undefined;
 

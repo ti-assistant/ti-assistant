@@ -6,31 +6,24 @@ import React, {
   ReactNode,
   useState,
 } from "react";
-import useSWR from "swr";
 import { ClientOnlyHoverMenu } from "./HoverMenu";
 import { LabeledDiv } from "./LabeledDiv";
 import { SelectableRow } from "./SelectableRow";
-import {
-  unassignStrategyCard,
-  swapStrategyCards,
-  setFirstStrategyCard,
-  StrategyCard,
-} from "./util/api/cards";
-import { chooseSubFaction, Faction, SubFaction } from "./util/api/factions";
-import {
-  chooseStartingTech,
-  hasTech,
-  removeStartingTech,
-  Tech,
-  TechType,
-} from "./util/api/techs";
-import { fetcher } from "./util/api/util";
+import { Faction, SubFaction } from "./util/api/factions";
+import { hasTech, Tech, TechType } from "./util/api/techs";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { getNextIndex, responsivePixels } from "./util/util";
-import { Options } from "./util/api/options";
-import { GameState } from "./util/api/state";
 import { getDefaultStrategyCards } from "./util/api/defaults";
+import { useGameData } from "./data/GameData";
+import { SymbolX } from "./icons/svgs";
+import { swapStrategyCards } from "./util/api/swapStrategyCards";
+import { getCurrentTurnLogEntries } from "./util/api/actionLog";
+import {
+  chooseStartingTech,
+  removeStartingTech,
+} from "./util/api/chooseStartingTech";
+import { chooseSubFaction } from "./util/api/chooseSubFaction";
 
 export interface FactionSymbolProps {
   faction: string;
@@ -134,6 +127,9 @@ export interface FullFactionSymbolProps {
 
 export function FullFactionSymbol({ faction }: FullFactionSymbolProps) {
   const adjustedFactionName = faction.replace("'", "");
+  if (faction === "None") {
+    return <SymbolX />;
+  }
   return (
     <Image
       src={`/images/factions/${adjustedFactionName}.webp`}
@@ -141,6 +137,21 @@ export function FullFactionSymbol({ faction }: FullFactionSymbolProps) {
       layout="fill"
       objectFit="contain"
     />
+  );
+}
+
+export interface WrappedFactionIconProps {
+  faction: string;
+  size: number;
+}
+
+export function WrappedFactionIcon({ faction, size }: WrappedFactionIconProps) {
+  const width = responsivePixels(size);
+  const height = responsivePixels(size);
+  return (
+    <div style={{ position: "relative", width: width, height: height }}>
+      <FullFactionSymbol faction={faction} />
+    </div>
   );
 }
 
@@ -176,27 +187,10 @@ export interface StartingComponentsProps {
 export function StartingComponents({ faction }: StartingComponentsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: techs }: { data?: Record<string, Tech> } = useSWR(
-    gameid ? `/api/${gameid}/techs` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: options }: { data?: Options } = useSWR(
-    gameid ? `/api/${gameid}/options` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["factions", "options", "techs"]);
+  const factions = gameData.factions;
+  const options = gameData.options;
+  const techs = gameData.techs;
 
   const startswith = faction.startswith;
 
@@ -454,29 +448,11 @@ export function FactionTile({
 }: FactionTileProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["factions", "state", "strategycards"]);
+  const factions = gameData.factions;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+
   const [showMenu, setShowMenu] = useState(false);
 
   const card = Object.values(strategyCards).find(
@@ -491,17 +467,6 @@ export function FactionTile({
     setShowMenu(false);
   }
 
-  function publicDisgrace() {
-    if (!gameid) {
-      return;
-    }
-    hideMenu();
-    if (!card) {
-      return;
-    }
-    unassignStrategyCard(gameid, card.name);
-  }
-
   function quantumDatahubNode() {
     if (!gameid) {
       return;
@@ -513,18 +478,7 @@ export function FactionTile({
     if (!card || !hacanCard) {
       return;
     }
-    swapStrategyCards(gameid, card, hacanCard);
-  }
-
-  function giftOfPrescience() {
-    if (!gameid) {
-      return;
-    }
-    hideMenu();
-    if (!card) {
-      return;
-    }
-    setFirstStrategyCard(gameid, card.name);
+    swapStrategyCards(gameid, card.name, hacanCard.name);
   }
 
   // NOTE: Only works for Strategy phase. Other phases are not deterministic.
@@ -587,27 +541,6 @@ export function FactionTile({
     const buttons: ReactNode[] = [];
     switch (state.phase) {
       case "STRATEGY":
-        if (didFactionJustGo()) {
-          // NOTE: Doesn't work correctly for 3 to 4 players.
-          buttons.push(
-            <div
-              key="Public Disgrace"
-              style={{
-                cursor: "pointer",
-                gap: "4px",
-                padding: "4px 8px",
-                boxShadow: "1px 1px 4px black",
-                backgroundColor: "#222",
-                border: `2px solid ${color}`,
-                borderRadius: "5px",
-                fontSize: opts.fontSize ?? "24px",
-              }}
-              onClick={publicDisgrace}
-            >
-              Public Disgrace
-            </div>
-          );
-        }
         if (haveAllFactionsPicked() && factions) {
           // TODO: Decide whether this should be on Hacan instead.
           const hacan = factions["Emirates of Hacan"];
@@ -633,30 +566,6 @@ export function FactionTile({
                 onClick={quantumDatahubNode}
               >
                 Quantum Datahub Node
-              </div>
-            );
-          }
-          const naalu = factions["Naalu Collective"];
-          if (card && naalu && faction.name !== "Naalu Collective") {
-            buttons.push(
-              <div
-                key="Gift of Prescience"
-                style={{
-                  position: "relative",
-                  cursor: "pointer",
-                  gap: "4px",
-                  padding: "4px 8px",
-                  boxShadow: "1px 1px 4px black",
-                  backgroundColor: "#222",
-                  border: `2px solid ${color}`,
-                  borderRadius: "5px",
-                  fontSize: opts.fontSize ?? "24px",
-                }}
-                onClick={giftOfPrescience}
-              >
-                {card.order === 0
-                  ? "Undo Gift of Prescience"
-                  : "Gift of Prescience"}
               </div>
             );
           }

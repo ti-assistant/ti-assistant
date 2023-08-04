@@ -3,6 +3,7 @@ import React, {
   PropsWithChildren,
   ReactNode,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -20,6 +21,11 @@ export interface LabeledDivProps {
   rightLabel?: ReactNode;
   style?: CSSProperties;
   color?: string;
+  opts?: LabeledDivOpts;
+}
+
+interface LabeledDivOpts {
+  fixedWidth?: boolean;
 }
 
 export function LabeledDiv({
@@ -30,12 +36,13 @@ export function LabeledDiv({
   onClick,
   style = {},
   color = "#999",
+  opts = {},
 }: PropsWithChildren<LabeledDivProps>) {
   const [minWidth, setMinWidth] = useState<number | undefined>();
   const labelRef = useRef<HTMLDivElement>(null);
 
   const labelWidth = labelRef.current?.clientWidth;
-  useEffect(() => {
+  useLayoutEffect(() => {
     setMinWidth((labelWidth ?? 0) + 16);
   }, [labelWidth]);
 
@@ -64,9 +71,10 @@ export function LabeledDiv({
     top: responsiveNegativePixels(-12),
     backgroundColor: "#222",
     borderRadius: responsivePixels(5),
-    padding: `${responsivePixels(2)} ${responsivePixels(4)}`,
+    // padding: `${responsivePixels(2)} ${responsivePixels(4)}`,
     color: `${color}`,
     textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
+    maxWidth: opts.fixedWidth ? "calc(100% - 14px)" : undefined,
   };
   const rightLabelStyle: CSSProperties = {
     position: "absolute",
@@ -99,7 +107,18 @@ export function LabeledDiv({
       )}
       {!!label ? (
         <div className="mediumFont" ref={labelRef} style={labelStyle}>
-          {label}
+          <div
+            style={{
+              overflow: "hidden",
+              textOverflow: "clip",
+              // maxWidth: "calc(100% - 18px)",
+              margin: `${responsivePixels(2)} ${responsivePixels(
+                4
+              )} ${responsivePixels(2)}`,
+            }}
+          >
+            {label}
+          </div>
         </div>
       ) : null}
       {!!rightLabel ? (

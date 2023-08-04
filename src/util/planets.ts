@@ -1,5 +1,5 @@
 import { Attachment } from "./api/attachments";
-import { Planet } from "./api/planets";
+import { Planet, PlanetType } from "./api/planets";
 
 /**
  * Gets all the planets claimed by a specific faction.
@@ -19,7 +19,7 @@ export function filterToClaimedPlanets(
 export function applyAllPlanetAttachments(
   planets: Planet[],
   attachments: Record<string, Attachment>
-) {
+): Planet[] {
   return planets.map((planet) => {
     return applyPlanetAttachments(planet, attachments);
   });
@@ -80,4 +80,22 @@ export function applyPlanetAttachments(
     }
   });
   return updatedPlanet;
+}
+
+export function getPlanetTypeColor(type: PlanetType) {
+  switch (type) {
+    case "CULTURAL": {
+      return "steelblue";
+    }
+    case "HAZARDOUS": {
+      return "firebrick";
+    }
+    case "INDUSTRIAL": {
+      return "Green";
+    }
+    case "ALL": {
+      return "#777";
+    }
+  }
+  return "#555";
 }

@@ -22,6 +22,7 @@ export interface BaseAttachment {
 
   // Optional
   attribute?: PlanetAttribute;
+  faction?: string;
   influence?: number;
   replaces?: string;
   resources?: number;

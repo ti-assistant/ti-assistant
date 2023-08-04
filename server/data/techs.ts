@@ -1,4 +1,5 @@
 import { BaseTech } from "../../src/util/api/techs";
+import { DISCORDANT_STARS_TECHS } from "./discordantstars/techs";
 
 export type TechId =
   | "AI Development Algorithm"
@@ -81,7 +82,8 @@ export type TechId =
   | "War Sun"
   | "Wormhole Generator"
   | "X-89 Bacterial Weapon"
-  | "Yin Spinner";
+  | "Yin Spinner"
+  | DiscordantStars.TechId;
 
 export const BASE_TECHS: Record<TechId, BaseTech> = {
   "AI Development Algorithm": {
@@ -914,4 +916,5 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     prereqs: ["GREEN", "GREEN"],
     type: "GREEN",
   },
+  ...DISCORDANT_STARS_TECHS,
 };

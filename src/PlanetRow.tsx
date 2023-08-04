@@ -1,21 +1,18 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import useSWR from "swr";
-
 import { AttachRow } from "./AttachRow";
 import { Modal } from "./Modal";
-import { fetcher } from "./util/api/util";
 import { SelectableRow } from "./SelectableRow";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
-import { ResponsiveResources } from "./Resources";
+import { CustomSizeResources, ResponsiveResources } from "./Resources";
 import { FullFactionSymbol } from "./FactionCard";
 import React from "react";
 import { Planet, PlanetAttribute, PlanetType } from "./util/api/planets";
-import { Faction } from "./util/api/factions";
 import { Attachment } from "./util/api/attachments";
 import { getFactionColor } from "./util/factions";
-import { BLACK_BORDER_GLOW, BLACK_TEXT_GLOW } from "./LabeledDiv";
+import { useGameData } from "./data/GameData";
+import { useDrag } from "react-dnd";
 
 export interface PlanetSymbolProps {
   type: PlanetType;
@@ -186,6 +183,97 @@ export function FullPlanetSymbol({
   );
 }
 
+export function FullPlanetTypeSymbol({ type }: { type: PlanetType }) {
+  let image;
+  switch (type) {
+    case "INDUSTRIAL":
+      image = (
+        <Image
+          src="/images/industrial_icon.svg"
+          alt="Industrial Planet Icon"
+          layout="fill"
+          objectFit="contain"
+        />
+      );
+      break;
+    case "CULTURAL":
+      image = (
+        <Image
+          src="/images/cultural_icon.svg"
+          alt="Cultural Planet Icon"
+          layout="fill"
+          objectFit="contain"
+        />
+      );
+      break;
+    case "HAZARDOUS":
+      image = (
+        <Image
+          src="/images/hazardous_icon.svg"
+          alt="Hazardous Planet Icon"
+          layout="fill"
+          objectFit="contain"
+        />
+      );
+      break;
+    case "ALL":
+      image = (
+        <div
+          className="flexRow"
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            gap: "1px",
+          }}
+        >
+          <div
+            className="flexColumn"
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              gap: "1px",
+            }}
+          >
+            <div
+              style={{ position: "relative", width: "100%", height: "100%" }}
+            >
+              <Image
+                src="/images/cultural_icon.svg"
+                alt="Cultural Planet Icon"
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
+            <div
+              style={{ position: "relative", width: "100%", height: "100%" }}
+            >
+              <Image
+                src="/images/hazardous_icon.svg"
+                alt="Hazardous Planet Icon"
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
+          </div>
+          <div style={{ position: "relative", width: "100%", height: "100%" }}>
+            <Image
+              src="/images/industrial_icon.svg"
+              alt="Industrial Planet Icon"
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
+        </div>
+      );
+      break;
+    default:
+      return null;
+  }
+  return image;
+}
+
 function InfoContent({ ability }: { ability: string }) {
   const description = ability.replaceAll("\\n", "\n");
   return (
@@ -239,7 +327,9 @@ export function LegendaryPlanetIcon({
           width: responsivePixels(16),
           paddingTop: responsivePixels(2),
           paddingLeft: responsivePixels(2),
-          boxShadow: "0px 0px 2px 1px purple",
+          boxShadow: `0px 0px ${responsivePixels(2)} ${responsivePixels(
+            1
+          )} purple`,
           backgroundColor: "black",
         }}
       >
@@ -447,21 +537,21 @@ export function PlanetRow({
   prevOwner,
 }: PlanetRowProps) {
   const router = useRouter();
-  const { game: gameid } = router.query;
-  const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
-    gameid ? `/api/${gameid}/attachments` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
+  const { game: gameid }: { game?: string } = router.query;
+  const gameData = useGameData(gameid, ["attachments", "factions"]);
+  const attachments = gameData.attachments;
+  const factions = gameData.factions;
+  const [{ isDragging }, dragRef] = useDrag(
+    () => ({
+      type: "PLANET",
+      item: { id: planet.name },
+      collect: (monitor) => ({
+        isDragging: !!monitor.isDragging(),
+      }),
+    }),
+    []
   );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+
   const [showAttachModal, setShowAttachModal] = useState(false);
 
   if (!attachments || !factions) {
@@ -546,6 +636,7 @@ export function PlanetRow({
       removeItem={planet.locked ? undefined : removePlanet}
     >
       <div
+        ref={dragRef}
         className="flexRow hiddenButtonParent"
         style={{
           gap: 0,
@@ -554,6 +645,7 @@ export function PlanetRow({
           justifyContent: "space-between",
           paddingTop: responsivePixels(4),
           boxSizing: "border-box",
+          opacity: isDragging ? 0.25 : undefined,
         }}
       >
         {claimed ? (
@@ -580,6 +672,7 @@ export function PlanetRow({
             flexDirection: "row",
             flexBasis: "50%",
             alignItems: "center",
+            isolation: "isolate",
           }}
         >
           <div>{planet.name}</div>
@@ -604,13 +697,13 @@ export function PlanetRow({
           <div
             className="flexRow"
             style={{
-              width: responsivePixels(62),
+              width: responsivePixels(40),
               paddingRight: responsivePixels(6),
             }}
           >
             {canAttach() ? (
               <button
-                style={{ fontSize: responsivePixels(12) }}
+                style={{ fontSize: responsivePixels(10) }}
                 className="hiddenButton"
                 onClick={displayAttachMenu}
               >
@@ -619,9 +712,10 @@ export function PlanetRow({
             ) : null}
           </div>
         ) : null}
-        <ResponsiveResources
+        <CustomSizeResources
           resources={planet.resources}
           influence={planet.influence}
+          height={36}
         />
         <div
           style={{
@@ -644,13 +738,13 @@ export function PlanetRow({
             </div>
           ) : null}
         </div>
-        <AttachMenu
-          visible={showAttachModal}
-          planet={planet}
-          attachments={availableAttachments()}
-          closeMenu={displayAttachMenu}
-        />
       </div>
+      <AttachMenu
+        visible={showAttachModal}
+        planet={planet}
+        attachments={availableAttachments()}
+        closeMenu={displayAttachMenu}
+      />
     </SelectableRow>
   );
 }

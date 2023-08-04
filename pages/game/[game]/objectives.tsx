@@ -1,31 +1,24 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import useSWR from "swr";
-import { Header, Footer, NonGameHeader } from "../../../src/Header";
+import { NonGameHeader } from "../../../src/Header";
 import { FullScreenLoader } from "../../../src/Loader";
+import { Updater } from "../../../src/Updater";
+import { ObjectivePanel } from "../../../src/components/ObjectivePanel";
+import { useGameData } from "../../../src/data/GameData";
 import ActionPhase from "../../../src/main/ActionPhase";
 import AgendaPhase from "../../../src/main/AgendaPhase";
 import ResultsPhase from "../../../src/main/ResultsPhase";
 import SetupPhase from "../../../src/main/SetupPhase";
 import StatusPhase from "../../../src/main/StatusPhase";
 import StrategyPhase from "../../../src/main/StrategyPhase";
-import SummaryColumn from "../../../src/main/SummaryColumn";
-import { ObjectivePanel } from "../../../src/ObjectivePanel";
-import { Updater } from "../../../src/Updater";
-import { GameState } from "../../../src/util/api/state";
-import { fetcher, setGameId } from "../../../src/util/api/util";
+import { setGameId } from "../../../src/util/api/util";
 import { responsivePixels } from "../../../src/util/util";
 
 export default function ObjectivesPage() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["state"]);
+  const state = gameData.state;
 
   useEffect(() => {
     if (!!gameid) {
@@ -78,7 +71,7 @@ export default function ObjectivesPage() {
       <div
         style={{
           position: "relative",
-          padding: `${responsivePixels(40)} 0 ${responsivePixels(20)} 0`,
+          padding: `${responsivePixels(60)} 0 ${responsivePixels(12)} 0`,
           height: "100dvh",
         }}
       >

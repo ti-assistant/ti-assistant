@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { MouseEventHandler, PropsWithChildren, ReactNode } from "react";
 import { CSSTransition } from "react-transition-group";
 import { responsivePixels } from "./util/util";
 
@@ -46,7 +46,7 @@ export function GenericModal({
             width: "100vw",
             height: "100dvh",
             backgroundColor: "black",
-            opacity: "50%",
+            opacity: 0.85,
           }}
           onClick={closeMenu}
         ></div>
@@ -57,6 +57,8 @@ export function GenericModal({
               position: "relative",
               width: "100dvw",
               height: "100dvh",
+              alignItems: "flex-start",
+              padding: responsivePixels(12),
             }}
             onClick={closeMenu}
           >
@@ -90,6 +92,12 @@ export function Modal({
   function onEnter(node: HTMLElement) {
     node.style.display = "flex";
   }
+  function closeModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.stopPropagation();
+    if (closeMenu) {
+      closeMenu();
+    }
+  }
   return (
     <CSSTransition
       in={visible}
@@ -111,6 +119,7 @@ export function Modal({
           flexDirection: "column",
           alignItems: "center",
           color: "#eee",
+          opacity: 1,
         }}
       >
         <div
@@ -121,7 +130,7 @@ export function Modal({
             backgroundColor: "black",
             opacity: "50%",
           }}
-          onClick={closeMenu}
+          onClick={closeModal}
         ></div>
         <CSSTransition in={visible} timeout={500} classNames="modal">
           <div
@@ -160,7 +169,7 @@ export function Modal({
                     top: responsivePixels(4),
                     zIndex: zIndex + 3,
                   }}
-                  onClick={closeMenu}
+                  onClick={closeModal}
                 >
                   &#x2715;
                 </div>

@@ -16,6 +16,7 @@ export interface SelectorProps {
   hoverMenuLabel: ReactNode;
   numToSelect?: number;
   options: string[];
+  fadedOptions?: string[];
   toggleItem: (itemName: string, add: boolean) => void;
   renderItem?: (itemName: string) => ReactNode;
   renderButton?: (
@@ -32,6 +33,7 @@ export function Selector({
   buttonStyle = {},
   hoverMenuLabel,
   borderColor,
+  fadedOptions = [],
   selectedLabel,
   options,
   toggleItem,
@@ -107,6 +109,7 @@ export function Selector({
             return (
               <button
                 key={option}
+                className={fadedOptions.includes(option) ? "faded" : ""}
                 style={{ fontSize: responsivePixels(14) }}
                 onClick={() => {
                   closeFn();
@@ -117,6 +120,7 @@ export function Selector({
               </button>
             );
           })}
+          {options.length === 0 ? "No options available" : null}
         </div>
       )}
     ></ClientOnlyHoverMenu>

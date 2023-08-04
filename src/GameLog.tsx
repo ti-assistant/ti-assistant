@@ -1,25 +1,27 @@
 import { useRouter } from "next/router";
-import React from "react";
-import useSWR from "swr";
+import React, { useMemo } from "react";
 import { capitalizeFirstLetter } from "../pages/setup";
 import { AgendaRow } from "./AgendaRow";
 import { BLACK_TEXT_GLOW, LabeledDiv, LabeledLine } from "./LabeledDiv";
 import { ObjectiveRow } from "./ObjectiveRow";
-import { PlanetRow } from "./PlanetRow";
-import { StrategyCardElement } from "./StrategyCard";
 import { TimerDisplay } from "./Timer";
-import { Agenda } from "./util/api/agendas";
-import { Attachment } from "./util/api/attachments";
-import { StrategyCard, StrategyCardName } from "./util/api/cards";
-import { Faction } from "./util/api/factions";
+import { buildCompleteGameData, useGameData } from "./data/GameData";
+import { Faction, GameFaction } from "./util/api/factions";
 import { LogEntry } from "./util/api/gameLog";
-import { Objective } from "./util/api/objectives";
-import { Planet } from "./util/api/planets";
-import { PlanetEvent, SubStateFaction } from "./util/api/subState";
-import { fetcher } from "./util/api/util";
+import { PlanetEvent } from "./util/api/subState";
 import { getFactionColor, getFactionName } from "./util/factions";
-import { applyPlanetAttachments } from "./util/planets";
 import { responsivePixels } from "./util/util";
+import { LogEntryElement } from "./components/LogEntry";
+import { GameData } from "./util/api/state";
+import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "./util/api/actionLog";
+import { SetupFaction } from "./util/api/setup";
+import { Options } from "./util/api/options";
+import { BASE_PLANETS } from "../server/data/planets";
+import { BASE_FACTIONS, FactionId } from "../server/data/factions";
+import { GamePlanet } from "./util/api/planets";
+import { GameObjective } from "./util/api/objectives";
+import { StoredGameData } from "./util/api/util";
+import { getHandler, updateGameData } from "./util/api/data";
 
 function createRepeatedString(array: string[]) {
   const arrayCopy = structuredClone(array);
@@ -43,508 +45,644 @@ function conqueredPlanetsString(
   const eventArray = planetEvents.map((planetEvent) => {
     if (planetEvent.prevOwner) {
       const prevFaction = factions[planetEvent.prevOwner];
-      return planetEvent.name + " from " + getFactionName(prevFaction);
+      return planetEvent.planet + " from " + getFactionName(prevFaction);
     }
-    return planetEvent.name;
+    return planetEvent.planet;
   });
   return "Took control of " + createRepeatedString(eventArray);
 }
 
-export function LogEntryElement({
-  logEntry,
-  prevEntry,
-}: {
-  logEntry: LogEntry;
-  prevEntry?: LogEntry;
+// export function LogEntryElement({
+//   logEntry,
+//   prevEntry,
+// }: {
+//   logEntry: LogEntry;
+//   prevEntry?: LogEntry;
+// }) {
+//   const router = useRouter();
+//   const { game: gameid }: { game?: string } = router.query;
+//   const gameData = useGameData(gameid, ["agendas", "factions", "objectives"]);
+//   const agendas = gameData.agendas;
+//   const factions = gameData.factions;
+//   const objectives = gameData.objectives;
+
+//   switch (logEntry.phase) {
+//     case "SETUP":
+//       return (
+//         <div
+//           className="flexColumn"
+//           style={{ alignItems: "stretch", width: "calc(100% - 8px)" }}
+//         >
+//           <LabeledDiv label="Starting objectives">
+//             {logEntry.objectives.map((objectiveName: string) => {
+//               const objective = (objectives ?? {})[objectiveName];
+//               if (!objective) {
+//                 return null;
+//               }
+//               return (
+//                 <ObjectiveRow
+//                   key={objectiveName}
+//                   hideScorers={true}
+//                   objective={objective}
+//                 />
+//               );
+//             })}
+//           </LabeledDiv>
+//         </div>
+//       );
+//     case "STRATEGY":
+//       return (
+//         <div className="flexColumn" style={{ alignItems: "stretch" }}>
+//           {/* <LabeledDiv label="Selected strategy cards"> */}
+//           {(logEntry.strategyCards ?? []).map((card) => {
+//             const color = getFactionColor((factions ?? {})[card.assignedTo]);
+//             return (
+//               <div key={card.name}>
+//                 <span
+//                   style={{
+//                     color: color,
+//                     textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
+//                   }}
+//                 >
+//                   {getFactionName((factions ?? {})[card.assignedTo])}
+//                 </span>{" "}
+//                 : {card.name}
+//               </div>
+//             );
+//           })}
+//           {/* </LabeledDiv> */}
+//         </div>
+//       );
+//     case "ACTION":
+//       if (!logEntry.turnData?.selectedAction || !logEntry.activeFaction) {
+//         return null;
+//       }
+//       let turnSummary = null;
+
+//       let componentSection,
+//         planetSection,
+//         objectiveSection,
+//         techSection,
+//         otherFactionsSection = null;
+
+//       if (logEntry.turnData?.component?.name) {
+//         let componentText = `Used ${logEntry.turnData.component.name}`;
+//         switch (logEntry.turnData.component.name) {
+//           case "Gain Relic":
+//             componentText = `Purged 3 relic fragments and gained ${
+//               (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
+//                 ?.name
+//             }`;
+//             break;
+//           case "Fabrication":
+//             if (
+//               (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
+//                 ?.name
+//             ) {
+//               componentText = `Purged 2 relic fragments and gained ${
+//                 (logEntry.turnData.factions ?? {})[logEntry.activeFaction]
+//                   ?.relic?.name
+//               }`;
+//             } else {
+//               componentText = `Purged 1 relic fragment and gained 1 command token`;
+//             }
+//             break;
+//           case "Black Market Forgery":
+//             componentText = `Purged 2 relic fragments and gained ${
+//               (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
+//                 ?.name
+//             }`;
+//           case "Hesh and Prit":
+//             componentText = `Used Hesh and Prit and gained ${
+//               (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
+//                 ?.name
+//             }`;
+//           case "Nano-Forge":
+//             componentText = `Attached Nano-Forge to ${
+//               (logEntry.turnData.attachments ?? {})["Nano-Forge"]
+//             }`;
+//         }
+//         componentSection = (
+//           <div
+//             className="flexColumn myriadPro"
+//             style={{ alignItems: "stretch", width: "100%" }}
+//           >
+//             {componentText}
+//           </div>
+//         );
+//       }
+
+//       const turnFactions = logEntry.turnData.factions ?? {};
+
+//       const conqueredPlanets =
+//         turnFactions[logEntry.activeFaction]?.planets ?? [];
+//       if (conqueredPlanets.length > 0) {
+//         planetSection = (
+//           <div
+//             className="flexColumn myriadPro"
+//             style={{ alignItems: "stretch", width: "100%" }}
+//           >
+//             {conqueredPlanetsString(conqueredPlanets, factions ?? {})}
+//           </div>
+//         );
+//       }
+
+//       const scoredObjectives =
+//         turnFactions[logEntry.activeFaction]?.objectives ?? [];
+//       if (scoredObjectives.length > 0) {
+//         objectiveSection = (
+//           <div
+//             className="flexColumn myriadPro"
+//             style={{ alignItems: "stretch", width: "100%" }}
+//           >
+//             Scored {createRepeatedString(scoredObjectives)}
+//           </div>
+//         );
+//       }
+//       const researchedTechs = turnFactions[logEntry.activeFaction]?.techs ?? [];
+//       if (researchedTechs.length > 0) {
+//         techSection = (
+//           <div
+//             className="flexColumn myriadPro"
+//             style={{ alignItems: "stretch", width: "100%" }}
+//           >
+//             Researched {createRepeatedString(researchedTechs)}
+//           </div>
+//         );
+//       }
+
+//       let hasOtherFactionContent = false;
+//       otherFactionsSection = (
+//         <div
+//           className="flexColumn myriadPro"
+//           style={{
+//             alignItems: "stretch",
+//             width: "100%",
+//           }}
+//         >
+//           {Object.entries(logEntry.turnData.factions ?? {}).map(
+//             ([factionName, faction]) => {
+//               if (factionName === logEntry.activeFaction) {
+//                 return null;
+//               }
+//               let localPlanetSummary,
+//                 localObjectiveSummary,
+//                 localTechSummary = null;
+//               const conqueredPlanets = faction.planets ?? [];
+//               if (conqueredPlanets.length > 0) {
+//                 localPlanetSummary = (
+//                   <div
+//                     className="flexColumn myriadPro"
+//                     style={{ alignItems: "stretch", width: "100%" }}
+//                   >
+//                     {conqueredPlanetsString(conqueredPlanets, factions ?? {})}
+//                   </div>
+//                 );
+//               }
+
+//               const scoredObjectives = faction.objectives ?? [];
+//               if (scoredObjectives.length > 0) {
+//                 localObjectiveSummary = (
+//                   <div
+//                     className="flexColumn myriadPro"
+//                     style={{ alignItems: "stretch", width: "100%" }}
+//                   >
+//                     Scored {createRepeatedString(scoredObjectives)}
+//                   </div>
+//                 );
+//               }
+//               const researchedTechs = faction.techs ?? [];
+//               if (researchedTechs.length > 0) {
+//                 localTechSummary = (
+//                   <div
+//                     className="flexColumn myriadPro"
+//                     style={{ alignItems: "stretch", width: "100%" }}
+//                   >
+//                     Researched {createRepeatedString(researchedTechs)}
+//                   </div>
+//                 );
+//               }
+
+//               const color = getFactionColor((factions ?? {})[factionName]);
+
+//               if (
+//                 !localObjectiveSummary &&
+//                 !localPlanetSummary &&
+//                 !localTechSummary
+//               ) {
+//                 return null;
+//               }
+//               hasOtherFactionContent = true;
+//               return (
+//                 <div
+//                   key={factionName}
+//                   className="flexColumn"
+//                   style={{
+//                     alignItems: "flex-start",
+//                     paddingLeft: responsivePixels(8),
+//                     gap: responsivePixels(4),
+//                   }}
+//                 >
+//                   <span
+//                     style={{
+//                       fontFamily: "Slider",
+//                       color: color,
+//                       textShadow:
+//                         color === "Black" ? BLACK_TEXT_GLOW : undefined,
+//                     }}
+//                   >
+//                     {getFactionName((factions ?? {})[factionName])}
+//                   </span>
+//                   <div
+//                     className="flexColumn"
+//                     style={{
+//                       alignItems: "flex-start",
+//                       paddingLeft: responsivePixels(8),
+//                     }}
+//                   >
+//                     {localTechSummary}
+//                     {localObjectiveSummary}
+//                     {localPlanetSummary}
+//                   </div>
+//                 </div>
+//               );
+//             }
+//           )}
+//         </div>
+//       );
+//       let totalSeconds = 0;
+//       let totalMinutes = 0;
+//       if (prevEntry?.gameSeconds && logEntry.gameSeconds) {
+//         totalSeconds = logEntry.gameSeconds - prevEntry.gameSeconds;
+//         totalMinutes = Math.floor(totalSeconds / 60);
+//         totalSeconds = totalSeconds % 60;
+//       }
+//       turnSummary = (
+//         <div
+//           className="flexColumn"
+//           style={{
+//             width: "100%",
+//             padding: `0 ${responsivePixels(16)}`,
+//           }}
+//         >
+//           {componentSection}
+//           {planetSection}
+//           {objectiveSection}
+//           {techSection}
+//           {hasOtherFactionContent ? otherFactionsSection : null}
+//         </div>
+//       );
+//       return (
+//         <>
+//           <LabeledLine
+//             label={getFactionName((factions ?? {})[logEntry.activeFaction])}
+//             rightLabel={logEntry.turnData.selectedAction}
+//             leftLabel={
+//               (totalMinutes > 0 ? totalMinutes + " mins " : "") +
+//               totalSeconds +
+//               " secs"
+//             }
+//             // leftLabel={
+//             //   <TimerDisplay
+//             //     time={totalSeconds ?? 0}
+//             //     style={{
+//             //       fontSize: responsivePixels(16),
+//             //     }}
+//             //     width={84}
+//             //   />
+//             // }
+//             // rightLabel={logEntry.turnData?.selectedAction}
+//             style={{ width: "calc(100% - 8px)" }}
+//             color={getFactionColor((factions ?? {})[logEntry.activeFaction])}
+//           />
+//           {turnSummary}
+//         </>
+//       );
+//     case "STATUS": {
+//       let factionScoringSection;
+//       factionScoringSection = (
+//         <div
+//           className="flexColumn myriadPro"
+//           style={{
+//             alignItems: "stretch",
+//             width: "100%",
+//           }}
+//         >
+//           {Object.entries(logEntry.turnData?.factions ?? {}).map(
+//             ([factionName, faction]) => {
+//               if (factionName === logEntry.activeFaction) {
+//                 return null;
+//               }
+//               let localObjectiveSummary = null;
+
+//               const scoredObjectives = faction.objectives ?? [];
+//               if (scoredObjectives.length > 0) {
+//                 localObjectiveSummary = (
+//                   <div
+//                     className="flexColumn myriadPro"
+//                     style={{ alignItems: "stretch", width: "100%" }}
+//                   >
+//                     Scored {createRepeatedString(scoredObjectives)}
+//                   </div>
+//                 );
+//               }
+
+//               const color = getFactionColor((factions ?? {})[factionName]);
+
+//               if (!localObjectiveSummary) {
+//                 return null;
+//               }
+//               hasOtherFactionContent = true;
+//               return (
+//                 <div
+//                   key={factionName}
+//                   className="flexColumn"
+//                   style={{
+//                     alignItems: "flex-start",
+//                     paddingLeft: responsivePixels(8),
+//                     gap: responsivePixels(4),
+//                   }}
+//                 >
+//                   <span
+//                     style={{
+//                       fontFamily: "Slider",
+//                       color: color,
+//                       textShadow:
+//                         color === "Black" ? BLACK_TEXT_GLOW : undefined,
+//                     }}
+//                   >
+//                     {getFactionName((factions ?? {})[factionName])}
+//                   </span>
+//                   <div
+//                     className="flexColumn"
+//                     style={{
+//                       alignItems: "flex-start",
+//                       paddingLeft: responsivePixels(8),
+//                     }}
+//                   >
+//                     {localObjectiveSummary}
+//                   </div>
+//                 </div>
+//               );
+//             }
+//           )}
+//         </div>
+//       );
+//       return (
+//         <>
+//           {factionScoringSection}
+//           <LabeledDiv
+//             label="Revealed objective"
+//             style={{ width: "fit-content", marginLeft: responsivePixels(8) }}
+//           >
+//             {(logEntry.objectives ?? []).map((objectiveName: string) => {
+//               const objective = (objectives ?? {})[objectiveName];
+//               if (!objective) {
+//                 return null;
+//               }
+//               return (
+//                 <ObjectiveRow
+//                   key={objectiveName}
+//                   hideScorers={true}
+//                   objective={objective}
+//                 />
+//               );
+//             })}
+//           </LabeledDiv>
+//         </>
+//       );
+//     }
+//     case "AGENDA": {
+//       if (!logEntry.agenda) {
+//         return null;
+//       }
+//       const agenda = (agendas ?? {})[logEntry.agenda];
+//       if (!agenda) {
+//         return null;
+//       }
+//       return (
+//         <div className="flexColumn">
+//           <AgendaRow key={logEntry.agenda} agenda={agenda} />
+//         </div>
+//       );
+//     }
+//   }
+//   if (logEntry.selectedAction) {
+//     return (
+//       <React.Fragment>
+//         {/* <LabeledDiv
+//         label={
+//           <TimerDisplay
+//             time={logEntry.gameSeconds ?? 0}
+//             style={{
+//               fontSize: responsivePixels(16),
+//               width: responsivePixels(84),
+//             }}
+//           />
+//         }
+//       > */}
+//         {logEntry.activeFaction} used {logEntry.selectedAction}
+//         <LabeledLine
+//           leftLabel={
+//             <TimerDisplay
+//               time={logEntry.gameSeconds ?? 0}
+//               style={{
+//                 fontSize: responsivePixels(16),
+//                 width: responsivePixels(84),
+//               }}
+//             />
+//           }
+//           rightLabel={new Date(logEntry.time).toLocaleString()}
+//         />
+//       </React.Fragment>
+//     );
+//   }
+//   return <div>{logEntry.activeFaction}</div>;
+// }
+
+export function buildInitialGameData(setupData: {
+  factions: SetupFaction[];
+  speaker: number;
+  options: Options;
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
-    gameid ? `/api/${gameid}/attachments` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
+  const gameFactions: GameFaction[] = setupData.factions.map(
+    (faction, index) => {
+      if (!faction.name || !faction.color) {
+        throw new Error("Faction missing name or color.");
+      }
+      // Determine speaker order for each faction.
+      let order: number;
+      if (index >= setupData.speaker) {
+        order = index - setupData.speaker + 1;
+      } else {
+        order = index + setupData.factions.length - setupData.speaker + 1;
+      }
+
+      // Get home planets for each faction.
+      // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
+      const homeBasePlanets = Object.entries(BASE_PLANETS).filter(
+        ([_, planet]) => planet.faction === faction.name && planet.home
+      );
+      const homePlanets: Record<string, { ready: boolean }> = {};
+      homeBasePlanets.forEach(([planetId, _]) => {
+        homePlanets[planetId] = {
+          ready: true,
+        };
+      });
+
+      // Get starting techs for each faction.
+      const baseFaction = BASE_FACTIONS[faction.name as FactionId];
+      const startingTechs: Record<string, { ready: boolean }> = {};
+      (baseFaction.startswith.techs ?? []).forEach((tech) => {
+        startingTechs[tech] = {
+          ready: true,
+        };
+      });
+
+      return {
+        ...faction,
+        // Client specified values
+        name: faction.name,
+        color: faction.color,
+        order: order,
+        mapPosition: index,
+        // Faction specific values
+        planets: homePlanets,
+        techs: startingTechs,
+        startswith: baseFaction.startswith,
+        // State values
+        hero: "locked",
+        commander: "locked",
+      };
     }
   );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
+
+  let baseFactions: Record<string, GameFaction> = {};
+  let basePlanets: Record<string, GamePlanet> = {};
+  let speakerName: string | undefined;
+  gameFactions.forEach((faction, index) => {
+    if (index === setupData.speaker) {
+      speakerName = faction.name;
     }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
+    const localFaction = { ...faction };
+    if (
+      faction.name === "Winnu" &&
+      !setupData.options.expansions.includes("POK")
+    ) {
+      localFaction.startswith.choice = {
+        select: 1,
+        options: [
+          "Neural Motivator",
+          "Sarween Tools",
+          "Antimass Deflectors",
+          "Plasma Scoring",
+        ],
+      };
     }
-  );
-  const { data: agendas }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  switch (logEntry.phase) {
-    case "SETUP":
-      return (
-        <div
-          className="flexColumn"
-          style={{ alignItems: "stretch", width: "calc(100% - 8px)" }}
-        >
-          <LabeledDiv label="Starting objectives">
-            {logEntry.objectives.map((objectiveName: string) => {
-              const objective = (objectives ?? {})[objectiveName];
-              if (!objective) {
-                return null;
-              }
-              return (
-                <ObjectiveRow
-                  key={objectiveName}
-                  hideScorers={true}
-                  objective={objective}
-                />
-              );
-            })}
-          </LabeledDiv>
-        </div>
-      );
-    case "STRATEGY":
-      return (
-        <div className="flexColumn" style={{ alignItems: "stretch" }}>
-          {/* <LabeledDiv label="Selected strategy cards"> */}
-          {(logEntry.strategyCards ?? []).map((card) => {
-            const color = getFactionColor((factions ?? {})[card.assignedTo]);
-            return (
-              <div key={card.name}>
-                <span
-                  style={{
-                    color: color,
-                    textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
-                  }}
-                >
-                  {getFactionName((factions ?? {})[card.assignedTo])}
-                </span>{" "}
-                : {card.name}
-              </div>
-            );
-          })}
-          {/* </LabeledDiv> */}
-        </div>
-      );
-    case "ACTION":
-      if (!logEntry.turnData?.selectedAction || !logEntry.activeFaction) {
-        return null;
+    baseFactions[faction.name] = localFaction;
+    Object.entries(faction.planets).forEach(([name, planet]) => {
+      basePlanets[name] = {
+        ...planet,
+        owner: faction.name,
+      };
+    });
+  });
+
+  let baseObjectives: Record<string, GameObjective> = {
+    "Custodians Token": {
+      selected: true,
+    },
+    "Imperial Point": {
+      selected: true,
+    },
+    "Support for the Throne": {
+      selected: true,
+    },
+  };
+
+  if (!speakerName) {
+    throw new Error("No speaker selected.");
+  }
+
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 180);
+
+  const gameState: StoredGameData = {
+    state: {
+      speaker: speakerName,
+      phase: "SETUP",
+      round: 1,
+    },
+    factions: baseFactions,
+    planets: basePlanets,
+    options: setupData.options,
+    objectives: baseObjectives,
+  };
+
+  return gameState;
+}
+
+export function buildSetupGameData(gameData: GameData): {
+  factions: SetupFaction[];
+  speaker: number;
+  options: Options;
+} {
+  const actionLog = gameData.actionLog ?? [];
+  let speaker = 0;
+  for (let i = actionLog.length - 1; i >= 0; i--) {
+    const entry = actionLog[i];
+    if (entry?.data.action === "ASSIGN_STRATEGY_CARD") {
+      const initialSpeaker = gameData.factions[entry.data.event.pickedBy];
+      if (initialSpeaker) {
+        speaker = initialSpeaker.mapPosition;
+        break;
       }
-      let turnSummary = null;
-
-      let componentSection,
-        planetSection,
-        objectiveSection,
-        techSection,
-        otherFactionsSection = null;
-
-      if (logEntry.turnData?.component?.name) {
-        let componentText = `Used ${logEntry.turnData.component.name}`;
-        switch (logEntry.turnData.component.name) {
-          case "Gain Relic":
-            componentText = `Purged 3 relic fragments and gained ${
-              (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
-                ?.name
-            }`;
-            break;
-          case "Fabrication":
-            if (
-              (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
-                ?.name
-            ) {
-              componentText = `Purged 2 relic fragments and gained ${
-                (logEntry.turnData.factions ?? {})[logEntry.activeFaction]
-                  ?.relic?.name
-              }`;
-            } else {
-              componentText = `Purged 1 relic fragment and gained 1 command token`;
-            }
-            break;
-          case "Black Market Forgery":
-            componentText = `Purged 2 relic fragments and gained ${
-              (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
-                ?.name
-            }`;
-          case "Hesh and Prit":
-            componentText = `Used Hesh and Prit and gained ${
-              (logEntry.turnData.factions ?? {})[logEntry.activeFaction]?.relic
-                ?.name
-            }`;
-          case "Nano-Forge":
-            componentText = `Attached Nano-Forge to ${
-              (logEntry.turnData.attachments ?? {})["Nano-Forge"]
-            }`;
-        }
-        componentSection = (
-          <div
-            className="flexColumn myriadPro"
-            style={{ alignItems: "stretch", width: "100%" }}
-          >
-            {componentText}
-          </div>
-        );
-      }
-
-      const turnFactions = logEntry.turnData.factions ?? {};
-
-      const conqueredPlanets =
-        turnFactions[logEntry.activeFaction]?.planets ?? [];
-      if (conqueredPlanets.length > 0) {
-        planetSection = (
-          <div
-            className="flexColumn myriadPro"
-            style={{ alignItems: "stretch", width: "100%" }}
-          >
-            {conqueredPlanetsString(conqueredPlanets, factions ?? {})}
-          </div>
-        );
-      }
-
-      const scoredObjectives =
-        turnFactions[logEntry.activeFaction]?.objectives ?? [];
-      if (scoredObjectives.length > 0) {
-        objectiveSection = (
-          <div
-            className="flexColumn myriadPro"
-            style={{ alignItems: "stretch", width: "100%" }}
-          >
-            Scored {createRepeatedString(scoredObjectives)}
-          </div>
-        );
-      }
-      const researchedTechs = turnFactions[logEntry.activeFaction]?.techs ?? [];
-      if (researchedTechs.length > 0) {
-        techSection = (
-          <div
-            className="flexColumn myriadPro"
-            style={{ alignItems: "stretch", width: "100%" }}
-          >
-            Researched {createRepeatedString(researchedTechs)}
-          </div>
-        );
-      }
-
-      let hasOtherFactionContent = false;
-      otherFactionsSection = (
-        <div
-          className="flexColumn myriadPro"
-          style={{
-            alignItems: "stretch",
-            width: "100%",
-          }}
-        >
-          {Object.entries(logEntry.turnData.factions ?? {}).map(
-            ([factionName, faction]) => {
-              if (factionName === logEntry.activeFaction) {
-                return null;
-              }
-              let localPlanetSummary,
-                localObjectiveSummary,
-                localTechSummary = null;
-              const conqueredPlanets = faction.planets ?? [];
-              if (conqueredPlanets.length > 0) {
-                localPlanetSummary = (
-                  <div
-                    className="flexColumn myriadPro"
-                    style={{ alignItems: "stretch", width: "100%" }}
-                  >
-                    {conqueredPlanetsString(conqueredPlanets, factions ?? {})}
-                  </div>
-                );
-              }
-
-              const scoredObjectives = faction.objectives ?? [];
-              if (scoredObjectives.length > 0) {
-                localObjectiveSummary = (
-                  <div
-                    className="flexColumn myriadPro"
-                    style={{ alignItems: "stretch", width: "100%" }}
-                  >
-                    Scored {createRepeatedString(scoredObjectives)}
-                  </div>
-                );
-              }
-              const researchedTechs = faction.techs ?? [];
-              if (researchedTechs.length > 0) {
-                localTechSummary = (
-                  <div
-                    className="flexColumn myriadPro"
-                    style={{ alignItems: "stretch", width: "100%" }}
-                  >
-                    Researched {createRepeatedString(researchedTechs)}
-                  </div>
-                );
-              }
-
-              const color = getFactionColor((factions ?? {})[factionName]);
-
-              if (
-                !localObjectiveSummary &&
-                !localPlanetSummary &&
-                !localTechSummary
-              ) {
-                return null;
-              }
-              hasOtherFactionContent = true;
-              return (
-                <div
-                  key={factionName}
-                  className="flexColumn"
-                  style={{
-                    alignItems: "flex-start",
-                    paddingLeft: responsivePixels(8),
-                    gap: responsivePixels(4),
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "Slider",
-                      color: color,
-                      textShadow:
-                        color === "Black" ? BLACK_TEXT_GLOW : undefined,
-                    }}
-                  >
-                    {getFactionName((factions ?? {})[factionName])}
-                  </span>
-                  <div
-                    className="flexColumn"
-                    style={{
-                      alignItems: "flex-start",
-                      paddingLeft: responsivePixels(8),
-                    }}
-                  >
-                    {localTechSummary}
-                    {localObjectiveSummary}
-                    {localPlanetSummary}
-                  </div>
-                </div>
-              );
-            }
-          )}
-        </div>
-      );
-      let totalSeconds = 0;
-      let totalMinutes = 0;
-      if (prevEntry?.gameSeconds && logEntry.gameSeconds) {
-        totalSeconds = logEntry.gameSeconds - prevEntry.gameSeconds;
-        totalMinutes = Math.floor(totalSeconds / 60);
-        totalSeconds = totalSeconds % 60;
-      }
-      turnSummary = (
-        <div
-          className="flexColumn"
-          style={{
-            width: "100%",
-            padding: `0 ${responsivePixels(16)}`,
-          }}
-        >
-          {componentSection}
-          {planetSection}
-          {objectiveSection}
-          {techSection}
-          {hasOtherFactionContent ? otherFactionsSection : null}
-        </div>
-      );
-      return (
-        <>
-          <LabeledLine
-            label={getFactionName((factions ?? {})[logEntry.activeFaction])}
-            rightLabel={logEntry.turnData.selectedAction}
-            leftLabel={
-              (totalMinutes > 0 ? totalMinutes + " mins " : "") +
-              totalSeconds +
-              " secs"
-            }
-            // leftLabel={
-            //   <TimerDisplay
-            //     time={totalSeconds ?? 0}
-            //     style={{
-            //       fontSize: responsivePixels(16),
-            //     }}
-            //     width={84}
-            //   />
-            // }
-            // rightLabel={logEntry.turnData?.selectedAction}
-            style={{ width: "calc(100% - 8px)" }}
-            color={getFactionColor((factions ?? {})[logEntry.activeFaction])}
-          />
-          {turnSummary}
-        </>
-      );
-    case "STATUS": {
-      let factionScoringSection;
-      factionScoringSection = (
-        <div
-          className="flexColumn myriadPro"
-          style={{
-            alignItems: "stretch",
-            width: "100%",
-          }}
-        >
-          {Object.entries(logEntry.turnData?.factions ?? {}).map(
-            ([factionName, faction]) => {
-              if (factionName === logEntry.activeFaction) {
-                return null;
-              }
-              let localObjectiveSummary = null;
-
-              const scoredObjectives = faction.objectives ?? [];
-              if (scoredObjectives.length > 0) {
-                localObjectiveSummary = (
-                  <div
-                    className="flexColumn myriadPro"
-                    style={{ alignItems: "stretch", width: "100%" }}
-                  >
-                    Scored {createRepeatedString(scoredObjectives)}
-                  </div>
-                );
-              }
-
-              const color = getFactionColor((factions ?? {})[factionName]);
-
-              if (!localObjectiveSummary) {
-                return null;
-              }
-              hasOtherFactionContent = true;
-              return (
-                <div
-                  key={factionName}
-                  className="flexColumn"
-                  style={{
-                    alignItems: "flex-start",
-                    paddingLeft: responsivePixels(8),
-                    gap: responsivePixels(4),
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "Slider",
-                      color: color,
-                      textShadow:
-                        color === "Black" ? BLACK_TEXT_GLOW : undefined,
-                    }}
-                  >
-                    {getFactionName((factions ?? {})[factionName])}
-                  </span>
-                  <div
-                    className="flexColumn"
-                    style={{
-                      alignItems: "flex-start",
-                      paddingLeft: responsivePixels(8),
-                    }}
-                  >
-                    {localObjectiveSummary}
-                  </div>
-                </div>
-              );
-            }
-          )}
-        </div>
-      );
-      return (
-        <>
-          {factionScoringSection}
-          <LabeledDiv
-            label="Revealed objective"
-            style={{ width: "fit-content", marginLeft: responsivePixels(8) }}
-          >
-            {(logEntry.objectives ?? []).map((objectiveName: string) => {
-              const objective = (objectives ?? {})[objectiveName];
-              if (!objective) {
-                return null;
-              }
-              return (
-                <ObjectiveRow
-                  key={objectiveName}
-                  hideScorers={true}
-                  objective={objective}
-                />
-              );
-            })}
-          </LabeledDiv>
-        </>
-      );
-    }
-    case "AGENDA": {
-      if (!logEntry.agenda) {
-        return null;
-      }
-      const agenda = (agendas ?? {})[logEntry.agenda];
-      if (!agenda) {
-        return null;
-      }
-      return (
-        <div className="flexColumn">
-          <AgendaRow key={logEntry.agenda} agenda={agenda} />
-        </div>
-      );
     }
   }
-  if (logEntry.selectedAction) {
-    return (
-      <React.Fragment>
-        {/* <LabeledDiv
-        label={
-          <TimerDisplay
-            time={logEntry.gameSeconds ?? 0}
-            style={{
-              fontSize: responsivePixels(16),
-              width: responsivePixels(84),
-            }}
-          />
-        }
-      > */}
-        {logEntry.activeFaction} used {logEntry.selectedAction}
-        <LabeledLine
-          leftLabel={
-            <TimerDisplay
-              time={logEntry.gameSeconds ?? 0}
-              style={{
-                fontSize: responsivePixels(16),
-                width: responsivePixels(84),
-              }}
-            />
-          }
-          rightLabel={new Date(logEntry.time).toLocaleString()}
-        />
-      </React.Fragment>
-    );
+
+  const factions: SetupFaction[] = [];
+  for (const faction of Object.values(gameData.factions)) {
+    factions[faction.mapPosition] = {
+      color: faction.color,
+      name: faction.name,
+      playerName: faction.playerName,
+    };
   }
-  return <div>{logEntry.activeFaction}</div>;
+
+  return {
+    factions: factions,
+    speaker: speaker,
+    options: gameData.options,
+  };
 }
 
 export function GameLog({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: gameLog }: { data?: LogEntry[] } = useSWR(
-    gameid ? `/api/${gameid}/gameLog` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  if (!gameLog) {
-    return null;
-  }
+  const gameData = useGameData(gameid);
+  const actionLog = gameData.actionLog ?? [];
+
+  const reversedActionLog = useMemo(() => {
+    return [...actionLog].reverse();
+  }, [actionLog]);
+
+  const setupGameData = useMemo(() => {
+    return buildSetupGameData(gameData);
+  }, [gameData]);
+
+  const initialGameData = useMemo(() => {
+    return buildInitialGameData(setupGameData);
+  }, [setupGameData]);
+
+  const dynamicGameData = useMemo(() => {
+    return buildCompleteGameData(initialGameData);
+  }, [initialGameData]);
 
   let prevPhase = "None";
   let prevEntry: LogEntry | undefined;
-  let currRound = 0;
+  // let currRound = 1;
+
+  let endTimeSeconds = 0;
 
   return (
     <div
@@ -557,41 +695,84 @@ export function GameLog({}) {
         alignItems: "flex-start",
       }}
     >
-      {gameLog.map((logEntry, index) => {
-        if (logEntry.phase && logEntry.phase !== prevPhase) {
-          prevPhase = logEntry.phase;
-          if (logEntry.phase === "STRATEGY") {
-            currRound++;
-          }
-          const output = (
-            <React.Fragment key={index}>
-              <LabeledLine
-                label={
-                  currRound !== 0
-                    ? `Round ${currRound} ${capitalizeFirstLetter(
-                        logEntry.phase.toLowerCase()
-                      )} Phase`
-                    : `${capitalizeFirstLetter(
-                        logEntry.phase.toLowerCase()
-                      )} Phase`
-                }
-                style={{ width: "calc(100% - 8px)" }}
-              />
-              <LogEntryElement logEntry={logEntry} prevEntry={prevEntry} />
-            </React.Fragment>
-          );
-          prevEntry = logEntry;
-          return output;
+      {reversedActionLog.map((logEntry, index) => {
+        const handler = getHandler(dynamicGameData, logEntry.data);
+        if (!handler) {
+          return null;
         }
-        const output = (
+        updateGameData(dynamicGameData, handler.getUpdates());
+        switch (logEntry.data.action) {
+          case "ADVANCE_PHASE": {
+            for (let i = index + 1; i < reversedActionLog.length; i++) {
+              const nextEntry = reversedActionLog[i];
+              if (!nextEntry) {
+                break;
+              }
+              if (PHASE_BOUNDARIES.includes(nextEntry.data.action)) {
+                endTimeSeconds = nextEntry.gameSeconds ?? 0;
+                break;
+              }
+            }
+            break;
+          }
+          case "SELECT_ACTION":
+          case "REVEAL_AGENDA":
+          case "ASSIGN_STRATEGY_CARD": {
+            for (let i = index + 1; i < reversedActionLog.length; i++) {
+              const nextEntry = reversedActionLog[i];
+              if (!nextEntry) {
+                break;
+              }
+              if (TURN_BOUNDARIES.includes(nextEntry.data.action)) {
+                endTimeSeconds = nextEntry.gameSeconds ?? 0;
+                break;
+              }
+            }
+            break;
+          }
+        }
+        return (
           <LogEntryElement
-            key={index}
+            key={logEntry.timestampMillis}
             logEntry={logEntry}
-            prevEntry={prevEntry}
+            currRound={dynamicGameData.state.round}
+            activePlayer={dynamicGameData.state.activeplayer}
+            endTimeSeconds={endTimeSeconds}
           />
-        );
-        prevEntry = logEntry;
-        return output;
+        ); // if (logEntry.phase && logEntry.phase !== prevPhase) {
+        //   prevPhase = logEntry.phase;
+        //   if (logEntry.phase === "STRATEGY") {
+        //     currRound++;
+        //   }
+        //   const output = (
+        //     <React.Fragment key={index}>
+        //       <LabeledLine
+        //         label={
+        //           currRound !== 0
+        //             ? `Round ${currRound} ${capitalizeFirstLetter(
+        //                 logEntry.phase.toLowerCase()
+        //               )} Phase`
+        //             : `${capitalizeFirstLetter(
+        //                 logEntry.phase.toLowerCase()
+        //               )} Phase`
+        //         }
+        //         style={{ width: "calc(100% - 8px)" }}
+        //       />
+        //       <LogEntryElement logEntry={logEntry} prevEntry={prevEntry} />
+        //     </React.Fragment>
+        //   );
+        //   prevEntry = logEntry;
+        //   return output;
+        // }
+        // const output = (
+        //   <LogEntryElement
+        //     key={index}
+        //     logEntry={logEntry}
+        //     prevEntry={prevEntry}
+        //   />
+        // );
+        // prevEntry = logEntry;
+        // return output;
       })}
     </div>
   );

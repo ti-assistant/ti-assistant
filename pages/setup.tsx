@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { fetcher } from "../src/util/api/util";
 import { convertToFactionColor } from "../src/util/factions";
 import { ClientOnlyHoverMenu } from "../src/HoverMenu";
-import { LabeledDiv, LabeledLine } from "../src/LabeledDiv";
+import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../src/LabeledDiv";
 import { responsivePixels } from "../src/util/util";
 import Head from "next/head";
 import { Map } from "../src/util/Map";
@@ -42,6 +42,7 @@ function MobileOptions({
   isCouncil,
 }: OptionsProps) {
   const mapStringRef = useRef<HTMLInputElement>(null);
+  const otherPointsRef = useRef<HTMLDivElement>(null);
 
   const mapString = options["map-string"];
 
@@ -146,15 +147,46 @@ function MobileOptions({
                   </button>
                   <button
                     className={
-                      options["victory-points"] === 14 ? "selected" : ""
+                      options["victory-points"] !== 14 &&
+                      options["victory-points"] !== 10
+                        ? "selected"
+                        : ""
                     }
                     onClick={() => {
-                      toggleOption(14, "victory-points");
+                      toggleOption(
+                        parseInt(otherPointsRef.current?.innerText ?? "10"),
+                        "victory-points"
+                      );
                     }}
                   >
                     Other
                   </button>
-                  <input type="number" defaultValue={12} />
+                  <div
+                    ref={otherPointsRef}
+                    spellCheck={false}
+                    contentEditable={true}
+                    suppressContentEditableWarning={true}
+                    onClick={(e) => (e.currentTarget.innerText = "")}
+                    onBlur={(e) => {
+                      const victoryPoints = parseInt(e.target.innerText);
+                      if (isNaN(victoryPoints) || victoryPoints <= 0) {
+                        if (
+                          options["victory-points"] !== 10 &&
+                          options["victory-points"] !== 14
+                        ) {
+                          e.currentTarget.innerText =
+                            options["victory-points"].toString();
+                        } else {
+                          e.currentTarget.innerText = "12";
+                        }
+                      } else {
+                        toggleOption(victoryPoints, "victory-points");
+                        e.currentTarget.innerText = victoryPoints.toString();
+                      }
+                    }}
+                  >
+                    12
+                  </div>
                 </div>
               </div>
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
@@ -493,6 +525,38 @@ function Options({
                   Codex III
                 </button>
               </div>
+              <div
+                className="flexColumn mediumFont"
+                style={{
+                  alignItems: "flex-start",
+                  padding: `0 ${responsivePixels(20)}`,
+                }}
+              >
+                Homebrew:
+                <div
+                  className="flexRow"
+                  style={{
+                    justifyContent: "flex-start",
+                    padding: `0 ${responsivePixels(20)}`,
+                  }}
+                >
+                  <button
+                    className={
+                      options.expansions.has("DISCORDANT STARS")
+                        ? "selected"
+                        : ""
+                    }
+                    onClick={() =>
+                      toggleExpansion(
+                        !options.expansions.has("DISCORDANT STARS"),
+                        "DISCORDANT STARS"
+                      )
+                    }
+                  >
+                    Discordant Stars
+                  </button>
+                </div>
+              </div>
             </div>
             <div>
               Map:
@@ -685,7 +749,7 @@ function FactionSelect({
   setPlayerName,
   options,
 }: FactionSelectProps) {
-  const nameRef = useRef<HTMLSpanElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
   const { data: availableFactions }: { data?: Record<string, BaseFaction> } =
     useSWR("/api/factions", fetcher, {
       revalidateIfStale: false,
@@ -702,7 +766,7 @@ function FactionSelect({
   const currentNameRef = nameRef?.current;
   useEffect(() => {
     if (currentNameRef && !playerName) {
-      currentNameRef.innerText = "Enter Player Name...";
+      currentNameRef.value = "Enter Player Name...";
     }
   }, [playerName, currentNameRef]);
 
@@ -728,6 +792,10 @@ function FactionSelect({
     return true;
   });
 
+  const selectedFactions = factions
+    .filter((faction) => !!faction.name)
+    .map((faction) => faction.name as string);
+
   function selectFaction(factionName: string | undefined) {
     if (factionIndex == undefined) {
       return;
@@ -742,34 +810,36 @@ function FactionSelect({
     setColor(factionIndex, color);
   }
 
-  function savePlayerName(element: HTMLSpanElement) {
+  function savePlayerName(element: HTMLInputElement) {
     if (factionIndex == undefined) {
       return;
     }
-    if (element.innerText !== "" && !element.innerText.includes("Player")) {
-      setPlayerName(factionIndex, element.innerText);
+    if (element.value !== "" && !element.value.includes("Player")) {
+      setPlayerName(factionIndex, element.value);
     } else {
       const faction = factions[factionIndex];
       if (!faction) {
         return;
       }
-      element.innerText = faction.playerName ?? "Enter Player Name...";
+      element.value = faction.playerName ?? "Enter Player Name...";
     }
   }
 
   const factionColor = convertToFactionColor(faction.color);
 
   const label = (
-    <span
+    <input
       ref={nameRef}
+      type="textbox"
       spellCheck={false}
-      contentEditable={true}
-      suppressContentEditableWarning={true}
-      onClick={(e) => (e.currentTarget.innerText = "")}
+      defaultValue={"Enter Player Name..."}
+      style={{
+        fontFamily: "Slider",
+        borderColor: factionColor,
+      }}
+      onClick={(e) => (e.currentTarget.value = "")}
       onBlur={(e) => savePlayerName(e.currentTarget)}
-    >
-      Enter Player Name...
-    </span>
+    />
   );
 
   const selectedColors = factions.map((faction) => faction.color);
@@ -822,6 +892,7 @@ function FactionSelect({
           <Selector
             hoverMenuLabel="Pick Faction"
             options={filteredFactions.map(([factionName, _]) => factionName)}
+            fadedOptions={selectedFactions}
             selectedItem={faction.name}
             toggleItem={(factionName, add) => {
               if (add) {

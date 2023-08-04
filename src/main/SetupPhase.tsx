@@ -1,61 +1,24 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { StartingComponents } from "../FactionCard";
-import { fetcher, poster } from "../util/api/util";
 import { ObjectiveRow } from "../ObjectiveRow";
-import { claimPlanet } from "../util/api/planets";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LabeledDiv } from "../LabeledDiv";
 import { getFactionColor, getFactionName } from "../util/factions";
-import {
-  finalizeSubState,
-  hideSubStateObjective,
-  revealSubStateObjective,
-  SubState,
-} from "../util/api/subState";
-import { responsivePixels } from "../util/util";
+import { responsivePixels, validateMapString } from "../util/util";
 import { NumberedItem } from "../NumberedItem";
 import { Faction } from "../util/api/factions";
-import { GameState, StateUpdateData } from "../util/api/state";
-import {
-  Objective,
-  removeObjective,
-  revealObjective,
-} from "../util/api/objectives";
 import { SelectableRow } from "../SelectableRow";
 import { LockedButtons } from "../LockedButton";
+import { useGameData } from "../data/GameData";
+import { hideObjective, revealObjective } from "../util/api/revealObjective";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { RevealObjectiveData } from "../util/model/revealObjective";
+import { advancePhase } from "../util/api/advancePhase";
+import { changeOption } from "../util/api/changeOption";
 
-export function startFirstRound(
-  gameid: string,
-  subState: SubState,
-  factions: Record<string, Faction>
-) {
-  finalizeSubState(gameid, subState);
-  const data: StateUpdateData = {
-    action: "ADVANCE_PHASE",
-  };
-  if (factions["Council Keleres"]) {
-    for (const planet of factions["Council Keleres"].startswith.planets ?? []) {
-      claimPlanet(gameid, planet, "Council Keleres");
-    }
-  }
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.phase = "STRATEGY";
-        updatedState.activeplayer = state.speaker;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
+export function startFirstRound(gameid: string) {
+  advancePhase(gameid);
 }
 
 function factionTechChoicesComplete(
@@ -86,18 +49,18 @@ function factionSubFactionChoicesComplete(
 
 export function setupPhaseComplete(
   factions: Record<string, Faction>,
-  subState: SubState
+  revealedObjectives: string[]
 ): boolean {
   return (
     factionSubFactionChoicesComplete(factions) &&
     factionTechChoicesComplete(factions) &&
-    (subState.objectives ?? []).length === 2
+    revealedObjectives.length === 2
   );
 }
 
 function getSetupPhaseText(
   factions: Record<string, Faction>,
-  subState: SubState
+  revealedObjectives: string[]
 ) {
   const textSections = [];
   if (
@@ -106,43 +69,50 @@ function getSetupPhaseText(
   ) {
     textSections.push("Select all faction choices");
   }
-  if ((subState.objectives ?? []).length !== 2) {
+  if (revealedObjectives.length !== 2) {
     textSections.push("Reveal 2 objectives");
   }
   return textSections.join(" and ");
 }
 
+export function setMapString(gameid: string | undefined, mapString: string) {
+  if (!gameid || !validateMapString(mapString)) {
+    return;
+  }
+  changeOption(gameid, "map-string", mapString);
+}
+
 export default function SetupPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "factions",
+    "objectives",
+    "options",
+    "state",
+  ]);
+
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const options = gameData.options;
+  const state = gameData.state;
+
+  const mapStringRef = useRef<HTMLInputElement>(null);
+
+  const mapString = options["map-string"];
+
+  useEffect(() => {
+    if (!mapStringRef.current || !mapString) {
+      return;
     }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+    mapStringRef.current.value = mapString ?? "";
+  }, [mapString]);
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const revealedObjectives = currentTurn
+    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+    .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
 
   const orderedFactions = useMemo(() => {
     if (!factions) {
@@ -157,10 +127,10 @@ export default function SetupPhase() {
     return Object.values(objectives ?? {}).filter((objective) => {
       return (
         objective.type === "STAGE ONE" &&
-        !subState?.objectives?.includes(objective.name)
+        !revealedObjectives.includes(objective.name)
       );
     });
-  }, [subState?.objectives, objectives]);
+  }, [revealedObjectives, objectives]);
 
   const speaker = (factions ?? {})[state?.speaker ?? ""];
 
@@ -168,7 +138,8 @@ export default function SetupPhase() {
     <div
       className="flexColumn"
       style={{
-        alignItems: "center",
+        alignItems: "flex-start",
+        width: "100%",
         justifyContent: "flex-start",
         marginTop: responsivePixels(100),
       }}
@@ -182,7 +153,30 @@ export default function SetupPhase() {
           margin: `0 ${responsivePixels(20)} 0 ${responsivePixels(40)}`,
         }}
       >
-        <NumberedItem>Build the galaxy</NumberedItem>
+        <NumberedItem>
+          Build the galaxy
+          <div
+            className="flexRow mediumFont"
+            style={{
+              fontFamily: "Myriad Pro",
+              paddingTop: responsivePixels(8),
+              alignItems: "flex-start",
+              whiteSpace: "nowrap",
+              width: "100%",
+            }}
+          >
+            Map String:
+            <input
+              ref={mapStringRef}
+              type="textbox"
+              className="smallFont"
+              style={{ width: `min(75vw, ${responsivePixels(700)})` }}
+              onChange={(event) =>
+                setMapString(gameid, event.currentTarget.value)
+              }
+            ></input>
+          </div>
+        </NumberedItem>
         <NumberedItem>Shuffle decks</NumberedItem>
         <NumberedItem>
           <LabeledDiv label="Gather starting components">
@@ -225,10 +219,10 @@ export default function SetupPhase() {
             color={getFactionColor(speaker)}
           >
             Draw 5 stage one objectives and reveal 2
-            {(subState?.objectives ?? []).length > 0 ? (
+            {revealedObjectives.length > 0 ? (
               <LabeledDiv label="Revealed Objectives">
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  {(subState?.objectives ?? []).map((objectiveName) => {
+                  {revealedObjectives.map((objectiveName) => {
                     const objective = (objectives ?? {})[objectiveName];
                     if (!objective) {
                       return (
@@ -239,8 +233,7 @@ export default function SetupPhase() {
                             if (!gameid) {
                               return;
                             }
-                            hideSubStateObjective(gameid, objectiveName);
-                            removeObjective(gameid, undefined, objectiveName);
+                            hideObjective(gameid, objectiveName);
                           }}
                         >
                           {objectiveName}
@@ -255,7 +248,7 @@ export default function SetupPhase() {
                           if (!gameid) {
                             return;
                           }
-                          hideSubStateObjective(gameid, objectiveName);
+                          hideObjective(gameid, objectiveName);
                         }}
                         viewing={true}
                       />
@@ -264,7 +257,7 @@ export default function SetupPhase() {
                 </div>
               </LabeledDiv>
             ) : null}
-            {(subState?.objectives ?? []).length < 2 ? (
+            {revealedObjectives.length < 2 ? (
               <ClientOnlyHoverMenu
                 label="Reveal Objective"
                 renderProps={(closeFn) => (
@@ -295,12 +288,7 @@ export default function SetupPhase() {
                                 return;
                               }
                               closeFn();
-                              revealSubStateObjective(gameid, objective.name);
-                              revealObjective(
-                                gameid,
-                                undefined,
-                                objective.name
-                              );
+                              revealObjective(gameid, objective.name);
                             }}
                           >
                             {objective.name}
@@ -322,32 +310,34 @@ export default function SetupPhase() {
           </LabeledDiv>
         </NumberedItem>
       </ol>
-      {!setupPhaseComplete(factions ?? {}, subState ?? {}) ? (
-        <div
-          style={{
-            color: "firebrick",
-            fontFamily: "Myriad Pro",
-            fontWeight: "bold",
-          }}
-        >
-          {getSetupPhaseText(factions ?? {}, subState ?? {})}
-        </div>
-      ) : null}
-      <LockedButtons
-        unlocked={setupPhaseComplete(factions ?? {}, subState ?? {})}
-        buttons={[
-          {
-            text: "Start Game",
-            onClick: () => {
-              if (!gameid) {
-                return;
-              }
-              startFirstRound(gameid, subState ?? {}, factions ?? {});
+      <div className="centered flexColumn" style={{ width: "100%" }}>
+        {!setupPhaseComplete(factions ?? {}, revealedObjectives) ? (
+          <div
+            style={{
+              color: "firebrick",
+              fontFamily: "Myriad Pro",
+              fontWeight: "bold",
+            }}
+          >
+            {getSetupPhaseText(factions ?? {}, revealedObjectives)}
+          </div>
+        ) : null}
+        <LockedButtons
+          unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
+          buttons={[
+            {
+              text: "Start Game",
+              onClick: () => {
+                if (!gameid) {
+                  return;
+                }
+                startFirstRound(gameid);
+              },
+              style: { fontSize: responsivePixels(40) },
             },
-            style: { fontSize: responsivePixels(40) },
-          },
-        ]}
-      />
+          ]}
+        />
+      </div>
     </div>
   );
 }

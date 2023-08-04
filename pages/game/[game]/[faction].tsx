@@ -1,95 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import useSWR from "swr";
-import { fetcher, setGameId } from "../../../src/util/api/util";
-import { responsivePixels } from "../../../src/util/util";
-import {
-  hasTech,
-  lockTech,
-  Tech,
-  TechType,
-  unlockTech,
-} from "../../../src/util/api/techs";
-import {
-  claimPlanet,
-  Planet,
-  unclaimPlanet,
-} from "../../../src/util/api/planets";
+import React, { useEffect, useRef, useState } from "react";
+import { AddPlanetList } from "../../../src/AddPlanetList";
+import { AddTechList } from "../../../src/AddTechList";
+import { AgendaRow } from "../../../src/AgendaRow";
 import {
   FactionCard,
   FullFactionSymbol,
   StartingComponents,
 } from "../../../src/FactionCard";
-import { BasicFactionTile } from "../../../src/FactionTile";
 import { FactionSummary } from "../../../src/FactionSummary";
-import { StaticFactionTimer } from "../../../src/Timer";
-import {
-  applyAllPlanetAttachments,
-  filterToClaimedPlanets,
-} from "../../../src/util/planets";
-import {
-  filterToOwnedTechs,
-  filterToUnownedTechs,
-} from "../../../src/util/techs";
-import { Updater } from "../../../src/Updater";
+import { NonGameHeader } from "../../../src/Header";
+import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
 import {
   BLACK_BORDER_GLOW,
   LabeledDiv,
   LabeledLine,
 } from "../../../src/LabeledDiv";
+import { LockedButtons } from "../../../src/LockedButton";
+import { Modal } from "../../../src/Modal";
+import { ObjectiveList } from "../../../src/ObjectiveList";
+import { ObjectiveRow } from "../../../src/ObjectiveRow";
+import { PlanetRow } from "../../../src/PlanetRow";
+import { SelectableRow } from "../../../src/SelectableRow";
+import { Selector } from "../../../src/Selector";
+import { Tab, TabBody } from "../../../src/Tab";
+import { TechRow } from "../../../src/TechRow";
+import { StaticFactionTimer } from "../../../src/Timer";
+import { Updater } from "../../../src/Updater";
 import {
-  StrategyCard,
-  unassignStrategyCard,
-} from "../../../src/util/api/cards";
-import {
-  GameState,
-  prevPlayer,
-  setAgendaNum,
-} from "../../../src/util/api/state";
+  canFactionVote,
+  computeRemainingVotes,
+  getTargets,
+} from "../../../src/VoteCount";
+import { useGameData } from "../../../src/data/GameData";
 import {
   AdditionalActions,
-  advanceToStatusPhase,
   FactionActionButtons,
   NextPlayerButtons,
+  advanceToStatusPhase,
 } from "../../../src/main/ActionPhase";
-import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
-import {
-  castSubStateVotes,
-  hideSubStateAgenda,
-  hideSubStateObjective,
-  markSecondary,
-  revealSubStateAgenda,
-  revealSubStateObjective,
-  scoreSubStateObjective,
-  setSubStateOther,
-  SubState,
-  undoSubStateStrategyCard,
-  unscoreSubStateObjective,
-} from "../../../src/util/api/subState";
-import { SelectableRow } from "../../../src/SelectableRow";
-import { ObjectiveRow } from "../../../src/ObjectiveRow";
-import {
-  Objective,
-  ObjectiveType,
-  removeObjective,
-  revealObjective,
-  scoreObjective,
-  unscoreObjective,
-} from "../../../src/util/api/objectives";
-import { AgendaRow } from "../../../src/AgendaRow";
-import { canFactionVote, getTargets } from "../../../src/VoteCount";
-import { computeVotes } from "../../../src/main/AgendaPhase";
-import {
-  Agenda,
-  OutcomeType,
-  repealAgenda,
-  resolveAgenda,
-} from "../../../src/util/api/agendas";
-import { Faction, updateCastVotes } from "../../../src/util/api/factions";
-import {
-  advanceToActionPhase,
-  StrategyCardSelectList,
-} from "../../../src/main/StrategyPhase";
+import { computeVotes, startNextRound } from "../../../src/main/AgendaPhase";
 import {
   setupPhaseComplete,
   startFirstRound,
@@ -98,38 +48,67 @@ import {
   advanceToAgendaPhase,
   statusPhaseComplete,
 } from "../../../src/main/StatusPhase";
-import { startNextRound } from "../../../src/main/AgendaPhase";
-import Head from "next/head";
-import { Attachment } from "../../../src/util/api/attachments";
-import { Modal } from "../../../src/Modal";
-import { AddTechList } from "../../../src/AddTechList";
-import { AddPlanetList } from "../../../src/AddPlanetList";
-import { Tab, TabBody } from "../../../src/Tab";
-import { TechRow } from "../../../src/TechRow";
-import { PlanetRow } from "../../../src/PlanetRow";
-import { ObjectiveList } from "../../../src/ObjectiveList";
+import {
+  StrategyCardSelectList,
+  advanceToActionPhase,
+} from "../../../src/main/StrategyPhase";
+import {
+  getActiveAgenda,
+  getFactionVotes,
+  getScoredObjectives,
+  getSelectedEligibleOutcomes,
+  getSpeakerTieBreak,
+} from "../../../src/util/actionLog";
+import {
+  getCurrentPhasePreviousLogEntries,
+  getCurrentTurnLogEntries,
+} from "../../../src/util/api/actionLog";
+import { addTech, removeTech } from "../../../src/util/api/addTech";
+import { Agenda, OutcomeType } from "../../../src/util/api/agendas";
+import { castVotes } from "../../../src/util/api/castVotes";
+import { claimPlanet, unclaimPlanet } from "../../../src/util/api/claimPlanet";
+import { getSelectedAction, undo } from "../../../src/util/api/data";
 import { getDefaultStrategyCards } from "../../../src/util/api/defaults";
-import { LockedButtons } from "../../../src/LockedButton";
+import { Faction } from "../../../src/util/api/factions";
+import { markSecondary } from "../../../src/util/api/markSecondary";
+import { ObjectiveType } from "../../../src/util/api/objectives";
+import { resolveAgenda } from "../../../src/util/api/resolveAgenda";
+import { hideAgenda, revealAgenda } from "../../../src/util/api/revealAgenda";
+import {
+  hideObjective,
+  revealObjective,
+} from "../../../src/util/api/revealObjective";
+import {
+  scoreObjective,
+  unscoreObjective,
+} from "../../../src/util/api/scoreObjective";
+import { selectEligibleOutcomes } from "../../../src/util/api/selectEligibleOutcomes";
+import { Tech, TechType, hasTech } from "../../../src/util/api/techs";
+import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor } from "../../../src/util/factions";
-import Link from "next/link";
-import Image from "next/image";
-import { Header, NonGameHeader } from "../../../src/Header";
-import { Selector } from "../../../src/Selector";
-import { getLastPickedCard } from "../../../src/util/helpers";
+import { RevealObjectiveData } from "../../../src/util/model/revealObjective";
+import {
+  applyAllPlanetAttachments,
+  filterToClaimedPlanets,
+} from "../../../src/util/planets";
+import {
+  filterToOwnedTechs,
+  filterToUnownedTechs,
+} from "../../../src/util/techs";
+import { responsivePixels } from "../../../src/util/util";
+import { speakerTieBreak } from "../../../src/util/api/speakerTieBreak";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
 function SecondaryCheck({
-  factionName,
+  faction,
   gameid,
-  subState,
 }: {
-  factionName: string;
+  faction: Faction;
   gameid: string;
-  subState: SubState;
 }) {
-  const secondaryState =
-    (subState.turnData?.factions ?? {})[factionName]?.secondary ?? "PENDING";
+  const factionName = faction.name;
+  const secondaryState = faction.secondary ?? "PENDING";
   return (
     <div className="flexRow">
       {secondaryState === "PENDING" ? (
@@ -168,111 +147,81 @@ function PhaseSection() {
     game: gameid,
     faction: factionName,
   }: { game?: string; faction?: string } = router.query;
-  const { data: agendas = {} }: { data?: Record<string, Agenda> } = useSWR(
-    gameid ? `/api/${gameid}/agendas` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: attachments = {} }: { data?: Record<string, Attachment> } =
-    useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher, {
-      revalidateIfStale: false,
-    });
-  const { data: factions = {} }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets = {} }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives = {} }: { data?: Record<string, Objective> } =
-    useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, {
-      revalidateIfStale: false,
-    });
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "agendas",
+    "attachments",
+    "factions",
+    "planets",
+    "objectives",
+    "options",
+    "state",
+    "strategycards",
+  ]);
+  const agendas = gameData.agendas ?? {};
+  const attachments = gameData.attachments ?? {};
+  const factions = gameData.factions ?? {};
+  const planets = gameData.planets ?? {};
+  const objectives = gameData.objectives ?? {};
+  const options = gameData.options;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
   const voteRef = useRef<HTMLDivElement>(null);
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  let currentAgenda: Agenda | undefined;
+  const activeAgenda = getActiveAgenda(currentTurn);
+  if (activeAgenda) {
+    currentAgenda = (agendas ?? {})[activeAgenda];
+  }
 
   function addObj(objectiveName: string) {
     if (!gameid) {
       return;
     }
-    revealSubStateObjective(gameid, objectiveName);
-    revealObjective(gameid, undefined, objectiveName);
+    revealObjective(gameid, objectiveName);
   }
   function removeObj(objectiveName: string) {
     if (!gameid) {
       return;
     }
-    hideSubStateObjective(gameid, objectiveName);
-    removeObjective(gameid, undefined, objectiveName);
+    hideObjective(gameid, objectiveName);
   }
   function scoreObj(objectiveName: string) {
     if (!gameid || !factionName) {
       return;
     }
     scoreObjective(gameid, factionName, objectiveName);
-    scoreSubStateObjective(gameid, factionName, objectiveName);
   }
   function unscoreObj(objectiveName: string) {
     if (!gameid || !factionName) {
       return;
     }
     unscoreObjective(gameid, factionName, objectiveName);
-    unscoreSubStateObjective(gameid, factionName, objectiveName);
   }
   function selectAgenda(agendaName: string) {
     if (!gameid) {
       return;
     }
-    revealSubStateAgenda(gameid, agendaName);
+    revealAgenda(gameid, agendaName);
   }
-  function hideAgenda() {
+  function hideAgendaLocal(agendaName: string) {
     if (!gameid) {
       return;
     }
-    hideSubStateAgenda(gameid);
+    hideAgenda(gameid, agendaName);
   }
-  function selectEligibleOutcome(outcome: OutcomeType | null) {
+  function selectEligibleOutcome(outcome: OutcomeType | "None") {
     if (!gameid) {
       return;
     }
-    setSubStateOther(gameid, "outcome", outcome);
+    selectEligibleOutcomes(gameid, outcome);
   }
   function selectSpeakerTieBreak(tieBreak: string | null) {
     if (!gameid) {
       return;
     }
-    setSubStateOther(gameid, "tieBreak", tieBreak);
+    speakerTieBreak(gameid, tieBreak ?? "None");
   }
   if (!factionName) {
     return null;
@@ -289,19 +238,16 @@ function PhaseSection() {
     if (agenda.target || agenda.elect === "???") return;
     outcomes.add(agenda.elect);
   });
-  let currentAgenda: Agenda | undefined;
+  // let currentAgenda: Agenda | undefined;
   const agendaNum = state?.agendaNum ?? 1;
   if (agendaNum > 2) {
     return null;
   }
-  if (subState.agenda) {
-    currentAgenda = agendas[subState.agenda];
-  }
-  const factionSubState = (subState.turnData?.factions ?? {})[factionName];
 
   const localAgenda = structuredClone(currentAgenda);
-  if (localAgenda && subState.outcome) {
-    localAgenda.elect = subState.outcome as OutcomeType;
+  const eligibleOutcomes = getSelectedEligibleOutcomes(currentTurn);
+  if (localAgenda && eligibleOutcomes && eligibleOutcomes !== "None") {
+    localAgenda.elect = eligibleOutcomes;
   }
   const targets = getTargets(
     localAgenda,
@@ -311,7 +257,7 @@ function PhaseSection() {
     agendas,
     objectives
   );
-  const totalVotes = computeVotes(currentAgenda, subState.turnData?.factions);
+  const totalVotes = computeVotes(currentAgenda, currentTurn);
   const maxVotes = Object.values(totalVotes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -326,73 +272,58 @@ function PhaseSection() {
   const ownedPlanets = filterToClaimedPlanets(planets, factionName);
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
-  let influence = 0;
-  for (const planet of updatedPlanets) {
-    influence += planet.influence;
-  }
+  const { influence, extraVotes } = computeRemainingVotes(
+    factionName,
+    factions,
+    planets,
+    attachments,
+    agendas,
+    options,
+    state,
+    getCurrentPhasePreviousLogEntries(gameData.actionLog ?? [])
+  );
+
   const faction = factions[factionName];
   if (!faction) {
     return null;
   }
 
-  influence -= Math.min(faction.votes ?? 0, influence);
-  let extraVotes = 0;
-  if (factionName === "Argent Flight") {
-    extraVotes += Object.keys(factions).length;
-  }
-  if (hasTech(faction, "Predictive Intelligence")) {
-    extraVotes += 3;
-  }
-  const label = !!subState.miscount
-    ? "Re-voting on Miscounted Agenda"
-    : agendaNum === 1
-    ? "FIRST AGENDA"
-    : "SECOND AGENDA";
+  const label =
+    // !!subState.miscount
+    //   ? "Re-voting on Miscounted Agenda"
+    //   :
+    agendaNum === 1 ? "FIRST AGENDA" : "SECOND AGENDA";
   async function completeAgenda() {
-    if (!gameid || !subState.agenda) {
+    if (!gameid) {
       return;
     }
-    const target = subState.tieBreak ? subState.tieBreak : selectedTargets[0];
-    if (!target) {
+    const tieBreak = getSpeakerTieBreak(currentTurn);
+    const target = tieBreak ? tieBreak : selectedTargets[0];
+    if (!target || !currentAgenda) {
       return;
     }
-    let activeAgenda = subState.agenda;
-    if (subState.subAgenda) {
-      activeAgenda = subState.subAgenda;
-      resolveAgenda(gameid, subState.agenda, subState.subAgenda);
-    }
-    resolveAgenda(gameid, activeAgenda, target);
-
-    updateCastVotes(gameid, subState.turnData?.factions);
-    hideSubStateAgenda(gameid);
-    if (activeAgenda === "Miscount Disclosed") {
-      repealAgenda(gameid, agendas[target]);
-      revealSubStateAgenda(gameid, target);
-      setSubStateOther(gameid, "miscount", true);
-    } else {
-      const agendaNum = state?.agendaNum ?? 1;
-      setAgendaNum(gameid, agendaNum + 1);
-    }
+    resolveAgenda(gameid, currentAgenda?.name, target);
   }
-  function castVotes(target: string | undefined, votes: number) {
+  function castVotesLocal(target: string | undefined, votes: number) {
     if (!gameid || !factionName) {
       return;
     }
     if (target === "Abstain") {
-      castSubStateVotes(gameid, factionName, "Abstain", 0);
+      castVotes(gameid, factionName, 0, "Abstain");
     } else {
-      castSubStateVotes(gameid, factionName, target, votes);
+      castVotes(gameid, factionName, votes, target);
     }
   }
+  const factionVotes = getFactionVotes(currentTurn, factionName);
   function saveCastVotes(element: HTMLDivElement) {
     if (element.innerText !== "") {
       const numerical = parseInt(element.innerText);
       if (!isNaN(numerical)) {
-        castVotes(factionSubState?.target, numerical);
+        castVotesLocal(factionVotes?.target, numerical);
         element.innerText = numerical.toString();
       }
     }
-    element.innerText = factionSubState?.votes?.toString() ?? "0";
+    element.innerText = factionVotes?.votes?.toString() ?? "0";
   }
 
   let leftLabel: string | undefined;
@@ -400,7 +331,11 @@ function PhaseSection() {
   let phaseContent = null;
   switch (state?.phase) {
     case "SETUP": {
-      const revealedObjectiveNames = subState.objectives ?? [];
+      const revealedObjectiveNames = currentTurn
+        .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+        .map(
+          (logEntry) => (logEntry.data as RevealObjectiveData).event.objective
+        );
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           return (
@@ -418,9 +353,9 @@ function PhaseSection() {
             </div>
           </LabeledDiv>
           <LabeledDiv label="Speaker Actions">
-            {(subState.objectives ?? []).length > 0 ? (
+            {revealedObjectiveNames.length > 0 ? (
               <LabeledDiv label="REVEALED OBJECTIVES">
-                {(subState.objectives ?? []).map((objectiveName) => {
+                {revealedObjectiveNames.map((objectiveName) => {
                   const objectiveObj = objectives[objectiveName];
                   if (!objectiveObj) {
                     return null;
@@ -436,7 +371,7 @@ function PhaseSection() {
                 })}
               </LabeledDiv>
             ) : null}
-            {(subState.objectives ?? []).length < 2 ? (
+            {revealedObjectiveNames.length < 2 ? (
               <ClientOnlyHoverMenu label="Reveal Objective">
                 <div
                   className="flexRow"
@@ -478,27 +413,12 @@ function PhaseSection() {
     }
     case "STRATEGY":
       function canUndo() {
-        const numPicked = (subState.strategyCards ?? []).length;
-        if (numPicked === 0) {
-          return false;
-        }
-        const lastCard = (subState.strategyCards ?? [])[numPicked - 1];
-        if (!lastCard) {
-          return false;
-        }
-        return lastCard.pickedBy === factionName;
-      }
-      function undoPick() {
-        if (!gameid || !state) {
-          return;
-        }
-        const lastPickedCard = getLastPickedCard(state, subState);
-        if (!lastPickedCard) {
-          return;
-        }
-        undoSubStateStrategyCard(gameid);
-        unassignStrategyCard(gameid, lastPickedCard.name);
-        prevPlayer(gameid, factions ?? {}, subState);
+        const lastAction = currentTurn[0];
+        return (
+          !!lastAction &&
+          lastAction.data.action === "ASSIGN_STRATEGY_CARD" &&
+          lastAction.data.event.pickedBy === factionName
+        );
       }
       if (factionName === state.activeplayer) {
         centerLabel = "SELECT STRATEGY CARD";
@@ -510,17 +430,26 @@ function PhaseSection() {
             >
               <StrategyCardSelectList mobile={true} />
             </div>
-            {canUndo() ? (
-              <button onClick={() => undoPick()}>Undo SC Pick</button>
-            ) : null}
           </div>
         );
       } else if (canUndo()) {
         centerLabel = "STRATEGY PHASE";
-        phaseContent = <button onClick={() => undoPick()}>Undo SC Pick</button>;
+        phaseContent = (
+          <button
+            onClick={() => {
+              if (!gameid) {
+                return;
+              }
+              undo(gameid);
+            }}
+          >
+            Undo SC Pick
+          </button>
+        );
       }
       break;
     case "ACTION":
+      const selectedAction = getSelectedAction(gameData);
       if (factionName === state.activeplayer) {
         centerLabel = "SELECT ACTION";
         phaseContent = (
@@ -536,7 +465,7 @@ function PhaseSection() {
                 primaryOnly={true}
               />
             </div>
-            {subState.turnData?.selectedAction ? (
+            {selectedAction ? (
               <div className="flexRow" style={{ width: "100%" }}>
                 <NextPlayerButtons
                   factionName={factionName}
@@ -547,76 +476,48 @@ function PhaseSection() {
           </React.Fragment>
         );
       } else {
-        switch (subState.turnData?.selectedAction) {
+        switch (selectedAction) {
           case "Leadership":
             leftLabel = "Leadership Secondary";
             phaseContent = (
-              <SecondaryCheck
-                factionName={factionName}
-                gameid={gameid ?? ""}
-                subState={subState}
-              />
+              <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Diplomacy":
             leftLabel = "Diplomacy Secondary";
             phaseContent = (
-              <SecondaryCheck
-                factionName={factionName}
-                gameid={gameid ?? ""}
-                subState={subState}
-              />
+              <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Politics":
             leftLabel = "Politics Secondary";
             phaseContent = (
-              <SecondaryCheck
-                factionName={factionName}
-                gameid={gameid ?? ""}
-                subState={subState}
-              />
+              <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Construction":
             leftLabel = "Construction Secondary";
             phaseContent = (
-              <SecondaryCheck
-                factionName={factionName}
-                gameid={gameid ?? ""}
-                subState={subState}
-              />
+              <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Trade":
             leftLabel = "Trade Secondary";
             phaseContent = (
-              <SecondaryCheck
-                factionName={factionName}
-                gameid={gameid ?? ""}
-                subState={subState}
-              />
+              <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Warfare":
             leftLabel = "Warfare Secondary";
             phaseContent = (
-              <SecondaryCheck
-                factionName={factionName}
-                gameid={gameid ?? ""}
-                subState={subState}
-              />
+              <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Technology":
             if (factionName === "Nekro Virus") {
               leftLabel = "Technology Secondary";
               phaseContent = (
-                <SecondaryCheck
-                  factionName={factionName}
-                  gameid={gameid ?? ""}
-                  subState={subState}
-                />
+                <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
               );
             } else {
               phaseContent = (
@@ -631,11 +532,7 @@ function PhaseSection() {
           case "Imperial":
             leftLabel = "Imperial Secondary";
             phaseContent = (
-              <SecondaryCheck
-                factionName={factionName}
-                gameid={gameid ?? ""}
-                subState={subState}
-              />
+              <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
         }
@@ -683,19 +580,14 @@ function PhaseSection() {
           objective.phase === "STATUS"
         );
       });
-      const scoredPublics = (
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).objectives ??
-        []
-      ).filter((objective) => {
+      const scoredObjectives = getScoredObjectives(currentTurn, factionName);
+      const scoredPublics = scoredObjectives.filter((objective) => {
         return (
           (objectives[objective] ?? {}).type === "STAGE ONE" ||
           (objectives[objective] ?? {}).type === "STAGE TWO"
         );
       });
-      const scoredSecrets = (
-        ((subState.turnData?.factions ?? {})[factionName] ?? {}).objectives ??
-        []
-      ).filter((objective) => {
+      const scoredSecrets = scoredObjectives.filter((objective) => {
         return (objectives[objective] ?? {}).type === "SECRET";
       });
       const revealableObjectives = Object.values(objectives ?? {}).filter(
@@ -703,8 +595,12 @@ function PhaseSection() {
           return objective.type === type && !objective.selected;
         }
       );
-      const subStateObjective = (subState.objectives ?? [])[0];
-      const subStateObjectiveObj = objectives[subStateObjective ?? ""];
+      const revealedObjective = currentTurn
+        .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+        .map(
+          (logEntry) => (logEntry.data as RevealObjectiveData).event.objective
+        )[0];
+      const revealedObjectiveObj = objectives[revealedObjective ?? ""];
       centerLabel = "SCORE OBJECTIVES";
       phaseContent = (
         <React.Fragment>
@@ -803,73 +699,57 @@ function PhaseSection() {
             )}
           </div>
           <LabeledDiv label="Speaker Actions">
-            {subStateObjectiveObj ? (
+            {revealedObjectiveObj ? (
               <LabeledDiv label="REVEALED OBJECTIVE">
                 <ObjectiveRow
-                  objective={subStateObjectiveObj}
-                  removeObjective={() => removeObj(subStateObjectiveObj.name)}
+                  objective={revealedObjectiveObj}
+                  removeObjective={() => removeObj(revealedObjectiveObj.name)}
                   viewing={true}
                 />
               </LabeledDiv>
             ) : (
               <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
-                {(subState.objectives ?? []).map((objective) => {
-                  const objectiveObj = objectives[objective];
-                  if (!objectiveObj) {
-                    return null;
-                  }
-                  return (
-                    <ObjectiveRow
-                      key={objective}
-                      objective={objectiveObj}
-                      removeObjective={() => removeObj(objective)}
-                      viewing={true}
-                    />
-                  );
-                })}
-                {(subState.objectives ?? []).length < 1 ? (
-                  <ClientOnlyHoverMenu
-                    label={`Reveal one Stage ${
-                      state.round > 3 ? "II" : "I"
-                    } objective`}
-                    style={{ maxHeight: "400px" }}
+                <ClientOnlyHoverMenu
+                  label={`Reveal one Stage ${
+                    state.round > 3 ? "II" : "I"
+                  } objective`}
+                  style={{ maxHeight: "400px" }}
+                >
+                  <div
+                    className="flexRow"
+                    style={{
+                      maxWidth: "85vw",
+                      gap: "4px",
+                      whiteSpace: "nowrap",
+                      padding: "8px",
+                      display: "grid",
+                      gridAutoFlow: "column",
+                      gridTemplateRows: "repeat(10, auto)",
+                      alignItems: "stretch",
+                      justifyContent: "flex-start",
+                      overflowX: "auto",
+                    }}
                   >
-                    <div
-                      className="flexRow"
-                      style={{
-                        maxWidth: "85vw",
-                        gap: "4px",
-                        whiteSpace: "nowrap",
-                        padding: "8px",
-                        display: "grid",
-                        gridAutoFlow: "column",
-                        gridTemplateRows: "repeat(10, auto)",
-                        alignItems: "stretch",
-                        justifyContent: "flex-start",
-                        overflowX: "auto",
-                      }}
-                    >
-                      {Object.values(revealableObjectives)
-                        .filter((objective) => {
-                          return (
-                            objective.type ===
-                            (state.round > 3 ? "STAGE TWO" : "STAGE ONE")
-                          );
-                        })
-                        .map((objective) => {
-                          return (
-                            <button
-                              key={objective.name}
-                              style={{ writingMode: "horizontal-tb" }}
-                              onClick={() => addObj(objective.name)}
-                            >
-                              {objective.name}
-                            </button>
-                          );
-                        })}
-                    </div>
-                  </ClientOnlyHoverMenu>
-                ) : null}
+                    {Object.values(revealableObjectives)
+                      .filter((objective) => {
+                        return (
+                          objective.type ===
+                          (state.round > 3 ? "STAGE TWO" : "STAGE ONE")
+                        );
+                      })
+                      .map((objective) => {
+                        return (
+                          <button
+                            key={objective.name}
+                            style={{ writingMode: "horizontal-tb" }}
+                            onClick={() => addObj(objective.name)}
+                          >
+                            {objective.name}
+                          </button>
+                        );
+                      })}
+                  </div>
+                </ClientOnlyHoverMenu>
               </div>
             )}
           </LabeledDiv>
@@ -878,9 +758,11 @@ function PhaseSection() {
       break;
     }
     case "AGENDA": {
+      const tieBreak = getSpeakerTieBreak(currentTurn);
       const hasVotableTarget =
-        !!factionSubState?.target && factionSubState?.target !== "Abstain";
+        !!factionVotes?.target && factionVotes?.target !== "Abstain";
       const items = Math.min((targets ?? []).length, 12);
+      const eligibleOutcomes = getSelectedEligibleOutcomes(currentTurn);
       centerLabel = "AGENDA PHASE";
       phaseContent = (
         <React.Fragment>
@@ -923,21 +805,29 @@ function PhaseSection() {
             <React.Fragment>
               <div className="largeFont" style={{ width: "100%" }}>
                 <LabeledDiv label={label}>
-                  <AgendaRow agenda={currentAgenda} removeAgenda={hideAgenda} />
+                  <AgendaRow
+                    agenda={currentAgenda}
+                    removeAgenda={() => {
+                      if (!currentAgenda) {
+                        return;
+                      }
+                      hideAgendaLocal(currentAgenda.name);
+                    }}
+                  />
                 </LabeledDiv>
               </div>
               {currentAgenda.name === "Covert Legislation" ? (
-                subState.outcome ? (
+                eligibleOutcomes ? (
                   <LabeledDiv
                     label="ELIGIBLE OUTCOMES"
                     style={{ paddingTop: "8px" }}
                   >
                     <SelectableRow
-                      itemName={subState.outcome}
-                      removeItem={() => selectEligibleOutcome(null)}
+                      itemName={eligibleOutcomes}
+                      removeItem={() => selectEligibleOutcome("None")}
                     >
                       <div style={{ display: "flex", fontSize: "18px" }}>
-                        {subState.outcome}
+                        {eligibleOutcomes}
                       </div>
                     </SelectableRow>
                   </LabeledDiv>
@@ -983,8 +873,8 @@ function PhaseSection() {
                 factionName,
                 agendas,
                 state,
-                subState,
-                factions
+                factions,
+                currentTurn
               ) ? (
                 <div className="flexRow">Cannot Vote</div>
               ) : (
@@ -1001,12 +891,12 @@ function PhaseSection() {
                       hoverMenuLabel="Select Vote Outcome"
                       selectedLabel="Selected Outcome"
                       options={targets}
-                      selectedItem={factionSubState?.target}
+                      selectedItem={factionVotes?.target}
                       toggleItem={(itemName, add) => {
                         if (add) {
-                          castVotes(itemName, 0);
+                          castVotesLocal(itemName, 0);
                         } else {
-                          castVotes(undefined, 0);
+                          castVotesLocal(undefined, 0);
                         }
                       }}
                     />
@@ -1044,13 +934,13 @@ function PhaseSection() {
                           paddingLeft: "12px",
                         }}
                       >
-                        {factionSubState?.votes ?? 0 > 0 ? (
+                        {factionVotes?.votes ?? 0 > 0 ? (
                           <div
                             className="arrowDown"
                             onClick={() =>
-                              castVotes(
-                                factionSubState?.target,
-                                (factionSubState?.votes ?? 0) - 1
+                              castVotesLocal(
+                                factionVotes?.target,
+                                (factionVotes?.votes ?? 0) - 1
                               )
                             }
                           ></div>
@@ -1071,16 +961,16 @@ function PhaseSection() {
                           onBlur={(e) => saveCastVotes(e.currentTarget)}
                           style={{ width: "32px" }}
                         >
-                          {factionSubState?.votes ?? 0}
+                          {factionVotes?.votes ?? 0}
                         </div>
-                        {factionSubState?.target &&
-                        factionSubState?.target !== "Abstain" ? (
+                        {factionVotes?.target &&
+                        factionVotes?.target !== "Abstain" ? (
                           <div
                             className="arrowUp"
                             onClick={() =>
-                              castVotes(
-                                factionSubState.target,
-                                (factionSubState?.votes ?? 0) + 1
+                              castVotesLocal(
+                                factionVotes.target,
+                                (factionVotes?.votes ?? 0) + 1
                               )
                             }
                           ></div>
@@ -1092,7 +982,7 @@ function PhaseSection() {
               )}
               <LabeledLine />
               {isTie ? (
-                !subState.tieBreak ? (
+                !tieBreak ? (
                   <LabeledDiv
                     label="Speaker Actions"
                     style={{ paddingTop: "12px" }}
@@ -1119,11 +1009,6 @@ function PhaseSection() {
                                 <button
                                   key={target}
                                   style={{ writingMode: "horizontal-tb" }}
-                                  className={
-                                    subState.tieBreak === target
-                                      ? "selected"
-                                      : ""
-                                  }
                                   onClick={() => selectSpeakerTieBreak(target)}
                                 >
                                   {target}
@@ -1138,11 +1023,6 @@ function PhaseSection() {
                                 <button
                                   key={target}
                                   style={{ writingMode: "horizontal-tb" }}
-                                  className={
-                                    subState.tieBreak === target
-                                      ? "selected"
-                                      : ""
-                                  }
                                   onClick={() => selectSpeakerTieBreak(target)}
                                 >
                                   {target}
@@ -1158,15 +1038,15 @@ function PhaseSection() {
                     style={{ paddingTop: "8px" }}
                   >
                     <SelectableRow
-                      itemName={subState.tieBreak}
+                      itemName={tieBreak}
                       removeItem={() => selectSpeakerTieBreak(null)}
                     >
-                      {subState.tieBreak}
+                      {tieBreak}
                     </SelectableRow>
                   </LabeledDiv>
                 )
               ) : null}
-              {selectedTargets.length === 1 || subState.tieBreak ? (
+              {selectedTargets.length === 1 || tieBreak ? (
                 <div
                   className="flexRow"
                   style={{ width: "100%", justifyContent: "center" }}
@@ -1175,7 +1055,7 @@ function PhaseSection() {
                     Resolve with target:{" "}
                     {selectedTargets.length === 1
                       ? selectedTargets[0]
-                      : subState.tieBreak}
+                      : tieBreak}
                   </button>
                 </div>
               ) : null}
@@ -1211,35 +1091,18 @@ function FactionContent() {
     game: gameid,
     faction: playerFaction,
   }: { game?: string; faction?: string } = router.query;
-  const { data: factions = {} }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: attachments = {} }: { data?: Record<string, Attachment> } =
-    useSWR(gameid ? `/api/${gameid}/attachments` : null, fetcher, {
-      revalidateIfStale: false,
-    });
-  const { data: objectives = {} }: { data?: Record<string, Objective> } =
-    useSWR(gameid ? `/api/${gameid}/objectives` : null, fetcher, {
-      revalidateIfStale: false,
-    });
-  const { data: planets = {} }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: techs = {} }: { data?: Record<string, Tech> } = useSWR(
-    gameid ? `/api/${gameid}/techs` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "attachments",
+    "factions",
+    "objectives",
+    "planets",
+    "techs",
+  ]);
+  const attachments = gameData.attachments ?? {};
+  const factions = gameData.factions ?? {};
+  const objectives = gameData.objectives ?? {};
+  const planets = gameData.planets ?? {};
+  const techs = gameData.techs ?? {};
 
   if (!factions || !playerFaction) {
     return null;
@@ -1277,18 +1140,18 @@ function FactionContent() {
     claimPlanet(gameid, toAdd, playerFaction);
   }
 
-  function removeTech(toRemove: string) {
+  function removeTechLocal(toRemove: string) {
     if (!gameid || !playerFaction) {
       return;
     }
-    lockTech(gameid, playerFaction, toRemove);
+    removeTech(gameid, playerFaction, toRemove);
   }
 
-  function addTech(toAdd: string) {
+  function addTechLocal(toAdd: string) {
     if (!gameid || !playerFaction) {
       return;
     }
-    unlockTech(gameid, playerFaction, toAdd);
+    addTech(gameid, playerFaction, toAdd);
   }
 
   const techsObj: Record<string, Tech> = {};
@@ -1352,7 +1215,7 @@ function FactionContent() {
         visible={showAddTech}
         title="Research Tech"
       >
-        <AddTechList techs={remainingTechs} addTech={addTech} />
+        <AddTechList techs={remainingTechs} addTech={addTechLocal} />
       </Modal>
       <Modal
         closeMenu={toggleAddPlanetMenu}
@@ -1440,7 +1303,7 @@ function FactionContent() {
                         <TechRow
                           key={tech.name}
                           tech={tech}
-                          removeTech={removeTech}
+                          removeTech={removeTechLocal}
                         />
                       );
                     })}
@@ -1494,36 +1357,20 @@ export default function GamePage() {
     game: gameid,
     faction: playerFaction,
   }: { game?: string; faction?: string } = router.query;
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "factions",
+    "state",
+    "strategycards",
+  ]);
+  const factions = gameData.factions;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const revealedObjectives = currentTurn
+    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+    .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
 
   useEffect(() => {
     if (!!gameid) {
@@ -1604,7 +1451,7 @@ export default function GamePage() {
         return (
           <div className="flexColumn" style={{ marginTop: "8px" }}>
             <LockedButtons
-              unlocked={setupPhaseComplete(factions ?? {}, subState)}
+              unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
               buttons={[
                 {
                   text: "Start Game",
@@ -1612,7 +1459,7 @@ export default function GamePage() {
                     if (!gameid) {
                       return;
                     }
-                    startFirstRound(gameid, subState, factions ?? {});
+                    startFirstRound(gameid);
                   },
                 },
               ]}
@@ -1628,7 +1475,7 @@ export default function GamePage() {
                   if (!gameid) {
                     return;
                   }
-                  advanceToActionPhase(gameid, strategyCards, subState);
+                  advanceToActionPhase(gameid);
                 }}
               >
                 Advance to Action Phase
@@ -1665,7 +1512,7 @@ export default function GamePage() {
               if (!gameid) {
                 return;
               }
-              startNextRound(gameid, subState);
+              startNextRound(gameid);
             },
           });
         }
@@ -1675,13 +1522,15 @@ export default function GamePage() {
             if (!gameid) {
               return;
             }
-            advanceToAgendaPhase(gameid, subState);
+            advanceToAgendaPhase(gameid);
           },
         });
         return (
           <div className="flexColumn" style={{ marginTop: "8px" }}>
             <LockedButtons
-              unlocked={statusPhaseComplete(subState)}
+              unlocked={statusPhaseComplete(
+                getCurrentTurnLogEntries(gameData.actionLog ?? [])
+              )}
               buttons={buttons}
             />
           </div>
@@ -1698,7 +1547,7 @@ export default function GamePage() {
                     if (!gameid) {
                       return;
                     }
-                    startNextRound(gameid, subState);
+                    startNextRound(gameid);
                   },
                 },
               ]}
@@ -1719,6 +1568,7 @@ export default function GamePage() {
       }}
     >
       <NonGameHeader />
+      <Updater />
       <div
         className="flexColumn"
         style={{

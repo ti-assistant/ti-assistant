@@ -1,0 +1,190 @@
+.factionIconRow {
+  --num-factions: 6;
+  display: grid;
+  position: relative;
+  width: 100%;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(var(--num-factions), 1fr);
+  justify-content: center;
+  align-content: center;
+  height: var(--twenty-pixel);
+}
+
+.factionIconWrapper {
+  width: 100%;
+  height: var(--twenty-four-pixel);
+  cursor: pointer;
+}
+
+.factionGridIconWrapper {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.factionIcon {
+  position: relative;
+  cursor: pointer;
+  opacity: 0.2;
+  
+  width: 66%;
+  height: 66%;
+  border-radius: 100%;
+  transition: width 50ms, height 50ms, opacity 50ms;
+}
+
+.factionIcon.selected {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .factionIcon:not(.selected):hover {
+    opacity: 0.75;
+    width: 90%;
+    height: 90%;
+  }
+}
+
+.factionIcon::before {
+  content: "";
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  left: calc(50%);
+  top: calc(50%);
+  // background-color: #eee;
+  box-shadow: 0px 0px var(--twelve-pixel) var(--eight-pixel) var(--color);
+  opacity: 0;
+  transition: opacity 250ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .factionIcon:hover::before {
+    opacity: 1;
+  }
+}
+
+.selected {
+  opacity: 1;
+}
+
+.column {
+  height: fit-content;
+  width: 100%;
+
+  --color: #eee;
+  background-color: #222;
+  border-radius: var(--four-pixel);
+  padding-top: var(--four-pixel);
+  
+  padding-bottom: var(--eight-pixel);
+  border: 1px solid var(--color);
+}
+
+.objRow {
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%;
+  // overflow: visible;
+  position: relative;
+
+  align-content: flex-start;
+  align-items: flex-start;
+
+  padding: var(--four-pixel) var(--twelve-pixel) var(--six-pixel);
+}
+
+.collapsibleRow {
+  width: 100%;
+  overflow: hidden;
+}
+
+.objectiveGrid {
+  width: 100%;
+  display: grid;
+  gap: var(--eight-pixel);
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: row;
+
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.objectiveTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: var(--eight-pixel);
+  width: 100%;
+  padding-bottom: var(--four-pixel);
+
+  font-size: var(--eighteen-pixel);
+}
+
+.collapsible {
+  display: grid;
+  gap: var(--eight-pixel);
+  width: 100%;
+  // height: 100%;
+}
+
+.factionTechsColumn .collapsible {
+  justify-content: center;
+}
+
+.collapsible, .collapsibleRow {
+  overflow: visible;
+}
+
+@media only screen and (max-width: 1023px) {
+  .objectiveGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .objectiveSection {
+    grid-row: 1 / 6;
+    grid-column: 2 / 3;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .objectiveGrid {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .objectiveSection {
+    width: 100%;
+  }
+
+  .collapsible {
+    grid-template-rows: 1fr;
+
+    transition: grid-template-rows 500ms 100ms;
+  }
+
+  .collapsible > div:not(.collapsibleRow) {
+    overflow: hidden;
+  }
+
+  .collapsibleRow {
+    overflow: hidden;
+  }
+
+  .collapsible.collapsed {
+    grid-template-rows: 0fr;
+
+    height: auto;
+  }
+
+  .collapsibleRow:has(:global(.hoverParent.hover)) {
+    overflow: visible;
+  }
+  
+  .collapsed > .collapsibleRow  {
+    overflow: hidden;
+  }
+}

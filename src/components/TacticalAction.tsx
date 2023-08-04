@@ -1,8 +1,4 @@
 import React, { CSSProperties } from "react";
-import style from "styled-jsx/style";
-import factions from "../../pages/api/factions";
-import attachments from "../../pages/api/[game]/attachments";
-import techs from "../../pages/api/[game]/techs";
 import { FullFactionSymbol } from "../FactionCard";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LabeledDiv, LabeledLine } from "../LabeledDiv";
@@ -12,42 +8,34 @@ import { PlanetRow } from "../PlanetRow";
 import { TechRow } from "../TechRow";
 import { Attachment } from "../util/api/attachments";
 import { Faction } from "../util/api/factions";
-import {
-  hasScoredObjective,
-  Objective,
-  scoreObjective,
-  unscoreObjective,
-} from "../util/api/objectives";
-import { claimPlanet, Planet, unclaimPlanet } from "../util/api/planets";
-import {
-  addSubStatePlanet,
-  addSubStateTech,
-  clearAddedSubStateTech,
-  PlanetEvent,
-  removeSubStatePlanet,
-  scoreSubStateObjective,
-  SubState,
-  unscoreSubStateObjective,
-} from "../util/api/subState";
+import { hasScoredObjective, Objective } from "../util/api/objectives";
+import { Planet } from "../util/api/planets";
+import { PlanetEvent } from "../util/api/subState";
 import { hasTech, Tech } from "../util/api/techs";
 import { getFactionColor } from "../util/factions";
 import { applyPlanetAttachments } from "../util/planets";
 import { responsivePixels, pluralize } from "../util/util";
 import { FactionSelectHoverMenu } from "./FactionSelect";
 import { SymbolX } from "../icons/svgs";
+import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
+import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
+import { addTech, removeTech } from "../util/api/addTech";
+import { ActionLogEntry } from "../util/api/util";
+import { getObjectiveScorers, getResearchedTechs } from "../util/actionLog";
+import { ClaimPlanetData } from "../util/model/claimPlanet";
 
 export function TacticalAction({
   activeFactionName,
   attachments,
   claimablePlanets,
   conqueredPlanets,
+  currentTurn,
   factions,
   gameid,
   objectives,
   planets,
   scorableObjectives,
   scoredObjectives,
-  subState,
   style = {},
   techs,
 }: {
@@ -55,27 +43,24 @@ export function TacticalAction({
   attachments: Record<string, Attachment>;
   claimablePlanets: Planet[];
   conqueredPlanets: PlanetEvent[];
+  currentTurn: ActionLogEntry[];
   factions: Record<string, Faction>;
   gameid: string;
   objectives: Record<string, Objective>;
   planets: Record<string, Planet>;
   scorableObjectives: Objective[];
   scoredObjectives: string[];
-  subState: SubState;
   style?: CSSProperties;
   techs: Record<string, Tech>;
 }) {
-  const nekroTechs =
-    ((subState.turnData?.factions ?? {})[activeFactionName] ?? {}).techs ?? [];
+  const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
 
-  const currentMartyrs = [];
-  for (const [factionName, faction] of Object.entries(
-    subState.turnData?.factions ?? {}
-  )) {
-    if (faction.objectives?.includes("Become a Martyr")) {
-      currentMartyrs.push(factionName);
-    }
-  }
+  const custodiansScorer = getObjectiveScorers(
+    currentTurn,
+    "Custodians Token"
+  )[0];
+
+  const currentMartyrs = getObjectiveScorers(currentTurn, "Become a Martyr");
   const possibleMartyrs = new Set<string>(currentMartyrs);
   const becomeAMartyr = (objectives ?? {})["Become a Martyr"];
   if (
@@ -86,7 +71,7 @@ export function TacticalAction({
   ) {
     const scorers = becomeAMartyr.scorers ?? [];
     for (const conqueredPlanet of conqueredPlanets) {
-      const planet = (planets ?? {})[conqueredPlanet.name];
+      const planet = (planets ?? {})[conqueredPlanet.planet];
       if (!planet) {
         continue;
       }
@@ -107,26 +92,32 @@ export function TacticalAction({
     return -1;
   });
 
-  function removeTech(factionName: string, toRemove: string) {
+  function removeTechLocal(factionName: string, toRemove: string) {
     if (!gameid) {
       return;
     }
-    clearAddedSubStateTech(gameid, factionName, toRemove);
+    removeTech(gameid, factionName, toRemove);
   }
 
-  function addTech(factionName: string, tech: Tech) {
+  function addTechLocal(factionName: string, tech: Tech) {
     if (!gameid) {
       return;
     }
-    addSubStateTech(gameid, factionName, tech.name);
+    addTech(gameid, factionName, tech.name);
   }
 
   let hasCustodiansPoint = false;
-  scoredObjectives.forEach((objective) => {
-    if (objective === "Custodians Token") {
+  const mecatolConquerers = currentTurn.filter(
+    (logEntry) =>
+      logEntry.data.action === "CLAIM_PLANET" &&
+      logEntry.data.event.planet === "Mecatol Rex"
+  );
+  if (mecatolConquerers[0]) {
+    const event = (mecatolConquerers[0].data as ClaimPlanetData).event;
+    if (event.faction === activeFactionName && !event.prevOwner) {
       hasCustodiansPoint = true;
     }
-  });
+  }
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
@@ -158,15 +149,11 @@ export function TacticalAction({
       return [];
     }
     if (factionName === "Nekro Virus") {
+      const addedTechs = getResearchedTechs(currentTurn, "Nekro Virus");
       const nekroTechs = new Set<string>();
       Object.values(factions ?? {}).forEach((otherFaction) => {
         Object.keys(otherFaction.techs).forEach((techName) => {
-          if (
-            !hasTech(faction, techName) &&
-            !(
-              (subState.turnData?.factions ?? {})["Nekro Virus"]?.techs ?? []
-            ).includes(techName)
-          ) {
+          if (!hasTech(faction, techName) && !addedTechs.includes(techName)) {
             nekroTechs.add(techName);
           }
         });
@@ -187,8 +174,7 @@ export function TacticalAction({
       ) {
         return false;
       }
-      const researchedTechs =
-        ((subState.turnData?.factions ?? {})[faction.name] ?? {}).techs ?? [];
+      const researchedTechs = getResearchedTechs(currentTurn, faction.name);
       if (researchedTechs.includes(tech.name)) {
         return false;
       }
@@ -209,31 +195,15 @@ export function TacticalAction({
     if (!gameid) {
       return;
     }
-    if (toRemove.name === "Mecatol Rex") {
-      if (!toRemove.prevOwner) {
-        undoObjective(factionName, "Custodians Token");
-      }
-    }
-    if (toRemove.prevOwner) {
-      claimPlanet(gameid, toRemove.name, toRemove.prevOwner);
-    } else {
-      unclaimPlanet(gameid, toRemove.name, factionName);
-    }
-    removeSubStatePlanet(gameid, factionName, toRemove.name);
+    unclaimPlanet(gameid, factionName, toRemove.planet);
   }
 
   function addPlanet(factionName: string, toAdd: Planet) {
     if (!gameid) {
       return;
     }
-    const prevOwner = toAdd.owner;
-    if (toAdd.name === "Mecatol Rex") {
-      if (!prevOwner) {
-        addObjective(factionName, "Custodians Token");
-      }
-    }
-    claimPlanet(gameid, toAdd.name, factionName);
-    addSubStatePlanet(gameid, factionName, toAdd.name, prevOwner);
+
+    claimPlanet(gameid, factionName, toAdd.name);
   }
 
   function addObjective(factionName: string, toScore: string) {
@@ -241,7 +211,6 @@ export function TacticalAction({
       return;
     }
     scoreObjective(gameid, factionName, toScore);
-    scoreSubStateObjective(gameid, factionName, toScore);
   }
 
   function undoObjective(factionName: string, toRemove: string) {
@@ -249,7 +218,6 @@ export function TacticalAction({
       return;
     }
     unscoreObjective(gameid, factionName, toRemove);
-    unscoreSubStateObjective(gameid, factionName, toRemove);
   }
 
   return (
@@ -262,7 +230,7 @@ export function TacticalAction({
               style={{ alignItems: "stretch", width: "100%" }}
             >
               {conqueredPlanets.map((planet) => {
-                const planetObj = planets[planet.name];
+                const planetObj = planets[planet.planet];
                 if (!planetObj) {
                   return null;
                 }
@@ -272,7 +240,7 @@ export function TacticalAction({
                 );
                 return (
                   <PlanetRow
-                    key={planet.name}
+                    key={planet.planet}
                     factionName={activeFactionName}
                     planet={adjustedPlanet}
                     removePlanet={() => removePlanet(activeFactionName, planet)}
@@ -324,7 +292,10 @@ export function TacticalAction({
                 if (!objectives) {
                   return null;
                 }
-                if (objective === "Custodians Token") {
+                if (
+                  objective === "Custodians Token" ||
+                  objective === "Support for the Throne"
+                ) {
                   return null;
                 }
                 const objectiveObj = objectives[objective];
@@ -383,7 +354,9 @@ export function TacticalAction({
                     <TechRow
                       key={tech}
                       tech={techObj}
-                      removeTech={() => removeTech(activeFactionName, tech)}
+                      removeTech={() =>
+                        removeTechLocal(activeFactionName, tech)
+                      }
                     />
                   );
                 })}
@@ -392,9 +365,10 @@ export function TacticalAction({
           ) : null}
           {nekroTechs.length < 4 && researchableTechs.length > 0 ? (
             <TechSelectHoverMenu
+              factionName="Nekro Virus"
               label="Technological Singularity"
               techs={researchableTechs}
-              selectTech={(tech) => addTech(activeFactionName, tech)}
+              selectTech={(tech) => addTechLocal(activeFactionName, tech)}
             />
           ) : null}
         </React.Fragment>
@@ -407,11 +381,7 @@ export function TacticalAction({
             {becomeAMartyr.type === "SECRET" || possibleMartyrs.size === 1 ? (
               <FactionSelectHoverMenu
                 onSelect={(factionName, prevFaction) => {
-                  console.log(prevFaction);
                   if (factionName && prevFaction) {
-                    if (!gameid) {
-                      return;
-                    }
                     undoObjective(prevFaction, "Become a Martyr");
                     addObjective(factionName, "Become a Martyr");
                   } else if (prevFaction) {

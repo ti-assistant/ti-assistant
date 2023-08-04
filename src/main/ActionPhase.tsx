@@ -1,68 +1,50 @@
 import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
-import React, { CSSProperties, useEffect } from "react";
+import React, { CSSProperties } from "react";
 import { FactionCard, FullFactionSymbol } from "../FactionCard";
 import { SmallStrategyCard } from "../StrategyCard";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
 import { hasTech, Tech } from "../util/api/techs";
-import {
-  markStrategyCardUsed,
-  StrategyCard,
-  StrategyCardName,
-} from "../util/api/cards";
-import { Faction, passFaction, readyAllFactions } from "../util/api/factions";
-import { fetcher, poster } from "../util/api/util";
+import { StrategyCard } from "../util/api/cards";
+import { Faction } from "../util/api/factions";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
-import SummaryColumn from "./SummaryColumn";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { PlanetRow } from "../PlanetRow";
 import { ObjectiveRow } from "../ObjectiveRow";
-import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../LabeledDiv";
+import { LabeledDiv, LabeledLine } from "../LabeledDiv";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { TechRow } from "../TechRow";
-import { BasicFactionTile } from "../FactionTile";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
-import { SelectableRow } from "../SelectableRow";
-import {
-  Action,
-  addSubStatePlanet,
-  addSubStateTech,
-  clearAddedSubStateTech,
-  clearSubState,
-  finalizeSubState,
-  markSecondary,
-  PlanetEvent,
-  removeSubStatePlanet,
-  scoreSubStateObjective,
-  Secondary,
-  setSubStateSelectedAction,
-  setSubStateSpeaker,
-  SubState,
-  undoSubStateSpeaker,
-  unscoreSubStateObjective,
-} from "../util/api/subState";
-import { pluralize, responsivePixels } from "../util/util";
+import { Action, Secondary } from "../util/api/subState";
+import { responsivePixels } from "../util/util";
 import { applyPlanetAttachments } from "../util/planets";
 import { ComponentAction } from "./util/ComponentAction";
-import { GameState, nextPlayer, StateUpdateData } from "../util/api/state";
-import { Attachment } from "../util/api/attachments";
-import { claimPlanet, Planet, unclaimPlanet } from "../util/api/planets";
-import {
-  hasScoredObjective,
-  Objective,
-  scoreObjective,
-  takeObjective,
-  unscoreObjective,
-} from "../util/api/objectives";
+import { Planet } from "../util/api/planets";
 import { getDefaultStrategyCards } from "../util/api/defaults";
 import { FullScreenLoader } from "../Loader";
-import { Agenda } from "../util/api/agendas";
 import { LockedButtons } from "../LockedButton";
 import { FactionSelectHoverMenu } from "../components/FactionSelect";
 import { FactionCircle } from "../components/FactionCircle";
 import { TacticalAction } from "../components/TacticalAction";
 import { SymbolX } from "../icons/svgs";
+import { useGameData } from "../data/GameData";
+import {
+  getNewSpeaker,
+  getNewSpeakerEvent,
+  getSelectedAction,
+} from "../util/api/data";
+import { ClaimPlanetData } from "../util/model/claimPlanet";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { addTech, removeTech } from "../util/api/addTech";
+import { advancePhase } from "../util/api/advancePhase";
+import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
+import { selectAction, unselectAction } from "../util/api/selectAction";
+import { endTurn } from "../util/api/endTurn";
+import { setSpeaker } from "../util/api/setSpeaker";
+import { markSecondary } from "../util/api/markSecondary";
+import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
+import { ScoreObjectiveData } from "../util/model/scoreObjective";
+import { getResearchedTechs } from "../util/actionLog";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -73,12 +55,10 @@ function SecondaryCheck({
   activeFactionName,
   gameid,
   orderedFactions,
-  subState,
 }: {
   activeFactionName: string;
   gameid: string;
   orderedFactions: Faction[];
-  subState: SubState;
 }) {
   let allCompleted = true;
   return (
@@ -94,9 +74,7 @@ function SecondaryCheck({
           if (faction.name === activeFactionName) {
             return null;
           }
-          const secondaryState =
-            (subState.turnData?.factions ?? {})[faction.name]?.secondary ??
-            "PENDING";
+          const secondaryState = faction.secondary ?? "PENDING";
           const color = getFactionColor(faction);
           if (secondaryState === "PENDING") {
             allCompleted = false;
@@ -203,64 +181,13 @@ export function FactionActionButtons({
 }: FactionActionButtonsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-
-  useEffect(() => {
-    if (!gameid || !subState || !planets) {
-      return;
-    }
-    const ownerOfMecatol = planets["Mecatol Rex"]?.owner;
-    const selectedAction = subState.turnData?.selectedAction;
-    const hasImperialPoint = (
-      (subState.turnData?.factions ?? {})[factionName]?.objectives ?? []
-    ).includes("Imperial Point");
-    if (
-      hasImperialPoint &&
-      (selectedAction !== "Imperial" || factionName !== ownerOfMecatol)
-    ) {
-      unscoreObjective(gameid, factionName, "Imperial Point");
-      unscoreSubStateObjective(gameid, factionName, "Imperial Point");
-      return;
-    }
-    if (
-      !hasImperialPoint &&
-      selectedAction === "Imperial" &&
-      factionName === ownerOfMecatol
-    ) {
-      scoreObjective(gameid, factionName, "Imperial Point");
-      scoreSubStateObjective(gameid, factionName, "Imperial Point");
-      return;
-    }
-  }, [factionName, planets, subState, gameid]);
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "factions",
+    "strategycards",
+  ]);
+  const factions = gameData.factions;
+  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
 
   if (!factions) {
     return null;
@@ -275,48 +202,16 @@ export function FactionActionButtons({
     return true;
   }
 
-  function addObjective(factionName: string, toScore: string) {
-    if (!gameid) {
-      return;
-    }
-    scoreObjective(gameid, factionName, toScore);
-    scoreSubStateObjective(gameid, factionName, toScore);
-  }
-
-  function undoObjective(factionName: string, toRemove: string) {
-    if (!gameid) {
-      return;
-    }
-    unscoreObjective(gameid, factionName, toRemove);
-    unscoreSubStateObjective(gameid, factionName, toRemove);
-  }
+  const selectedAction = getSelectedAction(gameData);
 
   function toggleAction(action: Action) {
-    if (!gameid || !subState) {
+    if (!gameid) {
       return;
     }
-    if (subState.turnData?.selectedAction === action) {
-      clearSubState(gameid);
-      if (subState.turnData?.selectedAction === "Imperial") {
-        const mecatol = (planets ?? {})["Mecatol Rex"];
-        if (mecatol && mecatol.owner === factionName) {
-          undoObjective(factionName, "Imperial Point");
-        }
-      }
+    if (selectedAction === action) {
+      unselectAction(gameid, action);
     } else {
-      setSubStateSelectedAction(gameid, action);
-      if (subState.turnData?.selectedAction === "Imperial") {
-        const mecatol = (planets ?? {})["Mecatol Rex"];
-        if (mecatol && mecatol.owner === factionName) {
-          undoObjective(factionName, "Imperial Point");
-        }
-      }
-      if (action === "Imperial") {
-        const mecatol = (planets ?? {})["Mecatol Rex"];
-        if (mecatol && mecatol.owner === factionName) {
-          addObjective(factionName, "Imperial Point");
-        }
-      }
+      selectAction(gameid, action);
     }
   }
 
@@ -324,10 +219,6 @@ export function FactionActionButtons({
   if (!activeFaction) {
     return null;
   }
-
-  const orderedStrategyCards = Object.values(strategyCards)
-    .filter((card) => card.faction)
-    .sort((a, b) => a.order - b.order);
 
   return (
     <div
@@ -347,11 +238,7 @@ export function FactionActionButtons({
           return (
             <button
               key={card.name}
-              className={
-                subState?.turnData?.selectedAction === card.name
-                  ? "selected"
-                  : ""
-              }
+              className={selectedAction === card.name ? "selected" : ""}
               style={buttonStyle}
               onClick={() => toggleAction(card.name)}
             >
@@ -361,18 +248,14 @@ export function FactionActionButtons({
         }
       )}
       <button
-        className={
-          subState?.turnData?.selectedAction === "Tactical" ? "selected" : ""
-        }
+        className={selectedAction === "Tactical" ? "selected" : ""}
         style={buttonStyle}
         onClick={() => toggleAction("Tactical")}
       >
         Tactical
       </button>
       <button
-        className={
-          subState?.turnData?.selectedAction === "Component" ? "selected" : ""
-        }
+        className={selectedAction === "Component" ? "selected" : ""}
         style={buttonStyle}
         onClick={() => toggleAction("Component")}
       >
@@ -380,9 +263,7 @@ export function FactionActionButtons({
       </button>
       {canFactionPass(activeFaction.name) ? (
         <button
-          className={
-            subState?.turnData?.selectedAction === "Pass" ? "selected" : ""
-          }
+          className={selectedAction === "Pass" ? "selected" : ""}
           style={buttonStyle}
           disabled={!canFactionPass(activeFaction.name)}
           onClick={() => toggleAction("Pass")}
@@ -422,55 +303,21 @@ export function AdditionalActions({
 }: AdditionalActionsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: attachments }: { data?: Record<string, Attachment> } = useSWR(
-    gameid ? `/api/${gameid}/attachments` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: techs }: { data?: Record<string, Tech> } = useSWR(
-    gameid ? `/api/${gameid}/techs` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: planets = {} }: { data?: Record<string, Planet> } = useSWR(
-    gameid ? `/api/${gameid}/planets` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: objectives }: { data?: Record<string, Objective> } = useSWR(
-    gameid ? `/api/${gameid}/objectives` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, [
+    "actionLog",
+    "attachments",
+    "factions",
+    "objectives",
+    "planets",
+    "state",
+    "techs",
+  ]);
+  const attachments = gameData.attachments;
+  const factions = gameData.factions;
+  const objectives = gameData.objectives;
+  const planets = gameData.planets ?? {};
+  const state = gameData.state;
+  const techs = gameData.techs;
 
   if (!factions || !techs) {
     return null;
@@ -482,16 +329,17 @@ export function AdditionalActions({
     return null;
   }
 
+  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+
   function getResearchableTechs(faction: Faction) {
+    const researchedTechs = getResearchedTechs(currentTurn, faction.name);
     if (faction.name === "Nekro Virus") {
       const nekroTechs = new Set<string>();
       Object.values(factions ?? {}).forEach((otherFaction) => {
         Object.keys(otherFaction.techs).forEach((techName) => {
           if (
             !hasTech(faction, techName) &&
-            !(
-              (subState.turnData?.factions ?? {})["Nekro Virus"]?.techs ?? []
-            ).includes(techName)
+            !researchedTechs.includes(techName)
           ) {
             nekroTechs.add(techName);
           }
@@ -513,8 +361,6 @@ export function AdditionalActions({
       ) {
         return false;
       }
-      const researchedTechs =
-        ((subState.turnData?.factions ?? {})[faction.name] ?? {}).techs ?? [];
       if (researchedTechs.includes(tech.name)) {
         return false;
       }
@@ -531,35 +377,18 @@ export function AdditionalActions({
 
   const researchableTechs = getResearchableTechs(activeFaction);
 
-  function removePlanet(factionName: string, toRemove: PlanetEvent) {
+  function removePlanet(factionName: string, toRemove: string) {
     if (!gameid) {
       return;
     }
-    if (toRemove.name === "Mecatol Rex") {
-      if (!toRemove.prevOwner) {
-        undoObjective(factionName, "Custodians Token");
-      }
-    }
-    if (toRemove.prevOwner) {
-      claimPlanet(gameid, toRemove.name, toRemove.prevOwner);
-    } else {
-      unclaimPlanet(gameid, toRemove.name, factionName);
-    }
-    removeSubStatePlanet(gameid, factionName, toRemove.name);
+    unclaimPlanet(gameid, factionName, toRemove);
   }
 
   function addPlanet(factionName: string, toAdd: Planet) {
     if (!gameid) {
       return;
     }
-    const prevOwner = toAdd.owner;
-    if (toAdd.name === "Mecatol Rex") {
-      if (!prevOwner) {
-        addObjective(factionName, "Custodians Token");
-      }
-    }
-    claimPlanet(gameid, toAdd.name, factionName);
-    addSubStatePlanet(gameid, factionName, toAdd.name, prevOwner);
+    claimPlanet(gameid, factionName, toAdd.name);
   }
 
   function addObjective(factionName: string, toScore: string) {
@@ -567,7 +396,6 @@ export function AdditionalActions({
       return;
     }
     scoreObjective(gameid, factionName, toScore);
-    scoreSubStateObjective(gameid, factionName, toScore);
   }
 
   function undoObjective(factionName: string, toRemove: string) {
@@ -575,34 +403,36 @@ export function AdditionalActions({
       return;
     }
     unscoreObjective(gameid, factionName, toRemove);
-    unscoreSubStateObjective(gameid, factionName, toRemove);
   }
 
-  function removeTech(factionName: string, toRemove: string) {
+  function removeTechLocal(factionName: string, toRemove: string) {
     if (!gameid) {
       return;
     }
-    clearAddedSubStateTech(gameid, factionName, toRemove);
+    removeTech(gameid, factionName, toRemove);
   }
 
-  function addTech(factionName: string, tech: Tech) {
+  function researchTech(factionName: string, tech: Tech) {
     if (!gameid) {
       return;
     }
-    addSubStateTech(gameid, factionName, tech.name);
+    addTech(gameid, factionName, tech.name);
   }
 
   function selectSpeaker(factionName: string) {
     if (!gameid) {
       return;
     }
-    setSubStateSpeaker(gameid, factionName);
+    setSpeaker(gameid, factionName);
   }
+
+  const newSpeakerEvent = getNewSpeakerEvent(gameData);
+
   function resetSpeaker() {
-    if (!gameid) {
+    if (!gameid || !newSpeakerEvent?.prevSpeaker) {
       return;
     }
-    undoSubStateSpeaker(gameid);
+    setSpeaker(gameid, newSpeakerEvent.prevSpeaker);
   }
 
   function lastFaction() {
@@ -612,9 +442,16 @@ export function AdditionalActions({
     ).length;
     return numFactions - 1 === numPassed;
   }
-  const claimedPlanets =
-    ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {}).planets ??
-    [];
+
+  const claimedPlanets = currentTurn
+    .filter(
+      (logEntry) =>
+        logEntry.data.action === "CLAIM_PLANET" &&
+        logEntry.data.event.faction === activeFaction.name
+    )
+    .map((logEntry) => {
+      return (logEntry.data as ClaimPlanetData).event.planet;
+    });
   const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
     if (!planets) {
       return false;
@@ -626,13 +463,12 @@ export function AdditionalActions({
       return false;
     }
     for (const claimedPlanet of claimedPlanets) {
-      if (claimedPlanet.name === planet.name) {
+      if (claimedPlanet === planet.name) {
         return false;
       }
     }
     if (claimedPlanets.length > 0) {
-      const claimedPlanetName = claimedPlanets[0]?.name;
-      const claimedPlanet = planets[claimedPlanetName ?? ""];
+      const claimedPlanet = planets[claimedPlanets[0] ?? ""];
       if (claimedPlanet?.system) {
         return planet.system === claimedPlanet.system;
       }
@@ -643,9 +479,13 @@ export function AdditionalActions({
     }
     return true;
   });
-  const scoredObjectives =
-    ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {})
-      .objectives ?? [];
+  const scoredObjectives = currentTurn
+    .filter(
+      (logEntry) =>
+        logEntry.data.action === "SCORE_OBJECTIVE" &&
+        logEntry.data.event.faction === activeFaction.name
+    )
+    .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.objective);
   const scorableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
       const scorers = objective.scorers ?? [];
@@ -680,19 +520,6 @@ export function AdditionalActions({
     maxWidth: "85vw",
   };
 
-  const secretButtonStyle: CSSProperties = {
-    fontFamily: "Myriad Pro",
-    padding: responsivePixels(8),
-    alignItems: "stretch",
-    display: "grid",
-    gridAutoFlow: "column",
-    maxWidth: "85vw",
-    justifyContent: "flex-start",
-    overflowX: "auto",
-    gridTemplateRows: `repeat(8, auto)`,
-    gap: responsivePixels(4),
-  };
-
   const orderedFactions = Object.values(factions).sort((a, b) => {
     if (a.order === activeFaction.order) {
       return -1;
@@ -711,11 +538,12 @@ export function AdditionalActions({
     }
     return -1;
   });
-  switch (subState.turnData?.selectedAction) {
+
+  const selectedAction = getSelectedAction(gameData);
+
+  switch (selectedAction) {
     case "Technology":
-      const researchedTech =
-        ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {}).techs ??
-        [];
+      const researchedTech = getResearchedTechs(currentTurn, factionName);
       if (!!primaryOnly || !!secondaryOnly) {
         const isActive = state?.activeplayer === factionName;
         const numTechs =
@@ -740,14 +568,14 @@ export function AdditionalActions({
                         key={tech}
                         tech={techObj}
                         removeTech={() => {
-                          if (gameid && !isActive) {
-                            markSecondary(
-                              gameid,
-                              activeFaction.name,
-                              "PENDING"
-                            );
-                          }
-                          removeTech(activeFaction.name, tech);
+                          // if (gameid && !isActive) {
+                          //   markSecondary(
+                          //     gameid,
+                          //     activeFaction.name,
+                          //     "PENDING"
+                          //   );
+                          // }
+                          removeTechLocal(activeFaction.name, tech);
                         }}
                       />
                     );
@@ -756,16 +584,17 @@ export function AdditionalActions({
               ) : null}
               {researchedTech.length < numTechs ? (
                 <TechSelectHoverMenu
+                  factionName={activeFaction.name}
                   techs={researchableTechs}
                   selectTech={(tech) => {
-                    if (
-                      gameid &&
-                      !isActive &&
-                      researchedTech.length + 1 === numTechs
-                    ) {
-                      markSecondary(gameid, activeFaction.name, "DONE");
-                    }
-                    addTech(activeFaction.name, tech);
+                    // if (
+                    //   gameid &&
+                    //   !isActive &&
+                    //   researchedTech.length + 1 === numTechs
+                    // ) {
+                    //   markSecondary(gameid, activeFaction.name, "DONE");
+                    // }
+                    researchTech(activeFaction.name, tech);
                   }}
                 />
               ) : null}
@@ -776,7 +605,6 @@ export function AdditionalActions({
                     activeFactionName={activeFaction.name}
                     gameid={gameid ?? ""}
                     orderedFactions={orderedFactions}
-                    subState={subState}
                   />
                 </React.Fragment>
               ) : null}
@@ -816,7 +644,7 @@ export function AdditionalActions({
                             key={tech}
                             tech={techObj}
                             removeTech={() =>
-                              removeTech(activeFaction.name, tech)
+                              removeTechLocal(activeFaction.name, tech)
                             }
                           />
                         );
@@ -825,8 +653,11 @@ export function AdditionalActions({
                   ) : null}
                   {researchedTech.length < 2 ? (
                     <TechSelectHoverMenu
+                      factionName={activeFaction.name}
                       techs={researchableTechs}
-                      selectTech={(tech) => addTech(activeFaction.name, tech)}
+                      selectTech={(tech) =>
+                        researchTech(activeFaction.name, tech)
+                      }
                     />
                   ) : null}
                 </LabeledDiv>
@@ -858,13 +689,13 @@ export function AdditionalActions({
                   maxTechs = 2;
                   // TODO: Add ability for people to copy them.
                 }
-                const researchedTechs =
-                  ((subState.turnData?.factions ?? {})[faction.name] ?? {})
-                    .techs ?? [];
+                const researchedTechs = getResearchedTechs(
+                  currentTurn,
+                  faction.name
+                );
                 const availableTechs = getResearchableTechs(faction);
                 const secondaryState =
-                  (subState.turnData?.factions ?? {})[faction.name]
-                    ?.secondary ?? "PENDING";
+                  factions[faction.name]?.secondary ?? "PENDING";
                 if (
                   researchedTechs.length === 0 &&
                   secondaryState === "SKIPPED"
@@ -877,6 +708,7 @@ export function AdditionalActions({
                     label={getFactionName(faction)}
                     color={getFactionColor(faction)}
                     style={{ width: "48%" }}
+                    opts={{ fixedWidth: true }}
                   >
                     <React.Fragment>
                       {researchedTechs.map((tech) => {
@@ -889,10 +721,10 @@ export function AdditionalActions({
                             key={tech}
                             tech={techObj}
                             removeTech={() => {
-                              if (gameid) {
-                                markSecondary(gameid, faction.name, "PENDING");
-                              }
-                              removeTech(faction.name, tech);
+                              // if (gameid) {
+                              //   markSecondary(gameid, faction.name, "PENDING");
+                              // }
+                              removeTechLocal(faction.name, tech);
                             }}
                             opts={{ hideSymbols: true }}
                           />
@@ -900,15 +732,16 @@ export function AdditionalActions({
                       })}
                       {researchedTechs.length < maxTechs ? (
                         <TechSelectHoverMenu
+                          factionName={faction.name}
                           techs={availableTechs}
                           selectTech={(tech) => {
-                            if (
-                              gameid &&
-                              researchedTechs.length + 1 === maxTechs
-                            ) {
-                              markSecondary(gameid, faction.name, "DONE");
-                            }
-                            addTech(faction.name, tech);
+                            // if (
+                            //   gameid &&
+                            //   researchedTechs.length + 1 === maxTechs
+                            // ) {
+                            //   markSecondary(gameid, faction.name, "DONE");
+                            // }
+                            researchTech(faction.name, tech);
                           }}
                         />
                       ) : null}
@@ -920,14 +753,13 @@ export function AdditionalActions({
                 activeFactionName={activeFaction.name}
                 gameid={gameid ?? ""}
                 orderedFactions={orderedFactions}
-                subState={subState}
               />
             </div>
           </div>
         </div>
       );
     case "Politics":
-      const selectedSpeaker = factions[subState.turnData.speaker ?? ""];
+      const selectedSpeaker = factions[newSpeakerEvent?.newSpeaker ?? ""];
       return (
         <div
           className="flexColumn"
@@ -956,7 +788,14 @@ export function AdditionalActions({
                   }
                 }}
                 options={orderedFactions
-                  .filter((faction) => faction.name !== state?.speaker)
+                  .filter((faction) => {
+                    return (
+                      faction.name !==
+                      (selectedSpeaker
+                        ? newSpeakerEvent?.prevSpeaker
+                        : state?.speaker)
+                    );
+                  })
                   .map((faction) => faction.name)}
                 selectedFaction={selectedSpeaker?.name}
                 size={52}
@@ -968,12 +807,14 @@ export function AdditionalActions({
             activeFactionName={activeFaction.name}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
-            subState={subState}
           />
         </div>
       );
     case "Diplomacy":
       if (activeFaction.name === "Xxcha Kingdom") {
+        const peaceAccordsPlanets = claimablePlanets.filter(
+          (planet) => planet.name !== "Mecatol Rex"
+        );
         return (
           <div className="flexColumn largeFont" style={{ ...style }}>
             <LabeledLine leftLabel="Primary" />
@@ -982,7 +823,7 @@ export function AdditionalActions({
                 {claimedPlanets.length > 0 ? (
                   <div className="flexColumn" style={{ alignItems: "stretch" }}>
                     {claimedPlanets.map((planet) => {
-                      const planetObj = planets[planet.name];
+                      const planetObj = planets[planet];
                       if (!planetObj) {
                         return null;
                       }
@@ -992,7 +833,7 @@ export function AdditionalActions({
                       );
                       return (
                         <PlanetRow
-                          key={planet.name}
+                          key={planet}
                           factionName={activeFaction.name}
                           planet={adjustedPlanet}
                           removePlanet={() =>
@@ -1003,10 +844,11 @@ export function AdditionalActions({
                     })}
                   </div>
                 ) : null}
-                {claimablePlanets.length > 0 && claimedPlanets.length === 0 ? (
+                {peaceAccordsPlanets.length > 0 &&
+                claimedPlanets.length === 0 ? (
                   <ClientOnlyHoverMenu label="Claim Empty Planet">
                     <div className="flexRow" style={targetButtonStyle}>
-                      {claimablePlanets.map((planet) => {
+                      {peaceAccordsPlanets.map((planet) => {
                         return (
                           <button
                             key={planet.name}
@@ -1032,14 +874,19 @@ export function AdditionalActions({
               activeFactionName={activeFaction.name}
               gameid={gameid ?? ""}
               orderedFactions={orderedFactions}
-              subState={subState}
             />
           </div>
         );
       } else if (factions["Xxcha Kingdom"]) {
-        const xxchaPlanets =
-          ((subState.turnData?.factions ?? {})["Xxcha Kingdom"] ?? {})
-            .planets ?? [];
+        const xxchaPlanets = currentTurn
+          .filter(
+            (logEntry) =>
+              logEntry.data.action === "CLAIM_PLANET" &&
+              logEntry.data.event.faction === "Xxcha Kingdom"
+          )
+          .map((logEntry) => {
+            return (logEntry.data as ClaimPlanetData).event.planet;
+          });
         const nonXxchaPlanets = Object.values(planets ?? {}).filter(
           (planet) => {
             if (planet.owner === "Xxcha Kingdom") {
@@ -1049,13 +896,12 @@ export function AdditionalActions({
               return false;
             }
             for (const claimedPlanet of claimedPlanets) {
-              if (claimedPlanet.name === planet.name) {
+              if (claimedPlanet === planet.name) {
                 return false;
               }
             }
             if (claimedPlanets.length > 0) {
-              const claimedPlanetName = claimedPlanets[0]?.name;
-              const claimedPlanet = planets[claimedPlanetName ?? ""];
+              const claimedPlanet = planets[claimedPlanets[0] ?? ""];
               if (claimedPlanet?.system) {
                 return planet.system === claimedPlanet.system;
               }
@@ -1086,7 +932,7 @@ export function AdditionalActions({
                     style={{ alignItems: "stretch", width: "100%" }}
                   >
                     {xxchaPlanets.map((planet) => {
-                      const planetObj = planets[planet.name];
+                      const planetObj = planets[planet];
                       if (!planetObj) {
                         return null;
                       }
@@ -1096,13 +942,13 @@ export function AdditionalActions({
                       );
                       return (
                         <PlanetRow
-                          key={planet.name}
+                          key={planet}
                           factionName={"Xxcha Kingdom"}
                           planet={adjustedPlanet}
                           removePlanet={() => {
-                            if (gameid) {
-                              markSecondary(gameid, "Xxcha Kingdom", "PENDING");
-                            }
+                            // if (gameid) {
+                            //   markSecondary(gameid, "Xxcha Kingdom", "PENDING");
+                            // }
                             removePlanet("Xxcha Kingdom", planet);
                           }}
                         />
@@ -1122,9 +968,9 @@ export function AdditionalActions({
                               width: responsivePixels(90),
                             }}
                             onClick={() => {
-                              if (gameid) {
-                                markSecondary(gameid, "Xxcha Kingdom", "DONE");
-                              }
+                              // if (gameid) {
+                              //   markSecondary(gameid, "Xxcha Kingdom", "DONE");
+                              // }
                               addPlanet("Xxcha Kingdom", planet);
                             }}
                           >
@@ -1141,7 +987,6 @@ export function AdditionalActions({
               activeFactionName={activeFaction.name}
               gameid={gameid ?? ""}
               orderedFactions={orderedFactions}
-              subState={subState}
             />
           </div>
         );
@@ -1153,7 +998,6 @@ export function AdditionalActions({
             activeFactionName={activeFaction.name}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
-            subState={subState}
           />
         </div>
       );
@@ -1168,12 +1012,15 @@ export function AdditionalActions({
             activeFactionName={activeFaction.name}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
-            subState={subState}
           />
         </div>
       );
     case "Imperial":
       let hasImperialPoint = false;
+      const mecatol = planets["Mecatol Rex"];
+      if (mecatol && mecatol.owner === activeFaction.name) {
+        hasImperialPoint = true;
+      }
       scoredObjectives.forEach((objective) => {
         if (objective === "Imperial Point") {
           hasImperialPoint = true;
@@ -1204,6 +1051,22 @@ export function AdditionalActions({
           objectiveObj.type === "STAGE ONE" || objectiveObj.type === "STAGE TWO"
         );
       });
+
+      const secretButtonStyle: CSSProperties = {
+        fontFamily: "Myriad Pro",
+        padding: responsivePixels(8),
+        alignItems: "stretch",
+        display: "grid",
+        gridAutoFlow: "column",
+        maxWidth: "85vw",
+        justifyContent: "flex-start",
+        overflowX: "auto",
+        gridTemplateRows: `repeat(${Math.min(
+          availablePublicObjectives.length,
+          8
+        )}, auto)`,
+        gap: responsivePixels(4),
+      };
       return (
         <div
           className="flexColumn largeFont"
@@ -1277,7 +1140,6 @@ export function AdditionalActions({
             activeFactionName={activeFaction.name}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
-            subState={subState}
           />
         </div>
       );
@@ -1379,22 +1241,26 @@ export function AdditionalActions({
       );
       return null;
     case "Tactical":
-      const conqueredPlanets =
-        ((subState.turnData?.factions ?? {})[activeFaction.name] ?? {})
-          .planets ?? [];
+      const conqueredPlanets = currentTurn
+        .filter(
+          (logEntry) =>
+            logEntry.data.action === "CLAIM_PLANET" &&
+            logEntry.data.event.faction === activeFaction.name
+        )
+        .map((logEntry) => (logEntry.data as ClaimPlanetData).event);
       return (
         <TacticalAction
           activeFactionName={activeFaction.name}
           attachments={attachments ?? {}}
           claimablePlanets={claimablePlanets}
           conqueredPlanets={conqueredPlanets}
+          currentTurn={currentTurn}
           factions={factions ?? {}}
           gameid={gameid ?? ""}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
           scorableObjectives={scorableObjectives}
           scoredObjectives={scoredObjectives}
-          subState={subState ?? {}}
           style={style}
           techs={techs ?? {}}
         />
@@ -1414,61 +1280,32 @@ export function NextPlayerButtons({
 }: NextPlayerButtonsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const {
-    data: strategyCards = getDefaultStrategyCards(),
-  }: { data?: Record<string, StrategyCard> } = useSWR(
-    gameid ? `/api/${gameid}/strategycards` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState = {} }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["actionLog"]);
+
+  const selectedAction = getSelectedAction(gameData);
+  const newSpeaker = getNewSpeaker(gameData);
 
   async function completeActions() {
-    if (!gameid || subState.turnData?.selectedAction === null) {
+    if (!gameid || selectedAction === null) {
       return;
     }
-    await finalizeAction();
-    nextPlayer(gameid, factions ?? {}, strategyCards, subState);
+
+    endTurn(gameid);
   }
 
   async function finalizeAction() {
-    if (!gameid || !subState.turnData?.selectedAction) {
+    if (!gameid || selectedAction === null) {
       return;
     }
-    finalizeSubState(gameid, subState);
-
-    if (strategyCards[subState.turnData?.selectedAction]) {
-      markStrategyCardUsed(
-        gameid,
-        subState.turnData?.selectedAction as StrategyCardName
-      );
-    }
-    if (subState.turnData?.selectedAction === "Pass") {
-      await passFaction(gameid, factionName);
-    }
+    endTurn(gameid, true);
   }
 
   function isTurnComplete() {
-    switch (subState.turnData?.selectedAction) {
+    switch (selectedAction) {
       case "Politics":
-        return !!subState.turnData.speaker;
+        return !!newSpeaker;
     }
-    return !!subState.turnData?.selectedAction;
+    return !!selectedAction;
   }
 
   if (!isTurnComplete()) {
@@ -1479,7 +1316,7 @@ export function NextPlayerButtons({
         <button onClick={completeActions} style={buttonStyle}>
           End Turn
         </button>
-        {subState.turnData?.selectedAction !== "Pass" ? (
+        {selectedAction !== "Pass" ? (
           <React.Fragment>
             <div style={{ fontSize: "16px" }}>OR</div>
             <button onClick={finalizeAction} style={buttonStyle}>
@@ -1654,67 +1491,23 @@ export function ActivePlayerColumn({
 }
 
 export function advanceToStatusPhase(gameid: string) {
-  const data: StateUpdateData = {
-    action: "ADVANCE_PHASE",
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        return {
-          ...state,
-          phase: "STATUS",
-        };
-      },
-      revalidate: false,
-    }
-  );
-
-  readyAllFactions(gameid);
+  advancePhase(gameid);
 }
 
 export default function ActionPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const { data: state }: { data?: GameState } = useSWR(
-    gameid ? `/api/${gameid}/state` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: subState }: { data?: SubState } = useSWR(
-    gameid ? `/api/${gameid}/subState` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-  const { data: strategyCards }: { data?: Record<string, StrategyCard> } =
-    useSWR(gameid ? `/api/${gameid}/strategycards` : null, fetcher, {
-      revalidateIfStale: false,
-    });
-  const { data: factions }: { data?: Record<string, Faction> } = useSWR(
-    gameid ? `/api/${gameid}/factions` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const gameData = useGameData(gameid, ["factions", "state", "strategycards"]);
+  const factions = gameData.factions;
+  const state = gameData.state;
+  const strategyCards = gameData.strategycards;
 
-  if (!factions || !state || !subState || !strategyCards) {
+  if (!factions || !state || !strategyCards) {
     return <FullScreenLoader />;
   }
 
   const activeFaction = factions[state.activeplayer ?? ""];
-  const onDeckFaction = getOnDeckFaction(
-    state,
-    factions,
-    strategyCards,
-    subState
-  );
+  const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);

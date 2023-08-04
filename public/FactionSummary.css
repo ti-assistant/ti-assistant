@@ -53,3 +53,9 @@
 .techSummaryGrid > :last-child {
   grid-column: 2 / 5;
 }
+
+@media only screen and (max-width: 900px) {
+  .summaryColumn {
+    display: none;
+  }
+}

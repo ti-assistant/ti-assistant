@@ -1,11 +1,73 @@
-import { mutate } from "swr";
-import { getOnDeckFaction, getPreviousFaction } from "../helpers";
 import { StrategyCard } from "./cards";
 import { Faction } from "./factions";
-import { SubState } from "./subState";
-import { poster } from "./util";
+import { AdvancePhaseEvent, SetSpeakerEvent } from "./subState";
+import { ActionLogEntry } from "./util";
+import { Agenda } from "./agendas";
+import { Attachment } from "./attachments";
+import { Component } from "./components";
+import { Objective } from "./objectives";
+import { Options } from "./options";
+import { Planet } from "./planets";
+import { Relic } from "./relics";
+import { Tech } from "./techs";
+import { AddTechData, RemoveTechData } from "../model/addTech";
+import { SelectActionData, UnselectActionData } from "../model/selectAction";
+import { ClaimPlanetData, UnclaimPlanetData } from "../model/claimPlanet";
+import { GiftOfPrescienceData } from "../model/giftOfPrescience";
+import {
+  SwapStrategyCardsData,
+  UnswapStrategyCardsData,
+} from "../model/swapStrategyCards";
+import { EndTurnData, UnendTurnData } from "../model/endTurn";
+import { MarkSecondaryData } from "../model/markSecondary";
+import {
+  ScoreObjectiveData,
+  UnscoreObjectiveData,
+} from "../model/scoreObjective";
+import {
+  HideObjectiveData,
+  RevealObjectiveData,
+} from "../model/revealObjective";
+import { RewindPhaseData } from "../model/advancePhase";
+import {
+  AssignStrategyCardData,
+  UnassignStrategyCardData,
+} from "../model/assignStrategyCard";
+import {
+  AddAttachmentData,
+  RemoveAttachmentData,
+} from "../model/addAttachment";
+import { ContinueGameData, EndGameData } from "../model/endGame";
+import { ManualVPUpdateData } from "../model/manualVPUpdate";
+import { HideAgendaData, RevealAgendaData } from "../model/revealAgenda";
+import { CastVotesData } from "../model/castVotes";
+import { RepealAgendaData, ResolveAgendaData } from "../model/resolveAgenda";
+import {
+  ChooseStartingTechData,
+  RemoveStartingTechData,
+} from "../model/chooseStartingTech";
+import { ChooseSubFactionData } from "../model/chooseSubFaction";
+import {
+  PlayActionCardData,
+  UnplayActionCardData,
+} from "../model/playActionCard";
+import {
+  PlayPromissoryNoteData,
+  UnplayPromissoryNoteData,
+} from "../model/playPromissoryNote";
+import { PlayComponentData, UnplayComponentData } from "../model/playComponent";
+import { GainRelicData, LoseRelicData } from "../model/gainRelic";
+import { UpdatePlanetStateData } from "../model/updatePlanetState";
+import { SelectFactionData } from "../model/selectFaction";
+import { SelectSubComponentData } from "../model/selectSubComponent";
+import { SelectEligibleOutcomesData } from "../model/selectEligibleOutcomes";
+import { PlayRiderData, UnplayRiderData } from "../model/playRider";
+import { SelectSubAgendaData } from "../model/selectSubAgenda";
+import { SetObjectivePointsData } from "../model/setObjectivePoints";
+import { SpeakerTieBreakData } from "../model/speakerTieBreak";
 
 export type Phase =
+  | "UNKNOWN"
   | "SETUP"
   | "STRATEGY"
   | "ACTION"
@@ -36,6 +98,58 @@ export interface StateUpdateData {
   timestamp?: number;
 }
 
+export type GameAction = "ASSIGN_STRATEGY_CARD" | "SET_SPEAKER";
+
+export interface AdvancePhaseData {
+  action: "ADVANCE_PHASE";
+  event: AdvancePhaseEvent;
+}
+
+export interface SetSpeakerData {
+  action: "SET_SPEAKER";
+  event: SetSpeakerEvent;
+}
+
+export interface UndoData {
+  action: "UNDO";
+}
+
+export type GameUpdateData =
+  | (AddTechData | RemoveTechData)
+  | (RevealObjectiveData | HideObjectiveData)
+  | (AdvancePhaseData | RewindPhaseData)
+  | (AssignStrategyCardData | UnassignStrategyCardData)
+  | (ClaimPlanetData | UnclaimPlanetData)
+  | (SelectActionData | UnselectActionData)
+  | (EndTurnData | UnendTurnData)
+  | SetSpeakerData
+  | MarkSecondaryData
+  | (ScoreObjectiveData | UnscoreObjectiveData)
+  | (SwapStrategyCardsData | UnswapStrategyCardsData)
+  | GiftOfPrescienceData
+  | (AddAttachmentData | RemoveAttachmentData)
+  | (EndGameData | ContinueGameData)
+  | ManualVPUpdateData
+  | (RevealAgendaData | HideAgendaData)
+  | CastVotesData
+  | (ResolveAgendaData | RepealAgendaData)
+  | (ChooseStartingTechData | RemoveStartingTechData)
+  | ChooseSubFactionData
+  | (PlayActionCardData | UnplayActionCardData)
+  | (PlayPromissoryNoteData | UnplayPromissoryNoteData)
+  | (PlayComponentData | UnplayComponentData)
+  | (GainRelicData | LoseRelicData)
+  | UpdatePlanetStateData
+  | SelectFactionData
+  | SelectSubComponentData
+  | SelectEligibleOutcomesData
+  | (PlayRiderData | UnplayRiderData)
+  | SelectSubAgendaData
+  | SetObjectivePointsData
+  | SpeakerTieBreakData
+  // TODO
+  | UndoData;
+
 export interface GameState {
   activeplayer?: string;
   ancientBurialSites?: string;
@@ -48,265 +162,17 @@ export interface GameState {
   speaker: string;
 }
 
-export function setSpeaker(gameid: string, speaker: string) {
-  const data: StateUpdateData = {
-    action: "SET_SPEAKER",
-    speaker: speaker,
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        if (
-          state.phase === "STRATEGY" &&
-          state.speaker === state.activeplayer
-        ) {
-          updatedState.activeplayer = speaker;
-        }
-
-        updatedState.speaker = speaker;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
-
-  // TODO: Consider whether there's a better option.
-  // Maybe split the backend changes to have separate updates?
-  mutate(
-    `/api/${gameid}/factions`,
-    (factions: Record<string, Faction>) => {
-      const updatedFactions = structuredClone(factions);
-
-      const speakerFaction = factions[speaker];
-
-      if (!speakerFaction) {
-        return updatedFactions;
-      }
-
-      const currentOrder = speakerFaction.order ?? 1;
-
-      const numFactions = Object.keys(factions).length;
-
-      for (const name of Object.keys(factions)) {
-        const updatedFaction = updatedFactions[name];
-        if (!updatedFaction) {
-          continue;
-        }
-        let factionOrder = updatedFaction.order - currentOrder + 1;
-        if (factionOrder < 1) {
-          factionOrder += numFactions;
-        }
-        updatedFaction.order = factionOrder;
-      }
-
-      return updatedFactions;
-    },
-    {
-      revalidate: false,
-    }
-  );
-}
-
-export function jumpToPlayer(gameid: string, factionName: string) {
-  setGlobalPause(gameid, false);
-
-  const data: StateUpdateData = {
-    action: "JUMP_TO_PLAYER",
-    factionName: factionName,
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        return {
-          ...structuredClone(state),
-          activeplayer: factionName,
-        };
-      },
-      revalidate: false,
-    }
-  );
-}
-
-export async function nextPlayer(
-  gameid: string,
-  factions: Record<string, Faction>,
-  strategyCards: Record<string, StrategyCard>,
-  subState: SubState
-) {
-  setGlobalPause(gameid, false);
-
-  const data: StateUpdateData = {
-    action: "ADVANCE_PLAYER",
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const onDeckFaction = getOnDeckFaction(
-          state,
-          factions,
-          strategyCards,
-          subState
-        );
-        return {
-          ...structuredClone(state),
-          activeplayer: onDeckFaction ? onDeckFaction.name : "None",
-        };
-      },
-      revalidate: false,
-    }
-  );
-}
-
-export async function prevPlayer(
-  gameid: string,
-  factions: Record<string, Faction>,
-  subState: SubState
-) {
-  setGlobalPause(gameid, false);
-
-  const data: StateUpdateData = {
-    action: "PREVIOUS_PLAYER",
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const prevFaction = getPreviousFaction(state, factions, subState);
-
-        return {
-          ...structuredClone(state),
-          activeplayer: prevFaction ? prevFaction.name : "None",
-        };
-      },
-      revalidate: false,
-    }
-  );
-}
-
-export async function finishGame(gameid: string) {
-  const data: StateUpdateData = {
-    action: "END_GAME",
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.phase = "END";
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
-}
-
-export async function continueGame(gameid: string) {
-  setGlobalPause(gameid, false);
-
-  const data: StateUpdateData = {
-    action: "CONTINUE_GAME",
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.phase = state.finalPhase ?? "STATUS";
-        delete updatedState.finalPhase;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
-}
-
-export function setAgendaNum(gameid: string, agendaNum: number) {
-  const data: StateUpdateData = {
-    action: "SET_AGENDA_NUM",
-    agendaNum: agendaNum,
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.agendaNum = agendaNum;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
-}
-
-export function ancientBurialSites(
-  gameid: string,
-  factionName: string | undefined
-) {
-  const data: StateUpdateData = {
-    action: "ANCIENT_BURIAL_SITES",
-    factionName: factionName,
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.ancientBurialSites = factionName;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
-}
-
-export function setGlobalPause(gameid: string, paused: boolean) {
-  const data: StateUpdateData = {
-    action: "SET_GLOBAL_PAUSE",
-    paused: paused,
-  };
-
-  mutate(
-    `/api/${gameid}/state`,
-    async () => await poster(`/api/${gameid}/stateUpdate`, data),
-    {
-      optimisticData: (state: GameState) => {
-        const updatedState = structuredClone(state);
-
-        updatedState.paused = paused;
-
-        return updatedState;
-      },
-      revalidate: false,
-    }
-  );
+export interface GameData {
+  actionLog?: ActionLogEntry[];
+  agendas?: Record<string, Agenda>;
+  attachments?: Record<string, Attachment>;
+  components?: Record<string, Component>;
+  factions: Record<string, Faction>;
+  objectives?: Record<string, Objective>;
+  options: Options;
+  planets: Record<string, Planet>;
+  relics?: Record<string, Relic>;
+  state: GameState;
+  strategycards?: Record<string, StrategyCard>;
+  techs?: Record<string, Tech>;
 }

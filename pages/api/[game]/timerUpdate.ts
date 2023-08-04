@@ -1,7 +1,7 @@
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import { TimerUpdateData } from "../../../src/util/api/timers";
-import { GameData } from "../../../src/util/api/util";
+import { getTimers, getTimersInTransaction } from "../../../server/util/fetch";
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,106 +21,73 @@ export default async function handler(
 
   const db = getFirestore();
 
-  const gameRef = await db.collection("games").doc(gameId).get();
+  const timersRef = db.collection("timers").doc(gameId);
 
-  if (!gameRef.exists) {
-    res.status(404);
-    return;
+  try {
+    await db.runTransaction(async (t) => {
+      const timers = await getTimersInTransaction(timersRef, t);
+
+      if (!data.timestamp) {
+        res.status(422).send({ message: "Missing info" });
+        return;
+      }
+
+      switch (data.action) {
+        case "SET_GAME_TIMER": {
+          if (data.timer == undefined) {
+            res.status(422).send({ message: "Missing info" });
+            return;
+          }
+          const timer = timers.game ?? 0;
+          if (data.timer > timer) {
+            t.update(timersRef, {
+              game: data.timer,
+            });
+          }
+          break;
+        }
+        case "SAVE_FACTION_TIMER": {
+          if (data.timer == undefined || !data.faction) {
+            res.status(422).send({ message: "Missing info" });
+            return;
+          }
+          const timer = timers[data.faction] ?? 0;
+          if (data.timer > timer) {
+            t.update(timersRef, {
+              [data.faction]: data.timer,
+            });
+          }
+          break;
+        }
+        case "SAVE_AGENDA_TIMER": {
+          if (data.timer == undefined) {
+            res.status(422);
+            return;
+          }
+          const timerName =
+            (data.agendaNum ?? 1) === 1 ? "firstAgenda" : "secondAgenda";
+          const timer = timers[timerName] ?? 0;
+          if (data.timer > timer) {
+            t.update(timersRef, {
+              [timerName]: data.timer,
+            });
+          }
+          break;
+        }
+        case "RESET_AGENDA_TIMERS": {
+          t.update(timersRef, {
+            firstAgenda: FieldValue.delete(),
+            secondAgenda: FieldValue.delete(),
+          });
+          break;
+        }
+      }
+    });
+  } catch (e) {
+    console.log("Transaction failed", e);
   }
 
-  const gameData = gameRef.data() as GameData;
+  const storedTimers = await getTimers(gameId);
 
-  if (!data.timestamp) {
-    res.status(422);
-    return;
-  }
-
-  const timestampString = `updates.timers.timestamp`;
-  const timestamp = Timestamp.fromMillis(data.timestamp);
-  switch (data.action) {
-    case "SET_GAME_TIMER": {
-      if (data.timer == undefined) {
-        res.status(422);
-        return;
-      }
-      const timer = (gameData.timers ?? {}).game ?? 0;
-      if (data.timer > timer) {
-        await db
-          .collection("games")
-          .doc(gameId)
-          .update({
-            "timers.game": data.timer,
-            [timestampString]: timestamp,
-          });
-      }
-      break;
-    }
-    case "SAVE_FACTION_TIMER": {
-      if (data.timer == undefined || !data.faction) {
-        res.status(422);
-        return;
-      }
-      const timer = (gameData.timers ?? {})[data.faction] ?? 0;
-      if (data.timer > timer) {
-        const factionString = `timers.${data.faction}`;
-        await db
-          .collection("games")
-          .doc(gameId)
-          .update({
-            [factionString]: data.timer,
-            [timestampString]: timestamp,
-          });
-      }
-      break;
-    }
-    case "SAVE_AGENDA_TIMER": {
-      if (data.timer == undefined) {
-        res.status(422);
-        return;
-      }
-      const timerName =
-        (gameData.state.agendaNum ?? 1) === 1 ? "firstAgenda" : "secondAgenda";
-      const timer = (gameData.timers ?? {})[timerName] ?? 0;
-      if (data.timer > timer) {
-        const timerString = `timers.${timerName}`;
-        await db
-          .collection("games")
-          .doc(gameId)
-          .update({
-            [timerString]: data.timer,
-            [timestampString]: timestamp,
-          });
-      }
-      break;
-    }
-    case "RESET_AGENDA_TIMERS": {
-      const timerOneString = `timers.firstAgenda`;
-      const timerTwoString = `timers.secondAgenda`;
-      await db
-        .collection("games")
-        .doc(gameId)
-        .update({
-          [timerOneString]: 0,
-          [timerTwoString]: 0,
-          [timestampString]: timestamp,
-        });
-      break;
-    }
-    case "SET_TIMER_PAUSE": {
-      if (data.paused == undefined) {
-        res.status(422).send({ message: "No value specified" });
-        return;
-      }
-      await db.collection("games").doc(gameId).update({
-        "timers.paused": data.paused,
-      });
-      break;
-    }
-  }
-
-  const responseRef = await db.collection("games").doc(gameId).get();
-
-  const responseData = responseRef.data() as GameData;
-
-  return res.status(200).json(responseData.timers ?? {});
+  return res.status(200).json(storedTimers);
 }

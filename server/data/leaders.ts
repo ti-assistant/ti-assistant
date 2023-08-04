@@ -1,6 +1,7 @@
 // NOTE: Currently only has leaders that get used as component actions.
 
 import { BaseLeader } from "../../src/util/api/components";
+import { DISCORDANT_STARS_LEADERS } from "./discordantstars/leaders";
 
 export type LeaderId =
   | "Airo Shir Aur"
@@ -23,11 +24,12 @@ export type LeaderId =
   | "Rin The Master's Legacy"
   | "Ssruu"
   | "The Helmsman"
-  | "Ul The Progenitor"
+  | "Ul the Progenitor"
   | "Umbat"
   | "UNITDSGNFLAYESH"
   | "Xxekir Grom"
-  | "Z'eu";
+  | "Z'eu"
+  | DiscordantStars.LeaderId;
 
 export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
   "Airo Shir Aur": {
@@ -235,13 +237,13 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     timing: "COMPONENT_ACTION",
     type: "HERO",
   },
-  "Ul The Progenitor": {
+  "Ul the Progenitor": {
     abilityName: "GEOFORM",
     description:
       "Ready Elysium and attach this card to it. Its resource and influence values are each increased by 3, and it gains the SPACE CANNON 5 (x3) ability as if it were a unit",
     expansion: "POK",
     faction: "Titans of Ul",
-    name: "Ul The Progenitor",
+    name: "Ul the Progenitor",
     timing: "COMPONENT_ACTION",
     type: "HERO",
   },
@@ -298,4 +300,5 @@ export const BASE_LEADERS: Record<LeaderId, BaseLeader> = {
     timing: "AGENDA_PHASE",
     type: "AGENT",
   },
+  ...DISCORDANT_STARS_LEADERS,
 };
