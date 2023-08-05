@@ -22,7 +22,7 @@
   display: grid;
   gap: var(--eight-pixel);
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  grid-template-columns: repeat(var(--num-columns), minmax(0, 1fr));
+  grid-template-columns: repeat(calc(var(--num-columns) - 1), minmax(0, 2fr)) 3fr;
   grid-auto-flow: column;
 
   overflow: hidden;
