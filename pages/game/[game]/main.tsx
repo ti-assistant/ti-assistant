@@ -12,6 +12,8 @@ import StatusPhase from "../../../src/main/StatusPhase";
 import StrategyPhase from "../../../src/main/StrategyPhase";
 import SummaryColumn from "../../../src/main/SummaryColumn";
 import { setGameId } from "../../../src/util/api/util";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function MainScreenPage() {
   const router = useRouter();
@@ -61,15 +63,17 @@ export default function MainScreenPage() {
       className="flexColumn"
       style={{ height: "100%", alignItems: "center", gap: 0 }}
     >
-      <Updater />
-      <Header />
-      <div className="mainPage">
-        {innerContent}
-        {state?.phase && state.phase !== "SETUP" ? (
-          <SummaryColumn order={order} subOrder={subOrder} />
-        ) : null}
-      </div>
-      <Footer />
+      <DndProvider backend={HTML5Backend}>
+        <Updater />
+        <Header />
+        <div className="mainPage">
+          {innerContent}
+          {state?.phase && state.phase !== "SETUP" ? (
+            <SummaryColumn order={order} subOrder={subOrder} />
+          ) : null}
+        </div>
+        <Footer />
+      </DndProvider>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { CSSProperties, useState } from "react";
-import { DndProvider, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDrop } from "react-dnd";
 import { WrappedFactionIcon } from "../FactionCard";
 import { PlanetSummary } from "../FactionSummary";
 import { PlanetRow } from "../PlanetRow";
@@ -228,27 +227,25 @@ export function PlanetPanel({}) {
   const orderedFactionNames = Object.keys(factions ?? {}).sort();
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div
-        className={styles.planetGrid}
-        style={
-          {
-            "--num-columns": Object.keys(factions).length / 2 + 1,
-            "--num-factions": Object.keys(factions).length,
-          } as CSSWithNumColumns
-        }
-      >
-        {orderedFactionNames.map((factionName) => {
-          return (
-            <PlanetSection
-              key={factionName}
-              factionName={factionName}
-              openedByDefault
-            />
-          );
-        })}
-        <UnclaimedPlanetSection />
-      </div>
-    </DndProvider>
+    <div
+      className={styles.planetGrid}
+      style={
+        {
+          "--num-columns": Object.keys(factions).length / 2 + 1,
+          "--num-factions": Object.keys(factions).length,
+        } as CSSWithNumColumns
+      }
+    >
+      {orderedFactionNames.map((factionName) => {
+        return (
+          <PlanetSection
+            key={factionName}
+            factionName={factionName}
+            openedByDefault
+          />
+        );
+      })}
+      <UnclaimedPlanetSection />
+    </div>
   );
 }
