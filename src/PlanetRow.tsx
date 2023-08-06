@@ -565,7 +565,7 @@ export function PlanetRow({
   }
 
   function availableAttachments() {
-    if (planet.name === "Mecatol Rex" || !attachments) {
+    if (!attachments) {
       return {};
     }
     const planetAttachments = planet.attachments ?? [];
@@ -574,6 +574,9 @@ export function PlanetRow({
         // If attached to this planet, always show.
         if (planetAttachments.includes(attachment.name)) {
           return true;
+        }
+        if (planet.name === "Mecatol Rex" && attachment.name !== "Nano-Forge") {
+          return false;
         }
         if (attachment.name === "Terraform" && factionName === "Titans of Ul") {
           return false;
