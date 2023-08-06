@@ -11,6 +11,10 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels } from "../util/util";
 import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
+import {
+  filterToClaimedPlanets,
+  applyAllPlanetAttachments,
+} from "../util/planets";
 
 interface ExtendedCSS extends CSSProperties {
   "--color": string;
@@ -25,7 +29,8 @@ function PlanetSection({
 }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions", "planets"]);
+  const gameData = useGameData(gameid, ["attachments", "factions", "planets"]);
+  const attachments = gameData.attachments ?? {};
   const factions = gameData.factions;
   const planets = gameData.planets;
 
@@ -51,9 +56,9 @@ function PlanetSection({
     [planets]
   );
 
-  const ownedPlanets = Object.values(planets).filter(
-    (planet) => planet.owner === factionName
-  );
+  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+
+  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
   return (
     <div
@@ -92,7 +97,7 @@ function PlanetSection({
             }}
           >
             <PlanetSummary
-              planets={ownedPlanets}
+              planets={updatedPlanets}
               faction={factions[factionName] as Faction}
             />
           </div>
@@ -104,7 +109,7 @@ function PlanetSection({
               backgroundColor: isOver ? "#333" : "#222",
             }}
           >
-            {ownedPlanets.map((planet) => {
+            {updatedPlanets.map((planet) => {
               return (
                 <PlanetRow
                   key={planet.name}
