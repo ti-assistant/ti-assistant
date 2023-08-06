@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import { DndProvider } from "react-dnd";
 import { AddPlanetList } from "../../../src/AddPlanetList";
 import { AddTechList } from "../../../src/AddTechList";
 import { AgendaRow } from "../../../src/AgendaRow";
@@ -27,6 +28,7 @@ import { Tab, TabBody } from "../../../src/Tab";
 import { TechRow } from "../../../src/TechRow";
 import { StaticFactionTimer } from "../../../src/Timer";
 import { Updater } from "../../../src/Updater";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import {
   canFactionVote,
   computeRemainingVotes,
@@ -83,6 +85,7 @@ import {
   unscoreObjective,
 } from "../../../src/util/api/scoreObjective";
 import { selectEligibleOutcomes } from "../../../src/util/api/selectEligibleOutcomes";
+import { speakerTieBreak } from "../../../src/util/api/speakerTieBreak";
 import { Tech, TechType, hasTech } from "../../../src/util/api/techs";
 import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor } from "../../../src/util/factions";
@@ -96,7 +99,6 @@ import {
   filterToUnownedTechs,
 } from "../../../src/util/techs";
 import { responsivePixels } from "../../../src/util/util";
-import { speakerTieBreak } from "../../../src/util/api/speakerTieBreak";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -1567,95 +1569,99 @@ export default function GamePage() {
         height: "100svh",
       }}
     >
-      <NonGameHeader />
-      <Updater />
-      <div
-        className="flexColumn"
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "800px",
-          marginTop: responsivePixels(54),
-        }}
-      >
+      <DndProvider backend={HTML5Backend}>
+        <NonGameHeader />
+        <Updater />
         <div
           className="flexColumn"
           style={{
+            position: "relative",
             width: "100%",
-            gap: "4px",
-            fontSize: "18px",
+            maxWidth: "800px",
+            marginTop: responsivePixels(54),
           }}
         >
-          <LabeledLine
-            leftLabel={state?.phase + " PHASE"}
-            rightLabel={"ROUND " + state?.round}
-          />
-          {orderTitle}
           <div
-            className="flexRow"
-            style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
+            className="flexColumn"
+            style={{
+              width: "100%",
+              gap: "4px",
+              fontSize: "18px",
+            }}
           >
-            {orderedFactions.map((faction) => {
-              const color = faction.passed ? "#555" : getFactionColor(faction);
-              return (
-                <div
-                  className="flexRow"
-                  key={faction.name}
-                  style={{
-                    position: "relative",
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "8px",
-                    border: `3px solid ${color}`,
-                    boxShadow:
-                      color === "Black" ? BLACK_BORDER_GLOW : undefined,
-                  }}
-                  onClick={() => swapToFaction(faction.name)}
-                >
+            <LabeledLine
+              leftLabel={state?.phase + " PHASE"}
+              rightLabel={"ROUND " + state?.round}
+            />
+            {orderTitle}
+            <div
+              className="flexRow"
+              style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
+            >
+              {orderedFactions.map((faction) => {
+                const color = faction.passed
+                  ? "#555"
+                  : getFactionColor(faction);
+                return (
                   <div
                     className="flexRow"
+                    key={faction.name}
                     style={{
                       position: "relative",
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "6px",
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                      border: `3px solid ${color}`,
+                      boxShadow:
+                        color === "Black" ? BLACK_BORDER_GLOW : undefined,
                     }}
+                    onClick={() => swapToFaction(faction.name)}
                   >
                     <div
+                      className="flexRow"
                       style={{
                         position: "relative",
-                        width: "28px",
-                        height: "28px",
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "6px",
                       }}
                     >
-                      <FullFactionSymbol faction={faction.name} />
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "28px",
+                          height: "28px",
+                        }}
+                      >
+                        <FullFactionSymbol faction={faction.name} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+            <NextPhaseButtons />
           </div>
-          <NextPhaseButtons />
+          <div style={{ width: "100%", margin: "4px" }}>
+            <FactionCard
+              faction={faction}
+              style={{ width: "100%" }}
+              rightLabel={
+                <StaticFactionTimer
+                  factionName={playerFaction}
+                  width={80}
+                  style={{
+                    fontSize: responsivePixels(16),
+                  }}
+                />
+              }
+              opts={{ hideTitle: true }}
+            >
+              <FactionContent />
+            </FactionCard>
+          </div>
         </div>
-        <div style={{ width: "100%", margin: "4px" }}>
-          <FactionCard
-            faction={faction}
-            style={{ width: "100%" }}
-            rightLabel={
-              <StaticFactionTimer
-                factionName={playerFaction}
-                width={80}
-                style={{
-                  fontSize: responsivePixels(16),
-                }}
-              />
-            }
-            opts={{ hideTitle: true }}
-          >
-            <FactionContent />
-          </FactionCard>
-        </div>
-      </div>
+      </DndProvider>
     </div>
   );
 }
