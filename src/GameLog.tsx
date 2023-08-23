@@ -715,7 +715,19 @@ export function GameLog({}) {
             }
             break;
           }
-          case "SELECT_ACTION":
+          case "SELECT_ACTION": {
+            // Set to end of previous turn.
+            for (let i = index - 1; i > 0; i--) {
+              const prevEntry = reversedActionLog[i];
+              if (!prevEntry) {
+                break;
+              }
+              if (TURN_BOUNDARIES.includes(prevEntry.data.action)) {
+                logEntry.gameSeconds = prevEntry.gameSeconds ?? 0;
+                break;
+              }
+            }
+          }
           case "REVEAL_AGENDA":
           case "ASSIGN_STRATEGY_CARD": {
             for (let i = index + 1; i < reversedActionLog.length; i++) {
