@@ -16,13 +16,20 @@ app.prepare().then(async () => {
   const server = createServer((req, res) =>
     handle(req, res, parse(req.url, true))
   );
+  const env = process.env.NODE_ENV;
+  const emulator = process.env.FIRESTORE_EMULATOR_HOST;
+  if (env === "production" || !emulator) {
+    console.log("Using production Firestore instance");
+    const serviceAccount = require("./twilight-imperium-360307-77d3ff625ffc.json");
+
+    initializeApp({
+      credential: cert(serviceAccount),
+    });
+  } else {
+    console.log(`Using Firestore Emulator on ${emulator}`);
+    initializeApp();
+  }
   const wss = new WebSocket.Server({ noServer: true });
-
-  const serviceAccount = require("./twilight-imperium-360307-77d3ff625ffc.json");
-
-  initializeApp({
-    credential: cert(serviceAccount),
-  });
 
   wss.on("connection", async function connection(ws) {
     // console.log('incoming connection', ws);
