@@ -1132,14 +1132,14 @@ function FactionContent() {
     if (!gameid || !playerFaction) {
       return;
     }
-    unclaimPlanet(gameid, toRemove, playerFaction);
+    unclaimPlanet(gameid, playerFaction, toRemove);
   }
 
   function addPlanet(toAdd: string) {
     if (!gameid || !playerFaction) {
       return;
     }
-    claimPlanet(gameid, toAdd, playerFaction);
+    claimPlanet(gameid, playerFaction, toAdd);
   }
 
   function removeTechLocal(toRemove: string) {
