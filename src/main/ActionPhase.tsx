@@ -1,50 +1,50 @@
 import { useRouter } from "next/router";
 import React, { CSSProperties } from "react";
-import { FactionCard, FullFactionSymbol } from "../FactionCard";
-import { SmallStrategyCard } from "../StrategyCard";
-import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
-import { hasTech, Tech } from "../util/api/techs";
-import { StrategyCard } from "../util/api/cards";
-import { Faction } from "../util/api/factions";
-import { FactionTimer, StaticFactionTimer } from "../Timer";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { PlanetRow } from "../PlanetRow";
-import { ObjectiveRow } from "../ObjectiveRow";
-import { LabeledDiv, LabeledLine } from "../LabeledDiv";
+import { FactionCard, FullFactionSymbol } from "../FactionCard";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { TechRow } from "../TechRow";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
-import { Action, Secondary } from "../util/api/subState";
-import { responsivePixels } from "../util/util";
-import { applyPlanetAttachments } from "../util/planets";
-import { ComponentAction } from "./util/ComponentAction";
-import { Planet } from "../util/api/planets";
-import { getDefaultStrategyCards } from "../util/api/defaults";
+import { LabeledDiv, LabeledLine } from "../LabeledDiv";
 import { FullScreenLoader } from "../Loader";
 import { LockedButtons } from "../LockedButton";
-import { FactionSelectHoverMenu } from "../components/FactionSelect";
+import { ObjectiveRow } from "../ObjectiveRow";
+import { PlanetRow } from "../PlanetRow";
+import { SmallStrategyCard } from "../StrategyCard";
+import { TechRow } from "../TechRow";
+import { FactionTimer, StaticFactionTimer } from "../Timer";
 import { FactionCircle } from "../components/FactionCircle";
+import { FactionSelectRadialMenu } from "../components/FactionSelect";
 import { TacticalAction } from "../components/TacticalAction";
-import { SymbolX } from "../icons/svgs";
 import { useGameData } from "../data/GameData";
+import { SymbolX } from "../icons/svgs";
+import { getResearchedTechs } from "../util/actionLog";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { addTech, removeTech } from "../util/api/addTech";
+import { advancePhase } from "../util/api/advancePhase";
+import { StrategyCard } from "../util/api/cards";
+import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
 import {
   getNewSpeaker,
   getNewSpeakerEvent,
   getSelectedAction,
 } from "../util/api/data";
-import { ClaimPlanetData } from "../util/model/claimPlanet";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { addTech, removeTech } from "../util/api/addTech";
-import { advancePhase } from "../util/api/advancePhase";
-import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
-import { selectAction, unselectAction } from "../util/api/selectAction";
+import { getDefaultStrategyCards } from "../util/api/defaults";
 import { endTurn } from "../util/api/endTurn";
-import { setSpeaker } from "../util/api/setSpeaker";
+import { Faction } from "../util/api/factions";
 import { markSecondary } from "../util/api/markSecondary";
+import { Planet } from "../util/api/planets";
 import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
+import { selectAction, unselectAction } from "../util/api/selectAction";
+import { setSpeaker } from "../util/api/setSpeaker";
+import { Action, Secondary } from "../util/api/subState";
+import { Tech, hasTech } from "../util/api/techs";
+import { getFactionColor, getFactionName } from "../util/factions";
+import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
+import { ClaimPlanetData } from "../util/model/claimPlanet";
 import { ScoreObjectiveData } from "../util/model/scoreObjective";
-import { getResearchedTechs } from "../util/actionLog";
+import { applyPlanetAttachments } from "../util/planets";
+import { responsivePixels } from "../util/util";
+import { ComponentAction } from "./util/ComponentAction";
+import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
 
 export interface FactionActionButtonsProps {
   factionName: string;
@@ -776,7 +776,7 @@ export function AdditionalActions({
               }}
             >
               New Speaker:
-              <FactionSelectHoverMenu
+              <FactionSelectRadialMenu
                 borderColor={
                   selectedSpeaker ? getFactionColor(selectedSpeaker) : undefined
                 }

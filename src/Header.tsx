@@ -14,7 +14,7 @@ import { Map } from "./util/Map";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../public/images/android-chrome-512x512.png";
-import { FactionSelectHoverMenu } from "./components/FactionSelect";
+import { FactionSelectRadialMenu } from "./components/FactionSelect";
 import { GenericModal } from "./Modal";
 import { TechPanel } from "./components/TechPanel";
 import { ObjectivePanel } from "./components/ObjectivePanel";
@@ -636,7 +636,7 @@ export function Footer({}) {
               !shouldBlockSpeakerUpdates() ? (
                 <div className="flexRow">
                   Speaker:
-                  <FactionSelectHoverMenu
+                  <FactionSelectRadialMenu
                     allowNone={false}
                     borderColor={
                       state?.speaker
@@ -668,7 +668,7 @@ export function Footer({}) {
                     className="flexColumn"
                     style={{
                       justifyContent: "flex-start",
-                      maxHeight: "calc(100dvh - 24px)",
+                      maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
                     }}
                   >
                     <div
@@ -688,7 +688,9 @@ export function Footer({}) {
                       className="flexColumn largeFont"
                       onClick={(e) => e.stopPropagation()}
                       style={{
-                        width: "clamp(80vw, 960px, calc(100vw - 24px))",
+                        width: `clamp(80vw, 960px, calc(100vw - ${responsivePixels(
+                          24
+                        )}))`,
                         justifyContent: "flex-start",
                         overflow: "auto",
                       }}
@@ -706,7 +708,7 @@ export function Footer({}) {
                     className="flexColumn"
                     style={{
                       justifyContent: "flex-start",
-                      height: "calc(100dvh - 24px)",
+                      height: `calc(100dvh - ${responsivePixels(24)})`,
                     }}
                   >
                     <div
@@ -726,10 +728,13 @@ export function Footer({}) {
                       className="flexColumn largeFont"
                       onClick={(e) => e.stopPropagation()}
                       style={{
-                        width: "clamp(80vw, 1200px, calc(100vw - 24px))",
+                        width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(
+                          24
+                        )}))`,
                         justifyContent: "flex-start",
                         overflow: "auto",
                         height: "fit-content",
+                        paddingBottom: responsivePixels(24),
                       }}
                     >
                       <ObjectivePanel />
@@ -747,7 +752,7 @@ export function Footer({}) {
                     className="flexColumn"
                     style={{
                       justifyContent: "flex-start",
-                      maxHeight: "calc(100dvh - 24px)",
+                      maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
                     }}
                   >
                     <div
@@ -767,7 +772,9 @@ export function Footer({}) {
                       className="flexColumn largeFont"
                       onClick={(e) => e.stopPropagation()}
                       style={{
-                        width: "clamp(80vw, 1200px, calc(100vw - 24px))",
+                        width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(
+                          24
+                        )}))`,
                         justifyContent: "flex-start",
                         overflow: "auto",
                         height: "100%",
@@ -792,7 +799,7 @@ export function Footer({}) {
                 !shouldBlockSpeakerUpdates() ? (
                   <div className="flexRow">
                     Speaker:
-                    <FactionSelectHoverMenu
+                    <FactionSelectRadialMenu
                       allowNone={false}
                       borderColor={
                         state?.speaker

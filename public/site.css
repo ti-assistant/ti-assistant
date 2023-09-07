@@ -384,7 +384,11 @@ input[type="textbox"] {
 }
 .hoverRadio.down {
   clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+}
 
+.hoverRadial {
+  transition: z-index 200ms, width 200ms, height 200ms, top 200ms, left 200ms;
+  /* clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); */
 }
 
 .hoverZoom {
@@ -444,6 +448,11 @@ input[type="textbox"] {
   z-index: 1000;
   /* clip-path: polygon(101% 101%, 0% 101%, 0% 0%, 101% 0%); */
   clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
+}
+
+.hoverParent.hover > .hoverRadial {
+  clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
+
 }
 
 .hoverZoom:hover {

@@ -71,7 +71,7 @@ export default function ObjectivesPage() {
       <div
         style={{
           position: "relative",
-          padding: `${responsivePixels(60)} 0 ${responsivePixels(12)} 0`,
+          padding: `${responsivePixels(60)} 0 ${responsivePixels(24)} 0`,
           height: "100dvh",
         }}
       >

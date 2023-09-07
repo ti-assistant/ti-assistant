@@ -2,27 +2,27 @@ import React, { CSSProperties } from "react";
 import { FullFactionSymbol } from "../FactionCard";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LabeledDiv, LabeledLine } from "../LabeledDiv";
-import { TechSelectHoverMenu } from "../main/util/TechSelectHoverMenu";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { PlanetRow } from "../PlanetRow";
 import { TechRow } from "../TechRow";
-import { Attachment } from "../util/api/attachments";
-import { Faction } from "../util/api/factions";
-import { hasScoredObjective, Objective } from "../util/api/objectives";
-import { Planet } from "../util/api/planets";
-import { PlanetEvent } from "../util/api/subState";
-import { hasTech, Tech } from "../util/api/techs";
-import { getFactionColor } from "../util/factions";
-import { applyPlanetAttachments } from "../util/planets";
-import { responsivePixels, pluralize } from "../util/util";
-import { FactionSelectHoverMenu } from "./FactionSelect";
 import { SymbolX } from "../icons/svgs";
-import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
-import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
-import { addTech, removeTech } from "../util/api/addTech";
-import { ActionLogEntry } from "../util/api/util";
+import { TechSelectHoverMenu } from "../main/util/TechSelectHoverMenu";
 import { getObjectiveScorers, getResearchedTechs } from "../util/actionLog";
+import { addTech, removeTech } from "../util/api/addTech";
+import { Attachment } from "../util/api/attachments";
+import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
+import { Faction } from "../util/api/factions";
+import { Objective, hasScoredObjective } from "../util/api/objectives";
+import { Planet } from "../util/api/planets";
+import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
+import { PlanetEvent } from "../util/api/subState";
+import { Tech, hasTech } from "../util/api/techs";
+import { ActionLogEntry } from "../util/api/util";
+import { getFactionColor } from "../util/factions";
 import { ClaimPlanetData } from "../util/model/claimPlanet";
+import { applyPlanetAttachments } from "../util/planets";
+import { pluralize, responsivePixels } from "../util/util";
+import { FactionSelectRadialMenu } from "./FactionSelect";
 
 export function TacticalAction({
   activeFactionName,
@@ -379,7 +379,7 @@ export function TacticalAction({
           <div className="flexRow">
             <ObjectiveRow objective={becomeAMartyr} hideScorers />
             {becomeAMartyr.type === "SECRET" || possibleMartyrs.size === 1 ? (
-              <FactionSelectHoverMenu
+              <FactionSelectRadialMenu
                 onSelect={(factionName, prevFaction) => {
                   if (factionName && prevFaction) {
                     undoObjective(prevFaction, "Become a Martyr");

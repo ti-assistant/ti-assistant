@@ -9,7 +9,12 @@ import { responsivePixels } from "../src/util/util";
 import Head from "next/head";
 import { Map } from "../src/util/Map";
 import { Expansion, Options } from "../src/util/api/options";
-import { MapStyle, SetupFaction, SetupOptions } from "../src/util/api/setup";
+import {
+  GameVariant,
+  MapStyle,
+  SetupFaction,
+  SetupOptions,
+} from "../src/util/api/setup";
 import { BaseFaction } from "../src/util/api/factions";
 import { Selector } from "../src/Selector";
 import { FullFactionSymbol } from "../src/FactionCard";
@@ -17,6 +22,7 @@ import { SelectableRow } from "../src/SelectableRow";
 import Link from "next/link";
 import Image from "next/image";
 import { NonGameHeader } from "../src/Header";
+import { FactionSelectRadialMenu } from "../src/components/FactionSelect";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -282,7 +288,7 @@ function MobileOptions({
                       </div>
                     </React.Fragment>
                   ) : null}
-                  Map String:
+                  Map String (filters out non-claimable planets):
                   <input
                     ref={mapStringRef}
                     type="textbox"
@@ -292,7 +298,6 @@ function MobileOptions({
                       toggleOption(event.currentTarget.value, "map-string")
                     }
                   ></input>
-                  Used to filter out planets that are not claimable.
                 </div>
               </div>
               {isCouncil ? (
@@ -350,24 +355,31 @@ function Options({
   }, [mapString]);
 
   let mapStyles: MapStyle[] = [];
+  let variants: GameVariant[] = [];
   switch (numFactions) {
     case 3:
       mapStyles = ["standard"];
+      variants = ["normal"];
       break;
     case 4:
       mapStyles = ["standard", "warp", "skinny"];
+      variants = ["normal", "alliance"];
       break;
     case 5:
       mapStyles = ["standard", "warp", "skinny"];
+      variants = ["normal"];
       break;
     case 6:
       mapStyles = ["standard", "large"];
+      variants = ["normal", "alliance"];
       break;
     case 7:
       mapStyles = ["standard", "warp"];
+      variants = ["normal"];
       break;
     case 8:
       mapStyles = ["standard", "warp"];
+      variants = ["normal", "alliance"];
       break;
   }
 
@@ -558,7 +570,7 @@ function Options({
                 </div>
               </div>
             </div>
-            <div>
+            <div style={{ width: "100%" }}>
               Map:
               <div
                 className="flexColumn"
@@ -591,7 +603,23 @@ function Options({
                     </div>
                   </React.Fragment>
                 ) : null}
-                Map String:
+                <div
+                  className="flexRow"
+                  style={{
+                    gap: 0,
+                    width: "100%",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  Map String
+                  <span
+                    className="smallFont"
+                    style={{ paddingLeft: responsivePixels(4) }}
+                  >
+                    (filters out non-claimable planets)
+                  </span>
+                  :
+                </div>
                 <input
                   ref={mapStringRef}
                   type="textbox"
@@ -601,7 +629,6 @@ function Options({
                     toggleOption(event.target.value, "map-string")
                   }
                 ></input>
-                Used to filter out planets that are not claimable.
               </div>
             </div>
             {isCouncil ? (
@@ -627,6 +654,32 @@ function Options({
                   >
                     Allow selecting a duplicate sub-faction
                   </button>
+                </div>
+              </div>
+            ) : null}
+            {variants.length > 1 ? (
+              <div>
+                Variants (WIP):
+                <div
+                  className="flexRow"
+                  style={{
+                    alignItems: "flex-start",
+                    padding: `${responsivePixels(8)} ${responsivePixels(20)}`,
+                  }}
+                >
+                  {variants.map((variant) => {
+                    return (
+                      <button
+                        key={variant}
+                        className={
+                          options["game-variant"] === variant ? "selected" : ""
+                        }
+                        onClick={() => toggleOption(variant, "game-variant")}
+                      >
+                        {capitalizeFirstLetter(variant)}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ) : null}
@@ -734,6 +787,10 @@ interface FactionSelectProps {
   setColor: (index: number, colorName: string | undefined) => void;
   setSpeaker: (index: number) => void;
   setPlayerName: (index: number, playerName: string) => void;
+  setAlliancePartner: (
+    index: number,
+    alliancePartner: number | undefined
+  ) => void;
   options: SetupOptions;
 }
 
@@ -747,6 +804,7 @@ function FactionSelect({
   setColor,
   setSpeaker,
   setPlayerName,
+  setAlliancePartner,
   options,
 }: FactionSelectProps) {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -793,7 +851,7 @@ function FactionSelect({
   });
 
   const selectedFactions = factions
-    .filter((faction) => !!faction.name)
+    .filter((faction, index) => !!faction.name && index < numFactions)
     .map((faction) => faction.name as string);
 
   function selectFaction(factionName: string | undefined) {
@@ -823,6 +881,22 @@ function FactionSelect({
       }
       element.value = faction.playerName ?? "Enter Player Name...";
     }
+  }
+
+  function selectAlliancePartner(factionName: string | undefined) {
+    if (factionIndex == undefined) {
+      return;
+    }
+    const index = factions.reduce(
+      (alliance: number | undefined, faction, index) => {
+        if (faction.name === factionName) {
+          return index;
+        }
+        return alliance;
+      },
+      undefined
+    );
+    setAlliancePartner(factionIndex, index);
   }
 
   const factionColor = convertToFactionColor(faction.color);
@@ -889,30 +963,107 @@ function FactionSelect({
             width: "100%",
           }}
         >
-          <Selector
-            hoverMenuLabel="Pick Faction"
-            options={filteredFactions.map(([factionName, _]) => factionName)}
-            fadedOptions={selectedFactions}
-            selectedItem={faction.name}
-            toggleItem={(factionName, add) => {
-              if (add) {
-                selectFaction(factionName);
-              } else {
-                selectFaction(undefined);
-              }
-            }}
-            renderItem={(factionName) => {
-              return (
-                <SelectableRow
-                  itemName={factionName}
-                  removeItem={() => selectFaction(undefined)}
-                  style={{ height: responsivePixels(32.67) }}
-                >
-                  {factionName}
-                </SelectableRow>
-              );
-            }}
-          />
+          <div
+            className="flexRow"
+            style={{ width: "100%", justifyContent: "space-between" }}
+          >
+            <Selector
+              hoverMenuLabel="Pick Faction"
+              options={filteredFactions.map(([factionName, _]) => factionName)}
+              fadedOptions={selectedFactions}
+              selectedItem={faction.name}
+              toggleItem={(factionName, add) => {
+                if (add) {
+                  selectFaction(factionName);
+                } else {
+                  selectFaction(undefined);
+                }
+              }}
+              renderItem={(factionName) => {
+                return (
+                  <SelectableRow
+                    itemName={factionName}
+                    removeItem={() => selectFaction(undefined)}
+                    style={{ height: responsivePixels(32.67) }}
+                  >
+                    {factionName}
+                  </SelectableRow>
+                );
+              }}
+            />
+            {options["game-variant"] === "alliance" ? (
+              <div className="flexRow">
+                Partner:
+                <FactionSelectRadialMenu
+                  allowNone
+                  selectedFaction={
+                    faction.alliancePartner != undefined
+                      ? factions[faction.alliancePartner]?.name
+                      : undefined
+                  }
+                  fadedOptions={factions
+                    .filter((faction) => faction.alliancePartner != undefined)
+                    .map((faction) => faction.name as string)}
+                  options={selectedFactions.filter(
+                    (factionName) => factionName !== faction.name
+                  )}
+                  onSelect={(factionName) => {
+                    selectAlliancePartner(factionName);
+                  }}
+                  borderColor={
+                    faction.alliancePartner != undefined
+                      ? convertToFactionColor(
+                          factions[faction.alliancePartner]?.color
+                        )
+                      : undefined
+                  }
+                  size={32}
+                />
+              </div>
+            ) : // <Selector
+            //   hoverMenuLabel="Partner"
+            //   options={selectedFactions.filter(
+            //     (factionName) => factionName !== faction.name
+            //   )}
+            //   selectedItem={
+            //     faction.alliancePartner != undefined
+            //       ? factions[faction.alliancePartner]?.name
+            //       : undefined
+            //   }
+            //   toggleItem={(factionName, add) => {
+            //     if (add) {
+            //       selectAlliancePartner(factionName);
+            //     } else {
+            //       selectAlliancePartner(undefined);
+            //     }
+            //   }}
+            //   renderItem={(factionName) => {
+            //     return (
+            //       // <LabeledDiv label="Partner">
+            //       <SelectableRow
+            //         itemName={factionName}
+            //         removeItem={() => selectAlliancePartner(undefined)}
+            //         // style={{
+            //         //   height: responsivePixels(32.67),
+            //         //   width: responsivePixels(32.67),
+            //         // }}
+            //       >
+            //         <div
+            //           style={{
+            //             position: "relative",
+            //             width: responsivePixels(32),
+            //             height: responsivePixels(32),
+            //           }}
+            //         >
+            //           <FullFactionSymbol faction={factionName} />
+            //         </div>
+            //       </SelectableRow>
+            //       // </LabeledDiv>
+            //     );
+            //   }}
+            // />
+            null}
+          </div>
           <div
             className="flexRow"
             style={{
@@ -989,6 +1140,7 @@ const INITIAL_OPTIONS: SetupOptions = {
     "CODEX THREE",
   ]),
   "allow-double-council": false,
+  "game-variant": "normal",
   "map-style": "standard",
   "map-string": "",
   "victory-points": 10,
@@ -1030,6 +1182,9 @@ export default function SetupPage() {
 
     setNumFactions(count);
     toggleOption("standard", "map-style");
+    if (count % 2 !== 0) {
+      toggleOption("normal", "game-variant");
+    }
 
     if (speaker > count) {
       setSpeaker(0);
@@ -1084,6 +1239,30 @@ export default function SetupPage() {
       })
     );
   }
+
+  function updateAlliancePartner(
+    index: number,
+    alliancePartner: number | undefined
+  ) {
+    setFactions(
+      factions.map((faction, i) => {
+        if (index === i) {
+          return { ...faction, alliancePartner };
+        }
+        if (alliancePartner === i) {
+          return { ...faction, alliancePartner: index };
+        }
+        if (
+          faction.alliancePartner === index ||
+          faction.alliancePartner === alliancePartner
+        ) {
+          return { ...faction, alliancePartner: undefined };
+        }
+        return faction;
+      })
+    );
+  }
+  console.log(factions);
 
   function randomSpeaker() {
     setSpeaker(Math.floor(Math.random() * numFactions));
@@ -1510,6 +1689,7 @@ export default function SetupPage() {
             setColor={updatePlayerColor}
             setSpeaker={setSpeaker}
             setPlayerName={updatePlayerName}
+            setAlliancePartner={updateAlliancePartner}
             options={options}
           />
           <SideGapDiv />
@@ -1524,6 +1704,7 @@ export default function SetupPage() {
               setColor={updatePlayerColor}
               setSpeaker={setSpeaker}
               setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
               options={options}
             />
           ) : null}
@@ -1538,6 +1719,7 @@ export default function SetupPage() {
               setColor={updatePlayerColor}
               setSpeaker={setSpeaker}
               setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
               options={options}
             />
           ) : null}
@@ -1564,6 +1746,7 @@ export default function SetupPage() {
               setColor={updatePlayerColor}
               setSpeaker={setSpeaker}
               setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
               options={options}
             />
           ) : null}
@@ -1601,6 +1784,7 @@ export default function SetupPage() {
               setColor={updatePlayerColor}
               setSpeaker={setSpeaker}
               setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
               options={options}
             />
           ) : null}
@@ -1655,6 +1839,7 @@ export default function SetupPage() {
             setColor={updatePlayerColor}
             setSpeaker={setSpeaker}
             setPlayerName={updatePlayerName}
+            setAlliancePartner={updateAlliancePartner}
             options={options}
           />
           <SideGapDiv />
@@ -1669,6 +1854,7 @@ export default function SetupPage() {
               setColor={updatePlayerColor}
               setSpeaker={setSpeaker}
               setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
               options={options}
             />
           ) : null}
@@ -1684,6 +1870,7 @@ export default function SetupPage() {
               setColor={updatePlayerColor}
               setSpeaker={setSpeaker}
               setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
               options={options}
             />
           ) : null}
@@ -1764,6 +1951,7 @@ export default function SetupPage() {
                 setColor={updatePlayerColor}
                 setSpeaker={setSpeaker}
                 setPlayerName={updatePlayerName}
+                setAlliancePartner={updateAlliancePartner}
                 options={options}
               />
             );

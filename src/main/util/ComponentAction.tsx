@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import React, { CSSProperties, ReactNode, useState } from "react";
 import { capitalizeFirstLetter } from "../../../pages/setup";
-import { FactionSelectHoverMenu } from "../../components/FactionSelect";
-import { TacticalAction } from "../../components/TacticalAction";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";
 import { LabeledDiv, LabeledLine } from "../../LabeledDiv";
@@ -11,17 +9,9 @@ import { PlanetRow } from "../../PlanetRow";
 import { SelectableRow } from "../../SelectableRow";
 import { Selector } from "../../Selector";
 import { TechRow } from "../../TechRow";
-import { Component } from "../../util/api/components";
-import { Faction } from "../../util/api/factions";
-import { hasTech, Tech } from "../../util/api/techs";
-import { getFactionColor } from "../../util/factions";
-import { applyAllPlanetAttachments } from "../../util/planets";
-import { pluralize, responsivePixels } from "../../util/util";
-import { TechSelectHoverMenu } from "./TechSelectHoverMenu";
+import { FactionSelectRadialMenu } from "../../components/FactionSelect";
+import { TacticalAction } from "../../components/TacticalAction";
 import { useGameData } from "../../data/GameData";
-import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
-import { playComponent, unplayComponent } from "../../util/api/playComponent";
-import { PlayComponentData } from "../../util/model/playComponent";
 import {
   getClaimedPlanets,
   getGainedRelic,
@@ -32,12 +22,22 @@ import {
   getSelectedFaction,
   getSelectedSubComponent,
 } from "../../util/actionLog";
-import { addTech, removeTech } from "../../util/api/addTech";
-import { gainRelic, loseRelic } from "../../util/api/gainRelic";
-import { updatePlanetState } from "../../util/api/updatePlanetState";
+import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { addAttachment, removeAttachment } from "../../util/api/addAttachment";
+import { addTech, removeTech } from "../../util/api/addTech";
+import { Component } from "../../util/api/components";
+import { Faction } from "../../util/api/factions";
+import { gainRelic, loseRelic } from "../../util/api/gainRelic";
+import { playComponent, unplayComponent } from "../../util/api/playComponent";
 import { selectFaction } from "../../util/api/selectFaction";
 import { selectSubComponent } from "../../util/api/selectSubComponent";
+import { Tech, hasTech } from "../../util/api/techs";
+import { updatePlanetState } from "../../util/api/updatePlanetState";
+import { getFactionColor } from "../../util/factions";
+import { PlayComponentData } from "../../util/model/playComponent";
+import { applyAllPlanetAttachments } from "../../util/planets";
+import { pluralize, responsivePixels } from "../../util/util";
+import { TechSelectHoverMenu } from "./TechSelectHoverMenu";
 
 function InfoContent({ component }: { component: Component }) {
   const description = component.description.replaceAll("\\n", "\n");
@@ -922,7 +922,7 @@ function ComponentDetails({ factionName }: { factionName: string }) {
       leftLabel = undefined;
       label = selectedFaction ? "Tactical Action" : "Select Faction";
       rightLabel = (
-        <FactionSelectHoverMenu
+        <FactionSelectRadialMenu
           allowNone={false}
           selectedFaction={selectedFaction}
           options={Object.keys(factions)}

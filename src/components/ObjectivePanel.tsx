@@ -22,7 +22,10 @@ import { setObjectivePoints } from "../util/api/setObjectivePoints";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { RevealObjectiveData } from "../util/model/revealObjective";
 import { responsiveNegativePixels, responsivePixels } from "../util/util";
-import { FactionSelectHoverMenu } from "./FactionSelect";
+import {
+  // FactionSelectRadialMenu,
+  FactionSelectRadialMenu,
+} from "./FactionSelect";
 import styles from "./ObjectivePanel.module.scss";
 
 function GridHeader({ children }: PropsWithChildren) {
@@ -619,7 +622,7 @@ export function ObjectivePanel({}) {
                     marginTop: "44%",
                   }}
                 >
-                  <FactionSelectHoverMenu
+                  <FactionSelectRadialMenu
                     options={orderedFactionNames}
                     selectedFaction={custodiansScorer}
                     onSelect={async (factionName) => {
@@ -1039,7 +1042,7 @@ export function ObjectivePanel({}) {
                   const scorer = scorers[0];
                   return (
                     <div key={name}>
-                      <FactionSelectHoverMenu
+                      <FactionSelectRadialMenu
                         key={name}
                         options={orderedFactionNames.filter(
                           (faction) => faction !== name
@@ -1674,7 +1677,7 @@ export function ObjectivePanel({}) {
                   marginTop: "44%",
                 }}
               >
-                <FactionSelectHoverMenu
+                <FactionSelectRadialMenu
                   options={orderedFactionNames}
                   selectedFaction={custodiansScorer}
                   onSelect={async (factionName) => {
@@ -1723,7 +1726,7 @@ export function ObjectivePanel({}) {
                       height: "100%",
                     }}
                   >
-                    <FactionSelectHoverMenu
+                    <FactionSelectRadialMenu
                       key={name}
                       options={orderedFactionNames.filter(
                         (faction) => faction !== name
@@ -2144,7 +2147,7 @@ function SimpleScorable({
       >
         {objective.name}
         <div className="flexRow">
-          <FactionSelectHoverMenu
+          <FactionSelectRadialMenu
             selectedFaction={objectiveScorers[0]}
             options={orderedFactionNames}
             onSelect={(factionName) => {
@@ -2166,7 +2169,7 @@ function SimpleScorable({
           />
           {/* TODO: Only show this if The Codex has been gained */}
           {numScorers > 1 && objectiveScorers[0] ? (
-            <FactionSelectHoverMenu
+            <FactionSelectRadialMenu
               selectedFaction={objectiveScorers[1]}
               options={orderedFactionNames}
               onSelect={(factionName) => {

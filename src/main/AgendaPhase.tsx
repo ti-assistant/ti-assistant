@@ -1,33 +1,20 @@
 import { useRouter } from "next/router";
-import { AgendaTimer } from "../Timer";
-import { getTargets, VoteCount } from "../VoteCount";
-import { AgendaRow } from "../AgendaRow";
-import { Agenda, OutcomeType } from "../util/api/agendas";
-import { SelectableRow } from "../SelectableRow";
-import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { LabeledDiv } from "../LabeledDiv";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { responsivePixels } from "../util/util";
-import { hasScoredObjective, Objective } from "../util/api/objectives";
-import { getDefaultStrategyCards } from "../util/api/defaults";
 import React from "react";
-import { Selector } from "../Selector";
-import { ObjectiveRow } from "../ObjectiveRow";
-import { computeVPs } from "../FactionSummary";
-import { LockedButtons } from "../LockedButton";
-import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
-import { Tech } from "../util/api/techs";
-import { FullFactionSymbol } from "../FactionCard";
-import { InfoRow } from "../InfoRow";
+import { AgendaRow } from "../AgendaRow";
 import { FactionCircle } from "../components/FactionCircle";
-import { FactionSelectHoverMenu } from "../components/FactionSelect";
-import { SymbolX } from "../icons/svgs";
+import { FactionSelectRadialMenu } from "../components/FactionSelect";
 import { useGameData } from "../data/GameData";
-import { advancePhase } from "../util/api/advancePhase";
-import { hideObjective, revealObjective } from "../util/api/revealObjective";
-import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
-import { hideAgenda, revealAgenda } from "../util/api/revealAgenda";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { FullFactionSymbol } from "../FactionCard";
+import { computeVPs } from "../FactionSummary";
+import { ClientOnlyHoverMenu } from "../HoverMenu";
+import { SymbolX } from "../icons/svgs";
+import { InfoRow } from "../InfoRow";
+import { LabeledDiv } from "../LabeledDiv";
+import { LockedButtons } from "../LockedButton";
+import { ObjectiveRow } from "../ObjectiveRow";
+import { SelectableRow } from "../SelectableRow";
+import { Selector } from "../Selector";
+import { AgendaTimer } from "../Timer";
 import {
   getActionCardTargets,
   getActiveAgenda,
@@ -44,21 +31,33 @@ import {
   getSelectedSubAgenda,
   getSpeakerTieBreak,
 } from "../util/actionLog";
-import { ActionLogEntry } from "../util/api/util";
-import { CastVotesData } from "../util/model/castVotes";
-import { resolveAgenda } from "../util/api/resolveAgenda";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { addTech } from "../util/api/addTech";
+import { advancePhase } from "../util/api/advancePhase";
+import { Agenda, OutcomeType } from "../util/api/agendas";
+import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
+import { getDefaultStrategyCards } from "../util/api/defaults";
+import { gainRelic, loseRelic } from "../util/api/gainRelic";
+import { hasScoredObjective, Objective } from "../util/api/objectives";
 import { playActionCard, unplayActionCard } from "../util/api/playActionCard";
 import {
   playPromissoryNote,
   unplayPromissoryNote,
 } from "../util/api/playPromissoryNote";
-import { gainRelic, loseRelic } from "../util/api/gainRelic";
-import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
-import { selectEligibleOutcomes } from "../util/api/selectEligibleOutcomes";
 import { playRider, unplayRider } from "../util/api/playRider";
-import { addTech, removeTech } from "../util/api/addTech";
+import { resolveAgenda } from "../util/api/resolveAgenda";
+import { hideAgenda, revealAgenda } from "../util/api/revealAgenda";
+import { hideObjective, revealObjective } from "../util/api/revealObjective";
+import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
+import { selectEligibleOutcomes } from "../util/api/selectEligibleOutcomes";
 import { selectSubAgenda } from "../util/api/selectSubAgenda";
 import { speakerTieBreak } from "../util/api/speakerTieBreak";
+import { Tech } from "../util/api/techs";
+import { ActionLogEntry } from "../util/api/util";
+import { getFactionColor, getFactionName } from "../util/factions";
+import { responsivePixels } from "../util/util";
+import { getTargets, VoteCount } from "../VoteCount";
+import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
 
 const RIDERS = [
   "Galactic Threat",
@@ -1113,7 +1112,7 @@ function AgendaSteps() {
                               color={getFactionColor(faction)}
                             >
                               <div className="flexRow">
-                                <FactionSelectHoverMenu
+                                <FactionSelectRadialMenu
                                   allowNone={possibleFactions.length > 1}
                                   selectedFaction={rider.faction}
                                   options={possibleFactions}
@@ -1519,7 +1518,7 @@ function DictatePolicy({}) {
     >
       <ObjectiveRow objective={dictatePolicy} hideScorers />
       {dictatePolicy.type === "SECRET" ? (
-        <FactionSelectHoverMenu
+        <FactionSelectRadialMenu
           onSelect={(factionName, prevFaction) => {
             if (!gameid) {
               return;
