@@ -68,12 +68,16 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown}>
           Planets
         </Tab>
-        <Tab selectTab={setTabShown} id="home" selectedId={tabShown}>
-          Home
-        </Tab>
-        <Tab selectTab={setTabShown} id="legendary" selectedId={tabShown}>
-          Legendary
-        </Tab>
+        {homePlanets.length > 0 ? (
+          <Tab selectTab={setTabShown} id="home" selectedId={tabShown}>
+            Home
+          </Tab>
+        ) : null}
+        {legendaryPlanets.length > 0 ? (
+          <Tab selectTab={setTabShown} id="legendary" selectedId={tabShown}>
+            Legendary
+          </Tab>
+        ) : null}
       </div>
       <TabBody id="normal" selectedId={tabShown}>
         <div
