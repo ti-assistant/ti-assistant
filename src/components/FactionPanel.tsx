@@ -19,6 +19,7 @@ import parse from "html-react-parser";
 import { BASE_LEADERS } from "../../server/data/leaders";
 import { addTech, removeTech } from "../util/api/addTech";
 import { Options } from "../util/api/options";
+import styles from "./FactionPanel.module.scss";
 
 function AbilitySection({
   leftLabel,
@@ -498,19 +499,7 @@ function FactionPanelContent({
   }
 
   return (
-    <div
-      style={{
-        display: "grid",
-        width: "100%",
-        gap: responsivePixels(8),
-        gridAutoFlow: "row",
-        gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-        // gridTemplateRows: "1fr 2fr 1fr",
-        // gridTemplateRows: "repeat(2 1fr)",
-        alignItems: "flex-start",
-        // outline: "2px solid orange",
-      }}
-    >
+    <div className={styles.factionInfoGrid}>
       <div
         className="flexColumn"
         style={{ width: "100%", justifyContent: "flex-start" }}
