@@ -19,7 +19,8 @@ export type Timing =
   | "MULTIPLE"
   | "PASSIVE"
   | "STATUS_PHASE_END"
-  | "TACTICAL_ACTION";
+  | "TACTICAL_ACTION"
+  | "OTHER";
 
 export type LeaderType = "AGENT" | "COMMANDER" | "HERO";
 
@@ -35,6 +36,7 @@ export interface BaseLeader {
     expansion: Expansion;
     name: string;
     timing?: Timing;
+    unlock?: string;
   };
   replaces?: string;
   subFaction?: string;

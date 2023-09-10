@@ -101,14 +101,16 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "RED",
     },
     "Trade Port II": {
+      abilities: ["PRODUCTION X", "ANTI-FIGHTER BARRAGE 6(x2)"],
       description:
-        "This unit's PRODUCTION value is equal to 4 more than the resource or influence value of this planet.\n\nUp to 3 fighters in this system do not count against your ships' capacity.\n\nThis unit may use its ANTI-FIGHTER BARRAGE during each round of space combat.\n\nPRODUCTION X\n\nANTI-FIGHTER BARRAGE 6(x2)",
+        "This unit's PRODUCTION value is equal to 4 more than the resource or influence value of this planet.\n\nUp to 3 fighters in this system do not count against your ships' capacity.\n\nThis unit may use its ANTI-FIGHTER BARRAGE during each round of space combat.",
       expansion: "DISCORDANT STARS",
       faction: "Celdauri Trade Confederation",
       name: "Trade Port II",
       prereqs: ["YELLOW", "YELLOW"],
       replaces: "Space Dock II",
       type: "UPGRADE",
+      stats: {},
     },
     // Cheiran Hordes
     // "Chitin Hulk II": {
@@ -147,8 +149,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "YELLOW",
     },
     "Aegis II": {
+      abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 5"],
       description:
-        "When another ship in this system would be destroyed by a game effect, you may have this ship become damaged instead.\n\nSUSTAIN DAMAGE\n\nBOMBARDMENT 5",
+        "When another ship in this system would be destroyed by a game effect, you may have this ship become damaged instead.",
       expansion: "DISCORDANT STARS",
       faction: "Dih-Mohn Flotilla",
       name: "Aegis II",
@@ -192,8 +195,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "GREEN",
     },
     "Corsair II": {
+      abilities: ["ANTI-FIGHTER BARRAGE 8"],
       description:
-        "This unit may move without being transported.\n\nFighters in excess of your ships' capacity count against your fleet pool.\n\nANTI-FIGHTER BARRAGE 8",
+        "This unit may move without being transported.\n\nFighters in excess of your ships' capacity count against your fleet pool.",
       expansion: "DISCORDANT STARS",
       faction: "Florzen Profiteers",
       name: "Corsair II",
@@ -236,6 +240,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "GREEN",
     },
     "Combat Transport II": {
+      abilities: [],
       description:
         "You may reroll 1 of your unit's combat dice during each round of ground combat on a planet in this system that contains 2 or fewer of your infantry.",
       expansion: "DISCORDANT STARS",
@@ -387,8 +392,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     // },
     // Li-Zho Dynasty
     "Heavy Bomber II": {
+      abilities: ["BOMBARDMENT 8"],
       description:
-        "This unit may move without being transported. Fighters in excess of your ships' capacity count against your fleet pool.\n\nBOMBARDMENT 8",
+        "This unit may move without being transported. Fighters in excess of your ships' capacity count against your fleet pool.",
       expansion: "DISCORDANT STARS",
       faction: "Li-Zho Dynasty",
       name: "Heavy Bomber II",
@@ -412,13 +418,15 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     },
     // Myko-Mentori
     "Mycelium Ring II": {
+      abilities: ["PLANETARY SHIELD", "PRODUCTION X"],
       description:
-        "This unit's PRODUCTION value is equal to 5 more than the resource value of this planet.\n\nDEPLOY: When you gain control of a planet, you may replace 3 infantry on that planet with 1 space dock.\n\nPLANETARY SHIELD\n\nPRODUCTION X",
+        "This unit's PRODUCTION value is equal to 5 more than the resource value of this planet.\n\nDEPLOY: When you gain control of a planet, you may replace 3 infantry on that planet with 1 space dock.",
       expansion: "DISCORDANT STARS",
       faction: "Myko-Mentori",
       name: "Mycelium Ring II",
       prereqs: ["YELLOW", "YELLOW"],
       replaces: "Space Dock II",
+      stats: {},
       type: "UPGRADE",
     },
     "Psychoactive Armaments": {
@@ -441,8 +449,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "YELLOW",
     },
     "Voidflare Warden II": {
+      abilities: ["SUSTAIN DAMAGE"],
       description:
-        "After a system is activated, you may have this unit become damaged to place or move the Wound token into this system.\n\nSUSTAIN DAMAGE",
+        "After a system is activated, you may have this unit become damaged to place or move the Wound token into this system.",
       expansion: "DISCORDANT STARS",
       faction: "Nivyn Star Kings",
       name: "Voidflare Warden II",
@@ -483,8 +492,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "YELLOW",
     },
     "Terrafactory II": {
+      abilities: ["SUSTAIN DAMAGE", "PRODUCTION 5", "BOMBARDMENT 3 (x3)"],
       description:
-        "Other player’s units in this system lose PLANETARY SHIELD.\n\nThis unit produces only 1 fighter or infantry for their cost instead of 2.\n\nSUSTAIN DAMAGE\nPRODUCTION 5\nBOMBARDMENT 3(x3)",
+        "Other player’s units in this system lose PLANETARY SHIELD.\n\nThis unit produces only 1 fighter or infantry for their cost instead of 2.",
       expansion: "DISCORDANT STARS",
       faction: "Roh'Dhna Mechatronics",
       name: "Terrafactory II",
@@ -500,6 +510,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     },
     // Savages of Cymiae
     "Unholy Abomination II": {
+      abilities: [],
       description:
         "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your turn, place each unit that is on this card on a planet you control, if able.",
       expansion: "DISCORDANT STARS",
@@ -533,7 +544,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "GREEN",
     },
     "Shattered Sky II": {
-      description: "BOMBARDMENT 6",
+      abilities: ["BOMBARDMENT 6"],
       expansion: "DISCORDANT STARS",
       faction: "L'tokk Khrask",
       name: "Shattered Sky II",
@@ -549,8 +560,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     },
     // Mirveda Protectorate
     "Gauss Cannon II": {
+      abilities: ["SPACE CANNON 4", "BOMBARDMENT 4"],
       description:
-        "This unit is placed in a space area instead of on a planet. This unit can move and retreat as if it were a ship.\n\nThis unit can be blockaded, if it is blockaded, it is destroyed.\n\nSPACE CANNON 4\n\nBOMBARDMENT 4",
+        "This unit is placed in a space area instead of on a planet. This unit can move and retreat as if it were a ship.\n\nThis unit can be blockaded, if it is blockaded, it is destroyed.",
       expansion: "DISCORDANT STARS",
       faction: "Mirveda Protectorate",
       name: "Gauss Cannon II",
@@ -592,8 +604,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     },
     // Tnelis Syndicate
     "Blockade Runner II": {
+      abilities: ["ANTI-FIGHTER BARRAGE 6(x4)"],
       description:
-        "This ship can move through systems that contain other players' ships.\n\nANTI-FIGHTER BARRAGE 6(x4)",
+        "This ship can move through systems that contain other players' ships.",
       expansion: "DISCORDANT STARS",
       faction: "Tnelis Syndicate",
       name: "Blockade Runner II",
@@ -645,6 +658,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "RED",
     },
     "Raider II": {
+      abilities: [],
       description:
         "During a round of space combat, if your opponent cannot declare a retreat, hits produced by this ship cannot be canceled and must be assigned to non-fighter ships, if able.",
       expansion: "DISCORDANT STARS",
@@ -662,8 +676,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     },
     // Veldyr Sovereignty
     "Lancer Dreadnought II": {
+      abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 5", "SPACE CANNON 5"],
       description:
-        'This unit cannot be destroyed by "Direct Hit" action cards.\n\nSUSTAIN DAMAGE\nBOMBARDMENT 5\nSPACE CANNON 5',
+        'This unit cannot be destroyed by "Direct Hit" action cards.',
       expansion: "DISCORDANT STARS",
       faction: "Veldyr Sovereignty",
       name: "Lancer Dreadnought II",
@@ -716,8 +731,9 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "RED",
     },
     "Impactor II": {
+      abilities: ["BOMBARDMENT 8"],
       description:
-        "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.\n\nBOMBARDMENT 8",
+        "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
       expansion: "DISCORDANT STARS",
       faction: "Zelian Purifier",
       name: "Impactor II",

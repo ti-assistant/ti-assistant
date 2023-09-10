@@ -26,6 +26,7 @@ import { continueGame, endGame } from "./util/api/endGame";
 import { repealAgenda } from "./util/api/resolveAgenda";
 import { getDefaultStrategyCards } from "./util/api/defaults";
 import { PlanetPanel } from "./components/PlanetPanel";
+import { FactionPanel } from "./components/FactionPanel";
 
 export function ResponsiveLogo({ size }: { size: number }) {
   return (

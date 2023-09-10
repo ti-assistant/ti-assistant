@@ -23,6 +23,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { NonGameHeader } from "../src/Header";
 import { FactionSelectRadialMenu } from "../src/components/FactionSelect";
+import { FactionPanel } from "../src/components/FactionPanel";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -36,6 +37,15 @@ interface OptionsProps {
   numFactions: number;
   maxFactions: number;
   isCouncil: boolean;
+}
+
+function createOptions(setupOptions: SetupOptions) {
+  const expansions = Array.from(setupOptions.expansions);
+  const optionsToSend: Options = {
+    ...setupOptions,
+    expansions: expansions,
+  };
+  return optionsToSend;
 }
 
 function MobileOptions({
@@ -986,7 +996,13 @@ function FactionSelect({
                     removeItem={() => selectFaction(undefined)}
                     style={{ height: responsivePixels(32.67) }}
                   >
-                    {factionName}
+                    <>
+                      {factionName}
+                      <FactionPanel
+                        factionName={factionName}
+                        options={createOptions(options)}
+                      />
+                    </>
                   </SelectableRow>
                 );
               }}

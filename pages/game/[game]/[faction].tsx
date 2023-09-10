@@ -1172,7 +1172,7 @@ function FactionContent() {
   });
   if (playerFaction !== "Nekro Virus") {
     Object.values(techsObj).forEach((tech) => {
-      if (tech.replaces) {
+      if (tech.type === "UPGRADE" && tech.replaces) {
         delete techsObj[tech.replaces];
       }
     });

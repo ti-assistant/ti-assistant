@@ -8,6 +8,7 @@ import { getInitiativeForFaction } from "../util/helpers";
 import { Faction } from "../util/api/factions";
 import { getDefaultStrategyCards } from "../util/api/defaults";
 import { useGameData } from "../data/GameData";
+import { FactionPanel } from "../components/FactionPanel";
 
 function sortByOrder(a: [string, Faction], b: [string, Faction]) {
   if (a[1].order > b[1].order) {
@@ -113,7 +114,12 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
         return (
           <div key={name}>
             <LabeledDiv
-              label={getFactionName(faction)}
+              label={
+                <div className="flexRow" style={{ gap: 0 }}>
+                  {getFactionName(faction)}
+                  <FactionPanel factionName={faction.name} options={options} />
+                </div>
+              }
               rightLabel={
                 <StaticFactionTimer
                   factionName={name}

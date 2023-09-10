@@ -1,8 +1,9 @@
 import { mutate } from "swr";
 import { Expansion } from "./options";
-import { GameTech } from "./techs";
+import { GameTech, UnitStats } from "./techs";
 import { poster } from "./util";
 import { Secondary } from "./subState";
+import { BaseLeader } from "./components";
 
 export type FactionUpdateAction =
   | "ADD_TECH"
@@ -59,13 +60,63 @@ export interface StartsWith {
   };
 }
 
+interface Ability {
+  name: string;
+  description: string;
+}
+
+export interface PromissoryNote {
+  name: string;
+  description: string;
+  omega?: {
+    expansion: Expansion;
+  } & Partial<PromissoryNote>;
+}
+
+type UnitType =
+  | "Carrier"
+  | "Cruiser"
+  | "Destroyer"
+  | "Dreadnought"
+  | "Fighter"
+  | "Flagship"
+  | "Infantry"
+  | "Mech"
+  | "PDS"
+  | "Space Dock"
+  | "War Sun";
+
+// type UnitAbilityType =
+//   | "SUSTAIN DAMAGE"
+//   | "PRODUCTION"
+//   | "PLANETARY SHIELD"
+//   | "SPACE CANNON"
+//   | "BOMBARDMENT"
+//   | "ANTI-FIGHTER BARRAGE";
+
+export interface Unit {
+  abilities?: string[];
+  description?: string;
+  expansion: Expansion;
+  name: string;
+  stats: UnitStats;
+  type: UnitType;
+  omega?: {
+    expansion: Expansion;
+  } & Partial<Unit>;
+  upgrade?: string;
+}
+
 export interface BaseFaction {
+  abilities: Ability[];
   colors: Record<string, number>;
   commodities: number;
   expansion: Expansion;
   name: string;
+  promissories: PromissoryNote[];
   shortname: string;
   startswith: StartsWith;
+  units: Unit[];
 }
 
 export interface GameFaction {

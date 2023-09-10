@@ -62,6 +62,32 @@ export function GenericModal({
             }}
             onClick={closeMenu}
           >
+            <div
+              style={{
+                position: "absolute",
+                top: responsivePixels(8),
+                marginRight: "90vw",
+                backgroundColor: "#222",
+                borderRadius: "100%",
+                aspectRatio: 1,
+                width: responsivePixels(40),
+                color: "grey",
+                cursor: "pointer",
+                fontSize: responsivePixels(20),
+              }}
+              onClick={closeMenu}
+            >
+              <div
+                className="flexColumn centered"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  fontWeight: "bold",
+                }}
+              >
+                &#x2715;
+              </div>
+            </div>
             {children}
           </div>
         </CSSTransition>

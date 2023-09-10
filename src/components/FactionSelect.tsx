@@ -266,10 +266,6 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
   const radians = ((Math.PI * 2) / numOptions) * index;
 
   const center = (size * 3) / 2;
-  // console.log(Math.cos(0));
-  if (index === 0) {
-    console.log(center - size * Math.cos(radians) - size / 2);
-  }
   const pos = {
     "--y-pos": responsivePixels(
       center - size * Math.cos(radians) - size / 2 + 2
@@ -316,7 +312,6 @@ export function FactionSelectRadialMenu({
     "--size": responsivePixels(size),
     borderRadius: "100%",
     justifyContent: "center",
-    // border: `${responsivePixels(2)} solid ${borderColor}`,
   };
 
   return (
@@ -344,8 +339,6 @@ export function FactionSelectRadialMenu({
               {
                 "--size": responsivePixels(size),
                 "--border-color": borderColor,
-                // opacity: 0.2,
-                // border: `${responsivePixels(2)} solid ${borderColor}`,
               } as CSSProperties
             }
           ></div>
@@ -381,9 +374,6 @@ export function FactionSelectRadialMenu({
               </div>
             ) : null}
             {options.map((factionName, index) => {
-              // if (factionName === selectedFaction) {
-              //   return null;
-              // }
               return (
                 <div
                   key={factionName}
@@ -396,7 +386,6 @@ export function FactionSelectRadialMenu({
             }`}
                   style={{
                     position: "absolute",
-                    // top: 0,
                     width: responsivePixels(size - 4),
                     height: responsivePixels(size - 4),
                     ...getRadialPosition(index, options.length, size),
@@ -484,76 +473,6 @@ export function FactionSelectRadialMenu({
                 </div>
               </div>
             ) : null}
-            {/* {selectedFaction && direction === "right" && allowNone ? (
-          <div
-            className={`flexRow ${styles.factionSelect}`}
-            style={{
-              width: responsivePixels(size - 4),
-              height: responsivePixels(size - 4),
-              fontSize: responsivePixels(size - 8),
-              color: "#777",
-              left: 0,
-              position: "absolute",
-            }}
-            onClick={() => {
-              closeFn();
-              onSelect(undefined, selectedFaction);
-            }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                width: responsivePixels(size - 10),
-                height: responsivePixels(size - 10),
-              }}
-            >
-              <SymbolX />
-            </div>
-          </div>
-        ) : null} */}
-            {/* {direction === "left" ? (
-          <div
-            className="flexRow"
-            style={{
-              position: "relative",
-              width: responsivePixels(size - 4),
-              height: responsivePixels(size - 4),
-              fontSize: responsivePixels(size - 8),
-              color: "#777",
-            }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                width: responsivePixels(size - 10),
-                height: responsivePixels(size - 10),
-              }}
-            >
-              {selectedFaction ? (
-                <FullFactionSymbol faction={selectedFaction} />
-              ) : (
-                <SymbolX />
-              )}
-            </div>
-            {tag ? (
-              <div
-                className={`flexRow ${styles.tag}`}
-                style={{
-                  border: `${responsivePixels(1)} solid ${tagBorderColor}`,
-                  boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                    1
-                  )} ${responsivePixels(4)} black`,
-                  width: responsivePixels(24),
-                  height: responsivePixels(24),
-                }}
-              >
-                {tag}
-              </div>
-            ) : null}
-          </div>
-        ) : null} */}
           </div>
         </React.Fragment>
       ) : null}

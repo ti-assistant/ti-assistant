@@ -95,6 +95,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "RED",
   },
   "Advanced Carrier II": {
+    abilities: ["SUSTAIN DAMAGE"],
     description: "",
     expansion: "BASE",
     faction: "Federation of Sol",
@@ -170,6 +171,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "GREEN",
   },
   "Carrier II": {
+    abilities: [],
     description: "",
     expansion: "BASE",
     name: "Carrier II",
@@ -192,6 +194,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "BLUE",
   },
   "Crimson Legionnaire II": {
+    abilities: [],
     description:
       "After this unit is destroyed, gain 1 commodity or convert 1 of your commodities to a trade good. Then, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system",
     expansion: "POK",
@@ -201,11 +204,12 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     replaces: "Infantry II",
     stats: {
       combat: 7,
-      cost: "1 (x2)",
+      cost: "1(x2)",
     },
     type: "UPGRADE",
   },
   "Cruiser II": {
+    abilities: [],
     description: "",
     expansion: "BASE",
     name: "Cruiser II",
@@ -235,7 +239,8 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "BLUE",
   },
   "Destroyer II": {
-    description: "ANTI-FIGHTER BARRAGE 6 (x3)",
+    abilities: ["ANTI-FIGHTER BARRAGE 6 (x3)"],
+    description: "",
     expansion: "BASE",
     name: "Destroyer II",
     prereqs: ["RED", "RED"],
@@ -256,18 +261,21 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "RED",
   },
   "Dimensional Tear II": {
+    abilities: ["PRODUCTION 7"],
     description:
-      "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder\n\nUp to 12 fighters in this system do not count against your ships' capacity\n\nPRODUCTION 7",
+      "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder\n\nUp to 12 fighters in this system do not count against your ships' capacity",
     expansion: "POK",
     faction: "Vuil'raith Cabal",
     name: "Dimensional Tear II",
     prereqs: ["YELLOW", "YELLOW"],
     replaces: "Space Dock II",
     type: "UPGRADE",
+    stats: {},
   },
   "Dreadnought II": {
+    abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 5"],
     description:
-      '"Direct Hit" cards are no longer effective against this type of ship\n\nSUSTAIN DAMAGE\nBOMBARDMENT 5',
+      '"Direct Hit" cards are no longer effective against this type of ship',
     expansion: "BASE",
     name: "Dreadnought II",
     prereqs: ["BLUE", "BLUE", "YELLOW"],
@@ -297,8 +305,9 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "YELLOW",
   },
   "Exotrireme II": {
+    abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 4 (x2)"],
     description:
-      'After a round of space combat, you may destroy this unit to destroy up to 2 ships in this system\n\n"Direct Hit" cards are no longer effective against this type of ship\n\nSUSTAIN DAMAGE\nBOMBARDMENT 4 (x2)',
+      'After a round of space combat, you may destroy this unit to destroy up to 2 ships in this system\n\n"Direct Hit" cards are no longer effective against this type of ship',
     expansion: "BASE",
     faction: "Sardakk N'orr",
     name: "Exotrireme II",
@@ -313,6 +322,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "UPGRADE",
   },
   "Fighter II": {
+    abilities: [],
     description:
       "This unit may move without being transported. Fighters in excess of your ships' capacity count against your fleet pool",
     expansion: "BASE",
@@ -320,7 +330,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     prereqs: ["GREEN", "BLUE"],
     stats: {
       combat: 8,
-      cost: "1 (x2)",
+      cost: "1(x2)",
       move: 2,
     },
     type: "UPGRADE",
@@ -334,8 +344,9 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "BLUE",
   },
   "Floating Factory II": {
+    abilities: ["PRODUCTION 7"],
     description:
-      "This unit is placed in the space area instead of on a planet. This unit can move and retreat as if it were a ship. If this unit is blockaded, it is destroyed\n\nPRODUCTION 7",
+      "This unit is placed in the space area instead of on a planet. This unit can move and retreat as if it were a ship. If this unit is blockaded, it is destroyed",
     expansion: "BASE",
     faction: "Clan of Saar",
     name: "Floating Factory II",
@@ -382,8 +393,14 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "YELLOW",
   },
   "Hel Titan II": {
+    abilities: [
+      "PLANETARY SHIELD",
+      "SUSTAIN DAMAGE",
+      "SPACE CANNON 5",
+      "PRODUCTION 1",
+    ],
     description:
-      "This unit is treated as both a structure and a ground force. It cannot be transported. You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system\n\nPLANETARY SHIELD\nSPACE CANNON 5\nSUSTAIN DAMAGE\nPRODUCTION 1",
+      "This unit is treated as both a structure and a ground force. It cannot be transported. You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system",
     expansion: "POK",
     faction: "Titans of Ul",
     name: "Hel Titan II",
@@ -395,6 +412,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "UPGRADE",
   },
   "Hybrid Crystal Fighter II": {
+    abilities: [],
     description:
       "This unit may move without being transported. Each fighter in excess of your ships' capacity counts as 1/2 of a ship against your fleet pool",
     expansion: "BASE",
@@ -404,7 +422,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     replaces: "Fighter II",
     stats: {
       combat: 7,
-      cost: "1 (x2)",
+      cost: "1(x2)",
       move: 2,
     },
     type: "UPGRADE",
@@ -435,6 +453,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "YELLOW",
   },
   "Infantry II": {
+    abilities: [],
     description:
       "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system",
     expansion: "BASE",
@@ -442,7 +461,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     prereqs: ["GREEN", "GREEN"],
     stats: {
       combat: 7,
-      cost: "1 (x2)",
+      cost: "1(x2)",
     },
     type: "UPGRADE",
   },
@@ -491,8 +510,9 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "BLUE",
   },
   "Letani Warrior II": {
+    abilities: ["PRODUCTION 2"],
     description:
-      "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system\n\nPRODUCTION 2",
+      "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
     expansion: "BASE",
     faction: "Arborec",
     name: "Letani Warrior II",
@@ -500,7 +520,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     replaces: "Infantry II",
     stats: {
       combat: 7,
-      cost: "1 (x2)",
+      cost: "1(x2)",
     },
     type: "UPGRADE",
   },
@@ -549,15 +569,16 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "RED",
   },
   "Memoria II": {
+    abilities: ["SUSTAIN DAMAGE", "ANTI-FIGHTER BARRAGE 5 (x3)"],
     description:
-      "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs\n\nSUSTAIN DAMAGE\nANTI-FIGHTER BARRAGE 5 (x3)",
+      "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs.",
     expansion: "POK",
     faction: "Nomad",
     name: "Memoria II",
     prereqs: ["GREEN", "BLUE", "YELLOW"],
     stats: {
       capacity: 6,
-      combat: "5 (x2)",
+      combat: "5(x2)",
       cost: 8,
       move: 2,
     },
@@ -607,11 +628,13 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "YELLOW",
   },
   "PDS II": {
+    abilities: ["PLANETARY SHIELD", "SPACE CANNON 5"],
     description:
-      "You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system\n\nPLANETARY SHIELD\nSPACE CANNON 5",
+      "You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system.",
     expansion: "BASE",
     name: "PDS II",
     prereqs: ["RED", "YELLOW"],
+    stats: {},
     type: "UPGRADE",
   },
   "Plasma Scoring": {
@@ -648,8 +671,8 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "GREEN",
   },
   "Prototype War Sun II": {
-    description:
-      "Other players' units in this system lose PLANETARY SHIELD\n\nSUSTAIN DAMAGE\nBOMBARDMENT 3 (x3)",
+    abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 3 (x3)"],
+    description: "Other players' units in this system lose PLANETARY SHIELD.",
     expansion: "BASE",
     faction: "Embers of Muaat",
     name: "Prototype War Sun II",
@@ -657,7 +680,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     replaces: "War Sun",
     stats: {
       capacity: 6,
-      combat: "3 (x3)",
+      combat: "3(x3)",
       cost: 10,
       move: 3,
     },
@@ -698,7 +721,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "YELLOW",
   },
   "Saturn Engine II": {
-    description: "SUSTAIN DAMAGE",
+    abilities: ["SUSTAIN DAMAGE"],
     expansion: "POK",
     faction: "Titans of Ul",
     name: "Saturn Engine II",
@@ -737,11 +760,13 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "BLUE",
   },
   "Space Dock II": {
+    abilities: ["PRODUCTION X"],
     description:
-      "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet\n\nUp to 3 fighters in this system do not count against your ships' capacity\n\nPRODUCTION X",
+      "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet\n\nUp to 3 fighters in this system do not count against your ships' capacity.",
     expansion: "BASE",
     name: "Space Dock II",
     prereqs: ["YELLOW", "YELLOW"],
+    stats: {},
     type: "UPGRADE",
   },
   "Spacial Conduit Cylinder": {
@@ -754,6 +779,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "BLUE",
   },
   "Spec Ops II": {
+    abilities: [],
     description:
       "After this unit is destroyed, roll 1 die. If the result is 5 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system",
     expansion: "BASE",
@@ -763,13 +789,14 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     replaces: "Infantry II",
     stats: {
       combat: 6,
-      cost: "1 (x2)",
+      cost: "1(x2)",
     },
     type: "UPGRADE",
   },
   "Strike Wing Alpha II": {
+    abilities: ["ANTI-FIGHTER BARRAGE 6 (x3)"],
     description:
-      "When this unit uses ANTI-FIGHTER BARRAGE, each result of 9 or 10 also destroys 1 of your opponent's infantry in the space area of the active system\n\nANTI-FIGHTER BARRAGE 6 (x3)",
+      "When this unit uses ANTI-FIGHTER BARRAGE, each result of 9 or 10 also destroys 1 of your opponent's infantry in the space area of the active system.",
     expansion: "POK",
     faction: "Argent Flight",
     name: "Strike Wing Alpha II",
@@ -784,8 +811,9 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "UPGRADE",
   },
   "Super-Dreadnought II": {
+    abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 4"],
     description:
-      '"Direct Hit" cards are no longer effective against this type of ship\n\nSUSTAIN DAMAGE\nBOMBARDMENT 4',
+      '"Direct Hit" cards are no longer effective against this type of ship.',
     expansion: "BASE",
     faction: "L1Z1X Mindnet",
     name: "Super-Dreadnought II",
@@ -862,14 +890,14 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     type: "RED",
   },
   "War Sun": {
-    description:
-      "Other players' units in this system lose PLANETARY SHIELD\n\nSUSTAIN DAMAGE\nBOMBARDMENT 3 (x3)",
+    abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 3 (x3)"],
+    description: "Other players' units in this system lose PLANETARY SHIELD.",
     expansion: "BASE",
     name: "War Sun",
     prereqs: ["YELLOW", "RED", "RED", "RED"],
     stats: {
       capacity: 6,
-      combat: "3 (x3)",
+      combat: "3(x3)",
       cost: 12,
       move: 2,
     },

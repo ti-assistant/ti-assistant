@@ -364,7 +364,7 @@ export function AdditionalActions({
       if (researchedTechs.includes(tech.name)) {
         return false;
       }
-      if (tech.replaces) {
+      if (tech.type === "UPGRADE" && tech.replaces) {
         replaces.push(tech.replaces);
       }
       return true;

@@ -364,6 +364,36 @@ input[type="textbox"] {
   cursor: pointer;
 }
 
+.downArrow::after {
+  position: relative;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: var(--six-pixel) solid transparent;
+  border-right: var(--six-pixel) solid transparent;
+
+  border-top: var(--eight-pixel) solid #ddd;
+  box-sizing: border-box;
+  cursor: pointer;
+  top: var(--eight-pixel);
+  margin-left: var(--four-pixel);
+}
+
+.upArrow::after {
+  position: relative;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: var(--six-pixel) solid transparent;
+  border-right: var(--six-pixel) solid transparent;
+
+  border-bottom: var(--eight-pixel) solid #ddd;
+  box-sizing: border-box;
+  cursor: pointer;
+  bottom: var(--eight-pixel);
+  margin-left: var(--four-pixel);
+}
+
 .hoverInfo {
   transform-origin: top left;
   position: absolute;
@@ -390,6 +420,17 @@ input[type="textbox"] {
   transition: z-index 200ms, width 200ms, height 200ms, top 200ms, left 200ms;
   /* clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); */
 }
+
+.keyword {
+  font-weight: bold;
+}
+
+.ability {
+  font-family: "Slider";
+  font-weight: normal;
+  font-size: 90%;
+}
+
 
 .hoverZoom {
   transition: transform 200ms;

@@ -6,10 +6,12 @@ export const DISCORDANT_STARS_FACTIONS: Record<
   BaseFaction
 > = {
   "Augurs of Ilyxum": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Augurs of Ilyxum",
+    promissories: [],
     shortname: "Ilyxum",
     startswith: {
       planets: ["Chrion", "Demis"],
@@ -23,6 +25,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   // "Bentor Conglomerate": {
   //   colors: {},
@@ -103,9 +106,11 @@ export const DISCORDANT_STARS_FACTIONS: Record<
   //   },
   // },
   "Celdauri Trade Confederation": {
+    abilities: [],
     colors: {},
     commodities: 4,
     expansion: "DISCORDANT STARS",
+    promissories: [],
     name: "Celdauri Trade Confederation",
     shortname: "Celdauri",
     startswith: {
@@ -123,6 +128,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   // "Cheiran Hordes": {
   //   colors: {},
@@ -148,10 +154,12 @@ export const DISCORDANT_STARS_FACTIONS: Record<
   //   },
   // },
   "Dih-Mohn Flotilla": {
+    abilities: [],
     colors: {},
     commodities: 2,
     expansion: "DISCORDANT STARS",
     name: "Dih-Mohn Flotilla",
+    promissories: [],
     shortname: "Dih-Mohn",
     startswith: {
       planets: ["Abyssus"],
@@ -165,6 +173,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   // "Edyn Mandate": {
   //   colors: {},
@@ -191,10 +200,12 @@ export const DISCORDANT_STARS_FACTIONS: Record<
   //   },
   // },
   "Florzen Profiteers": {
+    abilities: [],
     colors: {},
     commodities: 4,
     expansion: "DISCORDANT STARS",
     name: "Florzen Profiteers",
+    promissories: [],
     shortname: "Florzen",
     startswith: {
       planets: ["Delmor", "Kyd"],
@@ -206,12 +217,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Free Systems Compact": {
+    abilities: [],
     colors: {},
     commodities: 4,
     expansion: "DISCORDANT STARS",
     name: "Free Systems Compact",
+    promissories: [],
     shortname: "Free Systems",
     startswith: {
       planets: ["Idyn", "Kroll", "Cyrra"],
@@ -225,12 +239,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Ghemina Raiders": {
+    abilities: [],
     colors: {},
     commodities: 2,
     expansion: "DISCORDANT STARS",
     name: "Ghemina Raiders",
+    promissories: [],
     shortname: "Ghemina",
     startswith: {
       planets: ["Drah", "Trykk"],
@@ -243,6 +260,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 2,
       },
     },
+    units: [],
   },
   // "Ghoti Wayfarers": {
   //   colors: {},
@@ -292,10 +310,12 @@ export const DISCORDANT_STARS_FACTIONS: Record<
   //   },
   // },
   "Glimmer of Mortheus": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Glimmer of Mortheus",
+    promissories: [],
     shortname: "Mortheus",
     startswith: {
       planets: ["Biaheo", "Empero"],
@@ -309,12 +329,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Kollecc Society": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Kollecc Society",
+    promissories: [],
     shortname: "Kollecc",
     startswith: {
       planets: ["Susuros"],
@@ -327,6 +350,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   // "Monks of Kolume": {
   //   colors: {},
@@ -350,10 +374,12 @@ export const DISCORDANT_STARS_FACTIONS: Record<
   //   },
   // },
   "Kortali Tribunal": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Kortali Tribunal",
+    promissories: [],
     shortname: "Kortali",
     startswith: {
       planets: ["Ogdun", "Brthkul"],
@@ -367,6 +393,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   // "Lanefir Remnants": {
   //   colors: {},
@@ -395,10 +422,12 @@ export const DISCORDANT_STARS_FACTIONS: Record<
   //   },
   // },
   "Li-Zho Dynasty": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Li-Zho Dynasty",
+    promissories: [],
     shortname: "Li-Zho",
     startswith: {
       planets: ["Pax", "Vess", "Kyr"],
@@ -412,12 +441,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "L'tokk Khrask": {
+    abilities: [],
     colors: {},
     commodities: 2,
     expansion: "DISCORDANT STARS",
     name: "L'tokk Khrask",
+    promissories: [],
     shortname: "Khrask",
     startswith: {
       planets: ["Bohl-Duhr"],
@@ -430,12 +462,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Mirveda Protectorate": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Mirveda Protectorate",
+    promissories: [],
     shortname: "Mirveda",
     startswith: {
       planets: ["Aldra", "Beata"],
@@ -449,12 +484,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Myko-Mentori": {
+    abilities: [],
     colors: {},
     commodities: 1,
     expansion: "DISCORDANT STARS",
     name: "Myko-Mentori",
+    promissories: [],
     shortname: "Myko-Mentori",
     startswith: {
       planets: ["Shi-Halaum"],
@@ -467,12 +505,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Nivyn Star Kings": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Nivyn Star Kings",
+    promissories: [],
     shortname: "Nivyn",
     startswith: {
       planets: ["Ellas"],
@@ -487,12 +528,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Olradin League": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Olradin League",
+    promissories: [],
     shortname: "Olradin",
     startswith: {
       planets: ["Sanctuary"],
@@ -505,12 +549,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Roh'Dhna Mechatronics": {
+    abilities: [],
     colors: {},
     commodities: 4,
     expansion: "DISCORDANT STARS",
     name: "Roh'Dhna Mechatronics",
+    promissories: [],
     shortname: "Roh'Dhna",
     startswith: {
       planets: ["Prind"],
@@ -523,12 +570,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Savages of Cymiae": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Savages of Cymiae",
+    promissories: [],
     shortname: "Cymiae",
     startswith: {
       planets: ["Cymiae"],
@@ -542,12 +592,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Shipwrights of Axis": {
+    abilities: [],
     colors: {},
     commodities: 5,
     expansion: "DISCORDANT STARS",
     name: "Shipwrights of Axis",
+    promissories: [],
     shortname: "Axis",
     startswith: {
       planets: ["Axis"],
@@ -561,12 +614,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Tnelis Syndicate": {
+    abilities: [],
     colors: {},
     commodities: 2,
     expansion: "DISCORDANT STARS",
     name: "Tnelis Syndicate",
+    promissories: [],
     shortname: "Tnelis",
     startswith: {
       planets: ["Discordia"],
@@ -583,12 +639,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Vaden Banking Clans": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Vaden Banking Clans",
+    promissories: [],
     shortname: "Vaden",
     startswith: {
       planets: ["Vadarian", "Norvus"],
@@ -605,12 +664,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Vaylerian Scourge": {
+    abilities: [],
     colors: {},
     commodities: 2,
     expansion: "DISCORDANT STARS",
     name: "Vaylerian Scourge",
+    promissories: [],
     shortname: "Vaylerian",
     startswith: {
       planets: ["Vaylar"],
@@ -625,12 +687,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Veldyr Sovereignty": {
+    abilities: [],
     colors: {},
     commodities: 4,
     expansion: "DISCORDANT STARS",
     name: "Veldyr Sovereignty",
+    promissories: [],
     shortname: "Veldyr",
     startswith: {
       planets: ["Rhune"],
@@ -645,12 +710,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Zealots of Rhodun": {
+    abilities: [],
     colors: {},
     commodities: 3,
     expansion: "DISCORDANT STARS",
     name: "Zealots of Rhodun",
+    promissories: [],
     shortname: "Rhodun",
     startswith: {
       planets: ["Poh", "Orad"],
@@ -664,12 +732,15 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
   "Zelian Purifier": {
+    abilities: [],
     colors: {},
     commodities: 2,
     expansion: "DISCORDANT STARS",
     name: "Zelian Purifier",
+    promissories: [],
     shortname: "Zelian",
     startswith: {
       planets: ["Zelian", "Gen"],
@@ -684,5 +755,6 @@ export const DISCORDANT_STARS_FACTIONS: Record<
         "Space Dock": 1,
       },
     },
+    units: [],
   },
 };

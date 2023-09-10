@@ -189,6 +189,41 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
 }
 
 function InfoContent({ tech }: { tech: Tech }) {
+  if (tech.type === "UPGRADE") {
+    return (
+      <div
+        className="myriadPro"
+        style={{
+          width: "100%",
+          padding: responsivePixels(4),
+          whiteSpace: "pre-line",
+          textAlign: "center",
+          fontSize: responsivePixels(32),
+        }}
+      >
+        {tech.description ? tech.description.replaceAll("\\n", "\n") : null}
+        {tech.abilities.length > 0 ? (
+          <div
+            style={{
+              display: "grid",
+              gridAutoFlow: "row",
+              whiteSpace: "nowrap",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              fontFamily: "Slider",
+              paddingLeft: responsivePixels(8),
+              rowGap: responsivePixels(2),
+              width: "100%",
+            }}
+          >
+            {tech.abilities.map((ability) => {
+              return <div key={ability}>{ability.toUpperCase()}</div>;
+            })}
+          </div>
+        ) : null}
+        <UnitStatBlock stats={tech.stats} />
+      </div>
+    );
+  }
   const description = tech.description.replaceAll("\\n", "\n");
   return (
     <div
@@ -202,7 +237,6 @@ function InfoContent({ tech }: { tech: Tech }) {
       }}
     >
       {description}
-      <UnitStatBlock stats={tech.stats} />
     </div>
   );
 }

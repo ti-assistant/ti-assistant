@@ -10,7 +10,7 @@ export interface UnitStats {
   move?: number;
 }
 
-export interface BaseTech {
+interface BaseNormalTech {
   description: string;
   expansion: Expansion;
   faction?: string;
@@ -20,10 +20,26 @@ export interface BaseTech {
     expansion: Expansion;
   };
   prereqs: TechType[];
-  replaces?: string;
-  stats?: UnitStats;
-  type: TechType;
+  type: "RED" | "GREEN" | "BLUE" | "YELLOW";
 }
+
+interface BaseUpgradeTech {
+  abilities: string[];
+  description?: string;
+  expansion: Expansion;
+  faction?: string;
+  name: string;
+  omega?: {
+    description: string;
+    expansion: Expansion;
+  };
+  prereqs: TechType[];
+  replaces?: string;
+  stats: UnitStats;
+  type: "UPGRADE";
+}
+
+export type BaseTech = BaseNormalTech | BaseUpgradeTech;
 
 export interface GameTech {
   ready?: boolean;

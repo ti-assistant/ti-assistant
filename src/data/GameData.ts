@@ -5,13 +5,18 @@ import { Agenda } from "../util/api/agendas";
 import { BASE_AGENDAS } from "../../server/data/agendas";
 import { Attachment } from "../util/api/attachments";
 import { BASE_ATTACHMENTS } from "../../server/data/attachments";
-import { BaseFaction, Faction } from "../util/api/factions";
+import {
+  BaseFaction,
+  Faction,
+  PromissoryNote,
+  Unit,
+} from "../util/api/factions";
 import { BaseLeader, Component } from "../util/api/components";
 import { BASE_COMPONENTS } from "../../server/data/components";
 import { BASE_LEADERS } from "../../server/data/leaders";
 import { BASE_RELICS } from "../../server/data/relics";
 import { Relic } from "../util/api/relics";
-import { BASE_FACTIONS } from "../../server/data/factions";
+import { BASE_FACTIONS, FactionId } from "../../server/data/factions";
 import { BASE_OBJECTIVES } from "../../server/data/objectives";
 import { Objective } from "../util/api/objectives";
 import { validateMapString } from "../util/util";
@@ -24,6 +29,7 @@ import { getDefaultStrategyCards } from "../util/api/defaults";
 import { BASE_TECHS } from "../../server/data/techs";
 import { Tech } from "../util/api/techs";
 import stableHash from "stable-hash";
+import { Options } from "../util/api/options";
 
 export function useIsGameDataValidating(gameid: string | undefined) {
   const { isValidating }: { isValidating?: boolean } = useSWR(
@@ -322,6 +328,54 @@ export function buildFactions(storedGameData: StoredGameData) {
   return factions;
 }
 
+export function buildFaction(factionName: string, options: Options) {
+  const baseFaction = { ...BASE_FACTIONS[factionName as FactionId] };
+  if (!baseFaction) {
+    throw new Error("Unable to get base version of faction.");
+  }
+
+  const promissories: PromissoryNote[] = [];
+  for (const promissory of baseFaction.promissories) {
+    const localPromissory = { ...promissory };
+    if (
+      promissory.omega &&
+      options.expansions.includes(promissory.omega.expansion)
+    ) {
+      localPromissory.description =
+        promissory.omega.description ?? promissory.description;
+      localPromissory.name = promissory.omega.name ?? promissory.name;
+    }
+    promissories.push(localPromissory);
+  }
+  baseFaction.promissories = promissories;
+
+  const units: Unit[] = [];
+  for (const unit of baseFaction.units) {
+    const localUnit = { ...unit };
+    if (
+      unit.expansion !== "BASE" &&
+      !options.expansions.includes(unit.expansion)
+    ) {
+      continue;
+    }
+    if (unit.omega && options.expansions.includes(unit.omega.expansion)) {
+      localUnit.abilities = unit.omega.abilities ?? unit.abilities;
+      localUnit.description = unit.omega.description ?? unit.description;
+      localUnit.name = unit.omega.name ?? unit.name;
+      localUnit.stats = unit.omega.stats ?? unit.stats;
+      localUnit.type = unit.omega.type ?? unit.type;
+      localUnit.upgrade = unit.omega.upgrade ?? unit.upgrade;
+    }
+    units.push(localUnit);
+  }
+  baseFaction.units = units;
+
+  console.log(options);
+  console.log(baseFaction);
+
+  return baseFaction;
+}
+
 // TODO: Fix secrets (or remove ability to reveal them)
 export function buildObjectives(storedGameData: StoredGameData) {
   const gameObjectives = storedGameData.objectives ?? {};
@@ -495,4 +549,51 @@ export function buildTechs(storedGameData: StoredGameData) {
   });
 
   return techs;
+}
+
+export function buildBaseTechs(options: Options) {
+  const techs: Record<string, Tech> = {};
+  Object.entries(BASE_TECHS).forEach(([techId, tech]) => {
+    // Maybe filter out PoK technologies.
+    if (!options.expansions.includes("POK") && tech.expansion === "POK") {
+      return;
+    }
+    const techCopy = { ...tech };
+
+    // Maybe update techs for codices.
+    if (tech.omega && options.expansions.includes(tech.omega.expansion)) {
+      techCopy.name += " Ω";
+      techCopy.description = tech.omega.description;
+    }
+
+    techs[techId] = techCopy;
+  });
+
+  return techs;
+}
+
+export function buildLeaders(options: Options) {
+  const leaders: Record<string, BaseLeader> = {};
+  Object.entries(BASE_LEADERS).forEach(([leaderId, leader]) => {
+    // Maybe filter out PoK technologies.
+    if (!options.expansions.includes("POK") && leader.expansion === "POK") {
+      return;
+    }
+    const leaderCopy = { ...leader };
+
+    // Maybe update techs for codices.
+    if (leader.omega && options.expansions.includes(leader.omega.expansion)) {
+      leaderCopy.abilityName =
+        leader.omega.abilityName ?? leaderCopy.abilityName;
+      leaderCopy.name = leader.omega.name ?? leaderCopy.name;
+      leaderCopy.description =
+        leader.omega.description ?? leaderCopy.description;
+      leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
+      leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
+    }
+
+    leaders[leaderId] = leaderCopy;
+  });
+
+  return leaders;
 }
