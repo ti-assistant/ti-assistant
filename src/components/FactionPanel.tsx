@@ -1160,6 +1160,7 @@ export function FactionPanel({
           className="flexColumn"
           style={{
             whiteSpace: "normal",
+            textShadow: "none",
             width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(24)}))`,
             justifyContent: "flex-start",
             height: `calc(100dvh - ${responsivePixels(24)})`,
