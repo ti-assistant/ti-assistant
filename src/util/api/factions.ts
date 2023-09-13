@@ -120,6 +120,7 @@ export interface BaseFaction {
 }
 
 export interface GameFaction {
+  alliancePartner?: string;
   color: string;
   commander: string;
   hero: string;

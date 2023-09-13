@@ -120,7 +120,7 @@
 :global(.hoverParent.hover) > .hoverRadial > .factionSelect {
   top: calc(var(--y-pos) * 1);
   left: calc(var(--x-pos) * 1);
-  opacity: 1;
+  opacity: var(--opacity);
   transition: top 300ms, left 300ms;
 }
 

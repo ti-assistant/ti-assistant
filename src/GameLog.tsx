@@ -540,10 +540,10 @@ export function buildInitialGameData(setupData: {
       });
 
       return {
-        ...faction,
         // Client specified values
         name: faction.name,
         color: faction.color,
+        playerName: faction.playerName,
         order: order,
         mapPosition: index,
         // Faction specific values

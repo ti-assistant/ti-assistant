@@ -1,6 +1,6 @@
 import { Expansion } from "./options";
 
-export type GameVariant = "normal" | "alliance";
+export type GameVariant = "normal" | "alliance-separate" | "alliance-combined";
 
 export type MapStyle = "standard" | "warp" | "skinny" | "large";
 
@@ -9,6 +9,7 @@ export interface SetupOptions {
   "map-string": string;
   "map-style": MapStyle;
   "victory-points": number;
+  "secondary-victory-points": number;
   "game-variant": GameVariant;
   expansions: Set<Expansion>;
   [key: string]: any;

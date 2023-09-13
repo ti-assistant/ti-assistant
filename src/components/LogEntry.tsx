@@ -5,7 +5,7 @@ import { ActionLogEntry } from "../util/api/util";
 import { BLACK_TEXT_GLOW, LabeledLine } from "../LabeledDiv";
 import { Phase } from "../util/api/state";
 import { TimerDisplay } from "../Timer";
-import { responsivePixels } from "../util/util";
+import { pluralize, responsivePixels } from "../util/util";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { PlanetRow } from "../PlanetRow";
 import { AgendaRow } from "../AgendaRow";
@@ -235,6 +235,23 @@ export function LogEntryElement({
           <ColoredFactionName factionName={logEntry.data.event.faction} />
           lost <ObjectiveRow objective={objective} hideScorers />
           {logEntry.data.event.key ? ` (${logEntry.data.event.key})` : null}
+        </div>
+      );
+    }
+    case "MANUAL_VP_UPDATE": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          {logEntry.data.event.vps > 0 ? "gained" : "lost"}{" "}
+          {Math.abs(logEntry.data.event.vps)}{" "}
+          {pluralize("VP", Math.abs(logEntry.data.event.vps))}
         </div>
       );
     }

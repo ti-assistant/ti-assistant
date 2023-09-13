@@ -373,7 +373,7 @@ function Options({
       break;
     case 4:
       mapStyles = ["standard", "warp", "skinny"];
-      variants = ["normal", "alliance"];
+      variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
     case 5:
       mapStyles = ["standard", "warp", "skinny"];
@@ -381,7 +381,7 @@ function Options({
       break;
     case 6:
       mapStyles = ["standard", "large"];
-      variants = ["normal", "alliance"];
+      variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
     case 7:
       mapStyles = ["standard", "warp"];
@@ -389,8 +389,15 @@ function Options({
       break;
     case 8:
       mapStyles = ["standard", "warp"];
-      variants = ["normal", "alliance"];
+      variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
+  }
+
+  let defaultVPs = [10, 14];
+  let otherDefault = 12;
+  if (options["game-variant"] === "alliance-combined") {
+    defaultVPs = [20, 22, 24];
+    otherDefault = 26;
   }
 
   return (
@@ -430,26 +437,24 @@ function Options({
                   padding: `0 ${responsivePixels(20)}`,
                 }}
               >
-                <button
-                  className={options["victory-points"] === 10 ? "selected" : ""}
-                  onClick={() => {
-                    toggleOption(10, "victory-points");
-                  }}
-                >
-                  10
-                </button>
-                <button
-                  className={options["victory-points"] === 14 ? "selected" : ""}
-                  onClick={() => {
-                    toggleOption(14, "victory-points");
-                  }}
-                >
-                  14
-                </button>
+                {defaultVPs.map((VPs, index) => {
+                  return (
+                    <button
+                      key={index}
+                      className={
+                        options["victory-points"] === VPs ? "selected" : ""
+                      }
+                      onClick={() => {
+                        toggleOption(VPs, "victory-points");
+                      }}
+                    >
+                      {VPs}
+                    </button>
+                  );
+                })}
                 <button
                   className={
-                    options["victory-points"] !== 14 &&
-                    options["victory-points"] !== 10
+                    !defaultVPs.includes(options["victory-points"])
                       ? "selected"
                       : ""
                   }
@@ -471,14 +476,11 @@ function Options({
                   onBlur={(e) => {
                     const victoryPoints = parseInt(e.target.innerText);
                     if (isNaN(victoryPoints) || victoryPoints <= 0) {
-                      if (
-                        options["victory-points"] !== 10 &&
-                        options["victory-points"] !== 14
-                      ) {
+                      if (defaultVPs.includes(options["victory-points"])) {
                         e.currentTarget.innerText =
                           options["victory-points"].toString();
                       } else {
-                        e.currentTarget.innerText = "12";
+                        e.currentTarget.innerText = otherDefault.toString();
                       }
                     } else {
                       toggleOption(victoryPoints, "victory-points");
@@ -486,8 +488,76 @@ function Options({
                     }
                   }}
                 >
-                  12
+                  {otherDefault}
                 </div>
+                {options["game-variant"] === "alliance-separate" ? (
+                  <>
+                    <div>AND</div>
+                    {defaultVPs.map((VPs, index) => {
+                      return (
+                        <button
+                          key={index}
+                          className={
+                            options["secondary-victory-points"] === VPs
+                              ? "selected"
+                              : ""
+                          }
+                          onClick={() => {
+                            toggleOption(VPs, "secondary-victory-points");
+                          }}
+                        >
+                          {VPs}
+                        </button>
+                      );
+                    })}
+                    <button
+                      className={
+                        options["secondary-victory-points"] !== 14 &&
+                        options["secondary-victory-points"] !== 10
+                          ? "selected"
+                          : ""
+                      }
+                      onClick={() => {
+                        toggleOption(
+                          parseInt(otherPointsRef.current?.innerText ?? "10"),
+                          "secondary-victory-points"
+                        );
+                      }}
+                    >
+                      Other
+                    </button>
+                    <div
+                      ref={otherPointsRef}
+                      spellCheck={false}
+                      contentEditable={true}
+                      suppressContentEditableWarning={true}
+                      onClick={(e) => (e.currentTarget.innerText = "")}
+                      onBlur={(e) => {
+                        const victoryPoints = parseInt(e.target.innerText);
+                        if (isNaN(victoryPoints) || victoryPoints <= 0) {
+                          if (
+                            defaultVPs.includes(
+                              options["secondary-victory-points"]
+                            )
+                          ) {
+                            e.currentTarget.innerText =
+                              options["secondary-victory-points"].toString();
+                          } else {
+                            e.currentTarget.innerText = otherDefault.toString();
+                          }
+                        } else {
+                          toggleOption(
+                            victoryPoints,
+                            "secondary-victory-points"
+                          );
+                          e.currentTarget.innerText = victoryPoints.toString();
+                        }
+                      }}
+                    >
+                      {otherDefault}
+                    </div>
+                  </>
+                ) : null}
               </div>
             </div>
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
@@ -678,15 +748,31 @@ function Options({
                   }}
                 >
                   {variants.map((variant) => {
+                    let variantText = capitalizeFirstLetter(variant);
+                    let baseVPs = 10;
+                    switch (variant) {
+                      case "alliance-combined":
+                        variantText = "Alliance (combined VPs)";
+                        baseVPs = 22;
+                        break;
+                      case "alliance-separate":
+                        variantText = "Alliance (separate VPs)";
+                        baseVPs = 14;
+                        break;
+                    }
                     return (
                       <button
                         key={variant}
                         className={
                           options["game-variant"] === variant ? "selected" : ""
                         }
-                        onClick={() => toggleOption(variant, "game-variant")}
+                        onClick={() => {
+                          toggleOption(baseVPs, "victory-points");
+                          toggleOption(10, "secondary-victory-points");
+                          toggleOption(variant, "game-variant");
+                        }}
                       >
-                        {capitalizeFirstLetter(variant)}
+                        {variantText}
                       </button>
                     );
                   })}
@@ -1007,7 +1093,7 @@ function FactionSelect({
                 );
               }}
             />
-            {options["game-variant"] === "alliance" ? (
+            {options["game-variant"].startsWith("alliance") ? (
               <div className="flexRow">
                 Partner:
                 <FactionSelectRadialMenu
@@ -1160,6 +1246,7 @@ const INITIAL_OPTIONS: SetupOptions = {
   "map-style": "standard",
   "map-string": "",
   "victory-points": 10,
+  "secondary-victory-points": 10,
 };
 
 export default function SetupPage() {
@@ -1447,7 +1534,14 @@ export default function SetupPage() {
       if (!faction?.color || !faction?.name) {
         return true;
       }
+      if (
+        options["game-variant"].startsWith("alliance") &&
+        faction?.alliancePartner == undefined
+      ) {
+        return true;
+      }
     }
+
     if (invalidCouncil()) {
       return true;
     }
@@ -1484,10 +1578,11 @@ export default function SetupPage() {
   }
 
   function toggleOption(value: any, option: string) {
-    const currentOptions = { ...options };
-    currentOptions[option] = value;
-
-    setOptions(currentOptions);
+    setOptions((currentOptions) => {
+      const localOptions = { ...currentOptions };
+      localOptions[option] = value;
+      return localOptions;
+    });
   }
 
   function toggleExpansion(value: boolean, expansion: Expansion) {
@@ -1636,28 +1731,28 @@ export default function SetupPage() {
     return <div style={{ height: height }}></div>;
   }
   function RightBottomGapDiv({}) {
-    let height = responsivePixels(80);
+    let height = responsivePixels(64);
     switch (numFactions) {
       case 3:
-        height = responsivePixels(250);
+        height = responsivePixels(244);
         break;
       case 4:
         height =
           options["map-style"] === "standard"
-            ? responsivePixels(184)
-            : responsivePixels(41);
+            ? responsivePixels(168)
+            : responsivePixels(23);
         break;
       case 5:
       case 6:
-        height = responsivePixels(41);
+        height = responsivePixels(23);
         break;
       case 7:
         if (options["map-style"] === "warp") {
-          height = responsivePixels(80);
+          height = responsivePixels(64);
           break;
         }
       case 8:
-        height = responsivePixels(38);
+        height = responsivePixels(22);
         break;
     }
     return <div style={{ height: height }}></div>;
@@ -1903,8 +1998,14 @@ export default function SetupPage() {
               Start Game
             </button>
             {disableNextButton() && !invalidCouncil() ? (
-              <div style={{ color: "firebrick" }}>
+              <div
+                className="flexColumn centered"
+                style={{ color: "firebrick", maxWidth: responsivePixels(240) }}
+              >
                 Select all factions and colors
+                {options["game-variant"].startsWith("alliance")
+                  ? " and alliance partners"
+                  : ""}
               </div>
             ) : null}
             {invalidCouncil() ? (
@@ -2013,8 +2114,14 @@ export default function SetupPage() {
               Start Game
             </button>
             {disableNextButton() && !invalidCouncil() ? (
-              <div style={{ color: "firebrick" }}>
+              <div
+                className="flexColumn centered"
+                style={{ color: "firebrick", maxWidth: responsivePixels(240) }}
+              >
                 Select all factions and colors
+                {options["game-variant"].startsWith("alliance")
+                  ? " and alliance partners"
+                  : ""}
               </div>
             ) : null}
             {invalidCouncil() ? (

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { FullFactionSymbol } from "../FactionCard";
 import { computeVPs } from "../FactionSummary";
-import { BLACK_BORDER_GLOW, LabeledDiv } from "../LabeledDiv";
+import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../LabeledDiv";
 import { Modal } from "../Modal";
 import { ObjectiveRow } from "../ObjectiveRow";
 import { Selector } from "../Selector";
@@ -22,10 +22,7 @@ import { setObjectivePoints } from "../util/api/setObjectivePoints";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { RevealObjectiveData } from "../util/model/revealObjective";
 import { responsiveNegativePixels, responsivePixels } from "../util/util";
-import {
-  // FactionSelectRadialMenu,
-  FactionSelectRadialMenu,
-} from "./FactionSelect";
+import { FactionSelectRadialMenu } from "./FactionSelect";
 import styles from "./ObjectivePanel.module.scss";
 
 function GridHeader({ children }: PropsWithChildren) {
@@ -316,7 +313,38 @@ export function ObjectivePanel({}) {
     return null;
   }
 
-  const orderedFactionNames = Object.keys(factions ?? {}).sort();
+  let orderedFactions = Object.values(factions ?? {}).sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 1;
+  });
+
+  if ((options["game-variant"] ?? "normal").startsWith("alliance")) {
+    orderedFactions = orderedFactions.sort((a, b) => {
+      if (!a.alliancePartner || !b.alliancePartner) {
+        return 0;
+      }
+
+      // If same alliance, sort normally.
+      if (a.alliancePartner === b.name || b.alliancePartner === a.name) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        return 1;
+      }
+
+      // If different alliance, sort by earliest partner.
+      let aName = a.name < a.alliancePartner ? a.name : a.alliancePartner;
+      let bName = b.name < b.alliancePartner ? b.name : b.alliancePartner;
+      if (aName < bName) {
+        return -1;
+      }
+      return 1;
+    });
+  }
+
+  const orderedFactionNames = orderedFactions.map((faction) => faction.name);
 
   const revealOrder: Record<string, number> = {};
   let order = 1;
@@ -1297,6 +1325,11 @@ export function ObjectivePanel({}) {
           alignItems: "flex-start",
           width: "100%",
           padding: responsivePixels(8),
+          paddingLeft: (options["game-variant"] ?? "normal").startsWith(
+            "alliance"
+          )
+            ? responsivePixels(24)
+            : undefined,
           height: "100%",
           gap: responsivePixels(24),
           isolation: "isolate",
@@ -1317,7 +1350,7 @@ export function ObjectivePanel({}) {
             gridTemplateRows: `repeat(${numRows}, 2fr)`,
           }}
         >
-          {orderedFactionNames.map((name) => {
+          {orderedFactionNames.map((name, index) => {
             return (
               <div
                 key={name}
@@ -1336,9 +1369,24 @@ export function ObjectivePanel({}) {
                       ? BLACK_BORDER_GLOW
                       : undefined,
                   whiteSpace: "nowrap",
-                  overflow: "hidden",
+                  // overflow: "hidden",
                 }}
               >
+                {(options["game-variant"] ?? "normal").startsWith("alliance") &&
+                index % 2 !== 0 ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: "-4px",
+                      transform: "rotate(270deg)",
+                      transformOrigin: "left bottom",
+                      backgroundColor: "#222",
+                      padding: `0 ${responsivePixels(4)}`,
+                    }}
+                  >
+                    Alliance
+                  </div>
+                ) : null}
                 <div
                   style={{
                     width: "100%",
@@ -1728,9 +1776,13 @@ export function ObjectivePanel({}) {
                   >
                     <FactionSelectRadialMenu
                       key={name}
-                      options={orderedFactionNames.filter(
-                        (faction) => faction !== name
-                      )}
+                      options={orderedFactions
+                        .filter(
+                          (faction) =>
+                            faction.name !== name &&
+                            faction.alliancePartner !== name
+                        )
+                        .map((faction) => faction.name)}
                       selectedFaction={scorer}
                       onSelect={(factionName) => {
                         if (!gameid) {

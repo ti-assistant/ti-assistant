@@ -355,14 +355,50 @@ export function Header() {
 
   let gameFinished = false;
   if (options && factions) {
-    Object.values(factions).forEach((faction) => {
-      if (
-        computeVPs(factions, faction.name, objectives ?? {}) >=
-        options["victory-points"]
-      ) {
-        gameFinished = true;
-      }
-    });
+    switch (options["game-variant"]) {
+      case "alliance-combined":
+        Object.values(factions).forEach((faction) => {
+          if (!faction.alliancePartner) {
+            return;
+          }
+          if (
+            computeVPs(factions, faction.name, objectives ?? {}) +
+              computeVPs(factions, faction.alliancePartner, objectives ?? {}) >=
+            options["victory-points"]
+          ) {
+            gameFinished = true;
+          }
+        });
+        break;
+      case "alliance-separate":
+        Object.values(factions).forEach((faction) => {
+          console.log(faction.name, faction.alliancePartner);
+          if (
+            computeVPs(factions, faction.name, objectives ?? {}) >=
+              options["secondary-victory-points"] &&
+            faction.alliancePartner
+          ) {
+            if (
+              computeVPs(factions, faction.alliancePartner, objectives ?? {}) >=
+              options["victory-points"]
+            ) {
+              gameFinished = true;
+            }
+          }
+        });
+        break;
+      default:
+      case "normal":
+        Object.values(factions).forEach((faction) => {
+          if (
+            computeVPs(factions, faction.name, objectives ?? {}) >=
+            options["victory-points"]
+          ) {
+            gameFinished = true;
+          }
+        });
+        break;
+    }
   }
 
   return (
@@ -394,7 +430,9 @@ export function Header() {
               <Map
                 factions={mapOrderedFactions}
                 mapString={options ? options["map-string"] ?? "" : ""}
-                mapStyle={options ? options["map-style"] ?? "" : ""}
+                mapStyle={
+                  options ? options["map-style"] ?? "standard" : "standard"
+                }
                 mallice={mallice}
               />
             </div>

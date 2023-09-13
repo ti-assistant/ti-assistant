@@ -35,7 +35,7 @@ export default async function handler(
 
   const db = getFirestore();
 
-  const factionPromises = factions.map(async (faction, index) => {
+  const gameFactions = factions.map((faction, index) => {
     if (!faction.name || !faction.color) {
       throw new Error("Faction missing name or color.");
     }
@@ -68,8 +68,7 @@ export default async function handler(
       };
     });
 
-    return {
-      ...faction,
+    const gameFaction: GameFaction = {
       // Client specified values
       name: faction.name,
       color: faction.color,
@@ -83,9 +82,20 @@ export default async function handler(
       hero: "locked",
       commander: "locked",
     };
-  });
 
-  const gameFactions: GameFaction[] = await Promise.all(factionPromises);
+    if (faction.playerName) {
+      gameFaction.playerName = faction.playerName;
+    }
+
+    if (options["game-variant"].startsWith("alliance")) {
+      if (faction.alliancePartner == undefined) {
+        throw new Error("Creating alliance game w/o all alliance partners");
+      }
+      gameFaction.alliancePartner = factions[faction.alliancePartner]?.name;
+    }
+
+    return gameFaction;
+  });
 
   let baseFactions: Record<string, GameFaction> = {};
   let basePlanets: Record<string, GamePlanet> = {};

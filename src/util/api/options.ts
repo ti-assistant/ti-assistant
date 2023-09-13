@@ -1,5 +1,6 @@
 import { mutate } from "swr";
 import { poster } from "./util";
+import { MapStyle, GameVariant } from "./setup";
 
 export type Expansion =
   | "BASE"
@@ -22,5 +23,9 @@ export interface OptionUpdateData {
 export interface Options {
   expansions: Expansion[];
   "map-string"?: string;
+  "allow-double-council": boolean;
+  "map-style": MapStyle;
+  "victory-points": number;
+  "game-variant": GameVariant;
   [key: string]: any;
 }

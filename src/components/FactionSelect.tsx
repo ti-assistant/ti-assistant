@@ -384,12 +384,19 @@ export function FactionSelectRadialMenu({
                       : ""
                   }
             }`}
-                  style={{
-                    position: "absolute",
-                    width: responsivePixels(size - 4),
-                    height: responsivePixels(size - 4),
-                    ...getRadialPosition(index, options.length, size),
-                  }}
+                  style={
+                    {
+                      "--opacity":
+                        fadedOptions.includes(factionName) &&
+                        factionName !== selectedFaction
+                          ? 0.25
+                          : 1,
+                      position: "absolute",
+                      width: responsivePixels(size - 4),
+                      height: responsivePixels(size - 4),
+                      ...getRadialPosition(index, options.length, size),
+                    } as CSSProperties
+                  }
                   onClick={() => {
                     closeFn();
                     if (factionName === selectedFaction) {

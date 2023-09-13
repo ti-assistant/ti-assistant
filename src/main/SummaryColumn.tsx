@@ -50,6 +50,32 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
       sortFunction = (a, b) => {
         const aVPs = computeVPs(factions, a[0], objectives);
         const bVPs = computeVPs(factions, b[0], objectives);
+        switch (options["game-variant"]) {
+          case "alliance-combined":
+          case "alliance-separate": {
+            if (a[1].alliancePartner === b[0]) {
+              break;
+            }
+            const aPartnerVPs = computeVPs(
+              factions,
+              a[1].alliancePartner ?? "",
+              objectives
+            );
+            const bPartnerVPs = computeVPs(
+              factions,
+              b[1].alliancePartner ?? "",
+              objectives
+            );
+
+            if (aVPs + aPartnerVPs > bVPs + bPartnerVPs) {
+              return -1;
+            }
+            return 1;
+          }
+          case "normal":
+          default:
+            break;
+        }
         if (aVPs !== bVPs) {
           if (bVPs > aVPs) {
             return 1;
