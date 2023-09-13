@@ -6,4 +6,5 @@ export const BASE_OPTIONS: Options = {
   "map-style": "standard",
   "map-string": "",
   "victory-points": 10,
+  "game-variant": "normal",
 };
