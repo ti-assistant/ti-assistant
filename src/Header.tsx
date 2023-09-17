@@ -372,7 +372,6 @@ export function Header() {
         break;
       case "alliance-separate":
         Object.values(factions).forEach((faction) => {
-          console.log(faction.name, faction.alliancePartner);
           if (
             computeVPs(factions, faction.name, objectives ?? {}) >=
               options["secondary-victory-points"] &&

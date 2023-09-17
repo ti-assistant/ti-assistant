@@ -8,8 +8,10 @@ import {
 } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import {
+  getCurrentTurnLogEntriesInTransaction,
   getGameData,
   getGameDataInTransaction,
+  getLatestActionLogEntryInTransaction,
 } from "../../../server/util/fetch";
 import { ActionLogEntry } from "../../../src/util/api/util";
 import { GameUpdateData } from "../../../src/util/api/state";
@@ -156,11 +158,26 @@ async function updateActionLog(
   gameRef: DocumentReference<DocumentData>,
   t: Transaction,
   handler: Handler,
-  updates: Record<string, any>,
   gameTime: number
 ) {
+  const turnBoundary = await t.get(
+    gameRef
+      .collection("actionLog")
+      .orderBy("timestampMillis", "desc")
+      .where("data.action", "in", TURN_BOUNDARIES)
+      .limit(1)
+  );
+
+  let timestamp = 0;
+  turnBoundary.forEach((logEntry) => {
+    timestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
+  });
+
   const actionLog = await t.get(
-    gameRef.collection("actionLog").orderBy("timestampMillis", "desc")
+    gameRef
+      .collection("actionLog")
+      .orderBy("timestampMillis", "desc")
+      .where("timestampMillis", ">=", timestamp)
   );
 
   let foundLogEntry = false;
@@ -240,6 +257,15 @@ async function updateActionLog(
     return;
   }
 
+  insertLogEntry(gameRef, t, handler, gameTime);
+}
+
+function insertLogEntry(
+  gameRef: DocumentReference<DocumentData>,
+  t: Transaction,
+  handler: Handler,
+  gameTime: number
+) {
   const logEntry = handler.getLogEntry();
   logEntry.gameSeconds = gameTime;
   console.log("[CREATING ENTRY]", logEntry);
@@ -256,6 +282,10 @@ function updateInTransaction(
 ) {
   return db.runTransaction(async (t) => {
     const gameData = await getGameDataInTransaction(gameRef, t);
+    gameData.actionLog = await getCurrentTurnLogEntriesInTransaction(
+      gameRef,
+      t
+    );
 
     const data = req.body as GameUpdateData;
 
@@ -462,9 +492,9 @@ function updateInTransaction(
         break;
       }
       case "UNDO": {
-        const actionLog = gameData.actionLog ?? [];
-        let actionToUndo = actionLog[0];
+        const actionToUndo = (gameData.actionLog ?? [])[0];
 
+        console.log(actionToUndo);
         if (!actionToUndo) {
           res.status(200).json(gameData);
           return true;
@@ -487,7 +517,7 @@ function updateInTransaction(
     let updates = convertToServerUpdates(handler.getUpdates());
 
     // Needs to happen after handler.getUpdates();
-    await updateActionLog(gameRef, t, handler, updates, gameTime);
+    await updateActionLog(gameRef, t, handler, gameTime);
 
     console.log("UPDATES", updates);
     if (Object.keys(updates).length > 0) {

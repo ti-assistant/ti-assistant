@@ -35,11 +35,13 @@ export function LogEntryElement({
   logEntry,
   activePlayer,
   currRound,
+  startTimeSeconds,
   endTimeSeconds,
 }: {
   logEntry: ActionLogEntry;
   activePlayer?: string;
   currRound: number;
+  startTimeSeconds: number;
   endTimeSeconds: number;
 }) {
   const router = useRouter();
@@ -91,7 +93,7 @@ export function LogEntryElement({
           label={`${phase} Phase`}
           rightLabel={
             <TimerDisplay
-              time={endTimeSeconds - (logEntry.gameSeconds ?? 0)}
+              time={endTimeSeconds - startTimeSeconds}
               style={{
                 fontSize: responsivePixels(16),
               }}
@@ -116,7 +118,7 @@ export function LogEntryElement({
             {logEntry.data.event.name}
           </div>
           <TimerDisplay
-            time={endTimeSeconds - (logEntry.gameSeconds ?? 0)}
+            time={endTimeSeconds - startTimeSeconds}
             style={{
               fontSize: responsivePixels(16),
             }}
@@ -134,7 +136,7 @@ export function LogEntryElement({
           label={logEntry.data.event.action}
           rightLabel={
             <TimerDisplay
-              time={endTimeSeconds - (logEntry.gameSeconds ?? 0)}
+              time={endTimeSeconds - startTimeSeconds}
               style={{
                 fontSize: responsivePixels(16),
               }}
@@ -258,6 +260,21 @@ export function LogEntryElement({
     case "END_GAME": {
       return null;
     }
+    case "CHOOSE_STARTING_TECH": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          selected {logEntry.data.event.tech} as a starting tech
+        </div>
+      );
+    }
     case "ADD_TECH": {
       return (
         <div
@@ -270,6 +287,21 @@ export function LogEntryElement({
         >
           <ColoredFactionName factionName={logEntry.data.event.faction} />
           researched {logEntry.data.event.tech}
+        </div>
+      );
+    }
+    case "REMOVE_TECH": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          returned {logEntry.data.event.tech}
         </div>
       );
     }
@@ -357,7 +389,7 @@ export function LogEntryElement({
           leftLabel={<AgendaRow agenda={agenda} hideOutcome />}
           rightLabel={
             <TimerDisplay
-              time={endTimeSeconds - (logEntry.gameSeconds ?? 0)}
+              time={endTimeSeconds - startTimeSeconds}
               style={{
                 fontSize: responsivePixels(16),
               }}

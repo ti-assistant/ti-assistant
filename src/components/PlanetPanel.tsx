@@ -41,12 +41,10 @@ function PlanetSection({
       accept: "PLANET",
       drop: (item: { id: string }) => {
         const planet = planets[item.id];
-        console.log(planet);
         if (!gameid || !planet || planet.owner === factionName) {
           return;
         }
 
-        console.log("Claiming Planet", item.id);
         claimPlanet(gameid, factionName, planet.name);
       },
       collect: (monitor) => ({

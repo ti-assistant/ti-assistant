@@ -1365,7 +1365,6 @@ export default function SetupPage() {
       })
     );
   }
-  console.log(factions);
 
   function randomSpeaker() {
     setSpeaker(Math.floor(Math.random() * numFactions));

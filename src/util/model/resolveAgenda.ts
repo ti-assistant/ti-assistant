@@ -388,12 +388,13 @@ export class RepealAgendaHandler implements Handler {
       updates[`agendas.${this.data.event.agenda}.resolved`] = "DELETE";
       updates[`state.agendaNum`] = (this.gameData.state.agendaNum ?? 0) - 1;
 
-      const currentPhase = getCurrentPhaseLogEntries(
+      const currentTurn = getCurrentTurnLogEntries(
         this.gameData.actionLog ?? []
       );
 
       // NOTE: Each rider should only be able to be played once in a given round.
-      const riders = getPlayedRiders(currentPhase);
+      // NOTE: This may not properly undo riders.
+      const riders = getPlayedRiders(currentTurn);
       for (const rider of riders) {
         if (!rider.faction || rider.outcome !== this.data.event.target) {
           continue;

@@ -25,6 +25,10 @@ import {
   buildStrategyCards,
 } from "../../src/data/GameData";
 import { BASE_OPTIONS } from "../data/options";
+import {
+  PHASE_BOUNDARIES,
+  TURN_BOUNDARIES,
+} from "../../src/util/api/actionLog";
 
 /**
  * Returns the game data for a given game.
@@ -35,11 +39,6 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
   const gameRef = db.collection("games").doc(gameId);
 
   const game = await gameRef.get();
-
-  const actionLog = await gameRef
-    .collection("actionLog")
-    .orderBy("timestampMillis", "desc")
-    .get();
 
   if (!game.exists) {
     return {
@@ -54,6 +53,28 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
     };
   }
 
+  const gameData = game.data() as StoredGameData;
+
+  const phaseOrTurnBoundaries =
+    gameData.state.phase === "AGENDA" ? PHASE_BOUNDARIES : TURN_BOUNDARIES;
+
+  const phaseBoundary = await gameRef
+    .collection("actionLog")
+    .orderBy("timestampMillis", "desc")
+    .where("data.action", "in", phaseOrTurnBoundaries)
+    .get();
+
+  let firstTimestamp = 0;
+  phaseBoundary.forEach((logEntry) => {
+    firstTimestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
+  });
+
+  const actionLog = await gameRef
+    .collection("actionLog")
+    .orderBy("timestampMillis", "desc")
+    .where("timestampMillis", ">=", firstTimestamp)
+    .get();
+
   const actionLogEntries: ActionLogEntry[] = [];
   actionLog.forEach((logEntry) => {
     const storedLogEntry = logEntry.data() as ActionLogEntry;
@@ -61,7 +82,7 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
   });
 
   return {
-    ...(game.data() as StoredGameData),
+    ...gameData,
     actionLog: actionLogEntries,
   };
 }
@@ -77,20 +98,80 @@ export async function getGameDataInTransaction(
 
   const gameData = game.data() as StoredGameData;
 
-  const actionLog = await t.get(
-    gameRef.collection("actionLog").orderBy("timestampMillis", "desc")
+  return gameData;
+}
+
+export async function getCurrentTurnLogEntriesInTransaction(
+  gameRef: DocumentReference<DocumentData>,
+  t: Transaction
+) {
+  const turnBoundary = await t.get(
+    gameRef
+      .collection("actionLog")
+      .orderBy("timestampMillis", "desc")
+      .where("data.action", "in", TURN_BOUNDARIES)
+      .limit(1)
   );
 
-  const actionLogEntries: ActionLogEntry[] = [];
-  actionLog.forEach((logEntry) => {
-    const storedLogEntry = logEntry.data() as ActionLogEntry;
-    actionLogEntries.push(storedLogEntry);
+  let timestamp = 0;
+  turnBoundary.forEach((logEntry) => {
+    timestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
   });
 
-  return {
-    ...gameData,
-    actionLog: actionLogEntries,
-  };
+  const currentTurn = await t.get(
+    gameRef
+      .collection("actionLog")
+      .orderBy("timestampMillis", "desc")
+      .where("timestampMillis", ">=", timestamp)
+  );
+
+  const currentTurnEntries: ActionLogEntry[] = [];
+  currentTurn.forEach((logEntry) => {
+    const storedLogEntry = logEntry.data() as ActionLogEntry;
+    currentTurnEntries.push(storedLogEntry);
+  });
+
+  return currentTurnEntries;
+}
+
+export async function getLatestActionLogEntryInTransaction(
+  gameRef: DocumentReference<DocumentData>,
+  t: Transaction
+) {
+  const logEntry = await t.get(
+    gameRef.collection("actionLog").orderBy("timestampMillis", "desc").limit(1)
+  );
+  if (logEntry.empty) {
+    return undefined;
+  }
+
+  let latestEntry: ActionLogEntry | undefined;
+  logEntry.forEach((entry) => {
+    latestEntry = entry.data() as ActionLogEntry;
+  });
+
+  return latestEntry;
+}
+
+export async function getFullActionLog(gameId: string) {
+  const db = getFirestore();
+
+  const gameRef = db.collection("games").doc(gameId);
+  const logEntry = await gameRef
+    .collection("actionLog")
+    .orderBy("timestampMillis", "desc")
+    .get();
+
+  if (logEntry.empty) {
+    return [];
+  }
+
+  let actionLog: ActionLogEntry[] = [];
+  logEntry.forEach((entry) => {
+    actionLog.push(entry.data() as ActionLogEntry);
+  });
+
+  return actionLog;
 }
 
 export async function getTimers(gameId: string) {
@@ -119,97 +200,4 @@ export async function getTimersInTransaction(
   const timers = timerData.data() as Record<string, number>;
 
   return timers;
-}
-
-/**
- * Fetches the strategy cards associated with a game.
- */
-export async function fetchStrategyCards(
-  gameId: string
-): Promise<Record<string, StrategyCard>> {
-  const gameData = await getGameData(gameId);
-
-  return buildStrategyCards(gameData);
-}
-
-/**
- * Fetches the objectives associated with a game.
- */
-export async function fetchObjectives(
-  gameId: string,
-  secret: string
-): Promise<Record<string, Objective>> {
-  const gameData = await getGameData(gameId);
-
-  return buildObjectives(gameData);
-}
-
-/**
- * Fetches the attachments associated with a game.
- */
-export async function fetchAttachments(
-  gameId: string
-): Promise<Record<string, Attachment>> {
-  const gameData = await getGameData(gameId);
-
-  return buildAttachments(gameData);
-}
-
-/**
- * Fetches the planets associated with a game.
- * @param {string} gameid The game id. If not present, the default list will be fetched.
- * @returns {Promise} planets keyed by name.
- */
-export async function fetchPlanets(
-  gameId: string
-): Promise<Record<string, Planet>> {
-  const gameData = await getGameData(gameId);
-
-  return buildPlanets(gameData);
-}
-
-/**
- * Fetches the agendas associated with a game.
- */
-export async function fetchAgendas(
-  gameId: string
-): Promise<Record<string, Agenda>> {
-  const gameData = await getGameData(gameId);
-
-  return buildAgendas(gameData);
-}
-
-/**
- * Fetches the components associated with a game.
- */
-export async function fetchComponents(
-  gameId: string
-): Promise<Record<string, Component>> {
-  const db = getFirestore();
-
-  const gameData = await getGameData(gameId);
-
-  return buildComponents(gameData);
-}
-
-/**
- * Fetches the factions associated with a game.
- */
-export async function fetchFactions(
-  gameId: string
-): Promise<Record<string, Faction>> {
-  const gameData = await getGameData(gameId);
-
-  return buildFactions(gameData);
-}
-
-/**
- * Fetches the relics associated with a game.
- */
-export async function fetchRelics(
-  gameId: string
-): Promise<Record<string, Relic>> {
-  const gameData = await getGameData(gameId);
-
-  return buildRelics(gameData);
 }

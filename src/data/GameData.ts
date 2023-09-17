@@ -370,9 +370,6 @@ export function buildFaction(factionName: string, options: Options) {
   }
   baseFaction.units = units;
 
-  console.log(options);
-  console.log(baseFaction);
-
   return baseFaction;
 }
 

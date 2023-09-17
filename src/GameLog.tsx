@@ -20,8 +20,9 @@ import { BASE_PLANETS } from "../server/data/planets";
 import { BASE_FACTIONS, FactionId } from "../server/data/factions";
 import { GamePlanet } from "./util/api/planets";
 import { GameObjective } from "./util/api/objectives";
-import { StoredGameData } from "./util/api/util";
+import { ActionLogEntry, StoredGameData, fetcher } from "./util/api/util";
 import { getHandler, updateGameData } from "./util/api/data";
+import useSWR from "swr";
 
 function createRepeatedString(array: string[]) {
   const arrayCopy = structuredClone(array);
@@ -659,8 +660,13 @@ export function buildSetupGameData(gameData: GameData): {
 export function GameLog({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
+  const { data: storedActionLog }: { data?: ActionLogEntry[] } = useSWR(
+    gameid ? `/api/${gameid}/actionLog` : null,
+    fetcher
+  );
   const gameData = useGameData(gameid);
-  const actionLog = gameData.actionLog ?? [];
+
+  const actionLog = storedActionLog ?? [];
 
   const reversedActionLog = useMemo(() => {
     return [...actionLog].reverse();
@@ -682,8 +688,6 @@ export function GameLog({}) {
   let prevEntry: LogEntry | undefined;
   // let currRound = 1;
 
-  let endTimeSeconds = 0;
-
   return (
     <div
       className="flexColumn"
@@ -696,6 +700,8 @@ export function GameLog({}) {
       }}
     >
       {reversedActionLog.map((logEntry, index) => {
+        let startTimeSeconds = logEntry.gameSeconds ?? 0;
+        let endTimeSeconds = 0;
         const handler = getHandler(dynamicGameData, logEntry.data);
         if (!handler) {
           return null;
@@ -723,13 +729,13 @@ export function GameLog({}) {
                 break;
               }
               if (TURN_BOUNDARIES.includes(prevEntry.data.action)) {
-                logEntry.gameSeconds = prevEntry.gameSeconds ?? 0;
+                startTimeSeconds = prevEntry.gameSeconds ?? 0;
                 break;
               }
             }
+            // Intentional fall-through.
           }
-          case "REVEAL_AGENDA":
-          case "ASSIGN_STRATEGY_CARD": {
+          case "REVEAL_AGENDA": {
             for (let i = index + 1; i < reversedActionLog.length; i++) {
               const nextEntry = reversedActionLog[i];
               if (!nextEntry) {
@@ -742,6 +748,23 @@ export function GameLog({}) {
             }
             break;
           }
+          case "ASSIGN_STRATEGY_CARD": {
+            for (let i = index - 1; i > 0; i--) {
+              const prevEntry = reversedActionLog[i];
+              if (!prevEntry) {
+                break;
+              }
+              if (TURN_BOUNDARIES.includes(prevEntry.data.action)) {
+                startTimeSeconds = prevEntry.gameSeconds ?? 0;
+                endTimeSeconds = logEntry.gameSeconds ?? 0;
+
+                if (dynamicGameData.state.round === 1) {
+                  console.log(prevEntry);
+                }
+                break;
+              }
+            }
+          }
         }
         return (
           <LogEntryElement
@@ -749,6 +772,7 @@ export function GameLog({}) {
             logEntry={logEntry}
             currRound={dynamicGameData.state.round}
             activePlayer={dynamicGameData.state.activeplayer}
+            startTimeSeconds={startTimeSeconds}
             endTimeSeconds={endTimeSeconds}
           />
         ); // if (logEntry.phase && logEntry.phase !== prevPhase) {

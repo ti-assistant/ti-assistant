@@ -989,7 +989,6 @@ function FactionPanelContent({
             //     );
             //   }
             // }
-            console.log(localUnit);
             return (
               <AbilitySection
                 key={index}
