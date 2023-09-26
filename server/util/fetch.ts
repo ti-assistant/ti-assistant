@@ -62,6 +62,7 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
     .collection("actionLog")
     .orderBy("timestampMillis", "desc")
     .where("data.action", "in", phaseOrTurnBoundaries)
+    .limit(1)
     .get();
 
   let firstTimestamp = 0;
