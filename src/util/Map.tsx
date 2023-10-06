@@ -340,14 +340,40 @@ function getBaseSystemTiles(
       }
       break;
     case 8:
-      systemTiles[37] = getFactionSystemNumber(factions[0]);
-      systemTiles[40] = getFactionSystemNumber(factions[1]);
-      systemTiles[43] = getFactionSystemNumber(factions[2]);
-      systemTiles[46] = getFactionSystemNumber(factions[3]);
-      systemTiles[49] = getFactionSystemNumber(factions[4]);
-      systemTiles[52] = getFactionSystemNumber(factions[5]);
-      systemTiles[55] = getFactionSystemNumber(factions[6]);
-      systemTiles[58] = getFactionSystemNumber(factions[7]);
+      switch (mapStyle) {
+        case "standard":
+          systemTiles[37] = getFactionSystemNumber(factions[0]);
+          systemTiles[40] = getFactionSystemNumber(factions[1]);
+          systemTiles[43] = getFactionSystemNumber(factions[2]);
+          systemTiles[46] = getFactionSystemNumber(factions[3]);
+          systemTiles[49] = getFactionSystemNumber(factions[4]);
+          systemTiles[52] = getFactionSystemNumber(factions[5]);
+          systemTiles[55] = getFactionSystemNumber(factions[6]);
+          systemTiles[58] = getFactionSystemNumber(factions[7]);
+          break;
+        case "warp":
+          systemTiles[1] = "rotateSixty:87A";
+          systemTiles[2] = "rotateOneEighty:90B";
+          systemTiles[4] = "rotateOneTwenty:88A";
+          systemTiles[5] = "89B";
+          systemTiles[24] = "rotateOneTwenty:85B";
+          systemTiles[33] = "rotateOneTwenty:85B";
+          systemTiles[37] = getFactionSystemNumber(factions[0]);
+          systemTiles[40] = getFactionSystemNumber(factions[1]);
+          delete systemTiles[41];
+          delete systemTiles[42];
+          systemTiles[43] = getFactionSystemNumber(factions[2]);
+          delete systemTiles[45];
+          systemTiles[46] = getFactionSystemNumber(factions[3]);
+          systemTiles[49] = getFactionSystemNumber(factions[4]);
+          systemTiles[52] = getFactionSystemNumber(factions[5]);
+          delete systemTiles[53];
+          delete systemTiles[54];
+          systemTiles[55] = getFactionSystemNumber(factions[6]);
+          delete systemTiles[57];
+          systemTiles[58] = getFactionSystemNumber(factions[7]);
+          break;
+      }
       break;
   }
   return systemTiles;
