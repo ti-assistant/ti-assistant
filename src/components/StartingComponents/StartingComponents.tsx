@@ -153,22 +153,19 @@ export default function StartingComponents({
 
   return (
     <div className={styles.StartingComponents}>
-      {/* {startswith.planetchoice ? "Choose Sub-Faction" : null} */}
       {startswith.planetchoice ? (
         <div
           className="flexRow"
           style={{
             gap: responsivePixels(4),
             paddingLeft: responsivePixels(4),
-            // width: "100%",
-            // boxSizing: "border-box",
-            // alignItems: "flex-start",
-            // justifyContent: "center",
           }}
         >
           Sub-Faction:
           <FactionSelectRadialMenu
-            factions={startswith.planetchoice.options}
+            factions={startswith.planetchoice.options.filter(
+              (faction) => options["allow-double-council"] || !factions[faction]
+            )}
             onSelect={(faction) => {
               if (!faction) {
                 if (!startswith.faction) {
@@ -182,48 +179,8 @@ export default function StartingComponents({
             selectedFaction={startswith.faction}
             size={36}
           />
-          {/* {startswith.planetchoice.options.map((faction) => {
-            if (
-              !(options["allow-double-council"] ?? false) &&
-              factions &&
-              factions[faction]
-            ) {
-              return null;
-            }
-            if (
-              faction === "Argent Flight" &&
-              !options.expansions.includes("POK")
-            ) {
-              return null;
-            }
-            return (
-              <button
-                key={faction}
-                className={startswith.faction === faction ? "selected" : ""}
-                onClick={() => selectSubFaction(faction)}
-              >
-                {faction}
-              </button>
-            );
-          })} */}
         </div>
       ) : null}
-      {/* {orderedPlanets.length > 0 ? (
-        <>
-          Planets
-          <div
-            style={{
-              paddingLeft: responsivePixels(4),
-              fontFamily: "Myriad Pro",
-            }}
-          >
-            {orderedPlanets.map((planet) => {
-              return <div key={planet}>{planet}</div>;
-            })}
-          </div>
-        </>
-      ) : null} */}
-      {/* Techs {startswith.choice ? "(Choice)" : null} */}
       <div style={{}}>
         {orderedTechs.length === 0 && !startswith.choice ? (
           <div
