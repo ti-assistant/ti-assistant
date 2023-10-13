@@ -1,4 +1,4 @@
-import React, {
+import {
   CSSProperties,
   PropsWithChildren,
   ReactNode,
@@ -7,9 +7,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { FullFactionSymbol } from "./FactionCard";
-import { ResponsiveLogo } from "./Header";
-import { BLACK_BORDER_GLOW } from "./LabeledDiv";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
 
 export function ClientOnlyHoverMenu({
@@ -68,7 +65,7 @@ interface Shift {
   right?: number;
 }
 
-export interface HoverMenuProps {
+interface HoverMenuProps {
   renderProps?: (closeFn: () => void) => ReactNode;
   label?: ReactNode;
   style?: CSSProperties;

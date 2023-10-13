@@ -1,23 +1,20 @@
-import { useRouter } from "next/router";
-import React, { PropsWithChildren } from "react";
-import { BasicFactionTile, MenuButton } from "./FactionTile";
-import { LabeledDiv } from "./LabeledDiv";
-import { useGameData } from "./data/GameData";
-import { StrategyCard } from "./util/api/cards";
-import { getFactionColor, getFactionName } from "./util/factions";
-import { pluralize, responsivePixels } from "./util/util";
 import Image from "next/image";
+import React, { PropsWithChildren, useContext } from "react";
+import FactionTile from "./components/FactionTile/FactionTile";
+import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
+import { FactionContext } from "./context/Context";
+import { getFactionColor, getFactionName } from "./util/factions";
+import { responsivePixels } from "./util/util";
 
-export interface StrategyCardOpts {
+interface StrategyCardOpts {
   fontSize?: string;
   hideName?: boolean;
   noColor?: boolean;
 }
 
-export interface StrategyCardProps {
+interface StrategyCardProps {
   active?: boolean;
   card: StrategyCard;
-  factionActions?: MenuButton[];
   fontSize: number;
   onClick?: () => void;
   opts?: StrategyCardOpts;
@@ -27,15 +24,11 @@ export function StrategyCardElement({
   active,
   card,
   children,
-  factionActions,
   fontSize,
   onClick,
   opts = {},
 }: PropsWithChildren<StrategyCardProps>) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions"]);
-  const factions = gameData.factions;
+  const factions = useContext(FactionContext);
 
   const faction = card.faction && factions ? factions[card.faction] : undefined;
 
@@ -84,11 +77,7 @@ export function StrategyCardElement({
         )}
         {faction ? (
           <div style={{ flexGrow: 4, whiteSpace: "nowrap" }}>
-            <BasicFactionTile
-              faction={faction}
-              menuButtons={factionActions}
-              opts={{ fontSize: responsivePixels(16), iconSize: 32 }}
-            />
+            <FactionTile faction={faction} fontSize={16} iconSize={32} />
           </div>
         ) : (
           <React.Fragment>
@@ -151,17 +140,14 @@ export function StrategyCardElement({
   );
 }
 
-export interface SmallStrategyCardProps {
+interface SmallStrategyCardProps {
   // card: StrategyCard;
   cards: StrategyCard[];
   // active?: boolean;
 }
 
 export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions"]);
-  const factions = gameData.factions;
+  const factions = useContext(FactionContext);
 
   if (!cards[0]) {
     return null;
@@ -220,7 +206,7 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
           {cards.map((card) => {
             const textColor = !card.used ? "#eee" : "#555";
             return (
-              <div key={card.name} style={{ color: textColor }}>
+              <div key={card.id} style={{ color: textColor }}>
                 {card.name}
               </div>
             );

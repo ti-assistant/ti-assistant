@@ -1,24 +1,3 @@
-import { OutcomeType } from "../api/agendas";
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface PlayRiderEvent {
-  rider: string;
-
-  faction?: string;
-  outcome?: OutcomeType;
-}
-
-export interface PlayRiderData {
-  action: "PLAY_RIDER";
-  event: PlayRiderEvent;
-}
-
-export interface UnplayRiderData {
-  action: "UNPLAY_RIDER";
-  event: PlayRiderEvent;
-}
-
 export class PlayRiderHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: PlayRiderData) {}
 

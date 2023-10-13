@@ -1,25 +1,4 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
 // Should only be used for non-component cards
-
-export interface PlayActionCardEvent {
-  card: string;
-
-  // The player that played the card, or the target of the card.
-  target: string;
-}
-
-export interface PlayActionCardData {
-  action: "PLAY_ACTION_CARD";
-  event: PlayActionCardEvent;
-}
-
-export interface UnplayActionCardData {
-  action: "UNPLAY_ACTION_CARD";
-  event: PlayActionCardEvent;
-}
-
 export class PlayActionCardHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

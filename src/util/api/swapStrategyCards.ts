@@ -1,13 +1,14 @@
 import { mutate } from "swr";
-import { updateGameData, updateActionLog } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
 import { SwapStrategyCardsHandler } from "../model/swapStrategyCards";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 export function swapStrategyCards(
   gameId: string,
-  cardOne: string,
-  cardTwo: string,
+  cardOne: StrategyCardId,
+  cardTwo: StrategyCardId,
   imperialArbiter?: boolean
 ) {
   const data: GameUpdateData = {
@@ -23,18 +24,21 @@ export function swapStrategyCards(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new SwapStrategyCardsHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new SwapStrategyCardsHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

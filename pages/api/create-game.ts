@@ -1,13 +1,7 @@
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
-import { BASE_FACTIONS, FactionId } from "../../server/data/factions";
+import { BASE_FACTIONS } from "../../server/data/factions";
 import { BASE_PLANETS } from "../../server/data/planets";
-import { GameFaction } from "../../src/util/api/factions";
-import { GameObjective } from "../../src/util/api/objectives";
-import { Options } from "../../src/util/api/options";
-import { GamePlanet } from "../../src/util/api/planets";
-import { SetupFaction } from "../../src/util/api/setup";
-import { StoredGameData } from "../../src/util/api/util";
 
 function makeid(length: number) {
   var result = "";
@@ -36,7 +30,7 @@ export default async function handler(
   const db = getFirestore();
 
   const gameFactions = factions.map((faction, index) => {
-    if (!faction.name || !faction.color) {
+    if (!faction.name || !faction.color || !faction.id) {
       throw new Error("Faction missing name or color.");
     }
     // Determine speaker order for each faction.
@@ -49,19 +43,19 @@ export default async function handler(
 
     // Get home planets for each faction.
     // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
-    const homeBasePlanets = Object.entries(BASE_PLANETS).filter(
-      ([_, planet]) => planet.faction === faction.name && planet.home
+    const homeBasePlanets = Object.values(BASE_PLANETS).filter(
+      (planet) => planet.faction === faction.name && planet.home
     );
-    const homePlanets: Record<string, { ready: boolean }> = {};
-    homeBasePlanets.forEach(([planetId, _]) => {
-      homePlanets[planetId] = {
+    const homePlanets: Partial<Record<PlanetId, { ready: boolean }>> = {};
+    homeBasePlanets.forEach((planet) => {
+      homePlanets[planet.id] = {
         ready: true,
       };
     });
 
     // Get starting techs for each faction.
-    const baseFaction = BASE_FACTIONS[faction.name as FactionId];
-    const startingTechs: Record<string, { ready: boolean }> = {};
+    const baseFaction = BASE_FACTIONS[faction.id];
+    const startingTechs: Partial<Record<TechId, { ready: boolean }>> = {};
     (baseFaction.startswith.techs ?? []).forEach((tech) => {
       startingTechs[tech] = {
         ready: true,
@@ -91,18 +85,19 @@ export default async function handler(
       if (faction.alliancePartner == undefined) {
         throw new Error("Creating alliance game w/o all alliance partners");
       }
-      gameFaction.alliancePartner = factions[faction.alliancePartner]?.name;
+      gameFaction.alliancePartner = factions[faction.alliancePartner]?.id;
     }
 
     return gameFaction;
   });
 
-  let baseFactions: Record<string, GameFaction> = {};
-  let basePlanets: Record<string, GamePlanet> = {};
-  let speakerName: string | undefined;
+  let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
+  let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
+  let speakerName: FactionId | undefined;
   gameFactions.forEach((faction, index) => {
+    const baseFaction = BASE_FACTIONS[faction.name as FactionId];
     if (index === req.body.speaker) {
-      speakerName = faction.name;
+      speakerName = baseFaction.id;
     }
     const localFaction = { ...faction };
     if (faction.name === "Winnu" && !options.expansions.includes("POK")) {
@@ -116,16 +111,16 @@ export default async function handler(
         ],
       };
     }
-    baseFactions[faction.name] = localFaction;
+    baseFactions[faction.name as FactionId] = localFaction;
     Object.entries(faction.planets).forEach(([name, planet]) => {
-      basePlanets[name] = {
+      basePlanets[name as PlanetId] = {
         ...planet,
-        owner: faction.name,
+        owner: baseFaction.id,
       };
     });
   });
 
-  let baseObjectives: Record<string, GameObjective> = {
+  let baseObjectives: Partial<Record<ObjectiveId, GameObjective>> = {
     "Custodians Token": {
       selected: true,
     },

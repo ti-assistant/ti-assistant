@@ -1,10 +1,13 @@
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
-import { SetPauseData } from "../../../src/util/api/setPause";
 import {
   getGameData,
   getGameDataInTransaction,
 } from "../../../server/util/fetch";
+
+interface SetPauseData {
+  paused: boolean;
+}
 
 export default async function handler(
   req: NextApiRequest,

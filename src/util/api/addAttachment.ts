@@ -4,15 +4,16 @@ import {
   AddAttachmentHandler,
   RemoveAttachmentHandler,
 } from "../model/addAttachment";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { StoredGameData, poster } from "./util";
+import { poster } from "./util";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 // TODO: Determine whether planet treatment is necessary.
 export function addAttachment(
   gameId: string,
-  planet: string,
-  attachment: string
+  planet: PlanetId,
+  attachment: AttachmentId
 ) {
   const data: GameUpdateData = {
     action: "ADD_ATTACHMENT",
@@ -26,26 +27,29 @@ export function addAttachment(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const planets = buildPlanets(storedGameData);
-        for (const [planetId, planet] of Object.entries(planets)) {
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const planets = buildPlanets(currentData);
+        for (const planet of Object.values(planets)) {
           if ((planet.attachments ?? []).includes(data.event.attachment)) {
-            data.event.prevPlanet = planetId;
+            data.event.prevPlanet = planet.id;
             break;
           }
         }
 
-        const handler = new AddAttachmentHandler(storedGameData, data);
+        const handler = new AddAttachmentHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
@@ -54,8 +58,8 @@ export function addAttachment(
 
 export function removeAttachment(
   gameId: string,
-  planet: string,
-  attachment: string
+  planet: PlanetId,
+  attachment: AttachmentId
 ) {
   const data: GameUpdateData = {
     action: "REMOVE_ATTACHMENT",
@@ -69,18 +73,21 @@ export function removeAttachment(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new RemoveAttachmentHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new RemoveAttachmentHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

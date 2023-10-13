@@ -1,5 +1,3 @@
-import { BaseLeader } from "../../../src/util/api/components";
-
 export const DISCORDANT_STARS_LEADERS: Record<
   DiscordantStars.LeaderId,
   BaseLeader

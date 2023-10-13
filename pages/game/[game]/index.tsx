@@ -2,12 +2,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import QRCode from "qrcode";
-import { PropsWithChildren, useEffect, useState } from "react";
-import { FullFactionSymbol } from "../../../src/FactionCard";
-import { ResponsiveLogo } from "../../../src/Header";
-import { LabeledDiv } from "../../../src/LabeledDiv";
-import { FullScreenLoader } from "../../../src/Loader";
-import { useGameData } from "../../../src/data/GameData";
+import { PropsWithChildren, useContext, useEffect, useState } from "react";
+import { Loader } from "../../../src/Loader";
+import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
+import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import ResponsiveLogo from "../../../src/components/ResponsiveLogo/ResponsiveLogo";
+import { FactionContext, StateContext } from "../../../src/context/Context";
+import DataProvider from "../../../src/context/DataProvider";
 import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { responsivePixels } from "../../../src/util/util";
@@ -18,10 +19,18 @@ const BASE_URL =
     : "https://ti-assistant.com";
 
 export default function SelectFactionPage() {
+  return (
+    <DataProvider>
+      <InnerSelectFactionPage />
+    </DataProvider>
+  );
+}
+
+function InnerSelectFactionPage({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions"]);
-  const factions = gameData.factions;
+  const factions = useContext(FactionContext);
+  const state = useContext(StateContext);
 
   const [qrCode, setQrCode] = useState<string | undefined>();
 
@@ -49,18 +58,15 @@ export default function SelectFactionPage() {
     }
   }, [gameid]);
 
-  if (
-    gameData.state.phase !== "UNKNOWN" &&
-    Object.keys(factions).length === 0
-  ) {
+  if (state.phase !== "UNKNOWN" && Object.keys(factions).length === 0) {
     console.log("Forcing redirect!");
     // setGameId("");
     // router.push("/");
-    return;
+    return null;
   }
 
-  const orderedFactions = Object.entries(factions ?? {}).sort((a, b) => {
-    if (a[1].order > b[1].order) {
+  const orderedFactions = Object.values(factions ?? {}).sort((a, b) => {
+    if (a.order > b.order) {
       return 1;
     } else {
       return -1;
@@ -73,8 +79,8 @@ export default function SelectFactionPage() {
       style={{ alignItems: "center", height: "100svh" }}
     >
       <Header />
-      {gameData.state.phase === "UNKNOWN" ? (
-        <FullScreenLoader />
+      {state.phase === "UNKNOWN" ? (
+        <Loader />
       ) : (
         <div
           className="flexColumn"
@@ -120,14 +126,11 @@ export default function SelectFactionPage() {
               </div>
             </a>
           </Link>
-          {orderedFactions.map(([name, faction]) => {
+          {orderedFactions.map((faction) => {
             return (
-              <Link href={`/game/${gameid}/${name}`} key={faction.name}>
+              <Link href={`/game/${gameid}/${faction.id}`} key={faction.id}>
                 <a>
-                  <LabeledDiv
-                    color={getFactionColor(faction)}
-                    // onClick={() => selectFaction(name)}
-                  >
+                  <BorderedDiv color={getFactionColor(faction)}>
                     <div
                       className="flexRow"
                       style={{
@@ -139,7 +142,7 @@ export default function SelectFactionPage() {
                         height: "100%",
                       }}
                     >
-                      <FullFactionSymbol faction={faction.name} />
+                      <FactionIcon factionId={faction.id} size="100%" />
                     </div>
                     <div
                       className="flexColumn"
@@ -152,7 +155,7 @@ export default function SelectFactionPage() {
                     >
                       {getFactionName(faction)}
                     </div>
-                  </LabeledDiv>
+                  </BorderedDiv>
                 </a>
               </Link>
             );
@@ -175,8 +178,7 @@ function Sidebar({ side, children }: PropsWithChildren<{ side: string }>) {
 function Header() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["state"]);
-  const state = gameData.state;
+  const state = useContext(StateContext);
 
   const [qrCode, setQrCode] = useState<string | undefined>();
   const [qrCodeSize, setQrCodeSize] = useState(164);

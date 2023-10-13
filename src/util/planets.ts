@@ -1,16 +1,11 @@
-import { Attachment } from "./api/attachments";
-import { Planet, PlanetType } from "./api/planets";
-
 /**
  * Gets all the planets claimed by a specific faction.
  */
 export function filterToClaimedPlanets(
-  planets: Record<string, Planet>,
-  factionName: string
+  planets: Partial<Record<PlanetId, Planet>>,
+  factionId: FactionId
 ) {
-  return Object.values(planets).filter(
-    (planet) => planet.owner === factionName
-  );
+  return Object.values(planets).filter((planet) => planet.owner === factionId);
 }
 
 /**
@@ -18,7 +13,7 @@ export function filterToClaimedPlanets(
  */
 export function applyAllPlanetAttachments(
   planets: Planet[],
-  attachments: Record<string, Attachment>
+  attachments: Partial<Record<AttachmentId, Attachment>>
 ): Planet[] {
   return planets.map((planet) => {
     return applyPlanetAttachments(planet, attachments);
@@ -42,7 +37,7 @@ function hasSkip(planet: Planet) {
  */
 export function applyPlanetAttachments(
   planet: Planet,
-  attachments: Record<string, Attachment>
+  attachments: Partial<Record<AttachmentId, Attachment>>
 ) {
   let updatedPlanet = { ...planet };
   if (!attachments) {

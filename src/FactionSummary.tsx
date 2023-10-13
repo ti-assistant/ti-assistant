@@ -1,53 +1,24 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { FullFactionSymbol } from "./FactionCard";
-import { Modal } from "./Modal";
-import { FullPlanetSymbol, LegendaryPlanetIcon, PlanetRow } from "./PlanetRow";
-import { ResponsiveResources } from "./Resources";
-import { TechSkipIcon, WrappedTechIcon } from "./TechRow";
-import { Faction } from "./util/api/factions";
-import { Planet } from "./util/api/planets";
+import { useContext } from "react";
+import FactionIcon from "./components/FactionIcon/FactionIcon";
+import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
+import TechIcon from "./components/TechIcon/TechIcon";
+import {
+  AttachmentContext,
+  FactionContext,
+  ObjectiveContext,
+  PlanetContext,
+  StateContext,
+  TechContext,
+} from "./context/Context";
+import { manualVPUpdateAsync } from "./dynamic/api";
+import { computeVPs } from "./util/factions";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { filterToOwnedTechs, getTechColor } from "./util/techs";
+import { filterToOwnedTechs } from "./util/techs";
 import { pluralize, responsivePixels } from "./util/util";
-import { Tech, TechType } from "./util/api/techs";
-import { ObjectiveRow } from "./ObjectiveRow";
-import React from "react";
-import { getFactionColor, getFactionName } from "./util/factions";
-import { LabeledDiv } from "./LabeledDiv";
-import { useGameData } from "./data/GameData";
-import { claimPlanet, unclaimPlanet } from "./util/api/claimPlanet";
-import { hideObjective, revealObjective } from "./util/api/revealObjective";
-import { scoreObjective, unscoreObjective } from "./util/api/scoreObjective";
-import { Objective } from "./util/api/objectives";
-import { manualVPUpdate } from "./util/api/manualVPUpdate";
-
-function TechList({ techs }: { techs: Tech[] }) {
-  return (
-    <div
-      className="flexColumn"
-      style={{
-        alignItems: "stretch",
-        padding: "4px 8px",
-        backgroundColor: "#222",
-        boxShadow: "1px 1px 4px black",
-        whiteSpace: "nowrap",
-        gap: "4px",
-        border: `2px solid #333`,
-        borderRadius: "5px",
-      }}
-    >
-      {techs.map((tech) => (
-        <div key={tech.name} style={{ color: getTechColor(tech) }}>
-          {tech.name}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
   let blueTechs = [];
@@ -96,903 +67,50 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
   return (
     <div className="techSummaryGrid">
       <div className="centered">{redTechs.length || "-"}</div>
-      <WrappedTechIcon type={"RED"} size={16} />
+      <TechIcon type={"RED"} size={16} />
       <div>&nbsp;</div>
       <div className="centered">{greenTechs.length || "-"}</div>
-      <WrappedTechIcon type={"GREEN"} size={16} />
+      <TechIcon type={"GREEN"} size={16} />
       <div className="centered">{blueTechs.length || "-"}</div>
-      <WrappedTechIcon type={"BLUE"} size={16} />
+      <TechIcon type={"BLUE"} size={16} />
       <div>&nbsp;</div>
       <div className="centered">{yellowTechs.length || "-"}</div>
-      <WrappedTechIcon type={"YELLOW"} size={16} />
+      <TechIcon type={"YELLOW"} size={16} />
       <div className="centered">{upgradeTechs.length || "-"}</div>
       <div>{pluralize("Upgrade", upgradeTechs.length)}</div>
     </div>
   );
 }
 
-export function UpdateObjectives({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions", "objectives", "state"]);
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const state = gameData.state;
+//  function computeVPs(
+//   factions: Partial<Record<FactionId, Faction>>,
+//   factionId: FactionId,
+//   objectives: Partial<Record<ObjectiveId, Objective>>
+// ) {
+//   const faction = factions[factionId];
+//   if (!faction) {
+//     return 0;
+//   }
+//   return (
+//     (faction.vps ?? 0) +
+//     Object.values(objectives)
+//       .filter((objective) => {
+//         return (objective.scorers ?? []).includes(factionId);
+//       })
+//       .reduce((total, objective) => {
+//         const count = (objective.scorers ?? []).reduce((count, scorer) => {
+//           if (scorer === factionId) {
+//             return count + 1;
+//           }
+//           return count;
+//         }, 0);
+//         return Math.max(0, total + count * objective.points);
+//       }, 0)
+//   );
+// }
 
-  const [factionName, setFactionName] = useState("");
-
-  if (state && factionName === "") {
-    if (state.activeplayer && state.activeplayer !== "None") {
-      setFactionName(state.activeplayer);
-    } else {
-      setFactionName(state.speaker);
-    }
-    return null;
-  }
-
-  function scoreObj(objectiveName: string, score: boolean) {
-    if (!gameid) {
-      return;
-    }
-    if (score) {
-      scoreObjective(gameid, factionName, objectiveName);
-    } else {
-      unscoreObjective(gameid, factionName, objectiveName);
-    }
-  }
-
-  function addObjective(objectiveName: string) {
-    if (!gameid) {
-      return;
-    }
-    revealObjective(gameid, objectiveName);
-  }
-
-  function removeObj(objectiveName: string) {
-    if (!gameid) {
-      return;
-    }
-    hideObjective(gameid, objectiveName);
-  }
-
-  const orderedFactionNames = Object.keys(factions ?? {}).sort();
-
-  const sortedObjectives = Object.values(objectives ?? {}).sort((a, b) => {
-    if (a.selected && !b.selected) {
-      return -1;
-    } else if (b.selected && !a.selected) {
-      return 1;
-    }
-    if (a.name > b.name) {
-      return 1;
-    }
-    return -1;
-  });
-
-  const stageOneObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "STAGE ONE"
-  );
-  const stageTwoObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "STAGE TWO"
-  );
-  const secretObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "SECRET"
-  );
-  const otherObjectives = sortedObjectives.filter(
-    (obj) => obj.type === "OTHER"
-  );
-
-  let transition = {
-    "stage-one":
-      (stageOneObjectives.length > 0 &&
-        stageOneObjectives[0] &&
-        stageOneObjectives[0].selected) ??
-      false,
-    "stage-two":
-      (stageTwoObjectives.length > 0 &&
-        stageTwoObjectives[0] &&
-        stageTwoObjectives[0].selected) ??
-      false,
-    secret:
-      (secretObjectives.length > 0 &&
-        secretObjectives[0] &&
-        secretObjectives[0].selected) ??
-      false,
-    other:
-      (otherObjectives.length > 0 &&
-        otherObjectives[0] &&
-        otherObjectives[0].selected) ??
-      false,
-  };
-
-  return (
-    <div className="flexColumn" style={{ width: "100%", height: "100%" }}>
-      <div
-        style={{
-          fontSize: responsivePixels(24),
-          marginTop: responsivePixels(8),
-        }}
-      >
-        Score objectives for{" "}
-        {factions ? getFactionName(factions[factionName]) : factionName}
-      </div>
-      <div
-        className="flexColumn"
-        style={{
-          top: 0,
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          zIndex: -1,
-          opacity: 0.2,
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            position: "relative",
-            height: responsivePixels(240),
-            width: responsivePixels(240),
-          }}
-        >
-          <FullFactionSymbol faction={factionName} />
-        </div>
-      </div>
-      <div
-        className="flexRow"
-        style={{
-          flexWrap: "wrap",
-          backgroundColor: "#222",
-          zIndex: 904,
-          fontSize: responsivePixels(14),
-        }}
-      >
-        {orderedFactionNames.map((name) => {
-          return (
-            <button
-              key={name}
-              className={name === factionName ? "selected" : ""}
-              style={{ fontSize: responsivePixels(14) }}
-              onClick={() => setFactionName(name)}
-            >
-              {name}
-            </button>
-          );
-        })}
-      </div>
-      <div
-        className="flexRow"
-        style={{
-          width: "100%",
-          padding: `${responsivePixels(8)} 0px`,
-          backgroundColor: "#222",
-          position: "sticky",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          zIndex: 902,
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}
-        >
-          Stage I
-        </div>
-        <div
-          className="flexColumn"
-          style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}
-        >
-          Stage II
-        </div>
-        <div
-          className="flexColumn"
-          style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}
-        >
-          Secret
-        </div>
-        <div
-          className="flexColumn"
-          style={{ flex: "0 0 24%", fontSize: responsivePixels(24) }}
-        >
-          Other
-        </div>
-      </div>
-      <div
-        className="flexRow smallFont"
-        style={{
-          boxSizing: "border-box",
-          padding: responsivePixels(8),
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          height: "100%",
-          width: "100%",
-          overflowY: "auto",
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            flex: "0 0 24%",
-            gap: responsivePixels(8),
-            justifyItems: "flex-start",
-            alignItems: "stretch",
-          }}
-        >
-          {stageOneObjectives.map((obj) => {
-            const scorers = obj.scorers ?? [];
-            if (obj.selected) {
-              return (
-                <ObjectiveRow
-                  key={obj.name}
-                  objective={obj}
-                  scoreObjective={(name, score) => scoreObj(name, score)}
-                  factionName={factionName}
-                  removeObjective={
-                    scorers.length === 0 ? () => removeObj(obj.name) : undefined
-                  }
-                />
-              );
-            }
-            if (transition["stage-one"] && !obj.selected) {
-              transition["stage-one"] = false;
-              return (
-                <div
-                  key={obj.name}
-                  style={{
-                    paddingTop: responsivePixels(4),
-                    borderTop: `${responsivePixels(1)} solid #777`,
-                  }}
-                >
-                  <ObjectiveRow
-                    objective={obj}
-                    factionName={factionName}
-                    scoreObjective={(name, score) => scoreObj(name, score)}
-                    addObjective={() => addObjective(obj.name)}
-                  />
-                </div>
-              );
-            }
-            return (
-              <ObjectiveRow
-                key={obj.name}
-                objective={obj}
-                factionName={factionName}
-                scoreObjective={(name, score) => scoreObj(name, score)}
-                addObjective={() => addObjective(obj.name)}
-              />
-            );
-          })}
-        </div>
-        <div
-          className="flexColumn"
-          style={{
-            flex: "0 0 24%",
-            justifyItems: "flex-start",
-            alignItems: "stretch",
-          }}
-        >
-          {stageTwoObjectives.map((obj) => {
-            const scorers = obj.scorers ?? [];
-            if (obj.selected) {
-              return (
-                <ObjectiveRow
-                  key={obj.name}
-                  objective={obj}
-                  scoreObjective={(name, score) => scoreObj(name, score)}
-                  factionName={factionName}
-                  removeObjective={
-                    scorers.length === 0 ? () => removeObj(obj.name) : undefined
-                  }
-                />
-              );
-            }
-            if (transition["stage-two"] && !obj.selected) {
-              transition["stage-two"] = false;
-              return (
-                <div
-                  key={obj.name}
-                  style={{
-                    paddingTop: responsivePixels(8),
-                    borderTop: `${responsivePixels(1)} solid #777`,
-                  }}
-                >
-                  <ObjectiveRow
-                    objective={obj}
-                    factionName={factionName}
-                    scoreObjective={(name, score) => scoreObj(name, score)}
-                    addObjective={() => addObjective(obj.name)}
-                  />
-                </div>
-              );
-            }
-            return (
-              <ObjectiveRow
-                key={obj.name}
-                objective={obj}
-                factionName={factionName}
-                scoreObjective={(name, score) => scoreObj(name, score)}
-                addObjective={() => addObjective(obj.name)}
-              />
-            );
-          })}
-        </div>
-        <div
-          className="flexColumn"
-          style={{
-            flex: "0 0 24%",
-            justifyItems: "flex-start",
-            alignItems: "stretch",
-          }}
-        >
-          {secretObjectives.map((obj) => {
-            const scorers = obj.scorers ?? [];
-            if (obj.selected) {
-              return (
-                <ObjectiveRow
-                  key={obj.name}
-                  objective={obj}
-                  scoreObjective={(name, score) => scoreObj(name, score)}
-                  factionName={factionName}
-                  removeObjective={
-                    scorers.length === 0 ? () => removeObj(obj.name) : undefined
-                  }
-                />
-              );
-            }
-            if (transition["secret"] && !obj.selected) {
-              transition["secret"] = false;
-              return (
-                <div
-                  key={obj.name}
-                  style={{
-                    paddingTop: responsivePixels(4),
-                    borderTop: `${responsivePixels(1)} solid #777`,
-                  }}
-                >
-                  <ObjectiveRow
-                    objective={obj}
-                    factionName={factionName}
-                    scoreObjective={(name, score) => scoreObj(name, score)}
-                    addObjective={() => addObjective(obj.name)}
-                  />
-                </div>
-              );
-            }
-            return (
-              <ObjectiveRow
-                key={obj.name}
-                objective={obj}
-                factionName={factionName}
-                scoreObjective={(name, score) => scoreObj(name, score)}
-                addObjective={() => addObjective(obj.name)}
-              />
-            );
-          })}
-        </div>
-        <div
-          className="flexColumn"
-          style={{
-            flex: "0 0 24%",
-            justifyItems: "flex-start",
-            alignItems: "stretch",
-          }}
-        >
-          {otherObjectives.map((obj) => {
-            const scorers = obj.scorers ?? [];
-            if (obj.selected) {
-              return (
-                <ObjectiveRow
-                  key={obj.name}
-                  objective={obj}
-                  scoreObjective={(name, score) => scoreObj(name, score)}
-                  factionName={factionName}
-                  removeObjective={
-                    scorers.length === 0 ? () => removeObj(obj.name) : undefined
-                  }
-                />
-              );
-            }
-            if (transition["other"] && !obj.selected) {
-              transition["other"] = false;
-              return (
-                <div
-                  key={obj.name}
-                  style={{
-                    paddingTop: responsivePixels(4),
-                    borderTop: `${responsivePixels(1)} solid #777`,
-                  }}
-                >
-                  <ObjectiveRow
-                    objective={obj}
-                    factionName={factionName}
-                    scoreObjective={(name, score) => scoreObj(name, score)}
-                    addObjective={() => addObjective(obj.name)}
-                  />
-                </div>
-              );
-            }
-            return (
-              <ObjectiveRow
-                key={obj.name}
-                objective={obj}
-                factionName={factionName}
-                scoreObjective={(name, score) => scoreObj(name, score)}
-                addObjective={() => addObjective(obj.name)}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export interface UpdateObjectivesModalProps {
-  visible: boolean;
-  onComplete?: () => void;
-}
-
-export function UpdateObjectivesModal({
-  visible,
-  onComplete,
-}: UpdateObjectivesModalProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["state"]);
-  const state = gameData.state;
-
-  const [factionName, setFactionName] = useState("");
-
-  if (!state) {
-    return null;
-  }
-
-  if (factionName === "") {
-    setFactionName(state.speaker);
-    return null;
-  }
-
-  return (
-    <div>
-      <Modal
-        closeMenu={onComplete}
-        title={"Score Objectives for " + factionName}
-        visible={visible}
-      >
-        <UpdateObjectives />
-      </Modal>
-    </div>
-  );
-}
-
-export function UpdatePlanets({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "attachments",
-    "factions",
-    "planets",
-    "state",
-  ]);
-  const attachments = gameData.attachments;
-  const factions = gameData.factions;
-  const planets = gameData.planets;
-  const state = gameData.state;
-
-  const [factionName, setFactionName] = useState("");
-
-  useEffect(() => {
-    if (
-      state.activeplayer &&
-      state.activeplayer !== "" &&
-      state.activeplayer !== "None"
-    ) {
-      setFactionName(state.activeplayer);
-      return;
-    }
-    if (state.speaker && state.speaker !== "" && state.speaker !== "None") {
-      setFactionName(state.speaker);
-      return;
-    }
-  }, [state.activeplayer, state.speaker]);
-
-  if (!state) {
-    return null;
-  }
-
-  const updatedPlanets = applyAllPlanetAttachments(
-    Object.values(planets ?? {}),
-    attachments ?? {}
-  );
-
-  const planetsArr: Planet[] = [];
-  updatedPlanets.forEach((planet) => {
-    planetsArr.push(planet);
-  });
-
-  function removePlanet(toRemove: string) {
-    if (!gameid) {
-      return;
-    }
-    unclaimPlanet(gameid, factionName, toRemove);
-  }
-
-  function addPlanet(toAdd: string) {
-    if (!gameid) {
-      return;
-    }
-    claimPlanet(gameid, factionName, toAdd);
-  }
-  const orderedFactionNames = Object.keys(factions ?? {}).sort();
-
-  const unownedPlanets = planetsArr.filter((planet) => {
-    return !planet.locked && planet.owner !== factionName;
-  });
-
-  const half = Math.ceil(unownedPlanets.length / 2);
-  const middlePlanetCol = unownedPlanets.slice(0, half);
-  const lastPlanetCol = unownedPlanets.slice(half);
-
-  return (
-    <div className="flexColumn" style={{ width: "100%", height: "100%" }}>
-      <div
-        style={{
-          fontSize: responsivePixels(24),
-          marginTop: responsivePixels(8),
-        }}
-      >
-        Update planets for{" "}
-        {factions ? getFactionName(factions[factionName]) : factionName}
-      </div>
-      <div
-        className="flexColumn"
-        style={{
-          top: 0,
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          zIndex: -1,
-          opacity: 0.2,
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            position: "relative",
-            height: responsivePixels(240),
-            width: responsivePixels(240),
-          }}
-        >
-          <FullFactionSymbol faction={factionName} />
-        </div>
-      </div>
-      <div
-        className="flexRow"
-        style={{
-          flexWrap: "wrap",
-          backgroundColor: "#222",
-          zIndex: 904,
-          fontSize: responsivePixels(14),
-        }}
-      >
-        {orderedFactionNames.map((name) => {
-          return (
-            <button
-              key={name}
-              className={name === factionName ? "selected" : ""}
-              style={{ fontSize: responsivePixels(14) }}
-              onClick={() => setFactionName(name)}
-            >
-              {name}
-            </button>
-          );
-        })}
-      </div>
-      <div
-        className="flexRow"
-        style={{
-          alignItems: "flex-start",
-          width: "100%",
-          height: "100%",
-          boxSizing: "border-box",
-          overflowY: "auto",
-          padding: responsivePixels(8),
-        }}
-      >
-        <div
-          style={{
-            position: "sticky",
-            zIndex: 1, // Required to make the attach menu show up over other elements.
-            top: 0,
-            flex: "0 0 32%",
-          }}
-        >
-          <LabeledDiv
-            noBlur={true}
-            label={`Controlled by ${
-              factions ? getFactionName(factions[factionName]) : factionName
-            }`}
-            color={factions ? getFactionColor(factions[factionName]) : "#555"}
-          >
-            <div
-              className="flexColumn"
-              style={{ width: "100%", alignItems: "stretch" }}
-            >
-              {planetsArr.map((planet) => {
-                if (planet.owner !== factionName) {
-                  return null;
-                }
-                return (
-                  <div key={planet.name}>
-                    <PlanetRow
-                      factionName={factionName}
-                      planet={planet}
-                      removePlanet={removePlanet}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </LabeledDiv>
-        </div>
-        {/* </div> */}
-        <div
-          className="flexColumn"
-          style={{
-            flexWrap: "wrap",
-            alignItems: "stretch",
-            justifyContent: "stretch",
-            alignContent: "stretch",
-            boxSizing: "border-box",
-            padding: `0 ${responsivePixels(8)}`,
-          }}
-        >
-          {middlePlanetCol.map((planet) => {
-            return (
-              <div key={planet.name} style={{ flex: "0 0 32%" }}>
-                <PlanetRow
-                  factionName={factionName}
-                  planet={planet}
-                  addPlanet={addPlanet}
-                  opts={{ showSelfOwned: true }}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div
-          className="flexColumn"
-          style={{
-            flexWrap: "wrap",
-            alignItems: "stretch",
-            justifyContent: "stretch",
-            alignContent: "stretch",
-            boxSizing: "border-box",
-            padding: `0 ${responsivePixels(8)}`,
-          }}
-        >
-          {lastPlanetCol.map((planet) => {
-            return (
-              <div key={planet.name} style={{ flex: "0 0 32%" }}>
-                <PlanetRow
-                  factionName={factionName}
-                  planet={planet}
-                  addPlanet={addPlanet}
-                  opts={{ showSelfOwned: true }}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export interface UpdatePlanetsModalProps {
-  visible: boolean;
-  onComplete?: () => void;
-}
-
-export function UpdatePlanetsModal({
-  visible,
-  onComplete,
-}: UpdatePlanetsModalProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["state"]);
-  const state = gameData.state;
-
-  const [factionName, setFactionName] = useState("");
-
-  if (!state) {
-    return null;
-  }
-
-  if (factionName === "") {
-    setFactionName(state.speaker);
-    return null;
-  }
-
-  return (
-    <div>
-      <Modal
-        closeMenu={onComplete}
-        title={"Update Planets for " + factionName}
-        visible={visible}
-      >
-        <UpdatePlanets />
-      </Modal>
-    </div>
-  );
-}
-
-export interface PlanetSummaryProps {
-  planets: Planet[];
-  faction: Faction;
-  options?: {
-    total?: number;
-  };
-}
-
-export function PlanetSummary({
-  planets,
-  faction,
-  options = {},
-}: PlanetSummaryProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["options"]);
-  const gameOptions = gameData.options;
-
-  let numPlanets = 0;
-  let resources = 0;
-  let influence = 0;
-  let cultural = 0;
-  let hazardous = 0;
-  let industrial = 0;
-  let legendary = 0;
-  let techSkips = 0;
-  let attachments = 0;
-  for (const planet of planets) {
-    numPlanets++;
-    if (
-      (gameOptions?.expansions ?? []).includes("CODEX THREE") &&
-      faction.name === "Xxcha Kingdom" &&
-      faction.hero === "unlocked"
-    ) {
-      resources += planet.resources + planet.influence;
-      influence += planet.resources + planet.influence;
-    } else {
-      resources += planet.resources;
-      influence += planet.influence;
-    }
-    let hasSkip = false;
-    for (const attribute of planet.attributes) {
-      if (attribute.endsWith("skip")) {
-        hasSkip = true;
-      }
-      if (attribute === "legendary") {
-        ++legendary;
-      }
-    }
-    if (hasSkip) {
-      ++techSkips;
-    }
-    switch (planet.type) {
-      case "CULTURAL":
-        ++cultural;
-        break;
-      case "INDUSTRIAL":
-        ++industrial;
-        break;
-      case "HAZARDOUS":
-        ++hazardous;
-        break;
-    }
-    if (planet.attachments?.includes("Terraform")) {
-      ++cultural;
-      ++industrial;
-      ++hazardous;
-    }
-    if ((planet.attachments ?? []).length > 0) {
-      ++attachments;
-    }
-  }
-
-  return (
-    <div className="flexRow" style={{ gap: responsivePixels(2) }}>
-      <div
-        className="flexRow"
-        style={{
-          width: responsivePixels(50),
-          height: "100%",
-          paddingBottom: responsivePixels(2),
-          alignItems: "flex-end",
-          justifyContent: "flex-start",
-          position: "relative",
-        }}
-      >
-        <ResponsiveResources resources={resources} influence={influence} />
-        <div
-          className="flexColumn"
-          style={{
-            textAlign: "center",
-            position: "absolute",
-            width: responsivePixels(30),
-            height: responsivePixels(30),
-            right: 0,
-            top: 0,
-            border: `${responsivePixels(1)} solid #444`,
-            zIndex: -1,
-            backgroundColor: "#222",
-            borderRadius: "100%",
-            gap: 0,
-            fontSize: responsivePixels(18),
-          }}
-        >
-          {numPlanets}
-        </div>
-      </div>
-      <div className="flexRow" style={{ gap: responsivePixels(8) }}>
-        <div className="planetTypeGrid">
-          <div className="centered">{cultural || "-"}</div>
-          <FullPlanetSymbol type={"CULTURAL"} size={16} />
-          <div className="centered">{hazardous || "-"}</div>
-          <FullPlanetSymbol type={"HAZARDOUS"} size={16} />
-          <div className="centered">{industrial || "-"}</div>
-          <FullPlanetSymbol type={"INDUSTRIAL"} size={16} />
-        </div>
-        <div className="planetTypeGrid">
-          <LegendaryPlanetIcon />
-          <div className="centered">{legendary || "-"}</div>
-          <TechSkipIcon size={16} />
-          <div className="centered">{techSkips || "-"}</div>
-          <div
-            className="flexRow"
-            style={{
-              fontSize: responsivePixels(20),
-              lineHeight: responsivePixels(16),
-            }}
-          >
-            <div className="symbol">⎗</div>
-          </div>
-          <div className="centered">{attachments || "-"}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function computeVPs(
-  factions: Record<string, Faction>,
-  factionName: string,
-  objectives: Record<string, Objective>
-) {
-  const faction = factions[factionName];
-  if (!faction) {
-    return 0;
-  }
-  return (
-    (faction.vps ?? 0) +
-    Object.values(objectives)
-      .filter((objective) => {
-        return (objective.scorers ?? []).includes(factionName);
-      })
-      .reduce((total, objective) => {
-        const count = (objective.scorers ?? []).reduce((count, scorer) => {
-          if (scorer === factionName) {
-            return count + 1;
-          }
-          return count;
-        }, 0);
-        return Math.max(0, total + count * objective.points);
-      }, 0)
-  );
-}
-
-export interface FactionSummaryProps {
-  factionName: string;
+interface FactionSummaryProps {
+  factionId?: FactionId;
   options?: {
     hidePlanets?: boolean;
     hideTechs?: boolean;
@@ -1001,45 +119,47 @@ export interface FactionSummaryProps {
 }
 
 export function FactionSummary({
-  factionName,
+  factionId,
   options = {},
 }: FactionSummaryProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "attachments",
-    "factions",
-    "objectives",
-    "planets",
-    "state",
-    "techs",
-  ]);
-  const attachments = gameData.attachments ?? {};
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const planets = gameData.planets;
-  const state = gameData.state;
-  const techs = gameData.techs;
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
+  const state = useContext(StateContext);
+  const techs = useContext(TechContext);
 
-  const faction = factions ? factions[factionName] : undefined;
+  let ownedTechs: Tech[] = [];
+  let updatedPlanets: Planet[] = [];
+  let VPs = 0;
+  let factionHero = "locked";
+  if (factionId) {
+    const faction = factions[factionId];
 
-  if (!faction) {
-    return null;
+    if (!faction) {
+      throw new Error("Faction " + factionId + " not found");
+    }
+
+    ownedTechs = filterToOwnedTechs(techs ?? {}, faction);
+
+    const ownedPlanets = factionId
+      ? filterToClaimedPlanets(planets ?? {}, factionId)
+      : [];
+    updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
+
+    VPs = computeVPs(factions ?? {}, factionId, objectives ?? {});
+
+    factionHero = faction.hero;
   }
 
-  const ownedTechs = filterToOwnedTechs(techs ?? {}, faction);
-
-  const ownedPlanets = filterToClaimedPlanets(planets ?? {}, factionName);
-  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
-
-  const VPs = computeVPs(factions ?? {}, factionName, objectives ?? {});
-
   function manualVpAdjust(increase: boolean) {
-    if (!gameid) {
+    if (!gameid || !factionId) {
       return;
     }
     const value = increase ? 1 : -1;
-    manualVPUpdate(gameid, factionName, value);
+    manualVPUpdateAsync(gameid, factionId, value);
   }
 
   const editable = state?.phase !== "END";
@@ -1070,7 +190,7 @@ export function FactionSummary({
                 height: responsivePixels(60),
               }}
             >
-              <FullFactionSymbol faction={factionName} />
+              <FactionIcon factionId={factionId} size="100%" />
             </div>
           </div>
         ) : null}
@@ -1104,7 +224,12 @@ export function FactionSummary({
         </div>
       </div>
       {options.hidePlanets ? null : (
-        <PlanetSummary planets={updatedPlanets} faction={faction} />
+        <PlanetSummary
+          planets={updatedPlanets}
+          hasXxchaHero={
+            factionId === "Xxcha Kingdom" && factionHero === "unlocked"
+          }
+        />
       )}
     </div>
   );

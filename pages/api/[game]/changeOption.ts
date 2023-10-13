@@ -1,7 +1,11 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getGameData } from "../../../server/util/fetch";
-import { ChangeOptionData } from "../../../src/util/api/changeOption";
+
+interface ChangeOptionData {
+  option: string;
+  value: any;
+}
 
 export default async function handler(
   req: NextApiRequest,

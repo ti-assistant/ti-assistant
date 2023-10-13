@@ -1,0 +1,74 @@
+.Modal {
+  position: fixed;
+  left: 0;
+  top: 0px;
+  width: 100vw;
+  height: 100dvh;
+
+  display: none;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #eee;
+}
+
+.Overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100dvh;
+  background-color: black;
+  opacity: 50%;
+}
+
+.Modal .Content {
+  position: relative;
+  background-color: #222;
+  max-width: 85%;
+  max-height: 90vh;
+  border-radius: var(--ten-pixel);
+}
+
+.Modal .Header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  padding: var(--four-pixel);
+  border-bottom: var(--one-pixel) solid grey;
+  z-index: 1;
+  position: sticky;
+  top: 0;
+  background-color: #222;
+  border-radius: var(--ten-pixel) var(--ten-pixel) 0 0;
+}
+
+.Modal .CloseButton {
+  color: grey;
+  cursor: pointer;
+  font-size: var(--twenty-pixel);
+  margin-left: var(--six-pixel);
+  position: absolute;
+  top: var(--four-pixel);
+}
+
+.Modal .Title {
+  padding: var(--four-pixel) var(--thirty-two-pixel);
+  text-align: center;
+  flex-basis: 100%;
+  font-size: var(--forty-pixel);
+}
+
+.Modal .Body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 0 var(--four-pixel) var(--four-pixel) var(--four-pixel);
+}
+
+:global(.hoverInfo):has(.Modal.shown) {
+  clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
+}

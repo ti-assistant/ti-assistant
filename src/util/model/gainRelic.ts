@@ -1,24 +1,7 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
 } from "./scoreObjective";
-
-export interface GainRelicEvent {
-  faction: string;
-  relic: string;
-}
-
-export interface GainRelicData {
-  action: "GAIN_RELIC";
-  event: GainRelicEvent;
-}
-
-export interface LoseRelicData {
-  action: "LOSE_RELIC";
-  event: GainRelicEvent;
-}
 
 export class GainRelicHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: GainRelicData) {}

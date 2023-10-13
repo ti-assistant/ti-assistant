@@ -1,0 +1,37 @@
+.ObjectivesHeader {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.InnerObjectivesHeader {
+  top: 0;
+  width: 100vw;
+  position: fixed;
+  justify-content: space-between;
+}
+
+.HomeLink {
+  cursor: pointer;
+  position: fixed;
+  justify-content: center;
+}
+
+.HomeLink.mobile {
+  text-align: center;
+  z-index: 4;
+  padding-top: var(--twelve-pixel);
+  padding-bottom: var(--twelve-pixel);
+  width: 100%;
+  left: 0;
+  background-color: #222;
+  box-sizing: border-box;
+}
+
+.HomeLink.desktop {
+  top: var(--sixteen-pixel);
+  left: var(--ninety-six-pixel);
+}

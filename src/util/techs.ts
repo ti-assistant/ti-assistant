@@ -1,8 +1,4 @@
-import { Faction } from "./api/factions";
-import { Options } from "./api/options";
-import { Planet } from "./api/planets";
-import { Relic } from "./api/relics";
-import { hasTech, Tech, TechType } from "./api/techs";
+import { hasTech } from "./api/techs";
 
 export function getTechColor(tech: Tech) {
   return getTechTypeColor(tech.type);
@@ -26,11 +22,11 @@ export function getTechTypeColor(type: TechType) {
  * Gets all the techs owned by a specific faction.
  */
 export function filterToOwnedTechs(
-  techs: Record<string, Tech>,
+  techs: Partial<Record<TechId, Tech>>,
   faction: Faction
 ) {
   return Object.values(techs).filter((tech) => {
-    return !!hasTech(faction, tech.name);
+    return !!hasTech(faction, tech.id);
   });
 }
 
@@ -38,11 +34,11 @@ export function filterToOwnedTechs(
  * Gets all the techs not owned by a specific faction.
  */
 export function filterToUnownedTechs(
-  techs: Record<string, Tech>,
+  techs: Partial<Record<TechId, Tech>>,
   faction: Faction
 ) {
   return Object.values(techs).filter((tech) => {
-    return !hasTech(faction, tech.name);
+    return !hasTech(faction, tech.id);
   });
 }
 
@@ -71,10 +67,10 @@ export function sortTechs(techs: Tech[]) {
 
 export function getFactionPreReqs(
   faction: Faction | undefined,
-  techs: Record<string, Tech>,
+  techs: Partial<Record<TechId, Tech>>,
   options: Options,
   planets: Planet[],
-  relics: Record<string, Relic>
+  relics: Partial<Record<RelicId, Relic>>
 ) {
   const prereqs: Record<TechType, number> = {
     RED: 0,
@@ -89,7 +85,7 @@ export function getFactionPreReqs(
   }
 
   for (const ownedTech of Object.keys(faction.techs)) {
-    const tech = techs[ownedTech];
+    const tech = techs[ownedTech as TechId];
     if (!tech) {
       continue;
     }
@@ -97,7 +93,7 @@ export function getFactionPreReqs(
   }
 
   for (const planet of planets) {
-    if (planet.owner !== faction.name) {
+    if (planet.owner !== faction.id) {
       continue;
     }
     for (const attribute of planet.attributes) {
@@ -120,7 +116,7 @@ export function getFactionPreReqs(
 
   // The Prophet's Tears can substitute for any 1 pre-req.
   const theProphetsTears = relics["The Prophet's Tears"];
-  if (theProphetsTears && theProphetsTears.owner === faction.name) {
+  if (theProphetsTears && theProphetsTears.owner === faction.id) {
     prereqs.RED += 1;
     prereqs.GREEN += 1;
     prereqs.YELLOW += 1;
@@ -128,10 +124,7 @@ export function getFactionPreReqs(
   }
 
   // NOTE: This only applies once the Yin Brotherhood unlocks their commander, but there's currently no way to detect this.
-  if (
-    options.expansions.includes("POK") &&
-    faction.name === "Yin Brotherhood"
-  ) {
+  if (options.expansions.includes("POK") && faction.id === "Yin Brotherhood") {
     prereqs.GREEN += 1;
   }
 
@@ -156,7 +149,7 @@ export function canResearchTech(
     if (hasTech(faction, "AI Development Algorithm")) {
       usedAida = false;
     }
-    switch (faction.name) {
+    switch (faction.id) {
       case "Nekro Virus": {
         return isTechOwned;
       }
@@ -187,4 +180,28 @@ export function canResearchTech(
     localPrereqs[req] -= 1;
   }
   return true;
+}
+
+export function sortTechsByPreReqAndExpansion(techs: Tech[]) {
+  techs.sort((a, b) => {
+    if (a.prereqs.length === b.prereqs.length) {
+      if (a.expansion > b.expansion) {
+        return 1;
+      }
+      return -1;
+    }
+    if (a.prereqs.length > b.prereqs.length) {
+      return 1;
+    }
+    return -1;
+  });
+}
+
+export function sortTechsByName(techs: Tech[]) {
+  techs.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
 }

@@ -1,62 +1,71 @@
 import { useRouter } from "next/router";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useContext } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { FactionCard, FullFactionSymbol } from "../FactionCard";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { LabeledDiv, LabeledLine } from "../LabeledDiv";
 import { FullScreenLoader } from "../Loader";
 import { LockedButtons } from "../LockedButton";
-import { ObjectiveRow } from "../ObjectiveRow";
-import { PlanetRow } from "../PlanetRow";
 import { SmallStrategyCard } from "../StrategyCard";
 import { TechRow } from "../TechRow";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
-import { FactionCircle } from "../components/FactionCircle";
-import { FactionSelectRadialMenu } from "../components/FactionSelect";
+import FactionCard from "../components/FactionCard/FactionCard";
+import FactionCircle from "../components/FactionCircle/FactionCircle";
+import FactionIcon from "../components/FactionIcon/FactionIcon";
+import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import LabeledLine from "../components/LabeledLine/LabeledLine";
+import PlanetRow from "../components/PlanetRow/PlanetRow";
 import { TacticalAction } from "../components/TacticalAction";
-import { useGameData } from "../data/GameData";
+import TechSelectHoverMenu from "../components/TechSelectHoverMenu/TechSelectHoverMenu";
+import {
+  ActionLogContext,
+  AttachmentContext,
+  FactionContext,
+  ObjectiveContext,
+  PlanetContext,
+  StateContext,
+  StrategyCardContext,
+  TechContext,
+} from "../context/Context";
+import {
+  addTechAsync,
+  advancePhaseAsync,
+  claimPlanetAsync,
+  endTurnAsync,
+  markSecondaryAsync,
+  removeTechAsync,
+  scoreObjectiveAsync,
+  selectActionAsync,
+  setSpeakerAsync,
+  unclaimPlanetAsync,
+  unscoreObjectiveAsync,
+  unselectActionAsync,
+} from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
 import { getResearchedTechs } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { addTech, removeTech } from "../util/api/addTech";
-import { advancePhase } from "../util/api/advancePhase";
-import { StrategyCard } from "../util/api/cards";
-import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
 import {
-  getNewSpeaker,
-  getNewSpeakerEvent,
-  getSelectedAction,
+  getNewSpeakerEventFromLog,
+  getSelectedActionFromLog,
 } from "../util/api/data";
-import { getDefaultStrategyCards } from "../util/api/defaults";
-import { endTurn } from "../util/api/endTurn";
-import { Faction } from "../util/api/factions";
-import { markSecondary } from "../util/api/markSecondary";
-import { Planet } from "../util/api/planets";
-import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
-import { selectAction, unselectAction } from "../util/api/selectAction";
-import { setSpeaker } from "../util/api/setSpeaker";
-import { Action, Secondary } from "../util/api/subState";
-import { Tech, hasTech } from "../util/api/techs";
+import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
-import { ClaimPlanetData } from "../util/model/claimPlanet";
-import { ScoreObjectiveData } from "../util/model/scoreObjective";
 import { applyPlanetAttachments } from "../util/planets";
 import { responsivePixels } from "../util/util";
 import { ComponentAction } from "./util/ComponentAction";
-import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
+import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 
-export interface FactionActionButtonsProps {
-  factionName: string;
+interface FactionActionButtonsProps {
+  factionId: FactionId;
   buttonStyle?: CSSProperties;
 }
 
 function SecondaryCheck({
-  activeFactionName,
+  activeFactionId,
   gameid,
   orderedFactions,
 }: {
-  activeFactionName: string;
+  activeFactionId: FactionId;
   gameid: string;
   orderedFactions: Faction[];
 }) {
@@ -71,7 +80,7 @@ function SecondaryCheck({
         }}
       >
         {orderedFactions.map((faction) => {
-          if (faction.name === activeFactionName) {
+          if (faction.id === activeFactionId) {
             return null;
           }
           const secondaryState = faction.secondary ?? "PENDING";
@@ -81,11 +90,11 @@ function SecondaryCheck({
           }
           return (
             <FactionCircle
-              key={faction.name}
-              blur={true}
+              key={faction.id}
+              blur
               borderColor={color}
               fade={secondaryState !== "PENDING"}
-              factionName={faction.name}
+              factionId={faction.id}
               onClick={() => {
                 if (!gameid) {
                   return;
@@ -102,7 +111,7 @@ function SecondaryCheck({
                     nextState = "PENDING";
                     break;
                 }
-                markSecondary(gameid, faction.name, nextState);
+                markSecondaryAsync(gameid, faction.id, nextState);
               }}
               size={52}
               tag={
@@ -176,25 +185,21 @@ function SecondaryCheck({
 }
 
 export function FactionActionButtons({
-  factionName,
+  factionId,
   buttonStyle,
 }: FactionActionButtonsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "factions",
-    "strategycards",
-  ]);
-  const factions = gameData.factions;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  const actionLog = useContext(ActionLogContext);
+  const factions = useContext(FactionContext);
+  const strategyCards = useContext(StrategyCardContext);
 
   if (!factions) {
     return null;
   }
 
-  function canFactionPass(factionName: string) {
-    for (const card of getStrategyCardsForFaction(strategyCards, factionName)) {
+  function canFactionPass(factionId: FactionId) {
+    for (const card of getStrategyCardsForFaction(strategyCards, factionId)) {
       if (!card.used) {
         return false;
       }
@@ -202,20 +207,20 @@ export function FactionActionButtons({
     return true;
   }
 
-  const selectedAction = getSelectedAction(gameData);
+  const selectedAction = getSelectedActionFromLog(actionLog);
 
   function toggleAction(action: Action) {
     if (!gameid) {
       return;
     }
     if (selectedAction === action) {
-      unselectAction(gameid, action);
+      unselectActionAsync(gameid, action);
     } else {
-      selectAction(gameid, action);
+      selectActionAsync(gameid, action);
     }
   }
 
-  const activeFaction = factions[factionName];
+  const activeFaction = factions[factionId];
   if (!activeFaction) {
     return null;
   }
@@ -230,17 +235,17 @@ export function FactionActionButtons({
         flexWrap: "wrap",
       }}
     >
-      {getStrategyCardsForFaction(strategyCards, activeFaction.name).map(
+      {getStrategyCardsForFaction(strategyCards, activeFaction.id).map(
         (card) => {
           if (card.used) {
             return null;
           }
           return (
             <button
-              key={card.name}
-              className={selectedAction === card.name ? "selected" : ""}
+              key={card.id}
+              className={selectedAction === card.id ? "selected" : ""}
               style={buttonStyle}
-              onClick={() => toggleAction(card.name)}
+              onClick={() => toggleAction(card.id)}
             >
               {card.name}
             </button>
@@ -261,11 +266,11 @@ export function FactionActionButtons({
       >
         Component
       </button>
-      {canFactionPass(activeFaction.name) ? (
+      {canFactionPass(activeFaction.id) ? (
         <button
           className={selectedAction === "Pass" ? "selected" : ""}
           style={buttonStyle}
-          disabled={!canFactionPass(activeFaction.name)}
+          disabled={!canFactionPass(activeFaction.id)}
           onClick={() => toggleAction("Pass")}
         >
           Pass
@@ -275,20 +280,20 @@ export function FactionActionButtons({
   );
 }
 
-export function FactionActions({ factionName }: { factionName: string }) {
+export function FactionActions({ factionId }: { factionId: FactionId }) {
   return (
     <div className="flexColumn" style={{ gap: responsivePixels(4) }}>
       <div style={{ fontSize: responsivePixels(20) }}>Select Action</div>
       <FactionActionButtons
-        factionName={factionName}
+        factionId={factionId}
         buttonStyle={{ fontSize: responsivePixels(18) }}
       />
     </div>
   );
 }
 
-export interface AdditionalActionsProps {
-  factionName: string;
+interface AdditionalActionsProps {
+  factionId: FactionId;
   style?: CSSProperties;
   ClientOnlyHoverMenuStyle?: CSSProperties;
   primaryOnly?: boolean;
@@ -296,72 +301,62 @@ export interface AdditionalActionsProps {
 }
 
 export function AdditionalActions({
-  factionName,
+  factionId,
   style = {},
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "attachments",
-    "factions",
-    "objectives",
-    "planets",
-    "state",
-    "techs",
-  ]);
-  const attachments = gameData.attachments;
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const planets = gameData.planets ?? {};
-  const state = gameData.state;
-  const techs = gameData.techs;
+  const actionLog = useContext(ActionLogContext);
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
+  const state = useContext(StateContext);
+  const techs = useContext(TechContext);
 
   if (!factions || !techs) {
     return null;
   }
 
-  const activeFaction = factions[factionName];
+  const activeFaction = factions[factionId];
 
   if (!activeFaction) {
     return null;
   }
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   function getResearchableTechs(faction: Faction) {
-    const researchedTechs = getResearchedTechs(currentTurn, faction.name);
-    if (faction.name === "Nekro Virus") {
-      const nekroTechs = new Set<string>();
+    const researchedTechs = getResearchedTechs(currentTurn, faction.id);
+    if (faction.id === "Nekro Virus") {
+      const nekroTechs = new Set<TechId>();
       Object.values(factions ?? {}).forEach((otherFaction) => {
-        Object.keys(otherFaction.techs).forEach((techName) => {
-          if (
-            !hasTech(faction, techName) &&
-            !researchedTechs.includes(techName)
-          ) {
-            nekroTechs.add(techName);
+        Object.keys(otherFaction.techs).forEach((id) => {
+          const techId = id as TechId;
+          if (!hasTech(faction, techId) && !researchedTechs.includes(techId)) {
+            nekroTechs.add(techId);
           }
         });
       });
       return Array.from(nekroTechs).map(
-        (techName) => (techs ?? {})[techName] as Tech
+        (techId) => (techs ?? {})[techId] as Tech
       );
     }
-    const replaces: string[] = [];
+    const replaces: TechId[] = [];
     const availableTechs = Object.values(techs ?? {}).filter((tech) => {
-      if (hasTech(faction, tech.name)) {
+      if (hasTech(faction, tech.id)) {
         return false;
       }
       if (
-        faction.name !== "Nekro Virus" &&
+        faction.id !== "Nekro Virus" &&
         tech.faction &&
-        faction.name !== tech.faction
+        faction.id !== tech.faction
       ) {
         return false;
       }
-      if (researchedTechs.includes(tech.name)) {
+      if (researchedTechs.includes(tech.id)) {
         return false;
       }
       if (tech.type === "UPGRADE" && tech.replaces) {
@@ -369,70 +364,67 @@ export function AdditionalActions({
       }
       return true;
     });
-    if (faction.name !== "Nekro Virus") {
-      return availableTechs.filter((tech) => !replaces.includes(tech.name));
-    }
-    return availableTechs;
+    return availableTechs.filter((tech) => !replaces.includes(tech.id));
   }
 
   const researchableTechs = getResearchableTechs(activeFaction);
 
-  function removePlanet(factionName: string, toRemove: string) {
+  function removePlanet(factionId: FactionId, toRemove: PlanetId) {
     if (!gameid) {
       return;
     }
-    unclaimPlanet(gameid, factionName, toRemove);
+    unclaimPlanetAsync(gameid, factionId, toRemove);
   }
 
-  function addPlanet(factionName: string, toAdd: Planet) {
+  function addPlanet(factionId: FactionId, toAdd: Planet) {
     if (!gameid) {
       return;
     }
-    claimPlanet(gameid, factionName, toAdd.name);
+    claimPlanetAsync(gameid, factionId, toAdd.id);
   }
 
-  function addObjective(factionName: string, toScore: string) {
+  function addObjective(factionId: FactionId, toScore: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    scoreObjective(gameid, factionName, toScore);
+    scoreObjectiveAsync(gameid, factionId, toScore);
   }
 
-  function undoObjective(factionName: string, toRemove: string) {
+  function undoObjective(factionId: FactionId, toRemove: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    unscoreObjective(gameid, factionName, toRemove);
+    unscoreObjectiveAsync(gameid, factionId, toRemove);
   }
 
-  function removeTechLocal(factionName: string, toRemove: string) {
+  function removeTechLocal(factionId: FactionId, toRemove: TechId) {
     if (!gameid) {
       return;
     }
-    removeTech(gameid, factionName, toRemove);
+    removeTechAsync(gameid, factionId, toRemove);
   }
 
-  function researchTech(factionName: string, tech: Tech) {
+  function researchTech(factionId: FactionId, tech: Tech) {
     if (!gameid) {
       return;
     }
-    addTech(gameid, factionName, tech.name);
+    addTechAsync(gameid, factionId, tech.id);
   }
 
-  function selectSpeaker(factionName: string) {
+  async function selectSpeaker(factionId: FactionId) {
     if (!gameid) {
       return;
     }
-    setSpeaker(gameid, factionName);
+    setSpeakerAsync(gameid, factionId);
   }
 
-  const newSpeakerEvent = getNewSpeakerEvent(gameData);
+  const newSpeakerEvent = getNewSpeakerEventFromLog(actionLog);
 
-  function resetSpeaker() {
+  async function resetSpeaker() {
     if (!gameid || !newSpeakerEvent?.prevSpeaker) {
       return;
     }
-    setSpeaker(gameid, newSpeakerEvent.prevSpeaker);
+    setSpeakerAsync(gameid, factionId);
   }
 
   function lastFaction() {
@@ -447,7 +439,7 @@ export function AdditionalActions({
     .filter(
       (logEntry) =>
         logEntry.data.action === "CLAIM_PLANET" &&
-        logEntry.data.event.faction === activeFaction.name
+        logEntry.data.event.faction === activeFaction.id
     )
     .map((logEntry) => {
       return (logEntry.data as ClaimPlanetData).event.planet;
@@ -456,24 +448,26 @@ export function AdditionalActions({
     if (!planets) {
       return false;
     }
-    if (planet.owner === activeFaction.name) {
+    if (planet.owner === activeFaction.id) {
       return false;
     }
     if (planet.locked) {
       return false;
     }
     for (const claimedPlanet of claimedPlanets) {
-      if (claimedPlanet === planet.name) {
+      if (claimedPlanet === planet.id) {
         return false;
       }
     }
     if (claimedPlanets.length > 0) {
-      const claimedPlanet = planets[claimedPlanets[0] ?? ""];
-      if (claimedPlanet?.system) {
-        return planet.system === claimedPlanet.system;
-      }
+      const claimedPlanet = claimedPlanets[0]
+        ? planets[claimedPlanets[0]]
+        : null;
       if (claimedPlanet?.faction) {
         return planet.faction === claimedPlanet.faction;
+      }
+      if (claimedPlanet?.system) {
+        return planet.system === claimedPlanet.system;
       }
       return false;
     }
@@ -483,21 +477,21 @@ export function AdditionalActions({
     .filter(
       (logEntry) =>
         logEntry.data.action === "SCORE_OBJECTIVE" &&
-        logEntry.data.event.faction === activeFaction.name
+        logEntry.data.event.faction === activeFaction.id
     )
     .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.objective);
   const scorableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
       const scorers = objective.scorers ?? [];
-      if (scorers.includes(activeFaction.name)) {
+      if (scorers.includes(activeFaction.id)) {
         return false;
       }
-      if (scoredObjectives.includes(objective.name)) {
+      if (scoredObjectives.includes(objective.id)) {
         return false;
       }
       if (
-        objective.name === "Become a Martyr" ||
-        objective.name === "Prove Endurance"
+        objective.id === "Become a Martyr" ||
+        objective.id === "Prove Endurance"
       ) {
         return false;
       }
@@ -539,16 +533,16 @@ export function AdditionalActions({
     return -1;
   });
 
-  const selectedAction = getSelectedAction(gameData);
+  const selectedAction = getSelectedActionFromLog(actionLog);
 
   switch (selectedAction) {
     case "Technology":
-      const researchedTech = getResearchedTechs(currentTurn, factionName);
+      const researchedTech = getResearchedTechs(currentTurn, factionId);
       if (!!primaryOnly || !!secondaryOnly) {
-        const isActive = state?.activeplayer === factionName;
+        const isActive = state?.activeplayer === factionId;
         const numTechs =
-          isActive || factionName === "Universities of Jol-Nar" ? 2 : 1;
-        return activeFaction.name !== "Nekro Virus" ? (
+          isActive || factionId === "Universities of Jol-Nar" ? 2 : 1;
+        return activeFaction.id !== "Nekro Virus" ? (
           <div className="flexColumn largeFont" style={{ width: "100%" }}>
             <LabeledLine
               leftLabel={
@@ -571,11 +565,11 @@ export function AdditionalActions({
                           // if (gameid && !isActive) {
                           //   markSecondary(
                           //     gameid,
-                          //     activeFaction.name,
+                          //     activeFaction.id,
                           //     "PENDING"
                           //   );
                           // }
-                          removeTechLocal(activeFaction.name, tech);
+                          removeTechLocal(activeFaction.id, tech);
                         }}
                       />
                     );
@@ -584,7 +578,7 @@ export function AdditionalActions({
               ) : null}
               {researchedTech.length < numTechs ? (
                 <TechSelectHoverMenu
-                  factionName={activeFaction.name}
+                  factionId={activeFaction.id}
                   techs={researchableTechs}
                   selectTech={(tech) => {
                     // if (
@@ -592,9 +586,9 @@ export function AdditionalActions({
                     //   !isActive &&
                     //   researchedTech.length + 1 === numTechs
                     // ) {
-                    //   markSecondary(gameid, activeFaction.name, "DONE");
+                    //   markSecondary(gameid, activeFaction.id, "DONE");
                     // }
-                    researchTech(activeFaction.name, tech);
+                    researchTech(activeFaction.id, tech);
                   }}
                 />
               ) : null}
@@ -602,7 +596,7 @@ export function AdditionalActions({
                 <React.Fragment>
                   <LabeledLine leftLabel="Secondary" />
                   <SecondaryCheck
-                    activeFactionName={activeFaction.name}
+                    activeFactionId={activeFaction.id}
                     gameid={gameid ?? ""}
                     orderedFactions={orderedFactions}
                   />
@@ -617,7 +611,7 @@ export function AdditionalActions({
           className="flexColumn largeFont"
           style={{ ...style, gap: responsivePixels(4) }}
         >
-          {activeFaction.name !== "Nekro Virus" ? (
+          {activeFaction.id !== "Nekro Virus" ? (
             <div
               className="flexColumn"
               style={{ gap: responsivePixels(4), width: "100%" }}
@@ -644,7 +638,7 @@ export function AdditionalActions({
                             key={tech}
                             tech={techObj}
                             removeTech={() =>
-                              removeTechLocal(activeFaction.name, tech)
+                              removeTechLocal(activeFaction.id, tech)
                             }
                           />
                         );
@@ -653,10 +647,10 @@ export function AdditionalActions({
                   ) : null}
                   {researchedTech.length < 2 ? (
                     <TechSelectHoverMenu
-                      factionName={activeFaction.name}
+                      factionId={activeFaction.id}
                       techs={researchableTechs}
                       selectTech={(tech) =>
-                        researchTech(activeFaction.name, tech)
+                        researchTech(activeFaction.id, tech)
                       }
                     />
                   ) : null}
@@ -679,23 +673,23 @@ export function AdditionalActions({
             >
               {orderedFactions.map((faction) => {
                 if (
-                  faction.name === activeFaction.name ||
-                  faction.name === "Nekro Virus"
+                  faction.id === activeFaction.id ||
+                  faction.id === "Nekro Virus"
                 ) {
                   return null;
                 }
                 let maxTechs = 1;
-                if (faction.name === "Universities of Jol-Nar") {
+                if (faction.id === "Universities of Jol-Nar") {
                   maxTechs = 2;
                   // TODO: Add ability for people to copy them.
                 }
                 const researchedTechs = getResearchedTechs(
                   currentTurn,
-                  faction.name
+                  faction.id
                 );
                 const availableTechs = getResearchableTechs(faction);
                 const secondaryState =
-                  factions[faction.name]?.secondary ?? "PENDING";
+                  factions[faction.id]?.secondary ?? "PENDING";
                 if (
                   researchedTechs.length === 0 &&
                   secondaryState === "SKIPPED"
@@ -704,7 +698,7 @@ export function AdditionalActions({
                 }
                 return (
                   <LabeledDiv
-                    key={faction.name}
+                    key={faction.id}
                     label={getFactionName(faction)}
                     color={getFactionColor(faction)}
                     style={{ width: "48%" }}
@@ -722,9 +716,9 @@ export function AdditionalActions({
                             tech={techObj}
                             removeTech={() => {
                               // if (gameid) {
-                              //   markSecondary(gameid, faction.name, "PENDING");
+                              //   markSecondary(gameid, faction.id, "PENDING");
                               // }
-                              removeTechLocal(faction.name, tech);
+                              removeTechLocal(faction.id, tech);
                             }}
                             opts={{ hideSymbols: true }}
                           />
@@ -732,16 +726,16 @@ export function AdditionalActions({
                       })}
                       {researchedTechs.length < maxTechs ? (
                         <TechSelectHoverMenu
-                          factionName={faction.name}
+                          factionId={faction.id}
                           techs={availableTechs}
                           selectTech={(tech) => {
                             // if (
                             //   gameid &&
                             //   researchedTechs.length + 1 === maxTechs
                             // ) {
-                            //   markSecondary(gameid, faction.name, "DONE");
+                            //   markSecondary(gameid, faction.id, "DONE");
                             // }
-                            researchTech(faction.name, tech);
+                            researchTech(faction.id, tech);
                           }}
                         />
                       ) : null}
@@ -750,7 +744,7 @@ export function AdditionalActions({
                 );
               })}
               <SecondaryCheck
-                activeFactionName={activeFaction.name}
+                activeFactionId={activeFaction.id}
                 gameid={gameid ?? ""}
                 orderedFactions={orderedFactions}
               />
@@ -759,7 +753,9 @@ export function AdditionalActions({
         </div>
       );
     case "Politics":
-      const selectedSpeaker = factions[newSpeakerEvent?.newSpeaker ?? ""];
+      const selectedSpeaker = newSpeakerEvent?.newSpeaker
+        ? factions[newSpeakerEvent.newSpeaker]
+        : undefined;
       return (
         <div
           className="flexColumn"
@@ -780,40 +776,40 @@ export function AdditionalActions({
                 borderColor={
                   selectedSpeaker ? getFactionColor(selectedSpeaker) : undefined
                 }
-                onSelect={(factionName, _) => {
-                  if (factionName) {
-                    selectSpeaker(factionName);
+                onSelect={(factionId, _) => {
+                  if (factionId) {
+                    selectSpeaker(factionId);
                   } else {
                     resetSpeaker();
                   }
                 }}
-                options={orderedFactions
+                factions={orderedFactions
                   .filter((faction) => {
                     return (
-                      faction.name !==
+                      faction.id !==
                       (selectedSpeaker
                         ? newSpeakerEvent?.prevSpeaker
                         : state?.speaker)
                     );
                   })
-                  .map((faction) => faction.name)}
-                selectedFaction={selectedSpeaker?.name}
+                  .map((faction) => faction.id)}
+                selectedFaction={selectedSpeaker?.id}
                 size={52}
               />
             </div>
           </React.Fragment>
           <LabeledLine leftLabel="Secondary" />
           <SecondaryCheck
-            activeFactionName={activeFaction.name}
+            activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
           />
         </div>
       );
     case "Diplomacy":
-      if (activeFaction.name === "Xxcha Kingdom") {
+      if (activeFaction.id === "Xxcha Kingdom") {
         const peaceAccordsPlanets = claimablePlanets.filter(
-          (planet) => planet.name !== "Mecatol Rex"
+          (planet) => planet.id !== "Mecatol Rex"
         );
         return (
           <div className="flexColumn largeFont" style={{ ...style }}>
@@ -834,10 +830,10 @@ export function AdditionalActions({
                       return (
                         <PlanetRow
                           key={planet}
-                          factionName={activeFaction.name}
+                          factionId={activeFaction.id}
                           planet={adjustedPlanet}
                           removePlanet={() =>
-                            removePlanet(activeFaction.name, planet)
+                            removePlanet(activeFaction.id, planet)
                           }
                         />
                       );
@@ -851,14 +847,12 @@ export function AdditionalActions({
                       {peaceAccordsPlanets.map((planet) => {
                         return (
                           <button
-                            key={planet.name}
+                            key={planet.id}
                             style={{
                               writingMode: "horizontal-tb",
                               width: responsivePixels(90),
                             }}
-                            onClick={() =>
-                              addPlanet(activeFaction.name, planet)
-                            }
+                            onClick={() => addPlanet(activeFaction.id, planet)}
                           >
                             {planet.name}
                           </button>
@@ -871,7 +865,7 @@ export function AdditionalActions({
             </LabeledDiv>
             <LabeledLine leftLabel="Secondary" />
             <SecondaryCheck
-              activeFactionName={activeFaction.name}
+              activeFactionId={activeFaction.id}
               gameid={gameid ?? ""}
               orderedFactions={orderedFactions}
             />
@@ -896,12 +890,14 @@ export function AdditionalActions({
               return false;
             }
             for (const claimedPlanet of claimedPlanets) {
-              if (claimedPlanet === planet.name) {
+              if (claimedPlanet === planet.id) {
                 return false;
               }
             }
             if (claimedPlanets.length > 0) {
-              const claimedPlanet = planets[claimedPlanets[0] ?? ""];
+              const claimedPlanet = claimedPlanets[0]
+                ? planets[claimedPlanets[0]]
+                : undefined;
               if (claimedPlanet?.system) {
                 return planet.system === claimedPlanet.system;
               }
@@ -943,7 +939,7 @@ export function AdditionalActions({
                       return (
                         <PlanetRow
                           key={planet}
-                          factionName={"Xxcha Kingdom"}
+                          factionId={"Xxcha Kingdom"}
                           planet={adjustedPlanet}
                           removePlanet={() => {
                             // if (gameid) {
@@ -962,7 +958,7 @@ export function AdditionalActions({
                       {nonXxchaPlanets.map((planet) => {
                         return (
                           <button
-                            key={planet.name}
+                            key={planet.id}
                             style={{
                               writingMode: "horizontal-tb",
                               width: responsivePixels(90),
@@ -984,7 +980,7 @@ export function AdditionalActions({
               </React.Fragment>
             </LabeledDiv>
             <SecondaryCheck
-              activeFactionName={activeFaction.name}
+              activeFactionId={activeFaction.id}
               gameid={gameid ?? ""}
               orderedFactions={orderedFactions}
             />
@@ -995,7 +991,7 @@ export function AdditionalActions({
         <div className="flexColumn" style={{ width: "100%" }}>
           <LabeledLine leftLabel="Secondary" />
           <SecondaryCheck
-            activeFactionName={activeFaction.name}
+            activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
           />
@@ -1009,7 +1005,7 @@ export function AdditionalActions({
         <div className="flexColumn" style={{ width: "100%" }}>
           <LabeledLine leftLabel="Secondary" />
           <SecondaryCheck
-            activeFactionName={activeFaction.name}
+            activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
           />
@@ -1018,7 +1014,7 @@ export function AdditionalActions({
     case "Imperial":
       let hasImperialPoint = false;
       const mecatol = planets["Mecatol Rex"];
-      if (mecatol && mecatol.owner === activeFaction.name) {
+      if (mecatol && mecatol.owner === activeFaction.id) {
         hasImperialPoint = true;
       }
       scoredObjectives.forEach((objective) => {
@@ -1028,7 +1024,7 @@ export function AdditionalActions({
       });
       const availablePublicObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
-          if ((objective.scorers ?? []).includes(activeFaction.name)) {
+          if ((objective.scorers ?? []).includes(activeFaction.id)) {
             return false;
           }
           if (!objective.selected) {
@@ -1100,7 +1096,7 @@ export function AdditionalActions({
                         key={objective}
                         objective={objectiveObj}
                         removeObjective={() =>
-                          undoObjective(activeFaction.name, objective)
+                          undoObjective(activeFaction.id, objective)
                         }
                         hideScorers={true}
                       />
@@ -1118,9 +1114,9 @@ export function AdditionalActions({
                       {availablePublicObjectives.map((objective) => {
                         return (
                           <button
-                            key={objective.name}
+                            key={objective.id}
                             onClick={() =>
-                              addObjective(activeFaction.name, objective.name)
+                              addObjective(activeFaction.id, objective.id)
                             }
                           >
                             {objective.name}
@@ -1137,7 +1133,7 @@ export function AdditionalActions({
           </LabeledDiv>
           <LabeledLine leftLabel="Secondary" />
           <SecondaryCheck
-            activeFactionName={activeFaction.name}
+            activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
             orderedFactions={orderedFactions}
           />
@@ -1145,7 +1141,7 @@ export function AdditionalActions({
       );
     // TODO: Display buttons for various actions.
     case "Component":
-      return <ComponentAction factionName={activeFaction.name} />;
+      return <ComponentAction factionId={activeFaction.id} />;
     case "Pass":
       let hasProveEndurance = false;
       scoredObjectives.forEach((objective) => {
@@ -1165,7 +1161,7 @@ export function AdditionalActions({
           return false;
         }
         const scorers = proveEndurance.scorers ?? [];
-        if (scorers.includes(factionName)) {
+        if (scorers.includes(factionId)) {
           return false;
         }
         if (proveEndurance.type === "SECRET" && scorers.length !== 0) {
@@ -1188,18 +1184,18 @@ export function AdditionalActions({
         >
           Prove Endurance:
           <FactionCircle
-            key={activeFaction.name}
-            blur={true}
+            key={activeFaction.id}
+            blur
             borderColor={getFactionColor(activeFaction)}
-            factionName={activeFaction.name}
+            factionId={activeFaction.id}
             onClick={() => {
               if (!gameid) {
                 return;
               }
               if (hasProveEndurance) {
-                undoObjective(activeFaction.name, "Prove Endurance");
+                undoObjective(activeFaction.id, "Prove Endurance");
               } else {
-                addObjective(activeFaction.name, "Prove Endurance");
+                addObjective(activeFaction.id, "Prove Endurance");
               }
             }}
             size={52}
@@ -1245,12 +1241,12 @@ export function AdditionalActions({
         .filter(
           (logEntry) =>
             logEntry.data.action === "CLAIM_PLANET" &&
-            logEntry.data.event.faction === activeFaction.name
+            logEntry.data.event.faction === activeFaction.id
         )
         .map((logEntry) => (logEntry.data as ClaimPlanetData).event);
       return (
         <TacticalAction
-          activeFactionName={activeFaction.name}
+          activeFactionId={activeFaction.id}
           attachments={attachments ?? {}}
           claimablePlanets={claimablePlanets}
           conqueredPlanets={conqueredPlanets}
@@ -1269,35 +1265,33 @@ export function AdditionalActions({
   return null;
 }
 
-export interface NextPlayerButtonsProps {
-  factionName: string;
+interface NextPlayerButtonsProps {
   buttonStyle?: CSSProperties;
 }
 
 export function NextPlayerButtons({
-  factionName,
   buttonStyle = {},
 }: NextPlayerButtonsProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["actionLog"]);
 
-  const selectedAction = getSelectedAction(gameData);
-  const newSpeaker = getNewSpeaker(gameData);
+  const actionLog = useContext(ActionLogContext);
+  const selectedAction = getSelectedActionFromLog(actionLog);
+  const newSpeaker = getNewSpeakerEventFromLog(actionLog);
 
   async function completeActions() {
     if (!gameid || selectedAction === null) {
       return;
     }
 
-    endTurn(gameid);
+    endTurnAsync(gameid);
   }
 
   async function finalizeAction() {
     if (!gameid || selectedAction === null) {
       return;
     }
-    endTurn(gameid, true);
+    endTurnAsync(gameid, true);
   }
 
   function isTurnComplete() {
@@ -1329,7 +1323,7 @@ export function NextPlayerButtons({
   }
 }
 
-export interface ActivePlayerColumnProps {
+interface ActivePlayerColumnProps {
   activeFaction: Faction;
   onDeckFaction: Faction;
 }
@@ -1354,12 +1348,12 @@ export function ActivePlayerColumn({
     >
       Active Player
       <SwitchTransition>
-        <CSSTransition key={activeFaction.name} timeout={500} classNames="fade">
+        <CSSTransition key={activeFaction.id} timeout={500} classNames="fade">
           <FactionCard
             faction={activeFaction}
             rightLabel={
               <FactionTimer
-                factionName={activeFaction.name}
+                factionId={activeFaction.id}
                 style={{ fontSize: responsivePixels(16), width: "auto" }}
               />
             }
@@ -1376,35 +1370,28 @@ export function ActivePlayerColumn({
               className="flexColumn"
               style={{ width: "100%", justifyContent: "flex-start" }}
             >
-              <FactionActions factionName={activeFaction.name} />
+              <FactionActions factionId={activeFaction.id} />
               <AdditionalActions
-                factionName={activeFaction.name}
+                factionId={activeFaction.id}
                 style={{ minWidth: responsivePixels(350) }}
               />
             </div>
           </FactionCard>
         </CSSTransition>
       </SwitchTransition>
-      <NextPlayerButtons
-        factionName={activeFaction.name}
-        buttonStyle={{ fontSize: responsivePixels(24) }}
-      />
+      <NextPlayerButtons buttonStyle={{ fontSize: responsivePixels(24) }} />
       <div
         className="flexRow"
         style={{ width: "100%", justifyContent: "center" }}
       >
         {" "}
         <SwitchTransition>
-          <CSSTransition
-            key={onDeckFaction.name}
-            timeout={500}
-            classNames="fade"
-          >
+          <CSSTransition key={onDeckFaction.id} timeout={500} classNames="fade">
             <LabeledDiv
               label="On Deck"
               rightLabel={
                 <StaticFactionTimer
-                  factionName={onDeckFaction.name}
+                  factionId={onDeckFaction.id}
                   style={{
                     fontSize: responsivePixels(16),
                   }}
@@ -1438,7 +1425,7 @@ export function ActivePlayerColumn({
                     opacity: 0.7,
                   }}
                 >
-                  <FullFactionSymbol faction={onDeckFaction.name} />
+                  <FactionIcon factionId={onDeckFaction.id} size="100%" />
                 </div>
               </div>
               {/* <FactionCard
@@ -1459,7 +1446,7 @@ export function ActivePlayerColumn({
                 }}
               >
                 <StaticFactionTimer
-                  factionName={onDeckFaction.name}
+                  factionId={onDeckFaction.id}
                   style={{
                     fontSize: responsivePixels(24),
                   }}
@@ -1491,28 +1478,30 @@ export function ActivePlayerColumn({
 }
 
 export function advanceToStatusPhase(gameid: string) {
-  advancePhase(gameid);
+  advancePhaseAsync(gameid);
 }
 
 export default function ActionPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions", "state", "strategycards"]);
-  const factions = gameData.factions;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards;
+  const factions = useContext(FactionContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
   if (!factions || !state || !strategyCards) {
     return <FullScreenLoader />;
   }
 
-  const activeFaction = factions[state.activeplayer ?? ""];
+  const activeFaction =
+    state.activeplayer && state.activeplayer !== "None"
+      ? factions[state.activeplayer]
+      : undefined;
   const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
 
-  const cardsByFaction: Record<string, StrategyCard[]> = {};
+  const cardsByFaction: Partial<Record<FactionId, StrategyCard[]>> = {};
   orderedStrategyCards.forEach((card) => {
     if (!card.faction) {
       return;
@@ -1541,7 +1530,7 @@ export default function ActionPhase() {
         {Object.values(cardsByFaction).map((cards) => {
           return (
             <SmallStrategyCard
-              key={cards[0] ? cards[0].name : "Error"}
+              key={cards[0] ? cards[0].id : "Error"}
               cards={cards}
             />
           );

@@ -1,16 +1,3 @@
-import { OutcomeType } from "../api/agendas";
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SelectEligibleOutcomesEvent {
-  outcomes: OutcomeType | "None";
-}
-
-export interface SelectEligibleOutcomesData {
-  action: "SELECT_ELIGIBLE_OUTCOMES";
-  event: SelectEligibleOutcomesEvent;
-}
-
 export class SelectEligibleOutcomesHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

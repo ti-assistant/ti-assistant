@@ -1,28 +1,5 @@
-import { Handler, ActionLogAction } from "../api/data";
-import {
-  ActionLogEntry,
-  StoredGameData,
-  arrayRemove,
-  arrayUnion,
-} from "../api/util";
 import { buildPlanets } from "../../data/GameData";
-
-export interface AddAttachmentEvent {
-  attachment: string;
-  planet: string;
-  // Set by server
-  prevPlanet?: string;
-}
-
-export interface AddAttachmentData {
-  action: "ADD_ATTACHMENT";
-  event: AddAttachmentEvent;
-}
-
-export interface RemoveAttachmentData {
-  action: "REMOVE_ATTACHMENT";
-  event: AddAttachmentEvent;
-}
+import { arrayRemove, arrayUnion } from "../api/util";
 
 export class AddAttachmentHandler implements Handler {
   constructor(

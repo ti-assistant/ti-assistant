@@ -1,26 +1,19 @@
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
-import { LabeledDiv } from "./LabeledDiv";
+import React, { useContext, useRef, useState } from "react";
 import { Selector } from "./Selector";
-import { Agenda } from "./util/api/agendas";
-import { Attachment } from "./util/api/attachments";
-import { StrategyCard } from "./util/api/cards";
-import { getDefaultStrategyCards } from "./util/api/defaults";
-import { Faction } from "./util/api/factions";
-import { Objective } from "./util/api/objectives";
-import { Options } from "./util/api/options";
-import { Planet } from "./util/api/planets";
-import { GameState } from "./util/api/state";
-import { hasTech } from "./util/api/techs";
-import { getFactionColor, getFactionName } from "./util/factions";
+import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
 import {
-  applyAllPlanetAttachments,
-  filterToClaimedPlanets,
-} from "./util/planets";
-import { responsivePixels } from "./util/util";
-import { useGameData } from "./data/GameData";
-import { setSpeaker } from "./util/api/setSpeaker";
-import { castVotes } from "./util/api/castVotes";
+  ActionLogContext,
+  AgendaContext,
+  AttachmentContext,
+  FactionContext,
+  ObjectiveContext,
+  OptionContext,
+  PlanetContext,
+  StateContext,
+  StrategyCardContext,
+} from "./context/Context";
+import { castVotesAsync, setSpeakerAsync } from "./dynamic/api";
 import {
   getActionCardTargets,
   getAllVotes,
@@ -29,21 +22,24 @@ import {
   getPromissoryTargets,
 } from "./util/actionLog";
 import {
-  getCurrentPhaseLogEntries,
   getCurrentPhasePreviousLogEntries,
   getCurrentTurnLogEntries,
 } from "./util/api/actionLog";
-import { ActionLogEntry } from "./util/api/util";
-import { PlayPromissoryNoteData } from "./util/model/playPromissoryNote";
-// import { setSpeaker } from "./util/api/data";
+import { hasTech } from "./util/api/techs";
+import { getFactionColor, getFactionName } from "./util/factions";
+import {
+  applyAllPlanetAttachments,
+  filterToClaimedPlanets,
+} from "./util/planets";
+import { responsivePixels } from "./util/util";
 
 export function getTargets(
   agenda: Agenda | undefined,
-  factions: Record<string, Faction>,
-  strategycards: Record<string, StrategyCard>,
-  planets: Record<string, Planet>,
-  agendas: Record<string, Agenda>,
-  objectives: Record<string, Objective>
+  factions: Partial<Record<FactionId, Faction>>,
+  strategycards: Partial<Record<StrategyCardId, StrategyCard>>,
+  planets: Partial<Record<PlanetId, Planet>>,
+  agendas: Partial<Record<AgendaId, Agenda>>,
+  objectives: Partial<Record<ObjectiveId, Objective>>
 ) {
   if (!agenda) {
     return [];
@@ -54,7 +50,7 @@ export function getTargets(
     case "Player":
       return [
         ...Object.values(factions).map((faction) => {
-          return faction.name;
+          return faction.id;
         }),
         "Abstain",
       ];
@@ -110,18 +106,18 @@ export function getTargets(
 }
 
 export function canFactionVote(
-  factionName: string,
-  agendas: Record<string, Agenda>,
+  factionId: FactionId,
+  agendas: Partial<Record<AgendaId, Agenda>>,
   state: GameState,
-  factions: Record<string, Faction>,
+  factions: Partial<Record<FactionId, Faction>>,
   currentTurn: ActionLogEntry[]
 ) {
-  const faction = factions[factionName];
-  if (factionName === "Nekro Virus") {
+  const faction = factions[factionId];
+  if (factionId === "Nekro Virus") {
     return false;
   }
   if (
-    factionName === "Xxcha Kingdom" &&
+    factionId === "Xxcha Kingdom" &&
     faction &&
     faction.commander === "unlocked"
   ) {
@@ -131,19 +127,19 @@ export function canFactionVote(
     currentTurn,
     "Political Secret"
   );
-  if (politicalSecrets.includes(factionName)) {
+  if (politicalSecrets.includes(factionId)) {
     return false;
   }
   const assassinatedRep = getActionCardTargets(
     currentTurn,
     "Assassinate Representative"
   )[0];
-  if (assassinatedRep === factionName) {
+  if (assassinatedRep === factionId) {
     return false;
   }
   const riders = getPlayedRiders(currentTurn);
   for (const rider of riders) {
-    if (rider.faction === factionName) {
+    if (rider.faction === factionId) {
       return false;
     }
   }
@@ -151,7 +147,7 @@ export function canFactionVote(
   if (
     publicExecution &&
     publicExecution.resolved &&
-    publicExecution.target === factionName &&
+    publicExecution.target === factionId &&
     publicExecution.activeRound === state.round
   ) {
     return false;
@@ -160,11 +156,11 @@ export function canFactionVote(
 }
 
 export function computeRemainingVotes(
-  factionName: string,
-  factions: Record<string, Faction>,
-  planets: Record<string, Planet>,
-  attachments: Record<string, Attachment>,
-  agendas: Record<string, Agenda>,
+  factionId: FactionId,
+  factions: Partial<Record<FactionId, Faction>>,
+  planets: Partial<Record<PlanetId, Planet>>,
+  attachments: Partial<Record<AttachmentId, Attachment>>,
+  agendas: Partial<Record<AgendaId, Agenda>>,
   options: Options,
   state: GameState,
   currentPhasePrevious: ActionLogEntry[]
@@ -177,11 +173,11 @@ export function computeRemainingVotes(
       extraVotes: 1,
     };
   }
-  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+  const ownedPlanets = filterToClaimedPlanets(planets, factionId);
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
   const filteredPlanets = updatedPlanets.filter((planet) => {
-    if (factionName !== state?.ancientBurialSites) {
+    if (factionId !== state?.ancientBurialSites) {
       return true;
     }
     return (
@@ -206,7 +202,7 @@ export function computeRemainingVotes(
     return 0;
   });
 
-  const faction = factions[factionName];
+  const faction = factions[factionId];
   if (!faction) {
     return {
       influence: 0,
@@ -216,14 +212,14 @@ export function computeRemainingVotes(
 
   const votesCast = getAllVotes(currentPhasePrevious)
     .filter((voteEvent) => {
-      return voteEvent.faction === factionName;
+      return voteEvent.faction === factionId;
     })
     .reduce((votes, voteEvent) => {
       return votes + voteEvent.votes;
     }, 0);
 
   let influenceNeeded = votesCast;
-  if (factionName === "Argent Flight") {
+  if (factionId === "Argent Flight") {
     influenceNeeded = Math.max(
       influenceNeeded - Object.keys(factions).length,
       0
@@ -233,7 +229,7 @@ export function computeRemainingVotes(
   let remainingVotes = 0;
   for (const planet of orderedPlanets) {
     let planetInfluence = planet.influence;
-    if (factionName === "Xxcha Kingdom") {
+    if (factionId === "Xxcha Kingdom") {
       if (
         options.expansions.includes("CODEX THREE") &&
         faction.hero === "unlocked"
@@ -248,7 +244,7 @@ export function computeRemainingVotes(
       influenceNeeded -= planetInfluence;
       continue;
     }
-    if (factionName === "Xxcha Kingdom" && faction.commander === "unlocked") {
+    if (factionId === "Xxcha Kingdom" && faction.commander === "unlocked") {
       planetInfluence -= 1;
     }
     planetCount++;
@@ -262,10 +258,10 @@ export function computeRemainingVotes(
   }
 
   let extraVotes = 0;
-  if (factionName === "Argent Flight") {
+  if (factionId === "Argent Flight") {
     extraVotes += Object.keys(factions).length;
   }
-  if (factionName === "Xxcha Kingdom" && faction.commander === "unlocked") {
+  if (factionId === "Xxcha Kingdom" && faction.commander === "unlocked") {
     extraVotes += planetCount;
   }
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
@@ -279,35 +275,25 @@ export function computeRemainingVotes(
   };
 }
 
-export interface VoteCountProps {
-  factionName: string;
+interface VoteCountProps {
+  factionId: FactionId;
   agenda: Agenda | undefined;
 }
 
-export function VoteCount({ factionName, agenda }: VoteCountProps) {
+export function VoteCount({ factionId, agenda }: VoteCountProps) {
   const voteRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
 
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "attachments",
-    "factions",
-    "objectives",
-    "options",
-    "planets",
-    "state",
-    "strategycards",
-  ]);
-  const agendas = gameData.agendas;
-  const attachments = gameData.attachments;
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const options = gameData.options;
-  const planets = gameData.planets;
-  const state = gameData.state;
-  const strategycards = gameData.strategycards ?? getDefaultStrategyCards();
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const planets = useContext(PlanetContext);
+  const state = useContext(StateContext);
+  const strategycards = useContext(StrategyCardContext);
 
   const [usingPredictiveIntelligence, setUsingPredictiveIntelligence] =
     useState(true);
@@ -318,49 +304,43 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     }
 
     if (target === "Abstain") {
-      castVotes(gameid, factionName, 0, "Abstain");
+      castVotesAsync(gameid, factionId, 0, "Abstain");
     } else {
-      castVotes(gameid, factionName, votes, target);
+      castVotesAsync(gameid, factionId, votes, target);
     }
-
-    // if (target === "Abstain") {
-    //   castSubStateVotes(gameid, factionName, "Abstain", 0);
-    // } else {
-    //   castSubStateVotes(gameid, factionName, target, votes);
-    // }
   }
 
   if (!factions || !options || !state) {
     return null;
   }
 
-  const faction = factions[factionName];
+  const faction = factions[factionId];
 
   if (!faction) {
     return null;
   }
 
   const { influence, extraVotes } = computeRemainingVotes(
-    factionName,
+    factionId,
     factions,
     planets ?? {},
     attachments ?? {},
     agendas ?? {},
     options,
     state,
-    getCurrentPhasePreviousLogEntries(gameData.actionLog ?? [])
+    getCurrentPhasePreviousLogEntries(actionLog ?? [])
   );
 
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
   const menuButtons = [];
-  if (factionName !== state?.speaker) {
+  if (factionId !== state?.speaker) {
     menuButtons.push({
       text: "Set Speaker",
-      action: () => {
+      action: async () => {
         if (!gameid) {
           return;
         }
-        setSpeaker(gameid, factionName);
+        setSpeakerAsync(gameid, factionId);
       },
     });
   }
@@ -374,7 +354,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     });
   }
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog ?? []);
 
   const targets = getTargets(
     agenda,
@@ -384,7 +364,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
     agendas ?? {},
     objectives ?? {}
   );
-  const factionVotes = getFactionVotes(currentTurn, factionName);
+  const factionVotes = getFactionVotes(currentTurn, factionId);
 
   function saveCastVotes(element: HTMLDivElement) {
     if (element.innerText !== "") {
@@ -415,7 +395,7 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
         }}
       >
         {!canFactionVote(
-          factionName,
+          factionId,
           agendas ?? {},
           state,
           factions,
@@ -528,9 +508,9 @@ export function VoteCount({ factionName, agenda }: VoteCountProps) {
               hoverMenuLabel="Select"
               options={targets}
               selectedItem={factionVotes?.target}
-              toggleItem={(itemName, add) => {
+              toggleItem={(itemId, add) => {
                 if (add) {
-                  castVotesLocal(itemName, 0);
+                  castVotesLocal(itemId, 0);
                 } else {
                   castVotesLocal(undefined, 0);
                 }

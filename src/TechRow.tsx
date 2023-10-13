@@ -1,142 +1,11 @@
 import { ReactNode, useState } from "react";
-import Image from "next/image";
 
-import { Modal } from "./Modal";
 import { SelectableRow } from "./SelectableRow";
+import FactionIcon from "./components/FactionIcon/FactionIcon";
+import Modal from "./components/Modal/Modal";
+import TechIcon from "./components/TechIcon/TechIcon";
 import { getTechColor } from "./util/techs";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
-import { FullFactionSymbol } from "./FactionCard";
-import { Tech, TechType, UnitStats } from "./util/api/techs";
-
-export interface TechIconProps {
-  type: TechType;
-  width: number | string;
-  height: number | string;
-}
-
-export function TechIcon({ type, width, height }: TechIconProps) {
-  switch (type) {
-    case "RED":
-      return (
-        <Image
-          src="/images/red_tech.webp"
-          alt="Red Tech Skip"
-          width={width}
-          height={height}
-        />
-      );
-    case "YELLOW":
-      return (
-        <Image
-          src="/images/yellow_tech.webp"
-          alt="Yellow Tech Skip"
-          width={width}
-          height={height}
-        />
-      );
-    case "BLUE":
-      return (
-        <Image
-          src="/images/blue_tech.webp"
-          alt="Blue Tech Skip"
-          width={width}
-          height={height}
-        />
-      );
-    case "GREEN":
-      return (
-        <Image
-          src="/images/green_tech.webp"
-          alt="Green Tech Skip"
-          width={width}
-          height={height}
-        />
-      );
-  }
-  return type;
-}
-
-export interface WrappedTechIconProps {
-  type: TechType;
-  size: number;
-}
-
-export function WrappedTechIcon({ type, size }: WrappedTechIconProps) {
-  const width = responsivePixels(size + 2);
-  const height = responsivePixels(size);
-  return (
-    <div style={{ position: "relative", width: width, height: height }}>
-      <FullTechIcon type={type} />
-    </div>
-  );
-}
-
-export function TechSkipIcon({ size }: { size: number }) {
-  const width = responsivePixels(size);
-  const height = responsivePixels(size);
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
-        width: width,
-        height: height,
-        rowGap: responsivePixels(1),
-      }}
-    >
-      <WrappedTechIcon type="RED" size={size / 2 - 2} />
-      <WrappedTechIcon type="GREEN" size={size / 2 - 2} />
-      <WrappedTechIcon type="BLUE" size={size / 2 - 2} />
-      <WrappedTechIcon type="YELLOW" size={size / 2 - 2} />
-    </div>
-  );
-}
-
-export interface FullTechIconProps {
-  type: TechType;
-}
-
-export function FullTechIcon({ type }: FullTechIconProps) {
-  switch (type) {
-    case "RED":
-      return (
-        <Image
-          src="/images/red_tech.webp"
-          alt="Red Tech"
-          layout="fill"
-          objectFit="contain"
-        />
-      );
-    case "YELLOW":
-      return (
-        <Image
-          src="/images/yellow_tech.webp"
-          alt="Yellow Tech"
-          layout="fill"
-          objectFit="contain"
-        />
-      );
-    case "BLUE":
-      return (
-        <Image
-          src="/images/blue_tech.webp"
-          alt="Blue Tech"
-          layout="fill"
-          objectFit="contain"
-        />
-      );
-    case "GREEN":
-      return (
-        <Image
-          src="/images/green_tech.webp"
-          alt="Green Tech"
-          layout="fill"
-          objectFit="contain"
-        />
-      );
-  }
-  return null;
-}
 
 function UnitStat({ name, stat }: { name: string; stat: number | string }) {
   return (
@@ -192,7 +61,7 @@ function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
     return (
       <div
-        className="myriadPro"
+        className="myriadPro flexColumn"
         style={{
           width: "100%",
           padding: responsivePixels(4),
@@ -241,16 +110,16 @@ function InfoContent({ tech }: { tech: Tech }) {
   );
 }
 
-export interface TechRowProps {
+interface TechRowProps {
   className?: string;
   tech: Tech;
-  removeTech?: (techName: string) => void;
-  addTech?: (techName: string) => void;
+  removeTech?: (techId: TechId) => void;
+  addTech?: (techId: TechId) => void;
   leftContent?: ReactNode;
   opts?: TechRowOptions;
 }
 
-export interface TechRowOptions {
+interface TechRowOptions {
   hideInfo?: boolean;
   hideSymbols?: boolean;
   hideIcon?: boolean;
@@ -273,7 +142,7 @@ export function TechRow({
 
   return (
     <SelectableRow
-      itemName={tech.name}
+      itemId={tech.id}
       selectItem={addTech}
       removeItem={removeTech}
     >
@@ -325,15 +194,7 @@ export function TechRow({
                   right: responsiveNegativePixels(-16),
                 }}
               >
-                <div
-                  style={{
-                    position: "relative",
-                    width: responsivePixels(24),
-                    height: responsivePixels(24),
-                  }}
-                >
-                  <FullFactionSymbol faction={tech.faction} />
-                </div>
+                <FactionIcon factionId={tech.faction} size={24} />
               </div>
             ) : null}
           </div>
@@ -363,7 +224,7 @@ export function TechRow({
             }}
           >
             {tech.prereqs.map((prereq, index) => {
-              return <WrappedTechIcon key={index} type={prereq} size={20} />;
+              return <TechIcon key={index} type={prereq} size={20} />;
             })}
           </div>
         )}

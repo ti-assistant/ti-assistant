@@ -1,18 +1,3 @@
-import { Handler, ActionLogAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface EndGameEvent {}
-
-export interface EndGameData {
-  action: "END_GAME";
-  event: EndGameEvent;
-}
-
-export interface ContinueGameData {
-  action: "CONTINUE_GAME";
-  event: EndGameEvent;
-}
-
 export class EndGameHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: EndGameData) {}
 

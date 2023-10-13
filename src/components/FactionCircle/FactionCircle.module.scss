@@ -1,0 +1,18 @@
+.FactionCircle {
+  border-radius: 100%;
+  border: var(--two-pixel) solid var(--border-color);
+  width: var(--size);
+  height: var(--size);
+  color: #777;
+}
+
+.tag {
+  position: absolute;
+  background-color: #222;
+  border-radius: 100%;
+  margin-top: 58%;
+  margin-left: 60%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}

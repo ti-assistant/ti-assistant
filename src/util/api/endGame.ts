@@ -1,8 +1,9 @@
 import { mutate } from "swr";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
 import { ContinueGameHandler, EndGameHandler } from "../model/endGame";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 export function endGame(gameId: string) {
   const data: GameUpdateData = {
@@ -14,18 +15,21 @@ export function endGame(gameId: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new EndGameHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new EndGameHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
@@ -42,18 +46,21 @@ export function continueGame(gameId: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new ContinueGameHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new ContinueGameHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

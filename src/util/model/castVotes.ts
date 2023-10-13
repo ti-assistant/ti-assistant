@@ -1,17 +1,3 @@
-import { Handler, ActionLogAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface CastVotesEvent {
-  faction: string;
-  target?: string;
-  votes: number;
-}
-
-export interface CastVotesData {
-  action: "CAST_VOTES";
-  event: CastVotesEvent;
-}
-
 export class CastVotesHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: CastVotesData) {}
 

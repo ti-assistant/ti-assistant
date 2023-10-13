@@ -1,21 +1,3 @@
-import { Handler, ActionLogAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface RevealAgendaEvent {
-  agenda: string;
-  veto?: boolean;
-}
-
-export interface RevealAgendaData {
-  action: "REVEAL_AGENDA";
-  event: RevealAgendaEvent;
-}
-
-export interface HideAgendaData {
-  action: "HIDE_AGENDA";
-  event: RevealAgendaEvent;
-}
-
 export class RevealAgendaHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: RevealAgendaData) {}
 

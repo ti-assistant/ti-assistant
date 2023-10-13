@@ -1,10 +1,11 @@
 import { mutate } from "swr";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
 import { HideAgendaHandler, RevealAgendaHandler } from "../model/revealAgenda";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
-export function revealAgenda(gameId: string, agenda: string) {
+export function revealAgenda(gameId: string, agenda: AgendaId) {
   const data: GameUpdateData = {
     action: "REVEAL_AGENDA",
     event: {
@@ -16,25 +17,28 @@ export function revealAgenda(gameId: string, agenda: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new RevealAgendaHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new RevealAgendaHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
   );
 }
 
-export function hideAgenda(gameId: string, agenda: string, veto?: boolean) {
+export function hideAgenda(gameId: string, agenda: AgendaId, veto?: boolean) {
   const data: GameUpdateData = {
     action: "HIDE_AGENDA",
     event: {
@@ -47,18 +51,21 @@ export function hideAgenda(gameId: string, agenda: string, veto?: boolean) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new HideAgendaHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new HideAgendaHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

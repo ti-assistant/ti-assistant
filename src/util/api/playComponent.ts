@@ -1,11 +1,12 @@
 import { mutate } from "swr";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
 import {
   PlayComponentHandler,
   UnplayComponentHandler,
 } from "../model/playComponent";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 export function playComponent(gameId: string, name: string) {
   const data: GameUpdateData = {
@@ -19,20 +20,23 @@ export function playComponent(gameId: string, name: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new PlayComponentHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new PlayComponentHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
         const updates = handler.getUpdates();
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        updateGameData(storedGameData, updates);
+        updateGameData(currentData, updates);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
@@ -51,18 +55,21 @@ export function unplayComponent(gameId: string, name: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new UnplayComponentHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new UnplayComponentHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

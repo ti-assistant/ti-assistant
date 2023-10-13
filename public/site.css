@@ -1,4 +1,8 @@
 :root {
+  --negative-twelve-pixel: min(
+    calc(-12px + (-24 - -12) * ((100vw - 1280px) / (2560 - 1280))),
+    -12px
+  );
   --negative-four-pixel: min(
     calc(-4px + (-8 - -4) * ((100vw - 1280px) / (2560 - 1280))),
     -4px
@@ -86,6 +90,10 @@
   --forty-eight-pixel: max(
     calc(48px + (96 - 48) * ((100vw - 1280px) / (2560 - 1280))),
     48px
+  );
+  --fifty-pixel: max(
+    calc(50px + (100 - 50) * ((100vw - 1280px) / (2560 - 1280))),
+    50px
   );
   --eighty-pixel: max(
     calc(108px + (216 - 108) * ((100vw - 1280px) / (2560 - 1280))),

@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
-import { PlanetAttributes } from "./PlanetRow";
 import { ResponsiveResources } from "./Resources";
-import { Attachment } from "./util/api/attachments";
+import Image from "next/image";
+import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
 import { responsivePixels } from "./util/util";
-import { addAttachment, removeAttachment } from "./util/api/addAttachment";
-import { Planet } from "./util/api/planets";
+import LegendaryPlanetIcon from "./components/LegendaryPlanetIcon/LegendaryPlanetIcon";
+import PlanetIcon from "./components/PlanetIcon/PlanetIcon";
 
-export interface AttachRowProps {
+interface AttachRowProps {
   attachment: Attachment;
   planet: Planet;
 }
@@ -23,10 +23,10 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
     if (!gameid) {
       return;
     }
-    if ((planet.attachments ?? []).includes(attachment.name)) {
-      removeAttachment(gameid, planet.name, attachment.name);
+    if ((planet.attachments ?? []).includes(attachment.id)) {
+      removeAttachmentAsync(gameid, planet.id, attachment.id);
     } else {
-      addAttachment(gameid, planet.name, attachment.name);
+      addAttachmentAsync(gameid, planet.id, attachment.id);
     }
   }
 
@@ -48,9 +48,7 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
           style={{ fontSize: responsivePixels(14) }}
           onClick={toggleAttachment}
           className={
-            (planet.attachments ?? []).includes(attachment.name)
-              ? "selected"
-              : ""
+            (planet.attachments ?? []).includes(attachment.id) ? "selected" : ""
           }
         >
           {attachment.name}
@@ -66,6 +64,127 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
       {attachment.attribute ? (
         <PlanetAttributes attributes={[attachment.attribute]} />
       ) : null}
+    </div>
+  );
+}
+
+interface PlanetAttributesProps {
+  planetName?: string;
+  attributes: PlanetAttribute[];
+  ability?: string;
+}
+
+function PlanetAttributes({
+  planetName,
+  attributes,
+  ability,
+}: PlanetAttributesProps) {
+  if (attributes.length === 0) {
+    return null;
+  }
+  function getAttributeIcon(attribute: PlanetAttribute) {
+    switch (attribute) {
+      case "legendary":
+        return (
+          <LegendaryPlanetIcon planetName={planetName} ability={ability} />
+        );
+      case "red-skip":
+        return (
+          <Image
+            src="/images/red_tech.webp"
+            alt="Red Tech Skip"
+            layout="fill"
+            objectFit="contain"
+          />
+        );
+      case "yellow-skip":
+        return (
+          <Image
+            src="/images/yellow_tech.webp"
+            alt="Yellow Tech Skip"
+            layout="fill"
+            objectFit="contain"
+          />
+        );
+      case "blue-skip":
+        return (
+          <Image
+            src="/images/blue_tech.webp"
+            alt="Blue Tech Skip"
+            layout="fill"
+            objectFit="contain"
+          />
+        );
+      case "green-skip":
+        return (
+          <Image
+            src="/images/green_tech.webp"
+            alt="Green Tech Skip"
+            layout="fill"
+            objectFit="contain"
+          />
+        );
+      case "demilitarized":
+        return (
+          <Image
+            src="/images/demilitarized_zone.svg"
+            alt="Demilitarized Zone"
+            layout="fill"
+            objectFit="contain"
+          />
+        );
+      case "tomb":
+        return (
+          <Image
+            src="/images/tomb_symbol.webp"
+            alt="Tomb of Emphidia"
+            layout="fill"
+            objectFit="contain"
+          />
+        );
+      case "space-cannon":
+        return (
+          <div
+            style={{
+              width: responsivePixels(36),
+              height: responsivePixels(22),
+            }}
+          >
+            ✹✹✹
+          </div>
+        );
+      case "all-types":
+        return <PlanetIcon type="ALL" size={16} />;
+      default:
+        return null;
+    }
+  }
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        width: responsivePixels(36),
+        flexWrap: "wrap",
+        gap: responsivePixels(4),
+      }}
+    >
+      {attributes.map((attribute, index) => {
+        return (
+          <div
+            key={index}
+            style={{
+              width: responsivePixels(16),
+              height: responsivePixels(16),
+              position: "relative",
+            }}
+          >
+            {getAttributeIcon(attribute)}
+          </div>
+        );
+      })}
     </div>
   );
 }

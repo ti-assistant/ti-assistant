@@ -1,33 +1,4 @@
-import { BaseFaction } from "../../src/util/api/factions";
 import { DISCORDANT_STARS_FACTIONS } from "./discordantstars/factions";
-
-export type FactionId =
-  | "Arborec"
-  | "Argent Flight"
-  | "Barony of Letnev"
-  | "Clan of Saar"
-  | "Council Keleres"
-  | "Embers of Muaat"
-  | "Emirates of Hacan"
-  | "Empyrean"
-  | "Federation of Sol"
-  | "Ghosts of Creuss"
-  | "L1Z1X Mindnet"
-  | "Mahact Gene-Sorcerers"
-  | "Mentak Coalition"
-  | "Naalu Collective"
-  | "Naaz-Rokha Alliance"
-  | "Nekro Virus"
-  | "Nomad"
-  | "Sardakk N'orr"
-  | "Titans of Ul"
-  | "Universities of Jol-Nar"
-  | "Vuil'raith Cabal"
-  | "Winnu"
-  | "Xxcha Kingdom"
-  | "Yin Brotherhood"
-  | "Yssaril Tribes"
-  | DiscordantStars.FactionId;
 
 export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
   Arborec: {
@@ -46,6 +17,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "BASE",
+    id: "Arborec",
     name: "Arborec",
     promissories: [
       {
@@ -133,6 +105,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "POK",
+    id: "Argent Flight",
     name: "Argent Flight",
     promissories: [
       {
@@ -219,6 +192,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "BASE",
+    id: "Barony of Letnev",
     name: "Barony of Letnev",
     promissories: [
       {
@@ -295,6 +269,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "BASE",
+    id: "Clan of Saar",
     name: "Clan of Saar",
     promissories: [
       {
@@ -381,6 +356,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "CODEX THREE",
+    id: "Council Keleres",
     name: "Council Keleres",
     promissories: [
       {
@@ -453,6 +429,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 4,
     expansion: "BASE",
+    id: "Embers of Muaat",
     name: "Embers of Muaat",
     promissories: [
       {
@@ -540,6 +517,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 6,
     expansion: "BASE",
+    id: "Emirates of Hacan",
     name: "Emirates of Hacan",
     promissories: [
       {
@@ -613,6 +591,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 4,
     expansion: "POK",
+    id: "Empyrean",
     name: "Empyrean",
     promissories: [
       {
@@ -686,6 +665,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 4,
     expansion: "BASE",
+    id: "Federation of Sol",
     name: "Federation of Sol",
     promissories: [
       {
@@ -784,6 +764,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 4,
     expansion: "BASE",
+    id: "Ghosts of Creuss",
     name: "Ghosts of Creuss",
     promissories: [
       {
@@ -853,6 +834,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "BASE",
+    id: "L1Z1X Mindnet",
     name: "L1Z1X Mindnet",
     promissories: [
       {
@@ -869,7 +851,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     ],
     shortname: "L1Z1X",
     startswith: {
-      planets: ["[0.0.0]"],
+      planets: ["000"],
       techs: ["Neural Motivator", "Plasma Scoring"],
       units: {
         Carrier: 1,
@@ -946,6 +928,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "POK",
+    id: "Mahact Gene-Sorcerers",
     name: "Mahact Gene-Sorcerers",
     promissories: [
       {
@@ -1028,6 +1011,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "BASE",
+    id: "Mentak Coalition",
     name: "Mentak Coalition",
     promissories: [
       {
@@ -1098,6 +1082,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "BASE",
+    id: "Naalu Collective",
     name: "Naalu Collective",
     promissories: [
       {
@@ -1108,7 +1093,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     ],
     shortname: "Naalu",
     startswith: {
-      planets: ["Druua", "Maaluuk"],
+      planets: ["Druaa", "Maaluuk"],
       techs: ["Neural Motivator", "Sarween Tools"],
       units: {
         Carrier: 1,
@@ -1184,6 +1169,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "POK",
+    id: "Naaz-Rokha Alliance",
     name: "Naaz-Rokha Alliance",
     promissories: [
       {
@@ -1269,6 +1255,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "BASE",
+    id: "Nekro Virus",
     name: "Nekro Virus",
     promissories: [
       {
@@ -1338,6 +1325,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 4,
     expansion: "POK",
+    id: "Nomad",
     name: "Nomad",
     promissories: [
       {
@@ -1403,6 +1391,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "BASE",
+    id: "Sardakk N'orr",
     name: "Sardakk N'orr",
     promissories: [
       {
@@ -1488,6 +1477,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "POK",
+    id: "Titans of Ul",
     name: "Titans of Ul",
     promissories: [
       {
@@ -1590,6 +1580,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 4,
     expansion: "BASE",
+    id: "Universities of Jol-Nar",
     name: "Universities of Jol-Nar",
     promissories: [
       {
@@ -1670,6 +1661,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "POK",
+    id: "Vuil'raith Cabal",
     name: "Vuil'raith Cabal",
     promissories: [
       {
@@ -1750,6 +1742,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "BASE",
+    id: "Winnu",
     name: "Winnu",
     promissories: [
       {
@@ -1837,6 +1830,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 4,
     expansion: "BASE",
+    id: "Xxcha Kingdom",
     name: "Xxcha Kingdom",
     promissories: [
       {
@@ -1907,6 +1901,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 2,
     expansion: "BASE",
+    id: "Yin Brotherhood",
     name: "Yin Brotherhood",
     promissories: [
       {
@@ -1987,6 +1982,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     },
     commodities: 3,
     expansion: "BASE",
+    id: "Yssaril Tribes",
     name: "Yssaril Tribes",
     promissories: [
       {

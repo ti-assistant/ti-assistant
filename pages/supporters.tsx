@@ -1,8 +1,8 @@
-import React from "react";
 import Link from "next/link";
+import BorderedDiv from "../src/components/BorderedDiv/BorderedDiv";
+import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
+import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { responsivePixels } from "../src/util/util";
-import { LabeledDiv, LabeledLine } from "../src/LabeledDiv";
-import { NonGameHeader } from "../src/Header";
 
 export default function Supporters() {
   return (
@@ -47,7 +47,7 @@ export default function Supporters() {
 
         <Link href={`/`}>
           <a style={{ marginTop: responsivePixels(12) }}>
-            <LabeledDiv>
+            <BorderedDiv>
               <div
                 className="flexColumn mediumFont"
                 style={{
@@ -56,7 +56,7 @@ export default function Supporters() {
               >
                 Back
               </div>
-            </LabeledDiv>
+            </BorderedDiv>
           </a>
         </Link>
       </div>

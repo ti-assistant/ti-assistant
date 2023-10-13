@@ -1,35 +1,60 @@
-import useSWR from "swr";
-import { StoredGameData, fetcher } from "../util/api/util";
-import { GameData } from "../util/api/state";
-import { Agenda } from "../util/api/agendas";
-import { BASE_AGENDAS } from "../../server/data/agendas";
-import { Attachment } from "../util/api/attachments";
-import { BASE_ATTACHMENTS } from "../../server/data/attachments";
-import {
-  BaseFaction,
-  Faction,
-  PromissoryNote,
-  Unit,
-} from "../util/api/factions";
-import { BaseLeader, Component } from "../util/api/components";
-import { BASE_COMPONENTS } from "../../server/data/components";
-import { BASE_LEADERS } from "../../server/data/leaders";
-import { BASE_RELICS } from "../../server/data/relics";
-import { Relic } from "../util/api/relics";
-import { BASE_FACTIONS, FactionId } from "../../server/data/factions";
-import { BASE_OBJECTIVES } from "../../server/data/objectives";
-import { Objective } from "../util/api/objectives";
-import { validateMapString } from "../util/util";
-import { BASE_PLANETS } from "../../server/data/planets";
-import { Planet } from "../util/api/planets";
-import { BASE_STRATEGY_CARDS } from "../../server/data/strategyCards";
-import { StrategyCard } from "../util/api/cards";
-import { BASE_OPTIONS } from "../../server/data/options";
-import { getDefaultStrategyCards } from "../util/api/defaults";
-import { BASE_TECHS } from "../../server/data/techs";
-import { Tech } from "../util/api/techs";
 import stableHash from "stable-hash";
-import { Options } from "../util/api/options";
+import useSWR from "swr";
+import { BASE_OPTIONS } from "../../server/data/options";
+import { fetcher } from "../util/api/util";
+import { validateMapString } from "../util/util";
+
+let BASE_AGENDAS: Partial<Record<AgendaId, BaseAgenda>> = {};
+import("../../server/data/agendas").then((module) => {
+  BASE_AGENDAS = module.BASE_AGENDAS;
+});
+
+let BASE_ATTACHMENTS: Partial<Record<AttachmentId, BaseAttachment>> = {};
+import("../../server/data/attachments").then((module) => {
+  BASE_ATTACHMENTS = module.BASE_ATTACHMENTS;
+});
+
+let BASE_COMPONENTS: Partial<
+  Record<ComponentId, BaseComponent | BaseTechComponent>
+> = {};
+import("../../server/data/components").then((module) => {
+  BASE_COMPONENTS = module.BASE_COMPONENTS;
+});
+
+let BASE_FACTIONS: Partial<Record<FactionId, BaseFaction>> = {};
+import("../../server/data/factions").then((module) => {
+  BASE_FACTIONS = module.BASE_FACTIONS;
+});
+
+let BASE_LEADERS: Partial<Record<LeaderId, BaseLeader>> = {};
+import("../../server/data/leaders").then((module) => {
+  BASE_LEADERS = module.BASE_LEADERS;
+});
+
+let BASE_OBJECTIVES: Partial<Record<ObjectiveId, BaseObjective>> = {};
+import("../../server/data/objectives").then((module) => {
+  BASE_OBJECTIVES = module.BASE_OBJECTIVES;
+});
+
+let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
+import("../../server/data/planets").then((module) => {
+  BASE_PLANETS = module.BASE_PLANETS;
+});
+
+let BASE_RELICS: Partial<Record<RelicId, BaseRelic>> = {};
+import("../../server/data/relics").then((module) => {
+  BASE_RELICS = module.BASE_RELICS;
+});
+
+let BASE_STRATEGY_CARDS: Partial<Record<StrategyCardId, BaseStrategyCard>> = {};
+import("../../server/data/strategyCards").then((module) => {
+  BASE_STRATEGY_CARDS = module.BASE_STRATEGY_CARDS;
+});
+
+let BASE_TECHS: Partial<Record<TechId, BaseTech>> = {};
+import("../../server/data/techs").then((module) => {
+  BASE_TECHS = module.BASE_TECHS;
+});
 
 export function useIsGameDataValidating(gameid: string | undefined) {
   const { isValidating }: { isValidating?: boolean } = useSWR(
@@ -45,16 +70,17 @@ export function useIsGameDataValidating(gameid: string | undefined) {
 
 export function useGameData(
   gameid: string | undefined,
-  paths?: string[]
+  paths: string[]
 ): GameData {
   const { data: storedGameData }: { data?: StoredGameData } = useSWR(
     gameid ? `/api/${gameid}/data` : null,
-    fetcher,
+    () => fetcher(`/api/${gameid}/data`),
     {
       compare: (a?: StoredGameData, b?: StoredGameData) => {
         if (paths && paths.length > 0 && a && b) {
           for (const path of paths) {
             if (stableHash(a[path]) !== stableHash(b[path])) {
+              // console.log("Paths", paths);
               return false;
             }
           }
@@ -66,6 +92,15 @@ export function useGameData(
     }
   );
 
+  // return useMemo(() => {
+  //   console.log("What");
+  //   return buildCompleteGameData(storedGameData);
+  // }, [change]);
+
+  // console.log("Latest Change", latestChange);
+
+  // return useMemo(() => {
+  // console.log("Re-render!");
   if (!storedGameData) {
     return {
       agendas: BASE_AGENDAS,
@@ -79,16 +114,18 @@ export function useGameData(
       state: {
         phase: "UNKNOWN",
         round: 1,
-        speaker: "None",
+        speaker: "Vuil'raith Cabal",
       },
-      strategycards: getDefaultStrategyCards(),
+      strategycards: BASE_STRATEGY_CARDS,
       techs: BASE_TECHS,
     };
   }
+  return buildCompleteGameData(storedGameData);
+  // }, [latestChange]);
 
-  const completeGameData = buildCompleteGameData(storedGameData);
+  // const completeGameData = buildCompleteGameData(storedGameData);
 
-  return completeGameData;
+  // return completeGameData;
 }
 
 export function buildCompleteGameData(storedGameData: StoredGameData) {
@@ -113,7 +150,7 @@ export function buildCompleteGameData(storedGameData: StoredGameData) {
 export function buildAgendas(storedGameData: StoredGameData) {
   const gameAgendas = storedGameData.agendas ?? {};
 
-  const agendas: Record<string, Agenda> = {};
+  const agendas: Partial<Record<AgendaId, Agenda>> = {};
 
   const expansions = storedGameData.options.expansions;
 
@@ -129,9 +166,9 @@ export function buildAgendas(storedGameData: StoredGameData) {
       return;
     }
 
-    agendas[agendaId] = {
+    agendas[agendaId as AgendaId] = {
       ...agenda,
-      ...(gameAgendas[agendaId] ?? {}),
+      ...(gameAgendas[agendaId as AgendaId] ?? {}),
     };
   });
 
@@ -143,7 +180,7 @@ export function buildAttachments(storedGameData: StoredGameData) {
   const gameFactions = storedGameData.factions ?? {};
   const expansions = storedGameData.options.expansions;
 
-  const attachments: Record<string, Attachment> = {};
+  const attachments: Partial<Record<AttachmentId, Attachment>> = {};
   Object.entries(BASE_ATTACHMENTS).forEach(([attachmentId, attachment]) => {
     // Maybe filter out PoK attachments.
     if (
@@ -163,9 +200,9 @@ export function buildAttachments(storedGameData: StoredGameData) {
       return;
     }
 
-    attachments[attachmentId] = {
+    attachments[attachmentId as AttachmentId] = {
       ...attachment,
-      ...(gameAttachments[attachmentId] ?? {}),
+      ...(gameAttachments[attachmentId as AttachmentId] ?? {}),
     };
   });
 
@@ -277,10 +314,10 @@ export function buildComponents(storedGameData: StoredGameData) {
         return;
       }
 
-      components[relicId] = {
+      components[relicId as RelicId] = {
         ...relic,
-        ...(gameComponents[relicId] ?? {}),
-        ...(gameRelics[relicId] ?? {}),
+        ...(gameComponents[relicId as RelicId] ?? {}),
+        ...(gameRelics[relicId as RelicId] ?? {}),
         type: "RELIC",
       };
     });
@@ -295,25 +332,27 @@ export function buildComponents(storedGameData: StoredGameData) {
 }
 
 export function buildFactions(storedGameData: StoredGameData) {
-  const baseFactions: Record<string, BaseFaction> = {};
-  Object.entries(BASE_FACTIONS).forEach(([factionId, faction]) => {
+  const baseFactions: Partial<Record<FactionId, BaseFaction>> = {};
+  Object.entries(BASE_FACTIONS).forEach(([id, faction]) => {
+    const factionId = id as FactionId;
     baseFactions[factionId] = faction;
   });
 
-  const factions: Record<string, Faction> = {};
+  const factions: Partial<Record<FactionId, Faction>> = {};
   Object.entries(storedGameData.factions ?? {}).forEach(([id, faction]) => {
-    const baseFaction = baseFactions[id];
+    const factionId = id as FactionId;
+    const baseFaction = baseFactions[factionId];
     if (!baseFaction) {
       throw new Error("Unable to get base version of faction.");
     }
-    factions[id] = {
+    factions[factionId] = {
       ...baseFaction,
       ...faction,
     };
   });
 
   if (Object.keys(factions).includes("Council Keleres")) {
-    const councilChoice = new Set<string>();
+    const councilChoice = new Set<TechId>();
     Object.values(factions).forEach((faction) => {
       (faction.startswith.techs ?? []).forEach((tech) => {
         councilChoice.add(tech);
@@ -328,14 +367,20 @@ export function buildFactions(storedGameData: StoredGameData) {
   return factions;
 }
 
-export function buildFaction(factionName: string, options: Options) {
-  const baseFaction = { ...BASE_FACTIONS[factionName as FactionId] };
+export function buildFaction(
+  factionId: FactionId,
+  options: Options
+): BaseFaction {
+  const localFactions = {
+    ...BASE_FACTIONS,
+  };
+  const baseFaction = localFactions[factionId];
   if (!baseFaction) {
     throw new Error("Unable to get base version of faction.");
   }
 
   const promissories: PromissoryNote[] = [];
-  for (const promissory of baseFaction.promissories) {
+  for (const promissory of baseFaction.promissories ?? []) {
     const localPromissory = { ...promissory };
     if (
       promissory.omega &&
@@ -350,7 +395,7 @@ export function buildFaction(factionName: string, options: Options) {
   baseFaction.promissories = promissories;
 
   const units: Unit[] = [];
-  for (const unit of baseFaction.units) {
+  for (const unit of baseFaction.units ?? []) {
     const localUnit = { ...unit };
     if (
       unit.expansion !== "BASE" &&
@@ -380,7 +425,7 @@ export function buildObjectives(storedGameData: StoredGameData) {
   //   storedGameData[secret]?.objectives ?? {};
   const expansions = storedGameData.options?.expansions ?? [];
 
-  const objectives: Record<string, Objective> = {};
+  const objectives: Partial<Record<ObjectiveId, Objective>> = {};
   Object.entries(BASE_OBJECTIVES).forEach(([objectiveId, objective]) => {
     // Maybe filter out PoK objectives.
     if (!expansions.includes("POK") && objective.expansion === "POK") {
@@ -395,9 +440,9 @@ export function buildObjectives(storedGameData: StoredGameData) {
       objective.description = objective.omega.description;
     }
 
-    objectives[objectiveId] = {
+    objectives[objectiveId as ObjectiveId] = {
       ...objective,
-      ...(gameObjectives[objectiveId] ?? {}),
+      ...(gameObjectives[objectiveId as ObjectiveId] ?? {}),
       // ...(secretObjectives[objectiveId] ?? {}),
     };
   });
@@ -420,26 +465,31 @@ export function buildPlanets(storedGameData: StoredGameData) {
   const isValidMapString = validateMapString(mapString);
   const inGameSystems = mapString.split(" ").map((system) => parseInt(system));
 
-  let planets = {} as Record<string, Planet>;
-  Object.entries(BASE_PLANETS).forEach(([planetId, planet]) => {
+  let planets = {} as Partial<Record<PlanetId, Planet>>;
+  Object.entries(BASE_PLANETS).forEach(([_, planet]) => {
     if (planet.faction && !gameFactions[planet.faction]) {
       if (!gameFactions["Council Keleres"]) {
         return;
       }
       if (
-        !gameFactions["Council Keleres"].startswith.planets?.includes(
-          planet.name
-        )
+        !gameFactions["Council Keleres"].startswith.planets?.includes(planet.id)
       ) {
         return;
       }
     }
     if (
+      planet.faction &&
+      planet.subFaction &&
+      gameFactions[planet.faction]?.startswith.faction !== planet.subFaction
+    ) {
+      return;
+    }
+    if (
       isValidMapString &&
       planet.system &&
-      planet.name !== "Mirage" &&
-      planet.name !== "Mallice" &&
-      planet.name !== "Mecatol Rex" &&
+      planet.id !== "Mirage" &&
+      planet.id !== "Mallice" &&
+      planet.id !== "Mecatol Rex" &&
       !planet.faction &&
       !inGameSystems.includes(planet.system)
     ) {
@@ -455,25 +505,23 @@ export function buildPlanets(storedGameData: StoredGameData) {
       if (
         !gameFactions["Council Keleres"] ||
         !(gameFactions["Council Keleres"]?.startswith?.planets ?? []).includes(
-          planet.name
+          planet.id
         )
       ) {
         return;
       }
     }
 
-    if (gamePlanets[planetId] && gamePlanets[planetId]?.state === "PURGED") {
+    if (gamePlanets[planet.id] && gamePlanets[planet.id]?.state === "PURGED") {
       return;
     }
 
     planet = {
       ...planet,
-      ...(gamePlanets[planetId] ?? {}),
+      ...(gamePlanets[planet.id] ?? {}),
     };
 
-    const clientId = planetId === "000" ? "[0.0.0]" : planetId;
-
-    planets[clientId] = planet;
+    planets[planet.id] = planet;
   });
 
   return planets;
@@ -483,16 +531,16 @@ export function buildRelics(storedGameData: StoredGameData) {
   const gameRelics = storedGameData.relics ?? {};
   const expansions = storedGameData.options.expansions;
 
-  const relics: Record<string, Relic> = {};
+  const relics: Partial<Record<RelicId, Relic>> = {};
   Object.entries(BASE_RELICS).forEach(([relicId, relic]) => {
     // Maybe filter out Codex relics.
     if (!expansions.includes("POK") || !expansions.includes(relic.expansion)) {
       return;
     }
 
-    relics[relicId] = {
+    relics[relicId as RelicId] = {
       ...relic,
-      ...(gameRelics[relicId] ?? {}),
+      ...(gameRelics[relicId as RelicId] ?? {}),
     };
   });
 
@@ -514,11 +562,11 @@ export function buildState(storedGameData: StoredGameData) {
 export function buildStrategyCards(storedGameData: StoredGameData) {
   const strategyCards = storedGameData.strategycards ?? {};
 
-  const cards: Record<string, StrategyCard> = {};
+  const cards: Partial<Record<StrategyCardId, StrategyCard>> = {};
   Object.entries(BASE_STRATEGY_CARDS).forEach(([cardId, card]) => {
-    cards[cardId] = {
+    cards[cardId as StrategyCardId] = {
       ...card,
-      ...(strategyCards[cardId] ?? {}),
+      ...(strategyCards[cardId as StrategyCardId] ?? {}),
     };
   });
 
@@ -528,8 +576,8 @@ export function buildStrategyCards(storedGameData: StoredGameData) {
 export function buildTechs(storedGameData: StoredGameData) {
   const options = storedGameData.options;
 
-  const techs: Record<string, Tech> = {};
-  Object.entries(BASE_TECHS).forEach(([techId, tech]) => {
+  const techs: Partial<Record<TechId, Tech>> = {};
+  Object.values(BASE_TECHS).forEach((tech) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
@@ -542,15 +590,15 @@ export function buildTechs(storedGameData: StoredGameData) {
       techCopy.description = tech.omega.description;
     }
 
-    techs[techId] = techCopy;
+    techs[tech.id] = techCopy;
   });
 
   return techs;
 }
 
 export function buildBaseTechs(options: Options) {
-  const techs: Record<string, Tech> = {};
-  Object.entries(BASE_TECHS).forEach(([techId, tech]) => {
+  const techs: Partial<Record<TechId, Tech>> = {};
+  Object.values(BASE_TECHS).forEach((tech) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
@@ -563,7 +611,7 @@ export function buildBaseTechs(options: Options) {
       techCopy.description = tech.omega.description;
     }
 
-    techs[techId] = techCopy;
+    techs[tech.id] = techCopy;
   });
 
   return techs;

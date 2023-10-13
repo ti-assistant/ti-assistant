@@ -1,95 +1,11 @@
-import { BaseTech } from "../../src/util/api/techs";
 import { DISCORDANT_STARS_TECHS } from "./discordantstars/techs";
-
-export type TechId =
-  | "AI Development Algorithm"
-  | "Advanced Carrier II"
-  | "Aerie Hololattice"
-  | "Aetherstream"
-  | "Agency Supply Network"
-  | "Antimass Deflectors"
-  | "Assault Cannon"
-  | "Bio-Stims"
-  | "Bioplasmosis"
-  | "Carrier II"
-  | "Chaos Mapping"
-  | "Crimson Legionnaire II"
-  | "Cruiser II"
-  | "Dacxive Animators"
-  | "Dark Energy Tap"
-  | "Destroyer II"
-  | "Dimensional Splicer"
-  | "Dimensional Tear II"
-  | "Dreadnought II"
-  | "Duranium Armor"
-  | "E-Res Siphons"
-  | "Exotrireme II"
-  | "Fighter II"
-  | "Fleet Logistics"
-  | "Floating Factory II"
-  | "Genetic Recombination"
-  | "Graviton Laser System"
-  | "Gravity Drive"
-  | "Hegemonic Trade Policy"
-  | "Hel Titan II"
-  | "Hybrid Crystal Fighter II"
-  | "Hyper Metabolism"
-  | "IIHQ Modernization"
-  | "Impulse Core"
-  | "Infantry II"
-  | "Inheritance Systems"
-  | "Instinct Training"
-  | "Integrated Economy"
-  | "L4 Disruptors"
-  | "Lazax Gate Folding"
-  | "Letani Warrior II"
-  | "LightWave Deflector"
-  | "Magen Defense Grid"
-  | "Mageon Implants"
-  | "Magmus Reactor"
-  | "Memoria II"
-  | "Mirror Computing"
-  | "Neural Motivator"
-  | "Neuroglaive"
-  | "Non-Euclidean Shielding"
-  | "Nullification Field"
-  | "PDS II"
-  | "Plasma Scoring"
-  | "Pre-Fab Arcologies"
-  | "Predictive Intelligence"
-  | "Production Biomes"
-  | "Prototype War Sun II"
-  | "Psychoarchaeology"
-  | "Quantum Datahub Node"
-  | "Salvage Operations"
-  | "Sarween Tools"
-  | "Saturn Engine II"
-  | "Scanlink Drone Network"
-  | "Self Assembly Routines"
-  | "Sling Relay"
-  | "Space Dock II"
-  | "Spacial Conduit Cylinder"
-  | "Spec Ops II"
-  | "Strike Wing Alpha II"
-  | "Super-Dreadnought II"
-  | "Supercharge"
-  | "Temporal Command Suite"
-  | "Transit Diodes"
-  | "Transparasteel Plating"
-  | "Valkyrie Particle Weave"
-  | "Voidwatch"
-  | "Vortex"
-  | "War Sun"
-  | "Wormhole Generator"
-  | "X-89 Bacterial Weapon"
-  | "Yin Spinner"
-  | DiscordantStars.TechId;
 
 export const BASE_TECHS: Record<TechId, BaseTech> = {
   "AI Development Algorithm": {
     description:
       "When you research a unit upgrade technology, you may exhaust this card to ignore any 1 prerequisite\n\nWhen 1 or more of your units use PRODUCTION, you may exhaust this card to reduce the combined cost of the produced units by the number of unit upgrade technologies that you own",
     expansion: "POK",
+    id: "AI Development Algorithm",
     name: "AI Development Algorithm",
     prereqs: [],
     type: "RED",
@@ -99,6 +15,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description: "",
     expansion: "BASE",
     faction: "Federation of Sol",
+    id: "Advanced Carrier II",
     name: "Advanced Carrier II",
     prereqs: ["BLUE", "BLUE"],
     replaces: "Carrier II",
@@ -115,6 +32,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "Other players cannot move ships through systems that contain your structures\n\nEach planet that contains 1 or more of your structures gains the PRODUCTION 1 ability as if it were a unit",
     expansion: "POK",
     faction: "Argent Flight",
+    id: "Aerie Hololattice",
     name: "Aerie Hololattice",
     prereqs: ["YELLOW"],
     type: "YELLOW",
@@ -124,6 +42,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After you or one of your neighbors activates a system that is adjacent to an anomaly, you may apply +1 to the move value of all of that player's ships during this tactical action",
     expansion: "POK",
     faction: "Empyrean",
+    id: "Aetherstream",
     name: "Aetherstream",
     prereqs: ["BLUE", "BLUE"],
     type: "BLUE",
@@ -133,6 +52,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "Whenever you resolve one of your PRODUCTION abilities, you may resolve an additional one of your PRODUCTION abilities in any system; the additional use does not trigger this ability",
     expansion: "CODEX THREE",
     faction: "Council Keleres",
+    id: "Agency Supply Network",
     name: "Agency Supply Network",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -141,6 +61,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "Your ships can move into and through asteroid fields\n\nWhen other players' units use SPACE CANNON against your units, apply -1 to the result of each die roll",
     expansion: "BASE",
+    id: "Antimass Deflectors",
     name: "Antimass Deflectors",
     prereqs: [],
     type: "BLUE",
@@ -149,6 +70,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "At the start of a space combat in a system that contains 3 or more of your non-fighter ships, your opponent must destroy 1 of their non-fighter ships",
     expansion: "BASE",
+    id: "Assault Cannon",
     name: "Assault Cannon",
     prereqs: ["RED", "RED", "RED"],
     type: "RED",
@@ -157,6 +79,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "You may exhaust this card at the end of your turn to ready 1 of your planets that has a technology specialty or 1 of your other technologies",
     expansion: "POK",
+    id: "Bio-Stims",
     name: "Bio-Stims",
     prereqs: ["GREEN"],
     type: "GREEN",
@@ -166,6 +89,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "At the end of the status phase, you may remove any number of your infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems",
     expansion: "BASE",
     faction: "Arborec",
+    id: "Bioplasmosis",
     name: "Bioplasmosis",
     prereqs: ["GREEN", "GREEN"],
     type: "GREEN",
@@ -174,6 +98,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     abilities: [],
     description: "",
     expansion: "BASE",
+    id: "Carrier II",
     name: "Carrier II",
     prereqs: ["BLUE", "BLUE"],
     stats: {
@@ -189,6 +114,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "Other players cannot activate asteroid fields that contain 1 or more of your ships\n\nAt the start of your turn during the action phase, you may produce 1 unit in a system that contains at least 1 of your units that has PRODUCTION",
     expansion: "BASE",
     faction: "Clan of Saar",
+    id: "Chaos Mapping",
     name: "Chaos Mapping",
     prereqs: ["BLUE"],
     type: "BLUE",
@@ -199,6 +125,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After this unit is destroyed, gain 1 commodity or convert 1 of your commodities to a trade good. Then, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system",
     expansion: "POK",
     faction: "Mahact Gene-Sorcerers",
+    id: "Crimson Legionnaire II",
     name: "Crimson Legionnaire II",
     prereqs: ["GREEN", "GREEN"],
     replaces: "Infantry II",
@@ -212,6 +139,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     abilities: [],
     description: "",
     expansion: "BASE",
+    id: "Cruiser II",
     name: "Cruiser II",
     prereqs: ["GREEN", "YELLOW", "RED"],
     stats: {
@@ -226,6 +154,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "After you win a ground combat, you may place 1 infantry from your reinforcements on that planet",
     expansion: "BASE",
+    id: "Dacxive Animators",
     name: "Dacxive Animators",
     prereqs: ["GREEN"],
     type: "GREEN",
@@ -234,6 +163,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token\n\nYour ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system",
     expansion: "POK",
+    id: "Dark Energy Tap",
     name: "Dark Energy Tap",
     prereqs: [],
     type: "BLUE",
@@ -242,6 +172,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     abilities: ["ANTI-FIGHTER BARRAGE 6 (x3)"],
     description: "",
     expansion: "BASE",
+    id: "Destroyer II",
     name: "Destroyer II",
     prereqs: ["RED", "RED"],
     stats: {
@@ -256,6 +187,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "At the start of space combat in a system that contains a wormhole and 1 or more of your ships, you may produce 1 hit and assign it to 1 of your opponent's ships",
     expansion: "BASE",
     faction: "Ghosts of Creuss",
+    id: "Dimensional Splicer",
     name: "Dimensional Splicer",
     prereqs: ["RED"],
     type: "RED",
@@ -266,6 +198,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder\n\nUp to 12 fighters in this system do not count against your ships' capacity",
     expansion: "POK",
     faction: "Vuil'raith Cabal",
+    id: "Dimensional Tear II",
     name: "Dimensional Tear II",
     prereqs: ["YELLOW", "YELLOW"],
     replaces: "Space Dock II",
@@ -277,6 +210,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       '"Direct Hit" cards are no longer effective against this type of ship',
     expansion: "BASE",
+    id: "Dreadnought II",
     name: "Dreadnought II",
     prereqs: ["BLUE", "BLUE", "YELLOW"],
     stats: {
@@ -291,6 +225,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "During each combat round, after you assign hits to your units, repair 1 of your damaged units that did not use SUSTAIN DAMAGE during this combat round",
     expansion: "BASE",
+    id: "Duranium Armor",
     name: "Duranium Armor",
     prereqs: ["RED", "RED"],
     type: "RED",
@@ -300,6 +235,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After another player activates a system that contains 1 or more of your ships, gain 4 trade goods",
     expansion: "BASE",
     faction: "Universities of Jol-Nar",
+    id: "E-Res Siphons",
     name: "E-Res Siphons",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -310,6 +246,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       'After a round of space combat, you may destroy this unit to destroy up to 2 ships in this system\n\n"Direct Hit" cards are no longer effective against this type of ship',
     expansion: "BASE",
     faction: "Sardakk N'orr",
+    id: "Exotrireme II",
     name: "Exotrireme II",
     prereqs: ["BLUE", "BLUE", "YELLOW"],
     replaces: "Dreadnought II",
@@ -326,6 +263,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "This unit may move without being transported. Fighters in excess of your ships' capacity count against your fleet pool",
     expansion: "BASE",
+    id: "Fighter II",
     name: "Fighter II",
     prereqs: ["GREEN", "BLUE"],
     stats: {
@@ -339,6 +277,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "During each of your turns of the action phase, you may perform 2 actions instead of 1",
     expansion: "BASE",
+    id: "Fleet Logistics",
     name: "Fleet Logistics",
     prereqs: ["BLUE", "BLUE"],
     type: "BLUE",
@@ -349,6 +288,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "This unit is placed in the space area instead of on a planet. This unit can move and retreat as if it were a ship. If this unit is blockaded, it is destroyed",
     expansion: "BASE",
     faction: "Clan of Saar",
+    id: "Floating Factory II",
     name: "Floating Factory II",
     prereqs: ["YELLOW", "YELLOW"],
     replaces: "Space Dock II",
@@ -363,6 +303,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "You may exhaust this card before a player casts votes; that player must cast at least 1 vote for an outcome of your choice or remove 1 token from their fleet pool and return it to their reinforcements",
     expansion: "POK",
     faction: "Mahact Gene-Sorcerers",
+    id: "Genetic Recombination",
     name: "Genetic Recombination",
     prereqs: ["GREEN"],
     type: "GREEN",
@@ -371,6 +312,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "You may exhaust this card before 1 or more of your units uses SPACE CANNON; hits produced by those units must be assigned to non-fighter ships if able",
     expansion: "BASE",
+    id: "Graviton Laser System",
     name: "Graviton Laser System",
     prereqs: ["YELLOW"],
     type: "YELLOW",
@@ -379,6 +321,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "After you activate a system, apply +1 to the move value of 1 of your ships during this tactical action",
     expansion: "BASE",
+    id: "Gravity Drive",
     name: "Gravity Drive",
     prereqs: ["BLUE"],
     type: "BLUE",
@@ -388,6 +331,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "Exhaust this card when 1 or more of your units use PRODUCTION; swap the resource and influence values of 1 planet you control until the end of your turn",
     expansion: "BASE",
     faction: "Winnu",
+    id: "Hegemonic Trade Policy",
     name: "Hegemonic Trade Policy",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -403,6 +347,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "This unit is treated as both a structure and a ground force. It cannot be transported. You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system",
     expansion: "POK",
     faction: "Titans of Ul",
+    id: "Hel Titan II",
     name: "Hel Titan II",
     prereqs: ["RED", "YELLOW"],
     replaces: "PDS II",
@@ -417,6 +362,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "This unit may move without being transported. Each fighter in excess of your ships' capacity counts as 1/2 of a ship against your fleet pool",
     expansion: "BASE",
     faction: "Naalu Collective",
+    id: "Hybrid Crystal Fighter II",
     name: "Hybrid Crystal Fighter II",
     prereqs: ["GREEN", "BLUE"],
     replaces: "Fighter II",
@@ -430,6 +376,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
   "Hyper Metabolism": {
     description: "During the status phase, gain 3 command tokens instead of 2",
     expansion: "BASE",
+    id: "Hyper Metabolism",
     name: "Hyper Metabolism",
     prereqs: ["GREEN", "GREEN"],
     type: "GREEN",
@@ -439,6 +386,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "You are neighbors with all players that have units or control planets in or adjacent to the Mecatol Rex system\n\nGain the Custodia Vigilia planet card and its legendary planet ability card. You cannot lose these cards, and this card cannot have an X or Y assimilator placed on it",
     expansion: "CODEX THREE",
     faction: "Council Keleres",
+    id: "IIHQ Modernization",
     name: "I.I.H.Q. Modernization",
     prereqs: ["YELLOW"],
     type: "YELLOW",
@@ -448,6 +396,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "At the start of a space combat, you may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit against your opponent's ships; that hit must be assigned by your opponent to 1 of their non-fighter ships if able",
     expansion: "BASE",
     faction: "Yin Brotherhood",
+    id: "Impulse Core",
     name: "Impulse Core",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -457,6 +406,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system",
     expansion: "BASE",
+    id: "Infantry II",
     name: "Infantry II",
     prereqs: ["GREEN", "GREEN"],
     stats: {
@@ -470,6 +420,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "You may exhaust this card and spend 2 resources when you research a technology; ignore all of that technology's prerequisites",
     expansion: "BASE",
     faction: "L1Z1X Mindnet",
+    id: "Inheritance Systems",
     name: "Inheritance Systems",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -479,6 +430,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "You may exhaust this card and spend 1 token from your strategy pool when another player plays an action card; cancel that action card",
     expansion: "BASE",
     faction: "Xxcha Kingdom",
+    id: "Instinct Training",
     name: "Instinct Training",
     prereqs: ["GREEN"],
     type: "GREEN",
@@ -487,6 +439,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "After you gain control of a planet, you may produce any number of units on that planet that have a combined cost equal to or less than that planet's resource value",
     expansion: "BASE",
+    id: "Integrated Economy",
     name: "Integrated Economy",
     prereqs: ["YELLOW", "YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -496,6 +449,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "During an invasion, units cannot use SPACE CANNON against your units",
     expansion: "BASE",
     faction: "Barony of Letnev",
+    id: "L4 Disruptors",
     name: "L4 Disruptors",
     prereqs: ["YELLOW"],
     type: "YELLOW",
@@ -505,6 +459,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "During your tactical actions, if you do not control Mecatol Rex, treat its systems as if it has both an α and β wormhole\n\nACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex",
     expansion: "BASE",
     faction: "Winnu",
+    id: "Lazax Gate Folding",
     name: "Lazax Gate Folding",
     prereqs: ["BLUE", "BLUE"],
     type: "BLUE",
@@ -515,6 +470,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
     expansion: "BASE",
     faction: "Arborec",
+    id: "Letani Warrior II",
     name: "Letani Warrior II",
     prereqs: ["GREEN", "GREEN"],
     replaces: "Infantry II",
@@ -528,6 +484,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "Your ships can move through systems that contain other players' ships",
     expansion: "BASE",
+    id: "LightWave Deflector",
     name: "Light/Wave Deflector",
     prereqs: ["BLUE", "BLUE", "BLUE"],
     type: "BLUE",
@@ -536,6 +493,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "You may exhaust this card at the start of a round of ground combat on a planet that contains 1 or more of your units that have PLANETARY SHIELD; your opponent cannot make combat rolls this combat round",
     expansion: "BASE",
+    id: "Magen Defense Grid",
     name: "Magen Defense Grid",
     omega: {
       description:
@@ -550,6 +508,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "ACTION: Exhaust this card to look at another player's hand of action cards. Choose 1 of those cards and add it to your hand",
     expansion: "BASE",
     faction: "Yssaril Tribes",
+    id: "Mageon Implants",
     name: "Mageon Implants",
     prereqs: ["GREEN", "GREEN", "GREEN"],
     type: "GREEN",
@@ -559,6 +518,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "Your ships can move into supernovas\n\nAfter 1 or more of your units use PRODUCTION in a system that either contains a war sun or is adjacent to a supernova, gain 1 trade good",
     expansion: "BASE",
     faction: "Embers of Muaat",
+    id: "Magmus Reactor",
     name: "Magmus Reactor",
     omega: {
       description:
@@ -574,6 +534,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs.",
     expansion: "POK",
     faction: "Nomad",
+    id: "Memoria II",
     name: "Memoria II",
     prereqs: ["GREEN", "BLUE", "YELLOW"],
     stats: {
@@ -589,6 +550,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "When you spend trade goods, each trade good is worth 2 resources or influence instead of 1",
     expansion: "BASE",
     faction: "Mentak Coalition",
+    id: "Mirror Computing",
     name: "Mirror Computing",
     prereqs: ["YELLOW", "YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -596,6 +558,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
   "Neural Motivator": {
     description: "During the status phase, draw 2 action cards instead of 1",
     expansion: "BASE",
+    id: "Neural Motivator",
     name: "Neural Motivator",
     prereqs: [],
     type: "GREEN",
@@ -605,6 +568,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After another player activates a system that contains 1 or more of your ships, that player removes 1 token from their fleet pool and returns it to their reinforcements",
     expansion: "BASE",
     faction: "Naalu Collective",
+    id: "Neuroglaive",
     name: "Neuroglaive",
     prereqs: ["GREEN", "GREEN", "GREEN"],
     type: "GREEN",
@@ -614,6 +578,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "When 1 of your units uses SUSTAIN DAMAGE, cancel 2 hits instead of 1",
     expansion: "BASE",
     faction: "Barony of Letnev",
+    id: "Non-Euclidean Shielding",
     name: "Non-Euclidean Shielding",
     prereqs: ["RED", "RED"],
     type: "RED",
@@ -623,6 +588,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After another player activates a system that contains 1 or more of your ships, you may exhaust this card and spend 1 token from your strategy pool; immediately end that player's turn",
     expansion: "BASE",
     faction: "Xxcha Kingdom",
+    id: "Nullification Field",
     name: "Nullification Field",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -632,6 +598,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system.",
     expansion: "BASE",
+    id: "PDS II",
     name: "PDS II",
     prereqs: ["RED", "YELLOW"],
     stats: {},
@@ -641,6 +608,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "When 1 or more of your units use BOMBARDMENT or SPACE CANNON, 1 of those units may roll 1 additional die",
     expansion: "BASE",
+    id: "Plasma Scoring",
     name: "Plasma Scoring",
     prereqs: [],
     type: "RED",
@@ -649,6 +617,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description: "After you explore a planet, ready that planet",
     expansion: "POK",
     faction: "Naaz-Rokha Alliance",
+    id: "Pre-Fab Arcologies",
     name: "Pre-Fab Arcologies",
     prereqs: ["GREEN", "GREEN", "GREEN"],
     type: "GREEN",
@@ -657,6 +626,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "At the end of your turn, you may exhaust this card to redistribute your command tokens.\n\nWhen you cast votes during the agenda phase, you may cast 3 additional votes; if you do, and the outcome you voted for is not resolved, exhaust this card",
     expansion: "POK",
+    id: "Predictive Intelligence",
     name: "Predictive Intelligence",
     prereqs: ["YELLOW"],
     type: "YELLOW",
@@ -666,6 +636,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "ACTION: Exhaust this card and spend 1 token from your strategy pool to gain 4 trade goods and choose 1 other player; that player gains 2 trade goods",
     expansion: "BASE",
     faction: "Emirates of Hacan",
+    id: "Production Biomes",
     name: "Production Biomes",
     prereqs: ["GREEN", "GREEN"],
     type: "GREEN",
@@ -675,6 +646,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description: "Other players' units in this system lose PLANETARY SHIELD.",
     expansion: "BASE",
     faction: "Embers of Muaat",
+    id: "Prototype War Sun II",
     name: "Prototype War Sun II",
     prereqs: ["RED", "RED", "RED", "YELLOW"],
     replaces: "War Sun",
@@ -690,6 +662,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "You can use technology specialties on planets you control without exhausting them, even if those planets are exhausted\n\nDuring the Action Phase, you can exhaust planets you control that have technology specialties to gain 1 trade good",
     expansion: "POK",
+    id: "Psychoarchaeology",
     name: "Psychoarchaeology",
     prereqs: [],
     type: "GREEN",
@@ -699,6 +672,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "At the end of the strategy phase, you may spend 1 token from your strategy pool and give another player 3 of your trade goods. If you do, give 1 of your strategy cards to that player and take 1 of their strategy cards",
     expansion: "BASE",
     faction: "Emirates of Hacan",
+    id: "Quantum Datahub Node",
     name: "Quantum Datahub Node",
     prereqs: ["YELLOW", "YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -708,6 +682,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After you win or lose a space combat, gain 1 trade good; if you won the combat you may also produce 1 ship in that system of any ship type that was destroyed during the combat",
     expansion: "BASE",
     faction: "Mentak Coalition",
+    id: "Salvage Operations",
     name: "Salvage Operations",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -716,6 +691,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "When 1 or more of your units use PRODUCTION, reduce the combined cost of the produced units by 1",
     expansion: "BASE",
+    id: "Sarween Tools",
     name: "Sarween Tools",
     prereqs: [],
     type: "YELLOW",
@@ -724,6 +700,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     abilities: ["SUSTAIN DAMAGE"],
     expansion: "POK",
     faction: "Titans of Ul",
+    id: "Saturn Engine II",
     name: "Saturn Engine II",
     prereqs: ["GREEN", "YELLOW", "RED"],
     replaces: "Cruiser II",
@@ -739,6 +716,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "When you activate a system, you may explore 1 planet in that system which contains 1 or more of your units",
     expansion: "POK",
+    id: "Scanlink Drone Network",
     name: "Scanlink Drone Network",
     prereqs: [],
     type: "YELLOW",
@@ -747,6 +725,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "After 1 or more of your units use PRODUCTION, you may exhaust this card to place 1 mech from your reinforcements on a planet you control in that system\n\nAfter 1 of your mechs is destroyed, gain 1 trade good",
     expansion: "POK",
+    id: "Self Assembly Routines",
     name: "Self Assembly Routines",
     prereqs: ["RED"],
     type: "RED",
@@ -755,6 +734,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "ACTION: Exhaust this card to produce 1 ship in any system that contains 1 of your space docks",
     expansion: "POK",
+    id: "Sling Relay",
     name: "Sling Relay",
     prereqs: ["BLUE"],
     type: "BLUE",
@@ -764,6 +744,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet\n\nUp to 3 fighters in this system do not count against your ships' capacity.",
     expansion: "BASE",
+    id: "Space Dock II",
     name: "Space Dock II",
     prereqs: ["YELLOW", "YELLOW"],
     stats: {},
@@ -774,6 +755,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "You may exhaust this card after you activate a system that contains 1 or more of your units; that system is adjacent to all other systems that contain 1 or more of your units during this activation",
     expansion: "BASE",
     faction: "Universities of Jol-Nar",
+    id: "Spacial Conduit Cylinder",
     name: "Spacial Conduit Cylinder",
     prereqs: ["BLUE", "BLUE"],
     type: "BLUE",
@@ -784,6 +766,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After this unit is destroyed, roll 1 die. If the result is 5 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system",
     expansion: "BASE",
     faction: "Federation of Sol",
+    id: "Spec Ops II",
     name: "Spec Ops II",
     prereqs: ["GREEN", "GREEN"],
     replaces: "Infantry II",
@@ -799,6 +782,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "When this unit uses ANTI-FIGHTER BARRAGE, each result of 9 or 10 also destroys 1 of your opponent's infantry in the space area of the active system.",
     expansion: "POK",
     faction: "Argent Flight",
+    id: "Strike Wing Alpha II",
     name: "Strike Wing Alpha II",
     prereqs: ["RED", "RED"],
     replaces: "Destroyer II",
@@ -816,6 +800,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       '"Direct Hit" cards are no longer effective against this type of ship.',
     expansion: "BASE",
     faction: "L1Z1X Mindnet",
+    id: "Super-Dreadnought II",
     name: "Super-Dreadnought II",
     prereqs: ["BLUE", "BLUE", "YELLOW"],
     replaces: "Dreadnought II",
@@ -832,6 +817,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "At the start of a combat round, you may exhaust this card to apply +1 to the result of each of your unit's combat rolls during this combat round",
     expansion: "POK",
     faction: "Naaz-Rokha Alliance",
+    id: "Supercharge",
     name: "Supercharge",
     prereqs: ["RED"],
     type: "RED",
@@ -841,6 +827,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After any player's agent becomes exhausted, you may exhaust this card to ready that agent; if you ready another player's agent, you may perform a transaction with that player",
     expansion: "POK",
     faction: "Nomad",
+    id: "Temporal Command Suite",
     name: "Temporal Command Suite",
     prereqs: ["YELLOW"],
     type: "YELLOW",
@@ -849,6 +836,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "You may exhaust this card at the start of your turn during the action phase; remove up to 4 of your ground forces from the game board and place them on 1 or more planets you control",
     expansion: "BASE",
+    id: "Transit Diodes",
     name: "Transit Diodes",
     prereqs: ["YELLOW", "YELLOW"],
     type: "YELLOW",
@@ -858,6 +846,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "During your turn of the action phase, players that have passed cannot play action cards",
     expansion: "BASE",
     faction: "Yssaril Tribes",
+    id: "Transparasteel Plating",
     name: "Transparasteel Plating",
     prereqs: ["GREEN"],
     type: "GREEN",
@@ -867,6 +856,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After making combat rolls during a round of ground combat, if your opponent produced 1 or more hits, you produce 1 additional hit",
     expansion: "BASE",
     faction: "Sardakk N'orr",
+    id: "Valkyrie Particle Weave",
     name: "Valkyrie Particle Weave",
     prereqs: ["RED", "RED"],
     type: "RED",
@@ -876,6 +866,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After a player moves ships into a system that contains 1 or more of your units, they must give you 1 promissory note from their hand, if able",
     expansion: "POK",
     faction: "Empyrean",
+    id: "Voidwatch",
     name: "Voidwatch",
     prereqs: ["GREEN"],
     type: "GREEN",
@@ -885,6 +876,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements",
     expansion: "POK",
     faction: "Vuil'raith Cabal",
+    id: "Vortex",
     name: "Vortex",
     prereqs: ["RED"],
     type: "RED",
@@ -893,6 +885,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 3 (x3)"],
     description: "Other players' units in this system lose PLANETARY SHIELD.",
     expansion: "BASE",
+    id: "War Sun",
     name: "War Sun",
     prereqs: ["YELLOW", "RED", "RED", "RED"],
     stats: {
@@ -908,6 +901,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "At the start of the status phase, place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships",
     expansion: "BASE",
     faction: "Ghosts of Creuss",
+    id: "Wormhole Generator",
     name: "Wormhole Generator",
     omega: {
       description:
@@ -921,6 +915,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     description:
       "ACTION: Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet",
     expansion: "BASE",
+    id: "X-89 Bacterial Weapon",
     name: "X-89 Bacterial Weapon",
     omega: {
       description:
@@ -935,6 +930,7 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
       "After 1 or more of your units use PRODUCTION, place 1 infantry from your reinforcements on a planet you control in that system",
     expansion: "BASE",
     faction: "Yin Brotherhood",
+    id: "Yin Spinner",
     name: "Yin Spinner",
     omega: {
       description:

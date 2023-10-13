@@ -1,29 +1,18 @@
-import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
+import { ClientOnlyHoverMenu } from "../src/HoverMenu";
+import { SelectableRow } from "../src/SelectableRow";
+import { Selector } from "../src/Selector";
+import FactionIcon from "../src/components/FactionIcon/FactionIcon";
+import { FactionPanel } from "../src/components/FactionPanel";
+import FactionSelectRadialMenu from "../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
+import Map from "../src/components/Map/Map";
+import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { fetcher } from "../src/util/api/util";
 import { convertToFactionColor } from "../src/util/factions";
-import { ClientOnlyHoverMenu } from "../src/HoverMenu";
-import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../src/LabeledDiv";
 import { responsivePixels } from "../src/util/util";
-import Head from "next/head";
-import { Map } from "../src/util/Map";
-import { Expansion, Options } from "../src/util/api/options";
-import {
-  GameVariant,
-  MapStyle,
-  SetupFaction,
-  SetupOptions,
-} from "../src/util/api/setup";
-import { BaseFaction } from "../src/util/api/factions";
-import { Selector } from "../src/Selector";
-import { FullFactionSymbol } from "../src/FactionCard";
-import { SelectableRow } from "../src/SelectableRow";
-import Link from "next/link";
-import Image from "next/image";
-import { NonGameHeader } from "../src/Header";
-import { FactionSelectRadialMenu } from "../src/components/FactionSelect";
-import { FactionPanel } from "../src/components/FactionPanel";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -879,7 +868,7 @@ interface FactionSelectProps {
   mobile?: boolean;
   numFactions: number;
   speaker: number;
-  setFaction: (index: number, factionName: string | undefined) => void;
+  setFaction: (index: number, factionId: FactionId | undefined) => void;
   setColor: (index: number, colorName: string | undefined) => void;
   setSpeaker: (index: number) => void;
   setPlayerName: (index: number, playerName: string) => void;
@@ -889,6 +878,38 @@ interface FactionSelectProps {
   ) => void;
   options: SetupOptions;
 }
+
+// function FactionSelect({}: FactionSelectProps) {
+//   const color = convertToFactionColor("blue");
+//   return (
+//     <>
+//       <FactionSelectRadialMenu
+//         factions={[]}
+//         onSelect={() => {
+//           return color;
+//         }}
+//       />
+//       <SelectableRow itemId="potato" />
+//       <Selector hoverMenuLabel="Why" options={[]} toggleItem={() => {}} />
+//       <FactionIcon factionId="Vuil'raith Cabal" size={40} />
+//       <FactionPanel
+//         options={{
+//           expansions: [],
+//           "allow-double-council": false,
+//           "game-variant": "normal",
+//           "map-style": "standard",
+//           "victory-points": 12,
+//         }}
+//         faction={{
+//           color: "Blue",
+//           id: "Arborec",
+//           name: "Arborec",
+//         }}
+//       />
+//     </>
+//   );
+//   return <div>{color}</div>;
+// }
 
 function FactionSelect({
   factions,
@@ -904,10 +925,15 @@ function FactionSelect({
   options,
 }: FactionSelectProps) {
   const nameRef = useRef<HTMLInputElement>(null);
-  const { data: availableFactions }: { data?: Record<string, BaseFaction> } =
-    useSWR("/api/factions", fetcher, {
+  const {
+    data: availableFactions,
+  }: { data?: Partial<Record<FactionId, BaseFaction>> } = useSWR(
+    "/api/factions",
+    fetcher,
+    {
       revalidateIfStale: false,
-    });
+    }
+  );
   const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher, {
     revalidateIfStale: false,
   });
@@ -926,8 +952,8 @@ function FactionSelect({
 
   const isSpeaker = speaker === factionIndex;
 
-  const filteredFactions = Object.entries(availableFactions ?? {}).filter(
-    ([_, faction]) => {
+  const filteredFactions = Object.values(availableFactions ?? {}).filter(
+    (faction) => {
       if (faction.expansion === "BASE") {
         return true;
       }
@@ -947,14 +973,14 @@ function FactionSelect({
   });
 
   const selectedFactions = factions
-    .filter((faction, index) => !!faction.name && index < numFactions)
-    .map((faction) => faction.name as string);
+    .filter((faction, index) => !!faction.id && index < numFactions)
+    .map((faction) => faction.id as FactionId);
 
-  function selectFaction(factionName: string | undefined) {
+  function selectFaction(factionId: FactionId | undefined) {
     if (factionIndex == undefined) {
       return;
     }
-    setFaction(factionIndex, factionName);
+    setFaction(factionIndex, factionId);
   }
 
   function selectColor(color: string | undefined) {
@@ -979,13 +1005,13 @@ function FactionSelect({
     }
   }
 
-  function selectAlliancePartner(factionName: string | undefined) {
+  function selectAlliancePartner(factionId: FactionId | undefined) {
     if (factionIndex == undefined) {
       return;
     }
     const index = factions.reduce(
       (alliance: number | undefined, faction, index) => {
-        if (faction.name === factionName) {
+        if (faction.id === factionId) {
           return index;
         }
         return alliance;
@@ -1021,22 +1047,18 @@ function FactionSelect({
       color={factionColor}
       style={{ width: mobile ? "100%" : "22vw" }}
     >
-      {faction.name ? (
+      {faction.id ? (
         <div
           className="flexColumn"
-          style={{ position: "absolute", left: 0, width: "100%", zIndex: -1 }}
+          style={{
+            position: "absolute",
+            opacity: 0.5,
+            left: 0,
+            width: "100%",
+            zIndex: -1,
+          }}
         >
-          <div
-            className="flexRow"
-            style={{
-              position: "relative",
-              opacity: 0.5,
-              width: mobile ? responsivePixels(52) : responsivePixels(80),
-              height: mobile ? responsivePixels(52) : responsivePixels(80),
-            }}
-          >
-            <FullFactionSymbol faction={faction.name} />
-          </div>
+          <FactionIcon factionId={faction.id} size={mobile ? 52 : 80} />
         </div>
       ) : null}
       <div
@@ -1065,12 +1087,12 @@ function FactionSelect({
           >
             <Selector
               hoverMenuLabel="Pick Faction"
-              options={filteredFactions.map(([factionName, _]) => factionName)}
+              options={filteredFactions.map((faction) => faction.id)}
               fadedOptions={selectedFactions}
-              selectedItem={faction.name}
-              toggleItem={(factionName, add) => {
+              selectedItem={faction.id}
+              toggleItem={(factionId, add) => {
                 if (add) {
-                  selectFaction(factionName);
+                  selectFaction(factionId);
                 } else {
                   selectFaction(undefined);
                 }
@@ -1078,14 +1100,14 @@ function FactionSelect({
               renderItem={(factionName) => {
                 return (
                   <SelectableRow
-                    itemName={factionName}
+                    itemId={factionName}
                     removeItem={() => selectFaction(undefined)}
                     style={{ height: responsivePixels(32.67) }}
                   >
                     <>
                       {factionName}
                       <FactionPanel
-                        factionName={factionName}
+                        faction={faction}
                         options={createOptions(options)}
                       />
                     </>
@@ -1097,18 +1119,19 @@ function FactionSelect({
               <div className="flexRow">
                 Partner:
                 <FactionSelectRadialMenu
-                  allowNone
                   selectedFaction={
                     faction.alliancePartner != undefined
-                      ? factions[faction.alliancePartner]?.name
+                      ? (factions[faction.alliancePartner]?.id as FactionId)
                       : undefined
                   }
-                  fadedOptions={factions
+                  fadedFactions={factions
                     .filter((faction) => faction.alliancePartner != undefined)
-                    .map((faction) => faction.name as string)}
-                  options={selectedFactions.filter(
-                    (factionName) => factionName !== faction.name
-                  )}
+                    .map((faction) => faction.id as FactionId)}
+                  factions={
+                    selectedFactions.filter(
+                      (factionName) => factionName !== faction.id
+                    ) as FactionId[]
+                  }
                   onSelect={(factionName) => {
                     selectAlliancePartner(factionName);
                   }}
@@ -1143,7 +1166,7 @@ function FactionSelect({
             //     return (
             //       // <LabeledDiv label="Partner">
             //       <SelectableRow
-            //         itemName={factionName}
+            //         itemId={factionName}
             //         removeItem={() => selectAlliancePartner(undefined)}
             //         // style={{
             //         //   height: responsivePixels(32.67),
@@ -1260,7 +1283,7 @@ export default function SetupPage() {
 
   const router = useRouter();
 
-  const { data: availableFactions }: { data?: Record<string, BaseFaction> } =
+  const { data: availableFactions }: { data?: Record<FactionId, BaseFaction> } =
     useSWR("/api/factions", fetcher, {
       revalidateIfStale: false,
     });
@@ -1294,19 +1317,22 @@ export default function SetupPage() {
     }
   }
 
-  function updatePlayerFaction(index: number, factionName: string | undefined) {
+  function updatePlayerFaction(
+    index: number,
+    factionId: FactionId | undefined
+  ) {
     const faction = factions[index];
     if (!faction) {
       return;
     }
-    const prevValue = faction.name;
+    const prevValue = faction.id;
     setFactions(
       factions.map((faction, i) => {
         if (index === i) {
-          return { ...faction, name: factionName };
+          return { ...faction, name: factionId, id: factionId };
         }
-        if (factionName && faction.name === factionName) {
-          return { ...faction, name: prevValue };
+        if (factionId && faction.id === factionId) {
+          return { ...faction, name: prevValue, id: prevValue };
         }
         return faction;
       })
@@ -1371,18 +1397,18 @@ export default function SetupPage() {
   }
 
   function randomFactions() {
-    let selectedFactions: string[] = [];
+    let selectedFactions: FactionId[] = [];
     for (let index = 0; index < numFactions; index++) {
       const faction = factions[index];
       if (!faction) {
         continue;
       }
-      if (faction.name) {
-        selectedFactions[index] = faction.name;
+      if (faction.id) {
+        selectedFactions[index] = faction.id;
       }
     }
-    const filteredFactions = Object.entries(availableFactions ?? {}).filter(
-      ([_, faction]) => {
+    const filteredFactions = Object.values(availableFactions ?? {}).filter(
+      (faction) => {
         if (faction.expansion === "BASE") {
           return true;
         }
@@ -1392,16 +1418,16 @@ export default function SetupPage() {
         return true;
       }
     );
-    const factionKeys = filteredFactions.map(([name, _]) => name);
+    const factionKeys = filteredFactions.map((faction) => faction.id);
     for (let index = 0; index < numFactions; index++) {
       const faction = factions[index];
       if (!faction) {
         continue;
       }
-      if (faction.name) {
+      if (faction.id) {
         continue;
       }
-      let selectedFaction: string | undefined;
+      let selectedFaction: FactionId | undefined;
       while (!selectedFaction || selectedFactions.includes(selectedFaction)) {
         let randomIndex = Math.floor(Math.random() * factionKeys.length);
         selectedFaction = factionKeys[randomIndex];
@@ -1410,14 +1436,14 @@ export default function SetupPage() {
     }
     setFactions(
       factions.map((faction, index) => {
-        const factionName: string | undefined = selectedFactions[index];
-        if (!factionName) {
-          if (selectedFactions.includes(faction?.name ?? "")) {
-            return { ...faction, name: undefined };
+        const factionId: FactionId | undefined = selectedFactions[index];
+        if (!factionId) {
+          if (faction.id && selectedFactions.includes(faction.id)) {
+            return { ...faction, name: undefined, id: undefined };
           }
           return { ...faction };
         }
-        return { ...faction, name: factionName };
+        return { ...faction, name: factionId, id: factionId };
       })
     );
   }
@@ -1504,7 +1530,7 @@ export default function SetupPage() {
     }
     for (let i = 0; i < numFactions; i++) {
       const faction = factions[i];
-      if (!faction?.name) {
+      if (!faction?.id) {
         return false;
       }
     }
@@ -1530,7 +1556,7 @@ export default function SetupPage() {
     }
     for (let i = 0; i < numFactions; i++) {
       const faction = factions[i];
-      if (!faction?.color || !faction?.name) {
+      if (!faction?.color || !faction?.id) {
         return true;
       }
       if (
@@ -1550,7 +1576,7 @@ export default function SetupPage() {
   function isCouncilInGame() {
     for (let i = 0; i < numFactions; i++) {
       const faction = factions[i];
-      if (faction?.name === "Council Keleres") {
+      if (faction?.id === "Council Keleres") {
         return true;
       }
     }
@@ -1565,10 +1591,10 @@ export default function SetupPage() {
     for (let i = 0; i < numFactions; i++) {
       const faction = factions[i];
       if (
-        faction?.name === "Xxcha Kingdom" ||
-        faction?.name === "Argent Flight" ||
-        faction?.name === "Mentak Coalition" ||
-        faction?.name === "Council Keleres"
+        faction?.id === "Xxcha Kingdom" ||
+        faction?.id === "Argent Flight" ||
+        faction?.id === "Mentak Coalition" ||
+        faction?.id === "Council Keleres"
       ) {
         ++factionCount;
       }
@@ -1599,11 +1625,14 @@ export default function SetupPage() {
           ) {
             delete tempFaction.color;
           }
-          const currFaction = (availableFactions ?? {})[tempFaction.name ?? ""];
+          const currFaction = tempFaction.id
+            ? (availableFactions ?? {})[tempFaction.id]
+            : undefined;
           if (!currFaction || currFaction.expansion === "BASE") {
             return tempFaction;
           }
           if (!currentOptions.expansions.has(currFaction.expansion)) {
+            delete tempFaction.id;
             delete tempFaction.name;
           }
           return tempFaction;

@@ -1,21 +1,26 @@
-import { useRouter } from "next/router";
-import {
-  sortTechsByName,
-  sortTechsByPreReqAndExpansion,
-} from "../../AddTechList";
+import { useContext } from "react";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { useGameData } from "../../data/GameData";
-import { Tech, TechType } from "../../util/api/techs";
+import {
+  AttachmentContext,
+  FactionContext,
+  OptionContext,
+  PlanetContext,
+  RelicContext,
+  TechContext,
+} from "../../context/Context";
+import { applyAllPlanetAttachments } from "../../util/planets";
 import {
   canResearchTech,
   getFactionPreReqs,
   getTechTypeColor,
+  sortTechsByName,
+  sortTechsByPreReqAndExpansion,
 } from "../../util/techs";
 import { responsivePixels } from "../../util/util";
-import { applyAllPlanetAttachments } from "../../util/planets";
 
 interface InnerTechSelectHoverMenuProps {
-  factionName: string;
+  factionId: FactionId;
+  ignorePrereqs?: boolean;
   prereqs: Record<TechType, number>;
   label: string;
   techs: Tech[];
@@ -24,20 +29,18 @@ interface InnerTechSelectHoverMenuProps {
 }
 
 function InnerTechSelectHoverMenu({
-  factionName,
+  factionId,
+  ignorePrereqs = false,
   prereqs,
   techs,
   label,
   selectTech,
   outerCloseFn,
 }: InnerTechSelectHoverMenuProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions", "options"]);
-  const factions = gameData.factions;
-  const options = gameData.options;
+  const factions = useContext(FactionContext);
+  const options = useContext(OptionContext);
 
-  const faction = factions[factionName];
+  const faction = factions[factionId];
   return techs.length > 0 ? (
     <ClientOnlyHoverMenu
       label={label}
@@ -55,20 +58,21 @@ function InnerTechSelectHoverMenu({
           {techs.map((tech) => {
             let isTechOwned = false;
             for (const faction of Object.values(factions)) {
-              if (faction.techs[tech.name]) {
+              if (faction.techs[tech.id]) {
                 isTechOwned = true;
                 break;
               }
             }
             return (
               <button
-                key={tech.name}
+                key={tech.id}
                 onClick={() => {
                   innerCloseFn();
                   outerCloseFn();
                   selectTech(tech);
                 }}
                 className={
+                  ignorePrereqs ||
                   canResearchTech(tech, options, prereqs, faction, isTechOwned)
                     ? ""
                     : "faded"
@@ -85,38 +89,30 @@ function InnerTechSelectHoverMenu({
   ) : null;
 }
 
-export interface TechSelectHoverMenuProps {
-  factionName: string;
+interface TechSelectHoverMenuProps {
+  factionId: FactionId;
+  ignorePrereqs?: boolean;
   label?: string;
   techs: Tech[];
   selectTech: (tech: Tech) => void;
 }
 
 export function TechSelectHoverMenu({
-  factionName,
+  factionId,
+  ignorePrereqs = false,
   techs,
   label = "Research Tech",
   selectTech,
 }: TechSelectHoverMenuProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "attachments",
-    "factions",
-    "options",
-    "planets",
-    "relics",
-    "techs",
-  ]);
-  const attachments = gameData.attachments ?? {};
-  const factions = gameData.factions;
-  const options = gameData.options;
-  const planets = gameData.planets;
-  const relics = gameData.relics ?? {};
-  const allTechs = gameData.techs ?? {};
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const options = useContext(OptionContext);
+  const planets = useContext(PlanetContext);
+  const relics = useContext(RelicContext);
+  const allTechs = useContext(TechContext);
 
   const factionPreReqs = getFactionPreReqs(
-    factions[factionName],
+    factions[factionId],
     allTechs,
     options,
     applyAllPlanetAttachments(Object.values(planets), attachments),
@@ -157,7 +153,8 @@ export function TechSelectHoverMenu({
           }}
         >
           <InnerTechSelectHoverMenu
-            factionName={factionName}
+            factionId={factionId}
+            ignorePrereqs={ignorePrereqs}
             techs={redTechs}
             label="Warfare"
             prereqs={factionPreReqs}
@@ -165,7 +162,8 @@ export function TechSelectHoverMenu({
             outerCloseFn={outerCloseFn}
           />
           <InnerTechSelectHoverMenu
-            factionName={factionName}
+            factionId={factionId}
+            ignorePrereqs={ignorePrereqs}
             techs={blueTechs}
             label="Propulsion"
             prereqs={factionPreReqs}
@@ -173,7 +171,8 @@ export function TechSelectHoverMenu({
             outerCloseFn={outerCloseFn}
           />
           <InnerTechSelectHoverMenu
-            factionName={factionName}
+            factionId={factionId}
+            ignorePrereqs={ignorePrereqs}
             techs={yellowTechs}
             label="Cybernetic"
             prereqs={factionPreReqs}
@@ -181,7 +180,8 @@ export function TechSelectHoverMenu({
             outerCloseFn={outerCloseFn}
           />
           <InnerTechSelectHoverMenu
-            factionName={factionName}
+            factionId={factionId}
+            ignorePrereqs={ignorePrereqs}
             techs={greenTechs}
             label="Biotic"
             prereqs={factionPreReqs}
@@ -189,7 +189,8 @@ export function TechSelectHoverMenu({
             outerCloseFn={outerCloseFn}
           />
           <InnerTechSelectHoverMenu
-            factionName={factionName}
+            factionId={factionId}
+            ignorePrereqs={ignorePrereqs}
             techs={unitUpgrades}
             label="Unit Upgrades"
             prereqs={factionPreReqs}

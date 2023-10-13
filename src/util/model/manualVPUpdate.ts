@@ -1,16 +1,4 @@
 import { buildFactions } from "../../data/GameData";
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface ManualVPUpdateEvent {
-  faction: string;
-  vps: number;
-}
-
-export interface ManualVPUpdateData {
-  action: "MANUAL_VP_UPDATE";
-  event: ManualVPUpdateEvent;
-}
 
 export class ManualVPUpdateHandler implements Handler {
   constructor(

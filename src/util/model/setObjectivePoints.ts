@@ -1,16 +1,3 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SetObjectivePointsEvent {
-  objective: string;
-  points: number;
-}
-
-export interface SetObjectivePointsData {
-  action: "SET_OBJECTIVE_POINTS";
-  event: SetObjectivePointsEvent;
-}
-
 export class SetObjectivePointsHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

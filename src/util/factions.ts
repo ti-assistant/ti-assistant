@@ -1,6 +1,3 @@
-import { Loader } from "../Loader";
-import { Faction } from "./api/factions";
-
 export function getFactionColor(faction: Faction | undefined) {
   if (!faction) {
     return "#555";
@@ -28,7 +25,7 @@ export function convertToFactionColor(color: string | undefined) {
 
 export function getFactionName(faction: Faction | undefined) {
   if (!faction) {
-    return "Faction";
+    return "Loading Faction...";
   }
   if (faction.playerName) {
     return faction.playerName + " - " + faction.shortname;
@@ -44,4 +41,31 @@ export function getFactionShortName(faction: Faction | undefined) {
     return faction.playerName;
   }
   return faction.shortname;
+}
+
+export function computeVPs(
+  factions: Partial<Record<FactionId, Faction>>,
+  factionId: FactionId,
+  objectives: Partial<Record<ObjectiveId, Objective>>
+) {
+  const faction = factions[factionId];
+  if (!faction) {
+    return 0;
+  }
+  const factionVPs = faction.vps ?? 0;
+  const scoredVPs = Object.values(objectives)
+    .filter((objective) => {
+      return (objective.scorers ?? []).includes(factionId);
+    })
+    .reduce((total, objective) => {
+      const count = (objective.scorers ?? []).reduce((count, scorer) => {
+        if (scorer === factionId) {
+          return count + 1;
+        }
+        return count;
+      }, 0);
+      return Math.max(0, total + count * objective.points);
+    }, 0);
+
+  return factionVPs + scoredVPs;
 }

@@ -1,12 +1,9 @@
-import { useRouter } from "next/router";
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import BorderedDiv from "../src/components/BorderedDiv/BorderedDiv";
+import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { responsivePixels } from "../src/util/util";
-import Head from "next/head";
-import Link from "next/link";
-import { LabeledDiv } from "../src/LabeledDiv";
-import Image from "next/image";
-import { NonGameHeader, ResponsiveLogo } from "../src/Header";
 
 export default function HomePage() {
   const [gameId, setGameId] = useState("Game ID");
@@ -52,7 +49,7 @@ export default function HomePage() {
       >
         <Link href={"/setup"}>
           <a>
-            <LabeledDiv>
+            <BorderedDiv>
               <div
                 className="flexColumn"
                 style={{
@@ -62,13 +59,13 @@ export default function HomePage() {
               >
                 New Game
               </div>
-            </LabeledDiv>
+            </BorderedDiv>
           </a>
         </Link>
         {!!currentGame ? (
           <Link href={`/game/${getGameId()}`}>
             <a>
-              <LabeledDiv>
+              <BorderedDiv>
                 <div
                   className="flexColumn"
                   style={{
@@ -78,7 +75,7 @@ export default function HomePage() {
                 >
                   Continue Game
                 </div>
-              </LabeledDiv>
+              </BorderedDiv>
             </a>
           </Link>
         ) : null}
@@ -91,7 +88,7 @@ export default function HomePage() {
                   !validGameId() ? event.preventDefault() : null
                 }
               >
-                <LabeledDiv>
+                <BorderedDiv>
                   <div
                     className="flexColumn"
                     style={{
@@ -100,11 +97,11 @@ export default function HomePage() {
                   >
                     Join Game
                   </div>
-                </LabeledDiv>
+                </BorderedDiv>
               </a>
             </Link>
           ) : (
-            <LabeledDiv color="#555">
+            <BorderedDiv color="#555">
               <div
                 className="flexColumn"
                 style={{
@@ -114,7 +111,7 @@ export default function HomePage() {
               >
                 Join Game
               </div>
-            </LabeledDiv>
+            </BorderedDiv>
           )}
           <input
             value={gameId}
@@ -129,7 +126,7 @@ export default function HomePage() {
           >
             <Link href={`/supporters`}>
               <a>
-                <LabeledDiv>
+                <BorderedDiv>
                   <div
                     className="flexColumn mediumFont"
                     style={{
@@ -138,12 +135,12 @@ export default function HomePage() {
                   >
                     Supporters
                   </div>
-                </LabeledDiv>
+                </BorderedDiv>
               </a>
             </Link>
             <Link href={`/FAQ`}>
               <a>
-                <LabeledDiv>
+                <BorderedDiv>
                   <div
                     className="flexColumn mediumFont"
                     style={{
@@ -152,11 +149,11 @@ export default function HomePage() {
                   >
                     FAQ
                   </div>
-                </LabeledDiv>
+                </BorderedDiv>
               </a>
             </Link>
             <a href={`https://patreon.com/TIAssistant`}>
-              <LabeledDiv>
+              <BorderedDiv>
                 <div
                   className="flexColumn mediumFont"
                   style={{
@@ -165,10 +162,10 @@ export default function HomePage() {
                 >
                   Donate Trade Goods
                 </div>
-              </LabeledDiv>
+              </BorderedDiv>
             </a>
             <a href={`https://github.com/ti-assistant/issues/issues`}>
-              <LabeledDiv>
+              <BorderedDiv>
                 <div
                   className="flexColumn mediumFont"
                   style={{
@@ -177,7 +174,7 @@ export default function HomePage() {
                 >
                   Report Issue
                 </div>
-              </LabeledDiv>
+              </BorderedDiv>
             </a>
           </div>
         </div>
@@ -214,67 +211,6 @@ export default function HomePage() {
           Fantasy Flight Games®
         </a>
       </div>
-    </div>
-  );
-}
-
-function Sidebar({ side, children }: PropsWithChildren<{ side: string }>) {
-  const className = `${side}Sidebar`;
-  return (
-    <div className={className} style={{ letterSpacing: "3px" }}>
-      {children}
-    </div>
-  );
-}
-
-function Header() {
-  return (
-    <div
-      className="flexColumn"
-      style={{
-        top: 0,
-        position: "fixed",
-        justifyContent: "flex-start",
-      }}
-    >
-      <Head>
-        <title>Twilight Imperium Assistant</title>
-        <link rel="shortcut icon" href="/images/favicon.ico"></link>
-      </Head>
-      <Link href={"/"}>
-        <a
-          className="nonMobile flexRow extraLargeFont"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            textAlign: "center",
-            justifyContent: "center",
-            marginTop: `${responsivePixels(16)}`,
-            width: "100%",
-          }}
-        >
-          <ResponsiveLogo size={32} />
-          Twilight Imperium Assistant
-        </a>
-      </Link>
-      <Link href={"/"}>
-        <a
-          className="mobileOnly flexRow hugeFont"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            textAlign: "center",
-            justifyContent: "center",
-            marginTop: `${responsivePixels(12)}`,
-            width: "100%",
-          }}
-        >
-          <ResponsiveLogo size={28} />
-          Twilight Imperium Assistant
-        </a>
-      </Link>
-      <Sidebar side="left">TI ASSISTANT</Sidebar>
-      <Sidebar side="right">TI ASSISTANT</Sidebar>
     </div>
   );
 }

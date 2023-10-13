@@ -1,18 +1,6 @@
 import { buildStrategyCards } from "../../data/GameData";
-import { StrategyCard } from "../api/cards";
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
 
 const GIFT_OF_PRESCIENCE_FACTION = "Naalu Collective" as const;
-
-export interface GiftOfPrescienceEvent {
-  faction: string;
-}
-
-export interface GiftOfPrescienceData {
-  action: "GIFT_OF_PRESCIENCE";
-  event: GiftOfPrescienceEvent;
-}
 
 export class GiftOfPrescienceHandler implements Handler {
   constructor(
@@ -56,7 +44,7 @@ export class GiftOfPrescienceHandler implements Handler {
       return {};
     }
 
-    updates[`strategycards.${minCard.name}.order`] = 0;
+    updates[`strategycards.${minCard.id}.order`] = 0;
 
     return updates;
   }

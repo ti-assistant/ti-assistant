@@ -1,40 +1,19 @@
 import { mutate } from "swr";
-import { StoredGameData, poster } from "./util";
-
-export type TimerUpdateAction =
-  | "SET_GAME_TIMER"
-  | "SAVE_FACTION_TIMER"
-  | "SAVE_AGENDA_TIMER"
-  | "RESET_AGENDA_TIMERS";
-
-export interface TimerUpdateData {
-  action?: TimerUpdateAction;
-  agendaNum?: number;
-  faction?: string;
-  timer?: number;
-  timestamp?: number;
-}
-
-export interface Timers {
-  firstAgenda?: number;
-  game?: number;
-  secondAgenda?: number;
-  [key: string]: number | undefined;
-}
+import { poster } from "./util";
 
 export function updateLocalFactionTimer(
   gameid: string,
-  factionName: string,
+  factionId: FactionId,
   factionTimer: number
 ) {
   mutate(
     `/api/${gameid}/timers`,
-    (timers: Record<string, number>) => {
+    (timers?: Record<string, number>) => {
       if (!timers) {
         timers = {};
       }
 
-      timers[factionName] = factionTimer;
+      timers[factionId] = factionTimer;
 
       return structuredClone(timers);
     },
@@ -46,12 +25,12 @@ export function updateLocalFactionTimer(
 
 export function saveFactionTimer(
   gameid: string,
-  factionName: string,
+  factionId: FactionId,
   factionTimer: number
 ) {
   const data: TimerUpdateData = {
     action: "SAVE_FACTION_TIMER",
-    faction: factionName,
+    faction: factionId,
     timer: factionTimer,
   };
 
@@ -59,12 +38,12 @@ export function saveFactionTimer(
     `/api/${gameid}/timers`,
     async () => await poster(`/api/${gameid}/timerUpdate`, data),
     {
-      optimisticData: (timers: Record<string, number>) => {
+      optimisticData: (timers?: Record<string, number>) => {
         if (!timers) {
           timers = {};
         }
 
-        timers[factionName] = factionTimer;
+        timers[factionId] = factionTimer;
 
         return structuredClone(timers);
       },
@@ -76,7 +55,7 @@ export function saveFactionTimer(
 export function updateLocalGameTimer(gameid: string, timer: number) {
   mutate(
     `/api/${gameid}/timers`,
-    (timers: Record<string, number>) => {
+    (timers?: Record<string, number>) => {
       if (!timers) {
         timers = {};
       }
@@ -101,7 +80,7 @@ export function saveGameTimer(gameId: string, timer: number) {
     `/api/${gameId}/timers`,
     async () => await poster(`/api/${gameId}/timerUpdate`, data),
     {
-      optimisticData: (timers: Record<string, number>) => {
+      optimisticData: (timers?: Record<string, number>) => {
         if (!timers) {
           timers = {};
         }
@@ -122,7 +101,7 @@ export function updateLocalAgendaTimer(
 ) {
   mutate(
     `/api/${gameid}/timers`,
-    (timers: Record<string, number>) => {
+    (timers?: Record<string, number>) => {
       if (!timers) {
         timers = {};
       }
@@ -156,7 +135,7 @@ export function saveAgendaTimer(
     `/api/${gameid}/timers`,
     async () => await poster(`/api/${gameid}/timerUpdate`, data),
     {
-      optimisticData: (timers: Record<string, number>) => {
+      optimisticData: (timers?: Record<string, number>) => {
         if (!timers) {
           timers = {};
         }

@@ -1,24 +1,5 @@
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
-import { StrategyCardName } from "../api/cards";
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
 import { getOnDeckFaction } from "../helpers";
-
-export interface AssignStrategyCardEvent {
-  assignedTo: string;
-  name: StrategyCardName;
-  pickedBy: string;
-}
-
-export interface AssignStrategyCardData {
-  action: "ASSIGN_STRATEGY_CARD";
-  event: AssignStrategyCardEvent;
-}
-
-export interface UnassignStrategyCardData {
-  action: "UNASSIGN_STRATEGY_CARD";
-  event: AssignStrategyCardEvent;
-}
 
 export class AssignStrategyCardHandler implements Handler {
   constructor(
@@ -58,13 +39,13 @@ export class AssignStrategyCardHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
-      [`strategycards.${this.data.event.name}.faction`]:
+      [`strategycards.${this.data.event.id}.faction`]:
         this.data.event.assignedTo,
     };
 
     // TODO: Only update card if lower than other Naalu card.
     if (this.data.event.assignedTo === "Naalu Collective") {
-      updates[`strategycards.${this.data.event.name}.order`] = 0;
+      updates[`strategycards.${this.data.event.id}.order`] = 0;
     }
 
     const onDeckFaction = getOnDeckFaction(
@@ -104,8 +85,8 @@ export class UnassignStrategyCardHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
-      [`strategycards.${this.data.event.name}.faction`]: "DELETE",
-      [`strategycards.${this.data.event.name}.order`]: "DELETE",
+      [`strategycards.${this.data.event.id}.faction`]: "DELETE",
+      [`strategycards.${this.data.event.id}.order`]: "DELETE",
     };
 
     updates[`state.activeplayer`] = this.data.event.pickedBy;
@@ -124,7 +105,7 @@ export class UnassignStrategyCardHandler implements Handler {
     if (
       entry.data.action === "ASSIGN_STRATEGY_CARD" &&
       entry.data.event.assignedTo === this.data.event.assignedTo &&
-      entry.data.event.name === this.data.event.name &&
+      entry.data.event.id === this.data.event.id &&
       entry.data.event.pickedBy === this.data.event.pickedBy
     ) {
       return "DELETE";

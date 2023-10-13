@@ -1,5 +1,3 @@
-import { ActionLogEntry } from "./util";
-
 export const TURN_BOUNDARIES = [
   "ASSIGN_STRATEGY_CARD",
   "ADVANCE_PHASE",

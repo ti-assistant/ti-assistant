@@ -1,31 +1,44 @@
 import { useRouter } from "next/router";
-import React, { PropsWithChildren, ReactNode, useState } from "react";
-import { hasTech } from "../util/api/techs";
-import { StrategyCard } from "../util/api/cards";
-import { Faction } from "../util/api/factions";
-import { responsivePixels } from "../util/util";
-import { ActionLogEntry } from "../util/api/util";
-import { ObjectiveRow } from "../ObjectiveRow";
-import { Modal } from "../Modal";
+import React, {
+  PropsWithChildren,
+  ReactNode,
+  useContext,
+  useState,
+} from "react";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { LabeledDiv, LabeledLine } from "../LabeledDiv";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { startNextRound } from "./AgendaPhase";
-import { getDefaultStrategyCards } from "../util/api/defaults";
-import { getInitiativeForFaction } from "../util/helpers";
-import { FullFactionSymbol } from "../FactionCard";
+import { LockedButtons } from "../LockedButton";
 import { NumberedItem } from "../NumberedItem";
 import { Selector } from "../Selector";
-import { LockedButtons } from "../LockedButton";
+import FactionIcon from "../components/FactionIcon/FactionIcon";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import LabeledLine from "../components/LabeledLine/LabeledLine";
+import Modal from "../components/Modal/Modal";
+import {
+  ActionLogContext,
+  AgendaContext,
+  FactionContext,
+  ObjectiveContext,
+  OptionContext,
+  PlanetContext,
+  RelicContext,
+  StateContext,
+  StrategyCardContext,
+} from "../context/Context";
+import {
+  advancePhaseAsync,
+  hideObjectiveAsync,
+  revealObjectiveAsync,
+  scoreObjectiveAsync,
+  unscoreObjectiveAsync,
+} from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
-import { useGameData } from "../data/GameData";
-import { ScoreObjectiveData } from "../util/model/scoreObjective";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { RevealObjectiveData } from "../util/model/revealObjective";
-import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
-import { hideObjective, revealObjective } from "../util/api/revealObjective";
-import { advancePhase } from "../util/api/advancePhase";
 import { getObjectiveScorers } from "../util/actionLog";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { hasTech } from "../util/api/techs";
+import { getFactionColor, getFactionName } from "../util/factions";
+import { getInitiativeForFaction } from "../util/helpers";
+import { responsivePixels } from "../util/util";
+import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -48,19 +61,13 @@ function InfoContent({ children }: PropsWithChildren) {
 export function MiddleColumn() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "factions",
-    "objectives",
-    "planets",
-    "strategycards",
-  ]);
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const planets = gameData.planets;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  const actionLog = useContext(ActionLogContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
+  const strategyCards = useContext(StrategyCardContext);
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
@@ -70,17 +77,17 @@ export function MiddleColumn() {
     show: false,
   });
 
-  function scoreObj(factionName: string, objectiveName: string) {
+  function scoreObj(factionId: FactionId, objectiveId: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    scoreObjective(gameid, factionName, objectiveName);
+    scoreObjectiveAsync(gameid, factionId, objectiveId);
   }
-  function unscoreObj(factionName: string, objectiveName: string) {
+  function unscoreObj(factionId: FactionId, objectiveId: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    unscoreObjective(gameid, factionName, objectiveName);
+    unscoreObjectiveAsync(gameid, factionId, objectiveId);
   }
 
   const orderedStrategyCards = Object.values(strategyCards)
@@ -214,8 +221,6 @@ export function MiddleColumn() {
                 return null;
               }
               const faction = factions[card.faction];
-              const factionColor = getFactionColor(faction);
-              const factionName = getFactionName(faction);
               const scoredObjectives = currentTurn
                 .filter(
                   (logEntry) =>
@@ -249,10 +254,13 @@ export function MiddleColumn() {
               });
               return (
                 <div
-                  key={card.name}
+                  key={card.id}
                   style={{ width: "100%", position: "relative" }}
                 >
-                  <LabeledLine label={factionName} color={factionColor} />
+                  <LabeledLine
+                    label={getFactionName(faction)}
+                    color={getFactionColor(faction)}
+                  />
                   <div
                     className="flexRow"
                     style={{
@@ -287,17 +295,17 @@ export function MiddleColumn() {
                       >
                         <div style={{ width: "fit-content" }}>
                           <Selector
-                            options={availableObjectives.map((obj) => obj.name)}
+                            options={availableObjectives.map((obj) => obj.id)}
                             selectedItem={scoredPublics[0]}
                             hoverMenuLabel="Public"
-                            toggleItem={(objectiveName, add) => {
+                            toggleItem={(objectiveId, add) => {
                               if (!card.faction) {
                                 return;
                               }
                               if (add) {
-                                scoreObj(card.faction, objectiveName);
+                                scoreObj(card.faction, objectiveId);
                               } else {
-                                unscoreObj(card.faction, objectiveName);
+                                unscoreObj(card.faction, objectiveId);
                               }
                             }}
                           />
@@ -323,7 +331,7 @@ export function MiddleColumn() {
                         }}
                       >
                         {faction ? (
-                          <FullFactionSymbol faction={faction.name} />
+                          <FactionIcon factionId={faction.id} size="100%" />
                         ) : null}
                       </div>
                     </div>
@@ -333,17 +341,17 @@ export function MiddleColumn() {
                     >
                       <div style={{ width: "fit-content" }}>
                         <Selector
-                          options={secrets.map((obj) => obj.name)}
+                          options={secrets.map((obj) => obj.id)}
                           selectedItem={scoredSecrets[0]}
                           hoverMenuLabel="Secret"
-                          toggleItem={(objectiveName, add) => {
+                          toggleItem={(objectiveId, add) => {
                             if (!card.faction) {
                               return;
                             }
                             if (add) {
-                              scoreObj(card.faction, objectiveName);
+                              scoreObj(card.faction, objectiveId);
                             } else {
-                              unscoreObj(card.faction, objectiveName);
+                              unscoreObj(card.faction, objectiveId);
                             }
                           }}
                         />
@@ -401,7 +409,7 @@ export function MiddleColumn() {
                           {localFactions.map((faction) => {
                             return (
                               <div
-                                key={faction.name}
+                                key={faction.id}
                                 className="flexRow"
                                 style={{
                                   position: "relative",
@@ -409,7 +417,10 @@ export function MiddleColumn() {
                                   height: responsivePixels(32),
                                 }}
                               >
-                                <FullFactionSymbol faction={faction.name} />
+                                <FactionIcon
+                                  factionId={faction.id}
+                                  size="100%"
+                                />
                               </div>
                             );
                           })}
@@ -454,7 +465,7 @@ export function MiddleColumn() {
                           {localFactions.map((faction) => {
                             return (
                               <div
-                                key={faction.name}
+                                key={faction.id}
                                 className="flexRow"
                                 style={{
                                   position: "relative",
@@ -462,7 +473,10 @@ export function MiddleColumn() {
                                   height: responsivePixels(32),
                                 }}
                               >
-                                <FullFactionSymbol faction={faction.name} />
+                                <FactionIcon
+                                  factionId={faction.id}
+                                  size="100%"
+                                />
                               </div>
                             );
                           })}
@@ -495,10 +509,6 @@ export function MiddleColumn() {
   );
 }
 
-export function advanceToAgendaPhase(gameid: string) {
-  advancePhase(gameid);
-}
-
 export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
   const revealedObjectives = currentTurn.filter(
     (logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE"
@@ -509,27 +519,17 @@ export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
 export default function StatusPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "factions",
-    "objectives",
-    "options",
-    "planets",
-    "relics",
-    "state",
-    "strategycards",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const options = gameData.options;
-  const planets = gameData.planets;
-  const relics = gameData.relics;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const planets = useContext(PlanetContext);
+  const relics = useContext(RelicContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
@@ -552,10 +552,10 @@ export default function StatusPhase() {
       return;
     }
     if (!skipAgenda) {
-      advanceToAgendaPhase(gameid);
+      advancePhaseAsync(gameid);
       return;
     }
-    startNextRound(gameid);
+    advancePhaseAsync(gameid, true);
   }
 
   interface Ability {
@@ -572,14 +572,16 @@ export default function StatusPhase() {
     return false;
   }
 
-  function getStartOfStatusPhaseAbilities(): Record<string, Ability[]> {
+  function getStartOfStatusPhaseAbilities(): Partial<
+    Record<FactionId, Ability[]>
+  > {
     if (!factions) {
       return {};
     }
-    let abilities: Record<string, Ability[]> = {};
+    let abilities: Partial<Record<FactionId, Ability[]>> = {};
     for (const faction of Object.values(factions ?? {})) {
       const factionAbilities: Ability[] = [];
-      if (faction.name === "Arborec") {
+      if (faction.id === "Arborec") {
         factionAbilities.push({
           name: "Mitosis",
           description:
@@ -597,7 +599,7 @@ export default function StatusPhase() {
         });
       }
       if (factionAbilities.length > 0) {
-        abilities[faction.name] = factionAbilities;
+        abilities[faction.id] = factionAbilities;
       }
     }
     return abilities;
@@ -605,7 +607,7 @@ export default function StatusPhase() {
 
   const crownOfEmphidia = (relics ?? {})["The Crown of Emphidia"];
 
-  let crownScorer: string | undefined;
+  let crownScorer: FactionId | undefined;
   if (crownOfEmphidia && crownOfEmphidia.owner) {
     const crownObjective = (objectives ?? {})["Tomb + Crown of Emphidia"];
     if (
@@ -646,11 +648,11 @@ export default function StatusPhase() {
     if (!factions || !agendas) {
       return {};
     }
-    let abilities: Record<string, Ability[]> = {};
+    let abilities: Partial<Record<FactionId, Ability[]>> = {};
     const ministerOfPolicy = agendas["Minister of Policy"];
     for (const faction of Object.values(factions ?? {})) {
       const factionAbilities: Ability[] = [];
-      if (faction.name === "Federation of Sol") {
+      if (faction.id === "Federation of Sol") {
         factionAbilities.push({
           name: "Flagship: Genesis",
           description:
@@ -667,7 +669,7 @@ export default function StatusPhase() {
       if (
         ministerOfPolicy &&
         ministerOfPolicy.resolved &&
-        ministerOfPolicy.target == faction.name
+        ministerOfPolicy.target == faction.id
       ) {
         factionAbilities.push({
           name: "Minister of Policy",
@@ -676,7 +678,7 @@ export default function StatusPhase() {
         });
       }
       if (factionAbilities.length > 0) {
-        abilities[faction.name] = factionAbilities;
+        abilities[faction.id] = factionAbilities;
       }
     }
     return abilities;
@@ -687,7 +689,7 @@ export default function StatusPhase() {
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
 
-  const cardsByFaction: Record<string, StrategyCard[]> = {};
+  const cardsByFaction: Partial<Record<FactionId, StrategyCard[]>> = {};
   orderedStrategyCards.forEach((card) => {
     if (!card.faction) {
       return;
@@ -702,25 +704,27 @@ export default function StatusPhase() {
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
     .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
   const revealedObjective = revealedObjectives[0];
-  const revealedObjectiveObj = (objectives ?? {})[revealedObjective ?? ""];
+  const revealedObjectiveObj = revealedObjective
+    ? (objectives ?? {})[revealedObjective]
+    : undefined;
   const type = round < 4 ? "STAGE ONE" : "STAGE TWO";
   const availableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
       return objective.type === type && !objective.selected;
     }
   );
-  function addObj(objectiveName: string) {
+  function addObj(objectiveId: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    revealObjective(gameid, objectiveName);
+    revealObjectiveAsync(gameid, objectiveId);
   }
 
-  function removeObj(objectiveName: string) {
+  function removeObj(objectiveId: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    hideObjective(gameid, objectiveName);
+    hideObjectiveAsync(gameid, objectiveId);
   }
 
   const nextPhaseButtons = [];
@@ -774,26 +778,28 @@ export default function StatusPhase() {
                     }
                     const initiativeA = getInitiativeForFaction(
                       strategyCards,
-                      a[0]
+                      a[0] as FactionId
                     );
                     const initiativeB = getInitiativeForFaction(
                       strategyCards,
-                      b[0]
+                      b[0] as FactionId
                     );
                     if (initiativeA > initiativeB) {
                       return 1;
                     }
                     return -1;
                   })
-                  .map(([factionName, abilities]) => {
+                  .map(([factionId, abilities]) => {
                     if (!factions) {
                       return null;
                     }
                     return (
                       <LabeledDiv
-                        key={factionName}
-                        label={getFactionName(factions[factionName])}
-                        color={getFactionColor(factions[factionName])}
+                        key={factionId}
+                        label={getFactionName(factions[factionId as FactionId])}
+                        color={getFactionColor(
+                          factions[factionId as FactionId]
+                        )}
                       >
                         <div
                           className="flexColumn"
@@ -834,7 +840,7 @@ export default function StatusPhase() {
               >
                 <ObjectiveRow
                   objective={revealedObjectiveObj}
-                  removeObjective={() => removeObj(revealedObjectiveObj.name)}
+                  removeObjective={() => removeObj(revealedObjectiveObj.id)}
                   viewing={true}
                 />
               </LabeledDiv>
@@ -857,12 +863,12 @@ export default function StatusPhase() {
                           (round > 3 ? "STAGE TWO" : "STAGE ONE")
                         );
                       })
-                      .map((obj) => obj.name)}
-                    toggleItem={(objectiveName, add) => {
+                      .map((obj) => obj.id)}
+                    toggleItem={(objectiveId, add) => {
                       if (add) {
-                        addObj(objectiveName);
+                        addObj(objectiveId);
                       } else {
-                        removeObj(objectiveName);
+                        removeObj(objectiveId);
                       }
                     }}
                   />
@@ -891,26 +897,28 @@ export default function StatusPhase() {
                     }
                     const initiativeA = getInitiativeForFaction(
                       strategyCards,
-                      a[0]
+                      a[0] as FactionId
                     );
                     const initiativeB = getInitiativeForFaction(
                       strategyCards,
-                      b[0]
+                      b[0] as FactionId
                     );
                     if (initiativeA > initiativeB) {
                       return 1;
                     }
                     return -1;
                   })
-                  .map(([factionName, abilities]) => {
+                  .map(([factionId, abilities]) => {
                     if (!factions) {
                       return null;
                     }
                     return (
                       <LabeledDiv
-                        key={factionName}
-                        label={getFactionName(factions[factionName])}
-                        color={getFactionColor(factions[factionName])}
+                        key={factionId}
+                        label={getFactionName(factions[factionId as FactionId])}
+                        color={getFactionColor(
+                          factions[factionId as FactionId]
+                        )}
                       >
                         <div
                           className="flexColumn"
@@ -955,7 +963,7 @@ export default function StatusPhase() {
                           height: responsivePixels(32),
                         }}
                       >
-                        <FullFactionSymbol faction={crownFaction} />
+                        <FactionIcon factionId={crownFaction} size="100%" />
                         <div
                           className="flexRow"
                           style={{
@@ -980,13 +988,13 @@ export default function StatusPhase() {
                               return;
                             }
                             if (scoredCrown) {
-                              unscoreObjective(
+                              unscoreObjectiveAsync(
                                 gameid,
                                 crownFaction,
                                 "Tomb + Crown of Emphidia"
                               );
                             } else {
-                              scoreObjective(
+                              scoreObjectiveAsync(
                                 gameid,
                                 crownFaction,
                                 "Tomb + Crown of Emphidia"

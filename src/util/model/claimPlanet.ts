@@ -1,24 +1,5 @@
-import { Handler, ActionLogAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
 import { buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
-
-export interface ClaimPlanetEvent {
-  faction: string;
-  planet: string;
-  // Set by server
-  prevOwner?: string;
-}
-
-export interface ClaimPlanetData {
-  action: "CLAIM_PLANET";
-  event: ClaimPlanetEvent;
-}
-
-export interface UnclaimPlanetData {
-  action: "UNCLAIM_PLANET";
-  event: ClaimPlanetEvent;
-}
 
 export class ClaimPlanetHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: ClaimPlanetData) {}

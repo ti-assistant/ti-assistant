@@ -1,14 +1,14 @@
 import { mutate } from "swr";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
-import { OutcomeType } from "./agendas";
+import { poster } from "./util";
 import { PlayRiderHandler, UnplayRiderHandler } from "../model/playRider";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 export function playRider(
   gameId: string,
   rider: string,
-  faction?: string,
+  faction?: FactionId,
   outcome?: OutcomeType
 ) {
   const data: GameUpdateData = {
@@ -24,20 +24,23 @@ export function playRider(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new PlayRiderHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new PlayRiderHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
         const updates = handler.getUpdates();
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        updateGameData(storedGameData, updates);
+        updateGameData(currentData, updates);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
@@ -56,18 +59,21 @@ export function unplayRider(gameId: string, rider: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new UnplayRiderHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new UnplayRiderHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

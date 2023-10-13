@@ -1,15 +1,3 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SelectSubAgendaEvent {
-  subAgenda: string;
-}
-
-export interface SelectSubAgendaData {
-  action: "SELECT_SUB_AGENDA";
-  event: SelectSubAgendaEvent;
-}
-
 export class SelectSubAgendaHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

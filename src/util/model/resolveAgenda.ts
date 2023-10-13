@@ -1,55 +1,21 @@
-import { computeVPs } from "../../FactionSummary";
 import {
   buildAgendas,
   buildFactions,
   buildObjectives,
 } from "../../data/GameData";
 import { getPlayedRiders, getSelectedSubAgenda } from "../actionLog";
-import {
-  getCurrentPhaseLogEntries,
-  getCurrentTurnLogEntries,
-} from "../api/actionLog";
-import { Handler, ActionLogAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
+import { getCurrentTurnLogEntries } from "../api/actionLog";
+import { computeVPs } from "../factions";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
-import { CastVotesData } from "./castVotes";
 import {
   HideObjectiveHandler,
   RevealObjectiveHandler,
 } from "./revealObjective";
 import {
-  ScoreObjectiveData,
   ScoreObjectiveHandler,
-  UnscoreObjectiveData,
   UnscoreObjectiveHandler,
 } from "./scoreObjective";
 import { SetSpeakerHandler } from "./setSpeaker";
-
-export interface ResolveAgendaEvent {
-  agenda: string;
-  target: string; // Consider computing this?
-  resolvedBy?: string;
-
-  // Set by server, used to undo Politics Rider.
-  prevSpeaker?: string;
-}
-
-export interface RepealAgendaEvent {
-  agenda: string;
-  target: string; // Consider computing this?
-  repealedBy?: string;
-  prevSpeaker?: string;
-}
-
-export interface ResolveAgendaData {
-  action: "RESOLVE_AGENDA";
-  event: ResolveAgendaEvent;
-}
-
-export interface RepealAgendaData {
-  action: "REPEAL_AGENDA";
-  event: RepealAgendaEvent;
-}
 
 export class ResolveAgendaHandler implements Handler {
   constructor(
@@ -83,7 +49,7 @@ export class ResolveAgendaHandler implements Handler {
         const scoreObjectiveData: ScoreObjectiveData = {
           action: "SCORE_OBJECTIVE",
           event: {
-            faction: this.data.event.target,
+            faction: this.data.event.target as FactionId,
             objective: this.data.event.agenda,
           },
         };
@@ -102,7 +68,7 @@ export class ResolveAgendaHandler implements Handler {
         const handler = new RevealObjectiveHandler(this.gameData, {
           action: "REVEAL_OBJECTIVE",
           event: {
-            objective: this.data.event.target,
+            objective: this.data.event.target as ObjectiveId,
           },
         });
         updates = {
@@ -123,7 +89,7 @@ export class ResolveAgendaHandler implements Handler {
           action: "ADD_ATTACHMENT",
           event: {
             attachment: this.data.event.agenda,
-            planet: this.data.event.target,
+            planet: this.data.event.target as PlanetId,
           },
         });
         updates = {
@@ -137,13 +103,13 @@ export class ResolveAgendaHandler implements Handler {
           action: "ADD_ATTACHMENT",
           event: {
             attachment: this.data.event.agenda,
-            planet: this.data.event.target,
+            planet: this.data.event.target as PlanetId,
           },
         });
         const objectiveHandler = new ScoreObjectiveHandler(this.gameData, {
           action: "SCORE_OBJECTIVE",
           event: {
-            faction: this.data.event.target,
+            faction: this.data.event.target as FactionId,
             objective: this.data.event.agenda,
           },
         });
@@ -182,30 +148,24 @@ export class ResolveAgendaHandler implements Handler {
         const factions = buildFactions(this.gameData);
         const objectives = buildObjectives(this.gameData);
         if (this.data.event.target === "For") {
-          targetVPs = Object.keys(factions).reduce(
-            (currentMax, factionName) => {
-              return Math.max(
-                currentMax,
-                computeVPs(factions, factionName, objectives)
-              );
-            },
-            Number.MIN_SAFE_INTEGER
-          );
+          targetVPs = Object.values(factions).reduce((currentMax, faction) => {
+            return Math.max(
+              currentMax,
+              computeVPs(factions, faction.id, objectives)
+            );
+          }, Number.MIN_SAFE_INTEGER);
         } else {
-          targetVPs = Object.keys(factions ?? {}).reduce(
-            (currentMin, factionName) => {
-              return Math.min(
-                currentMin,
-                computeVPs(factions, factionName, objectives)
-              );
-            },
-            Number.MAX_SAFE_INTEGER
-          );
+          targetVPs = Object.values(factions).reduce((currentMin, faction) => {
+            return Math.min(
+              currentMin,
+              computeVPs(factions, faction.id, objectives)
+            );
+          }, Number.MAX_SAFE_INTEGER);
         }
         const forFactions = new Set();
-        for (const factionName of Object.keys(factions)) {
-          if (computeVPs(factions, factionName, objectives) === targetVPs) {
-            forFactions.add(factionName);
+        for (const faction of Object.values(factions)) {
+          if (computeVPs(factions, faction.id, objectives) === targetVPs) {
+            forFactions.add(faction.id);
           }
         }
 
@@ -214,7 +174,9 @@ export class ResolveAgendaHandler implements Handler {
         break;
       }
       case "Judicial Abolishment": {
-        const agenda = buildAgendas(this.gameData)[this.data.event.target];
+        const agenda = buildAgendas(this.gameData)[
+          this.data.event.target as AgendaId
+        ];
         if (!agenda || !agenda.target) {
           return {};
         }
@@ -222,7 +184,7 @@ export class ResolveAgendaHandler implements Handler {
         const repealHandler = new RepealAgendaHandler(this.gameData, {
           action: "REPEAL_AGENDA",
           event: {
-            agenda: this.data.event.target,
+            agenda: this.data.event.target as AgendaId,
             target: agenda.target,
           },
         });
@@ -238,13 +200,13 @@ export class ResolveAgendaHandler implements Handler {
           (agenda) => agenda.type === "LAW" && agenda.passed
         );
         updates[`agendas.${this.data.event.agenda}.affected`] = toRepeal.map(
-          (agenda) => agenda.name
+          (agenda) => agenda.id
         );
         for (const agenda of toRepeal) {
           const repealHandler = new RepealAgendaHandler(this.gameData, {
             action: "REPEAL_AGENDA",
             event: {
-              agenda: agenda.name,
+              agenda: agenda.id,
               target: agenda.target ?? "UNKNOWN",
             },
           });
@@ -272,7 +234,7 @@ export class ResolveAgendaHandler implements Handler {
         const handler = new SetSpeakerHandler(this.gameData, {
           action: "SET_SPEAKER",
           event: {
-            newSpeaker: nextPlayer.name,
+            newSpeaker: nextPlayer.id,
           },
         });
         updates = {
@@ -447,7 +409,7 @@ export class RepealAgendaHandler implements Handler {
         const unscoreObjectiveData: UnscoreObjectiveData = {
           action: "UNSCORE_OBJECTIVE",
           event: {
-            faction: this.data.event.target,
+            faction: this.data.event.target as FactionId,
             objective: this.data.event.agenda,
           },
         };
@@ -466,7 +428,7 @@ export class RepealAgendaHandler implements Handler {
         const handler = new HideObjectiveHandler(this.gameData, {
           action: "HIDE_OBJECTIVE",
           event: {
-            objective: this.data.event.target,
+            objective: this.data.event.target as ObjectiveId,
           },
         });
         updates = {
@@ -487,7 +449,7 @@ export class RepealAgendaHandler implements Handler {
           action: "REMOVE_ATTACHMENT",
           event: {
             attachment: this.data.event.agenda,
-            planet: this.data.event.target,
+            planet: this.data.event.target as PlanetId,
           },
         });
         updates = {
@@ -501,13 +463,13 @@ export class RepealAgendaHandler implements Handler {
           action: "REMOVE_ATTACHMENT",
           event: {
             attachment: this.data.event.agenda,
-            planet: this.data.event.target,
+            planet: this.data.event.target as PlanetId,
           },
         });
         const objectiveHandler = new UnscoreObjectiveHandler(this.gameData, {
           action: "UNSCORE_OBJECTIVE",
           event: {
-            faction: this.data.event.target,
+            faction: this.data.event.target as FactionId,
             objective: this.data.event.agenda,
           },
         });
@@ -530,14 +492,14 @@ export class RepealAgendaHandler implements Handler {
       }
       case "Judicial Abolishment": {
         const agendas = buildAgendas(this.gameData);
-        const agenda = agendas[this.data.event.target];
+        const agenda = agendas[this.data.event.target as AgendaId];
         if (!agenda || !agenda.target) {
           return {};
         }
         const resolveHandler = new ResolveAgendaHandler(this.gameData, {
           action: "RESOLVE_AGENDA",
           event: {
-            agenda: this.data.event.target,
+            agenda: this.data.event.target as AgendaId,
             target: agenda.target,
             resolvedBy: "UNDO",
           },
@@ -554,15 +516,15 @@ export class RepealAgendaHandler implements Handler {
           return {};
         }
         const toResolve = agenda.affected ?? [];
-        for (const agendaName of toResolve) {
-          const agenda = agendas[agendaName];
+        for (const agendaId of toResolve) {
+          const agenda = agendas[agendaId as AgendaId];
           if (!agenda || !agenda.target) {
             return {};
           }
           const repealHandler = new ResolveAgendaHandler(this.gameData, {
             action: "RESOLVE_AGENDA",
             event: {
-              agenda: agenda.name,
+              agenda: agenda.id,
               target: agenda.target,
               resolvedBy: "UNDO",
             },
@@ -587,7 +549,7 @@ export class RepealAgendaHandler implements Handler {
         const handler = new SetSpeakerHandler(this.gameData, {
           action: "SET_SPEAKER",
           event: {
-            newSpeaker: affected,
+            newSpeaker: affected as FactionId,
           },
         });
         updates = {

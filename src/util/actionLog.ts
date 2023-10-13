@@ -1,31 +1,12 @@
-import { GameUpdateData, SetSpeakerData } from "./api/state";
-import { ActionLogEntry } from "./api/util";
-import { AddTechData } from "./model/addTech";
-import { CastVotesData } from "./model/castVotes";
-import { ClaimPlanetData } from "./model/claimPlanet";
-import { GainRelicData } from "./model/gainRelic";
-import { PlayActionCardData } from "./model/playActionCard";
-import { PlayPromissoryNoteData } from "./model/playPromissoryNote";
-import { PlayRiderData } from "./model/playRider";
-import { RevealAgendaData } from "./model/revealAgenda";
-import { RevealObjectiveData } from "./model/revealObjective";
-import { ScoreObjectiveData } from "./model/scoreObjective";
-import { SelectEligibleOutcomesData } from "./model/selectEligibleOutcomes";
-import { SelectFactionData } from "./model/selectFaction";
-import { SelectSubAgendaData } from "./model/selectSubAgenda";
-import { SelectSubComponentData } from "./model/selectSubComponent";
-import { SpeakerTieBreakData } from "./model/speakerTieBreak";
-import { UpdatePlanetStateData } from "./model/updatePlanetState";
-
 export function getResearchedTechs(
   actionLog: ActionLogEntry[],
-  factionName: string
+  factionId: FactionId
 ) {
   return actionLog
     .filter(
       (logEntry) =>
         logEntry.data.action === "ADD_TECH" &&
-        logEntry.data.event.faction === factionName
+        logEntry.data.event.faction === factionId
     )
     .map((logEntry) => (logEntry.data as AddTechData).event.tech);
 }
@@ -38,26 +19,26 @@ export function getRevealedObjectives(actionLog: ActionLogEntry[]) {
 
 export function getReplacedTechs(
   actionLog: ActionLogEntry[],
-  factionName: string
+  factionId: FactionId
 ) {
   return actionLog
     .filter(
       (logEntry) =>
         logEntry.data.action === "REMOVE_TECH" &&
-        logEntry.data.event.faction === factionName
+        logEntry.data.event.faction === factionId
     )
     .map((logEntry) => (logEntry.data as AddTechData).event.tech);
 }
 
 export function getClaimedPlanets(
   actionLog: ActionLogEntry[],
-  factionName: string
+  factionId: FactionId
 ) {
   return actionLog
     .filter(
       (logEntry) =>
         logEntry.data.action === "CLAIM_PLANET" &&
-        logEntry.data.event.faction === factionName
+        logEntry.data.event.faction === factionId
     )
     .map((logEntry) => (logEntry.data as ClaimPlanetData).event);
 }
@@ -74,26 +55,26 @@ export function getNewOwner(actionLog: ActionLogEntry[], planetName: string) {
 
 export function getScoredObjectives(
   actionLog: ActionLogEntry[],
-  factionName: string
+  factionId: FactionId
 ) {
   return actionLog
     .filter(
       (logEntry) =>
         logEntry.data.action === "SCORE_OBJECTIVE" &&
-        logEntry.data.event.faction === factionName
+        logEntry.data.event.faction === factionId
     )
     .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.objective);
 }
 
 export function getObjectiveScorers(
   actionLog: ActionLogEntry[],
-  objectiveName: string
+  objectiveId: ObjectiveId
 ) {
   return actionLog
     .filter(
       (logEntry) =>
         logEntry.data.action === "SCORE_OBJECTIVE" &&
-        logEntry.data.event.objective === objectiveName
+        logEntry.data.event.objective === objectiveId
     )
     .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.faction);
 }
@@ -116,13 +97,13 @@ export function getAllVotes(actionLog: ActionLogEntry[]) {
 
 export function getFactionVotes(
   actionLog: ActionLogEntry[],
-  factionName: string
+  factionId: FactionId
 ) {
   return actionLog
     .filter(
       (logEntry) =>
         logEntry.data.action === "CAST_VOTES" &&
-        logEntry.data.event.faction === factionName
+        logEntry.data.event.faction === factionId
     )
     .map((logEntry) => (logEntry.data as CastVotesData).event)[0];
 }
@@ -196,9 +177,13 @@ export function getSelectedEligibleOutcomes(actionLog: ActionLogEntry[]) {
 export function getSelectedSubAgenda(actionLog: ActionLogEntry[]) {
   return actionLog
     .filter((logEntry) => logEntry.data.action === "SELECT_SUB_AGENDA")
-    .map(
-      (logEntry) => (logEntry.data as SelectSubAgendaData).event.subAgenda
-    )[0];
+    .map((logEntry) => {
+      const subAgenda = (logEntry.data as SelectSubAgendaData).event.subAgenda;
+      if (subAgenda === "None") {
+        return undefined;
+      }
+      return subAgenda;
+    })[0];
 }
 
 export function getPlayedRiders(actionLog: ActionLogEntry[]) {

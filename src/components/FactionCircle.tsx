@@ -1,16 +1,15 @@
-import React from "react";
 import { PropsWithChildren, ReactNode } from "react";
-import { FullFactionSymbol } from "../FactionCard";
-import { BLACK_BORDER_GLOW } from "../LabeledDiv";
-import { responsivePixels } from "../util/util";
-import styles from "./FactionSelect.module.scss";
 import { SymbolX } from "../icons/svgs";
+import { BLACK_BORDER_GLOW } from "../util/borderGlow";
+import { responsivePixels } from "../util/util";
+import FactionIcon from "./FactionIcon/FactionIcon";
+import styles from "./FactionSelect.module.scss";
 
-export function FactionCircle({
+function FactionCircle({
   blur = false,
   borderColor = "#444",
   children,
-  factionName,
+  factionId,
   fade = false,
   onClick,
   size = 44,
@@ -19,7 +18,7 @@ export function FactionCircle({
 }: PropsWithChildren<{
   blur?: boolean;
   borderColor?: string;
-  factionName?: string;
+  factionId?: FactionId;
   fade?: boolean;
   onClick?: () => void;
   size?: number;
@@ -60,8 +59,8 @@ export function FactionCircle({
             opacity: fade ? 0.5 : undefined,
           }}
         >
-          {factionName ? (
-            <FullFactionSymbol faction={factionName} />
+          {factionId ? (
+            <FactionIcon factionId={factionId} size="100%" />
           ) : (
             <SymbolX />
           )}

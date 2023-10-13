@@ -1,0 +1,35 @@
+.LabeledLine {
+  position: relative;
+  border-radius: var(--five-pixel);
+  width: 100%;
+  align-items: flex-start;
+  gap: 0;
+  color: var(--color);
+}
+
+.LabeledLine hr {
+  width: 100%;
+  border: var(--one-pixel) solid var(--color);
+  margin: var(--eight-pixel) 0;
+}
+
+.label {
+  --side-spacing: var(--six-pixel);
+
+  position: absolute;
+  font-size: var(--sixteen-pixel);
+  white-space: nowrap;
+  background-color: #222;
+  border-radius: var(--five-pixel);
+  padding: var(--two-pixel) var(--four-pixel);
+}
+
+.label.left {
+  left: var(--side-spacing);
+}
+.label.center {
+  top: var(--negative-two-pixel);
+}
+.label.right {
+  right: var(--side-spacing);
+}

@@ -1,108 +1,4 @@
-import { BasePlanet } from "../../src/util/api/planets";
 import { DISCORDANT_STARS_PLANETS } from "./discordantstars/planets";
-
-export type PlanetId =
-  | "000"
-  | "Abaddon"
-  | "Abyz"
-  | "Accoen"
-  | "Acheron"
-  | "Alio Prima"
-  | "Ang"
-  | "Arc Prime"
-  | "Archon Ren"
-  | "Archon Tau"
-  | "Archon Vail"
-  | "Arcturus"
-  | "Arinam"
-  | "Arnor"
-  | "Arretze"
-  | "Ashtroth"
-  | "Atlas"
-  | "Avar"
-  | "Ba'kal"
-  | "Bereg"
-  | "Cealdri"
-  | "Centauri"
-  | "Cormund"
-  | "Corneeq"
-  | "Creuss"
-  | "Custodia Vigilia"
-  | "Dal Bootha"
-  | "Darien"
-  | "Druaa"
-  | "Elysium"
-  | "Everra"
-  | "Fria"
-  | "Gral"
-  | "Hercant"
-  | "Hope's End"
-  | "Ixth"
-  | "Jeol Ir"
-  | "Jol"
-  | "Jord"
-  | "Kamdorn"
-  | "Kraag"
-  | "Lazar"
-  | "Lirta IV"
-  | "Lisis"
-  | "Lisis II"
-  | "Lodor"
-  | "Loki"
-  | "Lor"
-  | "Maaluuk"
-  | "Mallice"
-  | "Mecatol Rex"
-  | "Meer"
-  | "Mehar Xull"
-  | "Mellon"
-  | "Mirage"
-  | "Moll Primus"
-  | "Mordai II"
-  | "Muaat"
-  | "Naazir"
-  | "Nar"
-  | "Nestphar"
-  | "New Albion"
-  | "Perimeter"
-  | "Primor"
-  | "Quann"
-  | "Qucen'n"
-  | "Quinarra"
-  | "Ragh"
-  | "Rarron"
-  | "Resculon"
-  | "Retillion"
-  | "Rigel I"
-  | "Rigel II"
-  | "Rigel III"
-  | "Rokha"
-  | "Sakulag"
-  | "Saudor"
-  | "Sem-Lore"
-  | "Shalloq"
-  | "Siig"
-  | "Starpoint"
-  | "Tar'Mann"
-  | "Tequ'ran"
-  | "The Dark"
-  | "Thibah"
-  | "Torkan"
-  | "Tren'Lak"
-  | "Valk"
-  | "Vefut II"
-  | "Vega Major"
-  | "Vega Minor"
-  | "Velnor"
-  | "Vorhal"
-  | "Wellon"
-  | "Winnu"
-  | "Wren Terra"
-  | "Xanhact"
-  | "Xxehan"
-  | "Ylir"
-  | "Zohbat"
-  | DiscordantStars.PlanetId;
 
 const HOME_MIDDLE = { x: 0, y: -12 };
 const MIDDLE = { x: 0, y: 0 };
@@ -120,6 +16,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "L1Z1X Mindnet",
     home: true,
     influence: 0,
+    id: "000",
     name: "[0.0.0]",
     position: HOME_MIDDLE,
     resources: 5,
@@ -130,6 +27,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 0,
+    id: "Abaddon",
     name: "Abaddon",
     position: TOP_RIGHT,
     resources: 1,
@@ -140,6 +38,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 0,
+    id: "Abyz",
     name: "Abyz",
     position: TOP_LEFT,
     resources: 3,
@@ -150,6 +49,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 3,
+    id: "Accoen",
     name: "Accoen",
     position: TOP_LEFT,
     resources: 2,
@@ -162,6 +62,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Vuil'raith Cabal",
     home: true,
     influence: 0,
+    id: "Acheron",
     name: "Acheron",
     position: HOME_MIDDLE,
     resources: 4,
@@ -172,6 +73,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Alio Prima",
     name: "Alio Prima",
     position: BOTTOM_RIGHT,
     resources: 1,
@@ -182,6 +84,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["red-skip"],
     expansion: "POK",
     influence: 0,
+    id: "Ang",
     name: "Ang",
     position: MIDDLE,
     resources: 2,
@@ -194,6 +97,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Barony of Letnev",
     home: true,
     influence: 0,
+    id: "Arc Prime",
     name: "Arc Prime",
     position: TOP_LEFT,
     resources: 4,
@@ -206,9 +110,24 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Xxcha Kingdom",
     home: true,
     influence: 3,
+    id: "Archon Ren",
     name: "Archon Ren",
     position: TOP_LEFT,
     resources: 2,
+    system: 14,
+    type: "NONE",
+  },
+  "Archon Ren Keleres": {
+    attributes: [],
+    expansion: "CODEX THREE",
+    faction: "Council Keleres",
+    home: true,
+    influence: 3,
+    id: "Archon Ren Keleres",
+    name: "Archon Ren",
+    position: TOP_LEFT,
+    resources: 2,
+    subFaction: "Xxcha Kingdom",
     system: 14,
     type: "NONE",
   },
@@ -218,9 +137,24 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Xxcha Kingdom",
     home: true,
     influence: 1,
+    id: "Archon Tau",
     name: "Archon Tau",
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
+    system: 14,
+    type: "NONE",
+  },
+  "Archon Tau Keleres": {
+    attributes: [],
+    expansion: "CODEX THREE",
+    faction: "Council Keleres",
+    home: true,
+    influence: 1,
+    id: "Archon Tau Keleres",
+    name: "Archon Tau",
+    position: HOME_BOTTOM_RIGHT,
+    resources: 1,
+    subFaction: "Xxcha Kingdom",
     system: 14,
     type: "NONE",
   },
@@ -228,6 +162,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["blue-skip"],
     expansion: "POK",
     influence: 3,
+    id: "Archon Vail",
     name: "Archon Vail",
     position: MIDDLE,
     resources: 1,
@@ -240,6 +175,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Nomad",
     home: true,
     influence: 4,
+    id: "Arcturus",
     name: "Arcturus",
     position: HOME_MIDDLE,
     resources: 4,
@@ -250,6 +186,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Arinam",
     name: "Arinam",
     position: TOP_LEFT,
     resources: 1,
@@ -260,6 +197,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Arnor",
     name: "Arnor",
     position: TOP_LEFT,
     resources: 2,
@@ -272,6 +210,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Emirates of Hacan",
     home: true,
     influence: 0,
+    id: "Arretze",
     name: "Arretze",
     position: TOP_RIGHT,
     resources: 2,
@@ -282,6 +221,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 0,
+    id: "Ashtroth",
     name: "Ashtroth",
     position: FAR_BOTTOM_RIGHT,
     resources: 2,
@@ -292,6 +232,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Atlas",
     name: "Atlas",
     position: TOP_LEFT,
     resources: 3,
@@ -304,9 +245,24 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Argent Flight",
     home: true,
     influence: 1,
+    id: "Avar",
     name: "Avar",
     position: FAR_BOTTOM_RIGHT,
     resources: 1,
+    system: 58,
+    type: "NONE",
+  },
+  "Avar Keleres": {
+    attributes: [],
+    expansion: "CODEX THREE",
+    faction: "Council Keleres",
+    home: true,
+    influence: 1,
+    id: "Avar Keleres",
+    name: "Avar",
+    position: FAR_BOTTOM_RIGHT,
+    resources: 1,
+    subFaction: "Argent Flight",
     system: 58,
     type: "NONE",
   },
@@ -314,6 +270,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 2,
+    id: "Ba'kal",
     name: "Ba'kal",
     position: TOP_LEFT,
     resources: 3,
@@ -324,6 +281,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Bereg",
     name: "Bereg",
     position: TOP_LEFT,
     resources: 3,
@@ -334,6 +292,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["yellow-skip"],
     expansion: "POK",
     influence: 2,
+    id: "Cealdri",
     name: "Cealdri",
     position: TOP_LEFT,
     resources: 0,
@@ -344,6 +303,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 3,
+    id: "Centauri",
     name: "Centauri",
     position: TOP_LEFT,
     resources: 1,
@@ -354,6 +314,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 0,
+    id: "Cormund",
     name: "Cormund",
     position: { x: -14, y: -10 },
     resources: 2,
@@ -364,6 +325,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Corneeq",
     name: "Corneeq",
     position: TOP_LEFT,
     resources: 1,
@@ -376,6 +338,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Ghosts of Creuss",
     home: true,
     influence: 2,
+    id: "Creuss",
     name: "Creuss",
     position: HOME_MIDDLE, // TODO
     resources: 4,
@@ -390,6 +353,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Council Keleres",
     influence: 3,
     locked: true,
+    id: "Custodia Vigilia",
     name: "Custodia Vigilia",
     resources: 2,
     type: "NONE",
@@ -398,6 +362,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Dal Bootha",
     name: "Dal Bootha",
     position: TOP_LEFT,
     resources: 0,
@@ -410,6 +375,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Yin Brotherhood",
     home: true,
     influence: 4,
+    id: "Darien",
     name: "Darien",
     position: HOME_MIDDLE,
     resources: 4,
@@ -422,6 +388,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Naalu Collective",
     home: true,
     influence: 1,
+    id: "Druaa",
     name: "Druaa",
     position: HOME_BOTTOM_RIGHT,
     resources: 3,
@@ -434,6 +401,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Titans of Ul",
     home: true,
     influence: 1,
+    id: "Elysium",
     name: "Elysium",
     position: HOME_MIDDLE,
     resources: 4,
@@ -444,6 +412,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Everra",
     name: "Everra",
     position: { x: -14, y: -10 },
     resources: 3,
@@ -454,6 +423,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 0,
+    id: "Fria",
     name: "Fria",
     position: BOTTOM_RIGHT,
     resources: 2,
@@ -464,6 +434,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["blue-skip"],
     expansion: "BASE",
     influence: 1,
+    id: "Gral",
     name: "Gral",
     position: BOTTOM_RIGHT,
     resources: 1,
@@ -476,6 +447,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Emirates of Hacan",
     home: true,
     influence: 1,
+    id: "Hercant",
     name: "Hercant",
     position: MIDDLE_LEFT,
     resources: 1,
@@ -488,6 +460,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["legendary"],
     expansion: "POK",
     influence: 0,
+    id: "Hope's End",
     name: "Hope's End",
     position: MIDDLE,
     resources: 3,
@@ -500,6 +473,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Mahact Gene-Sorcerers",
     home: true,
     influence: 5,
+    id: "Ixth",
     name: "Ixth",
     position: HOME_MIDDLE,
     resources: 3,
@@ -510,6 +484,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 3,
+    id: "Jeol Ir",
     name: "Jeol Ir",
     position: BOTTOM_RIGHT,
     resources: 2,
@@ -522,6 +497,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Universities of Jol-Nar",
     home: true,
     influence: 2,
+    id: "Jol",
     name: "Jol",
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
@@ -534,6 +510,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Federation of Sol",
     home: true,
     influence: 2,
+    id: "Jord",
     name: "Jord",
     position: HOME_MIDDLE,
     resources: 4,
@@ -546,6 +523,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Emirates of Hacan",
     home: true,
     influence: 1,
+    id: "Kamdorn",
     name: "Kamdorn",
     position: FAR_BOTTOM_RIGHT,
     resources: 0,
@@ -556,6 +534,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Kraag",
     name: "Kraag",
     position: TOP_LEFT,
     resources: 2,
@@ -566,6 +545,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["yellow-skip"],
     expansion: "BASE",
     influence: 0,
+    id: "Lazar",
     name: "Lazar",
     position: TOP_LEFT,
     resources: 1,
@@ -576,6 +556,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 3,
+    id: "Lirta IV",
     name: "Lirta IV",
     position: BOTTOM_RIGHT,
     resources: 2,
@@ -586,6 +567,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 2,
+    id: "Lisis",
     name: "Lisis",
     position: TOP_LEFT,
     resources: 2,
@@ -598,6 +580,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Clan of Saar",
     home: true,
     influence: 0,
+    id: "Lisis II",
     name: "Lisis II",
     position: TOP_LEFT,
     resources: 1,
@@ -608,6 +591,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Lodor",
     name: "Lodor",
     position: TOP_LEFT,
     resources: 3,
@@ -618,6 +602,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 2,
+    id: "Loki",
     name: "Loki",
     position: MIDDLE_LEFT,
     resources: 1,
@@ -628,6 +613,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Lor",
     name: "Lor",
     position: BOTTOM_RIGHT,
     resources: 1,
@@ -640,6 +626,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Naalu Collective",
     home: true,
     influence: 2,
+    id: "Maaluuk",
     name: "Maaluuk",
     position: TOP_LEFT,
     resources: 0,
@@ -652,6 +639,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["legendary"],
     expansion: "POK",
     influence: 3,
+    id: "Mallice",
     name: "Mallice",
     position: { x: 16, y: -18 },
     resources: 0,
@@ -662,6 +650,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 6,
+    id: "Mecatol Rex",
     name: "Mecatol Rex",
     position: MIDDLE,
     resources: 1,
@@ -672,6 +661,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["red-skip"],
     expansion: "BASE",
     influence: 4,
+    id: "Meer",
     name: "Meer",
     position: BOTTOM_RIGHT,
     resources: 0,
@@ -682,6 +672,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["red-skip"],
     expansion: "BASE",
     influence: 3,
+    id: "Mehar Xull",
     name: "Mehar Xull",
     position: MIDDLE,
     resources: 1,
@@ -692,6 +683,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Mellon",
     name: "Mellon",
     position: TOP_LEFT,
     resources: 0,
@@ -704,6 +696,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["legendary"],
     expansion: "POK",
     influence: 2,
+    id: "Mirage",
     name: "Mirage",
     resources: 1,
     type: "CULTURAL",
@@ -714,10 +707,25 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Mentak Coalition",
     home: true,
     influence: 1,
+    id: "Moll Primus",
     name: "Moll Primus",
     position: HOME_MIDDLE,
     resources: 4,
     system: 2,
+    type: "NONE",
+  },
+  "Moll Primus Keleres": {
+    attributes: [],
+    expansion: "CODEX THREE",
+    faction: "Council Keleres",
+    home: true,
+    influence: 1,
+    id: "Moll Primus Keleres",
+    name: "Moll Primus",
+    position: HOME_MIDDLE,
+    resources: 4,
+    system: 2,
+    subFaction: "Mentak Coalition",
     type: "NONE",
   },
   "Mordai II": {
@@ -726,6 +734,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Nekro Virus",
     home: true,
     influence: 0,
+    id: "Mordai II",
     name: "Mordai II",
     position: HOME_MIDDLE,
     resources: 4,
@@ -738,6 +747,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Embers of Muaat",
     home: true,
     influence: 1,
+    id: "Muaat",
     name: "Muaat",
     position: HOME_MIDDLE,
     resources: 4,
@@ -750,6 +760,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Naaz-Rokha Alliance",
     home: true,
     influence: 1,
+    id: "Naazir",
     name: "Naazir",
     position: TOP_LEFT,
     resources: 2,
@@ -762,6 +773,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Universities of Jol-Nar",
     home: true,
     influence: 3,
+    id: "Nar",
     name: "Nar",
     position: TOP_LEFT,
     resources: 2,
@@ -774,6 +786,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Arborec",
     home: true,
     influence: 2,
+    id: "Nestphar",
     name: "Nestphar",
     position: HOME_MIDDLE,
     resources: 3,
@@ -784,6 +797,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["green-skip"],
     expansion: "BASE",
     influence: 1,
+    id: "New Albion",
     name: "New Albion",
     position: TOP_LEFT,
     resources: 1,
@@ -794,6 +808,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Perimeter",
     name: "Perimeter",
     position: MIDDLE,
     resources: 2,
@@ -806,6 +821,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["legendary"],
     expansion: "POK",
     influence: 1,
+    id: "Primor",
     name: "Primor",
     position: MIDDLE,
     resources: 2,
@@ -816,6 +832,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Quann",
     name: "Quann",
     position: TOP_LEFT,
     resources: 2,
@@ -826,6 +843,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Qucen'n",
     name: "Qucen'n",
     position: TOP_LEFT,
     resources: 1,
@@ -838,6 +856,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Sardakk N'orr",
     home: true,
     influence: 1,
+    id: "Quinarra",
     name: "Quinarra",
     position: HOME_BOTTOM_RIGHT,
     resources: 3,
@@ -850,6 +869,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Clan of Saar",
     home: true,
     influence: 1,
+    id: "Ragh",
     name: "Ragh",
     position: HOME_BOTTOM_RIGHT,
     resources: 2,
@@ -860,6 +880,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 3,
+    id: "Rarron",
     name: "Rarron",
     position: BOTTOM_RIGHT,
     resources: 0,
@@ -870,6 +891,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 0,
+    id: "Resculon",
     name: "Resculon",
     position: BOTTOM_RIGHT,
     resources: 2,
@@ -882,6 +904,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Yssaril Tribes",
     home: true,
     influence: 3,
+    id: "Retillion",
     name: "Retillion",
     position: TOP_LEFT,
     resources: 2,
@@ -892,6 +915,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Rigel I",
     name: "Rigel I",
     position: FAR_BOTTOM_RIGHT,
     resources: 0,
@@ -902,6 +926,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 2,
+    id: "Rigel II",
     name: "Rigel II",
     position: TOP_RIGHT,
     resources: 1,
@@ -912,6 +937,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["green-skip"],
     expansion: "POK",
     influence: 1,
+    id: "Rigel III",
     name: "Rigel III",
     position: MIDDLE_LEFT,
     resources: 1,
@@ -924,6 +950,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Naaz-Rokha Alliance",
     home: true,
     influence: 2,
+    id: "Rokha",
     name: "Rokha",
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
@@ -934,6 +961,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Sakulag",
     name: "Sakulag",
     position: BOTTOM_RIGHT,
     resources: 2,
@@ -944,6 +972,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Saudor",
     name: "Saudor",
     position: MIDDLE,
     resources: 2,
@@ -954,6 +983,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["yellow-skip"],
     expansion: "POK",
     influence: 2,
+    id: "Sem-Lore",
     name: "Sem-Lore",
     position: MIDDLE,
     resources: 3,
@@ -966,6 +996,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Yssaril Tribes",
     home: true,
     influence: 2,
+    id: "Shalloq",
     name: "Shalloq",
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
@@ -976,6 +1007,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 2,
+    id: "Siig",
     name: "Siig",
     position: BOTTOM_RIGHT,
     resources: 0,
@@ -986,6 +1018,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Starpoint",
     name: "Starpoint",
     position: BOTTOM_RIGHT,
     resources: 3,
@@ -996,6 +1029,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["green-skip"],
     expansion: "BASE",
     influence: 1,
+    id: "Tar'Mann",
     name: "Tar'Mann",
     position: MIDDLE,
     resources: 1,
@@ -1006,6 +1040,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 0,
+    id: "Tequ'ran",
     name: "Tequ'ran",
     position: TOP_LEFT,
     resources: 2,
@@ -1018,6 +1053,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Empyrean",
     home: true,
     influence: 4,
+    id: "The Dark",
     name: "The Dark",
     position: HOME_MIDDLE,
     resources: 3,
@@ -1028,6 +1064,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["blue-skip"],
     expansion: "BASE",
     influence: 1,
+    id: "Thibah",
     name: "Thibah",
     position: MIDDLE,
     resources: 1,
@@ -1038,19 +1075,21 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 3,
+    id: "Torkan",
     name: "Torkan",
     position: BOTTOM_RIGHT,
     resources: 0,
     system: 28,
     type: "CULTURAL",
   },
-  "Tren'Lak": {
+  "Tren'lak": {
     attributes: [],
     expansion: "BASE",
     faction: "Sardakk N'orr",
     home: true,
     influence: 0,
-    name: "Tren'Lak",
+    id: "Tren'lak",
+    name: "Tren'lak",
     position: TOP_LEFT,
     resources: 1,
     system: 13,
@@ -1062,9 +1101,24 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Argent Flight",
     home: true,
     influence: 0,
+    id: "Valk",
     name: "Valk",
     position: MIDDLE_LEFT,
     resources: 2,
+    system: 58,
+    type: "NONE",
+  },
+  "Valk Keleres": {
+    attributes: [],
+    expansion: "CODEX THREE",
+    faction: "Council Keleres",
+    home: true,
+    influence: 0,
+    id: "Valk Keleres",
+    name: "Valk",
+    position: MIDDLE_LEFT,
+    resources: 2,
+    subFaction: "Argent Flight",
     system: 58,
     type: "NONE",
   },
@@ -1072,6 +1126,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 2,
+    id: "Vefut II",
     name: "Vefut II",
     position: MIDDLE,
     resources: 2,
@@ -1082,6 +1137,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Vega Major",
     name: "Vega Major",
     position: TOP_LEFT,
     resources: 2,
@@ -1092,6 +1148,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["blue-skip"],
     expansion: "POK",
     influence: 2,
+    id: "Vega Minor",
     name: "Vega Minor",
     position: BOTTOM_RIGHT,
     resources: 1,
@@ -1102,6 +1159,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["red-skip"],
     expansion: "POK",
     influence: 1,
+    id: "Velnor",
     name: "Velnor",
     position: BOTTOM_RIGHT,
     resources: 2,
@@ -1112,6 +1170,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["green-skip"],
     expansion: "POK",
     influence: 2,
+    id: "Vorhal",
     name: "Vorhal",
     position: MIDDLE,
     resources: 0,
@@ -1122,6 +1181,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: ["yellow-skip"],
     expansion: "BASE",
     influence: 2,
+    id: "Wellon",
     name: "Wellon",
     position: MIDDLE,
     resources: 1,
@@ -1134,6 +1194,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Winnu",
     home: true,
     influence: 4,
+    id: "Winnu",
     name: "Winnu",
     position: HOME_MIDDLE,
     resources: 3,
@@ -1146,6 +1207,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Barony of Letnev",
     home: true,
     influence: 1,
+    id: "Wren Terra",
     name: "Wren Terra",
     position: HOME_BOTTOM_RIGHT,
     resources: 2,
@@ -1156,6 +1218,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "POK",
     influence: 1,
+    id: "Xanhact",
     name: "Xanhact",
     position: BOTTOM_RIGHT,
     resources: 0,
@@ -1166,6 +1229,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Xxehan",
     name: "Xxehan",
     position: BOTTOM_RIGHT,
     resources: 1,
@@ -1178,9 +1242,24 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     faction: "Argent Flight",
     home: true,
     influence: 2,
+    id: "Ylir",
     name: "Ylir",
     position: TOP_RIGHT,
     resources: 0,
+    system: 58,
+    type: "NONE",
+  },
+  "Ylir Keleres": {
+    attributes: [],
+    expansion: "CODEX THREE",
+    faction: "Council Keleres",
+    home: true,
+    influence: 2,
+    id: "Ylir Keleres",
+    name: "Ylir",
+    position: TOP_RIGHT,
+    resources: 0,
+    subFaction: "Argent Flight",
     system: 58,
     type: "NONE",
   },
@@ -1188,6 +1267,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     attributes: [],
     expansion: "BASE",
     influence: 1,
+    id: "Zohbat",
     name: "Zohbat",
     position: BOTTOM_RIGHT,
     resources: 3,

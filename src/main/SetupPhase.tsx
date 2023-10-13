@@ -1,28 +1,35 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useRef } from "react";
-import { StartingComponents } from "../FactionCard";
-import { ObjectiveRow } from "../ObjectiveRow";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { LabeledDiv } from "../LabeledDiv";
+import { LockedButtons } from "../LockedButton";
+import { NumberedItem } from "../NumberedItem";
+import { SelectableRow } from "../SelectableRow";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import StartingComponents from "../components/StartingComponents/StartingComponents";
+import {
+  ActionLogContext,
+  FactionContext,
+  ObjectiveContext,
+  OptionContext,
+  StateContext,
+} from "../context/Context";
+import {
+  advancePhaseAsync,
+  changeOptionAsync,
+  hideObjectiveAsync,
+  revealObjectiveAsync,
+} from "../dynamic/api";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels, validateMapString } from "../util/util";
-import { NumberedItem } from "../NumberedItem";
-import { Faction } from "../util/api/factions";
-import { SelectableRow } from "../SelectableRow";
-import { LockedButtons } from "../LockedButton";
-import { useGameData } from "../data/GameData";
-import { hideObjective, revealObjective } from "../util/api/revealObjective";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { RevealObjectiveData } from "../util/model/revealObjective";
-import { advancePhase } from "../util/api/advancePhase";
-import { changeOption } from "../util/api/changeOption";
 
 export function startFirstRound(gameid: string) {
-  advancePhase(gameid);
+  advancePhaseAsync(gameid);
 }
 
 function factionTechChoicesComplete(
-  factions: Record<string, Faction>
+  factions: Partial<Record<FactionId, Faction>>
 ): boolean {
   let complete = true;
   Object.values(factions).forEach((faction) => {
@@ -39,7 +46,7 @@ function factionTechChoicesComplete(
 }
 
 function factionSubFactionChoicesComplete(
-  factions: Record<string, Faction>
+  factions: Partial<Record<FactionId, Faction>>
 ): boolean {
   if (!factions["Council Keleres"]) {
     return true;
@@ -48,7 +55,7 @@ function factionSubFactionChoicesComplete(
 }
 
 export function setupPhaseComplete(
-  factions: Record<string, Faction>,
+  factions: Partial<Record<FactionId, Faction>>,
   revealedObjectives: string[]
 ): boolean {
   return (
@@ -59,7 +66,7 @@ export function setupPhaseComplete(
 }
 
 function getSetupPhaseText(
-  factions: Record<string, Faction>,
+  factions: Partial<Record<FactionId, Faction>>,
   revealedObjectives: string[]
 ) {
   const textSections = [];
@@ -67,10 +74,10 @@ function getSetupPhaseText(
     !factionSubFactionChoicesComplete(factions) ||
     !factionTechChoicesComplete(factions)
   ) {
-    textSections.push("Select all faction choices");
+    textSections.push("Select all Faction Choices");
   }
   if (revealedObjectives.length !== 2) {
-    textSections.push("Reveal 2 objectives");
+    textSections.push("Reveal 2 Objectives");
   }
   return textSections.join(" and ");
 }
@@ -79,24 +86,18 @@ export function setMapString(gameid: string | undefined, mapString: string) {
   if (!gameid || !validateMapString(mapString)) {
     return;
   }
-  changeOption(gameid, "map-string", mapString);
+  changeOptionAsync(gameid, "map-string", mapString);
 }
 
 export default function SetupPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "factions",
-    "objectives",
-    "options",
-    "state",
-  ]);
 
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const options = gameData.options;
-  const state = gameData.state;
+  const actionLog = useContext(ActionLogContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const state = useContext(StateContext);
 
   const mapStringRef = useRef<HTMLInputElement>(null);
 
@@ -109,7 +110,7 @@ export default function SetupPhase() {
     mapStringRef.current.value = mapString ?? "";
   }, [mapString]);
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
   const revealedObjectives = currentTurn
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
     .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
@@ -118,8 +119,8 @@ export default function SetupPhase() {
     if (!factions) {
       return [];
     }
-    return Object.entries(factions).sort((a, b) => {
-      return a[1].order - b[1].order;
+    return Object.values(factions).sort((a, b) => {
+      return a.order - b.order;
     });
   }, [factions]);
 
@@ -127,7 +128,7 @@ export default function SetupPhase() {
     return Object.values(objectives ?? {}).filter((objective) => {
       return (
         objective.type === "STAGE ONE" &&
-        !revealedObjectives.includes(objective.name)
+        !revealedObjectives.includes(objective.id)
       );
     });
   }, [revealedObjectives, objectives]);
@@ -135,34 +136,32 @@ export default function SetupPhase() {
   const speaker = (factions ?? {})[state?.speaker ?? ""];
 
   return (
-    <div
-      className="flexColumn"
-      style={{
-        alignItems: "flex-start",
-        width: "100%",
-        justifyContent: "flex-start",
-        marginTop: responsivePixels(100),
-      }}
-    >
+    <>
       <ol
-        className="flexColumn"
+        className="flexColumn largeFont"
         style={{
           alignItems: "flex-start",
-          padding: 0,
-          fontSize: responsivePixels(24),
-          margin: `0 ${responsivePixels(20)} 0 ${responsivePixels(40)}`,
+          justifyContent: "center",
+          boxSizing: "border-box",
+          height: "100svh",
+          margin: 0,
+          width: "min-content",
+          paddingLeft: responsivePixels(20),
+          whiteSpace: "normal",
         }}
       >
+        <div className="flexRow" style={{ width: responsivePixels(268) }}>
+          Setup
+        </div>
         <NumberedItem>
-          Build the galaxy
+          Build the Galaxy
           <div
-            className="flexRow mediumFont"
+            className="flexColumn mediumFont"
             style={{
               fontFamily: "Myriad Pro",
               paddingTop: responsivePixels(8),
               alignItems: "flex-start",
               whiteSpace: "nowrap",
-              width: "100%",
             }}
           >
             Map String:
@@ -170,7 +169,9 @@ export default function SetupPhase() {
               ref={mapStringRef}
               type="textbox"
               className="smallFont"
-              style={{ width: `min(75vw, ${responsivePixels(700)})` }}
+              style={{
+                width: `min(75vw, ${responsivePixels(268)})`,
+              }}
               onChange={(event) =>
                 setMapString(gameid, event.currentTarget.value)
               }
@@ -178,77 +179,43 @@ export default function SetupPhase() {
           </div>
         </NumberedItem>
         <NumberedItem>Shuffle decks</NumberedItem>
-        <NumberedItem>
-          <LabeledDiv label="Gather starting components">
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                flexWrap: "wrap",
-                alignItems: "flex-start",
-                justifyContent: "space-evenly",
-              }}
-            >
-              {orderedFactions.map(([name, faction]) => {
-                return (
-                  <ClientOnlyHoverMenu
-                    key={name}
-                    label={getFactionName(faction)}
-                    borderColor={getFactionColor(faction)}
-                  >
-                    <div
-                      style={{
-                        padding: `0 ${responsivePixels(8)} ${responsivePixels(
-                          8
-                        )} ${responsivePixels(8)}`,
-                      }}
-                    >
-                      <StartingComponents faction={faction} />
-                    </div>
-                  </ClientOnlyHoverMenu>
-                );
-              })}
-            </div>
-          </LabeledDiv>
-        </NumberedItem>
-        <NumberedItem>Draw 2 secret objectives and keep one</NumberedItem>
+        <NumberedItem>Gather Starting Components</NumberedItem>
+        <NumberedItem>Draw 2 secret objectives and keep 1</NumberedItem>
         <NumberedItem>Re-shuffle secret objectives</NumberedItem>
+        <NumberedItem>Draw 5 stage I objectives</NumberedItem>
+        <NumberedItem>Draw 5 stage II objectives</NumberedItem>
         <NumberedItem>
-          <LabeledDiv
-            label={getFactionName(speaker)}
-            color={getFactionColor(speaker)}
-          >
-            Draw 5 stage one objectives and reveal 2
+          <div className="flexColumn">
             {revealedObjectives.length > 0 ? (
-              <LabeledDiv label="Revealed Objectives">
+              <LabeledDiv label="Revealed Stage I Objectives">
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  {revealedObjectives.map((objectiveName) => {
-                    const objective = (objectives ?? {})[objectiveName];
+                  {revealedObjectives.map((objectiveId) => {
+                    const objective = (objectives ?? {})[objectiveId];
                     if (!objective) {
                       return (
                         <SelectableRow
-                          key={objectiveName}
-                          itemName={objectiveName}
+                          key={objectiveId}
+                          itemId={objectiveId}
                           removeItem={() => {
                             if (!gameid) {
                               return;
                             }
-                            hideObjective(gameid, objectiveName);
+                            hideObjectiveAsync(gameid, objectiveId);
                           }}
                         >
-                          {objectiveName}
+                          {objectiveId}
                         </SelectableRow>
                       );
                     }
                     return (
                       <ObjectiveRow
-                        key={objectiveName}
+                        key={objectiveId}
                         objective={objective}
                         removeObjective={() => {
                           if (!gameid) {
                             return;
                           }
-                          hideObjective(gameid, objectiveName);
+                          hideObjectiveAsync(gameid, objectiveId);
                         }}
                         viewing={true}
                       />
@@ -258,86 +225,132 @@ export default function SetupPhase() {
               </LabeledDiv>
             ) : null}
             {revealedObjectives.length < 2 ? (
-              <ClientOnlyHoverMenu
-                label="Reveal Objective"
-                renderProps={(closeFn) => (
-                  <div
-                    className="flexRow"
-                    style={{
-                      padding: `${responsivePixels(8)}`,
-                      display: "grid",
-                      gridAutoFlow: "column",
-                      gridTemplateRows: "repeat(5, auto)",
-                      justifyContent: "flex-start",
-                      gap: `${responsivePixels(4)}`,
-                      maxWidth: "80vw",
-                      overflowX: "auto",
-                    }}
-                  >
-                    {Object.values(availableObjectives)
-                      .filter((objective) => {
-                        return objective.type === "STAGE ONE";
-                      })
-                      .map((objective) => {
-                        return (
-                          <button
-                            key={objective.name}
-                            style={{ writingMode: "horizontal-tb" }}
-                            onClick={() => {
-                              if (!gameid) {
-                                return;
-                              }
-                              closeFn();
-                              revealObjective(gameid, objective.name);
-                            }}
-                          >
-                            {objective.name}
-                          </button>
-                        );
-                      })}
-                  </div>
-                )}
-              ></ClientOnlyHoverMenu>
+              <LabeledDiv
+                label={getFactionName((factions ?? {})[state?.speaker ?? ""])}
+                color={getFactionColor((factions ?? {})[state?.speaker ?? ""])}
+                style={{ width: "100%" }}
+              >
+                <ClientOnlyHoverMenu
+                  label="Reveal 2 stage I objectives"
+                  renderProps={(closeFn) => (
+                    <div
+                      className="flexRow"
+                      style={{
+                        padding: `${responsivePixels(8)}`,
+                        display: "grid",
+                        gridAutoFlow: "column",
+                        gridTemplateRows: "repeat(5, auto)",
+                        justifyContent: "flex-start",
+                        gap: `${responsivePixels(4)}`,
+                        maxWidth: "80vw",
+                        overflowX: "auto",
+                      }}
+                    >
+                      {Object.values(availableObjectives)
+                        .filter((objective) => {
+                          return objective.type === "STAGE ONE";
+                        })
+                        .map((objective) => {
+                          return (
+                            <button
+                              key={objective.id}
+                              style={{ writingMode: "horizontal-tb" }}
+                              onClick={() => {
+                                if (!gameid) {
+                                  return;
+                                }
+                                closeFn();
+                                revealObjectiveAsync(gameid, objective.id);
+                              }}
+                            >
+                              {objective.name}
+                            </button>
+                          );
+                        })}
+                    </div>
+                  )}
+                ></ClientOnlyHoverMenu>
+              </LabeledDiv>
             ) : null}
-          </LabeledDiv>
-        </NumberedItem>
-        <NumberedItem>
-          <LabeledDiv
-            label={getFactionName(speaker)}
-            color={getFactionColor(speaker)}
-          >
-            Draw 5 stage two objectives
-          </LabeledDiv>
+          </div>
         </NumberedItem>
       </ol>
-      <div className="centered flexColumn" style={{ width: "100%" }}>
-        {!setupPhaseComplete(factions ?? {}, revealedObjectives) ? (
+      <div className="flexColumn" style={{ height: "100dvh" }}>
+        <div
+          className="flexColumn"
+          style={{
+            alignItems: "center",
+            marginTop: responsivePixels(40),
+            boxSizing: "border-box",
+            margin: 0,
+            whiteSpace: "nowrap",
+            gap: responsivePixels(8),
+          }}
+        >
+          <div className="flexColumn" style={{ width: "100%" }}>
+            Starting Components
+          </div>
           <div
             style={{
-              color: "firebrick",
-              fontFamily: "Myriad Pro",
-              fontWeight: "bold",
+              display: "grid",
+              gridAutoFlow: "row",
+              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gap: responsivePixels(8),
+              paddingTop: responsivePixels(6),
             }}
           >
-            {getSetupPhaseText(factions ?? {}, revealedObjectives)}
+            {Object.values(orderedFactions).map((faction) => {
+              return (
+                <LabeledDiv
+                  key={faction.id}
+                  label={getFactionName(faction)}
+                  color={getFactionColor(faction)}
+                >
+                  <div
+                    className="flexColumn"
+                    style={{
+                      paddingTop: `${responsivePixels(2)}`,
+                      alignItems: "flex-start",
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  >
+                    <StartingComponents factionId={faction.id} />
+                  </div>
+                </LabeledDiv>
+              );
+            })}
           </div>
-        ) : null}
-        <LockedButtons
-          unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
-          buttons={[
-            {
-              text: "Start Game",
-              onClick: () => {
-                if (!gameid) {
-                  return;
-                }
-                startFirstRound(gameid);
-              },
-              style: { fontSize: responsivePixels(40) },
-            },
-          ]}
-        />
+          <div className="flexColumn">
+            {!setupPhaseComplete(factions ?? {}, revealedObjectives) ? (
+              <div
+                style={{
+                  color: "firebrick",
+                  fontFamily: "Myriad Pro",
+                  fontWeight: "bold",
+                }}
+              >
+                {getSetupPhaseText(factions ?? {}, revealedObjectives)}
+              </div>
+            ) : null}
+            <LockedButtons
+              unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
+              buttons={[
+                {
+                  text: "Start Game",
+                  onClick: () => {
+                    if (!gameid) {
+                      return;
+                    }
+                    startFirstRound(gameid);
+                  },
+                  style: { fontSize: responsivePixels(40) },
+                },
+              ]}
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

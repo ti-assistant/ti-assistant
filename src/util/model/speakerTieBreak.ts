@@ -1,15 +1,3 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SpeakerTieBreakEvent {
-  tieBreak: string;
-}
-
-export interface SpeakerTieBreakData {
-  action: "SPEAKER_TIE_BREAK";
-  event: SpeakerTieBreakEvent;
-}
-
 export class SpeakerTieBreakHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

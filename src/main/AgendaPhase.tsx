@@ -1,20 +1,53 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext } from "react";
 import { AgendaRow } from "../AgendaRow";
-import { FactionCircle } from "../components/FactionCircle";
-import { FactionSelectRadialMenu } from "../components/FactionSelect";
-import { useGameData } from "../data/GameData";
-import { FullFactionSymbol } from "../FactionCard";
-import { computeVPs } from "../FactionSummary";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { SymbolX } from "../icons/svgs";
 import { InfoRow } from "../InfoRow";
-import { LabeledDiv } from "../LabeledDiv";
 import { LockedButtons } from "../LockedButton";
-import { ObjectiveRow } from "../ObjectiveRow";
 import { SelectableRow } from "../SelectableRow";
 import { Selector } from "../Selector";
 import { AgendaTimer } from "../Timer";
+import { VoteCount, getTargets } from "../VoteCount";
+import FactionCircle from "../components/FactionCircle/FactionCircle";
+import FactionIcon from "../components/FactionIcon/FactionIcon";
+import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import {
+  ActionLogContext,
+  AgendaContext,
+  FactionContext,
+  ObjectiveContext,
+  OptionContext,
+  PlanetContext,
+  RelicContext,
+  StateContext,
+  StrategyCardContext,
+} from "../context/Context";
+import {
+  advancePhaseAsync,
+  claimPlanetAsync,
+  gainRelicAsync,
+  hideAgendaAsync,
+  hideObjectiveAsync,
+  loseRelicAsync,
+  playActionCardAsync,
+  playPromissoryNoteAsync,
+  playRiderAsync,
+  resolveAgendaAsync,
+  revealAgendaAsync,
+  revealObjectiveAsync,
+  scoreObjectiveAsync,
+  selectEligibleOutcomesAsync,
+  selectSubAgendaAsync,
+  speakerTieBreakAsync,
+  unclaimPlanetAsync,
+  unplayActionCardAsync,
+  unplayPromissoryNoteAsync,
+  unplayRiderAsync,
+  unscoreObjectiveAsync,
+} from "../dynamic/api";
+import { SymbolX } from "../icons/svgs";
 import {
   getActionCardTargets,
   getActiveAgenda,
@@ -24,7 +57,6 @@ import {
   getObjectiveScorers,
   getPlayedRiders,
   getPromissoryTargets,
-  getResearchedTechs,
   getRevealedObjectives,
   getScoredObjectives,
   getSelectedEligibleOutcomes,
@@ -32,32 +64,9 @@ import {
   getSpeakerTieBreak,
 } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { addTech } from "../util/api/addTech";
-import { advancePhase } from "../util/api/advancePhase";
-import { Agenda, OutcomeType } from "../util/api/agendas";
-import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
-import { getDefaultStrategyCards } from "../util/api/defaults";
-import { gainRelic, loseRelic } from "../util/api/gainRelic";
-import { hasScoredObjective, Objective } from "../util/api/objectives";
-import { playActionCard, unplayActionCard } from "../util/api/playActionCard";
-import {
-  playPromissoryNote,
-  unplayPromissoryNote,
-} from "../util/api/playPromissoryNote";
-import { playRider, unplayRider } from "../util/api/playRider";
-import { resolveAgenda } from "../util/api/resolveAgenda";
-import { hideAgenda, revealAgenda } from "../util/api/revealAgenda";
-import { hideObjective, revealObjective } from "../util/api/revealObjective";
-import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
-import { selectEligibleOutcomes } from "../util/api/selectEligibleOutcomes";
-import { selectSubAgenda } from "../util/api/selectSubAgenda";
-import { speakerTieBreak } from "../util/api/speakerTieBreak";
-import { Tech } from "../util/api/techs";
-import { ActionLogEntry } from "../util/api/util";
-import { getFactionColor, getFactionName } from "../util/factions";
+import { hasScoredObjective } from "../util/api/util";
+import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels } from "../util/util";
-import { getTargets, VoteCount } from "../VoteCount";
-import { TechSelectHoverMenu } from "./util/TechSelectHoverMenu";
 
 const RIDERS = [
   "Galactic Threat",
@@ -118,8 +127,8 @@ export function computeVotes(
   return orderedVotes;
 }
 
-export function startNextRound(gameid: string) {
-  advancePhase(gameid, true);
+function startNextRound(gameid: string) {
+  advancePhaseAsync(gameid, true);
 }
 
 function getSelectedOutcome(
@@ -132,148 +141,24 @@ function getSelectedOutcome(
   return getSpeakerTieBreak(currentTurn);
 }
 
-function PredictionDetails() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "factions",
-    "techs",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const techs = gameData.techs;
-
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
-  const revealedAgenda = getActiveAgenda(currentTurn);
-
-  const agendaName =
-    revealedAgenda === "Covert Legislation"
-      ? getSelectedSubAgenda(currentTurn)
-      : revealedAgenda;
-
-  const votes = computeVotes((agendas ?? {})[agendaName ?? ""], currentTurn);
-  const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
-    return Math.max(maxVotes, voteCount);
-  }, 0);
-  const selectedTargets = Object.entries(votes)
-    .filter(([_, voteCount]) => {
-      return voteCount === maxVotes;
-    })
-    .map(([target, _]) => {
-      return target;
-    });
-
-  const selectedOutcome = getSelectedOutcome(selectedTargets, currentTurn);
-
-  if (!selectedOutcome) {
-    return null;
-  }
-
-  const riders = getPlayedRiders(currentTurn);
-  let galacticThreat;
-  for (const rider of riders) {
-    if (rider.rider === "Galactic Threat") {
-      galacticThreat = rider;
-    }
-  }
-  if (!galacticThreat) {
-    return null;
-  }
-
-  if (selectedOutcome !== galacticThreat.outcome) {
-    return null;
-  }
-
-  const techOptions = new Set<string>();
-
-  const factionVotes = getAllVotes(currentTurn);
-
-  factionVotes.forEach((voteEvent) => {
-    if (voteEvent.faction === "Nekro Virus") {
-      return;
-    }
-    if (
-      !voteEvent.target ||
-      !voteEvent.votes ||
-      voteEvent.target !== selectedOutcome
-    ) {
-      return;
-    }
-
-    const factionTechs = (factions ?? {})[voteEvent.faction]?.techs ?? {};
-    Object.keys(factionTechs).forEach((techName) => {
-      techOptions.add(techName);
-    });
-  });
-
-  const nekroTechs = (factions ?? {})["Nekro Virus"]?.techs ?? {};
-  Object.keys(nekroTechs).forEach((techName) => {
-    techOptions.delete(techName);
-  });
-
-  if (techOptions.size === 0) {
-    return null;
-  }
-
-  const availableTechs = Array.from(techOptions).map(
-    (techName) => (techs ?? {})[techName] as Tech
-  );
-
-  const gainedTech = getResearchedTechs(currentTurn, "Nekro Virus")[0];
-
-  if (gainedTech) {
-    return (
-      <Selector
-        hoverMenuLabel="error"
-        autoSelect={false}
-        options={["1", "2"]}
-        toggleItem={() => {
-          if (!gameid) {
-            return;
-          }
-          addTech(gameid, "Nekro Virus", gainedTech);
-        }}
-        selectedItem={gainedTech}
-        selectedLabel="Galactic Threat"
-      />
-    );
-  }
-
-  return (
-    <TechSelectHoverMenu
-      factionName={"Nekro Virus"}
-      techs={availableTechs}
-      selectTech={(techName) => {
-        if (!gameid) {
-          return;
-        }
-        addTech(gameid, "Nekro Virus", techName.name);
-      }}
-      label="Galactic Threat"
-    />
-  );
-}
-
 function canScoreObjective(
-  factionName: string,
-  objectiveName: string,
-  objectives: Record<string, Objective>,
+  factionId: FactionId,
+  objectiveId: ObjectiveId,
+  objectives: Partial<Record<ObjectiveId, Objective>>,
   currentTurn: ActionLogEntry[]
 ) {
-  const scored = getScoredObjectives(currentTurn, factionName);
-  if (scored.includes(objectiveName)) {
+  const scored = getScoredObjectives(currentTurn, factionId);
+  if (scored.includes(objectiveId)) {
     return true;
   }
-  const objective = objectives[objectiveName];
+  const objective = objectives[objectiveId];
   if (!objective) {
     return false;
   }
   if (objective.type === "SECRET" && (objective.scorers ?? []).length > 0) {
     return false;
   }
-  if ((objective.scorers ?? []).includes(factionName)) {
+  if ((objective.scorers ?? []).includes(factionId)) {
     return false;
   }
   return true;
@@ -282,40 +167,33 @@ function canScoreObjective(
 function AgendaDetails() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "factions",
-    "objectives",
-    "planets",
-    "relics",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const planets = gameData.planets;
-  const relics = gameData.relics;
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
+  const relics = useContext(RelicContext);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  function addRelic(relicName: string, factionName: string) {
+  function addRelic(relicId: RelicId, factionId: FactionId) {
     if (!gameid) {
       return;
     }
-    gainRelic(gameid, factionName, relicName);
+    gainRelicAsync(gameid, factionId, relicId);
   }
-  function removeRelic(relicName: string, factionName: string) {
+  function removeRelic(relicId: RelicId, factionId: FactionId) {
     if (!gameid) {
       return;
     }
-    loseRelic(gameid, factionName, relicName);
+    loseRelicAsync(gameid, factionId, relicId);
   }
 
-  let agendaName = getActiveAgenda(currentTurn);
-  if (agendaName === "Covert Legislation") {
-    agendaName = getSelectedSubAgenda(currentTurn);
+  let agendaId = getActiveAgenda(currentTurn);
+  if (agendaId === "Covert Legislation") {
+    agendaId = getSelectedSubAgenda(currentTurn);
   }
 
-  const agenda = (agendas ?? {})[agendaName ?? ""];
+  const agenda = agendaId ? (agendas ?? {})[agendaId] : undefined;
 
   const votes = computeVotes(agenda, currentTurn);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
@@ -336,10 +214,10 @@ function AgendaDetails() {
   }
 
   let driveSection = null;
-  let driveTheDebate: string | undefined;
+  let driveTheDebate: FactionId | undefined;
   switch (agenda?.elect) {
     case "Player": {
-      driveTheDebate = selectedOutcome;
+      driveTheDebate = selectedOutcome as FactionId;
       break;
     }
     case "Cultural Planet":
@@ -347,7 +225,7 @@ function AgendaDetails() {
     case "Planet":
     case "Industrial Planet":
     case "Non-Home Planet Other Than Mecatol Rex": {
-      const electedPlanet = (planets ?? {})[selectedOutcome];
+      const electedPlanet = (planets ?? {})[selectedOutcome as PlanetId];
       if (!electedPlanet || !electedPlanet.owner) {
         break;
       }
@@ -356,18 +234,18 @@ function AgendaDetails() {
     }
   }
 
-  function addObjective(factionName: string, toScore: string) {
+  function addObjective(factionId: FactionId, toScore: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    scoreObjective(gameid, factionName, toScore);
+    scoreObjectiveAsync(gameid, factionId, toScore);
   }
 
-  function undoObjective(factionName: string, toRemove: string) {
+  function undoObjective(factionId: FactionId, toRemove: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    unscoreObjective(gameid, factionName, toRemove);
+    unscoreObjectiveAsync(gameid, factionId, toRemove);
   }
 
   const driveObj = (objectives ?? {})["Drive the Debate"];
@@ -392,9 +270,9 @@ function AgendaDetails() {
         >
           Drive the Debate:{" "}
           <FactionCircle
-            blur={true}
+            blur
             borderColor={getFactionColor((factions ?? {})[driveTheDebate])}
-            factionName={driveTheDebate}
+            factionId={driveTheDebate}
             onClick={() => {
               if (!gameid || !driveTheDebate) {
                 return;
@@ -447,7 +325,7 @@ function AgendaDetails() {
   }
 
   let agendaSelection = null;
-  switch (agendaName) {
+  switch (agendaId) {
     case "Incentive Program": {
       const type = selectedOutcome === "For" ? "STAGE ONE" : "STAGE TWO";
       const availableObjectives = Object.values(objectives ?? {}).filter(
@@ -460,9 +338,9 @@ function AgendaDetails() {
           hoverMenuLabel={`Reveal Stage ${
             type === "STAGE ONE" ? "I" : "II"
           } Objective`}
-          options={availableObjectives.map((objective) => objective.name)}
-          renderItem={(objectiveName) => {
-            const objective = (objectives ?? {})[objectiveName];
+          options={availableObjectives.map((objective) => objective.id)}
+          renderItem={(objectiveId) => {
+            const objective = (objectives ?? {})[objectiveId];
             if (!objective || !gameid) {
               return null;
             }
@@ -474,21 +352,23 @@ function AgendaDetails() {
               >
                 <ObjectiveRow
                   objective={objective}
-                  removeObjective={() => hideObjective(gameid, objectiveName)}
+                  removeObjective={() =>
+                    hideObjectiveAsync(gameid, objectiveId)
+                  }
                   hideScorers={true}
                 />
               </LabeledDiv>
             );
           }}
           selectedItem={getRevealedObjectives(currentTurn)[0]}
-          toggleItem={(objectiveName, add) => {
+          toggleItem={(objectiveId, add) => {
             if (!gameid) {
               return;
             }
             if (add) {
-              revealObjective(gameid, objectiveName);
+              revealObjectiveAsync(gameid, objectiveId);
             } else {
-              hideObjective(gameid, objectiveName);
+              hideObjectiveAsync(gameid, objectiveId);
             }
           }}
         />
@@ -496,22 +376,19 @@ function AgendaDetails() {
       break;
     }
     case "Colonial Redistribution": {
-      const minVPs = Object.keys(factions ?? {}).reduce(
-        (minVal, factionName) => {
-          return Math.min(
-            minVal,
-            computeVPs(factions ?? {}, factionName, objectives ?? {})
-          );
-        },
-        Number.MAX_SAFE_INTEGER
-      );
-      const availableFactions = Object.keys(factions ?? {}).filter(
-        (factionName) => {
+      const minVPs = Object.values(factions ?? {}).reduce((minVal, faction) => {
+        return Math.min(
+          minVal,
+          computeVPs(factions ?? {}, faction.id, objectives ?? {})
+        );
+      }, Number.MAX_SAFE_INTEGER);
+      const availableFactions = Object.values(factions ?? {})
+        .filter((faction) => {
           return (
-            computeVPs(factions ?? {}, factionName, objectives ?? {}) === minVPs
+            computeVPs(factions ?? {}, faction.id, objectives ?? {}) === minVPs
           );
-        }
-      );
+        })
+        .map((faction) => faction.id);
       const selectedFaction = getNewOwner(currentTurn, selectedOutcome);
       agendaSelection = (
         <Selector
@@ -519,14 +396,18 @@ function AgendaDetails() {
           options={availableFactions}
           selectedLabel="Faction Gaining Control of Planet"
           selectedItem={selectedFaction}
-          toggleItem={(factionName, add) => {
+          toggleItem={(factionId, add) => {
             if (!gameid) {
               return;
             }
             if (add) {
-              claimPlanet(gameid, factionName, selectedOutcome);
+              claimPlanetAsync(gameid, factionId, selectedOutcome as PlanetId);
             } else {
-              unclaimPlanet(gameid, factionName, selectedOutcome);
+              unclaimPlanetAsync(
+                gameid,
+                factionId,
+                selectedOutcome as PlanetId
+              );
             }
           }}
         />
@@ -536,13 +417,13 @@ function AgendaDetails() {
     case "Minister of Antiques": {
       const unownedRelics = Object.values(relics ?? {})
         .filter((relic) => !relic.owner)
-        .map((relic) => relic.name);
+        .map((relic) => relic.id);
       agendaSelection = (
         <Selector
           hoverMenuLabel="Gain Relic"
           options={unownedRelics}
-          renderItem={(itemName) => {
-            const relic = (relics ?? {})[itemName];
+          renderItem={(itemId) => {
+            const relic = (relics ?? {})[itemId];
             if (!relic) {
               return null;
             }
@@ -550,9 +431,9 @@ function AgendaDetails() {
               <LabeledDiv label="Gained Relic">
                 <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
                   <SelectableRow
-                    itemName={relic.name}
+                    itemId={relic.id}
                     removeItem={() => {
-                      removeRelic(relic.name, selectedOutcome);
+                      removeRelic(relic.id, selectedOutcome as FactionId);
                     }}
                   >
                     <InfoRow
@@ -562,19 +443,17 @@ function AgendaDetails() {
                       {relic.name}
                     </InfoRow>
                   </SelectableRow>
-                  {relic.name === "Shard of the Throne" ? (
-                    <div>+1 VP</div>
-                  ) : null}
+                  {relic.id === "Shard of the Throne" ? <div>+1 VP</div> : null}
                 </div>
               </LabeledDiv>
             );
           }}
           selectedItem={getGainedRelic(currentTurn)}
-          toggleItem={(relicName, add) => {
+          toggleItem={(relicId, add) => {
             if (add) {
-              addRelic(relicName, selectedOutcome);
+              addRelic(relicId, selectedOutcome as FactionId);
             } else {
-              removeRelic(relicName, selectedOutcome);
+              removeRelic(relicId, selectedOutcome as FactionId);
             }
           }}
         />
@@ -597,25 +476,16 @@ function AgendaDetails() {
 function AgendaSteps() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "factions",
-    "objectives",
-    "options",
-    "planets",
-    "state",
-    "strategycards",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const options = gameData.options;
-  const planets = gameData.planets;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const planets = useContext(PlanetContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   let currentAgenda: Agenda | undefined;
   const agendaNum = state?.agendaNum ?? 1;
@@ -635,124 +505,6 @@ function AgendaSteps() {
     .map(([target, _]) => {
       return target;
     });
-  const isTie = selectedTargets.length !== 1;
-
-  // function resolveAgendaOutcome(agendaName: string, target: string) {
-  //   if (!gameid) {
-  //     return;
-  //   }
-  //   switch (agendaName) {
-  //     case "Classified Document Leaks": {
-  //       changeObjectiveType(gameid, target, "STAGE ONE");
-  //       break;
-  //     }
-  //     case "Core Mining":
-  //     case "Demilitarized Zone":
-  //     case "Research Team: Biotic":
-  //     case "Research Team: Cybernetic":
-  //     case "Research Team: Propulsion":
-  //     case "Research Team: Warfare":
-  //     case "Senate Sanctuary":
-  //     case "Terraforming Initiative": {
-  //       addAttachment(gameid, target, agendaName);
-  //       break;
-  //     }
-  //     case "Holy Planet of Ixth":
-  //       addAttachment(gameid, target, agendaName);
-  //       const planetOwner = (planets ?? {})[target]?.owner;
-  //       if (planetOwner) {
-  //         scoreObjective(gameid, planetOwner, "Holy Planet of Ixth");
-  //       }
-  //       break;
-  //     case "Shard of the Throne":
-  //     case "The Crown of Emphidia":
-  //     case "Political Censure": {
-  //       scoreObjective(gameid, target, agendaName);
-  //       break;
-  //     }
-  //     case "Mutiny": {
-  //       const forFactions = Object.entries(subState.factions ?? {})
-  //         .filter(([_, faction]) => {
-  //           return (faction.votes ?? 0) > 0 && faction.target === "For";
-  //         })
-  //         .map(([factionName, _]) => factionName);
-  //       if (target === "For") {
-  //         changeObjectivePoints(gameid, "Mutiny", 1);
-  //       } else {
-  //         changeObjectivePoints(gameid, "Mutiny", -1);
-  //       }
-  //       for (const factionName of forFactions) {
-  //         scoreObjective(gameid, factionName, "Mutiny");
-  //       }
-  //       break;
-  //     }
-  //     case "Seed of an Empire": {
-  //       let targetVPs = 0;
-  //       if (target === "For") {
-  //         targetVPs = Object.keys(factions ?? {}).reduce(
-  //           (currentMax, factionName) => {
-  //             return Math.max(
-  //               currentMax,
-  //               computeVPs(factions ?? {}, factionName, objectives ?? {})
-  //             );
-  //           },
-  //           Number.MIN_SAFE_INTEGER
-  //         );
-  //       } else {
-  //         targetVPs = Object.keys(factions ?? {}).reduce(
-  //           (currentMin, factionName) => {
-  //             return Math.min(
-  //               currentMin,
-  //               computeVPs(factions ?? {}, factionName, objectives ?? {})
-  //             );
-  //           },
-  //           Number.MAX_SAFE_INTEGER
-  //         );
-  //       }
-  //       const forFactions = Object.keys(factions ?? {}).filter(
-  //         (factionName) => {
-  //           return (
-  //             computeVPs(factions ?? {}, factionName, objectives ?? {}) ===
-  //             targetVPs
-  //           );
-  //         }
-  //       );
-  //       for (const factionName of forFactions) {
-  //         scoreObjective(gameid, factionName, "Seed of an Empire");
-  //       }
-  //       break;
-  //     }
-  //     case "Colonial Redistribution": {
-  //       // TODO: Give planet to lowest VP player
-  //       break;
-  //     }
-  //     case "Judicial Abolishment": {
-  //       repealAgenda(gameid, (agendas ?? {})[target]);
-  //       break;
-  //     }
-  //     case "New Constitution": {
-  //       const toRepeal = Object.values(agendas ?? {}).filter((agenda) => {
-  //         return agenda.type === "LAW" && agenda.passed;
-  //       });
-  //       for (const agenda of toRepeal) {
-  //         repealAgenda(gameid, agenda);
-  //       }
-  //       break;
-  //     }
-  //     case "Public Execution": {
-  //       if (state?.speaker === target) {
-  //         const nextPlayer = Object.values(factions ?? {}).find(
-  //           (faction) => faction.order === 2
-  //         );
-  //         if (!nextPlayer) {
-  //           break;
-  //         }
-  //         setSpeaker(gameid, nextPlayer.name);
-  //       }
-  //       break;
-  //     }
-  //   }
-  // }
 
   async function completeAgenda() {
     if (!gameid || !currentAgenda) {
@@ -763,33 +515,33 @@ function AgendaSteps() {
       return;
     }
 
-    resolveAgenda(gameid, currentAgenda.name, target);
+    resolveAgendaAsync(gameid, currentAgenda.id, target);
   }
 
-  function selectAgenda(agendaName: string) {
+  function selectAgenda(agendaId: AgendaId) {
     if (!gameid) {
       return;
     }
-    revealAgenda(gameid, agendaName);
+    revealAgendaAsync(gameid, agendaId);
   }
-  function hideAgendaLocal(agendaName?: string, veto?: boolean) {
-    if (!gameid || !agendaName) {
+  function hideAgendaLocal(agendaId?: AgendaId, veto?: boolean) {
+    if (!gameid || !agendaId) {
       return;
     }
-    hideAgenda(gameid, agendaName, veto);
+    hideAgendaAsync(gameid, agendaId, veto);
   }
 
-  function selectSubAgendaLocal(agendaName: string | null) {
+  function selectSubAgendaLocal(agendaId: AgendaId | null) {
     if (!gameid) {
       return;
     }
-    selectSubAgenda(gameid, agendaName ?? "None");
+    selectSubAgendaAsync(gameid, agendaId ?? "None");
   }
   function selectEligibleOutcome(outcome: OutcomeType | "None") {
     if (!gameid) {
       return;
     }
-    selectEligibleOutcomes(gameid, outcome);
+    selectEligibleOutcomesAsync(gameid, outcome);
   }
 
   const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
@@ -864,11 +616,14 @@ function AgendaSteps() {
     (agenda) => agenda.elect === eligibleOutcomes
   );
 
-  const subAgenda = (agendas ?? {})[getSelectedSubAgenda(currentTurn) ?? ""];
+  const selectedSubAgenda = getSelectedSubAgenda(currentTurn);
+  const subAgenda = selectedSubAgenda
+    ? (agendas ?? {})[selectedSubAgenda]
+    : undefined;
 
   const speaker = (factions ?? {})[state?.speaker ?? ""];
 
-  const vetoText = !(factions ?? {})["Xxcha Kingom"]
+  const vetoText = !(factions ?? {})["Xxcha Kingdom"]
     ? "Veto"
     : "Veto/Quash/Political Favor";
 
@@ -884,7 +639,7 @@ function AgendaSteps() {
       return false;
     }
     const localAgenda =
-      currentAgenda.name === "Covert Legislation" ? subAgenda : currentAgenda;
+      currentAgenda.id === "Covert Legislation" ? subAgenda : currentAgenda;
     if (!localAgenda) {
       return false;
     }
@@ -930,10 +685,13 @@ function AgendaSteps() {
     return null;
   }
 
-  const ancientBurialSites = getActionCardTargets(
+  let ancientBurialSites = getActionCardTargets(
     currentTurn,
     "Ancient Burial Sites"
   )[0];
+  if (ancientBurialSites === "None") {
+    ancientBurialSites = undefined;
+  }
   const politicalSecrets = getPromissoryTargets(
     currentTurn,
     "Political Secret"
@@ -975,31 +733,47 @@ function AgendaSteps() {
           }}
         >
           {(!currentAgenda && agendaNum === 1) || ancientBurialSites ? (
-            <LabeledDiv
-              label="Start of Agenda Phase"
-              style={{ paddingTop: responsivePixels(12) }}
+            <ClientOnlyHoverMenu
+              label="Start of Agenda Phase Actions"
+              style={{ width: "100%" }}
             >
-              <Selector
-                hoverMenuLabel="Ancient Burial Sites"
-                selectedLabel="Cultural Planets Exhausted"
-                options={Object.keys(factions ?? {})}
-                toggleItem={(factionName, add) => {
-                  if (!gameid) {
-                    return;
-                  }
-                  if (add) {
-                    playActionCard(gameid, "Ancient Burial Sites", factionName);
-                  } else {
-                    unplayActionCard(
-                      gameid,
-                      "Ancient Burial Sites",
-                      factionName
-                    );
-                  }
+              <div
+                className="flexColumn"
+                style={{
+                  width: "100%",
+                  alignItems: "flex-start",
+                  padding: responsivePixels(8),
+                  paddingTop: 0,
                 }}
-                selectedItem={ancientBurialSites}
-              />
-            </LabeledDiv>
+              >
+                <Selector
+                  hoverMenuLabel="Ancient Burial Sites"
+                  selectedLabel="Cultural Planets Exhausted"
+                  options={Object.values(factions ?? {}).map(
+                    (faction) => faction.id
+                  )}
+                  toggleItem={(factionId, add) => {
+                    if (!gameid) {
+                      return;
+                    }
+                    if (add) {
+                      playActionCardAsync(
+                        gameid,
+                        "Ancient Burial Sites",
+                        factionId
+                      );
+                    } else {
+                      unplayActionCardAsync(
+                        gameid,
+                        "Ancient Burial Sites",
+                        factionId
+                      );
+                    }
+                  }}
+                  selectedItem={ancientBurialSites}
+                />
+              </div>
+            </ClientOnlyHoverMenu>
           ) : null}
           <div
             className="flexRow mediumFont"
@@ -1027,13 +801,13 @@ function AgendaSteps() {
                       {orderedAgendas.map((agenda) => {
                         return (
                           <button
-                            key={agenda.name}
+                            key={agenda.id}
                             className={agenda.resolved ? "faded" : ""}
                             style={{
                               fontSize: responsivePixels(14),
                               writingMode: "horizontal-tb",
                             }}
-                            onClick={() => selectAgenda(agenda.name)}
+                            onClick={() => selectAgenda(agenda.id)}
                           >
                             {agenda.name}
                           </button>
@@ -1047,9 +821,9 @@ function AgendaSteps() {
               <LabeledDiv label={label}>
                 <AgendaRow
                   agenda={currentAgenda}
-                  removeAgenda={() => hideAgendaLocal(currentAgenda?.name)}
+                  removeAgenda={() => hideAgendaLocal(currentAgenda?.id)}
                 />
-                {currentAgenda.name === "Covert Legislation" ? (
+                {currentAgenda.id === "Covert Legislation" ? (
                   <Selector
                     hoverMenuLabel="Reveal Eligible Outcomes"
                     selectedLabel="Eligible Outcomes"
@@ -1077,16 +851,18 @@ function AgendaSteps() {
                       }}
                     >
                       {orderedRiders.map((rider) => {
-                        const faction = (factions ?? {})[rider.faction ?? ""];
-                        let possibleFactions = Object.keys(
-                          factions ?? {}
-                        ).filter((faction) => {
-                          const secrets = getPromissoryTargets(
-                            currentTurn,
-                            "Political Secret"
-                          );
-                          return !secrets.includes(faction);
-                        });
+                        const faction = rider.faction
+                          ? (factions ?? {})[rider.faction]
+                          : undefined;
+                        let possibleFactions = Object.values(factions ?? {})
+                          .filter((faction) => {
+                            const secrets = getPromissoryTargets(
+                              currentTurn,
+                              "Political Secret"
+                            );
+                            return !secrets.includes(faction.id);
+                          })
+                          .map((faction) => faction.id);
                         if (rider.rider === "Galactic Threat") {
                           possibleFactions = ["Nekro Virus"];
                         }
@@ -1098,12 +874,12 @@ function AgendaSteps() {
                         return (
                           <SelectableRow
                             key={rider.rider}
-                            itemName={rider.rider}
+                            itemId={rider.rider}
                             removeItem={() => {
                               if (!gameid) {
                                 return;
                               }
-                              unplayRider(gameid, rider.rider);
+                              unplayRiderAsync(gameid, rider.rider);
                             }}
                           >
                             <LabeledDiv
@@ -1113,22 +889,25 @@ function AgendaSteps() {
                             >
                               <div className="flexRow">
                                 <FactionSelectRadialMenu
-                                  allowNone={possibleFactions.length > 1}
-                                  selectedFaction={rider.faction}
-                                  options={possibleFactions}
-                                  onSelect={(factionName) => {
+                                  selectedFaction={
+                                    rider.faction as FactionId | undefined
+                                  }
+                                  factions={possibleFactions}
+                                  onSelect={(factionId) => {
                                     if (!gameid) {
                                       return;
                                     }
-                                    playRider(
+                                    playRiderAsync(
                                       gameid,
                                       rider.rider,
-                                      factionName,
+                                      factionId,
                                       rider.outcome
                                     );
                                   }}
                                   borderColor={getFactionColor(
-                                    factions[rider.faction ?? ""]
+                                    rider.faction
+                                      ? factions[rider.faction]
+                                      : undefined
                                   )}
                                 />
                                 <Selector
@@ -1137,19 +916,19 @@ function AgendaSteps() {
                                   options={allTargets.filter(
                                     (target) => target !== "Abstain"
                                   )}
-                                  toggleItem={(itemName, add) => {
+                                  toggleItem={(itemId, add) => {
                                     if (!gameid) {
                                       return;
                                     }
                                     if (add) {
-                                      playRider(
+                                      playRiderAsync(
                                         gameid,
                                         rider.rider,
                                         rider.faction,
-                                        itemName as OutcomeType
+                                        itemId as OutcomeType
                                       );
                                     } else {
-                                      playRider(
+                                      playRiderAsync(
                                         gameid,
                                         rider.rider,
                                         rider.faction,
@@ -1173,100 +952,113 @@ function AgendaSteps() {
           !haveVotesBeenCast() &&
           !getSelectedOutcome(selectedTargets, currentTurn) ? (
             <>
-              <div className="flexRow">
-                <button
-                  onClick={() => hideAgendaLocal(currentAgenda?.name, true)}
+              <div className="flexRow"></div>
+              <ClientOnlyHoverMenu label="When an Agenda is Revealed">
+                <div
+                  className="flexColumn"
+                  style={{
+                    padding: responsivePixels(8),
+                    paddingTop: 0,
+                    alignItems: "flex-start",
+                  }}
                 >
-                  {vetoText}
-                </button>
-              </div>
-              <LabeledDiv label="Political Secret">
-                <div className="flexRow" style={{ width: "100%" }}>
-                  {votingOrder.map((faction) => {
-                    const politicalSecret = politicalSecrets.includes(
-                      faction.name
-                    );
-                    return (
-                      <div
-                        key={faction.name}
-                        className="flexRow hiddenButtonParent"
-                        style={{
-                          position: "relative",
-                          width: responsivePixels(32),
-                          height: responsivePixels(32),
-                        }}
-                      >
-                        <FullFactionSymbol faction={faction.name} />
-                        <div
-                          className="flexRow"
-                          style={{
-                            position: "absolute",
-                            backgroundColor: "#222",
-                            borderRadius: "100%",
-                            marginLeft: "60%",
-                            cursor: "pointer",
-                            marginTop: "60%",
-                            boxShadow: `${responsivePixels(
-                              1
-                            )} ${responsivePixels(1)} ${responsivePixels(
-                              4
-                            )} black`,
-                            width: responsivePixels(20),
-                            height: responsivePixels(20),
-                            color: politicalSecret ? "green" : "red",
-                          }}
-                          onClick={() => {
-                            if (!gameid) {
-                              return;
-                            }
-                            if (politicalSecret) {
-                              unplayPromissoryNote(
-                                gameid,
-                                "Political Secret",
-                                faction.name
-                              );
-                            } else {
-                              playPromissoryNote(
-                                gameid,
-                                "Political Secret",
-                                faction.name
-                              );
-                            }
-                          }}
-                        >
-                          {politicalSecret ? (
-                            <div
-                              className="symbol"
-                              style={{
-                                fontSize: responsivePixels(18),
-                                lineHeight: responsivePixels(18),
-                              }}
-                            >
-                              ✓
-                            </div>
-                          ) : (
+                  <button
+                    onClick={() => hideAgendaLocal(currentAgenda?.id, true)}
+                  >
+                    {vetoText}
+                  </button>
+                  <LabeledDiv label="Political Secret">
+                    <div className="flexRow" style={{ width: "100%" }}>
+                      {votingOrder.map((faction) => {
+                        const politicalSecret = politicalSecrets.includes(
+                          faction.id
+                        );
+                        return (
+                          <div
+                            key={faction.id}
+                            className="flexRow hiddenButtonParent"
+                            style={{
+                              position: "relative",
+                              width: responsivePixels(32),
+                              height: responsivePixels(32),
+                            }}
+                          >
+                            <FactionIcon factionId={faction.id} size="100%" />
                             <div
                               className="flexRow"
                               style={{
-                                width: "80%",
-                                height: "80%",
+                                position: "absolute",
+                                backgroundColor: "#222",
+                                borderRadius: "100%",
+                                marginLeft: "60%",
+                                cursor: "pointer",
+                                marginTop: "60%",
+                                boxShadow: `${responsivePixels(
+                                  1
+                                )} ${responsivePixels(1)} ${responsivePixels(
+                                  4
+                                )} black`,
+                                width: responsivePixels(20),
+                                height: responsivePixels(20),
+                                color: politicalSecret ? "green" : "red",
+                              }}
+                              onClick={() => {
+                                if (!gameid) {
+                                  return;
+                                }
+                                if (politicalSecret) {
+                                  unplayPromissoryNoteAsync(
+                                    gameid,
+                                    "Political Secret",
+                                    faction.id
+                                  );
+                                } else {
+                                  playPromissoryNoteAsync(
+                                    gameid,
+                                    "Political Secret",
+                                    faction.id
+                                  );
+                                }
                               }}
                             >
-                              <SymbolX color="red" />
+                              {politicalSecret ? (
+                                <div
+                                  className="symbol"
+                                  style={{
+                                    fontSize: responsivePixels(18),
+                                    lineHeight: responsivePixels(18),
+                                  }}
+                                >
+                                  ✓
+                                </div>
+                              ) : (
+                                <div
+                                  className="flexRow"
+                                  style={{
+                                    width: "80%",
+                                    height: "80%",
+                                  }}
+                                >
+                                  <SymbolX color="red" />
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </LabeledDiv>
                 </div>
-              </LabeledDiv>
+              </ClientOnlyHoverMenu>
             </>
           ) : null}
           {currentAgenda &&
           !haveVotesBeenCast() &&
           !getSelectedOutcome(selectedTargets, currentTurn) ? (
-            <ClientOnlyHoverMenu label="After an Agenda is Revealed">
+            <ClientOnlyHoverMenu
+              label="After an Agenda is Revealed"
+              style={{ width: "100%" }}
+            >
               <div
                 className="flexColumn"
                 style={{
@@ -1282,9 +1074,9 @@ function AgendaSteps() {
                       return;
                     }
                     if (electionHacked) {
-                      unplayActionCard(gameid, "Hack Election", "None");
+                      unplayActionCardAsync(gameid, "Hack Election", "None");
                     } else {
-                      playActionCard(gameid, "Hack Election", "None");
+                      playActionCardAsync(gameid, "Hack Election", "None");
                     }
                   }}
                 >
@@ -1295,38 +1087,40 @@ function AgendaSteps() {
                     hoverMenuLabel="Predict Outcome"
                     options={remainingRiders}
                     selectedItem={undefined}
-                    toggleItem={(itemName, add) => {
+                    toggleItem={(itemId, add) => {
                       if (!gameid) {
                         return;
                       }
-                      let factionName =
-                        itemName === "Galactic Threat"
+                      const factionId =
+                        itemId === "Galactic Threat"
                           ? "Nekro Virus"
                           : undefined;
-                      playRider(gameid, itemName, factionName, undefined);
+                      playRiderAsync(gameid, itemId, factionId, undefined);
                     }}
                   />
                 ) : null}
                 <Selector
                   hoverMenuLabel="Assassinate Representative"
                   selectedLabel="Assassinated Representative"
-                  options={Object.keys(factions ?? {})}
+                  options={Object.values(factions ?? {}).map(
+                    (faction) => faction.id
+                  )}
                   selectedItem={assassinatedRep}
-                  toggleItem={(itemName, add) => {
+                  toggleItem={(factionId, add) => {
                     if (!gameid) {
                       return;
                     }
                     if (add) {
-                      playActionCard(
+                      playActionCardAsync(
                         gameid,
                         "Assassinate Representative",
-                        itemName
+                        factionId
                       );
                     } else {
-                      unplayActionCard(
+                      unplayActionCardAsync(
                         gameid,
                         "Assassinate Representative",
-                        itemName
+                        factionId
                       );
                     }
                   }}
@@ -1360,13 +1154,13 @@ function AgendaSteps() {
                 </div>
               ) : null}
               {getSelectedOutcome(selectedTargets, currentTurn) ? (
-                currentAgenda && currentAgenda.name === "Covert Legislation" ? (
+                currentAgenda && currentAgenda.id === "Covert Legislation" ? (
                   <Selector
                     hoverMenuLabel="Covert Agenda"
-                    options={possibleSubAgendas.map((agenda) => agenda.name)}
-                    selectedItem={subAgenda?.name}
-                    renderItem={(agendaName) => {
-                      const agenda = (agendas ?? {})[agendaName];
+                    options={possibleSubAgendas.map((agenda) => agenda.id)}
+                    selectedItem={subAgenda?.id}
+                    renderItem={(agendaId) => {
+                      const agenda = (agendas ?? {})[agendaId];
                       if (!agenda) {
                         return null;
                       }
@@ -1379,9 +1173,9 @@ function AgendaSteps() {
                         </LabeledDiv>
                       );
                     }}
-                    toggleItem={(agendaName, add) => {
+                    toggleItem={(agendaId, add) => {
                       if (add) {
-                        selectSubAgendaLocal(agendaName);
+                        selectSubAgendaLocal(agendaId);
                       } else {
                         selectSubAgendaLocal(null);
                       }
@@ -1468,21 +1262,19 @@ function AgendaSteps() {
 function DictatePolicy({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "factions",
-    "objectives",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const numLawsInPlay = Object.values(agendas ?? {}).filter((agenda) => {
     return agenda.passed && agenda.type === "LAW";
   }).length;
-  const currentDictators = getObjectiveScorers(currentTurn, "Dictate Policy");
+  const currentDictators = getObjectiveScorers(
+    currentTurn,
+    "Dictate Policy"
+  ) as FactionId[];
   const dictatePolicy = (objectives ?? {})["Dictate Policy"];
   const possibleDictators = new Set(currentDictators);
   if (
@@ -1493,9 +1285,9 @@ function DictatePolicy({}) {
       dictatePolicy.type === "STAGE ONE")
   ) {
     const scorers = dictatePolicy.scorers ?? [];
-    for (const factionName of Object.keys(factions ?? {})) {
-      if (!scorers.includes(factionName)) {
-        possibleDictators.add(factionName);
+    for (const faction of Object.values(factions ?? {})) {
+      if (!scorers.includes(faction.id)) {
+        possibleDictators.add(faction.id);
       }
     }
   }
@@ -1519,29 +1311,31 @@ function DictatePolicy({}) {
       <ObjectiveRow objective={dictatePolicy} hideScorers />
       {dictatePolicy.type === "SECRET" ? (
         <FactionSelectRadialMenu
-          onSelect={(factionName, prevFaction) => {
+          onSelect={(factionId, prevFaction) => {
             if (!gameid) {
               return;
             }
             if (prevFaction) {
-              unscoreObjective(gameid, prevFaction, "Dictate Policy");
+              unscoreObjectiveAsync(gameid, prevFaction, "Dictate Policy");
             }
-            if (factionName) {
-              scoreObjective(gameid, factionName, "Dictate Policy");
+            if (factionId) {
+              scoreObjectiveAsync(gameid, factionId, "Dictate Policy");
             }
           }}
           borderColor={getFactionColor(
-            (factions ?? {})[currentDictators[0] ?? ""]
+            currentDictators[0]
+              ? (factions ?? {})[currentDictators[0]]
+              : undefined
           )}
-          options={orderedDictators}
-          selectedFaction={currentDictators[0]}
+          factions={orderedDictators}
+          selectedFaction={currentDictators[0] as FactionId | undefined}
         />
       ) : (
-        orderedDictators.map((factionName) => {
-          const current = hasScoredObjective(factionName, dictatePolicy);
+        orderedDictators.map((factionId) => {
+          const current = hasScoredObjective(factionId, dictatePolicy);
           return (
             <div
-              key={factionName}
+              key={factionId}
               className="flexRow hiddenButtonParent"
               style={{
                 position: "relative",
@@ -1549,7 +1343,7 @@ function DictatePolicy({}) {
                 height: responsivePixels(32),
               }}
             >
-              <FullFactionSymbol faction={factionName} />
+              <FactionIcon factionId={factionId} size="100%" />
               <div
                 className="flexRow"
                 style={{
@@ -1571,9 +1365,9 @@ function DictatePolicy({}) {
                     return;
                   }
                   if (current) {
-                    unscoreObjective(gameid, factionName, "Dictate Policy");
+                    unscoreObjectiveAsync(gameid, factionId, "Dictate Policy");
                   } else {
-                    scoreObjective(gameid, factionName, "Dictate Policy");
+                    scoreObjectiveAsync(gameid, factionId, "Dictate Policy");
                   }
                 }}
               >
@@ -1610,26 +1404,18 @@ function DictatePolicy({}) {
 export default function AgendaPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "factions",
-    "objectives",
-    "planets",
-    "state",
-    "strategycards",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const planets = gameData.planets;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
   if (!agendas || !factions) {
     return null;
   }
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   let currentAgenda: Agenda | undefined;
   const agendaNum = state?.agendaNum ?? 1;
@@ -1672,7 +1458,7 @@ export default function AgendaPhase() {
     if (!gameid) {
       return;
     }
-    speakerTieBreak(gameid, tieBreak ?? "None");
+    speakerTieBreakAsync(gameid, tieBreak ?? "None");
   }
 
   const electionHacked =
@@ -1836,8 +1622,8 @@ export default function AgendaPhase() {
             {votingOrder.map((faction) => {
               return (
                 <VoteCount
-                  key={faction.name}
-                  factionName={faction.name}
+                  key={faction.id}
+                  factionId={faction.id}
                   agenda={localAgenda}
                 />
               );
@@ -1900,7 +1686,7 @@ export default function AgendaPhase() {
               ) : (
                 <LabeledDiv label="Speaker Tie Break">
                   <SelectableRow
-                    itemName={tieBreak}
+                    itemId={tieBreak}
                     removeItem={() => selectSpeakerTieBreak(null)}
                   >
                     {tieBreak}

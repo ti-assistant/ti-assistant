@@ -5,21 +5,21 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { FullFactionSymbol } from "../FactionCard";
 import { SymbolX } from "../icons/svgs";
 import { responsivePixels } from "../util/util";
-import { FactionCircle } from "./FactionCircle";
+import FactionCircle from "./FactionCircle/FactionCircle";
+import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionSelect.module.scss";
 
-export interface FactionSelectProps {
+interface FactionSelectProps {
   allowNone?: boolean;
   direction?: "up" | "down" | "left" | "right";
-  selectedFaction?: string;
-  options: string[];
-  fadedOptions?: string[];
+  selectedFaction?: FactionId;
+  options: FactionId[];
+  fadedOptions?: FactionId[];
   onSelect: (
-    factionName: string | undefined,
-    prevFaction: string | undefined
+    factionId: FactionId | undefined,
+    prevFaction: FactionId | undefined
   ) => void;
   size?: number;
   tag?: ReactNode;
@@ -78,7 +78,7 @@ export function FactionSelectHoverMenu({
     >
       <FactionCircle
         borderColor={borderColor}
-        factionName={selectedFaction}
+        factionId={selectedFaction}
         tag={tag}
         tagBorderColor={tagBorderColor}
         size={size}
@@ -90,7 +90,7 @@ export function FactionSelectHoverMenu({
       >
         {selectedFaction && direction === "left" && allowNone ? (
           <div
-            className={`flexRow ${styles.factionSelect}`}
+            className={`flexRow`}
             style={{
               width: responsivePixels(size - 4),
               height: responsivePixels(size - 4),
@@ -134,7 +134,7 @@ export function FactionSelectHoverMenu({
               }}
             >
               {selectedFaction ? (
-                <FullFactionSymbol faction={selectedFaction} />
+                <FactionIcon factionId={selectedFaction} size="100%" />
               ) : (
                 <SymbolX />
               )}
@@ -157,15 +157,15 @@ export function FactionSelectHoverMenu({
             ) : null}
           </div>
         ) : null}
-        {options.map((factionName) => {
-          if (factionName === selectedFaction) {
+        {options.map((factionId) => {
+          if (factionId === selectedFaction) {
             return null;
           }
           return (
             <div
-              key={factionName}
-              className={`flexRow ${styles.factionSelect} ${
-                fadedOptions.includes(factionName) ? styles.faded : ""
+              key={factionId}
+              className={`flexRow ${styles.oldFactionSelect} ${
+                fadedOptions.includes(factionId) ? styles.faded : ""
               }
             }`}
               style={{
@@ -174,18 +174,10 @@ export function FactionSelectHoverMenu({
               }}
               onClick={() => {
                 closeFn();
-                onSelect(factionName, selectedFaction);
+                onSelect(factionId, selectedFaction);
               }}
             >
-              <div
-                style={{
-                  position: "relative",
-                  width: responsivePixels(size - 10),
-                  height: responsivePixels(size - 10),
-                }}
-              >
-                <FullFactionSymbol faction={factionName} />
-              </div>
+              <FactionIcon factionId={factionId} size={size - 10} />
             </div>
           );
         })}
@@ -235,7 +227,7 @@ export function FactionSelectHoverMenu({
               }}
             >
               {selectedFaction ? (
-                <FullFactionSymbol faction={selectedFaction} />
+                <FactionIcon factionId={selectedFaction} size="100%" />
               ) : (
                 <SymbolX />
               )}
@@ -373,13 +365,13 @@ export function FactionSelectRadialMenu({
                 </div>
               </div>
             ) : null}
-            {options.map((factionName, index) => {
+            {options.map((factionId, index) => {
               return (
                 <div
-                  key={factionName}
+                  key={factionId}
                   className={`flexRow ${styles.factionSelect} ${
-                    fadedOptions.includes(factionName) &&
-                    factionName !== selectedFaction
+                    fadedOptions.includes(factionId) &&
+                    factionId !== selectedFaction
                       ? styles.faded
                       : ""
                   }
@@ -387,8 +379,8 @@ export function FactionSelectRadialMenu({
                   style={
                     {
                       "--opacity":
-                        fadedOptions.includes(factionName) &&
-                        factionName !== selectedFaction
+                        fadedOptions.includes(factionId) &&
+                        factionId !== selectedFaction
                           ? 0.25
                           : 1,
                       position: "absolute",
@@ -399,11 +391,11 @@ export function FactionSelectRadialMenu({
                   }
                   onClick={() => {
                     closeFn();
-                    if (factionName === selectedFaction) {
+                    if (factionId === selectedFaction) {
                       onSelect(undefined, selectedFaction);
                       return;
                     }
-                    onSelect(factionName, selectedFaction);
+                    onSelect(factionId, selectedFaction);
                   }}
                 >
                   <div
@@ -413,10 +405,10 @@ export function FactionSelectRadialMenu({
                       height: responsivePixels(size - 10),
                     }}
                   >
-                    {factionName === selectedFaction ? (
+                    {factionId === selectedFaction ? (
                       <SymbolX />
                     ) : (
-                      <FullFactionSymbol faction={factionName} />
+                      <FactionIcon factionId={factionId} size="100%" />
                     )}
                   </div>
                 </div>
@@ -454,7 +446,7 @@ export function FactionSelectRadialMenu({
                     }}
                   >
                     {selectedFaction ? (
-                      <FullFactionSymbol faction={selectedFaction} />
+                      <FactionIcon factionId={selectedFaction} size="100%" />
                     ) : (
                       <SymbolX />
                     )}
@@ -485,7 +477,7 @@ export function FactionSelectRadialMenu({
       ) : null}
       <FactionCircle
         borderColor={borderColor}
-        factionName={selectedFaction}
+        factionId={selectedFaction}
         tag={tag}
         tagBorderColor={tagBorderColor}
         size={size}

@@ -1,22 +1,5 @@
 import { buildFactions, buildTechs } from "../../data/GameData";
-import { ActionLogAction, Handler } from "../api/data";
 import { hasTech } from "../api/techs";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface AddTechEvent {
-  faction: string;
-  tech: string;
-}
-
-export interface AddTechData {
-  action: "ADD_TECH";
-  event: AddTechEvent;
-}
-
-export interface RemoveTechData {
-  action: "REMOVE_TECH";
-  event: AddTechEvent;
-}
 
 export class AddTechHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: AddTechData) {}

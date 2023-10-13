@@ -1,15 +1,3 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SelectFactionEvent {
-  faction: string;
-}
-
-export interface SelectFactionData {
-  action: "SELECT_FACTION";
-  event: SelectFactionEvent;
-}
-
 export class SelectFactionHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

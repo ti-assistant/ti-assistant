@@ -1,11 +1,16 @@
 import { mutate } from "swr";
 import { buildPlanets } from "../../data/GameData";
 import { ClaimPlanetHandler, UnclaimPlanetHandler } from "../model/claimPlanet";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
-export function claimPlanet(gameId: string, faction: string, planet: string) {
+export function claimPlanet(
+  gameId: string,
+  faction: FactionId,
+  planet: PlanetId
+) {
   const data: GameUpdateData = {
     action: "CLAIM_PLANET",
     event: {
@@ -18,31 +23,38 @@ export function claimPlanet(gameId: string, faction: string, planet: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const planets = buildPlanets(storedGameData);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const planets = buildPlanets(currentData);
         const planet = planets[data.event.planet];
         if (planet && planet.owner) {
           data.event.prevOwner = planet.owner;
         }
 
-        const handler = new ClaimPlanetHandler(storedGameData, data);
+        const handler = new ClaimPlanetHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
   );
 }
 
-export function unclaimPlanet(gameId: string, faction: string, planet: string) {
+export function unclaimPlanet(
+  gameId: string,
+  faction: FactionId,
+  planet: PlanetId
+) {
   const data: GameUpdateData = {
     action: "UNCLAIM_PLANET",
     event: {
@@ -55,18 +67,21 @@ export function unclaimPlanet(gameId: string, faction: string, planet: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new UnclaimPlanetHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new UnclaimPlanetHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

@@ -1,6 +1,3 @@
-import { Resources } from "../../../src/Resources";
-import { BaseAttachment } from "../../../src/util/api/attachments";
-
 export const DISCORDANT_STARS_ATTACHMENTS: Record<
   DiscordantStars.AttachmentId,
   BaseAttachment
@@ -11,7 +8,8 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
   //   attribute: "blue-skip",
   //   expansion: "DISCORDANT STARS",
   //   influence: 0,
-  //   name: "Encryption Key",
+  //   id: "Encryption Key",
+  // name: "Encryption Key",
   //   required: {
   //     home: false,
   //   },
@@ -21,7 +19,8 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
   // "Core Token": {
   //   expansion: "DISCORDANT STARS",
   //   influence: 0,
-  //   name: "Core Token",
+  //   id: "Core Token",
+  // name: "Core Token",
   //   required: {
   //     home: false,
   //   },
@@ -31,7 +30,8 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
   // "Gledge Base": {
   //   expansion: "DISCORDANT STARS",
   //   influence: 0,
-  //   name: "Gledge Base",
+  //   id: "Gledge Base",
+  // name: "Gledge Base",
   //   required: {
   //     home: false,
   //   },
@@ -41,6 +41,7 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
     expansion: "DISCORDANT STARS",
     faction: "Veldyr Sovereignty",
     influence: 1,
+    id: "Branch Office - Broadcast Hub",
     name: "Branch Office - Broadcast Hub",
     required: {
       home: false,
@@ -51,6 +52,7 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
     expansion: "DISCORDANT STARS",
     faction: "Veldyr Sovereignty",
     influence: 1,
+    id: "Branch Office - Tax Haven",
     name: "Branch Office - Tax Haven",
     required: {
       home: false,
@@ -61,6 +63,7 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
     expansion: "DISCORDANT STARS",
     faction: "Veldyr Sovereignty",
     influence: 0,
+    id: "Branch Office - Reserve Bank",
     name: "Branch Office - Reserve Bank",
     required: {
       home: false,
@@ -71,6 +74,7 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
     expansion: "DISCORDANT STARS",
     faction: "Veldyr Sovereignty",
     influence: 0,
+    id: "Branch Office - Orbital Shipyard",
     name: "Branch Office - Orbital Shipyard",
     required: {
       home: false,

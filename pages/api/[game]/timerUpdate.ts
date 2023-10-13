@@ -1,6 +1,5 @@
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
-import { TimerUpdateData } from "../../../src/util/api/timers";
 import { getTimers, getTimersInTransaction } from "../../../server/util/fetch";
 
 export default async function handler(

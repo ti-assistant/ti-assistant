@@ -1,25 +1,4 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
 // Should only be used for non-component promissories
-
-export interface PlayPromissoryNoteEvent {
-  card: string;
-
-  // The player that played the card, or the target of the card.
-  target: string;
-}
-
-export interface PlayPromissoryNoteData {
-  action: "PLAY_PROMISSORY_NOTE";
-  event: PlayPromissoryNoteEvent;
-}
-
-export interface UnplayPromissoryNoteData {
-  action: "UNPLAY_PROMISSORY_NOTE";
-  event: PlayPromissoryNoteEvent;
-}
-
 export class PlayPromissoryNoteHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

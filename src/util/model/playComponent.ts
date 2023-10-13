@@ -1,20 +1,4 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
-
-export interface PlayComponentEvent {
-  name: string;
-}
-
-export interface PlayComponentData {
-  action: "PLAY_COMPONENT";
-  event: PlayComponentEvent;
-}
-
-export interface UnplayComponentData {
-  action: "UNPLAY_COMPONENT";
-  event: PlayComponentEvent;
-}
 
 export class PlayComponentHandler implements Handler {
   constructor(

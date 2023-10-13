@@ -1,60 +1,43 @@
 import { useRouter } from "next/router";
-import { CSSProperties, useState } from "react";
-import { useDrop } from "react-dnd";
-import { WrappedFactionIcon } from "../FactionCard";
-import { PlanetSummary } from "../FactionSummary";
-import { PlanetRow } from "../PlanetRow";
-import { useGameData } from "../data/GameData";
-import { claimPlanet, unclaimPlanet } from "../util/api/claimPlanet";
-import { Faction } from "../util/api/factions";
+import { CSSProperties, useContext, useState } from "react";
+import {
+  AttachmentContext,
+  FactionContext,
+  PlanetContext,
+} from "../context/Context";
+import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
 import { getFactionColor, getFactionName } from "../util/factions";
+import {
+  applyAllPlanetAttachments,
+  filterToClaimedPlanets,
+} from "../util/planets";
 import { responsivePixels } from "../util/util";
+import FactionIcon from "./FactionIcon/FactionIcon";
 import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
-import {
-  filterToClaimedPlanets,
-  applyAllPlanetAttachments,
-} from "../util/planets";
+import PlanetRow from "./PlanetRow/PlanetRow";
+import PlanetSummary from "./PlanetSummary/PlanetSummary";
 
 interface ExtendedCSS extends CSSProperties {
   "--color": string;
 }
 
 function PlanetSection({
-  factionName,
+  factionId,
   openedByDefault,
 }: {
-  factionName: string;
+  factionId: FactionId;
   openedByDefault: boolean;
 }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["attachments", "factions", "planets"]);
-  const attachments = gameData.attachments ?? {};
-  const factions = gameData.factions;
-  const planets = gameData.planets;
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const planets = useContext(PlanetContext);
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
 
-  const [{ isOver }, dropRef] = useDrop(
-    () => ({
-      accept: "PLANET",
-      drop: (item: { id: string }) => {
-        const planet = planets[item.id];
-        if (!gameid || !planet || planet.owner === factionName) {
-          return;
-        }
-
-        claimPlanet(gameid, factionName, planet.name);
-      },
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver(),
-      }),
-    }),
-    [planets]
-  );
-
-  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+  const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
@@ -63,7 +46,7 @@ function PlanetSection({
       className={styles.planetColumn}
       style={
         {
-          "--color": getFactionColor(factions[factionName]),
+          "--color": getFactionColor(factions[factionId]),
         } as ExtendedCSS
       }
     >
@@ -71,9 +54,9 @@ function PlanetSection({
         className={styles.planetTitle}
         onClick={() => setCollapsed(!collapsed)}
       >
-        <WrappedFactionIcon faction={factionName} size={20} />
-        {getFactionName(factions[factionName])}
-        <WrappedFactionIcon faction={factionName} size={20} />
+        <FactionIcon factionId={factionId} size={20} />
+        {getFactionName(factions[factionId])}
+        <FactionIcon factionId={factionId} size={20} />
       </div>
       <div
         className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
@@ -96,28 +79,29 @@ function PlanetSection({
           >
             <PlanetSummary
               planets={updatedPlanets}
-              faction={factions[factionName] as Faction}
+              hasXxchaHero={
+                factionId === "Xxcha Kingdom" &&
+                factions[factionId]?.hero === "unlocked"
+              }
             />
           </div>
           <div
             className={styles.planetList}
-            ref={dropRef}
             style={{
               minHeight: responsivePixels(40),
-              backgroundColor: isOver ? "#333" : "#222",
             }}
           >
             {updatedPlanets.map((planet) => {
               return (
                 <PlanetRow
-                  key={planet.name}
+                  key={planet.id}
                   planet={planet}
-                  factionName={factionName}
-                  removePlanet={(planetName) => {
+                  factionId={factionId}
+                  removePlanet={(planetId) => {
                     if (!gameid) {
                       return;
                     }
-                    unclaimPlanet(gameid, factionName, planetName);
+                    unclaimPlanetAsync(gameid, factionId, planetId);
                   }}
                 />
               );
@@ -132,9 +116,8 @@ function PlanetSection({
 function UnclaimedPlanetSection({}: {}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions", "planets"]);
-  const factions = gameData.factions;
-  const planets = gameData.planets;
+  const factions = useContext(FactionContext);
+  const planets = useContext(PlanetContext);
 
   const [collapsed, setCollapsed] = useState(true);
 
@@ -142,30 +125,8 @@ function UnclaimedPlanetSection({}: {}) {
     (planet) => !planet.owner
   );
 
-  const [{ isOver }, dropRef] = useDrop(
-    () => ({
-      accept: "PLANET",
-      drop: (item: { id: string }) => {
-        const planet = planets[item.id];
-        if (!gameid || !planet || !planet.owner) {
-          return;
-        }
-
-        unclaimPlanet(gameid, planet.owner, planet.name);
-      },
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver(),
-      }),
-    }),
-    [planets]
-  );
-
   return (
-    <div
-      ref={dropRef}
-      className={`${styles.planetColumn} ${styles.unclaimedColumn}`}
-      style={{ backgroundColor: isOver ? "#333" : "#222" }}
-    >
+    <div className={`${styles.planetColumn} ${styles.unclaimedColumn}`}>
       <div
         className={styles.planetTitle}
         onClick={() => setCollapsed(!collapsed)}
@@ -182,7 +143,7 @@ function UnclaimedPlanetSection({}: {}) {
           {unownedPlanets.map((planet) => {
             return (
               <div
-                key={planet.name}
+                key={planet.id}
                 className="flexRow"
                 style={{
                   justifyContent: "flex-start",
@@ -192,21 +153,17 @@ function UnclaimedPlanetSection({}: {}) {
                 }}
               >
                 <FactionSelectHoverMenu
-                  options={Object.keys(factions)}
-                  onSelect={(factionName) => {
-                    if (!gameid || !factionName) {
+                  options={Object.keys(factions) as FactionId[]}
+                  onSelect={(factionId) => {
+                    if (!gameid || !factionId) {
                       return;
                     }
-                    claimPlanet(gameid, factionName, planet.name);
+                    claimPlanetAsync(gameid, factionId, planet.id);
                   }}
                   size={28}
                 />
                 <div style={{ width: "100%" }}>
-                  <PlanetRow
-                    key={planet.name}
-                    planet={planet}
-                    factionName="Unknown"
-                  />
+                  <PlanetRow planet={planet} />
                 </div>
               </div>
             );
@@ -222,12 +179,11 @@ interface CSSWithNumColumns extends CSSProperties {
 }
 
 export function PlanetPanel({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions"]);
-  const factions = gameData.factions;
+  const factions = useContext(FactionContext);
 
-  const orderedFactionNames = Object.keys(factions ?? {}).sort();
+  const orderedFactionIds = Object.values(factions ?? {})
+    .map((faction) => faction.id)
+    .sort();
 
   return (
     <div
@@ -239,11 +195,11 @@ export function PlanetPanel({}) {
         } as CSSWithNumColumns
       }
     >
-      {orderedFactionNames.map((factionName) => {
+      {orderedFactionIds.map((factionId) => {
         return (
           <PlanetSection
-            key={factionName}
-            factionName={factionName}
+            key={factionId}
+            factionId={factionId}
             openedByDefault
           />
         );

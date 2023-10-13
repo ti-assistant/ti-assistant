@@ -1,7 +1,8 @@
 import { mutate } from "swr";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
+import { BASE_GAME_DATA } from "../../../server/data/data";
 
-export interface ChangeOptionData {
+interface ChangeOptionData {
   option: string;
   value: any;
 }
@@ -16,10 +17,13 @@ export function changeOption(gameId: string, option: string, value: any) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/changeOption`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        storedGameData.options[option] = value;
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        currentData.options[option] = value;
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

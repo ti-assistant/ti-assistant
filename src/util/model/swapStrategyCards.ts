@@ -1,22 +1,4 @@
 import { buildStrategyCards } from "../../data/GameData";
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SwapStrategyCardsEvent {
-  cardOne: string;
-  cardTwo: string;
-  imperialArbiter?: boolean;
-}
-
-export interface SwapStrategyCardsData {
-  action: "SWAP_STRATEGY_CARDS";
-  event: SwapStrategyCardsEvent;
-}
-
-export interface UnswapStrategyCardsData {
-  action: "UNSWAP_STRATEGY_CARDS";
-  event: SwapStrategyCardsEvent;
-}
 
 export class SwapStrategyCardsHandler implements Handler {
   constructor(
@@ -56,11 +38,11 @@ export class SwapStrategyCardsHandler implements Handler {
     // May not work for 3-4 player games.
     let zeroFaction: string | undefined;
     if (cardOne.order === 0) {
-      updates[`strategycards.${cardTwo.name}.order`] = 0;
+      updates[`strategycards.${cardTwo.id}.order`] = 0;
       zeroFaction = factionOne;
     }
     if (cardTwo.order === 0) {
-      updates[`strategycards.${cardOne.name}.order`] = 0;
+      updates[`strategycards.${cardOne.id}.order`] = 0;
       zeroFaction = factionTwo;
     }
 
@@ -119,11 +101,11 @@ export class UnswapStrategyCardsHandler implements Handler {
     // If faction was going first, find first card and update order.
     let zeroFaction: string | undefined;
     if (cardOne.order === 0) {
-      updates[`strategycards.${cardTwo.name}.order`] = 0;
+      updates[`strategycards.${cardTwo.id}.order`] = 0;
       zeroFaction = factionOne;
     }
     if (cardTwo.order === 0) {
-      updates[`strategycards.${cardOne.name}.order`] = 0;
+      updates[`strategycards.${cardOne.id}.order`] = 0;
       zeroFaction = factionTwo;
     }
 

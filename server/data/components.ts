@@ -1,65 +1,9 @@
-import { BaseComponent } from "../../src/util/api/components";
 import { DISCORDANT_STARS_COMPONENTS } from "./discordantstars/components";
 
-declare namespace DiscordantStars {
-  type ComponentId = "Emergency Deployment";
-}
-
-export type ComponentId =
-  | "Archaeological Expedition"
-  | "Black Market Forgery"
-  | "Blood Pact"
-  | "Cripple Defenses"
-  | "Dark Pact"
-  | "Divert Funding"
-  | "Economic Initiative"
-  | "Enigmatic Device"
-  | "Exploration Probe"
-  | "Fabrication"
-  | "Fighter Conscription"
-  | "Fires of the Gashlai"
-  | "Focused Research"
-  | "Frontline Deployment"
-  | "Gain Relic"
-  | "Ghost Ship"
-  | "Impersonation"
-  | "Industrial Initiative"
-  | "Insubordination"
-  | "Lazax Gate Folding"
-  | "Lucky Shot"
-  | "Mageon Implants"
-  | "Mining Initiative"
-  | "Orbital Drop"
-  | "Plagiarize"
-  | "Plague"
-  | "Production Biomes"
-  | "Promise of Protection"
-  | "Reactor Meltdown"
-  | "Refit Troops"
-  | "Repeal Law"
-  | "Rise of a Messiah"
-  | "Scuttle"
-  | "Seize Artifact"
-  | "Signal Jamming"
-  | "Sling Relay"
-  | "Spy"
-  | "Stall Tactics"
-  | "Star Forge"
-  | "Stymie"
-  | "Tactical Bombardment"
-  | "Terraform"
-  | "The Inferno"
-  | "Trade Convoys"
-  | "Unexpected Action"
-  | "Unstable Planet"
-  | "Uprising"
-  | "Vortex"
-  | "War Effort"
-  | "Wormhole Generator"
-  | "X-89 Bacterial Weapon"
-  | DiscordantStars.ComponentId;
-
-export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
+export const BASE_COMPONENTS: Record<
+  ComponentId,
+  BaseComponent | BaseTechComponent
+> = {
   "Archaeological Expedition": {
     description:
       "Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest",
@@ -198,6 +142,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
       "If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex",
     expansion: "BASE",
     faction: "Winnu",
+    id: "Lazax Gate Folding",
     name: "Lazax Gate Folding",
     type: "TECH",
   },
@@ -213,6 +158,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
       "Exhaust this card to look at another player's hand of action cards.  Choose 1 of those cards and add it to your hand",
     expansion: "BASE",
     faction: "Yssaril Tribes",
+    id: "Mageon Implants",
     name: "Mageon Implants",
     type: "TECH",
   },
@@ -250,6 +196,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
       "Exhaust this card and spend 1 token from your strategy pool to gain 4 trade goods and choose 1 other player; that player gains 2 trade goods",
     expansion: "BASE",
     faction: "Emirates of Hacan",
+    id: "Production Biomes",
     name: "Production Biomes",
     type: "TECH",
   },
@@ -312,6 +259,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     description:
       "Exhaust this card to produce 1 ship in any system that contains one of your space docks",
     expansion: "POK",
+    id: "Sling Relay",
     name: "Sling Relay",
     type: "TECH",
   },
@@ -402,6 +350,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
       "Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements",
     expansion: "POK",
     faction: "Vuil'raith Cabal",
+    id: "Vortex",
     name: "Vortex",
     type: "TECH",
   },
@@ -417,6 +366,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
       "Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships",
     expansion: "CODEX ONE",
     faction: "Ghosts of Creuss",
+    id: "Wormhole Generator",
     name: "Wormhole Generator Ω",
     type: "TECH",
   },
@@ -424,6 +374,7 @@ export const BASE_COMPONENTS: Record<ComponentId, BaseComponent> = {
     description:
       "Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet",
     expansion: "BASE ONLY",
+    id: "X-89 Bacterial Weapon",
     name: "X-89 Bacterial Weapon",
     type: "TECH",
   },

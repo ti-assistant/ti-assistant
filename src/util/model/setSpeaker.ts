@@ -1,17 +1,4 @@
 import { getCurrentTurnLogEntries } from "../api/actionLog";
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SetSpeakerEvent {
-  newSpeaker: string;
-  // Set by server, used for undo.
-  prevSpeaker?: string;
-}
-
-export interface SetSpeakerData {
-  action: "SET_SPEAKER";
-  event: SetSpeakerEvent;
-}
 
 export class SetSpeakerHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: SetSpeakerData) {}

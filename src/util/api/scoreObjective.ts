@@ -1,17 +1,18 @@
 import { mutate } from "swr";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
 } from "../model/scoreObjective";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 export function scoreObjective(
   gameId: string,
-  faction: string,
-  objective: string,
-  key?: string
+  faction: FactionId,
+  objective: ObjectiveId,
+  key?: FactionId
 ) {
   const data: GameUpdateData = {
     action: "SCORE_OBJECTIVE",
@@ -26,18 +27,21 @@ export function scoreObjective(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new ScoreObjectiveHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new ScoreObjectiveHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
@@ -46,9 +50,9 @@ export function scoreObjective(
 
 export function unscoreObjective(
   gameId: string,
-  faction: string,
-  objective: string,
-  key?: string
+  faction: FactionId,
+  objective: ObjectiveId,
+  key?: FactionId
 ) {
   const data: GameUpdateData = {
     action: "UNSCORE_OBJECTIVE",
@@ -63,18 +67,21 @@ export function unscoreObjective(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new UnscoreObjectiveHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new UnscoreObjectiveHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

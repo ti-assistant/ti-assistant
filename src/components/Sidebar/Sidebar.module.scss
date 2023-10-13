@@ -1,0 +1,34 @@
+.Sidebar {
+  --edge-distance: var(--sixteen-pixel);
+
+  background-color: #333;
+  box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
+  color: #eee;
+  font-size: var(--thirty-six-pixel);
+  letter-spacing: var(--three-pixel);
+  line-height: var(--thirty-six-pixel);
+  padding: var(--twelve-pixel) 0;
+  position: fixed;
+  text-align: center;
+  top: 100%;
+  transform-origin: 0px 0px;
+  width: 100svh;
+}
+
+.Sidebar.left {
+  transform: rotate(-90deg);
+  left: var(--edge-distance);
+  transform-origin: 0px 0px;
+}
+
+.Sidebar.right {
+  transform: rotate(90deg);
+  right: var(--edge-distance);
+  transform-origin: 100% 0px;
+}
+
+@media only screen and (max-width: 900px) {
+  .Sidebar {
+    display: none;
+  }
+}

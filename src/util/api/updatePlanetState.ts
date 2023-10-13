@@ -1,15 +1,13 @@
 import { mutate } from "swr";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
-import {
-  PlanetState,
-  UpdatePlanetStateHandler,
-} from "../model/updatePlanetState";
+import { poster } from "./util";
+import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 export function updatePlanetState(
   gameId: string,
-  planet: string,
+  planet: PlanetId,
   state: PlanetState
 ) {
   const data: GameUpdateData = {
@@ -24,20 +22,23 @@ export function updatePlanetState(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new UpdatePlanetStateHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new UpdatePlanetStateHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
         const updates = handler.getUpdates();
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        updateGameData(storedGameData, updates);
+        updateGameData(currentData, updates);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

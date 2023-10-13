@@ -4,26 +4,35 @@ import React, {
   CSSProperties,
   PropsWithChildren,
   ReactNode,
+  useContext,
   useState,
 } from "react";
-import { FullFactionSymbol } from "../FactionCard";
-import { computeVPs } from "../FactionSummary";
-import { BLACK_BORDER_GLOW, LabeledDiv, LabeledLine } from "../LabeledDiv";
-import { Modal } from "../Modal";
-import { ObjectiveRow } from "../ObjectiveRow";
 import { Selector } from "../Selector";
-import { useGameData } from "../data/GameData";
-import { Faction } from "../util/api/factions";
-import { manualVPUpdate } from "../util/api/manualVPUpdate";
-import { Objective } from "../util/api/objectives";
-import { hideObjective, revealObjective } from "../util/api/revealObjective";
-import { scoreObjective, unscoreObjective } from "../util/api/scoreObjective";
-import { setObjectivePoints } from "../util/api/setObjectivePoints";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { RevealObjectiveData } from "../util/model/revealObjective";
-import { responsiveNegativePixels, responsivePixels } from "../util/util";
-import { FactionSelectRadialMenu } from "./FactionSelect";
+import {
+  ActionLogContext,
+  FactionContext,
+  ObjectiveContext,
+  OptionContext,
+  StateContext,
+} from "../context/Context";
+import {
+  changeOptionAsync,
+  hideObjectiveAsync,
+  manualVPUpdateAsync,
+  revealObjectiveAsync,
+  scoreObjectiveAsync,
+  setObjectivePointsAsync,
+  unscoreObjectiveAsync,
+} from "../dynamic/api";
+import { BLACK_BORDER_GLOW } from "../util/borderGlow";
+import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
+import { responsivePixels } from "../util/util";
+import FactionIcon from "./FactionIcon/FactionIcon";
+import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
+import LabeledDiv from "./LabeledDiv/LabeledDiv";
+import Modal from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
+import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -73,31 +82,21 @@ function InfoContent({ objective }: InfoContentProps) {
 function ObjectiveColumn({
   objective,
   factions,
-  orderedFactionNames,
+  orderedFactionIds,
+  options,
 }: {
   objective: Objective;
-  factions: Record<string, Faction>;
-  orderedFactionNames: string[];
+  factions: Partial<Record<FactionId, Faction>>;
+  orderedFactionIds: FactionId[];
+  options: Options;
 }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  function scoreObj(
-    objectiveName: string,
-    factionName: string,
-    score: boolean
-  ) {
-    if (!gameid) {
-      return;
-    }
-    if (score) {
-      scoreObjective(gameid, factionName, objectiveName);
-    } else {
-      unscoreObjective(gameid, factionName, objectiveName);
-    }
-  }
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   const numScorers = (objective.scorers ?? []).length;
+
+  const description = options["display-objective-description"];
 
   return (
     <>
@@ -119,6 +118,8 @@ function ObjectiveColumn({
             justifyContent: "space-between",
             gap: responsivePixels(2),
             position: "relative",
+            fontFamily: description ? "Myriad Pro" : undefined,
+            fontSize: description ? responsivePixels(12) : undefined,
           }}
         >
           {numScorers === 0 ? (
@@ -128,36 +129,51 @@ function ObjectiveColumn({
                 if (!gameid) {
                   return;
                 }
-                hideObjective(gameid, objective.name);
+                hideObjectiveAsync(gameid, objective.id);
               }}
             >
               &#x2715;
             </div>
           ) : null}
-          {objective.name}
-          <div
-            className="popupIcon"
-            style={{ paddingRight: responsivePixels(8) }}
-            onClick={() => setShowInfoModal(true)}
-          >
-            &#x24D8;
-          </div>
+          {description ? (
+            <div
+              style={{
+                display: "flex",
+                height: "100%",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              {objective.description}
+            </div>
+          ) : (
+            objective.name
+          )}
+          {description ? null : (
+            <div
+              className="popupIcon"
+              style={{ paddingRight: responsivePixels(8) }}
+              onClick={() => setShowInfoModal(true)}
+            >
+              &#x24D8;
+            </div>
+          )}
         </div>
       </GridHeader>
-      {orderedFactionNames.map((factionName) => {
-        const scoredObjective = objective.scorers?.includes(factionName);
+      {orderedFactionIds.map((factionId) => {
+        const scoredObjective = objective.scorers?.includes(factionId);
         return (
           <div
-            key={factionName}
+            key={factionId}
             className={`flexRow ${styles.selected} ${styles.factionGridIconWrapper}`}
             onClick={() => {
               if (!gameid) {
                 return;
               }
               if (scoredObjective) {
-                unscoreObjective(gameid, factionName, objective.name);
+                unscoreObjectiveAsync(gameid, factionId, objective.id);
               } else {
-                scoreObjective(gameid, factionName, objective.name);
+                scoreObjectiveAsync(gameid, factionId, objective.id);
               }
             }}
           >
@@ -166,11 +182,11 @@ function ObjectiveColumn({
   ${styles.factionIcon} ${scoredObjective ? styles.selected : ""}`}
               style={
                 {
-                  "--color": getFactionColor((factions ?? {})[factionName]),
+                  "--color": getFactionColor((factions ?? {})[factionId]),
                 } as ExtendedCSS
               }
             >
-              <FullFactionSymbol faction={factionName} />
+              <FactionIcon factionId={factionId} size="100%" />
             </div>
           </div>
         );
@@ -179,18 +195,17 @@ function ObjectiveColumn({
   );
 }
 
-function SecretModalContent({ faction }: { faction: string }) {
+function SecretModalContent({ factionId }: { factionId: FactionId }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["objectives"]);
-  const objectives = gameData.objectives;
+  const objectives = useContext(ObjectiveContext);
 
   const secrets = Object.values(objectives ?? {}).filter(
     (objective) => objective.type === "SECRET"
   );
 
   const scoredSecrets = secrets.filter((secret) =>
-    (secret.scorers ?? []).includes(faction)
+    (secret.scorers ?? []).includes(factionId)
   );
   const availableSecrets = secrets.filter(
     (secret) => (secret.scorers ?? []).length === 0
@@ -215,7 +230,7 @@ function SecretModalContent({ faction }: { faction: string }) {
               if (!gameid) {
                 return;
               }
-              unscoreObjective(gameid, faction, secret.name);
+              unscoreObjectiveAsync(gameid, factionId, secret.id);
             }}
           />
         );
@@ -227,12 +242,12 @@ function SecretModalContent({ faction }: { faction: string }) {
         {scoredSecrets.length < 6 ? (
           <Selector
             hoverMenuLabel="Score Secret Objective"
-            options={availableSecrets.map((secret) => secret.name)}
-            toggleItem={(itemName) => {
+            options={availableSecrets.map((secret) => secret.id)}
+            toggleItem={(itemId) => {
               if (!gameid) {
                 return;
               }
-              scoreObjective(gameid, faction, itemName);
+              scoreObjectiveAsync(gameid, factionId, itemId);
             }}
           />
         ) : null}
@@ -287,28 +302,22 @@ interface ExtendedCSS extends CSSProperties {
 export function ObjectivePanel({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "factions",
-    "objectives",
-    "options",
-    "state",
-  ]);
-  const factions = gameData.factions;
-  const objectives = gameData.objectives;
-  const options = gameData.options;
-  const state = gameData.state;
+  const actionLog = useContext(ActionLogContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const state = useContext(StateContext);
 
-  const [factionName, setFactionName] = useState("");
+  const [factionId, setFactionId] = useState<FactionId>("Vuil'raith Cabal");
   const [secretModal, setSecretModal] = useState(false);
 
   const includesPoK = ((options ?? {}).expansions ?? []).includes("POK");
 
-  if (state && factionName === "") {
+  if (state && !factionId) {
     if (state.activeplayer && state.activeplayer !== "None") {
-      setFactionName(state.activeplayer);
+      setFactionId(state.activeplayer);
     } else {
-      setFactionName(state.speaker);
+      setFactionId(state.speaker);
     }
     return null;
   }
@@ -344,17 +353,28 @@ export function ObjectivePanel({}) {
     });
   }
 
-  const orderedFactionNames = orderedFactions.map((faction) => faction.name);
+  let orderedFactionIds = orderedFactions.map((faction) => faction.id);
 
-  const revealOrder: Record<string, number> = {};
+  if (orderedFactionIds.length === 0) {
+    orderedFactionIds = [
+      "Ghosts of Creuss",
+      "Mentak Coalition",
+      "Nekro Virus",
+      "Sardakk N'orr",
+      "Vuil'raith Cabal",
+      "Yin Brotherhood",
+    ];
+  }
+
+  const revealOrder: Partial<Record<ObjectiveId, number>> = {};
   let order = 1;
-  [...(gameData.actionLog ?? [])]
+  [...(actionLog ?? [])]
     .reverse()
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
     .forEach((logEntry) => {
-      const objectiveName = (logEntry.data as RevealObjectiveData).event
+      const objectiveId = (logEntry.data as RevealObjectiveData).event
         .objective;
-      revealOrder[objectiveName] = order;
+      revealOrder[objectiveId] = order;
       ++order;
     });
 
@@ -370,7 +390,7 @@ export function ObjectivePanel({}) {
     (obj) => obj.type === "SECRET"
   );
 
-  const secretsByFaction: Record<string, Objective[]> = {};
+  const secretsByFaction: Partial<Record<FactionId, Objective[]>> = {};
   for (const secret of secretObjectives) {
     for (const scorer of secret.scorers ?? []) {
       const faction = secretsByFaction[scorer] ?? [];
@@ -382,8 +402,8 @@ export function ObjectivePanel({}) {
   const selectedStageOneObjectives = stageOneObjectives
     .filter((obj) => obj && obj.selected)
     .sort((a, b) => {
-      const aRevealOrder = revealOrder[a.name];
-      const bRevealOrder = revealOrder[b.name];
+      const aRevealOrder = revealOrder[a.id];
+      const bRevealOrder = revealOrder[b.id];
       if (!aRevealOrder && !bRevealOrder) {
         if (a.name > b.name) {
           return 1;
@@ -407,8 +427,8 @@ export function ObjectivePanel({}) {
   const selectedStageTwoObjectives = stageTwoObjectives
     .filter((obj) => obj && obj.selected)
     .sort((a, b) => {
-      const aRevealOrder = revealOrder[a.name];
-      const bRevealOrder = revealOrder[b.name];
+      const aRevealOrder = revealOrder[a.id];
+      const bRevealOrder = revealOrder[b.id];
       if (!aRevealOrder && !bRevealOrder) {
         if (a.name > b.name) {
           return 1;
@@ -429,21 +449,23 @@ export function ObjectivePanel({}) {
   const remainingStageTwoObjectives = stageTwoObjectives.filter(
     (obj) => !obj.selected
   );
-  const selectedObjectives = new Set<string>();
+  const selectedObjectives = new Set<ObjectiveId>();
   selectedStageOneObjectives.forEach((objective) => {
-    selectedObjectives.add(objective.name);
+    selectedObjectives.add(objective.id);
   });
   selectedStageTwoObjectives.forEach((objective) => {
-    selectedObjectives.add(objective.name);
+    selectedObjectives.add(objective.id);
   });
 
   const numStageOneObjectives = selectedStageOneObjectives.length;
   const numStageTwoObjectives = selectedStageTwoObjectives.length;
 
-  const numRows = Object.keys(factions ?? {}).length + 1;
+  const numRows = orderedFactionIds.length + 1;
 
   const custodiansToken = (objectives ?? {})["Custodians Token"];
-  const custodiansScorer = (custodiansToken?.scorers ?? [])[0];
+  const custodiansScorer = (custodiansToken?.scorers ?? [])[0] as
+    | FactionId
+    | undefined;
 
   const supportForTheThrone = (objectives ?? {})["Support for the Throne"];
 
@@ -457,7 +479,7 @@ export function ObjectivePanel({}) {
   const holyPlanet = (objectives ?? {})["Holy Planet of Ixth"];
   const holyPlanetScorers = holyPlanet?.scorers ?? [];
 
-  const crown = (objectives ?? {})["Crown of Emphidia"];
+  const crown = (objectives ?? {})["The Crown of Emphidia"];
   const crownScorers = crown?.scorers ?? [];
 
   const imperialRider = (objectives ?? {})["Imperial Rider"];
@@ -467,22 +489,24 @@ export function ObjectivePanel({}) {
   const mutiny = (objectives ?? {})["Mutiny"];
   const mutinyDirection = mutiny?.points === 1 ? "[For]" : "[Against]";
 
-  function manualVpAdjust(increase: boolean, factionName: string) {
+  const displayDescription = options["display-objective-description"];
+
+  function manualVpAdjust(increase: boolean, factionId: FactionId) {
     if (!gameid) {
       return;
     }
     const value = increase ? 1 : -1;
-    manualVPUpdate(gameid, factionName, value);
+    manualVPUpdateAsync(gameid, factionId, value);
   }
 
   return (
     <>
       <Modal
-        title={getFactionName((factions ?? {})[factionName]) + " Secrets"}
+        title={getFactionName((factions ?? {})[factionId]) + " Secrets"}
         closeMenu={() => setSecretModal(false)}
         visible={!!secretModal}
       >
-        <SecretModalContent faction={factionName} />
+        <SecretModalContent factionId={factionId} />
       </Modal>
       <div className="tabletOnly">
         <div className={styles.objectiveGrid}>
@@ -503,7 +527,7 @@ export function ObjectivePanel({}) {
                   isolation: "isolate",
                 }}
               >
-                {orderedFactionNames.map((name) => {
+                {orderedFactionIds.map((name, index) => {
                   const faction = (factions ?? {})[name];
                   const VPs = computeVPs(
                     factions ?? {},
@@ -512,7 +536,7 @@ export function ObjectivePanel({}) {
                   );
                   return (
                     <LabeledDiv
-                      key={name}
+                      key={index}
                       label={getFactionName(faction)}
                       color={getFactionColor(faction)}
                       opts={{ fixedWidth: true }}
@@ -529,15 +553,7 @@ export function ObjectivePanel({}) {
                           top: 0,
                         }}
                       >
-                        <div
-                          style={{
-                            position: "relative",
-                            height: "90%",
-                            aspectRatio: 1,
-                          }}
-                        >
-                          <FullFactionSymbol faction={name} />
-                        </div>
+                        <FactionIcon factionId={name} size="90%" />
                       </div>
                       <div
                         key={name}
@@ -595,32 +611,30 @@ export function ObjectivePanel({}) {
                 }}
               >
                 <Selector
-                  options={remainingStageOneObjectives.map((obj) => obj.name)}
+                  options={remainingStageOneObjectives.map((obj) => obj.id)}
                   hoverMenuLabel="Stage I"
-                  toggleItem={(objectiveName, add) => {
+                  toggleItem={(objectiveId, add) => {
                     if (!gameid) {
                       return;
                     }
                     if (add) {
-                      // revealSubStateObjective(gameid, objectiveName);
-                      revealObjective(gameid, objectiveName);
+                      revealObjectiveAsync(gameid, objectiveId);
                     } else {
-                      hideObjective(gameid, objectiveName);
+                      hideObjectiveAsync(gameid, objectiveId);
                     }
                   }}
                 />
                 <Selector
-                  options={remainingStageTwoObjectives.map((obj) => obj.name)}
+                  options={remainingStageTwoObjectives.map((obj) => obj.id)}
                   hoverMenuLabel="Stage II"
-                  toggleItem={(objectiveName, add) => {
+                  toggleItem={(objectiveId, add) => {
                     if (!gameid) {
                       return;
                     }
                     if (add) {
-                      // revealSubStateObjective(gameid, objectiveName);
-                      revealObjective(gameid, objectiveName);
+                      revealObjectiveAsync(gameid, objectiveId);
                     } else {
-                      hideObjective(gameid, objectiveName);
+                      hideObjectiveAsync(gameid, objectiveId);
                     }
                   }}
                 />
@@ -651,21 +665,25 @@ export function ObjectivePanel({}) {
                   }}
                 >
                   <FactionSelectRadialMenu
-                    options={orderedFactionNames}
+                    factions={orderedFactionIds}
                     selectedFaction={custodiansScorer}
-                    onSelect={async (factionName) => {
+                    onSelect={(factionId) => {
                       if (!gameid) {
                         return;
                       }
                       if (custodiansScorer) {
-                        unscoreObjective(
+                        unscoreObjectiveAsync(
                           gameid,
                           custodiansScorer,
                           "Custodians Token"
                         );
                       }
-                      if (factionName) {
-                        scoreObjective(gameid, factionName, "Custodians Token");
+                      if (factionId) {
+                        scoreObjectiveAsync(
+                          gameid,
+                          factionId,
+                          "Custodians Token"
+                        );
                       }
                     }}
                     borderColor={
@@ -692,14 +710,14 @@ export function ObjectivePanel({}) {
                       return (
                         <>
                           <GridHeader>???</GridHeader>
-                          {orderedFactionNames.map((name) => {
+                          {orderedFactionIds.map((name) => {
                             return <div key={name}></div>;
                           })}
                         </>
                       );
                     }
                     return (
-                      <React.Fragment key={objective.name}>
+                      <React.Fragment key={objective.id}>
                         <ObjectiveRow
                           objective={objective}
                           hideScorers
@@ -709,8 +727,7 @@ export function ObjectivePanel({}) {
                                   if (!gameid) {
                                     return;
                                   }
-                                  // hideSubStateObjective(gameid, objective.name);
-                                  hideObjective(gameid, objective.name);
+                                  hideObjectiveAsync(gameid, objective.id);
                                 }
                               : undefined
                           }
@@ -719,57 +736,58 @@ export function ObjectivePanel({}) {
                           className={styles.factionIconRow}
                           style={
                             {
-                              "--num-factions": orderedFactionNames.length,
+                              "--num-factions": orderedFactionIds.length,
                             } as NumFactionsCSS
                           }
                         >
-                          {Object.values(orderedFactionNames).map(
-                            (factionName) => {
-                              const scoredObjective = (
-                                objective.scorers ?? []
-                              ).includes(factionName);
-                              return (
+                          {orderedFactionIds.map((factionId) => {
+                            const scoredObjective = (
+                              objective.scorers ?? []
+                            ).includes(factionId);
+                            return (
+                              <div
+                                key={factionId}
+                                className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                                onClick={() => {
+                                  if (!gameid) {
+                                    return;
+                                  }
+                                  if (scoredObjective) {
+                                    unscoreObjectiveAsync(
+                                      gameid,
+                                      factionId,
+                                      objective.id
+                                    );
+                                  } else {
+                                    scoreObjectiveAsync(
+                                      gameid,
+                                      factionId,
+                                      objective.id
+                                    );
+                                  }
+                                }}
+                              >
                                 <div
-                                  key={factionName}
-                                  className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
-                                  onClick={() => {
-                                    if (!gameid) {
-                                      return;
-                                    }
-                                    if (scoredObjective) {
-                                      unscoreObjective(
-                                        gameid,
-                                        factionName,
-                                        objective.name
-                                      );
-                                    } else {
-                                      scoreObjective(
-                                        gameid,
-                                        factionName,
-                                        objective.name
-                                      );
-                                    }
-                                  }}
-                                >
-                                  <div
-                                    className={`
+                                  className={`
                         ${styles.factionIcon} ${
-                                      scoredObjective ? styles.selected : ""
-                                    }`}
-                                    style={
-                                      {
-                                        "--color": getFactionColor(
-                                          (factions ?? {})[factionName]
-                                        ),
-                                      } as ExtendedCSS
-                                    }
-                                  >
-                                    <FullFactionSymbol faction={factionName} />
-                                  </div>
+                                    scoredObjective ? styles.selected : ""
+                                  }`}
+                                  style={
+                                    {
+                                      "--color": getFactionColor(
+                                        (factions ?? {})[factionId]
+                                      ),
+                                    } as ExtendedCSS
+                                  }
+                                >
+                                  <FactionIcon
+                                    factionId={factionId}
+                                    size="100%"
+                                  />
                                 </div>
-                              );
-                            }
-                          )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </React.Fragment>
                     );
@@ -789,14 +807,14 @@ export function ObjectivePanel({}) {
                       return (
                         <>
                           <GridHeader>???</GridHeader>
-                          {orderedFactionNames.map((name) => {
+                          {orderedFactionIds.map((name) => {
                             return <div key={name}></div>;
                           })}
                         </>
                       );
                     }
                     return (
-                      <React.Fragment key={objective.name}>
+                      <React.Fragment key={objective.id}>
                         <ObjectiveRow
                           objective={objective}
                           hideScorers
@@ -806,8 +824,7 @@ export function ObjectivePanel({}) {
                                   if (!gameid) {
                                     return;
                                   }
-                                  // hideSubStateObjective(gameid, objective.name);
-                                  hideObjective(gameid, objective.name);
+                                  hideObjectiveAsync(gameid, objective.id);
                                 }
                               : undefined
                           }
@@ -816,57 +833,58 @@ export function ObjectivePanel({}) {
                           className={styles.factionIconRow}
                           style={
                             {
-                              "--num-factions": orderedFactionNames.length,
+                              "--num-factions": orderedFactionIds.length,
                             } as NumFactionsCSS
                           }
                         >
-                          {Object.values(orderedFactionNames).map(
-                            (factionName) => {
-                              const scoredObjective = (
-                                objective.scorers ?? []
-                              ).includes(factionName);
-                              return (
+                          {Object.values(orderedFactionIds).map((factionId) => {
+                            const scoredObjective = (
+                              objective.scorers ?? []
+                            ).includes(factionId);
+                            return (
+                              <div
+                                key={factionId}
+                                className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                                onClick={() => {
+                                  if (!gameid) {
+                                    return;
+                                  }
+                                  if (scoredObjective) {
+                                    unscoreObjectiveAsync(
+                                      gameid,
+                                      factionId,
+                                      objective.id
+                                    );
+                                  } else {
+                                    scoreObjectiveAsync(
+                                      gameid,
+                                      factionId,
+                                      objective.id
+                                    );
+                                  }
+                                }}
+                              >
                                 <div
-                                  key={factionName}
-                                  className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
-                                  onClick={() => {
-                                    if (!gameid) {
-                                      return;
-                                    }
-                                    if (scoredObjective) {
-                                      unscoreObjective(
-                                        gameid,
-                                        factionName,
-                                        objective.name
-                                      );
-                                    } else {
-                                      scoreObjective(
-                                        gameid,
-                                        factionName,
-                                        objective.name
-                                      );
-                                    }
-                                  }}
-                                >
-                                  <div
-                                    className={`
+                                  className={`
                             ${styles.factionIcon} ${
-                                      scoredObjective ? styles.selected : ""
-                                    }`}
-                                    style={
-                                      {
-                                        "--color": getFactionColor(
-                                          (factions ?? {})[factionName]
-                                        ),
-                                      } as ExtendedCSS
-                                    }
-                                  >
-                                    <FullFactionSymbol faction={factionName} />
-                                  </div>
+                                    scoredObjective ? styles.selected : ""
+                                  }`}
+                                  style={
+                                    {
+                                      "--color": getFactionColor(
+                                        (factions ?? {})[factionId]
+                                      ),
+                                    } as ExtendedCSS
+                                  }
+                                >
+                                  <FactionIcon
+                                    factionId={factionId}
+                                    size="100%"
+                                  />
                                 </div>
-                              );
-                            }
-                          )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </React.Fragment>
                     );
@@ -880,7 +898,7 @@ export function ObjectivePanel({}) {
                   className="flexRow"
                   style={{ padding: "0 8px 0 4px", width: "100%" }}
                 >
-                  {orderedFactionNames.map((name) => {
+                  {orderedFactionIds.map((name) => {
                     const factionSecrets = secretsByFaction[name] ?? [];
                     return (
                       <div
@@ -893,20 +911,11 @@ export function ObjectivePanel({}) {
                           aspectRatio: 1,
                         }}
                         onClick={() => {
-                          setFactionName(name);
+                          setFactionId(name);
                           setSecretModal(true);
                         }}
                       >
-                        <div
-                          className="flexRow"
-                          style={{
-                            position: "relative",
-                            width: "100%",
-                            aspectRatio: 1,
-                          }}
-                        >
-                          <FullFactionSymbol faction={name} />
-                        </div>
+                        <FactionIcon factionId={name} size="100%" />
                         <div
                           className="flexRow"
                           style={{
@@ -948,7 +957,7 @@ export function ObjectivePanel({}) {
                   className="flexRow"
                   style={{ padding: "0 8px 0 4px", width: "100%" }}
                 >
-                  {orderedFactionNames.map((faction) => {
+                  {orderedFactionIds.map((faction) => {
                     const imperialPoints = (
                       (objectives ?? {})["Imperial Point"]?.scorers ?? []
                     ).filter((name) => name === faction).length;
@@ -989,7 +998,7 @@ export function ObjectivePanel({}) {
                               if (!gameid) {
                                 return;
                               }
-                              unscoreObjective(
+                              unscoreObjectiveAsync(
                                 gameid,
                                 faction,
                                 "Imperial Point"
@@ -1025,12 +1034,16 @@ export function ObjectivePanel({}) {
                             if (!gameid) {
                               return;
                             }
-                            scoreObjective(gameid, faction, "Imperial Point");
+                            scoreObjectiveAsync(
+                              gameid,
+                              faction,
+                              "Imperial Point"
+                            );
                           }}
                         >
                           +
                         </div>
-                        <FullFactionSymbol faction={faction} />
+                        <FactionIcon factionId={faction} size="100%" />
                         <div
                           className="flexRow"
                           style={{
@@ -1064,41 +1077,41 @@ export function ObjectivePanel({}) {
           >
             <div className={`flexRow ${styles.collapsibleRow}`}>
               <div className={`flexRow ${styles.objRow}`}>
-                {orderedFactionNames.map((name) => {
+                {orderedFactionIds.map((id) => {
                   const scorers =
-                    (supportForTheThrone?.keyedScorers ?? {})[name] ?? [];
-                  const scorer = scorers[0];
+                    (supportForTheThrone?.keyedScorers ?? {})[id] ?? [];
+                  const scorer = scorers[0] as FactionId | undefined;
                   return (
-                    <div key={name}>
+                    <div key={id}>
                       <FactionSelectRadialMenu
-                        key={name}
-                        options={orderedFactionNames.filter(
-                          (faction) => faction !== name
+                        key={id}
+                        factions={orderedFactionIds.filter(
+                          (faction) => faction !== id
                         )}
                         selectedFaction={scorer}
-                        onSelect={(factionName) => {
+                        onSelect={(factionId) => {
                           if (!gameid) {
                             return;
                           }
                           if (scorer) {
-                            unscoreObjective(
+                            unscoreObjectiveAsync(
                               gameid,
                               scorer,
                               "Support for the Throne",
-                              name
+                              id
                             );
                           }
-                          if (factionName) {
-                            scoreObjective(
+                          if (factionId) {
+                            scoreObjectiveAsync(
                               gameid,
-                              factionName,
+                              factionId,
                               "Support for the Throne",
-                              name
+                              id
                             );
                           }
                         }}
-                        tag={<FullFactionSymbol faction={name} />}
-                        tagBorderColor={getFactionColor((factions ?? {})[name])}
+                        tag={<FactionIcon factionId={id} size="100%" />}
+                        tagBorderColor={getFactionColor((factions ?? {})[id])}
                         borderColor={
                           scorer
                             ? getFactionColor((factions ?? {})[scorer])
@@ -1129,13 +1142,13 @@ export function ObjectivePanel({}) {
               >
                 <SimpleScorable
                   objective={imperialRider}
-                  orderedFactionNames={orderedFactionNames}
+                  orderedFactionNames={orderedFactionIds}
                   numScorers={includesPoK ? 2 : 1}
                   info="Can be scored 2x due to The Codex"
                 />
                 <SimpleScorable
                   objective={politicalCensure}
-                  orderedFactionNames={orderedFactionNames}
+                  orderedFactionNames={orderedFactionIds}
                 />
               </div>
               {includesPoK ? (
@@ -1150,31 +1163,31 @@ export function ObjectivePanel({}) {
                 >
                   <SimpleScorable
                     objective={shardOfTheThrone}
-                    orderedFactionNames={orderedFactionNames}
+                    orderedFactionNames={orderedFactionIds}
                   />
                   <SimpleScorable
                     objective={tomb}
-                    orderedFactionNames={orderedFactionNames}
+                    orderedFactionNames={orderedFactionIds}
                   />
                 </div>
               ) : null}
               <SimpleScorable
                 objective={holyPlanet}
-                orderedFactionNames={orderedFactionNames}
+                orderedFactionNames={orderedFactionIds}
                 numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
               />
               {!includesPoK ? (
                 <SimpleScorable
                   objective={shardOfTheThrone}
-                  orderedFactionNames={orderedFactionNames}
+                  orderedFactionNames={orderedFactionIds}
                   numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                   info="Can be scored 2x due to Miscount Disclosed"
                 />
               ) : null}
               <SimpleScorable
                 objective={crown}
-                orderedFactionNames={orderedFactionNames}
+                orderedFactionNames={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
               />
@@ -1197,9 +1210,9 @@ export function ObjectivePanel({}) {
                           return;
                         }
                         if (mutinyDirection === "[For]") {
-                          setObjectivePoints(gameid, "Mutiny", -1);
+                          setObjectivePointsAsync(gameid, "Mutiny", -1);
                         } else {
-                          setObjectivePoints(gameid, "Mutiny", 1);
+                          setObjectivePointsAsync(gameid, "Mutiny", 1);
                         }
                       }}
                     >
@@ -1210,30 +1223,30 @@ export function ObjectivePanel({}) {
                     className={styles.factionIconRow}
                     style={
                       {
-                        "--num-factions": orderedFactionNames.length,
+                        "--num-factions": orderedFactionIds.length,
                       } as NumFactionsCSS
                     }
                   >
-                    {Object.values(orderedFactionNames).map((factionName) => {
+                    {Object.values(orderedFactionIds).map((factionId) => {
                       const scoredObjective = (mutiny?.scorers ?? []).includes(
-                        factionName
+                        factionId
                       );
                       return (
                         <div
-                          key={factionName}
+                          key={factionId}
                           className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                           onClick={() => {
                             if (!gameid) {
                               return;
                             }
                             if (scoredObjective) {
-                              unscoreObjective(
+                              unscoreObjectiveAsync(
                                 gameid,
-                                factionName,
-                                mutiny.name
+                                factionId,
+                                mutiny.id
                               );
                             } else {
-                              scoreObjective(gameid, factionName, mutiny.name);
+                              scoreObjectiveAsync(gameid, factionId, mutiny.id);
                             }
                           }}
                         >
@@ -1245,12 +1258,12 @@ export function ObjectivePanel({}) {
                             style={
                               {
                                 "--color": getFactionColor(
-                                  (factions ?? {})[factionName]
+                                  (factions ?? {})[factionId]
                                 ),
                               } as ExtendedCSS
                             }
                           >
-                            <FullFactionSymbol faction={factionName} />
+                            <FactionIcon factionId={factionId} size="100%" />
                           </div>
                         </div>
                       );
@@ -1270,26 +1283,26 @@ export function ObjectivePanel({}) {
                     className={styles.factionIconRow}
                     style={
                       {
-                        "--num-factions": orderedFactionNames.length,
+                        "--num-factions": orderedFactionIds.length,
                       } as NumFactionsCSS
                     }
                   >
-                    {Object.values(orderedFactionNames).map((factionName) => {
+                    {Object.values(orderedFactionIds).map((factionId) => {
                       const scoredObjective = (seed?.scorers ?? []).includes(
-                        factionName
+                        factionId
                       );
                       return (
                         <div
-                          key={factionName}
+                          key={factionId}
                           className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                           onClick={() => {
                             if (!gameid) {
                               return;
                             }
                             if (scoredObjective) {
-                              unscoreObjective(gameid, factionName, seed.name);
+                              unscoreObjectiveAsync(gameid, factionId, seed.id);
                             } else {
-                              scoreObjective(gameid, factionName, seed.name);
+                              scoreObjectiveAsync(gameid, factionId, seed.id);
                             }
                           }}
                         >
@@ -1301,12 +1314,12 @@ export function ObjectivePanel({}) {
                             style={
                               {
                                 "--color": getFactionColor(
-                                  (factions ?? {})[factionName]
+                                  (factions ?? {})[factionId]
                                 ),
                               } as ExtendedCSS
                             }
                           >
-                            <FullFactionSymbol faction={factionName} />
+                            <FactionIcon factionId={factionId} size="100%" />
                           </div>
                         </div>
                       );
@@ -1350,7 +1363,7 @@ export function ObjectivePanel({}) {
             gridTemplateRows: `repeat(${numRows}, 2fr)`,
           }}
         >
-          {orderedFactionNames.map((name, index) => {
+          {orderedFactionIds.map((name, index) => {
             return (
               <div
                 key={name}
@@ -1396,7 +1409,7 @@ export function ObjectivePanel({}) {
                     zIndex: -1,
                   }}
                 >
-                  <FullFactionSymbol faction={name} />
+                  <FactionIcon factionId={name} size="100%" />
                 </div>
                 {getFactionName((factions ?? {})[name])}
               </div>
@@ -1414,7 +1427,7 @@ export function ObjectivePanel({}) {
             VPs
           </div>
 
-          {orderedFactionNames.map((name) => {
+          {orderedFactionIds.map((name) => {
             return (
               <div
                 key={name}
@@ -1436,10 +1449,27 @@ export function ObjectivePanel({}) {
               gridRow: "1 / 2",
               height: "100%",
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: "space-between",
               width: "100%",
             }}
           >
+            <button
+              onClick={() => {
+                if (!gameid) {
+                  return;
+                }
+                changeOptionAsync(
+                  gameid,
+                  "display-objective-description",
+                  !displayDescription
+                );
+              }}
+              style={{
+                fontSize: responsivePixels(16),
+              }}
+            >
+              Display {displayDescription ? "Titles" : "Descriptions"}
+            </button>
             <LabeledDiv
               label="Reveal Objective"
               noBlur={true}
@@ -1451,32 +1481,30 @@ export function ObjectivePanel({}) {
               }}
             >
               <Selector
-                options={remainingStageOneObjectives.map((obj) => obj.name)}
+                options={remainingStageOneObjectives.map((obj) => obj.id)}
                 hoverMenuLabel="Stage I"
-                toggleItem={(objectiveName, add) => {
+                toggleItem={(objectiveId, add) => {
                   if (!gameid) {
                     return;
                   }
                   if (add) {
-                    // revealSubStateObjective(gameid, objectiveName);
-                    revealObjective(gameid, objectiveName);
+                    revealObjectiveAsync(gameid, objectiveId);
                   } else {
-                    hideObjective(gameid, objectiveName);
+                    hideObjectiveAsync(gameid, objectiveId);
                   }
                 }}
               />
               <Selector
-                options={remainingStageTwoObjectives.map((obj) => obj.name)}
+                options={remainingStageTwoObjectives.map((obj) => obj.id)}
                 hoverMenuLabel="Stage II"
-                toggleItem={(objectiveName, add) => {
+                toggleItem={(objectiveId, add) => {
                   if (!gameid) {
                     return;
                   }
                   if (add) {
-                    // revealSubStateObjective(gameid, objectiveName);
-                    revealObjective(gameid, objectiveName);
+                    revealObjectiveAsync(gameid, objectiveId);
                   } else {
-                    hideObjective(gameid, objectiveName);
+                    hideObjectiveAsync(gameid, objectiveId);
                   }
                 }}
               />
@@ -1487,7 +1515,7 @@ export function ObjectivePanel({}) {
               return (
                 <>
                   <GridHeader>???</GridHeader>
-                  {orderedFactionNames.map((name) => {
+                  {orderedFactionIds.map((name) => {
                     return <div key={name}></div>;
                   })}
                 </>
@@ -1495,10 +1523,11 @@ export function ObjectivePanel({}) {
             }
             return (
               <ObjectiveColumn
-                key={objective.name}
+                key={objective.id}
                 objective={objective}
                 factions={factions ?? {}}
-                orderedFactionNames={orderedFactionNames}
+                orderedFactionIds={orderedFactionIds}
+                options={options}
               />
             );
           })}
@@ -1547,7 +1576,7 @@ export function ObjectivePanel({}) {
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: responsiveNegativePixels(-68),
+                marginBottom: responsivePixels(-68),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
@@ -1577,7 +1606,7 @@ export function ObjectivePanel({}) {
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: responsiveNegativePixels(-72),
+                marginBottom: responsivePixels(-72),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
@@ -1608,7 +1637,7 @@ export function ObjectivePanel({}) {
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: responsiveNegativePixels(-68),
+                marginBottom: responsivePixels(-68),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
@@ -1622,15 +1651,16 @@ export function ObjectivePanel({}) {
           {selectedStageTwoObjectives.map((objective) => {
             return (
               <ObjectiveColumn
-                key={objective.name}
+                key={objective.id}
                 objective={objective}
                 factions={factions ?? {}}
-                orderedFactionNames={orderedFactionNames}
+                orderedFactionIds={orderedFactionIds}
+                options={options}
               />
             );
           })}
           <GridHeader>Secrets</GridHeader>
-          {orderedFactionNames.map((name) => {
+          {orderedFactionIds.map((name) => {
             const factionSecrets = secretsByFaction[name] ?? [];
             return (
               <div
@@ -1644,20 +1674,11 @@ export function ObjectivePanel({}) {
                   padding: `0 ${responsivePixels(8)}`,
                 }}
                 onClick={() => {
-                  setFactionName(name);
+                  setFactionId(name);
                   setSecretModal(true);
                 }}
               >
-                <div
-                  className="flexRow"
-                  style={{
-                    position: "relative",
-                    height: "80%",
-                    width: "80%",
-                  }}
-                >
-                  <FullFactionSymbol faction={name} />
-                </div>
+                <FactionIcon factionId={name} size="80%" />
                 <div
                   className="flexRow"
                   style={{
@@ -1726,21 +1747,25 @@ export function ObjectivePanel({}) {
                 }}
               >
                 <FactionSelectRadialMenu
-                  options={orderedFactionNames}
+                  factions={orderedFactionIds}
                   selectedFaction={custodiansScorer}
-                  onSelect={async (factionName) => {
+                  onSelect={(factionId) => {
                     if (!gameid) {
                       return;
                     }
                     if (custodiansScorer) {
-                      unscoreObjective(
+                      unscoreObjectiveAsync(
                         gameid,
                         custodiansScorer,
                         "Custodians Token"
                       );
                     }
-                    if (factionName) {
-                      scoreObjective(gameid, factionName, "Custodians Token");
+                    if (factionId) {
+                      scoreObjectiveAsync(
+                        gameid,
+                        factionId,
+                        "Custodians Token"
+                      );
                     }
                   }}
                   borderColor={
@@ -1761,13 +1786,13 @@ export function ObjectivePanel({}) {
               className="flexRow"
               style={{ justifyContent: "space-evenly", width: "100%" }}
             >
-              {orderedFactionNames.map((name) => {
+              {orderedFactionIds.map((factionId) => {
                 const scorers =
-                  (supportForTheThrone?.keyedScorers ?? {})[name] ?? [];
-                const scorer = scorers[0];
+                  (supportForTheThrone?.keyedScorers ?? {})[factionId] ?? [];
+                const scorer = scorers[0] as FactionId | undefined;
                 return (
                   <div
-                    key={name}
+                    key={factionId}
                     style={{
                       position: "relative",
                       width: "fit-content",
@@ -1775,38 +1800,40 @@ export function ObjectivePanel({}) {
                     }}
                   >
                     <FactionSelectRadialMenu
-                      key={name}
-                      options={orderedFactions
+                      key={factionId}
+                      factions={orderedFactions
                         .filter(
                           (faction) =>
-                            faction.name !== name &&
-                            faction.alliancePartner !== name
+                            faction.id !== factionId &&
+                            faction.alliancePartner !== factionId
                         )
-                        .map((faction) => faction.name)}
+                        .map((faction) => faction.id)}
                       selectedFaction={scorer}
-                      onSelect={(factionName) => {
+                      onSelect={(selectedFactionId) => {
                         if (!gameid) {
                           return;
                         }
                         if (scorer) {
-                          unscoreObjective(
+                          unscoreObjectiveAsync(
                             gameid,
                             scorer,
                             "Support for the Throne",
-                            name
+                            factionId
                           );
                         }
-                        if (factionName) {
-                          scoreObjective(
+                        if (selectedFactionId) {
+                          scoreObjectiveAsync(
                             gameid,
-                            factionName,
+                            selectedFactionId,
                             "Support for the Throne",
-                            name
+                            factionId
                           );
                         }
                       }}
-                      tag={<FullFactionSymbol faction={name} />}
-                      tagBorderColor={getFactionColor((factions ?? {})[name])}
+                      tag={<FactionIcon factionId={factionId} size="100%" />}
+                      tagBorderColor={getFactionColor(
+                        (factions ?? {})[factionId]
+                      )}
                       borderColor={
                         scorer
                           ? getFactionColor((factions ?? {})[scorer])
@@ -1824,7 +1851,7 @@ export function ObjectivePanel({}) {
             style={{ gridColumn: "9 / 13" }}
           >
             <div className="flexRow" style={{ width: "100%", height: "100%" }}>
-              {orderedFactionNames.map((faction) => {
+              {orderedFactionIds.map((faction) => {
                 const imperialPoints = (
                   (objectives ?? {})["Imperial Point"]?.scorers ?? []
                 ).filter((name) => name === faction).length;
@@ -1863,7 +1890,11 @@ export function ObjectivePanel({}) {
                           if (!gameid) {
                             return;
                           }
-                          unscoreObjective(gameid, faction, "Imperial Point");
+                          unscoreObjectiveAsync(
+                            gameid,
+                            faction,
+                            "Imperial Point"
+                          );
                         }}
                       >
                         -
@@ -1893,12 +1924,12 @@ export function ObjectivePanel({}) {
                         if (!gameid) {
                           return;
                         }
-                        scoreObjective(gameid, faction, "Imperial Point");
+                        scoreObjectiveAsync(gameid, faction, "Imperial Point");
                       }}
                     >
                       +
                     </div>
-                    <FullFactionSymbol faction={faction} />
+                    <FactionIcon factionId={faction} size="100%" />
                     <div
                       className="flexRow"
                       style={{
@@ -1925,7 +1956,7 @@ export function ObjectivePanel({}) {
           <div className="flexColumn" style={{ gridColumn: "1 / 3" }}>
             <SimpleScorable
               objective={imperialRider}
-              orderedFactionNames={orderedFactionNames}
+              orderedFactionNames={orderedFactionIds}
               numScorers={includesPoK ? 2 : 1}
               info="Can be scored 2x due to The Codex"
             />
@@ -1947,11 +1978,11 @@ export function ObjectivePanel({}) {
               >
                 <SimpleScorable
                   objective={shardOfTheThrone}
-                  orderedFactionNames={orderedFactionNames}
+                  orderedFactionNames={orderedFactionIds}
                 />
                 <SimpleScorable
                   objective={tomb}
-                  orderedFactionNames={orderedFactionNames}
+                  orderedFactionNames={orderedFactionIds}
                 />
               </div>
             </LabeledDiv>
@@ -1968,27 +1999,27 @@ export function ObjectivePanel({}) {
           >
             <SimpleScorable
               objective={holyPlanet}
-              orderedFactionNames={orderedFactionNames}
+              orderedFactionNames={orderedFactionIds}
               numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
             />
             {!includesPoK ? (
               <SimpleScorable
                 objective={shardOfTheThrone}
-                orderedFactionNames={orderedFactionNames}
+                orderedFactionNames={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed"
               />
             ) : null}
             <SimpleScorable
               objective={crown}
-              orderedFactionNames={orderedFactionNames}
+              orderedFactionNames={orderedFactionIds}
               numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
             />
             <SimpleScorable
               objective={politicalCensure}
-              orderedFactionNames={orderedFactionNames}
+              orderedFactionNames={orderedFactionIds}
             />
           </LabeledDiv>
           <LabeledDiv
@@ -2020,9 +2051,9 @@ export function ObjectivePanel({}) {
                         return;
                       }
                       if (mutinyDirection === "[For]") {
-                        setObjectivePoints(gameid, "Mutiny", -1);
+                        setObjectivePointsAsync(gameid, "Mutiny", -1);
                       } else {
-                        setObjectivePoints(gameid, "Mutiny", 1);
+                        setObjectivePointsAsync(gameid, "Mutiny", 1);
                       }
                     }}
                   >
@@ -2033,26 +2064,26 @@ export function ObjectivePanel({}) {
                   className={styles.factionIconRow}
                   style={
                     {
-                      "--num-factions": orderedFactionNames.length,
+                      "--num-factions": orderedFactionIds.length,
                     } as NumFactionsCSS
                   }
                 >
-                  {Object.values(orderedFactionNames).map((factionName) => {
+                  {Object.values(orderedFactionIds).map((factionId) => {
                     const scoredObjective = (mutiny?.scorers ?? []).includes(
-                      factionName
+                      factionId
                     );
                     return (
                       <div
-                        key={factionName}
+                        key={factionId}
                         className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                         onClick={() => {
                           if (!gameid) {
                             return;
                           }
                           if (scoredObjective) {
-                            unscoreObjective(gameid, factionName, mutiny.name);
+                            unscoreObjectiveAsync(gameid, factionId, mutiny.id);
                           } else {
-                            scoreObjective(gameid, factionName, mutiny.name);
+                            scoreObjectiveAsync(gameid, factionId, mutiny.id);
                           }
                         }}
                       >
@@ -2064,12 +2095,12 @@ export function ObjectivePanel({}) {
                           style={
                             {
                               "--color": getFactionColor(
-                                (factions ?? {})[factionName]
+                                (factions ?? {})[factionId]
                               ),
                             } as ExtendedCSS
                           }
                         >
-                          <FullFactionSymbol faction={factionName} />
+                          <FactionIcon factionId={factionId} size="100%" />
                         </div>
                       </div>
                     );
@@ -2089,26 +2120,26 @@ export function ObjectivePanel({}) {
                   className={styles.factionIconRow}
                   style={
                     {
-                      "--num-factions": orderedFactionNames.length,
+                      "--num-factions": orderedFactionIds.length,
                     } as NumFactionsCSS
                   }
                 >
-                  {Object.values(orderedFactionNames).map((factionName) => {
+                  {Object.values(orderedFactionIds).map((factionId) => {
                     const scoredObjective = (seed?.scorers ?? []).includes(
-                      factionName
+                      factionId
                     );
                     return (
                       <div
-                        key={factionName}
+                        key={factionId}
                         className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                         onClick={() => {
                           if (!gameid) {
                             return;
                           }
                           if (scoredObjective) {
-                            unscoreObjective(gameid, factionName, seed.name);
+                            unscoreObjectiveAsync(gameid, factionId, seed.id);
                           } else {
-                            scoreObjective(gameid, factionName, seed.name);
+                            scoreObjectiveAsync(gameid, factionId, seed.id);
                           }
                         }}
                       >
@@ -2120,12 +2151,12 @@ export function ObjectivePanel({}) {
                           style={
                             {
                               "--color": getFactionColor(
-                                (factions ?? {})[factionName]
+                                (factions ?? {})[factionId]
                               ),
                             } as ExtendedCSS
                           }
                         >
-                          <FullFactionSymbol faction={factionName} />
+                          <FactionIcon factionId={factionId} size="100%" />
                         </div>
                       </div>
                     );
@@ -2147,14 +2178,13 @@ function SimpleScorable({
   info,
 }: {
   objective: Objective | undefined;
-  orderedFactionNames: string[];
+  orderedFactionNames: FactionId[];
   numScorers?: number;
   info?: string;
 }) {
   const router = useRouter();
   const { game: gameId }: { game?: string } = router.query;
-  const gameData = useGameData(gameId, ["factions"]);
-  const factions = gameData.factions;
+  const factions = useContext(FactionContext);
 
   const [showInfoModal, setShowInfoModal] = useState(false);
   if (!objective) {
@@ -2200,17 +2230,21 @@ function SimpleScorable({
         {objective.name}
         <div className="flexRow">
           <FactionSelectRadialMenu
-            selectedFaction={objectiveScorers[0]}
-            options={orderedFactionNames}
-            onSelect={(factionName) => {
+            selectedFaction={objectiveScorers[0] as FactionId | undefined}
+            factions={orderedFactionNames}
+            onSelect={(factionId) => {
               if (!gameId) {
                 return;
               }
               if (objectiveScorers[0]) {
-                unscoreObjective(gameId, objectiveScorers[0], objective.name);
+                unscoreObjectiveAsync(
+                  gameId,
+                  objectiveScorers[0],
+                  objective.id
+                );
               }
-              if (factionName) {
-                scoreObjective(gameId, factionName, objective.name);
+              if (factionId) {
+                scoreObjectiveAsync(gameId, factionId, objective.id);
               }
             }}
             borderColor={
@@ -2222,17 +2256,21 @@ function SimpleScorable({
           {/* TODO: Only show this if The Codex has been gained */}
           {numScorers > 1 && objectiveScorers[0] ? (
             <FactionSelectRadialMenu
-              selectedFaction={objectiveScorers[1]}
-              options={orderedFactionNames}
-              onSelect={(factionName) => {
+              selectedFaction={objectiveScorers[1] as FactionId | undefined}
+              factions={orderedFactionNames}
+              onSelect={(factionId) => {
                 if (!gameId) {
                   return;
                 }
                 if (objectiveScorers[1]) {
-                  unscoreObjective(gameId, objectiveScorers[1], objective.name);
+                  unscoreObjectiveAsync(
+                    gameId,
+                    objectiveScorers[1],
+                    objective.id
+                  );
                 }
-                if (factionName) {
-                  scoreObjective(gameId, factionName, objective.name);
+                if (factionId) {
+                  scoreObjectiveAsync(gameId, factionId, objective.id);
                 }
               }}
               tag={

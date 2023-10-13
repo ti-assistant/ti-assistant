@@ -1,55 +1,76 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { AddPlanetList } from "../../../src/AddPlanetList";
 import { AddTechList } from "../../../src/AddTechList";
 import { AgendaRow } from "../../../src/AgendaRow";
-import {
-  FactionCard,
-  FullFactionSymbol,
-  StartingComponents,
-} from "../../../src/FactionCard";
 import { FactionSummary } from "../../../src/FactionSummary";
-import { NonGameHeader } from "../../../src/Header";
+import { MobileHeader } from "../../../src/MobileHeader";
 import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
-import {
-  BLACK_BORDER_GLOW,
-  LabeledDiv,
-  LabeledLine,
-} from "../../../src/LabeledDiv";
 import { LockedButtons } from "../../../src/LockedButton";
-import { Modal } from "../../../src/Modal";
 import { ObjectiveList } from "../../../src/ObjectiveList";
-import { ObjectiveRow } from "../../../src/ObjectiveRow";
-import { PlanetRow } from "../../../src/PlanetRow";
 import { SelectableRow } from "../../../src/SelectableRow";
 import { Selector } from "../../../src/Selector";
 import { Tab, TabBody } from "../../../src/Tab";
 import { TechRow } from "../../../src/TechRow";
 import { StaticFactionTimer } from "../../../src/Timer";
-import { Updater } from "../../../src/Updater";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import {
   canFactionVote,
   computeRemainingVotes,
   getTargets,
 } from "../../../src/VoteCount";
-import { useGameData } from "../../../src/data/GameData";
+import FactionCard from "../../../src/components/FactionCard/FactionCard";
+import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
+import LabeledLine from "../../../src/components/LabeledLine/LabeledLine";
+import Modal from "../../../src/components/Modal/Modal";
+import PlanetRow from "../../../src/components/PlanetRow/PlanetRow";
+import StartingComponents from "../../../src/components/StartingComponents/StartingComponents";
+import Updater from "../../../src/components/Updater/Updater";
+import {
+  ActionLogContext,
+  AgendaContext,
+  AttachmentContext,
+  FactionContext,
+  ObjectiveContext,
+  OptionContext,
+  PlanetContext,
+  StateContext,
+  StrategyCardContext,
+  TechContext,
+} from "../../../src/context/Context";
+import {
+  addTechAsync,
+  advancePhaseAsync,
+  castVotesAsync,
+  claimPlanetAsync,
+  hideAgendaAsync,
+  hideObjectiveAsync,
+  markSecondaryAsync,
+  removeTechAsync,
+  resolveAgendaAsync,
+  revealAgendaAsync,
+  revealObjectiveAsync,
+  scoreObjectiveAsync,
+  selectEligibleOutcomesAsync,
+  speakerTieBreakAsync,
+  unclaimPlanetAsync,
+  undoAsync,
+  unscoreObjectiveAsync,
+} from "../../../src/dynamic/api";
 import {
   AdditionalActions,
   FactionActionButtons,
   NextPlayerButtons,
   advanceToStatusPhase,
 } from "../../../src/main/ActionPhase";
-import { computeVotes, startNextRound } from "../../../src/main/AgendaPhase";
+import { computeVotes } from "../../../src/main/AgendaPhase";
 import {
   setupPhaseComplete,
   startFirstRound,
 } from "../../../src/main/SetupPhase";
-import {
-  advanceToAgendaPhase,
-  statusPhaseComplete,
-} from "../../../src/main/StatusPhase";
+import { statusPhaseComplete } from "../../../src/main/StatusPhase";
 import {
   StrategyCardSelectList,
   advanceToActionPhase,
@@ -65,31 +86,10 @@ import {
   getCurrentPhasePreviousLogEntries,
   getCurrentTurnLogEntries,
 } from "../../../src/util/api/actionLog";
-import { addTech, removeTech } from "../../../src/util/api/addTech";
-import { Agenda, OutcomeType } from "../../../src/util/api/agendas";
-import { castVotes } from "../../../src/util/api/castVotes";
-import { claimPlanet, unclaimPlanet } from "../../../src/util/api/claimPlanet";
-import { getSelectedAction, undo } from "../../../src/util/api/data";
-import { getDefaultStrategyCards } from "../../../src/util/api/defaults";
-import { Faction } from "../../../src/util/api/factions";
-import { markSecondary } from "../../../src/util/api/markSecondary";
-import { ObjectiveType } from "../../../src/util/api/objectives";
-import { resolveAgenda } from "../../../src/util/api/resolveAgenda";
-import { hideAgenda, revealAgenda } from "../../../src/util/api/revealAgenda";
-import {
-  hideObjective,
-  revealObjective,
-} from "../../../src/util/api/revealObjective";
-import {
-  scoreObjective,
-  unscoreObjective,
-} from "../../../src/util/api/scoreObjective";
-import { selectEligibleOutcomes } from "../../../src/util/api/selectEligibleOutcomes";
-import { speakerTieBreak } from "../../../src/util/api/speakerTieBreak";
-import { Tech, TechType, hasTech } from "../../../src/util/api/techs";
+import { getSelectedActionFromLog } from "../../../src/util/api/data";
 import { setGameId } from "../../../src/util/api/util";
+import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
 import { getFactionColor } from "../../../src/util/factions";
-import { RevealObjectiveData } from "../../../src/util/model/revealObjective";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
@@ -99,6 +99,7 @@ import {
   filterToUnownedTechs,
 } from "../../../src/util/techs";
 import { responsivePixels } from "../../../src/util/util";
+import ObjectiveRow from "../../../src/components/ObjectiveRow/ObjectiveRow";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -109,7 +110,6 @@ function SecondaryCheck({
   faction: Faction;
   gameid: string;
 }) {
-  const factionName = faction.name;
   const secondaryState = faction.secondary ?? "PENDING";
   return (
     <div className="flexRow">
@@ -117,14 +117,14 @@ function SecondaryCheck({
         <React.Fragment>
           <button
             onClick={() => {
-              markSecondary(gameid, factionName, "DONE");
+              markSecondaryAsync(gameid, faction.id, "DONE");
             }}
           >
             Mark Completed
           </button>
           <button
             onClick={() => {
-              markSecondary(gameid, factionName, "SKIPPED");
+              markSecondaryAsync(gameid, faction.id, "SKIPPED");
             }}
           >
             Skip
@@ -133,7 +133,7 @@ function SecondaryCheck({
       ) : (
         <button
           onClick={() => {
-            markSecondary(gameid, factionName, "PENDING");
+            markSecondaryAsync(gameid, faction.id, "PENDING");
           }}
         >
           Not Done Yet
@@ -147,85 +147,75 @@ function PhaseSection() {
   const router = useRouter();
   const {
     game: gameid,
-    faction: factionName,
-  }: { game?: string; faction?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "attachments",
-    "factions",
-    "planets",
-    "objectives",
-    "options",
-    "state",
-    "strategycards",
-  ]);
-  const agendas = gameData.agendas ?? {};
-  const attachments = gameData.attachments ?? {};
-  const factions = gameData.factions ?? {};
-  const planets = gameData.planets ?? {};
-  const objectives = gameData.objectives ?? {};
-  const options = gameData.options;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+    faction: factionId,
+  }: { game?: string; faction?: FactionId } = router.query;
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const planets = useContext(PlanetContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
   const voteRef = useRef<HTMLDivElement>(null);
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
   let currentAgenda: Agenda | undefined;
   const activeAgenda = getActiveAgenda(currentTurn);
   if (activeAgenda) {
     currentAgenda = (agendas ?? {})[activeAgenda];
   }
 
-  function addObj(objectiveName: string) {
+  function addObj(objectiveId: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    revealObjective(gameid, objectiveName);
+    revealObjectiveAsync(gameid, objectiveId);
   }
-  function removeObj(objectiveName: string) {
+  function removeObj(objectiveId: ObjectiveId) {
     if (!gameid) {
       return;
     }
-    hideObjective(gameid, objectiveName);
+    hideObjectiveAsync(gameid, objectiveId);
   }
-  function scoreObj(objectiveName: string) {
-    if (!gameid || !factionName) {
+  function scoreObj(objectiveId: ObjectiveId) {
+    if (!gameid || !factionId) {
       return;
     }
-    scoreObjective(gameid, factionName, objectiveName);
+    scoreObjectiveAsync(gameid, factionId, objectiveId);
   }
-  function unscoreObj(objectiveName: string) {
-    if (!gameid || !factionName) {
+  function unscoreObj(objectiveId: ObjectiveId) {
+    if (!gameid || !factionId) {
       return;
     }
-    unscoreObjective(gameid, factionName, objectiveName);
+    unscoreObjectiveAsync(gameid, factionId, objectiveId);
   }
-  function selectAgenda(agendaName: string) {
+  function selectAgenda(agendaId: AgendaId) {
     if (!gameid) {
       return;
     }
-    revealAgenda(gameid, agendaName);
+    revealAgendaAsync(gameid, agendaId);
   }
-  function hideAgendaLocal(agendaName: string) {
+  function hideAgendaLocal(agendaId: AgendaId) {
     if (!gameid) {
       return;
     }
-    hideAgenda(gameid, agendaName);
+    hideAgendaAsync(gameid, agendaId);
   }
   function selectEligibleOutcome(outcome: OutcomeType | "None") {
     if (!gameid) {
       return;
     }
-    selectEligibleOutcomes(gameid, outcome);
+    selectEligibleOutcomesAsync(gameid, outcome);
   }
   function selectSpeakerTieBreak(tieBreak: string | null) {
     if (!gameid) {
       return;
     }
-    speakerTieBreak(gameid, tieBreak ?? "None");
+    speakerTieBreakAsync(gameid, tieBreak ?? "None");
   }
-  if (!factionName) {
+  if (!factionId) {
     return null;
   }
 
@@ -271,21 +261,21 @@ function PhaseSection() {
       return target;
     });
   const isTie = selectedTargets.length !== 1;
-  const ownedPlanets = filterToClaimedPlanets(planets, factionName);
+  const ownedPlanets = filterToClaimedPlanets(planets, factionId);
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
   const { influence, extraVotes } = computeRemainingVotes(
-    factionName,
+    factionId,
     factions,
     planets,
     attachments,
     agendas,
     options,
     state,
-    getCurrentPhasePreviousLogEntries(gameData.actionLog ?? [])
+    getCurrentPhasePreviousLogEntries(actionLog)
   );
 
-  const faction = factions[factionName];
+  const faction = factions[factionId];
   if (!faction) {
     return null;
   }
@@ -304,19 +294,19 @@ function PhaseSection() {
     if (!target || !currentAgenda) {
       return;
     }
-    resolveAgenda(gameid, currentAgenda?.name, target);
+    resolveAgendaAsync(gameid, currentAgenda?.id, target);
   }
   function castVotesLocal(target: string | undefined, votes: number) {
-    if (!gameid || !factionName) {
+    if (!gameid || !factionId) {
       return;
     }
     if (target === "Abstain") {
-      castVotes(gameid, factionName, 0, "Abstain");
+      castVotesAsync(gameid, factionId, 0, "Abstain");
     } else {
-      castVotes(gameid, factionName, votes, target);
+      castVotesAsync(gameid, factionId, votes, target);
     }
   }
-  const factionVotes = getFactionVotes(currentTurn, factionName);
+  const factionVotes = getFactionVotes(currentTurn, factionId);
   function saveCastVotes(element: HTMLDivElement) {
     if (element.innerText !== "") {
       const numerical = parseInt(element.innerText);
@@ -333,7 +323,7 @@ function PhaseSection() {
   let phaseContent = null;
   switch (state?.phase) {
     case "SETUP": {
-      const revealedObjectiveNames = currentTurn
+      const revealedObjectiveIds = currentTurn
         .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
         .map(
           (logEntry) => (logEntry.data as RevealObjectiveData).event.objective
@@ -342,7 +332,7 @@ function PhaseSection() {
         (objective) => {
           return (
             objective.type === "STAGE ONE" &&
-            !revealedObjectiveNames.includes(objective.name)
+            !revealedObjectiveIds.includes(objective.id)
           );
         }
       );
@@ -351,29 +341,29 @@ function PhaseSection() {
         <React.Fragment>
           <LabeledDiv label="Starting Components">
             <div style={{ fontSize: "16px", whiteSpace: "nowrap" }}>
-              <StartingComponents faction={faction} />
+              <StartingComponents factionId={faction.id} />
             </div>
           </LabeledDiv>
           <LabeledDiv label="Speaker Actions">
-            {revealedObjectiveNames.length > 0 ? (
+            {revealedObjectiveIds.length > 0 ? (
               <LabeledDiv label="REVEALED OBJECTIVES">
-                {revealedObjectiveNames.map((objectiveName) => {
-                  const objectiveObj = objectives[objectiveName];
+                {revealedObjectiveIds.map((objectiveId) => {
+                  const objectiveObj = objectives[objectiveId];
                   if (!objectiveObj) {
                     return null;
                   }
                   return (
                     <ObjectiveRow
-                      key={objectiveName}
+                      key={objectiveId}
                       objective={objectiveObj}
-                      removeObjective={() => removeObj(objectiveName)}
+                      removeObjective={() => removeObj(objectiveId)}
                       viewing={true}
                     />
                   );
                 })}
               </LabeledDiv>
             ) : null}
-            {revealedObjectiveNames.length < 2 ? (
+            {revealedObjectiveIds.length < 2 ? (
               <ClientOnlyHoverMenu label="Reveal Objective">
                 <div
                   className="flexRow"
@@ -397,9 +387,9 @@ function PhaseSection() {
                     .map((objective) => {
                       return (
                         <button
-                          key={objective.name}
+                          key={objective.id}
                           style={{ writingMode: "horizontal-tb" }}
-                          onClick={() => addObj(objective.name)}
+                          onClick={() => addObj(objective.id)}
                         >
                           {objective.name}
                         </button>
@@ -419,10 +409,10 @@ function PhaseSection() {
         return (
           !!lastAction &&
           lastAction.data.action === "ASSIGN_STRATEGY_CARD" &&
-          lastAction.data.event.pickedBy === factionName
+          lastAction.data.event.pickedBy === factionId
         );
       }
-      if (factionName === state.activeplayer) {
+      if (factionId === state.activeplayer) {
         centerLabel = "SELECT STRATEGY CARD";
         phaseContent = (
           <div className="flexColumn" style={{ width: "100%" }}>
@@ -442,7 +432,7 @@ function PhaseSection() {
               if (!gameid) {
                 return;
               }
-              undo(gameid);
+              undoAsync(gameid);
             }}
           >
             Undo SC Pick
@@ -451,28 +441,25 @@ function PhaseSection() {
       }
       break;
     case "ACTION":
-      const selectedAction = getSelectedAction(gameData);
-      if (factionName === state.activeplayer) {
+      const selectedAction = getSelectedActionFromLog(actionLog);
+      if (factionId === state.activeplayer) {
         centerLabel = "SELECT ACTION";
         phaseContent = (
           <React.Fragment>
-            <FactionActionButtons factionName={factionName} />
+            <FactionActionButtons factionId={factionId} />
             <div
               className="flexColumn"
               style={{ width: "95%", alignItems: "flex-start" }}
             >
               <AdditionalActions
-                factionName={factionName}
+                factionId={factionId}
                 style={{ width: "100%", alignItems: "flex-start" }}
                 primaryOnly={true}
               />
             </div>
             {selectedAction ? (
               <div className="flexRow" style={{ width: "100%" }}>
-                <NextPlayerButtons
-                  factionName={factionName}
-                  buttonStyle={{ fontSize: "20px" }}
-                />
+                <NextPlayerButtons buttonStyle={{ fontSize: "20px" }} />
               </div>
             ) : null}
           </React.Fragment>
@@ -516,7 +503,7 @@ function PhaseSection() {
             );
             break;
           case "Technology":
-            if (factionName === "Nekro Virus") {
+            if (factionId === "Nekro Virus") {
               leftLabel = "Technology Secondary";
               phaseContent = (
                 <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
@@ -524,7 +511,7 @@ function PhaseSection() {
             } else {
               phaseContent = (
                 <AdditionalActions
-                  factionName={factionName}
+                  factionId={factionId}
                   style={{ width: "100%" }}
                   secondaryOnly={true}
                 />
@@ -551,23 +538,23 @@ function PhaseSection() {
             objective.selected &&
             (objective.type === "STAGE ONE" ||
               objective.type === "STAGE TWO") &&
-            !(objective.scorers ?? []).includes(factionName)
+            !(objective.scorers ?? []).includes(factionId)
           );
         }
       );
       const canScoreObjectives = Object.values(planets ?? {}).reduce(
         (canScore, planet) => {
-          if (faction.name === "Clan of Saar") {
+          if (faction.id === "Clan of Saar") {
             return true;
           }
-          let planetFaction = faction.name;
-          if (faction.name === "Council Keleres") {
+          let planetFaction = faction.id;
+          if (faction.id === "Council Keleres") {
             planetFaction = faction.startswith.faction ?? planetFaction;
           }
           if (
             planet.home &&
             planet.faction === planetFaction &&
-            planet.owner !== faction.name
+            planet.owner !== faction.id
           ) {
             return false;
           }
@@ -578,11 +565,11 @@ function PhaseSection() {
       const secrets = Object.values(objectives ?? {}).filter((objective) => {
         return (
           objective.type === "SECRET" &&
-          !(objective.scorers ?? []).includes(factionName) &&
+          !(objective.scorers ?? []).includes(factionId) &&
           objective.phase === "STATUS"
         );
       });
-      const scoredObjectives = getScoredObjectives(currentTurn, factionName);
+      const scoredObjectives = getScoredObjectives(currentTurn, factionId);
       const scoredPublics = scoredObjectives.filter((objective) => {
         return (
           (objectives[objective] ?? {}).type === "STAGE ONE" ||
@@ -602,7 +589,9 @@ function PhaseSection() {
         .map(
           (logEntry) => (logEntry.data as RevealObjectiveData).event.objective
         )[0];
-      const revealedObjectiveObj = objectives[revealedObjective ?? ""];
+      const revealedObjectiveObj = revealedObjective
+        ? objectives[revealedObjective]
+        : undefined;
       centerLabel = "SCORE OBJECTIVES";
       phaseContent = (
         <React.Fragment>
@@ -621,7 +610,7 @@ function PhaseSection() {
                 style={{ whiteSpace: "nowrap" }}
               >
                 <SelectableRow
-                  itemName={scoredPublics[0]}
+                  itemId={scoredPublics[0]}
                   removeItem={unscoreObj}
                 >
                   {scoredPublics[0]}
@@ -646,8 +635,8 @@ function PhaseSection() {
                   {availableObjectives.map((objective) => {
                     return (
                       <button
-                        key={objective.name}
-                        onClick={() => scoreObj(objective.name)}
+                        key={objective.id}
+                        onClick={() => scoreObj(objective.id)}
                       >
                         {objective.name}
                       </button>
@@ -662,7 +651,7 @@ function PhaseSection() {
                 style={{ whiteSpace: "nowrap" }}
               >
                 <SelectableRow
-                  itemName={scoredSecrets[0]}
+                  itemId={scoredSecrets[0]}
                   removeItem={unscoreObj}
                 >
                   {scoredSecrets[0]}
@@ -688,9 +677,9 @@ function PhaseSection() {
                   {secrets.map((objective) => {
                     return (
                       <button
-                        key={objective.name}
+                        key={objective.id}
                         style={{ writingMode: "horizontal-tb" }}
-                        onClick={() => scoreObj(objective.name)}
+                        onClick={() => scoreObj(objective.id)}
                       >
                         {objective.name}
                       </button>
@@ -705,7 +694,7 @@ function PhaseSection() {
               <LabeledDiv label="REVEALED OBJECTIVE">
                 <ObjectiveRow
                   objective={revealedObjectiveObj}
-                  removeObjective={() => removeObj(revealedObjectiveObj.name)}
+                  removeObjective={() => removeObj(revealedObjectiveObj.id)}
                   viewing={true}
                 />
               </LabeledDiv>
@@ -742,9 +731,9 @@ function PhaseSection() {
                       .map((objective) => {
                         return (
                           <button
-                            key={objective.name}
+                            key={objective.id}
                             style={{ writingMode: "horizontal-tb" }}
-                            onClick={() => addObj(objective.name)}
+                            onClick={() => addObj(objective.id)}
                           >
                             {objective.name}
                           </button>
@@ -792,9 +781,9 @@ function PhaseSection() {
                   {orderedAgendas.map((agenda) => {
                     return (
                       <button
-                        key={agenda.name}
+                        key={agenda.id}
                         style={{ writingMode: "horizontal-tb" }}
-                        onClick={() => selectAgenda(agenda.name)}
+                        onClick={() => selectAgenda(agenda.id)}
                       >
                         {agenda.name}
                       </button>
@@ -813,19 +802,19 @@ function PhaseSection() {
                       if (!currentAgenda) {
                         return;
                       }
-                      hideAgendaLocal(currentAgenda.name);
+                      hideAgendaLocal(currentAgenda.id);
                     }}
                   />
                 </LabeledDiv>
               </div>
-              {currentAgenda.name === "Covert Legislation" ? (
+              {currentAgenda.id === "Covert Legislation" ? (
                 eligibleOutcomes ? (
                   <LabeledDiv
                     label="ELIGIBLE OUTCOMES"
                     style={{ paddingTop: "8px" }}
                   >
                     <SelectableRow
-                      itemName={eligibleOutcomes}
+                      itemId={eligibleOutcomes}
                       removeItem={() => selectEligibleOutcome("None")}
                     >
                       <div style={{ display: "flex", fontSize: "18px" }}>
@@ -872,7 +861,7 @@ function PhaseSection() {
             >
               <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
               {!canFactionVote(
-                factionName,
+                factionId,
                 agendas,
                 state,
                 factions,
@@ -894,9 +883,9 @@ function PhaseSection() {
                       selectedLabel="Selected Outcome"
                       options={targets}
                       selectedItem={factionVotes?.target}
-                      toggleItem={(itemName, add) => {
+                      toggleItem={(itemId, add) => {
                         if (add) {
-                          castVotesLocal(itemName, 0);
+                          castVotesLocal(itemId, 0);
                         } else {
                           castVotesLocal(undefined, 0);
                         }
@@ -1040,7 +1029,7 @@ function PhaseSection() {
                     style={{ paddingTop: "8px" }}
                   >
                     <SelectableRow
-                      itemName={tieBreak}
+                      itemId={tieBreak}
                       removeItem={() => selectSpeakerTieBreak(null)}
                     >
                       {tieBreak}
@@ -1092,19 +1081,12 @@ function FactionContent() {
   const {
     game: gameid,
     faction: playerFaction,
-  }: { game?: string; faction?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "attachments",
-    "factions",
-    "objectives",
-    "planets",
-    "techs",
-  ]);
-  const attachments = gameData.attachments ?? {};
-  const factions = gameData.factions ?? {};
-  const objectives = gameData.objectives ?? {};
-  const planets = gameData.planets ?? {};
-  const techs = gameData.techs ?? {};
+  }: { game?: string; faction?: FactionId } = router.query;
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
+  const techs = useContext(TechContext);
 
   if (!factions || !playerFaction) {
     return null;
@@ -1128,35 +1110,35 @@ function FactionContent() {
     setShowAddTech(!showAddTech);
   }
 
-  function removePlanet(toRemove: string) {
+  function removePlanet(toRemove: PlanetId) {
     if (!gameid || !playerFaction) {
       return;
     }
-    unclaimPlanet(gameid, playerFaction, toRemove);
+    unclaimPlanetAsync(gameid, playerFaction, toRemove);
   }
 
-  function addPlanet(toAdd: string) {
+  function addPlanet(toAdd: PlanetId) {
     if (!gameid || !playerFaction) {
       return;
     }
-    claimPlanet(gameid, playerFaction, toAdd);
+    claimPlanetAsync(gameid, playerFaction, toAdd);
   }
 
-  function removeTechLocal(toRemove: string) {
+  function removeTechLocal(toRemove: TechId) {
     if (!gameid || !playerFaction) {
       return;
     }
-    removeTech(gameid, playerFaction, toRemove);
+    removeTechAsync(gameid, playerFaction, toRemove);
   }
 
-  function addTechLocal(toAdd: string) {
+  function addTechLocal(toAdd: TechId) {
     if (!gameid || !playerFaction) {
       return;
     }
-    addTech(gameid, playerFaction, toAdd);
+    addTechAsync(gameid, playerFaction, toAdd);
   }
 
-  const techsObj: Record<string, Tech> = {};
+  const techsObj: Partial<Record<TechId, Tech>> = {};
   Object.values(techs ?? {}).forEach((tech) => {
     if (tech.faction) {
       if (playerFaction === "Nekro Virus" && !factions[tech.faction]) {
@@ -1168,7 +1150,7 @@ function FactionContent() {
         return;
       }
     }
-    techsObj[tech.name] = tech;
+    techsObj[tech.id] = tech;
   });
   if (playerFaction !== "Nekro Virus") {
     Object.values(techsObj).forEach((tech) => {
@@ -1226,10 +1208,7 @@ function FactionContent() {
       >
         <AddPlanetList planets={planets} addPlanet={addPlanet} />
       </Modal>
-      <FactionSummary
-        factionName={playerFaction}
-        options={{ showIcon: true }}
-      />
+      <FactionSummary factionId={playerFaction} options={{ showIcon: true }} />
       <div
         style={{
           width: "100%",
@@ -1303,7 +1282,7 @@ function FactionContent() {
                     {ownedTechs.map((tech) => {
                       return (
                         <TechRow
-                          key={tech.name}
+                          key={tech.id}
                           tech={tech}
                           removeTech={removeTechLocal}
                         />
@@ -1328,8 +1307,8 @@ function FactionContent() {
                     {updatedPlanets.map((planet) => {
                       return (
                         <PlanetRow
-                          key={planet.name}
-                          factionName={playerFaction}
+                          key={planet.id}
+                          factionId={playerFaction}
                           planet={planet}
                           removePlanet={removePlanet}
                         />
@@ -1354,22 +1333,36 @@ function FactionContent() {
 }
 
 export default function GamePage() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100svh",
+      }}
+    >
+      {/* <DataProvider> */}
+      <DndProvider backend={HTML5Backend}>
+        <InnerFactionPage />
+      </DndProvider>
+      {/* </DataProvider> */}
+    </div>
+  );
+}
+
+function InnerFactionPage({}) {
   const router = useRouter();
   const {
     game: gameid,
     faction: playerFaction,
-  }: { game?: string; faction?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "factions",
-    "state",
-    "strategycards",
-  ]);
-  const factions = gameData.factions;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  }: { game?: string; faction?: FactionId } = router.query;
+  const actionLog = useContext(ActionLogContext);
+  const factions = useContext(FactionContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
   const revealedObjectives = currentTurn
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
     .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
@@ -1388,12 +1381,12 @@ export default function GamePage() {
 
   if (!faction) {
     router.push(`/game/${gameid}`);
-    return;
+    return null;
   }
 
-  function swapToFaction(factionName: string) {
-    router.push(`/game/${gameid}/${factionName}`);
-    return;
+  function swapToFaction(factionId: FactionId) {
+    router.push(`/game/${gameid}/${factionId}`);
+    return null;
   }
 
   let orderedFactions: Faction[] = [];
@@ -1412,15 +1405,15 @@ export default function GamePage() {
       const orderedCards = Object.values(strategyCards).sort(
         (a, b) => a.order - b.order
       );
-      const orderedNames: string[] = [];
+      const orderedIds: FactionId[] = [];
       for (const card of orderedCards) {
-        if (card.faction && !orderedNames.includes(card.faction)) {
-          orderedNames.push(card.faction);
+        if (card.faction && !orderedIds.includes(card.faction)) {
+          orderedIds.push(card.faction);
         }
       }
 
-      for (const factionName of orderedNames) {
-        const faction = factions[factionName];
+      for (const factionId of orderedIds) {
+        const faction = factions[factionId];
         if (!faction) {
           continue;
         }
@@ -1514,7 +1507,7 @@ export default function GamePage() {
               if (!gameid) {
                 return;
               }
-              startNextRound(gameid);
+              advancePhaseAsync(gameid, true);
             },
           });
         }
@@ -1524,14 +1517,14 @@ export default function GamePage() {
             if (!gameid) {
               return;
             }
-            advanceToAgendaPhase(gameid);
+            advancePhaseAsync(gameid);
           },
         });
         return (
           <div className="flexColumn" style={{ marginTop: "8px" }}>
             <LockedButtons
               unlocked={statusPhaseComplete(
-                getCurrentTurnLogEntries(gameData.actionLog ?? [])
+                getCurrentTurnLogEntries(actionLog)
               )}
               buttons={buttons}
             />
@@ -1549,7 +1542,7 @@ export default function GamePage() {
                     if (!gameid) {
                       return;
                     }
-                    startNextRound(gameid);
+                    advancePhaseAsync(gameid, true);
                   },
                 },
               ]}
@@ -1561,107 +1554,88 @@ export default function GamePage() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100svh",
-      }}
-    >
-      <DndProvider backend={HTML5Backend}>
-        <NonGameHeader />
-        <Updater />
+    <>
+      <MobileHeader />
+      <Updater />
+      <div
+        className="flexColumn"
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "800px",
+          marginTop: responsivePixels(54),
+        }}
+      >
         <div
           className="flexColumn"
           style={{
-            position: "relative",
             width: "100%",
-            maxWidth: "800px",
-            marginTop: responsivePixels(54),
+            gap: "4px",
+            fontSize: "18px",
           }}
         >
+          <LabeledLine
+            leftLabel={state?.phase + " PHASE"}
+            rightLabel={"ROUND " + state?.round}
+          />
+          {orderTitle}
           <div
-            className="flexColumn"
-            style={{
-              width: "100%",
-              gap: "4px",
-              fontSize: "18px",
-            }}
+            className="flexRow"
+            style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
           >
-            <LabeledLine
-              leftLabel={state?.phase + " PHASE"}
-              rightLabel={"ROUND " + state?.round}
-            />
-            {orderTitle}
-            <div
-              className="flexRow"
-              style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
-            >
-              {orderedFactions.map((faction) => {
-                const color = faction.passed
-                  ? "#555"
-                  : getFactionColor(faction);
-                return (
+            {orderedFactions.map((faction) => {
+              const color = faction.passed ? "#555" : getFactionColor(faction);
+              return (
+                <div
+                  className="flexRow"
+                  key={faction.id}
+                  style={{
+                    position: "relative",
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "8px",
+                    border: `3px solid ${color}`,
+                    boxShadow:
+                      color === "Black" ? BLACK_BORDER_GLOW : undefined,
+                  }}
+                  onClick={() => swapToFaction(faction.id)}
+                >
                   <div
                     className="flexRow"
-                    key={faction.name}
                     style={{
                       position: "relative",
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "8px",
-                      border: `3px solid ${color}`,
-                      boxShadow:
-                        color === "Black" ? BLACK_BORDER_GLOW : undefined,
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "6px",
                     }}
-                    onClick={() => swapToFaction(faction.name)}
                   >
-                    <div
-                      className="flexRow"
-                      style={{
-                        position: "relative",
-                        width: "32px",
-                        height: "32px",
-                        borderRadius: "6px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: "relative",
-                          width: "28px",
-                          height: "28px",
-                        }}
-                      >
-                        <FullFactionSymbol faction={faction.name} />
-                      </div>
-                    </div>
+                    <FactionIcon factionId={faction.id} size={28} />
                   </div>
-                );
-              })}
-            </div>
-            <NextPhaseButtons />
+                </div>
+              );
+            })}
           </div>
-          <div style={{ width: "100%", margin: "4px" }}>
-            <FactionCard
-              faction={faction}
-              style={{ width: "100%" }}
-              rightLabel={
-                <StaticFactionTimer
-                  factionName={playerFaction}
-                  width={80}
-                  style={{
-                    fontSize: responsivePixels(16),
-                  }}
-                />
-              }
-              opts={{ hideTitle: true }}
-            >
-              <FactionContent />
-            </FactionCard>
-          </div>
+          <NextPhaseButtons />
         </div>
-      </DndProvider>
-    </div>
+        <div style={{ width: "100%", margin: "4px" }}>
+          <FactionCard
+            faction={faction}
+            hideIcon
+            style={{ width: "100%" }}
+            rightLabel={
+              <StaticFactionTimer
+                factionId={playerFaction}
+                width={80}
+                style={{
+                  fontSize: responsivePixels(16),
+                }}
+              />
+            }
+          >
+            <FactionContent />
+          </FactionCard>
+        </div>
+      </div>
+    </>
   );
 }

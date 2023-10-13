@@ -1,18 +1,18 @@
 import { mutate } from "swr";
-import { GameUpdateData } from "./state";
-import { StoredGameData, poster } from "./util";
-import { updateGameData, updateActionLog } from "./data";
+import { poster } from "./util";
 import {
   ChooseStartingTechHandler,
   RemoveStartingTechHandler,
 } from "../model/chooseStartingTech";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
 export function chooseStartingTech(
   gameId: string,
-  faction: string,
-  tech: string
+  faction: FactionId,
+  techId: TechId
 ) {
-  const techId = tech.replace(/\//g, "").replace(/\./g, "").replace(" Ω", "");
   const data: GameUpdateData = {
     action: "CHOOSE_STARTING_TECH",
     event: {
@@ -25,18 +25,21 @@ export function chooseStartingTech(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new ChooseStartingTechHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new ChooseStartingTechHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
@@ -45,10 +48,9 @@ export function chooseStartingTech(
 
 export function removeStartingTech(
   gameId: string,
-  faction: string,
-  tech: string
+  faction: FactionId,
+  techId: TechId
 ) {
-  const techId = tech.replace(/\//g, "").replace(/\./g, "").replace(" Ω", "");
   const data: GameUpdateData = {
     action: "REMOVE_STARTING_TECH",
     event: {
@@ -61,18 +63,21 @@ export function removeStartingTech(
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new RemoveStartingTechHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new RemoveStartingTechHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

@@ -1,71 +1,70 @@
-import { useRouter } from "next/router";
-import { computeVPs, FactionSummary } from "../FactionSummary";
-import { LabeledDiv } from "../LabeledDiv";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { responsivePixels } from "../util/util";
+import dynamic from "next/dynamic";
+import { useContext } from "react";
+import { FactionSummary } from "../FactionSummary";
 import { StaticFactionTimer } from "../Timer";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import {
+  FactionContext,
+  ObjectiveContext,
+  OptionContext,
+  StrategyCardContext,
+} from "../context/Context";
+import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
-import { Faction } from "../util/api/factions";
-import { getDefaultStrategyCards } from "../util/api/defaults";
-import { useGameData } from "../data/GameData";
-import { FactionPanel } from "../components/FactionPanel";
+import { responsivePixels } from "../util/util";
 
-function sortByOrder(a: [string, Faction], b: [string, Faction]) {
-  if (a[1].order > b[1].order) {
+const FactionPanel = dynamic(
+  import("../components/FactionPanel").then((mod) => mod.FactionPanel),
+  {
+    loading: () => (
+      <div
+        className="popupIcon"
+        style={{
+          fontSize: responsivePixels(16),
+        }}
+      >
+        &#x24D8;
+      </div>
+    ),
+  }
+);
+
+function sortByOrder(a: Faction, b: Faction) {
+  if (a.order > b.order) {
     return 1;
   } else {
     return -1;
   }
 }
 
-export interface SummaryColumnProps {
+interface SummaryColumnProps {
   order?: "VICTORY_POINTS" | "SPEAKER";
   subOrder?: "INITIATIVE" | "SPEAKER";
 }
 
 export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "factions",
-    "objectives",
-    "options",
-    "state",
-    "strategycards",
-  ]);
-  const factions = gameData.factions;
-  const objectives = gameData.objectives ?? {};
-  const options = gameData.options;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
-
-  if (!options || !factions) {
-    return <div>Loading...</div>;
-  }
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const strategyCards = useContext(StrategyCardContext);
 
   let sortFunction = sortByOrder;
   let title = "Speaker Order";
   switch (order) {
     case "VICTORY_POINTS":
       sortFunction = (a, b) => {
-        const aVPs = computeVPs(factions, a[0], objectives);
-        const bVPs = computeVPs(factions, b[0], objectives);
+        const aVPs = computeVPs(factions, a.id, objectives);
+        const bVPs = computeVPs(factions, b.id, objectives);
         switch (options["game-variant"]) {
           case "alliance-combined":
           case "alliance-separate": {
-            if (a[1].alliancePartner === b[0]) {
+            const aPartner = a.alliancePartner;
+            const bPartner = b.alliancePartner;
+            if (aPartner === b.id || !aPartner || !bPartner) {
               break;
             }
-            const aPartnerVPs = computeVPs(
-              factions,
-              a[1].alliancePartner ?? "",
-              objectives
-            );
-            const bPartnerVPs = computeVPs(
-              factions,
-              b[1].alliancePartner ?? "",
-              objectives
-            );
+            const aPartnerVPs = computeVPs(factions, aPartner, objectives);
+            const bPartnerVPs = computeVPs(factions, bPartner, objectives);
 
             if (aVPs + aPartnerVPs > bVPs + bPartnerVPs) {
               return -1;
@@ -84,19 +83,19 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
         }
         switch (subOrder) {
           case "INITIATIVE":
-            const aInitiative = getInitiativeForFaction(strategyCards, a[0]);
-            const bInitiative = getInitiativeForFaction(strategyCards, b[0]);
+            const aInitiative = getInitiativeForFaction(strategyCards, a.id);
+            const bInitiative = getInitiativeForFaction(strategyCards, b.id);
             if (aInitiative > bInitiative) {
               return 1;
             }
             return -1;
           case "SPEAKER":
-            if (a[1].order > b[1].order) {
+            if (a.order > b.order) {
               return 1;
             }
             return -1;
         }
-        if (a[1].order > b[1].order) {
+        if (a.order > b.order) {
           return 1;
         }
         return -1;
@@ -105,7 +104,19 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
       break;
   }
 
-  const orderedFactions = Object.entries(factions).sort(sortFunction);
+  let orderedFactions: (Faction | undefined)[] =
+    Object.values(factions).sort(sortFunction);
+
+  if (orderedFactions.length === 0) {
+    orderedFactions = [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ];
+  }
 
   const showTechs = options["faction-summary-show-techs"] ?? true;
   const showPlanets = options["faction-summary-show-planets"] ?? true;
@@ -118,15 +129,6 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
 
   const numFactions = Object.keys(factions).length;
 
-  function isActiveFaction(factionName: string) {
-    switch (state?.phase) {
-      case "STRATEGY":
-      case "ACTION":
-        return state?.activeplayer === factionName;
-    }
-    return false;
-  }
-
   return (
     <div
       className="summaryColumn"
@@ -136,19 +138,33 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
     >
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
 
-      {orderedFactions.map(([name, faction]) => {
+      {orderedFactions.map((faction, index) => {
         return (
-          <div key={name}>
+          <div key={index}>
             <LabeledDiv
               label={
-                <div className="flexRow" style={{ gap: 0 }}>
-                  {getFactionName(faction)}
-                  <FactionPanel factionName={faction.name} options={options} />
-                </div>
+                faction ? (
+                  <div className="flexRow" style={{ gap: 0 }}>
+                    {getFactionName(faction)}
+                    <FactionPanel faction={faction} options={options} />
+                  </div>
+                ) : (
+                  <div className="flexRow" style={{ gap: 0 }}>
+                    Loading Faction
+                    <div
+                      className="popupIcon"
+                      style={{
+                        fontSize: responsivePixels(16),
+                      }}
+                    >
+                      &#x24D8;
+                    </div>
+                  </div>
+                )
               }
               rightLabel={
                 <StaticFactionTimer
-                  factionName={name}
+                  factionId={faction?.id ?? "Unknown"}
                   style={{
                     fontSize: responsivePixels(16),
                   }}
@@ -158,7 +174,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
               color={getFactionColor(faction)}
             >
               <FactionSummary
-                factionName={name}
+                factionId={faction?.id}
                 options={factionSummaryOptions}
               />
             </LabeledDiv>

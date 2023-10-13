@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
-import { PlanetRow } from "./PlanetRow";
 import { Tab, TabBody } from "./Tab";
-import { Planet } from "./util/api/planets";
+import PlanetRow from "./components/PlanetRow/PlanetRow";
 
 function sortPlanetsByFaction(planets: Planet[]) {
   planets.sort((a, b) => {
@@ -26,15 +25,15 @@ function sortPlanetsByFaction(planets: Planet[]) {
   });
 }
 
-export interface AddPlanetListProps {
-  planets: Record<string, Planet>;
-  addPlanet?: (planetName: string) => void;
+interface AddPlanetListProps {
+  planets: Partial<Record<PlanetId, Planet>>;
+  addPlanet?: (planetId: PlanetId) => void;
 }
 
 export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
   const router = useRouter();
   const [tabShown, setTabShown] = useState("normal");
-  const { faction: playerFaction }: { faction?: string } = router.query;
+  const { faction: playerFaction }: { faction?: FactionId } = router.query;
 
   if (!playerFaction) {
     return <div>Loading...</div>;
@@ -96,8 +95,8 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
           {normalPlanets.map((planet) => {
             return (
               <PlanetRow
-                key={planet.name}
-                factionName={playerFaction}
+                key={planet.id}
+                factionId={playerFaction}
                 planet={planet}
                 addPlanet={addPlanet}
               />
@@ -122,8 +121,8 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
           {homePlanets.map((planet) => {
             return (
               <PlanetRow
-                key={planet.name}
-                factionName={playerFaction}
+                key={planet.id}
+                factionId={playerFaction}
                 planet={planet}
                 addPlanet={addPlanet}
               />
@@ -148,8 +147,8 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
           {legendaryPlanets.map((planet) => {
             return (
               <PlanetRow
-                key={planet.name}
-                factionName={playerFaction}
+                key={planet.id}
+                factionId={playerFaction}
                 planet={planet}
                 addPlanet={addPlanet}
               />

@@ -114,7 +114,12 @@
   top: calc(var(--initial-y) * 1);
   left: calc(var(--initial-x) * 1);
   opacity: 0;
+}
 
+.oldFactionSelect {
+  position: relative;
+  cursor: pointer;
+  border-radius: 100%;
 }
 
 :global(.hoverParent.hover) > .hoverRadial > .factionSelect {
@@ -125,5 +130,9 @@
 }
 
 .factionSelect:hover {
+  background-color: #333;
+}
+
+.oldFactionSelect:hover {
   background-color: #333;
 }

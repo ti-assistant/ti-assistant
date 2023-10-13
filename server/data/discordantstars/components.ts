@@ -1,8 +1,6 @@
-import { BaseComponent } from "../../../src/util/api/components";
-
 export const DISCORDANT_STARS_COMPONENTS: Record<
   DiscordantStars.ComponentId,
-  BaseComponent
+  BaseComponent | BaseTechComponent
 > = {
   "Algorithmic Replication": {
     description:
@@ -17,6 +15,7 @@ export const DISCORDANT_STARS_COMPONENTS: Record<
       "Exhaust this card to place or move 1 of your space docks onto a planet you control.",
     expansion: "DISCORDANT STARS",
     faction: "Shipwrights of Axis",
+    id: "Emergency Deployment",
     name: "Emergency Deployment",
     type: "TECH",
   },
@@ -33,6 +32,7 @@ export const DISCORDANT_STARS_COMPONENTS: Record<
       "Exhaust this card and 1 planet you control to explore that planet.",
     expansion: "DISCORDANT STARS",
     faction: "Dih-Mohn Flotilla",
+    id: "Impressment Programs",
     name: "Impressment Programs",
     type: "TECH",
   },
@@ -65,6 +65,7 @@ export const DISCORDANT_STARS_COMPONENTS: Record<
       "Exhaust this card to choose 1 of your neighbors that has 1 or more relic fragments. That player gains 2 trade goods and must give you 1 of those relic fragments of your choice.",
     expansion: "DISCORDANT STARS",
     faction: "Kollecc Society",
+    id: "Seeker Drones",
     name: "Seeker Drones",
     type: "TECH",
   },

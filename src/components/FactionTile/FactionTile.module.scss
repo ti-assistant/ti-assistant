@@ -1,0 +1,43 @@
+.FactionTile {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: var(--three-pixel) solid var(--color);
+  border-radius: var(--five-pixel);
+  background-color: #222;
+  padding: 0 var(--four-pixel);
+
+  white-space: nowrap;
+}
+
+.FactionTile .Body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--four-pixel);
+
+  padding: 0 var(--four-pixel);
+}
+
+.FactionTile .Icon {
+  position: absolute;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 0;
+}
+
+.FactionTile .Name {
+  position: relative;
+
+  text-align: center;
+}

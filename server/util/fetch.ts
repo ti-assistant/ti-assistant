@@ -5,30 +5,11 @@ import {
   getFirestore,
 } from "firebase-admin/firestore";
 
-import { Planet } from "../../src/util/api/planets";
-import { ActionLogEntry, StoredGameData } from "../../src/util/api/util";
-import { StrategyCard } from "../../src/util/api/cards";
-import { Objective } from "../../src/util/api/objectives";
-import { Attachment } from "../../src/util/api/attachments";
-import { Agenda } from "../../src/util/api/agendas";
-import { Component } from "../../src/util/api/components";
-import { Faction } from "../../src/util/api/factions";
-import { Relic } from "../../src/util/api/relics";
-import {
-  buildAgendas,
-  buildAttachments,
-  buildComponents,
-  buildFactions,
-  buildObjectives,
-  buildPlanets,
-  buildRelics,
-  buildStrategyCards,
-} from "../../src/data/GameData";
-import { BASE_OPTIONS } from "../data/options";
 import {
   PHASE_BOUNDARIES,
   TURN_BOUNDARIES,
 } from "../../src/util/api/actionLog";
+import { BASE_OPTIONS } from "../data/options";
 
 /**
  * Returns the game data for a given game.
@@ -47,7 +28,7 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
       planets: {},
       state: {
         phase: "SETUP",
-        speaker: "None",
+        speaker: "Vuil'raith Cabal",
         round: 1,
       },
     };
@@ -56,7 +37,9 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
   const gameData = game.data() as StoredGameData;
 
   const phaseOrTurnBoundaries =
-    gameData.state.phase === "AGENDA" ? PHASE_BOUNDARIES : TURN_BOUNDARIES;
+    gameData.state.phase === "AGENDA" || gameData.state.phase === "STRATEGY"
+      ? PHASE_BOUNDARIES
+      : TURN_BOUNDARIES;
 
   const phaseBoundary = await gameRef
     .collection("actionLog")

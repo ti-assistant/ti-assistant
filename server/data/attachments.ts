@@ -1,35 +1,11 @@
-import { BaseAttachment } from "../../src/util/api/attachments";
 import { DISCORDANT_STARS_ATTACHMENTS } from "./discordantstars/attachments";
-
-export type AttachmentId =
-  | "Biotic Research Facility"
-  | "Core Mining"
-  | "Cybernetic Research Facility"
-  | "Demilitarized Zone"
-  | "Dyson Sphere"
-  | "Holy Planet of Ixth"
-  | "Lazax Survivors"
-  | "Mining World"
-  | "Nano-Forge"
-  | "Paradise World"
-  | "Propulsion Research Facility"
-  | "Research Team: Biotic"
-  | "Research Team: Cybernetic"
-  | "Research Team: Propulsion"
-  | "Research Team: Warfare"
-  | "Rich World"
-  | "Senate Sanctuary"
-  | "Terraform"
-  | "Terraforming Initiative"
-  | "Tomb of Emphidia"
-  | "Ul the Progenitor"
-  | "Warfare Research Facility";
 
 export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Biotic Research Facility": {
     attribute: "green-skip",
     expansion: "POK",
     influence: 1,
+    id: "Biotic Research Facility",
     name: "Biotic Research Facility",
     replaces: "Research Team: Biotic",
     required: {
@@ -41,6 +17,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Core Mining": {
     expansion: "BASE",
     influence: 0,
+    id: "Core Mining",
     name: "Core Mining",
     required: {
       home: false,
@@ -52,6 +29,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "yellow-skip",
     expansion: "POK",
     influence: 1,
+    id: "Cybernetic Research Facility",
     name: "Cybernetic Research Facility",
     replaces: "Research Team: Cybernetic",
     required: {
@@ -64,6 +42,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "demilitarized",
     expansion: "BASE",
     influence: 0,
+    id: "Demilitarized Zone",
     name: "Demilitarized Zone",
     required: {
       home: false,
@@ -74,6 +53,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Dyson Sphere": {
     expansion: "POK",
     influence: 1,
+    id: "Dyson Sphere",
     name: "Dyson Sphere",
     replaces: "Holy Planet of Ixth",
     required: {
@@ -86,6 +66,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "victory-point",
     expansion: "BASE",
     influence: 0,
+    id: "Holy Planet of Ixth",
     name: "Holy Planet of Ixth",
     required: {
       home: false,
@@ -96,6 +77,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Lazax Survivors": {
     expansion: "POK",
     influence: 2,
+    id: "Lazax Survivors",
     name: "Lazax Survivors",
     required: {
       home: false,
@@ -106,6 +88,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Mining World": {
     expansion: "POK",
     influence: 0,
+    id: "Mining World",
     name: "Mining World",
     replaces: "Core Mining",
     required: {
@@ -118,6 +101,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "legendary",
     expansion: "CODEX TWO",
     influence: 2,
+    id: "Nano-Forge",
     name: "Nano-Forge",
     required: {
       home: false,
@@ -128,6 +112,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Paradise World": {
     expansion: "POK",
     influence: 2,
+    id: "Paradise World",
     name: "Paradise World",
     replaces: "Senate Sanctuary",
     required: {
@@ -140,6 +125,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "blue-skip",
     expansion: "POK",
     influence: 1,
+    id: "Propulsion Research Facility",
     name: "Propulsion Research Facility",
     replaces: "Research Team: Propulsion",
     required: {
@@ -152,6 +138,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "green-skip",
     expansion: "BASE",
     influence: 0,
+    id: "Research Team: Biotic",
     name: "Research Team: Biotic",
     required: {
       home: false,
@@ -163,6 +150,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "yellow-skip",
     expansion: "BASE",
     influence: 0,
+    id: "Research Team: Cybernetic",
     name: "Research Team: Cybernetic",
     required: {
       home: false,
@@ -174,6 +162,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "blue-skip",
     expansion: "BASE",
     influence: 0,
+    id: "Research Team: Propulsion",
     name: "Research Team: Propulsion",
     required: {
       home: false,
@@ -185,6 +174,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "red-skip",
     expansion: "BASE",
     influence: 0,
+    id: "Research Team: Warfare",
     name: "Research Team: Warfare",
     required: {
       home: false,
@@ -195,6 +185,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Rich World": {
     expansion: "POK",
     influence: 0,
+    id: "Rich World",
     name: "Rich World",
     replaces: "Terraforming Initiative",
     required: {
@@ -206,6 +197,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Senate Sanctuary": {
     expansion: "BASE",
     influence: 2,
+    id: "Senate Sanctuary",
     name: "Senate Sanctuary",
     required: {
       home: false,
@@ -218,6 +210,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     expansion: "POK",
     faction: "Titans of Ul",
     influence: 1,
+    id: "Terraform",
     name: "Terraform",
     required: {
       home: false,
@@ -227,6 +220,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
   "Terraforming Initiative": {
     expansion: "BASE",
     influence: 1,
+    id: "Terraforming Initiative",
     name: "Terraforming Initiative",
     required: {
       home: false,
@@ -238,6 +232,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "tomb",
     expansion: "POK",
     influence: 1,
+    id: "Tomb of Emphidia",
     name: "Tomb of Emphidia",
     required: {
       home: false,
@@ -250,10 +245,11 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     expansion: "POK",
     faction: "Titans of Ul",
     influence: 3,
+    id: "Ul the Progenitor",
     name: "Ul the Progenitor",
     required: {
       home: true,
-      name: "Elysium",
+      id: "Elysium",
     },
     resources: 3,
   },
@@ -261,6 +257,7 @@ export const BASE_ATTACHMENTS: Record<AttachmentId, BaseAttachment> = {
     attribute: "red-skip",
     expansion: "POK",
     influence: 1,
+    id: "Warfare Research Facility",
     name: "Warfare Research Facility",
     replaces: "Research Team: Warfare",
     required: {

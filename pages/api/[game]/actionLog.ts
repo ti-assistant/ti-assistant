@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getFullActionLog, getGameData } from "../../../server/util/fetch";
+import { getFullActionLog } from "../../../server/util/fetch";
 
 export default async function handler(
   req: NextApiRequest,

@@ -1,12 +1,15 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
-import { ObjectiveRow } from "./ObjectiveRow";
+import { useContext, useState } from "react";
 import { Tab, TabBody } from "./Tab";
-import { Objective, ObjectiveType } from "./util/api/objectives";
-import { LabeledLine } from "./LabeledDiv";
-import { useGameData } from "./data/GameData";
-import { hideObjective, revealObjective } from "./util/api/revealObjective";
-import { scoreObjective, unscoreObjective } from "./util/api/scoreObjective";
+import LabeledLine from "./components/LabeledLine/LabeledLine";
+import { ObjectiveContext } from "./context/Context";
+import {
+  hideObjectiveAsync,
+  revealObjectiveAsync,
+  scoreObjectiveAsync,
+  unscoreObjectiveAsync,
+} from "./dynamic/api";
+import ObjectiveRow from "./components/ObjectiveRow/ObjectiveRow";
 
 function sortObjectivesByName(objectives: Objective[]) {
   objectives.sort((a, b) => {
@@ -17,11 +20,10 @@ function sortObjectivesByName(objectives: Objective[]) {
   });
 }
 
-function SecretTab({ factionName }: { factionName: string }) {
+function SecretTab({ factionId }: { factionId: FactionId }) {
   const router = useRouter();
   const { game: gameid }: { game?: string; faction?: string } = router.query;
-  const gameData = useGameData(gameid, ["objectives"]);
-  const objectives = gameData.objectives;
+  const objectives = useContext(ObjectiveContext);
 
   const [editMode, setEditMode] = useState(false);
 
@@ -34,27 +36,27 @@ function SecretTab({ factionName }: { factionName: string }) {
     setEditMode(!editMode);
   }
 
-  function addObj(objectiveName: string) {
-    if (!gameid || !factionName) {
+  function addObj(objectiveId: ObjectiveId) {
+    if (!gameid || !factionId) {
       return;
     }
-    revealObjective(gameid, objectiveName);
+    revealObjectiveAsync(gameid, objectiveId);
     setEditMode(false);
   }
-  function removeObj(objectiveName: string) {
-    if (!gameid || !factionName) {
+  function removeObj(objectiveId: ObjectiveId) {
+    if (!gameid || !factionId) {
       return;
     }
-    hideObjective(gameid, objectiveName);
+    hideObjectiveAsync(gameid, objectiveId);
   }
-  function scoreObj(objectiveName: string, add: boolean) {
-    if (!gameid || !factionName) {
+  function scoreObj(objectiveId: ObjectiveId, add: boolean) {
+    if (!gameid || !factionId) {
       return;
     }
     if (add) {
-      scoreObjective(gameid, factionName, objectiveName);
+      scoreObjectiveAsync(gameid, factionId, objectiveId);
     } else {
-      unscoreObjective(gameid, factionName, objectiveName);
+      unscoreObjectiveAsync(gameid, factionId, objectiveId);
     }
   }
 
@@ -62,15 +64,15 @@ function SecretTab({ factionName }: { factionName: string }) {
   for (const objective of secretObjectives) {
     if (!editMode) {
       if (
-        (objective.factions ?? []).includes(factionName) ||
-        (objective.scorers ?? []).includes(factionName)
+        (objective.factions ?? []).includes(factionId) ||
+        (objective.scorers ?? []).includes(factionId)
       ) {
         factionSecrets.add(objective);
       }
     } else {
       if (
-        !(objective.factions ?? []).includes(factionName) &&
-        !(objective.scorers ?? []).includes(factionName)
+        !(objective.factions ?? []).includes(factionId) &&
+        !(objective.scorers ?? []).includes(factionId)
       ) {
         factionSecrets.add(objective);
       }
@@ -125,8 +127,8 @@ function SecretTab({ factionName }: { factionName: string }) {
             {Array.from(factionSecrets).map((obj) => {
               return (
                 <ObjectiveRow
-                  key={obj.name}
-                  factionName={factionName}
+                  key={obj.id}
+                  factionId={factionId}
                   objective={obj}
                   scoreObjective={scoreObj}
                   removeObjective={editMode ? undefined : removeObj}
@@ -149,39 +151,38 @@ export function ObjectiveList() {
   const router = useRouter();
   const {
     game: gameid,
-    faction: factionName,
-  }: { game?: string; faction?: string } = router.query;
-  const gameData = useGameData(gameid, ["objectives"]);
-  const objectives = gameData.objectives;
+    faction: factionId,
+  }: { game?: string; faction?: FactionId } = router.query;
+  const objectives = useContext(ObjectiveContext);
 
   const [tabShown, setTabShown] = useState("STAGE ONE");
   const [editMode, setEditMode] = useState(false);
 
-  if (!gameid || !factionName) {
+  if (!gameid || !factionId) {
     return <div>Loading...</div>;
   }
 
-  function addObj(objectiveName: string) {
-    if (!gameid || !factionName) {
+  function addObj(objectiveId: ObjectiveId) {
+    if (!gameid || !factionId) {
       return;
     }
-    revealObjective(gameid, objectiveName);
+    revealObjectiveAsync(gameid, objectiveId);
     setEditMode(false);
   }
-  function removeObj(objectiveName: string) {
-    if (!gameid || !factionName) {
+  function removeObj(objectiveId: ObjectiveId) {
+    if (!gameid || !factionId) {
       return;
     }
-    hideObjective(gameid, objectiveName);
+    hideObjectiveAsync(gameid, objectiveId);
   }
-  function scoreObj(objectiveName: string, add: boolean) {
-    if (!gameid || !factionName) {
+  function scoreObj(objectiveId: ObjectiveId, add: boolean) {
+    if (!gameid || !factionId) {
       return;
     }
     if (add) {
-      scoreObjective(gameid, factionName, objectiveName);
+      scoreObjectiveAsync(gameid, factionId, objectiveId);
     } else {
-      unscoreObjective(gameid, factionName, objectiveName);
+      unscoreObjectiveAsync(gameid, factionId, objectiveId);
     }
   }
 
@@ -325,16 +326,16 @@ export function ObjectiveList() {
               {stageOneObjectives.map((obj) => {
                 return (
                   <ObjectiveRow
-                    key={obj.name}
-                    factionName={factionName}
+                    key={obj.id}
+                    factionId={factionId}
                     objective={obj}
                     scoreObjective={scoreObj}
                     removeObjective={
                       editMode || (obj.scorers ?? []).length > 0
                         ? undefined
-                        : () => removeObj(obj.name)
+                        : () => removeObj(obj.id)
                     }
-                    addObjective={editMode ? () => addObj(obj.name) : undefined}
+                    addObjective={editMode ? () => addObj(obj.id) : undefined}
                   />
                 );
               })}
@@ -365,14 +366,14 @@ export function ObjectiveList() {
               {stageTwoObjectives.map((obj) => {
                 return (
                   <ObjectiveRow
-                    key={obj.name}
-                    factionName={factionName}
+                    key={obj.id}
+                    factionId={factionId}
                     objective={obj}
                     scoreObjective={scoreObj}
                     removeObjective={
-                      editMode ? undefined : () => removeObj(obj.name)
+                      editMode ? undefined : () => removeObj(obj.id)
                     }
-                    addObjective={editMode ? () => addObj(obj.name) : undefined}
+                    addObjective={editMode ? () => addObj(obj.id) : undefined}
                   />
                 );
               })}
@@ -386,7 +387,7 @@ export function ObjectiveList() {
         </div>
       </TabBody>
       <TabBody id="secret" selectedId={tabShown}>
-        <SecretTab factionName={factionName} />
+        <SecretTab factionId={factionId} />
       </TabBody>
       <TabBody id="other" selectedId={tabShown}>
         <div className="largeFont">
@@ -406,14 +407,14 @@ export function ObjectiveList() {
               {otherObjectives.map((obj) => {
                 return (
                   <ObjectiveRow
-                    key={obj.name}
-                    factionName={factionName}
+                    key={obj.id}
+                    factionId={factionId}
                     objective={obj}
                     scoreObjective={scoreObj}
                     removeObjective={
-                      editMode ? undefined : () => removeObj(obj.name)
+                      editMode ? undefined : () => removeObj(obj.id)
                     }
-                    addObjective={editMode ? () => addObj(obj.name) : undefined}
+                    addObjective={editMode ? () => addObj(obj.id) : undefined}
                   />
                 );
               })}

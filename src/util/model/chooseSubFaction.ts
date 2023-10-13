@@ -1,22 +1,4 @@
-import { buildFactions, buildPlanets, buildTechs } from "../../data/GameData";
-import { ActionLogAction, Handler } from "../api/data";
-import { hasTech } from "../api/techs";
-import {
-  ActionLogEntry,
-  StoredGameData,
-  arrayRemove,
-  arrayUnion,
-} from "../api/util";
-
-export interface ChooseSubFactionEvent {
-  faction: string;
-  subFaction: string;
-}
-
-export interface ChooseSubFactionData {
-  action: "CHOOSE_SUB_FACTION";
-  event: ChooseSubFactionEvent;
-}
+import { buildFactions, buildPlanets } from "../../data/GameData";
 
 export class ChooseSubFactionHandler implements Handler {
   constructor(
@@ -52,29 +34,30 @@ export class ChooseSubFactionHandler implements Handler {
     if (!undoing) {
       switch (this.data.event.subFaction) {
         case "Argent Flight": {
-          updates[`planets.Avar.owner`] = this.data.event.faction;
-          updates[`planets.Valk.owner`] = this.data.event.faction;
-          updates[`planets.Ylir.owner`] = this.data.event.faction;
+          updates[`planets.Avar Keleres.owner`] = this.data.event.faction;
+          updates[`planets.Valk Keleres.owner`] = this.data.event.faction;
+          updates[`planets.Ylir Keleres.owner`] = this.data.event.faction;
           updates[`factions.${this.data.event.faction}.startswith.planets`] = [
-            "Avar",
-            "Valk",
-            "Ylir",
+            "Avar Keleres",
+            "Valk Keleres",
+            "Ylir Keleres",
           ];
           break;
         }
         case "Mentak Coalition": {
-          updates[`planets.Moll Primus.owner`] = this.data.event.faction;
+          updates[`planets.Moll Primus Keleres.owner`] =
+            this.data.event.faction;
           updates[`factions.${this.data.event.faction}.startswith.planets`] = [
-            "Moll Primus",
+            "Moll Primus Keleres",
           ];
           break;
         }
         case "Xxcha Kingdom": {
-          updates[`planets.Archon Ren.owner`] = this.data.event.faction;
-          updates[`planets.Archon Tau.owner`] = this.data.event.faction;
+          updates[`planets.Archon Ren Keleres.owner`] = this.data.event.faction;
+          updates[`planets.Archon Tau Keleres.owner`] = this.data.event.faction;
           updates[`factions.${this.data.event.faction}.startswith.planets`] = [
-            "Archon Ren",
-            "Archon Tau",
+            "Archon Ren Keleres",
+            "Archon Tau Keleres",
           ];
           break;
         }

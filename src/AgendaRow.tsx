@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-import { Modal } from "./Modal";
 import { SelectableRow } from "./SelectableRow";
-import { Agenda } from "./util/api/agendas";
+import Modal from "./components/Modal/Modal";
 import { responsivePixels } from "./util/util";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
@@ -48,10 +47,10 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
   );
 }
 
-export interface AgendaRowProps {
+interface AgendaRowProps {
   agenda: Agenda;
-  addAgenda?: (agendaName: string) => void;
-  removeAgenda?: (agendaName: string) => void;
+  addAgenda?: (agendaId: AgendaId) => void;
+  removeAgenda?: (agendaId: AgendaId) => void;
   hideOutcome?: boolean;
 }
 
@@ -71,7 +70,7 @@ export function AgendaRow({
 
   return (
     <SelectableRow
-      itemName={agenda.name}
+      itemId={agenda.id}
       selectItem={addAgenda}
       removeItem={removeAgenda}
     >

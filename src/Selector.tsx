@@ -1,34 +1,29 @@
-import React, {
-  CSSProperties,
-  PropsWithChildren,
-  ReactNode,
-  useEffect,
-} from "react";
-import { ClientOnlyHoverMenu, HoverMenu } from "./HoverMenu";
-import { LabeledDiv } from "./LabeledDiv";
+import React, { CSSProperties, ReactNode, useEffect } from "react";
+import { ClientOnlyHoverMenu } from "./HoverMenu";
 import { SelectableRow } from "./SelectableRow";
+import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
 import { responsivePixels } from "./util/util";
 
-export interface SelectorProps {
+interface SelectorProps<Type extends string> {
   autoSelect?: boolean;
   borderColor?: string;
   buttonStyle?: CSSProperties;
   hoverMenuLabel: ReactNode;
   numToSelect?: number;
-  options: string[];
-  fadedOptions?: string[];
-  toggleItem: (itemName: string, add: boolean) => void;
-  renderItem?: (itemName: string) => ReactNode;
+  options: Type[];
+  fadedOptions?: Type[];
+  toggleItem: (itemId: Type, add: boolean) => void;
+  renderItem?: (itemId: Type) => ReactNode;
   renderButton?: (
-    itemName: string,
-    toggleItem: (itemName: string, add: boolean) => void
+    itemId: Type,
+    toggleItem: (itemId: Type, add: boolean) => void
   ) => ReactNode;
-  selectedItem?: string;
+  selectedItem?: Type;
   selectedLabel?: ReactNode;
   style?: CSSProperties;
 }
 
-export function Selector({
+export function Selector<Type extends string>({
   autoSelect,
   buttonStyle = {},
   hoverMenuLabel,
@@ -41,7 +36,7 @@ export function Selector({
   renderItem,
   renderButton,
   style,
-}: SelectorProps) {
+}: SelectorProps<Type>) {
   const shouldAutoSelect = !!autoSelect && options.length <= 1;
 
   useEffect(() => {
@@ -65,7 +60,7 @@ export function Selector({
       : () => toggleItem(selectedItem, false);
 
     const innerValue = (
-      <SelectableRow itemName={selectedItem} removeItem={removeItem}>
+      <SelectableRow itemId={selectedItem} removeItem={removeItem}>
         {selectedItem}
       </SelectableRow>
     );
@@ -100,6 +95,7 @@ export function Selector({
       buttonStyle={buttonStyle}
       borderColor={borderColor}
       label={hoverMenuLabel}
+      style={{ minWidth: "100%" }}
       renderProps={(closeFn) => (
         <div className="flexColumn" style={innerStyle}>
           {options.map((option) => {

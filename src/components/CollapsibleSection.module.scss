@@ -1,4 +1,3 @@
-
 .collapsibleContainer {
   display: flex;
   flex-direction: column;
@@ -8,18 +7,6 @@
   border-radius: var(--four-pixel);
 
   padding-bottom: var(--four-pixel);
-
-  // --color: #eee;
-  // width: 100%;
-  // white-space: pre-wrap;
-  // padding: var(--four-pixel) 0;
-  // gap: var(--four-pixel);
-  // height: 100%;
-  // border-radius: var(--four-pixel);
-  
-  // font-size: var(--fourteen-pixel);
-
-  // background-color: #222;
 }
 
 .title {
@@ -44,6 +31,6 @@
   }
 
   .contentContainer {
-      overflow: hidden;
+    overflow: hidden;
   }
 }

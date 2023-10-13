@@ -1,20 +1,5 @@
-import { ActionLogAction, Handler, getSelectedAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
 import { buildObjectives, buildPlanets } from "../../data/GameData";
-
-export interface SelectActionEvent {
-  action: string;
-}
-
-export interface SelectActionData {
-  action: "SELECT_ACTION";
-  event: SelectActionEvent;
-}
-
-export interface UnselectActionData {
-  action: "UNSELECT_ACTION";
-  event: SelectActionEvent;
-}
+import { getSelectedAction } from "../api/data";
 
 export class SelectActionHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: SelectActionData) {}

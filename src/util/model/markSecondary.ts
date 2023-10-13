@@ -1,17 +1,4 @@
-import { Handler, ActionLogAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-import { Secondary } from "../api/subState";
 import { buildFactions } from "../../data/GameData";
-
-export interface MarkSecondaryEvent {
-  faction: string;
-  state: Secondary;
-}
-
-export interface MarkSecondaryData {
-  action: "MARK_SECONDARY";
-  event: MarkSecondaryEvent;
-}
 
 export class MarkSecondaryHandler implements Handler {
   constructor(

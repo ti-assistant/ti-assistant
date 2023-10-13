@@ -1,103 +1,9 @@
-import { BaseObjective } from "../../src/util/api/objectives";
-
-export type ObjectiveId =
-  | "Achieve Supremacy"
-  | "Adapt New Strategies"
-  | "Amass Wealth"
-  | "Become a Legend"
-  | "Become a Martyr"
-  | "Become the Gatekeeper"
-  | "Betray a Friend"
-  | "Brave the Void"
-  | "Build Defenses"
-  | "Centralize Galactic Trade"
-  | "Command an Armada"
-  | "Conquer the Weak"
-  | "Construct Massive Cities"
-  | "Control the Borderlands"
-  | "Control the Region"
-  | "Corner the Market"
-  | "Crown of Emphidia"
-  | "Custodians Token"
-  | "Cut Supply Lines"
-  | "Darken the Skies"
-  | "Defy Space and Time"
-  | "Demonstrate Your Power"
-  | "Destroy Heretical Works"
-  | "Destroy Their Greatest Ship"
-  | "Develop Weaponry"
-  | "Dictate Policy"
-  | "Discover Lost Outposts"
-  | "Diversify Research"
-  | "Drive the Debate"
-  | "Engineer a Marvel"
-  | "Erect a Monument"
-  | "Establish Hegemony"
-  | "Establish a Perimeter"
-  | "Expand Borders"
-  | "Explore Deep Space"
-  | "Fight With Precision"
-  | "Forge an Alliance"
-  | "Form Galactic Brain Trust"
-  | "Form a Spy Network"
-  | "Foster Cohesion"
-  | "Found Research Outposts"
-  | "Found a Golden Age"
-  | "Fuel the War Machine"
-  | "Galvanize the People"
-  | "Gather a Mighty Fleet"
-  | "Hoard Raw Materials"
-  | "Hold Vast Reserves"
-  | "Holy Planet of Ixth"
-  | "Imperial Point"
-  | "Imperial Rider"
-  | "Improve Infrastructure"
-  | "Intimidate Council"
-  | "Lead from the Front"
-  | "Learn the Secrets of the Cosmos"
-  | "Make History"
-  | "Make an Example of Their World"
-  | "Manipulate Galactic Law"
-  | "Master the Laws of Physics"
-  | "Master the Sciences"
-  | "Mechanize the Military"
-  | "Mine Rare Metals"
-  | "Monopolize Production"
-  | "Mutiny"
-  | "Negotiate Trade Routes"
-  | "Occupy the Fringe"
-  | "Occupy the Seat of the Empire"
-  | "Patrol Vast Territories"
-  | "Political Censure"
-  | "Populate the Outer Rim"
-  | "Produce En Masse"
-  | "Protect the Border"
-  | "Prove Endurance"
-  | "Push Boundaries"
-  | "Raise a Fleet"
-  | "Reclaim Ancient Monuments"
-  | "Revolutionize Warfare"
-  | "Rule Distant Lands"
-  | "Seed of an Empire"
-  | "Seize an Icon"
-  | "Shard of the Throne"
-  | "Spark a Rebellion"
-  | "Stake your Claim"
-  | "Strengthen Bonds"
-  | "Subdue the Galaxy"
-  | "Support for the Throne"
-  | "Sway the Council"
-  | "Threaten Enemies"
-  | "Tomb + Crown of Emphidia"
-  | "Turn Their Fleets to Dust"
-  | "Unify the Colonies"
-  | "Unveil Flagship";
-
 export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Achieve Supremacy": {
     description:
       "Have your flagship or a war sun in another player's home system or the Mecatol Rex system",
     expansion: "POK",
+    id: "Achieve Supremacy",
     name: "Achieve Supremacy",
     points: 2,
     type: "STAGE TWO",
@@ -106,6 +12,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Own 2 faction technologies (Valefar Assimilator technologies do not count toward this objective)",
     expansion: "BASE",
+    id: "Adapt New Strategies",
     name: "Adapt New Strategies",
     phase: "STATUS",
     points: 1,
@@ -114,6 +21,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Amass Wealth": {
     description: "Spend 3 influence, 3 resources, and 3 trade goods",
     expansion: "POK",
+    id: "Amass Wealth",
     name: "Amass Wealth",
     points: 1,
     type: "STAGE ONE",
@@ -122,6 +30,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have units in 4 systems that contain legendary planets, Mecatol Rex, or anomalies",
     expansion: "POK",
+    id: "Become a Legend",
     name: "Become a Legend",
     points: 2,
     type: "STAGE TWO",
@@ -129,6 +38,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Become a Martyr": {
     description: "Lose control of a planet in a home system",
     expansion: "POK",
+    id: "Become a Martyr",
     name: "Become a Martyr",
     phase: "ACTION",
     points: 1,
@@ -138,6 +48,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have 1 or more ships in a system that contains an alpha wormhole and 1 or more ships in a system that contains a beta wormhole",
     expansion: "BASE",
+    id: "Become the Gatekeeper",
     name: "Become the Gatekeeper",
     phase: "STATUS",
     points: 1,
@@ -147,6 +58,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Win a combat against a player whose promissory note you had in your play area at the start of your tactical action",
     expansion: "POK",
+    id: "Betray a Friend",
     name: "Betray a Friend",
     phase: "ACTION",
     points: 1,
@@ -155,6 +67,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Brave the Void": {
     description: "Win a combat in an anomaly",
     expansion: "POK",
+    id: "Brave the Void",
     name: "Brave the Void",
     phase: "ACTION",
     points: 1,
@@ -163,6 +76,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Build Defenses": {
     description: "Have 4 or more structures",
     expansion: "POK",
+    id: "Build Defenses",
     name: "Build Defenses",
     points: 1,
     type: "STAGE ONE",
@@ -170,6 +84,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Centralize Galactic Trade": {
     description: "Spend 10 trade goods",
     expansion: "BASE",
+    id: "Centralize Galactic Trade",
     name: "Centralize Galactic Trade",
     points: 2,
     type: "STAGE TWO",
@@ -177,6 +92,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Command an Armada": {
     description: "Have 8 or more non-fighter ships in 1 system",
     expansion: "POK",
+    id: "Command an Armada",
     name: "Command an Armada",
     points: 2,
     type: "STAGE TWO",
@@ -184,6 +100,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Conquer the Weak": {
     description: "Control 1 planet that is in another player's home system",
     expansion: "BASE",
+    id: "Conquer the Weak",
     name: "Conquer the Weak",
     points: 2,
     type: "STAGE TWO",
@@ -191,6 +108,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Construct Massive Cities": {
     description: "Have 7 or more structures",
     expansion: "POK",
+    id: "Construct Massive Cities",
     name: "Construct Massive Cities",
     points: 2,
     type: "STAGE TWO",
@@ -199,6 +117,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have units in 5 systems on the edge of the game board other than your home system",
     expansion: "POK",
+    id: "Control the Borderlands",
     name: "Control the Borderlands",
     points: 2,
     type: "STAGE TWO",
@@ -206,6 +125,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Control the Region": {
     description: "Have 1 or more ships in 6 systems",
     expansion: "BASE",
+    id: "Control the Region",
     name: "Control the Region",
     phase: "STATUS",
     points: 1,
@@ -214,16 +134,18 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Corner the Market": {
     description: "Control 4 planets that each have the same planet trait",
     expansion: "BASE",
+    id: "Corner the Market",
     name: "Corner the Market",
     points: 1,
     type: "STAGE ONE",
   },
-  "Crown of Emphidia": {
+  "The Crown of Emphidia": {
     description: "Given to the current holder of the Crown of Emphidia",
     expansion: "BASE",
     max: 2,
     repeatable: true,
-    name: "Crown of Emphidia",
+    id: "The Crown of Emphidia",
+    name: "The Crown of Emphidia",
     points: 1,
     type: "OTHER",
   },
@@ -231,6 +153,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description: "Pay 6 influence to remove the token from Mecatol Rex",
     expansion: "BASE",
     max: 1,
+    id: "Custodians Token",
     name: "Custodians Token",
     points: 1,
     type: "OTHER",
@@ -239,6 +162,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have 1 or more ships in the same system as another player's space dock",
     expansion: "BASE",
+    id: "Cut Supply Lines",
     name: "Cut Supply Lines",
     phase: "STATUS",
     points: 1,
@@ -247,6 +171,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Darken the Skies": {
     description: "Win a combat in another player's home system",
     expansion: "POK",
+    id: "Darken the Skies",
     name: "Darken the Skies",
     phase: "ACTION",
     points: 1,
@@ -255,6 +180,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Defy Space and Time": {
     description: "Have units in the wormhole nexus",
     expansion: "POK",
+    id: "Defy Space and Time",
     name: "Defy Space and Time",
     phase: "STATUS",
     points: 1,
@@ -264,6 +190,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have 3 or more non-fighter ships in the active system at the end of a space combat",
     expansion: "POK",
+    id: "Demonstrate Your Power",
     name: "Demonstrate Your Power",
     phase: "ACTION",
     points: 1,
@@ -272,6 +199,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Destroy Heretical Works": {
     description: "Purge 2 of your relic fragments of any type",
     expansion: "POK",
+    id: "Destroy Heretical Works",
     name: "Destroy Heretical Works",
     phase: "STATUS",
     points: 1,
@@ -280,6 +208,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Destroy Their Greatest Ship": {
     description: "Destroy another player's war sun or flagship",
     expansion: "BASE",
+    id: "Destroy Their Greatest Ship",
     name: "Destroy Their Greatest Ship",
     phase: "ACTION",
     points: 1,
@@ -288,6 +217,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Develop Weaponry": {
     description: "Own 2 unit upgrade technologies",
     expansion: "BASE",
+    id: "Develop Weaponry",
     name: "Develop Weaponry",
     points: 1,
     type: "STAGE ONE",
@@ -295,6 +225,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Dictate Policy": {
     description: "There are 3 or more laws in play",
     expansion: "POK",
+    id: "Dictate Policy",
     name: "Dictate Policy",
     phase: "AGENDA",
     points: 1,
@@ -303,6 +234,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Discover Lost Outposts": {
     description: "Control 2 planets that have attachments",
     expansion: "POK",
+    id: "Discover Lost Outposts",
     name: "Discover Lost Outposts",
     points: 1,
     type: "STAGE ONE",
@@ -310,6 +242,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Diversify Research": {
     description: "Own 2 technologies in each of 2 colors",
     expansion: "BASE",
+    id: "Diversify Research",
     name: "Diversify Research",
     points: 1,
     type: "STAGE ONE",
@@ -317,6 +250,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Drive the Debate": {
     description: "You or a planet you control are elected by an agenda",
     expansion: "POK",
+    id: "Drive the Debate",
     name: "Drive the Debate",
     phase: "AGENDA",
     points: 1,
@@ -325,6 +259,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Engineer a Marvel": {
     description: "Have your flagship or a war sun on the game board",
     expansion: "POK",
+    id: "Engineer a Marvel",
     name: "Engineer a Marvel",
     points: 1,
     type: "STAGE ONE",
@@ -332,6 +267,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Erect a Monument": {
     description: "Spend 8 resources",
     expansion: "BASE",
+    id: "Erect a Monument",
     name: "Erect a Monument",
     points: 1,
     type: "STAGE ONE",
@@ -340,6 +276,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Control planets that have a combined influence value of at least 12",
     expansion: "POK",
+    id: "Establish Hegemony",
     name: "Establish Hegemony",
     phase: "STATUS",
     points: 1,
@@ -348,6 +285,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Establish a Perimeter": {
     description: "Have 4 PDS units on the game board",
     expansion: "BASE",
+    id: "Establish a Perimeter",
     name: "Establish a Perimeter",
     phase: "STATUS",
     points: 1,
@@ -356,6 +294,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Expand Borders": {
     description: "Control 6 planets in non-home systems",
     expansion: "BASE",
+    id: "Expand Borders",
     name: "Expand Borders",
     points: 1,
     type: "STAGE ONE",
@@ -363,6 +302,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Explore Deep Space": {
     description: "Have units in 3 systems that do not contain planets",
     expansion: "POK",
+    id: "Explore Deep Space",
     name: "Explore Deep Space",
     points: 1,
     type: "STAGE ONE",
@@ -371,6 +311,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Use ANTI-FIGHTER BARRAGE to destroy the last of a player's fighters in a system",
     expansion: "POK",
+    id: "Fight With Precision",
     name: "Fight With Precision",
     omega: {
       description:
@@ -384,6 +325,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Forge an Alliance": {
     description: "Control 4 cultural planets",
     expansion: "BASE",
+    id: "Forge an Alliance",
     name: "Forge an Alliance",
     phase: "STATUS",
     points: 1,
@@ -392,6 +334,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Form Galactic Brain Trust": {
     description: "Control 5 planets that have technology specialties",
     expansion: "BASE",
+    id: "Form Galactic Brain Trust",
     name: "Form Galactic Brain Trust",
     points: 2,
     type: "STAGE TWO",
@@ -399,6 +342,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Form a Spy Network": {
     description: "Discard 5 Action Cards",
     expansion: "BASE",
+    id: "Form a Spy Network",
     name: "Form a Spy Network",
     phase: "STATUS",
     points: 1,
@@ -407,6 +351,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Foster Cohesion": {
     description: "Be neighbors with all other players",
     expansion: "POK",
+    id: "Foster Cohesion",
     name: "Foster Cohesion",
     phase: "STATUS",
     points: 1,
@@ -415,6 +360,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Found Research Outposts": {
     description: "Control 3 planets that have technology specialties",
     expansion: "BASE",
+    id: "Found Research Outposts",
     name: "Found Research Outposts",
     points: 1,
     type: "STAGE ONE",
@@ -422,6 +368,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Found a Golden Age": {
     description: "Spend 16 resources",
     expansion: "BASE",
+    id: "Found a Golden Age",
     name: "Found a Golden Age",
     points: 2,
     type: "STAGE TWO",
@@ -429,6 +376,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Fuel the War Machine": {
     description: "Have 3 space docks on the game board",
     expansion: "BASE",
+    id: "Fuel the War Machine",
     name: "Fuel the War Machine",
     phase: "STATUS",
     points: 1,
@@ -438,6 +386,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Spend a total of 6 tokens from your tactic and/or strategy pools",
     expansion: "BASE",
+    id: "Galvanize the People",
     name: "Galvanize the People",
     points: 2,
     type: "STAGE TWO",
@@ -445,6 +394,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Gather a Mighty Fleet": {
     description: "Have 5 dreadnoughts on the game board",
     expansion: "BASE",
+    id: "Gather a Mighty Fleet",
     name: "Gather a Mighty Fleet",
     phase: "STATUS",
     points: 1,
@@ -454,6 +404,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Control planets that have a combined resource value of at least 12",
     expansion: "POK",
+    id: "Hoard Raw Materials",
     name: "Hoard Raw Materials",
     phase: "STATUS",
     points: 1,
@@ -462,6 +413,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Hold Vast Reserves": {
     description: "Spend 6 influence, 6 resources, and 6 trade goods",
     expansion: "POK",
+    id: "Hold Vast Reserves",
     name: "Hold Vast Reserves",
     points: 2,
     type: "STAGE TWO",
@@ -471,6 +423,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     expansion: "BASE ONLY",
     max: 2,
     repeatable: true,
+    id: "Holy Planet of Ixth",
     name: "Holy Planet of Ixth",
     points: 1,
     type: "OTHER",
@@ -479,6 +432,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Use the primary ability of Imperial while in control of Mecatol Rex",
     expansion: "BASE",
+    id: "Imperial Point",
     name: "Imperial Point",
     points: 1,
     repeatable: true,
@@ -489,6 +443,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
       "Correctly predict the outcome of an agenda using an Imperial Rider",
     expansion: "BASE",
     max: 2,
+    id: "Imperial Rider",
     name: "Imperial Rider",
     points: 1,
     repeatable: true,
@@ -497,6 +452,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Improve Infrastructure": {
     description: "Have structures on 3 planets outside of your home system",
     expansion: "POK",
+    id: "Improve Infrastructure",
     name: "Improve Infrastructure",
     points: 1,
     type: "STAGE ONE",
@@ -505,6 +461,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have 1 or more ships in 2 systems that are adjacent to Mecatol Rex's System",
     expansion: "BASE",
+    id: "Intimidate Council",
     name: "Intimidate Council",
     points: 1,
     type: "STAGE ONE",
@@ -513,6 +470,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Spend a total of 3 tokens from your tactic and/or strategy pools",
     expansion: "BASE",
+    id: "Lead from the Front",
     name: "Lead from the Front",
     points: 1,
     type: "STAGE ONE",
@@ -521,6 +479,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have 1 or more ships in 3 systems that are each adjacent to an anomaly",
     expansion: "BASE",
+    id: "Learn the Secrets of the Cosmos",
     name: "Learn the Secrets of the Cosmos",
     phase: "STATUS",
     points: 1,
@@ -530,6 +489,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have units in 2 systems that contain legendary planets, Mecatol Rex, or anomalies",
     expansion: "POK",
+    id: "Make History",
     name: "Make History",
     points: 1,
     type: "STAGE ONE",
@@ -538,6 +498,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Use BOMBARDMENT to destroy the last of a player's ground forces on a planet",
     expansion: "BASE",
+    id: "Make an Example of Their World",
     name: "Make an Example of Their World",
     omega: {
       description:
@@ -551,6 +512,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Manipulate Galactic Law": {
     description: "Spend 16 influence",
     expansion: "BASE",
+    id: "Manipulate Galactic Law",
     name: "Manipulate Galactic Law",
     points: 2,
     type: "STAGE TWO",
@@ -558,6 +520,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Master the Laws of Physics": {
     description: "Own 4 technologies of the same color",
     expansion: "BASE",
+    id: "Master the Laws of Physics",
     name: "Master the Laws of Physics",
     phase: "STATUS",
     points: 1,
@@ -566,6 +529,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Master the Sciences": {
     description: "Own 2 technologies in each of 4 colors",
     expansion: "BASE",
+    id: "Master the Sciences",
     name: "Master the Sciences",
     points: 2,
     type: "STAGE TWO",
@@ -573,6 +537,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Mechanize the Military": {
     description: "Have 1 mech on each of 4 planets",
     expansion: "POK",
+    id: "Mechanize the Military",
     name: "Mechanize the Military",
     phase: "STATUS",
     points: 1,
@@ -581,6 +546,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Mine Rare Metals": {
     description: "Control 4 hazardous planets",
     expansion: "BASE",
+    id: "Mine Rare Metals",
     name: "Mine Rare Metals",
     phase: "STATUS",
     points: 1,
@@ -589,6 +555,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Monopolize Production": {
     description: "Control 4 industrial planets",
     expansion: "BASE",
+    id: "Monopolize Production",
     name: "Monopolize Production",
     phase: "STATUS",
     points: 1,
@@ -598,6 +565,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       'FOR: Each player who voted "For" gains 1 victory point.\n\nAGAINST: Each player who voted "For" loses 1 victory point.',
     expansion: "BASE",
+    id: "Mutiny",
     name: "Mutiny",
     points: 1,
     type: "OTHER",
@@ -605,6 +573,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Negotiate Trade Routes": {
     description: "Spend 5 trade goods",
     expansion: "BASE",
+    id: "Negotiate Trade Routes",
     name: "Negotiate Trade Routes",
     points: 1,
     type: "STAGE ONE",
@@ -613,6 +582,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have 9 or more ground forces on a planet that does not contain 1 of your space docks",
     expansion: "POK",
+    id: "Occupy the Fringe",
     name: "Occupy the Fringe",
     phase: "STATUS",
     points: 1,
@@ -621,6 +591,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Occupy the Seat of the Empire": {
     description: "Control Mecatol Rex and have 3 or more ships in its system",
     expansion: "BASE",
+    id: "Occupy the Seat of the Empire",
     name: "Occupy the Seat of the Empire",
     phase: "STATUS",
     points: 1,
@@ -629,6 +600,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Patrol Vast Territories": {
     description: "Have units in 5 systems that do not contain planets",
     expansion: "POK",
+    id: "Patrol Vast Territories",
     name: "Patrol Vast Territories",
     points: 2,
     type: "STAGE TWO",
@@ -637,6 +609,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description: "Given to the player elected for Political Censure",
     expansion: "POK",
     max: 1,
+    id: "Political Censure",
     name: "Political Censure",
     points: 1,
     type: "OTHER",
@@ -645,6 +618,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have units in 3 systems on the edge of the game board other than your home system",
     expansion: "POK",
+    id: "Populate the Outer Rim",
     name: "Populate the Outer Rim",
     points: 1,
     type: "STAGE ONE",
@@ -653,6 +627,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have units with a combined PRODUCTION value of at least 8 in a single system",
     expansion: "POK",
+    id: "Produce En Masse",
     name: "Produce En Masse",
     phase: "STATUS",
     points: 1,
@@ -661,6 +636,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Protect the Border": {
     description: "Have structures on 5 planets outside of your home system",
     expansion: "POK",
+    id: "Protect the Border",
     name: "Protect the Border",
     points: 2,
     type: "STAGE TWO",
@@ -668,6 +644,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Prove Endurance": {
     description: "Be the last player to pass during a game round",
     expansion: "POK",
+    id: "Prove Endurance",
     name: "Prove Endurance",
     phase: "ACTION",
     points: 1,
@@ -676,6 +653,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Push Boundaries": {
     description: "Control more planets than each of 2 of your neighbors",
     expansion: "POK",
+    id: "Push Boundaries",
     name: "Push Boundaries",
     points: 1,
     type: "STAGE ONE",
@@ -683,6 +661,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Raise a Fleet": {
     description: "Have 5 or more non-fighter ships in 1 system",
     expansion: "POK",
+    id: "Raise a Fleet",
     name: "Raise a Fleet",
     points: 1,
     type: "STAGE ONE",
@@ -690,6 +669,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Reclaim Ancient Monuments": {
     description: "Control 3 planets that have attachments",
     expansion: "POK",
+    id: "Reclaim Ancient Monuments",
     name: "Reclaim Ancient Monuments",
     points: 2,
     type: "STAGE TWO",
@@ -697,6 +677,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Revolutionize Warfare": {
     description: "Own 3 unit upgrade technologies",
     expansion: "BASE",
+    id: "Revolutionize Warfare",
     name: "Revolutionize Warfare",
     points: 2,
     type: "STAGE TWO",
@@ -705,6 +686,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Control 2 planets that are each in or adjacent to a different, other player's home system",
     expansion: "POK",
+    id: "Rule Distant Lands",
     name: "Rule Distant Lands",
     points: 2,
     type: "STAGE TWO",
@@ -713,6 +695,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have the most victory points when Seed of an Empire passes or the least victory points when Seed of an Empire fails",
     expansion: "BASE",
+    id: "Seed of an Empire",
     name: "Seed of an Empire",
     points: 1,
     type: "OTHER",
@@ -720,6 +703,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Seize an Icon": {
     description: "Control a legendary planet",
     expansion: "POK",
+    id: "Seize an Icon",
     name: "Seize an Icon",
     phase: "STATUS",
     points: 1,
@@ -730,6 +714,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     expansion: "BASE",
     max: 2,
     repeatable: true,
+    id: "Shard of the Throne",
     name: "Shard of the Throne",
     points: 1,
     type: "OTHER",
@@ -738,6 +723,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Win a combat against a player who has the most victory points",
     expansion: "BASE",
+    id: "Spark a Rebellion",
     name: "Spark a Rebellion",
     phase: "ACTION",
     points: 1,
@@ -747,6 +733,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Control a planet in a system that contains a planet controlled by another player",
     expansion: "POK",
+    id: "Stake your Claim",
     name: "Stake your Claim",
     phase: "STATUS",
     points: 1,
@@ -755,6 +742,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Strengthen Bonds": {
     description: "Have another player's promissory note in your play area",
     expansion: "POK",
+    id: "Strengthen Bonds",
     name: "Strengthen Bonds",
     phase: "STATUS",
     points: 1,
@@ -763,6 +751,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Subdue the Galaxy": {
     description: "Control 11 planets in non-home systems",
     expansion: "BASE",
+    id: "Subdue the Galaxy",
     name: "Subdue the Galaxy",
     points: 2,
     type: "STAGE TWO",
@@ -771,6 +760,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have another player's Support for the Throne in your play area",
     expansion: "BASE",
+    id: "Support for the Throne",
     name: "Support for the Throne",
     points: 1,
     repeatable: true,
@@ -779,6 +769,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Sway the Council": {
     description: "Spend 8 influence",
     expansion: "BASE",
+    id: "Sway the Council",
     name: "Sway the Council",
     points: 1,
     type: "STAGE ONE",
@@ -787,6 +778,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Have 1 or more ships in a system that is adjacent to another player's home system",
     expansion: "BASE",
+    id: "Threaten Enemies",
     name: "Threaten Enemies",
     phase: "STATUS",
     points: 1,
@@ -797,15 +789,17 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
       "Use the Crown of Emphidia at the end of the status phase while in control of the Tomb of Emphidia",
     expansion: "POK",
     max: 1,
+    id: "Tomb + Crown of Emphidia",
     name: "Tomb + Crown of Emphidia",
     points: 1,
-    replaces: "Crown of Emphidia",
+    replaces: "The Crown of Emphidia",
     type: "OTHER",
   },
   "Turn Their Fleets to Dust": {
     description:
       "Use SPACE CANNON to destroy the last of a player's ships in a system",
     expansion: "BASE",
+    id: "Turn Their Fleets to Dust",
     name: "Turn Their Fleets to Dust",
     omega: {
       description:
@@ -819,6 +813,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
   "Unify the Colonies": {
     description: "Control 6 planets that each have the same planet trait",
     expansion: "BASE",
+    id: "Unify the Colonies",
     name: "Unify the Colonies",
     points: 2,
     type: "STAGE TWO",
@@ -827,6 +822,7 @@ export const BASE_OBJECTIVES: Record<ObjectiveId, BaseObjective> = {
     description:
       "Win a space combat in a system that contains your flagship. You cannot score this objective if your flagship is destroyed in the combat",
     expansion: "BASE",
+    id: "Unveil Flagship",
     name: "Unveil Flagship",
     phase: "ACTION",
     points: 1,

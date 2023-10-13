@@ -1,11 +1,11 @@
 import { mutate } from "swr";
-import { GameUpdateData } from "./state";
-import { StoredGameData, poster } from "./util";
+import { poster } from "./util";
 import { AddTechHandler, RemoveTechHandler } from "../model/addTech";
-import { updateGameData, updateActionLog } from "./data";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
-export function addTech(gameId: string, faction: string, tech: string) {
-  const techId = tech.replace(/\//g, "").replace(/\./g, "").replace(" Ω", "");
+export function addTech(gameId: string, faction: FactionId, techId: TechId) {
   const data: GameUpdateData = {
     action: "ADD_TECH",
     event: {
@@ -18,26 +18,29 @@ export function addTech(gameId: string, faction: string, tech: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new AddTechHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new AddTechHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        console.log("Tech Added", faction);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
   );
 }
 
-export function removeTech(gameId: string, faction: string, tech: string) {
-  const techId = tech.replace(/\//g, "").replace(/\./g, "").replace(" Ω", "");
+export function removeTech(gameId: string, faction: FactionId, techId: TechId) {
   const data: GameUpdateData = {
     action: "REMOVE_TECH",
     event: {
@@ -50,18 +53,21 @@ export function removeTech(gameId: string, faction: string, tech: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new RemoveTechHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new RemoveTechHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

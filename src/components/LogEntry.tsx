@@ -1,22 +1,21 @@
-import { useRouter } from "next/router";
-import { ObjectiveRow } from "../ObjectiveRow";
-import { useGameData } from "../data/GameData";
-import { ActionLogEntry } from "../util/api/util";
-import { BLACK_TEXT_GLOW, LabeledLine } from "../LabeledDiv";
-import { Phase } from "../util/api/state";
-import { TimerDisplay } from "../Timer";
-import { pluralize, responsivePixels } from "../util/util";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { PlanetRow } from "../PlanetRow";
+import { useContext } from "react";
 import { AgendaRow } from "../AgendaRow";
+import {
+  AgendaContext,
+  FactionContext,
+  ObjectiveContext,
+} from "../context/Context";
+import { BLACK_TEXT_GLOW } from "../util/borderGlow";
+import { getFactionColor, getFactionName } from "../util/factions";
+import { pluralize, responsivePixels } from "../util/util";
+import LabeledLine from "./LabeledLine/LabeledLine";
+import TimerDisplay from "./TimerDisplay/TimerDisplay";
+import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 
-function ColoredFactionName({ factionName }: { factionName: string }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["factions", "objectives"]);
-  const factions = gameData.factions;
+function ColoredFactionName({ factionId }: { factionId: FactionId }) {
+  const factions = useContext(FactionContext);
 
-  const faction = factions[factionName];
+  const faction = factions[factionId];
   const color = getFactionColor(faction);
 
   return (
@@ -39,17 +38,14 @@ export function LogEntryElement({
   endTimeSeconds,
 }: {
   logEntry: ActionLogEntry;
-  activePlayer?: string;
+  activePlayer?: FactionId | "None";
   currRound: number;
   startTimeSeconds: number;
   endTimeSeconds: number;
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["agendas", "factions", "objectives"]);
-  const agendas = gameData.agendas ?? {};
-  const factions = gameData.factions;
-  const objectives = gameData.objectives ?? {};
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
 
   switch (logEntry.data.action) {
     case "ADD_ATTACHMENT": {
@@ -114,8 +110,8 @@ export function LogEntryElement({
           }}
         >
           <div>
-            <ColoredFactionName factionName={logEntry.data.event.pickedBy} /> :{" "}
-            {logEntry.data.event.name}
+            <ColoredFactionName factionId={logEntry.data.event.pickedBy} /> :{" "}
+            {logEntry.data.event.id}
           </div>
           <TimerDisplay
             time={endTimeSeconds - startTimeSeconds}
@@ -128,7 +124,10 @@ export function LogEntryElement({
       );
     }
     case "SELECT_ACTION": {
-      const faction = factions[activePlayer ?? ""];
+      const faction =
+        activePlayer && activePlayer !== "None"
+          ? factions[activePlayer]
+          : undefined;
       return (
         <LabeledLine
           color={getFactionColor(faction)}
@@ -156,8 +155,8 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />{" "}
-          gained relic : {logEntry.data.event.relic}
+          <ColoredFactionName factionId={logEntry.data.event.faction} /> gained
+          relic : {logEntry.data.event.relic}
         </div>
       );
     }
@@ -196,7 +195,7 @@ export function LogEntryElement({
           }}
         >
           New Speaker:
-          <ColoredFactionName factionName={logEntry.data.event.newSpeaker} />
+          <ColoredFactionName factionId={logEntry.data.event.newSpeaker} />
         </div>
       );
     }
@@ -214,7 +213,7 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           scored <ObjectiveRow objective={objective} hideScorers />
           {logEntry.data.event.key ? ` (${logEntry.data.event.key})` : null}
         </div>
@@ -234,7 +233,7 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           lost <ObjectiveRow objective={objective} hideScorers />
           {logEntry.data.event.key ? ` (${logEntry.data.event.key})` : null}
         </div>
@@ -250,7 +249,7 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           {logEntry.data.event.vps > 0 ? "gained" : "lost"}{" "}
           {Math.abs(logEntry.data.event.vps)}{" "}
           {pluralize("VP", Math.abs(logEntry.data.event.vps))}
@@ -270,7 +269,7 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           selected {logEntry.data.event.tech} as a starting tech
         </div>
       );
@@ -285,7 +284,7 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           researched {logEntry.data.event.tech}
         </div>
       );
@@ -300,7 +299,7 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           returned {logEntry.data.event.tech}
         </div>
       );
@@ -315,13 +314,13 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} /> took
+          <ColoredFactionName factionId={logEntry.data.event.faction} /> took
           control of {logEntry.data.event.planet}
           {logEntry.data.event.prevOwner ? (
             <>
               {" "}
               from{" "}
-              <ColoredFactionName factionName={logEntry.data.event.prevOwner} />
+              <ColoredFactionName factionId={logEntry.data.event.prevOwner} />
             </>
           ) : null}
         </div>
@@ -336,7 +335,7 @@ export function LogEntryElement({
               padding: `0 ${responsivePixels(10)}`,
             }}
           >
-            <ColoredFactionName factionName={logEntry.data.event.faction} />
+            <ColoredFactionName factionId={logEntry.data.event.faction} />
             Abstained
           </div>
         );
@@ -348,12 +347,15 @@ export function LogEntryElement({
             padding: `0 ${responsivePixels(10)}`,
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           cast {logEntry.data.event.votes} for {logEntry.data.event.target}
         </div>
       );
     }
     case "PLAY_RIDER": {
+      if (!logEntry.data.event.faction) {
+        return null;
+      }
       return (
         <div
           className="flexRow"
@@ -361,7 +363,7 @@ export function LogEntryElement({
             padding: `0 ${responsivePixels(10)}`,
           }}
         >
-          <ColoredFactionName factionName={logEntry.data.event.faction ?? ""} />
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
           played {logEntry.data.event.rider} and predicted{" "}
           {logEntry.data.event.outcome}
         </div>

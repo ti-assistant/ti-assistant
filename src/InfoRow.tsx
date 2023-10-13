@@ -1,9 +1,9 @@
 import { PropsWithChildren, ReactNode, useState } from "react";
 
-import { Modal } from "./Modal";
+import Modal from "./components/Modal/Modal";
 import { responsivePixels } from "./util/util";
 
-export interface InfoRowProps {
+interface InfoRowProps {
   infoContent: ReactNode;
   infoTitle: ReactNode;
 }

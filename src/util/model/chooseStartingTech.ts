@@ -1,27 +1,6 @@
 import { buildFactions, buildTechs } from "../../data/GameData";
-import { ActionLogAction, Handler } from "../api/data";
 import { hasTech } from "../api/techs";
-import {
-  ActionLogEntry,
-  StoredGameData,
-  arrayRemove,
-  arrayUnion,
-} from "../api/util";
-
-export interface ChooseStartingTechEvent {
-  faction: string;
-  tech: string;
-}
-
-export interface ChooseStartingTechData {
-  action: "CHOOSE_STARTING_TECH";
-  event: ChooseStartingTechEvent;
-}
-
-export interface RemoveStartingTechData {
-  action: "REMOVE_STARTING_TECH";
-  event: ChooseStartingTechEvent;
-}
+import { arrayRemove, arrayUnion } from "../api/util";
 
 export class ChooseStartingTechHandler implements Handler {
   constructor(

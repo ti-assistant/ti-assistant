@@ -1,43 +1,5 @@
 import Cookies from "js-cookie";
 
-import { GameAgenda } from "./agendas";
-import { GameAttachment } from "./attachments";
-import { GameComponent } from "./components";
-import { GameFaction } from "./factions";
-import { GameObjective } from "./objectives";
-import { Options } from "./options";
-import { GamePlanet } from "./planets";
-import { GameStrategyCard } from "./cards";
-import { AssignStrategyCardEvent, SetSpeakerEvent } from "./subState";
-import { GameState, GameUpdateData } from "./state";
-import { Timestamp } from "firebase-admin/firestore";
-import { GameRelic } from "./relics";
-
-export type ActionLogEvent = AssignStrategyCardEvent | SetSpeakerEvent;
-
-export interface ActionLogEntry {
-  timestampMillis: number;
-  gameSeconds?: number;
-  data: GameUpdateData;
-}
-
-export interface StoredGameData {
-  actionLog?: ActionLogEntry[];
-  agendas?: Record<string, GameAgenda>;
-  attachments?: Record<string, GameAttachment>;
-  components?: Record<string, GameComponent>;
-  factions: Record<string, GameFaction>;
-  objectives?: Record<string, GameObjective>;
-  options: Options;
-  planets: Record<string, GamePlanet>;
-  relics?: Record<string, GameRelic>;
-  state: GameState;
-  strategycards?: Record<string, GameStrategyCard>;
-  updates?: Record<string, { timestamp: Timestamp }>;
-  // Secrets
-  [key: string]: any;
-}
-
 function genCookie(length: number): string {
   let result = "";
   const characters =
@@ -104,4 +66,8 @@ export async function poster(url: string, data: any): Promise<any> {
     throw new Error(val.message);
   }
   return val;
+}
+
+export function hasScoredObjective(factionId: FactionId, objective: Objective) {
+  return (objective.scorers ?? []).includes(factionId);
 }

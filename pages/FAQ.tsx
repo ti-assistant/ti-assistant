@@ -1,9 +1,8 @@
-import React from "react";
 import Link from "next/link";
+import BorderedDiv from "../src/components/BorderedDiv/BorderedDiv";
+import LabeledLine from "../src/components/LabeledLine/LabeledLine";
+import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { responsivePixels } from "../src/util/util";
-import { LabeledDiv, LabeledLine } from "../src/LabeledDiv";
-import { NonGameHeader } from "../src/Header";
-import { NumberedItem } from "../src/NumberedItem";
 
 export default function FAQPage() {
   return (
@@ -126,16 +125,16 @@ export default function FAQPage() {
         </div>
         <Link href={`/`}>
           <a style={{ marginTop: responsivePixels(12) }}>
-            <LabeledDiv>
+            <BorderedDiv style={{ minWidth: responsivePixels(190) }}>
               <div
-                className="flexColumn mediumFont"
+                className="flexColumn"
                 style={{
                   minWidth: responsivePixels(190),
                 }}
               >
                 Back
               </div>
-            </LabeledDiv>
+            </BorderedDiv>
           </a>
         </Link>
       </div>

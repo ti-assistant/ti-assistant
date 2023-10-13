@@ -1,26 +1,5 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-import { getOnDeckFaction } from "../helpers";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
-import { Secondary } from "../api/subState";
-
-export interface EndTurnEvent {
-  samePlayer?: boolean;
-  // Set by server
-  prevFaction?: string;
-  selectedAction?: string;
-  secondaries?: Record<string, Secondary>;
-}
-
-export interface EndTurnData {
-  action: "END_TURN";
-  event: EndTurnEvent;
-}
-
-export interface UnendTurnData {
-  action: "UNEND_TURN";
-  event: EndTurnEvent;
-}
+import { getOnDeckFaction } from "../helpers";
 
 export class EndTurnHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: EndTurnData) {}
@@ -46,9 +25,7 @@ export class EndTurnHandler implements Handler {
       [`state.paused`]: false,
     };
     if (!this.data.event.samePlayer) {
-      updates[`state.activeplayer`] = onDeckFaction
-        ? onDeckFaction.name
-        : "None";
+      updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.id : "None";
     }
 
     for (const factionId of Object.keys(this.gameData.factions)) {

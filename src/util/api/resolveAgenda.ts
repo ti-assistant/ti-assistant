@@ -1,13 +1,18 @@
 import { mutate } from "swr";
-import { updateActionLog, updateGameData } from "./data";
-import { GameUpdateData } from "./state";
-import { poster, StoredGameData } from "./util";
+import { poster } from "./util";
 import {
   RepealAgendaHandler,
   ResolveAgendaHandler,
 } from "../model/resolveAgenda";
+import { BASE_GAME_DATA } from "../../../server/data/data";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
 
-export function resolveAgenda(gameId: string, agenda: string, target: string) {
+export function resolveAgenda(
+  gameId: string,
+  agenda: AgendaId,
+  target: string
+) {
   const data: GameUpdateData = {
     action: "RESOLVE_AGENDA",
     event: {
@@ -20,25 +25,28 @@ export function resolveAgenda(gameId: string, agenda: string, target: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new ResolveAgendaHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new ResolveAgendaHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }
   );
 }
 
-export function repealAgenda(gameId: string, agenda: string, target: string) {
+export function repealAgenda(gameId: string, agenda: AgendaId, target: string) {
   const data: GameUpdateData = {
     action: "REPEAL_AGENDA",
     event: {
@@ -51,18 +59,21 @@ export function repealAgenda(gameId: string, agenda: string, target: string) {
     `/api/${gameId}/data`,
     async () => await poster(`/api/${gameId}/dataUpdate`, data),
     {
-      optimisticData: (storedGameData: StoredGameData) => {
-        const handler = new RepealAgendaHandler(storedGameData, data);
+      optimisticData: (currentData?: StoredGameData) => {
+        if (!currentData) {
+          return BASE_GAME_DATA;
+        }
+        const handler = new RepealAgendaHandler(currentData, data);
 
         if (!handler.validate()) {
-          return storedGameData;
+          return currentData;
         }
 
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(currentData, handler.getUpdates());
 
-        updateActionLog(storedGameData, handler);
+        updateActionLog(currentData, handler);
 
-        return structuredClone(storedGameData);
+        return structuredClone(currentData);
       },
       revalidate: false,
     }

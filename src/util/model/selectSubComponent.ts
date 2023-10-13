@@ -1,15 +1,3 @@
-import { ActionLogAction, Handler } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface SelectSubComponentEvent {
-  subComponent: string;
-}
-
-export interface SelectSubComponentData {
-  action: "SELECT_SUB_COMPONENT";
-  event: SelectSubComponentEvent;
-}
-
 export class SelectSubComponentHandler implements Handler {
   constructor(
     public gameData: StoredGameData,

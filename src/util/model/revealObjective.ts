@@ -1,20 +1,4 @@
 import { buildObjectives } from "../../data/GameData";
-import { Handler, ActionLogAction } from "../api/data";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface RevealObjectiveEvent {
-  objective: string;
-}
-
-export interface RevealObjectiveData {
-  action: "REVEAL_OBJECTIVE";
-  event: RevealObjectiveEvent;
-}
-
-export interface HideObjectiveData {
-  action: "HIDE_OBJECTIVE";
-  event: RevealObjectiveEvent;
-}
 
 export class RevealObjectiveHandler implements Handler {
   constructor(

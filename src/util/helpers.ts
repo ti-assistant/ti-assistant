@@ -1,12 +1,9 @@
-import { StrategyCard } from "./api/cards";
-import { Faction } from "./api/factions";
-import { GameState } from "./api/state";
 import { getNextIndex } from "./util";
 
 export function getOnDeckFaction(
   state: GameState,
-  factions: Record<string, Faction>,
-  strategyCards: Record<string, StrategyCard>
+  factions: Partial<Record<FactionId, Faction>>,
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>
 ): Faction | undefined {
   switch (state.phase) {
     case "SETUP":
@@ -17,7 +14,10 @@ export function getOnDeckFaction(
         return undefined;
       }
       // TODO: Handle 3 and 4 player counts needing to pick 2 SCs.
-      const currentFaction = factions[state.activeplayer];
+      const currentFaction =
+        state.activeplayer && state.activeplayer !== "None"
+          ? factions[state.activeplayer]
+          : undefined;
       if (!currentFaction) {
         return undefined;
       }
@@ -95,22 +95,25 @@ export function getOnDeckFaction(
         if (!nextCard) {
           break;
         }
-        const factionName = nextCard.faction;
-        if (!factionName) {
+        const factionId = nextCard.faction;
+        if (!factionId) {
           break;
         }
-        const faction = factions[factionName];
+        const faction = factions[factionId];
         if (!faction) {
           break;
         }
         if (!faction.passed) {
-          return factions[factionName];
+          return factions[factionId];
         }
       }
       if (!state.activeplayer) {
         return undefined;
       }
-      const currentFaction = factions[state.activeplayer];
+      const currentFaction =
+        state.activeplayer && state.activeplayer !== "None"
+          ? factions[state.activeplayer]
+          : undefined;
       return currentFaction?.passed ? undefined : currentFaction;
     }
     case "STATUS": {
@@ -145,9 +148,9 @@ export function getOnDeckFaction(
         if (!nextCard) {
           break;
         }
-        const factionName = nextCard.faction;
-        if (factionName) {
-          return factions[factionName];
+        const factionId = nextCard.faction;
+        if (factionId) {
+          return factions[factionId];
         }
       }
       return undefined;
@@ -156,7 +159,10 @@ export function getOnDeckFaction(
       if (!state.activeplayer) {
         return undefined;
       }
-      const currentFaction = factions[state.activeplayer];
+      const currentFaction =
+        state.activeplayer && state.activeplayer !== "None"
+          ? factions[state.activeplayer]
+          : undefined;
       return Object.values(factions).find(
         (faction) => faction.order === currentFaction?.order ?? 0 + 1
       );
@@ -168,20 +174,20 @@ export function getOnDeckFaction(
  * Gets the strategy card(s) that a faction has selected.
  */
 export function getStrategyCardsForFaction(
-  strategyCards: Record<string, StrategyCard>,
-  factionName: string
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
+  factionId: FactionId
 ) {
   const cards = Object.values(strategyCards).filter(
-    (card) => card.faction === factionName
+    (card) => card.faction === factionId
   );
   return cards;
 }
 
 export function getInitiativeForFaction(
-  strategyCards: Record<string, StrategyCard>,
-  factionName: string
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
+  factionId: FactionId
 ) {
-  const cards = getStrategyCardsForFaction(strategyCards, factionName);
+  const cards = getStrategyCardsForFaction(strategyCards, factionId);
   return cards.reduce((initiative, card) => {
     if (card.order < initiative) {
       return card.order;

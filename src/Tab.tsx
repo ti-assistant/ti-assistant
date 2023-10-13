@@ -1,6 +1,6 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 
-export interface TabProps {
+interface TabProps {
   selectTab: (id: string) => void;
   id: string;
   selectedId: string;
@@ -25,7 +25,7 @@ export function Tab({
   );
 }
 
-export interface TabBodyProps {
+interface TabBodyProps {
   id: string;
   selectedId: string;
   style?: CSSProperties;

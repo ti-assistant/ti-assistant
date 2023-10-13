@@ -1,0 +1,75 @@
+.Modal {
+  position: fixed;
+  left: 0;
+  top: 0px;
+  width: 100vw;
+  height: 100dvh;
+
+  display: none;
+
+  flex-direction: column;
+  align-items: center;
+  color: #eee;
+}
+
+.Overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100dvh;
+  background-color: black;
+  opacity: 0.85;
+}
+
+.Modal .Content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+
+  position: relative;
+  width: 100dvw;
+  height: 100dvh;
+
+  padding: var(--twelve-pixel);
+}
+
+.Modal .Button {
+  position: absolute;
+  top: var(--eight-pixel);
+  margin-right: 90vw;
+  background-color: #222;
+  border-radius: 100%;
+  aspect-ratio: 1;
+  width: var(--forty-pixel);
+  color: grey;
+  cursor: pointer;
+  font-size: var(--twenty-pixel);
+}
+
+.Modal .Button div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+  text-shadow: none;
+}
+
+.Modal .Title {
+  padding: var(--four-pixel) var(--thirty-two-pixel);
+  text-align: center;
+  flex-basis: 100%;
+  font-size: var(--forty-pixel);
+}
+
+.Modal .Body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 0 var(--four-pixel) var(--four-pixel) var(--four-pixel);
+}

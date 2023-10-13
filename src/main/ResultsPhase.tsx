@@ -1,7 +1,15 @@
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
-import { GameLog } from "../GameLog";
+import { Loader } from "../Loader";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import { responsivePixels } from "../util/util";
-import { LabeledDiv } from "../LabeledDiv";
+
+const GameLog = dynamic(
+  import("../GameLog").then((mod) => mod.GameLog),
+  {
+    loading: () => <Loader />,
+  }
+);
 
 export default function ResultsPhase() {
   const [viewing, setViewing] = useState("Game Log");

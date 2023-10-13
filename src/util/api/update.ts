@@ -1,0 +1,63 @@
+import { TURN_BOUNDARIES } from "./actionLog";
+import { updateGameData } from "./handler";
+import { getOppositeHandler } from "./opposite";
+
+export function updateActionLog(currentData: StoredGameData, handler: Handler) {
+  const actionLog = currentData.actionLog ?? [];
+  let lastCheck = false;
+  for (let i = 0; i < actionLog.length; ++i) {
+    if (lastCheck) {
+      break;
+    }
+    const logEntry = actionLog[i];
+    if (!logEntry) {
+      continue;
+    }
+
+    if (TURN_BOUNDARIES.includes(logEntry.data.action)) {
+      lastCheck = true;
+    }
+
+    const action = handler.getActionLogAction(logEntry);
+    switch (action) {
+      case "DELETE":
+        actionLog.splice(i, 1);
+        return;
+      case "REPLACE":
+        actionLog.splice(i, 1, handler.getLogEntry());
+        return;
+      case "REWIND_AND_DELETE":
+        for (let j = 0; j < i; ++j) {
+          const entry = actionLog[j];
+          if (!entry) {
+            continue;
+          }
+          const undoHandler = getOppositeHandler(handler.gameData, entry.data);
+          if (!undoHandler) {
+            continue;
+          }
+          updateGameData(currentData, undoHandler.getUpdates());
+        }
+        actionLog.splice(0, i + 1);
+        return;
+      case "REWIND_AND_REPLACE":
+        for (let j = 0; j < i; ++j) {
+          const entry = actionLog[j];
+          if (!entry) {
+            continue;
+          }
+          const undoHandler = getOppositeHandler(handler.gameData, entry.data);
+          if (!undoHandler) {
+            continue;
+          }
+          updateGameData(currentData, undoHandler.getUpdates());
+        }
+        actionLog.splice(0, i + 1, handler.getLogEntry());
+        return;
+    }
+  }
+
+  actionLog.unshift(handler.getLogEntry());
+
+  return;
+}

@@ -1,26 +1,39 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { StrategyCardElement } from "../StrategyCard";
-import { getOnDeckFaction } from "../util/helpers";
-import { strategyCardOrder, StrategyCard } from "../util/api/cards";
-import { Faction } from "../util/api/factions";
-import { responsivePixels } from "../util/util";
-import { FactionTimer, StaticFactionTimer } from "../Timer";
-import { FactionCard } from "../FactionCard";
-import { Modal } from "../Modal";
-import React, { PropsWithChildren, ReactNode, useState } from "react";
-import { LabeledDiv } from "../LabeledDiv";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { NumberedItem } from "../NumberedItem";
-import { hasTech } from "../util/api/techs";
-import { Agenda } from "../util/api/agendas";
-import { getDefaultStrategyCards } from "../util/api/defaults";
+import React, {
+  PropsWithChildren,
+  ReactNode,
+  useContext,
+  useState,
+} from "react";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
+import { Loader } from "../Loader";
+import { NumberedItem } from "../NumberedItem";
 import { Selector } from "../Selector";
-import { useGameData } from "../data/GameData";
-import { advancePhase } from "../util/api/advancePhase";
-import { assignStrategyCard } from "../util/api/assignStrategyCard";
-import { giftOfPrescience } from "../util/api/giftOfPrescience";
-import { swapStrategyCards } from "../util/api/swapStrategyCards";
+import { StrategyCardElement } from "../StrategyCard";
+import { FactionTimer, StaticFactionTimer } from "../Timer";
+import FactionCard from "../components/FactionCard/FactionCard";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import {
+  AgendaContext,
+  FactionContext,
+  StateContext,
+  StrategyCardContext,
+} from "../context/Context";
+import {
+  advancePhaseAsync,
+  assignStrategyCardAsync,
+  giftOfPrescienceAsync,
+  swapStrategyCardsAsync,
+} from "../dynamic/api";
+import { hasTech } from "../util/api/techs";
+import { getFactionColor, getFactionName } from "../util/factions";
+import { getOnDeckFaction } from "../util/helpers";
+import { responsivePixels } from "../util/util";
+
+const Modal = dynamic(() => import("../components/Modal/Modal"), {
+  loading: () => <Loader />,
+});
 
 function ChecksAndBalancesMenu({
   faction,
@@ -31,10 +44,10 @@ function ChecksAndBalancesMenu({
   mobile,
 }: {
   faction: Faction | undefined;
-  factions: Record<string, Faction>;
+  factions: Partial<Record<FactionId, Faction>>;
   strategyCards: StrategyCard[];
-  agendas: Record<string, Agenda>;
-  onSelect: (factionName: string) => void;
+  agendas: Partial<Record<AgendaId, Agenda>>;
+  onSelect: (factionId: FactionId) => void;
   mobile: boolean;
 }) {
   const checksAndBalances = agendas["Checks and Balances"];
@@ -44,30 +57,31 @@ function ChecksAndBalancesMenu({
 
   const numPlayers = Object.keys(factions).length;
 
-  const cardsPerFaction: Record<string, number> = {};
+  const cardsPerFaction: Partial<Record<FactionId, number>> = {};
   strategyCards.forEach((card) => {
     if (!card.faction) {
       return;
     }
-    if (!cardsPerFaction[card.faction]) {
-      cardsPerFaction[card.faction] = 0;
-    }
-    cardsPerFaction[card.faction] += 1;
+    let cardCount = cardsPerFaction[card.faction] ?? 0;
+    cardCount++;
+    cardsPerFaction[card.faction] = cardCount;
   });
-  const otherFactions = Object.keys(factions).filter((factionName) => {
-    if (faction.name === factionName) {
-      return false;
-    }
-    const numCards = cardsPerFaction[factionName] ?? 0;
-    if (numPlayers > 4) {
-      return numCards < 1;
-    }
-    return numCards < 2;
-  });
+  const otherFactions = Object.values(factions)
+    .filter((otherFaction) => {
+      if (faction.id === otherFaction.id) {
+        return false;
+      }
+      const numCards = cardsPerFaction[otherFaction.id] ?? 0;
+      if (numPlayers > 4) {
+        return numCards < 1;
+      }
+      return numCards < 2;
+    })
+    .map((otherFaction) => otherFaction.id);
 
   // If no other factions remaining, allow picking it yourself
   if (otherFactions.length === 0) {
-    otherFactions.push(faction.name);
+    otherFactions.push(faction.id);
   }
 
   return (
@@ -75,8 +89,8 @@ function ChecksAndBalancesMenu({
       buttonStyle={mobile ? { fontSize: responsivePixels(16) } : {}}
       hoverMenuLabel="Give to"
       options={otherFactions}
-      toggleItem={(factionName, _) => {
-        onSelect(factionName);
+      toggleItem={(factionId, _) => {
+        onSelect(factionId);
       }}
     />
   );
@@ -92,8 +106,8 @@ function QuantumDatahubNode({
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const [quantum, setQuantum] = useState<{
-    mainCard: string | undefined;
-    otherCard: string | undefined;
+    mainCard: StrategyCardId | undefined;
+    otherCard: StrategyCardId | undefined;
   }>({
     mainCard: undefined,
     otherCard: undefined,
@@ -104,17 +118,13 @@ function QuantumDatahubNode({
       return;
     }
 
-    const cardOne = strategyCards.find(
-      (card) => card.name === quantum.mainCard
-    );
-    const cardTwo = strategyCards.find(
-      (card) => card.name === quantum.otherCard
-    );
+    const cardOne = strategyCards.find((card) => card.id === quantum.mainCard);
+    const cardTwo = strategyCards.find((card) => card.id === quantum.otherCard);
     if (!cardOne || !cardTwo) {
       return;
     }
 
-    swapStrategyCards(gameid, quantum.mainCard, quantum.otherCard);
+    swapStrategyCardsAsync(gameid, quantum.mainCard, quantum.otherCard);
   }
 
   if (!faction || !hasTech(faction, "Quantum Datahub Node")) {
@@ -142,10 +152,10 @@ function QuantumDatahubNode({
             hoverMenuLabel="Strategy Card"
             autoSelect={true}
             options={strategyCards
-              .filter((card) => card.faction === faction.name)
-              .map((card) => card.name)}
-            toggleItem={(cardName, add) => {
-              const localCardName = add ? cardName : undefined;
+              .filter((card) => card.faction === faction.id)
+              .map((card) => card.id)}
+            toggleItem={(cardId, add) => {
+              const localCardName = add ? cardId : undefined;
               setQuantum((quantum) => {
                 return { ...quantum, mainCard: localCardName };
               });
@@ -156,10 +166,10 @@ function QuantumDatahubNode({
           <Selector
             hoverMenuLabel="Strategy Card"
             options={strategyCards
-              .filter((card) => card.faction && card.faction !== faction.name)
-              .map((card) => card.name)}
-            toggleItem={(cardName, add) => {
-              const localCardName = add ? cardName : undefined;
+              .filter((card) => card.faction && card.faction !== faction.id)
+              .map((card) => card.id)}
+            toggleItem={(cardId, add) => {
+              const localCardName = add ? cardId : undefined;
               setQuantum((quantum) => {
                 return { ...quantum, otherCard: localCardName };
               });
@@ -196,13 +206,12 @@ function QuantumDatahubNode({
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, ["agendas", "factions"]);
-  const agendas = gameData.agendas ?? {};
-  const factions = gameData.factions;
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
 
   const [quantum, setQuantum] = useState<{
-    mainCard: string | undefined;
-    otherCard: string | undefined;
+    mainCard: StrategyCardId | undefined;
+    otherCard: StrategyCardId | undefined;
   }>({
     mainCard: undefined,
     otherCard: undefined,
@@ -214,14 +223,16 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
       return;
     }
 
-    swapStrategyCards(gameid, quantum.mainCard, quantum.otherCard, true);
+    swapStrategyCardsAsync(gameid, quantum.mainCard, quantum.otherCard, true);
   }
 
   if (!arbiter || !arbiter.resolved) {
     return null;
   }
 
-  const faction = factions[arbiter.target ?? ""];
+  const faction = arbiter.target
+    ? factions[arbiter.target as FactionId]
+    : undefined;
 
   if (!faction) {
     return null;
@@ -248,10 +259,10 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
             hoverMenuLabel="Strategy Card"
             autoSelect={true}
             options={strategyCards
-              .filter((card) => card.faction === faction.name)
-              .map((card) => card.name)}
-            toggleItem={(cardName, add) => {
-              const localCardName = add ? cardName : undefined;
+              .filter((card) => card.faction === faction.id)
+              .map((card) => card.id)}
+            toggleItem={(cardId, add) => {
+              const localCardName = add ? cardId : undefined;
               setQuantum((quantum) => {
                 return { ...quantum, mainCard: localCardName };
               });
@@ -262,10 +273,10 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
           <Selector
             hoverMenuLabel="Strategy Card"
             options={strategyCards
-              .filter((card) => card.faction && card.faction !== faction.name)
-              .map((card) => card.name)}
-            toggleItem={(cardName, add) => {
-              const localCardName = add ? cardName : undefined;
+              .filter((card) => card.faction && card.faction !== faction.id)
+              .map((card) => card.id)}
+            toggleItem={(cardId, add) => {
+              const localCardName = add ? cardId : undefined;
               setQuantum((quantum) => {
                 return { ...quantum, otherCard: localCardName };
               });
@@ -316,39 +327,45 @@ function InfoContent({ children }: PropsWithChildren) {
   );
 }
 
+const CARD_ORDER: Record<StrategyCardId, number> = {
+  Leadership: 1,
+  Diplomacy: 2,
+  Politics: 3,
+  Construction: 4,
+  Trade: 5,
+  Warfare: 6,
+  Technology: 7,
+  Imperial: 8,
+};
+
 export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "agendas",
-    "factions",
-    "state",
-    "strategycards",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
   function pickStrategyCard(
     card: StrategyCard,
     faction: Faction,
-    pickedBy: string
+    pickedBy: FactionId
   ) {
     if (!gameid) {
       return;
     }
 
-    assignStrategyCard(gameid, faction.name, card.name, pickedBy);
+    assignStrategyCardAsync(gameid, faction.id, card.id, pickedBy);
   }
 
   const orderedStrategyCards = Object.values(strategyCards).sort(
-    (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
+    (a, b) => CARD_ORDER[a.id] - CARD_ORDER[b.id]
   );
 
-  const activefaction = factions
-    ? factions[state?.activeplayer ?? ""]
-    : undefined;
+  const activefaction =
+    factions && state.activeplayer && state.activeplayer !== "None"
+      ? factions[state?.activeplayer]
+      : undefined;
   const cab = (agendas ?? {})["Checks and Balances"];
 
   const checksAndBalances = !!cab && !!cab.passed;
@@ -358,7 +375,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
       {orderedStrategyCards.map((card) => {
         return (
           <StrategyCardElement
-            key={card.name}
+            key={card.id}
             card={card}
             active={
               card.faction || !activefaction || card.invalid ? false : true
@@ -369,8 +386,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
               !activefaction ||
               card.invalid
                 ? undefined
-                : () =>
-                    pickStrategyCard(card, activefaction, activefaction.name)
+                : () => pickStrategyCard(card, activefaction, activefaction.id)
             }
             fontSize={mobile ? 20 : 24}
           >
@@ -380,12 +396,12 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
               strategyCards={orderedStrategyCards}
               mobile={mobile}
               agendas={agendas ?? {}}
-              onSelect={(factionName) => {
-                const faction = (factions ?? {})[factionName];
+              onSelect={(factionId) => {
+                const faction = (factions ?? {})[factionId];
                 if (!faction || !activefaction) {
                   return;
                 }
-                pickStrategyCard(card, faction, activefaction.name);
+                pickStrategyCard(card, faction, activefaction.id);
               }}
             />
           </StrategyCardElement>
@@ -396,23 +412,16 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
 }
 
 export function advanceToActionPhase(gameid: string) {
-  advancePhase(gameid);
+  advancePhaseAsync(gameid);
 }
 
 export default function StrategyPhase() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
-  const gameData = useGameData(gameid, [
-    "actionLog",
-    "agendas",
-    "factions",
-    "state",
-    "strategycards",
-  ]);
-  const agendas = gameData.agendas;
-  const factions = gameData.factions;
-  const state = gameData.state;
-  const strategyCards = gameData.strategycards ?? getDefaultStrategyCards();
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
@@ -443,7 +452,7 @@ export default function StrategyPhase() {
   }
 
   function getStartOfStrategyPhaseAbilities() {
-    let abilities: Record<string, Ability[]> = {};
+    let abilities: Partial<Record<FactionId | "Every Player", Ability[]>> = {};
     abilities["Every Player"] = [];
     const aiRevolution = agendas
       ? agendas["Anti-Intellectual Revolution"]
@@ -488,14 +497,14 @@ export default function StrategyPhase() {
     }
     for (const faction of Object.values(factions ?? {})) {
       const factionAbilities: Ability[] = [];
-      if (faction.name === "Council Keleres") {
+      if (faction.id === "Council Keleres") {
         factionAbilities.push({
           name: "Council Patronage",
           description: "Replenish your commodities, then gain 1 trade good",
         });
       }
       if (factionAbilities.length > 0) {
-        abilities[getFactionName(faction)] = factionAbilities;
+        abilities[faction.id] = factionAbilities;
       }
     }
     return abilities;
@@ -553,14 +562,11 @@ export default function StrategyPhase() {
     return null;
   }
 
-  const activefaction = factions
-    ? factions[state?.activeplayer ?? ""]
-    : undefined;
+  const activefaction =
+    factions && state.activeplayer && state.activeplayer !== "None"
+      ? factions[state?.activeplayer]
+      : undefined;
   const onDeckFaction = getOnDeckFaction(state, factions ?? {}, strategyCards);
-
-  function canUndo() {
-    return (gameData.actionLog ?? []).length > 0;
-  }
   const updatedStrategyCards = Object.values(strategyCards).map((card) => {
     const updatedCard = structuredClone(card);
 
@@ -568,27 +574,18 @@ export default function StrategyPhase() {
   });
 
   const orderedStrategyCards = updatedStrategyCards.sort(
-    (a, b) => strategyCardOrder[a.name] - strategyCardOrder[b.name]
+    (a, b) => a.order - b.order
   );
 
-  function getFirstCardForFaction(factionName: string) {
-    for (const strategyCard of orderedStrategyCards) {
-      if (strategyCard.faction === factionName) {
-        return strategyCard;
-      }
-    }
-    return undefined;
-  }
-
-  function gift(factionName: string | undefined) {
+  function gift(factionId: FactionId | undefined) {
     if (!gameid) {
       return;
     }
-    giftOfPrescience(gameid, factionName ?? "Naalu Collective");
+    giftOfPrescienceAsync(gameid, factionId ?? "Naalu Collective");
   }
 
   const giftFaction = Object.values(strategyCards).reduce(
-    (faction: string | undefined, card) => {
+    (faction: FactionId | undefined, card) => {
       if (card.order === 0 && card.faction !== "Naalu Collective") {
         return card.faction;
       }
@@ -623,21 +620,25 @@ export default function StrategyPhase() {
             Start of Strategy Phase
             <ol className="flexColumn" style={{ alignItems: "stretch" }}>
               {Object.entries(getStartOfStrategyPhaseAbilities()).map(
-                ([factionName, abilities]) => {
+                ([factionId, abilities]) => {
                   if (abilities.length === 0) {
                     return null;
                   }
                   const label =
-                    factions && factionName !== "Every Player"
-                      ? getFactionName(factions[factionName])
-                      : factionName;
+                    factions && factionId !== "Every Player"
+                      ? getFactionName(factions[factionId as FactionId])
+                      : factionId;
                   return (
-                    <NumberedItem key={factionName}>
+                    <NumberedItem key={factionId}>
                       <LabeledDiv
                         label={label}
                         color={
                           factions
-                            ? getFactionColor(factions[factionName])
+                            ? getFactionColor(
+                                factionId !== "Every Player"
+                                  ? factions[factionId as FactionId]
+                                  : undefined
+                              )
                             : "#eee"
                         }
                       >
@@ -676,14 +677,14 @@ export default function StrategyPhase() {
           <div className="flexColumn">
             End of Strategy Phase
             {factions && factions["Naalu Collective"] ? (
-              <Selector
+              <Selector<FactionId>
                 hoverMenuLabel="Gift of Prescience"
                 selectedLabel="Gift of Prescience"
                 options={Object.values(factions ?? {})
-                  .map((faction) => faction.name)
+                  .map((faction) => faction.id)
                   .filter((name) => name !== "Naalu Collective")}
-                toggleItem={(factionName, add) => {
-                  const localFactionName = add ? factionName : undefined;
+                toggleItem={(factionId, add) => {
+                  const localFactionName = add ? factionId : undefined;
                   gift(localFactionName);
                 }}
                 selectedItem={giftFaction}
@@ -710,7 +711,7 @@ export default function StrategyPhase() {
       >
         <div
           className="flexRow"
-          style={{ position: "relative", maxWidth: "100%" }}
+          style={{ position: "relative", maxWidth: responsivePixels(420) }}
         >
           {activefaction ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
@@ -720,7 +721,6 @@ export default function StrategyPhase() {
                 style={{ height: responsivePixels(80) }}
                 opts={{
                   iconSize: responsivePixels(60),
-                  fontSize: responsivePixels(24),
                 }}
               >
                 <div
@@ -731,7 +731,7 @@ export default function StrategyPhase() {
                   }}
                 >
                   <FactionTimer
-                    factionName={activefaction.name}
+                    factionId={activefaction.id}
                     style={{ fontSize: responsivePixels(28) }}
                   />
                 </div>
@@ -766,7 +766,7 @@ export default function StrategyPhase() {
                   }}
                 >
                   <StaticFactionTimer
-                    factionName={onDeckFaction.name}
+                    factionId={onDeckFaction.id}
                     style={{
                       fontSize: responsivePixels(18),
                     }}
@@ -783,17 +783,11 @@ export default function StrategyPhase() {
             gap: responsivePixels(4),
             alignItems: "stretch",
             marginTop: responsivePixels(8),
-            width: responsivePixels(420),
+            width: responsivePixels(440),
           }}
         >
           <StrategyCardSelectList mobile={false} />
         </div>
-        {/* {canUndo() ? (
-          <div className="flexRow" style={{ gap: responsivePixels(16) }}>
-            <button onClick={() => undoPick()}>Undo SC Pick</button>
-            <button onClick={() => resetPhase()}>Reset Phase</button>
-          </div>
-        ) : null} */}
         {activefaction ? null : (
           <button
             style={{ fontSize: responsivePixels(20) }}

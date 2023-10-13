@@ -1,29 +1,4 @@
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
-import { GameStrategyCard } from "../api/cards";
-import { ActionLogAction, Handler } from "../api/data";
-import { GameFaction } from "../api/factions";
-import { GameState } from "../api/state";
-import { Timers } from "../api/timers";
-import { ActionLogEntry, StoredGameData } from "../api/util";
-
-export interface AdvancePhaseEvent {
-  skipAgenda: boolean;
-  // Set by server, used for Undo.
-  factions?: Record<string, GameFaction>;
-  state?: GameState;
-  strategycards?: Record<string, GameStrategyCard>;
-  timers?: Timers;
-}
-
-export interface AdvancePhaseData {
-  action: "ADVANCE_PHASE";
-  event: AdvancePhaseEvent;
-}
-
-export interface RewindPhaseData {
-  action: "REWIND_PHASE";
-  event: AdvancePhaseEvent;
-}
 
 export class AdvancePhaseHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {}
@@ -74,9 +49,9 @@ export class AdvancePhaseHandler implements Handler {
             minFaction = strategyCard.faction;
           }
           if (strategyCard.faction) {
-            updates[`strategycards.${strategyCard.name}.tradeGoods`] = "DELETE";
+            updates[`strategycards.${strategyCard.id}.tradeGoods`] = "DELETE";
           } else {
-            updates[`strategycards.${strategyCard.name}.tradeGoods`] =
+            updates[`strategycards.${strategyCard.id}.tradeGoods`] =
               "INCREMENT";
           }
         }
@@ -105,9 +80,9 @@ export class AdvancePhaseHandler implements Handler {
         updates[`state.activeplayer`] = this.gameData.state.speaker;
         const strategyCards = buildStrategyCards(this.gameData);
         for (const strategyCard of Object.values(strategyCards)) {
-          updates[`strategycards.${strategyCard.name}.faction`] = "DELETE";
-          updates[`strategycards.${strategyCard.name}.order`] = "DELETE";
-          updates[`strategycards.${strategyCard.name}.used`] = "DELETE";
+          updates[`strategycards.${strategyCard.id}.faction`] = "DELETE";
+          updates[`strategycards.${strategyCard.id}.order`] = "DELETE";
+          updates[`strategycards.${strategyCard.id}.used`] = "DELETE";
         }
         if (this.data.event.skipAgenda) {
           updates[`state.phase`] = "STRATEGY";
