@@ -127,7 +127,7 @@ export default function Footer({}) {
                     className="flexColumn"
                     style={{
                       justifyContent: "flex-start",
-                      maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
+                      maxHeight: `calc(100dvh - ${responsivePixels(12)})`,
                     }}
                   >
                     <div
@@ -167,7 +167,7 @@ export default function Footer({}) {
                     className="flexColumn"
                     style={{
                       justifyContent: "flex-start",
-                      height: `calc(100dvh - ${responsivePixels(24)})`,
+                      height: `calc(100dvh - ${responsivePixels(12)})`,
                     }}
                   >
                     <div
@@ -211,7 +211,7 @@ export default function Footer({}) {
                     className="flexColumn"
                     style={{
                       justifyContent: "flex-start",
-                      maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
+                      maxHeight: `calc(100dvh - ${responsivePixels(12)})`,
                     }}
                   >
                     <div

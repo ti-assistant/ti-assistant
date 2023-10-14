@@ -173,8 +173,12 @@ export default function Header() {
             <div
               style={{
                 position: "relative",
-                width: "min(100dvh, 100dvw)",
-                height: "min(100dvh, 100dvw)",
+                width: `min(calc(100dvh - ${responsivePixels(
+                  12
+                )}), calc(100dvw - ${responsivePixels(12)}))`,
+                height: `min(calc(100dvh - ${responsivePixels(
+                  12
+                )}), calc(100dvw - ${responsivePixels(12)}))`,
               }}
             >
               <Map
