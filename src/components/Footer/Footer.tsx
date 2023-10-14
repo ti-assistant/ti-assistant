@@ -127,6 +127,7 @@ export default function Footer({}) {
                     className="flexColumn"
                     style={{
                       justifyContent: "flex-start",
+                      gap: responsivePixels(6),
                       maxHeight: `calc(100dvh - ${responsivePixels(12)})`,
                     }}
                   >
@@ -134,7 +135,7 @@ export default function Footer({}) {
                       className="centered extraLargeFont"
                       style={{
                         backgroundColor: "#222",
-                        padding: `${responsivePixels(4)} ${responsivePixels(
+                        padding: `${responsivePixels(2)} ${responsivePixels(
                           8
                         )}`,
                         borderRadius: responsivePixels(4),
