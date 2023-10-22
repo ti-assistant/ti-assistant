@@ -2,15 +2,15 @@ import Head from "next/head";
 import Link from "next/link";
 import { responsivePixels } from "../../util/util";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
-import Sidebar from "../Sidebar/Sidebar";
 import styles from "./NonGameHeader.module.scss";
+import Sidebars from "../Sidebars/Sidebars";
 
 export default function NonGameHeader({
   leftSidebar,
   rightSidebar,
 }: {
-  leftSidebar?: string;
-  rightSidebar?: string;
+  leftSidebar: string;
+  rightSidebar: string;
 }) {
   return (
     <>
@@ -28,9 +28,9 @@ export default function NonGameHeader({
             justifyContent: "space-between",
           }}
         >
-          {leftSidebar ? <Sidebar side="left">{leftSidebar}</Sidebar> : null}
-          {rightSidebar ? <Sidebar side="right">{rightSidebar}</Sidebar> : null}
-
+          <div className="nonMobile">
+            <Sidebars left={leftSidebar} right={rightSidebar} />
+          </div>
           <Link href={"/"}>
             <a
               className="flexRow extraLargeFont nonMobile"

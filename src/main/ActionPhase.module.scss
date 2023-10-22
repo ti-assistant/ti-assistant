@@ -1,0 +1,83 @@
+.LeftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+
+  margin-top: var(--one-twenty-pixel);
+  padding-top: var(--twenty-eight-pixel);
+}
+
+.ActivePlayerColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--eight-pixel);
+
+  padding-top: var(--eighty-pixel);
+}
+
+.ActivePlayerSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--eight-pixel);
+
+  width: 100%;
+  min-width: 360px;
+  min-height: 220px;
+}
+
+.EndTurnButton {
+  font-size: var(--twenty-four-pixel);
+}
+
+@media only screen and (max-width: 1279px) {
+  .ActivePlayerColumn {
+    padding-top: var(--one-twenty-pixel);
+  }
+
+  .ActivePlayerSection {
+    min-width: 280px;
+  }
+
+  .EndTurnButton {
+    font-size: var(--twenty-pixel);
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .LeftColumn {
+    height: calc(100svh - 200px);
+    justify-content: center;
+
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .ActivePlayerColumn {
+    padding-top: 0;
+  }
+
+  .ActivePlayerSection {
+    min-width: 280px;
+  }
+
+  .EndTurnButton {
+    font-size: var(--twenty-pixel);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .LeftColumn {
+    display: none;
+  }
+
+  .ActivePlayerColumn {
+    padding-top: 0;
+  }
+
+  .ActivePlayerSection {
+    align-items: flex-start;
+  }
+}

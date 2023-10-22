@@ -10,7 +10,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import {
   getCurrentTurnLogEntriesInTransaction,
   getGameData,
-  getGameDataInTransaction
+  getGameDataInTransaction,
 } from "../../../server/util/fetch";
 import { TURN_BOUNDARIES } from "../../../src/util/api/actionLog";
 import { getOppositeHandler } from "../../../src/util/api/opposite";
@@ -91,6 +91,7 @@ import { SetSpeakerHandler } from "../../../src/util/model/setSpeaker";
 import { SpeakerTieBreakHandler } from "../../../src/util/model/speakerTieBreak";
 import { SwapStrategyCardsHandler } from "../../../src/util/model/swapStrategyCards";
 import { UpdatePlanetStateHandler } from "../../../src/util/model/updatePlanetState";
+import { UpdateLeaderStateHandler } from "../../../src/util/model/updateLeaderState";
 
 export default async function handler(
   req: NextApiRequest,
@@ -480,6 +481,10 @@ function updateInTransaction(
       }
       case "SPEAKER_TIE_BREAK": {
         handler = new SpeakerTieBreakHandler(gameData, data);
+        break;
+      }
+      case "UPDATE_LEADER_STATE": {
+        handler = new UpdateLeaderStateHandler(gameData, data);
         break;
       }
       case "UNDO": {

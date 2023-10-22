@@ -23,6 +23,7 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
+import styles from "./TacticalAction.module.scss";
 
 export function TacticalAction({
   activeFactionId,
@@ -224,10 +225,11 @@ export function TacticalAction({
     unscoreObjectiveAsync(gameid, factionId, toRemove);
   }
 
-  console.log("Re-render :(");
-
   return (
-    <div className="flexColumn largeFont" style={{ ...style }}>
+    <div
+      className={`flexColumn largeFont ${styles.TacticalAction}`}
+      style={{ ...style }}
+    >
       {conqueredPlanets.length > 0 ? (
         <LabeledDiv label="NEWLY CONTROLLED PLANETS">
           <React.Fragment>

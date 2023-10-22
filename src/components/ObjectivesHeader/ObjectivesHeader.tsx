@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { responsivePixels } from "../../util/util";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
-import Sidebar from "../Sidebar/Sidebar";
 import styles from "./ObjectivesHeader.module.scss";
+import Sidebars from "../Sidebars/Sidebars";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -63,8 +63,7 @@ export default function ObjectivesHeader({
       </Head>
       <div className={`flexRow ${styles.ObjectivesHeader}`}>
         <div className={styles.InnerObjectivesHeader}>
-          <Sidebar side="left">{leftSidebar}</Sidebar>
-          <Sidebar side="right">{rightSidebar}</Sidebar>
+          <Sidebars left={leftSidebar} right={rightSidebar} />
 
           <Link href={"/"}>
             <a

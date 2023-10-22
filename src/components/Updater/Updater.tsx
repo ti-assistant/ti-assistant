@@ -8,7 +8,7 @@ import { useInterval } from "../../util/util";
 import Modal from "../Modal/Modal";
 import styles from "./Updater.module.scss";
 
-const UPDATE_FREQUENCY = 5000;
+const UPDATE_FREQUENCY = 2500;
 
 // Only times out if the game is paused.
 const TIMEOUT_MINUTES = 5;

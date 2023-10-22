@@ -81,7 +81,7 @@ function PlanetSection({
               planets={updatedPlanets}
               hasXxchaHero={
                 factionId === "Xxcha Kingdom" &&
-                factions[factionId]?.hero === "unlocked"
+                factions[factionId]?.hero === "readied"
               }
             />
           </div>

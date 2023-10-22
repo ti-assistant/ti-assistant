@@ -1,0 +1,19 @@
+.FactionRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: var(--eight-pixel);
+  width: 100%;
+
+  padding-right: var(--four-pixel);
+}
+
+.InnerRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+
+  gap: var(--eight-pixel);
+}

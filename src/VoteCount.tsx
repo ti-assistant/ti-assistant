@@ -106,20 +106,18 @@ export function getTargets(
 }
 
 export function canFactionVote(
-  factionId: FactionId,
+  faction: Faction,
   agendas: Partial<Record<AgendaId, Agenda>>,
   state: GameState,
-  factions: Partial<Record<FactionId, Faction>>,
   currentTurn: ActionLogEntry[]
 ) {
-  const faction = factions[factionId];
-  if (factionId === "Nekro Virus") {
+  if (faction.id === "Nekro Virus") {
     return false;
   }
   if (
-    factionId === "Xxcha Kingdom" &&
+    faction.id === "Xxcha Kingdom" &&
     faction &&
-    faction.commander === "unlocked"
+    faction.commander === "readied"
   ) {
     return true;
   }
@@ -127,19 +125,19 @@ export function canFactionVote(
     currentTurn,
     "Political Secret"
   );
-  if (politicalSecrets.includes(factionId)) {
+  if (politicalSecrets.includes(faction.id)) {
     return false;
   }
   const assassinatedRep = getActionCardTargets(
     currentTurn,
     "Assassinate Representative"
   )[0];
-  if (assassinatedRep === factionId) {
+  if (assassinatedRep === faction.id) {
     return false;
   }
   const riders = getPlayedRiders(currentTurn);
   for (const rider of riders) {
-    if (rider.faction === factionId) {
+    if (rider.faction === faction.id) {
       return false;
     }
   }
@@ -147,7 +145,7 @@ export function canFactionVote(
   if (
     publicExecution &&
     publicExecution.resolved &&
-    publicExecution.target === factionId &&
+    publicExecution.target === faction.id &&
     publicExecution.activeRound === state.round
   ) {
     return false;
@@ -232,11 +230,11 @@ export function computeRemainingVotes(
     if (factionId === "Xxcha Kingdom") {
       if (
         options.expansions.includes("CODEX THREE") &&
-        faction.hero === "unlocked"
+        faction.hero === "readied"
       ) {
         planetInfluence += planet.resources;
       }
-      if (faction.commander === "unlocked") {
+      if (faction.commander === "readied") {
         planetInfluence += 1;
       }
     }
@@ -244,7 +242,7 @@ export function computeRemainingVotes(
       influenceNeeded -= planetInfluence;
       continue;
     }
-    if (factionId === "Xxcha Kingdom" && faction.commander === "unlocked") {
+    if (factionId === "Xxcha Kingdom" && faction.commander === "readied") {
       planetInfluence -= 1;
     }
     planetCount++;
@@ -261,7 +259,7 @@ export function computeRemainingVotes(
   if (factionId === "Argent Flight") {
     extraVotes += Object.keys(factions).length;
   }
-  if (factionId === "Xxcha Kingdom" && faction.commander === "unlocked") {
+  if (factionId === "Xxcha Kingdom" && faction.commander === "readied") {
     extraVotes += planetCount;
   }
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
@@ -308,10 +306,6 @@ export function VoteCount({ factionId, agenda }: VoteCountProps) {
     } else {
       castVotesAsync(gameid, factionId, votes, target);
     }
-  }
-
-  if (!factions || !options || !state) {
-    return null;
   }
 
   const faction = factions[factionId];
@@ -394,13 +388,7 @@ export function VoteCount({ factionId, agenda }: VoteCountProps) {
           alignItems: "center",
         }}
       >
-        {!canFactionVote(
-          factionId,
-          agendas ?? {},
-          state,
-          factions,
-          currentTurn
-        ) ? (
+        {!canFactionVote(faction, agendas, state, currentTurn) ? (
           <div
             className="flexRow"
             style={{ boxSizing: "border-box", width: "100%" }}

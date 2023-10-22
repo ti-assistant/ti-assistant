@@ -1,0 +1,13 @@
+.TacticalAction {
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (max-width: 600px) {
+  .TacticalAction {
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    padding-left: var(--sixteen-pixel);
+  }
+}

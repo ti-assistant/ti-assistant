@@ -32,7 +32,6 @@ export function addTech(gameId: string, faction: FactionId, techId: TechId) {
 
         updateActionLog(currentData, handler);
 
-        console.log("Tech Added", faction);
         return structuredClone(currentData);
       },
       revalidate: false,

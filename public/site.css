@@ -71,6 +71,10 @@
     calc(24px + (48 - 24) * ((100vw - 1280px) / (2560 - 1280))),
     24px
   );
+  --twenty-eight-pixel: max(
+    calc(28px + (56 - 28) * ((100vw - 1280px) / (2560 - 1280))),
+    28px
+  );
   --thirty-pixel: max(
     calc(30px + (60 - 30) * ((100vw - 1280px) / (2560 - 1280))),
     30px
@@ -95,21 +99,49 @@
     calc(50px + (100 - 50) * ((100vw - 1280px) / (2560 - 1280))),
     50px
   );
+  --sixty-four-pixel: max(
+    calc(64px + (128 - 64) * ((100vw - 1280px) / (2560 - 1280))),
+    64px
+  );
   --eighty-pixel: max(
-    calc(108px + (216 - 108) * ((100vw - 1280px) / (2560 - 1280))),
-    108px
+    calc(80px + (160 - 80) * ((100vw - 1280px) / (2560 - 1280))),
+    80px
   );
   --ninety-six-pixel: max(
     calc(96px + (192 - 96) * ((100vw - 1280px) / (2560 - 1280))),
     96px
   );
+  --one-eight-pixel: max(
+    calc(108px + (216 - 108) * ((100vw - 1280px) / (2560 - 1280))),
+    108px
+  );
   --one-twenty-pixel: max(
     calc(120px + (240 - 120) * ((100vw - 1280px) / (2560 - 1280))),
     120px
   );
+  --one-forty-pixel: max(
+    calc(140px + (280 - 140) * ((100vw - 1280px) / (2560 - 1280))),
+    140px
+  );
   --one-fifty-pixel: max(
     calc(150px + (300 - 150) * ((100vw - 1280px) / (2560 - 1280))),
     150px
+  );
+  --two-fifty-six-pixel: max(
+    calc(256px + (512 - 256) * ((100vw - 1280px) / (2560 - 1280))),
+    256px
+  );
+  --two-eighty-pixel: max(
+    calc(280px + (560 - 280) * ((100vw - 1280px) / (2560 - 1280))),
+    280px
+  );
+  --four-twenty-pixel: max(
+    calc(420px + (840 - 420) * ((100vw - 1280px) / (2560 - 1280))),
+    420px
+  );
+  --four-seventy-pixel: max(
+    calc(470px + (940 - 470) * ((100vw - 1280px) / (2560 - 1280))),
+    470px
   );
 }
 
@@ -152,14 +184,6 @@ body {
 
 .symbol {
   font-family: "Source Sans";
-}
-
-.mobileTitle {
-  display: none;
-}
-
-.tinyFont {
-  font-size: 12px;
 }
 
 .smallFont {
@@ -266,48 +290,6 @@ input[type="textbox"] {
   border: 2px solid #777;
   border-radius: 4px;
   outline: none;
-}
-
-.leftSidebar {
-  position: fixed;
-  transform: rotate(-90deg);
-  left: var(--sixteen-pixel);
-  width: 100svh;
-  text-align: center;
-  top: 100%;
-  background-color: #333;
-  color: #eee;
-  box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
-  padding: var(--twelve-pixel) 0;
-  font-size: var(--thirty-six-pixel);
-  transform-origin: 0px 0px;
-  line-height: var(--thirty-six-pixel);
-}
-
-.rightSidebar {
-  position: fixed;
-  transform: rotate(90deg);
-  right: var(--sixteen-pixel);
-  width: 100svh;
-  text-align: center;
-  top: 100%;
-  background-color: #333;
-  color: #eee;
-  box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
-  padding: var(--twelve-pixel) 0;
-  font-size: var(--thirty-six-pixel);
-  transform-origin: 100% 0px;
-  line-height: var(--thirty-six-pixel);
-}
-
-@media only screen and (max-width: 900px) {
-  .leftSidebar {
-    display: none;
-  }
-
-  .rightSidebar {
-    display: none;
-  }
 }
 
 .myriadPro {
@@ -424,11 +406,6 @@ input[type="textbox"] {
   clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
 }
 
-.hoverRadial {
-  transition: z-index 200ms, width 200ms, height 200ms, top 200ms, left 200ms;
-  /* clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); */
-}
-
 .keyword {
   font-weight: bold;
 }
@@ -437,13 +414,6 @@ input[type="textbox"] {
   font-family: "Slider";
   font-weight: normal;
   font-size: 90%;
-}
-
-
-.hoverZoom {
-  transition: transform 200ms;
-  transform: scale(1);
-  opacity: 0;
 }
 
 .hoverInfo.down {
@@ -476,10 +446,6 @@ input[type="textbox"] {
   position: relative;
 }
 
-/* .hoverParent:hover {
-  z-index: 1005;
-} */
-
 .hoverParent.hover {
   z-index: 1005;
 }
@@ -488,34 +454,14 @@ input[type="textbox"] {
   display: flex;
   position: absolute;
   z-index: 1000;
-  /* clip-path: polygon(101% 101%, 0% 101%, 0% 0%, 101% 0%); */
   clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
 }
 .hoverParent.hover > .hoverRadio {
   display: flex;
   position: absolute;
   z-index: 1000;
-  /* clip-path: polygon(101% 101%, 0% 101%, 0% 0%, 101% 0%); */
   clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
 }
-
-.hoverParent.hover > .hoverRadial {
-  clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
-
-}
-
-.hoverZoom:hover {
-  transform: scale(3);
-  z-index: 1000;
-}
-
-/* .hoverParent:hover > .hoverInfo {
-  display: flex;
-  position: absolute;
-  z-index: 1000; */
-  /* clip-path: polygon(101% 101%, 0% 101%, 0% 0%, 101% 0%); */
-  /* clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
-} */
 
 /* Firefox will have a degraded animation experience, but this will ensure functionality. */
 @supports not selector(:has(.hoverParent.hover)) {
@@ -523,10 +469,6 @@ input[type="textbox"] {
     clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
   }
 }
-
-/* .hoverInfo:has(.hoverParent.hover) {
-  clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
-} */
 
 .hoverInfo:has(.hoverParent.hover) {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
@@ -541,19 +483,6 @@ input[type="textbox"] {
   transition: opacity 200ms, z-index 200ms;
   z-index: 1000;
 }
-
-/* .hoverInfo.right {
-  left: 100%;
-  margin-left: 16px;
-  height: 0px;
-  max-width: 240px;
-}
-
-.hoverInfo.left {
-  right: 100%;
-  margin-right: 16px;
-  height: 0px;
-} */
 
 .fade-enter {
   opacity: 0;
@@ -618,31 +547,6 @@ input[type="textbox"] {
   display: flex;
 }
 
-.leftLabel {
-  position: absolute;
-  white-space: nowrap;
-  left: var(--six-pixel);
-  background-color: #222;
-  border-radius: var(--five-pixel);
-  padding: var(--two-pixel) var(--four-pixel);
-}
-.centerLabel {
-  position: absolute;
-  white-space: nowrap;
-  top: var(--negative-two-pixel);
-  background-color: #222;
-  border-radius: var(--five-pixel);
-  padding: var(--two-pixel) var(--four-pixel);
-}
-.rightLabel {
-  position: absolute;
-  white-space: nowrap;
-  right: var(--six-pixel);
-  background-color: #222;
-  border-radius: var(--five-pixel);
-  padding: var(--two-pixel) var(--four-pixel);
-}
-
 .tabletOnly {
   display: none;
 }
@@ -675,23 +579,6 @@ input[type="textbox"] {
   .nonMobile {
     display: none;
   }
-
-  .mobileTitle {
-    display: flex;
-    margin: 20px 0px;
-    font-size: 24px;
-    text-align: center;
-  }
-/* 
-  .leftLabel {
-    top: var(--negative-four-pixel);
-  }
-  .centerLabel {
-    top: var(--negative-two-pixel);
-  }
-  .rightLabel {
-    top: var(--negative-four-pixel);
-  } */
 }
 
 .centered {

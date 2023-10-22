@@ -10,6 +10,8 @@ import styles from "./FactionPanel.module.scss";
 import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
+import { updateLeaderStateAsync } from "../dynamic/api";
+import { useRouter } from "next/router";
 
 function AbilitySection({
   leftLabel,
@@ -168,6 +170,8 @@ function FactionPanelContent({
   factionId: FactionId;
   options: Options;
 }) {
+  const router = useRouter();
+  const { game: gameId }: { game?: string } = router.query;
   const techs = buildBaseTechs(options);
   const leaders = buildLeaders(options);
   let faction: BaseFaction | Faction = buildFaction(factionId, options);
@@ -231,19 +235,19 @@ function FactionPanelContent({
               }}
             >
               {factionLeaders.map((leader) => {
-                let state = "readied";
-                // switch (leader.type) {
-                //   case "COMMANDER":
-                //     if ("commander" in faction) {
-                //       state = faction.commander;
-                //     }
-                //     break;
-                //   case "HERO":
-                //     if ("hero" in faction) {
-                //       state = faction.hero;
-                //     }
-                //     break;
-                // }
+                let state: LeaderState = "readied";
+                switch (leader.type) {
+                  case "COMMANDER":
+                    if ("commander" in faction) {
+                      state = faction.commander;
+                    }
+                    break;
+                  case "HERO":
+                    if ("hero" in faction) {
+                      state = faction.hero;
+                    }
+                    break;
+                }
                 let innerContent = undefined;
                 let leftLabel = undefined;
                 switch (state) {
@@ -259,6 +263,28 @@ function FactionPanelContent({
                             factionId={leader.subFaction}
                             size={16}
                           />
+                        ) : null}
+                        {gameId && leader.type !== "AGENT" ? (
+                          <div
+                            className="flexRow"
+                            style={{
+                              gap: responsivePixels(4),
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              if (!gameId) {
+                                return;
+                              }
+                              updateLeaderStateAsync(
+                                gameId,
+                                factionId,
+                                leader.type,
+                                "locked"
+                              );
+                            }}
+                          >
+                            &#128275;
+                          </div>
                         ) : null}
                       </div>
                     );
@@ -281,39 +307,49 @@ function FactionPanelContent({
                         {leader.name}
                         <div
                           className="flexRow"
-                          style={{ gap: responsivePixels(4) }}
+                          style={{
+                            gap: responsivePixels(4),
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            if (!gameId) {
+                              return;
+                            }
+                            updateLeaderStateAsync(
+                              gameId,
+                              factionId,
+                              leader.type,
+                              "readied"
+                            );
+                          }}
                         >
-                          <div
-                            style={{
-                              fontSize: responsivePixels(8),
-                              color: "#eee",
-                              border: "1px solid #eee",
-                              padding: "2px 2px",
-                              borderRadius: "2px",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              alert("WIP - Will unlock later");
-                            }}
-                          >
-                            UNLOCK
-                          </div>
+                          &#128274;
                         </div>
                       </div>
                     );
                     innerContent = (
                       <div>
-                        <span onClick={() => alert("Unlock thing")}>
+                        <span
+                          onClick={() => {
+                            if (!gameId) {
+                              return;
+                            }
+                            updateLeaderStateAsync(
+                              gameId,
+                              factionId,
+                              leader.type,
+                              "readied"
+                            );
+                          }}
+                        >
                           {formatDescription("UNLOCK: ")}
                         </span>
                         {formatDescription(
                           leader.unlock ?? "Have 3 scored objectives"
                         )}
-                        <div>🗘</div>
                       </div>
                     );
                     break;
-                  case "unlocked":
                     leftLabel = (
                       <div className="flexRow">
                         {leader.name}

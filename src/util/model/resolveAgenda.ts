@@ -195,6 +195,11 @@ export class ResolveAgendaHandler implements Handler {
         break;
       }
       case "New Constitution": {
+        if (this.data.event.target === "Against") {
+          break;
+        }
+        updates[`agendas${this.data.event.agenda}.activeRound`] =
+          this.gameData.state.round + 1;
         const agendas = buildAgendas(this.gameData);
         const toRepeal = Object.values(agendas).filter(
           (agenda) => agenda.type === "LAW" && agenda.passed
@@ -224,6 +229,8 @@ export class ResolveAgendaHandler implements Handler {
         updates[`agendas.${this.data.event.agenda}.affected`] = [
           this.data.event.target,
         ];
+        updates[`agendas.${this.data.event.agenda}.activeRound`] =
+          this.gameData.state.round;
         const factions = buildFactions(this.gameData);
         const nextPlayer = Object.values(factions).find(
           (faction) => faction.order === 2
@@ -245,6 +252,24 @@ export class ResolveAgendaHandler implements Handler {
       }
       case "Colonial Redistribution": {
         // TODO - give planet to lowest VP player.
+        break;
+      }
+      case "Checks and Balances": {
+        if (this.data.event.target === "For") {
+          break;
+        }
+        updates[`agendas.${this.data.event.agenda}.activeRound`] =
+          this.gameData.state.round;
+        break;
+      }
+      case "Arms Reduction":
+      case "Anti-Intellectual Revolution": {
+        if (this.data.event.target === "For") {
+          break;
+        }
+        updates[`agendas.${this.data.event.agenda}.activeRound`] =
+          this.gameData.state.round + 1;
+        break;
       }
       case "Covert Legislation": {
         const subAgenda = getSelectedSubAgenda(currentTurn);
@@ -341,6 +366,7 @@ export class RepealAgendaHandler implements Handler {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
       [`agendas.${this.data.event.agenda}.passed`]: "DELETE",
+      [`agendas.${this.data.event.agenda}.activeRound`]: "DELETE",
       // Decide how to handle this.
       // [`agendas.${this.data.event.agenda}.resolved`]: true,
       // [`agendas.${this.data.event.agenda}.target`]: "DELETE",

@@ -52,7 +52,7 @@ export class ScoreObjectiveHandler implements Handler {
         }
       ).length;
       if (numScored >= 3) {
-        updates[`factions.${this.data.event.faction}.hero`] = "unlocked";
+        updates[`factions.${this.data.event.faction}.hero`] = "readied";
       }
     }
 
@@ -122,7 +122,7 @@ export class UnscoreObjectiveHandler implements Handler {
     }
 
     const faction = this.gameData.factions[this.data.event.faction];
-    if (faction && faction.hero === "unlocked") {
+    if (faction && faction.hero === "readied") {
       const numScored = Object.values(buildObjectives(this.gameData)).filter(
         (objective) => {
           return (

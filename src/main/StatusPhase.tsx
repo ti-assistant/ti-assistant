@@ -39,6 +39,7 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import { responsivePixels } from "../util/util";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import styles from "./StatusPhase.module.scss";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -55,6 +56,207 @@ function InfoContent({ children }: PropsWithChildren) {
     >
       {children}
     </div>
+  );
+}
+
+function CommandTokenGains() {
+  const factions = useContext(FactionContext);
+  const strategyCards = useContext(StrategyCardContext);
+
+  const orderedStrategyCards = Object.values(strategyCards)
+    .filter((card) => card.faction)
+    .sort((a, b) => a.order - b.order);
+  const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
+    return (
+      card.faction &&
+      orderedStrategyCards.findIndex(
+        (othercard) => card.faction === othercard.faction
+      ) === index
+    );
+  });
+
+  const numberOfCommandTokens: {
+    2: Faction[];
+    3: Faction[];
+    4: Faction[];
+  } = { 2: [], 3: [], 4: [] };
+  Object.values(filteredStrategyCards).forEach((card) => {
+    if (!factions || !card.faction) {
+      return;
+    }
+    const faction = factions[card.faction];
+    if (!faction) {
+      return;
+    }
+    let number: 2 | 3 | 4 = 2;
+    if (card.faction === "Federation of Sol") {
+      if (hasTech(faction, "Hyper Metabolism")) {
+        number = 4;
+      } else {
+        number = 3;
+      }
+    } else if (hasTech(faction, "Hyper Metabolism")) {
+      number = 3;
+    }
+    numberOfCommandTokens[number].push(faction);
+  });
+
+  return (
+    <LabeledDiv label="Gain Command Tokens and Redistribute">
+      <div
+        className="flexRow"
+        style={{
+          justifyContent: "flex-start",
+          alignItems: "stretch",
+          paddingTop: responsivePixels(2),
+        }}
+      >
+        {Object.entries(numberOfCommandTokens).map(
+          ([number, localFactions]) => {
+            const num = parseInt(number);
+            if (localFactions.length === 0) {
+              return null;
+            }
+            return (
+              <div
+                key={num}
+                className="flexColumn"
+                style={{ alignItems: "flex-start" }}
+              >
+                <LabeledDiv label={`${num}`}>
+                  <div
+                    className="flexRow"
+                    style={{
+                      flexWrap: "wrap",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    {" "}
+                    {localFactions.map((faction) => {
+                      return (
+                        <div
+                          key={faction.id}
+                          className="flexRow"
+                          style={{
+                            position: "relative",
+                            width: responsivePixels(32),
+                            height: responsivePixels(32),
+                          }}
+                        >
+                          <FactionIcon factionId={faction.id} size="100%" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </LabeledDiv>
+              </div>
+            );
+          }
+        )}
+      </div>
+    </LabeledDiv>
+  );
+}
+
+function ActionCardDraws() {
+  const factions = useContext(FactionContext);
+  const strategyCards = useContext(StrategyCardContext);
+
+  const orderedStrategyCards = Object.values(strategyCards)
+    .filter((card) => card.faction)
+    .sort((a, b) => a.order - b.order);
+  const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
+    return (
+      card.faction &&
+      orderedStrategyCards.findIndex(
+        (othercard) => card.faction === othercard.faction
+      ) === index
+    );
+  });
+  const numberOfActionCards: {
+    1: Faction[];
+    2: Faction[];
+    3: Faction[];
+  } = { 1: [], 2: [], 3: [] };
+  Object.values(filteredStrategyCards).forEach((card) => {
+    if (!factions || !card.faction) {
+      return;
+    }
+    let number: 1 | 2 | 3 = 1;
+    const faction = factions[card.faction];
+    if (!faction) {
+      return;
+    }
+    if (hasTech(faction, "Neural Motivator")) {
+      number = 2;
+    }
+    if (card.faction === "Yssaril Tribes") {
+      number = 3;
+    }
+    numberOfActionCards[number].push(faction);
+  });
+
+  return (
+    <LabeledDiv label="Draw Action Cards">
+      <div
+        className="flexRow"
+        style={{
+          justifyContent: "space-evenly",
+          alignItems: "stretch",
+          flexWrap: "wrap",
+          paddingTop: responsivePixels(2),
+        }}
+      >
+        {Object.entries(numberOfActionCards).map(([number, localFactions]) => {
+          const num = parseInt(number);
+          if (localFactions.length === 0) {
+            return null;
+          }
+          let displayNum = num;
+          if (
+            num === 3 &&
+            factions["Yssaril Tribes"] &&
+            !hasTech(factions["Yssaril Tribes"], "Neural Motivator")
+          ) {
+            displayNum = 2;
+          }
+          return (
+            <div
+              key={num}
+              className="flexColumn"
+              style={{
+                alignItems: "flex-start",
+              }}
+            >
+              <LabeledDiv
+                label={`${displayNum}${num === 3 ? " (Discard 1)" : ""}`}
+              >
+                <div
+                  className="flexRow"
+                  style={{ justifyContent: "flex-start" }}
+                >
+                  {localFactions.map((faction) => {
+                    return (
+                      <div
+                        key={faction.id}
+                        className="flexRow"
+                        style={{
+                          position: "relative",
+                          width: responsivePixels(32),
+                          height: responsivePixels(32),
+                        }}
+                      >
+                        <FactionIcon factionId={faction.id} size="100%" />
+                      </div>
+                    );
+                  })}
+                </div>
+              </LabeledDiv>
+            </div>
+          );
+        })}
+      </div>
+    </LabeledDiv>
   );
 }
 
@@ -161,15 +363,7 @@ export function MiddleColumn() {
     <div className="flexColumn" style={{ width: "100%" }}>
       {!revealedObjective ? (
         <LabeledDiv label="Score Objectives" noBlur={true}>
-          <div
-            className="flexColumn"
-            style={{
-              justifyContent: "space-evenly",
-              alignItems: "stretch",
-              gap: 0,
-              width: "100%",
-            }}
-          >
+          <div className={styles.ScoreObjectivesSection}>
             {filteredStrategyCards.map((card) => {
               const canScoreObjectives = Object.values(planets ?? {}).reduce(
                 (canScore, planet) => {
@@ -255,95 +449,37 @@ export function MiddleColumn() {
               return (
                 <div
                   key={card.id}
+                  className={styles.ObjectiveSection}
                   style={{ width: "100%", position: "relative" }}
                 >
-                  <LabeledLine
-                    label={getFactionName(faction)}
-                    color={getFactionColor(faction)}
-                  />
-                  <div
-                    className="flexRow"
-                    style={{
-                      justifyContent: "space-between",
-                      height: responsivePixels(36),
-                    }}
-                  >
-                    {!canScoreObjectives ? (
-                      <div
-                        className="smallFont"
-                        style={{ textAlign: "center", width: "40%" }}
-                      >
-                        Cannot score public objectives
-                      </div>
-                    ) : !scoredPublics[0] &&
-                      availableObjectives.length === 0 ? (
-                      <div
-                        className="smallFont"
-                        style={{ textAlign: "center", width: "40%" }}
-                      >
-                        No unscored Public Objectives
-                      </div>
-                    ) : (
-                      <div
-                        className="flexColumn smallFont"
-                        style={{
-                          width: "40%",
-                          alignItems: scoredPublics[0]
-                            ? "flex-start"
-                            : "flex-end",
-                        }}
-                      >
-                        <div style={{ width: "fit-content" }}>
-                          <Selector
-                            options={availableObjectives.map((obj) => obj.id)}
-                            selectedItem={scoredPublics[0]}
-                            hoverMenuLabel="Public"
-                            toggleItem={(objectiveId, add) => {
-                              if (!card.faction) {
-                                return;
-                              }
-                              if (add) {
-                                scoreObj(card.faction, objectiveId);
-                              } else {
-                                unscoreObj(card.faction, objectiveId);
-                              }
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                    <div
-                      className="flexColumn"
-                      style={{
-                        position: "absolute",
-                        zIndex: -1,
-                        width: "100%",
-                      }}
-                    >
-                      <div
-                        className="flexRow"
-                        style={{
-                          position: "relative",
-                          opacity: 0.5,
-                          top: responsivePixels(2),
-                          width: responsivePixels(40),
-                          height: responsivePixels(40),
-                        }}
-                      >
-                        {faction ? (
-                          <FactionIcon factionId={faction.id} size="100%" />
-                        ) : null}
-                      </div>
+                  <div style={{ gridColumn: "1 / 4", width: "100%" }}>
+                    <LabeledLine
+                      label={getFactionName(faction)}
+                      color={getFactionColor(faction)}
+                    />
+                  </div>
+                  {!canScoreObjectives ? (
+                    <div className="smallFont" style={{ textAlign: "center" }}>
+                      Cannot score public objectives
                     </div>
+                  ) : !scoredPublics[0] && availableObjectives.length === 0 ? (
+                    <div className="smallFont" style={{ textAlign: "center" }}>
+                      No unscored Public Objectives
+                    </div>
+                  ) : (
                     <div
                       className="flexColumn smallFont"
-                      style={{ width: "40%", alignItems: "flex-start" }}
+                      style={{
+                        width: "100%",
+                        alignItems: scoredPublics[0] ? "flex-start" : "center",
+                        gridColumn: "1 / 2",
+                      }}
                     >
                       <div style={{ width: "fit-content" }}>
                         <Selector
-                          options={secrets.map((obj) => obj.id)}
-                          selectedItem={scoredSecrets[0]}
-                          hoverMenuLabel="Secret"
+                          options={availableObjectives.map((obj) => obj.id)}
+                          selectedItem={scoredPublics[0]}
+                          hoverMenuLabel="Public"
                           toggleItem={(objectiveId, add) => {
                             if (!card.faction) {
                               return;
@@ -357,6 +493,57 @@ export function MiddleColumn() {
                         />
                       </div>
                     </div>
+                  )}
+                  <div
+                    className="flexColumn"
+                    style={{
+                      position: "absolute",
+                      zIndex: -1,
+                      width: "100%",
+                      gridColumn: "1 / 4",
+                      gridRow: "2 / 3",
+                    }}
+                  >
+                    <div
+                      className="flexRow"
+                      style={{
+                        position: "relative",
+                        opacity: 0.5,
+                        top: responsivePixels(2),
+                        width: responsivePixels(40),
+                        height: responsivePixels(40),
+                      }}
+                    >
+                      {faction ? (
+                        <FactionIcon factionId={faction.id} size="100%" />
+                      ) : null}
+                    </div>
+                  </div>
+                  <div
+                    className="flexColumn smallFont"
+                    style={{
+                      alignItems: "flex-start",
+                      gridColumn: "3 / 4",
+                    }}
+                  >
+                    <div style={{ width: "fit-content" }}>
+                      <Selector
+                        options={secrets.map((obj) => obj.id)}
+                        selectedItem={scoredSecrets[0]}
+                        hoverMenuLabel="Secret"
+                        itemsPerColumn={10}
+                        toggleItem={(objectiveId, add) => {
+                          if (!card.faction) {
+                            return;
+                          }
+                          if (add) {
+                            scoreObj(card.faction, objectiveId);
+                          } else {
+                            unscoreObj(card.faction, objectiveId);
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               );
@@ -365,129 +552,8 @@ export function MiddleColumn() {
         </LabeledDiv>
       ) : (
         <React.Fragment>
-          <LabeledDiv label="Draw Action Cards">
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "space-evenly",
-                alignItems: "stretch",
-                flexWrap: "wrap",
-                paddingTop: responsivePixels(2),
-              }}
-            >
-              {Object.entries(numberOfActionCards).map(
-                ([number, localFactions]) => {
-                  const num = parseInt(number);
-                  if (localFactions.length === 0) {
-                    return null;
-                  }
-                  let displayNum = num;
-                  if (
-                    num === 3 &&
-                    factions["Yssaril Tribes"] &&
-                    !hasTech(factions["Yssaril Tribes"], "Neural Motivator")
-                  ) {
-                    displayNum = 2;
-                  }
-                  return (
-                    <div
-                      key={num}
-                      className="flexColumn"
-                      style={{
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <LabeledDiv
-                        label={`${displayNum}${
-                          num === 3 ? " (Discard 1)" : ""
-                        }`}
-                      >
-                        <div
-                          className="flexRow"
-                          style={{ justifyContent: "flex-start" }}
-                        >
-                          {localFactions.map((faction) => {
-                            return (
-                              <div
-                                key={faction.id}
-                                className="flexRow"
-                                style={{
-                                  position: "relative",
-                                  width: responsivePixels(32),
-                                  height: responsivePixels(32),
-                                }}
-                              >
-                                <FactionIcon
-                                  factionId={faction.id}
-                                  size="100%"
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </LabeledDiv>
-                    </div>
-                  );
-                }
-              )}
-            </div>
-          </LabeledDiv>
-          <LabeledDiv label="Gain Command Tokens and Redistribute">
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "flex-start",
-                alignItems: "stretch",
-                paddingTop: responsivePixels(2),
-              }}
-            >
-              {Object.entries(numberOfCommandTokens).map(
-                ([number, localFactions]) => {
-                  const num = parseInt(number);
-                  if (localFactions.length === 0) {
-                    return null;
-                  }
-                  return (
-                    <div
-                      key={num}
-                      className="flexColumn"
-                      style={{ alignItems: "flex-start" }}
-                    >
-                      <LabeledDiv label={`${num}`}>
-                        <div
-                          className="flexRow"
-                          style={{
-                            flexWrap: "wrap",
-                            justifyContent: "flex-start",
-                          }}
-                        >
-                          {" "}
-                          {localFactions.map((faction) => {
-                            return (
-                              <div
-                                key={faction.id}
-                                className="flexRow"
-                                style={{
-                                  position: "relative",
-                                  width: responsivePixels(32),
-                                  height: responsivePixels(32),
-                                }}
-                              >
-                                <FactionIcon
-                                  factionId={faction.id}
-                                  size="100%"
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </LabeledDiv>
-                    </div>
-                  );
-                }
-              )}
-            </div>
-          </LabeledDiv>
+          <ActionCardDraws />
+          <CommandTokenGains />
         </React.Fragment>
       )}
     </div>
@@ -749,18 +815,7 @@ export default function StatusPhase() {
       >
         <InfoContent>{infoModal.content}</InfoContent>
       </Modal>
-      <ol
-        className="flexColumn largeFont"
-        style={{
-          alignItems: "flex-start",
-          justifyContent: "center",
-          boxSizing: "border-box",
-          height: "100svh",
-          margin: 0,
-          paddingLeft: responsivePixels(20),
-          whiteSpace: "nowrap",
-        }}
-      >
+      <ol className={`largeFont ${styles.LeftColumn}`}>
         {!hasStartOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
             <ClientOnlyHoverMenu
@@ -831,7 +886,14 @@ export default function StatusPhase() {
             </ClientOnlyHoverMenu>
           </NumberedItem>
         )}
-        <NumberedItem>Score Objectives</NumberedItem>
+        <NumberedItem>
+          Score Objectives
+          {!revealedObjective ? (
+            <div className={styles.EmbeddedObjectives}>
+              <MiddleColumn />
+            </div>
+          ) : null}
+        </NumberedItem>
         <NumberedItem>
           <div className="largeFont">
             {revealedObjectiveObj ? (
@@ -877,9 +939,23 @@ export default function StatusPhase() {
             )}{" "}
           </div>
         </NumberedItem>
-        <NumberedItem>Draw Action Cards</NumberedItem>
+        <NumberedItem>
+          Draw Action Cards
+          {revealedObjective ? (
+            <div className={styles.EmbeddedObjectives}>
+              <ActionCardDraws />
+            </div>
+          ) : null}
+        </NumberedItem>
         <NumberedItem>Remove Command Tokens</NumberedItem>
-        <NumberedItem>Gain and Redistribute Tokens</NumberedItem>
+        <NumberedItem>
+          Gain and Redistribute Tokens
+          {revealedObjective ? (
+            <div className={styles.EmbeddedObjectives}>
+              <CommandTokenGains />
+            </div>
+          ) : null}
+        </NumberedItem>
         <NumberedItem>Ready Cards</NumberedItem>
         <NumberedItem>Repair Units</NumberedItem>
         <NumberedItem>Return Strategy Cards</NumberedItem>
@@ -1032,15 +1108,14 @@ export default function StatusPhase() {
             </ClientOnlyHoverMenu>
           </NumberedItem>
         )}
+        <div className={styles.EmbeddedObjectives}>
+          <LockedButtons
+            unlocked={statusPhaseComplete(currentTurn)}
+            buttons={nextPhaseButtons}
+          />
+        </div>
       </ol>
-      <div
-        className="flexColumn"
-        style={{
-          width: "100%",
-          height: "100svh",
-          justifyContent: "center",
-        }}
-      >
+      <div className={styles.MainColumn}>
         <MiddleColumn />
         <LockedButtons
           unlocked={statusPhaseComplete(currentTurn)}

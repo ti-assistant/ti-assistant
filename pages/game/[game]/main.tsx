@@ -14,6 +14,7 @@ import StatusPhase from "../../../src/main/StatusPhase";
 import StrategyPhase from "../../../src/main/StrategyPhase";
 import SummaryColumn from "../../../src/main/SummaryColumn";
 import { setGameId } from "../../../src/util/api/util";
+import FactionRow from "../../../src/components/FactionRow/FactionRow";
 
 // const DataProvider = dynamic(
 //   () => import("../../../src/context/DataProvider"),
@@ -107,6 +108,9 @@ function InnerMainPage({}) {
         {innerContent}
         {/* {state.phase !== "SETUP" ? ( */}
         <SummaryColumn order={order} subOrder={subOrder} />
+        {/* <div className="mobileOnly" style={{ width: "100%" }}>
+          <FactionRow onClick={() => {}} />
+        </div> */}
         {/* ) : null} */}
       </div>
       <Footer />

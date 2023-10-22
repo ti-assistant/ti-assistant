@@ -1,9 +1,7 @@
-import React, {
+import {
   CSSProperties,
-  PropsWithChildren,
-  ReactNode,
-  useRef,
-  useState,
+  PropsWithChildren, useRef,
+  useState
 } from "react";
 import { SymbolX } from "../icons/svgs";
 import { responsivePixels } from "../util/util";
@@ -12,32 +10,18 @@ import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionSelect.module.scss";
 
 interface FactionSelectProps {
-  allowNone?: boolean;
-  direction?: "up" | "down" | "left" | "right";
-  selectedFaction?: FactionId;
   options: FactionId[];
-  fadedOptions?: FactionId[];
   onSelect: (
     factionId: FactionId | undefined,
     prevFaction: FactionId | undefined
   ) => void;
-  size?: number;
-  tag?: ReactNode;
-  borderColor?: string;
-  tagBorderColor?: string;
+  size: number;
 }
 
 export function FactionSelectHoverMenu({
-  allowNone = true,
-  direction = "right",
-  selectedFaction,
   options,
-  fadedOptions = [],
   onSelect,
-  size = 44,
-  tag,
-  borderColor = "#444",
-  tagBorderColor = "#444",
+  size,
 }: PropsWithChildren<FactionSelectProps>) {
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
@@ -53,10 +37,9 @@ export function FactionSelectHoverMenu({
   }
 
   const hoverMenuStyle: CSSProperties = {
-    left: direction === "right" ? 0 : undefined,
-    right: direction === "left" ? 0 : undefined,
+    left: 0,
     borderRadius: responsivePixels(Math.floor(size / 2)),
-    border: `${responsivePixels(2)} solid ${borderColor}`,
+    border: `${responsivePixels(2)} solid #444`,
   };
 
   return (
@@ -76,412 +59,52 @@ export function FactionSelectHoverMenu({
       }}
       ref={menu}
     >
-      <FactionCircle
-        borderColor={borderColor}
-        factionId={selectedFaction}
-        tag={tag}
-        tagBorderColor={tagBorderColor}
-        size={size}
-      />
+      <FactionCircle borderColor="#444" tagBorderColor="#444" size={size} />
       <div
-        className={`flexRow hoverRadio ${styles.hoverMenu} ` + direction}
+        className={`flexRow hoverRadio ${styles.hoverMenu}`}
         style={hoverMenuStyle}
         ref={innerMenu}
       >
-        {selectedFaction && direction === "left" && allowNone ? (
-          <div
-            className={`flexRow`}
-            style={{
-              width: responsivePixels(size - 4),
-              height: responsivePixels(size - 4),
-              fontSize: responsivePixels(size - 8),
-              color: "#777",
-            }}
-            onClick={() => {
-              closeFn();
-              onSelect(undefined, selectedFaction);
-            }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                width: responsivePixels(size - 10),
-                height: responsivePixels(size - 10),
-              }}
-            >
-              <SymbolX />
-            </div>
-          </div>
-        ) : null}
-        {direction === "right" ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "relative",
+            width: responsivePixels(size - 4),
+            height: responsivePixels(size - 4),
+            fontSize: responsivePixels(size - 8),
+            color: "#777",
+          }}
+        >
           <div
             className="flexRow"
             style={{
               position: "relative",
-              width: responsivePixels(size - 4),
-              height: responsivePixels(size - 4),
-              fontSize: responsivePixels(size - 8),
-              color: "#777",
+              width: responsivePixels(size - 10),
+              height: responsivePixels(size - 10),
             }}
           >
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                width: responsivePixels(size - 10),
-                height: responsivePixels(size - 10),
-              }}
-            >
-              {selectedFaction ? (
-                <FactionIcon factionId={selectedFaction} size="100%" />
-              ) : (
-                <SymbolX />
-              )}
-            </div>
-
-            {tag ? (
-              <div
-                className={`flexRow ${styles.tag}`}
-                style={{
-                  border: `${responsivePixels(1)} solid ${tagBorderColor}`,
-                  boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                    1
-                  )} ${responsivePixels(4)} black`,
-                  width: responsivePixels(24),
-                  height: responsivePixels(24),
-                }}
-              >
-                {tag}
-              </div>
-            ) : null}
+            <SymbolX />
           </div>
-        ) : null}
+        </div>
         {options.map((factionId) => {
-          if (factionId === selectedFaction) {
-            return null;
-          }
           return (
             <div
               key={factionId}
-              className={`flexRow ${styles.oldFactionSelect} ${
-                fadedOptions.includes(factionId) ? styles.faded : ""
-              }
-            }`}
+              className={`flexRow ${styles.oldFactionSelect}`}
               style={{
                 width: responsivePixels(size - 4),
                 height: responsivePixels(size - 4),
               }}
               onClick={() => {
                 closeFn();
-                onSelect(factionId, selectedFaction);
+                onSelect(factionId, undefined);
               }}
             >
               <FactionIcon factionId={factionId} size={size - 10} />
             </div>
           );
         })}
-        {selectedFaction && direction === "right" && allowNone ? (
-          <div
-            className={`flexRow ${styles.factionSelect}`}
-            style={{
-              width: responsivePixels(size - 4),
-              height: responsivePixels(size - 4),
-              fontSize: responsivePixels(size - 8),
-              color: "#777",
-            }}
-            onClick={() => {
-              closeFn();
-              onSelect(undefined, selectedFaction);
-            }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                width: responsivePixels(size - 10),
-                height: responsivePixels(size - 10),
-              }}
-            >
-              <SymbolX />
-            </div>
-          </div>
-        ) : null}
-        {direction === "left" ? (
-          <div
-            className="flexRow"
-            style={{
-              position: "relative",
-              width: responsivePixels(size - 4),
-              height: responsivePixels(size - 4),
-              fontSize: responsivePixels(size - 8),
-              color: "#777",
-            }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                width: responsivePixels(size - 10),
-                height: responsivePixels(size - 10),
-              }}
-            >
-              {selectedFaction ? (
-                <FactionIcon factionId={selectedFaction} size="100%" />
-              ) : (
-                <SymbolX />
-              )}
-            </div>
-            {tag ? (
-              <div
-                className={`flexRow ${styles.tag}`}
-                style={{
-                  border: `${responsivePixels(1)} solid ${tagBorderColor}`,
-                  boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                    1
-                  )} ${responsivePixels(4)} black`,
-                  width: responsivePixels(24),
-                  height: responsivePixels(24),
-                }}
-              >
-                {tag}
-              </div>
-            ) : null}
-          </div>
-        ) : null}
       </div>
-    </div>
-  );
-}
-
-function getRadialPosition(index: number, numOptions: number, size: number) {
-  const radians = ((Math.PI * 2) / numOptions) * index;
-
-  const center = (size * 3) / 2;
-  const pos = {
-    "--y-pos": responsivePixels(
-      center - size * Math.cos(radians) - size / 2 + 2
-    ),
-    "--x-pos": responsivePixels(
-      center - size * -Math.sin(radians) - size / 2 + 2
-    ),
-    "--initial-y": responsivePixels(size + 2),
-    "--initial-x": responsivePixels(size + 2),
-  };
-  return pos;
-}
-
-interface SizeCSS extends CSSProperties {
-  "--size": string;
-}
-
-export function FactionSelectRadialMenu({
-  allowNone = true,
-  direction = "right",
-  selectedFaction,
-  options,
-  fadedOptions = [],
-  onSelect,
-  size = 44,
-  tag,
-  borderColor = "#444",
-  tagBorderColor = "#444",
-}: PropsWithChildren<FactionSelectProps>) {
-  const menu = useRef<HTMLDivElement>(null);
-  const innerMenu = useRef<HTMLDivElement>(null);
-  const [closing, setClosing] = useState(false);
-
-  function closeFn() {
-    if (!menu.current) {
-      return;
-    }
-    menu.current.classList.remove("hover");
-    setClosing(true);
-    setTimeout(() => setClosing(false), 200);
-  }
-
-  const hoverMenuStyle: SizeCSS = {
-    "--size": responsivePixels(size),
-    borderRadius: "100%",
-    justifyContent: "center",
-  };
-
-  return (
-    <div
-      className={`hoverParent largeFont`}
-      onMouseEnter={() => {
-        if (!menu.current || closing) {
-          return;
-        }
-        menu.current.classList.add("hover");
-      }}
-      onMouseLeave={() => {
-        if (!menu.current) {
-          return;
-        }
-        menu.current.classList.remove("hover");
-      }}
-      ref={menu}
-    >
-      {options.length > 0 ? (
-        <React.Fragment>
-          <div
-            className={styles.hoverBackground}
-            style={
-              {
-                "--size": responsivePixels(size),
-                "--border-color": borderColor,
-              } as CSSProperties
-            }
-          ></div>
-          <div
-            className={`flexRow hoverRadial ${styles.hoverRadial} ` + direction}
-            style={hoverMenuStyle}
-            ref={innerMenu}
-          >
-            {selectedFaction && direction === "left" && allowNone ? (
-              <div
-                className={`flexRow ${styles.factionSelect}`}
-                style={{
-                  width: responsivePixels(size - 4),
-                  height: responsivePixels(size - 4),
-                  fontSize: responsivePixels(size - 8),
-                  color: "#777",
-                }}
-                onClick={() => {
-                  closeFn();
-                  onSelect(undefined, selectedFaction);
-                }}
-              >
-                <div
-                  className="flexRow"
-                  style={{
-                    position: "relative",
-                    width: responsivePixels(size - 10),
-                    height: responsivePixels(size - 10),
-                  }}
-                >
-                  <SymbolX />
-                </div>
-              </div>
-            ) : null}
-            {options.map((factionId, index) => {
-              return (
-                <div
-                  key={factionId}
-                  className={`flexRow ${styles.factionSelect} ${
-                    fadedOptions.includes(factionId) &&
-                    factionId !== selectedFaction
-                      ? styles.faded
-                      : ""
-                  }
-            }`}
-                  style={
-                    {
-                      "--opacity":
-                        fadedOptions.includes(factionId) &&
-                        factionId !== selectedFaction
-                          ? 0.25
-                          : 1,
-                      position: "absolute",
-                      width: responsivePixels(size - 4),
-                      height: responsivePixels(size - 4),
-                      ...getRadialPosition(index, options.length, size),
-                    } as CSSProperties
-                  }
-                  onClick={() => {
-                    closeFn();
-                    if (factionId === selectedFaction) {
-                      onSelect(undefined, selectedFaction);
-                      return;
-                    }
-                    onSelect(factionId, selectedFaction);
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      width: responsivePixels(size - 10),
-                      height: responsivePixels(size - 10),
-                    }}
-                  >
-                    {factionId === selectedFaction ? (
-                      <SymbolX />
-                    ) : (
-                      <FactionIcon factionId={factionId} size="100%" />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-            {direction === "right" ? (
-              <div
-                className="flexRow"
-                style={{
-                  position: "relative",
-                  width: responsivePixels(size - 2),
-                  height: responsivePixels(size - 2),
-                  borderRadius: "100%",
-                  border: `${responsivePixels(1)} solid ${borderColor}`,
-                  boxShadow: `0px 0px ${responsivePixels(8)} black`,
-                  backgroundColor: "#222",
-                }}
-              >
-                <div
-                  className="flexRow"
-                  style={{
-                    position: "relative",
-                    width: responsivePixels(size - 4),
-                    height: responsivePixels(size - 4),
-                    fontSize: responsivePixels(size - 8),
-                    color: "#777",
-                  }}
-                >
-                  <div
-                    className="flexRow"
-                    style={{
-                      position: "relative",
-                      width: responsivePixels(size - 10),
-                      height: responsivePixels(size - 10),
-                    }}
-                  >
-                    {selectedFaction ? (
-                      <FactionIcon factionId={selectedFaction} size="100%" />
-                    ) : (
-                      <SymbolX />
-                    )}
-                  </div>
-
-                  {tag ? (
-                    <div
-                      className={`flexRow ${styles.tag}`}
-                      style={{
-                        border: `${responsivePixels(
-                          1
-                        )} solid ${tagBorderColor}`,
-                        boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                          1
-                        )} ${responsivePixels(4)} black`,
-                        width: responsivePixels(24),
-                        height: responsivePixels(24),
-                      }}
-                    >
-                      {tag}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </React.Fragment>
-      ) : null}
-      <FactionCircle
-        borderColor={borderColor}
-        factionId={selectedFaction}
-        tag={tag}
-        tagBorderColor={tagBorderColor}
-        size={size}
-      />
     </div>
   );
 }

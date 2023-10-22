@@ -1,0 +1,49 @@
+.Updates {
+  bottom: 0;
+  width: 100vw;
+  position: fixed;
+  justify-content: space-between;
+}
+
+.UpdateBox {
+  position: fixed;
+  bottom: var(--sixteen-pixel);
+  left: var(--ninety-six-pixel);
+
+  z-index: 1;
+}
+
+.FactionBox {
+  display: none;
+}
+
+@media only screen and (max-width: 1279px) {
+  .UpdateBox {
+    left: 64px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .UpdateBox {
+    left: var(--sixteen-pixel);
+  }
+
+  .FactionBox {
+    position: fixed;
+    display: flex;
+    z-index: 1;
+
+    right: var(--sixteen-pixel);
+    bottom: var(--sixteen-pixel);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .UpdateBox {
+    display: none;
+  }
+
+  .FactionBox {
+    display: none;
+  }
+}

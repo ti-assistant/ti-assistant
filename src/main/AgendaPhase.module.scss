@@ -1,0 +1,18 @@
+.LeftColumn {
+  padding-top: var(--one-forty-pixel);
+}
+
+.MiddleColumn {
+  padding-top: var(--eighty-pixel);
+  align-items: stretch;
+}
+
+@media only screen and (max-width: 600px) {
+  .LeftColumn {
+    padding-top: 0;
+  }
+
+  .MiddleColumn {
+    padding-top: 0;
+  }
+}

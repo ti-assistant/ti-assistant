@@ -24,8 +24,9 @@ import GameTimer from "../GameTimer/GameTimer";
 import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
-import Sidebar from "../Sidebar/Sidebar";
 import UndoButton from "../UndoButton/UndoButton";
+import Sidebars from "../Sidebars/Sidebars";
+import styles from "./Header.module.scss";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -157,97 +158,58 @@ export default function Header() {
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
-      {validateMapString((options ?? {})["map-string"] ?? "") && state ? (
-        <>
-          <button
-            style={{
-              position: "fixed",
-              top: responsivePixels(/**state.phase === "SETUP" ? 64 :*/ 104),
-              left: responsivePixels(96),
-            }}
-            onClick={() => setShowMap(true)}
-          >
-            View Map
-          </button>
-          <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
-            <div
-              style={{
-                position: "relative",
-                width: `min(calc(100dvh - ${responsivePixels(
-                  12
-                )}), calc(100dvw - ${responsivePixels(12)}))`,
-                height: `min(calc(100dvh - ${responsivePixels(
-                  12
-                )}), calc(100dvw - ${responsivePixels(12)}))`,
-              }}
-            >
-              <Map
-                factions={mapOrderedFactions}
-                mapString={options ? options["map-string"] ?? "" : ""}
-                mapStyle={
-                  options ? options["map-style"] ?? "standard" : "standard"
-                }
-                mallice={mallice}
-              />
-            </div>
-          </GenericModal>
-        </>
+      <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
+        <div
+          style={{
+            position: "relative",
+            width: "min(100dvh, 100dvw)",
+            height: "min(100dvh, 100dvw)",
+          }}
+        >
+          <Map
+            factions={mapOrderedFactions}
+            mapString={options ? options["map-string"] ?? "" : ""}
+            mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
+            mallice={mallice}
+          />
+        </div>
+      </GenericModal>
+      {validateMapString((options ?? {})["map-string"] ?? "") ? (
+        <div className={styles.Map}>
+          <button onClick={() => setShowMap(true)}>View Map</button>
+        </div>
       ) : null}
-      {/* {state ? (
-        state.phase === "SETUP" ? (
-          <div
-            className="flexRow nonMobile"
-            style={{
-              position: "fixed",
-              top: responsivePixels(16),
-              right: responsivePixels(96),
-              alignItems: "flex-start",
-              justifyContent: "center",
-            }}
-          >
-            <div style={{ marginTop: responsivePixels(16) }}>
-              Game ID: {gameid}
-            </div>
-            {qrCode ? (
-              <img src={qrCode} alt="QR Code for joining game" />
-            ) : null}
+      <div className={styles.QRCode}>
+        <ClientOnlyHoverMenu label={`Game: ${gameid}`}>
+          <div className="flexColumn">
+            <Link href={`/game/${gameid}`}>
+              <a>
+                {qrCode ? (
+                  <img src={qrCode} alt="QR Code for joining game" />
+                ) : null}
+              </a>
+            </Link>
           </div>
-        ) : ( */}
-      <Link href={`/game/${gameid}`}>
-        <a>
-          <ClientOnlyHoverMenu
-            label={`Game: ${gameid}`}
-            buttonStyle={{
-              position: "fixed",
-              top: responsivePixels(64),
-              left: responsivePixels(96),
-            }}
-          >
-            <div
-              className="flexColumn"
-              style={{
-                position: "relative",
-                zIndex: 10000,
-                marginTop: responsivePixels(8),
-              }}
-            >
-              {qrCode ? (
-                <img src={qrCode} alt="QR Code for joining game" />
-              ) : null}
-            </div>
-          </ClientOnlyHoverMenu>
+        </ClientOnlyHoverMenu>
+      </div>
+      <Link href={"/"}>
+        <a className={styles.HomeLink}>
+          <div>
+            <ResponsiveLogo size={"100%"} />
+          </div>
+          Twilight Imperium Assistant
         </a>
       </Link>
-      {/* ) */}
-      {/* ) : null} */}
-      <div
-        className="flexRow extraLargeFont"
-        style={{
-          position: "fixed",
-          top: responsivePixels(16),
-          left: responsivePixels(470),
-        }}
-      >
+      {state.phase !== "SETUP" ? (
+        <div className={styles.GameTimer}>
+          <GameTimer frozen={state.phase === "END"} />
+        </div>
+      ) : null}
+      <Sidebars
+        left={state.phase === "END" ? "END OF GAME" : `${state.phase} PHASE`}
+        right={round}
+      />
+      <div className={styles.ControlButtons}>
         <UndoButton gameId={gameid} />
         {gameFinished ? (
           state?.phase === "END" ? (
@@ -278,97 +240,23 @@ export default function Header() {
         ) : null}
       </div>
       {passedLaws.length > 0 ? (
-        <ClientOnlyHoverMenu
-          label="Laws in Effect"
-          buttonStyle={{
-            position: "fixed",
-            top: responsivePixels(20),
-            right: responsivePixels(420),
-          }}
-        >
-          <div
-            className="flexColumn"
-            style={{ alignItems: "flex-start", padding: responsivePixels(8) }}
-          >
-            {passedLaws.map((agenda) => (
-              <AgendaRow
-                key={agenda.id}
-                agenda={agenda}
-                removeAgenda={removeAgenda}
-              />
-            ))}
-          </div>
-        </ClientOnlyHoverMenu>
+        <div className={styles.PassedLaws}>
+          <ClientOnlyHoverMenu label="Laws in Effect">
+            <div
+              className="flexColumn"
+              style={{ alignItems: "flex-start", padding: responsivePixels(8) }}
+            >
+              {passedLaws.map((agenda) => (
+                <AgendaRow
+                  key={agenda.id}
+                  agenda={agenda}
+                  removeAgenda={removeAgenda}
+                />
+              ))}
+            </div>
+          </ClientOnlyHoverMenu>
+        </div>
       ) : null}
-      <div
-        className="flex"
-        style={{
-          top: 0,
-          width: "100vw",
-          position: "fixed",
-          justifyContent: "space-between",
-        }}
-      >
-        <Sidebar side="left">
-          {!state
-            ? "LOADING..."
-            : state.phase === "END"
-            ? "END OF GAME"
-            : `${state.phase} PHASE`}
-        </Sidebar>
-        <Sidebar side="right">{round}</Sidebar>
-        <Link href={"/"}>
-          <a
-            className="extraLargeFont flexRow nonMobile"
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              justifyContent: "center",
-              backgroundColor: "#222",
-              top: responsivePixels(16),
-              left: responsivePixels(96),
-            }}
-          >
-            <ResponsiveLogo size={32} />
-            Twilight Imperium Assistant
-          </a>
-        </Link>
-        {state.phase !== "SETUP" ? (
-          <div
-            className="flexRow nonMobile"
-            style={{
-              position: "fixed",
-              top: responsivePixels(64),
-              left: responsivePixels(256),
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <GameTimer frozen={state.phase === "END"} />
-          </div>
-        ) : null}
-        <Link href={"/"}>
-          <a
-            className="flexRow hugeFont mobileOnly"
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              backgroundColor: "#222",
-              textAlign: "center",
-              zIndex: 4,
-              justifyContent: "center",
-              paddingTop: responsivePixels(12),
-              paddingBottom: responsivePixels(12),
-              left: 0,
-              width: "100%",
-              boxSizing: "border-box",
-            }}
-          >
-            <ResponsiveLogo size={28} />
-            Twilight Imperium Assistant
-          </a>
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

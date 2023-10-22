@@ -48,6 +48,7 @@ import {
   unscoreObjectiveAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
+import styles from "./AgendaPhase.module.scss";
 import {
   getActionCardTargets,
   getActiveAgenda,
@@ -625,7 +626,7 @@ function AgendaSteps() {
 
   const vetoText = !(factions ?? {})["Xxcha Kingdom"]
     ? "Veto"
-    : "Veto/Quash/Political Favor";
+    : "Veto or Quash or Political Favor";
 
   function haveVotesBeenCast() {
     const castVotesActions = currentTurn.filter(
@@ -1535,16 +1536,14 @@ export default function AgendaPhase() {
 
   return (
     <React.Fragment>
-      <div className="flexColumn" style={{ paddingTop: responsivePixels(140) }}>
+      <div className={`flexColumn ${styles.LeftColumn}`}>
         <AgendaSteps />
       </div>
       <div
-        className="flexColumn"
+        className={`flexColumn ${styles.MiddleColumn}`}
         style={{
-          paddingTop:
-            agendaNum > 2 ? responsivePixels(160) : responsivePixels(80),
+          paddingTop: agendaNum > 2 ? responsivePixels(160) : undefined,
           gap: numFactions > 7 ? 0 : responsivePixels(8),
-          alignItems: "stretch",
         }}
       >
         {agendaNum > 2 ? (

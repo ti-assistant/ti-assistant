@@ -10,6 +10,10 @@
 }
 
 .title {
+  width: 100%;
+  text-align: center;
+
+  color: var(--color);
   padding-top: var(--four-pixel);
   padding-bottom: var(--four-pixel);
 }
@@ -22,15 +26,28 @@
   grid-template-rows: 1fr;
 
   transition: grid-template-rows 500ms;
+  overflow: visible;
 }
 
 @media only screen and (max-width: 599px) {
+  .collapsibleContainer {
+    border: var(--one-pixel) solid var(--color);
+  }
+
   .collapsible.collapsed {
     grid-template-rows: 0fr;
     overflow: hidden;
   }
 
+  .collapsible.overflow {
+    overflow: visible;
+  }
+
   .contentContainer {
     overflow: hidden;
+  }
+
+  .collapsible.overflow > .contentContainer {
+    overflow: visible;
   }
 }

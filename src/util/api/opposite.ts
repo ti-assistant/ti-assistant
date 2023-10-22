@@ -41,6 +41,7 @@ import { SetObjectivePointsHandler } from "../model/setObjectivePoints";
 import { SetSpeakerHandler } from "../model/setSpeaker";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
 import { UnswapStrategyCardsHandler } from "../model/swapStrategyCards";
+import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 
 export function getOppositeHandler(
@@ -319,6 +320,31 @@ export function getOppositeHandler(
     }
     case "LOSE_RELIC": {
       throw new Error("LOSE_RELIC should not be in log");
+    }
+    case "UPDATE_LEADER_STATE": {
+      let state: LeaderState;
+      switch (data.event.state) {
+        case "readied":
+          state = "locked";
+          break;
+        case "locked":
+          state = "readied";
+          break;
+        case "purged":
+          state = "readied";
+          break;
+        case "exhausted":
+          state = "readied";
+          break;
+      }
+      return new UpdateLeaderStateHandler(gameData, {
+        action: "UPDATE_LEADER_STATE",
+        event: {
+          factionId: data.event.factionId,
+          leaderType: data.event.leaderType,
+          state: state,
+        },
+      });
     }
     case "UPDATE_PLANET_STATE": {
       return new UpdatePlanetStateHandler(gameData, {

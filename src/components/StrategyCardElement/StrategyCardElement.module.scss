@@ -1,0 +1,44 @@
+.StrategyCardElement {
+  height: var(--forty-eight-pixel);
+
+  display: grid;
+
+  grid-template-columns: subgrid;
+  grid-auto-flow: row;
+  // flex-direction: column;
+  border: var(--three-pixel) solid var(--color);
+  border-radius: var(--six-pixel);
+  justify-content: center;
+  // justify-items: center;
+  align-items: center;
+
+  grid-column: 1 / 5;
+}
+
+.Number {
+  // width: 14%;
+  // flex-shrink: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  color: var(--text-color);
+  grid-template-columns: 1 / 2;
+}
+
+.FactionCircle {
+  display: none;
+}
+
+@media only screen and (max-width: 1279px) {
+  .FactionCircle {
+    display: flex;
+    grid-column: 3 / 5;
+    justify-self: center;
+  }
+  .FactionTile {
+    display: none;
+  }
+}

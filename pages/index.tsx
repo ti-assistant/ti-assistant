@@ -180,36 +180,35 @@ export default function HomePage() {
         </div>
       </div>
       <div
-        style={{
-          position: "absolute",
-          bottom: responsivePixels(24),
-          fontSize: responsivePixels(10),
-        }}
-      >
-        Twilight Imperium Assistant is not affiliated with{" "}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://www.fantasyflightgames.com/en/index/"
-        >
-          Fantasy Flight Games®
-        </a>
-      </div>
-      <div
+        className="flexColumn"
         style={{
           position: "absolute",
           bottom: responsivePixels(8),
           fontSize: responsivePixels(10),
+          textAlign: "center",
+          gap: responsivePixels(4),
         }}
       >
-        Twilight Imperium™ and all associated images are the property of{" "}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://www.fantasyflightgames.com/en/index/"
-        >
-          Fantasy Flight Games®
-        </a>
+        <div>
+          Twilight Imperium Assistant is not affiliated with{" "}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.fantasyflightgames.com/en/index/"
+          >
+            Fantasy&nbsp;Flight&nbsp;Games®
+          </a>
+        </div>
+        <div>
+          Twilight Imperium™ and all associated images are the property of{" "}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.fantasyflightgames.com/en/index/"
+          >
+            Fantasy&nbsp;Flight&nbsp;Games®
+          </a>
+        </div>
       </div>
     </div>
   );

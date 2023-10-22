@@ -100,3 +100,8 @@
     transform: translate(24px, 0);
   }
 }
+
+@keyframes spin {
+  0% { transform: rotate3d(0, 1, 0, 0deg); }
+  100% { transform: rotate3d(0, 1, 0, 360deg); }
+}

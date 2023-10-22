@@ -10,7 +10,6 @@ import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { Loader } from "../Loader";
 import { NumberedItem } from "../NumberedItem";
 import { Selector } from "../Selector";
-import { StrategyCardElement } from "../StrategyCard";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import FactionCard from "../components/FactionCard/FactionCard";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
@@ -30,6 +29,9 @@ import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getOnDeckFaction } from "../util/helpers";
 import { responsivePixels } from "../util/util";
+import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import { StrategyCardElement } from "../components/StrategyCardElement/StrategyCardElement";
+import styles from "./StrategyPhase.module.scss";
 
 const Modal = dynamic(() => import("../components/Modal/Modal"), {
   loading: () => <Loader />,
@@ -85,14 +87,27 @@ function ChecksAndBalancesMenu({
   }
 
   return (
-    <Selector
-      buttonStyle={mobile ? { fontSize: responsivePixels(16) } : {}}
-      hoverMenuLabel="Give to"
-      options={otherFactions}
-      toggleItem={(factionId, _) => {
-        onSelect(factionId);
+    <div
+      className="flexRow"
+      style={{
+        fontSize: responsivePixels(16),
+        alignItems: "center",
+        justifyContent: "flex-end",
+        width: "100%",
       }}
-    />
+    >
+      Give to:
+      <FactionSelectRadialMenu
+        onSelect={(factionId) => {
+          if (!factionId) {
+            return;
+          }
+          onSelect(factionId);
+        }}
+        factions={otherFactions}
+        size={32}
+      />
+    </div>
   );
 }
 
@@ -371,7 +386,14 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const checksAndBalances = !!cab && !!cab.passed;
 
   return (
-    <React.Fragment>
+    <div
+      style={{
+        display: "grid",
+        gridTemplate: "repeat(8, 1fr) / 14% 2fr 2fr 1fr",
+        gridAutoFlow: "column",
+        gap: responsivePixels(4),
+      }}
+    >
       {orderedStrategyCards.map((card) => {
         return (
           <StrategyCardElement
@@ -407,7 +429,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
           </StrategyCardElement>
         );
       })}
-    </React.Fragment>
+    </div>
   );
 }
 
@@ -607,14 +629,7 @@ export default function StrategyPhase() {
       >
         <InfoContent>{infoModal.content}</InfoContent>
       </Modal>
-      <div
-        className="flexColumn"
-        style={{
-          alignItems: "center",
-          width: responsivePixels(280),
-          height: "100svh",
-        }}
-      >
+      <div className={styles.LeftColumn}>
         {hasStartOfStrategyPhaseAbilities() ? (
           <div className="flexColumn">
             Start of Strategy Phase
@@ -702,13 +717,7 @@ export default function StrategyPhase() {
           </div>
         ) : null}
       </div>
-      <div
-        className="flexColumn"
-        style={{
-          marginTop: "40px",
-          height: "calc(100svh - 40px)",
-        }}
-      >
+      <div className={styles.MainColumn}>
         <div
           className="flexRow"
           style={{ position: "relative", maxWidth: responsivePixels(420) }}
@@ -740,8 +749,8 @@ export default function StrategyPhase() {
           ) : (
             <div
               style={{
-                fontSize: responsivePixels(30),
-                paddingTop: responsivePixels(24),
+                fontSize: responsivePixels(28),
+                // paddingTop: responsivePixels(24),
               }}
             >
               Strategy Phase Complete
@@ -783,7 +792,6 @@ export default function StrategyPhase() {
             gap: responsivePixels(4),
             alignItems: "stretch",
             marginTop: responsivePixels(8),
-            width: responsivePixels(440),
           }}
         >
           <StrategyCardSelectList mobile={false} />

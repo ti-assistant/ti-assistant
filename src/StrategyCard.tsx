@@ -20,7 +20,7 @@ interface StrategyCardProps {
   opts?: StrategyCardOpts;
 }
 
-export function StrategyCardElement({
+function StrategyCardElement({
   active,
   card,
   children,
@@ -163,7 +163,14 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
       ? factions[cards[0].faction]
       : undefined;
 
-  const height = cards.length === 1 ? responsivePixels(54) : "auto";
+  const numFactions = Object.keys(factions).length;
+
+  let height = "auto";
+  if (numFactions > 7) {
+    height = responsivePixels(44);
+  } else if (cards.length === 1) {
+    height = responsivePixels(50);
+  }
 
   const borderColor = !faction?.passed ? getFactionColor(faction) : "#555";
   return (
@@ -173,7 +180,7 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
       style={{
         display: "flex",
         flexDirection: "column",
-        fontSize: responsivePixels(24),
+        fontSize: numFactions > 7 ? responsivePixels(20) : responsivePixels(24),
         height: height,
       }}
     >
@@ -191,7 +198,8 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
           style={{
             flexBasis: "14%",
             minWidth: responsivePixels(32),
-            fontSize: responsivePixels(32),
+            fontSize:
+              numFactions > 7 ? responsivePixels(28) : responsivePixels(32),
             display: "flex",
             justifyContent: "center",
             color: faction?.passed ? "#555" : "#eee",

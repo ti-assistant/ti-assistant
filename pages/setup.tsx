@@ -13,6 +13,8 @@ import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { fetcher } from "../src/util/api/util";
 import { convertToFactionColor } from "../src/util/factions";
 import { responsivePixels } from "../src/util/util";
+import { Loader } from "../src/Loader";
+import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1280,6 +1282,7 @@ export default function SetupPage() {
     expansions: new Set(INITIAL_OPTIONS.expansions),
   });
   const [numFactions, setNumFactions] = useState(6);
+  const [creatingGame, setCreatingGame] = useState(false);
 
   const router = useRouter();
 
@@ -1500,6 +1503,8 @@ export default function SetupPage() {
   activeFactions.splice(numFactions);
 
   async function startGame() {
+    setCreatingGame(true);
+
     const expansions = Array.from(options.expansions);
     const optionsToSend: Options = {
       ...options,
@@ -1551,6 +1556,9 @@ export default function SetupPage() {
   }
 
   function disableNextButton() {
+    if (creatingGame) {
+      return true;
+    }
     if (speaker === -1) {
       return true;
     }
@@ -2019,13 +2027,39 @@ export default function SetupPage() {
               style={{
                 fontSize: `${responsivePixels(40)}`,
                 fontFamily: "Slider",
+                color: creatingGame ? "#222" : undefined,
+                position: "relative",
               }}
               onClick={startGame}
               disabled={disableNextButton()}
             >
               Start Game
+              {creatingGame ? (
+                <div
+                  className="flexColumn"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      aspectRatio: 1,
+                      height: "80%",
+                      opacity: 0.5,
+                      animation: "spin 2s linear infinite",
+                    }}
+                  >
+                    <ResponsiveLogo size="100%" />
+                  </div>
+                </div>
+              ) : null}
             </button>
-            {disableNextButton() && !invalidCouncil() ? (
+            {!creatingGame && disableNextButton() && !invalidCouncil() ? (
               <div
                 className="flexColumn centered"
                 style={{ color: "firebrick", maxWidth: responsivePixels(240) }}
@@ -2139,9 +2173,9 @@ export default function SetupPage() {
               onClick={startGame}
               disabled={disableNextButton()}
             >
-              Start Game
+              {creatingGame ? <Loader /> : "Start Game"}
             </button>
-            {disableNextButton() && !invalidCouncil() ? (
+            {!creatingGame && disableNextButton() && !invalidCouncil() ? (
               <div
                 className="flexColumn centered"
                 style={{ color: "firebrick", maxWidth: responsivePixels(240) }}

@@ -134,7 +134,7 @@ export function FactionSummary({
   let ownedTechs: Tech[] = [];
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
-  let factionHero = "locked";
+  let factionHero: LeaderState = "locked";
   if (factionId) {
     const faction = factions[factionId];
 
@@ -227,7 +227,7 @@ export function FactionSummary({
         <PlanetSummary
           planets={updatedPlanets}
           hasXxchaHero={
-            factionId === "Xxcha Kingdom" && factionHero === "unlocked"
+            factionId === "Xxcha Kingdom" && factionHero === "readied"
           }
         />
       )}

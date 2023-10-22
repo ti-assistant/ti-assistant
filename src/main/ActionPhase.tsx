@@ -54,6 +54,7 @@ import { applyPlanetAttachments } from "../util/planets";
 import { responsivePixels } from "../util/util";
 import { ComponentAction } from "./util/ComponentAction";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import styles from "./ActionPhase.module.scss";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1307,13 +1308,21 @@ export function NextPlayerButtons({
   } else {
     return (
       <div className="flexRow" style={{ gap: "16px" }}>
-        <button onClick={completeActions} style={buttonStyle}>
+        <button
+          onClick={completeActions}
+          className={styles.EndTurnButton}
+          style={buttonStyle}
+        >
           End Turn
         </button>
         {selectedAction !== "Pass" ? (
           <React.Fragment>
             <div style={{ fontSize: "16px" }}>OR</div>
-            <button onClick={finalizeAction} style={buttonStyle}>
+            <button
+              onClick={finalizeAction}
+              className={styles.EndTurnButton}
+              style={buttonStyle}
+            >
               Take Another Action
             </button>
           </React.Fragment>
@@ -1336,16 +1345,7 @@ export function ActivePlayerColumn({
   const { game: gameid }: { game?: string } = router.query;
 
   return (
-    <div
-      className="flexColumn"
-      style={{
-        boxSizing: "border-box",
-        paddingTop: responsivePixels(74),
-        justifyContent: "flex-start",
-        alignItems: "center",
-        marginLeft: responsivePixels(40),
-      }}
-    >
+    <div className={styles.ActivePlayerColumn}>
       Active Player
       <SwitchTransition>
         <CSSTransition key={activeFaction.id} timeout={500} classNames="fade">
@@ -1357,19 +1357,12 @@ export function ActivePlayerColumn({
                 style={{ fontSize: responsivePixels(16), width: "auto" }}
               />
             }
-            style={{
-              minWidth: responsivePixels(400),
-              minHeight: responsivePixels(240),
-            }}
             opts={{
               iconSize: responsivePixels(200),
               fontSize: responsivePixels(32),
             }}
           >
-            <div
-              className="flexColumn"
-              style={{ width: "100%", justifyContent: "flex-start" }}
-            >
+            <div className={styles.ActivePlayerSection}>
               <FactionActions factionId={activeFaction.id} />
               <AdditionalActions
                 factionId={activeFaction.id}
@@ -1379,12 +1372,11 @@ export function ActivePlayerColumn({
           </FactionCard>
         </CSSTransition>
       </SwitchTransition>
-      <NextPlayerButtons buttonStyle={{ fontSize: responsivePixels(24) }} />
+      <NextPlayerButtons />
       <div
         className="flexRow"
         style={{ width: "100%", justifyContent: "center" }}
       >
-        {" "}
         <SwitchTransition>
           <CSSTransition key={onDeckFaction.id} timeout={500} classNames="fade">
             <LabeledDiv
@@ -1517,15 +1509,14 @@ export default function ActionPhase() {
   return (
     <React.Fragment>
       <div
-        className="flexColumn"
-        style={{
-          alignItems: "stretch",
-          justifyContent: "flex-start",
-          paddingTop: responsivePixels(148),
-          boxSizing: "border-box",
-          height: "100%",
-          gap: numFactions > 7 ? 0 : responsivePixels(8),
-        }}
+        className={styles.LeftColumn}
+        // className="flexColumn nonMobile"
+        style={
+          {
+            "--gap":
+              numFactions > 7 ? responsivePixels(4) : responsivePixels(8),
+          } as CSSProperties
+        }
       >
         {Object.values(cardsByFaction).map((cards) => {
           return (

@@ -40,6 +40,7 @@ type GameUpdateData =
   | (PlayComponentData | UnplayComponentData)
   | (GainRelicData | LoseRelicData)
   | UpdatePlanetStateData
+  | UpdateLeaderStateData
   | SelectFactionData
   | SelectSubComponentData
   | SelectEligibleOutcomesData
@@ -514,6 +515,17 @@ interface SwapStrategyCardsData {
 interface UnswapStrategyCardsData {
   action: "UNSWAP_STRATEGY_CARDS";
   event: SwapStrategyCardsEvent;
+}
+
+interface UpdateLeaderStateEvent {
+  factionId: FactionId;
+  leaderType: LeaderType;
+  state: LeaderState;
+}
+
+interface UpdateLeaderStateData {
+  action: "UPDATE_LEADER_STATE";
+  event: UpdateLeaderStateEvent;
 }
 
 type PlanetState = "READIED" | "EXHAUSTED" | "PURGED";

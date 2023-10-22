@@ -80,7 +80,6 @@ export function useGameData(
         if (paths && paths.length > 0 && a && b) {
           for (const path of paths) {
             if (stableHash(a[path]) !== stableHash(b[path])) {
-              // console.log("Paths", paths);
               return false;
             }
           }
@@ -92,15 +91,6 @@ export function useGameData(
     }
   );
 
-  // return useMemo(() => {
-  //   console.log("What");
-  //   return buildCompleteGameData(storedGameData);
-  // }, [change]);
-
-  // console.log("Latest Change", latestChange);
-
-  // return useMemo(() => {
-  // console.log("Re-render!");
   if (!storedGameData) {
     return {
       agendas: BASE_AGENDAS,

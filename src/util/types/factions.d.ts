@@ -98,8 +98,8 @@ interface BaseFaction {
 interface GameFaction {
   alliancePartner?: FactionId;
   color: string;
-  commander: string;
-  hero: string;
+  commander: LeaderState;
+  hero: LeaderState;
   mapPosition: number;
   name: string;
   order: number;

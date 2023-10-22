@@ -23,6 +23,7 @@ import {
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels, validateMapString } from "../util/util";
+import styles from "./SetupPhase.module.scss";
 
 export function startFirstRound(gameid: string) {
   advancePhaseAsync(gameid);
@@ -133,24 +134,10 @@ export default function SetupPhase() {
     });
   }, [revealedObjectives, objectives]);
 
-  const speaker = (factions ?? {})[state?.speaker ?? ""];
-
   return (
     <>
-      <ol
-        className="flexColumn largeFont"
-        style={{
-          alignItems: "flex-start",
-          justifyContent: "center",
-          boxSizing: "border-box",
-          height: "100svh",
-          margin: 0,
-          width: "min-content",
-          paddingLeft: responsivePixels(20),
-          whiteSpace: "normal",
-        }}
-      >
-        <div className="flexRow" style={{ width: responsivePixels(268) }}>
+      <ol className={`flexColumn largeFont ${styles.LeftColumn}`}>
+        <div className="flexRow" style={{ width: "100%" }}>
           Setup
         </div>
         <NumberedItem>
@@ -179,7 +166,43 @@ export default function SetupPhase() {
           </div>
         </NumberedItem>
         <NumberedItem>Shuffle decks</NumberedItem>
-        <NumberedItem>Gather Starting Components</NumberedItem>
+        <NumberedItem>
+          Gather Starting Components
+          <div className={styles.Embedded}>
+            <div
+              style={{
+                display: "grid",
+                gridAutoFlow: "row",
+                width: "100%",
+                gridTemplateColumns: "1fr",
+                gap: responsivePixels(8),
+                paddingTop: responsivePixels(6),
+              }}
+            >
+              {Object.values(orderedFactions).map((faction) => {
+                return (
+                  <LabeledDiv
+                    key={faction.id}
+                    label={getFactionName(faction)}
+                    color={getFactionColor(faction)}
+                  >
+                    <div
+                      className="flexColumn"
+                      style={{
+                        paddingTop: `${responsivePixels(2)}`,
+                        alignItems: "flex-start",
+                        height: "100%",
+                        width: "100%",
+                      }}
+                    >
+                      <StartingComponents factionId={faction.id} />
+                    </div>
+                  </LabeledDiv>
+                );
+              })}
+            </div>
+          </div>
+        </NumberedItem>
         <NumberedItem>Draw 2 secret objectives and keep 1</NumberedItem>
         <NumberedItem>Re-shuffle secret objectives</NumberedItem>
         <NumberedItem>Draw 5 stage I objectives</NumberedItem>
@@ -274,8 +297,37 @@ export default function SetupPhase() {
             ) : null}
           </div>
         </NumberedItem>
+
+        <div className={`flexColumn ${styles.Embedded}`}>
+          {!setupPhaseComplete(factions ?? {}, revealedObjectives) ? (
+            <div
+              style={{
+                color: "firebrick",
+                fontFamily: "Myriad Pro",
+                fontWeight: "bold",
+              }}
+            >
+              {getSetupPhaseText(factions ?? {}, revealedObjectives)}
+            </div>
+          ) : null}
+          <LockedButtons
+            unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
+            buttons={[
+              {
+                text: "Start Game",
+                onClick: () => {
+                  if (!gameid) {
+                    return;
+                  }
+                  startFirstRound(gameid);
+                },
+                style: { fontSize: responsivePixels(40) },
+              },
+            ]}
+          />
+        </div>
       </ol>
-      <div className="flexColumn" style={{ height: "100dvh" }}>
+      <div className={`flexColumn ${styles.MainColumn}`}>
         <div
           className="flexColumn"
           style={{

@@ -15,6 +15,10 @@
   width: 100svh;
 }
 
+.SidebarLine {
+  display: none;
+}
+
 .Sidebar.left {
   transform: rotate(-90deg);
   left: var(--edge-distance);
@@ -27,8 +31,29 @@
   transform-origin: 100% 0px;
 }
 
+@media only screen and (max-width: 1279px) {
+  .Sidebar {
+    --edge-distance: var(--eight-pixel);
+    color: #eee;
+    font-size: var(--twenty-four-pixel);
+    line-height: var(--twenty-four-pixel);
+    padding: var(--eight-pixel) 0;
+  }
+}
+
 @media only screen and (max-width: 900px) {
   .Sidebar {
     display: none;
+  }
+
+  .SidebarLine {
+    display: flex;
+    position: sticky;
+    top: 52px;
+    width: 100%;
+    margin-bottom: var(--four-pixel);
+    z-index: 1;
+
+    background-color: #222;
   }
 }

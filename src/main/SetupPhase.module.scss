@@ -1,0 +1,34 @@
+.LeftColumn {
+  height: 100svh;
+  align-items: stretch;
+  justify-content: center;
+  margin: 0;
+  width: min-content;
+  padding: 0 var(--twenty-pixel);
+  white-space: normal;
+}
+
+.Embedded {
+  display: none;
+}
+
+.MainColumn {
+  height: 100dvh;
+}
+
+@media only screen and (max-width: 600px) {
+  .LeftColumn {
+    height: fit-content;
+    width: 100%;
+  }
+
+  .MainColumn {
+    display: none;
+  }
+
+  .Embedded {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}

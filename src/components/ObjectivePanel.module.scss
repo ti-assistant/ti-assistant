@@ -26,7 +26,7 @@
   position: relative;
   cursor: pointer;
   opacity: 0.2;
-  
+
   width: 66%;
   height: 66%;
   border-radius: 100%;
@@ -77,7 +77,7 @@
   background-color: #222;
   border-radius: var(--four-pixel);
   padding-top: var(--four-pixel);
-  
+
   padding-bottom: var(--eight-pixel);
   border: 1px solid var(--color);
 }
@@ -134,7 +134,8 @@
   justify-content: center;
 }
 
-.collapsible, .collapsibleRow {
+.collapsible,
+.collapsibleRow {
   overflow: visible;
 }
 
@@ -170,7 +171,7 @@
     overflow: hidden;
   }
 
-  .collapsibleRow {
+  .collapsible:not(.overflow) > .collapsibleRow {
     overflow: hidden;
   }
 
@@ -183,8 +184,16 @@
   .collapsibleRow:has(:global(.hoverParent.hover)) {
     overflow: visible;
   }
-  
-  .collapsed > .collapsibleRow  {
-    overflow: hidden;
+
+  // .collapsed > .collapsibleRow {
+  //   overflow: hidden;
+  // }
+
+  .objRow {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: center;
+    justify-items: center;
   }
 }

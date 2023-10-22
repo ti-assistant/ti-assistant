@@ -16,15 +16,6 @@
   width: 100%;
 }
 
-.planetTypeGrid {
-  display: grid;
-  font-size: var(--fourteen-pixel);
-  gap: var(--four-pixel);
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
-  align-items: center;
-}
-
 .vpGrid {
   position: relative;
   align-items: center;

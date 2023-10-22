@@ -1255,7 +1255,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         if (
           "leader" in component &&
           component.leader === "HERO" &&
-          faction.hero !== "unlocked"
+          faction.hero !== "readied"
         ) {
           return false;
         }

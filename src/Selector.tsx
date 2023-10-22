@@ -9,6 +9,7 @@ interface SelectorProps<Type extends string> {
   borderColor?: string;
   buttonStyle?: CSSProperties;
   hoverMenuLabel: ReactNode;
+  itemsPerColumn?: number;
   numToSelect?: number;
   options: Type[];
   fadedOptions?: Type[];
@@ -27,6 +28,7 @@ export function Selector<Type extends string>({
   autoSelect,
   buttonStyle = {},
   hoverMenuLabel,
+  itemsPerColumn = 10,
   borderColor,
   fadedOptions = [],
   selectedLabel,
@@ -84,10 +86,10 @@ export function Selector<Type extends string>({
     ...(style ?? {}),
   };
 
-  if (options.length > 10) {
+  if (options.length > itemsPerColumn) {
     innerStyle.display = "grid";
     innerStyle.gridAutoFlow = "column";
-    innerStyle.gridTemplateRows = "repeat(10, auto)";
+    innerStyle.gridTemplateRows = `repeat(${itemsPerColumn}, auto)`;
   }
 
   return (

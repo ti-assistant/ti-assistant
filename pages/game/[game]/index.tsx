@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import QRCode from "qrcode";
-import { PropsWithChildren, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Loader } from "../../../src/Loader";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
@@ -12,6 +12,7 @@ import DataProvider from "../../../src/context/DataProvider";
 import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { responsivePixels } from "../../../src/util/util";
+import Sidebars from "../../../src/components/Sidebars/Sidebars";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -166,15 +167,6 @@ function InnerSelectFactionPage({}) {
   );
 }
 
-function Sidebar({ side, children }: PropsWithChildren<{ side: string }>) {
-  const className = `${side}Sidebar`;
-  return (
-    <div className={className} style={{ letterSpacing: "3px" }}>
-      {children}
-    </div>
-  );
-}
-
 function Header() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
@@ -228,8 +220,7 @@ function Header() {
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
-      <Sidebar side="left">{state ? "SELECT FACTION" : "LOADING..."}</Sidebar>
-      <Sidebar side="right">{round}</Sidebar>
+      <Sidebars left="SELECT FACTION" right={round} />
 
       <Link href={`/`}>
         <a

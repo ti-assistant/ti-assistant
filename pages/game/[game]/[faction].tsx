@@ -6,7 +6,6 @@ import { AddPlanetList } from "../../../src/AddPlanetList";
 import { AddTechList } from "../../../src/AddTechList";
 import { AgendaRow } from "../../../src/AgendaRow";
 import { FactionSummary } from "../../../src/FactionSummary";
-import { MobileHeader } from "../../../src/MobileHeader";
 import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
 import { LockedButtons } from "../../../src/LockedButton";
 import { ObjectiveList } from "../../../src/ObjectiveList";
@@ -100,6 +99,10 @@ import {
 } from "../../../src/util/techs";
 import { responsivePixels } from "../../../src/util/util";
 import ObjectiveRow from "../../../src/components/ObjectiveRow/ObjectiveRow";
+import DataProvider from "../../../src/context/DataProvider";
+import FactionCircle from "../../../src/components/FactionCircle/FactionCircle";
+import { getStrategyCardsForFaction } from "../../../src/util/helpers";
+import Header from "../../../src/components/Header/Header";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -459,7 +462,7 @@ function PhaseSection() {
             </div>
             {selectedAction ? (
               <div className="flexRow" style={{ width: "100%" }}>
-                <NextPlayerButtons buttonStyle={{ fontSize: "20px" }} />
+                <NextPlayerButtons />
               </div>
             ) : null}
           </React.Fragment>
@@ -860,13 +863,7 @@ function PhaseSection() {
               style={{ alignItems: "stretch", width: "100%" }}
             >
               <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
-              {!canFactionVote(
-                factionId,
-                agendas,
-                state,
-                factions,
-                currentTurn
-              ) ? (
+              {!canFactionVote(faction, agendas, state, currentTurn) ? (
                 <div className="flexRow">Cannot Vote</div>
               ) : (
                 <React.Fragment>
@@ -1094,7 +1091,9 @@ function FactionContent() {
   const faction = factions[playerFaction];
 
   if (!faction) {
-    router.push(`/game/${gameid}`);
+    if (Object.keys(factions).length > 0) {
+      router.push(`/game/${gameid}`);
+    }
     return null;
   }
 
@@ -1342,11 +1341,11 @@ export default function GamePage() {
         height: "100svh",
       }}
     >
-      {/* <DataProvider> */}
-      <DndProvider backend={HTML5Backend}>
-        <InnerFactionPage />
-      </DndProvider>
-      {/* </DataProvider> */}
+      <DataProvider>
+        <DndProvider backend={HTML5Backend}>
+          <InnerFactionPage />
+        </DndProvider>
+      </DataProvider>
     </div>
   );
 }
@@ -1380,7 +1379,9 @@ function InnerFactionPage({}) {
   const faction = factions[playerFaction];
 
   if (!faction) {
-    router.push(`/game/${gameid}`);
+    if (Object.keys(factions).length > 0) {
+      router.push(`/game/${gameid}`);
+    }
     return null;
   }
 
@@ -1555,7 +1556,7 @@ function InnerFactionPage({}) {
 
   return (
     <>
-      <MobileHeader />
+      <Header />
       <Updater />
       <div
         className="flexColumn"
@@ -1563,7 +1564,6 @@ function InnerFactionPage({}) {
           position: "relative",
           width: "100%",
           maxWidth: "800px",
-          marginTop: responsivePixels(54),
         }}
       >
         <div
@@ -1574,10 +1574,7 @@ function InnerFactionPage({}) {
             fontSize: "18px",
           }}
         >
-          <LabeledLine
-            leftLabel={state?.phase + " PHASE"}
-            rightLabel={"ROUND " + state?.round}
-          />
+          <NextPhaseButtons />
           {orderTitle}
           <div
             className="flexRow"
@@ -1585,6 +1582,31 @@ function InnerFactionPage({}) {
           >
             {orderedFactions.map((faction) => {
               const color = faction.passed ? "#555" : getFactionColor(faction);
+              const cards = getStrategyCardsForFaction(
+                strategyCards,
+                faction.id
+              );
+              return (
+                <FactionCircle
+                  key={faction.id}
+                  borderColor={color}
+                  factionId={faction.id}
+                  onClick={() => swapToFaction(faction.id)}
+                  tag={
+                    cards.length > 0 ? (
+                      <div
+                        style={{
+                          fontSize: responsivePixels(18),
+                          color: cards[0]?.color,
+                        }}
+                      >
+                        {cards[0]?.order}
+                      </div>
+                    ) : undefined
+                  }
+                  tagBorderColor={cards[0]?.color}
+                />
+              );
               return (
                 <div
                   className="flexRow"
@@ -1615,7 +1637,6 @@ function InnerFactionPage({}) {
               );
             })}
           </div>
-          <NextPhaseButtons />
         </div>
         <div style={{ width: "100%", margin: "4px" }}>
           <FactionCard

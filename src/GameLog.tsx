@@ -24,7 +24,6 @@ function buildInitialGameData(setupData: {
   speaker: number;
   options: Options;
 }) {
-  console.log(setupData.factions);
   const gameFactions: GameFaction[] = setupData.factions.map(
     (faction, index) => {
       if (!faction.name || !faction.color || !faction.id) {

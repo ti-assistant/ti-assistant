@@ -1,0 +1,139 @@
+.HomeLink {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  position: fixed;
+  justify-content: center;
+  background-color: #222;
+  top: var(--sixteen-pixel);
+  left: var(--ninety-six-pixel);
+  font-size: var(--twenty-four-pixel);
+  gap: var(--eight-pixel);
+}
+
+.HomeLink > div {
+  position: relative;
+  width: var(--thirty-two-pixel);
+  height: var(--thirty-two-pixel);
+}
+
+.GameTimer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--eight-pixel);
+
+  position: fixed;
+  top: var(--sixty-four-pixel);
+  left: var(--two-fifty-six-pixel);
+  padding-left: var(--twelve-pixel);
+  align-items: center;
+  justify-content: center;
+}
+
+.PassedLaws {
+  position: fixed;
+  top: var(--twenty-pixel);
+  right: var(--four-twenty-pixel);
+
+  z-index: 1;
+}
+
+.QRCode {
+  position: fixed;
+  top: var(--sixty-four-pixel);
+  left: var(--ninety-six-pixel);
+
+  z-index: 1;
+}
+
+.ControlButtons {
+  display: flex;
+  flex-direction: row;
+  gap: var(--eight-pixel);
+  justify-content: space-evenly;
+  align-items: center;
+
+  position: fixed;
+  top: var(--sixteen-pixel);
+  left: var(--four-seventy-pixel);
+  font-size: var(--twenty-four-pixel);
+}
+
+.Map {
+  position: fixed;
+  top: var(--one-eight-pixel);
+  left: var(--ninety-six-pixel);
+}
+
+@media only screen and (max-width: 1279px) {
+  .HomeLink {
+    left: 64px;
+  }
+
+  .GameTimer {
+    left: 222px;
+  }
+
+  .PassedLaws {
+    right: 388px;
+  }
+
+  .QRCode {
+    left: 64px;
+  }
+
+  .ControlButtons {
+    left: 438px;
+  }
+
+  .Map {
+    left: 64px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .HomeLink {
+    text-align: center;
+    position: sticky;
+    padding-top: var(--twelve-pixel);
+    padding-bottom: var(--twelve-pixel);
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: #222;
+    z-index: 1;
+  }
+
+  .HomeLink > div {
+    position: relative;
+    width: var(--twenty-eight-pixel);
+    height: var(--twenty-eight-pixel);
+  }
+
+  .GameTimer {
+    display: none;
+    // TODO: Decide whether or not to display game timer on mobile.
+  }
+
+  .PassedLaws {
+    display: none;
+    // TODO: Decide whether or not to display passed laws on mobile.
+  }
+
+  .QRCode {
+    display: none;
+    // TODO: Decide whether or not to display QR code on mobile.
+  }
+
+  .Map {
+    display: none;
+    // TODO: Decide whether or not to display map on mobile.
+  }
+
+  .ControlButtons {
+    display: none;
+    // TODO: Decide whether or not to display control buttons on mobile.
+  }
+}

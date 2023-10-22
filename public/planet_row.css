@@ -1,52 +1,3 @@
-.planetRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 72px;
-  padding-left: 4px;
-  padding-right: 4px;
-  position: relative;
-}
-
-.planetRow.exhausted {
-  background-color: #111;
-  color: #666;
-}
-
-.techRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: stretch;
-  min-height: 32px;
-  position: relative;
-}
-
-.techRow.exhausted {
-  background-color: #111;
-  color: #666;
-}
-
-.objectiveRow {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: var(--four-pixel);
-  padding-right: var(--four-pixel);
-  position: relative;
-  align-items: stretch;
-}
-
-.agendaRow {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 4px;
-  padding-right: 4px;
-  position: relative;
-  align-items: stretch;
-}
-
 .selectableRow {
   display: flex;
   flex-direction: row;
@@ -79,14 +30,4 @@
   font-size: 80%;
   margin: var(--three-pixel) var(--ten-pixel) var(--three-pixel)
     var(--three-pixel);
-}
-
-.checkmark {
-  display: flex;
-  align-items: center;
-  color: darkgreen;
-  cursor: pointer;
-  font-size: 20px;
-  z-index: 100;
-  margin-right: 8px;
 }

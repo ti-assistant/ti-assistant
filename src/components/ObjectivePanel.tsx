@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import React, {
   CSSProperties,
   PropsWithChildren,
-  ReactNode,
   useContext,
   useState,
 } from "react";
@@ -27,6 +26,7 @@ import {
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels } from "../util/util";
+import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
@@ -256,41 +256,6 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
   );
 }
 
-function CollapsibleSection({
-  openedByDefault = false,
-  className,
-  title,
-  color = "#eee",
-  children,
-}: PropsWithChildren<{
-  openedByDefault?: boolean;
-  color?: string;
-  className?: string;
-  title: ReactNode;
-}>) {
-  const [collapsed, setCollapsed] = useState(!openedByDefault);
-
-  return (
-    <div
-      className={styles.column + " " + className}
-      style={{ borderColor: color }}
-    >
-      <div
-        className={styles.objectiveTitle}
-        onClick={() => setCollapsed(!collapsed)}
-        style={{ color: color }}
-      >
-        {title}
-      </div>
-      <div
-        className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
-
 interface NumFactionsCSS extends CSSProperties {
   "--num-factions": number;
 }
@@ -513,7 +478,12 @@ export function ObjectivePanel({}) {
           <CollapsibleSection
             title="Victory Points"
             openedByDefault
-            className={styles.victoryPoints}
+            style={{
+              width: "100%",
+              height: "fit-content",
+              fontSize: responsivePixels(18),
+              paddingBottom: responsivePixels(8),
+            }}
           >
             <div>
               <div
@@ -598,7 +568,16 @@ export function ObjectivePanel({}) {
               width: "100%",
             }}
           >
-            <CollapsibleSection title="Reveal Objective" openedByDefault>
+            <CollapsibleSection
+              title="Reveal Objective"
+              openedByDefault
+              style={{
+                width: "100%",
+                height: "fit-content",
+                fontSize: responsivePixels(18),
+                paddingBottom: responsivePixels(8),
+              }}
+            >
               <div
                 className={`flexColumn ${styles.collapsibleRow}`}
                 style={{
@@ -702,7 +681,7 @@ export function ObjectivePanel({}) {
               <CollapsibleSection
                 title="Stage I"
                 color="orange"
-                className={styles.stageOne}
+                style={{ width: "100%" }}
               >
                 <div className="flexColumn">
                   {selectedStageOneObjectives.map((objective) => {
@@ -799,7 +778,7 @@ export function ObjectivePanel({}) {
               <CollapsibleSection
                 title="Stage II"
                 color="royalblue"
-                className={styles.stageTwo}
+                style={{ width: "100%" }}
               >
                 <div className="flexColumn">
                   {selectedStageTwoObjectives.map((objective) => {
@@ -892,7 +871,16 @@ export function ObjectivePanel({}) {
                 </div>
               </CollapsibleSection>
             )}
-            <CollapsibleSection title="Secrets" color="red">
+            <CollapsibleSection
+              title="Secrets"
+              color="red"
+              style={{
+                width: "100%",
+                height: "fit-content",
+                fontSize: responsivePixels(18),
+                paddingBottom: responsivePixels(8),
+              }}
+            >
               <div className="flexRow" style={{ width: "100%" }}>
                 <div
                   className="flexRow"
@@ -951,7 +939,15 @@ export function ObjectivePanel({}) {
                 </div>
               </div>
             </CollapsibleSection>
-            <CollapsibleSection title="Imperial Points">
+            <CollapsibleSection
+              title="Imperial Points"
+              style={{
+                width: "100%",
+                height: "fit-content",
+                fontSize: responsivePixels(18),
+                paddingBottom: responsivePixels(8),
+              }}
+            >
               <div className="flexRow" style={{ width: "100%" }}>
                 <div
                   className="flexRow"
@@ -1073,7 +1069,12 @@ export function ObjectivePanel({}) {
           </div>
           <CollapsibleSection
             title="Support for the Throne"
-            className={styles.supportForTheThrone}
+            style={{
+              width: "100%",
+              height: "fit-content",
+              fontSize: responsivePixels(18),
+              paddingBottom: responsivePixels(8),
+            }}
           >
             <div className={`flexRow ${styles.collapsibleRow}`}>
               <div className={`flexRow ${styles.objRow}`}>
@@ -1124,13 +1125,19 @@ export function ObjectivePanel({}) {
               </div>
             </div>
           </CollapsibleSection>
-          <CollapsibleSection title="Other Victory Points">
+          <CollapsibleSection
+            title="Other Victory Points"
+            style={{
+              width: "100%",
+              height: "fit-content",
+              fontSize: responsivePixels(18),
+              paddingBottom: responsivePixels(8),
+            }}
+          >
             <div
               className={"flexColumn " + styles.collapsibleRow}
-              style={{ width: "100%", height: "auto" }}
+              style={{ width: "100%" }}
             >
-              {/* <div className="flexColumn" style={{ gridColumn: "1 / 3" }}> */}
-
               <div
                 className="flexRow"
                 style={{
