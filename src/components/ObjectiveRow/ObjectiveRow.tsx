@@ -147,7 +147,7 @@ export default function ObjectiveRow({
                         top: 0,
                         left: responsivePixels(20),
                         position: "absolute",
-                        zIndex: 40,
+                        zIndex: 1,
                         backgroundColor: "#222",
                         color: "red",
                         display: "flex",

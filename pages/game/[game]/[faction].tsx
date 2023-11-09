@@ -1775,6 +1775,7 @@ function InnerFactionPage({}) {
           width: responsivePixels(36),
           padding: 0,
           gap: responsivePixels(4),
+          zIndex: 1,
         }}
         onClick={() => setShowMenu(!showMenu)}
       >
@@ -1786,10 +1787,13 @@ function InnerFactionPage({}) {
         className="flexColumn"
         style={{
           position: "fixed",
-          left: responsivePixels(19),
-          bottom: responsivePixels(64),
+          left: responsivePixels(15),
+          padding: responsivePixels(4),
+          bottom: responsivePixels(60),
           display: showMenu ? "flex" : "none",
           alignItems: "flex-start",
+          zIndex: 2,
+          backdropFilter: "blur(8px)",
         }}
       >
         {options["map-string"] !== "" ? (
