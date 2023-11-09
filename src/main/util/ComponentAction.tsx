@@ -931,7 +931,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       rightLabel = (
         <FactionSelectRadialMenu
           selectedFaction={selectedFaction}
-          factions={Object.values(factions).map((faction) => faction.id)}
+          factions={Object.values(factions)
+            .sort((a, b) => a.mapPosition - b.mapPosition)
+            .map((faction) => faction.id)}
           onSelect={(factionId, _) => {
             if (!gameid) {
               return;

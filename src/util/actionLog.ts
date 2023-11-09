@@ -66,6 +66,19 @@ export function getScoredObjectives(
     .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.objective);
 }
 
+export function getAttachments(
+  actionLog: ActionLogEntry[],
+  planetId: PlanetId
+) {
+  return actionLog
+    .filter(
+      (logEntry) =>
+        logEntry.data.action === "ADD_ATTACHMENT" &&
+        logEntry.data.event.planet === planetId
+    )
+    .map((logEntry) => (logEntry.data as AddAttachmentData).event.attachment);
+}
+
 export function getObjectiveScorers(
   actionLog: ActionLogEntry[],
   objectiveId: ObjectiveId

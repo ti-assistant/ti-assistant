@@ -62,7 +62,11 @@ export function Selector<Type extends string>({
       : () => toggleItem(selectedItem, false);
 
     const innerValue = (
-      <SelectableRow itemId={selectedItem} removeItem={removeItem}>
+      <SelectableRow
+        itemId={selectedItem}
+        removeItem={removeItem}
+        style={style}
+      >
         {selectedItem}
       </SelectableRow>
     );

@@ -498,14 +498,14 @@ export const DISCORDANT_STARS_PLANETS: Record<
     type: "NONE",
   },
   // L'tokk Khrask
-  "Bohl-Duhr": {
+  "Bohl-Dhur": {
     attributes: [],
     expansion: "DISCORDANT STARS",
     faction: "L'tokk Khrask",
     home: true,
     influence: 4,
-    id: "Bohl-Duhr",
-    name: "Bohl-Duhr",
+    id: "Bohl-Dhur",
+    name: "Bohl-Dhur",
     position: HOME_MIDDLE,
     resources: 3,
     system: 1019,

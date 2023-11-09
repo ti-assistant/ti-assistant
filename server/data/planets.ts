@@ -643,7 +643,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     name: "Mallice",
     position: { x: 16, y: -18 },
     resources: 0,
-    system: 82,
+    system: "82B",
     type: "CULTURAL",
   },
   "Mecatol Rex": {

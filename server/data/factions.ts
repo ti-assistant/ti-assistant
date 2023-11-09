@@ -1397,7 +1397,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
       {
         name: "Tekklar Legion",
         description:
-          "At the start of an invasion combat:\n\nApply +1 to the result of each of your unit's combat rolls during this combat.  If your opponent is the N'orr player, apply -1 to the result of each of his unit's combat rolls during this combat.\n\nThen, return this card to the N'orr player.",
+          "At the start of an invasion combat:\n\nApply +1 to the result of each of your unit's combat rolls during this combat.  If your opponent is the N'orr player, apply -1 to the result of each of their unit's combat rolls during this combat.\n\nThen, return this card to the N'orr player.",
       },
     ],
     shortname: "N'orr",

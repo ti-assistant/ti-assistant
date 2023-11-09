@@ -1,22 +1,29 @@
-import React, { CSSProperties, ReactNode, useRef, useState } from "react";
+import React, {
+  CSSProperties,
+  ReactNode,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { SymbolX } from "../../icons/svgs";
 import { responsivePixels } from "../../util/util";
-import FactionCircle from "../FactionCircle/FactionCircle";
-import FactionIcon from "../FactionIcon/FactionIcon";
-import styles from "./FactionSelectRadialMenu.module.scss";
+import styles from "./AttachmentSelectRadialMenu.module.scss";
+import { AttachmentContext } from "../../context/Context";
+import AttachmentIcon from "../AttachmentIcon/AttachmentIcon";
+import Circle from "../Circle/Circle";
+import { getTechTypeColor } from "../../util/techs";
 
-interface FactionSelectRadialMenuProps {
-  selectedFaction?: FactionId;
-  factions: FactionId[];
-  fadedFactions?: FactionId[];
-  invalidFactions?: FactionId[];
+interface AttachmentSelectRadialMenuProps {
+  selectedAttachment?: AttachmentId;
+  attachments: AttachmentId[];
+  fadedAttachments?: AttachmentId[];
+  hasSkip?: boolean;
   onSelect: (
-    factionId: FactionId | undefined,
-    prevFaction: FactionId | undefined
+    attachmentId: AttachmentId | undefined,
+    prevAttachment: AttachmentId | undefined
   ) => void;
   size?: number;
   tag?: ReactNode;
-  borderColor?: string;
   tagBorderColor?: string;
 }
 
@@ -37,12 +44,12 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
   return pos;
 }
 
-interface FactionSelectRadialMenuCSS extends CSSProperties {
+interface AttachmentSelectRadialMenuCSS extends CSSProperties {
   "--border-color": string;
   "--size": string;
 }
 
-interface FactionSelectCSS extends CSSProperties {
+interface AttachmentSelectCSS extends CSSProperties {
   "--opacity": number;
   "--x-pos": string;
   "--y-pos": string;
@@ -50,17 +57,18 @@ interface FactionSelectCSS extends CSSProperties {
   "--initial-y": string;
 }
 
-export default function FactionSelectRadialMenu({
-  selectedFaction,
-  factions,
-  fadedFactions = [],
-  invalidFactions = [],
+export default function AttachmentSelectRadialMenu({
+  selectedAttachment,
+  attachments,
+  fadedAttachments = [],
+  hasSkip = false,
   onSelect,
   size = 44,
   tag,
-  borderColor = "#444",
   tagBorderColor = "#444",
-}: FactionSelectRadialMenuProps) {
+}: AttachmentSelectRadialMenuProps) {
+  const attachmentData = useContext(AttachmentContext);
+
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
   const [closing, setClosing] = useState(false);
@@ -74,7 +82,19 @@ export default function FactionSelectRadialMenu({
     setTimeout(() => setClosing(false), 200);
   }
 
-  const hoverParentStyle: FactionSelectRadialMenuCSS = {
+  let borderColor = "#444";
+  if (
+    selectedAttachment &&
+    attachmentData[selectedAttachment]?.attribute?.includes("-skip")
+  ) {
+    const techType = attachmentData[selectedAttachment]?.attribute
+      ?.replace("-skip", "")
+      .toUpperCase() as TechType;
+
+    borderColor = getTechTypeColor(techType);
+  }
+
+  const hoverParentStyle: AttachmentSelectRadialMenuCSS = {
     "--border-color": borderColor,
     "--size": responsivePixels(size),
   };
@@ -97,50 +117,59 @@ export default function FactionSelectRadialMenu({
       }}
       ref={menu}
     >
-      {factions.length > 0 ? (
+      {attachments.length > 0 ? (
         <React.Fragment>
           <div className={styles.hoverBackground}></div>
           <div className={`flexRow ${styles.hoverRadial}`} ref={innerMenu}>
-            {factions.map((factionId, index) => {
-              const isInvalid = invalidFactions.includes(factionId);
+            {attachments.map((attachmentId, index) => {
+              const attachment = attachmentData[attachmentId];
+              if (!attachment) {
+                console.log(attachmentId);
+                return null;
+              }
               const opacity =
-                (fadedFactions.includes(factionId) &&
-                  factionId !== selectedFaction) ||
-                isInvalid
-                  ? 0.2
+                fadedAttachments.includes(attachmentId) &&
+                attachmentId !== selectedAttachment
+                  ? 0.25
                   : 1;
-              const factionSelectStyle: FactionSelectCSS = {
+              const factionSelectStyle: AttachmentSelectCSS = {
                 "--opacity": opacity,
                 width: responsivePixels(size - 4),
                 height: responsivePixels(size - 4),
-                pointerEvents: isInvalid ? "none" : undefined,
-                ...getRadialPosition(index, factions.length, size),
+                ...getRadialPosition(index, attachments.length, size),
               };
               return (
                 <div
-                  key={factionId}
+                  key={attachmentId}
                   className={`flexRow ${styles.factionSelect}`}
                   style={factionSelectStyle}
                   onClick={() => {
                     closeFn();
-                    if (factionId === selectedFaction) {
-                      console.log(selectedFaction);
-                      onSelect(undefined, selectedFaction);
+                    if (attachmentId === selectedAttachment) {
+                      onSelect(undefined, selectedAttachment);
                       return;
                     }
-                    onSelect(factionId, selectedFaction);
+                    onSelect(attachmentId, selectedAttachment);
                   }}
                 >
                   <div
+                    className="flexRow"
                     style={{
-                      width: responsivePixels(size - 10),
-                      height: responsivePixels(size - 10),
+                      position: "relative",
+                      width: responsivePixels(size - 8),
+                      height: responsivePixels(size - 8),
+                      whiteSpace: "pre-wrap",
+                      gap: 0,
                     }}
                   >
-                    {factionId === selectedFaction && !isInvalid ? (
+                    {attachmentId === selectedAttachment ? (
                       <SymbolX />
                     ) : (
-                      <FactionIcon factionId={factionId} size="100%" />
+                      <AttachmentIcon
+                        attachment={attachment}
+                        hasSkip={hasSkip}
+                        size={size - 8}
+                      />
                     )}
                   </div>
                 </div>
@@ -169,8 +198,13 @@ export default function FactionSelectRadialMenu({
                     height: responsivePixels(size - 10),
                   }}
                 >
-                  {selectedFaction ? (
-                    <FactionIcon factionId={selectedFaction} size="100%" />
+                  {selectedAttachment ? (
+                    <AttachmentIcon
+                      attachment={attachmentData[selectedAttachment]}
+                      hasSkip={hasSkip}
+                      hideBorder
+                      size={size - 8}
+                    />
                   ) : (
                     <SymbolX />
                   )}
@@ -196,13 +230,21 @@ export default function FactionSelectRadialMenu({
           </div>
         </React.Fragment>
       ) : null}
-      <FactionCircle
+      <Circle
         borderColor={borderColor}
-        factionId={selectedFaction}
         tag={tag}
         tagBorderColor={tagBorderColor}
         size={size}
-      />
+      >
+        <AttachmentIcon
+          attachment={
+            selectedAttachment ? attachmentData[selectedAttachment] : undefined
+          }
+          hasSkip={hasSkip}
+          hideBorder
+          size={size - 8}
+        />
+      </Circle>
     </div>
   );
 }

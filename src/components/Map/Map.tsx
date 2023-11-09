@@ -410,7 +410,7 @@ function getRotationClass(key: string) {
   }
 }
 
-function SystemImage({
+export function SystemImage({
   showDetails,
   systemNumber,
 }: {
@@ -485,7 +485,7 @@ function SystemImage({
       return false;
     }
     if (systemNumber === "82A" || systemNumber === "82B") {
-      return planet.system === 82;
+      return planet.system === "82B" || planet.system === "82A";
     }
     return planet.system === parseInt(systemNumber);
   });

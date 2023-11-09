@@ -41,7 +41,7 @@ interface BasePlanet {
   position?: { x: number; y: number };
   resources: number;
   subFaction?: SubFaction;
-  system?: number;
+  system?: SystemId;
   type: PlanetType;
 }
 

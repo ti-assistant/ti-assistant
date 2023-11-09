@@ -17,6 +17,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./Footer.module.scss";
 import FactionRow from "../FactionRow/FactionRow";
 import { FactionSummary } from "../../FactionSummary";
+import RelicPanel from "../RelicPanel/RelicPanel";
 
 const ObjectivePanel = dynamic(
   import("../ObjectivePanel").then((mod) => mod.ObjectivePanel),
@@ -93,7 +94,7 @@ export default function Footer({}) {
   }
 
   const orderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.order - b.order
+    (a, b) => a.mapPosition - b.mapPosition
   );
 
   let orderTitle = "";
@@ -239,10 +240,9 @@ export default function Footer({}) {
                       ? getFactionColor((factions ?? {})[state.speaker])
                       : undefined
                   }
-                  selectedFaction={state?.speaker}
-                  factions={orderedFactions
-                    .filter((faction) => faction.id !== state?.speaker)
-                    .map((faction) => faction.id)}
+                  selectedFaction={state.speaker}
+                  factions={orderedFactions.map((faction) => faction.id)}
+                  invalidFactions={[state.speaker]}
                   onSelect={async (factionId, _) => {
                     if (!gameid || !factionId) {
                       return;
@@ -262,6 +262,7 @@ export default function Footer({}) {
                 Objectives
               </button>
               <button onClick={() => setShowPlanetModal(true)}>Planets</button>
+              {/* <RelicPanel /> */}
             </div>
           </div>
         </LabeledDiv>

@@ -1087,36 +1087,53 @@ function FactionSelect({
             className="flexRow"
             style={{ width: "100%", justifyContent: "space-between" }}
           >
-            <Selector
-              hoverMenuLabel="Pick Faction"
-              options={filteredFactions.map((faction) => faction.id)}
-              fadedOptions={selectedFactions}
-              selectedItem={faction.id}
-              toggleItem={(factionId, add) => {
-                if (add) {
-                  selectFaction(factionId);
-                } else {
-                  selectFaction(undefined);
-                }
-              }}
-              renderItem={(factionName) => {
-                return (
-                  <SelectableRow
-                    itemId={factionName}
-                    removeItem={() => selectFaction(undefined)}
-                    style={{ height: responsivePixels(32.67) }}
-                  >
-                    <>
-                      {factionName}
-                      <FactionPanel
-                        faction={faction}
-                        options={createOptions(options)}
-                      />
-                    </>
-                  </SelectableRow>
-                );
-              }}
-            />
+            {faction.id ? (
+              <SelectableRow
+                itemId={faction.id}
+                removeItem={() => selectFaction(undefined)}
+                style={{ height: responsivePixels(32.67) }}
+              >
+                {faction.id}
+                <FactionPanel
+                  faction={faction}
+                  options={createOptions(options)}
+                />
+              </SelectableRow>
+            ) : (
+              <ClientOnlyHoverMenu label="Pick Faction">
+                <div
+                  style={{
+                    display: "grid",
+                    gridAutoFlow: "column",
+                    gridTemplateRows: "repeat(10, minmax(0, 1fr))",
+                    gap: responsivePixels(4),
+                    padding: responsivePixels(8),
+                    maxWidth: "88vw",
+                    overflowX: "auto",
+                  }}
+                >
+                  {filteredFactions.map((faction) => {
+                    return (
+                      <button
+                        key={faction.id}
+                        className={`flexRow ${
+                          selectedFactions.includes(faction.id) ? "faded" : ""
+                        }`}
+                        style={{
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          fontSize: responsivePixels(16),
+                        }}
+                        onClick={() => selectFaction(faction.id)}
+                      >
+                        <FactionIcon factionId={faction.id} size={20} />
+                        {faction.id}
+                      </button>
+                    );
+                  })}
+                </div>
+              </ClientOnlyHoverMenu>
+            )}
             {options["game-variant"].startsWith("alliance") ? (
               <div className="flexRow">
                 Partner:

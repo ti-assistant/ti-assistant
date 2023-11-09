@@ -28,4 +28,7 @@ export const StateContext = createContext<GameState>({
 export const StrategyCardContext = createContext<
   Partial<Record<StrategyCardId, StrategyCard>>
 >({});
+export const SystemContext = createContext<Partial<Record<SystemId, System>>>(
+  {}
+);
 export const TechContext = createContext<Partial<Record<TechId, Tech>>>({});

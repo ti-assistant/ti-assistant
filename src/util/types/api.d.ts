@@ -71,6 +71,7 @@ interface GameData {
   relics?: Partial<Record<RelicId, Relic>>;
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, StrategyCard>>;
+  systems?: Partial<Record<SystemId, System>>;
   techs?: Partial<Record<TechId, Tech>>;
 }
 
@@ -86,6 +87,7 @@ interface StoredGameData {
   relics?: Partial<Record<RelicId, GameRelic>>;
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, GameStrategyCard>>;
+  systems?: Partial<Record<SystemId, GameSystem>>;
   updates?: Record<string, { timestamp: Timestamp }>;
   // Secrets
   [key: string]: any;

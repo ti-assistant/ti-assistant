@@ -53,6 +53,7 @@ import {
   getActionCardTargets,
   getActiveAgenda,
   getAllVotes,
+  getFactionVotes,
   getGainedRelic,
   getNewOwner,
   getObjectiveScorers,
@@ -68,6 +69,7 @@ import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { hasScoredObjective } from "../util/api/util";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels } from "../util/util";
+import VoteBlock from "../components/VoteBlock/VoteBlock";
 
 const RIDERS = [
   "Galactic Threat",
@@ -85,8 +87,17 @@ const RIDERS = [
 
 export function computeVotes(
   agenda: Agenda | undefined,
-  currentTurn: ActionLogEntry[]
+  currentTurn: ActionLogEntry[],
+  numFactions: number
 ) {
+  const currentCouncilor = getActionCardTargets(
+    currentTurn,
+    "Distinguished Councilor"
+  )[0] as FactionId | undefined;
+  const usingPredictive = getActionCardTargets(
+    currentTurn,
+    "Predictive Intelligence"
+  ) as FactionId[];
   const castVotes: { [key: string]: number } =
     agenda && agenda.elect === "For/Against" ? { For: 0, Against: 0 } : {};
   const voteEvents = getAllVotes(currentTurn);
@@ -100,6 +111,15 @@ export function computeVotes(
         castVotes[voteEvent.target] = 0;
       }
       castVotes[voteEvent.target] += voteEvent.votes ?? 0;
+      if (voteEvent.faction === currentCouncilor) {
+        castVotes[voteEvent.target] += 5;
+      }
+      if (usingPredictive.includes(voteEvent.faction)) {
+        castVotes[voteEvent.target] += 3;
+      }
+      if (voteEvent.faction === "Argent Flight") {
+        castVotes[voteEvent.target] += numFactions;
+      }
     }
   });
   const orderedVotes: {
@@ -196,7 +216,7 @@ function AgendaDetails() {
 
   const agenda = agendaId ? (agendas ?? {})[agendaId] : undefined;
 
-  const votes = computeVotes(agenda, currentTurn);
+  const votes = computeVotes(agenda, currentTurn, Object.keys(factions).length);
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -495,7 +515,11 @@ function AgendaSteps() {
     currentAgenda = (agendas ?? {})[activeAgenda];
   }
 
-  const votes = computeVotes(currentAgenda, currentTurn);
+  const votes = computeVotes(
+    currentAgenda,
+    currentTurn,
+    Object.keys(factions).length
+  );
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -1129,7 +1153,8 @@ function AgendaSteps() {
               </div>
             </ClientOnlyHoverMenu>
           ) : null}
-          {currentAgenda ? "Cast votes (or abstain)" : null}
+          {currentAgenda ? <>Cast votes (or abstain)</> : null}
+          {/* {currentAgenda ? <DistinguishedCouncilor /> : null} */}
           {(votes && Object.keys(votes).length > 0) ||
           getSelectedOutcome(selectedTargets, currentTurn) ? (
             <LabeledDiv label="Results">
@@ -1257,6 +1282,78 @@ function AgendaSteps() {
         </div>
       )}
     </React.Fragment>
+  );
+}
+
+function DistinguishedCouncilor({}) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
+
+  // const numLawsInPlay = Object.values(agendas ?? {}).filter((agenda) => {
+  //   return agenda.passed && agenda.type === "LAW";
+  // }).length;
+  const currentCouncilors = getActionCardTargets(
+    currentTurn,
+    "Distinguished Councilor"
+  ) as FactionId[];
+  const possibleCouncilors = new Set<FactionId>(currentCouncilors);
+  // if (currentCouncilors.length > 0) {
+  for (const faction of Object.values(factions)) {
+    const factionVotes = getFactionVotes(currentTurn, faction.id);
+    if (factionVotes && factionVotes.votes > 0) {
+      possibleCouncilors.add(faction.id);
+    }
+  }
+  // }
+  const orderedCouncilors = Array.from(possibleCouncilors).sort((a, b) => {
+    if (a > b) {
+      return 1;
+    }
+    return -1;
+  });
+  if (orderedCouncilors.length < 1) {
+    return null;
+  }
+  const color = currentCouncilors[0]
+    ? getFactionColor(factions[currentCouncilors[0]])
+    : undefined;
+  return (
+    <div
+      className="flexRow"
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        fontSize: responsivePixels(14),
+      }}
+    >
+      Distinguished Councilor:
+      <FactionSelectRadialMenu
+        borderColor={color}
+        factions={orderedCouncilors}
+        selectedFaction={currentCouncilors[0]}
+        size={32}
+        onSelect={(factionId, prevFaction) => {
+          if (!gameid) {
+            return;
+          }
+          if (prevFaction) {
+            unplayActionCardAsync(
+              gameid,
+              "Distinguished Councilor",
+              prevFaction
+            );
+          }
+          if (factionId) {
+            playActionCardAsync(gameid, "Distinguished Councilor", factionId);
+          }
+        }}
+      />
+    </div>
   );
 }
 
@@ -1425,7 +1522,11 @@ export default function AgendaPhase() {
     currentAgenda = agendas[activeAgenda];
   }
 
-  const votes = computeVotes(currentAgenda, currentTurn);
+  const votes = computeVotes(
+    currentAgenda,
+    currentTurn,
+    Object.keys(factions).length
+  );
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -1602,97 +1703,131 @@ export default function AgendaPhase() {
             <div
               className="flexRow"
               style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
                 paddingBottom: responsivePixels(8),
                 alignItems: "flex-end",
+                maxWidth: responsivePixels(400),
               }}
             >
-              <div style={{ textAlign: "center", width: responsivePixels(80) }}>
-                Available Votes
-              </div>
-              <div style={{ textAlign: "center", width: responsivePixels(40) }}>
-                Cast Votes
-              </div>
               <div
-                style={{ textAlign: "center", width: responsivePixels(120) }}
+                style={{
+                  display: "grid",
+                  gridColumn: "span 4",
+                  gridTemplateColumns: "subgrid",
+                }}
               >
-                Outcome
-              </div>
-            </div>
-            {votingOrder.map((faction) => {
-              return (
-                <VoteCount
-                  key={faction.id}
-                  factionId={faction.id}
-                  agenda={localAgenda}
-                />
-              );
-            })}
-            {currentAgenda && isTie ? (
-              !tieBreak ? (
-                <LabeledDiv
-                  label={getFactionName(speaker)}
-                  color={getFactionColor(speaker)}
-                  style={{ width: "auto" }}
+                <div style={{ textAlign: "center" }}>Outcome</div>
+                <div
+                  className="flexColumn"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "subgrid",
+                    gridColumn: "span 3",
+                  }}
                 >
-                  <ClientOnlyHoverMenu label="Choose outcome if tied">
-                    <div
-                      className="flexRow"
-                      style={{
-                        alignItems: "stretch",
-                        justifyContent: "flex-start",
-                        gap: responsivePixels(4),
-                        padding: responsivePixels(8),
-                        display: "grid",
-                        gridAutoFlow: "column",
-                        gridTemplateRows: `repeat(${items}, auto)`,
-                      }}
-                    >
-                      {selectedTargets.length > 0
-                        ? selectedTargets.map((target) => {
-                            return (
-                              <button
-                                key={target}
-                                style={{
-                                  fontSize: responsivePixels(14),
-                                  writingMode: "horizontal-tb",
-                                }}
-                                onClick={() => selectSpeakerTieBreak(target)}
-                              >
-                                {target}
-                              </button>
-                            );
-                          })
-                        : allTargets.map((target) => {
-                            if (target === "Abstain") {
-                              return null;
-                            }
-                            return (
-                              <button
-                                key={target}
-                                style={{
-                                  fontSize: responsivePixels(14),
-                                  writingMode: "horizontal-tb",
-                                }}
-                                onClick={() => selectSpeakerTieBreak(target)}
-                              >
-                                {target}
-                              </button>
-                            );
-                          })}
-                    </div>
-                  </ClientOnlyHoverMenu>
-                </LabeledDiv>
-              ) : (
-                <LabeledDiv label="Speaker Tie Break">
-                  <SelectableRow
-                    itemId={tieBreak}
-                    removeItem={() => selectSpeakerTieBreak(null)}
+                  {/* <div className="flexRow" style={{ gridColumn: "span 3" }}>
+                    Votes
+                  </div> */}
+                  <div className="flexRow">Available</div>
+                  <div className="flexRow">Votes</div>
+                  <div className="flexRow">Extra</div>
+                </div>
+                {/* <div
+                  style={{ textAlign: "center", width: responsivePixels(80) }}
+                >
+                  Available Votes
+                </div>
+                <div
+                  style={{ textAlign: "center", width: responsivePixels(40) }}
+                >
+                  Cast Votes
+                </div>
+                <div
+                  style={{ textAlign: "center", width: responsivePixels(120) }}
+                >
+                  Extra Votes
+                </div> */}
+              </div>
+              {votingOrder.map((faction) => {
+                return (
+                  <VoteBlock
+                    key={faction.id}
+                    factionId={faction.id}
+                    agenda={localAgenda}
+                  />
+                );
+              })}
+              {currentAgenda && isTie ? (
+                !tieBreak ? (
+                  <LabeledDiv
+                    label={getFactionName(speaker)}
+                    color={getFactionColor(speaker)}
+                    style={{ width: "auto", gridColumn: "span 4" }}
                   >
-                    {tieBreak}
-                  </SelectableRow>
-                </LabeledDiv>
-              )
-            ) : null}
+                    <ClientOnlyHoverMenu label="Choose outcome if tied">
+                      <div
+                        className="flexRow"
+                        style={{
+                          alignItems: "stretch",
+                          justifyContent: "flex-start",
+                          gap: responsivePixels(4),
+                          padding: responsivePixels(8),
+                          display: "grid",
+                          gridAutoFlow: "column",
+                          gridTemplateRows: `repeat(${items}, auto)`,
+                        }}
+                      >
+                        {selectedTargets.length > 0
+                          ? selectedTargets.map((target) => {
+                              return (
+                                <button
+                                  key={target}
+                                  style={{
+                                    fontSize: responsivePixels(14),
+                                    writingMode: "horizontal-tb",
+                                  }}
+                                  onClick={() => selectSpeakerTieBreak(target)}
+                                >
+                                  {target}
+                                </button>
+                              );
+                            })
+                          : allTargets.map((target) => {
+                              if (target === "Abstain") {
+                                return null;
+                              }
+                              return (
+                                <button
+                                  key={target}
+                                  style={{
+                                    fontSize: responsivePixels(14),
+                                    writingMode: "horizontal-tb",
+                                  }}
+                                  onClick={() => selectSpeakerTieBreak(target)}
+                                >
+                                  {target}
+                                </button>
+                              );
+                            })}
+                      </div>
+                    </ClientOnlyHoverMenu>
+                  </LabeledDiv>
+                ) : (
+                  <LabeledDiv
+                    label="Speaker Tie Break"
+                    style={{ gridColumn: "span 4" }}
+                  >
+                    <SelectableRow
+                      itemId={tieBreak}
+                      removeItem={() => selectSpeakerTieBreak(null)}
+                    >
+                      {tieBreak}
+                    </SelectableRow>
+                  </LabeledDiv>
+                )
+              ) : null}
+            </div>
             <DictatePolicy />
             <LockedButtons
               unlocked={false}

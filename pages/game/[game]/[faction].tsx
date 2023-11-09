@@ -252,7 +252,11 @@ function PhaseSection() {
     agendas,
     objectives
   );
-  const totalVotes = computeVotes(currentAgenda, currentTurn);
+  const totalVotes = computeVotes(
+    currentAgenda,
+    currentTurn,
+    Object.keys(factions).length
+  );
   const maxVotes = Object.values(totalVotes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -1596,6 +1600,7 @@ function InnerFactionPage({}) {
                   factionId={faction.id}
                   onClick={() => swapToFaction(faction.id)}
                   style={{
+                    backgroundColor: isActive ? "#333" : undefined,
                     boxShadow: isActive
                       ? color === "Black"
                         ? "#eee 0 0 8px 4px"

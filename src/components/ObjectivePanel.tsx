@@ -288,7 +288,7 @@ export function ObjectivePanel({}) {
   }
 
   let orderedFactions = Object.values(factions ?? {}).sort((a, b) => {
-    if (a.name < b.name) {
+    if (a.mapPosition < b.mapPosition) {
       return -1;
     }
     return 1;
@@ -1086,9 +1086,8 @@ export function ObjectivePanel({}) {
                     <div key={id}>
                       <FactionSelectRadialMenu
                         key={id}
-                        factions={orderedFactionIds.filter(
-                          (faction) => faction !== id
-                        )}
+                        factions={orderedFactionIds}
+                        invalidFactions={[id]}
                         selectedFaction={scorer}
                         onSelect={(factionId) => {
                           if (!gameid) {
@@ -1808,11 +1807,12 @@ export function ObjectivePanel({}) {
                   >
                     <FactionSelectRadialMenu
                       key={factionId}
-                      factions={orderedFactions
+                      factions={orderedFactionIds}
+                      invalidFactions={orderedFactions
                         .filter(
                           (faction) =>
-                            faction.id !== factionId &&
-                            faction.alliancePartner !== factionId
+                            faction.id === factionId ||
+                            faction.alliancePartner === factionId
                         )
                         .map((faction) => faction.id)}
                       selectedFaction={scorer}

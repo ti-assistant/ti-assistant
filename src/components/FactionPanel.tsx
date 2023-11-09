@@ -660,14 +660,16 @@ export function FactionPanel({
           }}
         >
           <div
-            className="centered extraLargeFont"
+            className="flexRow centered extraLargeFont"
             style={{
               backgroundColor: "#222",
               padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
               borderRadius: responsivePixels(4),
             }}
           >
+            <FactionIcon factionId={faction.id} size={36} />
             {"shortname" in faction ? getFactionName(faction) : faction.name}
+            <FactionIcon factionId={faction.id} size={36} />
           </div>
           <div
             className="flexColumn largeFont"

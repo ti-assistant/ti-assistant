@@ -51,6 +51,11 @@ import("../../server/data/strategyCards").then((module) => {
   BASE_STRATEGY_CARDS = module.BASE_STRATEGY_CARDS;
 });
 
+let BASE_SYSTEMS: Partial<Record<SystemId, BaseSystem>> = {};
+import("../../server/data/systems").then((module) => {
+  BASE_SYSTEMS = module.BASE_SYSTEMS;
+});
+
 let BASE_TECHS: Partial<Record<TechId, BaseTech>> = {};
 import("../../server/data/techs").then((module) => {
   BASE_TECHS = module.BASE_TECHS;
@@ -107,6 +112,7 @@ export function useGameData(
         speaker: "Vuil'raith Cabal",
       },
       strategycards: BASE_STRATEGY_CARDS,
+      systems: BASE_SYSTEMS,
       techs: BASE_TECHS,
     };
   }
@@ -131,6 +137,7 @@ export function buildCompleteGameData(storedGameData: StoredGameData) {
     relics: buildRelics(storedGameData),
     state: buildState(storedGameData),
     strategycards: buildStrategyCards(storedGameData),
+    systems: buildSystems(storedGameData),
     techs: buildTechs(storedGameData),
   };
 
@@ -453,7 +460,9 @@ export function buildPlanets(storedGameData: StoredGameData) {
 
   const mapString = gameOptions["map-string"] ?? "";
   const isValidMapString = validateMapString(mapString);
-  const inGameSystems = mapString.split(" ").map((system) => parseInt(system));
+  const inGameSystems = mapString
+    .split(" ")
+    .map((system) => parseInt(system) as SystemId);
 
   let planets = {} as Partial<Record<PlanetId, Planet>>;
   Object.entries(BASE_PLANETS).forEach(([_, planet]) => {
@@ -561,6 +570,24 @@ export function buildStrategyCards(storedGameData: StoredGameData) {
   });
 
   return cards;
+}
+
+export function buildSystems(storedGameData: StoredGameData) {
+  const systems: Partial<Record<SystemId, BaseSystem>> = {};
+  Object.entries(BASE_SYSTEMS).forEach(([systemId, system]) => {
+    if (
+      system.expansion !== "BASE" &&
+      !storedGameData.options.expansions.includes(system.expansion)
+    ) {
+      return;
+    }
+
+    systems[systemId as SystemId] = {
+      ...system,
+    };
+  });
+
+  return systems;
 }
 
 export function buildTechs(storedGameData: StoredGameData) {

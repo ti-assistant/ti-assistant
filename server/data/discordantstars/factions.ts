@@ -461,7 +461,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     promissories: [],
     shortname: "Khrask",
     startswith: {
-      planets: ["Bohl-Duhr"],
+      planets: ["Bohl-Dhur"],
       techs: ["Scanlink Drone Network", "Plasma Scoring"],
       units: {
         Cruiser: 3,

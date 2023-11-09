@@ -17,6 +17,7 @@ import {
   RelicContext,
   StateContext,
   StrategyCardContext,
+  SystemContext,
   TechContext,
 } from "./Context";
 
@@ -73,6 +74,11 @@ import("../../server/data/strategyCards").then((module) => {
   BASE_STRATEGY_CARDS = module.BASE_STRATEGY_CARDS;
 });
 
+let BASE_SYSTEMS: Partial<Record<SystemId, BaseSystem>> = {};
+import("../../server/data/systems").then((module) => {
+  BASE_SYSTEMS = module.BASE_SYSTEMS;
+});
+
 let BASE_TECHS: Partial<Record<TechId, BaseTech>> = {};
 import("../../server/data/techs").then((module) => {
   BASE_TECHS = module.BASE_TECHS;
@@ -105,6 +111,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
       speaker: "Vuil'raith Cabal",
     },
     strategycards: BASE_STRATEGY_CARDS,
+    systems: BASE_SYSTEMS,
     techs: BASE_TECHS,
   };
   if (storedGameData) {
@@ -132,6 +139,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
     gameData.strategycards ?? {},
     BASE_STRATEGY_CARDS
   );
+  const systems = useStableValue(gameData.systems ?? {}, BASE_SYSTEMS);
   const techs = useStableValue(gameData.techs ?? {}, BASE_TECHS);
 
   return (
@@ -146,9 +154,11 @@ export default function DataProvider({ children }: PropsWithChildren) {
                     <RelicContext.Provider value={relics}>
                       <StateContext.Provider value={state}>
                         <StrategyCardContext.Provider value={strategycards}>
-                          <TechContext.Provider value={techs}>
-                            {children}
-                          </TechContext.Provider>
+                          <SystemContext.Provider value={systems}>
+                            <TechContext.Provider value={techs}>
+                              {children}
+                            </TechContext.Provider>
+                          </SystemContext.Provider>
                         </StrategyCardContext.Provider>
                       </StateContext.Provider>
                     </RelicContext.Provider>

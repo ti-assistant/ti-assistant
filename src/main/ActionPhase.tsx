@@ -143,40 +143,7 @@ function SecondaryCheck({
                 )
               }
               tagBorderColor={secondaryState === "DONE" ? "green" : "red"}
-            >
-              {/* {secondaryState === "DONE" ? (
-                <div
-                  className="flexColumn centered"
-                  style={{
-                    position: "absolute",
-                    color: "#eee",
-                    width: "100%",
-                    fontSize: responsivePixels(40),
-                    zIndex: 0,
-                    textAlign: "center",
-                    height: responsivePixels(52),
-                  }}
-                >
-                  ✓
-                </div>
-              ) : null}
-              {secondaryState === "SKIPPED" ? (
-                <div
-                  className="flexColumn centered"
-                  style={{
-                    position: "absolute",
-                    color: "#eee",
-                    width: "100%",
-                    fontSize: responsivePixels(44),
-                    zIndex: 0,
-                    textAlign: "center",
-                    height: responsivePixels(52),
-                  }}
-                >
-                  ⤬
-                </div>
-              ) : null} */}
-            </FactionCircle>
+            />
           );
         })}
       </div>
@@ -425,7 +392,7 @@ export function AdditionalActions({
     if (!gameid || !newSpeakerEvent?.prevSpeaker) {
       return;
     }
-    setSpeakerAsync(gameid, factionId);
+    setSpeakerAsync(gameid, newSpeakerEvent.prevSpeaker);
   }
 
   function lastFaction() {
@@ -757,6 +724,9 @@ export function AdditionalActions({
       const selectedSpeaker = newSpeakerEvent?.newSpeaker
         ? factions[newSpeakerEvent.newSpeaker]
         : undefined;
+      const mapOrderedFactions = [...orderedFactions].sort(
+        (a, b) => a.mapPosition - b.mapPosition
+      );
       return (
         <div
           className="flexColumn"
@@ -784,16 +754,12 @@ export function AdditionalActions({
                     resetSpeaker();
                   }
                 }}
-                factions={orderedFactions
-                  .filter((faction) => {
-                    return (
-                      faction.id !==
-                      (selectedSpeaker
-                        ? newSpeakerEvent?.prevSpeaker
-                        : state?.speaker)
-                    );
-                  })
-                  .map((faction) => faction.id)}
+                factions={mapOrderedFactions.map((faction) => faction.id)}
+                invalidFactions={[
+                  selectedSpeaker
+                    ? (newSpeakerEvent?.prevSpeaker as FactionId)
+                    : state.speaker,
+                ]}
                 selectedFaction={selectedSpeaker?.id}
                 size={52}
               />

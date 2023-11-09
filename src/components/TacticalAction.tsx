@@ -2,8 +2,10 @@ import React, { CSSProperties } from "react";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { TechRow } from "../TechRow";
 import {
+  addAttachmentAsync,
   addTechAsync,
   claimPlanetAsync,
+  removeAttachmentAsync,
   removeTechAsync,
   scoreObjectiveAsync,
   unclaimPlanetAsync,
@@ -11,7 +13,11 @@ import {
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
 import { TechSelectHoverMenu } from "../main/util/TechSelectHoverMenu";
-import { getObjectiveScorers, getResearchedTechs } from "../util/actionLog";
+import {
+  getAttachments,
+  getObjectiveScorers,
+  getResearchedTechs,
+} from "../util/actionLog";
 import { hasTech } from "../util/api/techs";
 import { hasScoredObjective } from "../util/api/util";
 import { getFactionColor } from "../util/factions";
@@ -24,6 +30,8 @@ import LabeledLine from "./LabeledLine/LabeledLine";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import styles from "./TacticalAction.module.scss";
+import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import PlanetIcon from "./PlanetIcon/PlanetIcon";
 
 export function TacticalAction({
   activeFactionId,
@@ -144,7 +152,10 @@ export function TacticalAction({
     maxWidth: "85vw",
     justifyContent: "flex-start",
     overflowX: "auto",
-    gridTemplateRows: `repeat(${Math.min(8, scorableObjectives.length)}, auto)`,
+    gridTemplateRows: `repeat(${Math.min(
+      10,
+      scorableObjectives.length
+    )}, auto)`,
     gap: responsivePixels(4),
   };
   function getResearchableTechs(factionId: FactionId) {
@@ -225,6 +236,13 @@ export function TacticalAction({
     unscoreObjectiveAsync(gameid, factionId, toRemove);
   }
 
+  const claimedAttachments = new Set<AttachmentId>();
+  for (const planet of Object.values(planets)) {
+    for (const attachment of planet.attachments ?? []) {
+      claimedAttachments.add(attachment);
+    }
+  }
+
   return (
     <div
       className={`flexColumn largeFont ${styles.TacticalAction}`}
@@ -232,32 +250,126 @@ export function TacticalAction({
     >
       {conqueredPlanets.length > 0 ? (
         <LabeledDiv label="NEWLY CONTROLLED PLANETS">
-          <React.Fragment>
-            <div
-              className="flexColumn"
-              style={{ alignItems: "stretch", width: "100%" }}
-            >
-              {conqueredPlanets.map((planet) => {
-                const planetObj = planets[planet.planet];
-                if (!planetObj) {
-                  return null;
-                }
-                const adjustedPlanet = applyPlanetAttachments(
-                  planetObj,
-                  attachments ?? {}
-                );
-                return (
-                  <PlanetRow
-                    key={planet.planet}
-                    factionId={activeFactionId}
-                    planet={adjustedPlanet}
-                    removePlanet={() => removePlanet(activeFactionId, planet)}
-                    prevOwner={planet.prevOwner}
-                  />
-                );
-              })}
-            </div>
-          </React.Fragment>
+          {/* <React.Fragment> */}
+          <div
+            className="flexColumn"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              width: "100%",
+            }}
+            // style={{ alignItems: "stretch", width: "100%" }}
+          >
+            {conqueredPlanets.map((planet) => {
+              const planetObj = planets[planet.planet];
+              if (!planetObj) {
+                return null;
+              }
+              const adjustedPlanet = applyPlanetAttachments(
+                planetObj,
+                attachments ?? {}
+              );
+              const currentAttachment = getAttachments(
+                currentTurn,
+                planet.planet
+              )[0];
+              const availableAttachments = Object.values(attachments)
+                .filter(
+                  (attachment) =>
+                    ((adjustedPlanet.type === "ALL" &&
+                      attachment.required.type) ||
+                      attachment.required.type === adjustedPlanet.type) &&
+                    (attachment.id === currentAttachment ||
+                      !claimedAttachments.has(attachment.id))
+                )
+                .map((attachment) => attachment.id);
+              return (
+                <div
+                  key={planet.planet}
+                  className="flexRow"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "subgrid",
+                    gridColumn: "span 2",
+                  }}
+                  // style={{ justifyContent: "center", gap: 0, width: "100%" }}
+                >
+                  <div style={{ width: "100%" }}>
+                    <PlanetRow
+                      key={planet.planet}
+                      factionId={activeFactionId}
+                      planet={adjustedPlanet}
+                      removePlanet={() => removePlanet(activeFactionId, planet)}
+                      prevOwner={planet.prevOwner}
+                      opts={{
+                        hideAttachButton: true,
+                      }}
+                    />
+                  </div>
+                  {availableAttachments.length > 0 &&
+                  (!planet.prevOwner ||
+                    (activeFactionId === "Naaz-Rokha Alliance" &&
+                      factions[activeFactionId]?.commander === "readied")) ? (
+                    <div
+                      className="flexRow"
+                      style={{ justifyContent: "center" }}
+                    >
+                      <AttachmentSelectRadialMenu
+                        attachments={availableAttachments}
+                        hasSkip={adjustedPlanet.attributes.reduce(
+                          (hasSkip, attribute) => {
+                            if (attribute.includes("skip")) {
+                              if (
+                                currentAttachment &&
+                                attachments[currentAttachment]?.attribute ===
+                                  attribute
+                              ) {
+                                return planetObj.attributes.reduce(
+                                  (hasSkip, attribute) => {
+                                    if (attribute.includes("skip")) {
+                                      return true;
+                                    }
+                                    return hasSkip;
+                                  },
+                                  false
+                                );
+                              }
+                              return true;
+                            }
+                            return hasSkip;
+                          },
+                          false
+                        )}
+                        onSelect={(attachmentId, prevAttachment) => {
+                          if (prevAttachment) {
+                            removeAttachmentAsync(
+                              gameid,
+                              planet.planet,
+                              prevAttachment
+                            );
+                          }
+                          if (attachmentId) {
+                            addAttachmentAsync(
+                              gameid,
+                              planet.planet,
+                              attachmentId
+                            );
+                          }
+                        }}
+                        selectedAttachment={currentAttachment}
+                        tag={
+                          adjustedPlanet.type === "ALL" ? undefined : (
+                            <PlanetIcon type={adjustedPlanet.type} size="60%" />
+                          )
+                        }
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+          {/* </React.Fragment> */}
         </LabeledDiv>
       ) : null}
       {claimablePlanets.length > 0 ? (

@@ -15,7 +15,9 @@ export function SelectableRow<Type extends string>({
   removeItem,
   style,
 }: PropsWithChildren<SelectableRowProps<Type>>) {
-  const iconStyle: CSSProperties = {};
+  const iconStyle: CSSProperties = {
+    textShadow: "none",
+  };
   if (style && style.fontSize) {
     const fontSizeValue = style.fontSize.valueOf();
     if (typeof fontSizeValue === "string") {
