@@ -64,6 +64,7 @@ export class AdvancePhaseHandler implements Handler {
         let minFaction: string | undefined;
         const strategyCards = buildStrategyCards(this.gameData);
         for (const strategyCard of Object.values(strategyCards)) {
+          updates[`strategycards.${strategyCard.id}.used`] = "DELETE";
           if (strategyCard.faction && strategyCard.order < minCard) {
             minCard = strategyCard.order;
             minFaction = strategyCard.faction;

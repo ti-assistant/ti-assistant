@@ -1581,6 +1581,9 @@ function InnerFactionPage({}) {
             style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
           >
             {orderedFactions.map((faction) => {
+              const isActive =
+                (state.phase === "ACTION" || state.phase === "STRATEGY") &&
+                state.activeplayer === faction.id;
               const color = faction.passed ? "#555" : getFactionColor(faction);
               const cards = getStrategyCardsForFaction(
                 strategyCards,
@@ -1592,19 +1595,27 @@ function InnerFactionPage({}) {
                   borderColor={color}
                   factionId={faction.id}
                   onClick={() => swapToFaction(faction.id)}
+                  style={{
+                    boxShadow: isActive
+                      ? color === "Black"
+                        ? "#eee 0 0 8px 4px"
+                        : "var(--border-color) 0 0 8px 4px"
+                      : undefined,
+                    zIndex: !isActive ? 1 : undefined,
+                  }}
                   tag={
                     cards.length > 0 ? (
                       <div
                         style={{
                           fontSize: responsivePixels(18),
-                          color: cards[0]?.color,
+                          color: cards[0]?.used ? "#555" : cards[0]?.color,
                         }}
                       >
                         {cards[0]?.order}
                       </div>
                     ) : undefined
                   }
-                  tagBorderColor={cards[0]?.color}
+                  tagBorderColor={cards[0]?.used ? "#555" : cards[0]?.color}
                 />
               );
               return (

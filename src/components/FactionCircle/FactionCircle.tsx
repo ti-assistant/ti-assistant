@@ -12,6 +12,7 @@ interface FactionCircleProps {
   fade?: boolean;
   onClick?: () => void;
   size?: number;
+  style?: CSSProperties;
   tag?: ReactNode;
   tagBorderColor?: string;
 }
@@ -29,6 +30,7 @@ export default function FactionCircle({
   fade = false,
   onClick,
   size = 44,
+  style = {},
   tag,
   tagBorderColor = "#444",
 }: PropsWithChildren<FactionCircleProps>) {
@@ -40,6 +42,7 @@ export default function FactionCircle({
     boxShadow: borderColor === "Black" ? BLACK_BORDER_GLOW : undefined,
     cursor: onClick ? "pointer" : undefined,
     fontSize: responsivePixels(size - 8),
+    ...style,
   };
 
   return (
