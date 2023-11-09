@@ -440,21 +440,6 @@ export function SystemImage({
             height: "100%",
           }}
         >
-          <div
-            className="hiddenButton"
-            style={{
-              position: "absolute",
-              width: "175%",
-              height: "175%",
-            }}
-          >
-            <NextImage
-              src={`/images/systems/ST_${systemNumber}.png`}
-              alt={`System ${systemNumber} Tile`}
-              layout="fill"
-              objectFit="contain"
-            />
-          </div>
           <NextImage
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
@@ -500,21 +485,6 @@ export function SystemImage({
         height: "100%",
       }}
     >
-      <div
-        className="hiddenButton"
-        style={{
-          position: "absolute",
-          width: "175%",
-          height: "175%",
-        }}
-      >
-        <NextImage
-          src={`/images/systems/ST_${systemNumber}.png`}
-          alt={`System ${systemNumber} Tile`}
-          layout="fill"
-          objectFit="contain"
-        />
-      </div>
       <NextImage
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
@@ -946,52 +916,54 @@ export default function Map({
   });
 
   return (
-    <div className="flexRow" style={{ height: "100%", width: "100%" }}>
+    <div className={styles.Map}>
       {gameid ? (
-        <LabeledDiv
-          label="View Details"
-          style={{
-            position: "absolute",
-            marginLeft: "-120%",
-            width: "fit-content",
-            backgroundColor: "#222",
-            justifyContent: "stretch",
-            alignItems: "stretch",
-            paddingTop: responsivePixels(16),
-          }}
-        >
-          <button
-            className={showDetails === "OWNERS" ? "selected" : ""}
-            onClick={(e) => {
-              const newValue = showDetails === "OWNERS" ? "NONE" : "OWNERS";
-              setShowDetails(newValue);
-              e.stopPropagation();
+        <div className={styles.Legend}>
+          <LabeledDiv
+            label="View Details"
+            style={{
+              width: "fit-content",
+              backgroundColor: "#222",
+              justifyContent: "stretch",
+              alignItems: "stretch",
+              paddingTop: responsivePixels(16),
             }}
           >
-            Owners
-          </button>
-          <button
-            className={showDetails === "TYPES" ? "selected" : ""}
-            onClick={(e) => {
-              const newValue = showDetails === "TYPES" ? "NONE" : "TYPES";
-              setShowDetails(newValue);
-              e.stopPropagation();
-            }}
-          >
-            Types
-          </button>
-          <button
-            className={showDetails === "ATTACHMENTS" ? "selected" : ""}
-            onClick={(e) => {
-              const newValue =
-                showDetails === "ATTACHMENTS" ? "NONE" : "ATTACHMENTS";
-              setShowDetails(newValue);
-              e.stopPropagation();
-            }}
-          >
-            Attachments
-          </button>
-        </LabeledDiv>
+            <div className={styles.LegendContent}>
+              <button
+                className={showDetails === "OWNERS" ? "selected" : ""}
+                onClick={(e) => {
+                  const newValue = showDetails === "OWNERS" ? "NONE" : "OWNERS";
+                  setShowDetails(newValue);
+                  e.stopPropagation();
+                }}
+              >
+                Owners
+              </button>
+              <button
+                className={showDetails === "TYPES" ? "selected" : ""}
+                onClick={(e) => {
+                  const newValue = showDetails === "TYPES" ? "NONE" : "TYPES";
+                  setShowDetails(newValue);
+                  e.stopPropagation();
+                }}
+              >
+                Types
+              </button>
+              <button
+                className={showDetails === "ATTACHMENTS" ? "selected" : ""}
+                onClick={(e) => {
+                  const newValue =
+                    showDetails === "ATTACHMENTS" ? "NONE" : "ATTACHMENTS";
+                  setShowDetails(newValue);
+                  e.stopPropagation();
+                }}
+              >
+                Attachments
+              </button>
+            </div>
+          </LabeledDiv>
+        </div>
       ) : null}
       {spiral.map((cube, index) => {
         const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);

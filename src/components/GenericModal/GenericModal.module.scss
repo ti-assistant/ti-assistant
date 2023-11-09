@@ -73,3 +73,10 @@
 
   padding: 0 var(--four-pixel) var(--four-pixel) var(--four-pixel);
 }
+
+@media only screen and (max-width: 600px) {
+  .Modal .Button {
+    margin-right: 0;
+    left: var(--eight-pixel);
+  }
+}

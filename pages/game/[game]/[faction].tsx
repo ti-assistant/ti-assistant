@@ -19,6 +19,9 @@ import {
   computeRemainingVotes,
   getTargets,
 } from "../../../src/VoteCount";
+import Map from "../../../src/components/Map/Map";
+import Image from "next/image";
+import Hexagon from "../../../public/images/systems/Hexagon.png";
 import FactionCard from "../../../src/components/FactionCard/FactionCard";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
@@ -103,6 +106,12 @@ import DataProvider from "../../../src/context/DataProvider";
 import FactionCircle from "../../../src/components/FactionCircle/FactionCircle";
 import { getStrategyCardsForFaction } from "../../../src/util/helpers";
 import Header from "../../../src/components/Header/Header";
+import GenericModal from "../../../src/components/GenericModal/GenericModal";
+import { CustomSizeResources, FullResources } from "../../../src/Resources";
+import { PlanetPanel } from "../../../src/components/PlanetPanel";
+import TechSkipIcon from "../../../src/components/TechSkipIcon/TechSkipIcon";
+import { TechPanel } from "../../../src/components/TechPanel";
+import { ObjectivePanel } from "../../../src/components/ObjectivePanel";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -1362,8 +1371,16 @@ function InnerFactionPage({}) {
   }: { game?: string; faction?: FactionId } = router.query;
   const actionLog = useContext(ActionLogContext);
   const factions = useContext(FactionContext);
+  const options = useContext(OptionContext);
+  const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
+
+  const [showMenu, setShowMenu] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+  const [showPlanetModal, setShowPlanetModal] = useState(false);
+  const [showObjectiveModal, setShowObjectiveModal] = useState(false);
+  const [showTechModal, setShowTechModal] = useState(false);
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   const revealedObjectives = currentTurn
@@ -1558,10 +1575,345 @@ function InnerFactionPage({}) {
     return null;
   }
 
+  const HEX_RATIO = 2 / Math.sqrt(3);
+
+  const mapOrderedFactions = Object.values(factions ?? {}).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
+  let mallice;
+  if (options && (options["expansions"] ?? []).includes("POK")) {
+    mallice = "A";
+    if (planets && (planets["Mallice"] ?? {}).owner) {
+      mallice = "B";
+    }
+  }
+
   return (
     <>
       <Header />
       <Updater />
+      <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
+        <div className="flexRow" style={{ height: "calc(100dvh - 16px)" }}>
+          <div
+            style={{
+              position: "relative",
+              width: "min(100dvh, 100dvw)",
+              height: "min(100dvh, 100dvw)",
+            }}
+          >
+            <Map
+              factions={mapOrderedFactions}
+              mapString={options ? options["map-string"] ?? "" : ""}
+              mapStyle={
+                options ? options["map-style"] ?? "standard" : "standard"
+              }
+              mallice={mallice}
+            />
+          </div>
+        </div>
+      </GenericModal>
+      <GenericModal
+        visible={showPlanetModal}
+        closeMenu={() => setShowPlanetModal(false)}
+      >
+        <div
+          className="flexColumn"
+          style={{
+            justifyContent: "flex-start",
+            maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
+          }}
+        >
+          <div
+            className="centered extraLargeFont"
+            style={{
+              backgroundColor: "#222",
+              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+              borderRadius: responsivePixels(4),
+              width: "min-content",
+            }}
+          >
+            Planets
+          </div>
+          <div
+            className="flexColumn largeFont"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(
+                24
+              )}))`,
+              justifyContent: "flex-start",
+              overflow: "auto",
+              height: "100%",
+            }}
+          >
+            <PlanetPanel />
+          </div>
+        </div>
+      </GenericModal>
+      <GenericModal
+        visible={showTechModal}
+        closeMenu={() => setShowTechModal(false)}
+      >
+        <div
+          className="flexColumn"
+          style={{
+            justifyContent: "flex-start",
+            maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
+          }}
+        >
+          <div
+            className="centered extraLargeFont"
+            style={{
+              backgroundColor: "#222",
+              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+              borderRadius: responsivePixels(4),
+              width: "min-content",
+            }}
+          >
+            Techs
+          </div>
+          <div
+            className="flexColumn largeFont"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: `clamp(80vw, 960px, calc(100vw - ${responsivePixels(
+                24
+              )}))`,
+              justifyContent: "flex-start",
+              overflow: "auto",
+            }}
+          >
+            <TechPanel />
+          </div>
+        </div>
+      </GenericModal>
+      <GenericModal
+        visible={showObjectiveModal}
+        closeMenu={() => setShowObjectiveModal(false)}
+      >
+        <div
+          className="flexColumn"
+          style={{
+            justifyContent: "flex-start",
+            height: `calc(100dvh - ${responsivePixels(24)})`,
+          }}
+        >
+          <div
+            className="centered extraLargeFont"
+            style={{
+              backgroundColor: "#222",
+              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+              borderRadius: responsivePixels(4),
+              width: "min-content",
+            }}
+          >
+            Objectives
+          </div>
+          <div
+            className="flexColumn largeFont"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(
+                24
+              )}))`,
+              justifyContent: "flex-start",
+              overflow: "auto",
+              height: "fit-content",
+              paddingBottom: responsivePixels(24),
+            }}
+          >
+            <ObjectivePanel />
+          </div>
+        </div>
+      </GenericModal>
+      <GenericModal
+        visible={showPlanetModal}
+        closeMenu={() => setShowPlanetModal(false)}
+      >
+        <div
+          className="flexColumn"
+          style={{
+            justifyContent: "flex-start",
+            maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
+          }}
+        >
+          <div
+            className="centered extraLargeFont"
+            style={{
+              backgroundColor: "#222",
+              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+              borderRadius: responsivePixels(4),
+              width: "min-content",
+            }}
+          >
+            Planets
+          </div>
+          <div
+            className="flexColumn largeFont"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(
+                24
+              )}))`,
+              justifyContent: "flex-start",
+              overflow: "auto",
+              height: "100%",
+            }}
+          >
+            <PlanetPanel />
+          </div>
+        </div>
+      </GenericModal>
+      <button
+        className="flexColumn"
+        style={{
+          position: "fixed",
+          aspectRatio: 1,
+          left: responsivePixels(16),
+          bottom: responsivePixels(16),
+          borderRadius: "100%",
+          width: responsivePixels(36),
+          padding: 0,
+          gap: responsivePixels(4),
+        }}
+        onClick={() => setShowMenu(!showMenu)}
+      >
+        <div className="menuBar"></div>
+        <div className="menuBar"></div>
+        <div className="menuBar"></div>
+      </button>
+      <div
+        className="flexColumn"
+        style={{
+          position: "fixed",
+          left: responsivePixels(19),
+          bottom: responsivePixels(64),
+          display: showMenu ? "flex" : "none",
+          alignItems: "flex-start",
+        }}
+      >
+        {options["map-string"] !== "" ? (
+          <div className="flexRow">
+            <button
+              className="flexRow"
+              style={{
+                width: responsivePixels(30),
+                padding: 0,
+                aspectRatio: 1,
+                borderRadius: "100%",
+                position: "relative",
+                gap: 0,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onClick={() => setShowMap(true)}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "60%",
+                  height: `calc(60% * ${HEX_RATIO})`,
+                }}
+              >
+                <Image
+                  style={{ opacity: "80%" }}
+                  src={Hexagon}
+                  alt={`System Tile`}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+            </button>
+            View Map
+          </div>
+        ) : null}
+        <div className="flexRow">
+          <button
+            className="flexRow"
+            style={{
+              width: responsivePixels(30),
+              padding: 0,
+              aspectRatio: 1,
+              borderRadius: "100%",
+              position: "relative",
+              gap: 0,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => setShowTechModal(true)}
+          >
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+              }}
+            >
+              <TechSkipIcon size={24} />
+            </div>
+          </button>
+          Update Techs
+        </div>
+        <div className="flexRow">
+          <button
+            className="flexRow"
+            style={{
+              width: responsivePixels(30),
+              padding: 0,
+              aspectRatio: 1,
+              borderRadius: "100%",
+              position: "relative",
+              gap: 0,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => setShowObjectiveModal(true)}
+          >
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: "50%",
+                aspectRatio: 1,
+                borderRadius: "100%",
+                border: "2px solid orange",
+                fontSize: responsivePixels(12),
+              }}
+            >
+              I
+            </div>
+          </button>
+          Update Objectives
+        </div>
+        <div className="flexRow">
+          <button
+            className="flexRow"
+            style={{
+              width: responsivePixels(30),
+              padding: 0,
+              aspectRatio: 1,
+              borderRadius: "100%",
+              position: "relative",
+              gap: 0,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => setShowPlanetModal(true)}
+          >
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                paddingTop: responsivePixels(2),
+                paddingLeft: responsivePixels(2),
+              }}
+            >
+              <CustomSizeResources resources={2} influence={3} height={24} />
+            </div>
+          </button>
+          Update Planets
+        </div>
+      </div>
       <div
         className="flexColumn"
         style={{

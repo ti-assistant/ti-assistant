@@ -301,6 +301,14 @@ input[type="textbox"] {
   margin: 0;
 }
 
+.menuBar {
+  height: var(--two-pixel);
+  width: var(--sixteen-pixel);
+  background-color: #eee;
+
+  border-radius: var(--one-pixel);
+}
+
 .myriadPro {
   font-family: "Myriad Pro";
 }
