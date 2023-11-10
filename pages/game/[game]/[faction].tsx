@@ -1765,17 +1765,18 @@ function InnerFactionPage({}) {
         </div>
       </GenericModal>
       <button
-        className="flexColumn"
+        className={`flexColumn ${showMenu ? "selected" : ""}`}
         style={{
           position: "fixed",
           aspectRatio: 1,
           left: responsivePixels(16),
           bottom: responsivePixels(16),
           borderRadius: "100%",
-          width: responsivePixels(36),
+          width: responsivePixels(48),
           padding: 0,
           gap: responsivePixels(4),
           zIndex: 1,
+          backgroundColor: showMenu ? "#444" : "#333",
         }}
         onClick={() => setShowMenu(!showMenu)}
       >
@@ -1787,9 +1788,9 @@ function InnerFactionPage({}) {
         className="flexColumn"
         style={{
           position: "fixed",
-          left: responsivePixels(15),
+          left: responsivePixels(19),
           padding: responsivePixels(4),
-          bottom: responsivePixels(60),
+          bottom: responsivePixels(70),
           display: showMenu ? "flex" : "none",
           alignItems: "flex-start",
           zIndex: 2,
@@ -1802,13 +1803,14 @@ function InnerFactionPage({}) {
               className="flexRow"
               style={{
                 width: responsivePixels(30),
-                padding: 0,
                 aspectRatio: 1,
                 borderRadius: "100%",
                 position: "relative",
                 gap: 0,
                 justifyContent: "center",
                 alignItems: "center",
+                padding: responsivePixels(3),
+                border: "none",
               }}
               onClick={() => setShowMap(true)}
             >
@@ -1816,14 +1818,13 @@ function InnerFactionPage({}) {
                 className="flexRow"
                 style={{
                   position: "relative",
-                  width: "60%",
-                  height: `calc(60% * ${HEX_RATIO})`,
+                  width: "100%",
+                  height: "100%",
                 }}
               >
                 <Image
-                  style={{ opacity: "80%" }}
-                  src={Hexagon}
-                  alt={`System Tile`}
+                  src={`/images/map_icon_outline.svg`}
+                  alt={`Map Icon`}
                   layout="fill"
                   objectFit="contain"
                 />
@@ -1837,13 +1838,14 @@ function InnerFactionPage({}) {
             className="flexRow"
             style={{
               width: responsivePixels(30),
-              padding: 0,
               aspectRatio: 1,
               borderRadius: "100%",
               position: "relative",
               gap: 0,
               justifyContent: "center",
               alignItems: "center",
+              padding: responsivePixels(3),
+              border: "none",
             }}
             onClick={() => setShowTechModal(true)}
           >
@@ -1863,13 +1865,14 @@ function InnerFactionPage({}) {
             className="flexRow"
             style={{
               width: responsivePixels(30),
-              padding: 0,
               aspectRatio: 1,
               borderRadius: "100%",
               position: "relative",
               gap: 0,
               justifyContent: "center",
               alignItems: "center",
+              padding: responsivePixels(3),
+              border: "none",
             }}
             onClick={() => setShowObjectiveModal(true)}
           >
@@ -1894,13 +1897,14 @@ function InnerFactionPage({}) {
             className="flexRow"
             style={{
               width: responsivePixels(30),
-              padding: 0,
               aspectRatio: 1,
               borderRadius: "100%",
               position: "relative",
               gap: 0,
               justifyContent: "center",
               alignItems: "center",
+              padding: responsivePixels(3),
+              border: "none",
             }}
             onClick={() => setShowPlanetModal(true)}
           >

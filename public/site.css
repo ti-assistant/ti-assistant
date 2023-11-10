@@ -302,11 +302,11 @@ input[type="textbox"] {
 }
 
 .menuBar {
-  height: var(--two-pixel);
-  width: var(--sixteen-pixel);
+  height: 4px;
+  width: 24px;
   background-color: #eee;
 
-  border-radius: var(--one-pixel);
+  border-radius: 4px;
 }
 
 .myriadPro {
