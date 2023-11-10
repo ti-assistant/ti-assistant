@@ -7,17 +7,23 @@ interface TechSkipIconCSS extends CSSProperties {
   "--size": string;
 }
 
-export default function TechSkipIcon({ size }: { size: number }) {
+export default function TechSkipIcon({
+  size,
+  outline,
+}: {
+  size: number;
+  outline?: boolean;
+}) {
   const techSkipIconCSS: TechSkipIconCSS = {
     "--size": responsivePixels(size),
   };
 
   return (
     <div className={styles.TechSkipIcon} style={techSkipIconCSS}>
-      <TechIcon type="RED" size={size / 2 - 2} />
-      <TechIcon type="GREEN" size={size / 2 - 2} />
-      <TechIcon type="BLUE" size={size / 2 - 2} />
-      <TechIcon type="YELLOW" size={size / 2 - 2} />
+      <TechIcon type="RED" size={size / 2} outline={outline} />
+      <TechIcon type="GREEN" size={size / 2} outline={outline} />
+      <TechIcon type="BLUE" size={size / 2} outline={outline} />
+      <TechIcon type="YELLOW" size={size / 2} outline={outline} />
     </div>
   );
 }

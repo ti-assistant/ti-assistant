@@ -1855,7 +1855,7 @@ function InnerFactionPage({}) {
                 position: "relative",
               }}
             >
-              <TechSkipIcon size={24} />
+              <TechSkipIcon size={24} outline />
             </div>
           </button>
           Update Techs
