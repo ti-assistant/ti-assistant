@@ -1,10 +1,13 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
+import Map from "../../../src/components/Map/Map";
 import { Loader } from "../../Loader";
+import Image from "next/image";
 import {
   FactionContext,
   OptionContext,
+  PlanetContext,
   StateContext,
   StrategyCardContext,
 } from "../../context/Context";
@@ -18,6 +21,8 @@ import styles from "./Footer.module.scss";
 import FactionRow from "../FactionRow/FactionRow";
 import { FactionSummary } from "../../FactionSummary";
 import RelicPanel from "../RelicPanel/RelicPanel";
+import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
+import { CustomSizeResources } from "../../Resources";
 
 const ObjectivePanel = dynamic(
   import("../ObjectivePanel").then((mod) => mod.ObjectivePanel),
@@ -57,10 +62,13 @@ export default function Footer({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
+  const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
   const options = useContext(OptionContext);
 
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMap, setShowMap] = useState(false);
   const [showTechModal, setShowTechModal] = useState(false);
   const [showObjectiveModal, setShowObjectiveModal] = useState(false);
   const [showPlanetModal, setShowPlanetModal] = useState(false);
@@ -111,9 +119,39 @@ export default function Footer({}) {
       orderTitle = "Voting Order";
       break;
   }
+  const mapOrderedFactions = Object.values(factions ?? {}).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
+  let mallice;
+  if (options && (options["expansions"] ?? []).includes("POK")) {
+    mallice = "A";
+    if (planets && (planets["Mallice"] ?? {}).owner) {
+      mallice = "B";
+    }
+  }
 
   return (
     <>
+      <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
+        <div className="flexRow" style={{ height: "calc(100dvh - 16px)" }}>
+          <div
+            style={{
+              position: "relative",
+              width: "min(100dvh, 100dvw)",
+              height: "min(100dvh, 100dvw)",
+            }}
+          >
+            <Map
+              factions={mapOrderedFactions}
+              mapString={options ? options["map-string"] ?? "" : ""}
+              mapStyle={
+                options ? options["map-style"] ?? "standard" : "standard"
+              }
+              mallice={mallice}
+            />
+          </div>
+        </div>
+      </GenericModal>
       <GenericModal
         visible={showTechModal}
         closeMenu={() => setShowTechModal(false)}
@@ -228,6 +266,118 @@ export default function Footer({}) {
           </div>
         </div>
       </GenericModal>
+      <button
+        className={`${styles.MobileMenuButton} ${
+          showMobileMenu ? "selected" : ""
+        }`}
+        style={{
+          backgroundColor: showMobileMenu ? "#444" : "#333",
+        }}
+        onClick={() => setShowMobileMenu(!showMobileMenu)}
+      >
+        <div className={styles.MenuBar}></div>
+        <div className={styles.MenuBar}></div>
+        <div className={styles.MenuBar}></div>
+      </button>
+      <div
+        className={styles.MobileMenu}
+        style={{
+          display: !showMobileMenu ? "none" : undefined,
+        }}
+      >
+        {!shouldBlockSpeakerUpdates() ? (
+          <div className="flexRow">
+            Speaker:
+            <FactionSelectRadialMenu
+              borderColor={
+                state?.speaker
+                  ? getFactionColor((factions ?? {})[state.speaker])
+                  : undefined
+              }
+              selectedFaction={state.speaker}
+              factions={orderedFactions.map((faction) => faction.id)}
+              invalidFactions={[state.speaker]}
+              size={36}
+              onSelect={async (factionId, _) => {
+                if (!gameid || !factionId) {
+                  return;
+                }
+                setSpeakerAsync(gameid, factionId);
+              }}
+            />
+          </div>
+        ) : null}
+        {options["map-string"] !== "" ? (
+          <div className="flexRow">
+            <button onClick={() => setShowMap(true)}>
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <Image
+                  src={`/images/map_icon_outline.svg`}
+                  alt={`Map Icon`}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+            </button>
+            View Map
+          </div>
+        ) : null}
+        <div className="flexRow">
+          <button onClick={() => setShowTechModal(true)}>
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+              }}
+            >
+              <TechSkipIcon size={24} outline />
+            </div>
+          </button>
+          Update Techs
+        </div>
+        <div className="flexRow">
+          <button onClick={() => setShowObjectiveModal(true)}>
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <Image
+                src={`/images/objectives_icon.svg`}
+                alt={`Objectives Icon`}
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
+          </button>
+          Update Objectives
+        </div>
+        <div className="flexRow">
+          <button onClick={() => setShowPlanetModal(true)}>
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                paddingTop: responsivePixels(2),
+                paddingLeft: responsivePixels(2),
+              }}
+            >
+              <CustomSizeResources resources={2} influence={3} height={24} />
+            </div>
+          </button>
+          Update Planets
+        </div>
+      </div>
       <div className={styles.UpdateBox}>
         <LabeledDiv label={state.phase === "END" ? "View" : "Update"}>
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
