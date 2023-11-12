@@ -619,7 +619,7 @@ export function ObjectivePanel({}) {
                 />
               </div>
             </CollapsibleSection>
-            <div className="flexRow" style={{ width: "100%" }}>
+            <div className="flexRow" style={{ width: "95%" }}>
               <div
                 className="flexRow"
                 style={{

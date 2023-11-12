@@ -280,10 +280,7 @@ export default function Footer({}) {
         <div className={styles.MenuBar}></div>
       </button>
       <div
-        className={styles.MobileMenu}
-        style={{
-          display: !showMobileMenu ? "none" : undefined,
-        }}
+        className={`${styles.MobileMenu} ${showMobileMenu ? styles.shown : ""}`}
       >
         {!shouldBlockSpeakerUpdates() ? (
           <div className="flexRow">
@@ -308,8 +305,8 @@ export default function Footer({}) {
           </div>
         ) : null}
         {options["map-string"] !== "" ? (
-          <div className="flexRow">
-            <button onClick={() => setShowMap(true)}>
+          <div className="flexRow" onClick={() => setShowMap(true)}>
+            <button>
               <div
                 className="flexRow"
                 style={{
@@ -329,8 +326,8 @@ export default function Footer({}) {
             View Map
           </div>
         ) : null}
-        <div className="flexRow">
-          <button onClick={() => setShowTechModal(true)}>
+        <div className="flexRow" onClick={() => setShowTechModal(true)}>
+          <button>
             <div
               className="flexRow"
               style={{
@@ -338,12 +335,38 @@ export default function Footer({}) {
               }}
             >
               <TechSkipIcon size={24} outline />
+              {/* <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: "80%",
+                height: "80%",
+                border: "1px solid #eee",
+                borderRadius: "100%",
+              }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "80%",
+                  height: "80%",
+                }}
+              >
+                <Image
+                  src={`/images/tech_icon.svg`}
+                  alt={`Tech Icon`}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+            </div> */}
             </div>
           </button>
           Update Techs
         </div>
-        <div className="flexRow">
-          <button onClick={() => setShowObjectiveModal(true)}>
+        <div className="flexRow" onClick={() => setShowObjectiveModal(true)}>
+          <button>
             <div
               className="flexRow"
               style={{
@@ -352,8 +375,14 @@ export default function Footer({}) {
                 height: "100%",
               }}
             >
-              <Image
+              {/* <Image
                 src={`/images/objectives_icon.svg`}
+                alt={`Objectives Icon`}
+                layout="fill"
+                objectFit="contain"
+              /> */}
+              <Image
+                src={`/images/objectives_icon_two.svg`}
                 alt={`Objectives Icon`}
                 layout="fill"
                 objectFit="contain"
@@ -362,8 +391,8 @@ export default function Footer({}) {
           </button>
           Update Objectives
         </div>
-        <div className="flexRow">
-          <button onClick={() => setShowPlanetModal(true)}>
+        <div className="flexRow" onClick={() => setShowPlanetModal(true)}>
+          <button>
             <div
               className="flexRow"
               style={{
