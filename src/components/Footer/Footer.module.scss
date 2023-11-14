@@ -69,6 +69,7 @@
     border-radius: 100%;
 
     z-index: 1;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .MenuBar {
@@ -92,6 +93,7 @@
     align-items: flex-start;
     justify-content: center;
     gap: 8px;
+    pointer-events: none;
 
     z-index: 0;
     backdrop-filter: blur(8px);
@@ -104,6 +106,7 @@
   .MobileMenu.shown {
     opacity: 1;
     bottom: 70px;
+    pointer-events: auto;
 
     transition: bottom 400ms, opacity 100ms;
   }
@@ -122,5 +125,6 @@
     border-radius: 100%;
     border: none;
     padding: 3px;
+    -webkit-tap-highlight-color: transparent;
   }
 }
