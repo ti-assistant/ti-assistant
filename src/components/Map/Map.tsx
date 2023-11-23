@@ -389,7 +389,7 @@ function validSystemNumber(number: string) {
   if (isNaN(intVal)) {
     return false;
   }
-  if (intVal === 81 || (intVal > 92 && intVal < 1001) || intVal > 1034) {
+  if ((intVal > 92 && intVal < 1001) || intVal > 1034) {
     return false;
   }
   return true;
@@ -408,6 +408,22 @@ function getRotationClass(key: string) {
     case "rotateThreeHundred":
       return styles.rotateThreeHundred;
   }
+}
+
+function getRotationClassFromNumber(key: number) {
+  switch (key) {
+    case 1:
+      return styles.rotateSixty;
+    case 2:
+      return styles.rotateOneTwenty;
+    case 3:
+      return styles.rotateOneEighty;
+    case 4:
+      return styles.rotateTwoForty;
+    case 5:
+      return styles.rotateThreeHundred;
+  }
+  return "";
 }
 
 export function SystemImage({
@@ -476,9 +492,23 @@ export function SystemImage({
   });
   systemPlanets = applyAllPlanetAttachments(systemPlanets, attachments);
 
+  let classNames: string | undefined = "";
+  if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
+    classNames = getRotationClassFromNumber(
+      parseInt(systemNumber.split("A")[1] ?? "0")
+    );
+    systemNumber = `${systemNumber.split("A")[0] ?? ""}A`;
+  }
+  if (systemNumber.includes("B") && systemNumber.split("B").length > 1) {
+    classNames = getRotationClassFromNumber(
+      parseInt(systemNumber.split("B")[1] ?? "0")
+    );
+    systemNumber = `${systemNumber.split("B")[0] ?? ""}B`;
+  }
+
   return (
     <div
-      className={`flexRow`}
+      className={`flexRow ${classNames}`}
       style={{
         position: "relative",
         width: "100%",
@@ -968,7 +998,7 @@ export default function Map({
       {spiral.map((cube, index) => {
         const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
         let tile = updatedSystemTiles[index];
-        if (!tile) {
+        if (!tile || tile === "-1") {
           return null;
         }
         return (
