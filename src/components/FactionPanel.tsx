@@ -72,6 +72,10 @@ const ABILITY_REGEX = [
   /FRAGILE/gi,
   /INDOCTRINATION/gi,
   /STALL TACTICS/gi,
+  // DS Faction specific keywords
+  /RALLY TO THE CAUSE/gi,
+  /RECYCLED MATERIALS/gi,
+  /AUTONETIC MEMORY/gi,
 ];
 
 function formatDescription(description: string) {

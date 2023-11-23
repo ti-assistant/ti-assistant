@@ -91,7 +91,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     //   replaces: "Fighter II",
     //   stats: {
     //     combat: 8,
-    //     cost: "1 (x2)",
+    //     cost: "1(x2)",
     //     move: 3,
     //   },
     //   type: "UPGRADE",
@@ -108,7 +108,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "RED",
     },
     "Trade Port II": {
-      abilities: ["PRODUCTION X", "ANTI-FIGHTER BARRAGE 6(x2)"],
+      abilities: ["PRODUCTION X", "ANTI-FIGHTER BARRAGE 6 (x2)"],
       description:
         "This unit's PRODUCTION value is equal to 4 more than the resource or influence value of this planet.\n\nUp to 3 fighters in this system do not count against your ships' capacity.\n\nThis unit may use its ANTI-FIGHTER BARRAGE during each round of space combat.",
       expansion: "DISCORDANT STARS",
@@ -221,7 +221,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       replaces: "Fighter II",
       stats: {
         combat: 8,
-        cost: "1 (x2)",
+        cost: "1(x2)",
         move: 3,
       },
       type: "UPGRADE",
@@ -436,7 +436,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       prereqs: ["BLUE", "GREEN"],
       replaces: "Fighter II",
       stats: {
-        cost: "1 (x2)",
+        cost: "1(x2)",
         combat: 8,
         move: 2,
       },
@@ -537,7 +537,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     "Terrafactory II": {
       abilities: ["SUSTAIN DAMAGE", "PRODUCTION 5", "BOMBARDMENT 3 (x3)"],
       description:
-        "Other player’s units in this system lose PLANETARY SHIELD.\n\nThis unit produces only 1 fighter or infantry for their cost instead of 2.",
+        "Other player's units in this system lose PLANETARY SHIELD.\n\nThis unit produces only 1 fighter or infantry for their cost instead of 2.",
       expansion: "DISCORDANT STARS",
       faction: "Roh'Dhna Mechatronics",
       id: "Terrafactory II",
@@ -546,7 +546,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       replaces: "War Sun",
       stats: {
         cost: 12,
-        combat: "3 (x3)",
+        combat: "3(x3)",
         move: 2,
         capacity: 6,
       },
@@ -656,7 +656,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
     },
     // Tnelis Syndicate
     "Blockade Runner II": {
-      abilities: ["ANTI-FIGHTER BARRAGE 6(x4)"],
+      abilities: ["ANTI-FIGHTER BARRAGE 6 (x4)"],
       description:
         "This ship can move through systems that contain other players' ships.",
       expansion: "DISCORDANT STARS",
@@ -804,7 +804,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       prereqs: ["GREEN", "GREEN"],
       replaces: "Infantry II",
       stats: {
-        cost: "1 (x2)",
+        cost: "1(x2)",
         combat: 7,
       },
       type: "UPGRADE",
