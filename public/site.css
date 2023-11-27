@@ -165,6 +165,7 @@ html {
   font-style: normal;
   font-weight: normal;
   src: local("Myriad Pro"), url("MYRIADPRO-REGULAR.woff") format("woff");
+  font-display: swap;
 }
 
 @font-face {
@@ -172,6 +173,7 @@ html {
   font-style: normal;
   font-weight: normal;
   src: url("SourceSans3-Regular.ttf") format("truetype");
+  font-display: swap;
 }
 
 body {
