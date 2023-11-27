@@ -74,7 +74,9 @@ export default async function handler(
       startswith: baseFaction.startswith,
       // State values
       hero: "locked",
-      commander: "locked",
+      commander: options["game-variant"].includes("alliance")
+        ? "readied"
+        : "locked",
     };
 
     if (faction.playerName) {
