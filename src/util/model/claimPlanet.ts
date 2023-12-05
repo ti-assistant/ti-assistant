@@ -106,11 +106,13 @@ export class UnclaimPlanetHandler implements Handler {
     // TODO: Figure out if [0.0.0] works.
 
     let prevOwner: string | undefined;
+    let claimedThisTurn: boolean = false;
     const currentTurn = getCurrentTurnLogEntries(this.gameData.actionLog ?? []);
     for (const entry of currentTurn) {
       const action = this.getActionLogAction(entry);
       if (action === "DELETE") {
         prevOwner = (entry.data as ClaimPlanetData).event.prevOwner;
+        claimedThisTurn = true;
       }
     }
 
@@ -119,7 +121,11 @@ export class UnclaimPlanetHandler implements Handler {
       [`planets.${this.data.event.planet}.owner`]: prevOwner ?? "DELETE",
     };
 
-    if (!prevOwner && this.data.event.planet === "Mecatol Rex") {
+    if (
+      claimedThisTurn &&
+      !prevOwner &&
+      this.data.event.planet === "Mecatol Rex"
+    ) {
       updates[`objectives.Custodians Token.scorers`] = "DELETE";
     }
 
