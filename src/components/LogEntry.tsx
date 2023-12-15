@@ -4,6 +4,7 @@ import {
   AgendaContext,
   FactionContext,
   ObjectiveContext,
+  TechContext,
 } from "../context/Context";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -11,6 +12,9 @@ import { pluralize, responsivePixels } from "../util/util";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TimerDisplay from "./TimerDisplay/TimerDisplay";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
+import FactionIcon from "./FactionIcon/FactionIcon";
+import TechIcon from "./TechIcon/TechIcon";
+import { getTechColor } from "../util/techs";
 
 function ColoredFactionName({ factionId }: { factionId: FactionId }) {
   const factions = useContext(FactionContext);
@@ -46,6 +50,7 @@ export function LogEntryElement({
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
   const objectives = useContext(ObjectiveContext);
+  const techs = useContext(TechContext);
 
   switch (logEntry.data.action) {
     case "ADD_ATTACHMENT": {
@@ -60,6 +65,21 @@ export function LogEntryElement({
         >
           Attached {logEntry.data.event.attachment} to{" "}
           {logEntry.data.event.planet}
+        </div>
+      );
+    }
+    case "GIFT_OF_PRESCIENCE": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId={logEntry.data.event.faction} /> used
+          Gift of Prescience.
         </div>
       );
     }
@@ -260,6 +280,10 @@ export function LogEntryElement({
       return null;
     }
     case "CHOOSE_STARTING_TECH": {
+      const tech = techs[logEntry.data.event.tech];
+      if (!tech) {
+        return null;
+      }
       return (
         <div
           className="flexRow"
@@ -270,11 +294,36 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
-          selected {logEntry.data.event.tech} as a starting tech
+          selected{" "}
+          <span style={{ color: getTechColor(tech) }}>
+            {logEntry.data.event.tech}
+          </span>
+          as a starting tech
+        </div>
+      );
+    }
+    case "CHOOSE_SUB_FACTION": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
+          selected {logEntry.data.event.subFaction}
+          <FactionIcon factionId={logEntry.data.event.subFaction} size={20} />
+          as their sub-faction
         </div>
       );
     }
     case "ADD_TECH": {
+      const tech = techs[logEntry.data.event.tech];
+      if (!tech) {
+        return null;
+      }
       return (
         <div
           className="flexRow"
@@ -285,11 +334,18 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
-          researched {logEntry.data.event.tech}
+          researched
+          <span style={{ color: getTechColor(tech) }}>
+            {logEntry.data.event.tech}
+          </span>
         </div>
       );
     }
     case "REMOVE_TECH": {
+      const tech = techs[logEntry.data.event.tech];
+      if (!tech) {
+        return null;
+      }
       return (
         <div
           className="flexRow"
@@ -300,7 +356,10 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
-          returned {logEntry.data.event.tech}
+          returned
+          <span style={{ color: getTechColor(tech) }}>
+            {logEntry.data.event.tech}
+          </span>
         </div>
       );
     }
