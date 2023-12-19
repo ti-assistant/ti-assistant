@@ -48,6 +48,7 @@ type GameUpdateData =
   | SelectSubAgendaData
   | SetObjectivePointsData
   | SpeakerTieBreakData
+  | StartVotingData
   // TODO
   | UndoData;
 
@@ -337,7 +338,7 @@ interface PlayRiderEvent {
   rider: string;
 
   faction?: FactionId;
-  outcome?: OutcomeType;
+  outcome?: string;
 }
 
 interface PlayRiderData {
@@ -540,4 +541,11 @@ interface UpdatePlanetStateEvent {
 interface UpdatePlanetStateData {
   action: "UPDATE_PLANET_STATE";
   event: UpdatePlanetStateEvent;
+}
+
+interface StartVotingEvent {}
+
+interface StartVotingData {
+  action: "START_VOTING";
+  event: StartVotingEvent;
 }

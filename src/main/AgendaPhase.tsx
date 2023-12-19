@@ -41,6 +41,7 @@ import {
   selectEligibleOutcomesAsync,
   selectSubAgendaAsync,
   speakerTieBreakAsync,
+  startVotingAsync,
   unclaimPlanetAsync,
   unplayActionCardAsync,
   unplayPromissoryNoteAsync,
@@ -671,41 +672,6 @@ function AgendaSteps() {
     return true;
   }
 
-  const riders = getPlayedRiders(currentTurn);
-  const orderedRiders = riders.sort((a, b) => {
-    if (a.rider > b.rider) {
-      return 1;
-    }
-    return -1;
-  });
-
-  const remainingRiders = RIDERS.filter((rider) => {
-    if (rider === "Keleres Rider" && factions && !factions["Council Keleres"]) {
-      return false;
-    }
-    if (rider === "Galactic Threat" && factions && !factions["Nekro Virus"]) {
-      return false;
-    }
-    const secrets = getPromissoryTargets(currentTurn, "Political Secret");
-    if (rider === "Galactic Threat" && secrets.includes("Nekro Virus")) {
-      return false;
-    }
-    if (
-      rider === "Sanction" &&
-      options &&
-      !options.expansions.includes("CODEX ONE")
-    ) {
-      return false;
-    }
-    const playedRiders = getPlayedRiders(currentTurn);
-    for (const playedRider of playedRiders) {
-      if (playedRider.rider === rider) {
-        return false;
-      }
-    }
-    return true;
-  });
-
   if (agendaNum > 2) {
     return null;
   }
@@ -863,113 +829,6 @@ function AgendaSteps() {
                     }}
                   />
                 ) : null}
-                {orderedRiders.length > 0 ? (
-                  <ClientOnlyHoverMenu label="Predictions">
-                    <div
-                      className="flexRow"
-                      style={{
-                        padding: responsivePixels(8),
-                        display: "grid",
-                        gridAutoFlow: "row",
-                        gridTemplateColumns: "repeat(3, auto)",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {orderedRiders.map((rider) => {
-                        const faction = rider.faction
-                          ? (factions ?? {})[rider.faction]
-                          : undefined;
-                        let possibleFactions = Object.values(factions ?? {})
-                          .filter((faction) => {
-                            const secrets = getPromissoryTargets(
-                              currentTurn,
-                              "Political Secret"
-                            );
-                            return !secrets.includes(faction.id);
-                          })
-                          .map((faction) => faction.id);
-                        if (rider.rider === "Galactic Threat") {
-                          possibleFactions = ["Nekro Virus"];
-                        }
-                        if (rider.rider === "Keleres Rider") {
-                          possibleFactions.filter(
-                            (faction) => faction !== "Council Keleres"
-                          );
-                        }
-                        return (
-                          <SelectableRow
-                            key={rider.rider}
-                            itemId={rider.rider}
-                            removeItem={() => {
-                              if (!gameid) {
-                                return;
-                              }
-                              unplayRiderAsync(gameid, rider.rider);
-                            }}
-                          >
-                            <LabeledDiv
-                              noBlur={true}
-                              label={rider.rider}
-                              color={getFactionColor(faction)}
-                            >
-                              <div className="flexRow">
-                                <FactionSelectRadialMenu
-                                  selectedFaction={
-                                    rider.faction as FactionId | undefined
-                                  }
-                                  factions={possibleFactions}
-                                  onSelect={(factionId) => {
-                                    if (!gameid) {
-                                      return;
-                                    }
-                                    playRiderAsync(
-                                      gameid,
-                                      rider.rider,
-                                      factionId,
-                                      rider.outcome
-                                    );
-                                  }}
-                                  borderColor={getFactionColor(
-                                    rider.faction
-                                      ? factions[rider.faction]
-                                      : undefined
-                                  )}
-                                />
-                                <Selector
-                                  hoverMenuLabel="Outcome"
-                                  selectedItem={rider.outcome}
-                                  options={allTargets.filter(
-                                    (target) => target !== "Abstain"
-                                  )}
-                                  toggleItem={(itemId, add) => {
-                                    if (!gameid) {
-                                      return;
-                                    }
-                                    if (add) {
-                                      playRiderAsync(
-                                        gameid,
-                                        rider.rider,
-                                        rider.faction,
-                                        itemId as OutcomeType
-                                      );
-                                    } else {
-                                      playRiderAsync(
-                                        gameid,
-                                        rider.rider,
-                                        rider.faction,
-                                        undefined
-                                      );
-                                    }
-                                  }}
-                                />
-                              </div>
-                            </LabeledDiv>
-                          </SelectableRow>
-                        );
-                      })}
-                    </div>
-                  </ClientOnlyHoverMenu>
-                ) : null}
               </LabeledDiv>
             )}
           </div>
@@ -1082,7 +941,7 @@ function AgendaSteps() {
           !getSelectedOutcome(selectedTargets, currentTurn) ? (
             <ClientOnlyHoverMenu
               label="After an Agenda is Revealed"
-              style={{ width: "100%" }}
+              style={{ minWidth: "100%" }}
             >
               <div
                 className="flexColumn"
@@ -1107,23 +966,6 @@ function AgendaSteps() {
                 >
                   Hack Election
                 </button>
-                {remainingRiders.length !== 0 ? (
-                  <Selector
-                    hoverMenuLabel="Predict Outcome"
-                    options={remainingRiders}
-                    selectedItem={undefined}
-                    toggleItem={(itemId, add) => {
-                      if (!gameid) {
-                        return;
-                      }
-                      const factionId =
-                        itemId === "Galactic Threat"
-                          ? "Nekro Virus"
-                          : undefined;
-                      playRiderAsync(gameid, itemId, factionId, undefined);
-                    }}
-                  />
-                ) : null}
                 <Selector
                   hoverMenuLabel="Assassinate Representative"
                   selectedLabel="Assassinated Representative"
@@ -1153,7 +995,25 @@ function AgendaSteps() {
               </div>
             </ClientOnlyHoverMenu>
           ) : null}
-          {currentAgenda ? <>Cast votes (or abstain)</> : null}
+          {currentAgenda ? (
+            !state.votingStarted ? (
+              <div className="flexRow">
+                <button
+                  style={{ width: "fit-content" }}
+                  onClick={() => {
+                    if (!gameid) {
+                      return;
+                    }
+                    startVotingAsync(gameid);
+                  }}
+                >
+                  Start Voting
+                </button>
+              </div>
+            ) : (
+              <>Cast votes (or abstain)</>
+            )
+          ) : null}
           {/* {currentAgenda ? <DistinguishedCouncilor /> : null} */}
           {(votes && Object.keys(votes).length > 0) ||
           getSelectedOutcome(selectedTargets, currentTurn) ? (

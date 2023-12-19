@@ -31,6 +31,7 @@ export class AdvancePhaseHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`state.votingStarted`]: "DELETE",
     };
     switch (this.gameData.state.phase) {
       case "SETUP": {

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useContext, useRef, useState } from "react";
+import React, { CSSProperties, useContext, useRef, useState } from "react";
 import {
   ActionLogContext,
   AgendaContext,
@@ -15,8 +15,10 @@ import { Selector } from "../../Selector";
 import {
   castVotesAsync,
   playActionCardAsync,
+  playRiderAsync,
   setSpeakerAsync,
   unplayActionCardAsync,
+  unplayRiderAsync,
 } from "../../dynamic/api";
 import {
   getPromissoryTargets,
@@ -39,6 +41,7 @@ import { responsivePixels } from "../../util/util";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import NumberInput from "../NumberInput/NumberInput";
+import styles from "./VoteBlock.module.scss";
 
 export function getTargets(
   agenda: Agenda | undefined,
@@ -110,6 +113,17 @@ export function getTargets(
       return [...scoredSecrets.map((secret) => secret.name), "Abstain"];
   }
   return [];
+}
+
+export function canFactionPredict(
+  factionId: FactionId,
+  currentTurn: ActionLogEntry[]
+) {
+  const politicalSecrets = getPromissoryTargets(
+    currentTurn,
+    "Political Secret"
+  );
+  return !politicalSecrets.includes(factionId);
 }
 
 export function canFactionVote(
@@ -224,12 +238,6 @@ export function computeRemainingVotes(
     }, 0);
 
   let influenceNeeded = votesCast;
-  if (factionId === "Argent Flight") {
-    influenceNeeded = Math.max(
-      influenceNeeded - Object.keys(factions).length,
-      0
-    );
-  }
   let planetCount = 0;
   let remainingVotes = 0;
   for (const planet of orderedPlanets) {
@@ -308,12 +316,255 @@ function ExtraVotes({ factionId }: { factionId: FactionId }) {
   );
 }
 
+const RIDERS = [
+  "Galactic Threat",
+  "Leadership Rider",
+  "Diplomacy Rider",
+  "Politics Rider",
+  "Construction Rider",
+  "Trade Rider",
+  "Warfare Rider",
+  "Technology Rider",
+  "Imperial Rider",
+  "Sanction",
+  "Keleres Rider",
+];
+
 interface VoteBlockProps {
   factionId: FactionId;
   agenda: Agenda | undefined;
 }
 
 export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const state = useContext(StateContext);
+
+  const faction = factions[factionId];
+
+  if (!faction) {
+    return null;
+  }
+
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
+
+  const completeRiders = getPlayedRiders(currentTurn).filter((rider) => {
+    return rider.faction === faction.id && rider.outcome;
+  });
+
+  return (
+    <LabeledDiv
+      label={getFactionName(faction)}
+      color={getFactionColor(faction)}
+      noBlur
+      style={{
+        display: "grid",
+        gridColumn: "span 4",
+        gridTemplateColumns: "subgrid",
+        rowGap: 0,
+      }}
+    >
+      <div className="flexColumn" style={{ gridColumn: "span 4", gap: 0 }}>
+        {completeRiders.map((rider) => {
+          return (
+            <div
+              className="flexRow"
+              style={{
+                gap: responsivePixels(4),
+                fontSize: responsivePixels(14),
+              }}
+            >
+              {state.votingStarted ? (
+                <div style={{ height: responsivePixels(20) }}></div>
+              ) : (
+                <div
+                  className="icon clickable negative"
+                  style={{ marginRight: 0 }}
+                  onClick={() => {
+                    if (!gameid) {
+                      return;
+                    }
+                    unplayRiderAsync(gameid, rider.rider);
+                  }}
+                >
+                  &#x2715;
+                </div>
+              )}
+              <i>{rider.rider}</i>: {rider.outcome}
+            </div>
+          );
+        })}
+      </div>
+      <div
+        className="flexRow"
+        style={{
+          display: "grid",
+          gridColumn: "span 4",
+          gridTemplateColumns: "subgrid",
+          gap: responsivePixels(16),
+          width: "100%",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {!agenda ? (
+          <>
+            <div></div>
+            <AvailableVotes factionId={factionId} />
+          </>
+        ) : null}
+        {agenda && !state.votingStarted ? (
+          <PredictionSection factionId={factionId} agenda={agenda} />
+        ) : null}
+        {agenda && state.votingStarted ? (
+          !canFactionVote(faction, agendas, state, currentTurn) ? (
+            completeRiders.length > 0 ? null : (
+              <div
+                className="flexRow"
+                style={{
+                  boxSizing: "border-box",
+                  width: "100%",
+                  gridColumn: "span 4",
+                }}
+              >
+                Cannot Vote
+              </div>
+            )
+          ) : (
+            <VotingSection factionId={factionId} agenda={agenda} />
+          )
+        ) : null}
+      </div>
+    </LabeledDiv>
+  );
+}
+
+function PredictionSection({
+  factionId,
+  agenda,
+}: {
+  factionId: FactionId;
+  agenda: Agenda | undefined;
+}) {
+  const router = useRouter();
+  const { game: gameid }: { game?: string } = router.query;
+
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
+  const planets = useContext(PlanetContext);
+  const strategycards = useContext(StrategyCardContext);
+
+  const currentTurn = getCurrentTurnLogEntries(actionLog ?? []);
+
+  const playedRiders = getPlayedRiders(currentTurn);
+
+  const pendingRider = playedRiders.filter((rider) => {
+    return rider.faction === factionId && !rider.outcome;
+  })[0];
+
+  const remainingRiders = RIDERS.filter((rider) => {
+    if (rider === "Keleres Rider" && factions && !factions["Council Keleres"]) {
+      return false;
+    }
+    if (rider === "Galactic Threat" && factions && !factions["Nekro Virus"]) {
+      return false;
+    }
+    const secrets = getPromissoryTargets(currentTurn, "Political Secret");
+    if (rider === "Galactic Threat" && secrets.includes("Nekro Virus")) {
+      return false;
+    }
+    if (
+      rider === "Sanction" &&
+      options &&
+      !options.expansions.includes("CODEX ONE")
+    ) {
+      return false;
+    }
+    for (const playedRider of playedRiders) {
+      if (playedRider.rider === rider) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  const targets = getTargets(
+    agenda,
+    factions,
+    strategycards,
+    planets ?? {},
+    agendas ?? {},
+    objectives ?? {}
+  ).filter((target) => target !== "Abstain");
+
+  if (!canFactionPredict(factionId, currentTurn)) {
+    return (
+      <>
+        <div
+          style={{
+            paddingLeft: responsivePixels(4),
+            fontSize: responsivePixels(14),
+          }}
+        >
+          Cannot Predict
+        </div>
+        <AvailableVotes factionId={factionId} />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Selector
+        hoverMenuLabel="Play Rider"
+        options={remainingRiders}
+        selectedItem={pendingRider?.rider}
+        toggleItem={(itemId, add) => {
+          if (!gameid) {
+            return;
+          }
+          if (add) {
+            playRiderAsync(gameid, itemId, factionId, undefined);
+          } else {
+            unplayRiderAsync(gameid, itemId);
+          }
+        }}
+      />
+      <AvailableVotes factionId={factionId} />{" "}
+      {pendingRider && targets.length > 0 ? (
+        <div style={{ gridColumn: "span 2" }}>
+          <Selector
+            hoverMenuLabel="Prediction"
+            options={targets}
+            selectedItem={undefined}
+            toggleItem={(itemId, add) => {
+              if (!gameid) {
+                return;
+              }
+              playRiderAsync(gameid, pendingRider.rider, factionId, itemId);
+            }}
+            style={{ minWidth: responsivePixels(154) }}
+          />
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+function VotingSection({
+  factionId,
+  agenda,
+}: {
+  factionId: FactionId;
+  agenda: Agenda | undefined;
+}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
 
@@ -327,6 +578,14 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
   const state = useContext(StateContext);
   const strategycards = useContext(StrategyCardContext);
 
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
+
+  const faction = factions[factionId];
+
+  if (!faction) {
+    return null;
+  }
+
   function castVotesLocal(target: string | undefined, votes: number) {
     if (!gameid) {
       return;
@@ -339,11 +598,18 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
     }
   }
 
-  const faction = factions[factionId];
+  const targets = getTargets(
+    agenda,
+    factions,
+    strategycards,
+    planets ?? {},
+    agendas ?? {},
+    objectives ?? {}
+  );
+  const factionVotes = getFactionVotes(currentTurn, factionId);
 
-  if (!faction) {
-    return null;
-  }
+  const hasVotableTarget =
+    !!factionVotes?.target && factionVotes?.target !== "Abstain";
 
   const { influence, extraVotes } = computeRemainingVotes(
     factionId,
@@ -355,19 +621,6 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
     state,
     getCurrentPhasePreviousLogEntries(actionLog ?? [])
   );
-
-  const currentTurn = getCurrentTurnLogEntries(actionLog ?? []);
-
-  const targets = getTargets(
-    agenda,
-    factions,
-    strategycards,
-    planets ?? {},
-    agendas ?? {},
-    objectives ?? {}
-  );
-  const factionVotes = getFactionVotes(currentTurn, factionId);
-
   let castExtraVotes = 0;
   const usingPredictive = getActionCardTargets(
     currentTurn,
@@ -391,311 +644,157 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
       break;
   }
 
-  const hasVotableTarget =
-    !!factionVotes?.target && factionVotes?.target !== "Abstain";
-
   return (
-    <LabeledDiv
-      label={getFactionName(faction)}
-      color={getFactionColor(faction)}
-      noBlur
-      style={{
-        display: "grid",
-        gridColumn: "span 4",
-        gridTemplateColumns: "subgrid",
-      }}
-    >
-      <div
-        className="flexRow"
-        style={{
-          display: "grid",
-          gridColumn: "span 4",
-          gridTemplateColumns: "subgrid",
-          gap: responsivePixels(16),
-          width: "100%",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        {!canFactionVote(faction, agendas, state, currentTurn) ? (
+    <>
+      <div className="flexRow" style={{ justifyContent: "flex-start" }}>
+        {state.votingStarted && targets.length > 0 ? (
+          <Selector
+            hoverMenuLabel="Select Outcome"
+            options={targets}
+            selectedItem={factionVotes?.target}
+            toggleItem={(itemId, add) => {
+              if (add) {
+                castVotesLocal(itemId, 0);
+              } else {
+                castVotesLocal(undefined, 0);
+              }
+            }}
+            style={{ minWidth: responsivePixels(154) }}
+          />
+        ) : null}
+      </div>
+      <AvailableVotes factionId={factionId} />
+      {hasVotableTarget ? (
+        <NumberInput
+          value={factionVotes.votes}
+          maxValue={99}
+          softMax={influence}
+          minValue={0}
+          onChange={(votes) => {
+            castVotesLocal(factionVotes.target, votes);
+          }}
+        />
+      ) : null}
+      {hasVotableTarget && factionVotes.votes > 0 ? (
+        <ClientOnlyHoverMenu
+          label={castExtraVotes === 0 ? "-" : `+${castExtraVotes}`}
+          buttonStyle={{ minWidth: responsivePixels(48) }}
+        >
           <div
-            className="flexRow"
+            className="flexColumn"
             style={{
-              boxSizing: "border-box",
-              width: "100%",
-              gridColumn: "span 4",
+              padding: responsivePixels(4),
+              fontSize: responsivePixels(16),
+              alignItems: "flex-start",
             }}
           >
-            Cannot Vote
-          </div>
-        ) : (
-          <React.Fragment>
-            <div className="flexRow" style={{ justifyContent: "flex-start" }}>
-              {targets.length > 0 ? (
-                <Selector
-                  hoverMenuLabel="Select Outcome"
-                  options={targets}
-                  selectedItem={factionVotes?.target}
-                  toggleItem={(itemId, add) => {
-                    if (add) {
-                      castVotesLocal(itemId, 0);
-                    } else {
-                      castVotesLocal(undefined, 0);
-                    }
-                  }}
-                  style={{ minWidth: responsivePixels(154) }}
-                />
-              ) : (
-                <div style={{ width: responsivePixels(154) }}></div>
-              )}
-            </div>
-            <div
-              style={{
-                position: "relative",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                whiteSpace: "nowrap",
-                flexShrink: 0,
-                height: "100%",
-              }}
-            >
-              <div
-                style={{
-                  color: "#72d4f7",
-                  lineHeight: responsivePixels(35),
-                  fontSize: responsivePixels(35),
-                  textShadow: `0 0 ${responsivePixels(4)} #72d4f7`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: responsivePixels(28),
-                  height: responsivePixels(35),
-                }}
-              >
-                &#x2B21;
-              </div>
-              <div
-                style={{
-                  lineHeight: responsivePixels(35),
-                  fontSize: responsivePixels(12),
-                  position: "absolute",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: responsivePixels(28),
-                  height: responsivePixels(35),
-                }}
-              >
-                {influence}
-              </div>
-              <div style={{ fontSize: responsivePixels(16) }}>
-                + {extraVotes}
-              </div>
-            </div>
-            {hasVotableTarget ? (
-              <NumberInput
-                value={factionVotes.votes}
-                maxValue={99}
-                softMax={influence}
-                minValue={0}
-                onChange={(votes) => {
-                  castVotesLocal(factionVotes.target, votes);
-                }}
-              />
-            ) : null}
-            {hasVotableTarget && factionVotes.votes > 0 ? (
-              <ClientOnlyHoverMenu
-                label={castExtraVotes === 0 ? "-" : `+${castExtraVotes}`}
-                buttonStyle={{ minWidth: responsivePixels(48) }}
-              >
-                <div
-                  className="flexColumn"
-                  style={{
-                    padding: responsivePixels(4),
-                    fontSize: responsivePixels(16),
-                    alignItems: "flex-start",
-                  }}
-                >
-                  {factionId === "Argent Flight"
-                    ? `+${
-                        factionVotes.votes > 0
-                          ? Object.keys(factions).length
-                          : 0
-                      } votes from Zeal`
-                    : null}
-                  {factionId === "Xxcha Kingdom" &&
-                  faction.commander === "readied"
-                    ? `+? votes from Elder Qanoj`
-                    : null}
-                  {factionId === "Emirates of Hacan" &&
-                  faction.commander === "readied"
-                    ? `+0 votes from Gila the Silvertongue`
-                    : null}
-                  {hasTech(faction, "Predictive Intelligence") ? (
-                    <button
-                      className={
-                        usingPredictive.includes(factionId) ? "selected" : ""
-                      }
-                      style={{ fontSize: responsivePixels(14) }}
-                      onClick={() => {
-                        if (!gameid) {
-                          return;
-                        }
-                        if (usingPredictive.includes(factionId)) {
-                          unplayActionCardAsync(
-                            gameid,
-                            "Predictive Intelligence",
-                            factionId
-                          );
-                        } else {
-                          playActionCardAsync(
-                            gameid,
-                            "Predictive Intelligence",
-                            factionId
-                          );
-                        }
-                      }}
-                    >
-                      Predictive Intelligence
-                    </button>
-                  ) : null}
-                  <button
-                    disabled={
-                      currentCouncilor && currentCouncilor !== factionId
-                    }
-                    className={currentCouncilor === factionId ? "selected" : ""}
-                    style={{ fontSize: responsivePixels(14) }}
-                    onClick={() => {
-                      if (!gameid) {
-                        return;
-                      }
-                      if (currentCouncilor === factionId) {
-                        unplayActionCardAsync(
-                          gameid,
-                          "Distinguished Councilor",
-                          factionId
-                        );
-                      } else {
-                        playActionCardAsync(
-                          gameid,
-                          "Distinguished Councilor",
-                          factionId
-                        );
-                      }
-                    }}
-                  >
-                    Distinguished Councilor
-                  </button>
-                </div>
-              </ClientOnlyHoverMenu>
-            ) : (
-              <div style={{ width: responsivePixels(48) }}></div>
-            )}
-            {/* <div
-              className="flexRow hoverParent"
-              style={{
-                flexShrink: 0,
-                gap: responsivePixels(4),
-                fontSize: responsivePixels(20),
-              }}
-            >
-              <ClientOnlyHoverMenu label={extraVotes}>
-                <ExtraVotes factionId={factionId} />
-              </ClientOnlyHoverMenu>
-              {factionVotes?.votes ?? 0 > 0 ? (
-                <div
-                  className="arrowDown"
-                  onClick={() =>
-                    castVotesLocal(
-                      factionVotes?.target,
-                      (factionVotes?.votes ?? 0) - 1
-                    )
-                  }
-                ></div>
-              ) : (
-                <div style={{ width: responsivePixels(12) }}></div>
-              )}
-              <div
-                className="flexRow"
-                ref={voteRef}
-                contentEditable={hasVotableTarget}
-                suppressContentEditableWarning={true}
-                onClick={(e) => {
-                  if (!hasVotableTarget) {
+            {factionId === "Argent Flight"
+              ? `+${
+                  factionVotes.votes > 0 ? Object.keys(factions).length : 0
+                } votes from Zeal`
+              : null}
+            {factionId === "Xxcha Kingdom" && faction?.commander === "readied"
+              ? `+? votes from Elder Qanoj`
+              : null}
+            {factionId === "Emirates of Hacan" &&
+            faction?.commander === "readied"
+              ? `+0 votes from Gila the Silvertongue`
+              : null}
+            {hasTech(faction, "Predictive Intelligence") ? (
+              <button
+                className={
+                  usingPredictive.includes(factionId) ? "selected" : ""
+                }
+                style={{ fontSize: responsivePixels(14) }}
+                onClick={() => {
+                  if (!gameid) {
                     return;
                   }
-                  e.currentTarget.innerText = "";
-                }}
-                onBlur={(e) => saveCastVotes(e.currentTarget)}
-                style={{ width: responsivePixels(24) }}
-              >
-                {factionVotes?.votes ?? 0}
-              </div>
-              {factionVotes?.target && factionVotes?.target !== "Abstain" ? (
-                <div
-                  className="arrowUp"
-                  onClick={() =>
-                    castVotesLocal(
-                      factionVotes.target,
-                      (factionVotes?.votes ?? 0) + 1
-                    )
+                  if (usingPredictive.includes(factionId)) {
+                    unplayActionCardAsync(
+                      gameid,
+                      "Predictive Intelligence",
+                      factionId
+                    );
+                  } else {
+                    playActionCardAsync(
+                      gameid,
+                      "Predictive Intelligence",
+                      factionId
+                    );
                   }
-                ></div>
-              ) : (
-                <div style={{ width: responsivePixels(12) }}></div>
-              )}
-            </div> */}
-          </React.Fragment>
-        )}
-        {/* <ClientOnlyHoverMenu
-            label={
-              factionSubState?.target
-                ? factions[factionSubState.target]
-                  ? getFactionName(factions[factionSubState.target])
-                  : factionSubState.target
-                : "Select"
-            }
-            buttonStyle={{ fontSize: responsivePixels(14) }}
-            style={{ minWidth: "100%" }}
-            renderProps={(closeFn) => (
-              <div
-                className="flexRow"
-                style={{
-                  padding: responsivePixels(8),
-                  gap: responsivePixels(4),
-                  alignItems: "stretch",
-                  justifyContent: "flex-start",
-                  display: "grid",
-                  gridAutoFlow: "column",
-                  gridTemplateRows: `repeat(${Math.min(
-                    targets.length,
-                    11
-                  )}, auto)`,
                 }}
               >
-                {targets.map((target) => {
-                  return (
-                    <button
-                      key={target}
-                      style={{
-                        writingMode: "horizontal-tb",
-                        fontSize: responsivePixels(14),
-                      }}
-                      onClick={() => {
-                        closeFn();
-                        castVotes(target, 0);
-                      }}
-                    >
-                      {target}
-                    </button>
+                Predictive Intelligence
+              </button>
+            ) : null}
+            <button
+              disabled={currentCouncilor && currentCouncilor !== factionId}
+              className={currentCouncilor === factionId ? "selected" : ""}
+              style={{ fontSize: responsivePixels(14) }}
+              onClick={() => {
+                if (!gameid) {
+                  return;
+                }
+                if (currentCouncilor === factionId) {
+                  unplayActionCardAsync(
+                    gameid,
+                    "Distinguished Councilor",
+                    factionId
                   );
-                })}
-              </div>
-            )}
-          ></ClientOnlyHoverMenu> */}
-        {/* </div> */}
-      </div>
-    </LabeledDiv>
+                } else {
+                  playActionCardAsync(
+                    gameid,
+                    "Distinguished Councilor",
+                    factionId
+                  );
+                }
+              }}
+            >
+              Distinguished Councilor
+            </button>
+          </div>
+        </ClientOnlyHoverMenu>
+      ) : null}
+    </>
+  );
+}
+
+interface AvailableVotesStyle extends CSSProperties {
+  "--width": string;
+  "--height": string;
+}
+
+function AvailableVotes({ factionId }: { factionId: FactionId }) {
+  const actionLog = useContext(ActionLogContext);
+  const agendas = useContext(AgendaContext);
+  const attachments = useContext(AttachmentContext);
+  const factions = useContext(FactionContext);
+  const options = useContext(OptionContext);
+  const planets = useContext(PlanetContext);
+  const state = useContext(StateContext);
+
+  const { influence, extraVotes } = computeRemainingVotes(
+    factionId,
+    factions,
+    planets,
+    attachments,
+    agendas,
+    options,
+    state,
+    getCurrentPhasePreviousLogEntries(actionLog)
+  );
+
+  const availableVotesStyle: AvailableVotesStyle = {
+    "--height": responsivePixels(35),
+    "--width": responsivePixels(28),
+  };
+
+  return (
+    <div className={styles.AvailableVotes} style={availableVotesStyle}>
+      <div className={styles.InfluenceIcon}>&#x2B21;</div>
+      <div className={styles.InfluenceText}>{influence}</div>
+      <div>+ {extraVotes}</div>
+    </div>
   );
 }

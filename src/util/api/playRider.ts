@@ -9,7 +9,7 @@ export function playRider(
   gameId: string,
   rider: string,
   faction?: FactionId,
-  outcome?: OutcomeType
+  outcome?: string
 ) {
   const data: GameUpdateData = {
     action: "PLAY_RIDER",

@@ -112,6 +112,9 @@ const setObjectivePointsFn = import("../util/api/setObjectivePoints").then(
 const speakerTieBreakFn = import("../util/api/speakerTieBreak").then(
   (mod) => mod.speakerTieBreak
 );
+const startVotingFn = import("../util/api/startVoting").then(
+  (mod) => mod.startVoting
+);
 const swapStrategyCardsFn = import("../util/api/swapStrategyCards").then(
   (mod) => mod.swapStrategyCards
 );
@@ -329,7 +332,7 @@ export async function playRiderAsync(
   gameId: string,
   rider: string,
   faction?: FactionId,
-  outcome?: OutcomeType
+  outcome?: string
 ) {
   const playRider = await playRiderFn;
   playRider(gameId, rider, faction, outcome);
@@ -462,6 +465,11 @@ export async function setObjectivePointsAsync(
 export async function speakerTieBreakAsync(gameId: string, tieBreak: string) {
   const speakerTieBreak = await speakerTieBreakFn;
   speakerTieBreak(gameId, tieBreak);
+}
+
+export async function startVotingAsync(gameId: string) {
+  const startVoting = await startVotingFn;
+  startVoting(gameId);
 }
 
 export async function swapStrategyCardsAsync(

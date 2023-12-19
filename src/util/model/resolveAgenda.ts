@@ -30,6 +30,7 @@ export class ResolveAgendaHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`state.votingStarted`]: false,
       [`agendas.${this.data.event.agenda}.passed`]:
         this.data.event.target !== "Against",
       [`agendas.${this.data.event.agenda}.resolved`]: true,
@@ -365,6 +366,7 @@ export class RepealAgendaHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`state.votingStarted`]: true,
       [`agendas.${this.data.event.agenda}.passed`]: "DELETE",
       [`agendas.${this.data.event.agenda}.activeRound`]: "DELETE",
       // Decide how to handle this.

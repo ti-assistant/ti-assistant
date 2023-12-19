@@ -36,4 +36,5 @@ interface GameState {
   phase: Phase;
   round: number;
   speaker: FactionId;
+  votingStarted?: boolean;
 }

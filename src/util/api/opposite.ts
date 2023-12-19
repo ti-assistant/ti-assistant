@@ -40,6 +40,7 @@ import { SelectSubComponentHandler } from "../model/selectSubComponent";
 import { SetObjectivePointsHandler } from "../model/setObjectivePoints";
 import { SetSpeakerHandler } from "../model/setSpeaker";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
+import { UnstartVotingHandler } from "../model/startVoting";
 import { UnswapStrategyCardsHandler } from "../model/swapStrategyCards";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
@@ -412,6 +413,9 @@ export function getOppositeHandler(
           tieBreak: "None",
         },
       });
+    }
+    case "START_VOTING": {
+      return new UnstartVotingHandler(gameData, data);
     }
   }
 }

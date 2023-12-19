@@ -92,6 +92,7 @@ import { SpeakerTieBreakHandler } from "../../../src/util/model/speakerTieBreak"
 import { SwapStrategyCardsHandler } from "../../../src/util/model/swapStrategyCards";
 import { UpdatePlanetStateHandler } from "../../../src/util/model/updatePlanetState";
 import { UpdateLeaderStateHandler } from "../../../src/util/model/updateLeaderState";
+import { StartVotingHandler } from "../../../src/util/model/startVoting";
 
 export default async function handler(
   req: NextApiRequest,
@@ -485,6 +486,10 @@ function updateInTransaction(
       }
       case "UPDATE_LEADER_STATE": {
         handler = new UpdateLeaderStateHandler(gameData, data);
+        break;
+      }
+      case "START_VOTING": {
+        handler = new StartVotingHandler(gameData, data);
         break;
       }
       case "UNDO": {
