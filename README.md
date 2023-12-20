@@ -25,5 +25,3 @@
 ## Testing
 
 Coming soon.
-
-## Contributing
