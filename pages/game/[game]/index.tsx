@@ -61,8 +61,8 @@ function InnerSelectFactionPage({}) {
 
   if (state.phase !== "UNKNOWN" && Object.keys(factions).length === 0) {
     console.log("Forcing redirect!");
-    // setGameId("");
-    // router.push("/");
+    setGameId("");
+    router.push("/");
     return null;
   }
 
