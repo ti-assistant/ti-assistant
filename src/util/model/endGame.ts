@@ -9,6 +9,7 @@ export class EndGameHandler implements Handler {
     return {
       [`state.finalPhase`]: this.gameData.state.phase,
       [`state.phase`]: "END",
+      [`deleteAt`]: "DELETE",
     };
   }
 

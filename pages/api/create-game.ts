@@ -139,7 +139,7 @@ export default async function handler(
   }
 
   const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + 180);
+  currentDate.setDate(currentDate.getDate() + 30);
 
   const gameState: StoredGameData = {
     state: {
