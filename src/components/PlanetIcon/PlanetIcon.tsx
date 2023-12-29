@@ -27,20 +27,20 @@ export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
         <Image
           src="/images/industrial_icon.svg"
           alt="Industrial Planet Icon"
-          width="18px"
-          height="18px"
+          width={18}
+          height={18}
         />
         <Image
           src="/images/cultural_icon.svg"
           alt="Cultural Planet Icon"
-          width="18px"
-          height="18px"
+          width={18}
+          height={18}
         />
         <Image
           src="/images/hazardous_icon.svg"
           alt="Hazardous Planet Icon"
-          width="18px"
-          height="18px"
+          width={18}
+          height={18}
         />
       </div>
     );
