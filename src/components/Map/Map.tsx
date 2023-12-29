@@ -459,8 +459,8 @@ export function SystemImage({
           <NextImage
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         </div>
       );
@@ -471,11 +471,10 @@ export function SystemImage({
         style={{ position: "relative", width: "100%", height: "100%" }}
       >
         <NextImage
-          style={{ opacity: "10%" }}
           src={Hexagon}
           alt={`System Tile`}
-          layout="fill"
-          objectFit="contain"
+          fill
+          style={{ opacity: "10%", objectFit: "contain" }}
         />
       </div>
     );
@@ -518,8 +517,8 @@ export function SystemImage({
       <NextImage
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
-        layout="fill"
-        objectFit="contain"
+        fill
+        style={{ objectFit: "contain" }}
       />
       {systemPlanets.map((planet) => {
         let detailsSymbol: ReactNode | null = null;
@@ -638,8 +637,8 @@ export function SystemImage({
               <NextImage
                 src={`/images/custodians.png`}
                 alt={`Custodians Token`}
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
               />
             </div>
           </div>

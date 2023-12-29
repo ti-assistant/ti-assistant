@@ -92,72 +92,66 @@ function InnerSelectFactionPage({}) {
           }}
         >
           <Link href={`/game/${gameid}/main`}>
-            <a>
-              <div
-                style={{
-                  border: `${responsivePixels(3)} solid grey`,
-                  borderRadius: responsivePixels(5),
-                  height: `10vh`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: `${responsivePixels(24)}`,
-                  cursor: "pointer",
-                }}
-              >
-                Main Screen
-              </div>
-            </a>
+            <div
+              style={{
+                border: `${responsivePixels(3)} solid grey`,
+                borderRadius: responsivePixels(5),
+                height: `10vh`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: `${responsivePixels(24)}`,
+                cursor: "pointer",
+              }}
+            >
+              Main Screen
+            </div>
           </Link>
           <Link href={`/game/${gameid}/objectives`}>
-            <a>
-              <div
-                style={{
-                  border: `${responsivePixels(3)} solid grey`,
-                  borderRadius: responsivePixels(5),
-                  height: `8vh`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: `${responsivePixels(24)}`,
-                  cursor: "pointer",
-                }}
-              >
-                Objective View
-              </div>
-            </a>
+            <div
+              style={{
+                border: `${responsivePixels(3)} solid grey`,
+                borderRadius: responsivePixels(5),
+                height: `8vh`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: `${responsivePixels(24)}`,
+                cursor: "pointer",
+              }}
+            >
+              Objective View
+            </div>
           </Link>
           {orderedFactions.map((faction) => {
             return (
               <Link href={`/game/${gameid}/${faction.id}`} key={faction.id}>
-                <a>
-                  <BorderedDiv color={getFactionColor(faction)}>
-                    <div
-                      className="flexRow"
-                      style={{
-                        zIndex: 0,
-                        opacity: "40%",
-                        position: "absolute",
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                      }}
-                    >
-                      <FactionIcon factionId={faction.id} size="100%" />
-                    </div>
-                    <div
-                      className="flexColumn"
-                      style={{
-                        height: "5vh",
-                        fontSize: responsivePixels(20),
-                        width: "100%",
-                        zIndex: 1,
-                      }}
-                    >
-                      {getFactionName(faction)}
-                    </div>
-                  </BorderedDiv>
-                </a>
+                <BorderedDiv color={getFactionColor(faction)}>
+                  <div
+                    className="flexRow"
+                    style={{
+                      zIndex: 0,
+                      opacity: "40%",
+                      position: "absolute",
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
+                    <FactionIcon factionId={faction.id} size="100%" />
+                  </div>
+                  <div
+                    className="flexColumn"
+                    style={{
+                      height: "5vh",
+                      fontSize: responsivePixels(20),
+                      width: "100%",
+                      zIndex: 1,
+                    }}
+                  >
+                    {getFactionName(faction)}
+                  </div>
+                </BorderedDiv>
               </Link>
             );
           })}
@@ -222,37 +216,35 @@ function Header() {
       </Head>
       <Sidebars left="SELECT FACTION" right={round} />
 
-      <Link href={`/`}>
-        <a
-          className="flexRow extraLargeFont nonMobile"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            justifyContent: "center",
-            top: `${responsivePixels(16)}`,
-            left: `${responsivePixels(96)}`,
-          }}
-        >
-          <ResponsiveLogo size={32} />
-          Twilight Imperium Assistant
-        </a>
+      <Link
+        href={`/`}
+        className="flexRow extraLargeFont nonMobile"
+        style={{
+          cursor: "pointer",
+          position: "fixed",
+          justifyContent: "center",
+          top: `${responsivePixels(16)}`,
+          left: `${responsivePixels(96)}`,
+        }}
+      >
+        <ResponsiveLogo size={32} />
+        Twilight Imperium Assistant
       </Link>
-      <Link href={`/`}>
-        <a
-          className="flexRow hugeFont mobileOnly"
-          style={{
-            cursor: "pointer",
-            position: "fixed",
-            justifyContent: "center",
-            textAlign: "center",
-            left: 0,
-            paddingTop: `${responsivePixels(12)}`,
-            width: "100%",
-          }}
-        >
-          <ResponsiveLogo size={28} />
-          Twilight Imperium Assistant
-        </a>
+      <Link
+        href={`/`}
+        className="flexRow hugeFont mobileOnly"
+        style={{
+          cursor: "pointer",
+          position: "fixed",
+          justifyContent: "center",
+          textAlign: "center",
+          left: 0,
+          paddingTop: `${responsivePixels(12)}`,
+          width: "100%",
+        }}
+      >
+        <ResponsiveLogo size={28} />
+        Twilight Imperium Assistant
       </Link>
       <div
         className="flexColumn nonMobile"

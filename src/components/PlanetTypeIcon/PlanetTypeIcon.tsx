@@ -26,8 +26,8 @@ export default function PlanetTypeIcon({ type, size }: PlanetTypeIconProps) {
           <Image
             src={`/images/${type.toLowerCase()}_icon.svg`}
             alt={`${type.toLowerCase()} planet icon`}
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "ALL":
@@ -56,8 +56,8 @@ export default function PlanetTypeIcon({ type, size }: PlanetTypeIconProps) {
                 <Image
                   src="/images/cultural_icon.svg"
                   alt="Cultural Planet Icon"
-                  layout="fill"
-                  objectFit="contain"
+                  fill
+                  style={{ objectFit: "contain" }}
                 />
               </div>
               <div
@@ -66,8 +66,8 @@ export default function PlanetTypeIcon({ type, size }: PlanetTypeIconProps) {
                 <Image
                   src="/images/hazardous_icon.svg"
                   alt="Hazardous Planet Icon"
-                  layout="fill"
-                  objectFit="contain"
+                  fill
+                  style={{ objectFit: "contain" }}
                 />
               </div>
             </div>
@@ -77,8 +77,8 @@ export default function PlanetTypeIcon({ type, size }: PlanetTypeIconProps) {
               <Image
                 src="/images/industrial_icon.svg"
                 alt="Industrial Planet Icon"
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
               />
             </div>
           </div>

@@ -48,57 +48,52 @@ export default function HomePage() {
         }}
       >
         <Link href={"/setup"}>
-          <a>
+          <BorderedDiv>
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                fontSize: responsivePixels(44),
+              }}
+            >
+              New Game
+            </div>
+          </BorderedDiv>
+        </Link>
+        {!!currentGame ? (
+          <Link href={`/game/${getGameId()}`}>
             <BorderedDiv>
               <div
                 className="flexColumn"
                 style={{
                   width: "100%",
-                  fontSize: responsivePixels(44),
+                  fontSize: responsivePixels(32),
                 }}
               >
-                New Game
+                Continue Game
               </div>
             </BorderedDiv>
-          </a>
-        </Link>
-        {!!currentGame ? (
-          <Link href={`/game/${getGameId()}`}>
-            <a>
-              <BorderedDiv>
-                <div
-                  className="flexColumn"
-                  style={{
-                    width: "100%",
-                    fontSize: responsivePixels(32),
-                  }}
-                >
-                  Continue Game
-                </div>
-              </BorderedDiv>
-            </a>
           </Link>
         ) : null}
 
         <div className="flexRow" style={{ gap: "8px" }}>
           {validGameId() ? (
-            <Link href={validGameId() ? `/game/${gameId}` : {}}>
-              <a
-                onClick={(event) =>
-                  !validGameId() ? event.preventDefault() : null
-                }
-              >
-                <BorderedDiv>
-                  <div
-                    className="flexColumn"
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    Join Game
-                  </div>
-                </BorderedDiv>
-              </a>
+            <Link
+              href={validGameId() ? `/game/${gameId}` : {}}
+              onClick={(event) =>
+                !validGameId() ? event.preventDefault() : null
+              }
+            >
+              <BorderedDiv>
+                <div
+                  className="flexColumn"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  Join Game
+                </div>
+              </BorderedDiv>
             </Link>
           ) : (
             <BorderedDiv color="#555">
@@ -125,32 +120,28 @@ export default function HomePage() {
             style={{ width: "75%", alignItems: "stretch" }}
           >
             <Link href={`/supporters`}>
-              <a>
-                <BorderedDiv>
-                  <div
-                    className="flexColumn mediumFont"
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    Supporters
-                  </div>
-                </BorderedDiv>
-              </a>
+              <BorderedDiv>
+                <div
+                  className="flexColumn mediumFont"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  Supporters
+                </div>
+              </BorderedDiv>
             </Link>
             <Link href={`/FAQ`}>
-              <a>
-                <BorderedDiv>
-                  <div
-                    className="flexColumn mediumFont"
-                    style={{
-                      width: "100%",
-                    }}
-                  >
-                    FAQ
-                  </div>
-                </BorderedDiv>
-              </a>
+              <BorderedDiv>
+                <div
+                  className="flexColumn mediumFont"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  FAQ
+                </div>
+              </BorderedDiv>
             </Link>
             <a href={`https://patreon.com/TIAssistant`}>
               <BorderedDiv>

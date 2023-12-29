@@ -32,8 +32,8 @@ export default function FactionIcon({ factionId, size }: FactionIconProps) {
       <Image
         src={`/images/factions/${adjustedFactionName}.webp`}
         alt={`${factionId} Icon`}
-        layout="fill"
-        objectFit="contain"
+        fill
+        style={{ objectFit: "contain" }}
       />
     );
   }, [factionId]);

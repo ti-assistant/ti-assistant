@@ -274,8 +274,8 @@ function PlanetAttributes({
           <Image
             src="/images/red_tech.webp"
             alt="Red Tech Skip"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "yellow-skip":
@@ -283,8 +283,8 @@ function PlanetAttributes({
           <Image
             src="/images/yellow_tech.webp"
             alt="Yellow Tech Skip"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "blue-skip":
@@ -292,8 +292,8 @@ function PlanetAttributes({
           <Image
             src="/images/blue_tech.webp"
             alt="Blue Tech Skip"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "green-skip":
@@ -301,8 +301,8 @@ function PlanetAttributes({
           <Image
             src="/images/green_tech.webp"
             alt="Green Tech Skip"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "demilitarized":
@@ -310,8 +310,8 @@ function PlanetAttributes({
           <Image
             src="/images/demilitarized_zone.svg"
             alt="Demilitarized Zone"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "tomb":
@@ -319,8 +319,8 @@ function PlanetAttributes({
           <Image
             src="/images/tomb_symbol.webp"
             alt="Tomb of Emphidia"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "space-cannon":

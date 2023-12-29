@@ -50,8 +50,8 @@ export default function TechIcon({
               outline ? "svg" : "webp"
             }`}
             alt={`${type.toLowerCase()} tech`}
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         );
       case "UPGRADE":

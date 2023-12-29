@@ -31,41 +31,39 @@ export default function NonGameHeader({
           <div className="nonMobile">
             <Sidebars left={leftSidebar} right={rightSidebar} />
           </div>
-          <Link href={"/"}>
-            <a
-              className="flexRow extraLargeFont nonMobile"
-              style={{
-                cursor: "pointer",
-                position: "fixed",
-                justifyContent: "center",
-                top: responsivePixels(16),
-                left: responsivePixels(96),
-              }}
-            >
-              <ResponsiveLogo size={32} />
-              Twilight Imperium Assistant
-            </a>
+          <Link
+            href={"/"}
+            className="flexRow extraLargeFont nonMobile"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              justifyContent: "center",
+              top: responsivePixels(16),
+              left: responsivePixels(96),
+            }}
+          >
+            <ResponsiveLogo size={32} />
+            Twilight Imperium Assistant
           </Link>
-          <Link href={"/"}>
-            <a
-              className="flexRow hugeFont mobileOnly"
-              style={{
-                cursor: "pointer",
-                position: "fixed",
-                textAlign: "center",
-                justifyContent: "center",
-                zIndex: 4,
-                paddingTop: responsivePixels(12),
-                paddingBottom: responsivePixels(12),
-                width: "100%",
-                left: 0,
-                backgroundColor: "#222",
-                boxSizing: "border-box",
-              }}
-            >
-              <ResponsiveLogo size={28} />
-              Twilight Imperium Assistant
-            </a>
+          <Link
+            href={"/"}
+            className="flexRow hugeFont mobileOnly"
+            style={{
+              cursor: "pointer",
+              position: "fixed",
+              textAlign: "center",
+              justifyContent: "center",
+              zIndex: 4,
+              paddingTop: responsivePixels(12),
+              paddingBottom: responsivePixels(12),
+              width: "100%",
+              left: 0,
+              backgroundColor: "#222",
+              boxSizing: "border-box",
+            }}
+          >
+            <ResponsiveLogo size={28} />
+            Twilight Imperium Assistant
           </Link>
         </div>
       </div>

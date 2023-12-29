@@ -117,8 +117,8 @@ function StrategyCardElement({
                   <Image
                     src="/images/trade_good.png"
                     alt="TGs"
-                    layout="fill"
-                    objectFit="contain"
+                    fill
+                    style={{ objectFit: "contain" }}
                   />
                 </div>
               </div>

@@ -632,8 +632,8 @@ export function ObjectivePanel({}) {
                 <Image
                   src={`/images/custodians.png`}
                   alt={`Custodians Token`}
-                  layout="fill"
-                  objectFit="contain"
+                  fill
+                  style={{ objectFit: "contain" }}
                 />
                 <div
                   className="flexRow"
@@ -1741,8 +1741,8 @@ export function ObjectivePanel({}) {
               <Image
                 src={`/images/custodians.png`}
                 alt={`Custodians Token`}
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
               />
               <div
                 className="flexRow"

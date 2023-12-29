@@ -54,8 +54,8 @@ export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
       <Image
         src={`/images/${type.toLowerCase()}_icon.svg`}
         alt={`${type.toLowerCase()} planet icon`}
-        layout="fill"
-        objectFit="contain"
+        fill
+        style={{ objectFit: "contain" }}
       />
     </div>
   );
