@@ -34,30 +34,37 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
-              gap: 0,
               paddingBottom: responsivePixels(4),
               width: "100%",
+              fontSize: responsivePixels(24),
             }}
           >
             <div className="flexRow centered" style={{ width: "100%" }}>
               Signoreliro
             </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Grant
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Ilya
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Benjamin
+            </div>
           </div>
         </LabeledDiv>
 
-        <Link href={`/`}>
-          <a style={{ marginTop: responsivePixels(12) }}>
-            <BorderedDiv>
-              <div
-                className="flexColumn mediumFont"
-                style={{
-                  minWidth: responsivePixels(190),
-                }}
-              >
-                Back
-              </div>
-            </BorderedDiv>
-          </a>
+        <Link href={`/`} style={{ marginTop: responsivePixels(12) }}>
+          <BorderedDiv>
+            <div
+              className="flexColumn mediumFont"
+              style={{
+                minWidth: responsivePixels(190),
+              }}
+            >
+              Back
+            </div>
+          </BorderedDiv>
         </Link>
       </div>
     </div>
