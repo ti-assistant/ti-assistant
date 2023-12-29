@@ -72,8 +72,8 @@ export default function LegendaryPlanetIcon({
           <Image
             src="/images/legendary_planet.svg"
             alt="Legendary Planet Icon"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         </div>
       </div>

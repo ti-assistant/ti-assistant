@@ -51,8 +51,8 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             <Image
               src="/images/blue_tech.webp"
               alt="Blue Tech Skip"
-              width="22px"
-              height="22px"
+              width={22}
+              height={22}
             />
           </div>
         </Tab>
@@ -61,8 +61,8 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             <Image
               src="/images/green_tech.webp"
               alt="Green Tech Skip"
-              width="22px"
-              height="22px"
+              width={22}
+              height={22}
             />
           </div>
         </Tab>
@@ -71,8 +71,8 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             <Image
               src="/images/yellow_tech.webp"
               alt="Yellow Tech Skip"
-              width="22px"
-              height="22px"
+              width={22}
+              height={22}
             />
           </div>
         </Tab>
@@ -81,8 +81,8 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             <Image
               src="/images/red_tech.webp"
               alt="Red Tech Skip"
-              width="22px"
-              height="22px"
+              width={22}
+              height={22}
             />
           </div>
         </Tab>

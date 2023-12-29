@@ -17,7 +17,7 @@ export default function ResponsiveLogo({ size }: { size: Size }) {
 
   return (
     <div className={styles.ResponsiveLogo} style={style}>
-      <Image src={Logo} alt="" layout="fill" objectFit="contain" />
+      <Image src={Logo} alt="" fill style={{ objectFit: "contain" }} />
     </div>
   );
 }

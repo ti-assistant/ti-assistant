@@ -123,19 +123,17 @@ export default function FAQPage() {
             , and I&apos;ll get back to you as soon as I can.
           </div>
         </div>
-        <Link href={`/`}>
-          <a style={{ marginTop: responsivePixels(12) }}>
-            <BorderedDiv style={{ minWidth: responsivePixels(190) }}>
-              <div
-                className="flexColumn"
-                style={{
-                  minWidth: responsivePixels(190),
-                }}
-              >
-                Back
-              </div>
-            </BorderedDiv>
-          </a>
+        <Link href={`/`} style={{ marginTop: responsivePixels(12) }}>
+          <BorderedDiv style={{ minWidth: responsivePixels(190) }}>
+            <div
+              className="flexColumn"
+              style={{
+                minWidth: responsivePixels(190),
+              }}
+            >
+              Back
+            </div>
+          </BorderedDiv>
         </Link>
       </div>
     </div>

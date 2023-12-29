@@ -318,8 +318,8 @@ export default function Footer({}) {
                 <Image
                   src={`/images/map_icon_outline.svg`}
                   alt={`Map Icon`}
-                  layout="fill"
-                  objectFit="contain"
+                  fill
+                  style={{ objectFit: "contain" }}
                 />
               </div>
             </button>
@@ -356,8 +356,8 @@ export default function Footer({}) {
                 <Image
                   src={`/images/tech_icon.svg`}
                   alt={`Tech Icon`}
-                  layout="fill"
-                  objectFit="contain"
+                  fill
+                  style={{ objectFit: "contain" }}
                 />
               </div>
             </div> */}
@@ -378,14 +378,14 @@ export default function Footer({}) {
               {/* <Image
                 src={`/images/objectives_icon.svg`}
                 alt={`Objectives Icon`}
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
               /> */}
               <Image
                 src={`/images/objectives_icon_two.svg`}
                 alt={`Objectives Icon`}
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
               />
             </div>
           </button>

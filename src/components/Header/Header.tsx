@@ -183,22 +183,18 @@ export default function Header() {
         <ClientOnlyHoverMenu label={`Game: ${gameid}`}>
           <div className="flexColumn">
             <Link href={`/game/${gameid}`}>
-              <a>
-                {qrCode ? (
-                  <img src={qrCode} alt="QR Code for joining game" />
-                ) : null}
-              </a>
+              {qrCode ? (
+                <img src={qrCode} alt="QR Code for joining game" />
+              ) : null}
             </Link>
           </div>
         </ClientOnlyHoverMenu>
       </div>
-      <Link href={"/"}>
-        <a className={styles.HomeLink}>
-          <div>
-            <ResponsiveLogo size={"100%"} />
-          </div>
-          Twilight Imperium Assistant
-        </a>
+      <Link href={"/"} className={styles.HomeLink}>
+        <div>
+          <ResponsiveLogo size={"100%"} />
+        </div>
+        Twilight Imperium Assistant
       </Link>
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>

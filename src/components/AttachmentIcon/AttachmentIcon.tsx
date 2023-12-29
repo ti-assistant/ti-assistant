@@ -42,8 +42,8 @@ export default function AttachmentIcon({
           <Image
             src={`/images/demilitarized_zone.svg`}
             alt={`Demilitarized Zone`}
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: "contain" }}
           />
         </div>
       );
@@ -105,8 +105,8 @@ export default function AttachmentIcon({
             <Image
               src={`/images/tomb_symbol.webp`}
               alt={`Tomb`}
-              layout="fill"
-              objectFit="contain"
+              fill
+              style={{ objectFit: "contain" }}
             />
           </div>
           <CustomSizeResources
@@ -144,8 +144,8 @@ export default function AttachmentIcon({
     //   <Image
     //     src={`/images/factions/${adjustedFactionName}.webp`}
     //     alt={`${factionId} Icon`}
-    //     layout="fill"
-    //     objectFit="contain"
+    //     fill
+    //     style={{ objectFit: "contain" }}
     //   />
     // );
   }, [attachment, hasSkip, hideBorder, size]);

@@ -65,47 +65,43 @@ export default function ObjectivesHeader({
         <div className={styles.InnerObjectivesHeader}>
           <Sidebars left={leftSidebar} right={rightSidebar} />
 
-          <Link href={"/"}>
-            <a
-              className={`flexRow extraLargeFont nonMobile ${styles.HomeLink} ${styles.desktop}`}
-            >
-              <ResponsiveLogo size={32} />
-              Twilight Imperium Assistant
-            </a>
+          <Link
+            href={"/"}
+            className={`flexRow extraLargeFont nonMobile ${styles.HomeLink} ${styles.desktop}`}
+          >
+            <ResponsiveLogo size={32} />
+            Twilight Imperium Assistant
           </Link>
-          <Link href={"/"}>
-            <a
-              className={`flexRow hugeFont mobileOnly ${styles.HomeLink} ${styles.mobile}`}
-            >
-              <ResponsiveLogo size={28} />
-              Twilight Imperium Assistant
-            </a>
+          <Link
+            href={"/"}
+            className={`flexRow hugeFont mobileOnly ${styles.HomeLink} ${styles.mobile}`}
+          >
+            <ResponsiveLogo size={28} />
+            Twilight Imperium Assistant
           </Link>
 
           {gameId ? (
             <Link href={`/game/${gameId}`}>
-              <a>
-                <ClientOnlyHoverMenu
-                  label={`Game: ${gameId}`}
-                  buttonStyle={{
-                    position: "fixed",
-                    top: responsivePixels(24),
-                    right: responsivePixels(120),
+              <ClientOnlyHoverMenu
+                label={`Game: ${gameId}`}
+                buttonStyle={{
+                  position: "fixed",
+                  top: responsivePixels(24),
+                  right: responsivePixels(120),
+                }}
+              >
+                <div
+                  className="flexColumn"
+                  style={{
+                    position: "relative",
+                    marginTop: responsivePixels(8),
                   }}
                 >
-                  <div
-                    className="flexColumn"
-                    style={{
-                      position: "relative",
-                      marginTop: responsivePixels(8),
-                    }}
-                  >
-                    {qrCode ? (
-                      <img src={qrCode} alt="QR Code for joining game" />
-                    ) : null}
-                  </div>
-                </ClientOnlyHoverMenu>
-              </a>
+                  {qrCode ? (
+                    <img src={qrCode} alt="QR Code for joining game" />
+                  ) : null}
+                </div>
+              </ClientOnlyHoverMenu>
             </Link>
           ) : null}
         </div>

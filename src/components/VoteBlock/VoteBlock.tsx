@@ -372,6 +372,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
         {completeRiders.map((rider) => {
           return (
             <div
+              key={rider.rider}
               className="flexRow"
               style={{
                 gap: responsivePixels(4),
