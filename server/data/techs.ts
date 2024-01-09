@@ -150,12 +150,12 @@ export const BASE_TECHS: Record<TechId, BaseTech> = {
     },
     type: "UPGRADE",
   },
-  "Dacxive Animators": {
+  "Daxcive Animators": {
     description:
       "After you win a ground combat, you may place 1 infantry from your reinforcements on that planet",
     expansion: "BASE",
-    id: "Dacxive Animators",
-    name: "Dacxive Animators",
+    id: "Daxcive Animators",
+    name: "Daxcive Animators",
     prereqs: ["GREEN"],
     type: "GREEN",
   },

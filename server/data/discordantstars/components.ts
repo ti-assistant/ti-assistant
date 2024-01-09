@@ -36,14 +36,14 @@ export const DISCORDANT_STARS_COMPONENTS: Record<
     name: "Impressment Programs",
     type: "TECH",
   },
-  // "Gledge Base": {
-  //   description:
-  //     "Attach this card to a non-home planet you control.\n\nThis planet's resource value is increased by 2.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Gledge Union",
-  //   name: "Gledge Base",
-  //   type: "PROMISSORY",
-  // },
+  "Gledge Base": {
+    description:
+      "ACTION: Attach this card to a non-home planet you control.\n\nThis planet's resource value is increased by 2.",
+    expansion: "DISCORDANT STARS",
+    faction: "Gledge Union",
+    name: "Gledge Base",
+    type: "PROMISSORY",
+  },
   // "Mantle Cracking": {
   //   description:
   //     'Place 1 "Core" token on a non-home planet you control other than Mecatol Rex that does not already contain a Core token to gain a number of trade goods equal to that planet\'s combined resource and influence values.',

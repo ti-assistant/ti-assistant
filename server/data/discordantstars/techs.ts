@@ -22,53 +22,54 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "YELLOW",
     },
     // Bentor Conglomerate
-    // "Broker Network": {
-    //   description:
-    //     "Each planet you control that has a technology specialty or an attachment gains the PRODUCTION 1 ability as if it were a unit.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Bentor Conglomerate",
-    //   id: "Broker Network",
-    // name: "Broker Network",
-    //   prereqs: ["GREEN"],
-    //   type: "GREEN",
-    // },
-    // "Merged Replicators": {
-    //   description:
-    //     "When 1 or more of your units use PRODUCTION, you may exhaust this card to increase the PRODUCTION value of 1 of those units to match the PRODUCTION value of the unit on the game board with the highest PRODUCTION value, or apply +2 to the total PRODUCTION value of those units.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Bentor Conglomerate",
-    //   id: "Merged Replicators",
-    // name: "Merged Replicators",
-    //   prereqs: ["YELLOW", "YELLOW"],
-    //   type: "YELLOW",
-    // },
+    "Broker Network": {
+      description:
+        "Each planet you control that has a technology specialty or an attachment gains the PRODUCTION 1 ability as if it were a unit.",
+      expansion: "DISCORDANT STARS",
+      faction: "Bentor Conglomerate",
+      id: "Broker Network",
+      name: "Broker Network",
+      prereqs: ["GREEN"],
+      type: "GREEN",
+    },
+    "Merged Replicators": {
+      description:
+        "When 1 or more of your units use PRODUCTION, you may exhaust this card to increase the PRODUCTION value of 1 of those units to match the PRODUCTION value of the unit on the game board with the highest PRODUCTION value, or apply +2 to the total PRODUCTION value of those units.",
+      expansion: "DISCORDANT STARS",
+      faction: "Bentor Conglomerate",
+      id: "Merged Replicators",
+      name: "Merged Replicators",
+      prereqs: ["YELLOW", "YELLOW"],
+      type: "YELLOW",
+    },
     // Berserkers of Kjalengard
-    // "Star Dragon II": {
-    //   description: "This unit may ignore the movement effects of anomalies.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Berserkers of Kjalengard",
-    //   id: "Star Dragon II",
-    // name: "Star Dragon II",
-    //   prereqs: ["BLUE", "BLUE"],
-    //   replaces: "Carrier II",
-    //   stats: {
-    //     capacity: 6,
-    //     combat: 7,
-    //     cost: 3,
-    //     move: 2,
-    //   },
-    //   type: "UPGRADE",
-    // },
-    // "Zhrgar Stimulants": {
-    //   description:
-    //     "After you activate a system that contains a Glory token, you may return 3 of your captured units to gain 1 command token.\n\nAfter a player rolls combat dice, you may exhaust this card to allow that player reroll up to 3 of those dice.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Berserkers of Kjalengard",
-    //   id: "Zhrgar Stimulants",
-    // name: "Zhrgar Stimulants",
-    //   prereqs: ["GREEN"],
-    //   type: "GREEN",
-    // },
+    "Star Dragon II": {
+      abilities: [],
+      description: "This unit may ignore the movement effects of anomalies.",
+      expansion: "DISCORDANT STARS",
+      faction: "Berserkers of Kjalengard",
+      id: "Star Dragon II",
+      name: "Star Dragon II",
+      prereqs: ["BLUE", "BLUE"],
+      replaces: "Carrier II",
+      stats: {
+        cost: 3,
+        combat: 7,
+        move: 2,
+        capacity: 6,
+      },
+      type: "UPGRADE",
+    },
+    "Zhrgar Stimulants": {
+      description:
+        "After you activate a system that contains a Glory token, you may return 3 of your captured units to gain 1 command token.\n\nAfter a player rolls combat dice, you may exhaust this card to allow that player reroll up to 3 of those dice.",
+      expansion: "DISCORDANT STARS",
+      faction: "Berserkers of Kjalengard",
+      id: "Zhrgar Stimulants",
+      name: "Zhrgar Stimulants",
+      prereqs: ["GREEN"],
+      type: "GREEN",
+    },
     // Blex Pestilence
     // "Biotic Weapons": {
     //   description:
@@ -121,33 +122,34 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       stats: {},
     },
     // Cheiran Hordes
-    // "Chitin Hulk II": {
-    //   description:
-    //     "This unit cannot be destroyed by “Direct Hit” action cards.\n\nWhen this unit is destroyed, you may place 1 fighter or 1 destroyer from your reinforcements in this system's space area.\n\nSUSTAIN DAMAGE\n\nBOMBARDMENT 5",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Cheiran Hordes",
-    //   id: "Chitin Hulk II",
-    // name: "Chitin Hulk II",
-    //   prereqs: ["BLUE", "BLUE", "YELLOW"],
-    //   replaces: "Dreadnought II",
-    //   stats: {
-    //     capacity: 1,
-    //     combat: 5,
-    //     cost: 4,
-    //     move: 2,
-    //   },
-    //   type: "UPGRADE",
-    // },
-    // "Brood Pod": {
-    //   description:
-    //     "After another player activates a system that contains 1 of your structures, you may exhaust this card to produce 1 ship in the active system.\n\nFor each of your structures in the active system, you may remove that unit from the game board to reduce the cost of the produced ship by 3.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Cheiran Hordes",
-    //   id: "Brood Pod",
-    // name: "Brood Pod",
-    //   prereqs: ["RED", "RED"],
-    //   type: "RED",
-    // },
+    "Chitin Hulk II": {
+      abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 5"],
+      description:
+        "This unit cannot be destroyed by “Direct Hit” action cards.\n\nWhen this unit is destroyed, you may place 1 fighter or 1 destroyer from your reinforcements in this system's space area.",
+      expansion: "DISCORDANT STARS",
+      faction: "Cheiran Hordes",
+      id: "Chitin Hulk II",
+      name: "Chitin Hulk II",
+      prereqs: ["BLUE", "BLUE", "YELLOW"],
+      replaces: "Dreadnought II",
+      stats: {
+        combat: 5,
+        cost: 4,
+        move: 2,
+        capacity: 1,
+      },
+      type: "UPGRADE",
+    },
+    "Brood Pod": {
+      description:
+        "After another player activates a system that contains 1 of your structures, you may exhaust this card to produce 1 ship in the active system.\n\nFor each of your structures in the active system, you may remove that unit from the game board to reduce the cost of the produced ship by 3.",
+      expansion: "DISCORDANT STARS",
+      faction: "Cheiran Hordes",
+      id: "Brood Pod",
+      name: "Brood Pod",
+      prereqs: ["RED", "RED"],
+      type: "RED",
+    },
     // Dih-Mohn Flotilla
     "Impressment Programs": {
       description:
@@ -178,26 +180,26 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "UPGRADE",
     },
     // Edyn Mandate
-    // "Unity Algorithm": {
-    //   description:
-    //     "Once per agenda phase, after an agenda is revealed, you may predict aloud an outcome of that agenda.\n\nIf your prediction is correct, you may score 1 public objective if you fulfill its requirements; each other player who voted for that outcome draws 1 secret objective.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Edyn Mandate",
-    //   id: "Unity Algorithm",
-    // name: "Unity Algorithm",
-    //   prereqs: ["GREEN", "GREEN", "GREEN"],
-    //   type: "GREEN",
-    // },
-    // "Encrypted Trade Hub": {
-    //   description:
-    //     "You may exhaust this card to allow a player to exchange 1 of their relics or agendas as part of a transaction.\n\nYou always vote last during the agenda phase. When an outcome you voted for or predicted is resolved, each player who voted for that outcome gains 1 commodity.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Edyn Mandate",
-    //   id: "Encrypted Trade Hub",
-    // name: "Encrypted Trade Hub",
-    //   prereqs: ["YELLOW", "YELLOW"],
-    //   type: "YELLOW",
-    // },
+    "Unity Algorithm": {
+      description:
+        "Once per agenda phase, after an agenda is revealed, you may predict aloud an outcome of that agenda. If your prediction is correct, you may score 1 public objective if you fulfill its requirements; each other player who voted for that outcome draws 1 secret objective.",
+      expansion: "DISCORDANT STARS",
+      faction: "Edyn Mandate",
+      id: "Unity Algorithm",
+      name: "Unity Algorithm",
+      prereqs: ["GREEN", "GREEN", "GREEN"],
+      type: "GREEN",
+    },
+    "Encrypted Trade Hub": {
+      description:
+        "You may exhaust this card to allow a player to exchange 1 of their relics or agendas as part of a transaction.\n\nYou always vote last during the agenda phase. When an outcome you voted for or predicted is resolved, each player who voted for that outcome gains 1 commodity.",
+      expansion: "DISCORDANT STARS",
+      faction: "Edyn Mandate",
+      id: "Encrypted Trade Hub",
+      name: "Encrypted Trade Hub",
+      prereqs: ["YELLOW", "YELLOW"],
+      type: "YELLOW",
+    },
     // Florzen Profiteers
     "Blackmail Programs": {
       description:
@@ -277,48 +279,50 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "UPGRADE",
     },
     // Ghoti Wayfarers
-    // "Networked Command": {
-    //   description:
-    //     "Up to 3 ships in your home system do not count against your fleet pool.\n\nWhen you cast 1 or more votes, you may exhaust this card to cast an additional number of votes equal to the number of command tokens in your fleet pool.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Ghoti Wayfarers",
-    //   id: "Networked Command",
-    // name: "Networked Command",
-    //   prereqs: ["GREEN"],
-    //   type: "GREEN",
-    // },
-    // "Parallel Production": {
-    //   description:
-    //     "When you produce 1 or more units, you may produce 1 additional unit in a system that contains 1 or more of your ships and 1 of your command tokens.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Ghoti Wayfarers",
-    //   id: "Parallel Production",
-    // name: "Parallel Production",
-    //   prereqs: ["YELLOW"],
-    //   type: "YELLOW",
-    // },
+    "Networked Command": {
+      description:
+        "Up to 3 ships in your home system do not count against your fleet pool.\n\nWhen you cast 1 or more votes, you may exhaust this card to cast an additional number of votes equal to the number of command tokens in your fleet pool.",
+      expansion: "DISCORDANT STARS",
+      faction: "Ghoti Wayfarers",
+      id: "Networked Command",
+      name: "Networked Command",
+      prereqs: ["GREEN"],
+      type: "GREEN",
+    },
+    "Parallel Production": {
+      description:
+        "When you produce 1 or more units, you may produce 1 additional unit in a system that contains 1 or more of your ships and 1 of your command tokens.",
+      expansion: "DISCORDANT STARS",
+      faction: "Ghoti Wayfarers",
+      id: "Parallel Production",
+      name: "Parallel Production",
+      prereqs: ["YELLOW"],
+      type: "YELLOW",
+    },
     // Gledge Union
-    // "Orion Platform II": {
-    //   description:
-    //     "When this unit produces 1 or more hits against another player's units, explore this planet.\n\nYou may use this unit's SPACE CANNON against ships that are adjacent to this unit's system.\n\nPLANETARY SHIELD\n\nSPACE CANNON 5",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Gledge Union",
-    //   id: "Orion Platform II",
-    // name: "Orion Platform II",
-    //   prereqs: ["RED", "YELLOW"],
-    //   replaces: "PDS II",
-    //   type: "UPGRADE",
-    // },
-    // "Lightning Drives": {
-    //   description:
-    //     "During movement, you may increase the move value of each of your units not transporting fighters or infantry by 1.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Gledge Union",
-    //   id: "Lightning Drives",
-    // name: "Lightning Drives",
-    //   prereqs: ["BLUE", "BLUE", "BLUE"],
-    //   type: "BLUE",
-    // },
+    "Orion Platform II": {
+      abilities: ["PLANETARY SHIELD", "SPACE CANNON 5"],
+      description:
+        "When this unit produces 1 or more hits against another player's units, explore this planet.\n\nYou may use this unit's SPACE CANNON against ships that are adjacent to this unit's system.",
+      expansion: "DISCORDANT STARS",
+      faction: "Gledge Union",
+      id: "Orion Platform II",
+      name: "Orion Platform II",
+      prereqs: ["RED", "YELLOW"],
+      stats: {},
+      replaces: "PDS II",
+      type: "UPGRADE",
+    },
+    "Lightning Drives": {
+      description:
+        "During movement, you may increase the move value of each of your units not transporting fighters or infantry by 1.",
+      expansion: "DISCORDANT STARS",
+      faction: "Gledge Union",
+      id: "Lightning Drives",
+      name: "Lightning Drives",
+      prereqs: ["BLUE", "BLUE", "BLUE"],
+      type: "BLUE",
+    },
     // Glimmer of Mortheus
     "Fractal Plating": {
       description:
@@ -362,26 +366,26 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       type: "BLUE",
     },
     // Monks of Kolume
-    // "Applied Biothermics": {
-    //   description:
-    //     "When you pass, you may gain 1 trade good for each other player who has passed.\n\nACTION: Exhaust this card.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Monks of Kolume",
-    //   id: "Applied Biothermics",
-    // name: "Applied Biothermics",
-    //   prereqs: ["GREEN", "GREEN"],
-    //   type: "GREEN",
-    // },
-    // "Omniscience Field": {
-    //   description:
-    //     "After a system is activated, you may exhaust this card to choose 1 player. Apply +1 or -1 to all rolls that player makes during this tactical action.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Monks of Kolume",
-    //   id: "Omniscience Field",
-    // name: "Omniscience Field",
-    //   prereqs: ["RED", "RED", "RED"],
-    //   type: "RED",
-    // },
+    "Applied Biothermics": {
+      description:
+        "When you pass, you may gain 1 commodity for each other player who has passed.\n\nACTION: Exhaust this card.",
+      expansion: "DISCORDANT STARS",
+      faction: "Monks of Kolume",
+      id: "Applied Biothermics",
+      name: "Applied Biothermics",
+      prereqs: ["GREEN", "GREEN"],
+      type: "GREEN",
+    },
+    "Omniscience Field": {
+      description:
+        "After a system is activated, you may exhaust this card to choose 1 player. Apply +1 or -1 to all rolls that player makes during this tactical action.",
+      expansion: "DISCORDANT STARS",
+      faction: "Monks of Kolume",
+      id: "Omniscience Field",
+      name: "Omniscience Field",
+      prereqs: ["RED", "RED", "RED"],
+      type: "RED",
+    },
     // Kortali Tribunal
     "Tempest Drive": {
       description:
@@ -403,27 +407,48 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       prereqs: ["RED", "RED"],
       type: "RED",
     },
+    // Kyro Sodality
+    "Indoctrination Team": {
+      description:
+        "During the agenda phase, after an outcome you voted for is resolved, place 2 infantry from your reinforcements on a planet you control.",
+      expansion: "DISCORDANT STARS",
+      faction: "Kyro Sodality",
+      id: "Indoctrination Team",
+      name: "Indoctrination Team",
+      prereqs: ["GREEN", "GREEN"],
+      type: "GREEN",
+    },
+    "Vector Program": {
+      description:
+        "At the start of the strategy phase, you may place any number of your trade goods on any combination of strategy cards. Then, place 2 trade goods from the supply on 1 strategy card.",
+      expansion: "DISCORDANT STARS",
+      faction: "Kyro Sodality",
+      id: "Vector Program",
+      name: "Vector Program",
+      prereqs: ["YELLOW"],
+      type: "YELLOW",
+    },
     // Lanefir Remnants
-    // "Spark Thrusters": {
-    //   description:
-    //     "ACTION: Spend 1 command token from your strategy pool or purge 1 relic fragment to move 1 of your ships to an adjacent system that contains no other player’s ships. If you spent a command token, exhaust this card.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Lanefir Remnants",
-    //   id: "Spark Thrusters",
-    // name: "Spark Thrusters",
-    //   prereqs: ["BLUE", "BLUE"],
-    //   type: "BLUE",
-    // },
-    // "ATS Armaments": {
-    //   description:
-    //     "After you explore, or purge 1 or more relic fragments, place 1 commodity token on this card.\n\nAt the start of a round of combat, remove any number of tokens from this card to reroll up to that many of your dice during this round of combat.",
-    //   expansion: "DISCORDANT STARS",
-    //   faction: "Lanefir Remnants",
-    //   id: "ATS Armaments",
-    // name: "ATS Armaments",
-    //   prereqs: ["RED", "RED"],
-    //   type: "RED",
-    // },
+    "Spark Thrusters": {
+      description:
+        "ACTION: Spend 1 command token from your strategy pool or purge 1 relic fragment to move 1 of your ships to an adjacent system that contains no other player's ships. If you spent a command token, exhaust this card.",
+      expansion: "DISCORDANT STARS",
+      faction: "Lanefir Remnants",
+      id: "Spark Thrusters",
+      name: "Spark Thrusters",
+      prereqs: ["BLUE", "BLUE"],
+      type: "BLUE",
+    },
+    "ATS Armaments": {
+      description:
+        "After you explore, or purge 1 or more relic fragments, place 1 commodity token on this card.\n\nAt the start of a round of combat, remove any number of tokens from this card to reroll up to that many of your dice during this round of combat.",
+      expansion: "DISCORDANT STARS",
+      faction: "Lanefir Remnants",
+      id: "ATS Armaments",
+      name: "ATS Armaments",
+      prereqs: ["RED", "RED"],
+      type: "RED",
+    },
     // Li-Zho Dynasty
     "Heavy Bomber II": {
       abilities: ["BOMBARDMENT 8"],
@@ -501,6 +526,33 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         combat: 4,
       },
       type: "UPGRADE",
+    },
+    // Nokar Sellships
+    "Sabre II": {
+      abilities: ["ANTI-FIGHTER BARRAGE 6 (x3)"],
+      description:
+        "After this unit is destroyed during combat, roll a die, on a result equal to or greater than 7, produce up to 1 hit against your opponent's ships.",
+      expansion: "DISCORDANT STARS",
+      faction: "Nokar Sellships",
+      id: "Sabre II",
+      name: "Sabre II",
+      prereqs: ["RED", "RED"],
+      stats: {
+        cost: 1,
+        combat: 7,
+        move: 2,
+      },
+      type: "UPGRADE",
+    },
+    "Local Contracts": {
+      description:
+        "During the action phase: You may exhaust this card to use the PRODUCTION ability of 1 of your units. Then, place 1 command token from your reinforcements in that unit's system.",
+      expansion: "DISCORDANT STARS",
+      faction: "Nokar Sellships",
+      id: "Local Contracts",
+      name: "Local Contracts",
+      prereqs: ["YELLOW", "YELLOW"],
+      type: "YELLOW",
     },
     // Olradin League
     "False Flag Operations": {

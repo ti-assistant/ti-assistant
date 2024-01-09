@@ -1267,7 +1267,7 @@ export const BASE_FACTIONS: Record<FactionId, BaseFaction> = {
     shortname: "Nekro",
     startswith: {
       planets: ["Mordai II"],
-      techs: ["Dacxive Animators"],
+      techs: ["Daxcive Animators"],
       units: {
         Carrier: 1,
         Cruiser: 1,
