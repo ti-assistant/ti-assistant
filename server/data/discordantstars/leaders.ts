@@ -34,47 +34,64 @@ export const DISCORDANT_STARS_LEADERS: Record<
     type: "HERO",
   },
   // Bentor Conglomerate
-  // "COO Mgur": {
-  //   description:
-  //     "Exhaust this card and choose 1 player. For each Fragment token on your faction sheet, that player gains 1 commodity. For each commodity they would gain in excess of their commodity value, they gain 1 trade good instead.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Bentor Conglomerate",
-  //   name: "C.O.O. Mgur",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "AGENT",
-  // },
-  // "CEO Ken Tucc": {
-  //   abilityName: "Primordial Data Core",
-  //   description:
-  //     "Purge this card to explore each planet you control in any order.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Bentor Conglomerate",
-  //   name: "C.E.O. Ken Tucc",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
+  "COO Mgur": {
+    description:
+      "ACTION: Exhaust this card and choose 1 player.\n\nFor each Fragment token on your faction sheet, that player gains 1 commodity. For each commodity they would gain in excess of their commodity value, they gain 1 trade good instead.",
+    expansion: "DISCORDANT STARS",
+    faction: "Bentor Conglomerate",
+    name: "C.O.O. Mgur",
+    timing: "COMPONENT_ACTION",
+    type: "AGENT",
+  },
+  "CMO Ranc": {
+    description: "Your commodity value is increased by 1.",
+    expansion: "DISCORDANT STARS",
+    faction: "Bentor Conglomerate",
+    name: "C.M.O. Ranc",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "Have 3 Fragment tokens on your faction sheet.",
+  },
+  "CEO Ken Tucc": {
+    abilityName: "Primordial Data Core",
+    description:
+      "ACTION: Purge this card to explore each planet you control in any order.",
+    expansion: "DISCORDANT STARS",
+    faction: "Bentor Conglomerate",
+    name: "C.E.O. Ken Tucc",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Berserkers of Kjalengard
-  // "Ygegnad The Thunder": {
-  //   abilityName: "For Eternal Glory",
-  //   description:
-  //     "For each system that contains a Glory token, remove up to 1 command token in or adjacent to that system from the game board and gain 1 command token, if able. Then, purge this card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Berserkers of Kjalengard",
-  //   name: "Ygegnad, The Thunder",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
-  // Blex Pestilence
-  // Speygh: {
-  //   abilityName: "Galactic Blight",
-  //   description:
-  //     "Attach this card to 1 of your strategy cards. Its initiative value is 9.\n\nNon-Blex Players may only resolve 1 clause of this strategy card's primary ability and must spend 1 additional command token from their strategy pool to resolve the secondary ability of this strategy card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Blex Pestilence",
-  //   name: "Speygh",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
+  "Merkismathr Asvand": {
+    description:
+      "At the start of a combat:\n\nExhaust this card to move a Glory token to the active system, if able. Then, the active player may gain a number of commodities equal to the number of neighbors they have.",
+    expansion: "DISCORDANT STARS",
+    faction: "Berserkers of Kjalengard",
+    name: "Merkismathr Asvand",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  "Sdallari Tvungovot": {
+    description:
+      "After you roll dice during the first round of a combat:\n\nReroll the combat dice of up to 4 of your fighters or infantry, applying +1 to the results; the Kjalengard player captures any units that reroll dice this way and do not produce at least 1 hit.",
+    expansion: "DISCORDANT STARS",
+    faction: "Berserkers of Kjalengard",
+    name: "Sdallari Tvungovot",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "Have 2 Glory tokens on the game board.",
+  },
+  "Ygegnad The Thunder": {
+    abilityName: "For Eternal Glory",
+    description:
+      "ACTION: For each system that contains a Glory token, remove up to 1 command token in or adjacent to that system from the game board and gain 1 command token, if able.\n\nThen, purge this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Berserkers of Kjalengard",
+    name: "Ygegnad, The Thunder",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Celdauri Trade Confederation
   "George Nobin": {
     description:
@@ -107,16 +124,35 @@ export const DISCORDANT_STARS_LEADERS: Record<
     type: "HERO",
   },
   // Cheiran Hordes
-  // "Thakt Clqua": {
-  //   abilityName: "Biomass Event",
-  //   description:
-  //     "Gather units from your reinforcements up to equal to your starting units. Place these units, in any combination, in the space area of any systems that contain 1 of your structures and no other players’ ships, or on planets you control. Then, purge this card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Cheiran Hordes",
-  //   name: "Thakt Clqua",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
+  "Operator Kkavras": {
+    description:
+      "At the end of a player's turn:\n\nExhaust this card to allow that player to remove 1 of their command tokens from the game board and place that token in an adjacent system that contains 1 or more of their structures and none of their command tokens.",
+    expansion: "DISCORDANT STARS",
+    faction: "Cheiran Hordes",
+    name: "Operator Kkavras",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  "Spc Phquaiset": {
+    description:
+      "While you are the defender during ground combat:\n\nAfter your opponent produces 1 or more hits against your units, you may spend 1 commodity or 1 trade good to cancel 1 of those hits.",
+    expansion: "DISCORDANT STARS",
+    faction: "Cheiran Hordes",
+    name: "Spc. Phquaiset",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "Have 4 structures on non-home planets.",
+  },
+  "Thakt Clqua": {
+    abilityName: "Biomass Event",
+    description:
+      "ACTION: Gather units from your reinforcements up to equal to your starting units. Place these units, in any combination, in the space area of any systems that contain 1 of your structures and no other players' ships, or on planets you control.\n\nThen, purge this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Cheiran Hordes",
+    name: "Thakt Clqua",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Dih-Mohn Flotilla
   "Jgin Faru": {
     description:
@@ -145,6 +181,36 @@ export const DISCORDANT_STARS_LEADERS: Record<
     faction: "Dih-Mohn Flotilla",
     name: "Verrisus Ypru",
     timing: "OTHER",
+    type: "HERO",
+  },
+  // Edyn Mandate
+  Allant: {
+    description:
+      "After a player passes:\n\nYou may exhaust this card to choose 1 player; that player may perform up to 1 action.\n\nThen, look at the top card of the agenda deck; you may discard that agenda card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Edyn Mandate",
+    name: "Allant",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  Kadryn: {
+    description:
+      "When any game effect would allow you to score a public objective, you may instead draw 1 secret objective.",
+    expansion: "DISCORDANT STARS",
+    faction: "Edyn Mandate",
+    name: "Kadryn",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "Have 1 or more laws in play.",
+  },
+  Midir: {
+    abilityName: "Golden Order",
+    description:
+      "ACTION: For each Sigil on the game board, draw 1 agenda. Reveal and resolve each agenda in any order as if you had cast 1 vote for an outcome of your choice. Other players cannot resolve abilities during this action.",
+    expansion: "DISCORDANT STARS",
+    faction: "Edyn Mandate",
+    name: "Midir",
+    timing: "COMPONENT_ACTION",
     type: "HERO",
   },
   // Florzen Profiteers
@@ -249,27 +315,66 @@ export const DISCORDANT_STARS_LEADERS: Record<
     type: "HERO",
   },
   // Ghoti Wayfarers
-  // Nmenmede: {
-  //   abilityName: "The Ghoti Arise",
-  //   description:
-  //     "For each system that contains 1 or more of your ships, you may replace 1 of your non-fighter ships in that system with a ship from your reinforcements that has a cost value of up to 2 greater than the cost value of that ship. Then, purge this card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Ghoti Wayfarers",
-  //   name: "Nmenmede",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
+  Becece: {
+    description:
+      "When a player produces 1 or more units:\n\nYou may exhaust this card to allow that player to either produce 2 additional units or gain 1 trade good.",
+    expansion: "DISCORDANT STARS",
+    faction: "Ghoti Wayfarers",
+    name: "Becece",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  "Ceie Doleegueaunm": {
+    description:
+      "After you activate a system, you may treat each system that contains no planets as adjacent to each other system that contains no planets during this tactical action.",
+    expansion: "DISCORDANT STARS",
+    faction: "Ghoti Wayfarers",
+    name: "Ceie Doleegueaunm",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "Have units in 3 systems that do not contain planets.",
+  },
+  Nmenmede: {
+    abilityName: "The Ghoti Arise",
+    description:
+      "ACTION: For each system that contains 1 or more of your ships, you may replace 1 of your non-fighter ships in that system with a ship from your reinforcements that has a cost value of up to 2 greater than the cost value of that ship.\n\nThen, purge this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Ghoti Wayfarers",
+    name: "Nmenmede",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Gledge Union
-  // Gorthrim: {
-  //   abilityName: "World Shapers",
-  //   description:
-  //     "Reveal cards from any non-frontier exploration decks until you reveal up to 3 attachments, if able; attach those cards to any planets you control of the corresponding planet type, and discard the rest. Then, purge this card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Gledge Union",
-  //   name: "Gorthrim",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
+  Durran: {
+    description:
+      "When 1 or more of a player's units use PRODUCTION: You may exhaust this card to apply +3 to the total PRODUCTION value of that player's units.",
+    expansion: "DISCORDANT STARS",
+    faction: "Gledge Union",
+    name: "Durran",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  Voldun: {
+    description:
+      "When you use the PRODUCTION of 1 or more of your units, you may increase the total PRODUCTION value of those units by 1 for each space dock you control.",
+    expansion: "DISCORDANT STARS",
+    faction: "Gledge Union",
+    name: "Voldun",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock:
+      "Control non-fighter ships with a total combined cost value of at least 10 in 1 system.",
+  },
+  Gorthrim: {
+    abilityName: "World Shapers",
+    description:
+      "ACTION: Reveal cards from any non-frontier exploration decks until you reveal up to 3 attachments, if able; attach those cards to any planets you control of the corresponding planet type, and discard the rest.\n\nThen, purge this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Gledge Union",
+    name: "Gorthrim",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Glimmer of Mortheus
   Walik: {
     description:
@@ -360,37 +465,95 @@ export const DISCORDANT_STARS_LEADERS: Record<
     timing: "OTHER",
     type: "HERO",
   },
+  // Kyro Sodality
+  Tox: {
+    description:
+      "After a player loses or draws a ground combat: You may exhaust this card to allow that player to replenish their commodities; place a number of infantry equal to 1 less than their commodity value on 1 planet you control.",
+    expansion: "DISCORDANT STARS",
+    faction: "Kyro Sodality",
+    name: "Tox",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  "Silas Deriga": {
+    description:
+      "When you cast votes: Remove any number of your infantry from the game board to cast 1 additional vote for each infantry removed.",
+    expansion: "DISCORDANT STARS",
+    faction: "Kyro Sodality",
+    name: "Silas Deriga",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "Have 6 infantry and 6 fighters on the game board.",
+  },
+  Speygh: {
+    abilityName: "Galactic Blight",
+    description:
+      "ACTION: Attach this card to 1 of your strategy cards. Its initiative value is 9.\n\nNon-Kyro Players may only resolve 1 clause of this strategy card's primary ability.\n\nThe Kyro player gains any trade goods placed on this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Kyro Sodality",
+    name: "Speygh",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Monks of Kolume
-  // "Disciple Fran": {
-  //   description:
-  //     "Exhaust this card to allow a player to redistribute 1 of their command tokens on their command sheet.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Monks of Kolume",
-  //   name: "Disciple Fran",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "AGENT",
-  // },
-  // "Wonell the Silent": {
-  //   abilityName: "Streaks in the Night",
-  //   description:
-  //     "Place this card near the game board; during this game round, after you perform a component action, you may use 1 of your unit's SPACE CANNON against ships in or adjacent to that unit's system, without rolling additional dice.\n\nAt the end of this game round, purge this card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Monks of Kolume",
-  //   name: "Wonell the Silent",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
+  "Disciple Fran": {
+    description:
+      "ACTION: Exhaust this card to allow a player to redistribute 1 of their command tokens on their command sheet.",
+    expansion: "DISCORDANT STARS",
+    faction: "Monks of Kolume",
+    name: "Disciple Fran",
+    timing: "COMPONENT_ACTION",
+    type: "AGENT",
+  },
+  "Issac of Sinci": {
+    description: "Apply +1 to each of your unit's ability rolls.",
+    expansion: "DISCORDANT STARS",
+    faction: "Monks of Kolume",
+    name: "Issac of Sinci",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "During the action phase, ready 1 of your technologies.",
+  },
+  "Wonell the Silent": {
+    abilityName: "Streaks in the Night",
+    description:
+      "ACTION: Place this card near the game board; during this game round, after you perform a component action, you may use 1 of your unit's SPACE CANNON against ships in or adjacent to that unit's system, without rolling additional dice.\n\nAt the end of this game round, purge this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Monks of Kolume",
+    name: "Wonell the Silent",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Lanefir Remnants
-  // "The Venerable": {
-  //   abilityName: "Broken Legacy",
-  //   description:
-  //     "Draw and reveal up to 3 relics. For each relic that started this action in a player's play area, gain 1 command token. Then, you may swap that relic for 1 of the revealed relics or relics in a player's play area. Then, shuffle the remaining relics into the relic deck and purge this card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Lanefir Remnants",
-  //   name: "The Venerable",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
+  "Vassa Hagi": {
+    description:
+      "When a player explores, you may exhaust this card to allow that player to discard 1 exploration card they drew and draw another.",
+    expansion: "DISCORDANT STARS",
+    faction: "Lanefir Remnants",
+    name: "Vassa Hagi",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  "Master Halbert": {
+    description:
+      "After you explore a planet: You may place 1 infantry from your reinforcements on that planet.",
+    expansion: "DISCORDANT STARS",
+    faction: "Lanefir Remnants",
+    name: "Master Halbert",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "7 relic fragments have been purged.",
+  },
+  "The Venerable": {
+    abilityName: "Broken Legacy",
+    description:
+      "ACTION: Draw and reveal up to 3 relics. For each relic that started this action in a player's play area, gain 1 command token. Then, you may swap that relic for 1 of the revealed relics or relics in a player's play area. \n\nThen, shuffle the remaining relics into the relic deck and purge this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Lanefir Remnants",
+    name: "The Venerable",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
   // Li-Zho Dynasty
   "Vasra Ivo": {
     description:
@@ -540,6 +703,36 @@ export const DISCORDANT_STARS_LEADERS: Record<
     expansion: "DISCORDANT STARS",
     faction: "Nivyn Star Kings",
     name: "Krill Drakkon",
+    timing: "COMPONENT_ACTION",
+    type: "HERO",
+  },
+  // Nokar Sellships
+  "Sal Sparrow": {
+    description:
+      "You may exhaust this card to allow 1 player with 1 or more ships in the active system to place 1 destroyer from their reinforcements in that system.\n\nThen, you may resolve 1 transaction with that player.",
+    expansion: "DISCORDANT STARS",
+    faction: "Nokar Sellships",
+    name: "Sal Sparrow",
+    timing: "OTHER",
+    type: "AGENT",
+  },
+  "Jack Hallard": {
+    description:
+      "Before you assign hits to your ships during a space combat, if you announced a retreat, cancel up to 2 hits. During combat, you may treat the active system as adjacent to each system adjacent to your home system.",
+    expansion: "DISCORDANT STARS",
+    faction: "Nokar Sellships",
+    name: "Jack Hallard",
+    timing: "PASSIVE",
+    type: "COMMANDER",
+    unlock: "Another player moves 1 of your ships.",
+  },
+  Starsails: {
+    abilityName: "Galactic Press Gang",
+    description:
+      "ACTION: Place this card near the game board, until the end of this game round, each of your planets gains the PRODUCTION 3 ability as if it were a unit.\n\nAt the end of this game round, purge this card.",
+    expansion: "DISCORDANT STARS",
+    faction: "Nokar Sellships",
+    name: "Starsails",
     timing: "COMPONENT_ACTION",
     type: "HERO",
   },

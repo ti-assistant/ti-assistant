@@ -60,7 +60,7 @@ type TechId =
   | "Chaos Mapping"
   | "Crimson Legionnaire II"
   | "Cruiser II"
-  | "Dacxive Animators"
+  | "Daxcive Animators"
   | "Dark Energy Tap"
   | "Destroyer II"
   | "Dimensional Splicer"

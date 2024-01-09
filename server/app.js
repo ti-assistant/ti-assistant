@@ -1,15 +1,12 @@
 const { createServer } = require("http");
-const WebSocket = require("ws");
 const { parse } = require("url");
 const next = require("next");
-const {
-  initializeApp,
-  applicationDefault,
-  cert,
-} = require("firebase-admin/app");
+const { initializeApp, cert } = require("firebase-admin/app");
+
+const HTTP_PORT = 8080;
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+const app = next({ dev, port: HTTP_PORT });
 const handle = app.getRequestHandler();
 
 app.prepare().then(async () => {
@@ -29,32 +26,9 @@ app.prepare().then(async () => {
     console.log(`Using Firestore Emulator on ${emulator}`);
     initializeApp();
   }
-  // const wss = new WebSocket.Server({ noServer: true });
 
-  // wss.on("connection", async function connection(ws) {
-  //   // console.log('incoming connection', ws);
-  //   ws.onclose = () => {
-  //     console.log("connection closed", wss.clients.size);
-  //   };
-
-  //   ws.onmessage = (message) => {
-  //     console.log("Received message: ", message.data);
-  //   };
-
-  //   ws.send("Just testing");
-  // });
-
-  // server.on("upgrade", function (req, socket, head) {
-  //   const { pathname } = parse(req.url, true);
-  //   if (pathname !== "/_next/webpack-hmr") {
-  //     wss.handleUpgrade(req, socket, head, function done(ws) {
-  //       wss.emit("connection", ws, req);
-  //     });
-  //   }
-  // });
-
-  server.listen(8080, (err) => {
+  server.listen(HTTP_PORT, (err) => {
     if (err) throw err;
-    console.log(`> Ready on http://localhost:8080`);
+    console.log(`> Ready on http://localhost:${HTTP_PORT}`);
   });
 });

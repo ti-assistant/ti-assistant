@@ -75,84 +75,188 @@ export const DISCORDANT_STARS_FACTIONS: Record<
       },
     ],
   },
-  // "Bentor Conglomerate": {
-  //   colors: {},
-  //   commodities: 2,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Bentor Conglomerate",
-  //   shortname: "Bentor",
-  //   startswith: {
-  //     planets: ["Benc", "Hau"],
-  //     choice: {
-  //       options: [
-  //         "Psychoarchaeology",
-  //         "Dark Energy Tap",
-  //         "Scanlink Drone Network",
-  //       ],
-  //       select: 2,
-  //     },
-  //     units: {
-  //       Carrier: 1,
-  //       Cruiser: 2,
-  //       Fighter: 3,
-  //       Infantry: 4,
-  //       PDS: 1,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
-  // "Berserkers of Kjalengard": {
-  //   colors: {},
-  //   commodities: 3,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Berserkers of Kjalengard",
-  //   shortname: "Kjalengard",
-  //   startswith: {
-  //     planets: ["Kjalengard", "Hulgade"],
-  //     choice: {
-  //       options: [
-  //         "Cruiser II",
-  //         "Destroyer II",
-  //         "Dreadnought II",
-  //         "Fighter II",
-  //         "Infantry II",
-  //         "PDS II",
-  //         "Space Dock II",
-  //         "War Sun",
-  //       ],
-  //       select: 1,
-  //     },
-  //     units: {
-  //       Carrier: 2,
-  //       Destroyer: 1,
-  //       Fighter: 4,
-  //       Infantry: 4,
-  //       PDS: 1,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
-  // "Blex Pestilence": {
-  //   colors: {},
-  //   commodities: 2,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Blex Pestilence",
-  //   shortname: "Blex",
-  //   startswith: {
-  //     planets: ["Avicenna"],
-  //     choice: {
-  //       options: ["Daxcive Animators", "Bio-Stims"],
-  //       select: 1,
-  //     },
-  //     units: {
-  //       Carrier: 1,
-  //       Destroyer: 1,
-  //       Dreadnought: 1,
-  //       Infantry: 3,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
+  "Bentor Conglomerate": {
+    abilities: [
+      {
+        name: "Secret Maps",
+        description:
+          "At the end of your tactical actions, you may explore 1 planet in the active system that is or contains 1 of your units with PRODUCTION that you did not explore during that tactical action.",
+      },
+      {
+        name: "Fortune Seekers",
+        description:
+          "After you explore a planet or frontier token, you may gain 1 commodity.",
+      },
+      {
+        name: "Ancient Blueprints",
+        description:
+          'The first time you gain a cultural, hazardous, industrial, or unknown relic fragment, place the corresponding "Fragment" token on your faction sheet.',
+      },
+    ],
+    colors: {},
+    commodities: 2,
+    expansion: "DISCORDANT STARS",
+    id: "Bentor Conglomerate",
+    name: "Bentor Conglomerate",
+    promissories: [
+      {
+        name: "Encryption Key",
+        description:
+          "ACTION: Attach this card to a non-home planet you control. This planet has 1 technology specialty of any color.",
+      },
+    ],
+    shortname: "Bentor",
+    startswith: {
+      planets: ["Benc", "Hau"],
+      choice: {
+        options: [
+          "Psychoarchaeology",
+          "Dark Energy Tap",
+          "Scanlink Drone Network",
+        ],
+        select: 2,
+      },
+      units: {
+        Carrier: 1,
+        Cruiser: 1,
+        Fighter: 3,
+        Infantry: 4,
+        PDS: 1,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: [
+          "SUSTAIN DAMAGE",
+          "ANTI-FIGHTER BARRAGE 9 (x2)",
+          "SPACE CANNON 9",
+          "BOMBARDMENT 9",
+        ],
+        description:
+          "Apply +1 to the results of this ship's combat and ability rolls for each Fragment token on your faction sheet.",
+        expansion: "DISCORDANT STARS",
+        name: "Wayfinder",
+        stats: {
+          cost: 8,
+          combat: "9(x2)",
+          move: 1,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "DEPLOY: When you place a Fragment token on your faction sheet, you may place 1 mech on a planet you control.",
+        expansion: "DISCORDANT STARS",
+        name: "Auctioneer",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+    ],
+  },
+  "Berserkers of Kjalengard": {
+    abilities: [
+      {
+        name: "Heroic Tales",
+        description:
+          "Capture your infantry and fighters that are destroyed during combat. When you pass, place up to 2 of your captured units in a system that contains 1 or more of your ships.",
+      },
+      {
+        name: "For Glory",
+        description:
+          "After you win a combat, you may place a Glory token in the active system; if you were the attacker, you may spend 4 trade goods to research a unit upgrade technology of the same type as 1 of your units in the active system.",
+      },
+      {
+        name: "Military Engineers",
+        description:
+          "When you research a unit upgrade technology, each of your unit upgrade technologies may satisfy 1 prerequisite it shares with the technology you are researching.",
+      },
+    ],
+    colors: {},
+    commodities: 3,
+    expansion: "DISCORDANT STARS",
+    id: "Berserkers of Kjalengard",
+    name: "Berserkers of Kjalengard",
+    promissories: [
+      {
+        name: "Vassalage",
+        description:
+          "At the start of combat:\n\nApply +1 to the results of each of your fighters' combat rolls during this combat. The Kjalengard player captures each of your fighters destroyed during this combat.\n\nThen, return this card to the Kjalengard player.",
+      },
+    ],
+    shortname: "Kjalengard",
+    startswith: {
+      planets: ["Kjalengard", "Hulgade"],
+      choice: {
+        options: [
+          "Cruiser II",
+          "Destroyer II",
+          "Dreadnought II",
+          "Fighter II",
+          "Infantry II",
+          "PDS II",
+          "Space Dock II",
+          "War Sun",
+        ],
+        select: 1,
+      },
+      units: {
+        Carrier: 2,
+        Destroyer: 1,
+        Fighter: 4,
+        Infantry: 4,
+        PDS: 1,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "After the first round of combat in this system, you may place up to 2 of your captured units in this system or on that planet.",
+        expansion: "DISCORDANT STARS",
+        name: "Hulgade's Hammer",
+        stats: {
+          cost: 8,
+          combat: "7(x2)",
+          move: 1,
+          capacity: 6,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "When you pass, if this unit is on a planet in or adjacent to a system that contains 1 of your Glory tokens, place 1 infantry from your reinforcements on this planet.",
+        expansion: "DISCORDANT STARS",
+        name: "Skald",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+      {
+        abilities: [],
+        description:
+          "This unit may ignore the movement effects of non-supernova anomalies.",
+        expansion: "DISCORDANT STARS",
+        name: "Star Dragon I",
+        stats: {
+          cost: 3,
+          combat: 8,
+          move: 1,
+          capacity: 4,
+        },
+        type: "Carrier",
+      },
+    ],
+  },
   "Celdauri Trade Confederation": {
     abilities: [
       {
@@ -232,29 +336,96 @@ export const DISCORDANT_STARS_FACTIONS: Record<
       },
     ],
   },
-  // "Cheiran Hordes": {
-  //   colors: {},
-  //   commodities: 3,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Cheiran Hordes",
-  //   shortname: "Cheiran",
-  //   startswith: {
-  //     planets: ["Gghurn Theta", "Arche"],
-  //     choice: {
-  //       options: ["Magen Defense Grid", "Self-Assembly Routines"],
-  //       select: 1,
-  //     },
-  //     units: {
-  //       Carrier: 1,
-  //       Destroyer: 1,
-  //       Dreadnought: 1,
-  //       Fighter: 2,
-  //       Infantry: 2,
-  //       Mech: 1,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
+  "Cheiran Hordes": {
+    abilities: [
+      {
+        name: "Teeming",
+        description:
+          "During setup, place 2 additional dreadnoughts and 1 additional mech in your reinforcements.",
+      },
+      {
+        name: "Moult",
+        description:
+          "After you win a space combat as the defender, you may produce 1 ship in the active system, reducing the cost by 1 for each of your non-fighter ships destroyed during that combat.",
+      },
+      {
+        name: "Byssus",
+        description:
+          "You may treat your mechs on planets you control as structures for any purpose other than scoring objectives.",
+      },
+    ],
+    colors: {},
+    commodities: 3,
+    expansion: "DISCORDANT STARS",
+    id: "Cheiran Hordes",
+    name: "Cheiran Hordes",
+    promissories: [
+      {
+        name: "Carcinisation",
+        description:
+          "When 1 of your non-fighter ships is destroyed during combat:\n\nYou may place 2 fighters from your reinforcements in the space area of the active system.\n\nAt the end of that combat, return this card to the Cheiran Hordes player.",
+      },
+    ],
+    shortname: "Cheiran",
+    startswith: {
+      planets: ["Gghurn Theta", "Arche"],
+      choice: {
+        options: ["Magen Defense Grid", "Self Assembly Routines"],
+        select: 1,
+      },
+      units: {
+        Carrier: 1,
+        Destroyer: 1,
+        Dreadnought: 1,
+        Fighter: 2,
+        Infantry: 2,
+        Mech: 1,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE", "ANTI-FIGHTER BARRAGE 7 (x2)"],
+        description:
+          "When this unit makes a combat or ability roll, it rolls 1 additional die if this system is adjacent to or contains 1 of your structures.",
+        expansion: "DISCORDANT STARS",
+        name: "Lithodax",
+        stats: {
+          cost: 8,
+          combat: "7(x2)",
+          move: 1,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "When this unit is destroyed, you may place 1 infantry from your reinforcements on this planet.",
+        expansion: "DISCORDANT STARS",
+        name: "Nauplius",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 5"],
+        description:
+          "When this unit is destroyed, you may place 1 fighter from your reinforcements in this system's space area.",
+        expansion: "DISCORDANT STARS",
+        name: "Chitin Hulk I",
+        stats: {
+          cost: 4,
+          combat: 5,
+          move: 1,
+          capacity: 1,
+        },
+        type: "Dreadnought",
+      },
+    ],
+  },
   "Dih-Mohn Flotilla": {
     abilities: [
       {
@@ -341,30 +512,90 @@ export const DISCORDANT_STARS_FACTIONS: Record<
       },
     ],
   },
-  // "Edyn Mandate": {
-  //   colors: {},
-  //   commodities: 3,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Edyn Mandate",
-  //   shortname: "Edyn",
-  //   startswith: {
-  //     planets: ["Edyn", "Ekko", "Okke"],
-  //     techs: [
-  //       "Psychoarchaeology",
-  //       "Dark Energy Tap",
-  //       "Scanlink Drone Network",
-  //       "AI Development Algorithm",
-  //     ],
-  //     units: {
-  //       Carrier: 1,
-  //       Destroyer: 2,
-  //       Fighter: 4,
-  //       Infantry: 2,
-  //       PDS: 1,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
+  "Edyn Mandate": {
+    abilities: [
+      {
+        name: "Grace",
+        description:
+          "Once per action phase, after you resolve the primary ability of a strategy card, you may resolve the secondary ability of 1 unexhausted strategy card with a lower printed initiative number than that strategy card.",
+      },
+      {
+        name: "Decree",
+        description:
+          "You may prevent ships from moving through anomalies that contain your ground forces.",
+      },
+      {
+        name: "Radiance",
+        description:
+          "After an agenda is revealed, you may predict aloud the outcome of that agenda. If your prediction is correct, place 1 command token from another player's reinforcements in a Sigil.",
+      },
+    ],
+    colors: {},
+    commodities: 3,
+    expansion: "DISCORDANT STARS",
+    id: "Edyn Mandate",
+    name: "Edyn Mandate",
+    promissories: [
+      {
+        name: "Edyn Rider",
+        description:
+          "After an agenda is revealed:\n\nYou cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, place 1 command token from another player's reinforcements in a system that contains your units.\n\nThen, return this card to the Edyn player.",
+      },
+    ],
+    shortname: "Edyn",
+    startswith: {
+      choice: {
+        options: [
+          "Psychoarchaeology",
+          "Neural Motivator",
+          "Dark Energy Tap",
+          "Antimass Deflectors",
+          "Scanlink Drone Network",
+          "Sarween Tools",
+          "AI Development Algorithm",
+          "Plasma Scoring",
+        ],
+        select: 3,
+      },
+      planets: ["Edyn", "Ekko", "Okke"],
+      units: {
+        Carrier: 1,
+        Destroyer: 2,
+        Fighter: 4,
+        Infantry: 3,
+        PDS: 1,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "Apply +1 to the results of this unit's combat rolls for each law in play.",
+        expansion: "DISCORDANT STARS",
+        name: "Kaliburn",
+        stats: {
+          cost: 8,
+          combat: "7(x2)",
+          move: 1,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "This system is a Sigil. Place an Edyn Sigil token beneath this unit as a reminder. Game effects cannot prevent you from using this ability.",
+        expansion: "DISCORDANT STARS",
+        name: "Rune Bearer",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+    ],
+  },
   "Florzen Profiteers": {
     abilities: [
       {
@@ -612,53 +843,168 @@ export const DISCORDANT_STARS_FACTIONS: Record<
       },
     ],
   },
-  // "Ghoti Wayfarers": {
-  //   colors: {},
-  //   commodities: 4,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Ghoti Wayfarers",
-  //   shortname: "Ghoti",
-  //   startswith: {
-  //     planets: ["Ghoti"],
-  //     choice: {
-  //       options: ["Gravity Drive", "Sling Relay"],
-  //       select: 1,
-  //     },
-  //     units: {
-  //       Cruiser: 1,
-  //       Flagship: 1,
-  //       Fighter: 2,
-  //       Infantry: 3,
-  //     },
-  //   },
-  // },
-  // "Gledge Union": {
-  //   colors: {},
-  //   commodities: 2,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Gledge Union",
-  //   shortname: "Gledge",
-  //   startswith: {
-  //     planets: ["Last Stop"],
-  //     choice: {
-  //       options: [
-  //         "Psychoarchaeology",
-  //         "Scanlink Drone Network",
-  //         "AI Development Algorithm",
-  //       ],
-  //       select: 2,
-  //     },
-  //     units: {
-  //       Carrier: 1,
-  //       Destroyer: 1,
-  //       Dreadnought: 1,
-  //       Fighter: 3,
-  //       Infantry: 2,
-  //       Mech: 1,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
+  "Ghoti Wayfarers": {
+    abilities: [
+      {
+        name: "Abyssal Embrace",
+        description:
+          "When you create the game board, place the Ghoti Space tile where your home system would normally be placed. The Ghoti Space system is not a home system.",
+      },
+      {
+        name: "Mobile Command",
+        description:
+          "The system that contains your flagship is your home system. Your flagship cannot be captured and you cannot score public objectives if your flagship is not on the game board.",
+      },
+      {
+        name: "Spawning Grounds",
+        description:
+          "During setup, gain and ready the Ghoti planet card and its planet ability card; you cannot lose those cards.",
+      },
+    ],
+    colors: {},
+    commodities: 4,
+    expansion: "DISCORDANT STARS",
+    id: "Ghoti Wayfarers",
+    name: "Ghoti Wayfarers",
+    promissories: [
+      {
+        name: "Ghoti Relay",
+        description:
+          "At the start of your turn:\n\nPlace this card in your play area to produce up to 2 ships in a system that contains 1 or more of your ships.\n\nAt the start of the status phase, return this card to the Ghoti Player.",
+      },
+    ],
+    shortname: "Ghoti",
+    startswith: {
+      planets: ["Ghoti"],
+      choice: {
+        options: ["Gravity Drive", "Sling Relay"],
+        select: 1,
+      },
+      units: {
+        Cruiser: 1,
+        Flagship: 1,
+        Fighter: 2,
+        Infantry: 3,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE", "PRODUCTION X"],
+        description:
+          "While in play, this unit is also treated as a space dock with a PRODUCTION value equal to the number of command tokens in your fleet pool.",
+        expansion: "DISCORDANT STARS",
+        name: "All Mother",
+        stats: {
+          cost: 6,
+          combat: "7(x2)",
+          move: 1,
+          capacity: 5,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "This unit can be blockaded. When producing ships in your home system, place up to 1 of those units in this system's space area if it is not blockaded.",
+        expansion: "DISCORDANT STARS",
+        name: "Tioleombp",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+    ],
+  },
+  "Gledge Union": {
+    abilities: [
+      {
+        name: "Mantle Cracking",
+        description:
+          'ACTION: Place 1 "Core" token on a non-home planet you control other than Mecatol Rex that does not contain a Core token to gain up to 4 trade goods.',
+      },
+      {
+        name: "Celestial Reclamation",
+        description:
+          "Planets that contain Core tokens have a base resource value of 2 and influence value of 0. Core tokens cannot be removed from the planet that contains them.",
+      },
+      {
+        name: "Deep Mining",
+        description:
+          "When you would explore a planet that contains 1 of your mechs or structures, you may instead gain 1 trade good.",
+      },
+    ],
+    colors: {},
+    commodities: 2,
+    expansion: "DISCORDANT STARS",
+    id: "Gledge Union",
+    name: "Gledge Union",
+    promissories: [
+      {
+        name: "Gledge Base",
+        description:
+          "ACTION: Attach this card to a non-home planet you control. This planet's resource value is increased by 2.",
+      },
+    ],
+    shortname: "Gledge",
+    startswith: {
+      planets: ["Last Stop"],
+      choice: {
+        options: [
+          "Psychoarchaeology",
+          "Scanlink Drone Network",
+          "AI Development Algorithm",
+        ],
+        select: 2,
+      },
+      units: {
+        Carrier: 1,
+        Destroyer: 1,
+        Dreadnought: 1,
+        Fighter: 3,
+        Infantry: 2,
+        Mech: 1,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE", "BOMBARDMENT 7"],
+        description:
+          "When this unit makes a combat or ability roll, it rolls 1 additional die for each of your mechs in or adjacent to this system.",
+        expansion: "DISCORDANT STARS",
+        name: "Beg Bersha",
+        stats: {
+          cost: 8,
+          combat: 7,
+          move: 1,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "When you exhaust this planet to spend resources, you may also spend 1 of its influence as a resource.",
+        expansion: "DISCORDANT STARS",
+        name: "Exodriller",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+      {
+        abilities: ["PLANETARY SHIELD", "SPACE CANNON 6"],
+        description:
+          "When this unit makes a SPACE CANNON roll against another player’s units, if it rolls at least 1 result of 9 or 10, explore this planet.",
+        expansion: "DISCORDANT STARS",
+        name: "Orion Platform I",
+        stats: {},
+        type: "PDS",
+      },
+    ],
+  },
   "Glimmer of Mortheus": {
     abilities: [
       {
@@ -797,27 +1143,6 @@ export const DISCORDANT_STARS_FACTIONS: Record<
       },
     ],
   },
-  // "Monks of Kolume": {
-  //   colors: {},
-  //   commodities: 3,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Monks of Kolume",
-  //   shortname: "Kolume",
-  //   startswith: {
-  //     planets: ["Alesna", "Azle"],
-  //     choice: {
-  //       options: ["Graviton Laser System", "Predictive Intelligence"],
-  //       select: 1,
-  //     },
-  //     units: {
-  //       Carrier: 2,
-  //       Cruiser: 1,
-  //       Fighter: 2,
-  //       Infantry: 4,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
   "Kortali Tribunal": {
     abilities: [
       {
@@ -884,32 +1209,160 @@ export const DISCORDANT_STARS_FACTIONS: Record<
       },
     ],
   },
-  // "Lanefir Remnants": {
-  //   colors: {},
-  //   commodities: 2,
-  //   expansion: "DISCORDANT STARS",
-  //   name: "Lanefir Remnants",
-  //   shortname: "Lanefir",
-  //   startswith: {
-  //     planets: ["Aysis Rest", "Solitude"],
-  //     choice: {
-  //       options: [
-  //         "Dark Energy Tap",
-  //         "Scanlink Drone Network",
-  //         "AI Development Algorithm",
-  //       ],
-  //       select: 2,
-  //     },
-  //     units: {
-  //       Carrier: 2,
-  //       Destroyer: 1,
-  //       Fighter: 2,
-  //       Infantry: 3,
-  //       PDS: 1,
-  //       "Space Dock": 1,
-  //     },
-  //   },
-  // },
+  "Kyro Sodality": {
+    abilities: [
+      {
+        name: "Contagion",
+        description:
+          'After you resolve the primary or secondary ability of the "Politics" strategy card, commit 1 infantry from your reinforcements to each of 2 planets that are adjacent to a planet you control; resolve invasion on those planets.',
+      },
+      {
+        name: "Plague Reservior",
+        description:
+          "Once per action, during invasion on a planet that contains your units, you may resolve ground combat on that planet, even if it does not contain another player's ground forces.",
+      },
+      {
+        name: "Subversive",
+        description:
+          "When participating in a combat that would end in a draw, you are treated as the winner instead.",
+      },
+    ],
+    colors: {},
+    commodities: 2,
+    expansion: "DISCORDANT STARS",
+    id: "Kyro Sodality",
+    name: "Kyro Sodality",
+    promissories: [
+      {
+        name: "Kyro Rider",
+        description:
+          "After an agenda is revealed:\n\nYou cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, place 3 infantry from your reinforcements on a planet you control.\n\nThen, return this card to the Kyro player.",
+      },
+    ],
+    shortname: "Kyro",
+    startswith: {
+      planets: ["Avicenna"],
+      choice: {
+        options: ["Daxcive Animators", "Bio-Stims"],
+        select: 1,
+      },
+      units: {
+        Carrier: 1,
+        Destroyer: 1,
+        Dreadnought: 1,
+        Fighter: 1,
+        Infantry: 3,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "During invasion in this system, commit up to 1 infantry from your reinforcements to each planet in this system.",
+        expansion: "DISCORDANT STARS",
+        name: "Auriga",
+        stats: {
+          cost: 8,
+          combat: "7(x2)",
+          move: 1,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "When this unit would be destroyed, if it is damaged, you may discard 1 action card to repair it instead.",
+        expansion: "DISCORDANT STARS",
+        name: "Pustule",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+    ],
+  },
+  "Lanefir Remnants": {
+    abilities: [
+      {
+        name: "A New Edifice",
+        description:
+          "You may not use technology specialties. When you would gain a relic, instead purge it and explore up to 3 planets you control.",
+      },
+      {
+        name: "Iconoclasm",
+        description:
+          "When researching a non-unit upgrade technology, you may purge 1 of your relic fragments to ignore 1 prerequisite on the technology you are researching.",
+      },
+      {
+        name: "War Stories",
+        description:
+          "Once per action, after you win a combat, explore 1 planet you control, or if the active system does not contain any planets, the frontier exploration deck in the active system.",
+      },
+    ],
+    colors: {},
+    commodities: 2,
+    expansion: "DISCORDANT STARS",
+    id: "Lanefir Remnants",
+    name: "Lanefir Remnants",
+    promissories: [
+      {
+        name: "Spoils of War",
+        description:
+          "After you win a combat:\n\nPlace this card face-up in your play area to explore 1 planet you control.\n\nAt the start of the Lanefir player's turn, return this card to the Lanefir player.",
+      },
+    ],
+    shortname: "Lanefir",
+    startswith: {
+      planets: ["Aysis Rest", "Solitude"],
+      choice: {
+        options: [
+          "Dark Energy Tap",
+          "Scanlink Drone Network",
+          "AI Development Algorithm",
+        ],
+        select: 2,
+      },
+      units: {
+        Carrier: 2,
+        Destroyer: 1,
+        Fighter: 2,
+        Infantry: 3,
+        PDS: 1,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "At the end of a tactical action in this system, you may explore 1 planet you control in this system.",
+        expansion: "DISCORDANT STARS",
+        name: "Memory of Dusk",
+        stats: {
+          cost: 8,
+          combat: "7(x2)",
+          move: 1,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "DEPLOY: At the start of your turn, purge 1 of your relic fragments to place 1 mech on a planet you control, if you do, you may end your turn.",
+        expansion: "DISCORDANT STARS",
+        name: "Troubadour",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+    ],
+  },
   "Li-Zho Dynasty": {
     abilities: [
       {
@@ -1148,6 +1601,80 @@ export const DISCORDANT_STARS_FACTIONS: Record<
       },
     ],
   },
+  "Monks of Kolume": {
+    abilities: [
+      {
+        name: "Starfall Gunnery",
+        description:
+          "During movement, while you are not the active player, you may only use 1 of your unit's SPACE CANNON. During each of your actions, up to 3 of your non-fighter ships gain SPACE CANNON 8.",
+      },
+      {
+        name: "Deliberate Action",
+        description:
+          "You cannot redistribute command tokens during the status phase. When you pass, you may place 1 command token from your reinforcements in 1 pool on your command sheet that contains no command tokens.",
+      },
+      {
+        name: "Meditation",
+        description:
+          "ACTION: Spend 1 command token from your strategy pool to ready 1 of your technologies.",
+      },
+    ],
+    colors: {},
+    commodities: 3,
+    expansion: "DISCORDANT STARS",
+    id: "Monks of Kolume",
+    name: "Monks of Kolume",
+    promissories: [
+      {
+        name: "Combinatorial Bypass",
+        description:
+          "At the start of invasion, place this card in your play area.\n\nDuring this invasion, all other player's units lose SPACE CANNON and PLANETARY SHIELD.\n\nAt the start of your next turn, return this card to the Kolume player.",
+      },
+    ],
+    shortname: "Kolume",
+    startswith: {
+      planets: ["Alesna", "Azle"],
+      choice: {
+        options: ["Graviton Laser System", "Predictive Intelligence"],
+        select: 1,
+      },
+      units: {
+        Carrier: 2,
+        Cruiser: 1,
+        Fighter: 2,
+        Infantry: 4,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE", "SPACE CANNON 7"],
+        description:
+          "Hits produced by the SPACE CANNON abilities of your units in this system cannot be canceled.",
+        expansion: "DISCORDANT STARS",
+        name: "Halberd",
+        stats: {
+          cost: 8,
+          combat: "7(x2)",
+          move: 1,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE", "SPACE CANNON 8 (x2)"],
+        description:
+          "Hits produced by this unit cannot be assigned to non-fighter ships.\n\nAfter you spend a command token from your strategy pool, repair this unit.",
+        expansion: "DISCORDANT STARS",
+        name: "Rook",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+    ],
+  },
   "Myko-Mentori": {
     abilities: [
       {
@@ -1298,6 +1825,99 @@ export const DISCORDANT_STARS_FACTIONS: Record<
           combat: 6,
         },
         type: "Mech",
+      },
+    ],
+  },
+  "Nokar Sellships": {
+    abilities: [
+      {
+        name: "Hired Guns",
+        description:
+          "After a player activates a system, you may choose up to 3 of your ships. During this tactical action, that player may control those ships as if they were their own. At the end of this tactical action, that player replaces each of those ships with their own of the same unit type.",
+      },
+      {
+        name: "Private Fleet",
+        description:
+          "During setup, place 4 additional destroyers in your reinforcements.",
+      },
+      {
+        name: "Desperados",
+        description:
+          "When you produce 1 or more units, 1 destroyer does not count against your PRODUCTION limit. Apply +1 to your destroyers' move values while you are not the active player.",
+      },
+    ],
+    colors: {},
+    commodities: 4,
+    expansion: "DISCORDANT STARS",
+    id: "Nokar Sellships",
+    name: "Nokar Sellships",
+    promissories: [
+      {
+        name: "Nokar Navigator",
+        description:
+          "At the start of a space combat:\n\nDuring this combat, the active system is adjacent to each system that contains a planet you control for the purposes of announcing and resolving retreats.\n\nAt the end of this combat, return this card to the Nokar player.",
+      },
+    ],
+    shortname: "Nokar",
+    startswith: {
+      choice: {
+        options: [
+          "AI Development Algorithm",
+          "Dark Energy Tap",
+          "Psychoarchaeology",
+        ],
+        select: 2,
+      },
+      planets: ["Zarr", "Nokk"],
+      units: {
+        Carrier: 1,
+        Cruiser: 1,
+        Destroyer: 1,
+        Fighter: 2,
+        Infantry: 4,
+        PDS: 1,
+        "Space Dock": 1,
+      },
+    },
+    units: [
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "Apply +1 to the results of this unit's combat rolls for every 2 destroyers you control.",
+        expansion: "DISCORDANT STARS",
+        name: "Annah Regia",
+        stats: {
+          cost: 8,
+          combat: "9(x2)",
+          move: 2,
+          capacity: 3,
+        },
+        type: "Flagship",
+      },
+      {
+        abilities: ["SUSTAIN DAMAGE"],
+        description:
+          "You may treat this system as adjacent to the active system for the purposes of declaring and resolving retreats.",
+        expansion: "DISCORDANT STARS",
+        name: "Freelance Outfit",
+        stats: {
+          cost: 2,
+          combat: 6,
+        },
+        type: "Mech",
+      },
+      {
+        abilities: ["ANTI-FIGHTER BARRAGE 9 (x2)"],
+        description:
+          "After this unit is destroyed during combat, roll a die, on a result of 9 or 10, produce up to 1 hit against your opponent's ships.",
+        expansion: "DISCORDANT STARS",
+        name: "Sabre I",
+        stats: {
+          cost: 1,
+          combat: 8,
+          move: 2,
+        },
+        type: "Destroyer",
       },
     ],
   },

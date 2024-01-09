@@ -27,16 +27,16 @@ export const DISCORDANT_STARS_ATTACHMENTS: Record<
   //   resources: 2,
   // },
   // // Can attach to Mecatol?
-  // "Gledge Base": {
-  //   expansion: "DISCORDANT STARS",
-  //   influence: 0,
-  //   id: "Gledge Base",
-  // name: "Gledge Base",
-  //   required: {
-  //     home: false,
-  //   },
-  //   resources: 2,
-  // },
+  "Gledge Base": {
+    expansion: "DISCORDANT STARS",
+    influence: 0,
+    id: "Gledge Base",
+    name: "Gledge Base",
+    required: {
+      home: false,
+    },
+    resources: 2,
+  },
   "Branch Office - Broadcast Hub": {
     expansion: "DISCORDANT STARS",
     faction: "Veldyr Sovereignty",
