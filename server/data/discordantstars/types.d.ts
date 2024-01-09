@@ -26,7 +26,6 @@ declare namespace DiscordantStars {
     | "Augurs of Ilyxum"
     | "Bentor Conglomerate"
     | "Berserkers of Kjalengard"
-    // | "Blex Pestilence"
     | "Celdauri Trade Confederation"
     | "Cheiran Hordes"
     | "Dih-Mohn Flotilla"
@@ -162,15 +161,6 @@ declare namespace DiscordantStars {
     | "Sal Sparrow"
     | "Jack Hallard"
     | "Starsails";
-  // | "Speygh"
-  // | "Thakt Clqua"
-  // | "Nmenmede"
-  // | "Gorthrim"
-  // | "Ygegnad The Thunder"
-  // | "Disciple Fran"
-  // | "Wonell the Silent"
-  // | "The Venerable"
-  // | "Starsails";
   type PlanetId =
     | "Auldane"
     | "Avicenna"
@@ -268,8 +258,6 @@ declare namespace DiscordantStars {
     | "Emergency Deployment"
     | "Broker Network"
     | "Merged Replicators"
-    // | "Vector II"
-    // | "Biotic Weapons"
     | "Emergency Mobilization Protocols"
     | "Trade Port II"
     | "Chitin Hulk II"

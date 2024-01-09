@@ -544,13 +544,20 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     ],
     shortname: "Edyn",
     startswith: {
+      choice: {
+        options: [
+          "Psychoarchaeology",
+          "Neural Motivator",
+          "Dark Energy Tap",
+          "Antimass Deflectors",
+          "Scanlink Drone Network",
+          "Sarween Tools",
+          "AI Development Algorithm",
+          "Plasma Scoring",
+        ],
+        select: 3,
+      },
       planets: ["Edyn", "Ekko", "Okke"],
-      techs: [
-        "Psychoarchaeology",
-        "Dark Energy Tap",
-        "Scanlink Drone Network",
-        "AI Development Algorithm",
-      ],
       units: {
         Carrier: 1,
         Destroyer: 2,

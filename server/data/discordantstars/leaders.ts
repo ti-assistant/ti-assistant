@@ -92,17 +92,6 @@ export const DISCORDANT_STARS_LEADERS: Record<
     timing: "COMPONENT_ACTION",
     type: "HERO",
   },
-  // Blex Pestilence
-  // Speygh: {
-  //   abilityName: "Galactic Blight",
-  //   description:
-  //     "Attach this card to 1 of your strategy cards. Its initiative value is 9.\n\nNon-Blex Players may only resolve 1 clause of this strategy card's primary ability and must spend 1 additional command token from their strategy pool to resolve the secondary ability of this strategy card.",
-  //   expansion: "DISCORDANT STARS",
-  //   faction: "Blex Pestilence",
-  //   name: "Speygh",
-  //   timing: "COMPONENT_ACTION",
-  //   type: "HERO",
-  // },
   // Celdauri Trade Confederation
   "George Nobin": {
     description:

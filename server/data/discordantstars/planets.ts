@@ -1,13 +1,10 @@
 const HOME_MIDDLE = { x: 0, y: -12 };
-const MIDDLE = { x: 0, y: 0 };
 const TOP_LEFT = { x: -22, y: -36 };
 const HOME_BOTTOM_RIGHT = { x: 30, y: 32 };
-const BOTTOM_RIGHT = { x: 18, y: 32 };
 const MIDDLE_LEFT = { x: -48, y: -8 };
 const TOP_RIGHT = { x: 22, y: -38 };
 const FAR_BOTTOM_RIGHT = { x: 28, y: 42 };
 
-// TODO: Add system numbers.
 export const DISCORDANT_STARS_PLANETS: Record<
   DiscordantStars.PlanetId,
   BasePlanet

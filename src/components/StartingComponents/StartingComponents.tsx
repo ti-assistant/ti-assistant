@@ -102,6 +102,15 @@ export default function StartingComponents({
         .filter((tech) => {
           return !!techs[tech];
         })
+        .filter((tech) => {
+          if (factionId !== "Edyn Mandate") {
+            return true;
+          }
+          const selectedTypes = (startswith.techs ?? []).map(
+            (tech) => techs[tech]?.type
+          );
+          return !selectedTypes.includes(techs[tech]?.type);
+        })
         .map((tech) => {
           return techs[tech] as Tech;
         })
