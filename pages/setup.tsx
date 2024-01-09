@@ -1108,7 +1108,7 @@ function FactionSelect({
                     gridTemplateRows: "repeat(10, minmax(0, 1fr))",
                     gap: responsivePixels(4),
                     padding: responsivePixels(8),
-                    maxWidth: "88vw",
+                    maxWidth: "min(85vw, 750px)",
                     overflowX: "auto",
                   }}
                 >
@@ -1127,6 +1127,9 @@ function FactionSelect({
                         onClick={() => selectFaction(faction.id)}
                       >
                         <FactionIcon factionId={faction.id} size={20} />
+                        {/* {options["expansions"].has("DISCORDANT STARS")
+                          ? faction.shortname
+                          : faction.id} */}
                         {faction.id}
                       </button>
                     );
