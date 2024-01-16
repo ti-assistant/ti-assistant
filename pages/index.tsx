@@ -1,11 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import BorderedDiv from "../src/components/BorderedDiv/BorderedDiv";
+import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { responsivePixels } from "../src/util/util";
-import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
-import Image from "next/image";
 
 export default function HomePage() {
   const [gameId, setGameId] = useState("Game ID");
