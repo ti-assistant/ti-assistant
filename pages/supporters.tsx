@@ -17,7 +17,7 @@ export default function Supporters() {
         }}
       >
         <LabeledDiv
-          label="Supporters"
+          label="Patrons"
           rightLabel={
             <a href={`https://patreon.com/TIAssistant`}>
               <div
@@ -50,6 +50,37 @@ export default function Supporters() {
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
               Benjamin
+            </div>
+          </div>
+        </LabeledDiv>
+        <LabeledDiv
+          label="Supporters"
+          rightLabel={
+            <a href={`https://www.buymeacoffee.com/tiassistant`}>
+              <div
+                className="flexColumn mediumFont"
+                style={{
+                  width: "100%",
+                }}
+              >
+                Buy me a coffee here!
+              </div>
+            </a>
+          }
+        >
+          <div
+            className="flexColumn largeFont"
+            style={{
+              paddingBottom: responsivePixels(4),
+              width: "100%",
+              fontSize: responsivePixels(24),
+            }}
+          >
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Worldly-Charity-9737
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Ha
             </div>
           </div>
         </LabeledDiv>
