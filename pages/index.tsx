@@ -4,6 +4,8 @@ import BorderedDiv from "../src/components/BorderedDiv/BorderedDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { responsivePixels } from "../src/util/util";
+import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
+import Image from "next/image";
 
 export default function HomePage() {
   const [gameId, setGameId] = useState("Game ID");
@@ -117,7 +119,7 @@ export default function HomePage() {
         <div className="flexColumn" style={{ width: "100%" }}>
           <div
             className="flexColumn"
-            style={{ width: "75%", alignItems: "stretch" }}
+            style={{ width: "85%", alignItems: "stretch" }}
           >
             <Link href={`/supporters`}>
               <BorderedDiv>
@@ -143,30 +145,74 @@ export default function HomePage() {
                 </div>
               </BorderedDiv>
             </Link>
-            <a href={`https://patreon.com/TIAssistant`}>
-              <BorderedDiv>
-                <div
-                  className="flexColumn mediumFont"
-                  style={{
-                    width: "100%",
-                  }}
-                >
-                  Donate Trade Goods
-                </div>
-              </BorderedDiv>
-            </a>
-            <a href={`https://github.com/ti-assistant/issues/issues`}>
-              <BorderedDiv>
-                <div
-                  className="flexColumn mediumFont"
-                  style={{
-                    width: "100%",
-                  }}
-                >
-                  Report Issue
-                </div>
-              </BorderedDiv>
-            </a>
+            <LabeledDiv label="Help support TI Assistant">
+              <a
+                href={`https://patreon.com/TIAssistant`}
+                style={{ width: "100%" }}
+              >
+                <BorderedDiv>
+                  <div
+                    className="flexRow mediumFont"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Image
+                      src="/images/patreon-icon.svg"
+                      alt="icon"
+                      width={18}
+                      height={18}
+                      style={{ width: "20%" }}
+                    />
+                    <div style={{ width: "80%" }}>Become a Patron</div>
+                  </div>
+                </BorderedDiv>
+              </a>
+              <a
+                href={`https://www.buymeacoffee.com/tiassistant`}
+                style={{ width: "100%" }}
+              >
+                <BorderedDiv>
+                  <div
+                    className="flexRow mediumFont"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Image
+                      src="/images/bmc-icon.svg"
+                      alt="icon"
+                      width={18}
+                      height={18}
+                      style={{ width: "20%" }}
+                    />
+                    <div style={{ width: "80%" }}>Buy me a coffee</div>
+                  </div>
+                </BorderedDiv>
+              </a>
+              <a
+                href={`https://github.com/ti-assistant/issues/issues`}
+                style={{ width: "100%" }}
+              >
+                <BorderedDiv>
+                  <div
+                    className="flexRow mediumFont"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Image
+                      src="/images/github-icon.svg"
+                      alt="icon"
+                      width={18}
+                      height={18}
+                      style={{ width: "20%" }}
+                    />
+                    <div style={{ width: "80%" }}>Report Issue</div>
+                  </div>
+                </BorderedDiv>
+              </a>
+            </LabeledDiv>
           </div>
         </div>
       </div>
