@@ -239,6 +239,68 @@ export function LogEntryElement({
         </div>
       );
     }
+    case "SELECT_ELIGIBLE_OUTCOMES": {
+      const outcomes = logEntry.data.event.outcomes;
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          Eligible outcomes revealed as{" "}
+          {outcomes === "For/Against" ? outcomes : `Elect ${outcomes}`}
+        </div>
+      );
+    }
+    case "SELECT_SUB_AGENDA": {
+      const subAgenda = logEntry.data.event.subAgenda;
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          Covert agenda revealed as {subAgenda}
+        </div>
+      );
+    }
+    case "HIDE_OBJECTIVE": {
+      const objective = logEntry.data.event.objective;
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          {objective} removed
+        </div>
+      );
+    }
+    case "UNCLAIM_PLANET": {
+      const planet = logEntry.data.event.planet;
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${responsivePixels(10)}`,
+            gap: responsivePixels(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId={logEntry.data.event.faction} />
+          lost control of {planet}
+        </div>
+      );
+    }
     case "UNSCORE_OBJECTIVE": {
       const objective = objectives[logEntry.data.event.objective];
       if (!objective) {
