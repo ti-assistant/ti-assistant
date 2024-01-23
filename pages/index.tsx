@@ -6,6 +6,7 @@ import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { responsivePixels } from "../src/util/util";
+import { FormattedMessage } from "react-intl";
 
 export default function HomePage() {
   const [gameId, setGameId] = useState("Game ID");
@@ -58,7 +59,11 @@ export default function HomePage() {
                 fontSize: responsivePixels(44),
               }}
             >
-              New Game
+              <FormattedMessage
+                id="+HPhsr"
+                defaultMessage="New Game"
+                description="A button that will start a new game."
+              />
             </div>
           </BorderedDiv>
         </Link>

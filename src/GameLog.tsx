@@ -8,6 +8,7 @@ import { getHandler } from "./util/api/gameLog";
 import { updateGameData } from "./util/api/handler";
 import { fetcher } from "./util/api/util";
 import { responsivePixels } from "./util/util";
+import { useIntl } from "react-intl";
 
 let BASE_FACTIONS: Partial<Record<FactionId, BaseFaction>> = {};
 import("../server/data/factions").then((module) => {
@@ -200,6 +201,7 @@ export function GameLog({}) {
     gameid ? `/api/${gameid}/actionLog` : null,
     fetcher
   );
+  const intl = useIntl();
   const gameData = useGameData(gameid, []);
 
   const reversedActionLog = useMemo(() => {
@@ -216,7 +218,7 @@ export function GameLog({}) {
   }, [setupGameData]);
 
   const dynamicGameData = useMemo(() => {
-    return buildCompleteGameData(initialGameData);
+    return buildCompleteGameData(initialGameData, intl);
   }, [initialGameData]);
 
   return (

@@ -20,6 +20,7 @@ import {
   SystemContext,
   TechContext,
 } from "./Context";
+import { IntlShape, useIntl } from "react-intl";
 
 function useStableValue<Type>(value: Type, defaultValue: Type): Type {
   const prevValue = useRef<Type>(defaultValue);
@@ -37,9 +38,13 @@ function useStableValue<Type>(value: Type, defaultValue: Type): Type {
   return value;
 }
 
-let BASE_AGENDAS: Partial<Record<AgendaId, BaseAgenda>> = {};
+let getBaseAgendas: (
+  intl: IntlShape
+) => Partial<Record<AgendaId, BaseAgenda>> = () => {
+  return {};
+};
 import("../../server/data/agendas").then((module) => {
-  BASE_AGENDAS = module.BASE_AGENDAS;
+  getBaseAgendas = module.getBaseAgendas;
 });
 
 let BASE_ATTACHMENTS: Partial<Record<AttachmentId, BaseAttachment>> = {};
@@ -96,8 +101,10 @@ export default function DataProvider({ children }: PropsWithChildren) {
     }
   );
 
+  const intl = useIntl();
+
   let gameData: GameData = {
-    agendas: BASE_AGENDAS,
+    agendas: getBaseAgendas(intl),
     attachments: BASE_ATTACHMENTS,
     components: BASE_COMPONENTS,
     factions: {},
@@ -115,11 +122,11 @@ export default function DataProvider({ children }: PropsWithChildren) {
     techs: BASE_TECHS,
   };
   if (storedGameData) {
-    gameData = buildCompleteGameData(storedGameData);
+    gameData = buildCompleteGameData(storedGameData, intl);
   }
 
   const actionLog = useStableValue(gameData.actionLog ?? [], []);
-  const agendas = useStableValue(gameData.agendas ?? {}, BASE_AGENDAS);
+  const agendas = useStableValue(gameData.agendas ?? {}, getBaseAgendas(intl));
   const attachments = useStableValue(
     gameData.attachments ?? {},
     BASE_ATTACHMENTS

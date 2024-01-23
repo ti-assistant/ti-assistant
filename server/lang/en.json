@@ -1,0 +1,509 @@
+{
+  "+HPhsr": {
+    "defaultMessage": "New Game",
+    "description": "A button that will start a new game."
+  },
+  "93G7sJ": {
+    "defaultMessage": "Test string"
+  },
+  "Anti-Intellectual Revolution.Description": {
+    "defaultMessage": "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.\\n\\nAGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
+    "description": "Description for Agenda Card: Anti-Intellectual Revolution"
+  },
+  "Anti-Intellectual Revolution.Title": {
+    "defaultMessage": "Anti-Intellectual Revolution",
+    "description": "Title of Agenda Card: Anti-Intellectual Revolution"
+  },
+  "Archived Secret.Description": {
+    "defaultMessage": "Elected player draws 1 secret objective.",
+    "description": "Description for Agenda Card: Archived Secret"
+  },
+  "Archived Secret.Title": {
+    "defaultMessage": "Archived Secret",
+    "description": "Title of Agenda Card: Archived Secret"
+  },
+  "Armed Forces Standardization.Description": {
+    "defaultMessage": "The elected player places command tokens from their reinforcements so that they have 3 tokens in their tactic pool, 3 tokens in their fleet pool and 2 tokens in their strategy pool. They return any excess tokens to their reinforcements.",
+    "description": "Description for Agenda Card: Armed Forces Standardization"
+  },
+  "Armed Forces Standardization.Title": {
+    "defaultMessage": "Armed Forces Standardization",
+    "description": "Title of Agenda Card: Armed Forces Standardization"
+  },
+  "Arms Reduction.Description": {
+    "defaultMessage": "FOR : Each player destroys all but 2 of their dreadnaughts and all but 4 of their cruisers.\\n\\nAGAINST : At the start of the next strategy phase, each player exhausts each of their planets that have a technology specialty.",
+    "description": "Description for Agenda Card: Arms Reduction"
+  },
+  "Arms Reduction.Title": {
+    "defaultMessage": "Arms Reduction",
+    "description": "Title of Agenda Card: Arms Reduction"
+  },
+  "Articles of War.Description": {
+    "defaultMessage": "FOR : All mechs lose their printed abilities except for SUSTAIN DAMAGE.\\n\\nAGAINST : Each player that voted \"For\" gains 3 trade goods.",
+    "description": "Description for Agenda Card: Articles of War"
+  },
+  "Articles of War.Title": {
+    "defaultMessage": "Articles of War",
+    "description": "Title of Agenda Card: Articles of War"
+  },
+  "Checks and Balances.Description": {
+    "defaultMessage": "FOR : When a player chooses a strategy card during the strategy phase, they give that strategy card to another player that does not have 1 (or a player that does not have 2 in a three- or four-player game), if able.\\n\\nAGAINST : Each player readies only 3 of their planets at the end of this agenda phase.",
+    "description": "Description for Agenda Card: Checks and Balances"
+  },
+  "Checks and Balances.Title": {
+    "defaultMessage": "Checks and Balances",
+    "description": "Title of Agenda Card: Checks and Balances"
+  },
+  "Clandestine Operations.Description": {
+    "defaultMessage": "FOR : Each player removes 2 command tokens from their command sheet and returns those tokens to their reinforcements.\\n\\nAGAINST : Each player removes 1 command token from their fleet pool and returns that token to their reinforcements.",
+    "description": "Description for Agenda Card: Clandestine Operations"
+  },
+  "Clandestine Operations.Title": {
+    "defaultMessage": "Clandestine Operations",
+    "description": "Title of Agenda Card: Clandestine Operations"
+  },
+  "Classified Document Leaks.Description": {
+    "defaultMessage": "When this agenda is revealed, if there are no scored secret objectives, discard this card and reveal another agenda from the top of the deck.\\n\\nThe elected secret objective becomes a public objective; place it near the other public objectives in the common play area.",
+    "description": "Description for Agenda Card: Classified Document Leaks"
+  },
+  "Classified Document Leaks.Title": {
+    "defaultMessage": "Classified Document Leaks",
+    "description": "Title of Agenda Card: Classified Document Leaks"
+  },
+  "Colonial Redistribution.Description": {
+    "defaultMessage": "Destroy each unit on the elected planet.\\n\\nThen, the player who controls that planet chooses 1 player with the fewest victory points; that player may place 1 infantry from their reinforcements on the elected planet.",
+    "description": "Description for Agenda Card: Colonial Redistribution"
+  },
+  "Colonial Redistribution.Title": {
+    "defaultMessage": "Colonial Redistribution",
+    "description": "Title of Agenda Card: Colonial Redistribution"
+  },
+  "Committee Formation.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nBefore players vote on an agenda that requires a player to be elected, the owner of this card may discard this card to choose a player to be elected. Players do not vote on that agenda.",
+    "description": "Description for Agenda Card: Committee Formation"
+  },
+  "Committee Formation.Title": {
+    "defaultMessage": "Committee Formation",
+    "description": "Title of Agenda Card: Committee Formation"
+  },
+  "Compensated Disarmament.Description": {
+    "defaultMessage": "Destroy each ground force on the elected planet; for each unit that was destroyed, the player who controls that planet gains 1 trade good.",
+    "description": "Description for Agenda Card: Compensated Disarmament"
+  },
+  "Compensated Disarmament.Title": {
+    "defaultMessage": "Compensated Disarmament",
+    "description": "Title of Agenda Card: Compensated Disarmament"
+  },
+  "Conventions of War.Description": {
+    "defaultMessage": "FOR : Players cannot use BOMBARDMENT against units that are on cultural planets.\\n\\nAGAINST : Each player that voted \"Against\" discards all of their action cards.",
+    "description": "Description for Agenda Card: Conventions of War"
+  },
+  "Conventions of War.Title": {
+    "defaultMessage": "Conventions of War",
+    "description": "Title of Agenda Card: Conventions of War"
+  },
+  "Core Mining.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nThen, destroy 1 infantry on the planet.\\n\\nThe resource value of this planet is increased by 2.",
+    "description": "Description for Agenda Card: Core Mining"
+  },
+  "Core Mining.Title": {
+    "defaultMessage": "Core Mining",
+    "description": "Title of Agenda Card: Core Mining"
+  },
+  "Covert Legislation.Description": {
+    "defaultMessage": "When this agenda is revealed, the speaker draws the next card in the agenda deck but does not reveal it to the other players.\\n\\nInstead, the speaker reads the eligible outcomes aloud (For, Against, Elect Player, etc.); the other players vote for these outcomes as if they were outcomes of this agenda, without knowing their effects.",
+    "description": "Description for Agenda Card: Covert Legislation"
+  },
+  "Covert Legislation.Title": {
+    "defaultMessage": "Covert Legislation",
+    "description": "Title of Agenda Card: Covert Legislation"
+  },
+  "Demilitarized Zone.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nThen, destroy all units on that planet.\\n\\nPlayer's units cannot land, be produced, or be placed on this planet.",
+    "description": "Description for Agenda Card: Demilitarized Zone"
+  },
+  "Demilitarized Zone.Title": {
+    "defaultMessage": "Demilitarized Zone",
+    "description": "Title of Agenda Card: Demilitarized Zone"
+  },
+  "Economic Equality.Description": {
+    "defaultMessage": "FOR : Each player returns all of their trade goods to the supply. Then, each player gains 5 trade goods.\\n\\nAGAINST : Each player returns all of their trade goods to the supply.",
+    "description": "Description for Agenda Card: Economic Equality"
+  },
+  "Economic Equality.Title": {
+    "defaultMessage": "Economic Equality",
+    "description": "Description for Agenda Card: Economic Equality"
+  },
+  "Enforced Travel Ban.Description": {
+    "defaultMessage": "FOR : Alpha and beta wormholes have no effect during movement.\\n\\nAGAINST : Destroy each PDS in or adjacent to a system that contains a wormhole.",
+    "description": "Description for Agenda Card: Enforced Travel Ban"
+  },
+  "Enforced Travel Ban.Title": {
+    "defaultMessage": "Enforced Travel Ban",
+    "description": "Title of Agenda Card: Enforced Travel Ban"
+  },
+  "Executive Sanctions.Description": {
+    "defaultMessage": "FOR : Each player can have a maximum of 3 action cards in their hand.\\n\\nAGAINST : Each player discards 1 random action card from their hand.",
+    "description": "Description for Agenda Card: Executive Sanctions"
+  },
+  "Executive Sanctions.Title": {
+    "defaultMessage": "Executive Sanctions",
+    "description": "Title of Agenda Card: Executive Sanctions"
+  },
+  "Fleet Regulations.Description": {
+    "defaultMessage": "FOR : Each player cannot have more than 4 tokens in their fleet pool.\\n\\nAGAINST : Each player places 1 command token from their reinforcements in their fleet pool.",
+    "description": "Description for Agenda Card: Fleet Regulations"
+  },
+  "Fleet Regulations.Title": {
+    "defaultMessage": "Fleet Regulations",
+    "description": "Title of Agenda Card: Fleet Regulations"
+  },
+  "Galactic Crisis Pact.Description": {
+    "defaultMessage": "Each player may perform the secondary ability of the elected strategy card without spending a command token; command tokens placed by the ability are placed from a player's reinforcements instead.",
+    "description": "Description for Agenda Card: Galactic Crisis Pact"
+  },
+  "Galactic Crisis Pact.Title": {
+    "defaultMessage": "Galactic Crisis Pact",
+    "description": "Title of Agenda Card: Galactic Crisis Pact"
+  },
+  "Holy Planet of Ixth.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nThe planet's owner gains 1 victory point.\\n\\nUnits on this planet cannot use PRODUCTION.\\n\\nWhen a player gains control of this planet, they gain 1 victory point.\\n\\nWhen a player loses control of this planet, they lose 1 victory point.",
+    "description": "Description for Agenda Card: Holy Planet of Ixth"
+  },
+  "Holy Planet of Ixth.Title": {
+    "defaultMessage": "Holy Planet of Ixth",
+    "description": "Title of Agenda Card: Holy Planet of Ixth"
+  },
+  "Homeland Defense Act.Description": {
+    "defaultMessage": "FOR : Each player can have any number of PDS units on planets they control.\\n\\nAGAINST : Each player destroys 1 of their PDS units.",
+    "description": "Description for Agenda Card: Homeland Defense Act"
+  },
+  "Homeland Defense Act.Title": {
+    "defaultMessage": "Homeland Defense Act",
+    "description": "Title of Agenda Card: Homeland Defense Act"
+  },
+  "Imperial Arbiter.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nAt the end of the strategy phase, the owner of this card may discard this card to swap 1 of their strategy cards with 1 of another player's strategy cards.",
+    "description": "Description for Agenda Card: Imperial Arbiter"
+  },
+  "Imperial Arbiter.Title": {
+    "defaultMessage": "Imperial Arbiter",
+    "description": "Title of Agenda Card: Imperial Arbiter"
+  },
+  "Incentive Program.Description": {
+    "defaultMessage": "FOR : Draw and reveal 1 stage I public objective from the deck and place it near the public objectives.\\n\\nAGAINST : Draw and reveal 1 stage II public objective from the deck and place it near the public objectives.",
+    "description": "Description for Agenda Card: Incentive Program"
+  },
+  "Incentive Program.Title": {
+    "defaultMessage": "Incentive Program",
+    "description": "Title for Agenda Card: Incentive Program"
+  },
+  "Ixthian Artifact.Description": {
+    "defaultMessage": "FOR : The speaker rolls 1 die. If the result is 6-10, each player may research 2 technologies. If the result is 1-5, destroy all units in Mecatol Rex's system, and each player with units in systems adjacent to Mecatol Rex's system destroys 3 of their units in each of those systems.\\n\\nAGAINST : No effect.",
+    "description": "Description for Agenda Card: Ixthian Artifact"
+  },
+  "Ixthian Artifact.Title": {
+    "defaultMessage": "Ixthian Artifact",
+    "description": "Title of Agenda Card: Ixthian Artifact"
+  },
+  "Judicial Abolishment.Description": {
+    "defaultMessage": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.\\n\\nDiscard the elected law from play.",
+    "description": "Description for Agenda Card: Judicial Abolishment"
+  },
+  "Judicial Abolishment.Title": {
+    "defaultMessage": "Judicial Abolishment",
+    "description": "Title of Agenda Card: Judicial Abolishment"
+  },
+  "Minister of Antiques.Description": {
+    "defaultMessage": "The elected player gains 1 relic.",
+    "description": "Description for Agenda Card: Minister of Antiques"
+  },
+  "Minister of Antiques.Title": {
+    "defaultMessage": "Minister of Antiques",
+    "description": "Title of Agenda Card: Minister of Antiques"
+  },
+  "Minister of Commerce.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nAfter the owner of this card replenishes commodities, they gain 1 trade good for each player that is their neighbor.",
+    "description": "Description for Agenda Card: Minister of Commerce"
+  },
+  "Minister of Commerce.Title": {
+    "defaultMessage": "Minister of Commerce",
+    "description": "Title of Agenda Card: Minister of Commerce"
+  },
+  "Minister of Exploration.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nWhen the owner of this card gains control of a planet, they gain 1 trade good.",
+    "description": "Description for Agenda Card: Minister of Exploration"
+  },
+  "Minister of Exploration.Title": {
+    "defaultMessage": "Minister of Exploration",
+    "description": "Title of Agenda Card: Minister of Exploration"
+  },
+  "Minister of Industry.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nWhen the owner of this card places a space dock in a system, their units in that system may use their PRODUCTION abilities.",
+    "description": "Description for Agenda Card: Minister of Industry"
+  },
+  "Minister of Industry.Title": {
+    "defaultMessage": "Minister of Industry",
+    "description": "Title of Agenda Card: Minister of Industry"
+  },
+  "Minister of Peace.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nAfter a player activates a system that contains 1 or more of a different player's units, the owner of this card may discard this card; immediately end the active player's turn.",
+    "description": "Description for Agenda Card: Minister of Peace"
+  },
+  "Minister of Peace.Title": {
+    "defaultMessage": "Minister of Peace",
+    "description": "Title of Agenda Card: Minister of Peace"
+  },
+  "Minister of Policy.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nAt the end of the status phase, the owner of this card draws 1 action card.",
+    "description": "Description for Agenda Card: Minister of Policy"
+  },
+  "Minister of Policy.Title": {
+    "defaultMessage": "Minister of Policy",
+    "description": "Title of Agenda Card: Minister of Policy"
+  },
+  "Minister of Sciences.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nWhen the owner of this card resolves the primary or secondary ability of the \"Technology\" strategy card, they do not need to spend resources to research technology.",
+    "description": "Description for Agenda Card: Minister of Sciences"
+  },
+  "Minister of Sciences.Title": {
+    "defaultMessage": "Minister of Sciences",
+    "description": "Title of Agenda Card: Minister of Sciences"
+  },
+  "Minister of War.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nThe owner of this card may discard this card after performing an action to remove 1 of their command counters from the game board and return it to their reinforcements; then they may perform 1 additional action.",
+    "description": "Description for Agenda Card: Minister of War"
+  },
+  "Minister of War.Title": {
+    "defaultMessage": "Minister of War",
+    "description": "Title of Agenda Card: Minister of War"
+  },
+  "Miscount Disclosed.Description": {
+    "defaultMessage": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.\\n\\nVote on the elected law as if it were just revealed from the top of the deck.",
+    "description": "Description for Agenda Card: Miscount Disclosed"
+  },
+  "Miscount Disclosed.Title": {
+    "defaultMessage": "Miscount Disclosed",
+    "description": "Title of Agenda Card: Miscount Disclosed"
+  },
+  "Mutiny.Description": {
+    "defaultMessage": "FOR : Each player who voted \"For\" gains 1 victory point.\\n\\nAGAINST : Each player who voted \"For\" loses 1 victory point.",
+    "description": "Description for Agenda Card: Mutiny"
+  },
+  "Mutiny.Title": {
+    "defaultMessage": "Mutiny",
+    "description": "Title of Agenda Card: Mutiny"
+  },
+  "New Constitution.Description": {
+    "defaultMessage": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.\\n\\nFOR : Discard all laws in play. At the start of the next strategy phase, each player exhausts each planet in their home system.\\n\\nAGAINST : No effect.",
+    "description": "Description for Agenda Card: New Constitution"
+  },
+  "New Constitution.Title": {
+    "defaultMessage": "New Constitution",
+    "description": "Title of Agenda Card: New Constitution"
+  },
+  "Nexus Sovereignty.Description": {
+    "defaultMessage": "FOR : Alpha and beta wormholes in the wormhole nexus have no effect during movement.\\n\\nAGAINST : Place a gamma wormhole token in the Mecatol Rex system.",
+    "description": "Description for Agenda Card: Nexus Sovereignty"
+  },
+  "Nexus Sovereignty.Title": {
+    "defaultMessage": "Nexus Sovereignty",
+    "description": "Title of Agenda Card: Nexus Sovereignty"
+  },
+  "Political Censure.Description": {
+    "defaultMessage": "The elected player gains this card and 1 victory point.\\n\\nThe elected player cannot play action cards.\\n\\nIf the owner of this card loses this card, they lose 1 victory point.",
+    "description": "Description for Agenda Card: Political Censure"
+  },
+  "Political Censure.Title": {
+    "defaultMessage": "Political Censure",
+    "description": "Title of Agenda Card: Political Censure"
+  },
+  "Prophecy of Ixth.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nThe owner of this card applies +1 to the result of their fighter's combat rolls. When the owner of this card uses PRODUCTION, they discard this card unless they produce 2 or more fighters.",
+    "description": "Description for Agenda Card: Prophecy of Ixth"
+  },
+  "Prophecy of Ixth.Title": {
+    "defaultMessage": "Prophecy of Ixth",
+    "description": "Title of Agenda Card: Prophecy of Ixth"
+  },
+  "Public Execution.Description": {
+    "defaultMessage": "The elected player discards all of their action cards. If they have the speaker token, they give it to the player on their left. The elected player cannot vote on any agendas during this agenda phase.",
+    "description": "Description for Agenda Card: Public Execution"
+  },
+  "Public Execution.Title": {
+    "defaultMessage": "Public Execution",
+    "description": "Title of Agenda Card: Public Execution"
+  },
+  "Publicize Weapon Schematics.Description": {
+    "defaultMessage": "FOR : If any player owns a war sun technology, all players may ignore all prerequisites on war sun technologies. All war suns lose SUSTAIN DAMAGE.\\n\\nAGAINST : Each player that owns a war sun technology discards all of their action cards.",
+    "description": "Description for Agenda Card: Publicize Weapon Schematics"
+  },
+  "Publicize Weapon Schematics.Title": {
+    "defaultMessage": "Publicize Weapon Schematics",
+    "description": "Title of Agenda Card: Publicize Weapon Schematics"
+  },
+  "Rearmament Agreement.Description": {
+    "defaultMessage": "FOR : Each player places 1 mech from their reinforcements on a planet they control in their home system.\\n\\nAGAINST : Each player replaces each of their mechs with 1 infantry from their reinforcements.",
+    "description": "Description for Agenda Card: Rearmament Agreement"
+  },
+  "Rearmament Agreement.Title": {
+    "defaultMessage": "Rearmament Agreement",
+    "description": "Title of Agenda Card: Rearmament Agreement"
+  },
+  "Regulated Conscription.Description": {
+    "defaultMessage": "FOR : When a player produces units, they produce only 1 fighter and infantry for its cost instead of 2.\\n\\nAGAINST : No effect.",
+    "description": "Description for Agenda Card: Regulated Conscription"
+  },
+  "Regulated Conscription.Title": {
+    "defaultMessage": "Regulated Conscription",
+    "description": "Title of Agenda Card: Regulated Conscription"
+  },
+  "Representative Government.Description": {
+    "defaultMessage": "FOR : Players cannot exhaust planets to cast votes during the agenda phase. Each player may cast 1 vote on each agenda instead.\\n\\nAGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets.",
+    "description": "Description for Agenda Card: Representative Government"
+  },
+  "Representative Government.Omega.Description": {
+    "defaultMessage": "FOR : Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes.\\n\\nAGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets.",
+    "description": "Omega description for Agenda Card: Representative Government"
+  },
+  "Representative Government.Title": {
+    "defaultMessage": "Representative Government",
+    "description": "Title of Agenda Card: Representative Government"
+  },
+  "Research Grant Reallocation.Description": {
+    "defaultMessage": "The elected player gains any 1 technology of their choice. Then, for each prerequisite on that technology, they remove 1 token from their fleet pool and return it to their reinforcements.",
+    "description": "Description for Agenda Card: Research Grant Reallocation"
+  },
+  "Research Grant Reallocation.Title": {
+    "defaultMessage": "Research Grant Reallocation",
+    "description": "Title of Agenda Card: Research Grant Reallocation"
+  },
+  "Research Team: Biotic.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 green prerequisite.",
+    "description": "Description for Agenda Card: Research Team: Biotic"
+  },
+  "Research Team: Biotic.Title": {
+    "defaultMessage": "Research Team: Biotic",
+    "description": "Title of Agenda Card: Research Team: Biotic"
+  },
+  "Research Team: Cybernetic.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 yellow prerequisite.",
+    "description": "Description for Agenda Card: Research Team: Cybernetic"
+  },
+  "Research Team: Cybernetic.Title": {
+    "defaultMessage": "Research Team: Cybernetic",
+    "description": "Title of Agenda Card: Research Team: Cybernetic"
+  },
+  "Research Team: Propulsion.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 blue prerequisite.",
+    "description": "Description for Agenda Card: Research Team: Propulsion"
+  },
+  "Research Team: Propulsion.Title": {
+    "defaultMessage": "Research Team: Propulsion",
+    "description": "Title of Agenda Card: Research Team: Propulsion"
+  },
+  "Research Team: Warfare.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 red prerequisite.",
+    "description": "Description for Agenda Card: Research Team: Warfare"
+  },
+  "Research Team: Warfare.Title": {
+    "defaultMessage": "Research Team: Warfare",
+    "description": "Title of Agenda Card: Research Team: Warfare"
+  },
+  "Search Warrant.Description": {
+    "defaultMessage": "The elected player gains this card and draws 2 secret objectives.\\n\\nThe owner of this card plays with their secret objectives revealed.",
+    "description": "Description for Agenda Card: Search Warrant"
+  },
+  "Search Warrant.Title": {
+    "defaultMessage": "Search Warrant",
+    "description": "Title of Agenda Card: Search Warrant"
+  },
+  "Seed of an Empire.Description": {
+    "defaultMessage": "FOR : The player with most victory points gains 1 victory point.\\n\\nAGAINST : The player with the fewest victory points gains 1 victory point.",
+    "description": "Description for Agenda Card: Seed of an Empire"
+  },
+  "Seed of an Empire.Title": {
+    "defaultMessage": "Seed of an Empire",
+    "description": "Title of Agenda Card: Seed of an Empire"
+  },
+  "Senate Sanctuary.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nThe influence value of this planet is increased by 2.",
+    "description": "Description for Agenda Card: Senate Sanctuary"
+  },
+  "Senate Sanctuary.Title": {
+    "defaultMessage": "Senate Sanctuary",
+    "description": "Title of Agenda Card: Senate Sanctuary"
+  },
+  "Shard of the Throne.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nA player gains this card and 1 victory point when they win a combat against the owner of this card.\\n\\nThen, the previous owner of this card loses 1 victory point.",
+    "description": "Description for Agenda Card: Shard of the Throne"
+  },
+  "Shard of the Throne.Title": {
+    "defaultMessage": "Shard of the Throne",
+    "description": "Title of Agenda Card: Shard of the Throne"
+  },
+  "Shared Research.Description": {
+    "defaultMessage": "FOR : Each player's units can move through nebulae.\\n\\nAGAINST : Each player places a command token from their reinforcements in their home system, if able.",
+    "description": "Description for Agenda Card: Shared Research"
+  },
+  "Shared Research.Title": {
+    "defaultMessage": "Shared Research",
+    "description": "Title of Agenda Card: Shared Research"
+  },
+  "Swords to Plowshares.Description": {
+    "defaultMessage": "FOR : Each player destroys half of their infantry on each planet they control, rounded up. Then, each player gains trade goods equal to the number of their infantry that were destroyed.\\n\\nAGAINST : Each player places 1 infantry from their reinforcements on each planet they control.",
+    "description": "Description for Agenda Card: Swords to Plowshares"
+  },
+  "Swords to Plowshares.Title": {
+    "defaultMessage": "Swords to Plowshares",
+    "description": "Title of Agenda Card: Swords to Plowshares"
+  },
+  "Terraforming Initiative.Description": {
+    "defaultMessage": "Attach this card to the elected planet's card.\\n\\nThe resource and influence values of this planet are increased by 1.",
+    "description": "Description for Agenda Card: Terraforming Initiative"
+  },
+  "Terraforming Initiative.Title": {
+    "defaultMessage": "Terraforming Initiative",
+    "description": "Title of Agenda Card: Terraforming Initiative"
+  },
+  "The Crown of Emphidia.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nA player gains this card and 1 victory point after they gain control of a planet in the home system of this card's owner.\\n\\nThen, the previous owner of this card loses 1 victory point.",
+    "description": "Description for Agenda Card: The Crown of Emphidia"
+  },
+  "The Crown of Emphidia.Title": {
+    "defaultMessage": "The Crown of Emphidia",
+    "description": "Title of Agenda Card: The Crown of Emphidia"
+  },
+  "The Crown of Thalnos.Description": {
+    "defaultMessage": "The elected player gains this card.\\n\\nDuring each combat round, the owner of this card may reroll any number of dice; they must destroy each of their units that did not produce a hit with its reroll.",
+    "description": "Description for Agenda Card: The Crown of Thalnos"
+  },
+  "The Crown of Thalnos.Title": {
+    "defaultMessage": "The Crown of Thalnos",
+    "description": "Title of Agenda Card: The Crown of Thalnos"
+  },
+  "Unconventional Measures.Description": {
+    "defaultMessage": "FOR : Each player that voted \"For\" draws 2 action cards.\\n\\nAGAINST : Each player that voted \"For\" discards all of their action cards.",
+    "description": "Description for Agenda Card: Unconventional Measures"
+  },
+  "Unconventional Measures.Title": {
+    "defaultMessage": "Unconventional Measures",
+    "description": "Title of Agenda Card: Unconventional Measures"
+  },
+  "Wormhole Reconstruction.Description": {
+    "defaultMessage": "FOR : All systems that contain either an alpha or beta wormhole are adjacent to each other.\\n\\nAGAINST : Each player places a command token from their reinforcements in each system that contains a wormhole and 1 or more of their ships.",
+    "description": "Description for Agenda Card: Wormhole Reconstruction"
+  },
+  "Wormhole Reconstruction.Title": {
+    "defaultMessage": "Wormhole Reconstruction",
+    "description": "Title of Agenda Card: Wormhole Reconstruction"
+  },
+  "Wormhole Research.Description": {
+    "defaultMessage": "FOR : Each player who has 1 or more ships in a system that contains a wormhole may research 1 technology. Then, destroy all ships in systems that contain an alpha or beta wormhole.\\n\\nAGAINST : Each player that voted \"Against\" removes 1 command token from their command sheet and returns it to their reinforcements.",
+    "description": "Description for Agenda Card: Wormhole Research"
+  },
+  "Wormhole Research.Title": {
+    "defaultMessage": "Wormhole Research",
+    "description": "Title of Agenda Card: Wormhole Research"
+  }
+}

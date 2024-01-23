@@ -27,6 +27,7 @@ import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
 import UndoButton from "../UndoButton/UndoButton";
 import Sidebars from "../Sidebars/Sidebars";
 import styles from "./Header.module.scss";
+import Cookies from "js-cookie";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"

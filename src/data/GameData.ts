@@ -3,10 +3,15 @@ import useSWR from "swr";
 import { BASE_OPTIONS } from "../../server/data/options";
 import { fetcher } from "../util/api/util";
 import { validateMapString } from "../util/util";
+import { IntlShape, useIntl } from "react-intl";
 
-let BASE_AGENDAS: Partial<Record<AgendaId, BaseAgenda>> = {};
+let getBaseAgendas: (
+  intl: IntlShape
+) => Partial<Record<AgendaId, BaseAgenda>> = () => {
+  return {};
+};
 import("../../server/data/agendas").then((module) => {
-  BASE_AGENDAS = module.BASE_AGENDAS;
+  getBaseAgendas = module.getBaseAgendas;
 });
 
 let BASE_ATTACHMENTS: Partial<Record<AttachmentId, BaseAttachment>> = {};
@@ -96,9 +101,11 @@ export function useGameData(
     }
   );
 
+  const intl = useIntl();
+
   if (!storedGameData) {
     return {
-      agendas: BASE_AGENDAS,
+      agendas: getBaseAgendas(intl),
       attachments: BASE_ATTACHMENTS,
       components: BASE_COMPONENTS,
       factions: {},
@@ -116,7 +123,7 @@ export function useGameData(
       techs: BASE_TECHS,
     };
   }
-  return buildCompleteGameData(storedGameData);
+  return buildCompleteGameData(storedGameData, intl);
   // }, [latestChange]);
 
   // const completeGameData = buildCompleteGameData(storedGameData);
@@ -124,10 +131,13 @@ export function useGameData(
   // return completeGameData;
 }
 
-export function buildCompleteGameData(storedGameData: StoredGameData) {
+export function buildCompleteGameData(
+  storedGameData: StoredGameData,
+  intl: IntlShape
+) {
   const completeGameData: GameData = {
     actionLog: storedGameData.actionLog,
-    agendas: buildAgendas(storedGameData),
+    agendas: buildAgendas(storedGameData, intl),
     attachments: buildAttachments(storedGameData),
     components: buildComponents(storedGameData),
     factions: buildFactions(storedGameData),
@@ -144,14 +154,14 @@ export function buildCompleteGameData(storedGameData: StoredGameData) {
   return completeGameData;
 }
 
-export function buildAgendas(storedGameData: StoredGameData) {
+export function buildAgendas(storedGameData: StoredGameData, intl: IntlShape) {
   const gameAgendas = storedGameData.agendas ?? {};
 
   const agendas: Partial<Record<AgendaId, Agenda>> = {};
 
   const expansions = storedGameData.options.expansions;
 
-  Object.entries(BASE_AGENDAS).forEach(([agendaId, agenda]) => {
+  Object.entries(getBaseAgendas(intl)).forEach(([agendaId, agenda]) => {
     if (
       agenda.expansion !== "BASE" &&
       agenda.expansion !== "BASE ONLY" &&
