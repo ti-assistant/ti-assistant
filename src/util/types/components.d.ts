@@ -27,6 +27,7 @@ interface BaseLeader {
   description: string;
   expansion: Expansion;
   faction?: FactionId;
+  id: LeaderId;
   name: string;
   omega?: {
     abilityName?: string;
@@ -58,6 +59,7 @@ interface BaseComponent {
   description: string;
   expansion: Expansion;
   faction?: FactionId;
+  id: ComponentId | RelicId | TechId | LeaderId;
   leader?: LeaderType;
   name: string;
   replaces?: string;

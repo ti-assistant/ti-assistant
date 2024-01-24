@@ -158,14 +158,14 @@ function ComponentSelect({
           {actionCards.map((component) => {
             return (
               <button
-                key={component.name}
+                key={component.id}
                 style={{ writingMode: "horizontal-tb" }}
                 className={
                   component.state === "exhausted" || component.state === "used"
                     ? "faded"
                     : ""
                 }
-                onClick={() => selectComponent(component.name)}
+                onClick={() => selectComponent(component.id)}
               >
                 {component.name}
               </button>
@@ -185,7 +185,7 @@ function ComponentSelect({
             {techs.map((component) => {
               return (
                 <button
-                  key={component.name}
+                  key={component.id}
                   style={{ writingMode: "horizontal-tb" }}
                   className={
                     component.state === "exhausted" ||
@@ -193,7 +193,7 @@ function ComponentSelect({
                       ? "faded"
                       : ""
                   }
-                  onClick={() => selectComponent(component.name)}
+                  onClick={() => selectComponent(component.id)}
                 >
                   {component.name}
                 </button>
@@ -210,7 +210,7 @@ function ComponentSelect({
           >
             {leaders.map((component) => {
               return (
-                <div className="flexColumn" key={component.name}>
+                <div className="flexColumn" key={component.id}>
                   <LabeledDiv
                     noBlur={true}
                     label={capitalizeFirstLetter(component.leader ?? "")}
@@ -222,7 +222,7 @@ function ComponentSelect({
                           ? "faded"
                           : ""
                       }
-                      onClick={() => selectComponent(component.name)}
+                      onClick={() => selectComponent(component.id)}
                     >
                       {component.name}
                     </button>
@@ -246,14 +246,14 @@ function ComponentSelect({
             {exploration.map((component) => {
               return (
                 <button
-                  key={component.name}
+                  key={component.id}
                   className={
                     component.state === "exhausted" ||
                     component.state === "used"
                       ? "faded"
                       : ""
                   }
-                  onClick={() => selectComponent(component.name)}
+                  onClick={() => selectComponent(component.id)}
                 >
                   {component.name}
                 </button>
@@ -276,14 +276,14 @@ function ComponentSelect({
                     {components.map((component) => {
                       return (
                         <button
-                          key={component.name}
+                          key={component.id}
                           className={
                             component.state === "exhausted" ||
                             component.state === "used"
                               ? "faded"
                               : ""
                           }
-                          onClick={() => selectComponent(component.name)}
+                          onClick={() => selectComponent(component.id)}
                         >
                           {component.name}
                         </button>
@@ -305,7 +305,7 @@ function ComponentSelect({
             {others.map((component) => {
               if (component.type === "FLAGSHIP") {
                 return (
-                  <div className="flexColumn" key={component.name}>
+                  <div className="flexColumn" key={component.id}>
                     <LabeledDiv
                       noBlur={true}
                       label={capitalizeFirstLetter(component.type)}
@@ -317,7 +317,7 @@ function ComponentSelect({
                             ? "faded"
                             : ""
                         }
-                        onClick={() => selectComponent(component.name)}
+                        onClick={() => selectComponent(component.id)}
                       >
                         {component.name}
                       </button>
@@ -327,8 +327,8 @@ function ComponentSelect({
               }
               return (
                 <button
-                  key={component.name}
-                  onClick={() => selectComponent(component.name)}
+                  key={component.id}
+                  onClick={() => selectComponent(component.id)}
                 >
                   {component.name}
                 </button>
@@ -1222,8 +1222,8 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
 
         if (
           unownedRelics.length === 0 &&
-          (component.name === "Gain Relic" ||
-            component.name === "Black Market Forgery")
+          (component.id === "Gain Relic" ||
+            component.id === "Black Market Forgery")
         ) {
           return false;
         }
@@ -1237,7 +1237,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         }
 
         if (component.type === "RELIC") {
-          const relic = (relics ?? {})[component.name as RelicId];
+          const relic = (relics ?? {})[component.id as RelicId];
           if (!relic) {
             return false;
           }
@@ -1284,12 +1284,12 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       if (component.leader !== "AGENT") {
         return false;
       }
-      if (component.name === "Ssruu") {
+      if (component.id === "Ssruu") {
         return false;
       }
       return true;
     })
-    .map((component) => component.name);
+    .map((component) => component.id);
 
   return (
     <React.Fragment>
@@ -1314,8 +1314,8 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       >
         <LabeledDiv label="Component" style={{ width: "90%" }}>
           <SelectableRow
-            itemId={component.name}
-            removeItem={() => unselectComponent(component.name)}
+            itemId={component.id}
+            removeItem={() => unselectComponent(component.id)}
           >
             {component.name}
             <div
@@ -1326,7 +1326,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
               &#x24D8;
             </div>
           </SelectableRow>
-          {component.name === "Ssruu" ? (
+          {component.id === "Ssruu" ? (
             <div
               className="flexRow"
               style={{ paddingLeft: responsivePixels(16) }}

@@ -33,9 +33,11 @@ import("../../server/data/factions").then((module) => {
   getBaseFactions = module.getBaseFactions;
 });
 
-let BASE_LEADERS: Partial<Record<LeaderId, BaseLeader>> = {};
+let getBaseLeaders: DataFunction<LeaderId, BaseLeader> = () => {
+  return {};
+};
 import("../../server/data/leaders").then((module) => {
-  BASE_LEADERS = module.BASE_LEADERS;
+  getBaseLeaders = module.getBaseLeaders;
 });
 
 let BASE_OBJECTIVES: Partial<Record<ObjectiveId, BaseObjective>> = {};
@@ -141,7 +143,7 @@ export function buildCompleteGameData(
     actionLog: storedGameData.actionLog,
     agendas: buildAgendas(storedGameData, intl),
     attachments: buildAttachments(storedGameData, intl),
-    components: buildComponents(storedGameData),
+    components: buildComponents(storedGameData, intl),
     factions: buildFactions(storedGameData, intl),
     objectives: buildObjectives(storedGameData),
     options: storedGameData.options,
@@ -229,7 +231,10 @@ export function buildAttachments(
   return attachments;
 }
 
-export function buildComponents(storedGameData: StoredGameData) {
+export function buildComponents(
+  storedGameData: StoredGameData,
+  intl: IntlShape
+) {
   const gameComponents = storedGameData.components ?? {};
   const gameFactions = storedGameData.factions ?? {};
   const gameRelics = storedGameData.relics ?? {};
@@ -267,7 +272,7 @@ export function buildComponents(storedGameData: StoredGameData) {
     };
   });
 
-  const componentLeaders = Object.entries(BASE_LEADERS)
+  const componentLeaders = Object.entries(getBaseLeaders(intl))
     // Filter out leaders that are not in the game.
     .filter(([_, leader]) => {
       if (leader.faction && !gameFactions[leader.faction]) {
@@ -652,9 +657,9 @@ export function buildBaseTechs(options: Options) {
   return techs;
 }
 
-export function buildLeaders(options: Options) {
+export function buildLeaders(options: Options, intl: IntlShape) {
   const leaders: Record<string, BaseLeader> = {};
-  Object.entries(BASE_LEADERS).forEach(([leaderId, leader]) => {
+  Object.entries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && leader.expansion === "POK") {
       return;
