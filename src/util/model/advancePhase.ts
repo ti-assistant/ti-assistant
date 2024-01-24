@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 
 export class AdvancePhaseHandler implements Handler {
@@ -7,7 +8,9 @@ export class AdvancePhaseHandler implements Handler {
     switch (this.gameData.state.phase) {
       case "STRATEGY": {
         const strategyCards = buildStrategyCards(this.gameData);
-        const factions = buildFactions(this.gameData);
+        const cache = createIntlCache();
+        const intl = createIntl({ locale: "en" }, cache);
+        const factions = buildFactions(this.gameData, intl);
         const numFactions = Object.keys(factions).length;
         const numPickedCards = Object.values(strategyCards).reduce(
           (numCards, card) => {

@@ -38,18 +38,18 @@ function useStableValue<Type>(value: Type, defaultValue: Type): Type {
   return value;
 }
 
-let getBaseAgendas: (
-  intl: IntlShape
-) => Partial<Record<AgendaId, BaseAgenda>> = () => {
+let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
   return {};
 };
 import("../../server/data/agendas").then((module) => {
   getBaseAgendas = module.getBaseAgendas;
 });
 
-let BASE_ATTACHMENTS: Partial<Record<AttachmentId, BaseAttachment>> = {};
+let getBaseAttachments: DataFunction<AttachmentId, BaseAttachment> = () => {
+  return {};
+};
 import("../../server/data/attachments").then((module) => {
-  BASE_ATTACHMENTS = module.BASE_ATTACHMENTS;
+  getBaseAttachments = module.getBaseAttachments;
 });
 
 let BASE_COMPONENTS: Partial<
@@ -103,9 +103,12 @@ export default function DataProvider({ children }: PropsWithChildren) {
 
   const intl = useIntl();
 
+  const baseAgendas = getBaseAgendas(intl);
+  const baseAttachments = getBaseAttachments(intl);
+
   let gameData: GameData = {
-    agendas: getBaseAgendas(intl),
-    attachments: BASE_ATTACHMENTS,
+    agendas: baseAgendas,
+    attachments: baseAttachments,
     components: BASE_COMPONENTS,
     factions: {},
     objectives: BASE_OBJECTIVES,
@@ -126,10 +129,10 @@ export default function DataProvider({ children }: PropsWithChildren) {
   }
 
   const actionLog = useStableValue(gameData.actionLog ?? [], []);
-  const agendas = useStableValue(gameData.agendas ?? {}, getBaseAgendas(intl));
+  const agendas = useStableValue(gameData.agendas ?? {}, baseAgendas);
   const attachments = useStableValue(
     gameData.attachments ?? {},
-    BASE_ATTACHMENTS
+    baseAttachments
   );
   const components = useStableValue(gameData.components ?? {}, BASE_COMPONENTS);
   const factions = useStableValue(gameData.factions, {});

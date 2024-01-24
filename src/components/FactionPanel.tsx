@@ -12,6 +12,7 @@ import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import { updateLeaderStateAsync } from "../dynamic/api";
 import { useRouter } from "next/router";
+import { useIntl } from "react-intl";
 
 function AbilitySection({
   leftLabel,
@@ -178,7 +179,8 @@ function FactionPanelContent({
   const { game: gameId }: { game?: string } = router.query;
   const techs = buildBaseTechs(options);
   const leaders = buildLeaders(options);
-  let faction: BaseFaction | Faction = buildFaction(factionId, options);
+  const intl = useIntl();
+  let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
   const factions = useContext(FactionContext);
   const gameFaction = factions[factionId];
   if (gameFaction) {

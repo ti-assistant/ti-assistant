@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import {
   buildAgendas,
   buildFactions,
@@ -39,6 +40,8 @@ export class ResolveAgendaHandler implements Handler {
     if (this.data.event.resolvedBy !== "UNDO") {
       updates[`state.agendaNum`] = (this.gameData.state.agendaNum ?? 0) + 1;
     }
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
 
     const currentTurn = getCurrentTurnLogEntries(this.gameData.actionLog ?? []);
 
@@ -146,7 +149,7 @@ export class ResolveAgendaHandler implements Handler {
       }
       case "Seed of an Empire": {
         let targetVPs = 0;
-        const factions = buildFactions(this.gameData);
+        const factions = buildFactions(this.gameData, intl);
         const objectives = buildObjectives(this.gameData);
         if (this.data.event.target === "For") {
           targetVPs = Object.values(factions).reduce((currentMax, faction) => {
@@ -175,7 +178,7 @@ export class ResolveAgendaHandler implements Handler {
         break;
       }
       case "Judicial Abolishment": {
-        const agenda = buildAgendas(this.gameData)[
+        const agenda = buildAgendas(this.gameData, intl)[
           this.data.event.target as AgendaId
         ];
         if (!agenda || !agenda.target) {
@@ -201,7 +204,7 @@ export class ResolveAgendaHandler implements Handler {
         }
         updates[`agendas${this.data.event.agenda}.activeRound`] =
           this.gameData.state.round + 1;
-        const agendas = buildAgendas(this.gameData);
+        const agendas = buildAgendas(this.gameData, intl);
         const toRepeal = Object.values(agendas).filter(
           (agenda) => agenda.type === "LAW" && agenda.passed
         );
@@ -232,7 +235,7 @@ export class ResolveAgendaHandler implements Handler {
         ];
         updates[`agendas.${this.data.event.agenda}.activeRound`] =
           this.gameData.state.round;
-        const factions = buildFactions(this.gameData);
+        const factions = buildFactions(this.gameData, intl);
         const nextPlayer = Object.values(factions).find(
           (faction) => faction.order === 2
         );
@@ -373,6 +376,8 @@ export class RepealAgendaHandler implements Handler {
       // [`agendas.${this.data.event.agenda}.resolved`]: true,
       // [`agendas.${this.data.event.agenda}.target`]: "DELETE",
     };
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     if (this.data.event.repealedBy === "UNDO") {
       updates[`agendas.${this.data.event.agenda}.target`] = "DELETE";
       updates[`agendas.${this.data.event.agenda}.resolved`] = "DELETE";
@@ -519,7 +524,7 @@ export class RepealAgendaHandler implements Handler {
         break;
       }
       case "Judicial Abolishment": {
-        const agendas = buildAgendas(this.gameData);
+        const agendas = buildAgendas(this.gameData, intl);
         const agenda = agendas[this.data.event.target as AgendaId];
         if (!agenda || !agenda.target) {
           return {};
@@ -538,7 +543,7 @@ export class RepealAgendaHandler implements Handler {
         };
       }
       case "New Constitution": {
-        const agendas = buildAgendas(this.gameData);
+        const agendas = buildAgendas(this.gameData, intl);
         const agenda = agendas[this.data.event.agenda];
         if (!agenda) {
           return {};
@@ -563,9 +568,9 @@ export class RepealAgendaHandler implements Handler {
           };
         }
         break;
-      }
+      } 
       case "Public Execution": {
-        const agendas = buildAgendas(this.gameData);
+        const agendas = buildAgendas(this.gameData, intl);
         const agenda = agendas[this.data.event.agenda];
         if (!agenda) {
           return {};

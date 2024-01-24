@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 import { getOnDeckFaction } from "../helpers";
 
@@ -19,8 +20,9 @@ export class AssignStrategyCardHandler implements Handler {
       }
       return value;
     }, 0);
-
-    const factions = buildFactions(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const factions = buildFactions(this.gameData, intl);
 
     switch (Object.keys(factions).length) {
       case 3:
@@ -47,10 +49,11 @@ export class AssignStrategyCardHandler implements Handler {
     if (this.data.event.assignedTo === "Naalu Collective") {
       updates[`strategycards.${this.data.event.id}.order`] = 0;
     }
-
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     const onDeckFaction = getOnDeckFaction(
       this.gameData.state,
-      buildFactions(this.gameData),
+      buildFactions(this.gameData, intl),
       buildStrategyCards(this.gameData)
     );
 

@@ -24,7 +24,7 @@ export default function MyApp({ Component, pageProps }) {
         return French;
     }
     return English;
-  });
+  }, [locale]);
 
   return (
     <IntlProvider locale={locale} messages={messages}>

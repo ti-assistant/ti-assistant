@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildTechs } from "../../data/GameData";
 import { hasTech } from "../api/techs";
 import { arrayRemove, arrayUnion } from "../api/util";
@@ -11,7 +12,9 @@ export class ChooseStartingTechHandler implements Handler {
   validate(): boolean {
     const techs = buildTechs(this.gameData);
     const tech = techs[this.data.event.tech];
-    const factions = buildFactions(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {
       return false;
@@ -31,9 +34,11 @@ export class ChooseStartingTechHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     const startingTechs =
-      buildFactions(this.gameData)[this.data.event.faction]?.startswith.techs ??
-      [];
+      buildFactions(this.gameData, intl)[this.data.event.faction]?.startswith
+        .techs ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}.ready`]:
@@ -80,7 +85,9 @@ export class RemoveStartingTechHandler implements Handler {
   validate(): boolean {
     const techs = buildTechs(this.gameData);
     const tech = techs[this.data.event.tech];
-    const factions = buildFactions(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {
       return false;
@@ -100,9 +107,11 @@ export class RemoveStartingTechHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     const startingTechs =
-      buildFactions(this.gameData)[this.data.event.faction]?.startswith.techs ??
-      [];
+      buildFactions(this.gameData, intl)[this.data.event.faction]?.startswith
+        .techs ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}`]:

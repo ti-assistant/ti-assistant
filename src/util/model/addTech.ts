@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildTechs } from "../../data/GameData";
 import { hasTech } from "../api/techs";
 
@@ -7,7 +8,11 @@ export class AddTechHandler implements Handler {
   validate(): boolean {
     const techs = buildTechs(this.gameData);
     const tech = techs[this.data.event.tech];
-    const factions = buildFactions(this.gameData);
+
+    // Translations not needed, so just create an english one.
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {
       return false;
@@ -67,7 +72,9 @@ export class RemoveTechHandler implements Handler {
   validate(): boolean {
     const techs = buildTechs(this.gameData);
     const tech = techs[this.data.event.tech];
-    const factions = buildFactions(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {
       return false;

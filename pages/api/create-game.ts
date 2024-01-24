@@ -1,7 +1,8 @@
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
-import { BASE_FACTIONS } from "../../server/data/factions";
+import { getBaseFactions } from "../../server/data/factions";
 import { BASE_PLANETS } from "../../server/data/planets";
+import { createIntl } from "react-intl";
 
 function makeid(length: number) {
   var result = "";
@@ -28,6 +29,11 @@ export default async function handler(
   let options: Options = req.body.options;
 
   const db = getFirestore();
+
+  const intl = createIntl({
+    locale: "en",
+  });
+  const BASE_FACTIONS = getBaseFactions(intl);
 
   const gameFactions = factions.map((faction, index) => {
     if (!faction.name || !faction.color || !faction.id) {

@@ -15,6 +15,8 @@ import { convertToFactionColor } from "../src/util/factions";
 import { responsivePixels } from "../src/util/util";
 import { Loader } from "../src/Loader";
 import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";
+import { getBaseFactions } from "../server/data/factions";
+import { useIntl } from "react-intl";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -927,15 +929,8 @@ function FactionSelect({
   options,
 }: FactionSelectProps) {
   const nameRef = useRef<HTMLInputElement>(null);
-  const {
-    data: availableFactions,
-  }: { data?: Partial<Record<FactionId, BaseFaction>> } = useSWR(
-    "/api/factions",
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const intl = useIntl();
+  const availableFactions = getBaseFactions(intl);
   const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher, {
     revalidateIfStale: false,
   });
@@ -1306,10 +1301,8 @@ export default function SetupPage() {
 
   const router = useRouter();
 
-  const { data: availableFactions }: { data?: Record<FactionId, BaseFaction> } =
-    useSWR("/api/factions", fetcher, {
-      revalidateIfStale: false,
-    });
+  const intl = useIntl();
+  const availableFactions = getBaseFactions(intl);
   const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher, {
     revalidateIfStale: false,
   });

@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 import { getOnDeckFaction } from "../helpers";
 
@@ -15,9 +16,11 @@ export class EndTurnHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     const onDeckFaction = getOnDeckFaction(
       this.gameData.state,
-      buildFactions(this.gameData),
+      buildFactions(this.gameData, intl),
       buildStrategyCards(this.gameData)
     );
 

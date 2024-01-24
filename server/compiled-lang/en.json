@@ -11,754 +11,4068 @@
       "value": "Test string"
     }
   ],
-  "Anti-Intellectual Revolution.Description": [
+  "Agendas.Anti-Intellectual Revolution.Description": [
     {
       "type": 0,
-      "value": "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.\\n\\nAGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own."
+      "value": "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own."
     }
   ],
-  "Anti-Intellectual Revolution.Title": [
+  "Agendas.Anti-Intellectual Revolution.Title": [
     {
       "type": 0,
       "value": "Anti-Intellectual Revolution"
     }
   ],
-  "Archived Secret.Description": [
+  "Agendas.Archived Secret.Description": [
     {
       "type": 0,
       "value": "Elected player draws 1 secret objective."
     }
   ],
-  "Archived Secret.Title": [
+  "Agendas.Archived Secret.Title": [
     {
       "type": 0,
       "value": "Archived Secret"
     }
   ],
-  "Armed Forces Standardization.Description": [
+  "Agendas.Armed Forces Standardization.Description": [
     {
       "type": 0,
       "value": "The elected player places command tokens from their reinforcements so that they have 3 tokens in their tactic pool, 3 tokens in their fleet pool and 2 tokens in their strategy pool. They return any excess tokens to their reinforcements."
     }
   ],
-  "Armed Forces Standardization.Title": [
+  "Agendas.Armed Forces Standardization.Title": [
     {
       "type": 0,
       "value": "Armed Forces Standardization"
     }
   ],
-  "Arms Reduction.Description": [
+  "Agendas.Arms Reduction.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player destroys all but 2 of their dreadnaughts and all but 4 of their cruisers.\\n\\nAGAINST : At the start of the next strategy phase, each player exhausts each of their planets that have a technology specialty."
+      "value": "FOR : Each player destroys all but 2 of their dreadnaughts and all but 4 of their cruisers."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : At the start of the next strategy phase, each player exhausts each of their planets that have a technology specialty."
     }
   ],
-  "Arms Reduction.Title": [
+  "Agendas.Arms Reduction.Title": [
     {
       "type": 0,
       "value": "Arms Reduction"
     }
   ],
-  "Articles of War.Description": [
+  "Agendas.Articles of War.Description": [
     {
       "type": 0,
-      "value": "FOR : All mechs lose their printed abilities except for SUSTAIN DAMAGE.\\n\\nAGAINST : Each player that voted \"For\" gains 3 trade goods."
+      "value": "FOR : All mechs lose their printed abilities except for SUSTAIN DAMAGE."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player that voted \"For\" gains 3 trade goods."
     }
   ],
-  "Articles of War.Title": [
+  "Agendas.Articles of War.Title": [
     {
       "type": 0,
       "value": "Articles of War"
     }
   ],
-  "Checks and Balances.Description": [
+  "Agendas.Checks and Balances.Description": [
     {
       "type": 0,
-      "value": "FOR : When a player chooses a strategy card during the strategy phase, they give that strategy card to another player that does not have 1 (or a player that does not have 2 in a three- or four-player game), if able.\\n\\nAGAINST : Each player readies only 3 of their planets at the end of this agenda phase."
+      "value": "FOR : When a player chooses a strategy card during the strategy phase, they give that strategy card to another player that does not have 1 (or a player that does not have 2 in a three- or four-player game), if able."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player readies only 3 of their planets at the end of this agenda phase."
     }
   ],
-  "Checks and Balances.Title": [
+  "Agendas.Checks and Balances.Title": [
     {
       "type": 0,
       "value": "Checks and Balances"
     }
   ],
-  "Clandestine Operations.Description": [
+  "Agendas.Clandestine Operations.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player removes 2 command tokens from their command sheet and returns those tokens to their reinforcements.\\n\\nAGAINST : Each player removes 1 command token from their fleet pool and returns that token to their reinforcements."
+      "value": "FOR : Each player removes 2 command tokens from their command sheet and returns those tokens to their reinforcements."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player removes 1 command token from their fleet pool and returns that token to their reinforcements."
     }
   ],
-  "Clandestine Operations.Title": [
+  "Agendas.Clandestine Operations.Title": [
     {
       "type": 0,
       "value": "Clandestine Operations"
     }
   ],
-  "Classified Document Leaks.Description": [
+  "Agendas.Classified Document Leaks.Description": [
     {
       "type": 0,
-      "value": "When this agenda is revealed, if there are no scored secret objectives, discard this card and reveal another agenda from the top of the deck.\\n\\nThe elected secret objective becomes a public objective; place it near the other public objectives in the common play area."
+      "value": "When this agenda is revealed, if there are no scored secret objectives, discard this card and reveal another agenda from the top of the deck."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The elected secret objective becomes a public objective; place it near the other public objectives in the common play area."
     }
   ],
-  "Classified Document Leaks.Title": [
+  "Agendas.Classified Document Leaks.Title": [
     {
       "type": 0,
       "value": "Classified Document Leaks"
     }
   ],
-  "Colonial Redistribution.Description": [
+  "Agendas.Colonial Redistribution.Description": [
     {
       "type": 0,
-      "value": "Destroy each unit on the elected planet.\\n\\nThen, the player who controls that planet chooses 1 player with the fewest victory points; that player may place 1 infantry from their reinforcements on the elected planet."
+      "value": "Destroy each unit on the elected planet."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, the player who controls that planet chooses 1 player with the fewest victory points; that player may place 1 infantry from their reinforcements on the elected planet."
     }
   ],
-  "Colonial Redistribution.Title": [
+  "Agendas.Colonial Redistribution.Title": [
     {
       "type": 0,
       "value": "Colonial Redistribution"
     }
   ],
-  "Committee Formation.Description": [
+  "Agendas.Committee Formation.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nBefore players vote on an agenda that requires a player to be elected, the owner of this card may discard this card to choose a player to be elected. Players do not vote on that agenda."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Before players vote on an agenda that requires a player to be elected, the owner of this card may discard this card to choose a player to be elected. Players do not vote on that agenda."
     }
   ],
-  "Committee Formation.Title": [
+  "Agendas.Committee Formation.Title": [
     {
       "type": 0,
       "value": "Committee Formation"
     }
   ],
-  "Compensated Disarmament.Description": [
+  "Agendas.Compensated Disarmament.Description": [
     {
       "type": 0,
       "value": "Destroy each ground force on the elected planet; for each unit that was destroyed, the player who controls that planet gains 1 trade good."
     }
   ],
-  "Compensated Disarmament.Title": [
+  "Agendas.Compensated Disarmament.Title": [
     {
       "type": 0,
       "value": "Compensated Disarmament"
     }
   ],
-  "Conventions of War.Description": [
+  "Agendas.Conventions of War.Description": [
     {
       "type": 0,
-      "value": "FOR : Players cannot use BOMBARDMENT against units that are on cultural planets.\\n\\nAGAINST : Each player that voted \"Against\" discards all of their action cards."
+      "value": "FOR : Players cannot use BOMBARDMENT against units that are on cultural planets."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player that voted \"Against\" discards all of their action cards."
     }
   ],
-  "Conventions of War.Title": [
+  "Agendas.Conventions of War.Title": [
     {
       "type": 0,
       "value": "Conventions of War"
     }
   ],
-  "Core Mining.Description": [
+  "Agendas.Core Mining.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nThen, destroy 1 infantry on the planet.\\n\\nThe resource value of this planet is increased by 2."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, destroy 1 infantry on the planet."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The resource value of this planet is increased by 2."
     }
   ],
-  "Core Mining.Title": [
+  "Agendas.Core Mining.Title": [
     {
       "type": 0,
       "value": "Core Mining"
     }
   ],
-  "Covert Legislation.Description": [
+  "Agendas.Covert Legislation.Description": [
     {
       "type": 0,
-      "value": "When this agenda is revealed, the speaker draws the next card in the agenda deck but does not reveal it to the other players.\\n\\nInstead, the speaker reads the eligible outcomes aloud (For, Against, Elect Player, etc.); the other players vote for these outcomes as if they were outcomes of this agenda, without knowing their effects."
+      "value": "When this agenda is revealed, the speaker draws the next card in the agenda deck but does not reveal it to the other players."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Instead, the speaker reads the eligible outcomes aloud (For, Against, Elect Player, etc.); the other players vote for these outcomes as if they were outcomes of this agenda, without knowing their effects."
     }
   ],
-  "Covert Legislation.Title": [
+  "Agendas.Covert Legislation.Title": [
     {
       "type": 0,
       "value": "Covert Legislation"
     }
   ],
-  "Demilitarized Zone.Description": [
+  "Agendas.Demilitarized Zone.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nThen, destroy all units on that planet.\\n\\nPlayer's units cannot land, be produced, or be placed on this planet."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, destroy all units on that planet."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Player's units cannot land, be produced, or be placed on this planet."
     }
   ],
-  "Demilitarized Zone.Title": [
+  "Agendas.Demilitarized Zone.Title": [
     {
       "type": 0,
       "value": "Demilitarized Zone"
     }
   ],
-  "Economic Equality.Description": [
+  "Agendas.Economic Equality.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player returns all of their trade goods to the supply. Then, each player gains 5 trade goods.\\n\\nAGAINST : Each player returns all of their trade goods to the supply."
+      "value": "FOR : Each player returns all of their trade goods to the supply. Then, each player gains 5 trade goods."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player returns all of their trade goods to the supply."
     }
   ],
-  "Economic Equality.Title": [
+  "Agendas.Economic Equality.Title": [
     {
       "type": 0,
       "value": "Economic Equality"
     }
   ],
-  "Enforced Travel Ban.Description": [
+  "Agendas.Enforced Travel Ban.Description": [
     {
       "type": 0,
-      "value": "FOR : Alpha and beta wormholes have no effect during movement.\\n\\nAGAINST : Destroy each PDS in or adjacent to a system that contains a wormhole."
+      "value": "FOR : Alpha and beta wormholes have no effect during movement."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Destroy each PDS in or adjacent to a system that contains a wormhole."
     }
   ],
-  "Enforced Travel Ban.Title": [
+  "Agendas.Enforced Travel Ban.Title": [
     {
       "type": 0,
       "value": "Enforced Travel Ban"
     }
   ],
-  "Executive Sanctions.Description": [
+  "Agendas.Executive Sanctions.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player can have a maximum of 3 action cards in their hand.\\n\\nAGAINST : Each player discards 1 random action card from their hand."
+      "value": "FOR : Each player can have a maximum of 3 action cards in their hand."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player discards 1 random action card from their hand."
     }
   ],
-  "Executive Sanctions.Title": [
+  "Agendas.Executive Sanctions.Title": [
     {
       "type": 0,
       "value": "Executive Sanctions"
     }
   ],
-  "Fleet Regulations.Description": [
+  "Agendas.Fleet Regulations.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player cannot have more than 4 tokens in their fleet pool.\\n\\nAGAINST : Each player places 1 command token from their reinforcements in their fleet pool."
+      "value": "FOR : Each player cannot have more than 4 tokens in their fleet pool."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player places 1 command token from their reinforcements in their fleet pool."
     }
   ],
-  "Fleet Regulations.Title": [
+  "Agendas.Fleet Regulations.Title": [
     {
       "type": 0,
       "value": "Fleet Regulations"
     }
   ],
-  "Galactic Crisis Pact.Description": [
+  "Agendas.Galactic Crisis Pact.Description": [
     {
       "type": 0,
       "value": "Each player may perform the secondary ability of the elected strategy card without spending a command token; command tokens placed by the ability are placed from a player's reinforcements instead."
     }
   ],
-  "Galactic Crisis Pact.Title": [
+  "Agendas.Galactic Crisis Pact.Title": [
     {
       "type": 0,
       "value": "Galactic Crisis Pact"
     }
   ],
-  "Holy Planet of Ixth.Description": [
+  "Agendas.Holy Planet of Ixth.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nThe planet's owner gains 1 victory point.\\n\\nUnits on this planet cannot use PRODUCTION.\\n\\nWhen a player gains control of this planet, they gain 1 victory point.\\n\\nWhen a player loses control of this planet, they lose 1 victory point."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The planet's owner gains 1 victory point."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Units on this planet cannot use PRODUCTION."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When a player gains control of this planet, they gain 1 victory point."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When a player loses control of this planet, they lose 1 victory point."
     }
   ],
-  "Holy Planet of Ixth.Title": [
+  "Agendas.Holy Planet of Ixth.Title": [
     {
       "type": 0,
       "value": "Holy Planet of Ixth"
     }
   ],
-  "Homeland Defense Act.Description": [
+  "Agendas.Homeland Defense Act.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player can have any number of PDS units on planets they control.\\n\\nAGAINST : Each player destroys 1 of their PDS units."
+      "value": "FOR : Each player can have any number of PDS units on planets they control."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player destroys 1 of their PDS units."
     }
   ],
-  "Homeland Defense Act.Title": [
+  "Agendas.Homeland Defense Act.Title": [
     {
       "type": 0,
       "value": "Homeland Defense Act"
     }
   ],
-  "Imperial Arbiter.Description": [
+  "Agendas.Imperial Arbiter.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nAt the end of the strategy phase, the owner of this card may discard this card to swap 1 of their strategy cards with 1 of another player's strategy cards."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "At the end of the strategy phase, the owner of this card may discard this card to swap 1 of their strategy cards with 1 of another player's strategy cards."
     }
   ],
-  "Imperial Arbiter.Title": [
+  "Agendas.Imperial Arbiter.Title": [
     {
       "type": 0,
       "value": "Imperial Arbiter"
     }
   ],
-  "Incentive Program.Description": [
+  "Agendas.Incentive Program.Description": [
     {
       "type": 0,
-      "value": "FOR : Draw and reveal 1 stage I public objective from the deck and place it near the public objectives.\\n\\nAGAINST : Draw and reveal 1 stage II public objective from the deck and place it near the public objectives."
+      "value": "FOR : Draw and reveal 1 stage I public objective from the deck and place it near the public objectives."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Draw and reveal 1 stage II public objective from the deck and place it near the public objectives."
     }
   ],
-  "Incentive Program.Title": [
+  "Agendas.Incentive Program.Title": [
     {
       "type": 0,
       "value": "Incentive Program"
     }
   ],
-  "Ixthian Artifact.Description": [
+  "Agendas.Ixthian Artifact.Description": [
     {
       "type": 0,
-      "value": "FOR : The speaker rolls 1 die. If the result is 6-10, each player may research 2 technologies. If the result is 1-5, destroy all units in Mecatol Rex's system, and each player with units in systems adjacent to Mecatol Rex's system destroys 3 of their units in each of those systems.\\n\\nAGAINST : No effect."
+      "value": "FOR : The speaker rolls 1 die. If the result is 6-10, each player may research 2 technologies. If the result is 1-5, destroy all units in Mecatol Rex's system, and each player with units in systems adjacent to Mecatol Rex's system destroys 3 of their units in each of those systems."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : No effect."
     }
   ],
-  "Ixthian Artifact.Title": [
+  "Agendas.Ixthian Artifact.Title": [
     {
       "type": 0,
       "value": "Ixthian Artifact"
     }
   ],
-  "Judicial Abolishment.Description": [
+  "Agendas.Judicial Abolishment.Description": [
     {
       "type": 0,
-      "value": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.\\n\\nDiscard the elected law from play."
+      "value": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Discard the elected law from play."
     }
   ],
-  "Judicial Abolishment.Title": [
+  "Agendas.Judicial Abolishment.Title": [
     {
       "type": 0,
       "value": "Judicial Abolishment"
     }
   ],
-  "Minister of Antiques.Description": [
+  "Agendas.Minister of Antiques.Description": [
     {
       "type": 0,
       "value": "The elected player gains 1 relic."
     }
   ],
-  "Minister of Antiques.Title": [
+  "Agendas.Minister of Antiques.Title": [
     {
       "type": 0,
       "value": "Minister of Antiques"
     }
   ],
-  "Minister of Commerce.Description": [
+  "Agendas.Minister of Commerce.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nAfter the owner of this card replenishes commodities, they gain 1 trade good for each player that is their neighbor."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "After the owner of this card replenishes commodities, they gain 1 trade good for each player that is their neighbor."
     }
   ],
-  "Minister of Commerce.Title": [
+  "Agendas.Minister of Commerce.Title": [
     {
       "type": 0,
       "value": "Minister of Commerce"
     }
   ],
-  "Minister of Exploration.Description": [
+  "Agendas.Minister of Exploration.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nWhen the owner of this card gains control of a planet, they gain 1 trade good."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When the owner of this card gains control of a planet, they gain 1 trade good."
     }
   ],
-  "Minister of Exploration.Title": [
+  "Agendas.Minister of Exploration.Title": [
     {
       "type": 0,
       "value": "Minister of Exploration"
     }
   ],
-  "Minister of Industry.Description": [
+  "Agendas.Minister of Industry.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nWhen the owner of this card places a space dock in a system, their units in that system may use their PRODUCTION abilities."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When the owner of this card places a space dock in a system, their units in that system may use their PRODUCTION abilities."
     }
   ],
-  "Minister of Industry.Title": [
+  "Agendas.Minister of Industry.Title": [
     {
       "type": 0,
       "value": "Minister of Industry"
     }
   ],
-  "Minister of Peace.Description": [
+  "Agendas.Minister of Peace.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nAfter a player activates a system that contains 1 or more of a different player's units, the owner of this card may discard this card; immediately end the active player's turn."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "After a player activates a system that contains 1 or more of a different player's units, the owner of this card may discard this card; immediately end the active player's turn."
     }
   ],
-  "Minister of Peace.Title": [
+  "Agendas.Minister of Peace.Title": [
     {
       "type": 0,
       "value": "Minister of Peace"
     }
   ],
-  "Minister of Policy.Description": [
+  "Agendas.Minister of Policy.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nAt the end of the status phase, the owner of this card draws 1 action card."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "At the end of the status phase, the owner of this card draws 1 action card."
     }
   ],
-  "Minister of Policy.Title": [
+  "Agendas.Minister of Policy.Title": [
     {
       "type": 0,
       "value": "Minister of Policy"
     }
   ],
-  "Minister of Sciences.Description": [
+  "Agendas.Minister of Sciences.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nWhen the owner of this card resolves the primary or secondary ability of the \"Technology\" strategy card, they do not need to spend resources to research technology."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When the owner of this card resolves the primary or secondary ability of the \"Technology\" strategy card, they do not need to spend resources to research technology."
     }
   ],
-  "Minister of Sciences.Title": [
+  "Agendas.Minister of Sciences.Title": [
     {
       "type": 0,
       "value": "Minister of Sciences"
     }
   ],
-  "Minister of War.Description": [
+  "Agendas.Minister of War.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nThe owner of this card may discard this card after performing an action to remove 1 of their command counters from the game board and return it to their reinforcements; then they may perform 1 additional action."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The owner of this card may discard this card after performing an action to remove 1 of their command counters from the game board and return it to their reinforcements; then they may perform 1 additional action."
     }
   ],
-  "Minister of War.Title": [
+  "Agendas.Minister of War.Title": [
     {
       "type": 0,
       "value": "Minister of War"
     }
   ],
-  "Miscount Disclosed.Description": [
+  "Agendas.Miscount Disclosed.Description": [
     {
       "type": 0,
-      "value": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.\\n\\nVote on the elected law as if it were just revealed from the top of the deck."
+      "value": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Vote on the elected law as if it were just revealed from the top of the deck."
     }
   ],
-  "Miscount Disclosed.Title": [
+  "Agendas.Miscount Disclosed.Title": [
     {
       "type": 0,
       "value": "Miscount Disclosed"
     }
   ],
-  "Mutiny.Description": [
+  "Agendas.Mutiny.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player who voted \"For\" gains 1 victory point.\\n\\nAGAINST : Each player who voted \"For\" loses 1 victory point."
+      "value": "FOR : Each player who voted \"For\" gains 1 victory point."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player who voted \"For\" loses 1 victory point."
     }
   ],
-  "Mutiny.Title": [
+  "Agendas.Mutiny.Title": [
     {
       "type": 0,
       "value": "Mutiny"
     }
   ],
-  "New Constitution.Description": [
+  "Agendas.New Constitution.Description": [
     {
       "type": 0,
-      "value": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.\\n\\nFOR : Discard all laws in play. At the start of the next strategy phase, each player exhausts each planet in their home system.\\n\\nAGAINST : No effect."
+      "value": "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "FOR : Discard all laws in play. At the start of the next strategy phase, each player exhausts each planet in their home system."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : No effect."
     }
   ],
-  "New Constitution.Title": [
+  "Agendas.New Constitution.Title": [
     {
       "type": 0,
       "value": "New Constitution"
     }
   ],
-  "Nexus Sovereignty.Description": [
+  "Agendas.Nexus Sovereignty.Description": [
     {
       "type": 0,
-      "value": "FOR : Alpha and beta wormholes in the wormhole nexus have no effect during movement.\\n\\nAGAINST : Place a gamma wormhole token in the Mecatol Rex system."
+      "value": "FOR : Alpha and beta wormholes in the wormhole nexus have no effect during movement."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Place a gamma wormhole token in the Mecatol Rex system."
     }
   ],
-  "Nexus Sovereignty.Title": [
+  "Agendas.Nexus Sovereignty.Title": [
     {
       "type": 0,
       "value": "Nexus Sovereignty"
     }
   ],
-  "Political Censure.Description": [
+  "Agendas.Political Censure.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card and 1 victory point.\\n\\nThe elected player cannot play action cards.\\n\\nIf the owner of this card loses this card, they lose 1 victory point."
+      "value": "The elected player gains this card and 1 victory point."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The elected player cannot play action cards."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If the owner of this card loses this card, they lose 1 victory point."
     }
   ],
-  "Political Censure.Title": [
+  "Agendas.Political Censure.Title": [
     {
       "type": 0,
       "value": "Political Censure"
     }
   ],
-  "Prophecy of Ixth.Description": [
+  "Agendas.Prophecy of Ixth.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nThe owner of this card applies +1 to the result of their fighter's combat rolls. When the owner of this card uses PRODUCTION, they discard this card unless they produce 2 or more fighters."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The owner of this card applies +1 to the result of their fighter's combat rolls. When the owner of this card uses PRODUCTION, they discard this card unless they produce 2 or more fighters."
     }
   ],
-  "Prophecy of Ixth.Title": [
+  "Agendas.Prophecy of Ixth.Title": [
     {
       "type": 0,
       "value": "Prophecy of Ixth"
     }
   ],
-  "Public Execution.Description": [
+  "Agendas.Public Execution.Description": [
     {
       "type": 0,
       "value": "The elected player discards all of their action cards. If they have the speaker token, they give it to the player on their left. The elected player cannot vote on any agendas during this agenda phase."
     }
   ],
-  "Public Execution.Title": [
+  "Agendas.Public Execution.Title": [
     {
       "type": 0,
       "value": "Public Execution"
     }
   ],
-  "Publicize Weapon Schematics.Description": [
+  "Agendas.Publicize Weapon Schematics.Description": [
     {
       "type": 0,
-      "value": "FOR : If any player owns a war sun technology, all players may ignore all prerequisites on war sun technologies. All war suns lose SUSTAIN DAMAGE.\\n\\nAGAINST : Each player that owns a war sun technology discards all of their action cards."
+      "value": "FOR : If any player owns a war sun technology, all players may ignore all prerequisites on war sun technologies. All war suns lose SUSTAIN DAMAGE."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player that owns a war sun technology discards all of their action cards."
     }
   ],
-  "Publicize Weapon Schematics.Title": [
+  "Agendas.Publicize Weapon Schematics.Title": [
     {
       "type": 0,
       "value": "Publicize Weapon Schematics"
     }
   ],
-  "Rearmament Agreement.Description": [
+  "Agendas.Rearmament Agreement.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player places 1 mech from their reinforcements on a planet they control in their home system.\\n\\nAGAINST : Each player replaces each of their mechs with 1 infantry from their reinforcements."
+      "value": "FOR : Each player places 1 mech from their reinforcements on a planet they control in their home system."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player replaces each of their mechs with 1 infantry from their reinforcements."
     }
   ],
-  "Rearmament Agreement.Title": [
+  "Agendas.Rearmament Agreement.Title": [
     {
       "type": 0,
       "value": "Rearmament Agreement"
     }
   ],
-  "Regulated Conscription.Description": [
+  "Agendas.Regulated Conscription.Description": [
     {
       "type": 0,
-      "value": "FOR : When a player produces units, they produce only 1 fighter and infantry for its cost instead of 2.\\n\\nAGAINST : No effect."
+      "value": "FOR : When a player produces units, they produce only 1 fighter and infantry for its cost instead of 2."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : No effect."
     }
   ],
-  "Regulated Conscription.Title": [
+  "Agendas.Regulated Conscription.Title": [
     {
       "type": 0,
       "value": "Regulated Conscription"
     }
   ],
-  "Representative Government.Description": [
+  "Agendas.Representative Government.Description": [
     {
       "type": 0,
-      "value": "FOR : Players cannot exhaust planets to cast votes during the agenda phase. Each player may cast 1 vote on each agenda instead.\\n\\nAGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
-    }
-  ],
-  "Representative Government.Omega.Description": [
+      "value": "FOR : Players cannot exhaust planets to cast votes during the agenda phase. Each player may cast 1 vote on each agenda instead."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
     {
       "type": 0,
-      "value": "FOR : Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes.\\n\\nAGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
+      "value": "AGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
     }
   ],
-  "Representative Government.Title": [
+  "Agendas.Representative Government.Omega.Description": [
+    {
+      "type": 0,
+      "value": "FOR : Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
+    }
+  ],
+  "Agendas.Representative Government.Title": [
     {
       "type": 0,
       "value": "Representative Government"
     }
   ],
-  "Research Grant Reallocation.Description": [
+  "Agendas.Research Grant Reallocation.Description": [
     {
       "type": 0,
       "value": "The elected player gains any 1 technology of their choice. Then, for each prerequisite on that technology, they remove 1 token from their fleet pool and return it to their reinforcements."
     }
   ],
-  "Research Grant Reallocation.Title": [
+  "Agendas.Research Grant Reallocation.Title": [
     {
       "type": 0,
       "value": "Research Grant Reallocation"
     }
   ],
-  "Research Team: Biotic.Description": [
+  "Agendas.Research Team: Biotic.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 green prerequisite."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When the owner of this planet researches technology, they may exhaust this card to ignore 1 green prerequisite."
     }
   ],
-  "Research Team: Biotic.Title": [
+  "Agendas.Research Team: Biotic.Title": [
     {
       "type": 0,
       "value": "Research Team: Biotic"
     }
   ],
-  "Research Team: Cybernetic.Description": [
+  "Agendas.Research Team: Cybernetic.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 yellow prerequisite."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When the owner of this planet researches technology, they may exhaust this card to ignore 1 yellow prerequisite."
     }
   ],
-  "Research Team: Cybernetic.Title": [
+  "Agendas.Research Team: Cybernetic.Title": [
     {
       "type": 0,
       "value": "Research Team: Cybernetic"
     }
   ],
-  "Research Team: Propulsion.Description": [
+  "Agendas.Research Team: Propulsion.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 blue prerequisite."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When the owner of this planet researches technology, they may exhaust this card to ignore 1 blue prerequisite."
     }
   ],
-  "Research Team: Propulsion.Title": [
+  "Agendas.Research Team: Propulsion.Title": [
     {
       "type": 0,
       "value": "Research Team: Propulsion"
     }
   ],
-  "Research Team: Warfare.Description": [
+  "Agendas.Research Team: Warfare.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nWhen the owner of this planet researches technology, they may exhaust this card to ignore 1 red prerequisite."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When the owner of this planet researches technology, they may exhaust this card to ignore 1 red prerequisite."
     }
   ],
-  "Research Team: Warfare.Title": [
+  "Agendas.Research Team: Warfare.Title": [
     {
       "type": 0,
       "value": "Research Team: Warfare"
     }
   ],
-  "Search Warrant.Description": [
+  "Agendas.Search Warrant.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card and draws 2 secret objectives.\\n\\nThe owner of this card plays with their secret objectives revealed."
+      "value": "The elected player gains this card and draws 2 secret objectives."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The owner of this card plays with their secret objectives revealed."
     }
   ],
-  "Search Warrant.Title": [
+  "Agendas.Search Warrant.Title": [
     {
       "type": 0,
       "value": "Search Warrant"
     }
   ],
-  "Seed of an Empire.Description": [
+  "Agendas.Seed of an Empire.Description": [
     {
       "type": 0,
-      "value": "FOR : The player with most victory points gains 1 victory point.\\n\\nAGAINST : The player with the fewest victory points gains 1 victory point."
+      "value": "FOR : The player with most victory points gains 1 victory point."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : The player with the fewest victory points gains 1 victory point."
     }
   ],
-  "Seed of an Empire.Title": [
+  "Agendas.Seed of an Empire.Title": [
     {
       "type": 0,
       "value": "Seed of an Empire"
     }
   ],
-  "Senate Sanctuary.Description": [
+  "Agendas.Senate Sanctuary.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nThe influence value of this planet is increased by 2."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The influence value of this planet is increased by 2."
     }
   ],
-  "Senate Sanctuary.Title": [
+  "Agendas.Senate Sanctuary.Title": [
     {
       "type": 0,
       "value": "Senate Sanctuary"
     }
   ],
-  "Shard of the Throne.Description": [
+  "Agendas.Shard of the Throne.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nA player gains this card and 1 victory point when they win a combat against the owner of this card.\\n\\nThen, the previous owner of this card loses 1 victory point."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "A player gains this card and 1 victory point when they win a combat against the owner of this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, the previous owner of this card loses 1 victory point."
     }
   ],
-  "Shard of the Throne.Title": [
+  "Agendas.Shard of the Throne.Title": [
     {
       "type": 0,
       "value": "Shard of the Throne"
     }
   ],
-  "Shared Research.Description": [
+  "Agendas.Shared Research.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player's units can move through nebulae.\\n\\nAGAINST : Each player places a command token from their reinforcements in their home system, if able."
+      "value": "FOR : Each player's units can move through nebulae."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player places a command token from their reinforcements in their home system, if able."
     }
   ],
-  "Shared Research.Title": [
+  "Agendas.Shared Research.Title": [
     {
       "type": 0,
       "value": "Shared Research"
     }
   ],
-  "Swords to Plowshares.Description": [
+  "Agendas.Swords to Plowshares.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player destroys half of their infantry on each planet they control, rounded up. Then, each player gains trade goods equal to the number of their infantry that were destroyed.\\n\\nAGAINST : Each player places 1 infantry from their reinforcements on each planet they control."
+      "value": "FOR : Each player destroys half of their infantry on each planet they control, rounded up. Then, each player gains trade goods equal to the number of their infantry that were destroyed."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player places 1 infantry from their reinforcements on each planet they control."
     }
   ],
-  "Swords to Plowshares.Title": [
+  "Agendas.Swords to Plowshares.Title": [
     {
       "type": 0,
       "value": "Swords to Plowshares"
     }
   ],
-  "Terraforming Initiative.Description": [
+  "Agendas.Terraforming Initiative.Description": [
     {
       "type": 0,
-      "value": "Attach this card to the elected planet's card.\\n\\nThe resource and influence values of this planet are increased by 1."
+      "value": "Attach this card to the elected planet's card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The resource and influence values of this planet are increased by 1."
     }
   ],
-  "Terraforming Initiative.Title": [
+  "Agendas.Terraforming Initiative.Title": [
     {
       "type": 0,
       "value": "Terraforming Initiative"
     }
   ],
-  "The Crown of Emphidia.Description": [
+  "Agendas.The Crown of Emphidia.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nA player gains this card and 1 victory point after they gain control of a planet in the home system of this card's owner.\\n\\nThen, the previous owner of this card loses 1 victory point."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "A player gains this card and 1 victory point after they gain control of a planet in the home system of this card's owner."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, the previous owner of this card loses 1 victory point."
     }
   ],
-  "The Crown of Emphidia.Title": [
+  "Agendas.The Crown of Emphidia.Title": [
     {
       "type": 0,
       "value": "The Crown of Emphidia"
     }
   ],
-  "The Crown of Thalnos.Description": [
+  "Agendas.The Crown of Thalnos.Description": [
     {
       "type": 0,
-      "value": "The elected player gains this card.\\n\\nDuring each combat round, the owner of this card may reroll any number of dice; they must destroy each of their units that did not produce a hit with its reroll."
+      "value": "The elected player gains this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "During each combat round, the owner of this card may reroll any number of dice; they must destroy each of their units that did not produce a hit with its reroll."
     }
   ],
-  "The Crown of Thalnos.Title": [
+  "Agendas.The Crown of Thalnos.Title": [
     {
       "type": 0,
       "value": "The Crown of Thalnos"
     }
   ],
-  "Unconventional Measures.Description": [
+  "Agendas.Unconventional Measures.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player that voted \"For\" draws 2 action cards.\\n\\nAGAINST : Each player that voted \"For\" discards all of their action cards."
+      "value": "FOR : Each player that voted \"For\" draws 2 action cards."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player that voted \"For\" discards all of their action cards."
     }
   ],
-  "Unconventional Measures.Title": [
+  "Agendas.Unconventional Measures.Title": [
     {
       "type": 0,
       "value": "Unconventional Measures"
     }
   ],
-  "Wormhole Reconstruction.Description": [
+  "Agendas.Wormhole Reconstruction.Description": [
     {
       "type": 0,
-      "value": "FOR : All systems that contain either an alpha or beta wormhole are adjacent to each other.\\n\\nAGAINST : Each player places a command token from their reinforcements in each system that contains a wormhole and 1 or more of their ships."
+      "value": "FOR : All systems that contain either an alpha or beta wormhole are adjacent to each other."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player places a command token from their reinforcements in each system that contains a wormhole and 1 or more of their ships."
     }
   ],
-  "Wormhole Reconstruction.Title": [
+  "Agendas.Wormhole Reconstruction.Title": [
     {
       "type": 0,
       "value": "Wormhole Reconstruction"
     }
   ],
-  "Wormhole Research.Description": [
+  "Agendas.Wormhole Research.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player who has 1 or more ships in a system that contains a wormhole may research 1 technology. Then, destroy all ships in systems that contain an alpha or beta wormhole.\\n\\nAGAINST : Each player that voted \"Against\" removes 1 command token from their command sheet and returns it to their reinforcements."
+      "value": "FOR : Each player who has 1 or more ships in a system that contains a wormhole may research 1 technology. Then, destroy all ships in systems that contain an alpha or beta wormhole."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST : Each player that voted \"Against\" removes 1 command token from their command sheet and returns it to their reinforcements."
     }
   ],
-  "Wormhole Research.Title": [
+  "Agendas.Wormhole Research.Title": [
     {
       "type": 0,
       "value": "Wormhole Research"
+    }
+  ],
+  "Arborec.Abilities.Mitosis.Description": [
+    {
+      "type": 0,
+      "value": "Your space docks cannot produce infantry. At the start of the status phase, place 1 infantry from your reinforcements on any planet you control."
+    }
+  ],
+  "Arborec.Abilities.Mitosis.Title": [
+    {
+      "type": 0,
+      "value": "Mitosis"
+    }
+  ],
+  "Arborec.Name": [
+    {
+      "type": 0,
+      "value": "Arborec"
+    }
+  ],
+  "Arborec.Promissories.Stymie.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "While this card is in your play area, the Arborec player cannot produce units in or adjacent to non-home systems that contain 1 or more of your units."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Arborec player's units, return this card to the Arborec player."
+    }
+  ],
+  "Arborec.Promissories.Stymie.Omega.Description": [
+    {
+      "type": 0,
+      "value": "After another player moves ships into a system that contains 1 or more of your units: You may place 1 command token from that player's reinforcements in any non-home system. Then, return this card to the Arborec player."
+    }
+  ],
+  "Arborec.Promissories.Stymie.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Stymie Ω"
+    }
+  ],
+  "Arborec.Promissories.Stymie.Title": [
+    {
+      "type": 0,
+      "value": "Stymie"
+    }
+  ],
+  "Arborec.Shortname": [
+    {
+      "type": 0,
+      "value": "Arborec"
+    }
+  ],
+  "Arborec.Units.Duha Menaimon.Description": [
+    {
+      "type": 0,
+      "value": "After you activate this system, you may produce up to 5 units in this system."
+    }
+  ],
+  "Arborec.Units.Duha Menaimon.Title": [
+    {
+      "type": 0,
+      "value": "Duha Menaimon"
+    }
+  ],
+  "Arborec.Units.Letani Behemoth.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: When you would use your MITOSIS faction ability you may replace 1 of your infantry with 1 mech from your reinforcements instead."
+    }
+  ],
+  "Arborec.Units.Letani Behemoth.Title": [
+    {
+      "type": 0,
+      "value": "Letani Behemoth"
+    }
+  ],
+  "Arborec.Units.Letani Warrior I.Title": [
+    {
+      "type": 0,
+      "value": "Letani Warrior I"
+    }
+  ],
+  "Argent Flight.Abilities.Raid Formation.Description": [
+    {
+      "type": 0,
+      "value": "When 1 or more of your units uses ANTI-FIGHTER BARRAGE, for each hit produced in excess of your opponent's fighters, choose 1 of your opponent's ships that has SUSTAIN DAMAGE to become damaged."
+    }
+  ],
+  "Argent Flight.Abilities.Raid Formation.Title": [
+    {
+      "type": 0,
+      "value": "Raid Formation"
+    }
+  ],
+  "Argent Flight.Abilities.Zeal.Description": [
+    {
+      "type": 0,
+      "value": "You always vote first during the agenda phase. When you cast at least 1 vote, cast 1 additional vote for each player in the game including you."
+    }
+  ],
+  "Argent Flight.Abilities.Zeal.Title": [
+    {
+      "type": 0,
+      "value": "Zeal"
+    }
+  ],
+  "Argent Flight.Name": [
+    {
+      "type": 0,
+      "value": "Argent Flight"
+    }
+  ],
+  "Argent Flight.Promissories.Strike Wing Ambuscade.Description": [
+    {
+      "type": 0,
+      "value": "When 1 or more of your units make a roll for a unit ability:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Choose 1 of those units to roll 1 additional die"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Argent player"
+    }
+  ],
+  "Argent Flight.Promissories.Strike Wing Ambuscade.Title": [
+    {
+      "type": 0,
+      "value": "Strike Wing Ambuscade"
+    }
+  ],
+  "Argent Flight.Shortname": [
+    {
+      "type": 0,
+      "value": "Argent"
+    }
+  ],
+  "Argent Flight.Units.Aerie Sentinel.Description": [
+    {
+      "type": 0,
+      "value": "This unit does not count against capacity if it is being transported or if it is in a space area with 1 or more of your ships that have capacity values."
+    }
+  ],
+  "Argent Flight.Units.Aerie Sentinel.Title": [
+    {
+      "type": 0,
+      "value": "Aerie Sentinel"
+    }
+  ],
+  "Argent Flight.Units.Quetzecoatl.Description": [
+    {
+      "type": 0,
+      "value": "Other players cannot use SPACE CANNON against your ships in this system."
+    }
+  ],
+  "Argent Flight.Units.Quetzecoatl.Title": [
+    {
+      "type": 0,
+      "value": "Quetzecoatl"
+    }
+  ],
+  "Argent Flight.Units.Strike Wing Alpha I.Title": [
+    {
+      "type": 0,
+      "value": "Strike Wing Alpha I"
+    }
+  ],
+  "Attachments.Biotic Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Biotic Research Facility"
+    }
+  ],
+  "Attachments.Branch Office - Broadcast Hub.Title": [
+    {
+      "type": 0,
+      "value": "Branch Office - Broadcast Hub"
+    }
+  ],
+  "Attachments.Branch Office - Orbital Shipyard.Title": [
+    {
+      "type": 0,
+      "value": "Branch Office - Orbital Shipyard"
+    }
+  ],
+  "Attachments.Branch Office - Reserve Bank.Title": [
+    {
+      "type": 0,
+      "value": "Branch Office - Reserve Bank"
+    }
+  ],
+  "Attachments.Branch Office - Tax Haven.Title": [
+    {
+      "type": 0,
+      "value": "Branch Office - Tax Haven"
+    }
+  ],
+  "Attachments.Core Mining.Title": [
+    {
+      "type": 0,
+      "value": "Core Mining"
+    }
+  ],
+  "Attachments.Cybernetic Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Cybernetic Research Facility"
+    }
+  ],
+  "Attachments.Demilitarized Zone.Title": [
+    {
+      "type": 0,
+      "value": "Demilitarized Zone"
+    }
+  ],
+  "Attachments.Dyson Sphere.Title": [
+    {
+      "type": 0,
+      "value": "Dyson Sphere"
+    }
+  ],
+  "Attachments.Gledge Base.Title": [
+    {
+      "type": 0,
+      "value": "Gledge Base"
+    }
+  ],
+  "Attachments.Holy Planet of Ixth.Title": [
+    {
+      "type": 0,
+      "value": "Holy Planet of Ixth"
+    }
+  ],
+  "Attachments.Lazax Survivors.Title": [
+    {
+      "type": 0,
+      "value": "Lazax Survivors"
+    }
+  ],
+  "Attachments.Mining World.Title": [
+    {
+      "type": 0,
+      "value": "Mining World"
+    }
+  ],
+  "Attachments.Nano-Forge.Title": [
+    {
+      "type": 0,
+      "value": "Nano-Forge"
+    }
+  ],
+  "Attachments.Paradise World.Title": [
+    {
+      "type": 0,
+      "value": "Paradise World"
+    }
+  ],
+  "Attachments.Propulsion Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Propulsion Research Facility"
+    }
+  ],
+  "Attachments.Research Team: Biotic.Title": [
+    {
+      "type": 0,
+      "value": "Research Team: Biotic"
+    }
+  ],
+  "Attachments.Research Team: Cybernetic.Title": [
+    {
+      "type": 0,
+      "value": "Research Team: Cybernetic"
+    }
+  ],
+  "Attachments.Research Team: Propulsion.Title": [
+    {
+      "type": 0,
+      "value": "Research Team: Propulsion"
+    }
+  ],
+  "Attachments.Research Team: Warfare.Title": [
+    {
+      "type": 0,
+      "value": "Research Team: Warfare"
+    }
+  ],
+  "Attachments.Rich World.Title": [
+    {
+      "type": 0,
+      "value": "Rich World"
+    }
+  ],
+  "Attachments.Senate Sanctuary.Title": [
+    {
+      "type": 0,
+      "value": "Senate Sanctuary"
+    }
+  ],
+  "Attachments.Terraform.Title": [
+    {
+      "type": 0,
+      "value": "Terraform"
+    }
+  ],
+  "Attachments.Terraforming Initiative.Title": [
+    {
+      "type": 0,
+      "value": "Terraforming Initiative"
+    }
+  ],
+  "Attachments.Tomb of Emphidia.Title": [
+    {
+      "type": 0,
+      "value": "Tomb of Emphidia"
+    }
+  ],
+  "Attachments.Ul the Progenitor.Title": [
+    {
+      "type": 0,
+      "value": "Ul the Progenitor"
+    }
+  ],
+  "Attachments.Warfare Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Warfare Research Facility"
+    }
+  ],
+  "Barony of Letnev.Abilities.Armada.Description": [
+    {
+      "type": 0,
+      "value": "The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool."
+    }
+  ],
+  "Barony of Letnev.Abilities.Armada.Title": [
+    {
+      "type": 0,
+      "value": "Armada"
+    }
+  ],
+  "Barony of Letnev.Abilities.Munitions Reserve.Description": [
+    {
+      "type": 0,
+      "value": "At the start of each round of space combat, you may spend 2 trade goods; you may re-roll any number of your dice during that combat round."
+    }
+  ],
+  "Barony of Letnev.Abilities.Munitions Reserve.Title": [
+    {
+      "type": 0,
+      "value": "Munitions Reserve"
+    }
+  ],
+  "Barony of Letnev.Name": [
+    {
+      "type": 0,
+      "value": "Barony of Letnev"
+    }
+  ],
+  "Barony of Letnev.Promissories.War Funding.Description": [
+    {
+      "type": 0,
+      "value": "At the start of a round of space combat:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The Letnev player loses 2 trade goods."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "During this combat round, re-roll any number of your dice."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Letnev player."
+    }
+  ],
+  "Barony of Letnev.Promissories.War Funding.Omega.Description": [
+    {
+      "type": 0,
+      "value": "After you and your opponent roll dice during space combat:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You may reroll all of your opponent's dice. You may reroll any number of your dice."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Letnev player."
+    }
+  ],
+  "Barony of Letnev.Promissories.War Funding.Omega.Title": [
+    {
+      "type": 0,
+      "value": "War Funding Ω"
+    }
+  ],
+  "Barony of Letnev.Promissories.War Funding.Title": [
+    {
+      "type": 0,
+      "value": "War Funding"
+    }
+  ],
+  "Barony of Letnev.Shortname": [
+    {
+      "type": 0,
+      "value": "Letnev"
+    }
+  ],
+  "Barony of Letnev.Units.Arc Secundus.Description": [
+    {
+      "type": 0,
+      "value": "Other players' units in this system lose PLANETARY SHIELD. At the start of each space combat round, repair this ship."
+    }
+  ],
+  "Barony of Letnev.Units.Arc Secundus.Title": [
+    {
+      "type": 0,
+      "value": "Arc Secundus"
+    }
+  ],
+  "Barony of Letnev.Units.Dunlain Reaper.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: At the start of a round of ground combat, you may spend 2 resources to replace 1 of your infantry in that combat with 1 mech."
+    }
+  ],
+  "Barony of Letnev.Units.Dunlain Reaper.Title": [
+    {
+      "type": 0,
+      "value": "Dunlain Reaper"
+    }
+  ],
+  "Clan of Saar.Abilities.Nomadic.Description": [
+    {
+      "type": 0,
+      "value": "You can score objectives even if you do not control the planets in your home system."
+    }
+  ],
+  "Clan of Saar.Abilities.Nomadic.Title": [
+    {
+      "type": 0,
+      "value": "Nomadic"
+    }
+  ],
+  "Clan of Saar.Abilities.Scavenge.Description": [
+    {
+      "type": 0,
+      "value": "After you gain control of a planet, gain 1 trade good."
+    }
+  ],
+  "Clan of Saar.Abilities.Scavenge.Title": [
+    {
+      "type": 0,
+      "value": "Scavenge"
+    }
+  ],
+  "Clan of Saar.Name": [
+    {
+      "type": 0,
+      "value": "Clan of Saar"
+    }
+  ],
+  "Clan of Saar.Promissories.Ragh's Call.Description": [
+    {
+      "type": 0,
+      "value": "After you commit 1 or more units to land on a planet:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Remove all of the Saar player's ground forces from that planet and place them on a planet controlled by the Saar player."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then return this card to the Saar player."
+    }
+  ],
+  "Clan of Saar.Promissories.Ragh's Call.Title": [
+    {
+      "type": 0,
+      "value": "Ragh's Call"
+    }
+  ],
+  "Clan of Saar.Shortname": [
+    {
+      "type": 0,
+      "value": "Saar"
+    }
+  ],
+  "Clan of Saar.Units.Floating Factory I.Description": [
+    {
+      "type": 0,
+      "value": "This unit is placed in a space area instead of on a planet. This unit can move and retreat as if it were a ship. If this unit is blockaded, it is destroyed."
+    }
+  ],
+  "Clan of Saar.Units.Floating Factory I.Title": [
+    {
+      "type": 0,
+      "value": "Floating Factory I"
+    }
+  ],
+  "Clan of Saar.Units.Scavenger Zeta.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: After you gain control of a planet, you may spend 1 trade good to place 1 mech on that planet."
+    }
+  ],
+  "Clan of Saar.Units.Scavenger Zeta.Title": [
+    {
+      "type": 0,
+      "value": "Scavenger Zeta"
+    }
+  ],
+  "Clan of Saar.Units.Son of Ragh.Title": [
+    {
+      "type": 0,
+      "value": "Son of Ragh"
+    }
+  ],
+  "Council Keleres.Abilities.Council Patronage.Description": [
+    {
+      "type": 0,
+      "value": "Replenish your commodities at the start of the strategy phase, then gain 1 trade good."
+    }
+  ],
+  "Council Keleres.Abilities.Council Patronage.Title": [
+    {
+      "type": 0,
+      "value": "Council Patronage"
+    }
+  ],
+  "Council Keleres.Abilities.Law's Order.Description": [
+    {
+      "type": 0,
+      "value": "You may spend 1 influence at the start of your turn to treat all laws as blank until the end of your turn."
+    }
+  ],
+  "Council Keleres.Abilities.Law's Order.Title": [
+    {
+      "type": 0,
+      "value": "Law's Order"
+    }
+  ],
+  "Council Keleres.Abilities.The Tribunii.Description": [
+    {
+      "type": 0,
+      "value": "During setup, choose an unplayed faction from among the Mentak, the Xxcha and the Argent Flight; take that faction's home system, command tokens and control markers. Additionally, take the Keleres Hero that corresponds to that faction."
+    }
+  ],
+  "Council Keleres.Abilities.The Tribunii.Title": [
+    {
+      "type": 0,
+      "value": "The Tribunii"
+    }
+  ],
+  "Council Keleres.Name": [
+    {
+      "type": 0,
+      "value": "Council Keleres"
+    }
+  ],
+  "Council Keleres.Promissories.Keleres Rider.Description": [
+    {
+      "type": 0,
+      "value": "After an agenda is revealed:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, draw 1 action card and gain 2 trade goods."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Keleres player."
+    }
+  ],
+  "Council Keleres.Promissories.Keleres Rider.Title": [
+    {
+      "type": 0,
+      "value": "Keleres Rider"
+    }
+  ],
+  "Council Keleres.Shortname": [
+    {
+      "type": 0,
+      "value": "Keleres"
+    }
+  ],
+  "Council Keleres.Units.Artemiris.Description": [
+    {
+      "type": 0,
+      "value": "Other players must spend 2 influence to activate the system that contains this ship."
+    }
+  ],
+  "Council Keleres.Units.Artemiris.Title": [
+    {
+      "type": 0,
+      "value": "Artemiris"
+    }
+  ],
+  "Council Keleres.Units.Omniopiares.Description": [
+    {
+      "type": 0,
+      "value": "Other players must spend 1 influence to commit ground forces to the planet that contains this unit."
+    }
+  ],
+  "Council Keleres.Units.Omniopiares.Title": [
+    {
+      "type": 0,
+      "value": "Omniopiares"
+    }
+  ],
+  "Embers of Muaat.Abilities.Gashlai Physiology.Description": [
+    {
+      "type": 0,
+      "value": "Your ships can move through supernovas."
+    }
+  ],
+  "Embers of Muaat.Abilities.Gashlai Physiology.Title": [
+    {
+      "type": 0,
+      "value": "Gashlai Physiology"
+    }
+  ],
+  "Embers of Muaat.Abilities.Star Forge.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 1 token from your strategy pool to place either 2 fighters or 1 destroyer from your reinforcements in a system that contains 1 or more of your war suns."
+    }
+  ],
+  "Embers of Muaat.Abilities.Star Forge.Title": [
+    {
+      "type": 0,
+      "value": "Star Forge"
+    }
+  ],
+  "Embers of Muaat.Name": [
+    {
+      "type": 0,
+      "value": "Embers of Muaat"
+    }
+  ],
+  "Embers of Muaat.Promissories.Fires of the Gashlai.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card. Then, return this card to the Muaat player."
+    }
+  ],
+  "Embers of Muaat.Promissories.Fires of the Gashlai.Title": [
+    {
+      "type": 0,
+      "value": "Fires of the Gashlai"
+    }
+  ],
+  "Embers of Muaat.Shortname": [
+    {
+      "type": 0,
+      "value": "Muaat"
+    }
+  ],
+  "Embers of Muaat.Units.Ember Colossus.Description": [
+    {
+      "type": 0,
+      "value": "When you use your STAR FORGE faction ability in this system or an adjacent system, you may place 1 infantry from your reinforcements with this unit."
+    }
+  ],
+  "Embers of Muaat.Units.Ember Colossus.Title": [
+    {
+      "type": 0,
+      "value": "Ember Colossus"
+    }
+  ],
+  "Embers of Muaat.Units.Prototype War Sun I.Description": [
+    {
+      "type": 0,
+      "value": "Other players' units in this system lose PLANETARY SHIELD."
+    }
+  ],
+  "Embers of Muaat.Units.Prototype War Sun I.Title": [
+    {
+      "type": 0,
+      "value": "Prototype War Sun I"
+    }
+  ],
+  "Embers of Muaat.Units.The Inferno.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 1 token from your strategy pool to place 1 cruiser in this unit's system."
+    }
+  ],
+  "Embers of Muaat.Units.The Inferno.Title": [
+    {
+      "type": 0,
+      "value": "The Inferno"
+    }
+  ],
+  "Emirates of Hacan.Abilities.Arbiters.Description": [
+    {
+      "type": 0,
+      "value": "When you are negotiating a transaction, action cards can be exchanged as part of that transaction."
+    }
+  ],
+  "Emirates of Hacan.Abilities.Arbiters.Title": [
+    {
+      "type": 0,
+      "value": "Arbiters"
+    }
+  ],
+  "Emirates of Hacan.Abilities.Guild Ships.Description": [
+    {
+      "type": 0,
+      "value": "You can negotiate transactions with players who are not your neighbor."
+    }
+  ],
+  "Emirates of Hacan.Abilities.Guild Ships.Title": [
+    {
+      "type": 0,
+      "value": "Guild Ships"
+    }
+  ],
+  "Emirates of Hacan.Abilities.Masters of Trade.Description": [
+    {
+      "type": 0,
+      "value": "You do not have to spend a command token to resolve the secondary ability of the \"Trade\" strategy card."
+    }
+  ],
+  "Emirates of Hacan.Abilities.Masters of Trade.Title": [
+    {
+      "type": 0,
+      "value": "Masters of Trade"
+    }
+  ],
+  "Emirates of Hacan.Name": [
+    {
+      "type": 0,
+      "value": "Emirates of Hacan"
+    }
+  ],
+  "Emirates of Hacan.Promissories.Trade Convoys.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face-up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "While this card is in your play area, you may negotiate transactions with players who are not your neighbor."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player."
+    }
+  ],
+  "Emirates of Hacan.Promissories.Trade Convoys.Title": [
+    {
+      "type": 0,
+      "value": "Trade Convoys"
+    }
+  ],
+  "Emirates of Hacan.Shortname": [
+    {
+      "type": 0,
+      "value": "Hacan"
+    }
+  ],
+  "Emirates of Hacan.Units.Pride of Kenara.Description": [
+    {
+      "type": 0,
+      "value": "This planet's card may be traded as part of a transaction; if you do, move all of your units from this planet to another planet you control."
+    }
+  ],
+  "Emirates of Hacan.Units.Pride of Kenara.Title": [
+    {
+      "type": 0,
+      "value": "Pride of Kenara"
+    }
+  ],
+  "Emirates of Hacan.Units.Wrath of Kenara.Description": [
+    {
+      "type": 0,
+      "value": "After you roll a die during a space combat in this system, you may spend 1 trade good to apply +1 to the result."
+    }
+  ],
+  "Emirates of Hacan.Units.Wrath of Kenara.Title": [
+    {
+      "type": 0,
+      "value": "Wrath of Kenara"
+    }
+  ],
+  "Empyrean.Abilities.Aetherpassage.Description": [
+    {
+      "type": 0,
+      "value": "After a player activates a system, you may allow that player to move their ships through systems that contain your ships."
+    }
+  ],
+  "Empyrean.Abilities.Aetherpassage.Title": [
+    {
+      "type": 0,
+      "value": "Aetherpassage"
+    }
+  ],
+  "Empyrean.Abilities.Dark Whispers.Description": [
+    {
+      "type": 0,
+      "value": "During setup, take the additional Empyrean faction promissory note; you have 2 faction promissory notes."
+    }
+  ],
+  "Empyrean.Abilities.Dark Whispers.Title": [
+    {
+      "type": 0,
+      "value": "Dark Whispers"
+    }
+  ],
+  "Empyrean.Abilities.Voidborn.Description": [
+    {
+      "type": 0,
+      "value": "Nebulae do not affect your ships' movement."
+    }
+  ],
+  "Empyrean.Abilities.Voidborn.Title": [
+    {
+      "type": 0,
+      "value": "Voidborn"
+    }
+  ],
+  "Empyrean.Name": [
+    {
+      "type": 0,
+      "value": "Empyrean"
+    }
+  ],
+  "Empyrean.Promissories.Blood Pact.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When you and the Empyrean player cast votes for the same outcome, cast 4 additional votes for that outcome."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player."
+    }
+  ],
+  "Empyrean.Promissories.Blood Pact.Title": [
+    {
+      "type": 0,
+      "value": "Blood Pact"
+    }
+  ],
+  "Empyrean.Promissories.Dark Pact.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player."
+    }
+  ],
+  "Empyrean.Promissories.Dark Pact.Title": [
+    {
+      "type": 0,
+      "value": "Dark Pact"
+    }
+  ],
+  "Empyrean.Shortname": [
+    {
+      "type": 0,
+      "value": "Empyrean"
+    }
+  ],
+  "Empyrean.Units.Dynamo.Description": [
+    {
+      "type": 0,
+      "value": "After any player's unit in this system or an adjacent system uses SUSTAIN DAMAGE, you may spend 2 influence to repair that unit."
+    }
+  ],
+  "Empyrean.Units.Dynamo.Title": [
+    {
+      "type": 0,
+      "value": "Dynamo"
+    }
+  ],
+  "Empyrean.Units.Watcher.Description": [
+    {
+      "type": 0,
+      "value": "You may remove this unit from a system that contains or is adjacent to another player's units to cancel an action card played by that player."
+    }
+  ],
+  "Empyrean.Units.Watcher.Title": [
+    {
+      "type": 0,
+      "value": "Watcher"
+    }
+  ],
+  "Federation of Sol.Abilities.Orbital Drop.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control."
+    }
+  ],
+  "Federation of Sol.Abilities.Orbital Drop.Title": [
+    {
+      "type": 0,
+      "value": "Orbital Drop"
+    }
+  ],
+  "Federation of Sol.Abilities.Versatile.Description": [
+    {
+      "type": 0,
+      "value": "When you gain command tokens during the status phase, gain 1 additional command token."
+    }
+  ],
+  "Federation of Sol.Abilities.Versatile.Title": [
+    {
+      "type": 0,
+      "value": "Versatile"
+    }
+  ],
+  "Federation of Sol.Name": [
+    {
+      "type": 0,
+      "value": "Federation of Sol"
+    }
+  ],
+  "Federation of Sol.Promissories.Military Support.Description": [
+    {
+      "type": 0,
+      "value": "At the start of the Sol player's turn:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Remove 1 token from the Sol player's strategy pool, if able, and return it to their reinforcements. Then, you may place 2 infantry from your reinforcements on any planet you control."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then return this card to the Sol player."
+    }
+  ],
+  "Federation of Sol.Promissories.Military Support.Title": [
+    {
+      "type": 0,
+      "value": "Military Support"
+    }
+  ],
+  "Federation of Sol.Shortname": [
+    {
+      "type": 0,
+      "value": "Sol"
+    }
+  ],
+  "Federation of Sol.Units.Advanced Carrier I.Title": [
+    {
+      "type": 0,
+      "value": "Advanced Carrier I"
+    }
+  ],
+  "Federation of Sol.Units.Genesis.Description": [
+    {
+      "type": 0,
+      "value": "At the end of the status phase, place 1 infantry from your reinforcements in this system's space area."
+    }
+  ],
+  "Federation of Sol.Units.Genesis.Title": [
+    {
+      "type": 0,
+      "value": "Genesis"
+    }
+  ],
+  "Federation of Sol.Units.Spec Ops I.Title": [
+    {
+      "type": 0,
+      "value": "Spec Ops I"
+    }
+  ],
+  "Federation of Sol.Units.ZS Thunderbolt M2.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: After you use your ORBITAL DROP faction ability, you may spend 3 resources to place 1 mech on that planet."
+    }
+  ],
+  "Federation of Sol.Units.ZS Thunderbolt M2.Title": [
+    {
+      "type": 0,
+      "value": "ZS Thunderbolt M2"
+    }
+  ],
+  "Ghosts of Creuss.Abilities.Creuss Gate.Description": [
+    {
+      "type": 0,
+      "value": "When you create the game board, place the Creuss Gate (tile 17) where your home system would normally be placed. The Creuss Gate system is not a home system. Then, place your home system (tile 51) in your play area."
+    }
+  ],
+  "Ghosts of Creuss.Abilities.Creuss Gate.Title": [
+    {
+      "type": 0,
+      "value": "Creuss Gate"
+    }
+  ],
+  "Ghosts of Creuss.Abilities.Quantum Entanglement.Description": [
+    {
+      "type": 0,
+      "value": "You treat all systems that contain either an alpha or beta wormhole as adjacent to each other. Game effects cannot prevent you from using this ability."
+    }
+  ],
+  "Ghosts of Creuss.Abilities.Quantum Entanglement.Title": [
+    {
+      "type": 0,
+      "value": "Quantum Entanglement"
+    }
+  ],
+  "Ghosts of Creuss.Abilities.Slipstream.Description": [
+    {
+      "type": 0,
+      "value": "During your tactical actions, apply +1 to the move value of each of your ships that starts its movement in your home system or in a system that contains either an alpha or beta wormhole."
+    }
+  ],
+  "Ghosts of Creuss.Abilities.Slipstream.Title": [
+    {
+      "type": 0,
+      "value": "Slipstream"
+    }
+  ],
+  "Ghosts of Creuss.Name": [
+    {
+      "type": 0,
+      "value": "Ghosts of Creuss"
+    }
+  ],
+  "Ghosts of Creuss.Promissories.Creuss Iff.Description": [
+    {
+      "type": 0,
+      "value": "At the start of your turn during the action phase:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Creuss player."
+    }
+  ],
+  "Ghosts of Creuss.Promissories.Creuss Iff.Title": [
+    {
+      "type": 0,
+      "value": "Creuss Iff"
+    }
+  ],
+  "Ghosts of Creuss.Shortname": [
+    {
+      "type": 0,
+      "value": "Creuss"
+    }
+  ],
+  "Ghosts of Creuss.Units.Hil Colish.Description": [
+    {
+      "type": 0,
+      "value": "This ship's system contains a delta wormhole. During movement, this ship may move before or after your other ships."
+    }
+  ],
+  "Ghosts of Creuss.Units.Hil Colish.Title": [
+    {
+      "type": 0,
+      "value": "Hil Colish"
+    }
+  ],
+  "Ghosts of Creuss.Units.Icarus Drive.Description": [
+    {
+      "type": 0,
+      "value": "After any player activates a system, you may remove this unit from the game board to place or move a Creuss wormhole token into this system."
+    }
+  ],
+  "Ghosts of Creuss.Units.Icarus Drive.Title": [
+    {
+      "type": 0,
+      "value": "Icarus Drive"
+    }
+  ],
+  "H3n/oR": [
+    {
+      "type": 0,
+      "value": "SUSTAIN DAMAGE"
+    }
+  ],
+  "K1ks2a": [
+    {
+      "type": 0,
+      "value": "SPACE CANNON "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    }
+  ],
+  "L1Z1X Mindnet.Abilities.Assimilate.Description": [
+    {
+      "type": 0,
+      "value": "When you gain control of a planet, replace each PDS and space dock that is on that planet with a matching unit from your reinforcements."
+    }
+  ],
+  "L1Z1X Mindnet.Abilities.Assimilate.Title": [
+    {
+      "type": 0,
+      "value": "Assimilate"
+    }
+  ],
+  "L1Z1X Mindnet.Abilities.Harrow.Description": [
+    {
+      "type": 0,
+      "value": "At the end of each round of ground combat, your ships in the active system may use their BOMBARDMENT abilities against your opponent's ground forces on the planet."
+    }
+  ],
+  "L1Z1X Mindnet.Abilities.Harrow.Title": [
+    {
+      "type": 0,
+      "value": "Harrow"
+    }
+  ],
+  "L1Z1X Mindnet.Name": [
+    {
+      "type": 0,
+      "value": "L1Z1X Mindnet"
+    }
+  ],
+  "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Description": [
+    {
+      "type": 0,
+      "value": "At the start of your turn:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Remove 1 token from the L1Z1X player's strategy pool and return it to their reinforcements. Then, place 1 command token from your reinforcements in your strategy pool."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the L1Z1X player."
+    }
+  ],
+  "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Description": [
+    {
+      "type": 0,
+      "value": "When you gain command tokens during the status phase:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gain 1 additional command token."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the L1Z1X player."
+    }
+  ],
+  "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Cybernetic Enhancements Ω"
+    }
+  ],
+  "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Title": [
+    {
+      "type": 0,
+      "value": "Cybernetic Enhancements"
+    }
+  ],
+  "L1Z1X Mindnet.Shortname": [
+    {
+      "type": 0,
+      "value": "L1Z1X"
+    }
+  ],
+  "L1Z1X Mindnet.Units.Annihilator.Description": [
+    {
+      "type": 0,
+      "value": "While not participating in ground combat, this unit can use its BOMBARDMENT ability on planets in its system as if it were a ship."
+    }
+  ],
+  "L1Z1X Mindnet.Units.Annihilator.Title": [
+    {
+      "type": 0,
+      "value": "Annihilator"
+    }
+  ],
+  "L1Z1X Mindnet.Units.Super-Dreadnought I.Title": [
+    {
+      "type": 0,
+      "value": "Super-Dreadnought I"
+    }
+  ],
+  "L1Z1X Mindnet.Units.[0.0.1].Description": [
+    {
+      "type": 0,
+      "value": "During a space combat, hits produced by this ship and by your dreadnoughts in this system must be assigned to non-fighter ships if able."
+    }
+  ],
+  "L1Z1X Mindnet.Units.[0.0.1].Title": [
+    {
+      "type": 0,
+      "value": "[0.0.1]"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Abilities.Edict.Description": [
+    {
+      "type": 0,
+      "value": "When you win a combat, place 1 command token from your opponent's reinforcements in your fleet pool if it does not already contain 1 of that player's tokens; other player's tokens in your fleet pool increase your fleet limit but cannot be redistributed."
+    }
+  ],
+  "Mahact Gene-Sorcerers.Abilities.Edict.Title": [
+    {
+      "type": 0,
+      "value": "Edict"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Abilities.Hubris.Description": [
+    {
+      "type": 0,
+      "value": "During setup, purge your \"Alliance\" promissory note. Other players cannot give you their \"Alliance\" promissory note."
+    }
+  ],
+  "Mahact Gene-Sorcerers.Abilities.Hubris.Title": [
+    {
+      "type": 0,
+      "value": "Hubris"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Abilities.Imperia.Description": [
+    {
+      "type": 0,
+      "value": "While another player's command token is in your fleet pool, you can use the ability of that player's commander, if it is unlocked."
+    }
+  ],
+  "Mahact Gene-Sorcerers.Abilities.Imperia.Title": [
+    {
+      "type": 0,
+      "value": "Imperia"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Name": [
+    {
+      "type": 0,
+      "value": "Mahact Gene-Sorcerers"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Promissories.Scepter of Dominion.Description": [
+    {
+      "type": 0,
+      "value": "At the start of the strategy phase:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Choose 1 non-home system that contains your units; each other player who has a token on the Mahact player's command sheet places a token from their reinforcements in that system"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Mahact player."
+    }
+  ],
+  "Mahact Gene-Sorcerers.Promissories.Scepter of Dominion.Title": [
+    {
+      "type": 0,
+      "value": "Scepter of Dominion"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Shortname": [
+    {
+      "type": 0,
+      "value": "Mahact"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Units.Arvicon Rex.Description": [
+    {
+      "type": 0,
+      "value": "During combat against an opponent whose command token is not in your fleet pool, apply +2 to the results of this unit's combat rolls."
+    }
+  ],
+  "Mahact Gene-Sorcerers.Units.Arvicon Rex.Title": [
+    {
+      "type": 0,
+      "value": "Arvicon Rex"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Units.Crimson Legionnaire I.Description": [
+    {
+      "type": 0,
+      "value": "After this unit is destroyed, gain 1 commodity or convert 1 of your commodities to a trade good."
+    }
+  ],
+  "Mahact Gene-Sorcerers.Units.Crimson Legionnaire I.Title": [
+    {
+      "type": 0,
+      "value": "Crimson Legionnaire I"
+    }
+  ],
+  "Mahact Gene-Sorcerers.Units.Starlancer.Description": [
+    {
+      "type": 0,
+      "value": "After a player whose command token is in your fleet pool activates this system, you may spend their token from your fleet pool to end their turn; they gain that token."
+    }
+  ],
+  "Mahact Gene-Sorcerers.Units.Starlancer.Title": [
+    {
+      "type": 0,
+      "value": "Starlancer"
+    }
+  ],
+  "Mentak Coalition.Abilities.Ambush.Description": [
+    {
+      "type": 0,
+      "value": "At the start of a space combat, you may roll 1 die for each of up to 2 of your cruisers or destroyers in the system. For each result equal to or greater than that ship's combat value, produce 1 hit; your opponent must assign it to 1 of their ships."
+    }
+  ],
+  "Mentak Coalition.Abilities.Ambush.Title": [
+    {
+      "type": 0,
+      "value": "Ambush"
+    }
+  ],
+  "Mentak Coalition.Abilities.Pillage.Description": [
+    {
+      "type": 0,
+      "value": "After 1 of your neighbors gains trade goods or resolves a transaction, if they have 3 or more trade goods, you may take 1 of their trade goods or commodities."
+    }
+  ],
+  "Mentak Coalition.Abilities.Pillage.Title": [
+    {
+      "type": 0,
+      "value": "Pillage"
+    }
+  ],
+  "Mentak Coalition.Name": [
+    {
+      "type": 0,
+      "value": "Mentak Coalition"
+    }
+  ],
+  "Mentak Coalition.Promissories.Promise of Protection.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face-up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "While this card is in your play area, the Mentak player cannot use their PILLAGE faction ability against you."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Mentak player's units, return this card to the Mentak player."
+    }
+  ],
+  "Mentak Coalition.Promissories.Promise of Protection.Title": [
+    {
+      "type": 0,
+      "value": "Promise of Protection"
+    }
+  ],
+  "Mentak Coalition.Shortname": [
+    {
+      "type": 0,
+      "value": "Mentak"
+    }
+  ],
+  "Mentak Coalition.Units.Fourth Moon.Description": [
+    {
+      "type": 0,
+      "value": "Other players' ships in this system cannot use SUSTAIN DAMAGE."
+    }
+  ],
+  "Mentak Coalition.Units.Fourth Moon.Title": [
+    {
+      "type": 0,
+      "value": "Fourth Moon"
+    }
+  ],
+  "Mentak Coalition.Units.Moll Terminus.Description": [
+    {
+      "type": 0,
+      "value": "Other players' ground forces on this planet cannot use SUSTAIN DAMAGE."
+    }
+  ],
+  "Mentak Coalition.Units.Moll Terminus.Title": [
+    {
+      "type": 0,
+      "value": "Moll Terminus"
+    }
+  ],
+  "Naalu Collective.Abilities.Foresight.Description": [
+    {
+      "type": 0,
+      "value": "After another player moves ships into a system that contains 1 or more of your ships, you may place 1 token from your strategy pool in an adjacent system that does not contain another player's ships; move your ships from the active system into that system."
+    }
+  ],
+  "Naalu Collective.Abilities.Foresight.Title": [
+    {
+      "type": 0,
+      "value": "Foresight"
+    }
+  ],
+  "Naalu Collective.Abilities.Telepathic.Description": [
+    {
+      "type": 0,
+      "value": "At the end of the strategy phase, place the Naalu \"0\" token on your strategy card; you are first in initiative order."
+    }
+  ],
+  "Naalu Collective.Abilities.Telepathic.Title": [
+    {
+      "type": 0,
+      "value": "Telepathic"
+    }
+  ],
+  "Naalu Collective.Name": [
+    {
+      "type": 0,
+      "value": "Naalu Collective"
+    }
+  ],
+  "Naalu Collective.Promissories.Gift of Prescience.Description": [
+    {
+      "type": 0,
+      "value": "At the end of the strategy phase:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place this card face-up in your play area and place the Naalu \"0\" token on your strategy card; you are first in the initiative order. The Naalu player cannot use their TELEPATHIC faction ability during this game round."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Return this card to the Naalu player at the end of the status phase."
+    }
+  ],
+  "Naalu Collective.Promissories.Gift of Prescience.Title": [
+    {
+      "type": 0,
+      "value": "Gift of Prescience"
+    }
+  ],
+  "Naalu Collective.Shortname": [
+    {
+      "type": 0,
+      "value": "Naalu"
+    }
+  ],
+  "Naalu Collective.Units.Hybrid Crystal Fighter I.Title": [
+    {
+      "type": 0,
+      "value": "Hybrid Crystal Fighter I"
+    }
+  ],
+  "Naalu Collective.Units.Iconoclast.Description": [
+    {
+      "type": 0,
+      "value": "During combat against an opponent who has at least 1 relic fragment, apply +2 to the results of this unit's combat rolls."
+    }
+  ],
+  "Naalu Collective.Units.Iconoclast.Omega.Description": [
+    {
+      "type": 0,
+      "value": "Other players cannot use ANTI-FIGHTER BARRAGE against your units in this system."
+    }
+  ],
+  "Naalu Collective.Units.Iconoclast.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Iconoclast Ω"
+    }
+  ],
+  "Naalu Collective.Units.Iconoclast.Title": [
+    {
+      "type": 0,
+      "value": "Iconoclast"
+    }
+  ],
+  "Naalu Collective.Units.Matriarch.Description": [
+    {
+      "type": 0,
+      "value": "During an invasion in this system, you may commit fighters to planets as if they were ground forces. When combat ends, return those units to the space area."
+    }
+  ],
+  "Naalu Collective.Units.Matriarch.Title": [
+    {
+      "type": 0,
+      "value": "Matriarch"
+    }
+  ],
+  "Naaz-Rokha Alliance.Abilities.Distant Suns.Description": [
+    {
+      "type": 0,
+      "value": "When you explore a planet that contains 1 of your mechs, you may draw 1 additional card; choose 1 to resolve and discard the rest."
+    }
+  ],
+  "Naaz-Rokha Alliance.Abilities.Distant Suns.Title": [
+    {
+      "type": 0,
+      "value": "Distant Suns"
+    }
+  ],
+  "Naaz-Rokha Alliance.Abilities.Fabrication.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic; or purge 1 of your relic fragments to gain 1 command token."
+    }
+  ],
+  "Naaz-Rokha Alliance.Abilities.Fabrication.Title": [
+    {
+      "type": 0,
+      "value": "Fabrication"
+    }
+  ],
+  "Naaz-Rokha Alliance.Name": [
+    {
+      "type": 0,
+      "value": "Naaz-Rokha Alliance"
+    }
+  ],
+  "Naaz-Rokha Alliance.Promissories.Black Market Forgery.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then return this card to the Naaz-Rokha player."
+    }
+  ],
+  "Naaz-Rokha Alliance.Promissories.Black Market Forgery.Title": [
+    {
+      "type": 0,
+      "value": "Black Market Forgery"
+    }
+  ],
+  "Naaz-Rokha Alliance.Shortname": [
+    {
+      "type": 0,
+      "value": "Naaz-Rokha"
+    }
+  ],
+  "Naaz-Rokha Alliance.Units.Eidolon.Description": [
+    {
+      "type": 0,
+      "value": "If this unit is in the space area of the active system at the start of a space combat, flip this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "(This card begins the game with this side face up)"
+    }
+  ],
+  "Naaz-Rokha Alliance.Units.Eidolon.Title": [
+    {
+      "type": 0,
+      "value": "Eidolon"
+    }
+  ],
+  "Naaz-Rokha Alliance.Units.Visz el Vir.Description": [
+    {
+      "type": 0,
+      "value": "Your mechs in this system roll 1 additional die during combat."
+    }
+  ],
+  "Naaz-Rokha Alliance.Units.Visz el Vir.Title": [
+    {
+      "type": 0,
+      "value": "Visz el Vir"
+    }
+  ],
+  "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Description": [
+    {
+      "type": 0,
+      "value": "If this unit is in the space area of the active system, it is also a ship. At the end of a space battle in the active system, flip this card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "(This card begins the game with this side face down)"
+    }
+  ],
+  "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Title": [
+    {
+      "type": 0,
+      "value": "Z-Grav Eidolon"
+    }
+  ],
+  "Nekro Virus.Abilities.Galactic Threat.Description": [
+    {
+      "type": 0,
+      "value": "You cannot vote on agendas. Once per agenda phase, after an agenda is revealed, you may predict aloud the outcome of that agenda. If your prediction is correct, gain 1 technology that is owned by a player who voted how you predicted."
+    }
+  ],
+  "Nekro Virus.Abilities.Galactic Threat.Title": [
+    {
+      "type": 0,
+      "value": "Galactic Threat"
+    }
+  ],
+  "Nekro Virus.Abilities.Propagation.Description": [
+    {
+      "type": 0,
+      "value": "You cannot research technology. When you would research a technology, gain 3 command tokens instead."
+    }
+  ],
+  "Nekro Virus.Abilities.Propagation.Title": [
+    {
+      "type": 0,
+      "value": "Propagation"
+    }
+  ],
+  "Nekro Virus.Abilities.Technological Singularity.Description": [
+    {
+      "type": 0,
+      "value": "Once per combat, after 1 of your opponent's units is destroyed, you may gain 1 technology that is owned by that player."
+    }
+  ],
+  "Nekro Virus.Abilities.Technological Singularity.Title": [
+    {
+      "type": 0,
+      "value": "Technological Singularity"
+    }
+  ],
+  "Nekro Virus.Name": [
+    {
+      "type": 0,
+      "value": "Nekro Virus"
+    }
+  ],
+  "Nekro Virus.Promissories.Antivirus.Description": [
+    {
+      "type": 0,
+      "value": "At the start of a combat:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place this card face-up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "While this card is in your play area, the Nekro player cannot use their TECHNOLOGICAL SINGULARITY faction ability against you."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Nekro player's units, return this card to the Nekro player."
+    }
+  ],
+  "Nekro Virus.Promissories.Antivirus.Title": [
+    {
+      "type": 0,
+      "value": "Antivirus"
+    }
+  ],
+  "Nekro Virus.Shortname": [
+    {
+      "type": 0,
+      "value": "Nekro"
+    }
+  ],
+  "Nekro Virus.Units.Mordred.Description": [
+    {
+      "type": 0,
+      "value": "During combat against an opponent who has an \"X\" or \"Y\" token on 1 or more of their technologies, apply +2 to the result of each of this unit's combat rolls."
+    }
+  ],
+  "Nekro Virus.Units.Mordred.Title": [
+    {
+      "type": 0,
+      "value": "Mordred"
+    }
+  ],
+  "Nekro Virus.Units.The Alastor.Description": [
+    {
+      "type": 0,
+      "value": "At the start of a space combat, choose any number of your ground forces in this system to participate in that combat as if they were ships."
+    }
+  ],
+  "Nekro Virus.Units.The Alastor.Title": [
+    {
+      "type": 0,
+      "value": "The Alastor"
+    }
+  ],
+  "Nomad.Abilities.Future Sight.Description": [
+    {
+      "type": 0,
+      "value": "During the Agenda phase, after an outcome that you voted for or predicted is resolved, gain 1 trade good."
+    }
+  ],
+  "Nomad.Abilities.Future Sight.Title": [
+    {
+      "type": 0,
+      "value": "Future Sight"
+    }
+  ],
+  "Nomad.Abilities.The Company.Description": [
+    {
+      "type": 0,
+      "value": "During setup, take the 2 additional Nomad faction agents and place them next to your faction sheet; you have 3 agents."
+    }
+  ],
+  "Nomad.Abilities.The Company.Title": [
+    {
+      "type": 0,
+      "value": "The Company"
+    }
+  ],
+  "Nomad.Name": [
+    {
+      "type": 0,
+      "value": "Nomad"
+    }
+  ],
+  "Nomad.Promissories.The Cavalry.Description": [
+    {
+      "type": 0,
+      "value": "At the start of a space combat against a player other than the Nomad:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "During this combat, treat 1 of your non-fighter ships as if it has the SUSTAIN DAMAGE ability, combat value, and ANTI-FIGHTER BARRAGE value of the Nomad's flagship."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Return this card to the Nomad player at the end of this combat."
+    }
+  ],
+  "Nomad.Promissories.The Cavalry.Title": [
+    {
+      "type": 0,
+      "value": "The Cavalry"
+    }
+  ],
+  "Nomad.Shortname": [
+    {
+      "type": 0,
+      "value": "Nomad"
+    }
+  ],
+  "Nomad.Units.Memoria.Description": [
+    {
+      "type": 0,
+      "value": "You may treat this unit as if it were adjacent to systems that contain one or more of your mechs."
+    }
+  ],
+  "Nomad.Units.Memoria.Title": [
+    {
+      "type": 0,
+      "value": "Memoria"
+    }
+  ],
+  "Nomad.Units.Quantum Manipulator.Description": [
+    {
+      "type": 0,
+      "value": "While this unit is in a space area during combat, you may use its SUSTAIN DAMAGE ability to cancel a hit that is produced against your ships in this system."
+    }
+  ],
+  "Nomad.Units.Quantum Manipulator.Title": [
+    {
+      "type": 0,
+      "value": "Quantum Manipulator"
+    }
+  ],
+  "Oozdq1": [
+    {
+      "type": 0,
+      "value": "PRODUCTION "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    }
+  ],
+  "Sardakk N'orr.Abilities.Unrelenting.Description": [
+    {
+      "type": 0,
+      "value": "Apply +1 to the result of each of your unit's combat rolls."
+    }
+  ],
+  "Sardakk N'orr.Abilities.Unrelenting.Title": [
+    {
+      "type": 0,
+      "value": "Unrelenting"
+    }
+  ],
+  "Sardakk N'orr.Name": [
+    {
+      "type": 0,
+      "value": "Sardakk N'orr"
+    }
+  ],
+  "Sardakk N'orr.Promissories.Tekklar Legion.Description": [
+    {
+      "type": 0,
+      "value": "At the start of an invasion combat:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Apply +1 to the result of each of your unit's combat rolls during this combat. If your opponent is the N'orr player, apply -1 to the result of each of their unit's combat rolls during this combat."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the N'orr player."
+    }
+  ],
+  "Sardakk N'orr.Promissories.Tekklar Legion.Title": [
+    {
+      "type": 0,
+      "value": "Tekklar Legion"
+    }
+  ],
+  "Sardakk N'orr.Shortname": [
+    {
+      "type": 0,
+      "value": "N'orr"
+    }
+  ],
+  "Sardakk N'orr.Units.C'Morran N'orr.Description": [
+    {
+      "type": 0,
+      "value": "Apply +1 to the result of each of your other ship's combat rolls in this system."
+    }
+  ],
+  "Sardakk N'orr.Units.C'Morran N'orr.Title": [
+    {
+      "type": 0,
+      "value": "C'Morran N'orr"
+    }
+  ],
+  "Sardakk N'orr.Units.Exotrireme I.Title": [
+    {
+      "type": 0,
+      "value": "Exotrireme I"
+    }
+  ],
+  "Sardakk N'orr.Units.Valkyrie Exoskeleton.Description": [
+    {
+      "type": 0,
+      "value": "After this unit uses its SUSTAIN DAMAGE ability during ground combat, it produces 1 hit against your opponent's ground forces on this planet."
+    }
+  ],
+  "Sardakk N'orr.Units.Valkyrie Exoskeleton.Title": [
+    {
+      "type": 0,
+      "value": "Valkyrie Exoskeleton"
+    }
+  ],
+  "Titans of Ul.Abilities.Awaken.Description": [
+    {
+      "type": 0,
+      "value": "After you activate a system that contains 1 or more of your sleeper tokens, you may replace each of those tokens with 1 PDS from your reinforcements."
+    }
+  ],
+  "Titans of Ul.Abilities.Awaken.Title": [
+    {
+      "type": 0,
+      "value": "Awaken"
+    }
+  ],
+  "Titans of Ul.Abilities.Coalescence.Description": [
+    {
+      "type": 0,
+      "value": "If your flagship or your AWAKEN faction ability places your units into the same space area or onto the same planet as another player's units, your units must participate in combat during \"Space Combat\" or \"Ground Combat\" steps."
+    }
+  ],
+  "Titans of Ul.Abilities.Coalescence.Title": [
+    {
+      "type": 0,
+      "value": "Coalescence"
+    }
+  ],
+  "Titans of Ul.Abilities.Terragenesis.Description": [
+    {
+      "type": 0,
+      "value": "After you explore a planet that does not have a sleeper token, you may place or move 1 sleeper token onto that planet."
+    }
+  ],
+  "Titans of Ul.Abilities.Terragenesis.Title": [
+    {
+      "type": 0,
+      "value": "Terragenesis"
+    }
+  ],
+  "Titans of Ul.Name": [
+    {
+      "type": 0,
+      "value": "Titans of Ul"
+    }
+  ],
+  "Titans of Ul.Promissories.Terraform.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Attach this card to a non-home planet you control other than Mecatol Rex."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Its resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial)."
+    }
+  ],
+  "Titans of Ul.Promissories.Terraform.Title": [
+    {
+      "type": 0,
+      "value": "Terraform"
+    }
+  ],
+  "Titans of Ul.Shortname": [
+    {
+      "type": 0,
+      "value": "Titans"
+    }
+  ],
+  "Titans of Ul.Units.Hecatoncheires.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: When you would place a PDS on a planet, you may place 1 mech and 1 infantry on that planet instead."
+    }
+  ],
+  "Titans of Ul.Units.Hecatoncheires.Title": [
+    {
+      "type": 0,
+      "value": "Hecatoncheires"
+    }
+  ],
+  "Titans of Ul.Units.Hel Titan I.Description": [
+    {
+      "type": 0,
+      "value": "This unit is treated as both a structure and a ground force. It cannot be transported."
+    }
+  ],
+  "Titans of Ul.Units.Hel Titan I.Title": [
+    {
+      "type": 0,
+      "value": "Hel Titan I"
+    }
+  ],
+  "Titans of Ul.Units.Ouranos.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: After you activate a system that contains 1 or more of your PDS, you may replace 1 of those PDS with this unit."
+    }
+  ],
+  "Titans of Ul.Units.Ouranos.Title": [
+    {
+      "type": 0,
+      "value": "Ouranos"
+    }
+  ],
+  "Titans of Ul.Units.Saturn Engine I.Title": [
+    {
+      "type": 0,
+      "value": "Saturn Engine I"
+    }
+  ],
+  "Universities of Jol-Nar.Abilities.Analytical.Description": [
+    {
+      "type": 0,
+      "value": "When you research a technology that is not a unit upgrade technology, you may ignore 1 prerequisite."
+    }
+  ],
+  "Universities of Jol-Nar.Abilities.Analytical.Title": [
+    {
+      "type": 0,
+      "value": "Analytical"
+    }
+  ],
+  "Universities of Jol-Nar.Abilities.Brilliant.Description": [
+    {
+      "type": 0,
+      "value": "When you spend a command token to resolve the secondary ability of the \"Technology\" strategy card, you may resolve the primary ability instead."
+    }
+  ],
+  "Universities of Jol-Nar.Abilities.Brilliant.Title": [
+    {
+      "type": 0,
+      "value": "Brilliant"
+    }
+  ],
+  "Universities of Jol-Nar.Abilities.Fragile.Description": [
+    {
+      "type": 0,
+      "value": "Apply -1 to the result of each of your unit's combat rolls."
+    }
+  ],
+  "Universities of Jol-Nar.Abilities.Fragile.Title": [
+    {
+      "type": 0,
+      "value": "Fragile"
+    }
+  ],
+  "Universities of Jol-Nar.Name": [
+    {
+      "type": 0,
+      "value": "Universities of Jol-Nar"
+    }
+  ],
+  "Universities of Jol-Nar.Promissories.Research Agreement.Description": [
+    {
+      "type": 0,
+      "value": "After the Jol-Nar player researches a technology that is not a faction technology:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gain that technology."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Jol-Nar player."
+    }
+  ],
+  "Universities of Jol-Nar.Promissories.Research Agreement.Title": [
+    {
+      "type": 0,
+      "value": "Research Agreement"
+    }
+  ],
+  "Universities of Jol-Nar.Shortname": [
+    {
+      "type": 0,
+      "value": "Jol-Nar"
+    }
+  ],
+  "Universities of Jol-Nar.Units.J.N.S. Hylarim.Description": [
+    {
+      "type": 0,
+      "value": "When making a combat roll for this ship, each result of 9 or 10, before applying modifiers, produces 2 additional hits."
+    }
+  ],
+  "Universities of Jol-Nar.Units.J.N.S. Hylarim.Title": [
+    {
+      "type": 0,
+      "value": "J.N.S. Hylarim"
+    }
+  ],
+  "Universities of Jol-Nar.Units.Shield Paling.Description": [
+    {
+      "type": 0,
+      "value": "Your infantry on this planet are not affected by your FRAGILE faction ability."
+    }
+  ],
+  "Universities of Jol-Nar.Units.Shield Paling.Title": [
+    {
+      "type": 0,
+      "value": "Shield Paling"
+    }
+  ],
+  "Vuil'raith Cabal.Abilities.Amalgamation.Description": [
+    {
+      "type": 0,
+      "value": "When you produce a unit, you may return 1 captured unit of that type to produce that unit without spending resources."
+    }
+  ],
+  "Vuil'raith Cabal.Abilities.Amalgamation.Title": [
+    {
+      "type": 0,
+      "value": "Amalgamation"
+    }
+  ],
+  "Vuil'raith Cabal.Abilities.Devour.Description": [
+    {
+      "type": 0,
+      "value": "Capture your opponent's non-structure units that are destroyed during combat."
+    }
+  ],
+  "Vuil'raith Cabal.Abilities.Devour.Title": [
+    {
+      "type": 0,
+      "value": "Devour"
+    }
+  ],
+  "Vuil'raith Cabal.Abilities.Riftmeld.Description": [
+    {
+      "type": 0,
+      "value": "When you research a unit upgrade technology, you may return 1 captured unit of that type to ignore all of the technology's prerequisites."
+    }
+  ],
+  "Vuil'raith Cabal.Abilities.Riftmeld.Title": [
+    {
+      "type": 0,
+      "value": "Riftmeld"
+    }
+  ],
+  "Vuil'raith Cabal.Name": [
+    {
+      "type": 0,
+      "value": "Vuil'raith Cabal"
+    }
+  ],
+  "Vuil'raith Cabal.Promissories.Crucible.Description": [
+    {
+      "type": 0,
+      "value": "After you activate a system:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Your ships do not roll for gravity rifts during this movement; apply an additional +1 to the move values of your ships that would move out of or through a gravity rift instead."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Vuil'raith player."
+    }
+  ],
+  "Vuil'raith Cabal.Promissories.Crucible.Title": [
+    {
+      "type": 0,
+      "value": "Crucible"
+    }
+  ],
+  "Vuil'raith Cabal.Shortname": [
+    {
+      "type": 0,
+      "value": "Vuil'raith"
+    }
+  ],
+  "Vuil'raith Cabal.Units.Dimensional Tear I.Description": [
+    {
+      "type": 0,
+      "value": "This system is a gravity rift; your ships do not roll for this gravity rift."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place a dimensional tear token beneath this unit as a reminder."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Up to 6 fighters in this system do not count against your ships' capacity."
+    }
+  ],
+  "Vuil'raith Cabal.Units.Dimensional Tear I.Title": [
+    {
+      "type": 0,
+      "value": "Dimensional Tear I"
+    }
+  ],
+  "Vuil'raith Cabal.Units.Reanimator.Description": [
+    {
+      "type": 0,
+      "value": "When your infantry on this planet are destroyed, place them on your faction sheet; those units are captured."
+    }
+  ],
+  "Vuil'raith Cabal.Units.Reanimator.Title": [
+    {
+      "type": 0,
+      "value": "Reanimator"
+    }
+  ],
+  "Vuil'raith Cabal.Units.The Terror Between.Description": [
+    {
+      "type": 0,
+      "value": "Capture all other non-structure units that are destroyed in this system, including your own."
+    }
+  ],
+  "Vuil'raith Cabal.Units.The Terror Between.Title": [
+    {
+      "type": 0,
+      "value": "The Terror Between"
+    }
+  ],
+  "Winnu.Abilities.Blood Ties.Description": [
+    {
+      "type": 0,
+      "value": "You do not have to spend influence to remove the custodians token from Mecatol Rex."
+    }
+  ],
+  "Winnu.Abilities.Blood Ties.Title": [
+    {
+      "type": 0,
+      "value": "Blood Ties"
+    }
+  ],
+  "Winnu.Abilities.Reclamation.Description": [
+    {
+      "type": 0,
+      "value": "After you resolve a tactical action during which you gained control of Mecatol Rex, you may place 1 PDS and 1 space dock from your reinforcements on Mecatol Rex."
+    }
+  ],
+  "Winnu.Abilities.Reclamation.Title": [
+    {
+      "type": 0,
+      "value": "Reclamation"
+    }
+  ],
+  "Winnu.Name": [
+    {
+      "type": 0,
+      "value": "Winnu"
+    }
+  ],
+  "Winnu.Promissories.Acquiescence.Description": [
+    {
+      "type": 0,
+      "value": "At the end of the strategy phase:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Exchange 1 of your strategy cards with a strategy card that was chosen by the Winnu player."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Winnu player."
+    }
+  ],
+  "Winnu.Promissories.Acquiescence.Omega.Description": [
+    {
+      "type": 0,
+      "value": "When the Winnu player resolves a strategic action:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You do not have to spend or place a command token to resolve the secondary ability of that strategy card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Winnu player."
+    }
+  ],
+  "Winnu.Promissories.Acquiescence.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Acquiescence Ω"
+    }
+  ],
+  "Winnu.Promissories.Acquiescence.Title": [
+    {
+      "type": 0,
+      "value": "Acquiescence"
+    }
+  ],
+  "Winnu.Shortname": [
+    {
+      "type": 0,
+      "value": "Winnu"
+    }
+  ],
+  "Winnu.Units.Reclaimer.Description": [
+    {
+      "type": 0,
+      "value": "After you resolve a tactical action where you gained control of this planet, you may place 1 PDS or 1 Space Dock from your reinforcements on this planet."
+    }
+  ],
+  "Winnu.Units.Reclaimer.Title": [
+    {
+      "type": 0,
+      "value": "Reclaimer"
+    }
+  ],
+  "Winnu.Units.Salai Sai Corian.Description": [
+    {
+      "type": 0,
+      "value": "When this unit makes a combat roll, it rolls a number of dice equal to the number of your opponent's non-fighter ships in this system."
+    }
+  ],
+  "Winnu.Units.Salai Sai Corian.Title": [
+    {
+      "type": 0,
+      "value": "Salai Sai Corian"
+    }
+  ],
+  "Xxcha Kingdom.Abilities.Peace Accords.Description": [
+    {
+      "type": 0,
+      "value": "After you resolve the primary or secondary ability of the \"Diplomacy\" strategy card, you may gain control of 1 planet other than Mecatol Rex that does not contain any units and is in a system that is adjacent to a planet you control."
+    }
+  ],
+  "Xxcha Kingdom.Abilities.Peace Accords.Title": [
+    {
+      "type": 0,
+      "value": "Peace Accords"
+    }
+  ],
+  "Xxcha Kingdom.Abilities.Quash.Description": [
+    {
+      "type": 0,
+      "value": "When an agenda is revealed, you may spend 1 token from your strategy pool to discard that agenda and reveal 1 agenda from the top of the deck. Players vote on this agenda instead."
+    }
+  ],
+  "Xxcha Kingdom.Abilities.Quash.Title": [
+    {
+      "type": 0,
+      "value": "Quash"
+    }
+  ],
+  "Xxcha Kingdom.Name": [
+    {
+      "type": 0,
+      "value": "Xxcha Kingdom"
+    }
+  ],
+  "Xxcha Kingdom.Promissories.Political Favor.Description": [
+    {
+      "type": 0,
+      "value": "When an agenda is revealed:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Remove 1 token from the Xxcha player's strategy pool and return it to their reinforcements. Then, discard the revealed agenda and reveal 1 agenda from the top of the deck. Players vote on this agenda instead."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Xxcha player."
+    }
+  ],
+  "Xxcha Kingdom.Promissories.Political Favor.Title": [
+    {
+      "type": 0,
+      "value": "Political Favor"
+    }
+  ],
+  "Xxcha Kingdom.Shortname": [
+    {
+      "type": 0,
+      "value": "Xxcha"
+    }
+  ],
+  "Xxcha Kingdom.Units.Indomitus.Description": [
+    {
+      "type": 0,
+      "value": "You may use this unit's SPACE CANNON ability against ships that are in adjacent systems."
+    }
+  ],
+  "Xxcha Kingdom.Units.Indomitus.Title": [
+    {
+      "type": 0,
+      "value": "Indomitus"
+    }
+  ],
+  "Xxcha Kingdom.Units.Loncara Ssodu.Description": [
+    {
+      "type": 0,
+      "value": "You may use this unit's SPACE CANNON against ships that are in adjacent systems."
+    }
+  ],
+  "Xxcha Kingdom.Units.Loncara Ssodu.Title": [
+    {
+      "type": 0,
+      "value": "Loncara Ssodu"
+    }
+  ],
+  "Yin Brotherhood.Abilities.Devotion.Description": [
+    {
+      "type": 0,
+      "value": "After each space battle round, you may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit and assign it to 1 of your opponent's ships in that system."
+    }
+  ],
+  "Yin Brotherhood.Abilities.Devotion.Title": [
+    {
+      "type": 0,
+      "value": "Devotion"
+    }
+  ],
+  "Yin Brotherhood.Abilities.Indoctrination.Description": [
+    {
+      "type": 0,
+      "value": "At the start of a ground combat, you may spend 2 influence to replace 1 of your opponent's participating infantry with 1 infantry from your reinforcements."
+    }
+  ],
+  "Yin Brotherhood.Abilities.Indoctrination.Title": [
+    {
+      "type": 0,
+      "value": "Indoctrination"
+    }
+  ],
+  "Yin Brotherhood.Name": [
+    {
+      "type": 0,
+      "value": "Yin Brotherhood"
+    }
+  ],
+  "Yin Brotherhood.Promissories.Greyfire Mutagen.Description": [
+    {
+      "type": 0,
+      "value": "After a system is activated:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The Yin player cannot use faction abilities or faction technology during this tactical action."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Yin player."
+    }
+  ],
+  "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Description": [
+    {
+      "type": 0,
+      "value": "At the start of a ground combat against 2 or more ground forces that are not controlled by the Yin player:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Replace 1 of your opponent's infantry with 1 infantry from your reinforcements."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Yin player."
+    }
+  ],
+  "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Greyfire Mutagen Ω"
+    }
+  ],
+  "Yin Brotherhood.Promissories.Greyfire Mutagen.Title": [
+    {
+      "type": 0,
+      "value": "Greyfire Mutagen"
+    }
+  ],
+  "Yin Brotherhood.Shortname": [
+    {
+      "type": 0,
+      "value": "Yin"
+    }
+  ],
+  "Yin Brotherhood.Units.Moyin's Ashes.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: When you use your INDOCTRINATION faction ability, you may spend 1 additional influence to replace your opponent's unit with 1 mech instead of 1 infantry."
+    }
+  ],
+  "Yin Brotherhood.Units.Moyin's Ashes.Title": [
+    {
+      "type": 0,
+      "value": "Moyin's Ashes"
+    }
+  ],
+  "Yin Brotherhood.Units.Van Hauge.Description": [
+    {
+      "type": 0,
+      "value": "When this ship is destroyed, destroy all ships in this system."
+    }
+  ],
+  "Yin Brotherhood.Units.Van Hauge.Title": [
+    {
+      "type": 0,
+      "value": "Van Hauge"
+    }
+  ],
+  "Yssaril Tribes.Abilities.Crafty.Description": [
+    {
+      "type": 0,
+      "value": "You can have any number of action cards in your hand. Game effects cannot prevent you from using this ability."
+    }
+  ],
+  "Yssaril Tribes.Abilities.Crafty.Title": [
+    {
+      "type": 0,
+      "value": "Crafty"
+    }
+  ],
+  "Yssaril Tribes.Abilities.Scheming.Description": [
+    {
+      "type": 0,
+      "value": "When you draw 1 or more action cards, draw 1 additional action card. Then, choose and discard 1 action card from your hand."
+    }
+  ],
+  "Yssaril Tribes.Abilities.Scheming.Title": [
+    {
+      "type": 0,
+      "value": "Scheming"
+    }
+  ],
+  "Yssaril Tribes.Abilities.Stall Tactics.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Discard 1 action card from your hand."
+    }
+  ],
+  "Yssaril Tribes.Abilities.Stall Tactics.Title": [
+    {
+      "type": 0,
+      "value": "Stall Tactics"
+    }
+  ],
+  "Yssaril Tribes.Name": [
+    {
+      "type": 0,
+      "value": "Yssaril Tribes"
+    }
+  ],
+  "Yssaril Tribes.Promissories.Spy Net.Description": [
+    {
+      "type": 0,
+      "value": "At the start of your turn:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Look at the Yssaril player's hand of action cards. Choose 1 of those cards and add it to your hand."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Yssaril player."
+    }
+  ],
+  "Yssaril Tribes.Promissories.Spy Net.Title": [
+    {
+      "type": 0,
+      "value": "Spy Net"
+    }
+  ],
+  "Yssaril Tribes.Shortname": [
+    {
+      "type": 0,
+      "value": "Yssaril"
+    }
+  ],
+  "Yssaril Tribes.Units.Blackshade Infiltrator.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: After you use your STALL TACTICS faction ability, you may place 1 mech on a planet you control."
+    }
+  ],
+  "Yssaril Tribes.Units.Blackshade Infiltrator.Title": [
+    {
+      "type": 0,
+      "value": "Blackshade Infiltrator"
+    }
+  ],
+  "Yssaril Tribes.Units.Y'sia Y'ssrila.Description": [
+    {
+      "type": 0,
+      "value": "This ship can move through systems that contain other player's ships."
+    }
+  ],
+  "Yssaril Tribes.Units.Y'sia Y'ssrila.Title": [
+    {
+      "type": 0,
+      "value": "Y'sia Y'ssrila"
+    }
+  ],
+  "hIFcXI": [
+    {
+      "type": 0,
+      "value": "PLANETARY SHIELD"
+    }
+  ],
+  "nryRrR": [
+    {
+      "type": 0,
+      "value": "BOMBARDMENT "
+    },
+    {
+      "type": 1,
+      "value": "value"
     }
   ]
 }

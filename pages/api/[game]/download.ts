@@ -4,8 +4,6 @@ import {
   getGameData,
   getTimers,
 } from "../../../server/util/fetch";
-import { BASE_PLANETS } from "../../../server/data/planets";
-import { BASE_FACTIONS } from "../../../server/data/factions";
 
 // function buildInitialGameData(setupData: {
 //   factions: SetupFaction[];
