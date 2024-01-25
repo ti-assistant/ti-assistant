@@ -6,12 +6,11 @@ export class AddTechHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: AddTechData) {}
 
   validate(): boolean {
-    const techs = buildTechs(this.gameData);
-    const tech = techs[this.data.event.tech];
-
     // Translations not needed, so just create an english one.
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
+    const techs = buildTechs(this.gameData, intl);
+    const tech = techs[this.data.event.tech];
     const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {
@@ -70,10 +69,10 @@ export class RemoveTechHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: RemoveTechData) {}
 
   validate(): boolean {
-    const techs = buildTechs(this.gameData);
-    const tech = techs[this.data.event.tech];
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
+    const techs = buildTechs(this.gameData, intl);
+    const tech = techs[this.data.event.tech];
     const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {

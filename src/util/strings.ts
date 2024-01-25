@@ -49,3 +49,14 @@ export function bombardment(value: string, intl: IntlShape) {
     { value }
   );
 }
+
+export function antiFighterBarrage(value: string, intl: IntlShape) {
+  return intl.formatMessage(
+    {
+      id: "D82kvD",
+      description: "A unit ability that allows a unit to destroy fighters.",
+      defaultMessage: "ANTI-FIGHTER BARRAGE {value}",
+    },
+    { value }
+  );
+}

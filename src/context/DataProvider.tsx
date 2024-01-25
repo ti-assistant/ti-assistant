@@ -93,9 +93,11 @@ import("../../server/data/systems").then((module) => {
   BASE_SYSTEMS = module.BASE_SYSTEMS;
 });
 
-let BASE_TECHS: Partial<Record<TechId, BaseTech>> = {};
+let getBaseTechs: DataFunction<TechId, BaseTech> = () => {
+  return {};
+};
 import("../../server/data/techs").then((module) => {
-  BASE_TECHS = module.BASE_TECHS;
+  getBaseTechs = module.getBaseTechs;
 });
 
 export default function DataProvider({ children }: PropsWithChildren) {
@@ -117,6 +119,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
   const baseObjectives = getBaseObjectives(intl);
   const baseRelics = getBaseRelics(intl);
   const baseStrategyCards = getBaseStrategyCards(intl);
+  const baseTechs = getBaseTechs(intl);
 
   let gameData: GameData = {
     agendas: baseAgendas,
@@ -134,7 +137,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
     },
     strategycards: baseStrategyCards,
     systems: BASE_SYSTEMS,
-    techs: BASE_TECHS,
+    techs: baseTechs,
   };
   if (storedGameData) {
     gameData = buildCompleteGameData(storedGameData, intl);
@@ -162,7 +165,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
     baseStrategyCards
   );
   const systems = useStableValue(gameData.systems ?? {}, BASE_SYSTEMS);
-  const techs = useStableValue(gameData.techs ?? {}, BASE_TECHS);
+  const techs = useStableValue(gameData.techs ?? {}, baseTechs);
 
   return (
     <ActionLogContext.Provider value={actionLog}>

@@ -74,9 +74,11 @@ import("../../server/data/systems").then((module) => {
   BASE_SYSTEMS = module.BASE_SYSTEMS;
 });
 
-let BASE_TECHS: Partial<Record<TechId, BaseTech>> = {};
+let getBaseTechs: DataFunction<TechId, BaseTech> = () => {
+  return {};
+};
 import("../../server/data/techs").then((module) => {
-  BASE_TECHS = module.BASE_TECHS;
+  getBaseTechs = module.getBaseTechs;
 });
 
 export function useIsGameDataValidating(gameid: string | undefined) {
@@ -133,7 +135,7 @@ export function useGameData(
       },
       strategycards: getBaseStrategyCards(intl),
       systems: BASE_SYSTEMS,
-      techs: BASE_TECHS,
+      techs: getBaseTechs(intl),
     };
   }
   return buildCompleteGameData(storedGameData, intl);
@@ -161,7 +163,7 @@ export function buildCompleteGameData(
     state: buildState(storedGameData),
     strategycards: buildStrategyCards(storedGameData, intl),
     systems: buildSystems(storedGameData),
-    techs: buildTechs(storedGameData),
+    techs: buildTechs(storedGameData, intl),
   };
 
   return completeGameData;
@@ -630,11 +632,11 @@ export function buildSystems(storedGameData: StoredGameData) {
   return systems;
 }
 
-export function buildTechs(storedGameData: StoredGameData) {
+export function buildTechs(storedGameData: StoredGameData, intl: IntlShape) {
   const options = storedGameData.options;
 
   const techs: Partial<Record<TechId, Tech>> = {};
-  Object.values(BASE_TECHS).forEach((tech) => {
+  Object.values(getBaseTechs(intl)).forEach((tech) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
@@ -653,9 +655,9 @@ export function buildTechs(storedGameData: StoredGameData) {
   return techs;
 }
 
-export function buildBaseTechs(options: Options) {
+export function buildBaseTechs(options: Options, intl: IntlShape) {
   const techs: Partial<Record<TechId, Tech>> = {};
-  Object.values(BASE_TECHS).forEach((tech) => {
+  Object.values(getBaseTechs(intl)).forEach((tech) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;

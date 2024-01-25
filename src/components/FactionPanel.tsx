@@ -178,7 +178,7 @@ function FactionPanelContent({
   const router = useRouter();
   const { game: gameId }: { game?: string } = router.query;
   const intl = useIntl();
-  const techs = buildBaseTechs(options);
+  const techs = buildBaseTechs(options, intl);
   const leaders = buildLeaders(options, intl);
   let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
   const factions = useContext(FactionContext);

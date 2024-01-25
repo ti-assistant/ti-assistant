@@ -570,6 +570,22 @@
     "defaultMessage": "Arborec",
     "description": "Shortened version of Faction name: Arborec"
   },
+  "Arborec.Techs.Bioplasmosis.Description": {
+    "defaultMessage": "At the end of the status phase, you may remove any number of your infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems.",
+    "description": "Description for Tech: Bioplasmosis"
+  },
+  "Arborec.Techs.Bioplasmosis.Title": {
+    "defaultMessage": "Bioplasmosis",
+    "description": "Title of Tech: Bioplasmosis"
+  },
+  "Arborec.Techs.Letani Warrior II.Description": {
+    "defaultMessage": "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
+    "description": "Description for Tech: Letani Warrior II"
+  },
+  "Arborec.Techs.Letani Warrior II.Title": {
+    "defaultMessage": "Letani Warrior II",
+    "description": "Title of Tech: Letani Warrior II"
+  },
   "Arborec.Units.Duha Menaimon.Description": {
     "defaultMessage": "After you activate this system, you may produce up to 5 units in this system.",
     "description": "Description of Faction Unit: Duha Menaimon"
@@ -653,6 +669,22 @@
   "Argent Flight.Shortname": {
     "defaultMessage": "Argent",
     "description": "Shortened version of Faction name: Argent Flight"
+  },
+  "Argent Flight.Techs.Aerie Hololattice.Description": {
+    "defaultMessage": "Other players cannot move ships through systems that contain your structures.{br}Each planet that contains 1 or more of your structures gains the PRODUCTION 1 ability as if it were a unit.",
+    "description": "Description for Tech: Aerie Hololattice"
+  },
+  "Argent Flight.Techs.Aerie Hololattice.Title": {
+    "defaultMessage": "Aerie Hololattice",
+    "description": "Title of Tech: Aerie Hololattice"
+  },
+  "Argent Flight.Techs.Strike Wing Alpha II.Description": {
+    "defaultMessage": "When this unit uses ANTI-FIGHTER BARRAGE, each result of 9 or 10 also destroys 1 of your opponent's infantry in the space area of the active system.",
+    "description": "Description for Tech: Strike Wing Alpha II"
+  },
+  "Argent Flight.Techs.Strike Wing Alpha II.Title": {
+    "defaultMessage": "Strike Wing Alpha II",
+    "description": "Title of Tech: Strike Wing Alpha II"
   },
   "Argent Flight.Units.Aerie Sentinel.Description": {
     "defaultMessage": "This unit does not count against capacity if it is being transported or if it is in a space area with 1 or more of your ships that have capacity values.",
@@ -854,6 +886,22 @@
     "defaultMessage": "Letnev",
     "description": "Shortened version of Faction name: Barony of Letnev"
   },
+  "Barony of Letnev.Techs.L4 Disruptors.Description": {
+    "defaultMessage": "During an invasion, units cannot use SPACE CANNON against your units.",
+    "description": "Description for Tech: L4 Disruptors"
+  },
+  "Barony of Letnev.Techs.L4 Disruptors.Title": {
+    "defaultMessage": "L4 Disruptors",
+    "description": "Title of Tech: L4 Disruptors"
+  },
+  "Barony of Letnev.Techs.Non-Euclidean Shielding.Description": {
+    "defaultMessage": "When 1 of your units uses SUSTAIN DAMAGE, cancel 2 hits instead of 1.",
+    "description": "Description for Tech: Non-Euclidean Shielding"
+  },
+  "Barony of Letnev.Techs.Non-Euclidean Shielding.Title": {
+    "defaultMessage": "Non-Euclidean Shielding",
+    "description": "Title of Tech: Non-Euclidean Shielding"
+  },
   "Barony of Letnev.Units.Arc Secundus.Description": {
     "defaultMessage": "Other players' units in this system lose PLANETARY SHIELD. At the start of each space combat round, repair this ship.",
     "description": "Description for Faction Unit: Arc Secundus"
@@ -933,6 +981,22 @@
   "Clan of Saar.Shortname": {
     "defaultMessage": "Saar",
     "description": "Shortened version of Faction name: Clan of Saar"
+  },
+  "Clan of Saar.Techs.Chaos Mapping.Description": {
+    "defaultMessage": "Other players cannot activate asteroid fields that contain 1 or more of your ships.{br}At the start of your turn during the action phase, you may produce 1 unit in a system that contains at least 1 of your units that has PRODUCTION.",
+    "description": "Description for Tech: Chaos Mapping"
+  },
+  "Clan of Saar.Techs.Chaos Mapping.Title": {
+    "defaultMessage": "Chaos Mapping",
+    "description": "Title of Tech: Chaos Mapping"
+  },
+  "Clan of Saar.Techs.Floating Factory II.Description": {
+    "defaultMessage": "This unit is placed in the space area instead of on a planet. This unit can move and retreat as if it were a ship. If this unit is blockaded, it is destroyed.",
+    "description": "Description for Tech: Floating Factory II"
+  },
+  "Clan of Saar.Techs.Floating Factory II.Title": {
+    "defaultMessage": "Floating Factory II",
+    "description": "Title of Tech: Floating Factory II"
   },
   "Clan of Saar.Units.Floating Factory I.Description": {
     "defaultMessage": "This unit is placed in a space area instead of on a planet. This unit can move and retreat as if it were a ship. If this unit is blockaded, it is destroyed.",
@@ -1050,6 +1114,22 @@
     "defaultMessage": "Keleres",
     "description": "Shortened version of Faction name: Council Keleres"
   },
+  "Council Keleres.Techs.Agency Supply Network.Description": {
+    "defaultMessage": "Whenever you resolve one of your PRODUCTION abilities, you may resolve an additional one of your PRODUCTION abilities in any system; the additional use does not trigger this ability.",
+    "description": "Description for Tech: Agency Supply Network"
+  },
+  "Council Keleres.Techs.Agency Supply Network.Title": {
+    "defaultMessage": "Agency Supply Network",
+    "description": "Title of Tech: Agency Supply Network"
+  },
+  "Council Keleres.Techs.I.I.H.Q. Modernization.Description": {
+    "defaultMessage": "You are neighbors with all players that have units or control planets in or adjacent to the Mecatol Rex system.{br}Gain the Custodia Vigilia planet card and its legendary planet ability card. You cannot lose these cards, and this card cannot have an X or Y assimilator placed on it.",
+    "description": "Description for Tech: I.I.H.Q. Modernization"
+  },
+  "Council Keleres.Techs.I.I.H.Q. Modernization.Title": {
+    "defaultMessage": "I.I.H.Q. Modernization",
+    "description": "Title of Tech: I.I.H.Q. Modernization"
+  },
   "Council Keleres.Units.Artemiris.Description": {
     "defaultMessage": "Other players must spend 2 influence to activate the system that contains this ship.",
     "description": "Description for Faction Unit: Artemiris"
@@ -1065,6 +1145,10 @@
   "Council Keleres.Units.Omniopiares.Title": {
     "defaultMessage": "Omniopiares",
     "description": "Title of Faction Unit: Omniopiares"
+  },
+  "D82kvD": {
+    "defaultMessage": "ANTI-FIGHTER BARRAGE {value}",
+    "description": "A unit ability that allows a unit to destroy fighters."
   },
   "Embers of Muaat.Abilities.Gashlai Physiology.Description": {
     "defaultMessage": "Your ships can move through supernovas.",
@@ -1129,6 +1213,30 @@
   "Embers of Muaat.Shortname": {
     "defaultMessage": "Muaat",
     "description": "Shortened version of Faction name: Embers of Muaat"
+  },
+  "Embers of Muaat.Techs.Magmus Reactor.Description": {
+    "defaultMessage": "Your ships can move into supernovas.{br}After 1 or more of your units use PRODUCTION in a system that either contains a war sun or is adjacent to a supernova, gain 1 trade good.",
+    "description": "Description for Tech: Magmus Reactor"
+  },
+  "Embers of Muaat.Techs.Magmus Reactor.Omega.Description": {
+    "defaultMessage": "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were 1 of your units.",
+    "description": "Description for Tech: Magmus Reactor Ω"
+  },
+  "Embers of Muaat.Techs.Magmus Reactor.Omega.Title": {
+    "defaultMessage": "Magmus Reactor Ω",
+    "description": "Title of Tech: Magmus Reactor Ω"
+  },
+  "Embers of Muaat.Techs.Magmus Reactor.Title": {
+    "defaultMessage": "Magmus Reactor",
+    "description": "Title of Tech: Magmus Reactor"
+  },
+  "Embers of Muaat.Techs.Prototype War Sun II.Description": {
+    "defaultMessage": "Other players' units in this system lose PLANETARY SHIELD.",
+    "description": "Description for Tech: Prototype War Sun II"
+  },
+  "Embers of Muaat.Techs.Prototype War Sun II.Title": {
+    "defaultMessage": "Prototype War Sun II",
+    "description": "Title of Tech: Prototype War Sun II"
   },
   "Embers of Muaat.Units.Ember Colossus.Description": {
     "defaultMessage": "When you use your STAR FORGE faction ability in this system or an adjacent system, you may place 1 infantry from your reinforcements with this unit.",
@@ -1226,6 +1334,22 @@
     "defaultMessage": "Hacan",
     "description": "Shortened version of Faction name: Emirates of Hacan"
   },
+  "Emirates of Hacan.Techs.Production Biomes.Description": {
+    "defaultMessage": "ACTION: Exhaust this card and spend 1 token from your strategy pool to gain 4 trade goods and choose 1 other player; that player gains 2 trade goods.",
+    "description": "Description for Tech: Production Biomes"
+  },
+  "Emirates of Hacan.Techs.Production Biomes.Title": {
+    "defaultMessage": "Production Biomes",
+    "description": "Title of Tech: Production Biomes"
+  },
+  "Emirates of Hacan.Techs.Quantum Datahub Node.Description": {
+    "defaultMessage": "At the end of the strategy phase, you may spend 1 token from your strategy pool and give another player 3 of your trade goods. If you do, give 1 of your strategy cards to that player and take 1 of their strategy cards.",
+    "description": "Description for Tech: Quantum Datahub Node"
+  },
+  "Emirates of Hacan.Techs.Quantum Datahub Node.Title": {
+    "defaultMessage": "Quantum Datahub Node",
+    "description": "Title of Tech: Quantum Datahub Node"
+  },
   "Emirates of Hacan.Units.Pride of Kenara.Description": {
     "defaultMessage": "This planet's card may be traded as part of a transaction; if you do, move all of your units from this planet to another planet you control.",
     "description": "Description for Faction Unit: Pride of Kenara"
@@ -1322,6 +1446,22 @@
     "defaultMessage": "Empyrean",
     "description": "Shortened version of Faction name: Empyrean"
   },
+  "Empyrean.Techs.Aetherstream.Description": {
+    "defaultMessage": "After you or one of your neighbors activates a system that is adjacent to an anomaly, you may apply +1 to the move value of all of that player's ships during this tactical action.",
+    "description": "Description for Tech: Aetherstream"
+  },
+  "Empyrean.Techs.Aetherstream.Title": {
+    "defaultMessage": "Aetherstream",
+    "description": "Title of Tech: Aetherstream"
+  },
+  "Empyrean.Techs.Voidwatch.Description": {
+    "defaultMessage": "After a player moves ships into a system that contains 1 or more of your units, they must give you 1 promissory note from their hand, if able.",
+    "description": "Description for Tech: Voidwatch"
+  },
+  "Empyrean.Techs.Voidwatch.Title": {
+    "defaultMessage": "Voidwatch",
+    "description": "Title of Tech: Voidwatch"
+  },
   "Empyrean.Units.Dynamo.Description": {
     "defaultMessage": "After any player's unit in this system or an adjacent system uses SUSTAIN DAMAGE, you may spend 2 influence to repair that unit.",
     "description": "Description for Faction Unit: Dynamo"
@@ -1401,6 +1541,18 @@
   "Federation of Sol.Shortname": {
     "defaultMessage": "Sol",
     "description": "Shortened version of Faction name: Federation of Sol"
+  },
+  "Federation of Sol.Techs.Advanced Carrier II.Title": {
+    "defaultMessage": "Advanced Carrier II",
+    "description": "Title of Tech: Advanced Carrier II"
+  },
+  "Federation of Sol.Techs.Spec Ops II.Description": {
+    "defaultMessage": "After this unit is destroyed, roll 1 die. If the result is 5 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
+    "description": "Description for Tech: Spec Ops II"
+  },
+  "Federation of Sol.Techs.Spec Ops II.Title": {
+    "defaultMessage": "Spec Ops II",
+    "description": "Title of Tech: Spec Ops II"
   },
   "Federation of Sol.Units.Advanced Carrier I.Title": {
     "defaultMessage": "Advanced Carrier I",
@@ -1498,6 +1650,30 @@
     "defaultMessage": "Creuss",
     "description": "Shortened version of Faction name: Ghosts of Creuss"
   },
+  "Ghosts of Creuss.Techs.Dimensional Splicer.Description": {
+    "defaultMessage": "At the start of space combat in a system that contains a wormhole and 1 or more of your ships, you may produce 1 hit and assign it to 1 of your opponent's ships.",
+    "description": "Description for Tech: Dimensional Splicer"
+  },
+  "Ghosts of Creuss.Techs.Dimensional Splicer.Title": {
+    "defaultMessage": "Dimensional Splicer",
+    "description": "Title of Tech: Dimensional Splicer"
+  },
+  "Ghosts of Creuss.Techs.Wormhole Generator.Description": {
+    "defaultMessage": "At the start of the status phase, place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
+    "description": "Description for Tech: Wormhole Generator"
+  },
+  "Ghosts of Creuss.Techs.Wormhole Generator.Omega.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
+    "description": "Description for Tech: Wormhole Generator Ω"
+  },
+  "Ghosts of Creuss.Techs.Wormhole Generator.Omega.Title": {
+    "defaultMessage": "Wormhole Generator Ω",
+    "description": "Title of Tech: Wormhole Generator Ω"
+  },
+  "Ghosts of Creuss.Techs.Wormhole Generator.Title": {
+    "defaultMessage": "Wormhole Generator",
+    "description": "Title of Tech: Wormhole Generator"
+  },
   "Ghosts of Creuss.Units.Hil Colish.Description": {
     "defaultMessage": "This ship's system contains a delta wormhole. During movement, this ship may move before or after your other ships.",
     "description": "Description for Faction Unit: Hil Colish"
@@ -1594,6 +1770,22 @@
     "defaultMessage": "L1Z1X",
     "description": "Shortened version of Faction name: L1Z1X Mindnet"
   },
+  "L1Z1X Mindnet.Techs.Inheritance Systems.Description": {
+    "defaultMessage": "You may exhaust this card and spend 2 resources when you research a technology; ignore all of that technology's prerequisites.",
+    "description": "Description for Tech: Inheritance Systems"
+  },
+  "L1Z1X Mindnet.Techs.Inheritance Systems.Title": {
+    "defaultMessage": "Inheritance Systems",
+    "description": "Title of Tech: Inheritance Systems"
+  },
+  "L1Z1X Mindnet.Techs.Super-Dreadnought II.Description": {
+    "defaultMessage": "\"Direct Hit\" cards are no longer effective against this type of ship.",
+    "description": "Description for Tech: Super-Dreadnought II"
+  },
+  "L1Z1X Mindnet.Techs.Super-Dreadnought II.Title": {
+    "defaultMessage": "Super-Dreadnought II",
+    "description": "Title of Tech: Super-Dreadnought II"
+  },
   "L1Z1X Mindnet.Units.Annihilator.Description": {
     "defaultMessage": "While not participating in ground combat, this unit can use its BOMBARDMENT ability on planets in its system as if it were a ship.",
     "description": "Description for Faction Unit: Annihilator"
@@ -1686,6 +1878,22 @@
     "defaultMessage": "Mahact",
     "description": "Shortened version of Faction name: Mahact Gene-Sorcerers"
   },
+  "Mahact Gene-Sorcerers.Techs.Crimson Legionnaire II.Description": {
+    "defaultMessage": "After this unit is destroyed, gain 1 commodity or convert 1 of your commodities to a trade good. Then, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
+    "description": "Description for Tech: Crimson Legionnaire II"
+  },
+  "Mahact Gene-Sorcerers.Techs.Crimson Legionnaire II.Title": {
+    "defaultMessage": "Crimson Legionnaire II",
+    "description": "Title of Tech: Crimson Legionnaire II"
+  },
+  "Mahact Gene-Sorcerers.Techs.Genetic Recombination.Description": {
+    "defaultMessage": "You may exhaust this card before a player casts votes; that player must cast at least 1 vote for an outcome of your choice or remove 1 token from their fleet pool and return it to their reinforcements.",
+    "description": "Description for Tech: Genetic Recombination"
+  },
+  "Mahact Gene-Sorcerers.Techs.Genetic Recombination.Title": {
+    "defaultMessage": "Genetic Recombination",
+    "description": "Title of Tech: Genetic Recombination"
+  },
   "Mahact Gene-Sorcerers.Units.Arvicon Rex.Description": {
     "defaultMessage": "During combat against an opponent whose command token is not in your fleet pool, apply +2 to the results of this unit's combat rolls.",
     "description": "Description for Faction Unit: Arvicon Rex"
@@ -1773,6 +1981,22 @@
   "Mentak Coalition.Shortname": {
     "defaultMessage": "Mentak",
     "description": "Shortened version of Faction name: Mentak Coalition"
+  },
+  "Mentak Coalition.Techs.Mirror Computing.Description": {
+    "defaultMessage": "When you spend trade goods, each trade good is worth 2 resources or influence instead of 1.",
+    "description": "Description for Tech: Mirror Computing"
+  },
+  "Mentak Coalition.Techs.Mirror Computing.Title": {
+    "defaultMessage": "Mirror Computing",
+    "description": "Title of Tech: Mirror Computing"
+  },
+  "Mentak Coalition.Techs.Salvage Operations.Description": {
+    "defaultMessage": "After you win or lose a space combat, gain 1 trade good; if you won the combat you may also produce 1 ship in that system of any ship type that was destroyed during the combat.",
+    "description": "Description for Tech: Salvage Operations"
+  },
+  "Mentak Coalition.Techs.Salvage Operations.Title": {
+    "defaultMessage": "Salvage Operations",
+    "description": "Title of Tech: Salvage Operations"
   },
   "Mentak Coalition.Units.Fourth Moon.Description": {
     "defaultMessage": "Other players' ships in this system cannot use SUSTAIN DAMAGE.",
@@ -1874,6 +2098,22 @@
     "defaultMessage": "Naalu",
     "description": "Shortened version of Faction name: Naalu Collective"
   },
+  "Naalu Collective.Techs.Hybrid Crystal Fighter II.Description": {
+    "defaultMessage": "This unit may move without being transported. Each fighter in excess of your ships' capacity counts as 1/2 of a ship against your fleet pool",
+    "description": "Description for Tech: Hybrid Crystal Fighter II"
+  },
+  "Naalu Collective.Techs.Hybrid Crystal Fighter II.Title": {
+    "defaultMessage": "Hybrid Crystal Fighter II",
+    "description": "Title of Tech: Hybrid Crystal Fighter II"
+  },
+  "Naalu Collective.Techs.Neuroglaive.Description": {
+    "defaultMessage": "After another player activates a system that contains 1 or more of your ships, that player removes 1 token from their fleet pool and returns it to their reinforcements.",
+    "description": "Description for Tech: Neuroglaive"
+  },
+  "Naalu Collective.Techs.Neuroglaive.Title": {
+    "defaultMessage": "Neuroglaive",
+    "description": "Title of Tech: Neuroglaive"
+  },
   "Naalu Collective.Units.Hybrid Crystal Fighter I.Title": {
     "defaultMessage": "Hybrid Crystal Fighter I",
     "description": "Title of Faction Unit: Hybrid Crystal Fighter I"
@@ -1965,6 +2205,22 @@
   "Naaz-Rokha Alliance.Shortname": {
     "defaultMessage": "Naaz-Rokha",
     "description": "Shortened version of Faction name: Naaz-Rokha Alliance"
+  },
+  "Naaz-Rokha Alliance.Techs.Pre-Fab Arcologies.Description": {
+    "defaultMessage": "After you explore a planet, ready that planet.",
+    "description": "Description for Tech: Pre-Fab Arcologies"
+  },
+  "Naaz-Rokha Alliance.Techs.Pre-Fab Arcologies.Title": {
+    "defaultMessage": "Pre-Fab Arcologies",
+    "description": "Title of Tech: Pre-Fab Arcologies"
+  },
+  "Naaz-Rokha Alliance.Techs.Supercharge.Description": {
+    "defaultMessage": "At the start of a combat round, you may exhaust this card to apply +1 to the result of each of your unit's combat rolls during this combat round.",
+    "description": "Description for Tech: Supercharge"
+  },
+  "Naaz-Rokha Alliance.Techs.Supercharge.Title": {
+    "defaultMessage": "Supercharge",
+    "description": "Title of Tech: Supercharge"
   },
   "Naaz-Rokha Alliance.Units.Eidolon.Description": {
     "defaultMessage": "If this unit is in the space area of the active system at the start of a space combat, flip this card.{br}(This card begins the game with this side face up)",
@@ -2157,6 +2413,22 @@
   "Nomad.Shortname": {
     "defaultMessage": "Nomad",
     "description": "Shortened version of Faction name: Nomad"
+  },
+  "Nomad.Techs.Memoria II.Description": {
+    "defaultMessage": "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs.",
+    "description": "Description for Tech: Memoria II"
+  },
+  "Nomad.Techs.Memoria II.Title": {
+    "defaultMessage": "Memoria II",
+    "description": "Title of Tech: Memoria II"
+  },
+  "Nomad.Techs.Temporal Command Suite.Description": {
+    "defaultMessage": "After any player's agent becomes exhausted, you may exhaust this card to ready that agent; if you ready another player's agent, you may perform a transaction with that player.",
+    "description": "Description for Tech: Temporal Command Suite"
+  },
+  "Nomad.Techs.Temporal Command Suite.Title": {
+    "defaultMessage": "Temporal Command Suite",
+    "description": "Title of Tech: Temporal Command Suite"
   },
   "Nomad.Units.Memoria.Description": {
     "defaultMessage": "You may treat this unit as if it were adjacent to systems that contain one or more of your mechs.",
@@ -3090,6 +3362,22 @@
     "defaultMessage": "N'orr",
     "description": "Shortened version of Faction name: Sardakk N'orr"
   },
+  "Sardakk N'orr.Techs.Exotrireme II.Description": {
+    "defaultMessage": "After a round of space combat, you may destroy this unit to destroy up to 2 ships in this system.{br}\"Direct Hit\" cards are no longer effective against this type of ship.",
+    "description": "Description for Tech: Exotrireme II"
+  },
+  "Sardakk N'orr.Techs.Exotrireme II.Title": {
+    "defaultMessage": "Exotrireme II",
+    "description": "Title of Tech: Exotrireme II"
+  },
+  "Sardakk N'orr.Techs.Valkyrie Particle Weave.Description": {
+    "defaultMessage": "After making combat rolls during a round of ground combat, if your opponent produced 1 or more hits, you produce 1 additional hit.",
+    "description": "Description for Tech: Valkyrie Particle Weave"
+  },
+  "Sardakk N'orr.Techs.Valkyrie Particle Weave.Title": {
+    "defaultMessage": "Valkyrie Particle Weave",
+    "description": "Title of Tech: Valkyrie Particle Weave"
+  },
   "Sardakk N'orr.Units.C'Morran N'orr.Description": {
     "defaultMessage": "Apply +1 to the result of each of your other ship's combat rolls in this system.",
     "description": "Description for Faction Unit: C'Morran N'orr"
@@ -3141,6 +3429,274 @@
   "Strategy Cards.Warfare.Title": {
     "defaultMessage": "Warfare",
     "description": "Title of Strategy Card: Warfare"
+  },
+  "Techs.AI Development Algorithm.Description": {
+    "defaultMessage": "When you research a unit upgrade technology, you may exhaust this card to ignore any 1 prerequisite.{br}When 1 or more of your units use PRODUCTION, you may exhaust this card to reduce the combined cost of the produced units by the number of unit upgrade technologies that you own.",
+    "description": "Description for Tech: AI Development Algorithm"
+  },
+  "Techs.AI Development Algorithm.Title": {
+    "defaultMessage": "AI Development Algorithm",
+    "description": "Title of Tech: AI Development Algorithm"
+  },
+  "Techs.Antimass Deflectors.Description": {
+    "defaultMessage": "Your ships can move into and through asteroid fields.{br}When other players' units use SPACE CANNON against your units, apply -1 to the result of each die roll.",
+    "description": "Description for Tech: Antimass Deflectors"
+  },
+  "Techs.Antimass Deflectors.Title": {
+    "defaultMessage": "Antimass Deflectors",
+    "description": "Title of Tech: Antimass Deflectors"
+  },
+  "Techs.Assault Cannon.Description": {
+    "defaultMessage": "At the start of a space combat in a system that contains 3 or more of your non-fighter ships, your opponent must destroy 1 of their non-fighter ships.",
+    "description": "Description for Tech: Assault Cannon"
+  },
+  "Techs.Assault Cannon.Title": {
+    "defaultMessage": "Assault Cannon",
+    "description": "Title of Tech: Assault Cannon"
+  },
+  "Techs.Bio-Stims.Description": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to ready 1 of your planets that has a technology specialty or 1 of your other technologies.",
+    "description": "Description for Tech: Bio-Stims"
+  },
+  "Techs.Bio-Stims.Title": {
+    "defaultMessage": "Bio-Stims",
+    "description": "Title of Tech: Bio-Stims"
+  },
+  "Techs.Carrier II.Title": {
+    "defaultMessage": "Carrier II",
+    "description": "Title of Tech: Carrier II"
+  },
+  "Techs.Cruiser II.Title": {
+    "defaultMessage": "Cruiser II",
+    "description": "Title of Tech: Cruiser II"
+  },
+  "Techs.Dark Energy Tap.Description": {
+    "defaultMessage": "After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.{br}Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.",
+    "description": "Description for Tech: Dark Energy Tap"
+  },
+  "Techs.Dark Energy Tap.Title": {
+    "defaultMessage": "Dark Energy Tap",
+    "description": "Title of Tech: Dark Energy Tap"
+  },
+  "Techs.Daxcive Animators.Description": {
+    "defaultMessage": "After you win a ground combat, you may place 1 infantry from your reinforcements on that planet.",
+    "description": "Description for Tech: Daxcive Animators"
+  },
+  "Techs.Daxcive Animators.Title": {
+    "defaultMessage": "Daxcive Animators",
+    "description": "Title of Tech: Daxcive Animators"
+  },
+  "Techs.Destroyer II.Title": {
+    "defaultMessage": "Destroyer II",
+    "description": "Title of Tech: Destroyer II"
+  },
+  "Techs.Dreadnought II.Description": {
+    "defaultMessage": "\"Direct Hit\" cards are no longer effective against this type of ship.",
+    "description": "Description for Tech: Dreadnought II"
+  },
+  "Techs.Dreadnought II.Title": {
+    "defaultMessage": "Dreadnought II",
+    "description": "Title of Tech: Dreadnought II"
+  },
+  "Techs.Duranium Armor.Description": {
+    "defaultMessage": "During each combat round, after you assign hits to your units, repair 1 of your damaged units that did not use SUSTAIN DAMAGE during this combat round.",
+    "description": "Description for Tech: Duranium Armor"
+  },
+  "Techs.Duranium Armor.Title": {
+    "defaultMessage": "Duranium Armor",
+    "description": "Title of Tech: Duranium Armor"
+  },
+  "Techs.Fighter II.Description": {
+    "defaultMessage": "This unit may move without being transported. Fighters in excess of your ships' capacity count against your fleet pool.",
+    "description": "Description for Tech: Fighter II"
+  },
+  "Techs.Fighter II.Title": {
+    "defaultMessage": "Fighter II",
+    "description": "Title of Tech: Fighter II"
+  },
+  "Techs.Fleet Logistics.Description": {
+    "defaultMessage": "During each of your turns of the action phase, you may perform 2 actions instead of 1.",
+    "description": "Description for Tech: Fleet Logistics"
+  },
+  "Techs.Fleet Logistics.Title": {
+    "defaultMessage": "Fleet Logistics",
+    "description": "Title of Tech: Fleet Logistics"
+  },
+  "Techs.Graviton Laser System.Description": {
+    "defaultMessage": "You may exhaust this card before 1 or more of your units uses SPACE CANNON; hits produced by those units must be assigned to non-fighter ships if able.",
+    "description": "Description for Tech: Graviton Laser System"
+  },
+  "Techs.Graviton Laser System.Title": {
+    "defaultMessage": "Graviton Laser System",
+    "description": "Title of Tech: Graviton Laser System"
+  },
+  "Techs.Gravity Drive.Description": {
+    "defaultMessage": "After you activate a system, apply +1 to the move value of 1 of your ships during this tactical action.",
+    "description": "Description for Tech: Gravity Drive"
+  },
+  "Techs.Gravity Drive.Title": {
+    "defaultMessage": "Gravity Drive",
+    "description": "Title of Tech: Gravity Drive"
+  },
+  "Techs.Hyper Metabolism.Description": {
+    "defaultMessage": "During the status phase, gain 3 command tokens instead of 2.",
+    "description": "Description for Tech: Hyper Metabolism"
+  },
+  "Techs.Hyper Metabolism.Title": {
+    "defaultMessage": "Hyper Metabolism",
+    "description": "Title of Tech: Hyper Metabolism"
+  },
+  "Techs.Infantry II.Description": {
+    "defaultMessage": "After this unit is destroyed, roll 1 die. If the result is 6 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
+    "description": "Description for Tech: Infantry II"
+  },
+  "Techs.Infantry II.Title": {
+    "defaultMessage": "Infantry II",
+    "description": "Title of Tech: Infantry II"
+  },
+  "Techs.Integrated Economy.Description": {
+    "defaultMessage": "After you gain control of a planet, you may produce any number of units on that planet that have a combined cost equal to or less than that planet's resource value.",
+    "description": "Description for Tech: Integrated Economy"
+  },
+  "Techs.Integrated Economy.Title": {
+    "defaultMessage": "Integrated Economy",
+    "description": "Title of Tech: Integrated Economy"
+  },
+  "Techs.Light/Wave Deflector.Description": {
+    "defaultMessage": "Your ships can move through systems that contain other players' ships.",
+    "description": "Description for Tech: Light/Wave Deflector"
+  },
+  "Techs.Light/Wave Deflector.Title": {
+    "defaultMessage": "Light/Wave Deflector",
+    "description": "Title of Tech: Light/Wave Deflector"
+  },
+  "Techs.Magen Defense Grid.Description": {
+    "defaultMessage": "You may exhaust this card at the start of a round of ground combat on a planet that contains 1 or more of your units that have PLANETARY SHIELD; your opponent cannot make combat rolls this combat round.",
+    "description": "Description for Tech: Magen Defense Grid"
+  },
+  "Techs.Magen Defense Grid.Omega.Description": {
+    "defaultMessage": "At the start of ground combat on a planet that contains 1 or more of your structures, you may produce 1 hit and assign it to 1 of your opponent's ground forces.",
+    "description": "Description for Tech: Magen Defense Grid Ω"
+  },
+  "Techs.Magen Defense Grid.Omega.Title": {
+    "defaultMessage": "Magen Defense Grid Ω",
+    "description": "Title of Tech: Magen Defense Grid Ω"
+  },
+  "Techs.Magen Defense Grid.Title": {
+    "defaultMessage": "Magen Defense Grid",
+    "description": "Title of Tech: Magen Defense Grid"
+  },
+  "Techs.Neural Motivator.Description": {
+    "defaultMessage": "During the status phase, draw 2 action cards instead of 1.",
+    "description": "Description for Tech: Neural Motivator"
+  },
+  "Techs.Neural Motivator.Title": {
+    "defaultMessage": "Neural Motivator",
+    "description": "Title of Tech: Neural Motivator"
+  },
+  "Techs.PDS II.Description": {
+    "defaultMessage": "You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system.",
+    "description": "Description for Tech: PDS II"
+  },
+  "Techs.PDS II.Title": {
+    "defaultMessage": "PDS II",
+    "description": "Title of Tech: PDS II"
+  },
+  "Techs.Plasma Scoring.Description": {
+    "defaultMessage": "When 1 or more of your units use BOMBARDMENT or SPACE CANNON, 1 of those units may roll 1 additional die.",
+    "description": "Description for Tech: Plasma Scoring"
+  },
+  "Techs.Plasma Scoring.Title": {
+    "defaultMessage": "Plasma Scoring",
+    "description": "Title of Tech: Plasma Scoring"
+  },
+  "Techs.Predictive Intelligence.Description": {
+    "defaultMessage": "At the end of your turn, you may exhaust this card to redistribute your command tokens.{br}When you cast votes during the agenda phase, you may cast 3 additional votes; if you do, and the outcome you voted for is not resolved, exhaust this card.",
+    "description": "Description for Tech: Predictive Intelligence"
+  },
+  "Techs.Predictive Intelligence.Title": {
+    "defaultMessage": "Predictive Intelligence",
+    "description": "Title of Tech: Predictive Intelligence"
+  },
+  "Techs.Psychoarchaeology.Description": {
+    "defaultMessage": "You can use technology specialties on planets you control without exhausting them, even if those planets are exhausted.{br}During the Action Phase, you can exhaust planets you control that have technology specialties to gain 1 trade good.",
+    "description": "Description for Tech: Psychoarchaeology"
+  },
+  "Techs.Psychoarchaeology.Title": {
+    "defaultMessage": "Psychoarchaeology",
+    "description": "Title of Tech: Psychoarchaeology"
+  },
+  "Techs.Sarween Tools.Description": {
+    "defaultMessage": "When 1 or more of your units use PRODUCTION, reduce the combined cost of the produced units by 1.",
+    "description": "Description for Tech: Sarween Tools"
+  },
+  "Techs.Sarween Tools.Title": {
+    "defaultMessage": "Sarween Tools",
+    "description": "Title of Tech: Sarween Tools"
+  },
+  "Techs.Scanlink Drone Network.Description": {
+    "defaultMessage": "When you activate a system, you may explore 1 planet in that system which contains 1 or more of your units.",
+    "description": "Description for Tech: Scanlink Drone Network"
+  },
+  "Techs.Scanlink Drone Network.Title": {
+    "defaultMessage": "Scanlink Drone Network",
+    "description": "Title of Tech: Scanlink Drone Network"
+  },
+  "Techs.Self Assembly Routines.Description": {
+    "defaultMessage": "After 1 or more of your units use PRODUCTION, you may exhaust this card to place 1 mech from your reinforcements on a planet you control in that system.{br}After 1 of your mechs is destroyed, gain 1 trade good.",
+    "description": "Description for Tech: Self Assembly Routines"
+  },
+  "Techs.Self Assembly Routines.Title": {
+    "defaultMessage": "Self Assembly Routines",
+    "description": "Title of Tech: Self Assembly Routines"
+  },
+  "Techs.Sling Relay.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to produce 1 ship in any system that contains 1 of your space docks.",
+    "description": "Description for Tech: Sling Relay"
+  },
+  "Techs.Sling Relay.Title": {
+    "defaultMessage": "Sling Relay",
+    "description": "Title of Tech: Sling Relay"
+  },
+  "Techs.Space Dock II.Description": {
+    "defaultMessage": "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
+    "description": "Description for Tech: Space Dock II"
+  },
+  "Techs.Space Dock II.Title": {
+    "defaultMessage": "Space Dock II",
+    "description": "Title of Tech: Space Dock II"
+  },
+  "Techs.Transit Diodes.Description": {
+    "defaultMessage": "You may exhaust this card at the start of your turn during the action phase; remove up to 4 of your ground forces from the game board and place them on 1 or more planets you control.",
+    "description": "Description for Tech: Transit Diodes"
+  },
+  "Techs.Transit Diodes.Title": {
+    "defaultMessage": "Transit Diodes",
+    "description": "Title of Tech: Transit Diodes"
+  },
+  "Techs.War Sun.Description": {
+    "defaultMessage": "Other players' units in this system lose PLANETARY SHIELD.",
+    "description": "Description for Tech: War Sun"
+  },
+  "Techs.War Sun.Title": {
+    "defaultMessage": "War Sun",
+    "description": "Title of Tech: War Sun"
+  },
+  "Techs.X-89 Bacterial Weapon.Description": {
+    "defaultMessage": "ACTION: Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet.",
+    "description": "Description for Tech: X-89 Bacterial Weapon"
+  },
+  "Techs.X-89 Bacterial Weapon.Omega.Description": {
+    "defaultMessage": "After 1 or more of your units use BOMBARDMENT against a planet, if at least 1 of your opponent's infantry was destroyed, you may destroy all of your opponent's infantry on that planet.",
+    "description": "Description for Tech: X-89 Bacterial Weapon Ω"
+  },
+  "Techs.X-89 Bacterial Weapon.Omega.Tech": {
+    "defaultMessage": "X-89 Bacterial Weapon Ω",
+    "description": "Title of Tech: X-89 Bacterial Weapon Ω"
+  },
+  "Techs.X-89 Bacterial Weapon.Title": {
+    "defaultMessage": "X-89 Bacterial Weapon",
+    "description": "Title of Tech: X-89 Bacterial Weapon"
   },
   "Titans of Ul.Abilities.Awaken.Description": {
     "defaultMessage": "After you activate a system that contains 1 or more of your sleeper tokens, you may replace each of those tokens with 1 PDS from your reinforcements.",
@@ -3213,6 +3769,18 @@
   "Titans of Ul.Shortname": {
     "defaultMessage": "Titans",
     "description": "Shortened version of Faction name: Titans of Ul"
+  },
+  "Titans of Ul.Techs.Hel Titan II.Description": {
+    "defaultMessage": "This unit is treated as both a structure and a ground force. It cannot be transported. You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system.",
+    "description": "Description for Tech: Hel Titan II"
+  },
+  "Titans of Ul.Techs.Hel Titan II.Title": {
+    "defaultMessage": "Hel Titan II",
+    "description": "Title of Tech: Hel Titan II"
+  },
+  "Titans of Ul.Techs.Saturn Engine II.Title": {
+    "defaultMessage": "Saturn Engine II",
+    "description": "Title of Tech: Saturn Engine II"
   },
   "Titans of Ul.Units.Hecatoncheires.Description": {
     "defaultMessage": "DEPLOY: When you would place a PDS on a planet, you may place 1 mech and 1 infantry on that planet instead.",
@@ -3314,6 +3882,22 @@
     "defaultMessage": "Jol-Nar",
     "description": "Shortened version of Faction name: Universities of Jol-Nar"
   },
+  "Universities of Jol-Nar.Techs.E-Res Siphons.Description": {
+    "defaultMessage": "After another player activates a system that contains 1 or more of your ships, gain 4 trade goods.",
+    "description": "Description for Tech: E-Res Siphons"
+  },
+  "Universities of Jol-Nar.Techs.E-Res Siphons.Title": {
+    "defaultMessage": "E-Res Siphons",
+    "description": "Title of Tech: E-Res Siphons"
+  },
+  "Universities of Jol-Nar.Techs.Spacial Conduit Cylinder.Description": {
+    "defaultMessage": "You may exhaust this card after you activate a system that contains 1 or more of your units; that system is adjacent to all other systems that contain 1 or more of your units during this activation.",
+    "description": "Description for Tech: Spacial Conduit Cylinder"
+  },
+  "Universities of Jol-Nar.Techs.Spacial Conduit Cylinder.Title": {
+    "defaultMessage": "Spacial Conduit Cylinder",
+    "description": "Title of Tech: Spacial Conduit Cylinder"
+  },
   "Universities of Jol-Nar.Units.J.N.S. Hylarim.Description": {
     "defaultMessage": "When making a combat roll for this ship, each result of 9 or 10, before applying modifiers, produces 2 additional hits.",
     "description": "Description for Faction Unit: J.N.S. Hylarim"
@@ -3401,6 +3985,22 @@
   "Vuil'raith Cabal.Shortname": {
     "defaultMessage": "Vuil'raith",
     "description": "Shortened version of Faction name: Vuil'raith Cabal"
+  },
+  "Vuil'raith Cabal.Techs.Dimensional Tear II.Description": {
+    "defaultMessage": "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder.{br}Up to 12 fighters in this system do not count against your ships' capacity.",
+    "description": "Description for Tech: Dimensional Tear II"
+  },
+  "Vuil'raith Cabal.Techs.Dimensional Tear II.Title": {
+    "defaultMessage": "Dimensional Tear II",
+    "description": "Title of Tech: Dimensional Tear II"
+  },
+  "Vuil'raith Cabal.Techs.Vortex.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements.",
+    "description": "Description for Tech: Vortex"
+  },
+  "Vuil'raith Cabal.Techs.Vortex.Title": {
+    "defaultMessage": "Vortex",
+    "description": "Title of Tech: Vortex"
   },
   "Vuil'raith Cabal.Units.Dimensional Tear I.Description": {
     "defaultMessage": "This system is a gravity rift; your ships do not roll for this gravity rift.{br}Place a dimensional tear token beneath this unit as a reminder.{br}Up to 6 fighters in this system do not count against your ships' capacity.",
@@ -3498,6 +4098,22 @@
     "defaultMessage": "Winnu",
     "description": "Shortened version of Faction name: Winnu"
   },
+  "Winnu.Techs.Hegemonic Trade Policy.Description": {
+    "defaultMessage": "Exhaust this card when 1 or more of your units use PRODUCTION; swap the resource and influence values of 1 planet you control until the end of your turn.",
+    "description": "Description for Tech: Hegemonic Trade Policy"
+  },
+  "Winnu.Techs.Hegemonic Trade Policy.Title": {
+    "defaultMessage": "Hegemonic Trade Policy",
+    "description": "Title of Tech: Hegemonic Trade Policy"
+  },
+  "Winnu.Techs.Lazax Gate Folding.Description": {
+    "defaultMessage": "During your tactical actions, if you do not control Mecatol Rex, treat its systems as if it has both an α and β wormhole.{br}ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex.",
+    "description": "Description for Tech: Lazax Gate Folding"
+  },
+  "Winnu.Techs.Lazax Gate Folding.Title": {
+    "defaultMessage": "Lazax Gate Folding",
+    "description": "Title of Tech: Lazax Gate Folding"
+  },
   "Winnu.Units.Reclaimer.Description": {
     "defaultMessage": "After you resolve a tactical action where you gained control of this planet, you may place 1 PDS or 1 Space Dock from your reinforcements on this planet.",
     "description": "Description for Faction Unit: Reclaimer"
@@ -3589,6 +4205,22 @@
   "Xxcha Kingdom.Shortname": {
     "defaultMessage": "Xxcha",
     "description": "Shortened version of Faction name: Xxcha Kingdom"
+  },
+  "Xxcha Kingdom.Techs.Instinct Training.Description": {
+    "defaultMessage": "You may exhaust this card and spend 1 token from your strategy pool when another player plays an action card; cancel that action card.",
+    "description": "Description for Tech: Instinct Training"
+  },
+  "Xxcha Kingdom.Techs.Instinct Training.Title": {
+    "defaultMessage": "Instinct Training",
+    "description": "Title of Tech: Instinct Training"
+  },
+  "Xxcha Kingdom.Techs.Nullification Field.Description": {
+    "defaultMessage": "After another player activates a system that contains 1 or more of your ships, you may exhaust this card and spend 1 token from your strategy pool; immediately end that player's turn.",
+    "description": "Description for Tech: Nullification Field"
+  },
+  "Xxcha Kingdom.Techs.Nullification Field.Title": {
+    "defaultMessage": "Nullification Field",
+    "description": "Title of Tech: Nullification Field"
   },
   "Xxcha Kingdom.Units.Indomitus.Description": {
     "defaultMessage": "You may use this unit's SPACE CANNON ability against ships that are in adjacent systems.",
@@ -3710,6 +4342,30 @@
     "defaultMessage": "Yin",
     "description": "Shortened version of Faction name: Yin Brotherhood"
   },
+  "Yin Brotherhood.Techs.Impulse Core.Description": {
+    "defaultMessage": "At the start of a space combat, you may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit against your opponent's ships; that hit must be assigned by your opponent to 1 of their non-fighter ships if able.",
+    "description": "Description for Tech: Impulse Core"
+  },
+  "Yin Brotherhood.Techs.Impulse Core.Title": {
+    "defaultMessage": "Impulse Core",
+    "description": "Title of Tech: Impulse Core"
+  },
+  "Yin Brotherhood.Techs.Yin Spinner.Description": {
+    "defaultMessage": "After 1 or more of your units use PRODUCTION, place 1 infantry from your reinforcements on a planet you control in that system.",
+    "description": "Description for Tech: Yin Spinner"
+  },
+  "Yin Brotherhood.Techs.Yin Spinner.Omega.Description": {
+    "defaultMessage": "After you produce units, place up to 2 infantry from your reinforcements on any planet you control or in any space area that contains 1 or more of your ships.",
+    "description": "Description for Tech: Yin Spinner Ω"
+  },
+  "Yin Brotherhood.Techs.Yin Spinner.Omega.Title": {
+    "defaultMessage": "Yin Spinner Ω",
+    "description": "Title of Tech: Yin Spinner Ω"
+  },
+  "Yin Brotherhood.Techs.Yin Spinner.Title": {
+    "defaultMessage": "Yin Spinner",
+    "description": "Title of Tech: Yin Spinner"
+  },
   "Yin Brotherhood.Units.Moyin's Ashes.Description": {
     "defaultMessage": "DEPLOY: When you use your INDOCTRINATION faction ability, you may spend 1 additional influence to replace your opponent's unit with 1 mech instead of 1 infantry.",
     "description": "Description for Faction Unit: Moyin's Ashes"
@@ -3797,6 +4453,22 @@
   "Yssaril Tribes.Shortname": {
     "defaultMessage": "Yssaril",
     "description": "Shortened version of Faction name: Yssaril Tribes"
+  },
+  "Yssaril Tribes.Techs.Mageon Implants.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to look at another player's hand of action cards. Choose 1 of those cards and add it to your hand.",
+    "description": "Description for Tech: Mageon Implants"
+  },
+  "Yssaril Tribes.Techs.Mageon Implants.Title": {
+    "defaultMessage": "Mageon Implants",
+    "description": "Title of Tech: Mageon Implants"
+  },
+  "Yssaril Tribes.Techs.Transparasteel Plating.Description": {
+    "defaultMessage": "During your turn of the action phase, players that have passed cannot play action cards.",
+    "description": "Description for Tech: Transparasteel Plating"
+  },
+  "Yssaril Tribes.Techs.Transparasteel Plating.Title": {
+    "defaultMessage": "Transparasteel Plating",
+    "description": "Title of Tech: Transparasteel Plating"
   },
   "Yssaril Tribes.Units.Blackshade Infiltrator.Description": {
     "defaultMessage": "DEPLOY: After you use your STALL TACTICS faction ability, you may place 1 mech on a planet you control.",

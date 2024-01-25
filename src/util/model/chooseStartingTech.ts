@@ -10,10 +10,10 @@ export class ChooseStartingTechHandler implements Handler {
   ) {}
 
   validate(): boolean {
-    const techs = buildTechs(this.gameData);
-    const tech = techs[this.data.event.tech];
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
+    const techs = buildTechs(this.gameData, intl);
+    const tech = techs[this.data.event.tech];
     const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {
@@ -83,10 +83,10 @@ export class RemoveStartingTechHandler implements Handler {
   ) {}
 
   validate(): boolean {
-    const techs = buildTechs(this.gameData);
-    const tech = techs[this.data.event.tech];
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
+    const techs = buildTechs(this.gameData, intl);
+    const tech = techs[this.data.event.tech];
     const factions = buildFactions(this.gameData, intl);
     const faction = factions[this.data.event.faction];
     if (!faction || !tech) {
