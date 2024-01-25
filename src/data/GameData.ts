@@ -40,9 +40,11 @@ import("../../server/data/leaders").then((module) => {
   getBaseLeaders = module.getBaseLeaders;
 });
 
-let BASE_OBJECTIVES: Partial<Record<ObjectiveId, BaseObjective>> = {};
+let getBaseObjectives: DataFunction<ObjectiveId, BaseObjective> = () => {
+  return {};
+};
 import("../../server/data/objectives").then((module) => {
-  BASE_OBJECTIVES = module.BASE_OBJECTIVES;
+  getBaseObjectives = module.getBaseObjectives;
 });
 
 let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
@@ -113,7 +115,7 @@ export function useGameData(
       attachments: getBaseAttachments(intl),
       components: BASE_COMPONENTS,
       factions: {},
-      objectives: BASE_OBJECTIVES,
+      objectives: getBaseObjectives(intl),
       options: BASE_OPTIONS,
       planets: BASE_PLANETS,
       relics: BASE_RELICS,
@@ -145,7 +147,7 @@ export function buildCompleteGameData(
     attachments: buildAttachments(storedGameData, intl),
     components: buildComponents(storedGameData, intl),
     factions: buildFactions(storedGameData, intl),
-    objectives: buildObjectives(storedGameData),
+    objectives: buildObjectives(storedGameData, intl),
     options: storedGameData.options,
     planets: buildPlanets(storedGameData),
     relics: buildRelics(storedGameData),
@@ -439,33 +441,38 @@ export function buildFaction(
 }
 
 // TODO: Fix secrets (or remove ability to reveal them)
-export function buildObjectives(storedGameData: StoredGameData) {
+export function buildObjectives(
+  storedGameData: StoredGameData,
+  intl: IntlShape
+) {
   const gameObjectives = storedGameData.objectives ?? {};
   // const secretObjectives: Record<string, GameObjective> =
   //   storedGameData[secret]?.objectives ?? {};
   const expansions = storedGameData.options?.expansions ?? [];
 
   const objectives: Partial<Record<ObjectiveId, Objective>> = {};
-  Object.entries(BASE_OBJECTIVES).forEach(([objectiveId, objective]) => {
-    // Maybe filter out PoK objectives.
-    if (!expansions.includes("POK") && objective.expansion === "POK") {
-      return;
-    }
-    // Filter out objectives that are removed by PoK.
-    if (expansions.includes("POK") && objective.expansion === "BASE ONLY") {
-      return;
-    }
+  Object.entries(getBaseObjectives(intl)).forEach(
+    ([objectiveId, objective]) => {
+      // Maybe filter out PoK objectives.
+      if (!expansions.includes("POK") && objective.expansion === "POK") {
+        return;
+      }
+      // Filter out objectives that are removed by PoK.
+      if (expansions.includes("POK") && objective.expansion === "BASE ONLY") {
+        return;
+      }
 
-    if (objective.omega && expansions.includes(objective.omega.expansion)) {
-      objective.description = objective.omega.description;
-    }
+      if (objective.omega && expansions.includes(objective.omega.expansion)) {
+        objective.description = objective.omega.description;
+      }
 
-    objectives[objectiveId as ObjectiveId] = {
-      ...objective,
-      ...(gameObjectives[objectiveId as ObjectiveId] ?? {}),
-      // ...(secretObjectives[objectiveId] ?? {}),
-    };
-  });
+      objectives[objectiveId as ObjectiveId] = {
+        ...objective,
+        ...(gameObjectives[objectiveId as ObjectiveId] ?? {}),
+        // ...(secretObjectives[objectiveId] ?? {}),
+      };
+    }
+  );
 
   Object.values(objectives).forEach((objective) => {
     if (objective.replaces) {

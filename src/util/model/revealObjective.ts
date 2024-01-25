@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildObjectives } from "../../data/GameData";
 
 export class RevealObjectiveHandler implements Handler {
@@ -7,7 +8,9 @@ export class RevealObjectiveHandler implements Handler {
   ) {}
 
   validate(): boolean {
-    const objectives = buildObjectives(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const objectives = buildObjectives(this.gameData, intl);
     const objective = objectives[this.data.event.objective];
 
     if (!objective || objective.selected) {
@@ -55,7 +58,9 @@ export class HideObjectiveHandler implements Handler {
   ) {}
 
   validate(): boolean {
-    const objectives = buildObjectives(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const objectives = buildObjectives(this.gameData, intl);
     const objective = objectives[this.data.event.objective];
 
     if (!objective || !objective.selected) {

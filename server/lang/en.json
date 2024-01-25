@@ -2174,6 +2174,758 @@
     "defaultMessage": "Quantum Manipulator",
     "description": "Title of Faction Unit: Quantum Manipulator"
   },
+  "Objectives.Achieve Supremacy.Description": {
+    "defaultMessage": "Have your flagship or a war sun in another player's home system or the Mecatol Rex system.",
+    "description": "Description for Objective: Achieve Supremacy"
+  },
+  "Objectives.Achieve Supremacy.Title": {
+    "defaultMessage": "Achieve Supremacy",
+    "description": "Title of Objective: Achieve Supremacy"
+  },
+  "Objectives.Adapt New Strategies.Description": {
+    "defaultMessage": "Own 2 faction technologies. (Valefar Assimilator technologies do not count toward this objective)",
+    "description": "Description for Objective: Adapt New Strategies"
+  },
+  "Objectives.Adapt New Strategies.Title": {
+    "defaultMessage": "Adapt New Strategies",
+    "description": "Title of Objective: Adapt New Strategies"
+  },
+  "Objectives.Amass Wealth.Description": {
+    "defaultMessage": "Spend 3 influence, 3 resources, and 3 trade goods.",
+    "description": "Description for Objective: Amass Wealth"
+  },
+  "Objectives.Amass Wealth.Title": {
+    "defaultMessage": "Amass Wealth",
+    "description": "Title of Objective: Amass Wealth"
+  },
+  "Objectives.Become a Legend.Description": {
+    "defaultMessage": "Have units in 4 systems that contain legendary planets, Mecatol Rex, or anomalies.",
+    "description": "Description for Objective: Become a Legend"
+  },
+  "Objectives.Become a Legend.Title": {
+    "defaultMessage": "Become a Legend",
+    "description": "Title of Objective: Become a Legend"
+  },
+  "Objectives.Become a Martyr.Description": {
+    "defaultMessage": "Lose control of a planet in a home system.",
+    "description": "Description for Objective: Become a Martyr"
+  },
+  "Objectives.Become a Martyr.Title": {
+    "defaultMessage": "Become a Martyr",
+    "description": "Title of Objective: Become a Martyr"
+  },
+  "Objectives.Become the Gatekeeper.Description": {
+    "defaultMessage": "Have 1 or more ships in a system that contains an alpha wormhole and 1 or more ships in a system that contains a beta wormhole.",
+    "description": "Description for Objective: Become the Gatekeeper"
+  },
+  "Objectives.Become the Gatekeeper.Title": {
+    "defaultMessage": "Become the Gatekeeper",
+    "description": "Title of Objective: Become the Gatekeeper"
+  },
+  "Objectives.Betray a Friend.Description": {
+    "defaultMessage": "Win a combat against a player whose promissory note you had in your play area at the start of your tactical action.",
+    "description": "Description for Objective: Betray a Friend"
+  },
+  "Objectives.Betray a Friend.Title": {
+    "defaultMessage": "Betray a Friend",
+    "description": "Title of Objective: Betray a Friend"
+  },
+  "Objectives.Brave the Void.Description": {
+    "defaultMessage": "Win a combat in an anomaly.",
+    "description": "Description for Objective: Brave the Void"
+  },
+  "Objectives.Brave the Void.Title": {
+    "defaultMessage": "Brave the Void",
+    "description": "Title of Objective: Brave the Void"
+  },
+  "Objectives.Build Defenses.Description": {
+    "defaultMessage": "Have 4 or more structures.",
+    "description": "Description for Objective: Build Defenses"
+  },
+  "Objectives.Build Defenses.Title": {
+    "defaultMessage": "Build Defenses",
+    "description": "Title of Objective: Build Defenses"
+  },
+  "Objectives.Centralize Galactic Trade.Description": {
+    "defaultMessage": "Spend 10 trade goods.",
+    "description": "Description for Objective: Centralize Galactic Trade"
+  },
+  "Objectives.Centralize Galactic Trade.Title": {
+    "defaultMessage": "Centralize Galactic Trade",
+    "description": "Title of Objective: Centralize Galactic Trade"
+  },
+  "Objectives.Command an Armada.Description": {
+    "defaultMessage": "Have 8 or more non-fighter ships in 1 system.",
+    "description": "Description for Objective: Command an Armada"
+  },
+  "Objectives.Command an Armada.Title": {
+    "defaultMessage": "Command an Armada",
+    "description": "Title of Objective: Command an Armada"
+  },
+  "Objectives.Conquer the Weak.Description": {
+    "defaultMessage": "Control 1 planet that is in another player's home system.",
+    "description": "Description for Objective: Conquer the Weak"
+  },
+  "Objectives.Conquer the Weak.Title": {
+    "defaultMessage": "Conquer the Weak",
+    "description": "Title of Objective: Conquer the Weak"
+  },
+  "Objectives.Construct Massive Cities.Description": {
+    "defaultMessage": "Have 7 or more structures.",
+    "description": "Description for Objective: Construct Massive Cities"
+  },
+  "Objectives.Construct Massive Cities.Title": {
+    "defaultMessage": "Construct Massive Cities",
+    "description": "Title of Objective: Construct Massive Cities"
+  },
+  "Objectives.Control the Borderlands.Description": {
+    "defaultMessage": "Have units in 5 systems on the edge of the game board other than your home system.",
+    "description": "Description for Objective: Control the Borderlands"
+  },
+  "Objectives.Control the Borderlands.Title": {
+    "defaultMessage": "Control the Borderlands",
+    "description": "Title of Objective: Control the Borderlands"
+  },
+  "Objectives.Control the Region.Description": {
+    "defaultMessage": "Have 1 or more ships in 6 systems.",
+    "description": "Description for Objective: Control the Region"
+  },
+  "Objectives.Control the Region.Title": {
+    "defaultMessage": "Control the Region",
+    "description": "Title of Objective: Control the Region"
+  },
+  "Objectives.Corner the Market.Description": {
+    "defaultMessage": "Control 4 planets that each have the same planet trait.",
+    "description": "Description for Objective: Corner the Market"
+  },
+  "Objectives.Corner the Market.Title": {
+    "defaultMessage": "Corner the Market",
+    "description": "Title of Objective: Corner the Market"
+  },
+  "Objectives.Custodians Token.Description": {
+    "defaultMessage": "Pay 6 influence to remove the token from Mecatol Rex.",
+    "description": "Description for Objective: Custodians Token"
+  },
+  "Objectives.Custodians Token.Title": {
+    "defaultMessage": "Custodians Token",
+    "description": "Title of Objective: Custodians Token"
+  },
+  "Objectives.Cut Supply Lines.Description": {
+    "defaultMessage": "Have 1 or more ships in the same system as another player's space dock.",
+    "description": "Description for Objective: Cut Supply Lines"
+  },
+  "Objectives.Cut Supply Lines.Title": {
+    "defaultMessage": "Cut Supply Lines",
+    "description": "Title of Objective: Cut Supply Lines"
+  },
+  "Objectives.Darken the Skies.Description": {
+    "defaultMessage": "Win a combat in another player's home system.",
+    "description": "Description for Objective: Darken the Skies"
+  },
+  "Objectives.Darken the Skies.Title": {
+    "defaultMessage": "Darken the Skies",
+    "description": "Title of Objective: Darken the Skies"
+  },
+  "Objectives.Defy Space and Time.Description": {
+    "defaultMessage": "Have units in the wormhole nexus.",
+    "description": "Description for Objective: Defy Space and Time"
+  },
+  "Objectives.Defy Space and Time.Title": {
+    "defaultMessage": "Defy Space and Time",
+    "description": "Title of Objective: Defy Space and Time"
+  },
+  "Objectives.Demonstrate Your Power.Description": {
+    "defaultMessage": "Have 3 or more non-fighter ships in the active system at the end of a space combat.",
+    "description": "Description for Objective: Demonstrate Your Power"
+  },
+  "Objectives.Demonstrate Your Power.Title": {
+    "defaultMessage": "Demonstrate Your Power",
+    "description": "Title of Objective: Demonstrate Your Power"
+  },
+  "Objectives.Destroy Heretical Works.Description": {
+    "defaultMessage": "Purge 2 of your relic fragments of any type.",
+    "description": "Description for Objective: Destroy Heretical Works"
+  },
+  "Objectives.Destroy Heretical Works.Title": {
+    "defaultMessage": "Destroy Heretical Works",
+    "description": "Title of Objective: Destroy Heretical Works"
+  },
+  "Objectives.Destroy Their Greatest Ship.Description": {
+    "defaultMessage": "Destroy another player's war sun or flagship.",
+    "description": "Description for Objective: Destroy Their Greatest Ship"
+  },
+  "Objectives.Destroy Their Greatest Ship.Title": {
+    "defaultMessage": "Destroy Their Greatest Ship",
+    "description": "Title of Objective: Destroy Their Greatest Ship"
+  },
+  "Objectives.Develop Weaponry.Description": {
+    "defaultMessage": "Own 2 unit upgrade technologies.",
+    "description": "Description for Objective: Develop Weaponry"
+  },
+  "Objectives.Develop Weaponry.Title": {
+    "defaultMessage": "Develop Weaponry",
+    "description": "Title of Objective: Develop Weaponry"
+  },
+  "Objectives.Dictate Policy.Description": {
+    "defaultMessage": "There are 3 or more laws in play.",
+    "description": "Description for Objective: Dictate Policy"
+  },
+  "Objectives.Dictate Policy.Title": {
+    "defaultMessage": "Dictate Policy",
+    "description": "Title of Objective: Dictate Policy"
+  },
+  "Objectives.Discover Lost Outposts.Description": {
+    "defaultMessage": "Control 2 planets that have attachments.",
+    "description": "Description for Objective: Discover Lost Outposts"
+  },
+  "Objectives.Discover Lost Outposts.Title": {
+    "defaultMessage": "Discover Lost Outposts",
+    "description": "Title of Objective: Discover Lost Outposts"
+  },
+  "Objectives.Diversify Research.Description": {
+    "defaultMessage": "Own 2 technologies in each of 2 colors.",
+    "description": "Description for Objective: Diversify Research"
+  },
+  "Objectives.Diversify Research.Title": {
+    "defaultMessage": "Diversify Research",
+    "description": "Title of Objective: Diversify Research"
+  },
+  "Objectives.Drive the Debate.Description": {
+    "defaultMessage": "You or a planet you control are elected by an agenda.",
+    "description": "Description for Objective: Drive the Debate"
+  },
+  "Objectives.Drive the Debate.Title": {
+    "defaultMessage": "Drive the Debate",
+    "description": "Title of Objective: Drive the Debate"
+  },
+  "Objectives.Engineer a Marvel.Description": {
+    "defaultMessage": "Have your flagship or a war sun on the game board.",
+    "description": "Description for Objective: Engineer a Marvel"
+  },
+  "Objectives.Engineer a Marvel.Title": {
+    "defaultMessage": "Engineer a Marvel",
+    "description": "Title of Objective: Engineer a Marvel"
+  },
+  "Objectives.Erect a Monument.Description": {
+    "defaultMessage": "Spend 8 resources.",
+    "description": "Description for Objective: Erect a Monument"
+  },
+  "Objectives.Erect a Monument.Title": {
+    "defaultMessage": "Erect a Monument",
+    "description": "Title of Objective: Erect a Monument"
+  },
+  "Objectives.Establish Hegemony.Description": {
+    "defaultMessage": "Control planets that have a combined influence value of at least 12.",
+    "description": "Description for Objective: Establish Hegemony"
+  },
+  "Objectives.Establish Hegemony.Title": {
+    "defaultMessage": "Establish Hegemony",
+    "description": "Title of Objective: Establish Hegemony"
+  },
+  "Objectives.Establish a Perimeter.Description": {
+    "defaultMessage": "Have 4 PDS units on the game board.",
+    "description": "Description for Objective: Establish a Perimeter"
+  },
+  "Objectives.Establish a Perimeter.Title": {
+    "defaultMessage": "Establish a Perimeter",
+    "description": "Title of Objective: Establish a Perimeter"
+  },
+  "Objectives.Expand Borders.Description": {
+    "defaultMessage": "Control 6 planets in non-home systems.",
+    "description": "Description for Objective: Expand Borders"
+  },
+  "Objectives.Expand Borders.Title": {
+    "defaultMessage": "Expand Borders",
+    "description": "Title of Objective: Expand Borders"
+  },
+  "Objectives.Explore Deep Space.Description": {
+    "defaultMessage": "Have units in 3 systems that do not contain planets.",
+    "description": "Description for Objective: Explore Deep Space"
+  },
+  "Objectives.Explore Deep Space.Title": {
+    "defaultMessage": "Explore Deep Space",
+    "description": "Title of Objective: Explore Deep Space"
+  },
+  "Objectives.Fight With Precision.Description": {
+    "defaultMessage": "Use ANTI-FIGHTER BARRAGE to destroy the last of a player's fighters in a system.",
+    "description": "Description for Objective: Fight With Precision"
+  },
+  "Objectives.Fight With Precision.Omega.Description": {
+    "defaultMessage": "Destroy the last of a player's fighters in the active system during the anti-fighter barrage step",
+    "description": "Description for Objective: Fight With Precision Ω"
+  },
+  "Objectives.Fight With Precision.Omega.Title": {
+    "defaultMessage": "Fight With Precision Ω",
+    "description": "Title of Objective: Fight With Precision Ω"
+  },
+  "Objectives.Fight With Precision.Title": {
+    "defaultMessage": "Fight With Precision",
+    "description": "Title of Objective: Fight With Precision"
+  },
+  "Objectives.Forge an Alliance.Description": {
+    "defaultMessage": "Control 4 cultural planets.",
+    "description": "Description for Objective: Forge an Alliance"
+  },
+  "Objectives.Forge an Alliance.Title": {
+    "defaultMessage": "Forge an Alliance",
+    "description": "Title of Objective: Forge an Alliance"
+  },
+  "Objectives.Form Galactic Brain Trust.Description": {
+    "defaultMessage": "Control 5 planets that have technology specialties.",
+    "description": "Description for Objective: Form Galactic Brain Trust"
+  },
+  "Objectives.Form Galactic Brain Trust.Title": {
+    "defaultMessage": "Form Galactic Brain Trust",
+    "description": "Title of Objective: Form Galactic Brain Trust"
+  },
+  "Objectives.Form a Spy Network.Description": {
+    "defaultMessage": "Discard 5 Action Cards.",
+    "description": "Description for Objective: Form a Spy Network"
+  },
+  "Objectives.Form a Spy Network.Title": {
+    "defaultMessage": "Form a Spy Network",
+    "description": "Title of Objective: Form a Spy Network"
+  },
+  "Objectives.Foster Cohesion.Description": {
+    "defaultMessage": "Be neighbors with all other players.",
+    "description": "Description for Objective: Foster Cohesion"
+  },
+  "Objectives.Foster Cohesion.Title": {
+    "defaultMessage": "Foster Cohesion",
+    "description": "Title of Objective: Foster Cohesion"
+  },
+  "Objectives.Found Research Outposts.Description": {
+    "defaultMessage": "Control 3 planets that have technology specialties.",
+    "description": "Description for Objective: Found Research Outposts"
+  },
+  "Objectives.Found Research Outposts.Title": {
+    "defaultMessage": "Found Research Outposts",
+    "description": "Title of Objective: Found Research Outposts"
+  },
+  "Objectives.Found a Golden Age.Description": {
+    "defaultMessage": "Spend 16 resources.",
+    "description": "Description for Objective: Found a Golden Age"
+  },
+  "Objectives.Found a Golden Age.Title": {
+    "defaultMessage": "Found a Golden Age",
+    "description": "Title of Objective: Found a Golden Age"
+  },
+  "Objectives.Fuel the War Machine.Description": {
+    "defaultMessage": "Have 3 space docks on the game board.",
+    "description": "Description for Objective: Fuel the War Machine"
+  },
+  "Objectives.Fuel the War Machine.Title": {
+    "defaultMessage": "Fuel the War Machine",
+    "description": "Title of Objective: Fuel the War Machine"
+  },
+  "Objectives.Galvanize the People.Description": {
+    "defaultMessage": "Spend a total of 6 tokens from your tactic and/or strategy pools.",
+    "description": "Description for Objective: Galvanize the People"
+  },
+  "Objectives.Galvanize the People.Title": {
+    "defaultMessage": "Galvanize the People",
+    "description": "Title of Objective: Galvanize the People"
+  },
+  "Objectives.Gather a Mighty Fleet.Description": {
+    "defaultMessage": "Have 5 dreadnoughts on the game board.",
+    "description": "Description for Objective: Gather a Mighty Fleet"
+  },
+  "Objectives.Gather a Mighty Fleet.Title": {
+    "defaultMessage": "Gather a Mighty Fleet",
+    "description": "Title of Objective: Gather a Mighty Fleet"
+  },
+  "Objectives.Hoard Raw Materials.Description": {
+    "defaultMessage": "Control planets that have a combined resource value of at least 12.",
+    "description": "Description for Objective: Hoard Raw Materials"
+  },
+  "Objectives.Hoard Raw Materials.Title": {
+    "defaultMessage": "Hoard Raw Materials",
+    "description": "Title of Objective: Hoard Raw Materials"
+  },
+  "Objectives.Hold Vast Reserves.Description": {
+    "defaultMessage": "Spend 6 influence, 6 resources, and 6 trade goods.",
+    "description": "Description for Objective: Hold Vast Reserves"
+  },
+  "Objectives.Hold Vast Reserves.Title": {
+    "defaultMessage": "Hold Vast Reserves",
+    "description": "Title of Objective: Hold Vast Reserves"
+  },
+  "Objectives.Holy Planet of Ixth.Description": {
+    "defaultMessage": "Given to the current owner of the Holy Planet of Ixth.",
+    "description": "Description for Objective: Holy Planet of Ixth"
+  },
+  "Objectives.Holy Planet of Ixth.Title": {
+    "defaultMessage": "Holy Planet of Ixth",
+    "description": "Title of Objective: Holy Planet of Ixth"
+  },
+  "Objectives.Imperial Point.Description": {
+    "defaultMessage": "Use the primary ability of Imperial while in control of Mecatol Rex.",
+    "description": "Description for Objective: Imperial Point"
+  },
+  "Objectives.Imperial Point.Title": {
+    "defaultMessage": "Imperial Point",
+    "description": "Title of Objective: Imperial Point"
+  },
+  "Objectives.Imperial Rider.Description": {
+    "defaultMessage": "Correctly predict the outcome of an agenda using Imperial Rider.",
+    "description": "Description for Objective: Imperial Rider"
+  },
+  "Objectives.Imperial Rider.Title": {
+    "defaultMessage": "Imperial Rider",
+    "description": "Title of Objective: Imperial Rider"
+  },
+  "Objectives.Improve Infrastructure.Description": {
+    "defaultMessage": "Have structures on 3 planets outside of your home system.",
+    "description": "Description for Objective: Improve Infrastructure"
+  },
+  "Objectives.Improve Infrastructure.Title": {
+    "defaultMessage": "Improve Infrastructure",
+    "description": "Title of Objective: Improve Infrastructure"
+  },
+  "Objectives.Intimidate Council.Description": {
+    "defaultMessage": "Have 1 or more ships in 2 systems that are adjacent to Mecatol Rex's System.",
+    "description": "Description for Objective: Intimidate Council"
+  },
+  "Objectives.Intimidate Council.Title": {
+    "defaultMessage": "Intimidate Council",
+    "description": "Title of Objective: Intimidate Council"
+  },
+  "Objectives.Lead from the Front.Description": {
+    "defaultMessage": "Spend a total of 3 tokens from your tactic and/or strategy pools.",
+    "description": "Description for Objective: Lead from the Front"
+  },
+  "Objectives.Lead from the Front.Title": {
+    "defaultMessage": "Lead from the Front",
+    "description": "Title of Objective: Lead from the Front"
+  },
+  "Objectives.Learn the Secrets of the Cosmos.Description": {
+    "defaultMessage": "Have 1 or more ships in 3 systems that are each adjacent to an anomaly.",
+    "description": "Description for Objective: Learn the Secrets of the Cosmos"
+  },
+  "Objectives.Learn the Secrets of the Cosmos.Title": {
+    "defaultMessage": "Learn the Secrets of the Cosmos",
+    "description": "Title of Objective: Learn the Secrets of the Cosmos"
+  },
+  "Objectives.Make History.Description": {
+    "defaultMessage": "Have units in 2 systems that contain legendary planets, Mecatol Rex, or anomalies.",
+    "description": "Description for Objective: Make History"
+  },
+  "Objectives.Make History.Title": {
+    "defaultMessage": "Make History",
+    "description": "Title of Objective: Make History"
+  },
+  "Objectives.Make an Example of Their World.Description": {
+    "defaultMessage": "Use BOMBARDMENT to destroy the last of a player's ground forces on a planet.",
+    "description": "Description for Objective: Make an Example of Their World"
+  },
+  "Objectives.Make an Example of Their World.Omega.Description": {
+    "defaultMessage": "Destroy the last of a player's ground forces on a planet during the bombardment step",
+    "description": "Description for Objective: Make an Example of Their World Ω"
+  },
+  "Objectives.Make an Example of Their World.Omega.Title": {
+    "defaultMessage": "Make an Example of Their World Ω",
+    "description": "Title of Objective: Make an Example of Their World Ω"
+  },
+  "Objectives.Make an Example of Their World.Title": {
+    "defaultMessage": "Make an Example of Their World",
+    "description": "Title of Objective: Make an Example of Their World"
+  },
+  "Objectives.Manipulate Galactic Law.Description": {
+    "defaultMessage": "Spend 16 influence.",
+    "description": "Description for Objective: Manipulate Galactic Law"
+  },
+  "Objectives.Manipulate Galactic Law.Title": {
+    "defaultMessage": "Manipulate Galactic Law",
+    "description": "Title of Objective: Manipulate Galactic Law"
+  },
+  "Objectives.Master the Laws of Physics.Description": {
+    "defaultMessage": "Own 4 technologies of the same color.",
+    "description": "Description for Objective: Master the Laws of Physics"
+  },
+  "Objectives.Master the Laws of Physics.Title": {
+    "defaultMessage": "Master the Laws of Physics",
+    "description": "Title of Objective: Master the Laws of Physics"
+  },
+  "Objectives.Master the Sciences.Description": {
+    "defaultMessage": "Own 2 technologies in each of 4 colors.",
+    "description": "Description for Objective: Master the Sciences"
+  },
+  "Objectives.Master the Sciences.Title": {
+    "defaultMessage": "Master the Sciences",
+    "description": "Title of Objective: Master the Sciences"
+  },
+  "Objectives.Mechanize the Military.Description": {
+    "defaultMessage": "Have 1 mech on each of 4 planets.",
+    "description": "Description for Objective: Mechanize the Military"
+  },
+  "Objectives.Mechanize the Military.Title": {
+    "defaultMessage": "Mechanize the Military",
+    "description": "Title of Objective: Mechanize the Military"
+  },
+  "Objectives.Mine Rare Metals.Description": {
+    "defaultMessage": "Control 4 hazardous planets.",
+    "description": "Description for Objective: Mine Rare Metals"
+  },
+  "Objectives.Mine Rare Metals.Title": {
+    "defaultMessage": "Mine Rare Metals",
+    "description": "Title of Objective: Mine Rare Metals"
+  },
+  "Objectives.Monopolize Production.Description": {
+    "defaultMessage": "Control 4 industrial planets.",
+    "description": "Description for Objective: Monopolize Production"
+  },
+  "Objectives.Monopolize Production.Title": {
+    "defaultMessage": "Monopolize Production",
+    "description": "Title of Objective: Monopolize Production"
+  },
+  "Objectives.Mutiny.Description": {
+    "defaultMessage": "FOR: Each player who voted \"For\" gains 1 victory point.{br}AGAINST: Each player who voted \"For\" loses 1 victory point.",
+    "description": "Description for Objective: Mutiny"
+  },
+  "Objectives.Mutiny.Title": {
+    "defaultMessage": "Mutiny",
+    "description": "Title of Objective: Mutiny"
+  },
+  "Objectives.Negotiate Trade Routes.Description": {
+    "defaultMessage": "Spend 5 trade goods.",
+    "description": "Description for Objective: Negotiate Trade Routes"
+  },
+  "Objectives.Negotiate Trade Routes.Title": {
+    "defaultMessage": "Negotiate Trade Routes",
+    "description": "Title of Objective: Negotiate Trade Routes"
+  },
+  "Objectives.Occupy the Fringe.Description": {
+    "defaultMessage": "Have 9 or more ground forces on a planet that does not contain 1 of your space docks.",
+    "description": "Description for Objective: Occupy the Fringe"
+  },
+  "Objectives.Occupy the Fringe.Title": {
+    "defaultMessage": "Occupy the Fringe",
+    "description": "Title of Objective: Occupy the Fringe"
+  },
+  "Objectives.Occupy the Seat of the Empire.Description": {
+    "defaultMessage": "Control Mecatol Rex and have 3 or more ships in its system.",
+    "description": "Description for Objective: Occupy the Seat of the Empire"
+  },
+  "Objectives.Occupy the Seat of the Empire.Title": {
+    "defaultMessage": "Occupy the Seat of the Empire",
+    "description": "Title of Objective: Occupy the Seat of the Empire"
+  },
+  "Objectives.Patrol Vast Territories.Description": {
+    "defaultMessage": "Have units in 5 systems that do not contain planets.",
+    "description": "Description for Objective: Patrol Vast Territories"
+  },
+  "Objectives.Patrol Vast Territories.Title": {
+    "defaultMessage": "Patrol Vast Territories",
+    "description": "Title of Objective: Patrol Vast Territories"
+  },
+  "Objectives.Political Censure.Description": {
+    "defaultMessage": "Given to the player elected for Political Censure.",
+    "description": "Description for Objective: Political Censure"
+  },
+  "Objectives.Political Censure.Title": {
+    "defaultMessage": "Political Censure",
+    "description": "Title of Objective: Political Censure"
+  },
+  "Objectives.Populate the Outer Rim.Description": {
+    "defaultMessage": "Have units in 3 systems on the edge of the game board other than your home system.",
+    "description": "Description for Objective: Populate the Outer Rim"
+  },
+  "Objectives.Populate the Outer Rim.Title": {
+    "defaultMessage": "Populate the Outer Rim",
+    "description": "Title of Objective: Populate the Outer Rim"
+  },
+  "Objectives.Produce En Masse.Description": {
+    "defaultMessage": "Have units with a combined PRODUCTION value of at least 8 in a single system.",
+    "description": "Description for Objective: Produce En Masse"
+  },
+  "Objectives.Produce En Masse.Title": {
+    "defaultMessage": "Produce En Masse",
+    "description": "Title of Objective: Produce En Masse"
+  },
+  "Objectives.Protect the Border.Description": {
+    "defaultMessage": "Have structures on 5 planets outside of your home system.",
+    "description": "Description for Objective: Protect the Border"
+  },
+  "Objectives.Protect the Border.Title": {
+    "defaultMessage": "Protect the Border",
+    "description": "Title of Objective: Protect the Border"
+  },
+  "Objectives.Prove Endurance.Description": {
+    "defaultMessage": "Be the last player to pass during a game round.",
+    "description": "Description for Objective: Prove Endurance"
+  },
+  "Objectives.Prove Endurance.Title": {
+    "defaultMessage": "Prove Endurance",
+    "description": "Title of Objective: Prove Endurance"
+  },
+  "Objectives.Push Boundaries.Description": {
+    "defaultMessage": "Control more planets than each of 2 of your neighbors.",
+    "description": "Description for Objective: Push Boundaries"
+  },
+  "Objectives.Push Boundaries.Title": {
+    "defaultMessage": "Push Boundaries",
+    "description": "Title of Objective: Push Boundaries"
+  },
+  "Objectives.Raise a Fleet.Description": {
+    "defaultMessage": "Have 5 or more non-fighter ships in 1 system.",
+    "description": "Description for Objective: Raise a Fleet"
+  },
+  "Objectives.Raise a Fleet.Title": {
+    "defaultMessage": "Raise a Fleet",
+    "description": "Title of Objective: Raise a Fleet"
+  },
+  "Objectives.Reclaim Ancient Monuments.Description": {
+    "defaultMessage": "Control 3 planets that have attachments.",
+    "description": "Description for Objective: Reclaim Ancient Monuments"
+  },
+  "Objectives.Reclaim Ancient Monuments.Title": {
+    "defaultMessage": "Reclaim Ancient Monuments",
+    "description": "Title of Objective: Reclaim Ancient Monuments"
+  },
+  "Objectives.Revolutionize Warfare.Description": {
+    "defaultMessage": "Own 3 unit upgrade technologies.",
+    "description": "Description for Objective: Revolutionize Warfare"
+  },
+  "Objectives.Revolutionize Warfare.Title": {
+    "defaultMessage": "Revolutionize Warfare",
+    "description": "Title of Objective: Revolutionize Warfare"
+  },
+  "Objectives.Rule Distant Lands.Description": {
+    "defaultMessage": "Control 2 planets that are each in or adjacent to a different, other player's home system.",
+    "description": "Description for Objective: Rule Distant Lands"
+  },
+  "Objectives.Rule Distant Lands.Title": {
+    "defaultMessage": "Rule Distant Lands",
+    "description": "Title of Objective: Rule Distant Lands"
+  },
+  "Objectives.Seed of an Empire.Description": {
+    "defaultMessage": "Have the most victory points when Seed of an Empire passes or the least victory points when Seed of an Empire fails.",
+    "description": "Description for Objective: Seed of an Empire"
+  },
+  "Objectives.Seed of an Empire.Title": {
+    "defaultMessage": "Seed of an Empire",
+    "description": "Title of Objective: Seed of an Empire"
+  },
+  "Objectives.Seize an Icon.Description": {
+    "defaultMessage": "Control a legendary planet.",
+    "description": "Description for Objective: Seize an Icon"
+  },
+  "Objectives.Seize an Icon.Title": {
+    "defaultMessage": "Seize an Icon",
+    "description": "Title of Objective: Seize an Icon"
+  },
+  "Objectives.Shard of the Throne.Description": {
+    "defaultMessage": "Given to the current holder of the Shard of the Throne.",
+    "description": "Description for Objective: Shard of the Throne"
+  },
+  "Objectives.Shard of the Throne.Title": {
+    "defaultMessage": "Shard of the Throne",
+    "description": "Title of Objective: Shard of the Throne"
+  },
+  "Objectives.Spark a Rebellion.Description": {
+    "defaultMessage": "Win a combat against a player who has the most victory points.",
+    "description": "Description for Objective: Spark a Rebellion"
+  },
+  "Objectives.Spark a Rebellion.Title": {
+    "defaultMessage": "Spark a Rebellion",
+    "description": "Title of Objective: Spark a Rebellion"
+  },
+  "Objectives.Stake your Claim.Description": {
+    "defaultMessage": "Control a planet in a system that contains a planet controlled by another player.",
+    "description": "Description for Objective: Stake your Claim"
+  },
+  "Objectives.Stake your Claim.Title": {
+    "defaultMessage": "Stake your Claim",
+    "description": "Title of Objective: Stake your Claim"
+  },
+  "Objectives.Strengthen Bonds.Description": {
+    "defaultMessage": "Have another player's promissory note in your play area.",
+    "description": "Description for Objective: Strengthen Bonds"
+  },
+  "Objectives.Strengthen Bonds.Title": {
+    "defaultMessage": "Strengthen Bonds",
+    "description": "Title of Objective: Strengthen Bonds"
+  },
+  "Objectives.Subdue the Galaxy.Description": {
+    "defaultMessage": "Control 11 planets in non-home systems.",
+    "description": "Description for Objective: Subdue the Galaxy"
+  },
+  "Objectives.Subdue the Galaxy.Title": {
+    "defaultMessage": "Subdue the Galaxy",
+    "description": "Title of Objective: Subdue the Galaxy"
+  },
+  "Objectives.Support for the Throne.Description": {
+    "defaultMessage": "Have another player's Support for the Throne in your play area.",
+    "description": "Description for Objective: Support for the Throne"
+  },
+  "Objectives.Support for the Throne.Title": {
+    "defaultMessage": "Support for the Throne",
+    "description": "Title of Objective: Support for the Throne"
+  },
+  "Objectives.Sway the Council.Description": {
+    "defaultMessage": "Spend 8 influence.",
+    "description": "Description for Objective: Sway the Council"
+  },
+  "Objectives.Sway the Council.Title": {
+    "defaultMessage": "Sway the Council",
+    "description": "Title of Objective: Sway the Council"
+  },
+  "Objectives.The Crown of Emphidia.Description": {
+    "defaultMessage": "Given to the current holder of the Crown of Emphidia.",
+    "description": "Description for Objective: The Crown of Emphidia"
+  },
+  "Objectives.The Crown of Emphidia.Title": {
+    "defaultMessage": "The Crown of Emphidia",
+    "description": "Title of Objective: The Crown of Emphidia"
+  },
+  "Objectives.Threaten Enemies.Description": {
+    "defaultMessage": "Have 1 or more ships in a system that is adjacent to another player's home system.",
+    "description": "Description for Objective: Threaten Enemies"
+  },
+  "Objectives.Threaten Enemies.Title": {
+    "defaultMessage": "Threaten Enemies",
+    "description": "Title of Objective: Threaten Enemies"
+  },
+  "Objectives.Tomb + Crown of Emphidia.Description": {
+    "defaultMessage": "Use the Crown of Emphidia at the end of the status phase while in control of the Tomb of Emphidia.",
+    "description": "Description for Objective: Tomb + Crown of Emphidia"
+  },
+  "Objectives.Tomb + Crown of Emphidia.Title": {
+    "defaultMessage": "Tomb + Crown of Emphidia",
+    "description": "Title of Objective: Tomb + Crown of Emphidia"
+  },
+  "Objectives.Turn Their Fleets to Dust.Description": {
+    "defaultMessage": "Use SPACE CANNON to destroy the last of a player's ships in a system.",
+    "description": "Description for Objective: Turn Their Fleets to Dust"
+  },
+  "Objectives.Turn Their Fleets to Dust.Omega.Description": {
+    "defaultMessage": "Destroy the last of a player's non-fighter ships in the active system during the space cannon offense step.",
+    "description": "Description for Objective: Turn Their Fleets to Dust Ω"
+  },
+  "Objectives.Turn Their Fleets to Dust.Omega.Title": {
+    "defaultMessage": "Turn Their Fleets to Dust Ω",
+    "description": "Title of Objective: Turn Their Fleets to Dust Ω"
+  },
+  "Objectives.Turn Their Fleets to Dust.Title": {
+    "defaultMessage": "Turn Their Fleets to Dust",
+    "description": "Title of Objective: Turn Their Fleets to Dust"
+  },
+  "Objectives.Unify the Colonies.Description": {
+    "defaultMessage": "Control 6 planets that each have the same planet trait.",
+    "description": "Description for Objective: Unify the Colonies"
+  },
+  "Objectives.Unify the Colonies.Title": {
+    "defaultMessage": "Unify the Colonies",
+    "description": "Title of Objective: Unify the Colonies"
+  },
+  "Objectives.Unveil Flagship.Description": {
+    "defaultMessage": "Win a space combat in a system that contains your flagship. You cannot score this objective if your flagship is destroyed in the combat.",
+    "description": "Description for Objective: Unveil Flagship"
+  },
+  "Objectives.Unveil Flagship.Title": {
+    "defaultMessage": "Unveil Flagship",
+    "description": "Title of Objective: Unveil Flagship"
+  },
   "Oozdq1": {
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."

@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildObjectives, buildPlanets } from "../../data/GameData";
 import { getSelectedAction } from "../api/data";
 
@@ -12,6 +13,8 @@ export class SelectActionHandler implements Handler {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
     };
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
 
     const selectedAction = getSelectedAction(this.gameData);
 
@@ -23,7 +26,7 @@ export class SelectActionHandler implements Handler {
         mecatol.owner === this.gameData.state.activeplayer
       ) {
         const mecatolScorers =
-          buildObjectives(this.gameData)["Imperial Point"]?.scorers ?? [];
+          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
         const lastIndex = mecatolScorers.lastIndexOf(
           this.gameData.state.activeplayer
         );
@@ -40,7 +43,7 @@ export class SelectActionHandler implements Handler {
         mecatol.owner === this.gameData.state.activeplayer
       ) {
         const mecatolScorers =
-          buildObjectives(this.gameData)["Imperial Point"]?.scorers ?? [];
+          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
         mecatolScorers.push(this.gameData.state.activeplayer);
         updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
       }
@@ -79,6 +82,8 @@ export class UnselectActionHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     const updates: Record<string, any> = {
       [`state.paused`]: false,
     };
@@ -90,7 +95,7 @@ export class UnselectActionHandler implements Handler {
         mecatol.owner === this.gameData.state.activeplayer
       ) {
         const mecatolScorers =
-          buildObjectives(this.gameData)["Imperial Point"]?.scorers ?? [];
+          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
         const lastIndex = mecatolScorers.lastIndexOf(
           this.gameData.state.activeplayer
         );

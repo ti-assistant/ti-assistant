@@ -150,7 +150,7 @@ export class ResolveAgendaHandler implements Handler {
       case "Seed of an Empire": {
         let targetVPs = 0;
         const factions = buildFactions(this.gameData, intl);
-        const objectives = buildObjectives(this.gameData);
+        const objectives = buildObjectives(this.gameData, intl);
         if (this.data.event.target === "For") {
           targetVPs = Object.values(factions).reduce((currentMax, faction) => {
             return Math.max(
@@ -568,7 +568,7 @@ export class RepealAgendaHandler implements Handler {
           };
         }
         break;
-      } 
+      }
       case "Public Execution": {
         const agendas = buildAgendas(this.gameData, intl);
         const agenda = agendas[this.data.event.agenda];

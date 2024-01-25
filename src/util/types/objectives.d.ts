@@ -12,6 +12,7 @@ interface BaseObjective {
   omega?: {
     description: string;
     expansion: Expansion;
+    name: string;
   };
   phase?: Phase;
   repeatable?: boolean;

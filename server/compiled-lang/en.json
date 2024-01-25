@@ -4523,6 +4523,1142 @@
       "value": "Quantum Manipulator"
     }
   ],
+  "Objectives.Achieve Supremacy.Description": [
+    {
+      "type": 0,
+      "value": "Have your flagship or a war sun in another player's home system or the Mecatol Rex system."
+    }
+  ],
+  "Objectives.Achieve Supremacy.Title": [
+    {
+      "type": 0,
+      "value": "Achieve Supremacy"
+    }
+  ],
+  "Objectives.Adapt New Strategies.Description": [
+    {
+      "type": 0,
+      "value": "Own 2 faction technologies. (Valefar Assimilator technologies do not count toward this objective)"
+    }
+  ],
+  "Objectives.Adapt New Strategies.Title": [
+    {
+      "type": 0,
+      "value": "Adapt New Strategies"
+    }
+  ],
+  "Objectives.Amass Wealth.Description": [
+    {
+      "type": 0,
+      "value": "Spend 3 influence, 3 resources, and 3 trade goods."
+    }
+  ],
+  "Objectives.Amass Wealth.Title": [
+    {
+      "type": 0,
+      "value": "Amass Wealth"
+    }
+  ],
+  "Objectives.Become a Legend.Description": [
+    {
+      "type": 0,
+      "value": "Have units in 4 systems that contain legendary planets, Mecatol Rex, or anomalies."
+    }
+  ],
+  "Objectives.Become a Legend.Title": [
+    {
+      "type": 0,
+      "value": "Become a Legend"
+    }
+  ],
+  "Objectives.Become a Martyr.Description": [
+    {
+      "type": 0,
+      "value": "Lose control of a planet in a home system."
+    }
+  ],
+  "Objectives.Become a Martyr.Title": [
+    {
+      "type": 0,
+      "value": "Become a Martyr"
+    }
+  ],
+  "Objectives.Become the Gatekeeper.Description": [
+    {
+      "type": 0,
+      "value": "Have 1 or more ships in a system that contains an alpha wormhole and 1 or more ships in a system that contains a beta wormhole."
+    }
+  ],
+  "Objectives.Become the Gatekeeper.Title": [
+    {
+      "type": 0,
+      "value": "Become the Gatekeeper"
+    }
+  ],
+  "Objectives.Betray a Friend.Description": [
+    {
+      "type": 0,
+      "value": "Win a combat against a player whose promissory note you had in your play area at the start of your tactical action."
+    }
+  ],
+  "Objectives.Betray a Friend.Title": [
+    {
+      "type": 0,
+      "value": "Betray a Friend"
+    }
+  ],
+  "Objectives.Brave the Void.Description": [
+    {
+      "type": 0,
+      "value": "Win a combat in an anomaly."
+    }
+  ],
+  "Objectives.Brave the Void.Title": [
+    {
+      "type": 0,
+      "value": "Brave the Void"
+    }
+  ],
+  "Objectives.Build Defenses.Description": [
+    {
+      "type": 0,
+      "value": "Have 4 or more structures."
+    }
+  ],
+  "Objectives.Build Defenses.Title": [
+    {
+      "type": 0,
+      "value": "Build Defenses"
+    }
+  ],
+  "Objectives.Centralize Galactic Trade.Description": [
+    {
+      "type": 0,
+      "value": "Spend 10 trade goods."
+    }
+  ],
+  "Objectives.Centralize Galactic Trade.Title": [
+    {
+      "type": 0,
+      "value": "Centralize Galactic Trade"
+    }
+  ],
+  "Objectives.Command an Armada.Description": [
+    {
+      "type": 0,
+      "value": "Have 8 or more non-fighter ships in 1 system."
+    }
+  ],
+  "Objectives.Command an Armada.Title": [
+    {
+      "type": 0,
+      "value": "Command an Armada"
+    }
+  ],
+  "Objectives.Conquer the Weak.Description": [
+    {
+      "type": 0,
+      "value": "Control 1 planet that is in another player's home system."
+    }
+  ],
+  "Objectives.Conquer the Weak.Title": [
+    {
+      "type": 0,
+      "value": "Conquer the Weak"
+    }
+  ],
+  "Objectives.Construct Massive Cities.Description": [
+    {
+      "type": 0,
+      "value": "Have 7 or more structures."
+    }
+  ],
+  "Objectives.Construct Massive Cities.Title": [
+    {
+      "type": 0,
+      "value": "Construct Massive Cities"
+    }
+  ],
+  "Objectives.Control the Borderlands.Description": [
+    {
+      "type": 0,
+      "value": "Have units in 5 systems on the edge of the game board other than your home system."
+    }
+  ],
+  "Objectives.Control the Borderlands.Title": [
+    {
+      "type": 0,
+      "value": "Control the Borderlands"
+    }
+  ],
+  "Objectives.Control the Region.Description": [
+    {
+      "type": 0,
+      "value": "Have 1 or more ships in 6 systems."
+    }
+  ],
+  "Objectives.Control the Region.Title": [
+    {
+      "type": 0,
+      "value": "Control the Region"
+    }
+  ],
+  "Objectives.Corner the Market.Description": [
+    {
+      "type": 0,
+      "value": "Control 4 planets that each have the same planet trait."
+    }
+  ],
+  "Objectives.Corner the Market.Title": [
+    {
+      "type": 0,
+      "value": "Corner the Market"
+    }
+  ],
+  "Objectives.Custodians Token.Description": [
+    {
+      "type": 0,
+      "value": "Pay 6 influence to remove the token from Mecatol Rex."
+    }
+  ],
+  "Objectives.Custodians Token.Title": [
+    {
+      "type": 0,
+      "value": "Custodians Token"
+    }
+  ],
+  "Objectives.Cut Supply Lines.Description": [
+    {
+      "type": 0,
+      "value": "Have 1 or more ships in the same system as another player's space dock."
+    }
+  ],
+  "Objectives.Cut Supply Lines.Title": [
+    {
+      "type": 0,
+      "value": "Cut Supply Lines"
+    }
+  ],
+  "Objectives.Darken the Skies.Description": [
+    {
+      "type": 0,
+      "value": "Win a combat in another player's home system."
+    }
+  ],
+  "Objectives.Darken the Skies.Title": [
+    {
+      "type": 0,
+      "value": "Darken the Skies"
+    }
+  ],
+  "Objectives.Defy Space and Time.Description": [
+    {
+      "type": 0,
+      "value": "Have units in the wormhole nexus."
+    }
+  ],
+  "Objectives.Defy Space and Time.Title": [
+    {
+      "type": 0,
+      "value": "Defy Space and Time"
+    }
+  ],
+  "Objectives.Demonstrate Your Power.Description": [
+    {
+      "type": 0,
+      "value": "Have 3 or more non-fighter ships in the active system at the end of a space combat."
+    }
+  ],
+  "Objectives.Demonstrate Your Power.Title": [
+    {
+      "type": 0,
+      "value": "Demonstrate Your Power"
+    }
+  ],
+  "Objectives.Destroy Heretical Works.Description": [
+    {
+      "type": 0,
+      "value": "Purge 2 of your relic fragments of any type."
+    }
+  ],
+  "Objectives.Destroy Heretical Works.Title": [
+    {
+      "type": 0,
+      "value": "Destroy Heretical Works"
+    }
+  ],
+  "Objectives.Destroy Their Greatest Ship.Description": [
+    {
+      "type": 0,
+      "value": "Destroy another player's war sun or flagship."
+    }
+  ],
+  "Objectives.Destroy Their Greatest Ship.Title": [
+    {
+      "type": 0,
+      "value": "Destroy Their Greatest Ship"
+    }
+  ],
+  "Objectives.Develop Weaponry.Description": [
+    {
+      "type": 0,
+      "value": "Own 2 unit upgrade technologies."
+    }
+  ],
+  "Objectives.Develop Weaponry.Title": [
+    {
+      "type": 0,
+      "value": "Develop Weaponry"
+    }
+  ],
+  "Objectives.Dictate Policy.Description": [
+    {
+      "type": 0,
+      "value": "There are 3 or more laws in play."
+    }
+  ],
+  "Objectives.Dictate Policy.Title": [
+    {
+      "type": 0,
+      "value": "Dictate Policy"
+    }
+  ],
+  "Objectives.Discover Lost Outposts.Description": [
+    {
+      "type": 0,
+      "value": "Control 2 planets that have attachments."
+    }
+  ],
+  "Objectives.Discover Lost Outposts.Title": [
+    {
+      "type": 0,
+      "value": "Discover Lost Outposts"
+    }
+  ],
+  "Objectives.Diversify Research.Description": [
+    {
+      "type": 0,
+      "value": "Own 2 technologies in each of 2 colors."
+    }
+  ],
+  "Objectives.Diversify Research.Title": [
+    {
+      "type": 0,
+      "value": "Diversify Research"
+    }
+  ],
+  "Objectives.Drive the Debate.Description": [
+    {
+      "type": 0,
+      "value": "You or a planet you control are elected by an agenda."
+    }
+  ],
+  "Objectives.Drive the Debate.Title": [
+    {
+      "type": 0,
+      "value": "Drive the Debate"
+    }
+  ],
+  "Objectives.Engineer a Marvel.Description": [
+    {
+      "type": 0,
+      "value": "Have your flagship or a war sun on the game board."
+    }
+  ],
+  "Objectives.Engineer a Marvel.Title": [
+    {
+      "type": 0,
+      "value": "Engineer a Marvel"
+    }
+  ],
+  "Objectives.Erect a Monument.Description": [
+    {
+      "type": 0,
+      "value": "Spend 8 resources."
+    }
+  ],
+  "Objectives.Erect a Monument.Title": [
+    {
+      "type": 0,
+      "value": "Erect a Monument"
+    }
+  ],
+  "Objectives.Establish Hegemony.Description": [
+    {
+      "type": 0,
+      "value": "Control planets that have a combined influence value of at least 12."
+    }
+  ],
+  "Objectives.Establish Hegemony.Title": [
+    {
+      "type": 0,
+      "value": "Establish Hegemony"
+    }
+  ],
+  "Objectives.Establish a Perimeter.Description": [
+    {
+      "type": 0,
+      "value": "Have 4 PDS units on the game board."
+    }
+  ],
+  "Objectives.Establish a Perimeter.Title": [
+    {
+      "type": 0,
+      "value": "Establish a Perimeter"
+    }
+  ],
+  "Objectives.Expand Borders.Description": [
+    {
+      "type": 0,
+      "value": "Control 6 planets in non-home systems."
+    }
+  ],
+  "Objectives.Expand Borders.Title": [
+    {
+      "type": 0,
+      "value": "Expand Borders"
+    }
+  ],
+  "Objectives.Explore Deep Space.Description": [
+    {
+      "type": 0,
+      "value": "Have units in 3 systems that do not contain planets."
+    }
+  ],
+  "Objectives.Explore Deep Space.Title": [
+    {
+      "type": 0,
+      "value": "Explore Deep Space"
+    }
+  ],
+  "Objectives.Fight With Precision.Description": [
+    {
+      "type": 0,
+      "value": "Use ANTI-FIGHTER BARRAGE to destroy the last of a player's fighters in a system."
+    }
+  ],
+  "Objectives.Fight With Precision.Omega.Description": [
+    {
+      "type": 0,
+      "value": "Destroy the last of a player's fighters in the active system during the anti-fighter barrage step"
+    }
+  ],
+  "Objectives.Fight With Precision.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Fight With Precision Ω"
+    }
+  ],
+  "Objectives.Fight With Precision.Title": [
+    {
+      "type": 0,
+      "value": "Fight With Precision"
+    }
+  ],
+  "Objectives.Forge an Alliance.Description": [
+    {
+      "type": 0,
+      "value": "Control 4 cultural planets."
+    }
+  ],
+  "Objectives.Forge an Alliance.Title": [
+    {
+      "type": 0,
+      "value": "Forge an Alliance"
+    }
+  ],
+  "Objectives.Form Galactic Brain Trust.Description": [
+    {
+      "type": 0,
+      "value": "Control 5 planets that have technology specialties."
+    }
+  ],
+  "Objectives.Form Galactic Brain Trust.Title": [
+    {
+      "type": 0,
+      "value": "Form Galactic Brain Trust"
+    }
+  ],
+  "Objectives.Form a Spy Network.Description": [
+    {
+      "type": 0,
+      "value": "Discard 5 Action Cards."
+    }
+  ],
+  "Objectives.Form a Spy Network.Title": [
+    {
+      "type": 0,
+      "value": "Form a Spy Network"
+    }
+  ],
+  "Objectives.Foster Cohesion.Description": [
+    {
+      "type": 0,
+      "value": "Be neighbors with all other players."
+    }
+  ],
+  "Objectives.Foster Cohesion.Title": [
+    {
+      "type": 0,
+      "value": "Foster Cohesion"
+    }
+  ],
+  "Objectives.Found Research Outposts.Description": [
+    {
+      "type": 0,
+      "value": "Control 3 planets that have technology specialties."
+    }
+  ],
+  "Objectives.Found Research Outposts.Title": [
+    {
+      "type": 0,
+      "value": "Found Research Outposts"
+    }
+  ],
+  "Objectives.Found a Golden Age.Description": [
+    {
+      "type": 0,
+      "value": "Spend 16 resources."
+    }
+  ],
+  "Objectives.Found a Golden Age.Title": [
+    {
+      "type": 0,
+      "value": "Found a Golden Age"
+    }
+  ],
+  "Objectives.Fuel the War Machine.Description": [
+    {
+      "type": 0,
+      "value": "Have 3 space docks on the game board."
+    }
+  ],
+  "Objectives.Fuel the War Machine.Title": [
+    {
+      "type": 0,
+      "value": "Fuel the War Machine"
+    }
+  ],
+  "Objectives.Galvanize the People.Description": [
+    {
+      "type": 0,
+      "value": "Spend a total of 6 tokens from your tactic and/or strategy pools."
+    }
+  ],
+  "Objectives.Galvanize the People.Title": [
+    {
+      "type": 0,
+      "value": "Galvanize the People"
+    }
+  ],
+  "Objectives.Gather a Mighty Fleet.Description": [
+    {
+      "type": 0,
+      "value": "Have 5 dreadnoughts on the game board."
+    }
+  ],
+  "Objectives.Gather a Mighty Fleet.Title": [
+    {
+      "type": 0,
+      "value": "Gather a Mighty Fleet"
+    }
+  ],
+  "Objectives.Hoard Raw Materials.Description": [
+    {
+      "type": 0,
+      "value": "Control planets that have a combined resource value of at least 12."
+    }
+  ],
+  "Objectives.Hoard Raw Materials.Title": [
+    {
+      "type": 0,
+      "value": "Hoard Raw Materials"
+    }
+  ],
+  "Objectives.Hold Vast Reserves.Description": [
+    {
+      "type": 0,
+      "value": "Spend 6 influence, 6 resources, and 6 trade goods."
+    }
+  ],
+  "Objectives.Hold Vast Reserves.Title": [
+    {
+      "type": 0,
+      "value": "Hold Vast Reserves"
+    }
+  ],
+  "Objectives.Holy Planet of Ixth.Description": [
+    {
+      "type": 0,
+      "value": "Given to the current owner of the Holy Planet of Ixth."
+    }
+  ],
+  "Objectives.Holy Planet of Ixth.Title": [
+    {
+      "type": 0,
+      "value": "Holy Planet of Ixth"
+    }
+  ],
+  "Objectives.Imperial Point.Description": [
+    {
+      "type": 0,
+      "value": "Use the primary ability of Imperial while in control of Mecatol Rex."
+    }
+  ],
+  "Objectives.Imperial Point.Title": [
+    {
+      "type": 0,
+      "value": "Imperial Point"
+    }
+  ],
+  "Objectives.Imperial Rider.Description": [
+    {
+      "type": 0,
+      "value": "Correctly predict the outcome of an agenda using Imperial Rider."
+    }
+  ],
+  "Objectives.Imperial Rider.Title": [
+    {
+      "type": 0,
+      "value": "Imperial Rider"
+    }
+  ],
+  "Objectives.Improve Infrastructure.Description": [
+    {
+      "type": 0,
+      "value": "Have structures on 3 planets outside of your home system."
+    }
+  ],
+  "Objectives.Improve Infrastructure.Title": [
+    {
+      "type": 0,
+      "value": "Improve Infrastructure"
+    }
+  ],
+  "Objectives.Intimidate Council.Description": [
+    {
+      "type": 0,
+      "value": "Have 1 or more ships in 2 systems that are adjacent to Mecatol Rex's System."
+    }
+  ],
+  "Objectives.Intimidate Council.Title": [
+    {
+      "type": 0,
+      "value": "Intimidate Council"
+    }
+  ],
+  "Objectives.Lead from the Front.Description": [
+    {
+      "type": 0,
+      "value": "Spend a total of 3 tokens from your tactic and/or strategy pools."
+    }
+  ],
+  "Objectives.Lead from the Front.Title": [
+    {
+      "type": 0,
+      "value": "Lead from the Front"
+    }
+  ],
+  "Objectives.Learn the Secrets of the Cosmos.Description": [
+    {
+      "type": 0,
+      "value": "Have 1 or more ships in 3 systems that are each adjacent to an anomaly."
+    }
+  ],
+  "Objectives.Learn the Secrets of the Cosmos.Title": [
+    {
+      "type": 0,
+      "value": "Learn the Secrets of the Cosmos"
+    }
+  ],
+  "Objectives.Make History.Description": [
+    {
+      "type": 0,
+      "value": "Have units in 2 systems that contain legendary planets, Mecatol Rex, or anomalies."
+    }
+  ],
+  "Objectives.Make History.Title": [
+    {
+      "type": 0,
+      "value": "Make History"
+    }
+  ],
+  "Objectives.Make an Example of Their World.Description": [
+    {
+      "type": 0,
+      "value": "Use BOMBARDMENT to destroy the last of a player's ground forces on a planet."
+    }
+  ],
+  "Objectives.Make an Example of Their World.Omega.Description": [
+    {
+      "type": 0,
+      "value": "Destroy the last of a player's ground forces on a planet during the bombardment step"
+    }
+  ],
+  "Objectives.Make an Example of Their World.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Make an Example of Their World Ω"
+    }
+  ],
+  "Objectives.Make an Example of Their World.Title": [
+    {
+      "type": 0,
+      "value": "Make an Example of Their World"
+    }
+  ],
+  "Objectives.Manipulate Galactic Law.Description": [
+    {
+      "type": 0,
+      "value": "Spend 16 influence."
+    }
+  ],
+  "Objectives.Manipulate Galactic Law.Title": [
+    {
+      "type": 0,
+      "value": "Manipulate Galactic Law"
+    }
+  ],
+  "Objectives.Master the Laws of Physics.Description": [
+    {
+      "type": 0,
+      "value": "Own 4 technologies of the same color."
+    }
+  ],
+  "Objectives.Master the Laws of Physics.Title": [
+    {
+      "type": 0,
+      "value": "Master the Laws of Physics"
+    }
+  ],
+  "Objectives.Master the Sciences.Description": [
+    {
+      "type": 0,
+      "value": "Own 2 technologies in each of 4 colors."
+    }
+  ],
+  "Objectives.Master the Sciences.Title": [
+    {
+      "type": 0,
+      "value": "Master the Sciences"
+    }
+  ],
+  "Objectives.Mechanize the Military.Description": [
+    {
+      "type": 0,
+      "value": "Have 1 mech on each of 4 planets."
+    }
+  ],
+  "Objectives.Mechanize the Military.Title": [
+    {
+      "type": 0,
+      "value": "Mechanize the Military"
+    }
+  ],
+  "Objectives.Mine Rare Metals.Description": [
+    {
+      "type": 0,
+      "value": "Control 4 hazardous planets."
+    }
+  ],
+  "Objectives.Mine Rare Metals.Title": [
+    {
+      "type": 0,
+      "value": "Mine Rare Metals"
+    }
+  ],
+  "Objectives.Monopolize Production.Description": [
+    {
+      "type": 0,
+      "value": "Control 4 industrial planets."
+    }
+  ],
+  "Objectives.Monopolize Production.Title": [
+    {
+      "type": 0,
+      "value": "Monopolize Production"
+    }
+  ],
+  "Objectives.Mutiny.Description": [
+    {
+      "type": 0,
+      "value": "FOR: Each player who voted \"For\" gains 1 victory point."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AGAINST: Each player who voted \"For\" loses 1 victory point."
+    }
+  ],
+  "Objectives.Mutiny.Title": [
+    {
+      "type": 0,
+      "value": "Mutiny"
+    }
+  ],
+  "Objectives.Negotiate Trade Routes.Description": [
+    {
+      "type": 0,
+      "value": "Spend 5 trade goods."
+    }
+  ],
+  "Objectives.Negotiate Trade Routes.Title": [
+    {
+      "type": 0,
+      "value": "Negotiate Trade Routes"
+    }
+  ],
+  "Objectives.Occupy the Fringe.Description": [
+    {
+      "type": 0,
+      "value": "Have 9 or more ground forces on a planet that does not contain 1 of your space docks."
+    }
+  ],
+  "Objectives.Occupy the Fringe.Title": [
+    {
+      "type": 0,
+      "value": "Occupy the Fringe"
+    }
+  ],
+  "Objectives.Occupy the Seat of the Empire.Description": [
+    {
+      "type": 0,
+      "value": "Control Mecatol Rex and have 3 or more ships in its system."
+    }
+  ],
+  "Objectives.Occupy the Seat of the Empire.Title": [
+    {
+      "type": 0,
+      "value": "Occupy the Seat of the Empire"
+    }
+  ],
+  "Objectives.Patrol Vast Territories.Description": [
+    {
+      "type": 0,
+      "value": "Have units in 5 systems that do not contain planets."
+    }
+  ],
+  "Objectives.Patrol Vast Territories.Title": [
+    {
+      "type": 0,
+      "value": "Patrol Vast Territories"
+    }
+  ],
+  "Objectives.Political Censure.Description": [
+    {
+      "type": 0,
+      "value": "Given to the player elected for Political Censure."
+    }
+  ],
+  "Objectives.Political Censure.Title": [
+    {
+      "type": 0,
+      "value": "Political Censure"
+    }
+  ],
+  "Objectives.Populate the Outer Rim.Description": [
+    {
+      "type": 0,
+      "value": "Have units in 3 systems on the edge of the game board other than your home system."
+    }
+  ],
+  "Objectives.Populate the Outer Rim.Title": [
+    {
+      "type": 0,
+      "value": "Populate the Outer Rim"
+    }
+  ],
+  "Objectives.Produce En Masse.Description": [
+    {
+      "type": 0,
+      "value": "Have units with a combined PRODUCTION value of at least 8 in a single system."
+    }
+  ],
+  "Objectives.Produce En Masse.Title": [
+    {
+      "type": 0,
+      "value": "Produce En Masse"
+    }
+  ],
+  "Objectives.Protect the Border.Description": [
+    {
+      "type": 0,
+      "value": "Have structures on 5 planets outside of your home system."
+    }
+  ],
+  "Objectives.Protect the Border.Title": [
+    {
+      "type": 0,
+      "value": "Protect the Border"
+    }
+  ],
+  "Objectives.Prove Endurance.Description": [
+    {
+      "type": 0,
+      "value": "Be the last player to pass during a game round."
+    }
+  ],
+  "Objectives.Prove Endurance.Title": [
+    {
+      "type": 0,
+      "value": "Prove Endurance"
+    }
+  ],
+  "Objectives.Push Boundaries.Description": [
+    {
+      "type": 0,
+      "value": "Control more planets than each of 2 of your neighbors."
+    }
+  ],
+  "Objectives.Push Boundaries.Title": [
+    {
+      "type": 0,
+      "value": "Push Boundaries"
+    }
+  ],
+  "Objectives.Raise a Fleet.Description": [
+    {
+      "type": 0,
+      "value": "Have 5 or more non-fighter ships in 1 system."
+    }
+  ],
+  "Objectives.Raise a Fleet.Title": [
+    {
+      "type": 0,
+      "value": "Raise a Fleet"
+    }
+  ],
+  "Objectives.Reclaim Ancient Monuments.Description": [
+    {
+      "type": 0,
+      "value": "Control 3 planets that have attachments."
+    }
+  ],
+  "Objectives.Reclaim Ancient Monuments.Title": [
+    {
+      "type": 0,
+      "value": "Reclaim Ancient Monuments"
+    }
+  ],
+  "Objectives.Revolutionize Warfare.Description": [
+    {
+      "type": 0,
+      "value": "Own 3 unit upgrade technologies."
+    }
+  ],
+  "Objectives.Revolutionize Warfare.Title": [
+    {
+      "type": 0,
+      "value": "Revolutionize Warfare"
+    }
+  ],
+  "Objectives.Rule Distant Lands.Description": [
+    {
+      "type": 0,
+      "value": "Control 2 planets that are each in or adjacent to a different, other player's home system."
+    }
+  ],
+  "Objectives.Rule Distant Lands.Title": [
+    {
+      "type": 0,
+      "value": "Rule Distant Lands"
+    }
+  ],
+  "Objectives.Seed of an Empire.Description": [
+    {
+      "type": 0,
+      "value": "Have the most victory points when Seed of an Empire passes or the least victory points when Seed of an Empire fails."
+    }
+  ],
+  "Objectives.Seed of an Empire.Title": [
+    {
+      "type": 0,
+      "value": "Seed of an Empire"
+    }
+  ],
+  "Objectives.Seize an Icon.Description": [
+    {
+      "type": 0,
+      "value": "Control a legendary planet."
+    }
+  ],
+  "Objectives.Seize an Icon.Title": [
+    {
+      "type": 0,
+      "value": "Seize an Icon"
+    }
+  ],
+  "Objectives.Shard of the Throne.Description": [
+    {
+      "type": 0,
+      "value": "Given to the current holder of the Shard of the Throne."
+    }
+  ],
+  "Objectives.Shard of the Throne.Title": [
+    {
+      "type": 0,
+      "value": "Shard of the Throne"
+    }
+  ],
+  "Objectives.Spark a Rebellion.Description": [
+    {
+      "type": 0,
+      "value": "Win a combat against a player who has the most victory points."
+    }
+  ],
+  "Objectives.Spark a Rebellion.Title": [
+    {
+      "type": 0,
+      "value": "Spark a Rebellion"
+    }
+  ],
+  "Objectives.Stake your Claim.Description": [
+    {
+      "type": 0,
+      "value": "Control a planet in a system that contains a planet controlled by another player."
+    }
+  ],
+  "Objectives.Stake your Claim.Title": [
+    {
+      "type": 0,
+      "value": "Stake your Claim"
+    }
+  ],
+  "Objectives.Strengthen Bonds.Description": [
+    {
+      "type": 0,
+      "value": "Have another player's promissory note in your play area."
+    }
+  ],
+  "Objectives.Strengthen Bonds.Title": [
+    {
+      "type": 0,
+      "value": "Strengthen Bonds"
+    }
+  ],
+  "Objectives.Subdue the Galaxy.Description": [
+    {
+      "type": 0,
+      "value": "Control 11 planets in non-home systems."
+    }
+  ],
+  "Objectives.Subdue the Galaxy.Title": [
+    {
+      "type": 0,
+      "value": "Subdue the Galaxy"
+    }
+  ],
+  "Objectives.Support for the Throne.Description": [
+    {
+      "type": 0,
+      "value": "Have another player's Support for the Throne in your play area."
+    }
+  ],
+  "Objectives.Support for the Throne.Title": [
+    {
+      "type": 0,
+      "value": "Support for the Throne"
+    }
+  ],
+  "Objectives.Sway the Council.Description": [
+    {
+      "type": 0,
+      "value": "Spend 8 influence."
+    }
+  ],
+  "Objectives.Sway the Council.Title": [
+    {
+      "type": 0,
+      "value": "Sway the Council"
+    }
+  ],
+  "Objectives.The Crown of Emphidia.Description": [
+    {
+      "type": 0,
+      "value": "Given to the current holder of the Crown of Emphidia."
+    }
+  ],
+  "Objectives.The Crown of Emphidia.Title": [
+    {
+      "type": 0,
+      "value": "The Crown of Emphidia"
+    }
+  ],
+  "Objectives.Threaten Enemies.Description": [
+    {
+      "type": 0,
+      "value": "Have 1 or more ships in a system that is adjacent to another player's home system."
+    }
+  ],
+  "Objectives.Threaten Enemies.Title": [
+    {
+      "type": 0,
+      "value": "Threaten Enemies"
+    }
+  ],
+  "Objectives.Tomb + Crown of Emphidia.Description": [
+    {
+      "type": 0,
+      "value": "Use the Crown of Emphidia at the end of the status phase while in control of the Tomb of Emphidia."
+    }
+  ],
+  "Objectives.Tomb + Crown of Emphidia.Title": [
+    {
+      "type": 0,
+      "value": "Tomb + Crown of Emphidia"
+    }
+  ],
+  "Objectives.Turn Their Fleets to Dust.Description": [
+    {
+      "type": 0,
+      "value": "Use SPACE CANNON to destroy the last of a player's ships in a system."
+    }
+  ],
+  "Objectives.Turn Their Fleets to Dust.Omega.Description": [
+    {
+      "type": 0,
+      "value": "Destroy the last of a player's non-fighter ships in the active system during the space cannon offense step."
+    }
+  ],
+  "Objectives.Turn Their Fleets to Dust.Omega.Title": [
+    {
+      "type": 0,
+      "value": "Turn Their Fleets to Dust Ω"
+    }
+  ],
+  "Objectives.Turn Their Fleets to Dust.Title": [
+    {
+      "type": 0,
+      "value": "Turn Their Fleets to Dust"
+    }
+  ],
+  "Objectives.Unify the Colonies.Description": [
+    {
+      "type": 0,
+      "value": "Control 6 planets that each have the same planet trait."
+    }
+  ],
+  "Objectives.Unify the Colonies.Title": [
+    {
+      "type": 0,
+      "value": "Unify the Colonies"
+    }
+  ],
+  "Objectives.Unveil Flagship.Description": [
+    {
+      "type": 0,
+      "value": "Win a space combat in a system that contains your flagship. You cannot score this objective if your flagship is destroyed in the combat."
+    }
+  ],
+  "Objectives.Unveil Flagship.Title": [
+    {
+      "type": 0,
+      "value": "Unveil Flagship"
+    }
+  ],
   "Oozdq1": [
     {
       "type": 0,

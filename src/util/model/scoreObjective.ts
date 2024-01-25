@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildObjectives } from "../../data/GameData";
 import { arrayRemove, arrayUnion } from "../api/util";
 
@@ -12,7 +13,11 @@ export class ScoreObjectiveHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const objective = buildObjectives(this.gameData)[this.data.event.objective];
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const objective = buildObjectives(this.gameData, intl)[
+      this.data.event.objective
+    ];
 
     let scorers = objective?.scorers ?? [];
 
@@ -42,15 +47,15 @@ export class ScoreObjectiveHandler implements Handler {
 
     const faction = this.gameData.factions[this.data.event.faction];
     if (faction && faction.hero === "locked") {
-      const numScored = Object.values(buildObjectives(this.gameData)).filter(
-        (objective) => {
-          return (
-            objective.type !== "OTHER" &&
-            ((objective.scorers ?? []).includes(this.data.event.faction) ||
-              objective.id === this.data.event.objective)
-          );
-        }
-      ).length;
+      const numScored = Object.values(
+        buildObjectives(this.gameData, intl)
+      ).filter((objective) => {
+        return (
+          objective.type !== "OTHER" &&
+          ((objective.scorers ?? []).includes(this.data.event.faction) ||
+            objective.id === this.data.event.objective)
+        );
+      }).length;
       if (numScored >= 3) {
         updates[`factions.${this.data.event.faction}.hero`] = "readied";
       }
@@ -91,7 +96,11 @@ export class UnscoreObjectiveHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const objective = buildObjectives(this.gameData)[this.data.event.objective];
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const objective = buildObjectives(this.gameData, intl)[
+      this.data.event.objective
+    ];
 
     let scorers = objective?.scorers ?? [];
 
@@ -123,15 +132,15 @@ export class UnscoreObjectiveHandler implements Handler {
 
     const faction = this.gameData.factions[this.data.event.faction];
     if (faction && faction.hero === "readied") {
-      const numScored = Object.values(buildObjectives(this.gameData)).filter(
-        (objective) => {
-          return (
-            objective.type !== "OTHER" &&
-            (objective.scorers ?? []).includes(this.data.event.faction) &&
-            objective.id !== this.data.event.objective
-          );
-        }
-      ).length;
+      const numScored = Object.values(
+        buildObjectives(this.gameData, intl)
+      ).filter((objective) => {
+        return (
+          objective.type !== "OTHER" &&
+          (objective.scorers ?? []).includes(this.data.event.faction) &&
+          objective.id !== this.data.event.objective
+        );
+      }).length;
       if (numScored < 3) {
         updates[`factions.${this.data.event.faction}.hero`] = "locked";
       }
