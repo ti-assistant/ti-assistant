@@ -2930,6 +2930,110 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "Relics.Dominus Orb.Description": {
+    "defaultMessage": "Before you move units during a tactical action, you may purge this card to move and transport units that are in systems that contain 1 of your command tokens.",
+    "description": "Description for Relic: Dominus Orb"
+  },
+  "Relics.Dominus Orb.Title": {
+    "defaultMessage": "Dominus Orb",
+    "description": "Title of Relic: Dominus Orb"
+  },
+  "Relics.Dynamis Core.Description": {
+    "defaultMessage": "While this card is in your play area, your commodity value is increased by 2.{br}ACTION: Purge this card to gain trade goods equal to your printed commodity value +2.",
+    "description": "Description for Relic: Dynamis Core"
+  },
+  "Relics.Dynamis Core.Title": {
+    "defaultMessage": "Dynamis Core",
+    "description": "Title of Relic: Dynamis Core"
+  },
+  "Relics.JR-XS455-O.Description": {
+    "defaultMessage": "ACTION: Exhaust this agent and choose a player; that player may spend 3 resources to place a structure on a planet they control. If they do not, they gain 1 trade good.",
+    "description": "Description for Relic: JR-XS455-O"
+  },
+  "Relics.JR-XS455-O.Title": {
+    "defaultMessage": "JR-XS455-O",
+    "description": "Title of Relic: JR-XS455-O"
+  },
+  "Relics.Maw of Worlds.Description": {
+    "defaultMessage": "At the start of the agenda phase, you may purge this card and exhaust all of your planets to gain any 1 technology.",
+    "description": "Description for Relic: Maw of Worlds"
+  },
+  "Relics.Maw of Worlds.Title": {
+    "defaultMessage": "Maw of Worlds",
+    "description": "Title of Relic: Maw of Worlds"
+  },
+  "Relics.Nano-Forge.Description": {
+    "defaultMessage": "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet.",
+    "description": "Description for Relic: Nano-Forge"
+  },
+  "Relics.Nano-Forge.Title": {
+    "defaultMessage": "Nano-Forge",
+    "description": "Title of Relic: Nano-Forge"
+  },
+  "Relics.Scepter of Emelpar.Description": {
+    "defaultMessage": "When you would spend a token from your strategy pool, you may exhaust this card to spend a token from your reinforcements instead.",
+    "description": "Description for Relic: Scepter of Emelpar"
+  },
+  "Relics.Scepter of Emelpar.Title": {
+    "defaultMessage": "Scepter of Emelpar",
+    "description": "Title of Relic: Scepter of Emelpar"
+  },
+  "Relics.Shard of the Throne.Description": {
+    "defaultMessage": "When you gain this card, gain 1 victory point. When you lose this card, lose 1 victory point.{br}When a player gains control of a legendary planet you control, or a planet you control in your home system, that player gains this card.",
+    "description": "Description for Relic: Shard of the Throne"
+  },
+  "Relics.Shard of the Throne.Title": {
+    "defaultMessage": "Shard of the Throne",
+    "description": "Title of Relic: Shard of the Throne"
+  },
+  "Relics.Stellar Converter.Description": {
+    "defaultMessage": "ACTION: Choose 1 non-home, non-legendary planet other than Mecatol Rex in a system that is adjacent to 1 or more of your units that have BOMBARDMENT; destroy all units on that planet and purge its attachments and its planet card. Then, place the destroyed planet token on that planet and purge this card.",
+    "description": "Description for Relic: Stellar Converter"
+  },
+  "Relics.Stellar Converter.Title": {
+    "defaultMessage": "Stellar Converter",
+    "description": "Title of Relic: Stellar Converter"
+  },
+  "Relics.The Codex.Description": {
+    "defaultMessage": "ACTION: Purge this card to take up to 3 action cards of your choice from the action card discard pile.",
+    "description": "Description for Relic: The Codex"
+  },
+  "Relics.The Codex.Title": {
+    "defaultMessage": "The Codex",
+    "description": "Title of Relic: The Codex"
+  },
+  "Relics.The Crown of Emphidia.Description": {
+    "defaultMessage": "After you perform a tactical action, you may exhaust this card to explore 1 planet you control.{br}At the end of the status phase, if you control the \"Tomb of Emphidia\", you may purge this card to gain 1 Victory Point.",
+    "description": "Description for Relic: The Crown of Emphidia"
+  },
+  "Relics.The Crown of Emphidia.Title": {
+    "defaultMessage": "The Crown of Emphidia",
+    "description": "Title of Relic: The Crown of Emphidia"
+  },
+  "Relics.The Crown of Thalnos.Description": {
+    "defaultMessage": "During each combat round, this card's owner may reroll any number of their dice, applying +1 to the results; any units that reroll dice but do not produce at least 1 hit are destroyed.",
+    "description": "Description for Relic: The Crown of Thalnos"
+  },
+  "Relics.The Crown of Thalnos.Title": {
+    "defaultMessage": "The Crown of Thalnos",
+    "description": "Title of Relic: The Crown of Thalnos"
+  },
+  "Relics.The Obsidian.Description": {
+    "defaultMessage": "When you gain this card, draw 1 secret objective. You can have 1 additional scored or unscored secret objective.",
+    "description": "Description for Relic: The Obsidian"
+  },
+  "Relics.The Obsidian.Title": {
+    "defaultMessage": "The Obsidian",
+    "description": "Title of Relic: The Obsidian"
+  },
+  "Relics.The Prophet's Tears.Description": {
+    "defaultMessage": "When you research a technology, you may exhaust this card to ignore 1 prerequisite or draw 1 action card.",
+    "description": "Description for Relic: The Prophet's Tears"
+  },
+  "Relics.The Prophet's Tears.Title": {
+    "defaultMessage": "The Prophet's Tears",
+    "description": "Title of Relic: The Prophet's Tears"
+  },
   "Sardakk N'orr.Abilities.Unrelenting.Description": {
     "defaultMessage": "Apply +1 to the result of each of your unit's combat rolls.",
     "description": "Description for Faction Ability: Unrelenting"

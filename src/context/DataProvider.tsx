@@ -71,9 +71,11 @@ import("../../server/data/planets").then((module) => {
   BASE_PLANETS = module.BASE_PLANETS;
 });
 
-let BASE_RELICS: Partial<Record<RelicId, BaseRelic>> = {};
+let getBaseRelics: DataFunction<RelicId, BaseRelic> = () => {
+  return {};
+};
 import("../../server/data/relics").then((module) => {
-  BASE_RELICS = module.BASE_RELICS;
+  getBaseRelics = module.getBaseRelics;
 });
 
 let BASE_STRATEGY_CARDS: Partial<Record<StrategyCardId, BaseStrategyCard>> = {};
@@ -108,6 +110,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
   const baseAgendas = getBaseAgendas(intl);
   const baseAttachments = getBaseAttachments(intl);
   const baseObjectives = getBaseObjectives(intl);
+  const baseRelics = getBaseRelics(intl);
 
   let gameData: GameData = {
     agendas: baseAgendas,
@@ -117,7 +120,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
     objectives: baseObjectives,
     options: BASE_OPTIONS,
     planets: BASE_PLANETS,
-    relics: BASE_RELICS,
+    relics: baseRelics,
     state: {
       phase: "UNKNOWN",
       round: 1,
@@ -142,7 +145,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
   const objectives = useStableValue(gameData.objectives ?? {}, baseObjectives);
   const options = useStableValue(gameData.options, BASE_OPTIONS);
   const planets = useStableValue(gameData.planets ?? {}, BASE_PLANETS);
-  const relics = useStableValue(gameData.relics ?? {}, BASE_RELICS);
+  const relics = useStableValue(gameData.relics ?? {}, baseRelics);
   const state = useStableValue(gameData.state, {
     phase: "UNKNOWN",
     round: 1,

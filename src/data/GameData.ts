@@ -52,9 +52,11 @@ import("../../server/data/planets").then((module) => {
   BASE_PLANETS = module.BASE_PLANETS;
 });
 
-let BASE_RELICS: Partial<Record<RelicId, BaseRelic>> = {};
+let getBaseRelics: DataFunction<RelicId, BaseRelic> = () => {
+  return {};
+};
 import("../../server/data/relics").then((module) => {
-  BASE_RELICS = module.BASE_RELICS;
+  getBaseRelics = module.getBaseRelics;
 });
 
 let BASE_STRATEGY_CARDS: Partial<Record<StrategyCardId, BaseStrategyCard>> = {};
@@ -118,7 +120,7 @@ export function useGameData(
       objectives: getBaseObjectives(intl),
       options: BASE_OPTIONS,
       planets: BASE_PLANETS,
-      relics: BASE_RELICS,
+      relics: getBaseRelics(intl),
       state: {
         phase: "UNKNOWN",
         round: 1,
@@ -150,7 +152,7 @@ export function buildCompleteGameData(
     objectives: buildObjectives(storedGameData, intl),
     options: storedGameData.options,
     planets: buildPlanets(storedGameData),
-    relics: buildRelics(storedGameData),
+    relics: buildRelics(storedGameData, intl),
     state: buildState(storedGameData),
     strategycards: buildStrategyCards(storedGameData),
     systems: buildSystems(storedGameData),
@@ -324,7 +326,7 @@ export function buildComponents(
     delete components["Ssruu"];
   }
 
-  Object.entries(BASE_RELICS)
+  Object.entries(getBaseRelics(intl))
     .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
     .forEach(([relicId, relic]) => {
       if (!expansions.includes("POK")) {
@@ -556,12 +558,12 @@ export function buildPlanets(storedGameData: StoredGameData) {
   return planets;
 }
 
-export function buildRelics(storedGameData: StoredGameData) {
+export function buildRelics(storedGameData: StoredGameData, intl: IntlShape) {
   const gameRelics = storedGameData.relics ?? {};
   const expansions = storedGameData.options.expansions;
 
   const relics: Partial<Record<RelicId, Relic>> = {};
-  Object.entries(BASE_RELICS).forEach(([relicId, relic]) => {
+  Object.entries(getBaseRelics(intl)).forEach(([relicId, relic]) => {
     // Maybe filter out Codex relics.
     if (!expansions.includes("POK") || !expansions.includes(relic.expansion)) {
       return;
