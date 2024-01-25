@@ -281,12 +281,15 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
       type: "GREEN",
     },
     "Dark Energy Tap": {
-      description: intl.formatMessage({
-        id: "Techs.Dark Energy Tap.Description",
-        description: "Description for Tech: Dark Energy Tap",
-        defaultMessage:
-          "After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.{br}Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Techs.Dark Energy Tap.Description",
+          description: "Description for Tech: Dark Energy Tap",
+          defaultMessage:
+            "After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.{br}Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.",
+        },
+        { br: "\n\n" }
+      ),
       expansion: "POK",
       id: "Dark Energy Tap",
       name: intl.formatMessage({
