@@ -5,6 +5,54 @@
       "value": "New Game"
     }
   ],
+  "+WkrHz": [
+    {
+      "type": 0,
+      "value": "AND"
+    }
+  ],
+  "0rSMZW": [
+    {
+      "type": 0,
+      "value": "Large"
+    }
+  ],
+  "2jNcVD": [
+    {
+      "type": 0,
+      "value": "Expansions:"
+    }
+  ],
+  "3Taw9H": [
+    {
+      "type": 0,
+      "value": "Codex I"
+    }
+  ],
+  "46dzNs": [
+    {
+      "type": 0,
+      "value": "Map:"
+    }
+  ],
+  "4V92Jv": [
+    {
+      "type": 0,
+      "value": "Warp"
+    }
+  ],
+  "4n1LQO": [
+    {
+      "type": 0,
+      "value": "Enter Player Name..."
+    }
+  ],
+  "4wSR75": [
+    {
+      "type": 0,
+      "value": "Standard"
+    }
+  ],
   "93G7sJ": [
     {
       "type": 0,
@@ -2241,6 +2289,722 @@
       "value": "Son of Ragh"
     }
   ],
+  "Components.Archaeological Expedition.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest."
+    }
+  ],
+  "Components.Archaeological Expedition.Title": [
+    {
+      "type": 0,
+      "value": "Archaeological Expedition"
+    }
+  ],
+  "Components.Black Market Forgery.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then return this card to the Naaz-Rokha player."
+    }
+  ],
+  "Components.Black Market Forgery.Title": [
+    {
+      "type": 0,
+      "value": "Black Market Forgery"
+    }
+  ],
+  "Components.Blood Pact.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When you and the Empyrean player cast votes for the same outcome, cast 4 additional votes for that outcome."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player."
+    }
+  ],
+  "Components.Blood Pact.Title": [
+    {
+      "type": 0,
+      "value": "Blood Pact"
+    }
+  ],
+  "Components.Cripple Defenses.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 planet. Destroy each PDS on that planet"
+    }
+  ],
+  "Components.Cripple Defenses.Title": [
+    {
+      "type": 0,
+      "value": "Cripple Defenses"
+    }
+  ],
+  "Components.Dark Pact.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player."
+    }
+  ],
+  "Components.Dark Pact.Title": [
+    {
+      "type": 0,
+      "value": "Dark Pact"
+    }
+  ],
+  "Components.Divert Funding.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Return a non-unit upgrade, non-faction technology that you own to your technology deck. Then, research another technology."
+    }
+  ],
+  "Components.Divert Funding.Title": [
+    {
+      "type": 0,
+      "value": "Divert Funding"
+    }
+  ],
+  "Components.Economic Initiative.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Ready each cultural planet you control."
+    }
+  ],
+  "Components.Economic Initiative.Title": [
+    {
+      "type": 0,
+      "value": "Economic Initiative"
+    }
+  ],
+  "Components.Enigmatic Device.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: You may spend 6 resources and purge this card to research 1 technology."
+    }
+  ],
+  "Components.Enigmatic Device.Title": [
+    {
+      "type": 0,
+      "value": "Enigmatic Device"
+    }
+  ],
+  "Components.Exploration Probe.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Explore a frontier token that is in or adjacent to a system that contains 1 or more of your ships."
+    }
+  ],
+  "Components.Exploration Probe.Title": [
+    {
+      "type": 0,
+      "value": "Exploration Probe"
+    }
+  ],
+  "Components.Fabrication.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic; or purge 1 of your relic fragments to gain 1 command token."
+    }
+  ],
+  "Components.Fabrication.Title": [
+    {
+      "type": 0,
+      "value": "Fabrication"
+    }
+  ],
+  "Components.Fighter Conscription.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships."
+    }
+  ],
+  "Components.Fighter Conscription.Title": [
+    {
+      "type": 0,
+      "value": "Fighter Conscription"
+    }
+  ],
+  "Components.Fires of the Gashlai.Description": [
+    {
+      "type": 0,
+      "value": "Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Muaat player."
+    }
+  ],
+  "Components.Fires of the Gashlai.Title": [
+    {
+      "type": 0,
+      "value": "Fires of the Gashlai"
+    }
+  ],
+  "Components.Focused Research.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 4 trade goods to research 1 technology."
+    }
+  ],
+  "Components.Focused Research.Title": [
+    {
+      "type": 0,
+      "value": "Focused Research"
+    }
+  ],
+  "Components.Frontline Deployment.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place 3 infantry from your reinforcements on 1 planet you control."
+    }
+  ],
+  "Components.Frontline Deployment.Title": [
+    {
+      "type": 0,
+      "value": "Frontline Deployment"
+    }
+  ],
+  "Components.Gain Relic.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Purge 3 of your relic fragments of the same type to gain 1 Relic."
+    }
+  ],
+  "Components.Gain Relic.Title": [
+    {
+      "type": 0,
+      "value": "Gain Relic"
+    }
+  ],
+  "Components.Ghost Ship.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place 1 destroyer from your reinforcements in a non-home system that contains a wormhole and does not contain other players' ships."
+    }
+  ],
+  "Components.Ghost Ship.Title": [
+    {
+      "type": 0,
+      "value": "Ghost Ship"
+    }
+  ],
+  "Components.Impersonation.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 3 influence to draw 1 secret objective."
+    }
+  ],
+  "Components.Impersonation.Title": [
+    {
+      "type": 0,
+      "value": "Impersonation"
+    }
+  ],
+  "Components.Industrial Initiative.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Gain 1 trade good for each industrial planet you control."
+    }
+  ],
+  "Components.Industrial Initiative.Title": [
+    {
+      "type": 0,
+      "value": "Industrial Initiative"
+    }
+  ],
+  "Components.Insubordination.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Remove 1 token from another player's tactic pool and return it to their reinforcements."
+    }
+  ],
+  "Components.Insubordination.Title": [
+    {
+      "type": 0,
+      "value": "Insubordination"
+    }
+  ],
+  "Components.Lazax Gate Folding.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex."
+    }
+  ],
+  "Components.Lazax Gate Folding.Title": [
+    {
+      "type": 0,
+      "value": "Lazax Gate Folding"
+    }
+  ],
+  "Components.Lucky Shot.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Destroy 1 dreadnought, cruiser, or destroyer in a system that contains a planet you control."
+    }
+  ],
+  "Components.Lucky Shot.Title": [
+    {
+      "type": 0,
+      "value": "Lucky Shot"
+    }
+  ],
+  "Components.Mageon Implants.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to look at another player's hand of action cards. Choose 1 of those cards and add it to your hand."
+    }
+  ],
+  "Components.Mageon Implants.Title": [
+    {
+      "type": 0,
+      "value": "Mageon Implants"
+    }
+  ],
+  "Components.Mining Initiative.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Gain trade goods equal to the resource value of 1 planet you control."
+    }
+  ],
+  "Components.Mining Initiative.Title": [
+    {
+      "type": 0,
+      "value": "Mining Initiative"
+    }
+  ],
+  "Components.Orbital Drop.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control."
+    }
+  ],
+  "Components.Orbital Drop.Title": [
+    {
+      "type": 0,
+      "value": "Orbital Drop"
+    }
+  ],
+  "Components.Plagiarize.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology."
+    }
+  ],
+  "Components.Plagiarize.Title": [
+    {
+      "type": 0,
+      "value": "Plagiarize"
+    }
+  ],
+  "Components.Plague.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 planet that is controlled by another player. Roll 1 die for each infantry on that planet. For each result of 6 or greater, destroy 1 of those units."
+    }
+  ],
+  "Components.Plague.Title": [
+    {
+      "type": 0,
+      "value": "Plague"
+    }
+  ],
+  "Components.Production Biomes.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card and spend 1 token from your strategy pool to gain 4 trade goods and choose 1 other player; that player gains 2 trade goods."
+    }
+  ],
+  "Components.Production Biomes.Title": [
+    {
+      "type": 0,
+      "value": "Production Biomes"
+    }
+  ],
+  "Components.Promise of Protection.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face-up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "While this card is in your play area, the Mentak player cannot use their Pillage faction ability against you."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Mentak player's units, return this card to the Mentak player."
+    }
+  ],
+  "Components.Promise of Protection.Title": [
+    {
+      "type": 0,
+      "value": "Promise of Protection"
+    }
+  ],
+  "Components.Reactor Meltdown.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Destroy 1 space dock in a non-home system."
+    }
+  ],
+  "Components.Reactor Meltdown.Title": [
+    {
+      "type": 0,
+      "value": "Reactor Meltdown"
+    }
+  ],
+  "Components.Refit Troops.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 or 2 of your infantry on the game board; replace each of those infantry with mechs."
+    }
+  ],
+  "Components.Refit Troops.Title": [
+    {
+      "type": 0,
+      "value": "Refit Troops"
+    }
+  ],
+  "Components.Repeal Law.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Discard 1 law from play."
+    }
+  ],
+  "Components.Repeal Law.Title": [
+    {
+      "type": 0,
+      "value": "Repeal Law"
+    }
+  ],
+  "Components.Rise of a Messiah.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place 1 infantry from your reinforcements on each planet you control."
+    }
+  ],
+  "Components.Rise of a Messiah.Title": [
+    {
+      "type": 0,
+      "value": "Rise of a Messiah"
+    }
+  ],
+  "Components.Scuttle.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 or 2 of your non-fighter ships on the game board and return them to your reinforcements; gain trade goods equal to the combined cost of those ships."
+    }
+  ],
+  "Components.Scuttle.Title": [
+    {
+      "type": 0,
+      "value": "Scuttle"
+    }
+  ],
+  "Components.Seize Artifact.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 of your neighbors that has 1 or more relic fragments. That player must give you 1 relic fragment of your choice."
+    }
+  ],
+  "Components.Seize Artifact.Title": [
+    {
+      "type": 0,
+      "value": "Seize Artifact"
+    }
+  ],
+  "Components.Signal Jamming.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Chose 1 non-home system that contains or is adjacent to 1 of your ships. Place a command token from another player's reinforcements in that system."
+    }
+  ],
+  "Components.Signal Jamming.Title": [
+    {
+      "type": 0,
+      "value": "Signal Jamming"
+    }
+  ],
+  "Components.Sling Relay.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to produce 1 ship in any system that contains one of your space docks."
+    }
+  ],
+  "Components.Sling Relay.Title": [
+    {
+      "type": 0,
+      "value": "Sling Relay"
+    }
+  ],
+  "Components.Spy.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 player. That player gives you 1 random action card from their hand."
+    }
+  ],
+  "Components.Spy.Title": [
+    {
+      "type": 0,
+      "value": "Spy"
+    }
+  ],
+  "Components.Stall Tactics.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Discard 1 action card from your hand."
+    }
+  ],
+  "Components.Stall Tactics.Title": [
+    {
+      "type": 0,
+      "value": "Stall Tactics"
+    }
+  ],
+  "Components.Star Forge.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 1 token from your strategy pool to place either 2 fighters or 1 destroyer from your reinforcements in a system that contains 1 or more of your war suns."
+    }
+  ],
+  "Components.Star Forge.Title": [
+    {
+      "type": 0,
+      "value": "Star Forge"
+    }
+  ],
+  "Components.Stymie.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "While this card is in your play area, the Arborec player cannot produce units in or adjacent to non-home systems that contain 1 or more of your units."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Arborec player's units, return this card to the Arborec player."
+    }
+  ],
+  "Components.Stymie.Title": [
+    {
+      "type": 0,
+      "value": "Stymie"
+    }
+  ],
+  "Components.Tactical Bombardment.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 system that contains 1 or more of your units that have Bombardment. Exhaust each planet controlled by other players in that system."
+    }
+  ],
+  "Components.Tactical Bombardment.Title": [
+    {
+      "type": 0,
+      "value": "Tactical Bombardment"
+    }
+  ],
+  "Components.Terraform.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Attach this card to a non-home planet you control other than Mecatol Rex."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Its resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial)."
+    }
+  ],
+  "Components.Terraform.Title": [
+    {
+      "type": 0,
+      "value": "Terraform"
+    }
+  ],
+  "Components.The Inferno.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Spend 1 token from your strategy pool to place 1 cruiser in this unit's system."
+    }
+  ],
+  "Components.The Inferno.Title": [
+    {
+      "type": 0,
+      "value": "The Inferno"
+    }
+  ],
+  "Components.Trade Convoys.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card face-up in your play area."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "While this card is in your play area, you may negotiate transactions with players who are not your neighbor."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player."
+    }
+  ],
+  "Components.Trade Convoys.Title": [
+    {
+      "type": 0,
+      "value": "Trade Convoys"
+    }
+  ],
+  "Components.Unexpected Action.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Remove 1 of your command tokens from the game board and return it to your reinforcements."
+    }
+  ],
+  "Components.Unexpected Action.Title": [
+    {
+      "type": 0,
+      "value": "Unexpected Action"
+    }
+  ],
+  "Components.Unstable Planet.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose 1 hazardous planet. Exhaust that planet and destroy up to 3 infantry on it."
+    }
+  ],
+  "Components.Unstable Planet.Title": [
+    {
+      "type": 0,
+      "value": "Unstable Planet"
+    }
+  ],
+  "Components.Uprising.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust 1 non-home planet controlled by another player. Then gain trade goods equal to its resource value."
+    }
+  ],
+  "Components.Uprising.Title": [
+    {
+      "type": 0,
+      "value": "Uprising"
+    }
+  ],
+  "Components.Vortex.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements."
+    }
+  ],
+  "Components.Vortex.Title": [
+    {
+      "type": 0,
+      "value": "Vortex"
+    }
+  ],
+  "Components.War Effort.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place 1 cruiser from your reinforcements in a system that contains 1 or more of your ships."
+    }
+  ],
+  "Components.War Effort.Title": [
+    {
+      "type": 0,
+      "value": "War Effort"
+    }
+  ],
+  "Components.Wormhole Generator.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships."
+    }
+  ],
+  "Components.Wormhole Generator.Title": [
+    {
+      "type": 0,
+      "value": "Wormhole Generator Ω"
+    }
+  ],
+  "Components.X-89 Bacterial Weapon.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet."
+    }
+  ],
+  "Components.X-89 Bacterial Weapon.Title": [
+    {
+      "type": 0,
+      "value": "X-89 Bacterial Weapon"
+    }
+  ],
   "Council Keleres.Abilities.Council Patronage.Description": [
     {
       "type": 0,
@@ -2505,6 +3269,12 @@
       "value": "Omniopiares"
     }
   ],
+  "Cw3noi": [
+    {
+      "type": 0,
+      "value": "Pick Faction"
+    }
+  ],
   "D82kvD": [
     {
       "type": 0,
@@ -2513,6 +3283,12 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "Ecx237": [
+    {
+      "type": 0,
+      "value": "Skinny"
     }
   ],
   "Embers of Muaat.Abilities.Gashlai Physiology.Description": [
@@ -3539,6 +4315,18 @@
       "value": "SUSTAIN DAMAGE"
     }
   ],
+  "JS92Jj": [
+    {
+      "type": 0,
+      "value": "Make Speaker"
+    }
+  ],
+  "Jh0WRk": [
+    {
+      "type": 0,
+      "value": "Player Count"
+    }
+  ],
   "K1ks2a": [
     {
       "type": 0,
@@ -3757,6 +4545,18 @@
     {
       "type": 0,
       "value": "[0.0.1]"
+    }
+  ],
+  "LYA+Dm": [
+    {
+      "type": 0,
+      "value": "Select all factions and colors"
+    }
+  ],
+  "Lm8L7/": [
+    {
+      "type": 0,
+      "value": "Color"
     }
   ],
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": [
@@ -6121,6 +6921,12 @@
       "value": "value"
     }
   ],
+  "R06tnh": [
+    {
+      "type": 0,
+      "value": "Victory Points:"
+    }
+  ],
   "Relics.Dominus Orb.Description": [
     {
       "type": 0,
@@ -7183,6 +7989,12 @@
     {
       "type": 0,
       "value": "Saturn Engine I"
+    }
+  ],
+  "UJSVtn": [
+    {
+      "type": 0,
+      "value": "Map String"
     }
   ],
   "Universities of Jol-Nar.Abilities.Analytical.Description": [
@@ -8495,10 +9307,46 @@
       "value": "Y'sia Y'ssrila"
     }
   ],
+  "ZZ/Lhe": [
+    {
+      "type": 0,
+      "value": "Map Type:"
+    }
+  ],
+  "ZlvDZB": [
+    {
+      "type": 0,
+      "value": "Discordant Stars"
+    }
+  ],
+  "d0uSBF": [
+    {
+      "type": 0,
+      "value": "Options"
+    }
+  ],
   "hIFcXI": [
     {
       "type": 0,
       "value": "PLANETARY SHIELD"
+    }
+  ],
+  "knYKVl": [
+    {
+      "type": 0,
+      "value": "Codex II"
+    }
+  ],
+  "knjCH0": [
+    {
+      "type": 0,
+      "value": "Speaker"
+    }
+  ],
+  "lYD2yu": [
+    {
+      "type": 0,
+      "value": "Start Game"
     }
   ],
   "nryRrR": [
@@ -8509,6 +9357,60 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "p9XVGB": [
+    {
+      "type": 0,
+      "value": "Prophecy of Kings"
+    }
+  ],
+  "r2htpd": [
+    {
+      "type": 0,
+      "value": "Factions"
+    }
+  ],
+  "rqdwvE": [
+    {
+      "type": 0,
+      "value": "Colors"
+    }
+  ],
+  "sgqLYB": [
+    {
+      "type": 0,
+      "value": "Other"
+    }
+  ],
+  "tocXJ4": [
+    {
+      "type": 0,
+      "value": "Reset"
+    }
+  ],
+  "weIxIg": [
+    {
+      "type": 0,
+      "value": "Homebrew:"
+    }
+  ],
+  "x42AMg": [
+    {
+      "type": 0,
+      "value": "Randomize"
+    }
+  ],
+  "zXrdrP": [
+    {
+      "type": 0,
+      "value": "Codex III"
+    }
+  ],
+  "zjv9Gr": [
+    {
+      "type": 0,
+      "value": "(filters out non-claimable planets)"
     }
   ]
 }

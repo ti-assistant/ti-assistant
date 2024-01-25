@@ -24,7 +24,7 @@ export default function MyApp({ Component, pageProps }) {
   }, [locale]);
 
   return (
-    <IntlProvider locale={locale} messages={messages}>
+    <IntlProvider locale={locale} messages={messages} onError={() => {}}>
       {/* TODO: Remove this when adding in an actual way to switch locale. */}
       <button
         onClick={() => {

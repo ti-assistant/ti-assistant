@@ -3,6 +3,38 @@
     "defaultMessage": "New Game",
     "description": "A button that will start a new game."
   },
+  "+WkrHz": {
+    "defaultMessage": "AND",
+    "description": "Text between two fields linking them together."
+  },
+  "0rSMZW": {
+    "defaultMessage": "Large",
+    "description": "Text on a button specifying that the map style should be large."
+  },
+  "2jNcVD": {
+    "defaultMessage": "Expansions:",
+    "description": "A label for a selector specifying which expansions should be enabled."
+  },
+  "3Taw9H": {
+    "defaultMessage": "Codex I",
+    "description": "Text on a button that will enable/disable Codex I."
+  },
+  "46dzNs": {
+    "defaultMessage": "Map:",
+    "description": "A label for a section of options related to the map."
+  },
+  "4V92Jv": {
+    "defaultMessage": "Warp",
+    "description": "Text on a button specifying that the map style should be warp."
+  },
+  "4n1LQO": {
+    "defaultMessage": "Enter Player Name...",
+    "description": "Initial text in a textbox used to input a player's name"
+  },
+  "4wSR75": {
+    "defaultMessage": "Standard",
+    "description": "Text on a button specifying that the map style should be standard."
+  },
   "93G7sJ": {
     "defaultMessage": "Test string"
   },
@@ -1018,6 +1050,414 @@
     "defaultMessage": "Son of Ragh",
     "description": "Title of Faction Unit: Son of Ragh"
   },
+  "Components.Archaeological Expedition.Description": {
+    "defaultMessage": "ACTION: Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest.",
+    "description": "Description for Component: Archaeological Expedition"
+  },
+  "Components.Archaeological Expedition.Title": {
+    "defaultMessage": "Archaeological Expedition",
+    "description": "Title of Component: Archaeological Expedition"
+  },
+  "Components.Black Market Forgery.Description": {
+    "defaultMessage": "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic.{br}Then return this card to the Naaz-Rokha player.",
+    "description": "Description for Component: Black Market Forgery"
+  },
+  "Components.Black Market Forgery.Title": {
+    "defaultMessage": "Black Market Forgery",
+    "description": "Title of Component: Black Market Forgery"
+  },
+  "Components.Blood Pact.Description": {
+    "defaultMessage": "ACTION: Place this card face up in your play area.{br}When you and the Empyrean player cast votes for the same outcome, cast 4 additional votes for that outcome.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
+    "description": "Description for Component: Blood Pact"
+  },
+  "Components.Blood Pact.Title": {
+    "defaultMessage": "Blood Pact",
+    "description": "Title of Component: Blood Pact"
+  },
+  "Components.Cripple Defenses.Description": {
+    "defaultMessage": "ACTION: Choose 1 planet. Destroy each PDS on that planet",
+    "description": "Description for Component: Cripple Defenses"
+  },
+  "Components.Cripple Defenses.Title": {
+    "defaultMessage": "Cripple Defenses",
+    "description": "Title of Component: Cripple Defenses"
+  },
+  "Components.Dark Pact.Description": {
+    "defaultMessage": "ACTION: Place this card face up in your play area.{br}When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
+    "description": "Description for Component: Dark Pact"
+  },
+  "Components.Dark Pact.Title": {
+    "defaultMessage": "Dark Pact",
+    "description": "Title of Component: Dark Pact"
+  },
+  "Components.Divert Funding.Description": {
+    "defaultMessage": "ACTION: Return a non-unit upgrade, non-faction technology that you own to your technology deck. Then, research another technology.",
+    "description": "Description for Component: Divert Funding"
+  },
+  "Components.Divert Funding.Title": {
+    "defaultMessage": "Divert Funding",
+    "description": "Title of Component: Divert Funding"
+  },
+  "Components.Economic Initiative.Description": {
+    "defaultMessage": "ACTION: Ready each cultural planet you control.",
+    "description": "Description for Component: Economic Initiative"
+  },
+  "Components.Economic Initiative.Title": {
+    "defaultMessage": "Economic Initiative",
+    "description": "Title of Component: Economic Initiative"
+  },
+  "Components.Enigmatic Device.Description": {
+    "defaultMessage": "ACTION: You may spend 6 resources and purge this card to research 1 technology.",
+    "description": "Description for Component: Enigmatic Device"
+  },
+  "Components.Enigmatic Device.Title": {
+    "defaultMessage": "Enigmatic Device",
+    "description": "Title of Component: Enigmatic Device"
+  },
+  "Components.Exploration Probe.Description": {
+    "defaultMessage": "ACTION: Explore a frontier token that is in or adjacent to a system that contains 1 or more of your ships.",
+    "description": "Description for Component: Exploration Probe"
+  },
+  "Components.Exploration Probe.Title": {
+    "defaultMessage": "Exploration Probe",
+    "description": "Title of Component: Exploration Probe"
+  },
+  "Components.Fabrication.Description": {
+    "defaultMessage": "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic; or purge 1 of your relic fragments to gain 1 command token.",
+    "description": "Description for Component: Fabrication"
+  },
+  "Components.Fabrication.Title": {
+    "defaultMessage": "Fabrication",
+    "description": "Title of Component: Fabrication"
+  },
+  "Components.Fighter Conscription.Description": {
+    "defaultMessage": "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships.",
+    "description": "Description for Component: Fighter Conscription"
+  },
+  "Components.Fighter Conscription.Title": {
+    "defaultMessage": "Fighter Conscription",
+    "description": "Title of Component: Fighter Conscription"
+  },
+  "Components.Fires of the Gashlai.Description": {
+    "defaultMessage": "Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
+    "description": "Description for Component: Fires of the Gashlai"
+  },
+  "Components.Fires of the Gashlai.Title": {
+    "defaultMessage": "Fires of the Gashlai",
+    "description": "Title of Component: Fires of the Gashlai"
+  },
+  "Components.Focused Research.Description": {
+    "defaultMessage": "ACTION: Spend 4 trade goods to research 1 technology.",
+    "description": "Description for Component: Focused Research"
+  },
+  "Components.Focused Research.Title": {
+    "defaultMessage": "Focused Research",
+    "description": "Title of Component: Focused Research"
+  },
+  "Components.Frontline Deployment.Description": {
+    "defaultMessage": "ACTION: Place 3 infantry from your reinforcements on 1 planet you control.",
+    "description": "Description for Component: Frontline Deployment"
+  },
+  "Components.Frontline Deployment.Title": {
+    "defaultMessage": "Frontline Deployment",
+    "description": "Title of Component: Frontline Deployment"
+  },
+  "Components.Gain Relic.Description": {
+    "defaultMessage": "ACTION: Purge 3 of your relic fragments of the same type to gain 1 Relic.",
+    "description": "Description for Component: Gain Relic"
+  },
+  "Components.Gain Relic.Title": {
+    "defaultMessage": "Gain Relic",
+    "description": "Title of Component: Gain Relic"
+  },
+  "Components.Ghost Ship.Description": {
+    "defaultMessage": "ACTION: Place 1 destroyer from your reinforcements in a non-home system that contains a wormhole and does not contain other players' ships.",
+    "description": "Description for Component: Ghost Ship"
+  },
+  "Components.Ghost Ship.Title": {
+    "defaultMessage": "Ghost Ship",
+    "description": "Title of Component: Ghost Ship"
+  },
+  "Components.Impersonation.Description": {
+    "defaultMessage": "ACTION: Spend 3 influence to draw 1 secret objective.",
+    "description": "Description for Component: Impersonation"
+  },
+  "Components.Impersonation.Title": {
+    "defaultMessage": "Impersonation",
+    "description": "Title of Component: Impersonation"
+  },
+  "Components.Industrial Initiative.Description": {
+    "defaultMessage": "ACTION: Gain 1 trade good for each industrial planet you control.",
+    "description": "Description for Component: Industrial Initiative"
+  },
+  "Components.Industrial Initiative.Title": {
+    "defaultMessage": "Industrial Initiative",
+    "description": "Title of Component: Industrial Initiative"
+  },
+  "Components.Insubordination.Description": {
+    "defaultMessage": "ACTION: Remove 1 token from another player's tactic pool and return it to their reinforcements.",
+    "description": "Description for Component: Insubordination"
+  },
+  "Components.Insubordination.Title": {
+    "defaultMessage": "Insubordination",
+    "description": "Title of Component: Insubordination"
+  },
+  "Components.Lazax Gate Folding.Description": {
+    "defaultMessage": "ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex.",
+    "description": "Description for Component: Lazax Gate Folding"
+  },
+  "Components.Lazax Gate Folding.Title": {
+    "defaultMessage": "Lazax Gate Folding",
+    "description": "Title of Component: Lazax Gate Folding"
+  },
+  "Components.Lucky Shot.Description": {
+    "defaultMessage": "ACTION: Destroy 1 dreadnought, cruiser, or destroyer in a system that contains a planet you control.",
+    "description": "Description for Component: Lucky Shot"
+  },
+  "Components.Lucky Shot.Title": {
+    "defaultMessage": "Lucky Shot",
+    "description": "Title of Component: Lucky Shot"
+  },
+  "Components.Mageon Implants.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to look at another player's hand of action cards. Choose 1 of those cards and add it to your hand.",
+    "description": "Description for Component: Mageon Implants"
+  },
+  "Components.Mageon Implants.Title": {
+    "defaultMessage": "Mageon Implants",
+    "description": "Title of Component: Mageon Implants"
+  },
+  "Components.Mining Initiative.Description": {
+    "defaultMessage": "ACTION: Gain trade goods equal to the resource value of 1 planet you control.",
+    "description": "Description for Component: Mining Initiative"
+  },
+  "Components.Mining Initiative.Title": {
+    "defaultMessage": "Mining Initiative",
+    "description": "Title of Component: Mining Initiative"
+  },
+  "Components.Orbital Drop.Description": {
+    "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control.",
+    "description": "Description for Component: Orbital Drop"
+  },
+  "Components.Orbital Drop.Title": {
+    "defaultMessage": "Orbital Drop",
+    "description": "Title of Component: Orbital Drop"
+  },
+  "Components.Plagiarize.Description": {
+    "defaultMessage": "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology.",
+    "description": "Description for Component: Plagiarize"
+  },
+  "Components.Plagiarize.Title": {
+    "defaultMessage": "Plagiarize",
+    "description": "Title of Component: Plagiarize"
+  },
+  "Components.Plague.Description": {
+    "defaultMessage": "ACTION: Choose 1 planet that is controlled by another player. Roll 1 die for each infantry on that planet. For each result of 6 or greater, destroy 1 of those units.",
+    "description": "Description for Component: Plague"
+  },
+  "Components.Plague.Title": {
+    "defaultMessage": "Plague",
+    "description": "Title of Component: Plague"
+  },
+  "Components.Production Biomes.Description": {
+    "defaultMessage": "ACTION: Exhaust this card and spend 1 token from your strategy pool to gain 4 trade goods and choose 1 other player; that player gains 2 trade goods.",
+    "description": "Description for Component: Production Biomes"
+  },
+  "Components.Production Biomes.Title": {
+    "defaultMessage": "Production Biomes",
+    "description": "Title of Component: Production Biomes"
+  },
+  "Components.Promise of Protection.Description": {
+    "defaultMessage": "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, the Mentak player cannot use their Pillage faction ability against you.{br}If you activate a system that contains 1 or more of the Mentak player's units, return this card to the Mentak player.",
+    "description": "Description for Component: Promise of Protection"
+  },
+  "Components.Promise of Protection.Title": {
+    "defaultMessage": "Promise of Protection",
+    "description": "Title of Component: Promise of Protection"
+  },
+  "Components.Reactor Meltdown.Description": {
+    "defaultMessage": "ACTION: Destroy 1 space dock in a non-home system.",
+    "description": "Description for Component: Reactor Meltdown"
+  },
+  "Components.Reactor Meltdown.Title": {
+    "defaultMessage": "Reactor Meltdown",
+    "description": "Title of Component: Reactor Meltdown"
+  },
+  "Components.Refit Troops.Description": {
+    "defaultMessage": "ACTION: Choose 1 or 2 of your infantry on the game board; replace each of those infantry with mechs.",
+    "description": "Description for Component: Refit Troops"
+  },
+  "Components.Refit Troops.Title": {
+    "defaultMessage": "Refit Troops",
+    "description": "Title of Component: Refit Troops"
+  },
+  "Components.Repeal Law.Description": {
+    "defaultMessage": "ACTION: Discard 1 law from play.",
+    "description": "Description for Component: Repeal Law"
+  },
+  "Components.Repeal Law.Title": {
+    "defaultMessage": "Repeal Law",
+    "description": "Title of Component: Repeal Law"
+  },
+  "Components.Rise of a Messiah.Description": {
+    "defaultMessage": "ACTION: Place 1 infantry from your reinforcements on each planet you control.",
+    "description": "Description for Component: Rise of a Messiah"
+  },
+  "Components.Rise of a Messiah.Title": {
+    "defaultMessage": "Rise of a Messiah",
+    "description": "Title of Component: Rise of a Messiah"
+  },
+  "Components.Scuttle.Description": {
+    "defaultMessage": "ACTION: Choose 1 or 2 of your non-fighter ships on the game board and return them to your reinforcements; gain trade goods equal to the combined cost of those ships.",
+    "description": "Description for Component: Scuttle"
+  },
+  "Components.Scuttle.Title": {
+    "defaultMessage": "Scuttle",
+    "description": "Title of Component: Scuttle"
+  },
+  "Components.Seize Artifact.Description": {
+    "defaultMessage": "ACTION: Choose 1 of your neighbors that has 1 or more relic fragments. That player must give you 1 relic fragment of your choice.",
+    "description": "Description for Component: Seize Artifact"
+  },
+  "Components.Seize Artifact.Title": {
+    "defaultMessage": "Seize Artifact",
+    "description": "Title of Component: Seize Artifact"
+  },
+  "Components.Signal Jamming.Description": {
+    "defaultMessage": "ACTION: Chose 1 non-home system that contains or is adjacent to 1 of your ships. Place a command token from another player's reinforcements in that system.",
+    "description": "Description for Component: Signal Jamming"
+  },
+  "Components.Signal Jamming.Title": {
+    "defaultMessage": "Signal Jamming",
+    "description": "Title of Component: Signal Jamming"
+  },
+  "Components.Sling Relay.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to produce 1 ship in any system that contains one of your space docks.",
+    "description": "Description for Component: Sling Relay"
+  },
+  "Components.Sling Relay.Title": {
+    "defaultMessage": "Sling Relay",
+    "description": "Title of Component: Sling Relay"
+  },
+  "Components.Spy.Description": {
+    "defaultMessage": "ACTION: Choose 1 player. That player gives you 1 random action card from their hand.",
+    "description": "Description for Component: Spy"
+  },
+  "Components.Spy.Title": {
+    "defaultMessage": "Spy",
+    "description": "Title of Component: Spy"
+  },
+  "Components.Stall Tactics.Description": {
+    "defaultMessage": "ACTION: Discard 1 action card from your hand.",
+    "description": "Description for Component: Stall Tactics"
+  },
+  "Components.Stall Tactics.Title": {
+    "defaultMessage": "Stall Tactics",
+    "description": "Title of Component: Stall Tactics"
+  },
+  "Components.Star Forge.Description": {
+    "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place either 2 fighters or 1 destroyer from your reinforcements in a system that contains 1 or more of your war suns.",
+    "description": "Description for Component: Star Forge"
+  },
+  "Components.Star Forge.Title": {
+    "defaultMessage": "Star Forge",
+    "description": "Title of Component: Star Forge"
+  },
+  "Components.Stymie.Description": {
+    "defaultMessage": "ACTION: Place this card face up in your play area.{br}While this card is in your play area, the Arborec player cannot produce units in or adjacent to non-home systems that contain 1 or more of your units.{br}If you activate a system that contains 1 or more of the Arborec player's units, return this card to the Arborec player.",
+    "description": "Description for Component: Stymie"
+  },
+  "Components.Stymie.Title": {
+    "defaultMessage": "Stymie",
+    "description": "Title of Component: Stymie"
+  },
+  "Components.Tactical Bombardment.Description": {
+    "defaultMessage": "ACTION: Choose 1 system that contains 1 or more of your units that have Bombardment. Exhaust each planet controlled by other players in that system.",
+    "description": "Description for Component: Tactical Bombardment"
+  },
+  "Components.Tactical Bombardment.Title": {
+    "defaultMessage": "Tactical Bombardment",
+    "description": "Title of Component: Tactical Bombardment"
+  },
+  "Components.Terraform.Description": {
+    "defaultMessage": "ACTION: Attach this card to a non-home planet you control other than Mecatol Rex.{br}Its resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial).",
+    "description": "Description for Component: Terraform"
+  },
+  "Components.Terraform.Title": {
+    "defaultMessage": "Terraform",
+    "description": "Title of Component: Terraform"
+  },
+  "Components.The Inferno.Description": {
+    "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place 1 cruiser in this unit's system.",
+    "description": "Description for Component: The Inferno"
+  },
+  "Components.The Inferno.Title": {
+    "defaultMessage": "The Inferno",
+    "description": "Title of Component: The Inferno"
+  },
+  "Components.Trade Convoys.Description": {
+    "defaultMessage": "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, you may negotiate transactions with players who are not your neighbor.{br}If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player.",
+    "description": "Description for Component: Trade Convoys"
+  },
+  "Components.Trade Convoys.Title": {
+    "defaultMessage": "Trade Convoys",
+    "description": "Title of Component: Trade Convoys"
+  },
+  "Components.Unexpected Action.Description": {
+    "defaultMessage": "ACTION: Remove 1 of your command tokens from the game board and return it to your reinforcements.",
+    "description": "Description for Component: Unexpected Action"
+  },
+  "Components.Unexpected Action.Title": {
+    "defaultMessage": "Unexpected Action",
+    "description": "Title of Component: Unexpected Action"
+  },
+  "Components.Unstable Planet.Description": {
+    "defaultMessage": "ACTION: Choose 1 hazardous planet. Exhaust that planet and destroy up to 3 infantry on it.",
+    "description": "Description for Component: Unstable Planet"
+  },
+  "Components.Unstable Planet.Title": {
+    "defaultMessage": "Unstable Planet",
+    "description": "Title of Component: Unstable Planet"
+  },
+  "Components.Uprising.Description": {
+    "defaultMessage": "ACTION: Exhaust 1 non-home planet controlled by another player. Then gain trade goods equal to its resource value.",
+    "description": "Description for Component: Uprising"
+  },
+  "Components.Uprising.Title": {
+    "defaultMessage": "Uprising",
+    "description": "Title of Component: Uprising"
+  },
+  "Components.Vortex.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements.",
+    "description": "Description for Component: Vortex"
+  },
+  "Components.Vortex.Title": {
+    "defaultMessage": "Vortex",
+    "description": "Title of Component: Vortex"
+  },
+  "Components.War Effort.Description": {
+    "defaultMessage": "ACTION: Place 1 cruiser from your reinforcements in a system that contains 1 or more of your ships.",
+    "description": "Description for Component: War Effort"
+  },
+  "Components.War Effort.Title": {
+    "defaultMessage": "War Effort",
+    "description": "Title of Component: War Effort"
+  },
+  "Components.Wormhole Generator.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
+    "description": "Description for Component: Wormhole Generator Ω"
+  },
+  "Components.Wormhole Generator.Title": {
+    "defaultMessage": "Wormhole Generator Ω",
+    "description": "Title of Component: Wormhole Generator Ω"
+  },
+  "Components.X-89 Bacterial Weapon.Description": {
+    "defaultMessage": "ACTION: Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet.",
+    "description": "Description for Component: X-89 Bacterial Weapon"
+  },
+  "Components.X-89 Bacterial Weapon.Title": {
+    "defaultMessage": "X-89 Bacterial Weapon",
+    "description": "Title of Component: X-89 Bacterial Weapon"
+  },
   "Council Keleres.Abilities.Council Patronage.Description": {
     "defaultMessage": "Replenish your commodities at the start of the strategy phase, then gain 1 trade good.",
     "description": "Description for Faction Ability: Council Patronage"
@@ -1146,9 +1586,17 @@
     "defaultMessage": "Omniopiares",
     "description": "Title of Faction Unit: Omniopiares"
   },
+  "Cw3noi": {
+    "defaultMessage": "Pick Faction",
+    "description": "Text on a hover menu for selecting a player's faction"
+  },
   "D82kvD": {
     "defaultMessage": "ANTI-FIGHTER BARRAGE {value}",
     "description": "A unit ability that allows a unit to destroy fighters."
+  },
+  "Ecx237": {
+    "defaultMessage": "Skinny",
+    "description": "Text on a button specifying that the map style should be skinny."
   },
   "Embers of Muaat.Abilities.Gashlai Physiology.Description": {
     "defaultMessage": "Your ships can move through supernovas.",
@@ -1694,6 +2142,14 @@
     "defaultMessage": "SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
   },
+  "JS92Jj": {
+    "defaultMessage": "Make Speaker",
+    "description": "Text on a button that will make a faction the speaker."
+  },
+  "Jh0WRk": {
+    "defaultMessage": "Player Count",
+    "description": "Label for a selector to change the number of players"
+  },
   "K1ks2a": {
     "defaultMessage": "SPACE CANNON {value}",
     "description": "A unit ability that allows a unit to use SPACE CANNON."
@@ -1805,6 +2261,14 @@
   "L1Z1X Mindnet.Units.[0.0.1].Title": {
     "defaultMessage": "[0.0.1]",
     "description": "Title of Faction Unit: [0.0.1]"
+  },
+  "LYA+Dm": {
+    "defaultMessage": "Select all factions and colors",
+    "description": "Error message explaining that all factions and colors need to be selected."
+  },
+  "Lm8L7/": {
+    "defaultMessage": "Color",
+    "description": "Text on a hover menu for picking a player's color."
   },
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": {
     "defaultMessage": "When you win a combat, place 1 command token from your opponent's reinforcements in your fleet pool if it does not already contain 1 of that player's tokens; other player's tokens in your fleet pool increase your fleet limit but cannot be redistributed.",
@@ -3202,6 +3666,10 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "R06tnh": {
+    "defaultMessage": "Victory Points:",
+    "description": "A label for a selector specifying the number of victory points required."
+  },
   "Relics.Dominus Orb.Description": {
     "defaultMessage": "Before you move units during a tactical action, you may purge this card to move and transport units that are in systems that contain 1 of your command tokens.",
     "description": "Description for Relic: Dominus Orb"
@@ -3809,6 +4277,10 @@
   "Titans of Ul.Units.Saturn Engine I.Title": {
     "defaultMessage": "Saturn Engine I",
     "description": "Title of Faction Unit: Saturn Engine I"
+  },
+  "UJSVtn": {
+    "defaultMessage": "Map String",
+    "description": "Label for a textbox used to specify the map string."
   },
   "Universities of Jol-Nar.Abilities.Analytical.Description": {
     "defaultMessage": "When you research a technology that is not a unit upgrade technology, you may ignore 1 prerequisite.",
@@ -4486,12 +4958,72 @@
     "defaultMessage": "Y'sia Y'ssrila",
     "description": "Title of Faction Unit: Y'sia Y'ssrila"
   },
+  "ZZ/Lhe": {
+    "defaultMessage": "Map Type:",
+    "description": "A label for a selector for selecting which map style to use."
+  },
+  "ZlvDZB": {
+    "defaultMessage": "Discordant Stars",
+    "description": "Text on a button that will enable/disable the Discordant Stars expansion."
+  },
+  "d0uSBF": {
+    "defaultMessage": "Options",
+    "description": "Label on a menu for changing game options"
+  },
   "hIFcXI": {
     "defaultMessage": "PLANETARY SHIELD",
     "description": "A unit ability that prevents BOMBARDMENT."
   },
+  "knYKVl": {
+    "defaultMessage": "Codex II",
+    "description": "Text on a button that will enable/disable Codex II."
+  },
+  "knjCH0": {
+    "defaultMessage": "Speaker",
+    "description": "The title of the player that has the Speaker token."
+  },
+  "lYD2yu": {
+    "defaultMessage": "Start Game",
+    "description": "Text on a button that will start a game."
+  },
   "nryRrR": {
     "defaultMessage": "BOMBARDMENT {value}",
     "description": "A unit ability that allows a unit to bombard ground forces."
+  },
+  "p9XVGB": {
+    "defaultMessage": "Prophecy of Kings",
+    "description": "Text on a button that will enable/disable the Prophecy of Kings expansion."
+  },
+  "r2htpd": {
+    "defaultMessage": "Factions",
+    "description": "Text on a button that will randomize factions."
+  },
+  "rqdwvE": {
+    "defaultMessage": "Colors",
+    "description": "Text on a button that will randomize colors."
+  },
+  "sgqLYB": {
+    "defaultMessage": "Other",
+    "description": "Text on a button used to select a non-listed value"
+  },
+  "tocXJ4": {
+    "defaultMessage": "Reset",
+    "description": "Text on a button that will reset selections."
+  },
+  "weIxIg": {
+    "defaultMessage": "Homebrew:",
+    "description": "A label for a selector specifying expansions that are homemade."
+  },
+  "x42AMg": {
+    "defaultMessage": "Randomize",
+    "description": "Label for a section that involves randomly selecting things."
+  },
+  "zXrdrP": {
+    "defaultMessage": "Codex III",
+    "description": "Text on a button that will enable/disable Codex III."
+  },
+  "zjv9Gr": {
+    "defaultMessage": "(filters out non-claimable planets)",
+    "description": "Part of a label explaining what the map string does."
   }
 }

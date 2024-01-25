@@ -60,3 +60,36 @@ export function antiFighterBarrage(value: string, intl: IntlShape) {
     { value }
   );
 }
+
+export function mapStyleString(style: MapStyle, intl: IntlShape) {
+  switch (style) {
+    case "large":
+      return intl.formatMessage({
+        id: "0rSMZW",
+        description:
+          "Text on a button specifying that the map style should be large.",
+        defaultMessage: "Large",
+      });
+    case "skinny":
+      return intl.formatMessage({
+        id: "Ecx237",
+        description:
+          "Text on a button specifying that the map style should be skinny.",
+        defaultMessage: "Skinny",
+      });
+    case "standard":
+      return intl.formatMessage({
+        id: "4wSR75",
+        description:
+          "Text on a button specifying that the map style should be standard.",
+        defaultMessage: "Standard",
+      });
+    case "warp":
+      return intl.formatMessage({
+        id: "4V92Jv",
+        description:
+          "Text on a button specifying that the map style should be warp.",
+        defaultMessage: "Warp",
+      });
+  }
+}

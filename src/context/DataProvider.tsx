@@ -52,11 +52,14 @@ import("../../server/data/attachments").then((module) => {
   getBaseAttachments = module.getBaseAttachments;
 });
 
-let BASE_COMPONENTS: Partial<
-  Record<ComponentId, BaseComponent | BaseTechComponent>
-> = {};
+let getBaseComponents: DataFunction<
+  ComponentId,
+  BaseComponent | BaseTechComponent
+> = () => {
+  return {};
+};
 import("../../server/data/components").then((module) => {
-  BASE_COMPONENTS = module.BASE_COMPONENTS;
+  getBaseComponents = module.getBaseComponents;
 });
 
 let getBaseObjectives: DataFunction<ObjectiveId, BaseObjective> = () => {
@@ -116,6 +119,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
 
   const baseAgendas = getBaseAgendas(intl);
   const baseAttachments = getBaseAttachments(intl);
+  const baseComponents = getBaseComponents(intl);
   const baseObjectives = getBaseObjectives(intl);
   const baseRelics = getBaseRelics(intl);
   const baseStrategyCards = getBaseStrategyCards(intl);
@@ -124,7 +128,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
   let gameData: GameData = {
     agendas: baseAgendas,
     attachments: baseAttachments,
-    components: BASE_COMPONENTS,
+    components: baseComponents,
     factions: {},
     objectives: baseObjectives,
     options: BASE_OPTIONS,
@@ -149,7 +153,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
     gameData.attachments ?? {},
     baseAttachments
   );
-  const components = useStableValue(gameData.components ?? {}, BASE_COMPONENTS);
+  const components = useStableValue(gameData.components ?? {}, baseComponents);
   const factions = useStableValue(gameData.factions, {});
   const objectives = useStableValue(gameData.objectives ?? {}, baseObjectives);
   const options = useStableValue(gameData.options, BASE_OPTIONS);

@@ -19,11 +19,14 @@ import("../../server/data/attachments").then((module) => {
   getBaseAttachments = module.getBaseAttachments;
 });
 
-let BASE_COMPONENTS: Partial<
-  Record<ComponentId, BaseComponent | BaseTechComponent>
-> = {};
+let getBaseComponents: DataFunction<
+  ComponentId,
+  BaseComponent | BaseTechComponent
+> = () => {
+  return {};
+};
 import("../../server/data/components").then((module) => {
-  BASE_COMPONENTS = module.BASE_COMPONENTS;
+  getBaseComponents = module.getBaseComponents;
 });
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
@@ -122,7 +125,7 @@ export function useGameData(
     return {
       agendas: getBaseAgendas(intl),
       attachments: getBaseAttachments(intl),
-      components: BASE_COMPONENTS,
+      components: getBaseComponents(intl),
       factions: {},
       objectives: getBaseObjectives(intl),
       options: BASE_OPTIONS,
@@ -253,35 +256,37 @@ export function buildComponents(
   const expansions = storedGameData.options.expansions;
 
   let components: Record<string, Component> = {};
-  Object.entries(BASE_COMPONENTS).forEach(([componentId, component]) => {
-    // Maybe filter out PoK components.
-    if (
-      component.expansion &&
-      component.expansion !== "BASE" &&
-      component.expansion !== "BASE ONLY" &&
-      !expansions.includes(component.expansion)
-    ) {
-      return;
-    }
+  Object.entries(getBaseComponents(intl)).forEach(
+    ([componentId, component]) => {
+      // Maybe filter out PoK components.
+      if (
+        component.expansion &&
+        component.expansion !== "BASE" &&
+        component.expansion !== "BASE ONLY" &&
+        !expansions.includes(component.expansion)
+      ) {
+        return;
+      }
 
-    // Filter out Codex Two relics if not using PoK.
-    if (!expansions.includes("POK") && component.type === "RELIC") {
-      return;
-    }
-    // Filter out leaders if not using PoK.
-    if (!expansions.includes("POK") && component.type === "LEADER") {
-      return;
-    }
-    // Filter out components that are removed by PoK.
-    if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
-      return;
-    }
+      // Filter out Codex Two relics if not using PoK.
+      if (!expansions.includes("POK") && component.type === "RELIC") {
+        return;
+      }
+      // Filter out leaders if not using PoK.
+      if (!expansions.includes("POK") && component.type === "LEADER") {
+        return;
+      }
+      // Filter out components that are removed by PoK.
+      if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
+        return;
+      }
 
-    components[componentId] = {
-      ...component,
-      ...(gameComponents[componentId] ?? {}),
-    };
-  });
+      components[componentId] = {
+        ...component,
+        ...(gameComponents[componentId] ?? {}),
+      };
+    }
+  );
 
   const componentLeaders = Object.entries(getBaseLeaders(intl))
     // Filter out leaders that are not in the game.
