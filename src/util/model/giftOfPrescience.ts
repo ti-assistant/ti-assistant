@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildStrategyCards } from "../../data/GameData";
 
 const GIFT_OF_PRESCIENCE_FACTION = "Naalu Collective" as const;
@@ -9,7 +10,9 @@ export class GiftOfPrescienceHandler implements Handler {
   ) {}
 
   validate(): boolean {
-    const strategyCards = buildStrategyCards(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const strategyCards = buildStrategyCards(this.gameData, intl);
 
     for (const card of Object.values(strategyCards)) {
       if (card.faction === this.data.event.faction && card.order === 0) {
@@ -24,12 +27,14 @@ export class GiftOfPrescienceHandler implements Handler {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
     };
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     for (const cardId of Object.keys(this.gameData.strategycards ?? {})) {
       updates[`strategycards.${cardId}.order`] = "DELETE";
     }
 
     // Find the first card for this faction and update it.
-    const strategyCards = buildStrategyCards(this.gameData);
+    const strategyCards = buildStrategyCards(this.gameData, intl);
     let minCard: StrategyCard | undefined;
     for (const card of Object.values(strategyCards)) {
       if (

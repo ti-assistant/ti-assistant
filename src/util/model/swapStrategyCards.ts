@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildStrategyCards } from "../../data/GameData";
 
 export class SwapStrategyCardsHandler implements Handler {
@@ -11,7 +12,9 @@ export class SwapStrategyCardsHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const strategyCards = buildStrategyCards(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const strategyCards = buildStrategyCards(this.gameData, intl);
     const cardOne = strategyCards[this.data.event.cardOne];
     const cardTwo = strategyCards[this.data.event.cardTwo];
 
@@ -76,7 +79,9 @@ export class UnswapStrategyCardsHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const strategyCards = buildStrategyCards(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const strategyCards = buildStrategyCards(this.gameData, intl);
     const cardOne = strategyCards[this.data.event.cardOne];
     const cardTwo = strategyCards[this.data.event.cardTwo];
 

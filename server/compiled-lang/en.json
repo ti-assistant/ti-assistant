@@ -6003,6 +6003,54 @@
       "value": "Valkyrie Exoskeleton"
     }
   ],
+  "Strategy Cards.Construction.Title": [
+    {
+      "type": 0,
+      "value": "Construction"
+    }
+  ],
+  "Strategy Cards.Diplomacy.Title": [
+    {
+      "type": 0,
+      "value": "Diplomacy"
+    }
+  ],
+  "Strategy Cards.Imperial.Title": [
+    {
+      "type": 0,
+      "value": "Imperial"
+    }
+  ],
+  "Strategy Cards.Leadership.Title": [
+    {
+      "type": 0,
+      "value": "Leadership"
+    }
+  ],
+  "Strategy Cards.Politics.Title": [
+    {
+      "type": 0,
+      "value": "Politics"
+    }
+  ],
+  "Strategy Cards.Technology.Title": [
+    {
+      "type": 0,
+      "value": "Technology"
+    }
+  ],
+  "Strategy Cards.Trade.Title": [
+    {
+      "type": 0,
+      "value": "Trade"
+    }
+  ],
+  "Strategy Cards.Warfare.Title": [
+    {
+      "type": 0,
+      "value": "Warfare"
+    }
+  ],
   "Titans of Ul.Abilities.Awaken.Description": [
     {
       "type": 0,

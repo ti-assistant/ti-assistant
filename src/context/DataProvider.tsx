@@ -78,9 +78,14 @@ import("../../server/data/relics").then((module) => {
   getBaseRelics = module.getBaseRelics;
 });
 
-let BASE_STRATEGY_CARDS: Partial<Record<StrategyCardId, BaseStrategyCard>> = {};
+let getBaseStrategyCards: DataFunction<
+  StrategyCardId,
+  BaseStrategyCard
+> = () => {
+  return {};
+};
 import("../../server/data/strategyCards").then((module) => {
-  BASE_STRATEGY_CARDS = module.BASE_STRATEGY_CARDS;
+  getBaseStrategyCards = module.getBaseStrategyCards;
 });
 
 let BASE_SYSTEMS: Partial<Record<SystemId, BaseSystem>> = {};
@@ -111,6 +116,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
   const baseAttachments = getBaseAttachments(intl);
   const baseObjectives = getBaseObjectives(intl);
   const baseRelics = getBaseRelics(intl);
+  const baseStrategyCards = getBaseStrategyCards(intl);
 
   let gameData: GameData = {
     agendas: baseAgendas,
@@ -126,7 +132,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
       round: 1,
       speaker: "Vuil'raith Cabal",
     },
-    strategycards: BASE_STRATEGY_CARDS,
+    strategycards: baseStrategyCards,
     systems: BASE_SYSTEMS,
     techs: BASE_TECHS,
   };
@@ -153,7 +159,7 @@ export default function DataProvider({ children }: PropsWithChildren) {
   });
   const strategycards = useStableValue(
     gameData.strategycards ?? {},
-    BASE_STRATEGY_CARDS
+    baseStrategyCards
   );
   const systems = useStableValue(gameData.systems ?? {}, BASE_SYSTEMS);
   const techs = useStableValue(gameData.techs ?? {}, BASE_TECHS);

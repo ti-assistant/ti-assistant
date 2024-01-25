@@ -9,10 +9,12 @@ export class AssignStrategyCardHandler implements Handler {
   ) {}
 
   validate(): boolean {
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     if (this.gameData.state.activeplayer !== this.data.event.pickedBy) {
       return false;
     }
-    const strategycards = buildStrategyCards(this.gameData);
+    const strategycards = buildStrategyCards(this.gameData, intl);
 
     const numCards = Object.values(strategycards).reduce((value, card) => {
       if (card.faction === this.data.event.assignedTo) {
@@ -20,8 +22,6 @@ export class AssignStrategyCardHandler implements Handler {
       }
       return value;
     }, 0);
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
     const factions = buildFactions(this.gameData, intl);
 
     switch (Object.keys(factions).length) {
@@ -54,7 +54,7 @@ export class AssignStrategyCardHandler implements Handler {
     const onDeckFaction = getOnDeckFaction(
       this.gameData.state,
       buildFactions(this.gameData, intl),
-      buildStrategyCards(this.gameData)
+      buildStrategyCards(this.gameData, intl)
     );
 
     updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.name : "None";

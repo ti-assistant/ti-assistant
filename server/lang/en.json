@@ -3110,6 +3110,38 @@
     "defaultMessage": "Valkyrie Exoskeleton",
     "description": "Title of Faction Unit: Valkyrie Exoskeleton"
   },
+  "Strategy Cards.Construction.Title": {
+    "defaultMessage": "Construction",
+    "description": "Title of Strategy Card: Construction"
+  },
+  "Strategy Cards.Diplomacy.Title": {
+    "defaultMessage": "Diplomacy",
+    "description": "Title of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Imperial.Title": {
+    "defaultMessage": "Imperial",
+    "description": "Title of Strategy Card: Imperial"
+  },
+  "Strategy Cards.Leadership.Title": {
+    "defaultMessage": "Leadership",
+    "description": "Title of Strategy Card: Leadership"
+  },
+  "Strategy Cards.Politics.Title": {
+    "defaultMessage": "Politics",
+    "description": "Title of Strategy Card: Politics"
+  },
+  "Strategy Cards.Technology.Title": {
+    "defaultMessage": "Technology",
+    "description": "Title of Strategy Card: Technology"
+  },
+  "Strategy Cards.Trade.Title": {
+    "defaultMessage": "Trade",
+    "description": "Title of Strategy Card: Trade"
+  },
+  "Strategy Cards.Warfare.Title": {
+    "defaultMessage": "Warfare",
+    "description": "Title of Strategy Card: Warfare"
+  },
   "Titans of Ul.Abilities.Awaken.Description": {
     "defaultMessage": "After you activate a system that contains 1 or more of your sleeper tokens, you may replace each of those tokens with 1 PDS from your reinforcements.",
     "description": "Description for Faction Ability: Awaken"

@@ -59,9 +59,14 @@ import("../../server/data/relics").then((module) => {
   getBaseRelics = module.getBaseRelics;
 });
 
-let BASE_STRATEGY_CARDS: Partial<Record<StrategyCardId, BaseStrategyCard>> = {};
+let getBaseStrategyCards: DataFunction<
+  StrategyCardId,
+  BaseStrategyCard
+> = () => {
+  return {};
+};
 import("../../server/data/strategyCards").then((module) => {
-  BASE_STRATEGY_CARDS = module.BASE_STRATEGY_CARDS;
+  getBaseStrategyCards = module.getBaseStrategyCards;
 });
 
 let BASE_SYSTEMS: Partial<Record<SystemId, BaseSystem>> = {};
@@ -126,7 +131,7 @@ export function useGameData(
         round: 1,
         speaker: "Vuil'raith Cabal",
       },
-      strategycards: BASE_STRATEGY_CARDS,
+      strategycards: getBaseStrategyCards(intl),
       systems: BASE_SYSTEMS,
       techs: BASE_TECHS,
     };
@@ -154,7 +159,7 @@ export function buildCompleteGameData(
     planets: buildPlanets(storedGameData),
     relics: buildRelics(storedGameData, intl),
     state: buildState(storedGameData),
-    strategycards: buildStrategyCards(storedGameData),
+    strategycards: buildStrategyCards(storedGameData, intl),
     systems: buildSystems(storedGameData),
     techs: buildTechs(storedGameData),
   };
@@ -590,11 +595,14 @@ export function buildState(storedGameData: StoredGameData) {
   return state;
 }
 
-export function buildStrategyCards(storedGameData: StoredGameData) {
+export function buildStrategyCards(
+  storedGameData: StoredGameData,
+  intl: IntlShape
+) {
   const strategyCards = storedGameData.strategycards ?? {};
 
   const cards: Partial<Record<StrategyCardId, StrategyCard>> = {};
-  Object.entries(BASE_STRATEGY_CARDS).forEach(([cardId, card]) => {
+  Object.entries(getBaseStrategyCards(intl)).forEach(([cardId, card]) => {
     cards[cardId as StrategyCardId] = {
       ...card,
       ...(strategyCards[cardId as StrategyCardId] ?? {}),

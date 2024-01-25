@@ -21,7 +21,7 @@ export class EndTurnHandler implements Handler {
     const onDeckFaction = getOnDeckFaction(
       this.gameData.state,
       buildFactions(this.gameData, intl),
-      buildStrategyCards(this.gameData)
+      buildStrategyCards(this.gameData, intl)
     );
 
     const updates: Record<string, any> = {
