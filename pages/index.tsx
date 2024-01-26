@@ -6,10 +6,12 @@ import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { responsivePixels } from "../src/util/util";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
+import { gameIdString } from "../src/util/strings";
 
 export default function HomePage() {
-  const [gameId, setGameId] = useState("Game ID");
+  const intl = useIntl();
+  const [gameId, setGameId] = useState(gameIdString(intl));
 
   const [currentGame, setCurrentGame] = useState<string | null>(null);
 
@@ -22,13 +24,13 @@ export default function HomePage() {
   }, [prevGameId]);
 
   function maybeClearGameId() {
-    if (gameId === "Game ID") {
+    if (gameId === gameIdString(intl)) {
       setGameId("");
     }
   }
 
   function validGameId() {
-    if (gameId === "Game Id") {
+    if (gameId === gameIdString(intl)) {
       return false;
     }
     if (gameId === "") {
@@ -77,7 +79,11 @@ export default function HomePage() {
                   fontSize: responsivePixels(32),
                 }}
               >
-                Continue Game
+                <FormattedMessage
+                  id="+/Qpw/"
+                  defaultMessage="Continue Game"
+                  description="A button that will rejoin the previous game."
+                />
               </div>
             </BorderedDiv>
           </Link>
@@ -98,7 +104,11 @@ export default function HomePage() {
                     width: "100%",
                   }}
                 >
-                  Join Game
+                  <FormattedMessage
+                    id="QFhw/l"
+                    defaultMessage="Join Game"
+                    description="A button that will join the game with a specified ID."
+                  />
                 </div>
               </BorderedDiv>
             </Link>
@@ -111,7 +121,11 @@ export default function HomePage() {
                   color: "#555",
                 }}
               >
-                Join Game
+                <FormattedMessage
+                  id="QFhw/l"
+                  defaultMessage="Join Game"
+                  description="A button that will join the game with a specified ID."
+                />
               </div>
             </BorderedDiv>
           )}
@@ -134,7 +148,11 @@ export default function HomePage() {
                     width: "100%",
                   }}
                 >
-                  Supporters
+                  <FormattedMessage
+                    id="4Z//RZ"
+                    defaultMessage="Supporters"
+                    description="A button that will open the supporters page."
+                  />
                 </div>
               </BorderedDiv>
             </Link>
@@ -146,11 +164,23 @@ export default function HomePage() {
                     width: "100%",
                   }}
                 >
-                  FAQ
+                  <FormattedMessage
+                    id="pKlkVZ"
+                    defaultMessage="FAQ"
+                    description="A button that will open the Frequently Asked Questions page."
+                  />
                 </div>
               </BorderedDiv>
             </Link>
-            <LabeledDiv label="Help support TI Assistant">
+            <LabeledDiv
+              label={
+                <FormattedMessage
+                  id="X7zR7a"
+                  description="Label for a section about helping TI Assistant"
+                  defaultMessage="Help support TI Assistant"
+                />
+              }
+            >
               <a
                 href={`https://patreon.com/TIAssistant`}
                 style={{ width: "100%" }}
@@ -169,7 +199,13 @@ export default function HomePage() {
                       height={18}
                       style={{ width: "20%" }}
                     />
-                    <div style={{ width: "80%" }}>Become a Patron</div>
+                    <div style={{ width: "80%" }}>
+                      <FormattedMessage
+                        id="wOb6Wx"
+                        defaultMessage="Become a Patron"
+                        description="A button that will open the Patreon page."
+                      />
+                    </div>
                   </div>
                 </BorderedDiv>
               </a>
@@ -191,7 +227,13 @@ export default function HomePage() {
                       height={18}
                       style={{ width: "20%" }}
                     />
-                    <div style={{ width: "80%" }}>Buy me a coffee</div>
+                    <div style={{ width: "80%" }}>
+                      <FormattedMessage
+                        id="Alcp4i"
+                        defaultMessage="Buy me a coffee"
+                        description="A button that will open the Buy me a coffee page."
+                      />
+                    </div>
                   </div>
                 </BorderedDiv>
               </a>
@@ -213,7 +255,13 @@ export default function HomePage() {
                       height={18}
                       style={{ width: "20%" }}
                     />
-                    <div style={{ width: "80%" }}>Report Issue</div>
+                    <div style={{ width: "80%" }}>
+                      <FormattedMessage
+                        id="A5p5qF"
+                        defaultMessage="Report Issue"
+                        description="A button that will open the Github issues page."
+                      />
+                    </div>
                   </div>
                 </BorderedDiv>
               </a>

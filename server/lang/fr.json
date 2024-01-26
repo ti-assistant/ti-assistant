@@ -1,4 +1,8 @@
 {
+  "+/Qpw/": {
+    "defaultMessage": "Le Continue Game",
+    "description": "A button that will rejoin the previous game."
+  },
   "+HPhsr": {
     "defaultMessage": "Le New Game",
     "description": "A button that will start a new game."
@@ -27,6 +31,10 @@
     "defaultMessage": "Le Warp",
     "description": "Text on a button specifying that the map style should be warp."
   },
+  "4Z//RZ": {
+    "defaultMessage": "Le Supporters",
+    "description": "A button that will open the supporters page."
+  },
   "4n1LQO": {
     "defaultMessage": "Le Enter Player Name...",
     "description": "Initial text in a textbox used to input a player's name"
@@ -37,6 +45,10 @@
   },
   "93G7sJ": {
     "defaultMessage": "Le Test string"
+  },
+  "A5p5qF": {
+    "defaultMessage": "Le Report Issue",
+    "description": "A button that will open the Github issues page."
   },
   "Agendas.Anti-Intellectual Revolution.Description": {
     "defaultMessage": "Le FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
@@ -537,6 +549,10 @@
   "Agendas.Wormhole Research.Title": {
     "defaultMessage": "Le Wormhole Research",
     "description": "Title of Agenda Card: Wormhole Research"
+  },
+  "Alcp4i": {
+    "defaultMessage": "Le Buy me a coffee",
+    "description": "A button that will open the Buy me a coffee page."
   },
   "Arborec.Abilities.Mitosis.Description": {
     "defaultMessage": "Le Your space docks cannot produce infantry. At the start of the status phase, place 1 infantry from your reinforcements on any planet you control.",
@@ -1925,6 +1941,10 @@
   "Empyrean.Units.Watcher.Title": {
     "defaultMessage": "Le Watcher",
     "description": "Title of Faction Unit: Watcher"
+  },
+  "FHUFoZ": {
+    "defaultMessage": "Le Game ID",
+    "description": "Label for the ID used to identify a specific game."
   },
   "Federation of Sol.Abilities.Orbital Drop.Description": {
     "defaultMessage": "Le ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control.",
@@ -3666,6 +3686,10 @@
     "defaultMessage": "Le PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "QFhw/l": {
+    "defaultMessage": "Le Join Game",
+    "description": "A button that will join the game with a specified ID."
+  },
   "R06tnh": {
     "defaultMessage": "Le Victory Points:",
     "description": "A label for a selector specifying the number of victory points required."
@@ -4602,6 +4626,10 @@
     "defaultMessage": "Le Salai Sai Corian",
     "description": "Title of Faction Unit: Salai Sai Corian"
   },
+  "X7zR7a": {
+    "defaultMessage": "Le Help support TI Assistant",
+    "description": "Label for a section about helping TI Assistant"
+  },
   "Xxcha Kingdom.Abilities.Peace Accords.Description": {
     "defaultMessage": "Le After you resolve the primary or secondary ability of the \"Diplomacy\" strategy card, you may gain control of 1 planet other than Mecatol Rex that does not contain any units and is in a system that is adjacent to a planet you control.",
     "description": "Description for Faction Ability: Peace Accords"
@@ -4994,6 +5022,10 @@
     "defaultMessage": "Le Prophecy of Kings",
     "description": "Text on a button that will enable/disable the Prophecy of Kings expansion."
   },
+  "pKlkVZ": {
+    "defaultMessage": "Le FAQ",
+    "description": "A button that will open the Frequently Asked Questions page."
+  },
   "r2htpd": {
     "defaultMessage": "Le Factions",
     "description": "Text on a button that will randomize factions."
@@ -5009,6 +5041,10 @@
   "tocXJ4": {
     "defaultMessage": "Le Reset",
     "description": "Text on a button that will reset selections."
+  },
+  "wOb6Wx": {
+    "defaultMessage": "Le Become a Patron",
+    "description": "A button that will open the Patreon page."
   },
   "weIxIg": {
     "defaultMessage": "Le Homebrew:",

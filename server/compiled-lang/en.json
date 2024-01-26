@@ -1,4 +1,10 @@
 {
+  "+/Qpw/": [
+    {
+      "type": 0,
+      "value": "Continue Game"
+    }
+  ],
   "+HPhsr": [
     {
       "type": 0,
@@ -41,6 +47,12 @@
       "value": "Warp"
     }
   ],
+  "4Z//RZ": [
+    {
+      "type": 0,
+      "value": "Supporters"
+    }
+  ],
   "4n1LQO": [
     {
       "type": 0,
@@ -57,6 +69,12 @@
     {
       "type": 0,
       "value": "Test string"
+    }
+  ],
+  "A5p5qF": [
+    {
+      "type": 0,
+      "value": "Report Issue"
     }
   ],
   "Agendas.Anti-Intellectual Revolution.Description": [
@@ -1327,6 +1345,12 @@
     {
       "type": 0,
       "value": "Wormhole Research"
+    }
+  ],
+  "Alcp4i": [
+    {
+      "type": 0,
+      "value": "Buy me a coffee"
     }
   ],
   "Arborec.Abilities.Mitosis.Description": [
@@ -3909,6 +3933,12 @@
     {
       "type": 0,
       "value": "Watcher"
+    }
+  ],
+  "FHUFoZ": [
+    {
+      "type": 0,
+      "value": "Game ID"
     }
   ],
   "Federation of Sol.Abilities.Orbital Drop.Description": [
@@ -6921,6 +6951,12 @@
       "value": "value"
     }
   ],
+  "QFhw/l": [
+    {
+      "type": 0,
+      "value": "Join Game"
+    }
+  ],
   "R06tnh": [
     {
       "type": 0,
@@ -8637,6 +8673,12 @@
       "value": "Salai Sai Corian"
     }
   ],
+  "X7zR7a": [
+    {
+      "type": 0,
+      "value": "Help support TI Assistant"
+    }
+  ],
   "Xxcha Kingdom.Abilities.Peace Accords.Description": [
     {
       "type": 0,
@@ -9365,6 +9407,12 @@
       "value": "Prophecy of Kings"
     }
   ],
+  "pKlkVZ": [
+    {
+      "type": 0,
+      "value": "FAQ"
+    }
+  ],
   "r2htpd": [
     {
       "type": 0,
@@ -9387,6 +9435,12 @@
     {
       "type": 0,
       "value": "Reset"
+    }
+  ],
+  "wOb6Wx": [
+    {
+      "type": 0,
+      "value": "Become a Patron"
     }
   ],
   "weIxIg": [

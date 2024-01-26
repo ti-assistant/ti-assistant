@@ -93,3 +93,11 @@ export function mapStyleString(style: MapStyle, intl: IntlShape) {
       });
   }
 }
+
+export function gameIdString(intl: IntlShape) {
+  return intl.formatMessage({
+    id: "FHUFoZ",
+    description: "Label for the ID used to identify a specific game.",
+    defaultMessage: "Game ID",
+  });
+}
