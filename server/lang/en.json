@@ -11,6 +11,14 @@
     "defaultMessage": "AND",
     "description": "Text between two fields linking them together."
   },
+  "+mUg6N": {
+    "defaultMessage": "Build the Galaxy",
+    "description": "A step in the setup phase: Build the Galaxy."
+  },
+  "/sF4zW": {
+    "defaultMessage": "Choose Starting Tech",
+    "description": "Label on a hover menu used to select starting techs."
+  },
   "0rSMZW": {
     "defaultMessage": "Large",
     "description": "Text on a button specifying that the map style should be large."
@@ -18,6 +26,14 @@
   "2HJ0k5": {
     "defaultMessage": "S",
     "description": "The letter used to identify secret objectives."
+  },
+  "2I5JBO": {
+    "defaultMessage": "Biotic",
+    "description": "Title of green techs."
+  },
+  "2hHU0G": {
+    "defaultMessage": "Unit Upgrades",
+    "description": "Title of uprade techs."
   },
   "2jNcVD": {
     "defaultMessage": "Expansions:",
@@ -985,6 +1001,14 @@
   "Barony of Letnev.Units.Dunlain Reaper.Title": {
     "defaultMessage": "Dunlain Reaper",
     "description": "Title of Faction Unit: Dunlain Reaper"
+  },
+  "CKpFBk": {
+    "defaultMessage": "Draw 2 secret objectives and keep 1",
+    "description": "A step in the setup phase: Draw 2 secret objectives and keep 1."
+  },
+  "ChW/ih": {
+    "defaultMessage": "Draw 5 stage II objectives",
+    "description": "A step in the setup phase: Draw 5 stage I objectives."
   },
   "Clan of Saar.Abilities.Nomadic.Description": {
     "defaultMessage": "You can score objectives even if you do not control the planets in your home system.",
@@ -2182,6 +2206,10 @@
     "defaultMessage": "SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
   },
+  "IG7CG4": {
+    "defaultMessage": "{count} {count, plural, one {Space Dock} other {Space Docks}}",
+    "description": "A number of Space Dock units."
+  },
   "J21D/U": {
     "defaultMessage": "Stage I",
     "description": "The title of public objectives that grant 1 victory point."
@@ -2197,6 +2225,10 @@
   "K1ks2a": {
     "defaultMessage": "SPACE CANNON {value}",
     "description": "A unit ability that allows a unit to use SPACE CANNON."
+  },
+  "KiioBO": {
+    "defaultMessage": "Final Score",
+    "description": "An ordering of factions based on end game scoring."
   },
   "L1Z1X Mindnet.Abilities.Assimilate.Description": {
     "defaultMessage": "When you gain control of a planet, replace each PDS and space dock that is on that planet with a matching unit from your reinforcements.",
@@ -2305,6 +2337,14 @@
   "L1Z1X Mindnet.Units.[0.0.1].Title": {
     "defaultMessage": "[0.0.1]",
     "description": "Title of Faction Unit: [0.0.1]"
+  },
+  "L4UH+0": {
+    "defaultMessage": "Speaker Order",
+    "description": "An ordering of factions based on the speaker."
+  },
+  "LD7frS": {
+    "defaultMessage": "Gather Starting Components",
+    "description": "A step in the setup phase: Gather starting components."
   },
   "LYA+Dm": {
     "defaultMessage": "Select all factions and colors",
@@ -2521,6 +2561,10 @@
   "Mentak Coalition.Units.Moll Terminus.Title": {
     "defaultMessage": "Moll Terminus",
     "description": "Title of Faction Unit: Moll Terminus"
+  },
+  "NEiUw9": {
+    "defaultMessage": "No Starting Tech",
+    "description": "Message explaining that a faction has no starting tech."
   },
   "Naalu Collective.Abilities.Foresight.Description": {
     "defaultMessage": "After another player moves ships into a system that contains 1 or more of your ships, you may place 1 token from your strategy pool in an adjacent system that does not contain another player's ships; move your ships from the active system into that system.",
@@ -2953,6 +2997,10 @@
   "Nomad.Units.Quantum Manipulator.Title": {
     "defaultMessage": "Quantum Manipulator",
     "description": "Title of Faction Unit: Quantum Manipulator"
+  },
+  "Nr4DLa": {
+    "defaultMessage": "Propulsion",
+    "description": "Title of blue techs."
   },
   "Objectives.Achieve Supremacy.Description": {
     "defaultMessage": "Have your flagship or a war sun in another player's home system or the Mecatol Rex system.",
@@ -3706,12 +3754,20 @@
     "defaultMessage": "Unveil Flagship",
     "description": "Title of Objective: Unveil Flagship"
   },
+  "OcsTaL": {
+    "defaultMessage": "Shuffle decks",
+    "description": "A step in the setup phase: Shuffle decks."
+  },
   "Oozdq1": {
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "PptkAD": {
+    "defaultMessage": "{count} {count, plural, one {Mech} other {Mechs}}",
+    "description": "A number of Mech units."
+  },
   "PzyYtG": {
-    "defaultMessage": "VPs",
+    "defaultMessage": "{count, plural, =0 {VPs} one {VP} other {VPs}}",
     "description": "Shortened version of Victory Points."
   },
   "QFhw/l": {
@@ -3725,6 +3781,10 @@
   "R06tnh": {
     "defaultMessage": "Victory Points",
     "description": "A label for a selector specifying the number of victory points required."
+  },
+  "RBlsAq": {
+    "defaultMessage": "Revealed stage I objectives",
+    "description": "A label for the stage I objectives that have been revealed"
   },
   "Relics.Dominus Orb.Description": {
     "defaultMessage": "Before you move units during a tactical action, you may purge this card to move and transport units that are in systems that contain 1 of your command tokens.",
@@ -3953,6 +4013,10 @@
   "Strategy Cards.Warfare.Title": {
     "defaultMessage": "Warfare",
     "description": "Title of Strategy Card: Warfare"
+  },
+  "SyY9is": {
+    "defaultMessage": "{count} {count, plural, one {Dreadnought} other {Dreadnoughts}}",
+    "description": "A number of Dreadnought units."
   },
   "Techs.AI Development Algorithm.Description": {
     "defaultMessage": "When you research a unit upgrade technology, you may exhaust this card to ignore any 1 prerequisite.{br}When 1 or more of your units use PRODUCTION, you may exhaust this card to reduce the combined cost of the produced units by the number of unit upgrade technologies that you own.",
@@ -4554,6 +4618,10 @@
     "defaultMessage": "The Terror Between",
     "description": "Title of Faction Unit: The Terror Between"
   },
+  "W9OGxl": {
+    "defaultMessage": "Cybernetic",
+    "description": "Title of yellow techs."
+  },
   "Winnu.Abilities.Blood Ties.Description": {
     "defaultMessage": "You do not have to spend influence to remove the custodians token from Mecatol Rex.",
     "description": "Description for Faction Ability: Blood Ties"
@@ -4657,6 +4725,10 @@
   "Winnu.Units.Salai Sai Corian.Title": {
     "defaultMessage": "Salai Sai Corian",
     "description": "Title of Faction Unit: Salai Sai Corian"
+  },
+  "WpoPPE": {
+    "defaultMessage": "{count} {count, plural, one {PDS} other {PDS}}",
+    "description": "A number of PDS units."
   },
   "X7zR7a": {
     "defaultMessage": "Help support TI Assistant",
@@ -4769,6 +4841,10 @@
   "Xxcha Kingdom.Units.Loncara Ssodu.Title": {
     "defaultMessage": "Loncara Ssodu",
     "description": "Title of Faction Unit: Loncara Ssodu"
+  },
+  "YKYdmA": {
+    "defaultMessage": "{count} {count, plural, one {Infantry} other {Infantry}}",
+    "description": "A number of Infantry units."
   },
   "Yin Brotherhood.Abilities.Devotion.Description": {
     "defaultMessage": "After each space battle round, you may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit and assign it to 1 of your opponent's ships in that system.",
@@ -5030,6 +5106,10 @@
     "defaultMessage": "Discordant Stars",
     "description": "Text on a button that will enable/disable the Discordant Stars expansion."
   },
+  "ZqAjEi": {
+    "defaultMessage": "Warfare",
+    "description": "Title of red techs."
+  },
   "c6uq+j": {
     "defaultMessage": "Select Faction",
     "description": "Instruction telling the user to select their faction."
@@ -5038,9 +5118,17 @@
     "defaultMessage": "Options",
     "description": "Label on a menu for changing game options"
   },
+  "dmwygw": {
+    "defaultMessage": "Re-shuffle secret objectives",
+    "description": "A step in the setup phase: Re-shuffle secret objectives."
+  },
   "e1q7sg": {
     "defaultMessage": "Display Descriptions",
     "description": "Text on a button that will display descriptions."
+  },
+  "e8vqxH": {
+    "defaultMessage": "{count} {count, plural, one {Fighter} other {Fighters}}",
+    "description": "A number of Fighter units."
   },
   "eGEjSH": {
     "defaultMessage": "Imperial Points",
@@ -5058,9 +5146,17 @@
     "defaultMessage": "Laws",
     "description": "Agendas that apply a continuing effect to the game."
   },
+  "hhi4w5": {
+    "defaultMessage": "Reveal 2 objectives",
+    "description": "Error message telling the user to reveal 2 objectives."
+  },
   "hhm3kX": {
     "defaultMessage": "Round {value}",
     "description": "The current round of the game."
+  },
+  "jgVoqe": {
+    "defaultMessage": "{count} {count, plural, one {Carrier} other {Carriers}}",
+    "description": "A number of Carrier units."
   },
   "knYKVl": {
     "defaultMessage": "Codex II",
@@ -5070,9 +5166,17 @@
     "defaultMessage": "Speaker",
     "description": "The title of the player that has the Speaker token."
   },
+  "lGDH2d": {
+    "defaultMessage": "{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}",
+    "description": "Unit upgrade techs."
+  },
   "lYD2yu": {
     "defaultMessage": "Start Game",
     "description": "Text on a button that will start a game."
+  },
+  "mcZgiQ": {
+    "defaultMessage": "{count} {count, plural, one {Destroyer} other {Destroyers}}",
+    "description": "A number of Destroyer units."
   },
   "nryRrR": {
     "defaultMessage": "BOMBARDMENT {value}",
@@ -5081,6 +5185,10 @@
   "nxPdWZ": {
     "defaultMessage": "Other Victory Points",
     "description": "The title of a section for assorted victory points."
+  },
+  "p4V2Yv": {
+    "defaultMessage": "Draw 5 stage I objectives",
+    "description": "A step in the setup phase: Draw 5 stage I objectives."
   },
   "p9XVGB": {
     "defaultMessage": "Prophecy of Kings",
@@ -5094,13 +5202,29 @@
     "defaultMessage": "Relics",
     "description": "The title of relic cards."
   },
+  "qfVnAj": {
+    "defaultMessage": "Reveal 2 stage I objectives",
+    "description": "A label telling the speaker to reveal objectives."
+  },
   "r2htpd": {
     "defaultMessage": "Factions",
     "description": "Text on a button that will randomize factions."
   },
+  "rEazHY": {
+    "defaultMessage": "{count} {count, plural, one {War Sun} other {War Suns}}",
+    "description": "A number of War Sun units."
+  },
+  "rlGbdz": {
+    "defaultMessage": "Starting Components",
+    "description": "A label for a section of components that a faction starts with."
+  },
   "rqdwvE": {
     "defaultMessage": "Colors",
     "description": "Text on a button that will randomize colors."
+  },
+  "sJ5zBj": {
+    "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
+    "description": "A number of Cruiser units."
   },
   "sgqLYB": {
     "defaultMessage": "Other",
@@ -5125,6 +5249,14 @@
   "x42AMg": {
     "defaultMessage": "Randomize",
     "description": "Label for a section that involves randomly selecting things."
+  },
+  "x5JPkJ": {
+    "defaultMessage": "{count} {count, plural, one {Flagship} other {Flagships}}",
+    "description": "A number of Flagship units."
+  },
+  "xu0llf": {
+    "defaultMessage": "Select all Faction Choices",
+    "description": "Error message telling the user to select all faction choices."
   },
   "yBACfb": {
     "defaultMessage": "Main Screen",

@@ -16,6 +16,8 @@ import { pluralize, responsivePixels } from "../../util/util";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import styles from "./StartingComponents.module.scss";
+import { Strings } from "../strings";
+import { FormattedMessage, useIntl } from "react-intl";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -44,6 +46,8 @@ export default function StartingComponents({
   const factions = useContext(FactionContext);
   const options = useContext(OptionContext);
   const techs = useContext(TechContext);
+
+  const intl = useIntl();
 
   const faction = factions[factionId];
 
@@ -199,7 +203,10 @@ export default function StartingComponents({
               // paddingLeft: "4px",
             }}
           >
-            No Starting Tech
+            <FormattedMessage
+              description="Message explaining that a faction has no starting tech."
+              defaultMessage="No Starting Tech"
+            />
           </div>
         ) : null}
         {orderedTechs.map((tech) => {
@@ -242,7 +249,12 @@ export default function StartingComponents({
             factionId={factionId}
             ignorePrereqs
             techs={orderedChoices}
-            label="Choose Starting Tech"
+            label={intl.formatMessage({
+              id: "/sF4zW",
+              description:
+                "Label on a hover menu used to select starting techs.",
+              defaultMessage: "Choose Starting Tech",
+            })}
             selectTech={(tech) => addTech(tech.id)}
           />
         </div>
@@ -267,7 +279,11 @@ export default function StartingComponents({
         }}
       >
         {orderedUnits.map(([unit, number]) => {
-          return <div key={unit}>{`${number} ${pluralize(unit, number)}`}</div>;
+          return (
+            <div key={unit}>
+              <Strings.Units unit={unit as UnitType} count={number} />
+            </div>
+          );
         })}
       </div>
     </div>

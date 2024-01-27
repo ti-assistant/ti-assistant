@@ -1530,7 +1530,8 @@ export function ObjectivePanel({}) {
             <FormattedMessage
               id="PzyYtG"
               description="Shortened version of Victory Points."
-              defaultMessage="VPs"
+              defaultMessage="{count, plural, =0 {VPs} one {VP} other {VPs}}"
+              values={{ count: 2 }}
             />
           </div>
 

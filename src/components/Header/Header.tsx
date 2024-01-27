@@ -28,6 +28,7 @@ import UndoButton from "../UndoButton/UndoButton";
 import Sidebars from "../Sidebars/Sidebars";
 import styles from "./Header.module.scss";
 import Cookies from "js-cookie";
+import { useIntl } from "react-intl";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -43,6 +44,8 @@ export default function Header() {
   const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
+
+  const intl = useIntl();
 
   const [qrCode, setQrCode] = useState<string>();
 
@@ -204,7 +207,16 @@ export default function Header() {
       ) : null}
       <Sidebars
         left={state.phase === "END" ? "END OF GAME" : `${state.phase} PHASE`}
-        right={round}
+        right={intl
+          .formatMessage(
+            {
+              id: "hhm3kX",
+              description: "The current round of the game.",
+              defaultMessage: "Round {value}",
+            },
+            { value: state.round }
+          )
+          .toUpperCase()}
       />
       <div className={styles.ControlButtons}>
         <UndoButton gameId={gameid} />

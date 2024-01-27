@@ -11,9 +11,13 @@
     "defaultMessage": "Le AND",
     "description": "Text between two fields linking them together."
   },
-  "5Bl4Ek": {
-    "defaultMessage": "Le Objectives",
-    "description": "Cards that define how to score victory points."
+  "+mUg6N": {
+    "defaultMessage": "Le Build the Galaxy",
+    "description": "A step in the setup phase: Build the Galaxy."
+  },
+  "/sF4zW": {
+    "defaultMessage": "Le Choose Starting Tech",
+    "description": "Label on a hover menu used to select starting techs."
   },
   "0rSMZW": {
     "defaultMessage": "Le Large",
@@ -22,6 +26,14 @@
   "2HJ0k5": {
     "defaultMessage": "Le S",
     "description": "The letter used to identify secret objectives."
+  },
+  "2I5JBO": {
+    "defaultMessage": "Le Biotic",
+    "description": "Title of green techs."
+  },
+  "2hHU0G": {
+    "defaultMessage": "Le Unit Upgrades",
+    "description": "Title of uprade techs."
   },
   "2jNcVD": {
     "defaultMessage": "Le Expansions:",
@@ -50,6 +62,10 @@
   "4wSR75": {
     "defaultMessage": "Le Standard",
     "description": "Text on a button specifying that the map style should be standard."
+  },
+  "5Bl4Ek": {
+    "defaultMessage": "Le Objectives",
+    "description": "Cards that define how to score victory points."
   },
   "6L07nG": {
     "defaultMessage": "Le Reveal Objective",
@@ -985,6 +1001,14 @@
   "Barony of Letnev.Units.Dunlain Reaper.Title": {
     "defaultMessage": "Le Dunlain Reaper",
     "description": "Title of Faction Unit: Dunlain Reaper"
+  },
+  "CKpFBk": {
+    "defaultMessage": "Le Draw 2 secret objectives and keep 1",
+    "description": "A step in the setup phase: Draw 2 secret objectives and keep 1."
+  },
+  "ChW/ih": {
+    "defaultMessage": "Le Draw 5 stage II objectives",
+    "description": "A step in the setup phase: Draw 5 stage I objectives."
   },
   "Clan of Saar.Abilities.Nomadic.Description": {
     "defaultMessage": "Le You can score objectives even if you do not control the planets in your home system.",
@@ -2182,6 +2206,10 @@
     "defaultMessage": "Le SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
   },
+  "IG7CG4": {
+    "defaultMessage": "Le {count} {count, plural, one {Space Dock} other {Space Docks}}",
+    "description": "A number of Space Dock units."
+  },
   "J21D/U": {
     "defaultMessage": "Le Stage I",
     "description": "The title of public objectives that grant 1 victory point."
@@ -2197,6 +2225,10 @@
   "K1ks2a": {
     "defaultMessage": "Le SPACE CANNON {value}",
     "description": "A unit ability that allows a unit to use SPACE CANNON."
+  },
+  "KiioBO": {
+    "defaultMessage": "Le Final Score",
+    "description": "An ordering of factions based on end game scoring."
   },
   "L1Z1X Mindnet.Abilities.Assimilate.Description": {
     "defaultMessage": "Le When you gain control of a planet, replace each PDS and space dock that is on that planet with a matching unit from your reinforcements.",
@@ -2305,6 +2337,14 @@
   "L1Z1X Mindnet.Units.[0.0.1].Title": {
     "defaultMessage": "Le [0.0.1]",
     "description": "Title of Faction Unit: [0.0.1]"
+  },
+  "L4UH+0": {
+    "defaultMessage": "Le Speaker Order",
+    "description": "An ordering of factions based on the speaker."
+  },
+  "LD7frS": {
+    "defaultMessage": "Le Gather Starting Components",
+    "description": "A step in the setup phase: Gather starting components."
   },
   "LYA+Dm": {
     "defaultMessage": "Le Select all factions and colors",
@@ -2521,6 +2561,10 @@
   "Mentak Coalition.Units.Moll Terminus.Title": {
     "defaultMessage": "Le Moll Terminus",
     "description": "Title of Faction Unit: Moll Terminus"
+  },
+  "NEiUw9": {
+    "defaultMessage": "Le No Starting Tech",
+    "description": "Message explaining that a faction has no starting tech."
   },
   "Naalu Collective.Abilities.Foresight.Description": {
     "defaultMessage": "Le After another player moves ships into a system that contains 1 or more of your ships, you may place 1 token from your strategy pool in an adjacent system that does not contain another player's ships; move your ships from the active system into that system.",
@@ -2953,6 +2997,10 @@
   "Nomad.Units.Quantum Manipulator.Title": {
     "defaultMessage": "Le Quantum Manipulator",
     "description": "Title of Faction Unit: Quantum Manipulator"
+  },
+  "Nr4DLa": {
+    "defaultMessage": "Le Propulsion",
+    "description": "Title of blue techs."
   },
   "Objectives.Achieve Supremacy.Description": {
     "defaultMessage": "Le Have your flagship or a war sun in another player's home system or the Mecatol Rex system.",
@@ -3706,12 +3754,20 @@
     "defaultMessage": "Le Unveil Flagship",
     "description": "Title of Objective: Unveil Flagship"
   },
+  "OcsTaL": {
+    "defaultMessage": "Le Shuffle decks",
+    "description": "A step in the setup phase: Shuffle decks."
+  },
   "Oozdq1": {
     "defaultMessage": "Le PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "PptkAD": {
+    "defaultMessage": "Le {count} {count, plural, one {Mech} other {Mechs}}",
+    "description": "A number of Mech units."
+  },
   "PzyYtG": {
-    "defaultMessage": "Le VPs",
+    "defaultMessage": "Le {count, plural, =0 {VPs} one {VP} other {VPs}}",
     "description": "Shortened version of Victory Points."
   },
   "QFhw/l": {
@@ -3725,6 +3781,10 @@
   "R06tnh": {
     "defaultMessage": "Le Victory Points",
     "description": "A label for a selector specifying the number of victory points required."
+  },
+  "RBlsAq": {
+    "defaultMessage": "Le Revealed stage I objectives",
+    "description": "A label for the stage I objectives that have been revealed"
   },
   "Relics.Dominus Orb.Description": {
     "defaultMessage": "Le Before you move units during a tactical action, you may purge this card to move and transport units that are in systems that contain 1 of your command tokens.",
@@ -3953,6 +4013,10 @@
   "Strategy Cards.Warfare.Title": {
     "defaultMessage": "Le Warfare",
     "description": "Title of Strategy Card: Warfare"
+  },
+  "SyY9is": {
+    "defaultMessage": "Le {count} {count, plural, one {Dreadnought} other {Dreadnoughts}}",
+    "description": "A number of Dreadnought units."
   },
   "Techs.AI Development Algorithm.Description": {
     "defaultMessage": "Le When you research a unit upgrade technology, you may exhaust this card to ignore any 1 prerequisite.{br}When 1 or more of your units use PRODUCTION, you may exhaust this card to reduce the combined cost of the produced units by the number of unit upgrade technologies that you own.",
@@ -4554,6 +4618,10 @@
     "defaultMessage": "Le The Terror Between",
     "description": "Title of Faction Unit: The Terror Between"
   },
+  "W9OGxl": {
+    "defaultMessage": "Le Cybernetic",
+    "description": "Title of yellow techs."
+  },
   "Winnu.Abilities.Blood Ties.Description": {
     "defaultMessage": "Le You do not have to spend influence to remove the custodians token from Mecatol Rex.",
     "description": "Description for Faction Ability: Blood Ties"
@@ -4657,6 +4725,10 @@
   "Winnu.Units.Salai Sai Corian.Title": {
     "defaultMessage": "Le Salai Sai Corian",
     "description": "Title of Faction Unit: Salai Sai Corian"
+  },
+  "WpoPPE": {
+    "defaultMessage": "Le {count} {count, plural, one {PDS} other {PDS}}",
+    "description": "A number of PDS units."
   },
   "X7zR7a": {
     "defaultMessage": "Le Help support TI Assistant",
@@ -4769,6 +4841,10 @@
   "Xxcha Kingdom.Units.Loncara Ssodu.Title": {
     "defaultMessage": "Le Loncara Ssodu",
     "description": "Title of Faction Unit: Loncara Ssodu"
+  },
+  "YKYdmA": {
+    "defaultMessage": "Le {count} {count, plural, one {Infantry} other {Infantry}}",
+    "description": "A number of Infantry units."
   },
   "Yin Brotherhood.Abilities.Devotion.Description": {
     "defaultMessage": "Le After each space battle round, you may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit and assign it to 1 of your opponent's ships in that system.",
@@ -5030,6 +5106,10 @@
     "defaultMessage": "Le Discordant Stars",
     "description": "Text on a button that will enable/disable the Discordant Stars expansion."
   },
+  "ZqAjEi": {
+    "defaultMessage": "Le Warfare",
+    "description": "Title of red techs."
+  },
   "c6uq+j": {
     "defaultMessage": "Le Select Faction",
     "description": "Instruction telling the user to select their faction."
@@ -5038,9 +5118,17 @@
     "defaultMessage": "Le Options",
     "description": "Label on a menu for changing game options"
   },
+  "dmwygw": {
+    "defaultMessage": "Le Re-shuffle secret objectives",
+    "description": "A step in the setup phase: Re-shuffle secret objectives."
+  },
   "e1q7sg": {
     "defaultMessage": "Le Display Descriptions",
     "description": "Text on a button that will display descriptions."
+  },
+  "e8vqxH": {
+    "defaultMessage": "Le {count} {count, plural, one {Fighter} other {Fighters}}",
+    "description": "A number of Fighter units."
   },
   "eGEjSH": {
     "defaultMessage": "Le Imperial Points",
@@ -5058,9 +5146,17 @@
     "defaultMessage": "Le Laws",
     "description": "Agendas that apply a continuing effect to the game."
   },
+  "hhi4w5": {
+    "defaultMessage": "Le Reveal 2 objectives",
+    "description": "Error message telling the user to reveal 2 objectives."
+  },
   "hhm3kX": {
     "defaultMessage": "Le Round {value}",
     "description": "The current round of the game."
+  },
+  "jgVoqe": {
+    "defaultMessage": "Le {count} {count, plural, one {Carrier} other {Carriers}}",
+    "description": "A number of Carrier units."
   },
   "knYKVl": {
     "defaultMessage": "Le Codex II",
@@ -5070,9 +5166,17 @@
     "defaultMessage": "Le Speaker",
     "description": "The title of the player that has the Speaker token."
   },
+  "lGDH2d": {
+    "defaultMessage": "Le {count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}",
+    "description": "Unit upgrade techs."
+  },
   "lYD2yu": {
     "defaultMessage": "Le Start Game",
     "description": "Text on a button that will start a game."
+  },
+  "mcZgiQ": {
+    "defaultMessage": "Le {count} {count, plural, one {Destroyer} other {Destroyers}}",
+    "description": "A number of Destroyer units."
   },
   "nryRrR": {
     "defaultMessage": "Le BOMBARDMENT {value}",
@@ -5081,6 +5185,10 @@
   "nxPdWZ": {
     "defaultMessage": "Le Other Victory Points",
     "description": "The title of a section for assorted victory points."
+  },
+  "p4V2Yv": {
+    "defaultMessage": "Le Draw 5 stage I objectives",
+    "description": "A step in the setup phase: Draw 5 stage I objectives."
   },
   "p9XVGB": {
     "defaultMessage": "Le Prophecy of Kings",
@@ -5094,13 +5202,29 @@
     "defaultMessage": "Le Relics",
     "description": "The title of relic cards."
   },
+  "qfVnAj": {
+    "defaultMessage": "Le Reveal 2 stage I objectives",
+    "description": "A label telling the speaker to reveal objectives."
+  },
   "r2htpd": {
     "defaultMessage": "Le Factions",
     "description": "Text on a button that will randomize factions."
   },
+  "rEazHY": {
+    "defaultMessage": "Le {count} {count, plural, one {War Sun} other {War Suns}}",
+    "description": "A number of War Sun units."
+  },
+  "rlGbdz": {
+    "defaultMessage": "Le Starting Components",
+    "description": "A label for a section of components that a faction starts with."
+  },
   "rqdwvE": {
     "defaultMessage": "Le Colors",
     "description": "Text on a button that will randomize colors."
+  },
+  "sJ5zBj": {
+    "defaultMessage": "Le {count} {count, plural, one {Cruiser} other {Cruisers}}",
+    "description": "A number of Cruiser units."
   },
   "sgqLYB": {
     "defaultMessage": "Le Other",
@@ -5125,6 +5249,14 @@
   "x42AMg": {
     "defaultMessage": "Le Randomize",
     "description": "Label for a section that involves randomly selecting things."
+  },
+  "x5JPkJ": {
+    "defaultMessage": "Le {count} {count, plural, one {Flagship} other {Flagships}}",
+    "description": "A number of Flagship units."
+  },
+  "xu0llf": {
+    "defaultMessage": "Le Select all Faction Choices",
+    "description": "Error message telling the user to select all faction choices."
   },
   "yBACfb": {
     "defaultMessage": "Le Main Screen",

@@ -24,6 +24,7 @@ import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels, validateMapString } from "../util/util";
 import styles from "./SetupPhase.module.scss";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 
 export function startFirstRound(gameid: string) {
   advancePhaseAsync(gameid);
@@ -68,19 +69,41 @@ export function setupPhaseComplete(
 
 function getSetupPhaseText(
   factions: Partial<Record<FactionId, Faction>>,
-  revealedObjectives: string[]
+  revealedObjectives: string[],
+  intl: IntlShape
 ) {
   const textSections = [];
   if (
     !factionSubFactionChoicesComplete(factions) ||
     !factionTechChoicesComplete(factions)
   ) {
-    textSections.push("Select all Faction Choices");
+    textSections.push(
+      intl.formatMessage({
+        id: "xu0llf",
+        defaultMessage: "Select all Faction Choices",
+        description:
+          "Error message telling the user to select all faction choices.",
+      })
+    );
   }
   if (revealedObjectives.length !== 2) {
-    textSections.push("Reveal 2 Objectives");
+    textSections.push(
+      intl.formatMessage({
+        id: "hhi4w5",
+        defaultMessage: "Reveal 2 objectives",
+        description: "Error message telling the user to reveal 2 objectives.",
+      })
+    );
   }
-  return textSections.join(" and ");
+  return textSections.join(
+    ` ${intl
+      .formatMessage({
+        id: "+WkrHz",
+        defaultMessage: "AND",
+        description: "Text between two fields linking them together.",
+      })
+      .toLowerCase()} `
+  );
 }
 
 export function setMapString(gameid: string | undefined, mapString: string) {
@@ -99,6 +122,8 @@ export default function SetupPhase() {
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
   const state = useContext(StateContext);
+
+  const intl = useIntl();
 
   const mapStringRef = useRef<HTMLInputElement>(null);
 
@@ -138,10 +163,18 @@ export default function SetupPhase() {
     <>
       <ol className={`flexColumn largeFont ${styles.LeftColumn}`}>
         <div className="flexRow" style={{ width: "100%" }}>
-          Setup
+          <FormattedMessage
+            id="9DZz2w"
+            description="Text identifying that this is the setup step."
+            defaultMessage="Setup Game"
+          />
         </div>
         <NumberedItem>
-          Build the Galaxy
+          <FormattedMessage
+            id="+mUg6N"
+            description="A step in the setup phase: Build the Galaxy."
+            defaultMessage="Build the Galaxy"
+          />
           <div
             className="flexColumn mediumFont"
             style={{
@@ -151,7 +184,12 @@ export default function SetupPhase() {
               whiteSpace: "nowrap",
             }}
           >
-            Map String:
+            <FormattedMessage
+              id="UJSVtn"
+              description="Label for a textbox used to specify the map string."
+              defaultMessage="Map String"
+            />
+            :
             <input
               ref={mapStringRef}
               type="textbox"
@@ -165,9 +203,19 @@ export default function SetupPhase() {
             ></input>
           </div>
         </NumberedItem>
-        <NumberedItem>Shuffle decks</NumberedItem>
         <NumberedItem>
-          Gather Starting Components
+          <FormattedMessage
+            id="OcsTaL"
+            description="A step in the setup phase: Shuffle decks."
+            defaultMessage="Shuffle decks"
+          />
+        </NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="LD7frS"
+            description="A step in the setup phase: Gather starting components."
+            defaultMessage="Gather Starting Components"
+          />
           <div className={styles.Embedded}>
             <div
               style={{
@@ -203,14 +251,46 @@ export default function SetupPhase() {
             </div>
           </div>
         </NumberedItem>
-        <NumberedItem>Draw 2 secret objectives and keep 1</NumberedItem>
-        <NumberedItem>Re-shuffle secret objectives</NumberedItem>
-        <NumberedItem>Draw 5 stage I objectives</NumberedItem>
-        <NumberedItem>Draw 5 stage II objectives</NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="CKpFBk"
+            description="A step in the setup phase: Draw 2 secret objectives and keep 1."
+            defaultMessage="Draw 2 secret objectives and keep 1"
+          />
+        </NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="dmwygw"
+            description="A step in the setup phase: Re-shuffle secret objectives."
+            defaultMessage="Re-shuffle secret objectives"
+          />
+        </NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="p4V2Yv"
+            description="A step in the setup phase: Draw 5 stage I objectives."
+            defaultMessage="Draw 5 stage I objectives"
+          />
+        </NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="ChW/ih"
+            description="A step in the setup phase: Draw 5 stage I objectives."
+            defaultMessage="Draw 5 stage II objectives"
+          />
+        </NumberedItem>
         <NumberedItem>
           <div className="flexColumn">
             {revealedObjectives.length > 0 ? (
-              <LabeledDiv label="Revealed Stage I Objectives">
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="RBlsAq"
+                    description="A label for the stage I objectives that have been revealed"
+                    defaultMessage="Revealed stage I objectives"
+                  />
+                }
+              >
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
                   {revealedObjectives.map((objectiveId) => {
                     const objective = (objectives ?? {})[objectiveId];
@@ -254,7 +334,13 @@ export default function SetupPhase() {
                 style={{ width: "100%" }}
               >
                 <ClientOnlyHoverMenu
-                  label="Reveal 2 stage I objectives"
+                  label={
+                    <FormattedMessage
+                      id="qfVnAj"
+                      description="A label telling the speaker to reveal objectives."
+                      defaultMessage="Reveal 2 stage I objectives"
+                    />
+                  }
                   renderProps={(closeFn) => (
                     <div
                       className="flexRow"
@@ -307,14 +393,18 @@ export default function SetupPhase() {
                 fontWeight: "bold",
               }}
             >
-              {getSetupPhaseText(factions ?? {}, revealedObjectives)}
+              {getSetupPhaseText(factions ?? {}, revealedObjectives, intl)}
             </div>
           ) : null}
           <LockedButtons
             unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
             buttons={[
               {
-                text: "Start Game",
+                text: intl.formatMessage({
+                  id: "lYD2yu",
+                  description: "Text on a button that will start a game.",
+                  defaultMessage: "Start Game",
+                }),
                 onClick: () => {
                   if (!gameid) {
                     return;
@@ -340,7 +430,11 @@ export default function SetupPhase() {
           }}
         >
           <div className="flexColumn" style={{ width: "100%" }}>
-            Starting Components
+            <FormattedMessage
+              id="rlGbdz"
+              description="A label for a section of components that a faction starts with."
+              defaultMessage="Starting Components"
+            />
           </div>
           <div
             style={{
@@ -382,14 +476,18 @@ export default function SetupPhase() {
                   fontWeight: "bold",
                 }}
               >
-                {getSetupPhaseText(factions ?? {}, revealedObjectives)}
+                {getSetupPhaseText(factions ?? {}, revealedObjectives, intl)}
               </div>
             ) : null}
             <LockedButtons
               unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
               buttons={[
                 {
-                  text: "Start Game",
+                  text: intl.formatMessage({
+                    id: "lYD2yu",
+                    description: "Text on a button that will start a game.",
+                    defaultMessage: "Start Game",
+                  }),
                   onClick: () => {
                     if (!gameid) {
                       return;

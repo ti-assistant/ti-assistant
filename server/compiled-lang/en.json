@@ -17,6 +17,18 @@
       "value": "AND"
     }
   ],
+  "+mUg6N": [
+    {
+      "type": 0,
+      "value": "Build the Galaxy"
+    }
+  ],
+  "/sF4zW": [
+    {
+      "type": 0,
+      "value": "Choose Starting Tech"
+    }
+  ],
   "0rSMZW": [
     {
       "type": 0,
@@ -27,6 +39,18 @@
     {
       "type": 0,
       "value": "S"
+    }
+  ],
+  "2I5JBO": [
+    {
+      "type": 0,
+      "value": "Biotic"
+    }
+  ],
+  "2hHU0G": [
+    {
+      "type": 0,
+      "value": "Unit Upgrades"
     }
   ],
   "2jNcVD": [
@@ -2143,6 +2167,18 @@
     {
       "type": 0,
       "value": "Dunlain Reaper"
+    }
+  ],
+  "CKpFBk": [
+    {
+      "type": 0,
+      "value": "Draw 2 secret objectives and keep 1"
+    }
+  ],
+  "ChW/ih": [
+    {
+      "type": 0,
+      "value": "Draw 5 stage II objectives"
     }
   ],
   "Clan of Saar.Abilities.Nomadic.Description": [
@@ -4375,6 +4411,40 @@
       "value": "SUSTAIN DAMAGE"
     }
   ],
+  "IG7CG4": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Space Dock"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Space Docks"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "J21D/U": [
     {
       "type": 0,
@@ -4401,6 +4471,12 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "KiioBO": [
+    {
+      "type": 0,
+      "value": "Final Score"
     }
   ],
   "L1Z1X Mindnet.Abilities.Assimilate.Description": [
@@ -4611,6 +4687,18 @@
     {
       "type": 0,
       "value": "[0.0.1]"
+    }
+  ],
+  "L4UH+0": [
+    {
+      "type": 0,
+      "value": "Speaker Order"
+    }
+  ],
+  "LD7frS": [
+    {
+      "type": 0,
+      "value": "Gather Starting Components"
     }
   ],
   "LYA+Dm": [
@@ -5007,6 +5095,12 @@
     {
       "type": 0,
       "value": "Moll Terminus"
+    }
+  ],
+  "NEiUw9": [
+    {
+      "type": 0,
+      "value": "No Starting Tech"
     }
   ],
   "Naalu Collective.Abilities.Foresight.Description": [
@@ -5839,6 +5933,12 @@
     {
       "type": 0,
       "value": "Quantum Manipulator"
+    }
+  ],
+  "Nr4DLa": [
+    {
+      "type": 0,
+      "value": "Propulsion"
     }
   ],
   "Objectives.Achieve Supremacy.Description": [
@@ -6977,6 +7077,12 @@
       "value": "Unveil Flagship"
     }
   ],
+  "OcsTaL": [
+    {
+      "type": 0,
+      "value": "Shuffle decks"
+    }
+  ],
   "Oozdq1": [
     {
       "type": 0,
@@ -6987,10 +7093,72 @@
       "value": "value"
     }
   ],
-  "PzyYtG": [
+  "PptkAD": [
+    {
+      "type": 1,
+      "value": "count"
+    },
     {
       "type": 0,
-      "value": "VPs"
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Mech"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Mechs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "PzyYtG": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "VPs"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "VP"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "VPs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "QFhw/l": [
@@ -7009,6 +7177,12 @@
     {
       "type": 0,
       "value": "Victory Points"
+    }
+  ],
+  "RBlsAq": [
+    {
+      "type": 0,
+      "value": "Revealed stage I objectives"
     }
   ],
   "Relics.Dominus Orb.Description": [
@@ -7423,6 +7597,40 @@
     {
       "type": 0,
       "value": "Warfare"
+    }
+  ],
+  "SyY9is": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Dreadnought"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Dreadnoughts"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Techs.AI Development Algorithm.Description": [
@@ -8509,6 +8717,12 @@
       "value": "The Terror Between"
     }
   ],
+  "W9OGxl": [
+    {
+      "type": 0,
+      "value": "Cybernetic"
+    }
+  ],
   "Winnu.Abilities.Blood Ties.Description": [
     {
       "type": 0,
@@ -8721,6 +8935,40 @@
       "value": "Salai Sai Corian"
     }
   ],
+  "WpoPPE": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "PDS"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "PDS"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "X7zR7a": [
     {
       "type": 0,
@@ -8911,6 +9159,40 @@
     {
       "type": 0,
       "value": "Loncara Ssodu"
+    }
+  ],
+  "YKYdmA": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Infantry"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Infantry"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Yin Brotherhood.Abilities.Devotion.Description": [
@@ -9415,6 +9697,12 @@
       "value": "Discordant Stars"
     }
   ],
+  "ZqAjEi": [
+    {
+      "type": 0,
+      "value": "Warfare"
+    }
+  ],
   "c6uq+j": [
     {
       "type": 0,
@@ -9427,10 +9715,50 @@
       "value": "Options"
     }
   ],
+  "dmwygw": [
+    {
+      "type": 0,
+      "value": "Re-shuffle secret objectives"
+    }
+  ],
   "e1q7sg": [
     {
       "type": 0,
       "value": "Display Descriptions"
+    }
+  ],
+  "e8vqxH": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Fighter"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Fighters"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "eGEjSH": [
@@ -9457,6 +9785,12 @@
       "value": "Laws"
     }
   ],
+  "hhi4w5": [
+    {
+      "type": 0,
+      "value": "Reveal 2 objectives"
+    }
+  ],
   "hhm3kX": [
     {
       "type": 0,
@@ -9465,6 +9799,40 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "jgVoqe": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Carrier"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Carriers"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "knYKVl": [
@@ -9479,10 +9847,78 @@
       "value": "Speaker"
     }
   ],
+  "lGDH2d": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Upgrades"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Upgrade"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Upgrades"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "lYD2yu": [
     {
       "type": 0,
       "value": "Start Game"
+    }
+  ],
+  "mcZgiQ": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Destroyer"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Destroyers"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "nryRrR": [
@@ -9499,6 +9935,12 @@
     {
       "type": 0,
       "value": "Other Victory Points"
+    }
+  ],
+  "p4V2Yv": [
+    {
+      "type": 0,
+      "value": "Draw 5 stage I objectives"
     }
   ],
   "p9XVGB": [
@@ -9519,16 +9961,96 @@
       "value": "Relics"
     }
   ],
+  "qfVnAj": [
+    {
+      "type": 0,
+      "value": "Reveal 2 stage I objectives"
+    }
+  ],
   "r2htpd": [
     {
       "type": 0,
       "value": "Factions"
     }
   ],
+  "rEazHY": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "War Sun"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "War Suns"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "rlGbdz": [
+    {
+      "type": 0,
+      "value": "Starting Components"
+    }
+  ],
   "rqdwvE": [
     {
       "type": 0,
       "value": "Colors"
+    }
+  ],
+  "sJ5zBj": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Cruiser"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Cruisers"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "sgqLYB": [
@@ -9565,6 +10087,46 @@
     {
       "type": 0,
       "value": "Randomize"
+    }
+  ],
+  "x5JPkJ": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Flagship"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Flagships"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "xu0llf": [
+    {
+      "type": 0,
+      "value": "Select all Faction Choices"
     }
   ],
   "yBACfb": [
