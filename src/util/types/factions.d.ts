@@ -100,8 +100,8 @@ interface GameFaction {
   color: string;
   commander: LeaderState;
   hero: LeaderState;
+  id: FactionId;
   mapPosition: number;
-  name: string;
   order: number;
   secondary?: Secondary;
   planets: Partial<Record<PlanetId, { ready: boolean }>>;

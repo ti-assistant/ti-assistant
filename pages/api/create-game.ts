@@ -50,7 +50,7 @@ export default async function handler(
     // Get home planets for each faction.
     // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
     const homeBasePlanets = Object.values(BASE_PLANETS).filter(
-      (planet) => planet.faction === faction.name && planet.home
+      (planet) => planet.faction === faction.id && planet.home
     );
     const homePlanets: Partial<Record<PlanetId, { ready: boolean }>> = {};
     homeBasePlanets.forEach((planet) => {
@@ -70,7 +70,7 @@ export default async function handler(
 
     const gameFaction: GameFaction = {
       // Client specified values
-      name: faction.name,
+      id: faction.id,
       color: faction.color,
       order: order,
       mapPosition: index,
@@ -103,12 +103,12 @@ export default async function handler(
   let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
   let speakerName: FactionId | undefined;
   gameFactions.forEach((faction, index) => {
-    const baseFaction = BASE_FACTIONS[faction.name as FactionId];
+    const baseFaction = BASE_FACTIONS[faction.id];
     if (index === req.body.speaker) {
       speakerName = baseFaction.id;
     }
     const localFaction = { ...faction };
-    if (faction.name === "Winnu" && !options.expansions.includes("POK")) {
+    if (faction.id === "Winnu" && !options.expansions.includes("POK")) {
       localFaction.startswith.choice = {
         select: 1,
         options: [
@@ -119,7 +119,7 @@ export default async function handler(
         ],
       };
     }
-    baseFactions[faction.name as FactionId] = localFaction;
+    baseFactions[faction.id] = localFaction;
     Object.entries(faction.planets).forEach(([name, planet]) => {
       basePlanets[name as PlanetId] = {
         ...planet,

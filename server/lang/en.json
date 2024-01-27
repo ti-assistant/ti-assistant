@@ -15,6 +15,10 @@
     "defaultMessage": "Large",
     "description": "Text on a button specifying that the map style should be large."
   },
+  "2HJ0k5": {
+    "defaultMessage": "S",
+    "description": "The letter used to identify secret objectives."
+  },
   "2jNcVD": {
     "defaultMessage": "Expansions:",
     "description": "A label for a selector specifying which expansions should be enabled."
@@ -43,8 +47,24 @@
     "defaultMessage": "Standard",
     "description": "Text on a button specifying that the map style should be standard."
   },
+  "5Bl4Ek": {
+    "defaultMessage": "Objectives",
+    "description": "Cards that define how to score victory points."
+  },
+  "6L07nG": {
+    "defaultMessage": "Reveal Objective",
+    "description": "Text telling the user to reveal an objective."
+  },
   "93G7sJ": {
     "defaultMessage": "Test string"
+  },
+  "9DZz2w": {
+    "defaultMessage": "Setup Game",
+    "description": "Text identifying that this is the setup step."
+  },
+  "9m91nk": {
+    "defaultMessage": "Objective View",
+    "description": "Text on a button that opens the objective view of the assistant."
   },
   "A5p5qF": {
     "defaultMessage": "Report Issue",
@@ -2162,6 +2182,10 @@
     "defaultMessage": "SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
   },
+  "J21D/U": {
+    "defaultMessage": "Stage I",
+    "description": "The title of public objectives that grant 1 victory point."
+  },
   "JS92Jj": {
     "defaultMessage": "Make Speaker",
     "description": "Text on a button that will make a faction the speaker."
@@ -3686,12 +3710,20 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "PzyYtG": {
+    "defaultMessage": "VPs",
+    "description": "Shortened version of Victory Points."
+  },
   "QFhw/l": {
     "defaultMessage": "Join Game",
     "description": "A button that will join the game with a specified ID."
   },
+  "QrrIrN": {
+    "defaultMessage": "Secrets",
+    "description": "The title of secret objectives."
+  },
   "R06tnh": {
-    "defaultMessage": "Victory Points:",
+    "defaultMessage": "Victory Points",
     "description": "A label for a selector specifying the number of victory points required."
   },
   "Relics.Dominus Orb.Description": {
@@ -4986,6 +5018,10 @@
     "defaultMessage": "Y'sia Y'ssrila",
     "description": "Title of Faction Unit: Y'sia Y'ssrila"
   },
+  "Z6gLCK": {
+    "defaultMessage": "Stage II",
+    "description": "The title of public objectives that grant 2 victory points."
+  },
   "ZZ/Lhe": {
     "defaultMessage": "Map Type:",
     "description": "A label for a selector for selecting which map style to use."
@@ -4994,13 +5030,37 @@
     "defaultMessage": "Discordant Stars",
     "description": "Text on a button that will enable/disable the Discordant Stars expansion."
   },
+  "c6uq+j": {
+    "defaultMessage": "Select Faction",
+    "description": "Instruction telling the user to select their faction."
+  },
   "d0uSBF": {
     "defaultMessage": "Options",
     "description": "Label on a menu for changing game options"
   },
+  "e1q7sg": {
+    "defaultMessage": "Display Descriptions",
+    "description": "Text on a button that will display descriptions."
+  },
+  "eGEjSH": {
+    "defaultMessage": "Imperial Points",
+    "description": "The title of points granted from using Imperial."
+  },
+  "entq4x": {
+    "defaultMessage": "Display Titles",
+    "description": "Text on a button that will display titles."
+  },
   "hIFcXI": {
     "defaultMessage": "PLANETARY SHIELD",
     "description": "A unit ability that prevents BOMBARDMENT."
+  },
+  "hMWeZX": {
+    "defaultMessage": "Laws",
+    "description": "Agendas that apply a continuing effect to the game."
+  },
+  "hhm3kX": {
+    "defaultMessage": "Round {value}",
+    "description": "The current round of the game."
   },
   "knYKVl": {
     "defaultMessage": "Codex II",
@@ -5018,6 +5078,10 @@
     "defaultMessage": "BOMBARDMENT {value}",
     "description": "A unit ability that allows a unit to bombard ground forces."
   },
+  "nxPdWZ": {
+    "defaultMessage": "Other Victory Points",
+    "description": "The title of a section for assorted victory points."
+  },
   "p9XVGB": {
     "defaultMessage": "Prophecy of Kings",
     "description": "Text on a button that will enable/disable the Prophecy of Kings expansion."
@@ -5025,6 +5089,10 @@
   "pKlkVZ": {
     "defaultMessage": "FAQ",
     "description": "A button that will open the Frequently Asked Questions page."
+  },
+  "pPpzkR": {
+    "defaultMessage": "Relics",
+    "description": "The title of relic cards."
   },
   "r2htpd": {
     "defaultMessage": "Factions",
@@ -5037,6 +5105,10 @@
   "sgqLYB": {
     "defaultMessage": "Other",
     "description": "Text on a button used to select a non-listed value"
+  },
+  "t6v2oN": {
+    "defaultMessage": "Directives",
+    "description": "Agenda cards that do not have an ongoing effect."
   },
   "tocXJ4": {
     "defaultMessage": "Reset",
@@ -5053,6 +5125,10 @@
   "x42AMg": {
     "defaultMessage": "Randomize",
     "description": "Label for a section that involves randomly selecting things."
+  },
+  "yBACfb": {
+    "defaultMessage": "Main Screen",
+    "description": "Text on a button that opens the main screen of the assistant."
   },
   "zXrdrP": {
     "defaultMessage": "Codex III",

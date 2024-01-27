@@ -142,7 +142,12 @@ function MobileOptions({
               }}
             >
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-                Victory Points:
+                <FormattedMessage
+                  id="R06tnh"
+                  description="A label for a selector specifying the number of victory points required."
+                  defaultMessage="Victory Points"
+                />
+                :
                 <div
                   className="flexRow"
                   style={{
@@ -184,7 +189,11 @@ function MobileOptions({
                       );
                     }}
                   >
-                    Other
+                    <FormattedMessage
+                      id="sgqLYB"
+                      description="Text on a button used to select a non-listed value"
+                      defaultMessage="Other"
+                    />
                   </button>
                   <div
                     ref={otherPointsRef}
@@ -215,7 +224,11 @@ function MobileOptions({
                 </div>
               </div>
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-                Expansions:
+                <FormattedMessage
+                  id="2jNcVD"
+                  description="A label for a selector specifying which expansions should be enabled."
+                  defaultMessage="Expansions:"
+                />
                 <div
                   className={rowOrColumn}
                   style={{
@@ -230,7 +243,11 @@ function MobileOptions({
                       toggleExpansion(!options.expansions.has("POK"), "POK")
                     }
                   >
-                    Prophecy of Kings
+                    <FormattedMessage
+                      id="p9XVGB"
+                      description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+                      defaultMessage="Prophecy of Kings"
+                    />
                   </button>
                   <button
                     className={
@@ -243,7 +260,11 @@ function MobileOptions({
                       )
                     }
                   >
-                    Codex I
+                    <FormattedMessage
+                      id="3Taw9H"
+                      description="Text on a button that will enable/disable Codex I."
+                      defaultMessage="Codex I"
+                    />
                   </button>
                   <button
                     className={
@@ -256,7 +277,11 @@ function MobileOptions({
                       )
                     }
                   >
-                    Codex II
+                    <FormattedMessage
+                      id="knYKVl"
+                      description="Text on a button that will enable/disable Codex II."
+                      defaultMessage="Codex II"
+                    />
                   </button>
                   <button
                     className={
@@ -269,12 +294,20 @@ function MobileOptions({
                       )
                     }
                   >
-                    Codex III
+                    <FormattedMessage
+                      id="zXrdrP"
+                      description="Text on a button that will enable/disable Codex III."
+                      defaultMessage="Codex III"
+                    />
                   </button>
                 </div>
               </div>
               <div>
-                Map:
+                <FormattedMessage
+                  id="46dzNs"
+                  description="A label for a section of options related to the map."
+                  defaultMessage="Map:"
+                />
                 <div
                   className="flexColumn"
                   style={{
@@ -286,7 +319,11 @@ function MobileOptions({
                 >
                   {mapStyles.length > 1 ? (
                     <React.Fragment>
-                      Map Type:
+                      <FormattedMessage
+                        id="ZZ/Lhe"
+                        description="A label for a selector for selecting which map style to use."
+                        defaultMessage="Map Type:"
+                      />
                       <div
                         className="flexRow"
                         style={{ paddingLeft: `${responsivePixels(16)}` }}
@@ -307,7 +344,22 @@ function MobileOptions({
                       </div>
                     </React.Fragment>
                   ) : null}
-                  Map String (filters out non-claimable planets):
+                  <FormattedMessage
+                    id="UJSVtn"
+                    description="Label for a textbox used to specify the map string."
+                    defaultMessage="Map String"
+                  />
+                  <span
+                    className="smallFont"
+                    style={{ paddingLeft: responsivePixels(4) }}
+                  >
+                    <FormattedMessage
+                      id="zjv9Gr"
+                      description="Part of a label explaining what the map string does."
+                      defaultMessage="(filters out non-claimable planets)"
+                    />
+                  </span>
+                  :
                   <input
                     ref={mapStringRef}
                     type="textbox"
@@ -456,8 +508,9 @@ function Options({
               <FormattedMessage
                 id="R06tnh"
                 description="A label for a selector specifying the number of victory points required."
-                defaultMessage="Victory Points:"
+                defaultMessage="Victory Points"
               />
+              :
               <div
                 className="flexRow"
                 style={{
@@ -1860,7 +1913,22 @@ export default function SetupPage() {
   // const mapSize = (Math.min(window.innerHeight, window.innerWidth * .5) - 96) * .6;
   return (
     <React.Fragment>
-      <NonGameHeader leftSidebar="SETUP GAME" rightSidebar="SETUP GAME" />
+      <NonGameHeader
+        leftSidebar={intl
+          .formatMessage({
+            id: "9DZz2w",
+            description: "Text identifying that this is the setup step.",
+            defaultMessage: "Setup Game",
+          })
+          .toUpperCase()}
+        rightSidebar={intl
+          .formatMessage({
+            id: "9DZz2w",
+            description: "Text identifying that this is the setup step.",
+            defaultMessage: "Setup Game",
+          })
+          .toUpperCase()}
+      />
       {/* Large Screen */}
       <div
         className="flexRow nonMobile"
@@ -2195,7 +2263,11 @@ export default function SetupPage() {
             className="flexRow"
             style={{ width: "100%", fontSize: responsivePixels(20) }}
           >
-            Setup Game
+            <FormattedMessage
+              id="9DZz2w"
+              description="Text identifying that this is the setup step."
+              defaultMessage="Setup Game"
+            />
           </div>
           <MobileOptions
             updatePlayerCount={updatePlayerCount}

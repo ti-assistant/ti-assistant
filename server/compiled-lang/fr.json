@@ -23,6 +23,12 @@
       "value": "Le Large"
     }
   ],
+  "2HJ0k5": [
+    {
+      "type": 0,
+      "value": "Le S"
+    }
+  ],
   "2jNcVD": [
     {
       "type": 0,
@@ -65,10 +71,34 @@
       "value": "Le Standard"
     }
   ],
+  "5Bl4Ek": [
+    {
+      "type": 0,
+      "value": "Le Objectives"
+    }
+  ],
+  "6L07nG": [
+    {
+      "type": 0,
+      "value": "Le Reveal Objective"
+    }
+  ],
   "93G7sJ": [
     {
       "type": 0,
       "value": "Le Test string"
+    }
+  ],
+  "9DZz2w": [
+    {
+      "type": 0,
+      "value": "Le Setup Game"
+    }
+  ],
+  "9m91nk": [
+    {
+      "type": 0,
+      "value": "Le Objective View"
     }
   ],
   "A5p5qF": [
@@ -4345,6 +4375,12 @@
       "value": "Le SUSTAIN DAMAGE"
     }
   ],
+  "J21D/U": [
+    {
+      "type": 0,
+      "value": "Le Stage I"
+    }
+  ],
   "JS92Jj": [
     {
       "type": 0,
@@ -6951,16 +6987,28 @@
       "value": "value"
     }
   ],
+  "PzyYtG": [
+    {
+      "type": 0,
+      "value": "Le VPs"
+    }
+  ],
   "QFhw/l": [
     {
       "type": 0,
       "value": "Le Join Game"
     }
   ],
+  "QrrIrN": [
+    {
+      "type": 0,
+      "value": "Le Secrets"
+    }
+  ],
   "R06tnh": [
     {
       "type": 0,
-      "value": "Le Victory Points:"
+      "value": "Le Victory Points"
     }
   ],
   "Relics.Dominus Orb.Description": [
@@ -9349,6 +9397,12 @@
       "value": "Le Y'sia Y'ssrila"
     }
   ],
+  "Z6gLCK": [
+    {
+      "type": 0,
+      "value": "Le Stage II"
+    }
+  ],
   "ZZ/Lhe": [
     {
       "type": 0,
@@ -9361,16 +9415,56 @@
       "value": "Le Discordant Stars"
     }
   ],
+  "c6uq+j": [
+    {
+      "type": 0,
+      "value": "Le Select Faction"
+    }
+  ],
   "d0uSBF": [
     {
       "type": 0,
       "value": "Le Options"
     }
   ],
+  "e1q7sg": [
+    {
+      "type": 0,
+      "value": "Le Display Descriptions"
+    }
+  ],
+  "eGEjSH": [
+    {
+      "type": 0,
+      "value": "Le Imperial Points"
+    }
+  ],
+  "entq4x": [
+    {
+      "type": 0,
+      "value": "Le Display Titles"
+    }
+  ],
   "hIFcXI": [
     {
       "type": 0,
       "value": "Le PLANETARY SHIELD"
+    }
+  ],
+  "hMWeZX": [
+    {
+      "type": 0,
+      "value": "Le Laws"
+    }
+  ],
+  "hhm3kX": [
+    {
+      "type": 0,
+      "value": "Le Round "
+    },
+    {
+      "type": 1,
+      "value": "value"
     }
   ],
   "knYKVl": [
@@ -9401,6 +9495,12 @@
       "value": "value"
     }
   ],
+  "nxPdWZ": [
+    {
+      "type": 0,
+      "value": "Le Other Victory Points"
+    }
+  ],
   "p9XVGB": [
     {
       "type": 0,
@@ -9411,6 +9511,12 @@
     {
       "type": 0,
       "value": "Le FAQ"
+    }
+  ],
+  "pPpzkR": [
+    {
+      "type": 0,
+      "value": "Le Relics"
     }
   ],
   "r2htpd": [
@@ -9429,6 +9535,12 @@
     {
       "type": 0,
       "value": "Le Other"
+    }
+  ],
+  "t6v2oN": [
+    {
+      "type": 0,
+      "value": "Le Directives"
     }
   ],
   "tocXJ4": [
@@ -9453,6 +9565,12 @@
     {
       "type": 0,
       "value": "Le Randomize"
+    }
+  ],
+  "yBACfb": [
+    {
+      "type": 0,
+      "value": "Le Main Screen"
     }
   ],
   "zXrdrP": [

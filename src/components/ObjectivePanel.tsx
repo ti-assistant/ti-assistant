@@ -33,6 +33,7 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import Modal from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -273,6 +274,8 @@ export function ObjectivePanel({}) {
   const options = useContext(OptionContext);
   const state = useContext(StateContext);
 
+  const intl = useIntl();
+
   const [factionId, setFactionId] = useState<FactionId>("Vuil'raith Cabal");
   const [secretModal, setSecretModal] = useState(false);
 
@@ -467,7 +470,15 @@ export function ObjectivePanel({}) {
   return (
     <>
       <Modal
-        title={getFactionName((factions ?? {})[factionId]) + " Secrets"}
+        title={
+          getFactionName((factions ?? {})[factionId]) +
+          " " +
+          intl.formatMessage({
+            id: "QrrIrN",
+            description: "The title of secret objectives.",
+            defaultMessage: "Secrets",
+          })
+        }
         closeMenu={() => setSecretModal(false)}
         visible={!!secretModal}
       >
@@ -476,7 +487,13 @@ export function ObjectivePanel({}) {
       <div className="tabletOnly">
         <div className={styles.objectiveGrid}>
           <CollapsibleSection
-            title="Victory Points"
+            title={
+              <FormattedMessage
+                id="R06tnh"
+                description="A label for a selector specifying the number of victory points required."
+                defaultMessage="Victory Points"
+              />
+            }
             openedByDefault
             style={{
               width: "100%",
@@ -591,7 +608,29 @@ export function ObjectivePanel({}) {
               >
                 <Selector
                   options={remainingStageOneObjectives.map((obj) => obj.id)}
-                  hoverMenuLabel="Stage I"
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="J21D/U"
+                      description="The title of public objectives that grant 1 victory point."
+                      defaultMessage="Stage I"
+                    />
+                  }
+                  renderButton={(itemId, toggleItem) => {
+                    const objective = objectives[itemId];
+                    if (!objective) {
+                      return null;
+                    }
+                    return (
+                      <button
+                        style={{ fontSize: responsivePixels(14) }}
+                        onClick={() => {
+                          toggleItem(itemId, true);
+                        }}
+                      >
+                        {objective.name}
+                      </button>
+                    );
+                  }}
                   toggleItem={(objectiveId, add) => {
                     if (!gameid) {
                       return;
@@ -605,7 +644,29 @@ export function ObjectivePanel({}) {
                 />
                 <Selector
                   options={remainingStageTwoObjectives.map((obj) => obj.id)}
-                  hoverMenuLabel="Stage II"
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="Z6gLCK"
+                      description="The title of public objectives that grant 2 victory points."
+                      defaultMessage="Stage II"
+                    />
+                  }
+                  renderButton={(itemId, toggleItem) => {
+                    const objective = objectives[itemId];
+                    if (!objective) {
+                      return null;
+                    }
+                    return (
+                      <button
+                        style={{ fontSize: responsivePixels(14) }}
+                        onClick={() => {
+                          toggleItem(itemId, true);
+                        }}
+                      >
+                        {objective.name}
+                      </button>
+                    );
+                  }}
                   toggleItem={(objectiveId, add) => {
                     if (!gameid) {
                       return;
@@ -679,7 +740,13 @@ export function ObjectivePanel({}) {
           <div className={"flexColumn " + styles.objectiveSection}>
             {selectedStageOneObjectives.length === 0 ? null : (
               <CollapsibleSection
-                title="Stage I"
+                title={
+                  <FormattedMessage
+                    id="J21D/U"
+                    description="The title of public objectives that grant 1 victory point."
+                    defaultMessage="Stage I"
+                  />
+                }
                 color="orange"
                 style={{ width: "100%" }}
               >
@@ -776,7 +843,13 @@ export function ObjectivePanel({}) {
             )}
             {selectedStageTwoObjectives.length === 0 ? null : (
               <CollapsibleSection
-                title="Stage II"
+                title={
+                  <FormattedMessage
+                    id="Z6gLCK"
+                    description="The title of public objectives that grant 2 victory points."
+                    defaultMessage="Stage II"
+                  />
+                }
                 color="royalblue"
                 style={{ width: "100%" }}
               >
@@ -872,7 +945,13 @@ export function ObjectivePanel({}) {
               </CollapsibleSection>
             )}
             <CollapsibleSection
-              title="Secrets"
+              title={
+                <FormattedMessage
+                  id="QrrIrN"
+                  description="The title of secret objectives."
+                  defaultMessage="Secrets"
+                />
+              }
               color="red"
               style={{
                 width: "100%",
@@ -940,7 +1019,13 @@ export function ObjectivePanel({}) {
               </div>
             </CollapsibleSection>
             <CollapsibleSection
-              title="Imperial Points"
+              title={
+                <FormattedMessage
+                  id="eGEjSH"
+                  description="The title of points granted from using Imperial."
+                  defaultMessage="Imperial Points"
+                />
+              }
               style={{
                 width: "100%",
                 height: "fit-content",
@@ -1068,7 +1153,13 @@ export function ObjectivePanel({}) {
             </CollapsibleSection>
           </div>
           <CollapsibleSection
-            title="Support for the Throne"
+            title={
+              <FormattedMessage
+                id="Objectives.Support for the Throne.Title"
+                description="Title of Objective: Support for the Throne"
+                defaultMessage="Support for the Throne"
+              />
+            }
             style={{
               width: "100%",
               height: "fit-content",
@@ -1125,7 +1216,13 @@ export function ObjectivePanel({}) {
             </div>
           </CollapsibleSection>
           <CollapsibleSection
-            title="Other Victory Points"
+            title={
+              <FormattedMessage
+                id="nxPdWZ"
+                description="The title of a section for assorted victory points."
+                defaultMessage="Other Victory Points"
+              />
+            }
             style={{
               width: "100%",
               height: "fit-content",
@@ -1430,7 +1527,11 @@ export function ObjectivePanel({}) {
               padding: `0 ${responsivePixels(8)}`,
             }}
           >
-            VPs
+            <FormattedMessage
+              id="PzyYtG"
+              description="Shortened version of Victory Points."
+              defaultMessage="VPs"
+            />
           </div>
 
           {orderedFactionIds.map((name) => {
@@ -1474,10 +1575,28 @@ export function ObjectivePanel({}) {
                 fontSize: responsivePixels(16),
               }}
             >
-              Display {displayDescription ? "Titles" : "Descriptions"}
+              {displayDescription ? (
+                <FormattedMessage
+                  id="entq4x"
+                  description="Text on a button that will display titles."
+                  defaultMessage="Display Titles"
+                />
+              ) : (
+                <FormattedMessage
+                  id="e1q7sg"
+                  description="Text on a button that will display descriptions."
+                  defaultMessage="Display Descriptions"
+                />
+              )}
             </button>
             <LabeledDiv
-              label="Reveal Objective"
+              label={
+                <FormattedMessage
+                  id="6L07nG"
+                  description="Text telling the user to reveal an objective."
+                  defaultMessage="Reveal Objective"
+                />
+              }
               noBlur={true}
               style={{
                 flexDirection: "row",
@@ -1488,7 +1607,29 @@ export function ObjectivePanel({}) {
             >
               <Selector
                 options={remainingStageOneObjectives.map((obj) => obj.id)}
-                hoverMenuLabel="Stage I"
+                hoverMenuLabel={
+                  <FormattedMessage
+                    id="J21D/U"
+                    description="The title of public objectives that grant 1 victory point."
+                    defaultMessage="Stage I"
+                  />
+                }
+                renderButton={(itemId, toggleItem) => {
+                  const objective = objectives[itemId];
+                  if (!objective) {
+                    return null;
+                  }
+                  return (
+                    <button
+                      style={{ fontSize: responsivePixels(14) }}
+                      onClick={() => {
+                        toggleItem(itemId, true);
+                      }}
+                    >
+                      {objective.name}
+                    </button>
+                  );
+                }}
                 toggleItem={(objectiveId, add) => {
                   if (!gameid) {
                     return;
@@ -1502,7 +1643,29 @@ export function ObjectivePanel({}) {
               />
               <Selector
                 options={remainingStageTwoObjectives.map((obj) => obj.id)}
-                hoverMenuLabel="Stage II"
+                hoverMenuLabel={
+                  <FormattedMessage
+                    id="Z6gLCK"
+                    description="The title of public objectives that grant 2 victory points."
+                    defaultMessage="Stage II"
+                  />
+                }
+                renderButton={(itemId, toggleItem) => {
+                  const objective = objectives[itemId];
+                  if (!objective) {
+                    return null;
+                  }
+                  return (
+                    <button
+                      style={{ fontSize: responsivePixels(14) }}
+                      onClick={() => {
+                        toggleItem(itemId, true);
+                      }}
+                    >
+                      {objective.name}
+                    </button>
+                  );
+                }}
                 toggleItem={(objectiveId, add) => {
                   if (!gameid) {
                     return;
@@ -1563,7 +1726,11 @@ export function ObjectivePanel({}) {
                 fontSize: responsivePixels(44),
               }}
             >
-              S
+              <FormattedMessage
+                id="2HJ0k5"
+                description="The letter used to identify secret objectives."
+                defaultMessage="S"
+              />
             </div>
           </div>
           <div
@@ -1591,7 +1758,11 @@ export function ObjectivePanel({}) {
                 whiteSpace: "nowrap",
               }}
             >
-              Stage I
+              <FormattedMessage
+                id="J21D/U"
+                description="The title of public objectives that grant 1 victory point."
+                defaultMessage="Stage I"
+              />
             </div>
           </div>
           <div
@@ -1621,7 +1792,11 @@ export function ObjectivePanel({}) {
                 whiteSpace: "nowrap",
               }}
             >
-              Stage II
+              <FormattedMessage
+                id="Z6gLCK"
+                description="The title of public objectives that grant 2 victory points."
+                defaultMessage="Stage II"
+              />
             </div>
           </div>
           <div
@@ -1651,7 +1826,11 @@ export function ObjectivePanel({}) {
                 color: "red",
               }}
             >
-              Secrets
+              <FormattedMessage
+                id="QrrIrN"
+                description="The title of secret objectives."
+                defaultMessage="Secrets"
+              />
             </div>
           </div>
           {selectedStageTwoObjectives.map((objective) => {
@@ -1665,7 +1844,13 @@ export function ObjectivePanel({}) {
               />
             );
           })}
-          <GridHeader>Secrets</GridHeader>
+          <GridHeader>
+            <FormattedMessage
+              id="QrrIrN"
+              description="The title of secret objectives."
+              defaultMessage="Secrets"
+            />
+          </GridHeader>
           {orderedFactionIds.map((name) => {
             const factionSecrets = secretsByFaction[name] ?? [];
             return (
@@ -1785,7 +1970,13 @@ export function ObjectivePanel({}) {
           </div>
           <LabeledDiv
             noBlur={true}
-            label="Support for the Throne"
+            label={
+              <FormattedMessage
+                id="Objectives.Support for the Throne.Title"
+                description="Title of Objective: Support for the Throne"
+                defaultMessage="Support for the Throne"
+              />
+            }
             style={{ gridColumn: "3 / 9" }}
           >
             <div
@@ -1854,7 +2045,13 @@ export function ObjectivePanel({}) {
           </LabeledDiv>
           <LabeledDiv
             noBlur={true}
-            label="Imperial Points"
+            label={
+              <FormattedMessage
+                id="eGEjSH"
+                description="The title of points granted from using Imperial."
+                defaultMessage="Imperial Points"
+              />
+            }
             style={{ gridColumn: "9 / 13" }}
           >
             <div className="flexRow" style={{ width: "100%", height: "100%" }}>
@@ -1971,7 +2168,13 @@ export function ObjectivePanel({}) {
           {includesPoK ? (
             <LabeledDiv
               noBlur={true}
-              label="Relics"
+              label={
+                <FormattedMessage
+                  id="pPpzkR"
+                  description="The title of relic cards."
+                  defaultMessage="Relics"
+                />
+              }
               style={{ width: "100%", height: "100%", gridColumn: "3 / 6" }}
             >
               <div
@@ -1996,7 +2199,13 @@ export function ObjectivePanel({}) {
           ) : null}
           <LabeledDiv
             noBlur={true}
-            label="Laws"
+            label={
+              <FormattedMessage
+                id="hMWeZX"
+                description="Agendas that apply a continuing effect to the game."
+                defaultMessage="Laws"
+              />
+            }
             style={{
               flexDirection: "row",
               gridColumn: includesPoK ? "6/8" : "3/ 8",
@@ -2031,7 +2240,13 @@ export function ObjectivePanel({}) {
           </LabeledDiv>
           <LabeledDiv
             noBlur={true}
-            label="Directives"
+            label={
+              <FormattedMessage
+                id="t6v2oN"
+                description="Agenda cards that do not have an ongoing effect."
+                defaultMessage="Directives"
+              />
+            }
             style={{
               gridColumn: includesPoK ? "8 / 13" : " 8 / 13",
               width: "100%",
