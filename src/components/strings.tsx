@@ -113,6 +113,5 @@ export namespace Strings {
           />
         );
     }
-    return "Pending";
   }
 }

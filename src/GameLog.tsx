@@ -61,6 +61,7 @@ function buildInitialGameData(
         return {
           // Client specified values
           name: faction.name,
+          id: faction.id,
           color: faction.color,
           playerName: faction.playerName,
           order: order,
@@ -84,6 +85,7 @@ function buildInitialGameData(
       return {
         // Client specified values
         name: faction.name,
+        id: faction.id,
         color: faction.color,
         playerName: faction.playerName,
         order: order,
@@ -104,11 +106,11 @@ function buildInitialGameData(
   let speakerName: FactionId | undefined;
   gameFactions.forEach((faction, index) => {
     if (index === setupData.speaker) {
-      speakerName = faction.name as FactionId;
+      speakerName = faction.id;
     }
     const localFaction = { ...faction };
     if (
-      faction.name === "Winnu" &&
+      faction.id === "Winnu" &&
       !setupData.options.expansions.includes("POK")
     ) {
       localFaction.startswith.choice = {
@@ -121,11 +123,11 @@ function buildInitialGameData(
         ],
       };
     }
-    baseFactions[faction.name as FactionId] = localFaction;
+    baseFactions[faction.id] = localFaction;
     Object.entries(faction.planets).forEach(([name, planet]) => {
       basePlanets[name as PlanetId] = {
         ...planet,
-        owner: faction.name as FactionId,
+        owner: faction.id,
       };
     });
   });

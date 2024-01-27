@@ -30,7 +30,7 @@ export function endTurn(gameId: string, samePlayer?: boolean) {
         data.event.selectedAction = selectedAction;
         const secondaries: Record<string, Secondary> = {};
         for (const faction of Object.values(currentData.factions)) {
-          secondaries[faction.name] = faction.secondary ?? "PENDING";
+          secondaries[faction.id] = faction.secondary ?? "PENDING";
         }
         data.event.secondaries = secondaries;
 

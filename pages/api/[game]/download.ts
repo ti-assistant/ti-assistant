@@ -166,7 +166,7 @@ function buildSetupGameData(gameData: StoredGameData): {
   for (const faction of Object.values(gameData.factions)) {
     factions[faction.mapPosition] = {
       color: faction.color,
-      name: faction.name,
+      id: faction.id,
       playerName: faction.playerName,
     };
   }

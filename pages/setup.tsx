@@ -1063,7 +1063,7 @@ function FactionSelect({
         defaultMessage: "Enter Player Name...",
       });
     }
-  }, [playerName, currentNameRef]);
+  }, [playerName, currentNameRef, intl]);
 
   const isSpeaker = speaker === factionIndex;
 
