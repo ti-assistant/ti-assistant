@@ -41,6 +41,12 @@
       "value": "Le Initiative Order"
     }
   ],
+  "0DDRZv": [
+    {
+      "type": 0,
+      "value": "Le Strategy Card"
+    }
+  ],
   "0rSMZW": [
     {
       "type": 0,
@@ -101,6 +107,20 @@
       "value": "Le Undo"
     }
   ],
+  "4PYolM": [
+    {
+      "type": 0,
+      "value": "Le Start of "
+    },
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
+    }
+  ],
   "4V92Jv": [
     {
       "type": 0,
@@ -149,6 +169,20 @@
       "value": "Le Back to Game"
     }
   ],
+  "8/h2ME": [
+    {
+      "type": 0,
+      "value": "Le Advance to "
+    },
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
+    }
+  ],
   "93G7sJ": [
     {
       "type": 0,
@@ -161,12 +195,6 @@
       "value": "Le Setup Game"
     }
   ],
-  "9dPmJG": [
-    {
-      "type": 0,
-      "value": "Le Strategy Phase"
-    }
-  ],
   "9m91nk": [
     {
       "type": 0,
@@ -177,12 +205,6 @@
     {
       "type": 0,
       "value": "Le Report Issue"
-    }
-  ],
-  "AIBv1o": [
-    {
-      "type": 0,
-      "value": "Le Unknown Phase"
     }
   ],
   "Agendas.Anti-Intellectual Revolution.Description": [
@@ -2003,12 +2025,6 @@
       "value": "Le Warfare Research Facility"
     }
   ],
-  "BJicVf": [
-    {
-      "type": 0,
-      "value": "Le Setup Phase"
-    }
-  ],
   "Barony of Letnev.Abilities.Armada.Description": [
     {
       "type": 0,
@@ -2227,6 +2243,20 @@
     {
       "type": 0,
       "value": "Le Dunlain Reaper"
+    }
+  ],
+  "CG2MQj": [
+    {
+      "type": 0,
+      "value": "Le End of "
+    },
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
     }
   ],
   "CKpFBk": [
@@ -4275,6 +4305,12 @@
       "value": "Le Owners"
     }
   ],
+  "GFfdMB": [
+    {
+      "type": 0,
+      "value": "Le Confirm Swap"
+    }
+  ],
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": [
     {
       "type": 0,
@@ -4525,6 +4561,20 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "Irm2+w": [
+    {
+      "type": 0,
+      "value": "Le "
+    },
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
     }
   ],
   "J21D/U": [
@@ -7181,10 +7231,46 @@
       "value": "value"
     }
   ],
-  "PTLLNt": [
+  "Phase.Action": [
     {
       "type": 0,
-      "value": "Le Action Phase"
+      "value": "Le Action"
+    }
+  ],
+  "Phase.Agenda": [
+    {
+      "type": 0,
+      "value": "Le Agenda"
+    }
+  ],
+  "Phase.End": [
+    {
+      "type": 0,
+      "value": "Le End of Game"
+    }
+  ],
+  "Phase.Setup": [
+    {
+      "type": 0,
+      "value": "Le Setup"
+    }
+  ],
+  "Phase.Status": [
+    {
+      "type": 0,
+      "value": "Le Status"
+    }
+  ],
+  "Phase.Strategy": [
+    {
+      "type": 0,
+      "value": "Le Strategy"
+    }
+  ],
+  "Phase.Unknown": [
+    {
+      "type": 0,
+      "value": "Le Unknown"
     }
   ],
   "PptkAD": [
@@ -7471,6 +7557,12 @@
     {
       "type": 0,
       "value": "Le Sub-Faction"
+    }
+  ],
+  "S0vXJt": [
+    {
+      "type": 0,
+      "value": "Le On Deck"
     }
   ],
   "Sardakk N'orr.Abilities.Unrelenting.Description": [
@@ -9327,6 +9419,12 @@
       "value": "count"
     }
   ],
+  "YKkcsO": [
+    {
+      "type": 0,
+      "value": "Le Discard to Swap"
+    }
+  ],
   "Yin Brotherhood.Abilities.Devotion.Description": [
     {
       "type": 0,
@@ -9993,6 +10091,24 @@
       "value": "Le Speaker"
     }
   ],
+  "l6pQCt": [
+    {
+      "type": 0,
+      "value": "Le Swap "
+    },
+    {
+      "type": 1,
+      "value": "firstCard"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "secondCard"
+    }
+  ],
   "lGDH2d": [
     {
       "type": 0,
@@ -10121,12 +10237,6 @@
       "value": "Le Relics"
     }
   ],
-  "qLZW8s": [
-    {
-      "type": 0,
-      "value": "Le End of Game"
-    }
-  ],
   "qfVnAj": [
     {
       "type": 0,
@@ -10233,12 +10343,6 @@
       "value": "count"
     }
   ],
-  "sMeRMP": [
-    {
-      "type": 0,
-      "value": "Le Agenda Phase"
-    }
-  ],
   "sgqLYB": [
     {
       "type": 0,
@@ -10257,10 +10361,10 @@
       "value": "Le Reset"
     }
   ],
-  "udTpDZ": [
+  "vTtJ6S": [
     {
       "type": 0,
-      "value": "Le Status Phase"
+      "value": "Le Active Player"
     }
   ],
   "vsuOf1": [

@@ -27,6 +27,10 @@
     "defaultMessage": "Initiative Order",
     "description": "An ordering of factions based on initiative."
   },
+  "0DDRZv": {
+    "defaultMessage": "Strategy Card",
+    "description": "Strategy card."
+  },
   "0rSMZW": {
     "defaultMessage": "Large",
     "description": "Text on a button specifying that the map style should be large."
@@ -67,6 +71,10 @@
     "defaultMessage": "Undo",
     "description": "Text shown on a button that will undo the previous action."
   },
+  "4PYolM": {
+    "defaultMessage": "Start of {phase} Phase",
+    "description": "Text showing that something will occur at the start of a specific phase."
+  },
   "4V92Jv": {
     "defaultMessage": "Warp",
     "description": "Text on a button specifying that the map style should be warp."
@@ -99,16 +107,16 @@
     "defaultMessage": "Back to Game",
     "description": "Text shown on a button that will return to the game."
   },
+  "8/h2ME": {
+    "defaultMessage": "Advance to {phase} Phase",
+    "description": "Text on a button that will advance the game to a specific phase."
+  },
   "93G7sJ": {
     "defaultMessage": "Test string"
   },
   "9DZz2w": {
     "defaultMessage": "Setup Game",
     "description": "Text identifying that this is the setup step."
-  },
-  "9dPmJG": {
-    "defaultMessage": "Strategy Phase",
-    "description": "Phase text shown during strategy phase."
   },
   "9m91nk": {
     "defaultMessage": "Objective View",
@@ -117,10 +125,6 @@
   "A5p5qF": {
     "defaultMessage": "Report Issue",
     "description": "A button that will open the Github issues page."
-  },
-  "AIBv1o": {
-    "defaultMessage": "Unknown Phase",
-    "description": "Phase text shown while game is loading."
   },
   "Agendas.Anti-Intellectual Revolution.Description": {
     "defaultMessage": "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
@@ -934,10 +938,6 @@
     "defaultMessage": "Warfare Research Facility",
     "description": "Title of Attachment: Warfare Research Facility"
   },
-  "BJicVf": {
-    "defaultMessage": "Setup Phase",
-    "description": "Phase text shown during setup phase."
-  },
   "Barony of Letnev.Abilities.Armada.Description": {
     "defaultMessage": "The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool.",
     "description": "Description for Faction Ability: Armada"
@@ -1041,6 +1041,10 @@
   "Barony of Letnev.Units.Dunlain Reaper.Title": {
     "defaultMessage": "Dunlain Reaper",
     "description": "Title of Faction Unit: Dunlain Reaper"
+  },
+  "CG2MQj": {
+    "defaultMessage": "End of {phase} Phase",
+    "description": "Text showing that something will occur at the end of a specific phase."
   },
   "CKpFBk": {
     "defaultMessage": "Draw 2 secret objectives and keep 1",
@@ -2142,6 +2146,10 @@
     "defaultMessage": "Owners",
     "description": "Text on a button that will show planet ownership."
   },
+  "GFfdMB": {
+    "defaultMessage": "Confirm Swap",
+    "description": "Text on a button that will apply a Strategy Card swap."
+  },
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": {
     "defaultMessage": "When you create the game board, place the Creuss Gate (tile 17) where your home system would normally be placed. The Creuss Gate system is not a home system. Then, place your home system (tile 51) in your play area.",
     "description": "Description for Faction Ability: Creuss Gate"
@@ -2261,6 +2269,10 @@
   "IG7CG4": {
     "defaultMessage": "{count} {count, plural, one {Space Dock} other {Space Docks}}",
     "description": "A number of Space Dock units."
+  },
+  "Irm2+w": {
+    "defaultMessage": "{phase} Phase",
+    "description": "Text shown on side of screen during a specific phase"
   },
   "J21D/U": {
     "defaultMessage": "Stage I",
@@ -3818,9 +3830,33 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
-  "PTLLNt": {
-    "defaultMessage": "Action Phase",
-    "description": "Phase text shown during action phase."
+  "Phase.Action": {
+    "defaultMessage": "Action",
+    "description": "Phase title for Action phase."
+  },
+  "Phase.Agenda": {
+    "defaultMessage": "Agenda",
+    "description": "Phase title for Agenda phase."
+  },
+  "Phase.End": {
+    "defaultMessage": "End of Game",
+    "description": "Phase title for end of game."
+  },
+  "Phase.Setup": {
+    "defaultMessage": "Setup",
+    "description": "Phase title for Setup phase."
+  },
+  "Phase.Status": {
+    "defaultMessage": "Status",
+    "description": "Phase title for Status phase."
+  },
+  "Phase.Strategy": {
+    "defaultMessage": "Strategy",
+    "description": "Phase title for Strategy phase."
+  },
+  "Phase.Unknown": {
+    "defaultMessage": "Unknown",
+    "description": "Phase text shown while game is loading."
   },
   "PptkAD": {
     "defaultMessage": "{count} {count, plural, one {Mech} other {Mechs}}",
@@ -3953,6 +3989,10 @@
   "RlIQB2": {
     "defaultMessage": "Sub-Faction",
     "description": "The faction that Council Keleres chooses."
+  },
+  "S0vXJt": {
+    "defaultMessage": "On Deck",
+    "description": "Label showing that the specific player is up next."
   },
   "Sardakk N'orr.Abilities.Unrelenting.Description": {
     "defaultMessage": "Apply +1 to the result of each of your unit's combat rolls.",
@@ -4918,6 +4958,10 @@
     "defaultMessage": "{count} {count, plural, one {Infantry} other {Infantry}}",
     "description": "A number of Infantry units."
   },
+  "YKkcsO": {
+    "defaultMessage": "Discard to Swap",
+    "description": "Text on a button that will apply a Imperial Arbiter Strategy Card swap."
+  },
   "Yin Brotherhood.Abilities.Devotion.Description": {
     "defaultMessage": "After each space battle round, you may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit and assign it to 1 of your opponent's ships in that system.",
     "description": "Description for Faction Ability: Devotion"
@@ -5242,6 +5286,10 @@
     "defaultMessage": "Speaker",
     "description": "The title of the player that has the Speaker token."
   },
+  "l6pQCt": {
+    "defaultMessage": "Swap {firstCard} for {secondCard}",
+    "description": "Text describing which strategy card a player is swapping for a different card."
+  },
   "lGDH2d": {
     "defaultMessage": "{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}",
     "description": "Unit upgrade techs."
@@ -5282,10 +5330,6 @@
     "defaultMessage": "Relics",
     "description": "The title of relic cards."
   },
-  "qLZW8s": {
-    "defaultMessage": "End of Game",
-    "description": "Phase text shown after game is finished."
-  },
   "qfVnAj": {
     "defaultMessage": "Reveal 2 stage I objectives",
     "description": "A label telling the speaker to reveal objectives."
@@ -5314,10 +5358,6 @@
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
     "description": "A number of Cruiser units."
   },
-  "sMeRMP": {
-    "defaultMessage": "Agenda Phase",
-    "description": "Phase text shown during agenda phase."
-  },
   "sgqLYB": {
     "defaultMessage": "Other",
     "description": "Text on a button used to select a non-listed value"
@@ -5330,9 +5370,9 @@
     "defaultMessage": "Reset",
     "description": "Text on a button that will reset selections."
   },
-  "udTpDZ": {
-    "defaultMessage": "Status Phase",
-    "description": "Phase text shown during status phase."
+  "vTtJ6S": {
+    "defaultMessage": "Active Player",
+    "description": "Label showing that the specific player is the current player."
   },
   "vsuOf1": {
     "defaultMessage": "End Game",

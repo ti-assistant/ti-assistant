@@ -218,7 +218,17 @@ export default function Header() {
         </div>
       ) : null}
       <Sidebars
-        left={phaseString(state.phase, intl).toUpperCase()}
+        left={intl
+          .formatMessage(
+            {
+              id: "Irm2+w",
+              defaultMessage: "{phase} Phase",
+              description:
+                "Text shown on side of screen during a specific phase",
+            },
+            { phase: phaseString(state.phase, intl).toUpperCase() }
+          )
+          .toUpperCase()}
         right={intl
           .formatMessage(
             {

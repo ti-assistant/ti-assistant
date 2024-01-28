@@ -106,44 +106,44 @@ export function phaseString(phase: Phase, intl: IntlShape) {
   switch (phase) {
     case "UNKNOWN":
       return intl.formatMessage({
-        id: "AIBv1o",
+        id: "Phase.Unknown",
         description: "Phase text shown while game is loading.",
-        defaultMessage: "Unknown Phase",
+        defaultMessage: "Unknown",
       });
     case "SETUP":
       return intl.formatMessage({
-        id: "BJicVf",
-        description: "Phase text shown during setup phase.",
-        defaultMessage: "Setup Phase",
+        id: "Phase.Setup",
+        description: "Phase title for Setup phase.",
+        defaultMessage: "Setup",
       });
     case "STRATEGY":
       return intl.formatMessage({
-        id: "9dPmJG",
-        description: "Phase text shown during strategy phase.",
-        defaultMessage: "Strategy Phase",
+        id: "Phase.Strategy",
+        description: "Phase title for Strategy phase.",
+        defaultMessage: "Strategy",
       });
     case "ACTION":
       return intl.formatMessage({
-        id: "PTLLNt",
-        description: "Phase text shown during action phase.",
-        defaultMessage: "Action Phase",
+        id: "Phase.Action",
+        description: "Phase title for Action phase.",
+        defaultMessage: "Action",
       });
     case "STATUS":
       return intl.formatMessage({
-        id: "udTpDZ",
-        description: "Phase text shown during status phase.",
-        defaultMessage: "Status Phase",
+        id: "Phase.Status",
+        description: "Phase title for Status phase.",
+        defaultMessage: "Status",
       });
     case "AGENDA":
       return intl.formatMessage({
-        id: "sMeRMP",
-        description: "Phase text shown during agenda phase.",
-        defaultMessage: "Agenda Phase",
+        id: "Phase.Agenda",
+        description: "Phase title for Agenda phase.",
+        defaultMessage: "Agenda",
       });
     case "END":
       return intl.formatMessage({
-        id: "qLZW8s",
-        description: "Phase text shown after game is finished.",
+        id: "Phase.End",
+        description: "Phase title for end of game.",
         defaultMessage: "End of Game",
       });
   }

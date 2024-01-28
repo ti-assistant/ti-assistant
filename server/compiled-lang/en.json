@@ -41,6 +41,12 @@
       "value": "Initiative Order"
     }
   ],
+  "0DDRZv": [
+    {
+      "type": 0,
+      "value": "Strategy Card"
+    }
+  ],
   "0rSMZW": [
     {
       "type": 0,
@@ -101,6 +107,20 @@
       "value": "Undo"
     }
   ],
+  "4PYolM": [
+    {
+      "type": 0,
+      "value": "Start of "
+    },
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
+    }
+  ],
   "4V92Jv": [
     {
       "type": 0,
@@ -149,6 +169,20 @@
       "value": "Back to Game"
     }
   ],
+  "8/h2ME": [
+    {
+      "type": 0,
+      "value": "Advance to "
+    },
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
+    }
+  ],
   "93G7sJ": [
     {
       "type": 0,
@@ -161,12 +195,6 @@
       "value": "Setup Game"
     }
   ],
-  "9dPmJG": [
-    {
-      "type": 0,
-      "value": "Strategy Phase"
-    }
-  ],
   "9m91nk": [
     {
       "type": 0,
@@ -177,12 +205,6 @@
     {
       "type": 0,
       "value": "Report Issue"
-    }
-  ],
-  "AIBv1o": [
-    {
-      "type": 0,
-      "value": "Unknown Phase"
     }
   ],
   "Agendas.Anti-Intellectual Revolution.Description": [
@@ -2003,12 +2025,6 @@
       "value": "Warfare Research Facility"
     }
   ],
-  "BJicVf": [
-    {
-      "type": 0,
-      "value": "Setup Phase"
-    }
-  ],
   "Barony of Letnev.Abilities.Armada.Description": [
     {
       "type": 0,
@@ -2227,6 +2243,20 @@
     {
       "type": 0,
       "value": "Dunlain Reaper"
+    }
+  ],
+  "CG2MQj": [
+    {
+      "type": 0,
+      "value": "End of "
+    },
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
     }
   ],
   "CKpFBk": [
@@ -4275,6 +4305,12 @@
       "value": "Owners"
     }
   ],
+  "GFfdMB": [
+    {
+      "type": 0,
+      "value": "Confirm Swap"
+    }
+  ],
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": [
     {
       "type": 0,
@@ -4521,6 +4557,16 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "Irm2+w": [
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase"
     }
   ],
   "J21D/U": [
@@ -7177,10 +7223,46 @@
       "value": "value"
     }
   ],
-  "PTLLNt": [
+  "Phase.Action": [
     {
       "type": 0,
-      "value": "Action Phase"
+      "value": "Action"
+    }
+  ],
+  "Phase.Agenda": [
+    {
+      "type": 0,
+      "value": "Agenda"
+    }
+  ],
+  "Phase.End": [
+    {
+      "type": 0,
+      "value": "End of Game"
+    }
+  ],
+  "Phase.Setup": [
+    {
+      "type": 0,
+      "value": "Setup"
+    }
+  ],
+  "Phase.Status": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "Phase.Strategy": [
+    {
+      "type": 0,
+      "value": "Strategy"
+    }
+  ],
+  "Phase.Unknown": [
+    {
+      "type": 0,
+      "value": "Unknown"
     }
   ],
   "PptkAD": [
@@ -7459,6 +7541,12 @@
     {
       "type": 0,
       "value": "Sub-Faction"
+    }
+  ],
+  "S0vXJt": [
+    {
+      "type": 0,
+      "value": "On Deck"
     }
   ],
   "Sardakk N'orr.Abilities.Unrelenting.Description": [
@@ -9303,6 +9391,12 @@
       "value": "count"
     }
   ],
+  "YKkcsO": [
+    {
+      "type": 0,
+      "value": "Discard to Swap"
+    }
+  ],
   "Yin Brotherhood.Abilities.Devotion.Description": [
     {
       "type": 0,
@@ -9961,6 +10055,24 @@
       "value": "Speaker"
     }
   ],
+  "l6pQCt": [
+    {
+      "type": 0,
+      "value": "Swap "
+    },
+    {
+      "type": 1,
+      "value": "firstCard"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "secondCard"
+    }
+  ],
   "lGDH2d": [
     {
       "offset": 0,
@@ -10081,12 +10193,6 @@
       "value": "Relics"
     }
   ],
-  "qLZW8s": [
-    {
-      "type": 0,
-      "value": "End of Game"
-    }
-  ],
   "qfVnAj": [
     {
       "type": 0,
@@ -10185,12 +10291,6 @@
       "value": "count"
     }
   ],
-  "sMeRMP": [
-    {
-      "type": 0,
-      "value": "Agenda Phase"
-    }
-  ],
   "sgqLYB": [
     {
       "type": 0,
@@ -10209,10 +10309,10 @@
       "value": "Reset"
     }
   ],
-  "udTpDZ": [
+  "vTtJ6S": [
     {
       "type": 0,
-      "value": "Status Phase"
+      "value": "Active Player"
     }
   ],
   "vsuOf1": [
