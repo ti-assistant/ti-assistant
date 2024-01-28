@@ -11,6 +11,10 @@
     "defaultMessage": "Le AND",
     "description": "Text between two fields linking them together."
   },
+  "+XKsgE": {
+    "defaultMessage": "Le Game",
+    "description": "Text used to identify the current game."
+  },
   "+mUg6N": {
     "defaultMessage": "Le Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
@@ -19,9 +23,21 @@
     "defaultMessage": "Le Choose Starting Tech",
     "description": "Label on a hover menu used to select starting techs."
   },
+  "09baik": {
+    "defaultMessage": "Le Initiative Order",
+    "description": "An ordering of factions based on initiative."
+  },
   "0rSMZW": {
     "defaultMessage": "Le Large",
     "description": "Text on a button specifying that the map style should be large."
+  },
+  "1fNqTf": {
+    "defaultMessage": "Le Planets",
+    "description": "Planets."
+  },
+  "1odgd1": {
+    "defaultMessage": "Le Attachments",
+    "description": "Text on a button that will show planet attachments."
   },
   "2HJ0k5": {
     "defaultMessage": "Le S",
@@ -47,6 +63,10 @@
     "defaultMessage": "Le Map:",
     "description": "A label for a section of options related to the map."
   },
+  "49oatW": {
+    "defaultMessage": "Le Undo",
+    "description": "Text shown on a button that will undo the previous action."
+  },
   "4V92Jv": {
     "defaultMessage": "Le Warp",
     "description": "Text on a button specifying that the map style should be warp."
@@ -67,9 +87,17 @@
     "defaultMessage": "Le Objectives",
     "description": "Cards that define how to score victory points."
   },
+  "5rR4S2": {
+    "defaultMessage": "Le View Details",
+    "description": "Label for a section that includes map details."
+  },
   "6L07nG": {
     "defaultMessage": "Le Reveal Objective",
     "description": "Text telling the user to reveal an objective."
+  },
+  "7SZHCO": {
+    "defaultMessage": "Le Back to Game",
+    "description": "Text shown on a button that will return to the game."
   },
   "93G7sJ": {
     "defaultMessage": "Le Test string"
@@ -78,6 +106,10 @@
     "defaultMessage": "Le Setup Game",
     "description": "Text identifying that this is the setup step."
   },
+  "9dPmJG": {
+    "defaultMessage": "Le Strategy Phase",
+    "description": "Phase text shown during strategy phase."
+  },
   "9m91nk": {
     "defaultMessage": "Le Objective View",
     "description": "Text on a button that opens the objective view of the assistant."
@@ -85,6 +117,10 @@
   "A5p5qF": {
     "defaultMessage": "Le Report Issue",
     "description": "A button that will open the Github issues page."
+  },
+  "AIBv1o": {
+    "defaultMessage": "Le Unknown Phase",
+    "description": "Phase text shown while game is loading."
   },
   "Agendas.Anti-Intellectual Revolution.Description": {
     "defaultMessage": "Le FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
@@ -898,6 +934,10 @@
     "defaultMessage": "Le Warfare Research Facility",
     "description": "Title of Attachment: Warfare Research Facility"
   },
+  "BJicVf": {
+    "defaultMessage": "Le Setup Phase",
+    "description": "Phase text shown during setup phase."
+  },
   "Barony of Letnev.Abilities.Armada.Description": {
     "defaultMessage": "Le The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool.",
     "description": "Description for Faction Ability: Armada"
@@ -1005,6 +1045,10 @@
   "CKpFBk": {
     "defaultMessage": "Le Draw 2 secret objectives and keep 1",
     "description": "A step in the setup phase: Draw 2 secret objectives and keep 1."
+  },
+  "COzTbT": {
+    "defaultMessage": "Le Pause",
+    "description": "Text shown on a button that will pause the game."
   },
   "ChW/ih": {
     "defaultMessage": "Le Draw 5 stage II objectives",
@@ -1654,6 +1698,10 @@
     "defaultMessage": "Le ANTI-FIGHTER BARRAGE {value}",
     "description": "A unit ability that allows a unit to destroy fighters."
   },
+  "Dw1fzR": {
+    "defaultMessage": "Le Update Planets",
+    "description": "Text shown on a button that opens the update planets panel."
+  },
   "Ecx237": {
     "defaultMessage": "Le Skinny",
     "description": "Text on a button specifying that the map style should be skinny."
@@ -2090,6 +2138,10 @@
     "defaultMessage": "Le ZS Thunderbolt M2",
     "description": "Title of Faction Unit: ZS Thunderbolt M2"
   },
+  "FhKQXR": {
+    "defaultMessage": "Le Owners",
+    "description": "Text on a button that will show planet ownership."
+  },
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": {
     "defaultMessage": "Le When you create the game board, place the Creuss Gate (tile 17) where your home system would normally be placed. The Creuss Gate system is not a home system. Then, place your home system (tile 51) in your play area.",
     "description": "Description for Faction Ability: Creuss Gate"
@@ -2353,6 +2405,10 @@
   "Lm8L7/": {
     "defaultMessage": "Le Color",
     "description": "Text on a hover menu for picking a player's color."
+  },
+  "Lrn2Da": {
+    "defaultMessage": "Le Update Objectives",
+    "description": "Text shown on a button that opens the update objectives panel."
   },
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": {
     "defaultMessage": "Le When you win a combat, place 1 command token from your opponent's reinforcements in your fleet pool if it does not already contain 1 of that player's tokens; other player's tokens in your fleet pool increase your fleet limit but cannot be redistributed.",
@@ -3762,6 +3818,10 @@
     "defaultMessage": "Le PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "PTLLNt": {
+    "defaultMessage": "Le Action Phase",
+    "description": "Phase text shown during action phase."
+  },
   "PptkAD": {
     "defaultMessage": "Le {count} {count, plural, one {Mech} other {Mechs}}",
     "description": "A number of Mech units."
@@ -3889,6 +3949,10 @@
   "Relics.The Prophet's Tears.Title": {
     "defaultMessage": "Le The Prophet's Tears",
     "description": "Title of Relic: The Prophet's Tears"
+  },
+  "RlIQB2": {
+    "defaultMessage": "Le Sub-Faction",
+    "description": "The faction that Council Keleres chooses."
   },
   "Sardakk N'orr.Abilities.Unrelenting.Description": {
     "defaultMessage": "Le Apply +1 to the result of each of your unit's combat rolls.",
@@ -4402,6 +4466,10 @@
     "defaultMessage": "Le Map String",
     "description": "Label for a textbox used to specify the map string."
   },
+  "USnh0f": {
+    "defaultMessage": "Le Update Techs",
+    "description": "Text shown on a button that opens the update techs panel."
+  },
   "Universities of Jol-Nar.Abilities.Analytical.Description": {
     "defaultMessage": "Le When you research a technology that is not a unit upgrade technology, you may ignore 1 prerequisite.",
     "description": "Description for Faction Ability: Analytical"
@@ -4505,6 +4573,10 @@
   "Universities of Jol-Nar.Units.Shield Paling.Title": {
     "defaultMessage": "Le Shield Paling",
     "description": "Title of Faction Unit: Shield Paling"
+  },
+  "VjlCY0": {
+    "defaultMessage": "Le Update",
+    "description": "Text specifying a section that includes update operations."
   },
   "Vuil'raith Cabal.Abilities.Amalgamation.Description": {
     "defaultMessage": "Le When you produce a unit, you may return 1 captured unit of that type to produce that unit without spending resources.",
@@ -5118,6 +5190,10 @@
     "defaultMessage": "Le Options",
     "description": "Label on a menu for changing game options"
   },
+  "dNmJ1r": {
+    "defaultMessage": "Le Unpause",
+    "description": "Text shown on a button that will unpause the game."
+  },
   "dmwygw": {
     "defaultMessage": "Le Re-shuffle secret objectives",
     "description": "A step in the setup phase: Re-shuffle secret objectives."
@@ -5186,6 +5262,10 @@
     "defaultMessage": "Le Other Victory Points",
     "description": "The title of a section for assorted victory points."
   },
+  "oiV4lE": {
+    "defaultMessage": "Le Laws in Effect",
+    "description": "Text on a hover menu that will display the current laws that have been passed."
+  },
   "p4V2Yv": {
     "defaultMessage": "Le Draw 5 stage I objectives",
     "description": "A step in the setup phase: Draw 5 stage I objectives."
@@ -5202,6 +5282,10 @@
     "defaultMessage": "Le Relics",
     "description": "The title of relic cards."
   },
+  "qLZW8s": {
+    "defaultMessage": "Le End of Game",
+    "description": "Phase text shown after game is finished."
+  },
   "qfVnAj": {
     "defaultMessage": "Le Reveal 2 stage I objectives",
     "description": "A label telling the speaker to reveal objectives."
@@ -5213,6 +5297,10 @@
   "rEazHY": {
     "defaultMessage": "Le {count} {count, plural, one {War Sun} other {War Suns}}",
     "description": "A number of War Sun units."
+  },
+  "rbtRWF": {
+    "defaultMessage": "Le Voting Order",
+    "description": "An ordering of factions based on voting."
   },
   "rlGbdz": {
     "defaultMessage": "Le Starting Components",
@@ -5226,6 +5314,10 @@
     "defaultMessage": "Le {count} {count, plural, one {Cruiser} other {Cruisers}}",
     "description": "A number of Cruiser units."
   },
+  "sMeRMP": {
+    "defaultMessage": "Le Agenda Phase",
+    "description": "Phase text shown during agenda phase."
+  },
   "sgqLYB": {
     "defaultMessage": "Le Other",
     "description": "Text on a button used to select a non-listed value"
@@ -5237,6 +5329,18 @@
   "tocXJ4": {
     "defaultMessage": "Le Reset",
     "description": "Text on a button that will reset selections."
+  },
+  "udTpDZ": {
+    "defaultMessage": "Le Status Phase",
+    "description": "Phase text shown during status phase."
+  },
+  "vsuOf1": {
+    "defaultMessage": "Le End Game",
+    "description": "Text shown on a button that will end the game."
+  },
+  "wDLqxZ": {
+    "defaultMessage": "Le Types",
+    "description": "Text on a button that will show planet types."
   },
   "wOb6Wx": {
     "defaultMessage": "Le Become a Patron",
@@ -5254,6 +5358,10 @@
     "defaultMessage": "Le {count} {count, plural, one {Flagship} other {Flagships}}",
     "description": "A number of Flagship units."
   },
+  "xDzJ9/": {
+    "defaultMessage": "Le View Map",
+    "description": "Text shown on a button that opens the map."
+  },
   "xu0llf": {
     "defaultMessage": "Le Select all Faction Choices",
     "description": "Error message telling the user to select all faction choices."
@@ -5261,6 +5369,10 @@
   "yBACfb": {
     "defaultMessage": "Le Main Screen",
     "description": "Text on a button that opens the main screen of the assistant."
+  },
+  "ys7uwX": {
+    "defaultMessage": "Le Techs",
+    "description": "Shortened version of technologies."
   },
   "zXrdrP": {
     "defaultMessage": "Le Codex III",

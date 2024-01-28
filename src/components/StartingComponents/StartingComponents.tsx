@@ -174,7 +174,12 @@ export default function StartingComponents({
             paddingLeft: responsivePixels(4),
           }}
         >
-          Sub-Faction:
+          <FormattedMessage
+            id="RlIQB2"
+            description="The faction that Council Keleres chooses."
+            defaultMessage="Sub-Faction"
+          />
+          :
           <FactionSelectRadialMenu
             factions={startswith.planetchoice.options.filter(
               (faction) => options["allow-double-council"] || !factions[faction]
@@ -204,6 +209,7 @@ export default function StartingComponents({
             }}
           >
             <FormattedMessage
+              id="NEiUw9"
               description="Message explaining that a faction has no starting tech."
               defaultMessage="No Starting Tech"
             />

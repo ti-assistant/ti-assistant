@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect } from "react";
+import { FormattedMessage } from "react-intl";
 import { ActionLogContext } from "../../context/Context";
 import { undoAsync } from "../../dynamic/api";
 import { responsivePixels } from "../../util/util";
@@ -45,7 +46,11 @@ export default function UndoButton({ gameId }: { gameId?: string }) {
       style={{ fontSize: responsivePixels(20) }}
       onClick={() => undoAsync(gameId)}
     >
-      Undo
+      <FormattedMessage
+        id="49oatW"
+        description="Text shown on a button that will undo the previous action."
+        defaultMessage="Undo"
+      />
     </button>
   );
 }

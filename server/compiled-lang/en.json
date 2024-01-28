@@ -17,6 +17,12 @@
       "value": "AND"
     }
   ],
+  "+XKsgE": [
+    {
+      "type": 0,
+      "value": "Game"
+    }
+  ],
   "+mUg6N": [
     {
       "type": 0,
@@ -29,10 +35,28 @@
       "value": "Choose Starting Tech"
     }
   ],
+  "09baik": [
+    {
+      "type": 0,
+      "value": "Initiative Order"
+    }
+  ],
   "0rSMZW": [
     {
       "type": 0,
       "value": "Large"
+    }
+  ],
+  "1fNqTf": [
+    {
+      "type": 0,
+      "value": "Planets"
+    }
+  ],
+  "1odgd1": [
+    {
+      "type": 0,
+      "value": "Attachments"
     }
   ],
   "2HJ0k5": [
@@ -71,6 +95,12 @@
       "value": "Map:"
     }
   ],
+  "49oatW": [
+    {
+      "type": 0,
+      "value": "Undo"
+    }
+  ],
   "4V92Jv": [
     {
       "type": 0,
@@ -101,10 +131,22 @@
       "value": "Objectives"
     }
   ],
+  "5rR4S2": [
+    {
+      "type": 0,
+      "value": "View Details"
+    }
+  ],
   "6L07nG": [
     {
       "type": 0,
       "value": "Reveal Objective"
+    }
+  ],
+  "7SZHCO": [
+    {
+      "type": 0,
+      "value": "Back to Game"
     }
   ],
   "93G7sJ": [
@@ -119,6 +161,12 @@
       "value": "Setup Game"
     }
   ],
+  "9dPmJG": [
+    {
+      "type": 0,
+      "value": "Strategy Phase"
+    }
+  ],
   "9m91nk": [
     {
       "type": 0,
@@ -129,6 +177,12 @@
     {
       "type": 0,
       "value": "Report Issue"
+    }
+  ],
+  "AIBv1o": [
+    {
+      "type": 0,
+      "value": "Unknown Phase"
     }
   ],
   "Agendas.Anti-Intellectual Revolution.Description": [
@@ -1949,6 +2003,12 @@
       "value": "Warfare Research Facility"
     }
   ],
+  "BJicVf": [
+    {
+      "type": 0,
+      "value": "Setup Phase"
+    }
+  ],
   "Barony of Letnev.Abilities.Armada.Description": [
     {
       "type": 0,
@@ -2173,6 +2233,12 @@
     {
       "type": 0,
       "value": "Draw 2 secret objectives and keep 1"
+    }
+  ],
+  "COzTbT": [
+    {
+      "type": 0,
+      "value": "Pause"
     }
   ],
   "ChW/ih": [
@@ -3375,6 +3441,12 @@
       "value": "value"
     }
   ],
+  "Dw1fzR": [
+    {
+      "type": 0,
+      "value": "Update Planets"
+    }
+  ],
   "Ecx237": [
     {
       "type": 0,
@@ -4197,6 +4269,12 @@
       "value": "ZS Thunderbolt M2"
     }
   ],
+  "FhKQXR": [
+    {
+      "type": 0,
+      "value": "Owners"
+    }
+  ],
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": [
     {
       "type": 0,
@@ -4711,6 +4789,12 @@
     {
       "type": 0,
       "value": "Color"
+    }
+  ],
+  "Lrn2Da": [
+    {
+      "type": 0,
+      "value": "Update Objectives"
     }
   ],
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": [
@@ -7093,6 +7177,12 @@
       "value": "value"
     }
   ],
+  "PTLLNt": [
+    {
+      "type": 0,
+      "value": "Action Phase"
+    }
+  ],
   "PptkAD": [
     {
       "type": 1,
@@ -7363,6 +7453,12 @@
     {
       "type": 0,
       "value": "The Prophet's Tears"
+    }
+  ],
+  "RlIQB2": [
+    {
+      "type": 0,
+      "value": "Sub-Faction"
     }
   ],
   "Sardakk N'orr.Abilities.Unrelenting.Description": [
@@ -8289,6 +8385,12 @@
       "value": "Map String"
     }
   ],
+  "USnh0f": [
+    {
+      "type": 0,
+      "value": "Update Techs"
+    }
+  ],
   "Universities of Jol-Nar.Abilities.Analytical.Description": [
     {
       "type": 0,
@@ -8483,6 +8585,12 @@
     {
       "type": 0,
       "value": "Shield Paling"
+    }
+  ],
+  "VjlCY0": [
+    {
+      "type": 0,
+      "value": "Update"
     }
   ],
   "Vuil'raith Cabal.Abilities.Amalgamation.Description": [
@@ -9715,6 +9823,12 @@
       "value": "Options"
     }
   ],
+  "dNmJ1r": [
+    {
+      "type": 0,
+      "value": "Unpause"
+    }
+  ],
   "dmwygw": [
     {
       "type": 0,
@@ -9937,6 +10051,12 @@
       "value": "Other Victory Points"
     }
   ],
+  "oiV4lE": [
+    {
+      "type": 0,
+      "value": "Laws in Effect"
+    }
+  ],
   "p4V2Yv": [
     {
       "type": 0,
@@ -9959,6 +10079,12 @@
     {
       "type": 0,
       "value": "Relics"
+    }
+  ],
+  "qLZW8s": [
+    {
+      "type": 0,
+      "value": "End of Game"
     }
   ],
   "qfVnAj": [
@@ -10007,6 +10133,12 @@
       "value": "count"
     }
   ],
+  "rbtRWF": [
+    {
+      "type": 0,
+      "value": "Voting Order"
+    }
+  ],
   "rlGbdz": [
     {
       "type": 0,
@@ -10053,6 +10185,12 @@
       "value": "count"
     }
   ],
+  "sMeRMP": [
+    {
+      "type": 0,
+      "value": "Agenda Phase"
+    }
+  ],
   "sgqLYB": [
     {
       "type": 0,
@@ -10069,6 +10207,24 @@
     {
       "type": 0,
       "value": "Reset"
+    }
+  ],
+  "udTpDZ": [
+    {
+      "type": 0,
+      "value": "Status Phase"
+    }
+  ],
+  "vsuOf1": [
+    {
+      "type": 0,
+      "value": "End Game"
+    }
+  ],
+  "wDLqxZ": [
+    {
+      "type": 0,
+      "value": "Types"
     }
   ],
   "wOb6Wx": [
@@ -10123,6 +10279,12 @@
       "value": "count"
     }
   ],
+  "xDzJ9/": [
+    {
+      "type": 0,
+      "value": "View Map"
+    }
+  ],
   "xu0llf": [
     {
       "type": 0,
@@ -10133,6 +10295,12 @@
     {
       "type": 0,
       "value": "Main Screen"
+    }
+  ],
+  "ys7uwX": [
+    {
+      "type": 0,
+      "value": "Techs"
     }
   ],
   "zXrdrP": [

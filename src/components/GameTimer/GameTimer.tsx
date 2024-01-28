@@ -7,6 +7,7 @@ import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
 import { responsivePixels, useInterval } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
+import { FormattedMessage } from "react-intl";
 
 export default function GameTimer({ frozen = false }) {
   const router = useRouter();
@@ -85,7 +86,21 @@ export default function GameTimer({ frozen = false }) {
       </div>
       {frozen ? null : (
         <div className="flexRow">
-          <button onClick={togglePause}>{paused ? "Unpause" : "Pause"}</button>
+          <button onClick={togglePause}>
+            {paused ? (
+              <FormattedMessage
+                id="dNmJ1r"
+                description="Text shown on a button that will unpause the game."
+                defaultMessage="Unpause"
+              />
+            ) : (
+              <FormattedMessage
+                id="COzTbT"
+                description="Text shown on a button that will pause the game."
+                defaultMessage="Pause"
+              />
+            )}
+          </button>
         </div>
       )}
     </div>

@@ -101,3 +101,50 @@ export function gameIdString(intl: IntlShape) {
     defaultMessage: "Game ID",
   });
 }
+
+export function phaseString(phase: Phase, intl: IntlShape) {
+  switch (phase) {
+    case "UNKNOWN":
+      return intl.formatMessage({
+        id: "AIBv1o",
+        description: "Phase text shown while game is loading.",
+        defaultMessage: "Unknown Phase",
+      });
+    case "SETUP":
+      return intl.formatMessage({
+        id: "BJicVf",
+        description: "Phase text shown during setup phase.",
+        defaultMessage: "Setup Phase",
+      });
+    case "STRATEGY":
+      return intl.formatMessage({
+        id: "9dPmJG",
+        description: "Phase text shown during strategy phase.",
+        defaultMessage: "Strategy Phase",
+      });
+    case "ACTION":
+      return intl.formatMessage({
+        id: "PTLLNt",
+        description: "Phase text shown during action phase.",
+        defaultMessage: "Action Phase",
+      });
+    case "STATUS":
+      return intl.formatMessage({
+        id: "udTpDZ",
+        description: "Phase text shown during status phase.",
+        defaultMessage: "Status Phase",
+      });
+    case "AGENDA":
+      return intl.formatMessage({
+        id: "sMeRMP",
+        description: "Phase text shown during agenda phase.",
+        defaultMessage: "Agenda Phase",
+      });
+    case "END":
+      return intl.formatMessage({
+        id: "qLZW8s",
+        description: "Phase text shown after game is finished.",
+        defaultMessage: "End of Game",
+      });
+  }
+}

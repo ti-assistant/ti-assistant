@@ -11,6 +11,10 @@
     "defaultMessage": "AND",
     "description": "Text between two fields linking them together."
   },
+  "+XKsgE": {
+    "defaultMessage": "Game",
+    "description": "Text used to identify the current game."
+  },
   "+mUg6N": {
     "defaultMessage": "Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
@@ -19,9 +23,21 @@
     "defaultMessage": "Choose Starting Tech",
     "description": "Label on a hover menu used to select starting techs."
   },
+  "09baik": {
+    "defaultMessage": "Initiative Order",
+    "description": "An ordering of factions based on initiative."
+  },
   "0rSMZW": {
     "defaultMessage": "Large",
     "description": "Text on a button specifying that the map style should be large."
+  },
+  "1fNqTf": {
+    "defaultMessage": "Planets",
+    "description": "Planets."
+  },
+  "1odgd1": {
+    "defaultMessage": "Attachments",
+    "description": "Text on a button that will show planet attachments."
   },
   "2HJ0k5": {
     "defaultMessage": "S",
@@ -47,6 +63,10 @@
     "defaultMessage": "Map:",
     "description": "A label for a section of options related to the map."
   },
+  "49oatW": {
+    "defaultMessage": "Undo",
+    "description": "Text shown on a button that will undo the previous action."
+  },
   "4V92Jv": {
     "defaultMessage": "Warp",
     "description": "Text on a button specifying that the map style should be warp."
@@ -67,9 +87,17 @@
     "defaultMessage": "Objectives",
     "description": "Cards that define how to score victory points."
   },
+  "5rR4S2": {
+    "defaultMessage": "View Details",
+    "description": "Label for a section that includes map details."
+  },
   "6L07nG": {
     "defaultMessage": "Reveal Objective",
     "description": "Text telling the user to reveal an objective."
+  },
+  "7SZHCO": {
+    "defaultMessage": "Back to Game",
+    "description": "Text shown on a button that will return to the game."
   },
   "93G7sJ": {
     "defaultMessage": "Test string"
@@ -78,6 +106,10 @@
     "defaultMessage": "Setup Game",
     "description": "Text identifying that this is the setup step."
   },
+  "9dPmJG": {
+    "defaultMessage": "Strategy Phase",
+    "description": "Phase text shown during strategy phase."
+  },
   "9m91nk": {
     "defaultMessage": "Objective View",
     "description": "Text on a button that opens the objective view of the assistant."
@@ -85,6 +117,10 @@
   "A5p5qF": {
     "defaultMessage": "Report Issue",
     "description": "A button that will open the Github issues page."
+  },
+  "AIBv1o": {
+    "defaultMessage": "Unknown Phase",
+    "description": "Phase text shown while game is loading."
   },
   "Agendas.Anti-Intellectual Revolution.Description": {
     "defaultMessage": "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
@@ -898,6 +934,10 @@
     "defaultMessage": "Warfare Research Facility",
     "description": "Title of Attachment: Warfare Research Facility"
   },
+  "BJicVf": {
+    "defaultMessage": "Setup Phase",
+    "description": "Phase text shown during setup phase."
+  },
   "Barony of Letnev.Abilities.Armada.Description": {
     "defaultMessage": "The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool.",
     "description": "Description for Faction Ability: Armada"
@@ -1005,6 +1045,10 @@
   "CKpFBk": {
     "defaultMessage": "Draw 2 secret objectives and keep 1",
     "description": "A step in the setup phase: Draw 2 secret objectives and keep 1."
+  },
+  "COzTbT": {
+    "defaultMessage": "Pause",
+    "description": "Text shown on a button that will pause the game."
   },
   "ChW/ih": {
     "defaultMessage": "Draw 5 stage II objectives",
@@ -1654,6 +1698,10 @@
     "defaultMessage": "ANTI-FIGHTER BARRAGE {value}",
     "description": "A unit ability that allows a unit to destroy fighters."
   },
+  "Dw1fzR": {
+    "defaultMessage": "Update Planets",
+    "description": "Text shown on a button that opens the update planets panel."
+  },
   "Ecx237": {
     "defaultMessage": "Skinny",
     "description": "Text on a button specifying that the map style should be skinny."
@@ -2090,6 +2138,10 @@
     "defaultMessage": "ZS Thunderbolt M2",
     "description": "Title of Faction Unit: ZS Thunderbolt M2"
   },
+  "FhKQXR": {
+    "defaultMessage": "Owners",
+    "description": "Text on a button that will show planet ownership."
+  },
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": {
     "defaultMessage": "When you create the game board, place the Creuss Gate (tile 17) where your home system would normally be placed. The Creuss Gate system is not a home system. Then, place your home system (tile 51) in your play area.",
     "description": "Description for Faction Ability: Creuss Gate"
@@ -2353,6 +2405,10 @@
   "Lm8L7/": {
     "defaultMessage": "Color",
     "description": "Text on a hover menu for picking a player's color."
+  },
+  "Lrn2Da": {
+    "defaultMessage": "Update Objectives",
+    "description": "Text shown on a button that opens the update objectives panel."
   },
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": {
     "defaultMessage": "When you win a combat, place 1 command token from your opponent's reinforcements in your fleet pool if it does not already contain 1 of that player's tokens; other player's tokens in your fleet pool increase your fleet limit but cannot be redistributed.",
@@ -3762,6 +3818,10 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "PTLLNt": {
+    "defaultMessage": "Action Phase",
+    "description": "Phase text shown during action phase."
+  },
   "PptkAD": {
     "defaultMessage": "{count} {count, plural, one {Mech} other {Mechs}}",
     "description": "A number of Mech units."
@@ -3889,6 +3949,10 @@
   "Relics.The Prophet's Tears.Title": {
     "defaultMessage": "The Prophet's Tears",
     "description": "Title of Relic: The Prophet's Tears"
+  },
+  "RlIQB2": {
+    "defaultMessage": "Sub-Faction",
+    "description": "The faction that Council Keleres chooses."
   },
   "Sardakk N'orr.Abilities.Unrelenting.Description": {
     "defaultMessage": "Apply +1 to the result of each of your unit's combat rolls.",
@@ -4402,6 +4466,10 @@
     "defaultMessage": "Map String",
     "description": "Label for a textbox used to specify the map string."
   },
+  "USnh0f": {
+    "defaultMessage": "Update Techs",
+    "description": "Text shown on a button that opens the update techs panel."
+  },
   "Universities of Jol-Nar.Abilities.Analytical.Description": {
     "defaultMessage": "When you research a technology that is not a unit upgrade technology, you may ignore 1 prerequisite.",
     "description": "Description for Faction Ability: Analytical"
@@ -4505,6 +4573,10 @@
   "Universities of Jol-Nar.Units.Shield Paling.Title": {
     "defaultMessage": "Shield Paling",
     "description": "Title of Faction Unit: Shield Paling"
+  },
+  "VjlCY0": {
+    "defaultMessage": "Update",
+    "description": "Text specifying a section that includes update operations."
   },
   "Vuil'raith Cabal.Abilities.Amalgamation.Description": {
     "defaultMessage": "When you produce a unit, you may return 1 captured unit of that type to produce that unit without spending resources.",
@@ -5118,6 +5190,10 @@
     "defaultMessage": "Options",
     "description": "Label on a menu for changing game options"
   },
+  "dNmJ1r": {
+    "defaultMessage": "Unpause",
+    "description": "Text shown on a button that will unpause the game."
+  },
   "dmwygw": {
     "defaultMessage": "Re-shuffle secret objectives",
     "description": "A step in the setup phase: Re-shuffle secret objectives."
@@ -5186,6 +5262,10 @@
     "defaultMessage": "Other Victory Points",
     "description": "The title of a section for assorted victory points."
   },
+  "oiV4lE": {
+    "defaultMessage": "Laws in Effect",
+    "description": "Text on a hover menu that will display the current laws that have been passed."
+  },
   "p4V2Yv": {
     "defaultMessage": "Draw 5 stage I objectives",
     "description": "A step in the setup phase: Draw 5 stage I objectives."
@@ -5202,6 +5282,10 @@
     "defaultMessage": "Relics",
     "description": "The title of relic cards."
   },
+  "qLZW8s": {
+    "defaultMessage": "End of Game",
+    "description": "Phase text shown after game is finished."
+  },
   "qfVnAj": {
     "defaultMessage": "Reveal 2 stage I objectives",
     "description": "A label telling the speaker to reveal objectives."
@@ -5213,6 +5297,10 @@
   "rEazHY": {
     "defaultMessage": "{count} {count, plural, one {War Sun} other {War Suns}}",
     "description": "A number of War Sun units."
+  },
+  "rbtRWF": {
+    "defaultMessage": "Voting Order",
+    "description": "An ordering of factions based on voting."
   },
   "rlGbdz": {
     "defaultMessage": "Starting Components",
@@ -5226,6 +5314,10 @@
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
     "description": "A number of Cruiser units."
   },
+  "sMeRMP": {
+    "defaultMessage": "Agenda Phase",
+    "description": "Phase text shown during agenda phase."
+  },
   "sgqLYB": {
     "defaultMessage": "Other",
     "description": "Text on a button used to select a non-listed value"
@@ -5237,6 +5329,18 @@
   "tocXJ4": {
     "defaultMessage": "Reset",
     "description": "Text on a button that will reset selections."
+  },
+  "udTpDZ": {
+    "defaultMessage": "Status Phase",
+    "description": "Phase text shown during status phase."
+  },
+  "vsuOf1": {
+    "defaultMessage": "End Game",
+    "description": "Text shown on a button that will end the game."
+  },
+  "wDLqxZ": {
+    "defaultMessage": "Types",
+    "description": "Text on a button that will show planet types."
   },
   "wOb6Wx": {
     "defaultMessage": "Become a Patron",
@@ -5254,6 +5358,10 @@
     "defaultMessage": "{count} {count, plural, one {Flagship} other {Flagships}}",
     "description": "A number of Flagship units."
   },
+  "xDzJ9/": {
+    "defaultMessage": "View Map",
+    "description": "Text shown on a button that opens the map."
+  },
   "xu0llf": {
     "defaultMessage": "Select all Faction Choices",
     "description": "Error message telling the user to select all faction choices."
@@ -5261,6 +5369,10 @@
   "yBACfb": {
     "defaultMessage": "Main Screen",
     "description": "Text on a button that opens the main screen of the assistant."
+  },
+  "ys7uwX": {
+    "defaultMessage": "Techs",
+    "description": "Shortened version of technologies."
   },
   "zXrdrP": {
     "defaultMessage": "Codex III",

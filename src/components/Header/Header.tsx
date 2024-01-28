@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import QRCode from "qrcode";
 import React, { useContext, useEffect, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import {
@@ -19,16 +20,15 @@ import {
   repealAgendaAsync,
 } from "../../dynamic/api";
 import { computeVPs } from "../../util/factions";
+import { phaseString } from "../../util/strings";
 import { responsivePixels, validateMapString } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
-import UndoButton from "../UndoButton/UndoButton";
 import Sidebars from "../Sidebars/Sidebars";
+import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
-import Cookies from "js-cookie";
-import { useIntl } from "react-intl";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -64,7 +64,9 @@ export default function Header() {
 
   if (!qrCode && gameid) {
     QRCode.toDataURL(
-      `${BASE_URL}/game/${gameid}`,
+      `${BASE_URL}${
+        router.locale && router.locale !== "en" ? `/${router.locale}` : ""
+      }/game/${gameid}`,
       {
         color: {
           dark: "#eeeeeeff",
@@ -81,8 +83,6 @@ export default function Header() {
       }
     );
   }
-
-  const round = state ? `ROUND ${state.round}` : "LOADING...";
 
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.mapPosition - b.mapPosition
@@ -180,11 +180,23 @@ export default function Header() {
       </GenericModal>
       {validateMapString((options ?? {})["map-string"] ?? "") ? (
         <div className={styles.Map}>
-          <button onClick={() => setShowMap(true)}>View Map</button>
+          <button onClick={() => setShowMap(true)}>
+            <FormattedMessage
+              id="xDzJ9/"
+              description="Text shown on a button that opens the map."
+              defaultMessage="View Map"
+            />
+          </button>
         </div>
       ) : null}
       <div className={styles.QRCode}>
-        <ClientOnlyHoverMenu label={`Game: ${gameid}`}>
+        <ClientOnlyHoverMenu
+          label={`${intl.formatMessage({
+            id: "+XKsgE",
+            description: "Text used to identify the current game.",
+            defaultMessage: "Game",
+          })}: ${gameid}`}
+        >
           <div className="flexColumn">
             <Link href={`/game/${gameid}`}>
               {qrCode ? (
@@ -206,7 +218,7 @@ export default function Header() {
         </div>
       ) : null}
       <Sidebars
-        left={state.phase === "END" ? "END OF GAME" : `${state.phase} PHASE`}
+        left={phaseString(state.phase, intl).toUpperCase()}
         right={intl
           .formatMessage(
             {
@@ -231,7 +243,11 @@ export default function Header() {
                 continueGameAsync(gameid);
               }}
             >
-              Back to Game
+              <FormattedMessage
+                id="7SZHCO"
+                description="Text shown on a button that will return to the game."
+                defaultMessage="Back to Game"
+              />
             </button>
           ) : (
             <button
@@ -243,14 +259,26 @@ export default function Header() {
                 endGameAsync(gameid);
               }}
             >
-              End Game
+              <FormattedMessage
+                id="vsuOf1"
+                description="Text shown on a button that will end the game."
+                defaultMessage="End Game"
+              />
             </button>
           )
         ) : null}
       </div>
       {passedLaws.length > 0 ? (
         <div className={styles.PassedLaws}>
-          <ClientOnlyHoverMenu label="Laws in Effect">
+          <ClientOnlyHoverMenu
+            label={
+              <FormattedMessage
+                id="oiV4lE"
+                description="Text on a hover menu that will display the current laws that have been passed."
+                defaultMessage="Laws in Effect"
+              />
+            }
+          >
             <div
               className="flexColumn"
               style={{ alignItems: "flex-start", padding: responsivePixels(8) }}
