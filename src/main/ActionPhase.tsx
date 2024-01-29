@@ -1737,7 +1737,12 @@ export default function ActionPhase() {
                   fontSize: responsivePixels(42),
                 }}
               >
-                Action Phase Complete
+                <FormattedMessage
+                  id="Gns4AS"
+                  description="Text showing that the current phase is complete"
+                  defaultMessage="{phase} Phase Complete"
+                  values={{ phase: phaseString("ACTION", intl) }}
+                />
               </div>
               <LockedButtons
                 unlocked={true}

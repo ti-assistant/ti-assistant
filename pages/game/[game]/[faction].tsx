@@ -172,6 +172,8 @@ function PhaseSection() {
   const strategyCards = useContext(StrategyCardContext);
   const voteRef = useRef<HTMLDivElement>(null);
 
+  const intl = useIntl();
+
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   let currentAgenda: Agenda | undefined;
   const activeAgenda = getActiveAgenda(currentTurn);
@@ -259,7 +261,8 @@ function PhaseSection() {
     strategyCards,
     planets,
     agendas,
-    objectives
+    objectives,
+    intl
   );
   const totalVotes = computeVotes(
     currentAgenda,

@@ -1,4 +1,10 @@
 {
+  "++U8Ff": [
+    {
+      "type": 0,
+      "value": "After an Agenda is Revealed"
+    }
+  ],
   "+/Qpw/": [
     {
       "type": 0,
@@ -9,6 +15,12 @@
     {
       "type": 0,
       "value": "Take Control of Planet"
+    }
+  ],
+  "+BcBcX": [
+    {
+      "type": 0,
+      "value": "Eligible Outcomes"
     }
   ],
   "+HPhsr": [
@@ -41,6 +53,12 @@
       "value": "Build the Galaxy"
     }
   ],
+  "+x4AIR": [
+    {
+      "type": 0,
+      "value": "Pending"
+    }
+  ],
   "/KXhGz": [
     {
       "type": 0,
@@ -69,6 +87,12 @@
     {
       "type": 0,
       "value": "Strategy Card"
+    }
+  ],
+  "0MawcE": [
+    {
+      "type": 0,
+      "value": "When an Agenda is Revealed"
     }
   ],
   "0NYmNN": [
@@ -289,6 +313,12 @@
     {
       "type": 0,
       "value": "Report Issue"
+    }
+  ],
+  "AO8lj8": [
+    {
+      "type": 0,
+      "value": "Cultural Planets Exhausted"
     }
   ],
   "Agendas.Anti-Intellectual Revolution.Description": [
@@ -2559,6 +2589,12 @@
       "value": "Son of Ragh"
     }
   ],
+  "Components.Ancient Burial Sites.Title": [
+    {
+      "type": 0,
+      "value": "Ancient Burial Sites"
+    }
+  ],
   "Components.Archaeological Expedition.Description": [
     {
       "type": 0,
@@ -2569,6 +2605,12 @@
     {
       "type": 0,
       "value": "Archaeological Expedition"
+    }
+  ],
+  "Components.Assassinate Representative.Title": [
+    {
+      "type": 0,
+      "value": "Assassinate Representative"
     }
   ],
   "Components.Black Market Forgery.Description": [
@@ -2657,6 +2699,12 @@
     {
       "type": 0,
       "value": "Dark Pact"
+    }
+  ],
+  "Components.Distinguished Councilor.Title": [
+    {
+      "type": 0,
+      "value": "Distinguished Councilor"
     }
   ],
   "Components.Divert Funding.Description": [
@@ -2797,6 +2845,12 @@
     {
       "type": 0,
       "value": "Ghost Ship"
+    }
+  ],
+  "Components.Hack Election.Title": [
+    {
+      "type": 0,
+      "value": "Hack Election"
     }
   ],
   "Components.Impersonation.Description": [
@@ -3225,6 +3279,12 @@
     {
       "type": 0,
       "value": "Uprising"
+    }
+  ],
+  "Components.Veto.Title": [
+    {
+      "type": 0,
+      "value": "Veto"
     }
   ],
   "Components.Vortex.Description": [
@@ -4663,10 +4723,26 @@
       "value": "Icarus Drive"
     }
   ],
+  "Gns4AS": [
+    {
+      "type": 1,
+      "value": "phase"
+    },
+    {
+      "type": 0,
+      "value": " Phase Complete"
+    }
+  ],
   "H3n/oR": [
     {
       "type": 0,
       "value": "SUSTAIN DAMAGE"
+    }
+  ],
+  "HI2ztT": [
+    {
+      "type": 0,
+      "value": "Faction Gaining Control of Planet"
     }
   ],
   "HQ3wv9": [
@@ -4801,6 +4877,18 @@
     {
       "type": 0,
       "value": "Final Score"
+    }
+  ],
+  "KzTGw5": [
+    {
+      "type": 0,
+      "value": "Veto or Quash or Political Favor"
+    }
+  ],
+  "Kzzn9t": [
+    {
+      "type": 0,
+      "value": "Choose outcome if tied"
     }
   ],
   "L1Z1X Mindnet.Abilities.Assimilate.Description": [
@@ -5029,6 +5117,12 @@
     {
       "type": 0,
       "value": "Select all factions and colors"
+    }
+  ],
+  "LaXLjN": [
+    {
+      "type": 0,
+      "value": "Abstain"
     }
   ],
   "Lm8L7/": [
@@ -7487,6 +7581,102 @@
       "value": "value"
     }
   ],
+  "OpsE1E": [
+    {
+      "options": {
+        "1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "First"
+            }
+          ]
+        },
+        "2": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Second"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "First"
+            }
+          ]
+        }
+      },
+      "type": 5,
+      "value": "num"
+    },
+    {
+      "type": 0,
+      "value": " Agenda"
+    }
+  ],
+  "Outcomes.Cultural Planet": [
+    {
+      "type": 0,
+      "value": "Cultural Planet"
+    }
+  ],
+  "Outcomes.For/Against": [
+    {
+      "type": 0,
+      "value": "For/Against"
+    }
+  ],
+  "Outcomes.Hazardous Planet": [
+    {
+      "type": 0,
+      "value": "Hazardous Planet"
+    }
+  ],
+  "Outcomes.Industrial Planet": [
+    {
+      "type": 0,
+      "value": "Industrial Planet"
+    }
+  ],
+  "Outcomes.Law": [
+    {
+      "type": 0,
+      "value": "Law"
+    }
+  ],
+  "Outcomes.Non-Home Planet Other Than Mecatol Rex": [
+    {
+      "type": 0,
+      "value": "Non-Home Planet Other Than Mecatol Rex"
+    }
+  ],
+  "Outcomes.Planet": [
+    {
+      "type": 0,
+      "value": "Planet"
+    }
+  ],
+  "Outcomes.Player": [
+    {
+      "type": 0,
+      "value": "Player"
+    }
+  ],
+  "Outcomes.Scored Secret Objective": [
+    {
+      "type": 0,
+      "value": "Scored Secret Objective"
+    }
+  ],
+  "Outcomes.Strategy Card": [
+    {
+      "type": 0,
+      "value": "Strategy Card"
+    }
+  ],
   "PBW6vs": [
     {
       "type": 0,
@@ -7573,6 +7763,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "Promissories.Political Secret.Title": [
+    {
+      "type": 0,
+      "value": "Political Secret"
     }
   ],
   "PzyYtG": [
@@ -7813,6 +8009,72 @@
       "value": "The Prophet's Tears"
     }
   ],
+  "Riders.Construction Rider.Title": [
+    {
+      "type": 0,
+      "value": "Construction Rider"
+    }
+  ],
+  "Riders.Diplomacy Rider.Title": [
+    {
+      "type": 0,
+      "value": "Diplomacy Rider"
+    }
+  ],
+  "Riders.Galactic Threat.Title": [
+    {
+      "type": 0,
+      "value": "Galactic Threat"
+    }
+  ],
+  "Riders.Imperial Rider.Title": [
+    {
+      "type": 0,
+      "value": "Imperial Rider"
+    }
+  ],
+  "Riders.Keleres Rider.Title": [
+    {
+      "type": 0,
+      "value": "Keleres Rider"
+    }
+  ],
+  "Riders.Leadership Rider.Title": [
+    {
+      "type": 0,
+      "value": "Leadership Rider"
+    }
+  ],
+  "Riders.Politics Rider.Title": [
+    {
+      "type": 0,
+      "value": "Politics Rider"
+    }
+  ],
+  "Riders.Sanction.Title": [
+    {
+      "type": 0,
+      "value": "Sanction"
+    }
+  ],
+  "Riders.Technology Rider.Title": [
+    {
+      "type": 0,
+      "value": "Technology Rider"
+    }
+  ],
+  "Riders.Trade Rider.Title": [
+    {
+      "type": 0,
+      "value": "Trade Rider"
+    }
+  ],
+  "Riders.Warfare Rider.Title": [
+    {
+      "type": 0,
+      "value": "Warfare Rider"
+    }
+  ],
   "RlIQB2": [
     {
       "type": 0,
@@ -7823,6 +8085,12 @@
     {
       "type": 0,
       "value": "On Deck"
+    }
+  ],
+  "SOC2Bh": [
+    {
+      "type": 0,
+      "value": "Against"
     }
   ],
   "Sardakk N'orr.Abilities.Unrelenting.Description": [
@@ -9993,6 +10261,12 @@
       "value": "Van Hauge"
     }
   ],
+  "YoQKZ7": [
+    {
+      "type": 0,
+      "value": "Give Planet to Faction"
+    }
+  ],
   "YotjeE": [
     {
       "type": 0,
@@ -10193,6 +10467,12 @@
       "value": "Stage II"
     }
   ],
+  "ZAYAbS": [
+    {
+      "type": 0,
+      "value": "Reveal and Read one Agenda"
+    }
+  ],
   "ZZ/Lhe": [
     {
       "type": 0,
@@ -10217,10 +10497,34 @@
       "value": "+1 VP for controlling Mecatol Rex"
     }
   ],
+  "c4LYqr": [
+    {
+      "type": 0,
+      "value": "Cannot Vote"
+    }
+  ],
   "c6uq+j": [
     {
       "type": 0,
       "value": "Select Faction"
+    }
+  ],
+  "c9hO6S": [
+    {
+      "type": 0,
+      "value": "Assassinated Representative"
+    }
+  ],
+  "cHsAYk": [
+    {
+      "type": 0,
+      "value": "Select Outcome"
+    }
+  ],
+  "cKaLW8": [
+    {
+      "type": 0,
+      "value": "Reveal Eligible Outcomes"
     }
   ],
   "cqWqzv": [
@@ -10323,6 +10627,18 @@
       "value": "Details"
     }
   ],
+  "g92Jbl": [
+    {
+      "type": 0,
+      "value": "Updates Paused"
+    }
+  ],
+  "gQ0twG": [
+    {
+      "type": 0,
+      "value": "Start Voting"
+    }
+  ],
   "ggO0Am": [
     {
       "type": 0,
@@ -10349,6 +10665,12 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "jGX605": [
+    {
+      "type": 0,
+      "value": "Play Rider"
     }
   ],
   "jgVoqe": [
@@ -10500,6 +10822,12 @@
     {
       "type": 0,
       "value": "Start Game"
+    }
+  ],
+  "m5acGq": [
+    {
+      "type": 0,
+      "value": "Cast votes (or abstain)"
     }
   ],
   "mcZgiQ": [
@@ -10784,6 +11112,44 @@
       "value": "Reset"
     }
   ],
+  "uEqy1T": [
+    {
+      "type": 0,
+      "value": "Close to continue"
+    }
+  ],
+  "urcttb": [
+    {
+      "type": 0,
+      "value": "Ready "
+    },
+    {
+      "options": {
+        "3": {
+          "value": [
+            {
+              "type": 0,
+              "value": "3"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "all"
+            }
+          ]
+        }
+      },
+      "type": 5,
+      "value": "num"
+    },
+    {
+      "type": 0,
+      "value": " planets, then"
+    }
+  ],
   "vTtJ6S": [
     {
       "type": 0,
@@ -10912,6 +11278,12 @@
     {
       "type": 0,
       "value": "Main Screen"
+    }
+  ],
+  "ymJxS0": [
+    {
+      "type": 0,
+      "value": "For"
     }
   ],
   "ys7uwX": [

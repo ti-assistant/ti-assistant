@@ -179,3 +179,141 @@ export function objectiveTypeString(type: ObjectiveType, intl: IntlShape) {
       });
   }
 }
+
+export function outcomeString(type: OutcomeType, intl: IntlShape) {
+  switch (type) {
+    case "For/Against":
+      return intl.formatMessage({
+        id: "Outcomes.For/Against",
+        description: "Outcome type: For/Against",
+        defaultMessage: "For/Against",
+      });
+    case "Planet":
+      return intl.formatMessage({
+        id: "Outcomes.Planet",
+        description: "Outcome type: Planet",
+        defaultMessage: "Planet",
+      });
+    case "Cultural Planet":
+      return intl.formatMessage({
+        id: "Outcomes.Cultural Planet",
+        description: "Outcome type: Cultural Planet",
+        defaultMessage: "Cultural Planet",
+      });
+    case "Hazardous Planet":
+      return intl.formatMessage({
+        id: "Outcomes.Hazardous Planet",
+        description: "Outcome type: Hazardous Planet",
+        defaultMessage: "Hazardous Planet",
+      });
+    case "Industrial Planet":
+      return intl.formatMessage({
+        id: "Outcomes.Industrial Planet",
+        description: "Outcome type: Industrial Planet",
+        defaultMessage: "Industrial Planet",
+      });
+    case "Player":
+      return intl.formatMessage({
+        id: "Outcomes.Player",
+        description: "Outcome type: Player",
+        defaultMessage: "Player",
+      });
+    case "Strategy Card":
+      return intl.formatMessage({
+        id: "Outcomes.Strategy Card",
+        description: "Outcome type: Strategy Card",
+        defaultMessage: "Strategy Card",
+      });
+    case "Law":
+      return intl.formatMessage({
+        id: "Outcomes.Law",
+        description: "Outcome type: Law",
+        defaultMessage: "Law",
+      });
+    case "Scored Secret Objective":
+      return intl.formatMessage({
+        id: "Outcomes.Scored Secret Objective",
+        description: "Outcome type: Scored Secret Objective",
+        defaultMessage: "Scored Secret Objective",
+      });
+    case "Non-Home Planet Other Than Mecatol Rex":
+      return intl.formatMessage({
+        id: "Outcomes.Non-Home Planet Other Than Mecatol Rex",
+        description: "Outcome type: Non-Home Planet Other Than Mecatol Rex",
+        defaultMessage: "Non-Home Planet Other Than Mecatol Rex",
+      });
+  }
+  return "";
+}
+
+export function riderString(rider: string, intl: IntlShape) {
+  switch (rider) {
+    case "Galactic Threat":
+      return intl.formatMessage({
+        id: "Riders.Galactic Threat.Title",
+        description: "Title of Rider: Galactic Threat",
+        defaultMessage: "Galactic Threat",
+      });
+    case "Leadership Rider":
+      return intl.formatMessage({
+        id: "Riders.Leadership Rider.Title",
+        description: "Title of Rider: Leadership Rider",
+        defaultMessage: "Leadership Rider",
+      });
+    case "Diplomacy Rider":
+      return intl.formatMessage({
+        id: "Riders.Diplomacy Rider.Title",
+        description: "Title of Rider: Diplomacy Rider",
+        defaultMessage: "Diplomacy Rider",
+      });
+    case "Politics Rider":
+      return intl.formatMessage({
+        id: "Riders.Politics Rider.Title",
+        description: "Title of Rider: Politics Rider",
+        defaultMessage: "Politics Rider",
+      });
+    case "Construction Rider":
+      return intl.formatMessage({
+        id: "Riders.Construction Rider.Title",
+        description: "Title of Rider: Construction Rider",
+        defaultMessage: "Construction Rider",
+      });
+    case "Trade Rider":
+      return intl.formatMessage({
+        id: "Riders.Trade Rider.Title",
+        description: "Title of Rider: Trade Rider",
+        defaultMessage: "Trade Rider",
+      });
+    case "Warfare Rider":
+      return intl.formatMessage({
+        id: "Riders.Warfare Rider.Title",
+        description: "Title of Rider: Warfare Rider",
+        defaultMessage: "Warfare Rider",
+      });
+    case "Technology Rider":
+      return intl.formatMessage({
+        id: "Riders.Technology Rider.Title",
+        description: "Title of Rider: Technology Rider",
+        defaultMessage: "Technology Rider",
+      });
+    case "Imperial Rider":
+      return intl.formatMessage({
+        id: "Riders.Imperial Rider.Title",
+        description: "Title of Rider: Imperial Rider",
+        defaultMessage: "Imperial Rider",
+      });
+    case "Sanction":
+      return intl.formatMessage({
+        id: "Riders.Sanction.Title",
+        description: "Title of Rider: Sanction",
+        defaultMessage: "Sanction",
+      });
+    case "Keleres Rider":
+      return intl.formatMessage({
+        id: "Riders.Keleres Rider.Title",
+        description: "Title of Rider: Keleres Rider",
+        defaultMessage: "Keleres Rider",
+      });
+  }
+  return "";
+}

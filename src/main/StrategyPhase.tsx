@@ -871,7 +871,12 @@ export default function StrategyPhase() {
                 // paddingTop: responsivePixels(24),
               }}
             >
-              Strategy Phase Complete
+              <FormattedMessage
+                id="Gns4AS"
+                description="Text showing that the current phase is complete"
+                defaultMessage="{phase} Phase Complete"
+                values={{ phase: phaseString("STRATEGY", intl) }}
+              />
             </div>
           )}
           {onDeckFaction ? (

@@ -11,12 +11,10 @@ import {
   StateContext,
   StrategyCardContext,
 } from "../../context/Context";
-import { Selector } from "../../Selector";
 import {
   castVotesAsync,
   playActionCardAsync,
   playRiderAsync,
-  setSpeakerAsync,
   unplayActionCardAsync,
   unplayRiderAsync,
 } from "../../dynamic/api";
@@ -42,6 +40,9 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import NumberInput from "../NumberInput/NumberInput";
 import styles from "./VoteBlock.module.scss";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { Selector } from "../Selector/Selector";
+import { riderString } from "../../util/strings";
 
 export function getTargets(
   agenda: Agenda | undefined,
@@ -49,57 +50,101 @@ export function getTargets(
   strategycards: Partial<Record<StrategyCardId, StrategyCard>>,
   planets: Partial<Record<PlanetId, Planet>>,
   agendas: Partial<Record<AgendaId, Agenda>>,
-  objectives: Partial<Record<ObjectiveId, Objective>>
+  objectives: Partial<Record<ObjectiveId, Objective>>,
+  intl: IntlShape
 ) {
   if (!agenda) {
     return [];
   }
+  const abstain = {
+    id: "Abstain",
+    name: intl.formatMessage({
+      id: "LaXLjN",
+      defaultMessage: "Abstain",
+      description: "Outcome choosing not to vote.",
+    }),
+  };
   switch (agenda.elect) {
     case "For/Against":
-      return ["For", "Against", "Abstain"];
+      return [
+        {
+          id: "For",
+          name: intl.formatMessage({
+            id: "ymJxS0",
+            defaultMessage: "For",
+            description: "Outcome choosing to pass a law.",
+          }),
+        },
+        {
+          id: "Against",
+          name: intl.formatMessage({
+            id: "SOC2Bh",
+            defaultMessage: "Against",
+            description: "Outcome choosing to vote down a law.",
+          }),
+        },
+        abstain,
+      ];
     case "Player":
       return [
         ...Object.values(factions).map((faction) => {
-          return faction.id;
+          return { id: faction.id, name: faction.name };
         }),
-        "Abstain",
+        abstain,
       ];
     case "Strategy Card":
-      return [...Object.keys(strategycards), "Abstain"];
+      return [
+        ...Object.values(strategycards).map((card) => {
+          return { id: card.id, name: card.name };
+        }),
+        abstain,
+      ];
     case "Planet":
       const ownedPlanetNames = Object.values(planets)
         .filter((planet) => !!planet.owner)
-        .map((planet) => planet.name);
-      return [...ownedPlanetNames, "Abstain"];
+        .map((planet) => {
+          return { id: planet.id, name: planet.name };
+        });
+      return [...ownedPlanetNames, abstain];
     case "Cultural Planet":
       const culturalPlanets = Object.values(planets)
         .filter((planet) => planet.type === "CULTURAL")
         .filter((planet) => !!planet.owner)
-        .map((planet) => planet.name);
-      return [...culturalPlanets, "Abstain"];
+        .map((planet) => {
+          return { id: planet.id, name: planet.name };
+        });
+      return [...culturalPlanets, abstain];
     case "Hazardous Planet":
       const hazardousPlanets = Object.values(planets)
         .filter((planet) => planet.type === "HAZARDOUS")
         .filter((planet) => !!planet.owner)
-        .map((planet) => planet.name);
-      return [...hazardousPlanets, "Abstain"];
+        .map((planet) => {
+          return { id: planet.id, name: planet.name };
+        });
+      return [...hazardousPlanets, abstain];
     case "Industrial Planet":
       const industrialPlanets = Object.values(planets)
         .filter((planet) => planet.type === "INDUSTRIAL")
         .filter((planet) => !!planet.owner)
-        .map((planet) => planet.name);
-      return [...industrialPlanets, "Abstain"];
+        .map((planet) => {
+          return { id: planet.id, name: planet.name };
+        });
+      return [...industrialPlanets, abstain];
     case "Non-Home Planet Other Than Mecatol Rex":
       const electablePlanets = Object.values(planets)
         .filter((planet) => !planet.home && planet.name !== "Mecatol Rex")
         .filter((planet) => !!planet.owner)
-        .map((planet) => planet.name);
-      return [...electablePlanets, "Abstain"];
+        .map((planet) => {
+          return { id: planet.id, name: planet.name };
+        });
+      return [...electablePlanets, abstain];
     case "Law":
       const passedLaws = Object.values(agendas)
         .filter((agenda) => agenda.type === "LAW" && agenda.passed)
-        .map((law) => law.name);
-      return [...passedLaws, "Abstain"];
+        .map((law) => {
+          return { id: law.id, name: law.name };
+        });
+      return [...passedLaws, abstain];
     case "Scored Secret Objective":
       const secrets = Object.values(objectives).filter((objective) => {
         return objective.type === "SECRET";
@@ -108,9 +153,19 @@ export function getTargets(
         return (objective.scorers ?? []).length > 0;
       });
       if (scoredSecrets.length === 0) {
-        return [...secrets.map((secret) => secret.name), "Abstain"];
+        return [
+          ...secrets.map((secret) => {
+            return { id: secret.id, name: secret.name };
+          }),
+          abstain,
+        ];
       }
-      return [...scoredSecrets.map((secret) => secret.name), "Abstain"];
+      return [
+        ...scoredSecrets.map((secret) => {
+          return { id: secret.id, name: secret.name };
+        }),
+        abstain,
+      ];
   }
   return [];
 }
@@ -344,6 +399,8 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
   const factions = useContext(FactionContext);
   const state = useContext(StateContext);
 
+  const intl = useIntl();
+
   const faction = factions[factionId];
 
   if (!faction) {
@@ -395,7 +452,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
                   &#x2715;
                 </div>
               )}
-              <i>{rider.rider}</i>: {rider.outcome}
+              <i>{riderString(rider.rider, intl)}</i>: {rider.outcome}
             </div>
           );
         })}
@@ -432,7 +489,11 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
                   gridColumn: "span 4",
                 }}
               >
-                Cannot Vote
+                <FormattedMessage
+                  id="c4LYqr"
+                  description="Text informing a player that they cannot vote."
+                  defaultMessage="Cannot Vote"
+                />
               </div>
             )
           ) : (
@@ -462,6 +523,8 @@ function PredictionSection({
   const planets = useContext(PlanetContext);
   const strategycards = useContext(StrategyCardContext);
 
+  const intl = useIntl();
+
   const currentTurn = getCurrentTurnLogEntries(actionLog ?? []);
 
   const playedRiders = getPlayedRiders(currentTurn);
@@ -488,6 +551,14 @@ function PredictionSection({
     ) {
       return false;
     }
+
+    if (
+      pendingRider &&
+      pendingRider.rider === rider &&
+      pendingRider.faction === factionId
+    ) {
+      return true;
+    }
     for (const playedRider of playedRiders) {
       if (playedRider.rider === rider) {
         return false;
@@ -500,10 +571,11 @@ function PredictionSection({
     agenda,
     factions,
     strategycards,
-    planets ?? {},
-    agendas ?? {},
-    objectives ?? {}
-  ).filter((target) => target !== "Abstain");
+    planets,
+    agendas,
+    objectives,
+    intl
+  ).filter((target) => target.id !== "Abstain");
 
   if (!canFactionPredict(factionId, currentTurn)) {
     return (
@@ -524,8 +596,16 @@ function PredictionSection({
   return (
     <>
       <Selector
-        hoverMenuLabel="Play Rider"
-        options={remainingRiders}
+        hoverMenuLabel={
+          <FormattedMessage
+            id="jGX605"
+            description="Text on hover menu for selecting a rider to play."
+            defaultMessage="Play Rider"
+          />
+        }
+        options={remainingRiders.map((rider) => {
+          return { id: rider, name: riderString(rider, intl) };
+        })}
         selectedItem={pendingRider?.rider}
         toggleItem={(itemId, add) => {
           if (!gameid) {
@@ -542,7 +622,13 @@ function PredictionSection({
       {pendingRider && targets.length > 0 ? (
         <div style={{ gridColumn: "span 2" }}>
           <Selector
-            hoverMenuLabel="Prediction"
+            hoverMenuLabel={
+              <FormattedMessage
+                id="+x4AIR"
+                description="Text on a hover menu for selecting a rider target."
+                defaultMessage="Pending"
+              />
+            }
             options={targets}
             selectedItem={undefined}
             toggleItem={(itemId, add) => {
@@ -579,6 +665,8 @@ function VotingSection({
   const state = useContext(StateContext);
   const strategycards = useContext(StrategyCardContext);
 
+  const intl = useIntl();
+
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const faction = factions[factionId];
@@ -603,16 +691,17 @@ function VotingSection({
     agenda,
     factions,
     strategycards,
-    planets ?? {},
-    agendas ?? {},
-    objectives ?? {}
+    planets,
+    agendas,
+    objectives,
+    intl
   );
   const factionVotes = getFactionVotes(currentTurn, factionId);
 
   const hasVotableTarget =
     !!factionVotes?.target && factionVotes?.target !== "Abstain";
 
-  const { influence, extraVotes } = computeRemainingVotes(
+  const { influence } = computeRemainingVotes(
     factionId,
     factions,
     planets,
@@ -650,7 +739,13 @@ function VotingSection({
       <div className="flexRow" style={{ justifyContent: "flex-start" }}>
         {state.votingStarted && targets.length > 0 ? (
           <Selector
-            hoverMenuLabel="Select Outcome"
+            hoverMenuLabel={
+              <FormattedMessage
+                id="cHsAYk"
+                description="Text on hover menu for selecting voting outcome."
+                defaultMessage="Select Outcome"
+              />
+            }
             options={targets}
             selectedItem={factionVotes?.target}
             toggleItem={(itemId, add) => {
@@ -726,7 +821,11 @@ function VotingSection({
                   }
                 }}
               >
-                Predictive Intelligence
+                <FormattedMessage
+                  id="Techs.Predictive Intelligence.Title"
+                  description="Title of Tech: Predictive Intelligence"
+                  defaultMessage="Predictive Intelligence"
+                />
               </button>
             ) : null}
             <button
@@ -752,7 +851,11 @@ function VotingSection({
                 }
               }}
             >
-              Distinguished Councilor
+              <FormattedMessage
+                id="Components.Distinguished Councilor.Title"
+                description="Title of Component: Distinguished Councilor"
+                defaultMessage="Distinguished Councilor"
+              />
             </button>
           </div>
         </ClientOnlyHoverMenu>

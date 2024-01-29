@@ -1,4 +1,8 @@
 {
+  "++U8Ff": {
+    "defaultMessage": "After an Agenda is Revealed",
+    "description": "Label on hover menu for actions that happen after an agenda is revealed."
+  },
   "+/Qpw/": {
     "defaultMessage": "Continue Game",
     "description": "A button that will rejoin the previous game."
@@ -6,6 +10,10 @@
   "+8kwFc": {
     "defaultMessage": "Take Control of Planet",
     "description": "Text on a hover menu allowing a player to take control of planets."
+  },
+  "+BcBcX": {
+    "defaultMessage": "Eligible Outcomes",
+    "description": "Label for a section showing the eligible outcomes."
   },
   "+HPhsr": {
     "defaultMessage": "New Game",
@@ -27,6 +35,10 @@
     "defaultMessage": "Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
   },
+  "+x4AIR": {
+    "defaultMessage": "Pending",
+    "description": "Text on a hover menu for selecting a rider target."
+  },
   "/KXhGz": {
     "defaultMessage": "Tactical",
     "description": "Text on a button that will select a tactical action."
@@ -46,6 +58,10 @@
   "0DDRZv": {
     "defaultMessage": "Strategy Card",
     "description": "Strategy card."
+  },
+  "0MawcE": {
+    "defaultMessage": "When an Agenda is Revealed",
+    "description": "Label on hover menu for actions that happen when an agenda is revealed."
   },
   "0NYmNN": {
     "defaultMessage": "Return Strategy Cards",
@@ -181,6 +197,10 @@
   "A5p5qF": {
     "defaultMessage": "Report Issue",
     "description": "A button that will open the Github issues page."
+  },
+  "AO8lj8": {
+    "defaultMessage": "Cultural Planets Exhausted",
+    "description": "Label for section explaining which player has had their cultural planets exhausted."
   },
   "Agendas.Anti-Intellectual Revolution.Description": {
     "defaultMessage": "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
@@ -1214,6 +1234,10 @@
     "defaultMessage": "Son of Ragh",
     "description": "Title of Faction Unit: Son of Ragh"
   },
+  "Components.Ancient Burial Sites.Title": {
+    "defaultMessage": "Ancient Burial Sites",
+    "description": "Title of Component: Ancient Burial Sites"
+  },
   "Components.Archaeological Expedition.Description": {
     "defaultMessage": "ACTION: Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest.",
     "description": "Description for Component: Archaeological Expedition"
@@ -1221,6 +1245,10 @@
   "Components.Archaeological Expedition.Title": {
     "defaultMessage": "Archaeological Expedition",
     "description": "Title of Component: Archaeological Expedition"
+  },
+  "Components.Assassinate Representative.Title": {
+    "defaultMessage": "Assassinate Representative",
+    "description": "Title of Component: Assassinate Representative"
   },
   "Components.Black Market Forgery.Description": {
     "defaultMessage": "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic.{br}Then return this card to the Naaz-Rokha player.",
@@ -1253,6 +1281,10 @@
   "Components.Dark Pact.Title": {
     "defaultMessage": "Dark Pact",
     "description": "Title of Component: Dark Pact"
+  },
+  "Components.Distinguished Councilor.Title": {
+    "defaultMessage": "Distinguished Councilor",
+    "description": "Title of Component: Distinguished Councilor"
   },
   "Components.Divert Funding.Description": {
     "defaultMessage": "ACTION: Return a non-unit upgrade, non-faction technology that you own to your technology deck. Then, research another technology.",
@@ -1341,6 +1373,10 @@
   "Components.Ghost Ship.Title": {
     "defaultMessage": "Ghost Ship",
     "description": "Title of Component: Ghost Ship"
+  },
+  "Components.Hack Election.Title": {
+    "defaultMessage": "Hack Election",
+    "description": "Title of Component: Hack Election"
   },
   "Components.Impersonation.Description": {
     "defaultMessage": "ACTION: Spend 3 influence to draw 1 secret objective.",
@@ -1589,6 +1625,10 @@
   "Components.Uprising.Title": {
     "defaultMessage": "Uprising",
     "description": "Title of Component: Uprising"
+  },
+  "Components.Veto.Title": {
+    "defaultMessage": "Veto",
+    "description": "Title of Component: Veto"
   },
   "Components.Vortex.Description": {
     "defaultMessage": "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements.",
@@ -2326,9 +2366,17 @@
     "defaultMessage": "Icarus Drive",
     "description": "Title of Faction Unit: Icarus Drive"
   },
+  "Gns4AS": {
+    "defaultMessage": "{phase} Phase Complete",
+    "description": "Text showing that the current phase is complete"
+  },
   "H3n/oR": {
     "defaultMessage": "SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
+  },
+  "HI2ztT": {
+    "defaultMessage": "Faction Gaining Control of Planet",
+    "description": "Label saying which faction is gaining control of a planet."
   },
   "HQ3wv9": {
     "defaultMessage": "No unscored Public Objectives",
@@ -2373,6 +2421,14 @@
   "KiioBO": {
     "defaultMessage": "Final Score",
     "description": "An ordering of factions based on end game scoring."
+  },
+  "KzTGw5": {
+    "defaultMessage": "Veto or Quash or Political Favor",
+    "description": "Text on a button for replacing the current agenda."
+  },
+  "Kzzn9t": {
+    "defaultMessage": "Choose outcome if tied",
+    "description": "Text on a hover menu for the speaker choosing the outcome."
   },
   "L1Z1X Mindnet.Abilities.Assimilate.Description": {
     "defaultMessage": "When you gain control of a planet, replace each PDS and space dock that is on that planet with a matching unit from your reinforcements.",
@@ -2493,6 +2549,10 @@
   "LYA+Dm": {
     "defaultMessage": "Select all factions and colors",
     "description": "Error message explaining that all factions and colors need to be selected."
+  },
+  "LaXLjN": {
+    "defaultMessage": "Abstain",
+    "description": "Outcome choosing not to vote."
   },
   "Lm8L7/": {
     "defaultMessage": "Color",
@@ -3926,6 +3986,50 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "OpsE1E": {
+    "defaultMessage": "{num, select, 1 {First} 2 {Second} other {First}} Agenda",
+    "description": "Label specifying which agenda this is."
+  },
+  "Outcomes.Cultural Planet": {
+    "defaultMessage": "Cultural Planet",
+    "description": "Outcome type: Cultural Planet"
+  },
+  "Outcomes.For/Against": {
+    "defaultMessage": "For/Against",
+    "description": "Outcome type: For/Against"
+  },
+  "Outcomes.Hazardous Planet": {
+    "defaultMessage": "Hazardous Planet",
+    "description": "Outcome type: Hazardous Planet"
+  },
+  "Outcomes.Industrial Planet": {
+    "defaultMessage": "Industrial Planet",
+    "description": "Outcome type: Industrial Planet"
+  },
+  "Outcomes.Law": {
+    "defaultMessage": "Law",
+    "description": "Outcome type: Law"
+  },
+  "Outcomes.Non-Home Planet Other Than Mecatol Rex": {
+    "defaultMessage": "Non-Home Planet Other Than Mecatol Rex",
+    "description": "Outcome type: Non-Home Planet Other Than Mecatol Rex"
+  },
+  "Outcomes.Planet": {
+    "defaultMessage": "Planet",
+    "description": "Outcome type: Planet"
+  },
+  "Outcomes.Player": {
+    "defaultMessage": "Player",
+    "description": "Outcome type: Player"
+  },
+  "Outcomes.Scored Secret Objective": {
+    "defaultMessage": "Scored Secret Objective",
+    "description": "Outcome type: Scored Secret Objective"
+  },
+  "Outcomes.Strategy Card": {
+    "defaultMessage": "Strategy Card",
+    "description": "Outcome type: Strategy Card"
+  },
   "PBW6vs": {
     "defaultMessage": "Secondary",
     "description": "The alternate ability for a strategy card."
@@ -3965,6 +4069,10 @@
   "PptkAD": {
     "defaultMessage": "{count} {count, plural, one {Mech} other {Mechs}}",
     "description": "A number of Mech units."
+  },
+  "Promissories.Political Secret.Title": {
+    "defaultMessage": "Political Secret",
+    "description": "Title of Promissory: Political Secret"
   },
   "PzyYtG": {
     "defaultMessage": "{count, plural, =0 {VPs} one {VP} other {VPs}}",
@@ -4090,6 +4198,50 @@
     "defaultMessage": "The Prophet's Tears",
     "description": "Title of Relic: The Prophet's Tears"
   },
+  "Riders.Construction Rider.Title": {
+    "defaultMessage": "Construction Rider",
+    "description": "Title of Rider: Construction Rider"
+  },
+  "Riders.Diplomacy Rider.Title": {
+    "defaultMessage": "Diplomacy Rider",
+    "description": "Title of Rider: Diplomacy Rider"
+  },
+  "Riders.Galactic Threat.Title": {
+    "defaultMessage": "Galactic Threat",
+    "description": "Title of Rider: Galactic Threat"
+  },
+  "Riders.Imperial Rider.Title": {
+    "defaultMessage": "Imperial Rider",
+    "description": "Title of Rider: Imperial Rider"
+  },
+  "Riders.Keleres Rider.Title": {
+    "defaultMessage": "Keleres Rider",
+    "description": "Title of Rider: Keleres Rider"
+  },
+  "Riders.Leadership Rider.Title": {
+    "defaultMessage": "Leadership Rider",
+    "description": "Title of Rider: Leadership Rider"
+  },
+  "Riders.Politics Rider.Title": {
+    "defaultMessage": "Politics Rider",
+    "description": "Title of Rider: Politics Rider"
+  },
+  "Riders.Sanction.Title": {
+    "defaultMessage": "Sanction",
+    "description": "Title of Rider: Sanction"
+  },
+  "Riders.Technology Rider.Title": {
+    "defaultMessage": "Technology Rider",
+    "description": "Title of Rider: Technology Rider"
+  },
+  "Riders.Trade Rider.Title": {
+    "defaultMessage": "Trade Rider",
+    "description": "Title of Rider: Trade Rider"
+  },
+  "Riders.Warfare Rider.Title": {
+    "defaultMessage": "Warfare Rider",
+    "description": "Title of Rider: Warfare Rider"
+  },
   "RlIQB2": {
     "defaultMessage": "Sub-Faction",
     "description": "The faction that Council Keleres chooses."
@@ -4097,6 +4249,10 @@
   "S0vXJt": {
     "defaultMessage": "On Deck",
     "description": "Label showing that the specific player is up next."
+  },
+  "SOC2Bh": {
+    "defaultMessage": "Against",
+    "description": "Outcome choosing to vote down a law."
   },
   "Sardakk N'orr.Abilities.Unrelenting.Description": {
     "defaultMessage": "Apply +1 to the result of each of your unit's combat rolls.",
@@ -5226,6 +5382,10 @@
     "defaultMessage": "Van Hauge",
     "description": "Title of Faction Unit: Van Hauge"
   },
+  "YoQKZ7": {
+    "defaultMessage": "Give Planet to Faction",
+    "description": "Text on a hover menu for giving a planet to another faction."
+  },
   "YotjeE": {
     "defaultMessage": "Gain and Redistribute Tokens",
     "description": "Instruction telling players to gain and redistribute Tokens."
@@ -5338,6 +5498,10 @@
     "defaultMessage": "Stage II",
     "description": "The title of public objectives that grant 2 victory points."
   },
+  "ZAYAbS": {
+    "defaultMessage": "Reveal and Read one Agenda",
+    "description": "Instruction telling the speaker to reveal an agenda."
+  },
   "ZZ/Lhe": {
     "defaultMessage": "Map Type:",
     "description": "A label for a selector for selecting which map style to use."
@@ -5354,9 +5518,25 @@
     "defaultMessage": "+1 VP for controlling Mecatol Rex",
     "description": "Message telling a player that they get a victory point."
   },
+  "c4LYqr": {
+    "defaultMessage": "Cannot Vote",
+    "description": "Text informing a player that they cannot vote."
+  },
   "c6uq+j": {
     "defaultMessage": "Select Faction",
     "description": "Instruction telling the user to select their faction."
+  },
+  "c9hO6S": {
+    "defaultMessage": "Assassinated Representative",
+    "description": "Label for section describing the faction that has has Assassinate Representative played on them."
+  },
+  "cHsAYk": {
+    "defaultMessage": "Select Outcome",
+    "description": "Text on hover menu for selecting voting outcome."
+  },
+  "cKaLW8": {
+    "defaultMessage": "Reveal Eligible Outcomes",
+    "description": "Text on a hover menu for revealing eligible outcomes."
   },
   "cqWqzv": {
     "defaultMessage": "Gained Relic",
@@ -5406,6 +5586,14 @@
     "defaultMessage": "Details",
     "description": "Label for a section containing additional details."
   },
+  "g92Jbl": {
+    "defaultMessage": "Updates Paused",
+    "description": "Text telling the user that updates are paused."
+  },
+  "gQ0twG": {
+    "defaultMessage": "Start Voting",
+    "description": "Text on a button that will start the voting part of Agenda Phase."
+  },
   "ggO0Am": {
     "defaultMessage": "Secret",
     "description": "Label for selecting a secret objective."
@@ -5421,6 +5609,10 @@
   "hhm3kX": {
     "defaultMessage": "Round {value}",
     "description": "The current round of the game."
+  },
+  "jGX605": {
+    "defaultMessage": "Play Rider",
+    "description": "Text on hover menu for selecting a rider to play."
   },
   "jgVoqe": {
     "defaultMessage": "{count} {count, plural, one {Carrier} other {Carriers}}",
@@ -5449,6 +5641,10 @@
   "lYD2yu": {
     "defaultMessage": "Start Game",
     "description": "Text on a button that will start a game."
+  },
+  "m5acGq": {
+    "defaultMessage": "Cast votes (or abstain)",
+    "description": "Text label telling players to cast votes or abstain."
   },
   "mcZgiQ": {
     "defaultMessage": "{count} {count, plural, one {Destroyer} other {Destroyers}}",
@@ -5542,6 +5738,14 @@
     "defaultMessage": "Reset",
     "description": "Text on a button that will reset selections."
   },
+  "uEqy1T": {
+    "defaultMessage": "Close to continue",
+    "description": "Text telling the user to close the dialog to resume."
+  },
+  "urcttb": {
+    "defaultMessage": "Ready {num, select, 3 {3} other {all}} planets, then",
+    "description": "Text explaining how many planets to ready."
+  },
   "vTtJ6S": {
     "defaultMessage": "Active Player",
     "description": "Label showing that the specific player is the current player."
@@ -5593,6 +5797,10 @@
   "yBACfb": {
     "defaultMessage": "Main Screen",
     "description": "Text on a button that opens the main screen of the assistant."
+  },
+  "ymJxS0": {
+    "defaultMessage": "For",
+    "description": "Outcome choosing to pass a law."
   },
   "ys7uwX": {
     "defaultMessage": "Techs",
