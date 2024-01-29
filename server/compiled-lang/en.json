@@ -119,6 +119,12 @@
       "value": "Attachments"
     }
   ],
+  "22b12K": [
+    {
+      "type": 0,
+      "value": "Home"
+    }
+  ],
   "2HJ0k5": [
     {
       "type": 0,
@@ -221,6 +227,12 @@
     {
       "type": 0,
       "value": "Take Another Action"
+    }
+  ],
+  "5R8kPv": [
+    {
+      "type": 0,
+      "value": "Speaker Actions"
     }
   ],
   "5WXn8l": [
@@ -2587,6 +2599,12 @@
     {
       "type": 0,
       "value": "Son of Ragh"
+    }
+  ],
+  "CoNZle": [
+    {
+      "type": 0,
+      "value": "Cannot score Public Objectives"
     }
   ],
   "Components.Ancient Burial Sites.Title": [
@@ -5579,6 +5597,12 @@
       "value": "No Starting Tech"
     }
   ],
+  "NUNF0C": [
+    {
+      "type": 0,
+      "value": "Faction Details"
+    }
+  ],
   "Naalu Collective.Abilities.Foresight.Description": [
     {
       "type": 0,
@@ -7763,6 +7787,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "PrGqwQ": [
+    {
+      "type": 0,
+      "value": "Add Planet"
     }
   ],
   "Promissories.Political Secret.Title": [
@@ -10645,6 +10675,12 @@
       "value": "Secret"
     }
   ],
+  "hCXyLw": [
+    {
+      "type": 0,
+      "value": "Select Strategy Card"
+    }
+  ],
   "hIFcXI": [
     {
       "type": 0,
@@ -11026,6 +11062,12 @@
       "value": "Other"
     }
   ],
+  "sgxJMg": [
+    {
+      "type": 0,
+      "value": "Legendary"
+    }
+  ],
   "sngfoO": [
     {
       "type": 0,
@@ -11302,6 +11344,12 @@
     {
       "type": 0,
       "value": "(filters out non-claimable planets)"
+    }
+  ],
+  "zlpl9F": [
+    {
+      "type": 0,
+      "value": "Score Secret Objective"
     }
   ]
 }

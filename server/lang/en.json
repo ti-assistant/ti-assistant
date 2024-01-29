@@ -79,6 +79,10 @@
     "defaultMessage": "Attachments",
     "description": "Text on a button that will show planet attachments."
   },
+  "22b12K": {
+    "defaultMessage": "Home",
+    "description": "Home system planets."
+  },
   "2HJ0k5": {
     "defaultMessage": "S",
     "description": "The letter used to identify secret objectives."
@@ -142,6 +146,10 @@
   "5ChhqO": {
     "defaultMessage": "Take Another Action",
     "description": "Text on a button that will let the player take another action."
+  },
+  "5R8kPv": {
+    "defaultMessage": "Speaker Actions",
+    "description": "Label for a section for actions by the speaker."
   },
   "5WXn8l": {
     "defaultMessage": "Start Next Round",
@@ -1233,6 +1241,10 @@
   "Clan of Saar.Units.Son of Ragh.Title": {
     "defaultMessage": "Son of Ragh",
     "description": "Title of Faction Unit: Son of Ragh"
+  },
+  "CoNZle": {
+    "defaultMessage": "Cannot score Public Objectives",
+    "description": "Message telling a player that they cannot score public objectives."
   },
   "Components.Ancient Burial Sites.Title": {
     "defaultMessage": "Ancient Burial Sites",
@@ -2782,6 +2794,10 @@
     "defaultMessage": "No Starting Tech",
     "description": "Message explaining that a faction has no starting tech."
   },
+  "NUNF0C": {
+    "defaultMessage": "Faction Details",
+    "description": "Label for a section of faction details."
+  },
   "Naalu Collective.Abilities.Foresight.Description": {
     "defaultMessage": "After another player moves ships into a system that contains 1 or more of your ships, you may place 1 token from your strategy pool in an adjacent system that does not contain another player's ships; move your ships from the active system into that system.",
     "description": "Description for Faction Ability: Foresight"
@@ -4069,6 +4085,10 @@
   "PptkAD": {
     "defaultMessage": "{count} {count, plural, one {Mech} other {Mechs}}",
     "description": "A number of Mech units."
+  },
+  "PrGqwQ": {
+    "defaultMessage": "Add Planet",
+    "description": "Label for adding a planet."
   },
   "Promissories.Political Secret.Title": {
     "defaultMessage": "Political Secret",
@@ -5598,6 +5618,10 @@
     "defaultMessage": "Secret",
     "description": "Label for selecting a secret objective."
   },
+  "hCXyLw": {
+    "defaultMessage": "Select Strategy Card",
+    "description": "Label telling a player to select a strategy card."
+  },
   "hIFcXI": {
     "defaultMessage": "PLANETARY SHIELD",
     "description": "A unit ability that prevents BOMBARDMENT."
@@ -5718,6 +5742,10 @@
     "defaultMessage": "Other",
     "description": "Text on a button used to select a non-listed value"
   },
+  "sgxJMg": {
+    "defaultMessage": "Legendary",
+    "description": "Legendary planets."
+  },
   "sngfoO": {
     "defaultMessage": "Returned {count, plural, one {Tech} other {Techs}}",
     "description": "Label for a section listing returned techs."
@@ -5813,5 +5841,9 @@
   "zjv9Gr": {
     "defaultMessage": "(filters out non-claimable planets)",
     "description": "Part of a label explaining what the map string does."
+  },
+  "zlpl9F": {
+    "defaultMessage": "Score Secret Objective",
+    "description": "Message telling a player to score a secret objective."
   }
 }

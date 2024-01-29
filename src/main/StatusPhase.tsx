@@ -487,7 +487,11 @@ export function MiddleColumn() {
                   </div>
                   {!canScoreObjectives ? (
                     <div className="smallFont" style={{ textAlign: "center" }}>
-                      Cannot score public objectives
+                      <FormattedMessage
+                        id="CoNZle"
+                        description="Message telling a player that they cannot score public objectives."
+                        defaultMessage="Cannot score Public Objectives"
+                      />
                     </div>
                   ) : !scoredPublics[0] && availableObjectives.length === 0 ? (
                     <div className="smallFont" style={{ textAlign: "center" }}>
