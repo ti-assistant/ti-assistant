@@ -5,10 +5,22 @@
       "value": "Continue Game"
     }
   ],
+  "+8kwFc": [
+    {
+      "type": 0,
+      "value": "Take Control of Planet"
+    }
+  ],
   "+HPhsr": [
     {
       "type": 0,
       "value": "New Game"
+    }
+  ],
+  "+IA3Oz": [
+    {
+      "type": 0,
+      "value": "Promissory"
     }
   ],
   "+WkrHz": [
@@ -27,6 +39,18 @@
     {
       "type": 0,
       "value": "Build the Galaxy"
+    }
+  ],
+  "/KXhGz": [
+    {
+      "type": 0,
+      "value": "Tactical"
+    }
+  ],
+  "/MkeMw": [
+    {
+      "type": 0,
+      "value": "Leaders"
     }
   ],
   "/sF4zW": [
@@ -95,6 +119,18 @@
       "value": "Codex I"
     }
   ],
+  "3qIvsL": [
+    {
+      "type": 0,
+      "value": "Research Tech"
+    }
+  ],
+  "43UU69": [
+    {
+      "type": 0,
+      "value": "Component"
+    }
+  ],
   "46dzNs": [
     {
       "type": 0,
@@ -151,16 +187,40 @@
       "value": "Objectives"
     }
   ],
+  "5ChhqO": [
+    {
+      "type": 0,
+      "value": "Take Another Action"
+    }
+  ],
   "5rR4S2": [
     {
       "type": 0,
       "value": "View Details"
     }
   ],
+  "64NLXu": [
+    {
+      "type": 0,
+      "value": "+1 VP for Custodians Token"
+    }
+  ],
   "6L07nG": [
     {
       "type": 0,
       "value": "Reveal Objective"
+    }
+  ],
+  "73882v": [
+    {
+      "type": 0,
+      "value": "Score Public Objective"
+    }
+  ],
+  "7ECd6J": [
+    {
+      "type": 0,
+      "value": "Pass"
     }
   ],
   "7SZHCO": [
@@ -3471,10 +3531,70 @@
       "value": "value"
     }
   ],
+  "DGs6vS": [
+    {
+      "type": 0,
+      "value": "Scored Action Phase "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Objective"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Objectives"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Dw1fzR": [
     {
       "type": 0,
       "value": "Update Planets"
+    }
+  ],
+  "E9UhAA": [
+    {
+      "type": 0,
+      "value": "Newly Controlled "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Planet"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Planets"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Ecx237": [
@@ -4525,6 +4645,12 @@
       "value": "SUSTAIN DAMAGE"
     }
   ],
+  "HW1UF8": [
+    {
+      "type": 0,
+      "value": "Action Cards"
+    }
+  ],
   "IG7CG4": [
     {
       "type": 1,
@@ -4843,6 +4969,52 @@
       "value": "Update Objectives"
     }
   ],
+  "M0ywrk": [
+    {
+      "type": 0,
+      "value": "Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Trade "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Goods"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Good"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Goods"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": [
     {
       "type": 0,
@@ -5041,6 +5213,12 @@
     {
       "type": 0,
       "value": "Starlancer"
+    }
+  ],
+  "McKqpw": [
+    {
+      "type": 0,
+      "value": "Gain Tech"
     }
   ],
   "Mentak Coalition.Abilities.Ambush.Description": [
@@ -6069,6 +6247,12 @@
     {
       "type": 0,
       "value": "Propulsion"
+    }
+  ],
+  "NxpzKH": [
+    {
+      "type": 0,
+      "value": "End Turn"
     }
   ],
   "Objectives.Achieve Supremacy.Description": [
@@ -7223,6 +7407,12 @@
       "value": "value"
     }
   ],
+  "PBW6vs": [
+    {
+      "type": 0,
+      "value": "Secondary"
+    }
+  ],
   "Phase.Action": [
     {
       "type": 0,
@@ -7263,6 +7453,12 @@
     {
       "type": 0,
       "value": "Unknown"
+    }
+  ],
+  "PnNSxg": [
+    {
+      "type": 0,
+      "value": "OR"
     }
   ],
   "PptkAD": [
@@ -8473,6 +8669,12 @@
       "value": "Map String"
     }
   ],
+  "UJs3kj": [
+    {
+      "type": 0,
+      "value": "Claim Empty Planet"
+    }
+  ],
   "USnh0f": [
     {
       "type": 0,
@@ -9171,6 +9373,12 @@
       "value": "Help support TI Assistant"
     }
   ],
+  "XG4lKH": [
+    {
+      "type": 0,
+      "value": "Return Tech"
+    }
+  ],
   "Xxcha Kingdom.Abilities.Peace Accords.Description": [
     {
       "type": 0,
@@ -9395,6 +9603,12 @@
     {
       "type": 0,
       "value": "Discard to Swap"
+    }
+  ],
+  "YeYE6S": [
+    {
+      "type": 0,
+      "value": "Select Action"
     }
   ],
   "Yin Brotherhood.Abilities.Devotion.Description": [
@@ -9905,10 +10119,22 @@
       "value": "Warfare"
     }
   ],
+  "a1rHE+": [
+    {
+      "type": 0,
+      "value": "+1 VP for controlling Mecatol Rex"
+    }
+  ],
   "c6uq+j": [
     {
       "type": 0,
       "value": "Select Faction"
+    }
+  ],
+  "cqWqzv": [
+    {
+      "type": 0,
+      "value": "Gained Relic"
     }
   ],
   "d0uSBF": [
@@ -9923,10 +10149,22 @@
       "value": "Unpause"
     }
   ],
+  "dd3UAo": [
+    {
+      "type": 0,
+      "value": "Draw 1 secret objective"
+    }
+  ],
   "dmwygw": [
     {
       "type": 0,
       "value": "Re-shuffle secret objectives"
+    }
+  ],
+  "e01Ge2": [
+    {
+      "type": 0,
+      "value": "Tactical Action"
     }
   ],
   "e1q7sg": [
@@ -9979,6 +10217,18 @@
     {
       "type": 0,
       "value": "Display Titles"
+    }
+  ],
+  "fCdj3q": [
+    {
+      "type": 0,
+      "value": "Score Action Phase Objective"
+    }
+  ],
+  "fVAave": [
+    {
+      "type": 0,
+      "value": "Details"
     }
   ],
   "hIFcXI": [
@@ -10147,6 +10397,18 @@
       "value": "count"
     }
   ],
+  "mhqGMn": [
+    {
+      "type": 0,
+      "value": "Primary"
+    }
+  ],
+  "mkUb00": [
+    {
+      "type": 0,
+      "value": "Select Component"
+    }
+  ],
   "nryRrR": [
     {
       "type": 0,
@@ -10191,6 +10453,12 @@
     {
       "type": 0,
       "value": "Relics"
+    }
+  ],
+  "pTiYPm": [
+    {
+      "type": 0,
+      "value": "New Speaker"
     }
   ],
   "qfVnAj": [
@@ -10297,6 +10565,80 @@
       "value": "Other"
     }
   ],
+  "sngfoO": [
+    {
+      "type": 0,
+      "value": "Returned "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Tech"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Techs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "t0EFbu": [
+    {
+      "type": 0,
+      "value": "Exploration/Relic"
+    }
+  ],
+  "t5fXQR": [
+    {
+      "type": 0,
+      "value": "Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " command "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "token"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "tokens"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "t6v2oN": [
     {
       "type": 0,
@@ -10325,6 +10667,36 @@
     {
       "type": 0,
       "value": "Types"
+    }
+  ],
+  "wHhicR": [
+    {
+      "type": 0,
+      "value": "Researched "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Tech"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Techs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "wOb6Wx": [

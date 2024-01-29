@@ -93,7 +93,7 @@ function InnerTechSelectHoverMenu({
 interface TechSelectHoverMenuProps {
   factionId: FactionId;
   ignorePrereqs?: boolean;
-  label?: string;
+  label: string;
   techs: Tech[];
   selectTech: (tech: Tech) => void;
 }
@@ -102,7 +102,7 @@ export default function TechSelectHoverMenu({
   factionId,
   ignorePrereqs = false,
   techs,
-  label = "Research Tech",
+  label,
   selectTech,
 }: TechSelectHoverMenuProps) {
   const attachments = useContext(AttachmentContext);

@@ -5,6 +5,7 @@ import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
 import { responsivePixels } from "./util/util";
 import LegendaryPlanetIcon from "./components/LegendaryPlanetIcon/LegendaryPlanetIcon";
 import PlanetIcon from "./components/PlanetIcon/PlanetIcon";
+import { FormattedMessage } from "react-intl";
 
 interface AttachRowProps {
   attachment: Attachment;
@@ -59,7 +60,13 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
         influence={attachment.influence ?? 0}
       />
       {isSkip() ? (
-        <div style={{ marginRight: responsivePixels(6) }}>OR</div>
+        <div style={{ marginRight: responsivePixels(6) }}>
+          <FormattedMessage
+            id="PnNSxg"
+            description="Text between two fields linking them together."
+            defaultMessage="OR"
+          />
+        </div>
       ) : null}
       {attachment.attribute ? (
         <PlanetAttributes attributes={[attachment.attribute]} />

@@ -4,7 +4,6 @@ import { capitalizeFirstLetter } from "../../../pages/setup";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
-import { Selector } from "../../Selector";
 import { TechRow } from "../../TechRow";
 import FactionSelectRadialMenu from "../../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../components/LabeledDiv/LabeledDiv";
@@ -48,9 +47,11 @@ import {
 } from "../../util/actionLog";
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
-import { getFactionColor } from "../../util/factions";
+import { getFactionColor, getFactionName } from "../../util/factions";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize, responsivePixels } from "../../util/util";
+import { FormattedMessage, useIntl } from "react-intl";
+import { Selector } from "../../components/Selector/Selector";
 
 function InfoContent({ component }: { component: Component }) {
   const description = component.description.replaceAll("\\n", "\n");
@@ -79,6 +80,7 @@ function ComponentSelect({
   components: Component[];
   selectComponent: (componentName: string) => void;
 }) {
+  const factions = useContext(FactionContext);
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
       (component) => component.type !== "TECH"
@@ -153,7 +155,15 @@ function ComponentSelect({
         maxWidth: "85vw",
       }}
     >
-      <ClientOnlyHoverMenu label="Action Cards">
+      <ClientOnlyHoverMenu
+        label={
+          <FormattedMessage
+            id="HW1UF8"
+            description="Cards that are used to make actions."
+            defaultMessage="Action Cards"
+          />
+        }
+      >
         <div className="flexRow" style={innerStyle}>
           {actionCards.map((component) => {
             return (
@@ -174,7 +184,15 @@ function ComponentSelect({
         </div>
       </ClientOnlyHoverMenu>
       {techs.length > 0 ? (
-        <ClientOnlyHoverMenu label="Techs">
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="ys7uwX"
+              description="Shortened version of technologies."
+              defaultMessage="Techs"
+            />
+          }
+        >
           <div
             className="flexRow"
             style={{
@@ -203,7 +221,15 @@ function ComponentSelect({
         </ClientOnlyHoverMenu>
       ) : null}
       {leaders.length > 0 ? (
-        <ClientOnlyHoverMenu label="Leaders">
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="/MkeMw"
+              description="Agent, commander, and hero cards."
+              defaultMessage="Leaders"
+            />
+          }
+        >
           <div
             className="flexColumn"
             style={{ alignItems: "stretch", padding: responsivePixels(8) }}
@@ -234,7 +260,15 @@ function ComponentSelect({
         </ClientOnlyHoverMenu>
       ) : null}
       {exploration.length > 0 ? (
-        <ClientOnlyHoverMenu label="Exploration/Relic">
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="t0EFbu"
+              description="Abilities related to exploration and relics."
+              defaultMessage="Exploration/Relic"
+            />
+          }
+        >
           <div
             className="flexColumn"
             style={{
@@ -263,16 +297,27 @@ function ComponentSelect({
         </ClientOnlyHoverMenu>
       ) : null}
       {promissory.length > 0 ? (
-        <ClientOnlyHoverMenu label="Promissory">
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="+IA3Oz"
+              description="Promissory note actions."
+              defaultMessage="Promissory"
+            />
+          }
+        >
           <div
             className="flexColumn"
             style={{ alignItems: "stretch", padding: responsivePixels(8) }}
           >
             {Object.entries(promissoryByFaction).map(([id, components]) => {
-              const factionId = id as FactionId;
+              const faction = factions[id as FactionId];
+              if (!faction) {
+                return null;
+              }
               return (
-                <div className="flexColumn" key={factionId}>
-                  <LabeledDiv noBlur={true} label={factionId}>
+                <div className="flexColumn" key={faction.id}>
+                  <LabeledDiv noBlur={true} label={getFactionName(faction)}>
                     {components.map((component) => {
                       return (
                         <button
@@ -297,7 +342,15 @@ function ComponentSelect({
         </ClientOnlyHoverMenu>
       ) : null}
       {others.length > 0 ? (
-        <ClientOnlyHoverMenu label="Other">
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="sgqLYB"
+              description="Text on a button used to select a non-listed value"
+              defaultMessage="Other"
+            />
+          }
+        >
           <div
             className="flexColumn"
             style={{ alignItems: "stretch", padding: responsivePixels(8) }}
@@ -351,6 +404,8 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const planets = useContext(PlanetContext);
   const relics = useContext(RelicContext);
   const techs = useContext(TechContext);
+
+  const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -459,7 +514,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     attachments ?? {}
   );
 
-  let leftLabel: ReactNode | undefined = "Details";
+  let leftLabel: ReactNode | undefined = (
+    <FormattedMessage
+      id="fVAave"
+      description="Label for a section containing additional details."
+      defaultMessage="Details"
+    />
+  );
   let label: ReactNode | undefined;
   let rightLabel: ReactNode | undefined;
   let lineColor: string | undefined;
@@ -481,14 +542,28 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         break;
       }
       if (factionId === "Nekro Virus") {
-        innerContent = "Gain 3 command tokens";
+        innerContent = (
+          <FormattedMessage
+            id="t5fXQR"
+            description="Text telling a player how many command tokens to gain."
+            defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
+            values={{ count: 3 }}
+          />
+        );
         break;
       }
       const researchedTech = getResearchedTechs(currentTurn, factionId);
       const availableTechs = getResearchableTechs(faction);
 
       if (researchedTech.length > 0) {
-        leftLabel = "Researched Tech";
+        leftLabel = (
+          <FormattedMessage
+            id="wHhicR"
+            description="Label for a section listing researched techs."
+            defaultMessage="Researched {count, plural, one {Tech} other {Techs}}"
+            values={{ count: researchedTech.length }}
+          />
+        );
         innerContent = (
           <React.Fragment>
             {researchedTech.map((tech) => {
@@ -513,6 +588,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         innerContent = (
           <TechSelectHoverMenu
             factionId={factionId}
+            label={intl.formatMessage({
+              id: "3qIvsL",
+              description: "Label on a hover menu used to research tech.",
+              defaultMessage: "Research Tech",
+            })}
             techs={availableTechs}
             selectTech={addTechLocal}
           />
@@ -542,7 +622,16 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         <div className="flexColumn" style={{ width: "100%" }}>
           {returnedTechs.length > 0 ? (
             <React.Fragment>
-              <LabeledDiv label="Returned Tech">
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="sngfoO"
+                    description="Label for a section listing returned techs."
+                    defaultMessage="Returned {count, plural, one {Tech} other {Techs}}"
+                    values={{ count: returnedTechs.length }}
+                  />
+                }
+              >
                 {returnedTechs.map((tech) => {
                   const techObj = techs[tech];
                   if (!techObj) {
@@ -561,7 +650,16 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 })}
               </LabeledDiv>
               {researchedTech.length > 0 ? (
-                <LabeledDiv label="Researched Tech">
+                <LabeledDiv
+                  label={
+                    <FormattedMessage
+                      id="wHhicR"
+                      description="Label for a section listing researched techs."
+                      defaultMessage="Researched {count, plural, one {Tech} other {Techs}}"
+                      values={{ count: researchedTech.length }}
+                    />
+                  }
+                >
                   {researchedTech.map((tech) => {
                     const techObj = techs[tech];
                     if (!techObj) {
@@ -579,18 +677,32 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
               ) : factionId !== "Nekro Virus" ? (
                 <TechSelectHoverMenu
                   factionId={factionId}
+                  label={intl.formatMessage({
+                    id: "3qIvsL",
+                    description: "Label on a hover menu used to research tech.",
+                    defaultMessage: "Research Tech",
+                  })}
                   techs={availableTechs}
                   selectTech={addTechLocal}
                 />
               ) : (
-                "Gain 3 command tokens"
+                <FormattedMessage
+                  id="t5fXQR"
+                  description="Text telling a player how many command tokens to gain."
+                  defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
+                  values={{ count: 3 }}
+                />
               )}
             </React.Fragment>
           ) : (
             <TechSelectHoverMenu
               factionId={factionId}
               techs={canReturnTechs}
-              label="Return Tech"
+              label={intl.formatMessage({
+                id: "XG4lKH",
+                description: "Label on a hover menu used to return a tech.",
+                defaultMessage: "Return Tech",
+              })}
               selectTech={addRemoveTech}
             />
           )}
@@ -606,7 +718,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       const numCommodities = faction.commodities + 2;
 
       innerContent = (
-        <React.Fragment>{`Gain ${numCommodities} Trade Goods`}</React.Fragment>
+        <React.Fragment>
+          <FormattedMessage
+            id="M0ywrk"
+            description="Text telling a player how many Trade Goods to gain."
+            defaultMessage="Gain {count} Trade {count, plural, =0 {Goods} one {Good} other {Goods}}"
+            values={{ count: numCommodities }}
+          />
+        </React.Fragment>
       );
       break;
     }
@@ -614,17 +733,30 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     case "Black Market Forgery":
     case "Hesh and Prit":
     case "Fabrication": {
-      const unownedRelics = Object.values(relics ?? {})
-        .filter((relic) => !relic.owner)
-        .map((relic) => relic.id);
-      leftLabel = "Gained Relic";
+      const gainedRelic = getGainedRelic(currentTurn);
+      const unownedRelics = Object.values(relics).filter(
+        (relic) => !relic.owner || gainedRelic === relic.id
+      );
+      leftLabel = (
+        <FormattedMessage
+          id="cqWqzv"
+          description="Label for section listing the relic gained."
+          defaultMessage="Gained Relic"
+        />
+      );
       innerContent =
         unownedRelics.length > 0 ? (
           <Selector
-            hoverMenuLabel="Gain Relic"
+            hoverMenuLabel={
+              <FormattedMessage
+                id="Components.Gain Relic.Title"
+                description="Title of Component: Gain Relic"
+                defaultMessage="Gain Relic"
+              />
+            }
             options={unownedRelics}
-            renderItem={(itemId) => {
-              const relic = (relics ?? {})[itemId];
+            renderItem={(itemId, _) => {
+              const relic = relics[itemId];
               if (!relic) {
                 return null;
               }
@@ -677,9 +809,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         >
           <Selector
             hoverMenuLabel="Destroy Planet"
-            options={nonHomeNonLegendaryNonMecatolPlanets.map(
-              (planet) => planet.id
-            )}
+            options={nonHomeNonLegendaryNonMecatolPlanets}
             selectedItem={destroyedPlanet}
             toggleItem={(planetId, add) => {
               if (add) {
@@ -718,9 +848,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           className="flexColumn"
           style={{ width: "100%", alignItems: "flex-start" }}
         >
-          <Selector<PlanetId>
+          <Selector
             hoverMenuLabel="Attach to Planet"
-            options={ownedNonHomeNonLegendaryPlanets.map((planet) => planet.id)}
+            options={ownedNonHomeNonLegendaryPlanets}
             renderItem={(planetId) => {
               const planet = updatedPlanets.find(
                 (planet) => planet.id === planetId
@@ -774,9 +904,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         >
           <Selector
             hoverMenuLabel="Attach to Planet"
-            options={ownedNonHomeNonLegendaryNonMecatolPlanets.map(
-              (planet) => planet.id
-            )}
+            options={ownedNonHomeNonLegendaryNonMecatolPlanets}
             selectedItem={terraformedPlanet}
             renderItem={(planetId) => {
               const planet = updatedPlanets.find(
@@ -927,7 +1055,19 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         }
       );
       leftLabel = undefined;
-      label = selectedFaction ? "Tactical Action" : "Select Faction";
+      label = selectedFaction ? (
+        <FormattedMessage
+          id="e01Ge2"
+          description="Type of action involving activating a system."
+          defaultMessage="Tactical Action"
+        />
+      ) : (
+        <FormattedMessage
+          id="c6uq+j"
+          description="Instruction telling the user to select their faction."
+          defaultMessage="Select Faction"
+        />
+      );
       rightLabel = (
         <FactionSelectRadialMenu
           selectedFaction={selectedFaction}
@@ -1010,7 +1150,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         innerContent = (
           <TechSelectHoverMenu
             factionId={factionId}
-            label="Gain Tech"
+            label={intl.formatMessage({
+              id: "McKqpw",
+              description: "Label on a hover menu used to gain tech.",
+              defaultMessage: "Gain Tech",
+            })}
             techs={availableTechs}
             selectTech={addTechLocal}
           />
@@ -1082,10 +1226,12 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 
       innerContent = (
         <React.Fragment>
-          {`Gain ${numIndustrialPlanets} ${pluralize(
-            "trade good",
-            numIndustrialPlanets
-          )}`}
+          <FormattedMessage
+            id="M0ywrk"
+            description="Text telling a player how many Trade Goods to gain."
+            defaultMessage="Gain {count} Trade {count, plural, =0 {Goods} one {Good} other {Goods}}"
+            values={{ count: numIndustrialPlanets }}
+          />
         </React.Fragment>
       );
       break;
@@ -1267,7 +1413,15 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     );
 
     return (
-      <ClientOnlyHoverMenu label="Select Component">
+      <ClientOnlyHoverMenu
+        label={
+          <FormattedMessage
+            id="mkUb00"
+            description="Text on a hover menu for selecting a component action."
+            defaultMessage="Select Component"
+          />
+        }
+      >
         <ComponentSelect
           components={filteredComponents}
           selectComponent={selectComponent}
@@ -1276,20 +1430,18 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     );
   }
 
-  const agentsForSsruu = Object.values(components ?? {})
-    .filter((component) => {
-      if (component.type !== "LEADER") {
-        return false;
-      }
-      if (component.leader !== "AGENT") {
-        return false;
-      }
-      if (component.id === "Ssruu") {
-        return false;
-      }
-      return true;
-    })
-    .map((component) => component.id);
+  const agentsForSsruu = Object.values(components ?? {}).filter((component) => {
+    if (component.type !== "LEADER") {
+      return false;
+    }
+    if (component.leader !== "AGENT") {
+      return false;
+    }
+    if (component.id === "Ssruu") {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <React.Fragment>
@@ -1312,7 +1464,16 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         className="flexColumn largeFont"
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
-        <LabeledDiv label="Component" style={{ width: "90%" }}>
+        <LabeledDiv
+          label={
+            <FormattedMessage
+              id="43UU69"
+              description="Text on a button that will select a component action."
+              defaultMessage="Component"
+            />
+          }
+          style={{ width: "90%" }}
+        >
           <SelectableRow
             itemId={component.id}
             removeItem={() => unselectComponent(component.id)}

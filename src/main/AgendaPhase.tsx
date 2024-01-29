@@ -71,6 +71,7 @@ import { hasScoredObjective } from "../util/api/util";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels } from "../util/util";
 import VoteBlock from "../components/VoteBlock/VoteBlock";
+import { FormattedMessage } from "react-intl";
 
 const RIDERS = [
   "Galactic Threat",
@@ -450,7 +451,15 @@ function AgendaDetails() {
               return null;
             }
             return (
-              <LabeledDiv label="Gained Relic">
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="cqWqzv"
+                    description="Label for section listing the relic gained."
+                    defaultMessage="Gained Relic"
+                  />
+                }
+              >
                 <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
                   <SelectableRow
                     itemId={relic.id}

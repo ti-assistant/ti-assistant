@@ -3,9 +3,17 @@
     "defaultMessage": "Le Continue Game",
     "description": "A button that will rejoin the previous game."
   },
+  "+8kwFc": {
+    "defaultMessage": "Le Take Control of Planet",
+    "description": "Text on a hover menu allowing a player to take control of planets."
+  },
   "+HPhsr": {
     "defaultMessage": "Le New Game",
     "description": "A button that will start a new game."
+  },
+  "+IA3Oz": {
+    "defaultMessage": "Le Promissory",
+    "description": "Promissory note actions."
   },
   "+WkrHz": {
     "defaultMessage": "Le AND",
@@ -18,6 +26,14 @@
   "+mUg6N": {
     "defaultMessage": "Le Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
+  },
+  "/KXhGz": {
+    "defaultMessage": "Le Tactical",
+    "description": "Text on a button that will select a tactical action."
+  },
+  "/MkeMw": {
+    "defaultMessage": "Le Leaders",
+    "description": "Agent, commander, and hero cards."
   },
   "/sF4zW": {
     "defaultMessage": "Le Choose Starting Tech",
@@ -63,6 +79,14 @@
     "defaultMessage": "Le Codex I",
     "description": "Text on a button that will enable/disable Codex I."
   },
+  "3qIvsL": {
+    "defaultMessage": "Le Research Tech",
+    "description": "Label on a hover menu used to research tech."
+  },
+  "43UU69": {
+    "defaultMessage": "Le Component",
+    "description": "Text on a button that will select a component action."
+  },
   "46dzNs": {
     "defaultMessage": "Le Map:",
     "description": "A label for a section of options related to the map."
@@ -95,13 +119,29 @@
     "defaultMessage": "Le Objectives",
     "description": "Cards that define how to score victory points."
   },
+  "5ChhqO": {
+    "defaultMessage": "Le Take Another Action",
+    "description": "Text on a button that will let the player take another action."
+  },
   "5rR4S2": {
     "defaultMessage": "Le View Details",
     "description": "Label for a section that includes map details."
   },
+  "64NLXu": {
+    "defaultMessage": "Le +1 VP for Custodians Token",
+    "description": "Text telling the player that they gained a victory point for removing the Custodians Token."
+  },
   "6L07nG": {
     "defaultMessage": "Le Reveal Objective",
     "description": "Text telling the user to reveal an objective."
+  },
+  "73882v": {
+    "defaultMessage": "Le Score Public Objective",
+    "description": "Message telling a player to score a public objective."
+  },
+  "7ECd6J": {
+    "defaultMessage": "Le Pass",
+    "description": "Text on a button that will pass."
   },
   "7SZHCO": {
     "defaultMessage": "Le Back to Game",
@@ -1702,9 +1742,17 @@
     "defaultMessage": "Le ANTI-FIGHTER BARRAGE {value}",
     "description": "A unit ability that allows a unit to destroy fighters."
   },
+  "DGs6vS": {
+    "defaultMessage": "Le Scored Action Phase {count, plural, one {Objective} other {Objectives}}",
+    "description": "Label for section of scored action phase objectives."
+  },
   "Dw1fzR": {
     "defaultMessage": "Le Update Planets",
     "description": "Text shown on a button that opens the update planets panel."
+  },
+  "E9UhAA": {
+    "defaultMessage": "Le Newly Controlled {count, plural, one {Planet} other {Planets}}",
+    "description": "Label for section of newly controlled planets."
   },
   "Ecx237": {
     "defaultMessage": "Le Skinny",
@@ -2266,6 +2314,10 @@
     "defaultMessage": "Le SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
   },
+  "HW1UF8": {
+    "defaultMessage": "Le Action Cards",
+    "description": "Cards that are used to make actions."
+  },
   "IG7CG4": {
     "defaultMessage": "Le {count} {count, plural, one {Space Dock} other {Space Docks}}",
     "description": "A number of Space Dock units."
@@ -2422,6 +2474,10 @@
     "defaultMessage": "Le Update Objectives",
     "description": "Text shown on a button that opens the update objectives panel."
   },
+  "M0ywrk": {
+    "defaultMessage": "Le Gain {count} Trade {count, plural, =0 {Goods} one {Good} other {Goods}}",
+    "description": "Text telling a player how many Trade Goods to gain."
+  },
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": {
     "defaultMessage": "Le When you win a combat, place 1 command token from your opponent's reinforcements in your fleet pool if it does not already contain 1 of that player's tokens; other player's tokens in your fleet pool increase your fleet limit but cannot be redistributed.",
     "description": "Description for Faction Ability: Edict"
@@ -2533,6 +2589,10 @@
   "Mahact Gene-Sorcerers.Units.Starlancer.Title": {
     "defaultMessage": "Le Starlancer",
     "description": "Title of Faction Unit: Starlancer"
+  },
+  "McKqpw": {
+    "defaultMessage": "Le Gain Tech",
+    "description": "Label on a hover menu used to gain tech."
   },
   "Mentak Coalition.Abilities.Ambush.Description": {
     "defaultMessage": "Le At the start of a space combat, you may roll 1 die for each of up to 2 of your cruisers or destroyers in the system. For each result equal to or greater than that ship's combat value, produce 1 hit; your opponent must assign it to 1 of their ships.",
@@ -3069,6 +3129,10 @@
   "Nr4DLa": {
     "defaultMessage": "Le Propulsion",
     "description": "Title of blue techs."
+  },
+  "NxpzKH": {
+    "defaultMessage": "Le End Turn",
+    "description": "Text on a button that will end the player's turn."
   },
   "Objectives.Achieve Supremacy.Description": {
     "defaultMessage": "Le Have your flagship or a war sun in another player's home system or the Mecatol Rex system.",
@@ -3830,6 +3894,10 @@
     "defaultMessage": "Le PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
+  "PBW6vs": {
+    "defaultMessage": "Le Secondary",
+    "description": "The alternate ability for a strategy card."
+  },
   "Phase.Action": {
     "defaultMessage": "Le Action",
     "description": "Phase title for Action phase."
@@ -3857,6 +3925,10 @@
   "Phase.Unknown": {
     "defaultMessage": "Le Unknown",
     "description": "Phase text shown while game is loading."
+  },
+  "PnNSxg": {
+    "defaultMessage": "Le OR",
+    "description": "Text between two fields linking them together."
   },
   "PptkAD": {
     "defaultMessage": "Le {count} {count, plural, one {Mech} other {Mechs}}",
@@ -4506,6 +4578,10 @@
     "defaultMessage": "Le Map String",
     "description": "Label for a textbox used to specify the map string."
   },
+  "UJs3kj": {
+    "defaultMessage": "Le Claim Empty Planet",
+    "description": "Text on a hover menu for claiming an empty planet."
+  },
   "USnh0f": {
     "defaultMessage": "Le Update Techs",
     "description": "Text shown on a button that opens the update techs panel."
@@ -4846,6 +4922,10 @@
     "defaultMessage": "Le Help support TI Assistant",
     "description": "Label for a section about helping TI Assistant"
   },
+  "XG4lKH": {
+    "defaultMessage": "Le Return Tech",
+    "description": "Label on a hover menu used to return a tech."
+  },
   "Xxcha Kingdom.Abilities.Peace Accords.Description": {
     "defaultMessage": "Le After you resolve the primary or secondary ability of the \"Diplomacy\" strategy card, you may gain control of 1 planet other than Mecatol Rex that does not contain any units and is in a system that is adjacent to a planet you control.",
     "description": "Description for Faction Ability: Peace Accords"
@@ -4961,6 +5041,10 @@
   "YKkcsO": {
     "defaultMessage": "Le Discard to Swap",
     "description": "Text on a button that will apply a Imperial Arbiter Strategy Card swap."
+  },
+  "YeYE6S": {
+    "defaultMessage": "Le Select Action",
+    "description": "Label telling the user to select the action a player took."
   },
   "Yin Brotherhood.Abilities.Devotion.Description": {
     "defaultMessage": "Le After each space battle round, you may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit and assign it to 1 of your opponent's ships in that system.",
@@ -5226,9 +5310,17 @@
     "defaultMessage": "Le Warfare",
     "description": "Title of red techs."
   },
+  "a1rHE+": {
+    "defaultMessage": "Le +1 VP for controlling Mecatol Rex",
+    "description": "Message telling a player that they get a victory point."
+  },
   "c6uq+j": {
     "defaultMessage": "Le Select Faction",
     "description": "Instruction telling the user to select their faction."
+  },
+  "cqWqzv": {
+    "defaultMessage": "Le Gained Relic",
+    "description": "Label for section listing the relic gained."
   },
   "d0uSBF": {
     "defaultMessage": "Le Options",
@@ -5238,9 +5330,17 @@
     "defaultMessage": "Le Unpause",
     "description": "Text shown on a button that will unpause the game."
   },
+  "dd3UAo": {
+    "defaultMessage": "Le Draw 1 secret objective",
+    "description": "Message telling a player to draw a secret objective."
+  },
   "dmwygw": {
     "defaultMessage": "Le Re-shuffle secret objectives",
     "description": "A step in the setup phase: Re-shuffle secret objectives."
+  },
+  "e01Ge2": {
+    "defaultMessage": "Le Tactical Action",
+    "description": "Type of action involving activating a system."
   },
   "e1q7sg": {
     "defaultMessage": "Le Display Descriptions",
@@ -5257,6 +5357,14 @@
   "entq4x": {
     "defaultMessage": "Le Display Titles",
     "description": "Text on a button that will display titles."
+  },
+  "fCdj3q": {
+    "defaultMessage": "Le Score Action Phase Objective",
+    "description": "Text on a hover menu allowing a player to score an action phase objective."
+  },
+  "fVAave": {
+    "defaultMessage": "Le Details",
+    "description": "Label for a section containing additional details."
   },
   "hIFcXI": {
     "defaultMessage": "Le PLANETARY SHIELD",
@@ -5302,6 +5410,14 @@
     "defaultMessage": "Le {count} {count, plural, one {Destroyer} other {Destroyers}}",
     "description": "A number of Destroyer units."
   },
+  "mhqGMn": {
+    "defaultMessage": "Le Primary",
+    "description": "The main ability for a strategy card."
+  },
+  "mkUb00": {
+    "defaultMessage": "Le Select Component",
+    "description": "Text on a hover menu for selecting a component action."
+  },
   "nryRrR": {
     "defaultMessage": "Le BOMBARDMENT {value}",
     "description": "A unit ability that allows a unit to bombard ground forces."
@@ -5329,6 +5445,10 @@
   "pPpzkR": {
     "defaultMessage": "Le Relics",
     "description": "The title of relic cards."
+  },
+  "pTiYPm": {
+    "defaultMessage": "Le New Speaker",
+    "description": "Label for a selector selecting a new speaker."
   },
   "qfVnAj": {
     "defaultMessage": "Le Reveal 2 stage I objectives",
@@ -5362,6 +5482,18 @@
     "defaultMessage": "Le Other",
     "description": "Text on a button used to select a non-listed value"
   },
+  "sngfoO": {
+    "defaultMessage": "Le Returned {count, plural, one {Tech} other {Techs}}",
+    "description": "Label for a section listing returned techs."
+  },
+  "t0EFbu": {
+    "defaultMessage": "Le Exploration/Relic",
+    "description": "Abilities related to exploration and relics."
+  },
+  "t5fXQR": {
+    "defaultMessage": "Le Gain {count} command {count, plural, one {token} other {tokens}}",
+    "description": "Text telling a player how many command tokens to gain."
+  },
   "t6v2oN": {
     "defaultMessage": "Le Directives",
     "description": "Agenda cards that do not have an ongoing effect."
@@ -5381,6 +5513,10 @@
   "wDLqxZ": {
     "defaultMessage": "Le Types",
     "description": "Text on a button that will show planet types."
+  },
+  "wHhicR": {
+    "defaultMessage": "Le Researched {count, plural, one {Tech} other {Techs}}",
+    "description": "Label for a section listing researched techs."
   },
   "wOb6Wx": {
     "defaultMessage": "Le Become a Patron",

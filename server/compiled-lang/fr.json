@@ -5,10 +5,22 @@
       "value": "Le Continue Game"
     }
   ],
+  "+8kwFc": [
+    {
+      "type": 0,
+      "value": "Le Take Control of Planet"
+    }
+  ],
   "+HPhsr": [
     {
       "type": 0,
       "value": "Le New Game"
+    }
+  ],
+  "+IA3Oz": [
+    {
+      "type": 0,
+      "value": "Le Promissory"
     }
   ],
   "+WkrHz": [
@@ -27,6 +39,18 @@
     {
       "type": 0,
       "value": "Le Build the Galaxy"
+    }
+  ],
+  "/KXhGz": [
+    {
+      "type": 0,
+      "value": "Le Tactical"
+    }
+  ],
+  "/MkeMw": [
+    {
+      "type": 0,
+      "value": "Le Leaders"
     }
   ],
   "/sF4zW": [
@@ -95,6 +119,18 @@
       "value": "Le Codex I"
     }
   ],
+  "3qIvsL": [
+    {
+      "type": 0,
+      "value": "Le Research Tech"
+    }
+  ],
+  "43UU69": [
+    {
+      "type": 0,
+      "value": "Le Component"
+    }
+  ],
   "46dzNs": [
     {
       "type": 0,
@@ -151,16 +187,40 @@
       "value": "Le Objectives"
     }
   ],
+  "5ChhqO": [
+    {
+      "type": 0,
+      "value": "Le Take Another Action"
+    }
+  ],
   "5rR4S2": [
     {
       "type": 0,
       "value": "Le View Details"
     }
   ],
+  "64NLXu": [
+    {
+      "type": 0,
+      "value": "Le +1 VP for Custodians Token"
+    }
+  ],
   "6L07nG": [
     {
       "type": 0,
       "value": "Le Reveal Objective"
+    }
+  ],
+  "73882v": [
+    {
+      "type": 0,
+      "value": "Le Score Public Objective"
+    }
+  ],
+  "7ECd6J": [
+    {
+      "type": 0,
+      "value": "Le Pass"
     }
   ],
   "7SZHCO": [
@@ -3471,10 +3531,70 @@
       "value": "value"
     }
   ],
+  "DGs6vS": [
+    {
+      "type": 0,
+      "value": "Le Scored Action Phase "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Objective"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Objectives"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Dw1fzR": [
     {
       "type": 0,
       "value": "Le Update Planets"
+    }
+  ],
+  "E9UhAA": [
+    {
+      "type": 0,
+      "value": "Le Newly Controlled "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Planet"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Planets"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Ecx237": [
@@ -4525,6 +4645,12 @@
       "value": "Le SUSTAIN DAMAGE"
     }
   ],
+  "HW1UF8": [
+    {
+      "type": 0,
+      "value": "Le Action Cards"
+    }
+  ],
   "IG7CG4": [
     {
       "type": 0,
@@ -4851,6 +4977,52 @@
       "value": "Le Update Objectives"
     }
   ],
+  "M0ywrk": [
+    {
+      "type": 0,
+      "value": "Le Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Trade "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Goods"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Good"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Goods"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": [
     {
       "type": 0,
@@ -5049,6 +5221,12 @@
     {
       "type": 0,
       "value": "Le Starlancer"
+    }
+  ],
+  "McKqpw": [
+    {
+      "type": 0,
+      "value": "Le Gain Tech"
     }
   ],
   "Mentak Coalition.Abilities.Ambush.Description": [
@@ -6077,6 +6255,12 @@
     {
       "type": 0,
       "value": "Le Propulsion"
+    }
+  ],
+  "NxpzKH": [
+    {
+      "type": 0,
+      "value": "Le End Turn"
     }
   ],
   "Objectives.Achieve Supremacy.Description": [
@@ -7231,6 +7415,12 @@
       "value": "value"
     }
   ],
+  "PBW6vs": [
+    {
+      "type": 0,
+      "value": "Le Secondary"
+    }
+  ],
   "Phase.Action": [
     {
       "type": 0,
@@ -7271,6 +7461,12 @@
     {
       "type": 0,
       "value": "Le Unknown"
+    }
+  ],
+  "PnNSxg": [
+    {
+      "type": 0,
+      "value": "Le OR"
     }
   ],
   "PptkAD": [
@@ -8493,6 +8689,12 @@
       "value": "Le Map String"
     }
   ],
+  "UJs3kj": [
+    {
+      "type": 0,
+      "value": "Le Claim Empty Planet"
+    }
+  ],
   "USnh0f": [
     {
       "type": 0,
@@ -9195,6 +9397,12 @@
       "value": "Le Help support TI Assistant"
     }
   ],
+  "XG4lKH": [
+    {
+      "type": 0,
+      "value": "Le Return Tech"
+    }
+  ],
   "Xxcha Kingdom.Abilities.Peace Accords.Description": [
     {
       "type": 0,
@@ -9423,6 +9631,12 @@
     {
       "type": 0,
       "value": "Le Discard to Swap"
+    }
+  ],
+  "YeYE6S": [
+    {
+      "type": 0,
+      "value": "Le Select Action"
     }
   ],
   "Yin Brotherhood.Abilities.Devotion.Description": [
@@ -9933,10 +10147,22 @@
       "value": "Le Warfare"
     }
   ],
+  "a1rHE+": [
+    {
+      "type": 0,
+      "value": "Le +1 VP for controlling Mecatol Rex"
+    }
+  ],
   "c6uq+j": [
     {
       "type": 0,
       "value": "Le Select Faction"
+    }
+  ],
+  "cqWqzv": [
+    {
+      "type": 0,
+      "value": "Le Gained Relic"
     }
   ],
   "d0uSBF": [
@@ -9951,10 +10177,22 @@
       "value": "Le Unpause"
     }
   ],
+  "dd3UAo": [
+    {
+      "type": 0,
+      "value": "Le Draw 1 secret objective"
+    }
+  ],
   "dmwygw": [
     {
       "type": 0,
       "value": "Le Re-shuffle secret objectives"
+    }
+  ],
+  "e01Ge2": [
+    {
+      "type": 0,
+      "value": "Le Tactical Action"
     }
   ],
   "e1q7sg": [
@@ -10011,6 +10249,18 @@
     {
       "type": 0,
       "value": "Le Display Titles"
+    }
+  ],
+  "fCdj3q": [
+    {
+      "type": 0,
+      "value": "Le Score Action Phase Objective"
+    }
+  ],
+  "fVAave": [
+    {
+      "type": 0,
+      "value": "Le Details"
     }
   ],
   "hIFcXI": [
@@ -10191,6 +10441,18 @@
       "value": "count"
     }
   ],
+  "mhqGMn": [
+    {
+      "type": 0,
+      "value": "Le Primary"
+    }
+  ],
+  "mkUb00": [
+    {
+      "type": 0,
+      "value": "Le Select Component"
+    }
+  ],
   "nryRrR": [
     {
       "type": 0,
@@ -10235,6 +10497,12 @@
     {
       "type": 0,
       "value": "Le Relics"
+    }
+  ],
+  "pTiYPm": [
+    {
+      "type": 0,
+      "value": "Le New Speaker"
     }
   ],
   "qfVnAj": [
@@ -10349,6 +10617,80 @@
       "value": "Le Other"
     }
   ],
+  "sngfoO": [
+    {
+      "type": 0,
+      "value": "Le Returned "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Tech"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Techs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "t0EFbu": [
+    {
+      "type": 0,
+      "value": "Le Exploration/Relic"
+    }
+  ],
+  "t5fXQR": [
+    {
+      "type": 0,
+      "value": "Le Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " command "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "token"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "tokens"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "t6v2oN": [
     {
       "type": 0,
@@ -10377,6 +10719,36 @@
     {
       "type": 0,
       "value": "Le Types"
+    }
+  ],
+  "wHhicR": [
+    {
+      "type": 0,
+      "value": "Le Researched "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Tech"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Techs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "wOb6Wx": [

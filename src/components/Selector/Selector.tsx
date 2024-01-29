@@ -14,7 +14,7 @@ interface SelectorProps<Id extends string, Name extends string> {
   options: { id: Id; name: Name }[];
   fadedOptions?: Id[];
   toggleItem: (itemId: Id, add: boolean) => void;
-  renderItem?: (itemName: Name) => ReactNode;
+  renderItem?: (itemId: Id, itemName: Name) => ReactNode;
   renderButton?: (
     itemId: Id,
     itemName: Name,
@@ -72,7 +72,7 @@ export function Selector<Id extends string, Name extends string>({
       return <React.Fragment>{selectedItem}</React.Fragment>;
     }
     const renderedItem = renderItem
-      ? renderItem(selectedOption.name)
+      ? renderItem(selectedItem, selectedOption.name)
       : undefined;
     if (renderedItem) {
       return <React.Fragment>{renderedItem}</React.Fragment>;
