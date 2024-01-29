@@ -34,6 +34,7 @@ import Modal from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import { FormattedMessage, useIntl } from "react-intl";
+import { objectiveTypeString } from "../util/strings";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -608,13 +609,7 @@ export function ObjectivePanel({}) {
               >
                 <Selector
                   options={remainingStageOneObjectives.map((obj) => obj.id)}
-                  hoverMenuLabel={
-                    <FormattedMessage
-                      id="J21D/U"
-                      description="The title of public objectives that grant 1 victory point."
-                      defaultMessage="Stage I"
-                    />
-                  }
+                  hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
                   renderButton={(itemId, toggleItem) => {
                     const objective = objectives[itemId];
                     if (!objective) {
@@ -644,13 +639,7 @@ export function ObjectivePanel({}) {
                 />
                 <Selector
                   options={remainingStageTwoObjectives.map((obj) => obj.id)}
-                  hoverMenuLabel={
-                    <FormattedMessage
-                      id="Z6gLCK"
-                      description="The title of public objectives that grant 2 victory points."
-                      defaultMessage="Stage II"
-                    />
-                  }
+                  hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
                   renderButton={(itemId, toggleItem) => {
                     const objective = objectives[itemId];
                     if (!objective) {
@@ -740,13 +729,7 @@ export function ObjectivePanel({}) {
           <div className={"flexColumn " + styles.objectiveSection}>
             {selectedStageOneObjectives.length === 0 ? null : (
               <CollapsibleSection
-                title={
-                  <FormattedMessage
-                    id="J21D/U"
-                    description="The title of public objectives that grant 1 victory point."
-                    defaultMessage="Stage I"
-                  />
-                }
+                title={objectiveTypeString("STAGE ONE", intl)}
                 color="orange"
                 style={{ width: "100%" }}
               >
@@ -843,13 +826,7 @@ export function ObjectivePanel({}) {
             )}
             {selectedStageTwoObjectives.length === 0 ? null : (
               <CollapsibleSection
-                title={
-                  <FormattedMessage
-                    id="Z6gLCK"
-                    description="The title of public objectives that grant 2 victory points."
-                    defaultMessage="Stage II"
-                  />
-                }
+                title={objectiveTypeString("STAGE TWO", intl)}
                 color="royalblue"
                 style={{ width: "100%" }}
               >
@@ -1608,13 +1585,7 @@ export function ObjectivePanel({}) {
             >
               <Selector
                 options={remainingStageOneObjectives.map((obj) => obj.id)}
-                hoverMenuLabel={
-                  <FormattedMessage
-                    id="J21D/U"
-                    description="The title of public objectives that grant 1 victory point."
-                    defaultMessage="Stage I"
-                  />
-                }
+                hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
                 renderButton={(itemId, toggleItem) => {
                   const objective = objectives[itemId];
                   if (!objective) {
@@ -1644,13 +1615,7 @@ export function ObjectivePanel({}) {
               />
               <Selector
                 options={remainingStageTwoObjectives.map((obj) => obj.id)}
-                hoverMenuLabel={
-                  <FormattedMessage
-                    id="Z6gLCK"
-                    description="The title of public objectives that grant 2 victory points."
-                    defaultMessage="Stage II"
-                  />
-                }
+                hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
                 renderButton={(itemId, toggleItem) => {
                   const objective = objectives[itemId];
                   if (!objective) {
@@ -1759,11 +1724,7 @@ export function ObjectivePanel({}) {
                 whiteSpace: "nowrap",
               }}
             >
-              <FormattedMessage
-                id="J21D/U"
-                description="The title of public objectives that grant 1 victory point."
-                defaultMessage="Stage I"
-              />
+              {objectiveTypeString("STAGE ONE", intl)}
             </div>
           </div>
           <div
@@ -1793,11 +1754,7 @@ export function ObjectivePanel({}) {
                 whiteSpace: "nowrap",
               }}
             >
-              <FormattedMessage
-                id="Z6gLCK"
-                description="The title of public objectives that grant 2 victory points."
-                defaultMessage="Stage II"
-              />
+              {objectiveTypeString("STAGE TWO", intl)}
             </div>
           </div>
           <div

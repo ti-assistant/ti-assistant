@@ -71,6 +71,12 @@
       "value": "Strategy Card"
     }
   ],
+  "0NYmNN": [
+    {
+      "type": 0,
+      "value": "Return Strategy Cards"
+    }
+  ],
   "0rSMZW": [
     {
       "type": 0,
@@ -193,6 +199,12 @@
       "value": "Take Another Action"
     }
   ],
+  "5WXn8l": [
+    {
+      "type": 0,
+      "value": "Start Next Round"
+    }
+  ],
   "5rR4S2": [
     {
       "type": 0,
@@ -203,6 +215,12 @@
     {
       "type": 0,
       "value": "+1 VP for Custodians Token"
+    }
+  ],
+  "6EVvXu": [
+    {
+      "type": 0,
+      "value": "Public"
     }
   ],
   "6L07nG": [
@@ -241,6 +259,12 @@
     {
       "type": 0,
       "value": " Phase"
+    }
+  ],
+  "8OswCT": [
+    {
+      "type": 0,
+      "value": "Gain Command Tokens and Redistribute"
     }
   ],
   "93G7sJ": [
@@ -4645,6 +4669,12 @@
       "value": "SUSTAIN DAMAGE"
     }
   ],
+  "HQ3wv9": [
+    {
+      "type": 0,
+      "value": "No unscored Public Objectives"
+    }
+  ],
   "HW1UF8": [
     {
       "type": 0,
@@ -4685,6 +4715,44 @@
       "value": "count"
     }
   ],
+  "IfyaDZ": [
+    {
+      "type": 0,
+      "value": "Revealed "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Objective"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Objectives"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Irm2+w": [
     {
       "type": 1,
@@ -4705,6 +4773,12 @@
     {
       "type": 0,
       "value": "Make Speaker"
+    }
+  ],
+  "Jdx9F+": [
+    {
+      "type": 0,
+      "value": "Remove Command Tokens"
     }
   ],
   "Jh0WRk": [
@@ -6253,6 +6327,12 @@
     {
       "type": 0,
       "value": "End Turn"
+    }
+  ],
+  "OVn1wE": [
+    {
+      "type": 0,
+      "value": "Ready Cards"
     }
   ],
   "Objectives.Achieve Supremacy.Description": [
@@ -9121,6 +9201,12 @@
       "value": "Cybernetic"
     }
   ],
+  "WHJC8f": [
+    {
+      "type": 0,
+      "value": "Score Objectives"
+    }
+  ],
   "Winnu.Abilities.Blood Ties.Description": [
     {
       "type": 0,
@@ -9907,6 +9993,12 @@
       "value": "Van Hauge"
     }
   ],
+  "YotjeE": [
+    {
+      "type": 0,
+      "value": "Gain and Redistribute Tokens"
+    }
+  ],
   "Yssaril Tribes.Abilities.Crafty.Description": [
     {
       "type": 0,
@@ -10231,6 +10323,12 @@
       "value": "Details"
     }
   ],
+  "ggO0Am": [
+    {
+      "type": 0,
+      "value": "Secret"
+    }
+  ],
   "hIFcXI": [
     {
       "type": 0,
@@ -10241,12 +10339,6 @@
     {
       "type": 0,
       "value": "Laws"
-    }
-  ],
-  "hhi4w5": [
-    {
-      "type": 0,
-      "value": "Reveal 2 objectives"
     }
   ],
   "hhm3kX": [
@@ -10321,6 +10413,53 @@
     {
       "type": 1,
       "value": "secondCard"
+    }
+  ],
+  "lDBTCO": [
+    {
+      "type": 0,
+      "value": "Reveal "
+    },
+    {
+      "style": null,
+      "type": 2,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "objective"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "objectives"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "lGDH2d": [
@@ -10459,12 +10598,6 @@
     {
       "type": 0,
       "value": "New Speaker"
-    }
-  ],
-  "qfVnAj": [
-    {
-      "type": 0,
-      "value": "Reveal 2 stage I objectives"
     }
   ],
   "r2htpd": [
@@ -10755,6 +10888,18 @@
     {
       "type": 0,
       "value": "View Map"
+    }
+  ],
+  "xhMq82": [
+    {
+      "type": 0,
+      "value": "Repair Units"
+    }
+  ],
+  "xtgxwA": [
+    {
+      "type": 0,
+      "value": "Draw Action Cards"
     }
   ],
   "xu0llf": [

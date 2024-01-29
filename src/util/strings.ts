@@ -148,3 +148,34 @@ export function phaseString(phase: Phase, intl: IntlShape) {
       });
   }
 }
+
+export function objectiveTypeString(type: ObjectiveType, intl: IntlShape) {
+  switch (type) {
+    case "STAGE ONE":
+      return intl.formatMessage({
+        id: "J21D/U",
+        description:
+          "The title of public objectives that grant 1 victory point.",
+        defaultMessage: "Stage I",
+      });
+    case "STAGE TWO":
+      return intl.formatMessage({
+        id: "Z6gLCK",
+        description:
+          "The title of public objectives that grant 2 victory points.",
+        defaultMessage: "Stage II",
+      });
+    case "SECRET":
+      return intl.formatMessage({
+        id: "QrrIrN",
+        description: "The title of secret objectives.",
+        defaultMessage: "Secrets",
+      });
+    case "OTHER":
+      return intl.formatMessage({
+        id: "sgqLYB",
+        description: "Text on a button used to select a non-listed value",
+        defaultMessage: "Other",
+      });
+  }
+}

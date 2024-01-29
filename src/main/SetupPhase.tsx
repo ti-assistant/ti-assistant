@@ -25,6 +25,7 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels, validateMapString } from "../util/util";
 import styles from "./SetupPhase.module.scss";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { objectiveTypeString } from "../util/strings";
 
 export function startFirstRound(gameid: string) {
   advancePhaseAsync(gameid);
@@ -88,11 +89,18 @@ function getSetupPhaseText(
   }
   if (revealedObjectives.length !== 2) {
     textSections.push(
-      intl.formatMessage({
-        id: "hhi4w5",
-        defaultMessage: "Reveal 2 objectives",
-        description: "Error message telling the user to reveal 2 objectives.",
-      })
+      intl.formatMessage(
+        {
+          id: "lDBTCO",
+          description: "Instruction telling the speaker to reveal objectives.",
+          defaultMessage:
+            "Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}",
+        },
+        {
+          count: 2,
+          type: objectiveTypeString("STAGE ONE", intl),
+        }
+      )
     );
   }
   return textSections.join(
@@ -336,9 +344,13 @@ export default function SetupPhase() {
                 <ClientOnlyHoverMenu
                   label={
                     <FormattedMessage
-                      id="qfVnAj"
-                      description="A label telling the speaker to reveal objectives."
-                      defaultMessage="Reveal 2 stage I objectives"
+                      id="lDBTCO"
+                      description="Instruction telling the speaker to reveal objectives."
+                      defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                      values={{
+                        count: 2,
+                        type: objectiveTypeString("STAGE ONE", intl),
+                      }}
                     />
                   }
                   renderProps={(closeFn) => (

@@ -47,6 +47,10 @@
     "defaultMessage": "Le Strategy Card",
     "description": "Strategy card."
   },
+  "0NYmNN": {
+    "defaultMessage": "Le Return Strategy Cards",
+    "description": "Instruction telling players to return strategy cards."
+  },
   "0rSMZW": {
     "defaultMessage": "Le Large",
     "description": "Text on a button specifying that the map style should be large."
@@ -123,6 +127,10 @@
     "defaultMessage": "Le Take Another Action",
     "description": "Text on a button that will let the player take another action."
   },
+  "5WXn8l": {
+    "defaultMessage": "Le Start Next Round",
+    "description": "Text on a button that will start the next round."
+  },
   "5rR4S2": {
     "defaultMessage": "Le View Details",
     "description": "Label for a section that includes map details."
@@ -130,6 +138,10 @@
   "64NLXu": {
     "defaultMessage": "Le +1 VP for Custodians Token",
     "description": "Text telling the player that they gained a victory point for removing the Custodians Token."
+  },
+  "6EVvXu": {
+    "defaultMessage": "Le Public",
+    "description": "Label for selecting a public objective."
   },
   "6L07nG": {
     "defaultMessage": "Le Reveal Objective",
@@ -150,6 +162,10 @@
   "8/h2ME": {
     "defaultMessage": "Le Advance to {phase} Phase",
     "description": "Text on a button that will advance the game to a specific phase."
+  },
+  "8OswCT": {
+    "defaultMessage": "Le Gain Command Tokens and Redistribute",
+    "description": "Text telling the players to gain command tokens and redistribute."
   },
   "93G7sJ": {
     "defaultMessage": "Le Test string"
@@ -2314,6 +2330,10 @@
     "defaultMessage": "Le SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
   },
+  "HQ3wv9": {
+    "defaultMessage": "Le No unscored Public Objectives",
+    "description": "Message telling a player that they have scored all objectives."
+  },
   "HW1UF8": {
     "defaultMessage": "Le Action Cards",
     "description": "Cards that are used to make actions."
@@ -2321,6 +2341,10 @@
   "IG7CG4": {
     "defaultMessage": "Le {count} {count, plural, one {Space Dock} other {Space Docks}}",
     "description": "A number of Space Dock units."
+  },
+  "IfyaDZ": {
+    "defaultMessage": "Le Revealed {type} {count, plural, one {Objective} other {Objectives}}",
+    "description": "A label for revealed objectives."
   },
   "Irm2+w": {
     "defaultMessage": "Le {phase} Phase",
@@ -2333,6 +2357,10 @@
   "JS92Jj": {
     "defaultMessage": "Le Make Speaker",
     "description": "Text on a button that will make a faction the speaker."
+  },
+  "Jdx9F+": {
+    "defaultMessage": "Le Remove Command Tokens",
+    "description": "Instruction telling players to remove command tokens."
   },
   "Jh0WRk": {
     "defaultMessage": "Le Player Count",
@@ -3133,6 +3161,10 @@
   "NxpzKH": {
     "defaultMessage": "Le End Turn",
     "description": "Text on a button that will end the player's turn."
+  },
+  "OVn1wE": {
+    "defaultMessage": "Le Ready Cards",
+    "description": "Instruction telling players to ready cards."
   },
   "Objectives.Achieve Supremacy.Description": {
     "defaultMessage": "Le Have your flagship or a war sun in another player's home system or the Mecatol Rex system.",
@@ -4810,6 +4842,10 @@
     "defaultMessage": "Le Cybernetic",
     "description": "Title of yellow techs."
   },
+  "WHJC8f": {
+    "defaultMessage": "Le Score Objectives",
+    "description": "Text telling the players to score objectives."
+  },
   "Winnu.Abilities.Blood Ties.Description": {
     "defaultMessage": "Le You do not have to spend influence to remove the custodians token from Mecatol Rex.",
     "description": "Description for Faction Ability: Blood Ties"
@@ -5190,6 +5226,10 @@
     "defaultMessage": "Le Van Hauge",
     "description": "Title of Faction Unit: Van Hauge"
   },
+  "YotjeE": {
+    "defaultMessage": "Le Gain and Redistribute Tokens",
+    "description": "Instruction telling players to gain and redistribute Tokens."
+  },
   "Yssaril Tribes.Abilities.Crafty.Description": {
     "defaultMessage": "Le You can have any number of action cards in your hand. Game effects cannot prevent you from using this ability.",
     "description": "Description for Faction Ability: Crafty"
@@ -5366,6 +5406,10 @@
     "defaultMessage": "Le Details",
     "description": "Label for a section containing additional details."
   },
+  "ggO0Am": {
+    "defaultMessage": "Le Secret",
+    "description": "Label for selecting a secret objective."
+  },
   "hIFcXI": {
     "defaultMessage": "Le PLANETARY SHIELD",
     "description": "A unit ability that prevents BOMBARDMENT."
@@ -5373,10 +5417,6 @@
   "hMWeZX": {
     "defaultMessage": "Le Laws",
     "description": "Agendas that apply a continuing effect to the game."
-  },
-  "hhi4w5": {
-    "defaultMessage": "Le Reveal 2 objectives",
-    "description": "Error message telling the user to reveal 2 objectives."
   },
   "hhm3kX": {
     "defaultMessage": "Le Round {value}",
@@ -5397,6 +5437,10 @@
   "l6pQCt": {
     "defaultMessage": "Le Swap {firstCard} for {secondCard}",
     "description": "Text describing which strategy card a player is swapping for a different card."
+  },
+  "lDBTCO": {
+    "defaultMessage": "Le Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}",
+    "description": "Instruction telling the speaker to reveal objectives."
   },
   "lGDH2d": {
     "defaultMessage": "Le {count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}",
@@ -5449,10 +5493,6 @@
   "pTiYPm": {
     "defaultMessage": "Le New Speaker",
     "description": "Label for a selector selecting a new speaker."
-  },
-  "qfVnAj": {
-    "defaultMessage": "Le Reveal 2 stage I objectives",
-    "description": "A label telling the speaker to reveal objectives."
   },
   "r2htpd": {
     "defaultMessage": "Le Factions",
@@ -5537,6 +5577,14 @@
   "xDzJ9/": {
     "defaultMessage": "Le View Map",
     "description": "Text shown on a button that opens the map."
+  },
+  "xhMq82": {
+    "defaultMessage": "Le Repair Units",
+    "description": "Instruction telling players to repair units."
+  },
+  "xtgxwA": {
+    "defaultMessage": "Le Draw Action Cards",
+    "description": "Instruction telling players to draw action cards."
   },
   "xu0llf": {
     "defaultMessage": "Le Select all Faction Choices",

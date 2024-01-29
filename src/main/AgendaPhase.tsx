@@ -71,7 +71,7 @@ import { hasScoredObjective } from "../util/api/util";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { responsivePixels } from "../util/util";
 import VoteBlock from "../components/VoteBlock/VoteBlock";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const RIDERS = [
   "Galactic Threat",
@@ -1379,6 +1379,8 @@ export default function AgendaPhase() {
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
 
+  const intl = useIntl();
+
   if (!agendas || !factions) {
     return null;
   }
@@ -1564,7 +1566,11 @@ export default function AgendaPhase() {
               }}
               onClick={() => nextPhase()}
             >
-              Start Next Round
+              {intl.formatMessage({
+                id: "5WXn8l",
+                defaultMessage: "Start Next Round",
+                description: "Text on a button that will start the next round.",
+              })}
             </button>
           </div>
         ) : (
@@ -1706,7 +1712,12 @@ export default function AgendaPhase() {
               }}
               buttons={[
                 {
-                  text: "Start Next Round",
+                  text: intl.formatMessage({
+                    id: "5WXn8l",
+                    defaultMessage: "Start Next Round",
+                    description:
+                      "Text on a button that will start the next round.",
+                  }),
                   style: {
                     fontSize: responsivePixels(24),
                   },
