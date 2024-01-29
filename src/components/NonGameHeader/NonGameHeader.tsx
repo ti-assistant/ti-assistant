@@ -1,9 +1,12 @@
+import Cookies from "js-cookie";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { responsivePixels } from "../../util/util";
+import LanguageSelectRadialMenu from "../LanguageSelectRadialMenu/LanguageSelectRadialMenu";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
-import styles from "./NonGameHeader.module.scss";
 import Sidebars from "../Sidebars/Sidebars";
+import styles from "./NonGameHeader.module.scss";
 
 export default function NonGameHeader({
   leftSidebar,
@@ -12,6 +15,7 @@ export default function NonGameHeader({
   leftSidebar: string;
   rightSidebar: string;
 }) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -45,6 +49,27 @@ export default function NonGameHeader({
             <ResponsiveLogo size={32} />
             Twilight Imperium Assistant
           </Link>
+          <div className={styles.LangSelect}>
+            <LanguageSelectRadialMenu
+              selectedLocale={router.locale ?? "en"}
+              locales={["en"]}
+              invalidLocales={[router.locale ?? "en"]}
+              onSelect={(locale) => {
+                if (!locale) {
+                  return;
+                }
+                Cookies.set("NEXT_LOCALE", locale);
+                router.push(
+                  { pathname: router.pathname, query: router.query },
+                  router.asPath,
+                  {
+                    locale: locale,
+                  }
+                );
+              }}
+              size={28}
+            />
+          </div>
           <Link
             href={"/"}
             className="flexRow hugeFont mobileOnly"

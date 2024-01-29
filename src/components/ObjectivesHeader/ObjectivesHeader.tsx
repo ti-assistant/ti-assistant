@@ -7,6 +7,9 @@ import { responsivePixels } from "../../util/util";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
 import styles from "./ObjectivesHeader.module.scss";
 import Sidebars from "../Sidebars/Sidebars";
+import LanguageSelectRadialMenu from "../LanguageSelectRadialMenu/LanguageSelectRadialMenu";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -24,6 +27,7 @@ export default function ObjectivesHeader({
   rightSidebar,
   gameId,
 }: ObjectivesHeaderProps) {
+  const router = useRouter();
   const [qrCode, setQrCode] = useState<string>();
   const [qrCodeSize, setQrCodeSize] = useState(164);
 
@@ -79,6 +83,27 @@ export default function ObjectivesHeader({
             <ResponsiveLogo size={28} />
             Twilight Imperium Assistant
           </Link>
+          <div className={styles.LangSelect}>
+            <LanguageSelectRadialMenu
+              selectedLocale={router.locale ?? "en"}
+              locales={["en"]}
+              invalidLocales={[router.locale ?? "en"]}
+              onSelect={(locale) => {
+                if (!locale) {
+                  return;
+                }
+                Cookies.set("NEXT_LOCALE", locale);
+                router.push(
+                  { pathname: router.pathname, query: router.query },
+                  router.asPath,
+                  {
+                    locale: locale,
+                  }
+                );
+              }}
+              size={28}
+            />
+          </div>
 
           {gameId ? (
             <Link href={`/game/${gameId}`}>

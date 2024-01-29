@@ -29,6 +29,8 @@ import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
 import Sidebars from "../Sidebars/Sidebars";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
+import LanguageSelectRadialMenu from "../LanguageSelectRadialMenu/LanguageSelectRadialMenu";
+import Cookies from "js-cookie";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -212,6 +214,27 @@ export default function Header() {
         </div>
         Twilight Imperium Assistant
       </Link>
+      <div className={styles.LangSelect}>
+        <LanguageSelectRadialMenu
+          selectedLocale={router.locale ?? "en"}
+          locales={["en"]}
+          invalidLocales={[router.locale ?? "en"]}
+          onSelect={(locale) => {
+            if (!locale) {
+              return;
+            }
+            Cookies.set("NEXT_LOCALE", locale);
+            router.push(
+              { pathname: router.pathname, query: router.query },
+              router.asPath,
+              {
+                locale: locale,
+              }
+            );
+          }}
+          size={28}
+        />
+      </div>
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>
           <GameTimer frozen={state.phase === "END"} />

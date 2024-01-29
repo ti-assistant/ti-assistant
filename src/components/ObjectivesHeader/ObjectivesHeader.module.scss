@@ -35,3 +35,20 @@
   top: var(--sixteen-pixel);
   left: var(--ninety-six-pixel);
 }
+
+.LangSelect {
+  display: flex;
+  position: fixed;
+  top: var(--thirty-two-pixel);
+  left: max(calc(30px + (60 - 30) * ((100vw - 1280px) / (2560 - 1280))), 30px);
+  z-index: 2;
+}
+
+@media only screen and (max-width: 900px) {
+  .LangSelect {
+    bottom: var(--thirty-six-pixel);
+    right: var(--thirty-six-pixel);
+    left: unset;
+    top: unset;
+  }
+}

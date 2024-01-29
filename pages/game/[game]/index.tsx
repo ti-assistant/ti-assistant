@@ -14,6 +14,8 @@ import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { responsivePixels } from "../../../src/util/util";
 import Sidebars from "../../../src/components/Sidebars/Sidebars";
 import { FormattedMessage, useIntl } from "react-intl";
+import LanguageSelectRadialMenu from "../../../src/components/LanguageSelectRadialMenu/LanguageSelectRadialMenu";
+import Cookies from "js-cookie";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -257,6 +259,35 @@ function Header() {
         <ResponsiveLogo size={32} />
         Twilight Imperium Assistant
       </Link>
+      <div
+        className="nonMobile"
+        style={{
+          position: "fixed",
+          top: responsivePixels(32),
+          left: responsivePixels(30),
+          zIndex: 2,
+        }}
+      >
+        <LanguageSelectRadialMenu
+          selectedLocale={router.locale ?? "en"}
+          locales={["en"]}
+          invalidLocales={[router.locale ?? "en"]}
+          onSelect={(locale) => {
+            if (!locale) {
+              return;
+            }
+            Cookies.set("NEXT_LOCALE", locale);
+            router.push(
+              { pathname: router.pathname, query: router.query },
+              router.asPath,
+              {
+                locale: locale,
+              }
+            );
+          }}
+          size={28}
+        />
+      </div>
       <Link
         href={`/`}
         className="flexRow hugeFont mobileOnly"
@@ -273,6 +304,35 @@ function Header() {
         <ResponsiveLogo size={28} />
         Twilight Imperium Assistant
       </Link>
+      <div
+        className="mobileOnly"
+        style={{
+          position: "fixed",
+          bottom: responsivePixels(36),
+          right: responsivePixels(36),
+          zIndex: 2,
+        }}
+      >
+        <LanguageSelectRadialMenu
+          selectedLocale={router.locale ?? "en"}
+          locales={["en"]}
+          invalidLocales={[router.locale ?? "en"]}
+          onSelect={(locale) => {
+            if (!locale) {
+              return;
+            }
+            Cookies.set("NEXT_LOCALE", locale);
+            router.push(
+              { pathname: router.pathname, query: router.query },
+              router.asPath,
+              {
+                locale: locale,
+              }
+            );
+          }}
+          size={28}
+        />
+      </div>
       <div
         className="flexColumn nonMobile"
         style={{
