@@ -1,7 +1,7 @@
 module.exports = {
   distDir: "build",
   i18n: {
-    locales: ["en", "fr"],
+    locales: ["en"],
     defaultLocale: "en",
   },
 };
