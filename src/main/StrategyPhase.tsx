@@ -9,7 +9,6 @@ import React, {
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { Loader } from "../Loader";
 import { NumberedItem } from "../NumberedItem";
-import { Selector } from "../Selector";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import FactionCard from "../components/FactionCard/FactionCard";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
@@ -32,6 +31,9 @@ import { responsivePixels } from "../util/util";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import { StrategyCardElement } from "../components/StrategyCardElement/StrategyCardElement";
 import styles from "./StrategyPhase.module.scss";
+import { FormattedMessage, useIntl } from "react-intl";
+import { phaseString } from "../util/strings";
+import { Selector } from "../components/Selector/Selector";
 
 const Modal = dynamic(() => import("../components/Modal/Modal"), {
   loading: () => <Loader />,
@@ -151,7 +153,15 @@ function QuantumDatahubNode({
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
     >
-      <ClientOnlyHoverMenu label="Quantum Datahub Node">
+      <ClientOnlyHoverMenu
+        label={
+          <FormattedMessage
+            id="Emirates of Hacan.Techs.Quantum Datahub Node.Title"
+            description="Title of Tech: Quantum Datahub Node"
+            defaultMessage="Quantum Datahub Node"
+          />
+        }
+      >
         <div
           className="flexColumn"
           style={{
@@ -162,34 +172,61 @@ function QuantumDatahubNode({
             width: "100%",
           }}
         >
-          Swap
-          <Selector
-            hoverMenuLabel="Strategy Card"
-            autoSelect={true}
-            options={strategyCards
-              .filter((card) => card.faction === faction.id)
-              .map((card) => card.id)}
-            toggleItem={(cardId, add) => {
-              const localCardName = add ? cardId : undefined;
-              setQuantum((quantum) => {
-                return { ...quantum, mainCard: localCardName };
-              });
+          <FormattedMessage
+            id="l6pQCt"
+            description="Text describing which strategy card a player is swapping for a different card."
+            defaultMessage="Swap {firstCard} for {secondCard}"
+            values={{
+              firstCard: (
+                <Selector
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="0DDRZv"
+                      description="Strategy card."
+                      defaultMessage="Strategy Card"
+                    />
+                  }
+                  autoSelect={true}
+                  options={strategyCards
+                    .filter((card) => card.faction === faction.id)
+                    .map((card) => {
+                      return { id: card.id, name: card.name };
+                    })}
+                  toggleItem={(cardId, add) => {
+                    const localCardName = add ? cardId : undefined;
+                    setQuantum((quantum) => {
+                      return { ...quantum, mainCard: localCardName };
+                    });
+                  }}
+                  selectedItem={quantum.mainCard}
+                />
+              ),
+              secondCard: (
+                <Selector
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="0DDRZv"
+                      description="Strategy card."
+                      defaultMessage="Strategy Card"
+                    />
+                  }
+                  options={strategyCards
+                    .filter(
+                      (card) => card.faction && card.faction !== faction.id
+                    )
+                    .map((card) => {
+                      return { id: card.id, name: card.name };
+                    })}
+                  toggleItem={(cardId, add) => {
+                    const localCardName = add ? cardId : undefined;
+                    setQuantum((quantum) => {
+                      return { ...quantum, otherCard: localCardName };
+                    });
+                  }}
+                  selectedItem={quantum.otherCard}
+                />
+              ),
             }}
-            selectedItem={quantum.mainCard}
-          />
-          for
-          <Selector
-            hoverMenuLabel="Strategy Card"
-            options={strategyCards
-              .filter((card) => card.faction && card.faction !== faction.id)
-              .map((card) => card.id)}
-            toggleItem={(cardId, add) => {
-              const localCardName = add ? cardId : undefined;
-              setQuantum((quantum) => {
-                return { ...quantum, otherCard: localCardName };
-              });
-            }}
-            selectedItem={quantum.otherCard}
           />
           <div
             className="flexColumn"
@@ -209,7 +246,11 @@ function QuantumDatahubNode({
                 });
               }}
             >
-              Confirm Swap
+              <FormattedMessage
+                id="GFfdMB"
+                description="Text on a button that will apply a Strategy Card swap."
+                defaultMessage="Confirm Swap"
+              />
             </button>
           </div>
         </div>
@@ -241,7 +282,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
     swapStrategyCardsAsync(gameid, quantum.mainCard, quantum.otherCard, true);
   }
 
-  if (!arbiter || !arbiter.resolved) {
+  if (!arbiter || !arbiter.resolved || !arbiter.passed) {
     return null;
   }
 
@@ -258,7 +299,15 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
     >
-      <ClientOnlyHoverMenu label="Imperial Arbiter">
+      <ClientOnlyHoverMenu
+        label={
+          <FormattedMessage
+            id="Agendas.Imperial Arbiter.Title"
+            description="Title of Agenda Card: Imperial Arbiter"
+            defaultMessage="Imperial Arbiter"
+          />
+        }
+      >
         <div
           className="flexColumn"
           style={{
@@ -269,34 +318,61 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
             width: "100%",
           }}
         >
-          Swap
-          <Selector
-            hoverMenuLabel="Strategy Card"
-            autoSelect={true}
-            options={strategyCards
-              .filter((card) => card.faction === faction.id)
-              .map((card) => card.id)}
-            toggleItem={(cardId, add) => {
-              const localCardName = add ? cardId : undefined;
-              setQuantum((quantum) => {
-                return { ...quantum, mainCard: localCardName };
-              });
+          <FormattedMessage
+            id="l6pQCt"
+            description="Text describing which strategy card a player is swapping for a different card."
+            defaultMessage="Swap {firstCard} for {secondCard}"
+            values={{
+              firstCard: (
+                <Selector
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="0DDRZv"
+                      description="Strategy card."
+                      defaultMessage="Strategy Card"
+                    />
+                  }
+                  autoSelect={true}
+                  options={strategyCards
+                    .filter((card) => card.faction === faction.id)
+                    .map((card) => {
+                      return { id: card.id, name: card.name };
+                    })}
+                  toggleItem={(cardId, add) => {
+                    const localCardName = add ? cardId : undefined;
+                    setQuantum((quantum) => {
+                      return { ...quantum, mainCard: localCardName };
+                    });
+                  }}
+                  selectedItem={quantum.mainCard}
+                />
+              ),
+              secondCard: (
+                <Selector
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="0DDRZv"
+                      description="Strategy card."
+                      defaultMessage="Strategy Card"
+                    />
+                  }
+                  options={strategyCards
+                    .filter(
+                      (card) => card.faction && card.faction !== faction.id
+                    )
+                    .map((card) => {
+                      return { id: card.id, name: card.name };
+                    })}
+                  toggleItem={(cardId, add) => {
+                    const localCardName = add ? cardId : undefined;
+                    setQuantum((quantum) => {
+                      return { ...quantum, otherCard: localCardName };
+                    });
+                  }}
+                  selectedItem={quantum.otherCard}
+                />
+              ),
             }}
-            selectedItem={quantum.mainCard}
-          />
-          for
-          <Selector
-            hoverMenuLabel="Strategy Card"
-            options={strategyCards
-              .filter((card) => card.faction && card.faction !== faction.id)
-              .map((card) => card.id)}
-            toggleItem={(cardId, add) => {
-              const localCardName = add ? cardId : undefined;
-              setQuantum((quantum) => {
-                return { ...quantum, otherCard: localCardName };
-              });
-            }}
-            selectedItem={quantum.otherCard}
           />
           <div
             className="flexColumn"
@@ -316,7 +392,11 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
                 });
               }}
             >
-              Discard to Swap
+              <FormattedMessage
+                id="YKkcsO"
+                description="Text on a button that will apply a Imperial Arbiter Strategy Card swap."
+                defaultMessage="Discard to Swap"
+              />
             </button>
           </div>
         </div>
@@ -444,6 +524,7 @@ export default function StrategyPhase() {
   const factions = useContext(FactionContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
+  const intl = useIntl();
 
   const [infoModal, setInfoModal] = useState<{
     show: boolean;
@@ -521,8 +602,17 @@ export default function StrategyPhase() {
       const factionAbilities: Ability[] = [];
       if (faction.id === "Council Keleres") {
         factionAbilities.push({
-          name: "Council Patronage",
-          description: "Replenish your commodities, then gain 1 trade good",
+          name: intl.formatMessage({
+            id: "Council Keleres.Abilities.Council Patronage.Title",
+            defaultMessage: "Council Patronage",
+            description: "Title of Faction Ability: Council Patronage",
+          }),
+          description: intl.formatMessage({
+            id: "Council Keleres.Abilities.Council Patronage.Description",
+            defaultMessage:
+              "Replenish your commodities at the start of the strategy phase, then gain 1 trade good.",
+            description: "Description for Faction Ability: Council Patronage",
+          }),
         });
       }
       if (factionAbilities.length > 0) {
@@ -632,7 +722,12 @@ export default function StrategyPhase() {
       <div className={styles.LeftColumn}>
         {hasStartOfStrategyPhaseAbilities() ? (
           <div className="flexColumn">
-            Start of Strategy Phase
+            <FormattedMessage
+              id="4PYolM"
+              description="Text showing that something will occur at the start of a specific phase."
+              defaultMessage="Start of {phase} Phase"
+              values={{ phase: phaseString("STRATEGY", intl) }}
+            />
             <ol className="flexColumn" style={{ alignItems: "stretch" }}>
               {Object.entries(getStartOfStrategyPhaseAbilities()).map(
                 ([factionId, abilities]) => {
@@ -690,14 +785,33 @@ export default function StrategyPhase() {
         ) : null}
         {haveAllFactionsPicked() && hasEndOfStrategyPhaseAbilities() ? (
           <div className="flexColumn">
-            End of Strategy Phase
+            <FormattedMessage
+              id="CG2MQj"
+              description="Text showing that something will occur at the end of a specific phase."
+              defaultMessage="End of {phase} Phase"
+              values={{ phase: phaseString("STRATEGY", intl) }}
+            />
             {factions && factions["Naalu Collective"] ? (
-              <Selector<FactionId>
-                hoverMenuLabel="Gift of Prescience"
-                selectedLabel="Gift of Prescience"
-                options={Object.values(factions ?? {})
-                  .map((faction) => faction.id)
-                  .filter((name) => name !== "Naalu Collective")}
+              <Selector
+                hoverMenuLabel={
+                  <FormattedMessage
+                    id="Naalu Collective.Promissories.Gift of Prescience.Title"
+                    description="Title of Faction Promissory: Gift of Prescience"
+                    defaultMessage="Gift of Prescience"
+                  />
+                }
+                selectedLabel={
+                  <FormattedMessage
+                    id="Naalu Collective.Promissories.Gift of Prescience.Title"
+                    description="Title of Faction Promissory: Gift of Prescience"
+                    defaultMessage="Gift of Prescience"
+                  />
+                }
+                options={Object.values(factions)
+                  .filter((faction) => faction.id !== "Naalu Collective")
+                  .map((faction) => {
+                    return { id: faction.id, name: faction.name };
+                  })}
                 toggleItem={(factionId, add) => {
                   const localFactionName = add ? factionId : undefined;
                   gift(localFactionName);
@@ -724,7 +838,11 @@ export default function StrategyPhase() {
         >
           {activefaction ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
-              Active Player
+              <FormattedMessage
+                id="vTtJ6S"
+                description="Label showing that the specific player is the current player."
+                defaultMessage="Active Player"
+              />
               <FactionCard
                 faction={activefaction}
                 style={{ height: responsivePixels(80) }}
@@ -753,12 +871,21 @@ export default function StrategyPhase() {
                 // paddingTop: responsivePixels(24),
               }}
             >
-              Strategy Phase Complete
+              <FormattedMessage
+                id="Gns4AS"
+                description="Text showing that the current phase is complete"
+                defaultMessage="{phase} Phase Complete"
+                values={{ phase: phaseString("STRATEGY", intl) }}
+              />
             </div>
           )}
           {onDeckFaction ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
-              On Deck
+              <FormattedMessage
+                id="S0vXJt"
+                description="Label showing that the specific player is up next."
+                defaultMessage="On Deck"
+              />
               <FactionCard
                 faction={onDeckFaction}
                 style={{ height: responsivePixels(64) }}
@@ -801,7 +928,12 @@ export default function StrategyPhase() {
             style={{ fontSize: responsivePixels(20) }}
             onClick={() => nextPhase()}
           >
-            Advance to Action Phase
+            <FormattedMessage
+              id="8/h2ME"
+              description="Text on a button that will advance the game to a specific phase."
+              defaultMessage="Advance to {phase} Phase"
+              values={{ phase: phaseString("ACTION", intl) }}
+            />
           </button>
         )}
       </div>

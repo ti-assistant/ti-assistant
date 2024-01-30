@@ -6,6 +6,7 @@ import Updater from "../../../src/components/Updater/Updater";
 import DataProvider from "../../../src/context/DataProvider";
 import { setGameId } from "../../../src/util/api/util";
 import { responsivePixels } from "../../../src/util/util";
+import { useIntl } from "react-intl";
 
 export default function ObjectivesPage() {
   return (
@@ -18,6 +19,8 @@ export default function ObjectivesPage() {
 function InnerObjectivesPage({}) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
+
+  const intl = useIntl();
 
   useEffect(() => {
     if (!!gameid) {
@@ -32,8 +35,20 @@ function InnerObjectivesPage({}) {
     >
       <Updater />
       <ObjectivesHeader
-        leftSidebar="OBJECTIVES"
-        rightSidebar="OBJECTIVES"
+        leftSidebar={intl
+          .formatMessage({
+            id: "5Bl4Ek",
+            description: "Cards that define how to score victory points.",
+            defaultMessage: "Objectives",
+          })
+          .toUpperCase()}
+        rightSidebar={intl
+          .formatMessage({
+            id: "5Bl4Ek",
+            description: "Cards that define how to score victory points.",
+            defaultMessage: "Objectives",
+          })
+          .toUpperCase()}
         gameId={gameid}
       />
       <div

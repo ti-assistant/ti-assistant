@@ -17,6 +17,7 @@ import {
   sortTechsByPreReqAndExpansion,
 } from "../../util/techs";
 import { responsivePixels } from "../../util/util";
+import { useIntl } from "react-intl";
 
 interface InnerTechSelectHoverMenuProps {
   factionId: FactionId;
@@ -92,7 +93,7 @@ function InnerTechSelectHoverMenu({
 interface TechSelectHoverMenuProps {
   factionId: FactionId;
   ignorePrereqs?: boolean;
-  label?: string;
+  label: string;
   techs: Tech[];
   selectTech: (tech: Tech) => void;
 }
@@ -101,7 +102,7 @@ export default function TechSelectHoverMenu({
   factionId,
   ignorePrereqs = false,
   techs,
-  label = "Research Tech",
+  label,
   selectTech,
 }: TechSelectHoverMenuProps) {
   const attachments = useContext(AttachmentContext);
@@ -110,6 +111,8 @@ export default function TechSelectHoverMenu({
   const planets = useContext(PlanetContext);
   const relics = useContext(RelicContext);
   const allTechs = useContext(TechContext);
+
+  const intl = useIntl();
 
   const factionPreReqs = getFactionPreReqs(
     factions[factionId],
@@ -156,7 +159,11 @@ export default function TechSelectHoverMenu({
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
             techs={redTechs}
-            label="Warfare"
+            label={intl.formatMessage({
+              id: "ZqAjEi",
+              description: "Title of red techs.",
+              defaultMessage: "Warfare",
+            })}
             prereqs={factionPreReqs}
             selectTech={selectTech}
             outerCloseFn={outerCloseFn}
@@ -165,7 +172,11 @@ export default function TechSelectHoverMenu({
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
             techs={blueTechs}
-            label="Propulsion"
+            label={intl.formatMessage({
+              id: "Nr4DLa",
+              description: "Title of blue techs.",
+              defaultMessage: "Propulsion",
+            })}
             prereqs={factionPreReqs}
             selectTech={selectTech}
             outerCloseFn={outerCloseFn}
@@ -174,7 +185,11 @@ export default function TechSelectHoverMenu({
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
             techs={yellowTechs}
-            label="Cybernetic"
+            label={intl.formatMessage({
+              id: "W9OGxl",
+              description: "Title of yellow techs.",
+              defaultMessage: "Cybernetic",
+            })}
             prereqs={factionPreReqs}
             selectTech={selectTech}
             outerCloseFn={outerCloseFn}
@@ -183,7 +198,11 @@ export default function TechSelectHoverMenu({
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
             techs={greenTechs}
-            label="Biotic"
+            label={intl.formatMessage({
+              id: "2I5JBO",
+              description: "Title of green techs.",
+              defaultMessage: "Biotic",
+            })}
             prereqs={factionPreReqs}
             selectTech={selectTech}
             outerCloseFn={outerCloseFn}
@@ -192,7 +211,11 @@ export default function TechSelectHoverMenu({
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
             techs={unitUpgrades}
-            label="Unit Upgrades"
+            label={intl.formatMessage({
+              id: "2hHU0G",
+              description: "Title of uprade techs.",
+              defaultMessage: "Unit Upgrades",
+            })}
             prereqs={factionPreReqs}
             selectTech={selectTech}
             outerCloseFn={outerCloseFn}

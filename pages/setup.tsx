@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { ClientOnlyHoverMenu } from "../src/HoverMenu";
 import { SelectableRow } from "../src/SelectableRow";
-import { Selector } from "../src/Selector";
 import FactionIcon from "../src/components/FactionIcon/FactionIcon";
 import { FactionPanel } from "../src/components/FactionPanel";
 import FactionSelectRadialMenu from "../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -15,6 +14,10 @@ import { convertToFactionColor } from "../src/util/factions";
 import { responsivePixels } from "../src/util/util";
 import { Loader } from "../src/Loader";
 import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";
+import { getBaseFactions } from "../server/data/factions";
+import { FormattedMessage, useIntl } from "react-intl";
+import { mapStyleString } from "../src/util/strings";
+import { Strings } from "../src/components/strings";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -50,6 +53,7 @@ function MobileOptions({
 }: OptionsProps) {
   const mapStringRef = useRef<HTMLInputElement>(null);
   const otherPointsRef = useRef<HTMLDivElement>(null);
+  const intl = useIntl();
 
   const mapString = options["map-string"];
 
@@ -93,7 +97,13 @@ function MobileOptions({
   }, []);
   return (
     <div className="flexColumn" style={{ width: "100%" }}>
-      <label>Player Count</label>
+      <label>
+        <FormattedMessage
+          id="Jh0WRk"
+          defaultMessage="Player Count"
+          description="Label for a selector to change the number of players"
+        />
+      </label>
       <div className="flexRow">
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
@@ -112,7 +122,15 @@ function MobileOptions({
         className="flexRow"
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
-        <ClientOnlyHoverMenu label="Options">
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="d0uSBF"
+              defaultMessage="Options"
+              description="Label on a menu for changing game options"
+            />
+          }
+        >
           <div style={{ width: "90vw", overflowX: "scroll" }}>
             <div
               className="flexColumn"
@@ -124,7 +142,12 @@ function MobileOptions({
               }}
             >
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-                Victory Points:
+                <FormattedMessage
+                  id="R06tnh"
+                  description="A label for a selector specifying the number of victory points required."
+                  defaultMessage="Victory Points"
+                />
+                :
                 <div
                   className="flexRow"
                   style={{
@@ -166,7 +189,11 @@ function MobileOptions({
                       );
                     }}
                   >
-                    Other
+                    <FormattedMessage
+                      id="sgqLYB"
+                      description="Text on a button used to select a non-listed value"
+                      defaultMessage="Other"
+                    />
                   </button>
                   <div
                     ref={otherPointsRef}
@@ -197,7 +224,11 @@ function MobileOptions({
                 </div>
               </div>
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-                Expansions:
+                <FormattedMessage
+                  id="2jNcVD"
+                  description="A label for a selector specifying which expansions should be enabled."
+                  defaultMessage="Expansions:"
+                />
                 <div
                   className={rowOrColumn}
                   style={{
@@ -212,7 +243,11 @@ function MobileOptions({
                       toggleExpansion(!options.expansions.has("POK"), "POK")
                     }
                   >
-                    Prophecy of Kings
+                    <FormattedMessage
+                      id="p9XVGB"
+                      description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+                      defaultMessage="Prophecy of Kings"
+                    />
                   </button>
                   <button
                     className={
@@ -225,7 +260,11 @@ function MobileOptions({
                       )
                     }
                   >
-                    Codex I
+                    <FormattedMessage
+                      id="3Taw9H"
+                      description="Text on a button that will enable/disable Codex I."
+                      defaultMessage="Codex I"
+                    />
                   </button>
                   <button
                     className={
@@ -238,7 +277,11 @@ function MobileOptions({
                       )
                     }
                   >
-                    Codex II
+                    <FormattedMessage
+                      id="knYKVl"
+                      description="Text on a button that will enable/disable Codex II."
+                      defaultMessage="Codex II"
+                    />
                   </button>
                   <button
                     className={
@@ -251,12 +294,20 @@ function MobileOptions({
                       )
                     }
                   >
-                    Codex III
+                    <FormattedMessage
+                      id="zXrdrP"
+                      description="Text on a button that will enable/disable Codex III."
+                      defaultMessage="Codex III"
+                    />
                   </button>
                 </div>
               </div>
               <div>
-                Map:
+                <FormattedMessage
+                  id="46dzNs"
+                  description="A label for a section of options related to the map."
+                  defaultMessage="Map:"
+                />
                 <div
                   className="flexColumn"
                   style={{
@@ -268,7 +319,11 @@ function MobileOptions({
                 >
                   {mapStyles.length > 1 ? (
                     <React.Fragment>
-                      Map Type:
+                      <FormattedMessage
+                        id="ZZ/Lhe"
+                        description="A label for a selector for selecting which map style to use."
+                        defaultMessage="Map Type:"
+                      />
                       <div
                         className="flexRow"
                         style={{ paddingLeft: `${responsivePixels(16)}` }}
@@ -282,14 +337,29 @@ function MobileOptions({
                               }
                               onClick={() => toggleOption(style, "map-style")}
                             >
-                              {capitalizeFirstLetter(style)}
+                              {mapStyleString(style, intl)}
                             </button>
                           );
                         })}
                       </div>
                     </React.Fragment>
                   ) : null}
-                  Map String (filters out non-claimable planets):
+                  <FormattedMessage
+                    id="UJSVtn"
+                    description="Label for a textbox used to specify the map string."
+                    defaultMessage="Map String"
+                  />
+                  <span
+                    className="smallFont"
+                    style={{ paddingLeft: responsivePixels(4) }}
+                  >
+                    <FormattedMessage
+                      id="zjv9Gr"
+                      description="Part of a label explaining what the map string does."
+                      defaultMessage="(filters out non-claimable planets)"
+                    />
+                  </span>
+                  :
                   <input
                     ref={mapStringRef}
                     type="textbox"
@@ -301,7 +371,7 @@ function MobileOptions({
                   ></input>
                 </div>
               </div>
-              {isCouncil ? (
+              {/* {isCouncil ? (
                 <div>
                   Council Keleres:
                   <div
@@ -326,7 +396,7 @@ function MobileOptions({
                     </button>
                   </div>
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
         </ClientOnlyHoverMenu>
@@ -346,6 +416,7 @@ function Options({
 }: OptionsProps) {
   const mapStringRef = useRef<HTMLInputElement>(null);
   const otherPointsRef = useRef<HTMLDivElement>(null);
+  const intl = useIntl();
 
   const mapString = options["map-string"];
 
@@ -393,7 +464,13 @@ function Options({
 
   return (
     <div className="flexColumn">
-      <label>Player Count</label>
+      <label>
+        <FormattedMessage
+          id="Jh0WRk"
+          defaultMessage="Player Count"
+          description="Label for a selector to change the number of players"
+        />
+      </label>
       <div className="flexRow">
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
@@ -408,7 +485,15 @@ function Options({
           );
         })}
       </div>
-      <ClientOnlyHoverMenu label="Options">
+      <ClientOnlyHoverMenu
+        label={
+          <FormattedMessage
+            id="d0uSBF"
+            defaultMessage="Options"
+            description="Label on a menu for changing game options"
+          />
+        }
+      >
         <div>
           <div
             className="flexColumn"
@@ -420,7 +505,12 @@ function Options({
             }}
           >
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-              Victory Points:
+              <FormattedMessage
+                id="R06tnh"
+                description="A label for a selector specifying the number of victory points required."
+                defaultMessage="Victory Points"
+              />
+              :
               <div
                 className="flexRow"
                 style={{
@@ -456,7 +546,11 @@ function Options({
                     );
                   }}
                 >
-                  Other
+                  <FormattedMessage
+                    id="sgqLYB"
+                    description="Text on a button used to select a non-listed value"
+                    defaultMessage="Other"
+                  />
                 </button>
                 <div
                   ref={otherPointsRef}
@@ -483,7 +577,13 @@ function Options({
                 </div>
                 {options["game-variant"] === "alliance-separate" ? (
                   <>
-                    <div>AND</div>
+                    <div>
+                      <FormattedMessage
+                        id="+WkrHz"
+                        description="Text between two fields linking them together."
+                        defaultMessage="AND"
+                      />
+                    </div>
                     {defaultVPs.map((VPs, index) => {
                       return (
                         <button
@@ -515,7 +615,11 @@ function Options({
                         );
                       }}
                     >
-                      Other
+                      <FormattedMessage
+                        id="sgqLYB"
+                        description="Text on a button used to select a non-listed value"
+                        defaultMessage="Other"
+                      />
                     </button>
                     <div
                       ref={otherPointsRef}
@@ -552,7 +656,11 @@ function Options({
               </div>
             </div>
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-              Expansions:
+              <FormattedMessage
+                id="2jNcVD"
+                description="A label for a selector specifying which expansions should be enabled."
+                defaultMessage="Expansions:"
+              />
               <div
                 className="flexRow"
                 style={{
@@ -566,7 +674,11 @@ function Options({
                     toggleExpansion(!options.expansions.has("POK"), "POK")
                   }
                 >
-                  Prophecy of Kings
+                  <FormattedMessage
+                    id="p9XVGB"
+                    description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+                    defaultMessage="Prophecy of Kings"
+                  />
                 </button>
                 <button
                   className={
@@ -579,7 +691,11 @@ function Options({
                     )
                   }
                 >
-                  Codex I
+                  <FormattedMessage
+                    id="3Taw9H"
+                    description="Text on a button that will enable/disable Codex I."
+                    defaultMessage="Codex I"
+                  />
                 </button>
                 <button
                   className={
@@ -592,7 +708,11 @@ function Options({
                     )
                   }
                 >
-                  Codex II
+                  <FormattedMessage
+                    id="knYKVl"
+                    description="Text on a button that will enable/disable Codex II."
+                    defaultMessage="Codex II"
+                  />
                 </button>
                 <button
                   className={
@@ -605,7 +725,11 @@ function Options({
                     )
                   }
                 >
-                  Codex III
+                  <FormattedMessage
+                    id="zXrdrP"
+                    description="Text on a button that will enable/disable Codex III."
+                    defaultMessage="Codex III"
+                  />
                 </button>
               </div>
               <div
@@ -615,7 +739,11 @@ function Options({
                   padding: `0 ${responsivePixels(20)}`,
                 }}
               >
-                Homebrew:
+                <FormattedMessage
+                  id="weIxIg"
+                  description="A label for a selector specifying expansions that are homemade."
+                  defaultMessage="Homebrew:"
+                />
                 <div
                   className="flexRow"
                   style={{
@@ -636,13 +764,21 @@ function Options({
                       )
                     }
                   >
-                    Discordant Stars
+                    <FormattedMessage
+                      id="ZlvDZB"
+                      description="Text on a button that will enable/disable the Discordant Stars expansion."
+                      defaultMessage="Discordant Stars"
+                    />
                   </button>
                 </div>
               </div>
             </div>
             <div style={{ width: "100%" }}>
-              Map:
+              <FormattedMessage
+                id="46dzNs"
+                description="A label for a section of options related to the map."
+                defaultMessage="Map:"
+              />
               <div
                 className="flexColumn"
                 style={{
@@ -653,7 +789,11 @@ function Options({
               >
                 {mapStyles.length > 1 ? (
                   <React.Fragment>
-                    Map Type:
+                    <FormattedMessage
+                      id="ZZ/Lhe"
+                      description="A label for a selector for selecting which map style to use."
+                      defaultMessage="Map Type:"
+                    />
                     <div
                       className="flexRow"
                       style={{ paddingLeft: `${responsivePixels(16)}` }}
@@ -667,7 +807,7 @@ function Options({
                             }
                             onClick={() => toggleOption(style, "map-style")}
                           >
-                            {capitalizeFirstLetter(style)}
+                            {mapStyleString(style, intl)}
                           </button>
                         );
                       })}
@@ -682,12 +822,20 @@ function Options({
                     justifyContent: "flex-start",
                   }}
                 >
-                  Map String
+                  <FormattedMessage
+                    id="UJSVtn"
+                    description="Label for a textbox used to specify the map string."
+                    defaultMessage="Map String"
+                  />
                   <span
                     className="smallFont"
                     style={{ paddingLeft: responsivePixels(4) }}
                   >
-                    (filters out non-claimable planets)
+                    <FormattedMessage
+                      id="zjv9Gr"
+                      description="Part of a label explaining what the map string does."
+                      defaultMessage="(filters out non-claimable planets)"
+                    />
                   </span>
                   :
                 </div>
@@ -702,7 +850,7 @@ function Options({
                 ></input>
               </div>
             </div>
-            {isCouncil ? (
+            {/* {isCouncil ? (
               <div>
                 Council Keleres:
                 <div
@@ -727,7 +875,7 @@ function Options({
                   </button>
                 </div>
               </div>
-            ) : null}
+            ) : null} */}
             {variants.length > 1 ? (
               <div>
                 Variants (WIP):
@@ -881,38 +1029,6 @@ interface FactionSelectProps {
   options: SetupOptions;
 }
 
-// function FactionSelect({}: FactionSelectProps) {
-//   const color = convertToFactionColor("blue");
-//   return (
-//     <>
-//       <FactionSelectRadialMenu
-//         factions={[]}
-//         onSelect={() => {
-//           return color;
-//         }}
-//       />
-//       <SelectableRow itemId="potato" />
-//       <Selector hoverMenuLabel="Why" options={[]} toggleItem={() => {}} />
-//       <FactionIcon factionId="Vuil'raith Cabal" size={40} />
-//       <FactionPanel
-//         options={{
-//           expansions: [],
-//           "allow-double-council": false,
-//           "game-variant": "normal",
-//           "map-style": "standard",
-//           "victory-points": 12,
-//         }}
-//         faction={{
-//           color: "Blue",
-//           id: "Arborec",
-//           name: "Arborec",
-//         }}
-//       />
-//     </>
-//   );
-//   return <div>{color}</div>;
-// }
-
 function FactionSelect({
   factions,
   position,
@@ -927,15 +1043,8 @@ function FactionSelect({
   options,
 }: FactionSelectProps) {
   const nameRef = useRef<HTMLInputElement>(null);
-  const {
-    data: availableFactions,
-  }: { data?: Partial<Record<FactionId, BaseFaction>> } = useSWR(
-    "/api/factions",
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
+  const intl = useIntl();
+  const availableFactions = getBaseFactions(intl);
   const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher, {
     revalidateIfStale: false,
   });
@@ -948,9 +1057,13 @@ function FactionSelect({
   const currentNameRef = nameRef?.current;
   useEffect(() => {
     if (currentNameRef && !playerName) {
-      currentNameRef.value = "Enter Player Name...";
+      currentNameRef.value = intl.formatMessage({
+        id: "4n1LQO",
+        description: "Initial text in a textbox used to input a player's name",
+        defaultMessage: "Enter Player Name...",
+      });
     }
-  }, [playerName, currentNameRef]);
+  }, [playerName, currentNameRef, intl]);
 
   const isSpeaker = speaker === factionIndex;
 
@@ -1003,7 +1116,14 @@ function FactionSelect({
       if (!faction) {
         return;
       }
-      element.value = faction.playerName ?? "Enter Player Name...";
+      element.value =
+        faction.playerName ??
+        intl.formatMessage({
+          id: "4n1LQO",
+          description:
+            "Initial text in a textbox used to input a player's name",
+          defaultMessage: "Enter Player Name...",
+        });
     }
   }
 
@@ -1030,7 +1150,11 @@ function FactionSelect({
       ref={nameRef}
       type="textbox"
       spellCheck={false}
-      defaultValue={"Enter Player Name..."}
+      defaultValue={intl.formatMessage({
+        id: "4n1LQO",
+        description: "Initial text in a textbox used to input a player's name",
+        defaultMessage: "Enter Player Name...",
+      })}
       style={{
         fontFamily: "Slider",
         borderColor: factionColor,
@@ -1045,7 +1169,7 @@ function FactionSelect({
   return (
     <LabeledDiv
       label={label}
-      rightLabel={isSpeaker ? "Speaker" : undefined}
+      rightLabel={isSpeaker ? <Strings.Speaker /> : undefined}
       color={factionColor}
       style={{ width: mobile ? "100%" : "22vw" }}
     >
@@ -1089,18 +1213,26 @@ function FactionSelect({
           >
             {faction.id ? (
               <SelectableRow
-                itemId={faction.id}
+                itemId={availableFactions[faction.id].name}
                 removeItem={() => selectFaction(undefined)}
                 style={{ height: responsivePixels(32.67) }}
               >
-                {faction.id}
+                {availableFactions[faction.id].name}
                 <FactionPanel
                   faction={faction}
                   options={createOptions(options)}
                 />
               </SelectableRow>
             ) : (
-              <ClientOnlyHoverMenu label="Pick Faction">
+              <ClientOnlyHoverMenu
+                label={
+                  <FormattedMessage
+                    id="Cw3noi"
+                    description="Text on a hover menu for selecting a player's faction"
+                    defaultMessage="Pick Faction"
+                  />
+                }
+              >
                 <div
                   style={{
                     display: "grid",
@@ -1127,10 +1259,7 @@ function FactionSelect({
                         onClick={() => selectFaction(faction.id)}
                       >
                         <FactionIcon factionId={faction.id} size={20} />
-                        {/* {options["expansions"].has("DISCORDANT STARS")
-                          ? faction.shortname
-                          : faction.id} */}
-                        {faction.id}
+                        {faction.name}
                       </button>
                     );
                   })}
@@ -1167,49 +1296,7 @@ function FactionSelect({
                   size={32}
                 />
               </div>
-            ) : // <Selector
-            //   hoverMenuLabel="Partner"
-            //   options={selectedFactions.filter(
-            //     (factionName) => factionName !== faction.name
-            //   )}
-            //   selectedItem={
-            //     faction.alliancePartner != undefined
-            //       ? factions[faction.alliancePartner]?.name
-            //       : undefined
-            //   }
-            //   toggleItem={(factionName, add) => {
-            //     if (add) {
-            //       selectAlliancePartner(factionName);
-            //     } else {
-            //       selectAlliancePartner(undefined);
-            //     }
-            //   }}
-            //   renderItem={(factionName) => {
-            //     return (
-            //       // <LabeledDiv label="Partner">
-            //       <SelectableRow
-            //         itemId={factionName}
-            //         removeItem={() => selectAlliancePartner(undefined)}
-            //         // style={{
-            //         //   height: responsivePixels(32.67),
-            //         //   width: responsivePixels(32.67),
-            //         // }}
-            //       >
-            //         <div
-            //           style={{
-            //             position: "relative",
-            //             width: responsivePixels(32),
-            //             height: responsivePixels(32),
-            //           }}
-            //         >
-            //           <FullFactionSymbol faction={factionName} />
-            //         </div>
-            //       </SelectableRow>
-            //       // </LabeledDiv>
-            //     );
-            //   }}
-            // />
-            null}
+            ) : null}
           </div>
           <div
             className="flexRow"
@@ -1219,7 +1306,13 @@ function FactionSelect({
             }}
           >
             <ClientOnlyHoverMenu
-              label={faction.color ? "Color" : "Color"}
+              label={
+                <FormattedMessage
+                  id="Lm8L7/"
+                  description="Text on a hover menu for picking a player's color."
+                  defaultMessage="Color"
+                />
+              }
               renderProps={(closeFn) => {
                 return (
                   <div
@@ -1266,7 +1359,11 @@ function FactionSelect({
             ></ClientOnlyHoverMenu>
             {mobile || isSpeaker ? null : (
               <button onClick={() => setSpeaker(factionIndex)}>
-                Make Speaker
+                <FormattedMessage
+                  id="JS92Jj"
+                  description="Text on a button that will make a faction the speaker."
+                  defaultMessage="Make Speaker"
+                />
               </button>
             )}
           </div>
@@ -1286,7 +1383,7 @@ const INITIAL_OPTIONS: SetupOptions = {
     "CODEX TWO",
     "CODEX THREE",
   ]),
-  "allow-double-council": false,
+  "allow-double-council": true,
   "game-variant": "normal",
   "map-style": "standard",
   "map-string": "",
@@ -1306,10 +1403,8 @@ export default function SetupPage() {
 
   const router = useRouter();
 
-  const { data: availableFactions }: { data?: Record<FactionId, BaseFaction> } =
-    useSWR("/api/factions", fetcher, {
-      revalidateIfStale: false,
-    });
+  const intl = useIntl();
+  const availableFactions = getBaseFactions(intl);
   const { data: colors }: { data?: string[] } = useSWR("/api/colors", fetcher, {
     revalidateIfStale: false,
   });
@@ -1818,7 +1913,22 @@ export default function SetupPage() {
   // const mapSize = (Math.min(window.innerHeight, window.innerWidth * .5) - 96) * .6;
   return (
     <React.Fragment>
-      <NonGameHeader leftSidebar="SETUP GAME" rightSidebar="SETUP GAME" />
+      <NonGameHeader
+        leftSidebar={intl
+          .formatMessage({
+            id: "9DZz2w",
+            description: "Text identifying that this is the setup step.",
+            defaultMessage: "Setup Game",
+          })
+          .toUpperCase()}
+        rightSidebar={intl
+          .formatMessage({
+            id: "9DZz2w",
+            description: "Text identifying that this is the setup step.",
+            defaultMessage: "Setup Game",
+          })
+          .toUpperCase()}
+      />
       {/* Large Screen */}
       <div
         className="flexRow nonMobile"
@@ -1965,31 +2075,53 @@ export default function SetupPage() {
           }}
         >
           <div className="flexColumn" style={{ width: "100%" }}>
-            <LabeledDiv label="Randomize">
+            <LabeledDiv
+              label={
+                <FormattedMessage
+                  id="x42AMg"
+                  description="Label for a section that involves randomly selecting things."
+                  defaultMessage="Randomize"
+                />
+              }
+            >
               <div
                 className="flexRow"
                 style={{ whiteSpace: "nowrap", width: "100%" }}
               >
                 <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
-                  Speaker
+                  <Strings.Speaker />
                 </button>
                 <button
                   style={{ textAlign: "center" }}
                   onClick={randomFactions}
                   disabled={disableRandomizeFactionButton()}
                 >
-                  Factions
+                  <FormattedMessage
+                    id="r2htpd"
+                    description="Text on a button that will randomize factions."
+                    defaultMessage="Factions"
+                  />
                 </button>
                 <button
                   style={{ textAlign: "center" }}
                   onClick={randomColors}
                   disabled={disableRandomizeColorsButton()}
                 >
-                  Colors
+                  <FormattedMessage
+                    id="rqdwvE"
+                    description="Text on a button that will randomize colors."
+                    defaultMessage="Colors"
+                  />
                 </button>
               </div>
             </LabeledDiv>
-            <button onClick={reset}>Reset</button>
+            <button onClick={reset}>
+              <FormattedMessage
+                id="tocXJ4"
+                description="Text on a button that will reset selections."
+                defaultMessage="Reset"
+              />
+            </button>
 
             {/* </div> */}
           </div>
@@ -2053,7 +2185,11 @@ export default function SetupPage() {
               onClick={startGame}
               disabled={disableNextButton()}
             >
-              Start Game
+              <FormattedMessage
+                id="lYD2yu"
+                description="Text on a button that will start a game."
+                defaultMessage="Start Game"
+              />
               {creatingGame ? (
                 <div
                   className="flexColumn"
@@ -2084,7 +2220,11 @@ export default function SetupPage() {
                 className="flexColumn centered"
                 style={{ color: "firebrick", maxWidth: responsivePixels(240) }}
               >
-                Select all factions and colors
+                <FormattedMessage
+                  id="LYA+Dm"
+                  description="Error message explaining that all factions and colors need to be selected."
+                  defaultMessage="Select all factions and colors"
+                />
                 {options["game-variant"].startsWith("alliance")
                   ? " and alliance partners"
                   : ""}
@@ -2123,7 +2263,11 @@ export default function SetupPage() {
             className="flexRow"
             style={{ width: "100%", fontSize: responsivePixels(20) }}
           >
-            Setup Game
+            <FormattedMessage
+              id="9DZz2w"
+              description="Text identifying that this is the setup step."
+              defaultMessage="Setup Game"
+            />
           </div>
           <MobileOptions
             updatePlayerCount={updatePlayerCount}
@@ -2162,7 +2306,7 @@ export default function SetupPage() {
                 style={{ whiteSpace: "nowrap", width: "100%" }}
               >
                 <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
-                  Speaker
+                  <Strings.Speaker />
                 </button>
                 <button
                   style={{ textAlign: "center" }}

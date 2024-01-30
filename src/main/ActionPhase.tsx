@@ -55,6 +55,8 @@ import { responsivePixels } from "../util/util";
 import { ComponentAction } from "./util/ComponentAction";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import styles from "./ActionPhase.module.scss";
+import { FormattedMessage, useIntl } from "react-intl";
+import { phaseString } from "../util/strings";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -225,14 +227,22 @@ export function FactionActionButtons({
         style={buttonStyle}
         onClick={() => toggleAction("Tactical")}
       >
-        Tactical
+        <FormattedMessage
+          id="/KXhGz"
+          description="Text on a button that will select a tactical action."
+          defaultMessage="Tactical"
+        />
       </button>
       <button
         className={selectedAction === "Component" ? "selected" : ""}
         style={buttonStyle}
         onClick={() => toggleAction("Component")}
       >
-        Component
+        <FormattedMessage
+          id="43UU69"
+          description="Text on a button that will select a component action."
+          defaultMessage="Component"
+        />
       </button>
       {canFactionPass(activeFaction.id) ? (
         <button
@@ -241,7 +251,11 @@ export function FactionActionButtons({
           disabled={!canFactionPass(activeFaction.id)}
           onClick={() => toggleAction("Pass")}
         >
-          Pass
+          <FormattedMessage
+            id="7ECd6J"
+            description="Text on a button that will pass."
+            defaultMessage="Pass"
+          />
         </button>
       ) : null}
     </div>
@@ -251,7 +265,13 @@ export function FactionActionButtons({
 export function FactionActions({ factionId }: { factionId: FactionId }) {
   return (
     <div className="flexColumn" style={{ gap: responsivePixels(4) }}>
-      <div style={{ fontSize: responsivePixels(20) }}>Select Action</div>
+      <div style={{ fontSize: responsivePixels(20) }}>
+        <FormattedMessage
+          id="YeYE6S"
+          description="Label telling the user to select the action a player took."
+          defaultMessage="Select Action"
+        />
+      </div>
       <FactionActionButtons
         factionId={factionId}
         buttonStyle={{ fontSize: responsivePixels(18) }}
@@ -283,6 +303,8 @@ export function AdditionalActions({
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
   const techs = useContext(TechContext);
+
+  const intl = useIntl();
 
   if (!factions || !techs) {
     return null;
@@ -547,6 +569,11 @@ export function AdditionalActions({
               {researchedTech.length < numTechs ? (
                 <TechSelectHoverMenu
                   factionId={activeFaction.id}
+                  label={intl.formatMessage({
+                    id: "3qIvsL",
+                    description: "Label on a hover menu used to research tech.",
+                    defaultMessage: "Research Tech",
+                  })}
                   techs={researchableTechs}
                   selectTech={(tech) => {
                     // if (
@@ -562,7 +589,15 @@ export function AdditionalActions({
               ) : null}
               {isActive ? (
                 <React.Fragment>
-                  <LabeledLine leftLabel="Secondary" />
+                  <LabeledLine
+                    leftLabel={
+                      <FormattedMessage
+                        id="PBW6vs"
+                        description="The alternate ability for a strategy card."
+                        defaultMessage="Secondary"
+                      />
+                    }
+                  />
                   <SecondaryCheck
                     activeFactionId={activeFaction.id}
                     gameid={gameid ?? ""}
@@ -584,7 +619,15 @@ export function AdditionalActions({
               className="flexColumn"
               style={{ gap: responsivePixels(4), width: "100%" }}
             >
-              <LabeledLine leftLabel="Primary" />
+              <LabeledLine
+                leftLabel={
+                  <FormattedMessage
+                    id="mhqGMn"
+                    description="The main ability for a strategy card."
+                    defaultMessage="Primary"
+                  />
+                }
+              />
 
               <div style={{ width: "fit-content" }}>
                 <LabeledDiv
@@ -617,6 +660,12 @@ export function AdditionalActions({
                     <TechSelectHoverMenu
                       factionId={activeFaction.id}
                       techs={researchableTechs}
+                      label={intl.formatMessage({
+                        id: "3qIvsL",
+                        description:
+                          "Label on a hover menu used to research tech.",
+                        defaultMessage: "Research Tech",
+                      })}
                       selectTech={(tech) =>
                         researchTech(activeFaction.id, tech)
                       }
@@ -630,7 +679,15 @@ export function AdditionalActions({
             className="flexColumn"
             style={{ gap: responsivePixels(4), width: "100%" }}
           >
-            <LabeledLine leftLabel="Secondary" />
+            <LabeledLine
+              leftLabel={
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              }
+            />
             <div
               className="flexRow mediumFont"
               style={{
@@ -695,6 +752,12 @@ export function AdditionalActions({
                       {researchedTechs.length < maxTechs ? (
                         <TechSelectHoverMenu
                           factionId={faction.id}
+                          label={intl.formatMessage({
+                            id: "3qIvsL",
+                            description:
+                              "Label on a hover menu used to research tech.",
+                            defaultMessage: "Research Tech",
+                          })}
                           techs={availableTechs}
                           selectTech={(tech) => {
                             // if (
@@ -733,7 +796,15 @@ export function AdditionalActions({
           style={{ gap: "4px", width: "100%", ...style }}
         >
           <React.Fragment>
-            <LabeledLine leftLabel="Primary" />
+            <LabeledLine
+              leftLabel={
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              }
+            />
             <div
               className="flexRow largeFont"
               style={{
@@ -742,7 +813,12 @@ export function AdditionalActions({
                 width: "100%",
               }}
             >
-              New Speaker:
+              <FormattedMessage
+                id="pTiYPm"
+                description="Label for a selector selecting a new speaker."
+                defaultMessage="New Speaker"
+              />
+              :
               <FactionSelectRadialMenu
                 borderColor={
                   selectedSpeaker ? getFactionColor(selectedSpeaker) : undefined
@@ -765,7 +841,15 @@ export function AdditionalActions({
               />
             </div>
           </React.Fragment>
-          <LabeledLine leftLabel="Secondary" />
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            }
+          />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
@@ -780,8 +864,24 @@ export function AdditionalActions({
         );
         return (
           <div className="flexColumn largeFont" style={{ ...style }}>
-            <LabeledLine leftLabel="Primary" />
-            <LabeledDiv label="Peace Accords">
+            <LabeledLine
+              leftLabel={
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              }
+            />
+            <LabeledDiv
+              label={
+                <FormattedMessage
+                  id="Xxcha Kingdom.Abilities.Peace Accords.Title"
+                  defaultMessage="Peace Accords"
+                  description="Title of Faction Ability: Peace Accords"
+                />
+              }
+            >
               <React.Fragment>
                 {claimedPlanets.length > 0 ? (
                   <div className="flexColumn" style={{ alignItems: "stretch" }}>
@@ -809,7 +909,15 @@ export function AdditionalActions({
                 ) : null}
                 {peaceAccordsPlanets.length > 0 &&
                 claimedPlanets.length === 0 ? (
-                  <ClientOnlyHoverMenu label="Claim Empty Planet">
+                  <ClientOnlyHoverMenu
+                    label={
+                      <FormattedMessage
+                        id="UJs3kj"
+                        description="Text on a hover menu for claiming an empty planet."
+                        defaultMessage="Claim Empty Planet"
+                      />
+                    }
+                  >
                     <div className="flexRow" style={targetButtonStyle}>
                       {peaceAccordsPlanets.map((planet) => {
                         return (
@@ -830,7 +938,15 @@ export function AdditionalActions({
                 ) : null}
               </React.Fragment>
             </LabeledDiv>
-            <LabeledLine leftLabel="Secondary" />
+            <LabeledLine
+              leftLabel={
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              }
+            />
             <SecondaryCheck
               activeFactionId={activeFaction.id}
               gameid={gameid ?? ""}
@@ -881,11 +997,24 @@ export function AdditionalActions({
             className="flexColumn largeFont"
             style={{ width: "100%", ...style }}
           >
-            <LabeledLine leftLabel="Secondary" />
+            <LabeledLine
+              leftLabel={
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              }
+            />
             <LabeledDiv
               label={`${getFactionName(
                 factions["Xxcha Kingdom"]
-              )} - Peace Accords`}
+              )} - ${intl.formatMessage({
+                id: "Xxcha Kingdom.Abilities.Peace Accords.Title",
+                defaultMessage: "Peace Accords",
+                description: "Title of Faction Ability: Peace Accords",
+              })}
+              `}
               color={getFactionColor(factions["Xxcha Kingdom"])}
             >
               <React.Fragment>
@@ -920,7 +1049,15 @@ export function AdditionalActions({
                   </div>
                 ) : null}
                 {nonXxchaPlanets.length > 0 && xxchaPlanets.length === 0 ? (
-                  <ClientOnlyHoverMenu label="Claim Empty Planet">
+                  <ClientOnlyHoverMenu
+                    label={
+                      <FormattedMessage
+                        id="UJs3kj"
+                        description="Text on a hover menu for claiming an empty planet."
+                        defaultMessage="Claim Empty Planet"
+                      />
+                    }
+                  >
                     <div className="flexRow" style={targetButtonStyle}>
                       {nonXxchaPlanets.map((planet) => {
                         return (
@@ -956,7 +1093,15 @@ export function AdditionalActions({
       }
       return (
         <div className="flexColumn" style={{ width: "100%" }}>
-          <LabeledLine leftLabel="Secondary" />
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            }
+          />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
@@ -970,7 +1115,15 @@ export function AdditionalActions({
     case "Warfare":
       return (
         <div className="flexColumn" style={{ width: "100%" }}>
-          <LabeledLine leftLabel="Secondary" />
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            }
+          />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
@@ -1035,18 +1188,44 @@ export function AdditionalActions({
           className="flexColumn largeFont"
           style={{ width: "100%", ...style }}
         >
-          <LabeledLine leftLabel="Primary" />
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
+                id="mhqGMn"
+                description="The main ability for a strategy card."
+                defaultMessage="Primary"
+              />
+            }
+          />
           <div
             style={{
               backdropFilter: "blur(4px)",
               padding: `${responsivePixels(2)} 0`,
             }}
           >
-            {hasImperialPoint
-              ? "+1 VP for controlling Mecatol Rex"
-              : "Draw 1 secret objective"}
+            {hasImperialPoint ? (
+              <FormattedMessage
+                id="a1rHE+"
+                description="Message telling a player that they get a victory point."
+                defaultMessage="+1 VP for controlling Mecatol Rex"
+              />
+            ) : (
+              <FormattedMessage
+                id="dd3UAo"
+                description="Message telling a player to draw a secret objective."
+                defaultMessage="Draw 1 secret objective"
+              />
+            )}
           </div>
-          <LabeledDiv label="Score Public Objective ?">
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="73882v"
+                description="Message telling a player to score a public objective."
+                defaultMessage="Score Public Objective"
+              />
+            }
+          >
             <React.Fragment>
               {scoredPublics.length > 0 ? (
                 <div className="flexColumn" style={{ alignItems: "stretch" }}>
@@ -1073,7 +1252,15 @@ export function AdditionalActions({
               ) : null}
               {scoredPublics.length < 1 ? (
                 availablePublicObjectives.length > 0 ? (
-                  <ClientOnlyHoverMenu label="Score Public Objective">
+                  <ClientOnlyHoverMenu
+                    label={
+                      <FormattedMessage
+                        id="73882v"
+                        description="Message telling a player to score a public objective."
+                        defaultMessage="Score Public Objective"
+                      />
+                    }
+                  >
                     <div
                       className="flexColumn"
                       style={{ ...secretButtonStyle }}
@@ -1098,7 +1285,15 @@ export function AdditionalActions({
               ) : null}
             </React.Fragment>
           </LabeledDiv>
-          <LabeledLine leftLabel="Secondary" />
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            }
+          />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
             gameid={gameid ?? ""}
@@ -1242,6 +1437,8 @@ export function NextPlayerButtons({
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
 
+  const intl = useIntl();
+
   const actionLog = useContext(ActionLogContext);
   const selectedAction = getSelectedActionFromLog(actionLog);
   const newSpeaker = getNewSpeakerEventFromLog(actionLog);
@@ -1279,17 +1476,31 @@ export function NextPlayerButtons({
           className={styles.EndTurnButton}
           style={buttonStyle}
         >
-          End Turn
+          <FormattedMessage
+            id="NxpzKH"
+            description="Text on a button that will end the player's turn."
+            defaultMessage="End Turn"
+          />
         </button>
         {selectedAction !== "Pass" ? (
           <React.Fragment>
-            <div style={{ fontSize: "16px" }}>OR</div>
+            <div style={{ fontSize: "16px" }}>
+              <FormattedMessage
+                id="PnNSxg"
+                description="Text between two fields linking them together."
+                defaultMessage="OR"
+              />
+            </div>
             <button
               onClick={finalizeAction}
               className={styles.EndTurnButton}
               style={buttonStyle}
             >
-              Take Another Action
+              <FormattedMessage
+                id="5ChhqO"
+                description="Text on a button that will let the player take another action."
+                defaultMessage="Take Another Action"
+              />
             </button>
           </React.Fragment>
         ) : null}
@@ -1309,10 +1520,15 @@ export function ActivePlayerColumn({
 }: ActivePlayerColumnProps) {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
+  const intl = useIntl();
 
   return (
     <div className={styles.ActivePlayerColumn}>
-      Active Player
+      <FormattedMessage
+        id="vTtJ6S"
+        description="Label showing that the specific player is the current player."
+        defaultMessage="Active Player"
+      />
       <SwitchTransition>
         <CSSTransition key={activeFaction.id} timeout={500} classNames="fade">
           <FactionCard
@@ -1346,7 +1562,13 @@ export function ActivePlayerColumn({
         <SwitchTransition>
           <CSSTransition key={onDeckFaction.id} timeout={500} classNames="fade">
             <LabeledDiv
-              label="On Deck"
+              label={
+                <FormattedMessage
+                  id="S0vXJt"
+                  description="Label showing that the specific player is up next."
+                  defaultMessage="On Deck"
+                />
+              }
               rightLabel={
                 <StaticFactionTimer
                   factionId={onDeckFaction.id}
@@ -1421,7 +1643,15 @@ export function ActivePlayerColumn({
         style={{ marginTop: responsivePixels(12) }}
         buttons={[
           {
-            text: "Advance to Status Phase",
+            text: intl.formatMessage(
+              {
+                id: "8/h2ME",
+                defaultMessage: "Advance to {phase} Phase",
+                description:
+                  "Text on a button that will advance the game to a specific phase.",
+              },
+              { phase: phaseString("STATUS", intl) }
+            ),
             onClick: () => {
               if (!gameid) {
                 return;
@@ -1445,6 +1675,7 @@ export default function ActionPhase() {
   const factions = useContext(FactionContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
+  const intl = useIntl();
 
   if (!factions || !state || !strategyCards) {
     return <FullScreenLoader />;
@@ -1476,7 +1707,6 @@ export default function ActionPhase() {
     <React.Fragment>
       <div
         className={styles.LeftColumn}
-        // className="flexColumn nonMobile"
         style={
           {
             "--gap":
@@ -1507,13 +1737,26 @@ export default function ActionPhase() {
                   fontSize: responsivePixels(42),
                 }}
               >
-                Action Phase Complete
+                <FormattedMessage
+                  id="Gns4AS"
+                  description="Text showing that the current phase is complete"
+                  defaultMessage="{phase} Phase Complete"
+                  values={{ phase: phaseString("ACTION", intl) }}
+                />
               </div>
               <LockedButtons
                 unlocked={true}
                 buttons={[
                   {
-                    text: "Advance to Status Phase",
+                    text: intl.formatMessage(
+                      {
+                        id: "8/h2ME",
+                        defaultMessage: "Advance to {phase} Phase",
+                        description:
+                          "Text on a button that will advance the game to a specific phase.",
+                      },
+                      { phase: phaseString("STATUS", intl) }
+                    ),
                     onClick: () => {
                       if (!gameid) {
                         return;

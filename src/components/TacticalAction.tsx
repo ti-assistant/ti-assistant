@@ -22,7 +22,7 @@ import { hasTech } from "../util/api/techs";
 import { hasScoredObjective } from "../util/api/util";
 import { getFactionColor } from "../util/factions";
 import { applyPlanetAttachments } from "../util/planets";
-import { pluralize, responsivePixels } from "../util/util";
+import { responsivePixels } from "../util/util";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
@@ -32,6 +32,7 @@ import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import styles from "./TacticalAction.module.scss";
 import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "./PlanetIcon/PlanetIcon";
+import { FormattedMessage, useIntl } from "react-intl";
 
 export function TacticalAction({
   activeFactionId,
@@ -63,6 +64,8 @@ export function TacticalAction({
   techs: Partial<Record<TechId, Tech>>;
 }) {
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
+
+  const intl = useIntl();
 
   const custodiansScorer = getObjectiveScorers(
     currentTurn,
@@ -249,7 +252,16 @@ export function TacticalAction({
       style={{ ...style }}
     >
       {conqueredPlanets.length > 0 ? (
-        <LabeledDiv label="NEWLY CONTROLLED PLANETS">
+        <LabeledDiv
+          label={
+            <FormattedMessage
+              id="E9UhAA"
+              description="Label for section of newly controlled planets."
+              defaultMessage="Newly Controlled {count, plural, one {Planet} other {Planets}}"
+              values={{ count: conqueredPlanets.length }}
+            />
+          }
+        >
           {/* <React.Fragment> */}
           <div
             className="flexColumn"
@@ -374,7 +386,13 @@ export function TacticalAction({
       ) : null}
       {claimablePlanets.length > 0 ? (
         <ClientOnlyHoverMenu
-          label="Take Control of Planet"
+          label={
+            <FormattedMessage
+              id="+8kwFc"
+              description="Text on a hover menu allowing a player to take control of planets."
+              defaultMessage="Take Control of Planet"
+            />
+          }
           renderProps={(closeFn) => (
             <div className="flexRow" style={targetButtonStyle}>
               {claimablePlanets.map((planet) => {
@@ -397,14 +415,24 @@ export function TacticalAction({
           )}
         ></ClientOnlyHoverMenu>
       ) : null}
-      {hasCustodiansPoint ? "+1 VP for Custodians Token" : null}
+      {hasCustodiansPoint ? (
+        <FormattedMessage
+          id="64NLXu"
+          description="Text telling the player that they gained a victory point for removing the Custodians Token."
+          defaultMessage="+1 VP for Custodians Token"
+        />
+      ) : null}
       {(scoredObjectives.length > 0 && !hasCustodiansPoint) ||
       scoredObjectives.length > 1 ? (
         <LabeledDiv
-          label={`Scored Action Phase ${pluralize(
-            "Objective",
-            scoredObjectives.length
-          )}`}
+          label={
+            <FormattedMessage
+              id="DGs6vS"
+              description="Label for section of scored action phase objectives."
+              defaultMessage="Scored Action Phase {count, plural, one {Objective} other {Objectives}}"
+              values={{ count: scoredObjectives.length }}
+            />
+          }
         >
           <React.Fragment>
             <div className="flexColumn" style={{ alignItems: "stretch" }}>
@@ -439,7 +467,13 @@ export function TacticalAction({
       ) : null}
       {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
         <ClientOnlyHoverMenu
-          label="Score Action Phase Objective"
+          label={
+            <FormattedMessage
+              id="fCdj3q"
+              description="Text on a hover menu allowing a player to score an action phase objective."
+              defaultMessage="Score Action Phase Objective"
+            />
+          }
           renderProps={(closeFn) => (
             <div className="flexColumn" style={{ ...secretButtonStyle }}>
               {scorableObjectives.map((objective) => {
@@ -484,7 +518,12 @@ export function TacticalAction({
           {nekroTechs.length < 4 && researchableTechs.length > 0 ? (
             <TechSelectHoverMenu
               factionId="Nekro Virus"
-              label="Technological Singularity"
+              label={intl.formatMessage({
+                id: "Nekro Virus.Abilities.Technological Singularity.Title",
+                description:
+                  "Title of Faction Ability: Technological Singularity",
+                defaultMessage: "Technological Singularity",
+              })}
               techs={researchableTechs}
               selectTech={(tech) => addTechLocal(activeFactionId, tech)}
             />

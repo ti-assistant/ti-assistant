@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions } from "../../data/GameData";
 
 export class MarkSecondaryHandler implements Handler {
@@ -7,7 +8,9 @@ export class MarkSecondaryHandler implements Handler {
   ) {}
 
   validate(): boolean {
-    const faction = buildFactions(this.gameData)[this.data.event.faction];
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const faction = buildFactions(this.gameData, intl)[this.data.event.faction];
     if (!faction) {
       return false;
     }

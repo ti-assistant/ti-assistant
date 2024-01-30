@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Tab, TabBody } from "./Tab";
 import PlanetRow from "./components/PlanetRow/PlanetRow";
+import { FormattedMessage } from "react-intl";
 
 function sortPlanetsByFaction(planets: Planet[]) {
   planets.sort((a, b) => {
@@ -65,16 +66,28 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
         style={{ backgroundColor: "#222", padding: "4px 4px 0px 4px" }}
       >
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown}>
-          Planets
+          <FormattedMessage
+            id="1fNqTf"
+            description="Planets."
+            defaultMessage="Planets"
+          />
         </Tab>
         {homePlanets.length > 0 ? (
           <Tab selectTab={setTabShown} id="home" selectedId={tabShown}>
-            Home
+            <FormattedMessage
+              id="22b12K"
+              description="Home system planets."
+              defaultMessage="Home"
+            />
           </Tab>
         ) : null}
         {legendaryPlanets.length > 0 ? (
           <Tab selectTab={setTabShown} id="legendary" selectedId={tabShown}>
-            Legendary
+            <FormattedMessage
+              id="sgxJMg"
+              description="Legendary planets."
+              defaultMessage="Legendary"
+            />
           </Tab>
         ) : null}
       </div>

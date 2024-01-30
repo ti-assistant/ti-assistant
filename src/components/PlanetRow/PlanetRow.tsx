@@ -10,6 +10,7 @@ import { responsivePixels } from "../../util/util";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
+import { FormattedMessage } from "react-intl";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -463,7 +464,13 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
         influence={attachment.influence ?? 0}
       />
       {isSkip() ? (
-        <div style={{ marginRight: responsivePixels(6) }}>OR</div>
+        <div style={{ marginRight: responsivePixels(6) }}>
+          <FormattedMessage
+            id="PnNSxg"
+            description="Text between two fields linking them together."
+            defaultMessage="OR"
+          />
+        </div>
       ) : null}
       {attachment.attribute ? (
         <PlanetAttributes attributes={[attachment.attribute]} />

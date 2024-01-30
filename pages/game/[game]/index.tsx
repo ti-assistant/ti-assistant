@@ -13,6 +13,9 @@ import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { responsivePixels } from "../../../src/util/util";
 import Sidebars from "../../../src/components/Sidebars/Sidebars";
+import { FormattedMessage, useIntl } from "react-intl";
+import LanguageSelectRadialMenu from "../../../src/components/LanguageSelectRadialMenu/LanguageSelectRadialMenu";
+import Cookies from "js-cookie";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -104,7 +107,11 @@ function InnerSelectFactionPage({}) {
                 cursor: "pointer",
               }}
             >
-              Main Screen
+              <FormattedMessage
+                id="yBACfb"
+                description="Text on a button that opens the main screen of the assistant."
+                defaultMessage="Main Screen"
+              />
             </div>
           </Link>
           <Link href={`/game/${gameid}/objectives`}>
@@ -120,7 +127,11 @@ function InnerSelectFactionPage({}) {
                 cursor: "pointer",
               }}
             >
-              Objective View
+              <FormattedMessage
+                id="9m91nk"
+                description="Text on a button that opens the objective view of the assistant."
+                defaultMessage="Objective View"
+              />
             </div>
           </Link>
           {orderedFactions.map((faction) => {
@@ -165,6 +176,7 @@ function Header() {
   const router = useRouter();
   const { game: gameid }: { game?: string } = router.query;
   const state = useContext(StateContext);
+  const intl = useIntl();
 
   const [qrCode, setQrCode] = useState<string | undefined>();
   const [qrCodeSize, setQrCodeSize] = useState(164);
@@ -198,8 +210,6 @@ function Header() {
     );
   }
 
-  const round = state ? `ROUND ${state.round}` : "LOADING...";
-
   return (
     <div
       className="flex"
@@ -214,7 +224,26 @@ function Header() {
         <title>Twilight Imperium Assistant</title>
         <link rel="shortcut icon" href="/images/favicon.ico"></link>
       </Head>
-      <Sidebars left="SELECT FACTION" right={round} />
+      <Sidebars
+        left={intl
+          .formatMessage({
+            id: "c6uq+j",
+            description:
+              "Instruction telling the user to select their faction.",
+            defaultMessage: "Select Faction",
+          })
+          .toUpperCase()}
+        right={intl
+          .formatMessage(
+            {
+              id: "hhm3kX",
+              description: "The current round of the game.",
+              defaultMessage: "Round {value}",
+            },
+            { value: state.round }
+          )
+          .toUpperCase()}
+      />
 
       <Link
         href={`/`}
@@ -230,6 +259,35 @@ function Header() {
         <ResponsiveLogo size={32} />
         Twilight Imperium Assistant
       </Link>
+      <div
+        className="nonMobile"
+        style={{
+          position: "fixed",
+          top: responsivePixels(32),
+          left: responsivePixels(30),
+          zIndex: 2,
+        }}
+      >
+        <LanguageSelectRadialMenu
+          selectedLocale={router.locale ?? "en"}
+          locales={["en"]}
+          invalidLocales={[router.locale ?? "en"]}
+          onSelect={(locale) => {
+            if (!locale) {
+              return;
+            }
+            Cookies.set("NEXT_LOCALE", locale);
+            router.push(
+              { pathname: router.pathname, query: router.query },
+              router.asPath,
+              {
+                locale: locale,
+              }
+            );
+          }}
+          size={28}
+        />
+      </div>
       <Link
         href={`/`}
         className="flexRow hugeFont mobileOnly"
@@ -247,6 +305,35 @@ function Header() {
         Twilight Imperium Assistant
       </Link>
       <div
+        className="mobileOnly"
+        style={{
+          position: "fixed",
+          bottom: responsivePixels(36),
+          right: responsivePixels(36),
+          zIndex: 2,
+        }}
+      >
+        <LanguageSelectRadialMenu
+          selectedLocale={router.locale ?? "en"}
+          locales={["en"]}
+          invalidLocales={[router.locale ?? "en"]}
+          onSelect={(locale) => {
+            if (!locale) {
+              return;
+            }
+            Cookies.set("NEXT_LOCALE", locale);
+            router.push(
+              { pathname: router.pathname, query: router.query },
+              router.asPath,
+              {
+                locale: locale,
+              }
+            );
+          }}
+          size={28}
+        />
+      </div>
+      <div
         className="flexColumn nonMobile"
         style={{
           position: "fixed",
@@ -256,7 +343,14 @@ function Header() {
           justifyContent: "center",
         }}
       >
-        <div>Game ID: {gameid}</div>
+        <div>
+          <FormattedMessage
+            id="FHUFoZ"
+            description="Label for the ID used to identify a specific game."
+            defaultMessage="Game ID"
+          />
+          : {gameid}
+        </div>
         {qrCode ? <img src={qrCode} alt="QR Code for joining game" /> : null}
       </div>
     </div>

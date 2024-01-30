@@ -22,6 +22,36 @@
 
 1. Run `npm run build`.
 
+## Localization
+
+#### Adding a new string
+
+1. Add string using `<FormattedMessage />` or `intl.formatMessage(...)`.
+
+2. Run `npm run extract` to generate `/server/lang/en.json`
+
+3. Add generated IDs from `/server/lang/en.json` to new locations.
+
+4. Copy new sections from `/server/lang/en.json` to other language files and translate string.
+
+5. Run `npm run compile` to generate `/server/compiled-lang/<language>.json` files.
+
+6. Create a PR with the changes.
+
+#### Adding a new language
+
+1. Copy `/server/lang/en.json` to `/server/lang/<language>.json`.
+
+2. Translate strings in new language file.
+
+3. Run `npm run compile` to generate `/server/compiled-lang/<language>.json` files.
+
+4. Update `next.config.js` to include the new language in `i18n.locales`.
+
+5. Update locations where `<LanguageSelectRadialMenu />` is called to include the new locale.
+
+6. Create a PR with the changes.
+
 ## Testing
 
 Coming soon.

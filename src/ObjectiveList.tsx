@@ -10,6 +10,8 @@ import {
   unscoreObjectiveAsync,
 } from "./dynamic/api";
 import ObjectiveRow from "./components/ObjectiveRow/ObjectiveRow";
+import { objectiveTypeString } from "./util/strings";
+import { FormattedMessage, useIntl } from "react-intl";
 
 function sortObjectivesByName(objectives: Objective[]) {
   objectives.sort((a, b) => {
@@ -90,7 +92,13 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
     if (objs.size <= 4) {
       return (
         <div className="flexColumn" style={{ gap: "4px" }}>
-          <button onClick={toggleEditMode}>Pick Objective</button>
+          <button onClick={toggleEditMode}>
+            <FormattedMessage
+              id="6L07nG"
+              description="Text telling the user to reveal an objective."
+              defaultMessage="Reveal Objective"
+            />
+          </button>
           <div style={{ fontSize: "16px", textAlign: "center" }}>
             Secret Objectives will only be revealed to other players when scored
           </div>
@@ -154,6 +162,8 @@ export function ObjectiveList() {
     faction: factionId,
   }: { game?: string; faction?: FactionId } = router.query;
   const objectives = useContext(ObjectiveContext);
+
+  const intl = useIntl();
 
   const [tabShown, setTabShown] = useState("STAGE ONE");
   const [editMode, setEditMode] = useState(false);
@@ -225,7 +235,15 @@ export function ObjectiveList() {
           }
         }
         if (stageOneObjectives.length < maxStageOne) {
-          return <button onClick={toggleEditMode}>Reveal Objective</button>;
+          return (
+            <button onClick={toggleEditMode}>
+              <FormattedMessage
+                id="6L07nG"
+                description="Text telling the user to reveal an objective."
+                defaultMessage="Reveal Objective"
+              />
+            </button>
+          );
         } else if (
           stageOneObjectives.length === 5 &&
           stageTwoObjectives.length !== 6
@@ -239,7 +257,15 @@ export function ObjectiveList() {
         return null;
       case "STAGE TWO":
         if (stageTwoObjectives.length < 5) {
-          return <button onClick={toggleEditMode}>Reveal Objective</button>;
+          return (
+            <button onClick={toggleEditMode}>
+              <FormattedMessage
+                id="6L07nG"
+                description="Text telling the user to reveal an objective."
+                defaultMessage="Reveal Objective"
+              />
+            </button>
+          );
         } else if (
           stageTwoObjectives.length === 5 &&
           stageOneObjectives.length !== 6
@@ -255,7 +281,13 @@ export function ObjectiveList() {
         if (secretObjectives.length < 3) {
           return (
             <div className="flexColumn" style={{ gap: "4px" }}>
-              <button onClick={toggleEditMode}>Reveal Objective</button>
+              <button onClick={toggleEditMode}>
+                <FormattedMessage
+                  id="6L07nG"
+                  description="Text telling the user to reveal an objective."
+                  defaultMessage="Reveal Objective"
+                />
+              </button>
               <div>This will not reveal to other players</div>
             </div>
           );
@@ -268,7 +300,15 @@ export function ObjectiveList() {
         }
         return null;
       case "OTHER":
-        return <button onClick={toggleEditMode}>Select Objective</button>;
+        return (
+          <button onClick={toggleEditMode}>
+            <FormattedMessage
+              id="6L07nG"
+              description="Text telling the user to reveal an objective."
+              defaultMessage="Reveal Objective"
+            />
+          </button>
+        );
     }
   }
 
@@ -296,16 +336,16 @@ export function ObjectiveList() {
         }}
       >
         <Tab selectTab={changeTab} id="STAGE ONE" selectedId={tabShown}>
-          Stage I
+          {objectiveTypeString("STAGE ONE", intl)}
         </Tab>
         <Tab selectTab={changeTab} id="STAGE TWO" selectedId={tabShown}>
-          Stage II
+          {objectiveTypeString("STAGE TWO", intl)}
         </Tab>
         <Tab selectTab={changeTab} id="secret" selectedId={tabShown}>
-          Secrets
+          {objectiveTypeString("SECRET", intl)}
         </Tab>
         <Tab selectTab={changeTab} id="other" selectedId={tabShown}>
-          Other
+          {objectiveTypeString("OTHER", intl)}
         </Tab>
       </div>
       <TabBody id="STAGE ONE" selectedId={tabShown}>

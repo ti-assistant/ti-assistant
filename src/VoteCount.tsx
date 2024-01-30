@@ -32,6 +32,7 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import { responsivePixels } from "./util/util";
+import { useIntl } from "react-intl";
 
 export function getTargets(
   agenda: Agenda | undefined,
@@ -293,6 +294,8 @@ export function VoteCount({ factionId, agenda }: VoteCountProps) {
   const state = useContext(StateContext);
   const strategycards = useContext(StrategyCardContext);
 
+  const intl = useIntl();
+
   const [usingPredictiveIntelligence, setUsingPredictiveIntelligence] =
     useState(true);
 
@@ -354,9 +357,10 @@ export function VoteCount({ factionId, agenda }: VoteCountProps) {
     agenda,
     factions,
     strategycards,
-    planets ?? {},
-    agendas ?? {},
-    objectives ?? {}
+    planets,
+    agendas,
+    objectives,
+    intl
   );
   const factionVotes = getFactionVotes(currentTurn, factionId);
 

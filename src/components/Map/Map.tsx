@@ -17,6 +17,7 @@ import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import styles from "./Map.module.scss";
+import { FormattedMessage } from "react-intl";
 
 interface Cube {
   q: number;
@@ -949,7 +950,13 @@ export default function Map({
       {gameid ? (
         <div className={styles.Legend}>
           <LabeledDiv
-            label="View Details"
+            label={
+              <FormattedMessage
+                id="5rR4S2"
+                description="Label for a section that includes map details."
+                defaultMessage="View Details"
+              />
+            }
             style={{
               width: "fit-content",
               backgroundColor: "#222",
@@ -967,7 +974,11 @@ export default function Map({
                   e.stopPropagation();
                 }}
               >
-                Owners
+                <FormattedMessage
+                  id="FhKQXR"
+                  description="Text on a button that will show planet ownership."
+                  defaultMessage="Owners"
+                />
               </button>
               <button
                 className={showDetails === "TYPES" ? "selected" : ""}
@@ -977,7 +988,11 @@ export default function Map({
                   e.stopPropagation();
                 }}
               >
-                Types
+                <FormattedMessage
+                  id="wDLqxZ"
+                  description="Text on a button that will show planet types."
+                  defaultMessage="Types"
+                />
               </button>
               <button
                 className={showDetails === "ATTACHMENTS" ? "selected" : ""}
@@ -988,7 +1003,11 @@ export default function Map({
                   e.stopPropagation();
                 }}
               >
-                Attachments
+                <FormattedMessage
+                  id="1odgd1"
+                  description="Text on a button that will show planet attachments."
+                  defaultMessage="Attachments"
+                />
               </button>
             </div>
           </LabeledDiv>

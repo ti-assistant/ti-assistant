@@ -20,6 +20,7 @@ import {
   SystemContext,
   TechContext,
 } from "./Context";
+import { IntlShape, useIntl } from "react-intl";
 
 function useStableValue<Type>(value: Type, defaultValue: Type): Type {
   const prevValue = useRef<Type>(defaultValue);
@@ -37,26 +38,35 @@ function useStableValue<Type>(value: Type, defaultValue: Type): Type {
   return value;
 }
 
-let BASE_AGENDAS: Partial<Record<AgendaId, BaseAgenda>> = {};
+let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
+  return {};
+};
 import("../../server/data/agendas").then((module) => {
-  BASE_AGENDAS = module.BASE_AGENDAS;
+  getBaseAgendas = module.getBaseAgendas;
 });
 
-let BASE_ATTACHMENTS: Partial<Record<AttachmentId, BaseAttachment>> = {};
+let getBaseAttachments: DataFunction<AttachmentId, BaseAttachment> = () => {
+  return {};
+};
 import("../../server/data/attachments").then((module) => {
-  BASE_ATTACHMENTS = module.BASE_ATTACHMENTS;
+  getBaseAttachments = module.getBaseAttachments;
 });
 
-let BASE_COMPONENTS: Partial<
-  Record<ComponentId, BaseComponent | BaseTechComponent>
-> = {};
+let getBaseComponents: DataFunction<
+  ComponentId,
+  BaseComponent | BaseTechComponent
+> = () => {
+  return {};
+};
 import("../../server/data/components").then((module) => {
-  BASE_COMPONENTS = module.BASE_COMPONENTS;
+  getBaseComponents = module.getBaseComponents;
 });
 
-let BASE_OBJECTIVES: Partial<Record<ObjectiveId, BaseObjective>> = {};
+let getBaseObjectives: DataFunction<ObjectiveId, BaseObjective> = () => {
+  return {};
+};
 import("../../server/data/objectives").then((module) => {
-  BASE_OBJECTIVES = module.BASE_OBJECTIVES;
+  getBaseObjectives = module.getBaseObjectives;
 });
 
 let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
@@ -64,14 +74,21 @@ import("../../server/data/planets").then((module) => {
   BASE_PLANETS = module.BASE_PLANETS;
 });
 
-let BASE_RELICS: Partial<Record<RelicId, BaseRelic>> = {};
+let getBaseRelics: DataFunction<RelicId, BaseRelic> = () => {
+  return {};
+};
 import("../../server/data/relics").then((module) => {
-  BASE_RELICS = module.BASE_RELICS;
+  getBaseRelics = module.getBaseRelics;
 });
 
-let BASE_STRATEGY_CARDS: Partial<Record<StrategyCardId, BaseStrategyCard>> = {};
+let getBaseStrategyCards: DataFunction<
+  StrategyCardId,
+  BaseStrategyCard
+> = () => {
+  return {};
+};
 import("../../server/data/strategyCards").then((module) => {
-  BASE_STRATEGY_CARDS = module.BASE_STRATEGY_CARDS;
+  getBaseStrategyCards = module.getBaseStrategyCards;
 });
 
 let BASE_SYSTEMS: Partial<Record<SystemId, BaseSystem>> = {};
@@ -79,9 +96,11 @@ import("../../server/data/systems").then((module) => {
   BASE_SYSTEMS = module.BASE_SYSTEMS;
 });
 
-let BASE_TECHS: Partial<Record<TechId, BaseTech>> = {};
+let getBaseTechs: DataFunction<TechId, BaseTech> = () => {
+  return {};
+};
 import("../../server/data/techs").then((module) => {
-  BASE_TECHS = module.BASE_TECHS;
+  getBaseTechs = module.getBaseTechs;
 });
 
 export default function DataProvider({ children }: PropsWithChildren) {
@@ -96,40 +115,50 @@ export default function DataProvider({ children }: PropsWithChildren) {
     }
   );
 
+  const intl = useIntl();
+
+  const baseAgendas = getBaseAgendas(intl);
+  const baseAttachments = getBaseAttachments(intl);
+  const baseComponents = getBaseComponents(intl);
+  const baseObjectives = getBaseObjectives(intl);
+  const baseRelics = getBaseRelics(intl);
+  const baseStrategyCards = getBaseStrategyCards(intl);
+  const baseTechs = getBaseTechs(intl);
+
   let gameData: GameData = {
-    agendas: BASE_AGENDAS,
-    attachments: BASE_ATTACHMENTS,
-    components: BASE_COMPONENTS,
+    agendas: baseAgendas,
+    attachments: baseAttachments,
+    components: baseComponents,
     factions: {},
-    objectives: BASE_OBJECTIVES,
+    objectives: baseObjectives,
     options: BASE_OPTIONS,
     planets: BASE_PLANETS,
-    relics: BASE_RELICS,
+    relics: baseRelics,
     state: {
       phase: "UNKNOWN",
       round: 1,
       speaker: "Vuil'raith Cabal",
     },
-    strategycards: BASE_STRATEGY_CARDS,
+    strategycards: baseStrategyCards,
     systems: BASE_SYSTEMS,
-    techs: BASE_TECHS,
+    techs: baseTechs,
   };
   if (storedGameData) {
-    gameData = buildCompleteGameData(storedGameData);
+    gameData = buildCompleteGameData(storedGameData, intl);
   }
 
   const actionLog = useStableValue(gameData.actionLog ?? [], []);
-  const agendas = useStableValue(gameData.agendas ?? {}, BASE_AGENDAS);
+  const agendas = useStableValue(gameData.agendas ?? {}, baseAgendas);
   const attachments = useStableValue(
     gameData.attachments ?? {},
-    BASE_ATTACHMENTS
+    baseAttachments
   );
-  const components = useStableValue(gameData.components ?? {}, BASE_COMPONENTS);
+  const components = useStableValue(gameData.components ?? {}, baseComponents);
   const factions = useStableValue(gameData.factions, {});
-  const objectives = useStableValue(gameData.objectives ?? {}, BASE_OBJECTIVES);
+  const objectives = useStableValue(gameData.objectives ?? {}, baseObjectives);
   const options = useStableValue(gameData.options, BASE_OPTIONS);
   const planets = useStableValue(gameData.planets ?? {}, BASE_PLANETS);
-  const relics = useStableValue(gameData.relics ?? {}, BASE_RELICS);
+  const relics = useStableValue(gameData.relics ?? {}, baseRelics);
   const state = useStableValue(gameData.state, {
     phase: "UNKNOWN",
     round: 1,
@@ -137,10 +166,10 @@ export default function DataProvider({ children }: PropsWithChildren) {
   });
   const strategycards = useStableValue(
     gameData.strategycards ?? {},
-    BASE_STRATEGY_CARDS
+    baseStrategyCards
   );
   const systems = useStableValue(gameData.systems ?? {}, BASE_SYSTEMS);
-  const techs = useStableValue(gameData.techs ?? {}, BASE_TECHS);
+  const techs = useStableValue(gameData.techs ?? {}, baseTechs);
 
   return (
     <ActionLogContext.Provider value={actionLog}>

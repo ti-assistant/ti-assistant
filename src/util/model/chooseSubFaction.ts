@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildPlanets } from "../../data/GameData";
 
 export class ChooseSubFactionHandler implements Handler {
@@ -11,7 +12,9 @@ export class ChooseSubFactionHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const faction = buildFactions(this.gameData)[this.data.event.faction];
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const faction = buildFactions(this.gameData, intl)[this.data.event.faction];
     if (!faction) {
       return {};
     }

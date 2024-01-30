@@ -12,6 +12,7 @@ import {
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import { responsivePixels } from "../util/util";
+import { FormattedMessage } from "react-intl";
 
 const FactionPanel = dynamic(
   import("../components/FactionPanel").then((mod) => mod.FactionPanel),
@@ -49,7 +50,13 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
   const strategyCards = useContext(StrategyCardContext);
 
   let sortFunction = sortByOrder;
-  let title = "Speaker Order";
+  let title = (
+    <FormattedMessage
+      id="L4UH+0"
+      description="An ordering of factions based on the speaker."
+      defaultMessage="Speaker Order"
+    />
+  );
   switch (order) {
     case "VICTORY_POINTS":
       sortFunction = (a, b) => {
@@ -100,7 +107,13 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
         }
         return -1;
       };
-      title = "Final Score";
+      title = (
+        <FormattedMessage
+          id="KiioBO"
+          description="An ordering of factions based on end game scoring."
+          defaultMessage="Final Score"
+        />
+      );
       break;
   }
 

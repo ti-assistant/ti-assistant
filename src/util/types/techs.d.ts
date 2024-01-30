@@ -16,6 +16,7 @@ interface BaseNormalTech {
   omega?: {
     description: string;
     expansion: Expansion;
+    name: string;
   };
   prereqs: TechType[];
   type: "RED" | "GREEN" | "BLUE" | "YELLOW";
@@ -31,6 +32,7 @@ interface BaseUpgradeTech {
   omega?: {
     description: string;
     expansion: Expansion;
+    name: string;
   };
   prereqs: TechType[];
   replaces?: TechId;

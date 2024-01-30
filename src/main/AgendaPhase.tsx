@@ -1,24 +1,23 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../AgendaRow";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { InfoRow } from "../InfoRow";
 import { LockedButtons } from "../LockedButton";
 import { SelectableRow } from "../SelectableRow";
-import { Selector } from "../Selector";
 import { AgendaTimer } from "../Timer";
-import { VoteCount, getTargets } from "../VoteCount";
 import FactionCircle from "../components/FactionCircle/FactionCircle";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import VoteBlock, { getTargets } from "../components/VoteBlock/VoteBlock";
 import {
   ActionLogContext,
   AgendaContext,
   FactionContext,
   ObjectiveContext,
-  OptionContext,
   PlanetContext,
   RelicContext,
   StateContext,
@@ -33,7 +32,6 @@ import {
   loseRelicAsync,
   playActionCardAsync,
   playPromissoryNoteAsync,
-  playRiderAsync,
   resolveAgendaAsync,
   revealAgendaAsync,
   revealObjectiveAsync,
@@ -45,11 +43,9 @@ import {
   unclaimPlanetAsync,
   unplayActionCardAsync,
   unplayPromissoryNoteAsync,
-  unplayRiderAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
-import styles from "./AgendaPhase.module.scss";
 import {
   getActionCardTargets,
   getActiveAgenda,
@@ -58,7 +54,6 @@ import {
   getGainedRelic,
   getNewOwner,
   getObjectiveScorers,
-  getPlayedRiders,
   getPromissoryTargets,
   getRevealedObjectives,
   getScoredObjectives,
@@ -69,22 +64,14 @@ import {
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { hasScoredObjective } from "../util/api/util";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
+import {
+  objectiveTypeString,
+  outcomeString,
+  phaseString,
+} from "../util/strings";
 import { responsivePixels } from "../util/util";
-import VoteBlock from "../components/VoteBlock/VoteBlock";
-
-const RIDERS = [
-  "Galactic Threat",
-  "Leadership Rider",
-  "Diplomacy Rider",
-  "Politics Rider",
-  "Construction Rider",
-  "Trade Rider",
-  "Warfare Rider",
-  "Technology Rider",
-  "Imperial Rider",
-  "Sanction",
-  "Keleres Rider",
-];
+import styles from "./AgendaPhase.module.scss";
+import { Selector } from "../components/Selector/Selector";
 
 export function computeVotes(
   agenda: Agenda | undefined,
@@ -197,6 +184,8 @@ function AgendaDetails() {
   const relics = useContext(RelicContext);
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
+  const intl = useIntl();
+
   function addRelic(relicId: RelicId, factionId: FactionId) {
     if (!gameid) {
       return;
@@ -290,7 +279,12 @@ function AgendaDetails() {
             paddingLeft: responsivePixels(12),
           }}
         >
-          Drive the Debate:{" "}
+          <FormattedMessage
+            id="Objectives.Drive the Debate.Title"
+            description="Title of Objective: Drive the Debate"
+            defaultMessage="Drive the Debate"
+          />
+          :{" "}
           <FactionCircle
             blur
             borderColor={getFactionColor((factions ?? {})[driveTheDebate])}
@@ -357,10 +351,18 @@ function AgendaDetails() {
       );
       agendaSelection = (
         <Selector
-          hoverMenuLabel={`Reveal Stage ${
-            type === "STAGE ONE" ? "I" : "II"
-          } Objective`}
-          options={availableObjectives.map((objective) => objective.id)}
+          hoverMenuLabel={
+            <FormattedMessage
+              id="lDBTCO"
+              description="Instruction telling the speaker to reveal objectives."
+              defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+              values={{
+                count: 1,
+                type: objectiveTypeString(type, intl),
+              }}
+            />
+          }
+          options={availableObjectives}
           renderItem={(objectiveId) => {
             const objective = (objectives ?? {})[objectiveId];
             if (!objective || !gameid) {
@@ -368,9 +370,17 @@ function AgendaDetails() {
             }
             return (
               <LabeledDiv
-                label={`Revealed Stage ${
-                  type === "STAGE ONE" ? "I" : "II"
-                } Objective`}
+                label={
+                  <FormattedMessage
+                    id="IfyaDZ"
+                    description="A label for revealed objectives."
+                    defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
+                    values={{
+                      count: 1,
+                      type: type,
+                    }}
+                  />
+                }
               >
                 <ObjectiveRow
                   objective={objective}
@@ -404,19 +414,31 @@ function AgendaDetails() {
           computeVPs(factions ?? {}, faction.id, objectives ?? {})
         );
       }, Number.MAX_SAFE_INTEGER);
-      const availableFactions = Object.values(factions ?? {})
-        .filter((faction) => {
+      const availableFactions = Object.values(factions ?? {}).filter(
+        (faction) => {
           return (
             computeVPs(factions ?? {}, faction.id, objectives ?? {}) === minVPs
           );
-        })
-        .map((faction) => faction.id);
+        }
+      );
       const selectedFaction = getNewOwner(currentTurn, selectedOutcome);
       agendaSelection = (
         <Selector
-          hoverMenuLabel={`Give Planet to Faction`}
+          hoverMenuLabel={
+            <FormattedMessage
+              id="YoQKZ7"
+              description="Text on a hover menu for giving a planet to another faction."
+              defaultMessage="Give Planet to Faction"
+            />
+          }
           options={availableFactions}
-          selectedLabel="Faction Gaining Control of Planet"
+          selectedLabel={
+            <FormattedMessage
+              id="HI2ztT"
+              description="Label saying which faction is gaining control of a planet."
+              defaultMessage="Faction Gaining Control of Planet"
+            />
+          }
           selectedItem={selectedFaction}
           toggleItem={(factionId, add) => {
             if (!gameid) {
@@ -437,12 +459,18 @@ function AgendaDetails() {
       break;
     }
     case "Minister of Antiques": {
-      const unownedRelics = Object.values(relics ?? {})
-        .filter((relic) => !relic.owner)
-        .map((relic) => relic.id);
+      const unownedRelics = Object.values(relics ?? {}).filter(
+        (relic) => !relic.owner
+      );
       agendaSelection = (
         <Selector
-          hoverMenuLabel="Gain Relic"
+          hoverMenuLabel={
+            <FormattedMessage
+              id="Components.Gain Relic.Title"
+              description="Title of Component: Gain Relic"
+              defaultMessage="Gain Relic"
+            />
+          }
           options={unownedRelics}
           renderItem={(itemId) => {
             const relic = (relics ?? {})[itemId];
@@ -450,7 +478,15 @@ function AgendaDetails() {
               return null;
             }
             return (
-              <LabeledDiv label="Gained Relic">
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="cqWqzv"
+                    description="Label for section listing the relic gained."
+                    defaultMessage="Gained Relic"
+                  />
+                }
+              >
                 <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
                   <SelectableRow
                     itemId={relic.id}
@@ -502,10 +538,11 @@ function AgendaSteps() {
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
   const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
+
+  const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -602,11 +639,14 @@ function AgendaSteps() {
   });
 
   const flexDirection = "flexColumn";
-  const label =
-    // !!subState.miscount
-    //   ? "Re-voting on Miscounted Agenda"
-    //   :
-    agendaNum === 1 ? "First Agenda" : "Second Agenda";
+  const label = (
+    <FormattedMessage
+      id="OpsE1E"
+      defaultMessage="{num, select, 1 {First} 2 {Second} other {First}} Agenda"
+      description="Label specifying which agenda this is."
+      values={{ num: agendaNum }}
+    />
+  );
 
   const localAgenda = currentAgenda
     ? structuredClone(currentAgenda)
@@ -618,18 +658,13 @@ function AgendaSteps() {
 
   const allTargets = getTargets(
     localAgenda,
-    factions ?? {},
+    factions,
     strategyCards,
-    planets ?? {},
-    agendas ?? {},
-    objectives ?? {}
+    planets,
+    agendas,
+    objectives,
+    intl
   );
-  const numFactions = votingOrder.length;
-
-  const checksAndBalances = (agendas ?? {})["Checks and Balances"];
-
-  const committeeFormation = (agendas ?? {})["Committee Formation"];
-
   let items = (selectedTargets ?? []).length;
   if (items === 0) {
     items = allTargets.length;
@@ -649,9 +684,19 @@ function AgendaSteps() {
 
   const speaker = (factions ?? {})[state?.speaker ?? ""];
 
-  const vetoText = !(factions ?? {})["Xxcha Kingdom"]
-    ? "Veto"
-    : "Veto or Quash or Political Favor";
+  const vetoText = !(factions ?? {})["Xxcha Kingdom"] ? (
+    <FormattedMessage
+      id="Components.Veto.Title"
+      description="Title of Component: Veto"
+      defaultMessage="Veto"
+    />
+  ) : (
+    <FormattedMessage
+      id="KzTGw5"
+      description="Text on a button for replacing the current agenda."
+      defaultMessage="Veto or Quash or Political Favor"
+    />
+  );
 
   function haveVotesBeenCast() {
     const castVotesActions = currentTurn.filter(
@@ -711,7 +756,12 @@ function AgendaSteps() {
             width: "100%",
           }}
         >
-          Agenda Phase Complete
+          <FormattedMessage
+            id="Gns4AS"
+            description="Text showing that the current phase is complete"
+            defaultMessage="{phase} Phase Complete"
+            values={{ phase: phaseString("AGENDA", intl) }}
+          />
         </div>
       ) : (
         <div
@@ -725,7 +775,14 @@ function AgendaSteps() {
         >
           {(!currentAgenda && agendaNum === 1) || ancientBurialSites ? (
             <ClientOnlyHoverMenu
-              label="Start of Agenda Phase Actions"
+              label={
+                <FormattedMessage
+                  id="4PYolM"
+                  description="Text showing that something will occur at the start of a specific phase."
+                  defaultMessage="Start of {phase} Phase"
+                  values={{ phase: phaseString("AGENDA", intl) }}
+                />
+              }
               style={{ width: "100%" }}
             >
               <div
@@ -738,11 +795,21 @@ function AgendaSteps() {
                 }}
               >
                 <Selector
-                  hoverMenuLabel="Ancient Burial Sites"
-                  selectedLabel="Cultural Planets Exhausted"
-                  options={Object.values(factions ?? {}).map(
-                    (faction) => faction.id
-                  )}
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="Components.Ancient Burial Sites.Title"
+                      description="Title of Component: Ancient Burial Sites"
+                      defaultMessage="Ancient Burial Sites"
+                    />
+                  }
+                  selectedLabel={
+                    <FormattedMessage
+                      id="AO8lj8"
+                      description="Label for section explaining which player has had their cultural planets exhausted."
+                      defaultMessage="Cultural Planets Exhausted"
+                    />
+                  }
+                  options={Object.values(factions)}
                   toggleItem={(factionId, add) => {
                     if (!gameid) {
                       return;
@@ -776,7 +843,15 @@ function AgendaSteps() {
                   label={getFactionName(speaker)}
                   color={getFactionColor(speaker)}
                 >
-                  <ClientOnlyHoverMenu label="Reveal and Read one Agenda">
+                  <ClientOnlyHoverMenu
+                    label={
+                      <FormattedMessage
+                        id="ZAYAbS"
+                        description="Instruction telling the speaker to reveal an agenda."
+                        defaultMessage="Reveal and Read one Agenda"
+                      />
+                    }
+                  >
                     <div
                       className="flexRow"
                       style={{
@@ -816,9 +891,24 @@ function AgendaSteps() {
                 />
                 {currentAgenda.id === "Covert Legislation" ? (
                   <Selector
-                    hoverMenuLabel="Reveal Eligible Outcomes"
-                    selectedLabel="Eligible Outcomes"
-                    options={Array.from(outcomes)}
+                    hoverMenuLabel={
+                      <FormattedMessage
+                        id="cKaLW8"
+                        description="Text on a hover menu for revealing eligible outcomes."
+                        defaultMessage="Reveal Eligible Outcomes"
+                      />
+                    }
+                    selectedLabel={
+                      <FormattedMessage
+                        id="+BcBcX"
+                        description="Label for a section showing the eligible outcomes."
+                        defaultMessage="Eligible Outcomes"
+                      />
+                    }
+                    options={Array.from(outcomes).map((outcome) => ({
+                      id: outcome,
+                      name: outcomeString(outcome, intl),
+                    }))}
                     selectedItem={eligibleOutcomes}
                     toggleItem={(outcome, add) => {
                       if (add) {
@@ -837,7 +927,15 @@ function AgendaSteps() {
           !getSelectedOutcome(selectedTargets, currentTurn) ? (
             <>
               <div className="flexRow"></div>
-              <ClientOnlyHoverMenu label="When an Agenda is Revealed">
+              <ClientOnlyHoverMenu
+                label={
+                  <FormattedMessage
+                    id="0MawcE"
+                    description="Label on hover menu for actions that happen when an agenda is revealed."
+                    defaultMessage="When an Agenda is Revealed"
+                  />
+                }
+              >
                 <div
                   className="flexColumn"
                   style={{
@@ -851,7 +949,15 @@ function AgendaSteps() {
                   >
                     {vetoText}
                   </button>
-                  <LabeledDiv label="Political Secret">
+                  <LabeledDiv
+                    label={
+                      <FormattedMessage
+                        id="Promissories.Political Secret.Title"
+                        description="Title of Promissory: Political Secret"
+                        defaultMessage="Political Secret"
+                      />
+                    }
+                  >
                     <div className="flexRow" style={{ width: "100%" }}>
                       {votingOrder.map((faction) => {
                         const politicalSecret = politicalSecrets.includes(
@@ -940,7 +1046,13 @@ function AgendaSteps() {
           !haveVotesBeenCast() &&
           !getSelectedOutcome(selectedTargets, currentTurn) ? (
             <ClientOnlyHoverMenu
-              label="After an Agenda is Revealed"
+              label={
+                <FormattedMessage
+                  id="++U8Ff"
+                  description="Label on hover menu for actions that happen after an agenda is revealed."
+                  defaultMessage="After an Agenda is Revealed"
+                />
+              }
               style={{ minWidth: "100%" }}
             >
               <div
@@ -964,14 +1076,28 @@ function AgendaSteps() {
                     }
                   }}
                 >
-                  Hack Election
+                  <FormattedMessage
+                    id="Components.Hack Election.Title"
+                    description="Title of Component: Hack Election"
+                    defaultMessage="Hack Election"
+                  />
                 </button>
                 <Selector
-                  hoverMenuLabel="Assassinate Representative"
-                  selectedLabel="Assassinated Representative"
-                  options={Object.values(factions ?? {}).map(
-                    (faction) => faction.id
-                  )}
+                  hoverMenuLabel={
+                    <FormattedMessage
+                      id="Components.Assassinate Representative.Title"
+                      description="Title of Component: Assassinate Representative"
+                      defaultMessage="Assassinate Representative"
+                    />
+                  }
+                  selectedLabel={
+                    <FormattedMessage
+                      id="c9hO6S"
+                      description="Label for section describing the faction that has has Assassinate Representative played on them."
+                      defaultMessage="Assassinated Representative"
+                    />
+                  }
+                  options={Object.values(factions)}
                   selectedItem={assassinatedRep}
                   toggleItem={(factionId, add) => {
                     if (!gameid) {
@@ -1007,11 +1133,19 @@ function AgendaSteps() {
                     startVotingAsync(gameid);
                   }}
                 >
-                  Start Voting
+                  <FormattedMessage
+                    id="gQ0twG"
+                    description="Text on a button that will start the voting part of Agenda Phase."
+                    defaultMessage="Start Voting"
+                  />
                 </button>
               </div>
             ) : (
-              <>Cast votes (or abstain)</>
+              <FormattedMessage
+                id="m5acGq"
+                description="Text label telling players to cast votes or abstain."
+                defaultMessage="Cast votes (or abstain)"
+              />
             )
           ) : null}
           {/* {currentAgenda ? <DistinguishedCouncilor /> : null} */}
@@ -1042,8 +1176,14 @@ function AgendaSteps() {
               {getSelectedOutcome(selectedTargets, currentTurn) ? (
                 currentAgenda && currentAgenda.id === "Covert Legislation" ? (
                   <Selector
-                    hoverMenuLabel="Covert Agenda"
-                    options={possibleSubAgendas.map((agenda) => agenda.id)}
+                    hoverMenuLabel={
+                      <FormattedMessage
+                        id="Agendas.Covert Legislation.Title"
+                        description="Title of Agenda Card: Covert Legislation"
+                        defaultMessage="Covert Legislation"
+                      />
+                    }
+                    options={possibleSubAgendas}
                     selectedItem={subAgenda?.id}
                     renderItem={(agendaId) => {
                       const agenda = (agendas ?? {})[agendaId];
@@ -1051,7 +1191,15 @@ function AgendaSteps() {
                         return null;
                       }
                       return (
-                        <LabeledDiv label="Covert Agenda">
+                        <LabeledDiv
+                          label={
+                            <FormattedMessage
+                              id="Agendas.Covert Legislation.Title"
+                              description="Title of Agenda Card: Covert Legislation"
+                              defaultMessage="Covert Legislation"
+                            />
+                          }
+                        >
                           <AgendaRow
                             agenda={agenda}
                             removeAgenda={() => selectSubAgendaLocal(null)}
@@ -1370,6 +1518,8 @@ export default function AgendaPhase() {
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
 
+  const intl = useIntl();
+
   if (!agendas || !factions) {
     return null;
   }
@@ -1409,11 +1559,12 @@ export default function AgendaPhase() {
 
   const allTargets = getTargets(
     localAgenda,
-    factions ?? {},
+    factions,
     strategyCards,
-    planets ?? {},
-    agendas ?? {},
-    objectives ?? {}
+    planets,
+    agendas,
+    objectives,
+    intl
   );
 
   function selectSpeakerTieBreak(tieBreak: string | null) {
@@ -1442,35 +1593,11 @@ export default function AgendaPhase() {
     return electionHacked ? b.order - a.order : a.order - b.order;
   });
 
-  const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
-    if (a.name < b.name) {
-      return -1;
-    }
-    return 1;
-  });
   const outcomes = new Set<OutcomeType>();
   Object.values(agendas ?? {}).forEach((agenda) => {
     if (agenda.target || agenda.elect === "???") return;
     outcomes.add(agenda.elect);
   });
-
-  let width = 1400;
-  if (orderedAgendas.length < 35) {
-    width = 920;
-  }
-  if (orderedAgendas.length < 18) {
-    width = 460;
-  }
-
-  const flexDirection =
-    currentAgenda && currentAgenda.elect === "For/Against"
-      ? "flexRow"
-      : "flexColumn";
-  const label =
-    // !!subState.miscount
-    //   ? "Re-voting on Miscounted Agenda"
-    //   :
-    agendaNum === 1 ? "First Agenda" : "Second Agenda";
 
   const numFactions = votingOrder.length;
 
@@ -1525,7 +1652,12 @@ export default function AgendaPhase() {
                 marginTop: responsivePixels(120),
               }}
             >
-              Agenda Phase Complete
+              <FormattedMessage
+                id="Gns4AS"
+                description="Text showing that the current phase is complete"
+                defaultMessage="{phase} Phase Complete"
+                values={{ phase: phaseString("AGENDA", intl) }}
+              />
             </div>
             <DictatePolicy />
             {checksAndBalances &&
@@ -1537,7 +1669,12 @@ export default function AgendaPhase() {
                   fontSize: responsivePixels(28),
                 }}
               >
-                Ready 3 planets, then
+                <FormattedMessage
+                  id="urcttb"
+                  defaultMessage="Ready {num, select, 3 {3} other {all}} planets, then"
+                  description="Text explaining how many planets to ready."
+                  values={{ num: 3 }}
+                />
               </div>
             ) : (
               <div
@@ -1545,7 +1682,12 @@ export default function AgendaPhase() {
                   fontSize: responsivePixels(28),
                 }}
               >
-                Ready all planets, then
+                <FormattedMessage
+                  id="urcttb"
+                  defaultMessage="Ready {num, select, 3 {3} other {all}} planets, then"
+                  description="Text explaining how many planets to ready."
+                  values={{ num: 1 }}
+                />
               </div>
             )}
             <button
@@ -1555,7 +1697,11 @@ export default function AgendaPhase() {
               }}
               onClick={() => nextPhase()}
             >
-              Start Next Round
+              {intl.formatMessage({
+                id: "5WXn8l",
+                defaultMessage: "Start Next Round",
+                description: "Text on a button that will start the next round.",
+              })}
             </button>
           </div>
         ) : (
@@ -1625,7 +1771,15 @@ export default function AgendaPhase() {
                     color={getFactionColor(speaker)}
                     style={{ width: "auto", gridColumn: "span 4" }}
                   >
-                    <ClientOnlyHoverMenu label="Choose outcome if tied">
+                    <ClientOnlyHoverMenu
+                      label={
+                        <FormattedMessage
+                          id="Kzzn9t"
+                          description="Text on a hover menu for the speaker choosing the outcome."
+                          defaultMessage="Choose outcome if tied"
+                        />
+                      }
+                    >
                       <div
                         className="flexRow"
                         style={{
@@ -1654,19 +1808,21 @@ export default function AgendaPhase() {
                               );
                             })
                           : allTargets.map((target) => {
-                              if (target === "Abstain") {
+                              if (target.id === "Abstain") {
                                 return null;
                               }
                               return (
                                 <button
-                                  key={target}
+                                  key={target.id}
                                   style={{
                                     fontSize: responsivePixels(14),
                                     writingMode: "horizontal-tb",
                                   }}
-                                  onClick={() => selectSpeakerTieBreak(target)}
+                                  onClick={() =>
+                                    selectSpeakerTieBreak(target.id)
+                                  }
                                 >
-                                  {target}
+                                  {target.name}
                                 </button>
                               );
                             })}
@@ -1697,7 +1853,12 @@ export default function AgendaPhase() {
               }}
               buttons={[
                 {
-                  text: "Start Next Round",
+                  text: intl.formatMessage({
+                    id: "5WXn8l",
+                    defaultMessage: "Start Next Round",
+                    description:
+                      "Text on a button that will start the next round.",
+                  }),
                   style: {
                     fontSize: responsivePixels(24),
                   },

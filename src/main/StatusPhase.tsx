@@ -8,7 +8,6 @@ import React, {
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LockedButtons } from "../LockedButton";
 import { NumberedItem } from "../NumberedItem";
-import { Selector } from "../Selector";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../components/LabeledLine/LabeledLine";
@@ -40,6 +39,9 @@ import { getInitiativeForFaction } from "../util/helpers";
 import { responsivePixels } from "../util/util";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import styles from "./StatusPhase.module.scss";
+import { FormattedMessage, useIntl } from "react-intl";
+import { objectiveTypeString, phaseString } from "../util/strings";
+import { Selector } from "../components/Selector/Selector";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -102,7 +104,15 @@ function CommandTokenGains() {
   });
 
   return (
-    <LabeledDiv label="Gain Command Tokens and Redistribute">
+    <LabeledDiv
+      label={
+        <FormattedMessage
+          id="8OswCT"
+          description="Text telling the players to gain command tokens and redistribute."
+          defaultMessage="Gain Command Tokens and Redistribute"
+        />
+      }
+    >
       <div
         className="flexRow"
         style={{
@@ -197,7 +207,15 @@ function ActionCardDraws() {
   });
 
   return (
-    <LabeledDiv label="Draw Action Cards">
+    <LabeledDiv
+      label={
+        <FormattedMessage
+          id="xtgxwA"
+          description="Instruction telling players to draw action cards."
+          defaultMessage="Draw Action Cards"
+        />
+      }
+    >
       <div
         className="flexRow"
         style={{
@@ -362,7 +380,16 @@ export function MiddleColumn() {
   let innerContent = (
     <div className="flexColumn" style={{ width: "100%" }}>
       {!revealedObjective ? (
-        <LabeledDiv label="Score Objectives" noBlur={true}>
+        <LabeledDiv
+          label={
+            <FormattedMessage
+              id="WHJC8f"
+              description="Text telling the players to score objectives."
+              defaultMessage="Score Objectives"
+            />
+          }
+          noBlur={true}
+        >
           <div className={styles.ScoreObjectivesSection}>
             {filteredStrategyCards.map((card) => {
               const canScoreObjectives = Object.values(planets ?? {}).reduce(
@@ -385,36 +412,6 @@ export function MiddleColumn() {
                 },
                 true
               );
-              const availableObjectives = Object.values(
-                objectives ?? {}
-              ).filter((objective) => {
-                if (!card.faction) {
-                  return null;
-                }
-                return (
-                  objective.selected &&
-                  (!objective.phase || objective.phase === "STATUS") &&
-                  (objective.type === "STAGE ONE" ||
-                    objective.type === "STAGE TWO") &&
-                  !(objective.scorers ?? []).includes(card.faction)
-                );
-              });
-              const secrets = Object.values(objectives ?? {}).filter(
-                (objective) => {
-                  if (!card.faction) {
-                    return null;
-                  }
-                  return (
-                    objective.type === "SECRET" &&
-                    (objective.scorers ?? []).length === 0 &&
-                    objective.phase === "STATUS"
-                  );
-                }
-              );
-              if (!factions || !card.faction) {
-                return null;
-              }
-              const faction = factions[card.faction];
               const scoredObjectives = currentTurn
                 .filter(
                   (logEntry) =>
@@ -446,6 +443,36 @@ export function MiddleColumn() {
                 }
                 return objectiveObj.type === "SECRET";
               });
+              const availableObjectives = Object.values(objectives).filter(
+                (objective) => {
+                  if (!card.faction) {
+                    return null;
+                  }
+                  return (
+                    objective.selected &&
+                    (!objective.phase || objective.phase === "STATUS") &&
+                    (objective.type === "STAGE ONE" ||
+                      objective.type === "STAGE TWO") &&
+                    (!(objective.scorers ?? []).includes(card.faction) ||
+                      scoredPublics.includes(objective.id))
+                  );
+                }
+              );
+              const secrets = Object.values(objectives).filter((objective) => {
+                if (!card.faction) {
+                  return null;
+                }
+                return (
+                  objective.type === "SECRET" &&
+                  ((objective.scorers ?? []).length === 0 ||
+                    scoredSecrets.includes(objective.id)) &&
+                  objective.phase === "STATUS"
+                );
+              });
+              if (!factions || !card.faction) {
+                return null;
+              }
+              const faction = factions[card.faction];
               return (
                 <div
                   key={card.id}
@@ -460,11 +487,19 @@ export function MiddleColumn() {
                   </div>
                   {!canScoreObjectives ? (
                     <div className="smallFont" style={{ textAlign: "center" }}>
-                      Cannot score public objectives
+                      <FormattedMessage
+                        id="CoNZle"
+                        description="Message telling a player that they cannot score public objectives."
+                        defaultMessage="Cannot score Public Objectives"
+                      />
                     </div>
                   ) : !scoredPublics[0] && availableObjectives.length === 0 ? (
                     <div className="smallFont" style={{ textAlign: "center" }}>
-                      No unscored Public Objectives
+                      <FormattedMessage
+                        id="HQ3wv9"
+                        description="Message telling a player that they have scored all objectives."
+                        defaultMessage="No unscored Public Objectives"
+                      />
                     </div>
                   ) : (
                     <div
@@ -477,9 +512,15 @@ export function MiddleColumn() {
                     >
                       <div style={{ width: "fit-content" }}>
                         <Selector
-                          options={availableObjectives.map((obj) => obj.id)}
+                          options={availableObjectives}
                           selectedItem={scoredPublics[0]}
-                          hoverMenuLabel="Public"
+                          hoverMenuLabel={
+                            <FormattedMessage
+                              id="6EVvXu"
+                              description="Label for selecting a public objective."
+                              defaultMessage="Public"
+                            />
+                          }
                           toggleItem={(objectiveId, add) => {
                             if (!card.faction) {
                               return;
@@ -528,9 +569,15 @@ export function MiddleColumn() {
                   >
                     <div style={{ width: "fit-content" }}>
                       <Selector
-                        options={secrets.map((obj) => obj.id)}
+                        options={secrets}
                         selectedItem={scoredSecrets[0]}
-                        hoverMenuLabel="Secret"
+                        hoverMenuLabel={
+                          <FormattedMessage
+                            id="ggO0Am"
+                            description="Label for selecting a secret objective."
+                            defaultMessage="Secret"
+                          />
+                        }
                         itemsPerColumn={10}
                         toggleItem={(objectiveId, add) => {
                           if (!card.faction) {
@@ -594,6 +641,8 @@ export default function StatusPhase() {
   const relics = useContext(RelicContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
+
+  const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -796,12 +845,24 @@ export default function StatusPhase() {
   const nextPhaseButtons = [];
   if (!state?.agendaUnlocked) {
     nextPhaseButtons.push({
-      text: "Start Next Round",
+      text: intl.formatMessage({
+        id: "5WXn8l",
+        defaultMessage: "Start Next Round",
+        description: "Text on a button that will start the next round.",
+      }),
       onClick: () => nextPhase(true),
     });
   }
   nextPhaseButtons.push({
-    text: "Advance to Agenda Phase",
+    text: intl.formatMessage(
+      {
+        id: "8/h2ME",
+        defaultMessage: "Advance to {phase} Phase",
+        description:
+          "Text on a button that will advance the game to a specific phase.",
+      },
+      { phase: phaseString("AGENDA", intl) }
+    ),
     onClick: () => nextPhase(false),
   });
 
@@ -887,7 +948,11 @@ export default function StatusPhase() {
           </NumberedItem>
         )}
         <NumberedItem>
-          Score Objectives
+          <FormattedMessage
+            id="WHJC8f"
+            description="Text telling the players to score objectives."
+            defaultMessage="Score Objectives"
+          />
           {!revealedObjective ? (
             <div className={styles.EmbeddedObjectives}>
               <MiddleColumn />
@@ -898,7 +963,20 @@ export default function StatusPhase() {
           <div className="largeFont">
             {revealedObjectiveObj ? (
               <LabeledDiv
-                label={`Revealed Stage ${round < 4 ? "I" : "II"} Objective`}
+                label={
+                  <FormattedMessage
+                    id="IfyaDZ"
+                    description="A label for revealed objectives."
+                    defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
+                    values={{
+                      count: 1,
+                      type:
+                        round > 3
+                          ? objectiveTypeString("STAGE TWO", intl)
+                          : objectiveTypeString("STAGE ONE", intl),
+                    }}
+                  />
+                }
               >
                 <ObjectiveRow
                   objective={revealedObjectiveObj}
@@ -914,18 +992,29 @@ export default function StatusPhase() {
               >
                 <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
                   <Selector
-                    hoverMenuLabel={`Reveal one Stage ${
-                      round > 3 ? "II" : "I"
-                    } objective`}
+                    hoverMenuLabel={
+                      <FormattedMessage
+                        id="lDBTCO"
+                        description="Instruction telling the speaker to reveal objectives."
+                        defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                        values={{
+                          count: 1,
+                          type:
+                            round > 3
+                              ? objectiveTypeString("STAGE TWO", intl)
+                              : objectiveTypeString("STAGE ONE", intl),
+                        }}
+                      />
+                    }
                     selectedItem={undefined}
-                    options={Object.values(availableObjectives)
-                      .filter((objective) => {
+                    options={Object.values(availableObjectives).filter(
+                      (objective) => {
                         return (
                           objective.type ===
                           (round > 3 ? "STAGE TWO" : "STAGE ONE")
                         );
-                      })
-                      .map((obj) => obj.id)}
+                      }
+                    )}
                     toggleItem={(objectiveId, add) => {
                       if (add) {
                         addObj(objectiveId);
@@ -936,29 +1025,61 @@ export default function StatusPhase() {
                   />
                 </div>
               </LabeledDiv>
-            )}{" "}
+            )}
           </div>
         </NumberedItem>
         <NumberedItem>
-          Draw Action Cards
+          <FormattedMessage
+            id="xtgxwA"
+            description="Instruction telling players to draw action cards."
+            defaultMessage="Draw Action Cards"
+          />
           {revealedObjective ? (
             <div className={styles.EmbeddedObjectives}>
               <ActionCardDraws />
             </div>
           ) : null}
         </NumberedItem>
-        <NumberedItem>Remove Command Tokens</NumberedItem>
         <NumberedItem>
-          Gain and Redistribute Tokens
+          <FormattedMessage
+            id="Jdx9F+"
+            description="Instruction telling players to remove command tokens."
+            defaultMessage="Remove Command Tokens"
+          />
+        </NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="YotjeE"
+            description="Instruction telling players to gain and redistribute Tokens."
+            defaultMessage="Gain and Redistribute Tokens"
+          />
           {revealedObjective ? (
             <div className={styles.EmbeddedObjectives}>
               <CommandTokenGains />
             </div>
           ) : null}
         </NumberedItem>
-        <NumberedItem>Ready Cards</NumberedItem>
-        <NumberedItem>Repair Units</NumberedItem>
-        <NumberedItem>Return Strategy Cards</NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="OVn1wE"
+            description="Instruction telling players to ready cards."
+            defaultMessage="Ready Cards"
+          />
+        </NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="xhMq82"
+            description="Instruction telling players to repair units."
+            defaultMessage="Repair Units"
+          />
+        </NumberedItem>
+        <NumberedItem>
+          <FormattedMessage
+            id="0NYmNN"
+            description="Instruction telling players to return strategy cards."
+            defaultMessage="Return Strategy Cards"
+          />
+        </NumberedItem>
         {!hasEndOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
             <ClientOnlyHoverMenu label="End of Status Phase Abilities">

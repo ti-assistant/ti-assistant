@@ -7,6 +7,7 @@ import { setGlobalPauseAsync } from "../../dynamic/api";
 import { useInterval } from "../../util/util";
 import Modal from "../Modal/Modal";
 import styles from "./Updater.module.scss";
+import { FormattedMessage } from "react-intl";
 
 const UPDATE_FREQUENCY = 2500;
 
@@ -70,9 +71,23 @@ export default function Updater({}) {
       closeMenu={restartUpdates}
       level={2}
       visible={!shouldUpdate}
-      title={<div className={styles.pausedTitle}>Updates Paused</div>}
+      title={
+        <div className={styles.pausedTitle}>
+          <FormattedMessage
+            id="g92Jbl"
+            description="Text telling the user that updates are paused."
+            defaultMessage="Updates Paused"
+          />
+        </div>
+      }
     >
-      <div className={`flexRow ${styles.pausedBody}`}>Close to continue</div>
+      <div className={`flexRow ${styles.pausedBody}`}>
+        <FormattedMessage
+          id="uEqy1T"
+          description="Text telling the user to close the dialog to resume."
+          defaultMessage="Close to continue"
+        />
+      </div>
     </Modal>
   );
 }

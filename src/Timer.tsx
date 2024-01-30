@@ -18,6 +18,7 @@ import {
   updateLocalFactionTimer,
 } from "./util/api/timers";
 import { responsivePixels, useInterval } from "./util/util";
+import { FormattedMessage } from "react-intl";
 
 export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   const router = useRouter();
@@ -76,7 +77,12 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
       style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
     >
       <div style={{ fontSize: responsivePixels(18) }}>
-        {agendaNum === 2 ? "Second" : "First"} Agenda
+        <FormattedMessage
+          id="OpsE1E"
+          defaultMessage="{num, select, 1 {First} 2 {Second} other {First}} Agenda"
+          description="Label specifying which agenda this is."
+          values={{ num: agendaNum }}
+        />
       </div>
       <TimerDisplay time={agendaTimer} width={132} />
     </div>

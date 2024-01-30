@@ -17,6 +17,14 @@
   height: var(--thirty-two-pixel);
 }
 
+.LangSelect {
+  display: flex;
+  position: fixed;
+  top: var(--thirty-two-pixel);
+  left: var(--thirty-two-pixel);
+  z-index: 2;
+}
+
 .GameTimer {
   display: flex;
   flex-direction: column;
@@ -70,6 +78,10 @@
     left: 64px;
   }
 
+  .LangSelect {
+    left: 14px;
+  }
+
   .GameTimer {
     left: 222px;
   }
@@ -110,6 +122,13 @@
     position: relative;
     width: var(--twenty-eight-pixel);
     height: var(--twenty-eight-pixel);
+  }
+
+  .LangSelect {
+    bottom: var(--thirty-six-pixel);
+    right: var(--thirty-six-pixel);
+    left: unset;
+    top: unset;
   }
 
   .GameTimer {

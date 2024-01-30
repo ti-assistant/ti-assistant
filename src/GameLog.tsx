@@ -8,10 +8,13 @@ import { getHandler } from "./util/api/gameLog";
 import { updateGameData } from "./util/api/handler";
 import { fetcher } from "./util/api/util";
 import { responsivePixels } from "./util/util";
+import { IntlShape, useIntl } from "react-intl";
 
-let BASE_FACTIONS: Partial<Record<FactionId, BaseFaction>> = {};
+let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
+  return {};
+};
 import("../server/data/factions").then((module) => {
-  BASE_FACTIONS = module.BASE_FACTIONS;
+  getBaseFactions = module.getBaseFactions;
 });
 
 let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
@@ -19,11 +22,14 @@ import("../server/data/planets").then((module) => {
   BASE_PLANETS = module.BASE_PLANETS;
 });
 
-function buildInitialGameData(setupData: {
-  factions: SetupFaction[];
-  speaker: number;
-  options: Options;
-}) {
+function buildInitialGameData(
+  setupData: {
+    factions: SetupFaction[];
+    speaker: number;
+    options: Options;
+  },
+  intl: IntlShape
+) {
   const gameFactions: GameFaction[] = setupData.factions.map(
     (faction, index) => {
       if (!faction.name || !faction.color || !faction.id) {
@@ -50,11 +56,12 @@ function buildInitialGameData(setupData: {
       });
 
       // Get starting techs for each faction.
-      const baseFaction = BASE_FACTIONS[faction.id];
+      const baseFaction = getBaseFactions(intl)[faction.id];
       if (!baseFaction) {
         return {
           // Client specified values
           name: faction.name,
+          id: faction.id,
           color: faction.color,
           playerName: faction.playerName,
           order: order,
@@ -78,6 +85,7 @@ function buildInitialGameData(setupData: {
       return {
         // Client specified values
         name: faction.name,
+        id: faction.id,
         color: faction.color,
         playerName: faction.playerName,
         order: order,
@@ -98,11 +106,11 @@ function buildInitialGameData(setupData: {
   let speakerName: FactionId | undefined;
   gameFactions.forEach((faction, index) => {
     if (index === setupData.speaker) {
-      speakerName = faction.name as FactionId;
+      speakerName = faction.id;
     }
     const localFaction = { ...faction };
     if (
-      faction.name === "Winnu" &&
+      faction.id === "Winnu" &&
       !setupData.options.expansions.includes("POK")
     ) {
       localFaction.startswith.choice = {
@@ -115,11 +123,11 @@ function buildInitialGameData(setupData: {
         ],
       };
     }
-    baseFactions[faction.name as FactionId] = localFaction;
+    baseFactions[faction.id] = localFaction;
     Object.entries(faction.planets).forEach(([name, planet]) => {
       basePlanets[name as PlanetId] = {
         ...planet,
-        owner: faction.name as FactionId,
+        owner: faction.id,
       };
     });
   });
@@ -200,6 +208,7 @@ export function GameLog({}) {
     gameid ? `/api/${gameid}/actionLog` : null,
     fetcher
   );
+  const intl = useIntl();
   const gameData = useGameData(gameid, []);
 
   const reversedActionLog = useMemo(() => {
@@ -212,12 +221,12 @@ export function GameLog({}) {
   }, [gameData]);
 
   const initialGameData = useMemo(() => {
-    return buildInitialGameData(setupGameData);
-  }, [setupGameData]);
+    return buildInitialGameData(setupGameData, intl);
+  }, [setupGameData, intl]);
 
   const dynamicGameData = useMemo(() => {
-    return buildCompleteGameData(initialGameData);
-  }, [initialGameData]);
+    return buildCompleteGameData(initialGameData, intl);
+  }, [initialGameData, intl]);
 
   return (
     <div

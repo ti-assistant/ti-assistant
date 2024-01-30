@@ -28,7 +28,7 @@ interface StrategyCardUpdateData {
 interface BaseStrategyCard {
   color: string;
   id: StrategyCardId;
-  name: StrategyCardName;
+  name: string;
   order: number;
 }
 

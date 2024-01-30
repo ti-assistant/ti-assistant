@@ -12,6 +12,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "react-intl": "^6.6.1",
     "react-transition-group": "^4.4.5",
     "sharp": "^0.33.1",
     "stable-hash": "^0.0.3",
@@ -26,13 +27,17 @@
     "dev": "node server/app.js",
     "build": "next build",
     "lint": "next lint",
-    "start": "NODE_ENV=production node server/app.js"
+    "start": "NODE_ENV=production node server/app.js",
+    "extract": "formatjs extract '{pages,server,src}/**/*.{js,ts,tsx}' --ignore '{pages,server,src}/**/*.d.ts' --out-file server/lang/en.json",
+    "compile": "formatjs compile-folder --ast server/lang server/compiled-lang",
+    "i18n": "formatjs extract 'pages/**/*.{js,ts,tsx}' --out-file server/lang/en.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@formatjs/cli": "^6.2.6",
     "@types/js-cookie": "^3.0.2",
     "@types/qrcode": "^1.5.0",
     "@types/react": "^18.0.28",

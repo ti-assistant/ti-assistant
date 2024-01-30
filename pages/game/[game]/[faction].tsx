@@ -11,17 +11,10 @@ import Footer from "../../../src/components/Footer/Footer";
 import { LockedButtons } from "../../../src/LockedButton";
 import { ObjectiveList } from "../../../src/ObjectiveList";
 import { SelectableRow } from "../../../src/SelectableRow";
-import { Selector } from "../../../src/Selector";
 import { Tab, TabBody } from "../../../src/Tab";
 import { TechRow } from "../../../src/TechRow";
 import { StaticFactionTimer } from "../../../src/Timer";
-import {
-  canFactionVote,
-  computeRemainingVotes,
-  getTargets,
-} from "../../../src/VoteCount";
-import Map from "../../../src/components/Map/Map";
-import Image from "next/image";
+import { canFactionVote, computeRemainingVotes } from "../../../src/VoteCount";
 import FactionCard from "../../../src/components/FactionCard/FactionCard";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
@@ -106,12 +99,10 @@ import DataProvider from "../../../src/context/DataProvider";
 import FactionCircle from "../../../src/components/FactionCircle/FactionCircle";
 import { getStrategyCardsForFaction } from "../../../src/util/helpers";
 import Header from "../../../src/components/Header/Header";
-import GenericModal from "../../../src/components/GenericModal/GenericModal";
-import { CustomSizeResources, FullResources } from "../../../src/Resources";
-import { PlanetPanel } from "../../../src/components/PlanetPanel";
-import TechSkipIcon from "../../../src/components/TechSkipIcon/TechSkipIcon";
-import { TechPanel } from "../../../src/components/TechPanel";
-import { ObjectivePanel } from "../../../src/components/ObjectivePanel";
+import { FormattedMessage, useIntl } from "react-intl";
+import { getTargets } from "../../../src/components/VoteBlock/VoteBlock";
+import { Selector } from "../../../src/components/Selector/Selector";
+import { phaseString, objectiveTypeString } from "../../../src/util/strings";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -171,6 +162,8 @@ function PhaseSection() {
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
   const voteRef = useRef<HTMLDivElement>(null);
+
+  const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   let currentAgenda: Agenda | undefined;
@@ -259,7 +252,8 @@ function PhaseSection() {
     strategyCards,
     planets,
     agendas,
-    objectives
+    objectives,
+    intl
   );
   const totalVotes = computeVotes(
     currentAgenda,
@@ -334,8 +328,8 @@ function PhaseSection() {
     element.innerText = factionVotes?.votes?.toString() ?? "0";
   }
 
-  let leftLabel: string | undefined;
-  let centerLabel: string | undefined;
+  let leftLabel: React.ReactNode | undefined;
+  let centerLabel: React.ReactNode | undefined;
   let phaseContent = null;
   switch (state?.phase) {
     case "SETUP": {
@@ -355,14 +349,38 @@ function PhaseSection() {
       centerLabel = undefined;
       phaseContent = (
         <React.Fragment>
-          <LabeledDiv label="Starting Components">
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="rlGbdz"
+                description="A label for a section of components that a faction starts with."
+                defaultMessage="Starting Components"
+              />
+            }
+          >
             <div style={{ fontSize: "16px", whiteSpace: "nowrap" }}>
               <StartingComponents factionId={faction.id} />
             </div>
           </LabeledDiv>
-          <LabeledDiv label="Speaker Actions">
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="5R8kPv"
+                description="Label for a section for actions by the speaker."
+                defaultMessage="Speaker Actions"
+              />
+            }
+          >
             {revealedObjectiveIds.length > 0 ? (
-              <LabeledDiv label="REVEALED OBJECTIVES">
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="RBlsAq"
+                    description="A label for the stage I objectives that have been revealed"
+                    defaultMessage="Revealed stage I objectives"
+                  />
+                }
+              >
                 {revealedObjectiveIds.map((objectiveId) => {
                   const objectiveObj = objectives[objectiveId];
                   if (!objectiveObj) {
@@ -380,7 +398,15 @@ function PhaseSection() {
               </LabeledDiv>
             ) : null}
             {revealedObjectiveIds.length < 2 ? (
-              <ClientOnlyHoverMenu label="Reveal Objective">
+              <ClientOnlyHoverMenu
+                label={
+                  <FormattedMessage
+                    id="6L07nG"
+                    description="Text telling the user to reveal an objective."
+                    defaultMessage="Reveal Objective"
+                  />
+                }
+              >
                 <div
                   className="flexRow"
                   style={{
@@ -429,7 +455,13 @@ function PhaseSection() {
         );
       }
       if (factionId === state.activeplayer) {
-        centerLabel = "SELECT STRATEGY CARD";
+        centerLabel = (
+          <FormattedMessage
+            id="hCXyLw"
+            defaultMessage="Select Strategy Card"
+            description="Label telling a player to select a strategy card."
+          />
+        );
         phaseContent = (
           <div className="flexColumn" style={{ width: "100%" }}>
             <div
@@ -441,7 +473,14 @@ function PhaseSection() {
           </div>
         );
       } else if (canUndo()) {
-        centerLabel = "STRATEGY PHASE";
+        centerLabel = (
+          <FormattedMessage
+            id="Irm2+w"
+            defaultMessage="{phase} Phase"
+            description="Text shown on side of screen during a specific phase"
+            values={{ phase: phaseString("STRATEGY", intl).toUpperCase() }}
+          />
+        );
         phaseContent = (
           <button
             onClick={() => {
@@ -459,7 +498,13 @@ function PhaseSection() {
     case "ACTION":
       const selectedAction = getSelectedActionFromLog(actionLog);
       if (factionId === state.activeplayer) {
-        centerLabel = "SELECT ACTION";
+        centerLabel = (
+          <FormattedMessage
+            id="YeYE6S"
+            description="Label telling the user to select the action a player took."
+            defaultMessage="Select Action"
+          />
+        );
         phaseContent = (
           <React.Fragment>
             <FactionActionButtons factionId={factionId} />
@@ -483,44 +528,86 @@ function PhaseSection() {
       } else {
         switch (selectedAction) {
           case "Leadership":
-            leftLabel = "Leadership Secondary";
+            leftLabel = (
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            );
             phaseContent = (
               <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Diplomacy":
-            leftLabel = "Diplomacy Secondary";
+            leftLabel = (
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            );
             phaseContent = (
               <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Politics":
-            leftLabel = "Politics Secondary";
+            leftLabel = (
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            );
             phaseContent = (
               <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Construction":
-            leftLabel = "Construction Secondary";
+            leftLabel = (
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            );
             phaseContent = (
               <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Trade":
-            leftLabel = "Trade Secondary";
+            leftLabel = (
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            );
             phaseContent = (
               <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Warfare":
-            leftLabel = "Warfare Secondary";
+            leftLabel = (
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            );
             phaseContent = (
               <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
             break;
           case "Technology":
             if (factionId === "Nekro Virus") {
-              leftLabel = "Technology Secondary";
+              leftLabel = (
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              );
               phaseContent = (
                 <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
               );
@@ -535,7 +622,13 @@ function PhaseSection() {
             }
             break;
           case "Imperial":
-            leftLabel = "Imperial Secondary";
+            leftLabel = (
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            );
             phaseContent = (
               <SecondaryCheck faction={faction} gameid={gameid ?? ""} />
             );
@@ -608,7 +701,13 @@ function PhaseSection() {
       const revealedObjectiveObj = revealedObjective
         ? objectives[revealedObjective]
         : undefined;
-      centerLabel = "SCORE OBJECTIVES";
+      centerLabel = (
+        <FormattedMessage
+          id="WHJC8f"
+          description="Text telling the players to score objectives."
+          defaultMessage="Score Objectives"
+        />
+      );
       phaseContent = (
         <React.Fragment>
           <div
@@ -633,9 +732,21 @@ function PhaseSection() {
                 </SelectableRow>
               </LabeledDiv>
             ) : !canScoreObjectives ? (
-              "Cannot score public objectives"
+              <FormattedMessage
+                id="CoNZle"
+                description="Message telling a player that they cannot score public objectives."
+                defaultMessage="Cannot score Public Objectives"
+              />
             ) : (
-              <ClientOnlyHoverMenu label="Score Public Objective">
+              <ClientOnlyHoverMenu
+                label={
+                  <FormattedMessage
+                    id="73882v"
+                    description="Message telling a player to score a public objective."
+                    defaultMessage="Score Public Objective"
+                  />
+                }
+              >
                 <div
                   className="flexColumn"
                   style={{
@@ -645,9 +756,13 @@ function PhaseSection() {
                     alignItems: "stretch",
                   }}
                 >
-                  {availableObjectives.length === 0
-                    ? "No unscored public objectives"
-                    : null}
+                  {availableObjectives.length === 0 ? (
+                    <FormattedMessage
+                      id="HQ3wv9"
+                      description="Message telling a player that they have scored all objectives."
+                      defaultMessage="No unscored Public Objectives"
+                    />
+                  ) : null}
                   {availableObjectives.map((objective) => {
                     return (
                       <button
@@ -674,7 +789,15 @@ function PhaseSection() {
                 </SelectableRow>
               </LabeledDiv>
             ) : (
-              <ClientOnlyHoverMenu label="Score Secret Objective">
+              <ClientOnlyHoverMenu
+                label={
+                  <FormattedMessage
+                    id="zlpl9F"
+                    description="Message telling a player to score a secret objective."
+                    defaultMessage="Score Secret Objective"
+                  />
+                }
+              >
                 <div
                   className="flexRow"
                   style={{
@@ -705,9 +828,32 @@ function PhaseSection() {
               </ClientOnlyHoverMenu>
             )}
           </div>
-          <LabeledDiv label="Speaker Actions">
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="5R8kPv"
+                description="Label for a section for actions by the speaker."
+                defaultMessage="Speaker Actions"
+              />
+            }
+          >
             {revealedObjectiveObj ? (
-              <LabeledDiv label="REVEALED OBJECTIVE">
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="IfyaDZ"
+                    description="A label for revealed objectives."
+                    defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
+                    values={{
+                      count: 1,
+                      type:
+                        state.round > 3
+                          ? objectiveTypeString("STAGE TWO", intl)
+                          : objectiveTypeString("STAGE ONE", intl),
+                    }}
+                  />
+                }
+              >
                 <ObjectiveRow
                   objective={revealedObjectiveObj}
                   removeObjective={() => removeObj(revealedObjectiveObj.id)}
@@ -717,9 +863,20 @@ function PhaseSection() {
             ) : (
               <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
                 <ClientOnlyHoverMenu
-                  label={`Reveal one Stage ${
-                    state.round > 3 ? "II" : "I"
-                  } objective`}
+                  label={
+                    <FormattedMessage
+                      id="lDBTCO"
+                      description="Instruction telling the speaker to reveal objectives."
+                      defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                      values={{
+                        count: 1,
+                        type:
+                          state.round > 3
+                            ? objectiveTypeString("STAGE TWO", intl)
+                            : objectiveTypeString("STAGE ONE", intl),
+                      }}
+                    />
+                  }
                   style={{ maxHeight: "400px" }}
                 >
                   <div
@@ -770,15 +927,36 @@ function PhaseSection() {
         !!factionVotes?.target && factionVotes?.target !== "Abstain";
       const items = Math.min((targets ?? []).length, 12);
       const eligibleOutcomes = getSelectedEligibleOutcomes(currentTurn);
-      centerLabel = "AGENDA PHASE";
+      centerLabel = (
+        <FormattedMessage
+          id="Irm2+w"
+          defaultMessage="{phase} Phase"
+          description="Text shown on side of screen during a specific phase"
+          values={{ phase: phaseString("AGENDA", intl).toUpperCase() }}
+        />
+      );
       phaseContent = (
         <React.Fragment>
           {!currentAgenda ? (
             <LabeledDiv
-              label="Speaker Actions"
+              label={
+                <FormattedMessage
+                  id="5R8kPv"
+                  description="Label for a section for actions by the speaker."
+                  defaultMessage="Speaker Actions"
+                />
+              }
               style={{ marginTop: "4px", paddingTop: "12px" }}
             >
-              <ClientOnlyHoverMenu label="Reveal and Read one Agenda">
+              <ClientOnlyHoverMenu
+                label={
+                  <FormattedMessage
+                    id="ZAYAbS"
+                    description="Instruction telling the speaker to reveal an agenda."
+                    defaultMessage="Reveal and Read one Agenda"
+                  />
+                }
+              >
                 <div
                   className="flexRow"
                   style={{
@@ -826,7 +1004,13 @@ function PhaseSection() {
               {currentAgenda.id === "Covert Legislation" ? (
                 eligibleOutcomes ? (
                   <LabeledDiv
-                    label="ELIGIBLE OUTCOMES"
+                    label={
+                      <FormattedMessage
+                        id="+BcBcX"
+                        description="Label for a section showing the eligible outcomes."
+                        defaultMessage="Eligible Outcomes"
+                      />
+                    }
                     style={{ paddingTop: "8px" }}
                   >
                     <SelectableRow
@@ -840,10 +1024,24 @@ function PhaseSection() {
                   </LabeledDiv>
                 ) : (
                   <LabeledDiv
-                    label="Speaker Actions"
+                    label={
+                      <FormattedMessage
+                        id="5R8kPv"
+                        description="Label for a section for actions by the speaker."
+                        defaultMessage="Speaker Actions"
+                      />
+                    }
                     style={{ marginTop: "4px", paddingTop: "12px" }}
                   >
-                    <ClientOnlyHoverMenu label="Reveal Eligible Outcomes">
+                    <ClientOnlyHoverMenu
+                      label={
+                        <FormattedMessage
+                          id="cKaLW8"
+                          description="Text on a hover menu for revealing eligible outcomes."
+                          defaultMessage="Reveal Eligible Outcomes"
+                        />
+                      }
+                    >
                       <div
                         className="flexColumn"
                         style={{
@@ -877,7 +1075,13 @@ function PhaseSection() {
             >
               <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
               {!canFactionVote(faction, agendas, state, currentTurn) ? (
-                <div className="flexRow">Cannot Vote</div>
+                <div className="flexRow">
+                  <FormattedMessage
+                    id="c4LYqr"
+                    description="Text informing a player that they cannot vote."
+                    defaultMessage="Cannot Vote"
+                  />
+                </div>
               ) : (
                 <React.Fragment>
                   <div
@@ -889,7 +1093,13 @@ function PhaseSection() {
                     }}
                   >
                     <Selector
-                      hoverMenuLabel="Select Vote Outcome"
+                      hoverMenuLabel={
+                        <FormattedMessage
+                          id="cHsAYk"
+                          description="Text on hover menu for selecting voting outcome."
+                          defaultMessage="Select Outcome"
+                        />
+                      }
                       selectedLabel="Selected Outcome"
                       options={targets}
                       selectedItem={factionVotes?.target}
@@ -985,10 +1195,24 @@ function PhaseSection() {
               {isTie ? (
                 !tieBreak ? (
                   <LabeledDiv
-                    label="Speaker Actions"
+                    label={
+                      <FormattedMessage
+                        id="5R8kPv"
+                        description="Label for a section for actions by the speaker."
+                        defaultMessage="Speaker Actions"
+                      />
+                    }
                     style={{ paddingTop: "12px" }}
                   >
-                    <ClientOnlyHoverMenu label="Choose outcome (vote tied)">
+                    <ClientOnlyHoverMenu
+                      label={
+                        <FormattedMessage
+                          id="Kzzn9t"
+                          description="Text on a hover menu for the speaker choosing the outcome."
+                          defaultMessage="Choose outcome if tied"
+                        />
+                      }
+                    >
                       <div
                         className="flexRow"
                         style={{
@@ -1017,16 +1241,18 @@ function PhaseSection() {
                               );
                             })
                           : targets.map((target) => {
-                              if (target === "Abstain") {
+                              if (target.id === "Abstain") {
                                 return null;
                               }
                               return (
                                 <button
-                                  key={target}
+                                  key={target.id}
                                   style={{ writingMode: "horizontal-tb" }}
-                                  onClick={() => selectSpeakerTieBreak(target)}
+                                  onClick={() =>
+                                    selectSpeakerTieBreak(target.id)
+                                  }
                                 >
-                                  {target}
+                                  {target.name}
                                 </button>
                               );
                             })}
@@ -1209,14 +1435,26 @@ function FactionContent() {
       <Modal
         closeMenu={toggleAddTechMenu}
         visible={showAddTech}
-        title="Research Tech"
+        title={
+          <FormattedMessage
+            id="3qIvsL"
+            description="Label on a hover menu used to research tech."
+            defaultMessage="Research Tech"
+          />
+        }
       >
         <AddTechList techs={remainingTechs} addTech={addTechLocal} />
       </Modal>
       <Modal
         closeMenu={toggleAddPlanetMenu}
         visible={showAddPlanet}
-        title="Add Planet"
+        title={
+          <FormattedMessage
+            id="PrGqwQ"
+            description="Label for adding a planet."
+            defaultMessage="Add Planet"
+          />
+        }
       >
         <AddPlanetList planets={planets} addPlanet={addPlanet} />
       </Modal>
@@ -1243,7 +1481,15 @@ function FactionContent() {
             style={{ width: "100%", alignItems: "stretch", padding: "0px 8px" }}
           >
             <PhaseSection />
-            <LabeledLine label="FACTION DETAILS" />
+            <LabeledLine
+              label={
+                <FormattedMessage
+                  id="NUNF0C"
+                  defaultMessage="Faction Details"
+                  description="Label for a section of faction details."
+                />
+              }
+            />
             <div
               className="flexColumn"
               style={{ gap: 0, alignItems: "stretch" }}
@@ -1258,28 +1504,46 @@ function FactionContent() {
                   id="techs"
                   selectedId={tabShown}
                 >
-                  Techs
+                  <FormattedMessage
+                    id="ys7uwX"
+                    description="Shortened version of technologies."
+                    defaultMessage="Techs"
+                  />
                 </Tab>
                 <Tab
                   selectTab={toggleTabShown}
                   id="planets"
                   selectedId={tabShown}
                 >
-                  Planets
+                  <FormattedMessage
+                    id="1fNqTf"
+                    description="Planets."
+                    defaultMessage="Planets"
+                  />
                 </Tab>
                 <Tab
                   selectTab={toggleTabShown}
                   id="objectives"
                   selectedId={tabShown}
                 >
-                  Objectives
+                  <FormattedMessage
+                    id="5Bl4Ek"
+                    description="Cards that define how to score victory points."
+                    defaultMessage="Objectives"
+                  />
                 </Tab>
               </div>
               <TabBody id="techs" selectedId={tabShown}>
                 <div>
                   <LabeledLine />
                   <div className="flexRow" style={{ height: "32px" }}>
-                    <button onClick={toggleAddTechMenu}>Research Tech</button>
+                    <button onClick={toggleAddTechMenu}>
+                      <FormattedMessage
+                        id="3qIvsL"
+                        description="Label on a hover menu used to research tech."
+                        defaultMessage="Research Tech"
+                      />
+                    </button>
                   </div>
                   <div
                     className="flexColumn largeFont"
@@ -1307,7 +1571,13 @@ function FactionContent() {
                 <div>
                   <LabeledLine />
                   <div className="flexRow" style={{ height: "40px" }}>
-                    <button onClick={toggleAddPlanetMenu}>Add Planet</button>
+                    <button onClick={toggleAddPlanetMenu}>
+                      <FormattedMessage
+                        id="PrGqwQ"
+                        description="Label for adding a planet."
+                        defaultMessage="Add Planet"
+                      />
+                    </button>
                   </div>
                   <div
                     className="largeFont"
@@ -1376,6 +1646,8 @@ function InnerFactionPage({}) {
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
 
+  const intl = useIntl();
+
   const [showMenu, setShowMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [showPlanetModal, setShowPlanetModal] = useState(false);
@@ -1412,18 +1684,30 @@ function InnerFactionPage({}) {
   }
 
   let orderedFactions: Faction[] = [];
-  let orderTitle = "";
+  let orderTitle = <></>;
   switch (state?.phase) {
     case "SETUP":
     case "STRATEGY":
-      orderTitle = "Speaker Order";
+      orderTitle = (
+        <FormattedMessage
+          id="L4UH+0"
+          description="An ordering of factions based on the speaker."
+          defaultMessage="Speaker Order"
+        />
+      );
       orderedFactions = Object.values(factions).sort(
         (a, b) => a.order - b.order
       );
       break;
     case "ACTION":
     case "STATUS":
-      orderTitle = "Initiative Order";
+      orderTitle = (
+        <FormattedMessage
+          id="09baik"
+          description="An ordering of factions based on initiative."
+          defaultMessage="Initiative Order"
+        />
+      );
       const orderedCards = Object.values(strategyCards).sort(
         (a, b) => a.order - b.order
       );
@@ -1443,7 +1727,13 @@ function InnerFactionPage({}) {
       }
       break;
     case "AGENDA":
-      orderTitle = "Voting Order";
+      orderTitle = (
+        <FormattedMessage
+          id="rbtRWF"
+          description="An ordering of factions based on voting."
+          defaultMessage="Voting Order"
+        />
+      );
       orderedFactions = Object.values(factions).sort((a, b) => {
         if (a.name === "Argent Flight") {
           return -1;
@@ -1471,7 +1761,11 @@ function InnerFactionPage({}) {
               unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
               buttons={[
                 {
-                  text: "Start Game",
+                  text: intl.formatMessage({
+                    id: "lYD2yu",
+                    description: "Text on a button that will start a game.",
+                    defaultMessage: "Start Game",
+                  }),
                   onClick: () => {
                     if (!gameid) {
                       return;
@@ -1495,7 +1789,14 @@ function InnerFactionPage({}) {
                   advanceToActionPhase(gameid);
                 }}
               >
-                Advance to Action Phase
+                <FormattedMessage
+                  id="8/h2ME"
+                  defaultMessage="Advance to {phase} Phase"
+                  description="Text on a button that will advance the game to a specific phase."
+                  values={{
+                    phase: phaseString("ACTION", intl),
+                  }}
+                />
               </button>
             </div>
           );
@@ -1508,7 +1809,15 @@ function InnerFactionPage({}) {
               unlocked={state?.activeplayer === "None"}
               buttons={[
                 {
-                  text: "Advance to Status Phase",
+                  text: intl.formatMessage(
+                    {
+                      id: "8/h2ME",
+                      defaultMessage: "Advance to {phase} Phase",
+                      description:
+                        "Text on a button that will advance the game to a specific phase.",
+                    },
+                    { phase: phaseString("STATUS", intl) }
+                  ),
                   onClick: () => {
                     if (!gameid) {
                       return;
@@ -1524,7 +1833,11 @@ function InnerFactionPage({}) {
         let buttons = [];
         if (!state?.agendaUnlocked) {
           buttons.push({
-            text: "Start Next Round",
+            text: intl.formatMessage({
+              id: "5WXn8l",
+              defaultMessage: "Start Next Round",
+              description: "Text on a button that will start the next round.",
+            }),
             onClick: () => {
               if (!gameid) {
                 return;
@@ -1534,7 +1847,15 @@ function InnerFactionPage({}) {
           });
         }
         buttons.push({
-          text: "Advance to Agenda Phase",
+          text: intl.formatMessage(
+            {
+              id: "8/h2ME",
+              defaultMessage: "Advance to {phase} Phase",
+              description:
+                "Text on a button that will advance the game to a specific phase.",
+            },
+            { phase: phaseString("AGENDA", intl) }
+          ),
           onClick: () => {
             if (!gameid) {
               return;
@@ -1559,7 +1880,12 @@ function InnerFactionPage({}) {
               unlocked={state?.agendaNum === 3}
               buttons={[
                 {
-                  text: "Start Next Round",
+                  text: intl.formatMessage({
+                    id: "5WXn8l",
+                    defaultMessage: "Start Next Round",
+                    description:
+                      "Text on a button that will start the next round.",
+                  }),
                   onClick: () => {
                     if (!gameid) {
                       return;

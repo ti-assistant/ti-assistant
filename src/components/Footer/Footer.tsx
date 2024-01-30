@@ -1,9 +1,11 @@
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import Map from "../../../src/components/Map/Map";
+import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
-import Image from "next/image";
+import { CustomSizeResources } from "../../Resources";
 import {
   FactionContext,
   OptionContext,
@@ -14,15 +16,15 @@ import {
 import { setSpeakerAsync } from "../../dynamic/api";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { responsivePixels } from "../../util/util";
+import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import GenericModal from "../GenericModal/GenericModal";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import styles from "./Footer.module.scss";
-import FactionRow from "../FactionRow/FactionRow";
-import { FactionSummary } from "../../FactionSummary";
 import RelicPanel from "../RelicPanel/RelicPanel";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
-import { CustomSizeResources } from "../../Resources";
+import styles from "./Footer.module.scss";
+import { FormattedMessage } from "react-intl";
+import { Strings } from "../strings";
 
 const ObjectivePanel = dynamic(
   import("../ObjectivePanel").then((mod) => mod.ObjectivePanel),
@@ -105,18 +107,36 @@ export default function Footer({}) {
     (a, b) => a.mapPosition - b.mapPosition
   );
 
-  let orderTitle = "";
+  let orderTitle = <></>;
   switch (state?.phase) {
     case "SETUP":
     case "STRATEGY":
-      orderTitle = "Speaker Order";
+      orderTitle = (
+        <FormattedMessage
+          id="L4UH+0"
+          description="An ordering of factions based on the speaker."
+          defaultMessage="Speaker Order"
+        />
+      );
       break;
     case "ACTION":
     case "STATUS":
-      orderTitle = "Initiative Order";
+      orderTitle = (
+        <FormattedMessage
+          id="09baik"
+          description="An ordering of factions based on initiative."
+          defaultMessage="Initiative Order"
+        />
+      );
       break;
     case "AGENDA":
-      orderTitle = "Voting Order";
+      orderTitle = (
+        <FormattedMessage
+          id="rbtRWF"
+          description="An ordering of factions based on voting."
+          defaultMessage="Voting Order"
+        />
+      );
       break;
   }
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
@@ -172,7 +192,11 @@ export default function Footer({}) {
               width: "min-content",
             }}
           >
-            Techs
+            <FormattedMessage
+              id="ys7uwX"
+              description="Shortened version of technologies."
+              defaultMessage="Techs"
+            />
           </div>
           <div
             className="flexColumn largeFont"
@@ -209,7 +233,11 @@ export default function Footer({}) {
               width: "min-content",
             }}
           >
-            Objectives
+            <FormattedMessage
+              id="5Bl4Ek"
+              description="Cards that define how to score victory points."
+              defaultMessage="Objectives"
+            />
           </div>
           <div
             className="flexColumn largeFont"
@@ -248,7 +276,11 @@ export default function Footer({}) {
               width: "min-content",
             }}
           >
-            Planets
+            <FormattedMessage
+              id="1fNqTf"
+              description="Planets."
+              defaultMessage="Planets"
+            />
           </div>
           <div
             className="flexColumn largeFont"
@@ -284,7 +316,7 @@ export default function Footer({}) {
       >
         {!shouldBlockSpeakerUpdates() ? (
           <div className="flexRow">
-            Speaker:
+            <Strings.Speaker />:
             <FactionSelectRadialMenu
               borderColor={
                 state?.speaker
@@ -323,7 +355,11 @@ export default function Footer({}) {
                 />
               </div>
             </button>
-            View Map
+            <FormattedMessage
+              id="xDzJ9/"
+              description="Text shown on a button that opens the map."
+              defaultMessage="View Map"
+            />
           </div>
         ) : null}
         <div className="flexRow" onClick={() => setShowTechModal(true)}>
@@ -363,7 +399,11 @@ export default function Footer({}) {
             </div> */}
             </div>
           </button>
-          Update Techs
+          <FormattedMessage
+            id="USnh0f"
+            description="Text shown on a button that opens the update techs panel."
+            defaultMessage="Update Techs"
+          />
         </div>
         <div className="flexRow" onClick={() => setShowObjectiveModal(true)}>
           <button>
@@ -389,7 +429,11 @@ export default function Footer({}) {
               />
             </div>
           </button>
-          Update Objectives
+          <FormattedMessage
+            id="Lrn2Da"
+            description="Text shown on a button that opens the update objectives panel."
+            defaultMessage="Update Objectives"
+          />
         </div>
         <div className="flexRow" onClick={() => setShowPlanetModal(true)}>
           <button>
@@ -404,15 +448,27 @@ export default function Footer({}) {
               <CustomSizeResources resources={2} influence={3} height={24} />
             </div>
           </button>
-          Update Planets
+          <FormattedMessage
+            id="Dw1fzR"
+            description="Text shown on a button that opens the update planets panel."
+            defaultMessage="Update Planets"
+          />
         </div>
       </div>
       <div className={styles.UpdateBox}>
-        <LabeledDiv label={state.phase === "END" ? "View" : "Update"}>
+        <LabeledDiv
+          label={
+            <FormattedMessage
+              id="VjlCY0"
+              description="Text specifying a section that includes update operations."
+              defaultMessage="Update"
+            />
+          }
+        >
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
             {!shouldBlockSpeakerUpdates() ? (
               <div className="flexRow">
-                Speaker:
+                <Strings.Speaker />:
                 <FactionSelectRadialMenu
                   borderColor={
                     state?.speaker
@@ -435,12 +491,28 @@ export default function Footer({}) {
               className="flexRow"
               style={{ width: "100%", alignItems: "center" }}
             >
-              <button onClick={() => setShowTechModal(true)}>Techs</button>
+              <button onClick={() => setShowTechModal(true)}>
+                <FormattedMessage
+                  id="ys7uwX"
+                  description="Shortened version of technologies."
+                  defaultMessage="Techs"
+                />
+              </button>
 
               <button onClick={() => setShowObjectiveModal(true)}>
-                Objectives
+                <FormattedMessage
+                  id="5Bl4Ek"
+                  description="Cards that define how to score victory points."
+                  defaultMessage="Objectives"
+                />
               </button>
-              <button onClick={() => setShowPlanetModal(true)}>Planets</button>
+              <button onClick={() => setShowPlanetModal(true)}>
+                <FormattedMessage
+                  id="1fNqTf"
+                  description="Planets."
+                  defaultMessage="Planets"
+                />
+              </button>
               {/* <RelicPanel /> */}
             </div>
           </div>

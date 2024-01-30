@@ -1,13 +1,16 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 
 export class AdvancePhaseHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {}
 
   validate(): boolean {
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     switch (this.gameData.state.phase) {
       case "STRATEGY": {
-        const strategyCards = buildStrategyCards(this.gameData);
-        const factions = buildFactions(this.gameData);
+        const strategyCards = buildStrategyCards(this.gameData, intl);
+        const factions = buildFactions(this.gameData, intl);
         const numFactions = Object.keys(factions).length;
         const numPickedCards = Object.values(strategyCards).reduce(
           (numCards, card) => {
@@ -33,6 +36,8 @@ export class AdvancePhaseHandler implements Handler {
       [`state.paused`]: false,
       [`state.votingStarted`]: "DELETE",
     };
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     switch (this.gameData.state.phase) {
       case "SETUP": {
         updates[`state.phase`] = "STRATEGY";
@@ -43,7 +48,7 @@ export class AdvancePhaseHandler implements Handler {
         updates[`state.phase`] = "ACTION";
         let minCard = Number.MAX_SAFE_INTEGER;
         let minFaction: string | undefined;
-        const strategyCards = buildStrategyCards(this.gameData);
+        const strategyCards = buildStrategyCards(this.gameData, intl);
         for (const strategyCard of Object.values(strategyCards)) {
           if (strategyCard.faction && strategyCard.order < minCard) {
             minCard = strategyCard.order;
@@ -63,7 +68,7 @@ export class AdvancePhaseHandler implements Handler {
         updates[`state.phase`] = "STATUS";
         let minCard = Number.MAX_SAFE_INTEGER;
         let minFaction: string | undefined;
-        const strategyCards = buildStrategyCards(this.gameData);
+        const strategyCards = buildStrategyCards(this.gameData, intl);
         for (const strategyCard of Object.values(strategyCards)) {
           updates[`strategycards.${strategyCard.id}.used`] = "DELETE";
           if (strategyCard.faction && strategyCard.order < minCard) {
@@ -80,7 +85,7 @@ export class AdvancePhaseHandler implements Handler {
       }
       case "STATUS": {
         updates[`state.activeplayer`] = this.gameData.state.speaker;
-        const strategyCards = buildStrategyCards(this.gameData);
+        const strategyCards = buildStrategyCards(this.gameData, intl);
         for (const strategyCard of Object.values(strategyCards)) {
           updates[`strategycards.${strategyCard.id}.faction`] = "DELETE";
           updates[`strategycards.${strategyCard.id}.order`] = "DELETE";

@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions } from "../../data/GameData";
 
 export class ManualVPUpdateHandler implements Handler {
@@ -12,8 +13,10 @@ export class ManualVPUpdateHandler implements Handler {
 
   getUpdates(): Record<string, any> {
     // Reset order for all other cards
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
     const factionVPs =
-      buildFactions(this.gameData)[this.data.event.faction]?.vps ?? 0;
+      buildFactions(this.gameData, intl)[this.data.event.faction]?.vps ?? 0;
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`factions.${this.data.event.faction}.vps`]:

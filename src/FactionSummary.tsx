@@ -19,6 +19,7 @@ import {
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
 import { pluralize, responsivePixels } from "./util/util";
+import { FormattedMessage } from "react-intl";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
   let blueTechs = [];
@@ -77,7 +78,14 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
       <div className="centered">{yellowTechs.length || "-"}</div>
       <TechIcon type={"YELLOW"} size={16} />
       <div className="centered">{upgradeTechs.length || "-"}</div>
-      <div>{pluralize("Upgrade", upgradeTechs.length)}</div>
+      <div>
+        <FormattedMessage
+          id="lGDH2d"
+          description="Unit upgrade techs."
+          defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
+          values={{ count: upgradeTechs.length }}
+        />
+      </div>
     </div>
   );
 }
@@ -220,7 +228,12 @@ export function FactionSummary({
           )}
         </div>
         <div className="centered" style={{ fontSize: responsivePixels(20) }}>
-          {pluralize("VP", VPs)}
+          <FormattedMessage
+            id="PzyYtG"
+            description="Shortened version of Victory Points."
+            defaultMessage="{count, plural, =0 {VPs} one {VP} other {VPs}}"
+            values={{ count: VPs }}
+          />
         </div>
       </div>
       {options.hidePlanets ? null : (

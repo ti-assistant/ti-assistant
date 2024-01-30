@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Tab, TabBody } from "./Tab";
 import { TechRow } from "./TechRow";
 import { sortTechsByName, sortTechsByPreReqAndExpansion } from "./util/techs";
+import { FormattedMessage } from "react-intl";
 
 interface AddTechListProps {
   techs: Tech[];
@@ -88,7 +89,11 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
         </Tab>
         <Tab selectTab={setTabShown} id="upgrades" selectedId={tabShown}>
           <div className="flexRow" style={{ height: "28px" }}>
-            Upgrades
+            <FormattedMessage
+              id="2hHU0G"
+              description="Title of uprade techs."
+              defaultMessage="Unit Upgrades"
+            />
           </div>
         </Tab>
       </div>
