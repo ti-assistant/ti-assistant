@@ -74,12 +74,13 @@ export default function LanguageSelectRadialMenu({
   borderColor = "#444",
   tagBorderColor = "#444",
 }: LanguageSelectRadialMenuProps) {
-  if (locales.length === 1) {
-    return null;
-  }
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
   const [closing, setClosing] = useState(false);
+
+  if (locales.length === 1) {
+    return null;
+  }
 
   function closeFn() {
     if (!menu.current || !styles.hover) {
