@@ -14,7 +14,6 @@ import { SelectableRow } from "../../../src/SelectableRow";
 import { Tab, TabBody } from "../../../src/Tab";
 import { TechRow } from "../../../src/TechRow";
 import { StaticFactionTimer } from "../../../src/Timer";
-import { canFactionVote, computeRemainingVotes } from "../../../src/VoteCount";
 import FactionCard from "../../../src/components/FactionCard/FactionCard";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
@@ -100,7 +99,11 @@ import FactionCircle from "../../../src/components/FactionCircle/FactionCircle";
 import { getStrategyCardsForFaction } from "../../../src/util/helpers";
 import Header from "../../../src/components/Header/Header";
 import { FormattedMessage, useIntl } from "react-intl";
-import { getTargets } from "../../../src/components/VoteBlock/VoteBlock";
+import {
+  canFactionVote,
+  computeRemainingVotes,
+  getTargets,
+} from "../../../src/components/VoteBlock/VoteBlock";
 import { Selector } from "../../../src/components/Selector/Selector";
 import { phaseString, objectiveTypeString } from "../../../src/util/strings";
 
