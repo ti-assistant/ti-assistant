@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../AgendaRow";
@@ -17,6 +16,7 @@ import {
   ActionLogContext,
   AgendaContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   PlanetContext,
   RelicContext,
@@ -136,8 +136,8 @@ export function computeVotes(
   return orderedVotes;
 }
 
-function startNextRound(gameid: string) {
-  advancePhaseAsync(gameid, true);
+function startNextRound(gameId: string) {
+  advancePhaseAsync(gameId, true);
 }
 
 function getSelectedOutcome(
@@ -174,11 +174,10 @@ function canScoreObjective(
 }
 
 function AgendaDetails() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const planets = useContext(PlanetContext);
   const relics = useContext(RelicContext);
@@ -187,16 +186,16 @@ function AgendaDetails() {
   const intl = useIntl();
 
   function addRelic(relicId: RelicId, factionId: FactionId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    gainRelicAsync(gameid, factionId, relicId);
+    gainRelicAsync(gameId, factionId, relicId);
   }
   function removeRelic(relicId: RelicId, factionId: FactionId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    loseRelicAsync(gameid, factionId, relicId);
+    loseRelicAsync(gameId, factionId, relicId);
   }
 
   let agendaId = getActiveAgenda(currentTurn);
@@ -246,17 +245,17 @@ function AgendaDetails() {
   }
 
   function addObjective(factionId: FactionId, toScore: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    scoreObjectiveAsync(gameid, factionId, toScore);
+    scoreObjectiveAsync(gameId, factionId, toScore);
   }
 
   function undoObjective(factionId: FactionId, toRemove: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    unscoreObjectiveAsync(gameid, factionId, toRemove);
+    unscoreObjectiveAsync(gameId, factionId, toRemove);
   }
 
   const driveObj = (objectives ?? {})["Drive the Debate"];
@@ -290,7 +289,7 @@ function AgendaDetails() {
             borderColor={getFactionColor((factions ?? {})[driveTheDebate])}
             factionId={driveTheDebate}
             onClick={() => {
-              if (!gameid || !driveTheDebate) {
+              if (!gameId || !driveTheDebate) {
                 return;
               }
               if (hasScoredDrive) {
@@ -365,7 +364,7 @@ function AgendaDetails() {
           options={availableObjectives}
           renderItem={(objectiveId) => {
             const objective = (objectives ?? {})[objectiveId];
-            if (!objective || !gameid) {
+            if (!objective || !gameId) {
               return null;
             }
             return (
@@ -385,7 +384,7 @@ function AgendaDetails() {
                 <ObjectiveRow
                   objective={objective}
                   removeObjective={() =>
-                    hideObjectiveAsync(gameid, objectiveId)
+                    hideObjectiveAsync(gameId, objectiveId)
                   }
                   hideScorers={true}
                 />
@@ -394,13 +393,13 @@ function AgendaDetails() {
           }}
           selectedItem={getRevealedObjectives(currentTurn)[0]}
           toggleItem={(objectiveId, add) => {
-            if (!gameid) {
+            if (!gameId) {
               return;
             }
             if (add) {
-              revealObjectiveAsync(gameid, objectiveId);
+              revealObjectiveAsync(gameId, objectiveId);
             } else {
-              hideObjectiveAsync(gameid, objectiveId);
+              hideObjectiveAsync(gameId, objectiveId);
             }
           }}
         />
@@ -441,14 +440,14 @@ function AgendaDetails() {
           }
           selectedItem={selectedFaction}
           toggleItem={(factionId, add) => {
-            if (!gameid) {
+            if (!gameId) {
               return;
             }
             if (add) {
-              claimPlanetAsync(gameid, factionId, selectedOutcome as PlanetId);
+              claimPlanetAsync(gameId, factionId, selectedOutcome as PlanetId);
             } else {
               unclaimPlanetAsync(
-                gameid,
+                gameId,
                 factionId,
                 selectedOutcome as PlanetId
               );
@@ -532,11 +531,10 @@ function AgendaDetails() {
 }
 
 function AgendaSteps() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
@@ -570,7 +568,7 @@ function AgendaSteps() {
     });
 
   async function completeAgenda() {
-    if (!gameid || !currentAgenda) {
+    if (!gameId || !currentAgenda) {
       return;
     }
     const target = getSelectedOutcome(selectedTargets, currentTurn);
@@ -578,33 +576,33 @@ function AgendaSteps() {
       return;
     }
 
-    resolveAgendaAsync(gameid, currentAgenda.id, target);
+    resolveAgendaAsync(gameId, currentAgenda.id, target);
   }
 
   function selectAgenda(agendaId: AgendaId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    revealAgendaAsync(gameid, agendaId);
+    revealAgendaAsync(gameId, agendaId);
   }
   function hideAgendaLocal(agendaId?: AgendaId, veto?: boolean) {
-    if (!gameid || !agendaId) {
+    if (!gameId || !agendaId) {
       return;
     }
-    hideAgendaAsync(gameid, agendaId, veto);
+    hideAgendaAsync(gameId, agendaId, veto);
   }
 
   function selectSubAgendaLocal(agendaId: AgendaId | null) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    selectSubAgendaAsync(gameid, agendaId ?? "None");
+    selectSubAgendaAsync(gameId, agendaId ?? "None");
   }
   function selectEligibleOutcome(outcome: OutcomeType | "None") {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    selectEligibleOutcomesAsync(gameid, outcome);
+    selectEligibleOutcomesAsync(gameId, outcome);
   }
 
   const orderedAgendas = Object.values(agendas ?? {}).sort((a, b) => {
@@ -811,18 +809,18 @@ function AgendaSteps() {
                   }
                   options={Object.values(factions)}
                   toggleItem={(factionId, add) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     if (add) {
                       playActionCardAsync(
-                        gameid,
+                        gameId,
                         "Ancient Burial Sites",
                         factionId
                       );
                     } else {
                       unplayActionCardAsync(
-                        gameid,
+                        gameId,
                         "Ancient Burial Sites",
                         factionId
                       );
@@ -993,18 +991,18 @@ function AgendaSteps() {
                                 color: politicalSecret ? "green" : "red",
                               }}
                               onClick={() => {
-                                if (!gameid) {
+                                if (!gameId) {
                                   return;
                                 }
                                 if (politicalSecret) {
                                   unplayPromissoryNoteAsync(
-                                    gameid,
+                                    gameId,
                                     "Political Secret",
                                     faction.id
                                   );
                                 } else {
                                   playPromissoryNoteAsync(
-                                    gameid,
+                                    gameId,
                                     "Political Secret",
                                     faction.id
                                   );
@@ -1066,13 +1064,13 @@ function AgendaSteps() {
                 <button
                   className={electionHacked ? "selected" : ""}
                   onClick={() => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     if (electionHacked) {
-                      unplayActionCardAsync(gameid, "Hack Election", "None");
+                      unplayActionCardAsync(gameId, "Hack Election", "None");
                     } else {
-                      playActionCardAsync(gameid, "Hack Election", "None");
+                      playActionCardAsync(gameId, "Hack Election", "None");
                     }
                   }}
                 >
@@ -1100,18 +1098,18 @@ function AgendaSteps() {
                   options={Object.values(factions)}
                   selectedItem={assassinatedRep}
                   toggleItem={(factionId, add) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     if (add) {
                       playActionCardAsync(
-                        gameid,
+                        gameId,
                         "Assassinate Representative",
                         factionId
                       );
                     } else {
                       unplayActionCardAsync(
-                        gameid,
+                        gameId,
                         "Assassinate Representative",
                         factionId
                       );
@@ -1127,10 +1125,10 @@ function AgendaSteps() {
                 <button
                   style={{ width: "fit-content" }}
                   onClick={() => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
-                    startVotingAsync(gameid);
+                    startVotingAsync(gameId);
                   }}
                 >
                   <FormattedMessage
@@ -1233,11 +1231,11 @@ function AgendaSteps() {
                   selectedLabel="Overwritten Outcome"
                   selectedItem={subState.overwrite}
                   toggleItem={(targetName, add) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     setSubStateOther(
-                      gameid,
+                      gameId,
                       "overwrite",
                       add ? targetName : undefined
                     );
@@ -1275,11 +1273,11 @@ function AgendaSteps() {
                 selectedLabel="Overwritten Outcome"
                 selectedItem={subState.overwrite}
                 toggleItem={(targetName, add) => {
-                  if (!gameid) {
+                  if (!gameId) {
                     return;
                   }
                   setSubStateOther(
-                    gameid,
+                    gameId,
                     "overwrite",
                     add ? targetName : undefined
                   );
@@ -1294,11 +1292,10 @@ function AgendaSteps() {
 }
 
 function DistinguishedCouncilor({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -1346,18 +1343,18 @@ function DistinguishedCouncilor({}) {
         selectedFaction={currentCouncilors[0]}
         size={32}
         onSelect={(factionId, prevFaction) => {
-          if (!gameid) {
+          if (!gameId) {
             return;
           }
           if (prevFaction) {
             unplayActionCardAsync(
-              gameid,
+              gameId,
               "Distinguished Councilor",
               prevFaction
             );
           }
           if (factionId) {
-            playActionCardAsync(gameid, "Distinguished Councilor", factionId);
+            playActionCardAsync(gameId, "Distinguished Councilor", factionId);
           }
         }}
       />
@@ -1366,11 +1363,10 @@ function DistinguishedCouncilor({}) {
 }
 
 function DictatePolicy({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -1418,14 +1414,14 @@ function DictatePolicy({}) {
       {dictatePolicy.type === "SECRET" ? (
         <FactionSelectRadialMenu
           onSelect={(factionId, prevFaction) => {
-            if (!gameid) {
+            if (!gameId) {
               return;
             }
             if (prevFaction) {
-              unscoreObjectiveAsync(gameid, prevFaction, "Dictate Policy");
+              unscoreObjectiveAsync(gameId, prevFaction, "Dictate Policy");
             }
             if (factionId) {
-              scoreObjectiveAsync(gameid, factionId, "Dictate Policy");
+              scoreObjectiveAsync(gameId, factionId, "Dictate Policy");
             }
           }}
           borderColor={getFactionColor(
@@ -1467,13 +1463,13 @@ function DictatePolicy({}) {
                   color: current ? "green" : "red",
                 }}
                 onClick={() => {
-                  if (!gameid) {
+                  if (!gameId) {
                     return;
                   }
                   if (current) {
-                    unscoreObjectiveAsync(gameid, factionId, "Dictate Policy");
+                    unscoreObjectiveAsync(gameId, factionId, "Dictate Policy");
                   } else {
-                    scoreObjectiveAsync(gameid, factionId, "Dictate Policy");
+                    scoreObjectiveAsync(gameId, factionId, "Dictate Policy");
                   }
                 }}
               >
@@ -1508,11 +1504,10 @@ function DictatePolicy({}) {
 }
 
 export default function AgendaPhase() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
@@ -1568,10 +1563,10 @@ export default function AgendaPhase() {
   );
 
   function selectSpeakerTieBreak(tieBreak: string | null) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    speakerTieBreakAsync(gameid, tieBreak ?? "None");
+    speakerTieBreakAsync(gameId, tieBreak ?? "None");
   }
 
   const electionHacked =
@@ -1616,10 +1611,10 @@ export default function AgendaPhase() {
   const tieBreak = getSpeakerTieBreak(currentTurn);
 
   function nextPhase() {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    startNextRound(gameid);
+    startNextRound(gameId);
   }
 
   return (

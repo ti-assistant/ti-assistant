@@ -1,21 +1,12 @@
-import dynamic from "next/dynamic";
-import React, { useState } from "react";
-import { Loader } from "../Loader";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import { responsivePixels } from "../util/util";
-import { useRouter } from "next/router";
+import React, { useContext, useState } from "react";
 import BorderedDiv from "../components/BorderedDiv/BorderedDiv";
-
-const GameLog = dynamic(
-  import("../GameLog").then((mod) => mod.GameLog),
-  {
-    loading: () => <Loader />,
-  }
-);
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import { GameIdContext } from "../context/Context";
+import { responsivePixels } from "../util/util";
+import { GameLog } from "../GameLog";
 
 export default function ResultsPhase() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const [viewing, setViewing] = useState("Game Log");
 
   return (
@@ -30,8 +21,8 @@ export default function ResultsPhase() {
           </button>
         </LabeledDiv>
         <a
-          href={`/api/${gameid}/download`}
-          download={`${gameid}_data`}
+          href={`/api/${gameId}/download`}
+          download={`${gameId}_data`}
           style={{ textAlign: "center" }}
         >
           <BorderedDiv>Download Game Data</BorderedDiv>

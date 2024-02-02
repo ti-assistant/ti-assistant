@@ -1,8 +1,7 @@
 .LeftColumn {
-  height: 100svh;
+  margin-top: var(--one-twenty-pixel);
   align-items: stretch;
-  justify-content: center;
-  margin: 0;
+  justify-content: flex-start;
   width: min-content;
   padding: 0 var(--twenty-pixel);
   white-space: normal;
@@ -14,6 +13,14 @@
 
 .MainColumn {
   height: 100dvh;
+}
+
+@media only screen and (max-width: 1279px) {
+  .LeftColumn {
+    height: calc(100dvh - 40px);
+    margin: 0;
+    justify-content: center;
+  }
 }
 
 @media only screen and (max-width: 600px) {

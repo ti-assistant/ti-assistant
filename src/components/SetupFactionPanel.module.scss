@@ -1,0 +1,22 @@
+
+.factionInfoGrid {
+  display: grid;
+  width: 100%;
+  gap: var(--eight-pixel);
+  grid-auto-flow: row;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: flex-start;
+}
+
+@media only screen and (max-width: 1023px) {
+  .factionInfoGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .factionInfoGrid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}

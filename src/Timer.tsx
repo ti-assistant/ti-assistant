@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import {
   CSSProperties,
   useCallback,
@@ -8,7 +7,7 @@ import {
   useState,
 } from "react";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
-import { StateContext } from "./context/Context";
+import { GameIdContext, StateContext } from "./context/Context";
 import { useSharedTimer } from "./data/SharedTimer";
 import { useTimers } from "./data/Timers";
 import {
@@ -17,14 +16,14 @@ import {
   updateLocalAgendaTimer,
   updateLocalFactionTimer,
 } from "./util/api/timers";
-import { responsivePixels, useInterval } from "./util/util";
+import { responsivePixels } from "./util/util";
 import { FormattedMessage } from "react-intl";
+import { useInterval } from "./util/client";
 
 export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
-  const timers = useTimers(gameid);
+  const timers = useTimers(gameId);
 
   const [agendaTimer, setAgendaTimer] = useState(0);
   const { addSubscriber, removeSubscriber } = useSharedTimer();
@@ -33,12 +32,12 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   const lastUpdate = useRef(0);
 
   useInterval(() => {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     if (lastUpdate.current < timerRef.current) {
       lastUpdate.current = timerRef.current;
-      saveAgendaTimer(gameid, timerRef.current, agendaNum);
+      saveAgendaTimer(gameId, timerRef.current, agendaNum);
     }
   }, 15000);
 
@@ -46,13 +45,13 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   const paused = state?.paused;
 
   const updateTime = useCallback(() => {
-    if (!gameid || paused || !isActive) {
+    if (!gameId || paused || !isActive) {
       return;
     }
     timerRef.current += 1;
-    updateLocalAgendaTimer(gameid, timerRef.current, agendaNum);
+    updateLocalAgendaTimer(gameId, timerRef.current, agendaNum);
     setAgendaTimer(timerRef.current);
-  }, [paused, isActive, gameid, agendaNum]);
+  }, [paused, isActive, gameId, agendaNum]);
 
   useEffect(() => {
     const id = addSubscriber(updateTime);
@@ -100,9 +99,8 @@ export function StaticFactionTimer({
   style,
   width,
 }: FactionTimerProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-  const timers = useTimers(gameid);
+  const gameId = useContext(GameIdContext);
+  const timers = useTimers(gameId);
   const [factionTimer, setFactionTimer] = useState(0);
   const prevFaction = useRef<string>();
 
@@ -111,7 +109,7 @@ export function StaticFactionTimer({
 
   useEffect(() => {
     return () => {
-      if (!gameid || factionId === "Unknown") {
+      if (!gameId || factionId === "Unknown") {
         return;
       }
       if (
@@ -119,10 +117,10 @@ export function StaticFactionTimer({
         lastUpdate.current < timerRef.current
       ) {
         lastUpdate.current = timerRef.current;
-        saveFactionTimer(gameid, factionId, timerRef.current);
+        saveFactionTimer(gameId, factionId, timerRef.current);
       }
     };
-  }, [factionId, gameid]);
+  }, [factionId, gameId]);
 
   const localFactionTimer = timers[factionId] ?? 0;
 
@@ -142,22 +140,21 @@ export function StaticFactionTimer({
 }
 
 export function FactionTimer({ factionId, style }: FactionTimerProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const [factionTimer, setFactionTimer] = useState(0);
   const prevFaction = useRef<string>();
 
   const timerRef = useRef(0);
   const lastUpdate = useRef(0);
 
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
-  const timers = useTimers(gameid);
+  const timers = useTimers(gameId);
 
   const { addSubscriber, removeSubscriber } = useSharedTimer();
 
   useEffect(() => {
     return () => {
-      if (!gameid || factionId === "Unknown") {
+      if (!gameId || factionId === "Unknown") {
         return;
       }
       if (
@@ -165,32 +162,32 @@ export function FactionTimer({ factionId, style }: FactionTimerProps) {
         lastUpdate.current < timerRef.current
       ) {
         lastUpdate.current = timerRef.current;
-        saveFactionTimer(gameid, factionId, timerRef.current);
+        saveFactionTimer(gameId, factionId, timerRef.current);
       }
     };
-  }, [factionId, gameid]);
+  }, [factionId, gameId]);
 
   useInterval(() => {
-    if (!gameid || factionId === "Unknown") {
+    if (!gameId || factionId === "Unknown") {
       return;
     }
     if (prevFaction.current == factionId && lastUpdate.current < factionTimer) {
       lastUpdate.current = factionTimer;
-      saveFactionTimer(gameid, factionId, factionTimer);
+      saveFactionTimer(gameId, factionId, factionTimer);
     }
   }, 5000);
 
   const paused = state?.paused;
 
   const updateTime = useCallback(() => {
-    if (paused || !gameid || factionId === "Unknown") {
+    if (paused || !gameId || factionId === "Unknown") {
       return;
     }
 
     timerRef.current += 1;
-    updateLocalFactionTimer(gameid, factionId, timerRef.current);
+    updateLocalFactionTimer(gameId, factionId, timerRef.current);
     setFactionTimer(timerRef.current);
-  }, [paused, gameid, factionId]);
+  }, [paused, gameId, factionId]);
 
   useEffect(() => {
     const id = addSubscriber(updateTime);

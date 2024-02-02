@@ -60,6 +60,20 @@ interface ActionLogEntry {
   data: GameUpdateData;
 }
 
+interface BaseData {
+  agendas: Record<AgendaId, BaseAgenda>;
+  attachments: Record<AttachmentId, BaseAttachment>;
+  components: Record<ComponentId, BaseComponent | BaseTechComponent>;
+  factions: Record<FactionId, BaseFaction>;
+  leaders: Record<LeaderId, BaseLeader>;
+  objectives: Record<ObjectiveId, BaseObjective>;
+  planets: Record<PlanetId, BasePlanet>;
+  relics: Record<RelicId, BaseRelic>;
+  strategycards: Record<StrategyCardId, StrategyCard>;
+  systems: Record<SystemId, BaseSystem>;
+  techs: Record<TechId, BaseTech>;
+}
+
 interface GameData {
   actionLog?: ActionLogEntry[];
   agendas?: Partial<Record<AgendaId, Agenda>>;

@@ -124,7 +124,6 @@ export default function FactionSelectRadialMenu({
                   onClick={() => {
                     closeFn();
                     if (factionId === selectedFaction) {
-                      console.log(selectedFaction);
                       onSelect(undefined, selectedFaction);
                       return;
                     }

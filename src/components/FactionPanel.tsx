@@ -1,7 +1,7 @@
 import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode, useContext, useState } from "react";
-import { FactionContext } from "../context/Context";
-import { buildBaseTechs, buildFaction, buildLeaders } from "../data/GameData";
+import { FactionContext, GameIdContext, TechContext } from "../context/Context";
+import { buildLeaders } from "../data/GameData";
 import { getFactionName } from "../util/factions";
 import { responsivePixels } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
@@ -11,8 +11,8 @@ import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import { updateLeaderStateAsync } from "../dynamic/api";
-import { useRouter } from "next/router";
 import { useIntl } from "react-intl";
+import { useSearchParams } from "next/navigation";
 
 function AbilitySection({
   leftLabel,
@@ -169,33 +169,23 @@ function UnitStat({ name, stat }: { name: string; stat: number | string }) {
 }
 
 function FactionPanelContent({
-  factionId,
+  faction,
   options,
 }: {
-  factionId: FactionId;
+  faction: Faction;
   options: Options;
 }) {
-  const router = useRouter();
-  const { game: gameId }: { game?: string } = router.query;
   const intl = useIntl();
-  const techs = buildBaseTechs(options, intl);
   const leaders = buildLeaders(options, intl);
-  let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
-  const factions = useContext(FactionContext);
-  const gameFaction = factions[factionId];
-  if (gameFaction) {
-    faction = gameFaction;
-  }
-
-  if (!faction) {
-    return null;
-  }
+  // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
+  const gameId = useContext(GameIdContext);
+  const techs = useContext(TechContext);
 
   const factionTechs = Object.values(techs).filter(
-    (tech) => tech.faction === factionId
+    (tech) => tech.faction === faction.id
   );
   const factionLeaders = Object.values(leaders)
-    .filter((leader) => leader.faction === factionId)
+    .filter((leader) => leader.faction === faction.id)
     .filter((leader) =>
       faction.startswith.faction && leader.subFaction
         ? leader.subFaction === faction.startswith.faction
@@ -283,7 +273,7 @@ function FactionPanelContent({
                               }
                               updateLeaderStateAsync(
                                 gameId,
-                                factionId,
+                                faction.id,
                                 leader.type,
                                 "locked"
                               );
@@ -323,7 +313,7 @@ function FactionPanelContent({
                             }
                             updateLeaderStateAsync(
                               gameId,
-                              factionId,
+                              faction.id,
                               leader.type,
                               "readied"
                             );
@@ -342,7 +332,7 @@ function FactionPanelContent({
                             }
                             updateLeaderStateAsync(
                               gameId,
-                              factionId,
+                              faction.id,
                               leader.type,
                               "readied"
                             );
@@ -647,7 +637,7 @@ export function FactionPanel({
   faction,
   options,
 }: {
-  faction: Faction | SetupFaction;
+  faction: Faction;
   options: Options;
 }) {
   const [showPanel, setShowPanel] = useState(false);
@@ -674,7 +664,7 @@ export function FactionPanel({
             }}
           >
             <FactionIcon factionId={faction.id} size={36} />
-            {"shortname" in faction ? getFactionName(faction) : faction.name}
+            {getFactionName(faction)}
             <FactionIcon factionId={faction.id} size={36} />
           </div>
           <div
@@ -689,14 +679,7 @@ export function FactionPanel({
               height: "fit-content",
             }}
           >
-            <FactionPanelContent
-              factionId={
-                "shortname" in faction
-                  ? faction.id
-                  : (faction.name as FactionId)
-              }
-              options={options}
-            />
+            <FactionPanelContent faction={faction} options={options} />
           </div>
         </div>
       </GenericModal>

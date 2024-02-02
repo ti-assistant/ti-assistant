@@ -1,8 +1,7 @@
-import { useRouter } from "next/router";
 import React, { CSSProperties, useContext, useState } from "react";
 import { Selector } from "../Selector";
 import { TechRow } from "../TechRow";
-import { FactionContext, TechContext } from "../context/Context";
+import { FactionContext, GameIdContext, TechContext } from "../context/Context";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
 import { hasTech, isTechReplaced } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -14,9 +13,8 @@ import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const techs = useContext(TechContext);
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
@@ -123,24 +121,24 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs}
                         toggleItem={(techId, add) => {
-                          if (!gameid) {
+                          if (!gameId) {
                             return;
                           }
                           if (add) {
-                            addTechAsync(gameid, faction.id, techId);
+                            addTechAsync(gameId, faction.id, techId);
                           } else {
-                            removeTechAsync(gameid, faction.id, techId);
+                            removeTechAsync(gameId, faction.id, techId);
                           }
                         }}
                         renderItem={(techId) => {
                           const tech = (techs ?? {})[techId];
-                          if (!tech || !gameid) {
+                          if (!tech || !gameId) {
                             return null;
                           }
                           return (
                             <div
                               onClick={() =>
-                                removeTechAsync(gameid, faction.id, techId)
+                                removeTechAsync(gameId, faction.id, techId)
                               }
                             >
                               <TechRow
@@ -160,24 +158,24 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs}
                         toggleItem={(techId, add) => {
-                          if (!gameid) {
+                          if (!gameId) {
                             return;
                           }
                           if (add) {
-                            addTechAsync(gameid, faction.id, techId);
+                            addTechAsync(gameId, faction.id, techId);
                           } else {
-                            removeTechAsync(gameid, faction.id, techId);
+                            removeTechAsync(gameId, faction.id, techId);
                           }
                         }}
                         renderItem={(techId) => {
                           const tech = (techs ?? {})[techId];
-                          if (!tech || !gameid) {
+                          if (!tech || !gameId) {
                             return null;
                           }
                           return (
                             <div
                               onClick={() =>
-                                removeTechAsync(gameid, faction.id, techId)
+                                removeTechAsync(gameId, faction.id, techId)
                               }
                             >
                               <TechRow
@@ -200,13 +198,13 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                         <div
                           key={tech.id}
                           onClick={() => {
-                            if (!gameid) {
+                            if (!gameId) {
                               return;
                             }
                             if (factionHasTech) {
-                              removeTechAsync(gameid, faction.id, tech.id);
+                              removeTechAsync(gameId, faction.id, tech.id);
                             } else {
-                              addTechAsync(gameid, faction.id, tech.id);
+                              addTechAsync(gameId, faction.id, tech.id);
                             }
                           }}
                           style={{ maxWidth: "100%" }}
@@ -256,8 +254,7 @@ function TechUpdateRow({
   tech: Tech;
   orderedFactions: Faction[];
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
 
   const numFactions = orderedFactions.length;
 
@@ -286,13 +283,13 @@ function TechUpdateRow({
               key={faction.id}
               className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
               onClick={() => {
-                if (!gameid) {
+                if (!gameId) {
                   return;
                 }
                 if (factionHasTech) {
-                  removeTechAsync(gameid, faction.id, tech.id);
+                  removeTechAsync(gameId, faction.id, tech.id);
                 } else {
-                  addTechAsync(gameid, faction.id, tech.id);
+                  addTechAsync(gameId, faction.id, tech.id);
                 }
               }}
             >

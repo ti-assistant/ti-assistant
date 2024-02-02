@@ -144,7 +144,7 @@ export function phaseString(phase: Phase, intl: IntlShape) {
       return intl.formatMessage({
         id: "Phase.End",
         description: "Phase title for end of game.",
-        defaultMessage: "End of Game",
+        defaultMessage: "Results",
       });
   }
 }

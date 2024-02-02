@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React, { CSSProperties, useContext } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
@@ -20,6 +19,7 @@ import {
   ActionLogContext,
   AttachmentContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   PlanetContext,
   StateContext,
@@ -65,11 +65,11 @@ interface FactionActionButtonsProps {
 
 function SecondaryCheck({
   activeFactionId,
-  gameid,
+  gameId,
   orderedFactions,
 }: {
   activeFactionId: FactionId;
-  gameid: string;
+  gameId: string;
   orderedFactions: Faction[];
 }) {
   let allCompleted = true;
@@ -99,7 +99,7 @@ function SecondaryCheck({
               fade={secondaryState !== "PENDING"}
               factionId={faction.id}
               onClick={() => {
-                if (!gameid) {
+                if (!gameId) {
                   return;
                 }
                 let nextState: Secondary = "DONE";
@@ -114,7 +114,7 @@ function SecondaryCheck({
                     nextState = "PENDING";
                     break;
                 }
-                markSecondaryAsync(gameid, faction.id, nextState);
+                markSecondaryAsync(gameId, faction.id, nextState);
               }}
               size={52}
               tag={
@@ -158,10 +158,9 @@ export function FactionActionButtons({
   factionId,
   buttonStyle,
 }: FactionActionButtonsProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const strategyCards = useContext(StrategyCardContext);
 
   if (!factions) {
@@ -180,13 +179,13 @@ export function FactionActionButtons({
   const selectedAction = getSelectedActionFromLog(actionLog);
 
   function toggleAction(action: Action) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     if (selectedAction === action) {
-      unselectActionAsync(gameid, action);
+      unselectActionAsync(gameId, action);
     } else {
-      selectActionAsync(gameid, action);
+      selectActionAsync(gameId, action);
     }
   }
 
@@ -294,11 +293,10 @@ export function AdditionalActions({
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const attachments = useContext(AttachmentContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
@@ -360,61 +358,61 @@ export function AdditionalActions({
   const researchableTechs = getResearchableTechs(activeFaction);
 
   function removePlanet(factionId: FactionId, toRemove: PlanetId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    unclaimPlanetAsync(gameid, factionId, toRemove);
+    unclaimPlanetAsync(gameId, factionId, toRemove);
   }
 
   function addPlanet(factionId: FactionId, toAdd: Planet) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    claimPlanetAsync(gameid, factionId, toAdd.id);
+    claimPlanetAsync(gameId, factionId, toAdd.id);
   }
 
   function addObjective(factionId: FactionId, toScore: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    scoreObjectiveAsync(gameid, factionId, toScore);
+    scoreObjectiveAsync(gameId, factionId, toScore);
   }
 
   function undoObjective(factionId: FactionId, toRemove: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    unscoreObjectiveAsync(gameid, factionId, toRemove);
+    unscoreObjectiveAsync(gameId, factionId, toRemove);
   }
 
   function removeTechLocal(factionId: FactionId, toRemove: TechId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    removeTechAsync(gameid, factionId, toRemove);
+    removeTechAsync(gameId, factionId, toRemove);
   }
 
   function researchTech(factionId: FactionId, tech: Tech) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    addTechAsync(gameid, factionId, tech.id);
+    addTechAsync(gameId, factionId, tech.id);
   }
 
   async function selectSpeaker(factionId: FactionId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    setSpeakerAsync(gameid, factionId);
+    setSpeakerAsync(gameId, factionId);
   }
 
   const newSpeakerEvent = getNewSpeakerEventFromLog(actionLog);
 
   async function resetSpeaker() {
-    if (!gameid || !newSpeakerEvent?.prevSpeaker) {
+    if (!gameId || !newSpeakerEvent?.prevSpeaker) {
       return;
     }
-    setSpeakerAsync(gameid, newSpeakerEvent.prevSpeaker);
+    setSpeakerAsync(gameId, newSpeakerEvent.prevSpeaker);
   }
 
   function lastFaction() {
@@ -552,9 +550,9 @@ export function AdditionalActions({
                         key={tech}
                         tech={techObj}
                         removeTech={() => {
-                          // if (gameid && !isActive) {
+                          // if (gameId && !isActive) {
                           //   markSecondary(
-                          //     gameid,
+                          //     gameId,
                           //     activeFaction.id,
                           //     "PENDING"
                           //   );
@@ -577,11 +575,11 @@ export function AdditionalActions({
                   techs={researchableTechs}
                   selectTech={(tech) => {
                     // if (
-                    //   gameid &&
+                    //   gameId &&
                     //   !isActive &&
                     //   researchedTech.length + 1 === numTechs
                     // ) {
-                    //   markSecondary(gameid, activeFaction.id, "DONE");
+                    //   markSecondary(gameId, activeFaction.id, "DONE");
                     // }
                     researchTech(activeFaction.id, tech);
                   }}
@@ -600,7 +598,7 @@ export function AdditionalActions({
                   />
                   <SecondaryCheck
                     activeFactionId={activeFaction.id}
-                    gameid={gameid ?? ""}
+                    gameId={gameId ?? ""}
                     orderedFactions={orderedFactions}
                   />
                 </React.Fragment>
@@ -740,8 +738,8 @@ export function AdditionalActions({
                             key={tech}
                             tech={techObj}
                             removeTech={() => {
-                              // if (gameid) {
-                              //   markSecondary(gameid, faction.id, "PENDING");
+                              // if (gameId) {
+                              //   markSecondary(gameId, faction.id, "PENDING");
                               // }
                               removeTechLocal(faction.id, tech);
                             }}
@@ -761,10 +759,10 @@ export function AdditionalActions({
                           techs={availableTechs}
                           selectTech={(tech) => {
                             // if (
-                            //   gameid &&
+                            //   gameId &&
                             //   researchedTechs.length + 1 === maxTechs
                             // ) {
-                            //   markSecondary(gameid, faction.id, "DONE");
+                            //   markSecondary(gameId, faction.id, "DONE");
                             // }
                             researchTech(faction.id, tech);
                           }}
@@ -776,7 +774,7 @@ export function AdditionalActions({
               })}
               <SecondaryCheck
                 activeFactionId={activeFaction.id}
-                gameid={gameid ?? ""}
+                gameId={gameId ?? ""}
                 orderedFactions={orderedFactions}
               />
             </div>
@@ -852,7 +850,7 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameid={gameid ?? ""}
+            gameId={gameId ?? ""}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -949,7 +947,7 @@ export function AdditionalActions({
             />
             <SecondaryCheck
               activeFactionId={activeFaction.id}
-              gameid={gameid ?? ""}
+              gameId={gameId ?? ""}
               orderedFactions={orderedFactions}
             />
           </div>
@@ -1038,8 +1036,8 @@ export function AdditionalActions({
                           factionId={"Xxcha Kingdom"}
                           planet={adjustedPlanet}
                           removePlanet={() => {
-                            // if (gameid) {
-                            //   markSecondary(gameid, "Xxcha Kingdom", "PENDING");
+                            // if (gameId) {
+                            //   markSecondary(gameId, "Xxcha Kingdom", "PENDING");
                             // }
                             removePlanet("Xxcha Kingdom", planet);
                           }}
@@ -1068,8 +1066,8 @@ export function AdditionalActions({
                               width: responsivePixels(90),
                             }}
                             onClick={() => {
-                              // if (gameid) {
-                              //   markSecondary(gameid, "Xxcha Kingdom", "DONE");
+                              // if (gameId) {
+                              //   markSecondary(gameId, "Xxcha Kingdom", "DONE");
                               // }
                               addPlanet("Xxcha Kingdom", planet);
                             }}
@@ -1085,7 +1083,7 @@ export function AdditionalActions({
             </LabeledDiv>
             <SecondaryCheck
               activeFactionId={activeFaction.id}
-              gameid={gameid ?? ""}
+              gameId={gameId ?? ""}
               orderedFactions={orderedFactions}
             />
           </div>
@@ -1104,7 +1102,7 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameid={gameid ?? ""}
+            gameId={gameId ?? ""}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -1126,7 +1124,7 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameid={gameid ?? ""}
+            gameId={gameId ?? ""}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -1296,7 +1294,7 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameid={gameid ?? ""}
+            gameId={gameId ?? ""}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -1351,7 +1349,7 @@ export function AdditionalActions({
             borderColor={getFactionColor(activeFaction)}
             factionId={activeFaction.id}
             onClick={() => {
-              if (!gameid) {
+              if (!gameId) {
                 return;
               }
               if (hasProveEndurance) {
@@ -1414,7 +1412,7 @@ export function AdditionalActions({
           conqueredPlanets={conqueredPlanets}
           currentTurn={currentTurn}
           factions={factions ?? {}}
-          gameid={gameid ?? ""}
+          gameid={gameId ?? ""}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
           scorableObjectives={scorableObjectives}
@@ -1434,28 +1432,24 @@ interface NextPlayerButtonsProps {
 export function NextPlayerButtons({
   buttonStyle = {},
 }: NextPlayerButtonsProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-
-  const intl = useIntl();
-
   const actionLog = useContext(ActionLogContext);
+  const gameId = useContext(GameIdContext);
   const selectedAction = getSelectedActionFromLog(actionLog);
   const newSpeaker = getNewSpeakerEventFromLog(actionLog);
 
   async function completeActions() {
-    if (!gameid || selectedAction === null) {
+    if (!gameId || selectedAction === null) {
       return;
     }
 
-    endTurnAsync(gameid);
+    endTurnAsync(gameId);
   }
 
   async function finalizeAction() {
-    if (!gameid || selectedAction === null) {
+    if (!gameId || selectedAction === null) {
       return;
     }
-    endTurnAsync(gameid, true);
+    endTurnAsync(gameId, true);
   }
 
   function isTurnComplete() {
@@ -1518,8 +1512,7 @@ export function ActivePlayerColumn({
   activeFaction,
   onDeckFaction,
 }: ActivePlayerColumnProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const intl = useIntl();
 
   return (
@@ -1653,10 +1646,10 @@ export function ActivePlayerColumn({
               { phase: phaseString("STATUS", intl) }
             ),
             onClick: () => {
-              if (!gameid) {
+              if (!gameId) {
                 return;
               }
-              advanceToStatusPhase(gameid);
+              advanceToStatusPhase(gameId);
             },
           },
         ]}
@@ -1665,14 +1658,13 @@ export function ActivePlayerColumn({
   );
 }
 
-export function advanceToStatusPhase(gameid: string) {
-  advancePhaseAsync(gameid);
+export function advanceToStatusPhase(gameId: string) {
+  advancePhaseAsync(gameId);
 }
 
 export default function ActionPhase() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
   const intl = useIntl();
@@ -1758,10 +1750,10 @@ export default function ActionPhase() {
                       { phase: phaseString("STATUS", intl) }
                     ),
                     onClick: () => {
-                      if (!gameid) {
+                      if (!gameId) {
                         return;
                       }
-                      advanceToStatusPhase(gameid);
+                      advanceToStatusPhase(gameId);
                     },
                   },
                 ]}

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 import React, {
   CSSProperties,
   PropsWithChildren,
@@ -10,6 +9,7 @@ import { Selector } from "../Selector";
 import {
   ActionLogContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   OptionContext,
   StateContext,
@@ -82,18 +82,18 @@ function InfoContent({ objective }: InfoContentProps) {
 }
 
 function ObjectiveColumn({
+  gameId,
   objective,
   factions,
   orderedFactionIds,
   options,
 }: {
+  gameId: string;
   objective: Objective;
   factions: Partial<Record<FactionId, Faction>>;
   orderedFactionIds: FactionId[];
   options: Options;
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   const numScorers = (objective.scorers ?? []).length;
@@ -128,10 +128,10 @@ function ObjectiveColumn({
             <div
               className="icon clickable negative"
               onClick={() => {
-                if (!gameid) {
+                if (!gameId) {
                   return;
                 }
-                hideObjectiveAsync(gameid, objective.id);
+                hideObjectiveAsync(gameId, objective.id);
               }}
             >
               &#x2715;
@@ -169,13 +169,13 @@ function ObjectiveColumn({
             key={factionId}
             className={`flexRow ${styles.selected} ${styles.factionGridIconWrapper}`}
             onClick={() => {
-              if (!gameid) {
+              if (!gameId) {
                 return;
               }
               if (scoredObjective) {
-                unscoreObjectiveAsync(gameid, factionId, objective.id);
+                unscoreObjectiveAsync(gameId, factionId, objective.id);
               } else {
-                scoreObjectiveAsync(gameid, factionId, objective.id);
+                scoreObjectiveAsync(gameId, factionId, objective.id);
               }
             }}
           >
@@ -197,9 +197,13 @@ function ObjectiveColumn({
   );
 }
 
-function SecretModalContent({ factionId }: { factionId: FactionId }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+function SecretModalContent({
+  factionId,
+  gameId,
+}: {
+  factionId: FactionId;
+  gameId: string;
+}) {
   const objectives = useContext(ObjectiveContext);
 
   const secrets = Object.values(objectives ?? {}).filter(
@@ -229,10 +233,10 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
             objective={secret}
             hideScorers={true}
             removeObjective={() => {
-              if (!gameid) {
+              if (!gameId) {
                 return;
               }
-              unscoreObjectiveAsync(gameid, factionId, secret.id);
+              unscoreObjectiveAsync(gameId, factionId, secret.id);
             }}
           />
         );
@@ -246,10 +250,10 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
             hoverMenuLabel="Score Secret Objective"
             options={availableSecrets.map((secret) => secret.id)}
             toggleItem={(itemId) => {
-              if (!gameid) {
+              if (!gameId) {
                 return;
               }
-              scoreObjectiveAsync(gameid, factionId, itemId);
+              scoreObjectiveAsync(gameId, factionId, itemId);
             }}
           />
         ) : null}
@@ -266,11 +270,10 @@ interface ExtendedCSS extends CSSProperties {
   "--color": string;
 }
 
-export function ObjectivePanel({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+export function ObjectivePanel() {
   const actionLog = useContext(ActionLogContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
   const state = useContext(StateContext);
@@ -461,11 +464,11 @@ export function ObjectivePanel({}) {
   const displayDescription = options["display-objective-description"];
 
   function manualVpAdjust(increase: boolean, factionId: FactionId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     const value = increase ? 1 : -1;
-    manualVPUpdateAsync(gameid, factionId, value);
+    manualVPUpdateAsync(gameId, factionId, value);
   }
 
   return (
@@ -483,7 +486,7 @@ export function ObjectivePanel({}) {
         closeMenu={() => setSecretModal(false)}
         visible={!!secretModal}
       >
-        <SecretModalContent factionId={factionId} />
+        <SecretModalContent factionId={factionId} gameId={gameId} />
       </Modal>
       <div className="tabletOnly">
         <div className={styles.objectiveGrid}>
@@ -627,13 +630,13 @@ export function ObjectivePanel({}) {
                     );
                   }}
                   toggleItem={(objectiveId, add) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     if (add) {
-                      revealObjectiveAsync(gameid, objectiveId);
+                      revealObjectiveAsync(gameId, objectiveId);
                     } else {
-                      hideObjectiveAsync(gameid, objectiveId);
+                      hideObjectiveAsync(gameId, objectiveId);
                     }
                   }}
                 />
@@ -657,13 +660,13 @@ export function ObjectivePanel({}) {
                     );
                   }}
                   toggleItem={(objectiveId, add) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     if (add) {
-                      revealObjectiveAsync(gameid, objectiveId);
+                      revealObjectiveAsync(gameId, objectiveId);
                     } else {
-                      hideObjectiveAsync(gameid, objectiveId);
+                      hideObjectiveAsync(gameId, objectiveId);
                     }
                   }}
                 />
@@ -697,19 +700,19 @@ export function ObjectivePanel({}) {
                     factions={orderedFactionIds}
                     selectedFaction={custodiansScorer}
                     onSelect={(factionId) => {
-                      if (!gameid) {
+                      if (!gameId) {
                         return;
                       }
                       if (custodiansScorer) {
                         unscoreObjectiveAsync(
-                          gameid,
+                          gameId,
                           custodiansScorer,
                           "Custodians Token"
                         );
                       }
                       if (factionId) {
                         scoreObjectiveAsync(
-                          gameid,
+                          gameId,
                           factionId,
                           "Custodians Token"
                         );
@@ -753,10 +756,10 @@ export function ObjectivePanel({}) {
                           removeObjective={
                             (objective.scorers ?? []).length === 0
                               ? () => {
-                                  if (!gameid) {
+                                  if (!gameId) {
                                     return;
                                   }
-                                  hideObjectiveAsync(gameid, objective.id);
+                                  hideObjectiveAsync(gameId, objective.id);
                                 }
                               : undefined
                           }
@@ -778,18 +781,18 @@ export function ObjectivePanel({}) {
                                 key={factionId}
                                 className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                                 onClick={() => {
-                                  if (!gameid) {
+                                  if (!gameId) {
                                     return;
                                   }
                                   if (scoredObjective) {
                                     unscoreObjectiveAsync(
-                                      gameid,
+                                      gameId,
                                       factionId,
                                       objective.id
                                     );
                                   } else {
                                     scoreObjectiveAsync(
-                                      gameid,
+                                      gameId,
                                       factionId,
                                       objective.id
                                     );
@@ -850,10 +853,10 @@ export function ObjectivePanel({}) {
                           removeObjective={
                             (objective.scorers ?? []).length === 0
                               ? () => {
-                                  if (!gameid) {
+                                  if (!gameId) {
                                     return;
                                   }
-                                  hideObjectiveAsync(gameid, objective.id);
+                                  hideObjectiveAsync(gameId, objective.id);
                                 }
                               : undefined
                           }
@@ -875,18 +878,18 @@ export function ObjectivePanel({}) {
                                 key={factionId}
                                 className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                                 onClick={() => {
-                                  if (!gameid) {
+                                  if (!gameId) {
                                     return;
                                   }
                                   if (scoredObjective) {
                                     unscoreObjectiveAsync(
-                                      gameid,
+                                      gameId,
                                       factionId,
                                       objective.id
                                     );
                                   } else {
                                     scoreObjectiveAsync(
-                                      gameid,
+                                      gameId,
                                       factionId,
                                       objective.id
                                     );
@@ -1053,11 +1056,11 @@ export function ObjectivePanel({}) {
                               zIndex: 2,
                             }}
                             onClick={() => {
-                              if (!gameid) {
+                              if (!gameId) {
                                 return;
                               }
                               unscoreObjectiveAsync(
-                                gameid,
+                                gameId,
                                 faction,
                                 "Imperial Point"
                               );
@@ -1089,11 +1092,11 @@ export function ObjectivePanel({}) {
                             zIndex: 2,
                           }}
                           onClick={() => {
-                            if (!gameid) {
+                            if (!gameId) {
                               return;
                             }
                             scoreObjectiveAsync(
-                              gameid,
+                              gameId,
                               faction,
                               "Imperial Point"
                             );
@@ -1158,12 +1161,12 @@ export function ObjectivePanel({}) {
                         invalidFactions={[id]}
                         selectedFaction={scorer}
                         onSelect={(factionId) => {
-                          if (!gameid) {
+                          if (!gameId) {
                             return;
                           }
                           if (scorer) {
                             unscoreObjectiveAsync(
-                              gameid,
+                              gameId,
                               scorer,
                               "Support for the Throne",
                               id
@@ -1171,7 +1174,7 @@ export function ObjectivePanel({}) {
                           }
                           if (factionId) {
                             scoreObjectiveAsync(
-                              gameid,
+                              gameId,
                               factionId,
                               "Support for the Throne",
                               id
@@ -1221,12 +1224,14 @@ export function ObjectivePanel({}) {
                 }}
               >
                 <SimpleScorable
+                  gameId={gameId}
                   objective={imperialRider}
                   orderedFactionNames={orderedFactionIds}
                   numScorers={includesPoK ? 2 : 1}
                   info="Can be scored 2x due to The Codex"
                 />
                 <SimpleScorable
+                  gameId={gameId}
                   objective={politicalCensure}
                   orderedFactionNames={orderedFactionIds}
                 />
@@ -1242,16 +1247,19 @@ export function ObjectivePanel({}) {
                   }}
                 >
                   <SimpleScorable
+                    gameId={gameId}
                     objective={shardOfTheThrone}
                     orderedFactionNames={orderedFactionIds}
                   />
                   <SimpleScorable
+                    gameId={gameId}
                     objective={tomb}
                     orderedFactionNames={orderedFactionIds}
                   />
                 </div>
               ) : null}
               <SimpleScorable
+                gameId={gameId}
                 objective={holyPlanet}
                 orderedFactionNames={orderedFactionIds}
                 numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
@@ -1259,6 +1267,7 @@ export function ObjectivePanel({}) {
               />
               {!includesPoK ? (
                 <SimpleScorable
+                  gameId={gameId}
                   objective={shardOfTheThrone}
                   orderedFactionNames={orderedFactionIds}
                   numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
@@ -1266,6 +1275,7 @@ export function ObjectivePanel({}) {
                 />
               ) : null}
               <SimpleScorable
+                gameId={gameId}
                 objective={crown}
                 orderedFactionNames={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
@@ -1286,13 +1296,13 @@ export function ObjectivePanel({}) {
                     <button
                       style={{ fontSize: responsivePixels(14) }}
                       onClick={() => {
-                        if (!gameid) {
+                        if (!gameId) {
                           return;
                         }
                         if (mutinyDirection === "[For]") {
-                          setObjectivePointsAsync(gameid, "Mutiny", -1);
+                          setObjectivePointsAsync(gameId, "Mutiny", -1);
                         } else {
-                          setObjectivePointsAsync(gameid, "Mutiny", 1);
+                          setObjectivePointsAsync(gameId, "Mutiny", 1);
                         }
                       }}
                     >
@@ -1316,17 +1326,17 @@ export function ObjectivePanel({}) {
                           key={factionId}
                           className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                           onClick={() => {
-                            if (!gameid) {
+                            if (!gameId) {
                               return;
                             }
                             if (scoredObjective) {
                               unscoreObjectiveAsync(
-                                gameid,
+                                gameId,
                                 factionId,
                                 mutiny.id
                               );
                             } else {
-                              scoreObjectiveAsync(gameid, factionId, mutiny.id);
+                              scoreObjectiveAsync(gameId, factionId, mutiny.id);
                             }
                           }}
                         >
@@ -1376,13 +1386,13 @@ export function ObjectivePanel({}) {
                           key={factionId}
                           className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                           onClick={() => {
-                            if (!gameid) {
+                            if (!gameId) {
                               return;
                             }
                             if (scoredObjective) {
-                              unscoreObjectiveAsync(gameid, factionId, seed.id);
+                              unscoreObjectiveAsync(gameId, factionId, seed.id);
                             } else {
-                              scoreObjectiveAsync(gameid, factionId, seed.id);
+                              scoreObjectiveAsync(gameId, factionId, seed.id);
                             }
                           }}
                         >
@@ -1443,6 +1453,39 @@ export function ObjectivePanel({}) {
             gridTemplateRows: `repeat(${numRows}, 2fr)`,
           }}
         >
+          {/* TODO: Move to options menu */}
+          <button
+            onClick={() => {
+              if (!gameId) {
+                return;
+              }
+              changeOptionAsync(
+                gameId,
+                "display-objective-description",
+                !displayDescription
+              );
+            }}
+            style={{
+              fontSize: responsivePixels(16),
+              position: "absolute",
+              top: 0,
+              right: 0,
+            }}
+          >
+            {displayDescription ? (
+              <FormattedMessage
+                id="entq4x"
+                description="Text on a button that will display titles."
+                defaultMessage="Display Titles"
+              />
+            ) : (
+              <FormattedMessage
+                id="e1q7sg"
+                description="Text on a button that will display descriptions."
+                defaultMessage="Display Descriptions"
+              />
+            )}
+          </button>
           {orderedFactionIds.map((name, index) => {
             return (
               <div
@@ -1511,7 +1554,6 @@ export function ObjectivePanel({}) {
               values={{ count: 2 }}
             />
           </div>
-
           {orderedFactionIds.map((name) => {
             return (
               <div
@@ -1534,39 +1576,11 @@ export function ObjectivePanel({}) {
               gridRow: "1 / 2",
               height: "100%",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: "flex-end",
               width: "100%",
+              paddingTop: responsivePixels(36),
             }}
           >
-            <button
-              onClick={() => {
-                if (!gameid) {
-                  return;
-                }
-                changeOptionAsync(
-                  gameid,
-                  "display-objective-description",
-                  !displayDescription
-                );
-              }}
-              style={{
-                fontSize: responsivePixels(16),
-              }}
-            >
-              {displayDescription ? (
-                <FormattedMessage
-                  id="entq4x"
-                  description="Text on a button that will display titles."
-                  defaultMessage="Display Titles"
-                />
-              ) : (
-                <FormattedMessage
-                  id="e1q7sg"
-                  description="Text on a button that will display descriptions."
-                  defaultMessage="Display Descriptions"
-                />
-              )}
-            </button>
             <LabeledDiv
               label={
                 <FormattedMessage
@@ -1603,13 +1617,13 @@ export function ObjectivePanel({}) {
                   );
                 }}
                 toggleItem={(objectiveId, add) => {
-                  if (!gameid) {
+                  if (!gameId) {
                     return;
                   }
                   if (add) {
-                    revealObjectiveAsync(gameid, objectiveId);
+                    revealObjectiveAsync(gameId, objectiveId);
                   } else {
-                    hideObjectiveAsync(gameid, objectiveId);
+                    hideObjectiveAsync(gameId, objectiveId);
                   }
                 }}
               />
@@ -1633,13 +1647,13 @@ export function ObjectivePanel({}) {
                   );
                 }}
                 toggleItem={(objectiveId, add) => {
-                  if (!gameid) {
+                  if (!gameId) {
                     return;
                   }
                   if (add) {
-                    revealObjectiveAsync(gameid, objectiveId);
+                    revealObjectiveAsync(gameId, objectiveId);
                   } else {
-                    hideObjectiveAsync(gameid, objectiveId);
+                    hideObjectiveAsync(gameId, objectiveId);
                   }
                 }}
               />
@@ -1659,6 +1673,7 @@ export function ObjectivePanel({}) {
             return (
               <ObjectiveColumn
                 key={objective.id}
+                gameId={gameId}
                 objective={objective}
                 factions={factions ?? {}}
                 orderedFactionIds={orderedFactionIds}
@@ -1795,6 +1810,7 @@ export function ObjectivePanel({}) {
             return (
               <ObjectiveColumn
                 key={objective.id}
+                gameId={gameId}
                 objective={objective}
                 factions={factions ?? {}}
                 orderedFactionIds={orderedFactionIds}
@@ -1899,19 +1915,19 @@ export function ObjectivePanel({}) {
                   factions={orderedFactionIds}
                   selectedFaction={custodiansScorer}
                   onSelect={(factionId) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     if (custodiansScorer) {
                       unscoreObjectiveAsync(
-                        gameid,
+                        gameId,
                         custodiansScorer,
                         "Custodians Token"
                       );
                     }
                     if (factionId) {
                       scoreObjectiveAsync(
-                        gameid,
+                        gameId,
                         factionId,
                         "Custodians Token"
                       );
@@ -1966,12 +1982,12 @@ export function ObjectivePanel({}) {
                         .map((faction) => faction.id)}
                       selectedFaction={scorer}
                       onSelect={(selectedFactionId) => {
-                        if (!gameid) {
+                        if (!gameId) {
                           return;
                         }
                         if (scorer) {
                           unscoreObjectiveAsync(
-                            gameid,
+                            gameId,
                             scorer,
                             "Support for the Throne",
                             factionId
@@ -1979,7 +1995,7 @@ export function ObjectivePanel({}) {
                         }
                         if (selectedFactionId) {
                           scoreObjectiveAsync(
-                            gameid,
+                            gameId,
                             selectedFactionId,
                             "Support for the Throne",
                             factionId
@@ -2049,11 +2065,11 @@ export function ObjectivePanel({}) {
                           zIndex: 2,
                         }}
                         onClick={() => {
-                          if (!gameid) {
+                          if (!gameId) {
                             return;
                           }
                           unscoreObjectiveAsync(
-                            gameid,
+                            gameId,
                             faction,
                             "Imperial Point"
                           );
@@ -2083,10 +2099,10 @@ export function ObjectivePanel({}) {
                         zIndex: 2,
                       }}
                       onClick={() => {
-                        if (!gameid) {
+                        if (!gameId) {
                           return;
                         }
-                        scoreObjectiveAsync(gameid, faction, "Imperial Point");
+                        scoreObjectiveAsync(gameId, faction, "Imperial Point");
                       }}
                     >
                       +
@@ -2117,6 +2133,7 @@ export function ObjectivePanel({}) {
           </LabeledDiv>
           <div className="flexColumn" style={{ gridColumn: "1 / 3" }}>
             <SimpleScorable
+              gameId={gameId}
               objective={imperialRider}
               orderedFactionNames={orderedFactionIds}
               numScorers={includesPoK ? 2 : 1}
@@ -2145,10 +2162,12 @@ export function ObjectivePanel({}) {
                 }}
               >
                 <SimpleScorable
+                  gameId={gameId}
                   objective={shardOfTheThrone}
                   orderedFactionNames={orderedFactionIds}
                 />
                 <SimpleScorable
+                  gameId={gameId}
                   objective={tomb}
                   orderedFactionNames={orderedFactionIds}
                 />
@@ -2172,6 +2191,7 @@ export function ObjectivePanel({}) {
             }}
           >
             <SimpleScorable
+              gameId={gameId}
               objective={holyPlanet}
               orderedFactionNames={orderedFactionIds}
               numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
@@ -2179,6 +2199,7 @@ export function ObjectivePanel({}) {
             />
             {!includesPoK ? (
               <SimpleScorable
+                gameId={gameId}
                 objective={shardOfTheThrone}
                 orderedFactionNames={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
@@ -2186,12 +2207,14 @@ export function ObjectivePanel({}) {
               />
             ) : null}
             <SimpleScorable
+              gameId={gameId}
               objective={crown}
               orderedFactionNames={orderedFactionIds}
               numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
             />
             <SimpleScorable
+              gameId={gameId}
               objective={politicalCensure}
               orderedFactionNames={orderedFactionIds}
             />
@@ -2227,13 +2250,13 @@ export function ObjectivePanel({}) {
                   <button
                     style={{ fontSize: responsivePixels(14) }}
                     onClick={() => {
-                      if (!gameid) {
+                      if (!gameId) {
                         return;
                       }
                       if (mutinyDirection === "[For]") {
-                        setObjectivePointsAsync(gameid, "Mutiny", -1);
+                        setObjectivePointsAsync(gameId, "Mutiny", -1);
                       } else {
-                        setObjectivePointsAsync(gameid, "Mutiny", 1);
+                        setObjectivePointsAsync(gameId, "Mutiny", 1);
                       }
                     }}
                   >
@@ -2257,13 +2280,13 @@ export function ObjectivePanel({}) {
                         key={factionId}
                         className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                         onClick={() => {
-                          if (!gameid) {
+                          if (!gameId) {
                             return;
                           }
                           if (scoredObjective) {
-                            unscoreObjectiveAsync(gameid, factionId, mutiny.id);
+                            unscoreObjectiveAsync(gameId, factionId, mutiny.id);
                           } else {
-                            scoreObjectiveAsync(gameid, factionId, mutiny.id);
+                            scoreObjectiveAsync(gameId, factionId, mutiny.id);
                           }
                         }}
                       >
@@ -2313,13 +2336,13 @@ export function ObjectivePanel({}) {
                         key={factionId}
                         className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
                         onClick={() => {
-                          if (!gameid) {
+                          if (!gameId) {
                             return;
                           }
                           if (scoredObjective) {
-                            unscoreObjectiveAsync(gameid, factionId, seed.id);
+                            unscoreObjectiveAsync(gameId, factionId, seed.id);
                           } else {
-                            scoreObjectiveAsync(gameid, factionId, seed.id);
+                            scoreObjectiveAsync(gameId, factionId, seed.id);
                           }
                         }}
                       >
@@ -2352,18 +2375,18 @@ export function ObjectivePanel({}) {
 }
 
 function SimpleScorable({
+  gameId,
   objective,
   orderedFactionNames,
   numScorers = 1,
   info,
 }: {
+  gameId: string;
   objective: Objective | undefined;
   orderedFactionNames: FactionId[];
   numScorers?: number;
   info?: string;
 }) {
-  const router = useRouter();
-  const { game: gameId }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
 
   const [showInfoModal, setShowInfoModal] = useState(false);

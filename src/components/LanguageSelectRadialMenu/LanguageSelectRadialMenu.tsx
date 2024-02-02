@@ -1,21 +1,18 @@
+"use client";
+
 import React, { CSSProperties, ReactNode, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
 import { responsivePixels } from "../../util/util";
-import FactionCircle from "../FactionCircle/FactionCircle";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./LanguageSelectRadialMenu.module.scss";
 import Circle from "../Circle/Circle";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 interface LanguageSelectRadialMenuProps {
   selectedLocale?: string;
   locales: string[];
   fadedLocales?: string[];
   invalidLocales?: string[];
-  onSelect: (
-    locale: string | undefined,
-    prevLocale: string | undefined
-  ) => void;
   size?: number;
   tag?: ReactNode;
   borderColor?: string;
@@ -68,7 +65,6 @@ export default function LanguageSelectRadialMenu({
   locales,
   fadedLocales = [],
   invalidLocales = [],
-  onSelect,
   size = 44,
   tag,
   borderColor = "#444",
@@ -140,10 +136,10 @@ export default function LanguageSelectRadialMenu({
                   onClick={() => {
                     closeFn();
                     if (locale === selectedLocale) {
-                      onSelect(undefined, selectedLocale);
                       return;
                     }
-                    onSelect(locale, selectedLocale);
+                    Cookies.set("TI_LOCALE", locale);
+                    window.location.reload();
                   }}
                 >
                   <div

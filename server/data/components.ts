@@ -724,12 +724,15 @@ export function getBaseComponents(
       type: "FLAGSHIP",
     },
     "Trade Convoys": {
-      description: intl.formatMessage({
-        id: "Components.Trade Convoys.Description",
-        description: "Description for Component: Trade Convoys",
-        defaultMessage:
-          "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, you may negotiate transactions with players who are not your neighbor.{br}If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Components.Trade Convoys.Description",
+          description: "Description for Component: Trade Convoys",
+          defaultMessage:
+            "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, you may negotiate transactions with players who are not your neighbor.{br}If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player.",
+        },
+        { br: "\n\n" }
+      ),
       expansion: "BASE",
       faction: "Emirates of Hacan",
       id: "Trade Convoys",

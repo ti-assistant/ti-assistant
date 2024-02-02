@@ -1,9 +1,9 @@
-import stableHash from "stable-hash";
-import useSWR from "swr";
-import { BASE_OPTIONS } from "../../server/data/options";
-import { fetcher } from "../util/api/util";
-import { validateMapString } from "../util/util";
-import { IntlShape, useIntl } from "react-intl";
+// import stableHash from "stable-hash";
+// import useSWR from "swr";
+// import { BASE_OPTIONS } from "../../server/data/options";
+// import { fetcher } from "../util/api/util";
+// import { validateMapString } from "../util/util";
+import { IntlShape } from "react-intl";
 
 let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
   return {};
@@ -83,71 +83,6 @@ let getBaseTechs: DataFunction<TechId, BaseTech> = () => {
 import("../../server/data/techs").then((module) => {
   getBaseTechs = module.getBaseTechs;
 });
-
-export function useIsGameDataValidating(gameid: string | undefined) {
-  const { isValidating }: { isValidating?: boolean } = useSWR(
-    gameid ? `/api/${gameid}/data` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-    }
-  );
-
-  return isValidating;
-}
-
-export function useGameData(
-  gameid: string | undefined,
-  paths: string[]
-): GameData {
-  const { data: storedGameData }: { data?: StoredGameData } = useSWR(
-    gameid ? `/api/${gameid}/data` : null,
-    () => fetcher(`/api/${gameid}/data`),
-    {
-      compare: (a?: StoredGameData, b?: StoredGameData) => {
-        if (paths && paths.length > 0 && a && b) {
-          for (const path of paths) {
-            if (stableHash(a[path]) !== stableHash(b[path])) {
-              return false;
-            }
-          }
-          return true;
-        }
-        return stableHash(a) === stableHash(b);
-      },
-      revalidateIfStale: false,
-    }
-  );
-
-  const intl = useIntl();
-
-  if (!storedGameData) {
-    return {
-      agendas: getBaseAgendas(intl),
-      attachments: getBaseAttachments(intl),
-      components: getBaseComponents(intl),
-      factions: {},
-      objectives: getBaseObjectives(intl),
-      options: BASE_OPTIONS,
-      planets: BASE_PLANETS,
-      relics: getBaseRelics(intl),
-      state: {
-        phase: "UNKNOWN",
-        round: 1,
-        speaker: "Vuil'raith Cabal",
-      },
-      strategycards: getBaseStrategyCards(intl),
-      systems: BASE_SYSTEMS,
-      techs: getBaseTechs(intl),
-    };
-  }
-  return buildCompleteGameData(storedGameData, intl);
-  // }, [latestChange]);
-
-  // const completeGameData = buildCompleteGameData(storedGameData);
-
-  // return completeGameData;
-}
 
 export function buildCompleteGameData(
   storedGameData: StoredGameData,
@@ -495,6 +430,25 @@ export function buildObjectives(
   });
 
   return objectives;
+}
+
+function validateMapString(mapString: string) {
+  const systemArray = mapString.split(" ");
+  switch (systemArray.length) {
+    // 3 rings or less
+    case 36:
+      break;
+    // 4 rings
+    case 60:
+      break;
+  }
+  for (const system of systemArray) {
+    if (isNaN(parseInt(system))) {
+      return false;
+    }
+  }
+  // TODO: Load systems and ensure that they are all found.
+  return true;
 }
 
 export function buildPlanets(storedGameData: StoredGameData) {

@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React, {
   PropsWithChildren,
   ReactNode,
@@ -16,6 +15,7 @@ import {
   ActionLogContext,
   AgendaContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   OptionContext,
   PlanetContext,
@@ -279,10 +279,9 @@ function ActionCardDraws() {
 }
 
 export function MiddleColumn() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const planets = useContext(PlanetContext);
   const strategyCards = useContext(StrategyCardContext);
@@ -298,16 +297,16 @@ export function MiddleColumn() {
   });
 
   function scoreObj(factionId: FactionId, objectiveId: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    scoreObjectiveAsync(gameid, factionId, objectiveId);
+    scoreObjectiveAsync(gameId, factionId, objectiveId);
   }
   function unscoreObj(factionId: FactionId, objectiveId: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    unscoreObjectiveAsync(gameid, factionId, objectiveId);
+    unscoreObjectiveAsync(gameId, factionId, objectiveId);
   }
 
   const orderedStrategyCards = Object.values(strategyCards)
@@ -398,9 +397,6 @@ export function MiddleColumn() {
                     return true;
                   }
                   let planetFaction = card.faction;
-                  if (card.faction === "Council Keleres") {
-                    planetFaction = factions[card.faction]?.startswith.faction;
-                  }
                   if (
                     planet.home &&
                     planet.faction === planetFaction &&
@@ -630,11 +626,10 @@ export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
 }
 
 export default function StatusPhase() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
@@ -663,14 +658,14 @@ export default function StatusPhase() {
   }
 
   function nextPhase(skipAgenda = false) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     if (!skipAgenda) {
-      advancePhaseAsync(gameid);
+      advancePhaseAsync(gameId);
       return;
     }
-    advancePhaseAsync(gameid, true);
+    advancePhaseAsync(gameId, true);
   }
 
   interface Ability {
@@ -829,17 +824,17 @@ export default function StatusPhase() {
     }
   );
   function addObj(objectiveId: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    revealObjectiveAsync(gameid, objectiveId);
+    revealObjectiveAsync(gameId, objectiveId);
   }
 
   function removeObj(objectiveId: ObjectiveId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    hideObjectiveAsync(gameid, objectiveId);
+    hideObjectiveAsync(gameId, objectiveId);
   }
 
   const nextPhaseButtons = [];
@@ -1181,18 +1176,18 @@ export default function StatusPhase() {
                             color: scoredCrown ? "green" : "red",
                           }}
                           onClick={() => {
-                            if (!gameid) {
+                            if (!gameId) {
                               return;
                             }
                             if (scoredCrown) {
                               unscoreObjectiveAsync(
-                                gameid,
+                                gameId,
                                 crownFaction,
                                 "Tomb + Crown of Emphidia"
                               );
                             } else {
                               scoreObjectiveAsync(
-                                gameid,
+                                gameId,
                                 crownFaction,
                                 "Tomb + Crown of Emphidia"
                               );

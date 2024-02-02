@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CSSProperties,
   PropsWithChildren,
@@ -8,6 +10,10 @@ import {
   useState,
 } from "react";
 import { responsiveNegativePixels, responsivePixels } from "./util/util";
+import styles from "./HoverMenu.module.scss";
+
+// TODO: Clean up this component.
+// TODO: Ensure that corner tag looks good regardless of which way this opens.
 
 export function ClientOnlyHoverMenu({
   label,
@@ -29,15 +35,19 @@ export function ClientOnlyHoverMenu({
     return (
       <div className="hoverParent largeFont" style={buttonStyle}>
         <div
-          style={{
-            border: borderless
-              ? undefined
-              : `${responsivePixels(2)} solid ${borderColor}`,
-            borderRadius: responsivePixels(5),
-            padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-            whiteSpace: "nowrap",
-            backgroundColor: "#222",
-          }}
+          className={styles.hoverLabel}
+          style={
+            {
+              "--color": borderColor,
+              border: borderless
+                ? undefined
+                : `${responsivePixels(2)} solid ${borderColor}`,
+              borderRadius: responsivePixels(5),
+              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+              whiteSpace: "nowrap",
+              backgroundColor: "#222",
+            } as CSSProperties
+          }
         >
           {label}
         </div>
@@ -207,26 +217,34 @@ export function HoverMenu({
       style={buttonStyle}
     >
       <div
-        style={{
-          border: borderless
-            ? undefined
-            : `${responsivePixels(2)} solid ${borderColor}`,
-          borderRadius: responsivePixels(5),
-          padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-          whiteSpace: "nowrap",
-          backgroundColor: "#222",
-        }}
+        className={styles.hoverLabel}
+        style={
+          {
+            "--color": borderColor,
+            border: borderless
+              ? undefined
+              : `${responsivePixels(2)} solid ${borderColor}`,
+            borderRadius: responsivePixels(5),
+            padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+            whiteSpace: "nowrap",
+            backgroundColor: "#222",
+          } as CSSProperties
+        }
       >
         {label}
       </div>
       <div className={classNames} style={hoverMenuStyle} ref={innerMenu}>
         {direction === "down" ? (
           <div
-            style={{
-              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              marginLeft: shift.left ? responsivePixels(shift.left) : 0,
-              marginRight: shift.right ? responsivePixels(shift.right) : 0,
-            }}
+            className={styles.innerHoverLabel}
+            style={
+              {
+                "--color": borderColor,
+                padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+                marginLeft: shift.left ? responsivePixels(shift.left) : 0,
+                marginRight: shift.right ? responsivePixels(shift.right) : 0,
+              } as CSSProperties
+            }
           >
             {label}
           </div>

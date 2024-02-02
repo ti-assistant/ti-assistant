@@ -1,14 +1,16 @@
-import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
+import { IntlShape, useIntl } from "react-intl";
 import useSWR from "swr";
 import { LogEntryElement } from "./components/LogEntry";
-import { buildCompleteGameData, useGameData } from "./data/GameData";
+import { GameIdContext } from "./context/Context";
+import { useGameData } from "./data/ClientGameData";
+import { buildCompleteGameData } from "./data/GameData";
 import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "./util/api/actionLog";
 import { getHandler } from "./util/api/gameLog";
 import { updateGameData } from "./util/api/handler";
 import { fetcher } from "./util/api/util";
 import { responsivePixels } from "./util/util";
-import { IntlShape, useIntl } from "react-intl";
+import { Loader } from "./Loader";
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
@@ -144,16 +146,12 @@ function buildInitialGameData(
     },
   };
 
-  if (!speakerName) {
-    throw new Error("No speaker selected.");
-  }
-
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 180);
 
   const gameState: StoredGameData = {
     state: {
-      speaker: speakerName,
+      speaker: speakerName ?? "Vuil'raith Cabal",
       phase: "SETUP",
       round: 1,
     },
@@ -172,7 +170,7 @@ function buildSetupGameData(gameData: GameData): {
   options: Options;
 } {
   const actionLog = gameData.actionLog ?? [];
-  let speaker = 0;
+  let speaker = 1;
   for (let i = actionLog.length - 1; i >= 0; i--) {
     const entry = actionLog[i];
     if (entry?.data.action === "ASSIGN_STRATEGY_CARD") {
@@ -202,14 +200,13 @@ function buildSetupGameData(gameData: GameData): {
 }
 
 export function GameLog({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const { data: storedActionLog }: { data?: ActionLogEntry[] } = useSWR(
-    gameid ? `/api/${gameid}/actionLog` : null,
+    gameId ? `/api/${gameId}/actionLog` : null,
     fetcher
   );
   const intl = useIntl();
-  const gameData = useGameData(gameid, []);
+  const gameData = useGameData(gameId, []);
 
   const reversedActionLog = useMemo(() => {
     const actionLog = storedActionLog ?? [];
@@ -227,6 +224,10 @@ export function GameLog({}) {
   const dynamicGameData = useMemo(() => {
     return buildCompleteGameData(initialGameData, intl);
   }, [initialGameData, intl]);
+
+  if (reversedActionLog.length === 0) {
+    return <Loader />;
+  }
 
   return (
     <div
@@ -311,40 +312,7 @@ export function GameLog({}) {
             startTimeSeconds={startTimeSeconds}
             endTimeSeconds={endTimeSeconds}
           />
-        ); // if (logEntry.phase && logEntry.phase !== prevPhase) {
-        //   prevPhase = logEntry.phase;
-        //   if (logEntry.phase === "STRATEGY") {
-        //     currRound++;
-        //   }
-        //   const output = (
-        //     <React.Fragment key={index}>
-        //       <LabeledLine
-        //         label={
-        //           currRound !== 0
-        //             ? `Round ${currRound} ${capitalizeFirstLetter(
-        //                 logEntry.phase.toLowerCase()
-        //               )} Phase`
-        //             : `${capitalizeFirstLetter(
-        //                 logEntry.phase.toLowerCase()
-        //               )} Phase`
-        //         }
-        //         style={{ width: "calc(100% - 8px)" }}
-        //       />
-        //       <LogEntryElement logEntry={logEntry} prevEntry={prevEntry} />
-        //     </React.Fragment>
-        //   );
-        //   prevEntry = logEntry;
-        //   return output;
-        // }
-        // const output = (
-        //   <LogEntryElement
-        //     key={index}
-        //     logEntry={logEntry}
-        //     prevEntry={prevEntry}
-        //   />
-        // );
-        // prevEntry = logEntry;
-        // return output;
+        );
       })}
     </div>
   );

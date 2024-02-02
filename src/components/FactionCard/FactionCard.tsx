@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { CSSProperties, PropsWithChildren, ReactNode, useContext } from "react";
 import { Loader } from "../../Loader";
 import { OptionContext } from "../../context/Context";
@@ -6,6 +5,7 @@ import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
+import { FactionPanel } from "../FactionPanel";
 
 interface FactionCardOpts {
   fontSize?: string;
@@ -21,13 +21,6 @@ interface FactionCardProps {
   style?: CSSProperties;
 }
 
-const FactionPanel = dynamic(
-  () => import("../FactionPanel").then((mod) => mod.FactionPanel),
-  {
-    loading: () => <Loader />,
-  }
-);
-
 export default function FactionCard({
   children,
   faction,
@@ -42,10 +35,10 @@ export default function FactionCard({
   return (
     <LabeledDiv
       label={
-        // <div className="flexRow" style={{ gap: 0 }}>
-        getFactionName(faction)
-        // <FactionPanel faction={faction} options={options} />
-        // </div>
+        <div className="flexRow" style={{ gap: 0 }}>
+          {getFactionName(faction)}
+          <FactionPanel faction={faction} options={options} />
+        </div>
       }
       rightLabel={rightLabel}
       color={getFactionColor(faction)}

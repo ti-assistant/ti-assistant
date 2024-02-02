@@ -1,9 +1,7 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-
+import { FormattedMessage } from "react-intl";
 import { Tab, TabBody } from "./Tab";
 import PlanetRow from "./components/PlanetRow/PlanetRow";
-import { FormattedMessage } from "react-intl";
 
 function sortPlanetsByFaction(planets: Planet[]) {
   planets.sort((a, b) => {
@@ -27,21 +25,20 @@ function sortPlanetsByFaction(planets: Planet[]) {
 }
 
 interface AddPlanetListProps {
+  factionId: FactionId;
   planets: Partial<Record<PlanetId, Planet>>;
   addPlanet?: (planetId: PlanetId) => void;
 }
 
-export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
-  const router = useRouter();
+export function AddPlanetList({
+  factionId,
+  planets,
+  addPlanet,
+}: AddPlanetListProps) {
   const [tabShown, setTabShown] = useState("normal");
-  const { faction: playerFaction }: { faction?: FactionId } = router.query;
-
-  if (!playerFaction) {
-    return <div>Loading...</div>;
-  }
 
   const remainingPlanets = Object.values(planets).filter((planet) => {
-    if (planet.owner === playerFaction) {
+    if (planet.owner === factionId) {
       return false;
     }
     if (planet.locked) {
@@ -109,7 +106,7 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
             return (
               <PlanetRow
                 key={planet.id}
-                factionId={playerFaction}
+                factionId={factionId}
                 planet={planet}
                 addPlanet={addPlanet}
               />
@@ -135,7 +132,7 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
             return (
               <PlanetRow
                 key={planet.id}
-                factionId={playerFaction}
+                factionId={factionId}
                 planet={planet}
                 addPlanet={addPlanet}
               />
@@ -161,7 +158,7 @@ export function AddPlanetList({ planets, addPlanet }: AddPlanetListProps) {
             return (
               <PlanetRow
                 key={planet.id}
-                factionId={playerFaction}
+                factionId={factionId}
                 planet={planet}
                 addPlanet={addPlanet}
               />

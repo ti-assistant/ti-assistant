@@ -1,8 +1,7 @@
-import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { Tab, TabBody } from "./Tab";
 import LabeledLine from "./components/LabeledLine/LabeledLine";
-import { ObjectiveContext } from "./context/Context";
+import { GameIdContext, ObjectiveContext } from "./context/Context";
 import {
   hideObjectiveAsync,
   revealObjectiveAsync,
@@ -23,8 +22,7 @@ function sortObjectivesByName(objectives: Objective[]) {
 }
 
 function SecretTab({ factionId }: { factionId: FactionId }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string; faction?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
 
   const [editMode, setEditMode] = useState(false);
@@ -39,26 +37,26 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
   }
 
   function addObj(objectiveId: ObjectiveId) {
-    if (!gameid || !factionId) {
+    if (!gameId || !factionId) {
       return;
     }
-    revealObjectiveAsync(gameid, objectiveId);
+    revealObjectiveAsync(gameId, objectiveId);
     setEditMode(false);
   }
   function removeObj(objectiveId: ObjectiveId) {
-    if (!gameid || !factionId) {
+    if (!gameId || !factionId) {
       return;
     }
-    hideObjectiveAsync(gameid, objectiveId);
+    hideObjectiveAsync(gameId, objectiveId);
   }
   function scoreObj(objectiveId: ObjectiveId, add: boolean) {
-    if (!gameid || !factionId) {
+    if (!gameId || !factionId) {
       return;
     }
     if (add) {
-      scoreObjectiveAsync(gameid, factionId, objectiveId);
+      scoreObjectiveAsync(gameId, factionId, objectiveId);
     } else {
-      unscoreObjectiveAsync(gameid, factionId, objectiveId);
+      unscoreObjectiveAsync(gameId, factionId, objectiveId);
     }
   }
 
@@ -155,12 +153,8 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
 }
 
 // TODO: Rename to Objective Tab
-export function ObjectiveList() {
-  const router = useRouter();
-  const {
-    game: gameid,
-    faction: factionId,
-  }: { game?: string; faction?: FactionId } = router.query;
+export function ObjectiveList({ factionId }: { factionId: FactionId }) {
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
 
   const intl = useIntl();
@@ -168,31 +162,27 @@ export function ObjectiveList() {
   const [tabShown, setTabShown] = useState("STAGE ONE");
   const [editMode, setEditMode] = useState(false);
 
-  if (!gameid || !factionId) {
-    return <div>Loading...</div>;
-  }
-
   function addObj(objectiveId: ObjectiveId) {
-    if (!gameid || !factionId) {
+    if (!gameId || !factionId) {
       return;
     }
-    revealObjectiveAsync(gameid, objectiveId);
+    revealObjectiveAsync(gameId, objectiveId);
     setEditMode(false);
   }
   function removeObj(objectiveId: ObjectiveId) {
-    if (!gameid || !factionId) {
+    if (!gameId || !factionId) {
       return;
     }
-    hideObjectiveAsync(gameid, objectiveId);
+    hideObjectiveAsync(gameId, objectiveId);
   }
   function scoreObj(objectiveId: ObjectiveId, add: boolean) {
-    if (!gameid || !factionId) {
+    if (!gameId || !factionId) {
       return;
     }
     if (add) {
-      scoreObjectiveAsync(gameid, factionId, objectiveId);
+      scoreObjectiveAsync(gameId, factionId, objectiveId);
     } else {
-      unscoreObjectiveAsync(gameid, factionId, objectiveId);
+      unscoreObjectiveAsync(gameId, factionId, objectiveId);
     }
   }
 

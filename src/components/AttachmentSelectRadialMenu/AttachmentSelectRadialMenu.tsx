@@ -124,7 +124,6 @@ export default function AttachmentSelectRadialMenu({
             {attachments.map((attachmentId, index) => {
               const attachment = attachmentData[attachmentId];
               if (!attachment) {
-                console.log(attachmentId);
                 return null;
               }
               const opacity =

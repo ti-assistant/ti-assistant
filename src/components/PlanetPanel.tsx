@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
 import { CSSProperties, useContext, useState } from "react";
 import {
   AttachmentContext,
   FactionContext,
+  GameIdContext,
   PlanetContext,
 } from "../context/Context";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
@@ -29,10 +29,9 @@ function PlanetSection({
   factionId: FactionId;
   openedByDefault: boolean;
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const attachments = useContext(AttachmentContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const planets = useContext(PlanetContext);
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
@@ -98,10 +97,10 @@ function PlanetSection({
                   planet={planet}
                   factionId={factionId}
                   removePlanet={(planetId) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
-                    unclaimPlanetAsync(gameid, factionId, planetId);
+                    unclaimPlanetAsync(gameId, factionId, planetId);
                   }}
                 />
               );
@@ -114,9 +113,8 @@ function PlanetSection({
 }
 
 function UnclaimedPlanetSection({}: {}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const planets = useContext(PlanetContext);
 
   const [collapsed, setCollapsed] = useState(true);
@@ -155,10 +153,10 @@ function UnclaimedPlanetSection({}: {}) {
                 <FactionSelectHoverMenu
                   options={Object.keys(factions) as FactionId[]}
                   onSelect={(factionId) => {
-                    if (!gameid || !factionId) {
+                    if (!gameId || !factionId) {
                       return;
                     }
-                    claimPlanetAsync(gameid, factionId, planet.id);
+                    claimPlanetAsync(gameId, factionId, planet.id);
                   }}
                   size={28}
                 />

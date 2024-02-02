@@ -1,6 +1,4 @@
-import { useRouter } from "next/router";
 import React, { CSSProperties, ReactNode, useContext, useState } from "react";
-import { capitalizeFirstLetter } from "../../../pages/setup";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
@@ -17,6 +15,7 @@ import {
   AttachmentContext,
   ComponentContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   PlanetContext,
   RelicContext,
@@ -52,6 +51,10 @@ import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize, responsivePixels } from "../../util/util";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Selector } from "../../components/Selector/Selector";
+
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function InfoContent({ component }: { component: Component }) {
   const description = component.description.replaceAll("\\n", "\n");
@@ -395,11 +398,10 @@ function ComponentSelect({
 }
 
 function ComponentDetails({ factionId }: { factionId: FactionId }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const attachments = useContext(AttachmentContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const planets = useContext(PlanetContext);
   const relics = useContext(RelicContext);
@@ -445,67 +447,67 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   }
 
   function addTechLocal(tech: Tech) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    addTechAsync(gameid, factionId, tech.id);
+    addTechAsync(gameId, factionId, tech.id);
   }
   function removeTechLocal(techId: TechId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    removeTechAsync(gameid, factionId, techId);
+    removeTechAsync(gameId, factionId, techId);
   }
   function addRemoveTech(tech: Tech) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    removeTechAsync(gameid, factionId, tech.id);
+    removeTechAsync(gameId, factionId, tech.id);
   }
   function clearAddedTech(techId: TechId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    addTechAsync(gameid, factionId, techId);
+    addTechAsync(gameId, factionId, techId);
   }
   function addRelic(relicId: RelicId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    gainRelicAsync(gameid, factionId, relicId);
+    gainRelicAsync(gameId, factionId, relicId);
   }
   function removeRelic(relicId: RelicId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    loseRelicAsync(gameid, factionId, relicId);
+    loseRelicAsync(gameId, factionId, relicId);
   }
   function destroyPlanet(planetId: PlanetId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
 
-    updatePlanetStateAsync(gameid, planetId, "PURGED");
+    updatePlanetStateAsync(gameId, planetId, "PURGED");
   }
   function undestroyPlanet(planetId: PlanetId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    updatePlanetStateAsync(gameid, planetId, "READIED");
+    updatePlanetStateAsync(gameId, planetId, "READIED");
   }
   function toggleAttachment(
     planetId: PlanetId,
     attachmentId: AttachmentId,
     add: boolean
   ) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
 
     if (add) {
-      addAttachmentAsync(gameid, planetId, attachmentId);
+      addAttachmentAsync(gameId, planetId, attachmentId);
     } else {
-      removeAttachmentAsync(gameid, planetId, attachmentId);
+      removeAttachmentAsync(gameId, planetId, attachmentId);
     }
   }
 
@@ -981,7 +983,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           conqueredPlanets={conqueredPlanets}
           currentTurn={getCurrentTurnLogEntries(actionLog)}
           factions={factions ?? {}}
-          gameid={gameid ?? ""}
+          gameid={gameId ?? ""}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
           scoredObjectives={scoredObjectives}
@@ -1075,10 +1077,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             .sort((a, b) => a.mapPosition - b.mapPosition)
             .map((faction) => faction.id)}
           onSelect={(factionId, _) => {
-            if (!gameid) {
+            if (!gameId) {
               return;
             }
-            selectFactionAsync(gameid, factionId ?? "None");
+            selectFactionAsync(gameId, factionId ?? "None");
           }}
           size={44}
           borderColor={getFactionColor(
@@ -1100,7 +1102,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 conqueredPlanets={claimedPlanets}
                 currentTurn={getCurrentTurnLogEntries(actionLog)}
                 factions={factions ?? {}}
-                gameid={gameid ?? ""}
+                gameid={gameId ?? ""}
                 objectives={objectives ?? {}}
                 planets={planets ?? {}}
                 scorableObjectives={scorableObjectives}
@@ -1287,11 +1289,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 }
 
 export function ComponentAction({ factionId }: { factionId: FactionId }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const actionLog = useContext(ActionLogContext);
   const components = useContext(ComponentContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const relics = useContext(RelicContext);
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
@@ -1309,18 +1310,18 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   const component = (components ?? {})[playedComponent ?? ""] ?? null;
 
   async function selectComponent(componentName: string) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     const updatedName = componentName
       .replace(/\./g, "")
       .replace(/,/g, "")
       .replace(/ Ω/g, "");
-    playComponentAsync(gameid, updatedName);
+    playComponentAsync(gameId, updatedName);
   }
 
   function unselectComponent(componentName: string) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
 
@@ -1328,7 +1329,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       .replace(/\./g, "")
       .replace(/,/g, "")
       .replace(/ Ω/g, "");
-    unplayComponentAsync(gameid, updatedName);
+    unplayComponentAsync(gameId, updatedName);
   }
 
   if (!factions) {
@@ -1498,14 +1499,14 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
                 options={agentsForSsruu}
                 selectedItem={getSelectedSubComponent(currentTurn)}
                 toggleItem={(agent, add) => {
-                  if (!gameid) {
+                  if (!gameId) {
                     return;
                   }
                   const updatedName = agent
                     .replace(/\./g, "")
                     .replace(/,/g, "")
                     .replace(/ Ω/g, "");
-                  selectSubComponentAsync(gameid, add ? updatedName : "None");
+                  selectSubComponentAsync(gameId, add ? updatedName : "None");
                 }}
               />
             </div>
