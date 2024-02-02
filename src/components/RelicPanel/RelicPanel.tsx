@@ -1,20 +1,22 @@
 import { useContext, useState } from "react";
 import styles from "./RelicPanel.module.scss";
 import GenericModal from "../GenericModal/GenericModal";
-import { FactionContext, RelicContext } from "../../context/Context";
+import {
+  FactionContext,
+  GameIdContext,
+  RelicContext,
+} from "../../context/Context";
 import { CollapsibleSection } from "../CollapsibleSection";
 import { responsivePixels } from "../../util/util";
 import { InfoRow } from "../../InfoRow";
 import { FactionSelectHoverMenu } from "../FactionSelect";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
-import { useRouter } from "next/router";
 import { getFactionColor } from "../../util/factions";
 
 function RelicPanelContent({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const relics = useContext(RelicContext);
 
   return (
@@ -59,14 +61,14 @@ function RelicPanelContent({}) {
                   size={36}
                   selectedFaction={relic.owner}
                   onSelect={(factionId, prevFaction) => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
                     if (prevFaction) {
-                      loseRelicAsync(gameid, prevFaction, relic.id);
+                      loseRelicAsync(gameId, prevFaction, relic.id);
                     }
                     if (factionId) {
-                      gainRelicAsync(gameid, factionId, relic.id);
+                      gainRelicAsync(gameId, factionId, relic.id);
                     }
                   }}
                 />

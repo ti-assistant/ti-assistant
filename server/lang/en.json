@@ -27,10 +27,6 @@
     "defaultMessage": "AND",
     "description": "Text between two fields linking them together."
   },
-  "+XKsgE": {
-    "defaultMessage": "Game",
-    "description": "Text used to identify the current game."
-  },
   "+mUg6N": {
     "defaultMessage": "Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
@@ -191,16 +187,9 @@
     "defaultMessage": "Gain Command Tokens and Redistribute",
     "description": "Text telling the players to gain command tokens and redistribute."
   },
-  "93G7sJ": {
-    "defaultMessage": "Test string"
-  },
   "9DZz2w": {
     "defaultMessage": "Setup Game",
     "description": "Text identifying that this is the setup step."
-  },
-  "9m91nk": {
-    "defaultMessage": "Objective View",
-    "description": "Text on a button that opens the objective view of the assistant."
   },
   "A5p5qF": {
     "defaultMessage": "Report Issue",
@@ -4059,7 +4048,7 @@
     "description": "Phase title for Agenda phase."
   },
   "Phase.End": {
-    "defaultMessage": "End of Game",
+    "defaultMessage": "Results",
     "description": "Phase title for end of game."
   },
   "Phase.Setup": {
@@ -5630,10 +5619,6 @@
     "defaultMessage": "Laws",
     "description": "Agendas that apply a continuing effect to the game."
   },
-  "hhm3kX": {
-    "defaultMessage": "Round {value}",
-    "description": "The current round of the game."
-  },
   "jGX605": {
     "defaultMessage": "Play Rider",
     "description": "Text on hover menu for selecting a rider to play."
@@ -5821,10 +5806,6 @@
   "xu0llf": {
     "defaultMessage": "Select all Faction Choices",
     "description": "Error message telling the user to select all faction choices."
-  },
-  "yBACfb": {
-    "defaultMessage": "Main Screen",
-    "description": "Text on a button that opens the main screen of the assistant."
   },
   "ymJxS0": {
     "defaultMessage": "For",

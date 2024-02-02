@@ -1,0 +1,54 @@
+.HomeLink {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  position: fixed;
+  justify-content: center;
+  background-color: #222;
+  top: var(--sixteen-pixel);
+  left: var(--ninety-six-pixel);
+  font-size: var(--twenty-four-pixel);
+  gap: var(--eight-pixel);
+}
+
+.LangSelect {
+  display: flex;
+  position: fixed;
+  top: var(--thirty-two-pixel);
+  left: max(calc(30px + (60 - 30) * ((100vw - 1280px) / (2560 - 1280))), 30px);
+  z-index: 2;
+}
+
+.HomeLink > div {
+  position: relative;
+  width: var(--thirty-two-pixel);
+  height: var(--thirty-two-pixel);
+}
+
+@media only screen and (max-width: 1279px) {
+  .HomeLink {
+    left: 64px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .HomeLink {
+    text-align: center;
+    position: sticky;
+    padding-top: var(--twelve-pixel);
+    padding-bottom: var(--twelve-pixel);
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: #222;
+    z-index: 1;
+  }
+
+  .HomeLink > div {
+    position: relative;
+    width: var(--twenty-eight-pixel);
+    height: var(--twenty-eight-pixel);
+  }
+}

@@ -46,9 +46,7 @@
 
 3. Run `npm run compile` to generate `/server/compiled-lang/<language>.json` files.
 
-4. Update `next.config.js` to include the new language in `i18n.locales`.
-
-5. Update locations where `<LanguageSelectRadialMenu />` is called to include the new locale.
+5. Update `/app/layout.tsx` to include the new locale.
 
 6. Create a PR with the changes.
 

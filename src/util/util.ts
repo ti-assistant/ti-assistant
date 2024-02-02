@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 /**
  * Returns the next index in order between [min, max)
  */
@@ -53,24 +51,4 @@ export function responsiveNegativePixels(number: number) {
   return `min( calc( ${number}px + ( ${
     number * 2
   } - ${number} ) * ( ( 100vw - 1280px ) / ( 2560 - 1280 ) ) ), ${number}px )`;
-}
-
-export function useInterval(callback: () => void, delay: number | null) {
-  const savedCallback = useRef<() => void>(() => {});
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
 }

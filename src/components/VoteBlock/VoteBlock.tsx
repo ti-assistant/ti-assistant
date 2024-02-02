@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
 import React, { CSSProperties, useContext, useRef, useState } from "react";
 import {
   ActionLogContext,
   AgendaContext,
   AttachmentContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   OptionContext,
   PlanetContext,
@@ -391,12 +391,10 @@ interface VoteBlockProps {
 }
 
 export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
 
   const intl = useIntl();
@@ -443,10 +441,10 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
                   className="icon clickable negative"
                   style={{ marginRight: 0 }}
                   onClick={() => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
-                    unplayRiderAsync(gameid, rider.rider);
+                    unplayRiderAsync(gameId, rider.rider);
                   }}
                 >
                   &#x2715;
@@ -512,12 +510,10 @@ function PredictionSection({
   factionId: FactionId;
   agenda: Agenda | undefined;
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
@@ -608,13 +604,13 @@ function PredictionSection({
         })}
         selectedItem={pendingRider?.rider}
         toggleItem={(itemId, add) => {
-          if (!gameid) {
+          if (!gameId) {
             return;
           }
           if (add) {
-            playRiderAsync(gameid, itemId, factionId, undefined);
+            playRiderAsync(gameId, itemId, factionId, undefined);
           } else {
-            unplayRiderAsync(gameid, itemId);
+            unplayRiderAsync(gameId, itemId);
           }
         }}
       />
@@ -632,10 +628,10 @@ function PredictionSection({
             options={targets}
             selectedItem={undefined}
             toggleItem={(itemId, add) => {
-              if (!gameid) {
+              if (!gameId) {
                 return;
               }
-              playRiderAsync(gameid, pendingRider.rider, factionId, itemId);
+              playRiderAsync(gameId, pendingRider.rider, factionId, itemId);
             }}
             style={{ minWidth: responsivePixels(154) }}
           />
@@ -652,13 +648,11 @@ function VotingSection({
   factionId: FactionId;
   agenda: Agenda | undefined;
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-
   const actionLog = useContext(ActionLogContext);
   const agendas = useContext(AgendaContext);
   const attachments = useContext(AttachmentContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
@@ -676,14 +670,14 @@ function VotingSection({
   }
 
   function castVotesLocal(target: string | undefined, votes: number) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
 
     if (target === "Abstain") {
-      castVotesAsync(gameid, factionId, 0, "Abstain");
+      castVotesAsync(gameId, factionId, 0, "Abstain");
     } else {
-      castVotesAsync(gameid, factionId, votes, target);
+      castVotesAsync(gameId, factionId, votes, target);
     }
   }
 
@@ -803,18 +797,18 @@ function VotingSection({
                 }
                 style={{ fontSize: responsivePixels(14) }}
                 onClick={() => {
-                  if (!gameid) {
+                  if (!gameId) {
                     return;
                   }
                   if (usingPredictive.includes(factionId)) {
                     unplayActionCardAsync(
-                      gameid,
+                      gameId,
                       "Predictive Intelligence",
                       factionId
                     );
                   } else {
                     playActionCardAsync(
-                      gameid,
+                      gameId,
                       "Predictive Intelligence",
                       factionId
                     );
@@ -833,18 +827,18 @@ function VotingSection({
               className={currentCouncilor === factionId ? "selected" : ""}
               style={{ fontSize: responsivePixels(14) }}
               onClick={() => {
-                if (!gameid) {
+                if (!gameId) {
                   return;
                 }
                 if (currentCouncilor === factionId) {
                   unplayActionCardAsync(
-                    gameid,
+                    gameId,
                     "Distinguished Councilor",
                     factionId
                   );
                 } else {
                   playActionCardAsync(
-                    gameid,
+                    gameId,
                     "Distinguished Councilor",
                     factionId
                   );

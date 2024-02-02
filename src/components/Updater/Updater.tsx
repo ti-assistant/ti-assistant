@@ -1,31 +1,30 @@
-import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { mutate } from "swr";
-import { StateContext } from "../../context/Context";
-import { useIsGameDataValidating } from "../../data/GameData";
+import { GameIdContext, StateContext } from "../../context/Context";
 import { setGlobalPauseAsync } from "../../dynamic/api";
-import { useInterval } from "../../util/util";
+import { useInterval, useIsGameDataValidating } from "../../util/client";
 import Modal from "../Modal/Modal";
 import styles from "./Updater.module.scss";
-import { FormattedMessage } from "react-intl";
 
 const UPDATE_FREQUENCY = 2500;
 
 // Only times out if the game is paused.
 const TIMEOUT_MINUTES = 5;
 
-export default function Updater({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+export default function Updater() {
+  // const router = useRouter();
+  // const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
-  const isValidating = useIsGameDataValidating(gameid);
+  const isValidating = useIsGameDataValidating(gameId);
 
   const [shouldUpdate, setShouldUpdate] = useState(true);
   const [latestLocalActivityMillis, setLatestLocalActivityMillis] = useState(0);
 
   function pauseUpdates() {
-    if (gameid) {
-      setGlobalPauseAsync(gameid, true);
+    if (gameId) {
+      setGlobalPauseAsync(gameId, true);
     }
     setShouldUpdate(false);
   }
@@ -37,20 +36,20 @@ export default function Updater({}) {
   }, [latestLocalActivityMillis, pauseUpdates]);
 
   function restartUpdates() {
-    if (gameid) {
-      setGlobalPauseAsync(gameid, false);
+    if (gameId) {
+      setGlobalPauseAsync(gameId, false);
     }
     setShouldUpdate(true);
     setLatestLocalActivityMillis(0);
   }
 
   function refreshData() {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
 
     if (!isValidating) {
-      mutate(`/api/${gameid}/data`);
+      mutate(`/api/${gameId}/data`);
     }
 
     // If not paused, the timers will automatically update.
@@ -58,7 +57,7 @@ export default function Updater({}) {
       setLatestLocalActivityMillis(
         (localActivity) => localActivity + UPDATE_FREQUENCY
       );
-      mutate(`/api/${gameid}/timers`);
+      mutate(`/api/${gameId}/timers`);
     } else {
       setLatestLocalActivityMillis(0);
     }

@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { useContext } from "react";
 import { FactionSummary } from "../FactionSummary";
 import { StaticFactionTimer } from "../Timer";
@@ -13,22 +12,7 @@ import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import { responsivePixels } from "../util/util";
 import { FormattedMessage } from "react-intl";
-
-const FactionPanel = dynamic(
-  import("../components/FactionPanel").then((mod) => mod.FactionPanel),
-  {
-    loading: () => (
-      <div
-        className="popupIcon"
-        style={{
-          fontSize: responsivePixels(16),
-        }}
-      >
-        &#x24D8;
-      </div>
-    ),
-  }
-);
+import { FactionPanel } from "../components/FactionPanel";
 
 function sortByOrder(a: Faction, b: Faction) {
   if (a.order > b.order) {
@@ -117,19 +101,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
       break;
   }
 
-  let orderedFactions: (Faction | undefined)[] =
-    Object.values(factions).sort(sortFunction);
-
-  if (orderedFactions.length === 0) {
-    orderedFactions = [
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-    ];
-  }
+  let orderedFactions = Object.values(factions).sort(sortFunction);
 
   const showTechs = options["faction-summary-show-techs"] ?? true;
   const showPlanets = options["faction-summary-show-planets"] ?? true;

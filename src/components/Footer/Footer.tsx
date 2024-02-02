@@ -1,6 +1,6 @@
-import dynamic from "next/dynamic";
+"use client";
+
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import Map from "../../../src/components/Map/Map";
 import { FactionSummary } from "../../FactionSummary";
@@ -8,6 +8,7 @@ import { Loader } from "../../Loader";
 import { CustomSizeResources } from "../../Resources";
 import {
   FactionContext,
+  GameIdContext,
   OptionContext,
   PlanetContext,
   StateContext,
@@ -25,45 +26,14 @@ import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import styles from "./Footer.module.scss";
 import { FormattedMessage } from "react-intl";
 import { Strings } from "../strings";
-
-const ObjectivePanel = dynamic(
-  import("../ObjectivePanel").then((mod) => mod.ObjectivePanel),
-  {
-    loading: () => <Loader />,
-  }
-);
-const PlanetPanel = dynamic(
-  import("../PlanetPanel").then((mod) => mod.PlanetPanel),
-  {
-    loading: () => <Loader />,
-  }
-);
-const TechPanel = dynamic(
-  import("../TechPanel").then((mod) => mod.TechPanel),
-  {
-    loading: () => <Loader />,
-  }
-);
-const FactionPanel = dynamic(
-  import("../FactionPanel").then((mod) => mod.FactionPanel),
-  {
-    loading: () => (
-      <div
-        className="popupIcon"
-        style={{
-          fontSize: responsivePixels(16),
-        }}
-      >
-        &#x24D8;
-      </div>
-    ),
-  }
-);
+import { TechPanel } from "../TechPanel";
+import { ObjectivePanel } from "../ObjectivePanel";
+import { PlanetPanel } from "../PlanetPanel";
+import { FactionPanel } from "../FactionPanel";
 
 export default function Footer({}) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
@@ -328,10 +298,10 @@ export default function Footer({}) {
               invalidFactions={[state.speaker]}
               size={36}
               onSelect={async (factionId, _) => {
-                if (!gameid || !factionId) {
+                if (!gameId || !factionId) {
                   return;
                 }
-                setSpeakerAsync(gameid, factionId);
+                setSpeakerAsync(gameId, factionId);
               }}
             />
           </div>
@@ -457,6 +427,7 @@ export default function Footer({}) {
       </div>
       <div className={styles.UpdateBox}>
         <LabeledDiv
+          noBlur
           label={
             <FormattedMessage
               id="VjlCY0"
@@ -479,10 +450,10 @@ export default function Footer({}) {
                   factions={orderedFactions.map((faction) => faction.id)}
                   invalidFactions={[state.speaker]}
                   onSelect={async (factionId, _) => {
-                    if (!gameid || !factionId) {
+                    if (!gameId || !factionId) {
                       return;
                     }
-                    setSpeakerAsync(gameid, factionId);
+                    setSpeakerAsync(gameId, factionId);
                   }}
                 />
               </div>

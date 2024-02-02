@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useBetween } from "use-between";
-import { useInterval } from "../util/util";
+import { useInterval } from "../util/client";
 
 function makeid(length: number) {
   let result = "";

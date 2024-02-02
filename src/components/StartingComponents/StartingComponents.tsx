@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
 import { useContext } from "react";
 import { SelectableRow } from "../../SelectableRow";
 import {
   FactionContext,
+  GameIdContext,
   OptionContext,
   TechContext,
 } from "../../context/Context";
@@ -41,9 +41,8 @@ const techOrder: TechType[] = ["RED", "GREEN", "BLUE", "YELLOW", "UPGRADE"];
 export default function StartingComponents({
   factionId,
 }: StartingComponentsProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const options = useContext(OptionContext);
   const techs = useContext(TechContext);
 
@@ -137,24 +136,24 @@ export default function StartingComponents({
     : [];
 
   function addTech(techId: TechId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    chooseStartingTechAsync(gameid, factionId, techId);
+    chooseStartingTechAsync(gameId, factionId, techId);
   }
 
   function removeTech(techId: TechId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    removeStartingTechAsync(gameid, factionId, techId);
+    removeStartingTechAsync(gameId, factionId, techId);
   }
 
   function selectSubFaction(subFaction: SubFaction) {
-    if (!gameid || factionId !== "Council Keleres") {
+    if (!gameId || factionId !== "Council Keleres") {
       return;
     }
-    chooseSubFactionAsync(gameid, "Council Keleres", subFaction);
+    chooseSubFactionAsync(gameId, "Council Keleres", subFaction);
   }
 
   let numToChoose = !startswith.choice

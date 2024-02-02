@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { CSSProperties } from "react";
 import Logo from "../../../public/images/android-chrome-512x512.png";
-import { responsivePixels } from "../../util/util";
 import styles from "./ResponsiveLogo.module.scss";
+import { responsivePixels } from "../../util/neutral";
 
 type Size = `${number}%` | number;
 

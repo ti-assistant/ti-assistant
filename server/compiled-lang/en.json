@@ -41,12 +41,6 @@
       "value": "AND"
     }
   ],
-  "+XKsgE": [
-    {
-      "type": 0,
-      "value": "Game"
-    }
-  ],
   "+mUg6N": [
     {
       "type": 0,
@@ -303,22 +297,10 @@
       "value": "Gain Command Tokens and Redistribute"
     }
   ],
-  "93G7sJ": [
-    {
-      "type": 0,
-      "value": "Test string"
-    }
-  ],
   "9DZz2w": [
     {
       "type": 0,
       "value": "Setup Game"
-    }
-  ],
-  "9m91nk": [
-    {
-      "type": 0,
-      "value": "Objective View"
     }
   ],
   "A5p5qF": [
@@ -7722,7 +7704,7 @@
   "Phase.End": [
     {
       "type": 0,
-      "value": "End of Game"
+      "value": "Results"
     }
   ],
   "Phase.Setup": [
@@ -10693,16 +10675,6 @@
       "value": "Laws"
     }
   ],
-  "hhm3kX": [
-    {
-      "type": 0,
-      "value": "Round "
-    },
-    {
-      "type": 1,
-      "value": "value"
-    }
-  ],
   "jGX605": [
     {
       "type": 0,
@@ -11314,12 +11286,6 @@
     {
       "type": 0,
       "value": "Select all Faction Choices"
-    }
-  ],
-  "yBACfb": [
-    {
-      "type": 0,
-      "value": "Main Screen"
     }
   ],
   "ymJxS0": [

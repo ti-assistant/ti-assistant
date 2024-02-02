@@ -1,6 +1,6 @@
+import Cookies from "js-cookie";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import QRCode from "qrcode";
 import React, { useContext, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -9,6 +9,7 @@ import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import {
   AgendaContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   OptionContext,
   PlanetContext,
@@ -24,13 +25,12 @@ import { phaseString } from "../../util/strings";
 import { responsivePixels, validateMapString } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import GenericModal from "../GenericModal/GenericModal";
+// import LanguageSelectRadialMenu from "../LanguageSelectRadialMenu/LanguageSelectRadialMenu";
 import Map from "../Map/Map";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
 import Sidebars from "../Sidebars/Sidebars";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
-import LanguageSelectRadialMenu from "../LanguageSelectRadialMenu/LanguageSelectRadialMenu";
-import Cookies from "js-cookie";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -38,8 +38,7 @@ const BASE_URL =
     : "https://ti-assistant.com";
 
 export default function Header() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
   const objectives = useContext(ObjectiveContext);
@@ -64,11 +63,11 @@ export default function Header() {
     );
   }, []);
 
-  if (!qrCode && gameid) {
+  if (!qrCode && gameId) {
     QRCode.toDataURL(
       `${BASE_URL}${
-        router.locale && router.locale !== "en" ? `/${router.locale}` : ""
-      }/game/${gameid}`,
+        intl.locale && intl.locale !== "en" ? `/${intl.locale}` : ""
+      }/game/${gameId}`,
       {
         color: {
           dark: "#eeeeeeff",
@@ -101,14 +100,14 @@ export default function Header() {
     return agenda.passed && agenda.type === "LAW";
   });
   async function removeAgenda(agendaId: AgendaId) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     const target = (agendas ?? {})[agendaId]?.target;
     if (!target) {
       return;
     }
-    repealAgendaAsync(gameid, agendaId, target);
+    repealAgendaAsync(gameId, agendaId, target);
   }
 
   let gameFinished = false;
@@ -191,56 +190,50 @@ export default function Header() {
           </button>
         </div>
       ) : null}
-      <div className={styles.QRCode}>
+      {/* <div className={styles.QRCode}>
         <ClientOnlyHoverMenu
           label={`${intl.formatMessage({
             id: "+XKsgE",
             description: "Text used to identify the current game.",
             defaultMessage: "Game",
-          })}: ${gameid}`}
+          })}: ${gameId}`}
         >
           <div className="flexColumn">
-            <Link href={`/game/${gameid}`}>
+            <Link href={`/game/${gameId}`}>
               {qrCode ? (
                 <img src={qrCode} alt="QR Code for joining game" />
               ) : null}
             </Link>
           </div>
         </ClientOnlyHoverMenu>
-      </div>
-      <Link href={"/"} className={styles.HomeLink}>
+      </div> */}
+      {/* <Link href={"/"} className={styles.HomeLink}>
         <div>
           <ResponsiveLogo size={"100%"} />
         </div>
         Twilight Imperium Assistant
-      </Link>
-      <div className={styles.LangSelect}>
+      </Link> */}
+      {/* <div className={styles.LangSelect}>
         <LanguageSelectRadialMenu
-          selectedLocale={router.locale ?? "en"}
+          selectedLocale={intl.locale ?? "en"}
           locales={["en"]}
-          invalidLocales={[router.locale ?? "en"]}
+          invalidLocales={[intl.locale ?? "en"]}
           onSelect={(locale) => {
             if (!locale) {
               return;
             }
-            Cookies.set("NEXT_LOCALE", locale);
-            router.push(
-              { pathname: router.pathname, query: router.query },
-              router.asPath,
-              {
-                locale: locale,
-              }
-            );
+            Cookies.set("TI_LOCALE", locale);
+            window.location.reload();
           }}
           size={28}
         />
-      </div>
+      </div> */}
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>
           <GameTimer frozen={state.phase === "END"} />
         </div>
       ) : null}
-      <Sidebars
+      {/* <Sidebars
         left={intl
           .formatMessage(
             {
@@ -262,18 +255,18 @@ export default function Header() {
             { value: state.round }
           )
           .toUpperCase()}
-      />
+      /> */}
       <div className={styles.ControlButtons}>
-        <UndoButton gameId={gameid} />
+        <UndoButton gameId={gameId} />
         {gameFinished ? (
           state?.phase === "END" ? (
             <button
               style={{ fontSize: responsivePixels(24) }}
               onClick={() => {
-                if (!gameid) {
+                if (!gameId) {
                   return;
                 }
-                continueGameAsync(gameid);
+                continueGameAsync(gameId);
               }}
             >
               <FormattedMessage
@@ -286,10 +279,10 @@ export default function Header() {
             <button
               style={{ fontFamily: "Slider", fontSize: responsivePixels(32) }}
               onClick={() => {
-                if (!gameid) {
+                if (!gameId) {
                   return;
                 }
-                endGameAsync(gameid);
+                endGameAsync(gameId);
               }}
             >
               <FormattedMessage

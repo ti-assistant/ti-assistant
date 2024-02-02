@@ -1,11 +1,12 @@
-import { useRouter } from "next/router";
-import { ResponsiveResources } from "./Resources";
 import Image from "next/image";
-import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
-import { responsivePixels } from "./util/util";
+import { useContext } from "react";
+import { FormattedMessage } from "react-intl";
+import { ResponsiveResources } from "./Resources";
 import LegendaryPlanetIcon from "./components/LegendaryPlanetIcon/LegendaryPlanetIcon";
 import PlanetIcon from "./components/PlanetIcon/PlanetIcon";
-import { FormattedMessage } from "react-intl";
+import { GameIdContext } from "./context/Context";
+import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
+import { responsivePixels } from "./util/util";
 
 interface AttachRowProps {
   attachment: Attachment;
@@ -13,21 +14,20 @@ interface AttachRowProps {
 }
 
 export function AttachRow({ attachment, planet }: AttachRowProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
 
   function isSkip() {
     return (attachment.attribute ?? "").includes("skip");
   }
 
   function toggleAttachment() {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     if ((planet.attachments ?? []).includes(attachment.id)) {
-      removeAttachmentAsync(gameid, planet.id, attachment.id);
+      removeAttachmentAsync(gameId, planet.id, attachment.id);
     } else {
-      addAttachmentAsync(gameid, planet.id, attachment.id);
+      addAttachmentAsync(gameId, planet.id, attachment.id);
     }
   }
 

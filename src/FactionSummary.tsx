@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useContext } from "react";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
@@ -6,6 +5,7 @@ import TechIcon from "./components/TechIcon/TechIcon";
 import {
   AttachmentContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   PlanetContext,
   StateContext,
@@ -18,7 +18,7 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
-import { pluralize, responsivePixels } from "./util/util";
+import { responsivePixels } from "./util/util";
 import { FormattedMessage } from "react-intl";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
@@ -130,10 +130,9 @@ export function FactionSummary({
   factionId,
   options = {},
 }: FactionSummaryProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const attachments = useContext(AttachmentContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
@@ -163,11 +162,11 @@ export function FactionSummary({
   }
 
   function manualVpAdjust(increase: boolean) {
-    if (!gameid || !factionId) {
+    if (!gameId || !factionId) {
       return;
     }
     const value = increase ? 1 : -1;
-    manualVPUpdateAsync(gameid, factionId, value);
+    manualVPUpdateAsync(gameId, factionId, value);
   }
 
   const editable = state?.phase !== "END";

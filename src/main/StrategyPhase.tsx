@@ -1,5 +1,3 @@
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
 import React, {
   PropsWithChildren,
   ReactNode,
@@ -15,6 +13,7 @@ import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import {
   AgendaContext,
   FactionContext,
+  GameIdContext,
   StateContext,
   StrategyCardContext,
 } from "../context/Context";
@@ -34,10 +33,7 @@ import styles from "./StrategyPhase.module.scss";
 import { FormattedMessage, useIntl } from "react-intl";
 import { phaseString } from "../util/strings";
 import { Selector } from "../components/Selector/Selector";
-
-const Modal = dynamic(() => import("../components/Modal/Modal"), {
-  loading: () => <Loader />,
-});
+import Modal from "../components/Modal/Modal";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -120,8 +116,7 @@ function QuantumDatahubNode({
   faction: Faction | undefined;
   strategyCards: StrategyCard[];
 }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
   const [quantum, setQuantum] = useState<{
     mainCard: StrategyCardId | undefined;
     otherCard: StrategyCardId | undefined;
@@ -131,7 +126,7 @@ function QuantumDatahubNode({
   });
 
   function quantumDatahubNode() {
-    if (!gameid || !quantum.mainCard || !quantum.otherCard) {
+    if (!gameId || !quantum.mainCard || !quantum.otherCard) {
       return;
     }
 
@@ -141,7 +136,7 @@ function QuantumDatahubNode({
       return;
     }
 
-    swapStrategyCardsAsync(gameid, quantum.mainCard, quantum.otherCard);
+    swapStrategyCardsAsync(gameId, quantum.mainCard, quantum.otherCard);
   }
 
   if (!faction || !hasTech(faction, "Quantum Datahub Node")) {
@@ -260,9 +255,8 @@ function QuantumDatahubNode({
 }
 
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const agendas = useContext(AgendaContext);
+  const gameId = useContext(GameIdContext);
   const factions = useContext(FactionContext);
 
   const [quantum, setQuantum] = useState<{
@@ -275,11 +269,11 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const arbiter = agendas["Imperial Arbiter"];
 
   function quantumDatahubNode() {
-    if (!gameid || !quantum.mainCard || !quantum.otherCard) {
+    if (!gameId || !quantum.mainCard || !quantum.otherCard) {
       return;
     }
 
-    swapStrategyCardsAsync(gameid, quantum.mainCard, quantum.otherCard, true);
+    swapStrategyCardsAsync(gameId, quantum.mainCard, quantum.otherCard, true);
   }
 
   if (!arbiter || !arbiter.resolved || !arbiter.passed) {
@@ -434,10 +428,9 @@ const CARD_ORDER: Record<StrategyCardId, number> = {
 };
 
 export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
 
@@ -446,11 +439,11 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
     faction: Faction,
     pickedBy: FactionId
   ) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
 
-    assignStrategyCardAsync(gameid, faction.id, card.id, pickedBy);
+    assignStrategyCardAsync(gameId, faction.id, card.id, pickedBy);
   }
 
   const orderedStrategyCards = Object.values(strategyCards).sort(
@@ -513,15 +506,14 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   );
 }
 
-export function advanceToActionPhase(gameid: string) {
-  advancePhaseAsync(gameid);
+export function advanceToActionPhase(gameId: string) {
+  advancePhaseAsync(gameId);
 }
 
 export default function StrategyPhase() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
   const intl = useIntl();
@@ -535,10 +527,10 @@ export default function StrategyPhase() {
   });
 
   function nextPhase() {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    advanceToActionPhase(gameid);
+    advanceToActionPhase(gameId);
   }
 
   function showInfoModal(title: string, content: ReactNode) {
@@ -690,10 +682,10 @@ export default function StrategyPhase() {
   );
 
   function gift(factionId: FactionId | undefined) {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
-    giftOfPrescienceAsync(gameid, factionId ?? "Naalu Collective");
+    giftOfPrescienceAsync(gameId, factionId ?? "Naalu Collective");
   }
 
   const giftFaction = Object.values(strategyCards).reduce(

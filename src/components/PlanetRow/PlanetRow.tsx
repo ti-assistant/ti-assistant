@@ -1,9 +1,12 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { CustomSizeResources, ResponsiveResources } from "../../Resources";
 import { SelectableRow } from "../../SelectableRow";
-import { AttachmentContext, FactionContext } from "../../context/Context";
+import {
+  AttachmentContext,
+  FactionContext,
+  GameIdContext,
+} from "../../context/Context";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";
 import { responsivePixels } from "../../util/util";
@@ -417,21 +420,20 @@ interface AttachRowProps {
 }
 
 function AttachRow({ attachment, planet }: AttachRowProps) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const gameId = useContext(GameIdContext);
 
   function isSkip() {
     return (attachment.attribute ?? "").includes("skip");
   }
 
   function toggleAttachment() {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     if ((planet.attachments ?? []).includes(attachment.id)) {
-      removeAttachmentAsync(gameid, planet.id, attachment.id);
+      removeAttachmentAsync(gameId, planet.id, attachment.id);
     } else {
-      addAttachmentAsync(gameid, planet.id, attachment.id);
+      addAttachmentAsync(gameId, planet.id, attachment.id);
     }
   }
 

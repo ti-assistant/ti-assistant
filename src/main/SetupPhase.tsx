@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useContext, useEffect, useMemo, useRef } from "react";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LockedButtons } from "../LockedButton";
@@ -10,6 +9,7 @@ import StartingComponents from "../components/StartingComponents/StartingCompone
 import {
   ActionLogContext,
   FactionContext,
+  GameIdContext,
   ObjectiveContext,
   OptionContext,
   StateContext,
@@ -27,8 +27,8 @@ import styles from "./SetupPhase.module.scss";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { objectiveTypeString } from "../util/strings";
 
-export function startFirstRound(gameid: string) {
-  advancePhaseAsync(gameid);
+export function startFirstRound(gameId: string) {
+  advancePhaseAsync(gameId);
 }
 
 function factionTechChoicesComplete(
@@ -114,19 +114,17 @@ function getSetupPhaseText(
   );
 }
 
-export function setMapString(gameid: string | undefined, mapString: string) {
-  if (!gameid || !validateMapString(mapString)) {
+export function setMapString(gameId: string | undefined, mapString: string) {
+  if (!gameId || !validateMapString(mapString)) {
     return;
   }
-  changeOptionAsync(gameid, "map-string", mapString);
+  changeOptionAsync(gameId, "map-string", mapString);
 }
 
 export default function SetupPhase() {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
-
   const actionLog = useContext(ActionLogContext);
   const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
   const state = useContext(StateContext);
@@ -206,7 +204,7 @@ export default function SetupPhase() {
                 width: `min(75vw, ${responsivePixels(268)})`,
               }}
               onChange={(event) =>
-                setMapString(gameid, event.currentTarget.value)
+                setMapString(gameId, event.currentTarget.value)
               }
             ></input>
           </div>
@@ -308,10 +306,10 @@ export default function SetupPhase() {
                           key={objectiveId}
                           itemId={objectiveId}
                           removeItem={() => {
-                            if (!gameid) {
+                            if (!gameId) {
                               return;
                             }
-                            hideObjectiveAsync(gameid, objectiveId);
+                            hideObjectiveAsync(gameId, objectiveId);
                           }}
                         >
                           {objectiveId}
@@ -323,10 +321,10 @@ export default function SetupPhase() {
                         key={objectiveId}
                         objective={objective}
                         removeObjective={() => {
-                          if (!gameid) {
+                          if (!gameId) {
                             return;
                           }
-                          hideObjectiveAsync(gameid, objectiveId);
+                          hideObjectiveAsync(gameId, objectiveId);
                         }}
                         viewing={true}
                       />
@@ -377,11 +375,11 @@ export default function SetupPhase() {
                               key={objective.id}
                               style={{ writingMode: "horizontal-tb" }}
                               onClick={() => {
-                                if (!gameid) {
+                                if (!gameId) {
                                   return;
                                 }
                                 closeFn();
-                                revealObjectiveAsync(gameid, objective.id);
+                                revealObjectiveAsync(gameId, objective.id);
                               }}
                             >
                               {objective.name}
@@ -418,10 +416,10 @@ export default function SetupPhase() {
                   defaultMessage: "Start Game",
                 }),
                 onClick: () => {
-                  if (!gameid) {
+                  if (!gameId) {
                     return;
                   }
-                  startFirstRound(gameid);
+                  startFirstRound(gameId);
                 },
                 style: { fontSize: responsivePixels(40) },
               },
@@ -501,10 +499,10 @@ export default function SetupPhase() {
                     defaultMessage: "Start Game",
                   }),
                   onClick: () => {
-                    if (!gameid) {
+                    if (!gameId) {
                       return;
                     }
-                    startFirstRound(gameid);
+                    startFirstRound(gameId);
                   },
                   style: { fontSize: responsivePixels(40) },
                 },

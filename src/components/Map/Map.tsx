@@ -1,10 +1,10 @@
 import NextImage from "next/image";
-import { useRouter } from "next/router";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
 import {
   AttachmentContext,
   FactionContext,
+  GameIdContext,
   PlanetContext,
 } from "../../context/Context";
 import { getFactionColor } from "../../util/factions";
@@ -18,6 +18,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import styles from "./Map.module.scss";
 import { FormattedMessage } from "react-intl";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Cube {
   q: number;
@@ -435,7 +436,8 @@ export function SystemImage({
   systemNumber: string | undefined;
 }) {
   const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
+  const searchParams = useSearchParams();
+  const gameId = searchParams?.get("gameId");
   const attachments = useContext(AttachmentContext);
   const factions = useContext(FactionContext);
   const planets = useContext(PlanetContext);
@@ -621,7 +623,7 @@ export function SystemImage({
         );
       })}
       {
-        gameid && systemNumber === "18" && !systemPlanets[0]?.owner ? (
+        gameId && systemNumber === "18" && !systemPlanets[0]?.owner ? (
           <div
             className="flexRow"
             style={{
@@ -795,8 +797,7 @@ export default function Map({
   mallice,
   factions,
 }: MapProps) {
-  const router = useRouter();
-  const { game: gameid } = router.query;
+  const gameId = useContext(GameIdContext);
 
   const [showDetails, setShowDetails] = useState<Details>("NONE");
 
@@ -947,7 +948,7 @@ export default function Map({
 
   return (
     <div className={styles.Map}>
-      {gameid ? (
+      {gameId ? (
         <div className={styles.Legend}>
           <LabeledDiv
             label={

@@ -1,46 +1,45 @@
-import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { StateContext } from "../../context/Context";
+import { GameIdContext, StateContext } from "../../context/Context";
 import { useSharedTimer } from "../../data/SharedTimer";
 import { useTimers } from "../../data/Timers";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
-import { responsivePixels, useInterval } from "../../util/util";
+import { responsivePixels } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import { FormattedMessage } from "react-intl";
+import { useInterval } from "../../util/client";
 
 export default function GameTimer({ frozen = false }) {
-  const router = useRouter();
-  const { game: gameid }: { game?: string } = router.query;
   const [gameTimer, setGameTimer] = useState(0);
   const { addSubscriber, removeSubscriber } = useSharedTimer();
 
   const timerRef = useRef(0);
   const lastUpdate = useRef(0);
 
+  const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
-  const timers = useTimers(gameid);
+  const timers = useTimers(gameId);
 
   useInterval(() => {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     if (lastUpdate.current < timerRef.current) {
       lastUpdate.current = timerRef.current;
-      saveGameTimer(gameid, timerRef.current);
+      saveGameTimer(gameId, timerRef.current);
     }
   }, 15000);
 
   const paused = state?.paused;
 
   const updateTime = useCallback(() => {
-    if (!gameid || paused || frozen) {
+    if (!gameId || paused || frozen) {
       return;
     }
     timerRef.current += 1;
-    updateLocalGameTimer(gameid, timerRef.current);
+    updateLocalGameTimer(gameId, timerRef.current);
     setGameTimer(timerRef.current);
-  }, [paused, frozen, gameid]);
+  }, [paused, frozen, gameId]);
 
   useEffect(() => {
     const id = addSubscriber(updateTime);
@@ -59,13 +58,13 @@ export default function GameTimer({ frozen = false }) {
   }, [localGameTimer, gameTimer]);
 
   function togglePause() {
-    if (!gameid) {
+    if (!gameId) {
       return;
     }
     if (paused) {
-      setGlobalPauseAsync(gameid, false);
+      setGlobalPauseAsync(gameId, false);
     } else {
-      setGlobalPauseAsync(gameid, true);
+      setGlobalPauseAsync(gameId, true);
     }
   }
 
