@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useContext, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { ActionLogContext } from "../../context/Context";

@@ -522,7 +522,7 @@ function FactionPanelContent({
   );
 }
 
-export function SetupFactionPanel({
+export default function SetupFactionPanel({
   faction,
   options,
 }: {

@@ -18,7 +18,6 @@ import { responsivePixels } from "../../../src/util/util";
 
 export default function SelectFactionPage() {
   const router = useRouter();
-  // const { game: gameid }: { game?: string } = router.query;
   const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
   const state = useContext(StateContext);
@@ -50,7 +49,6 @@ export default function SelectFactionPage() {
       className="flexColumn"
       style={{ alignItems: "center", height: "100svh" }}
     >
-      {/* <Header /> */}
       <div
         className="flexColumn"
         style={{
@@ -132,149 +130,6 @@ export default function SelectFactionPage() {
           );
         })}
       </div>
-    </div>
-  );
-}
-
-function Header() {
-  const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const intl = useIntl();
-
-  // const [qrCode, setQrCode] = useState<string | undefined>();
-  // const [qrCodeSize, setQrCodeSize] = useState(164);
-
-  return (
-    <div
-      className="flex"
-      style={{
-        top: 0,
-        width: "100vw",
-        position: "fixed",
-        justifyContent: "space-between",
-      }}
-    >
-      {/* <Head>
-        <title>Twilight Imperium Assistant</title>
-        <link rel="shortcut icon" href="/images/favicon.ico"></link>
-      </Head> */}
-      {/* <Sidebars
-        left={intl
-          .formatMessage({
-            id: "c6uq+j",
-            description:
-              "Instruction telling the user to select their faction.",
-            defaultMessage: "Select Faction",
-          })
-          .toUpperCase()}
-        right={intl
-          .formatMessage(
-            {
-              id: "hhm3kX",
-              description: "The current round of the game.",
-              defaultMessage: "Round {value}",
-            },
-            { value: state.round }
-          )
-          .toUpperCase()}
-      /> */}
-
-      {/* <Link
-        href={`/`}
-        className="flexRow extraLargeFont nonMobile"
-        style={{
-          cursor: "pointer",
-          position: "fixed",
-          justifyContent: "center",
-          top: `${responsivePixels(16)}`,
-          left: `${responsivePixels(96)}`,
-        }}
-      >
-        <ResponsiveLogo size={32} />
-        Twilight Imperium Assistant
-      </Link> */}
-      {/* <div
-        className="nonMobile"
-        style={{
-          position: "fixed",
-          top: responsivePixels(32),
-          left: responsivePixels(30),
-          zIndex: 2,
-        }}
-      >
-        <LanguageSelectRadialMenu
-          selectedLocale={intl.locale}
-          locales={["en", "fr"]}
-          invalidLocales={[]}
-          onSelect={(locale) => {
-            if (!locale) {
-              return;
-            }
-            Cookies.set("TI_LOCALE", locale);
-            window.location.reload();
-          }}
-          size={28}
-        />
-      </div> */}
-      {/* <Link
-        href={`/`}
-        className="flexRow hugeFont mobileOnly"
-        style={{
-          cursor: "pointer",
-          position: "fixed",
-          justifyContent: "center",
-          textAlign: "center",
-          left: 0,
-          paddingTop: `${responsivePixels(12)}`,
-          width: "100%",
-        }}
-      >
-        <ResponsiveLogo size={28} />
-        Twilight Imperium Assistant
-      </Link> */}
-      {/* <div
-        className="mobileOnly"
-        style={{
-          position: "fixed",
-          bottom: responsivePixels(36),
-          right: responsivePixels(36),
-          zIndex: 2,
-        }}
-      >
-        <LanguageSelectRadialMenu
-          selectedLocale={intl.locale}
-          locales={["en", "fr"]}
-          invalidLocales={[]}
-          onSelect={(locale) => {
-            if (!locale) {
-              return;
-            }
-            Cookies.set("TI_LOCALE", locale);
-            window.location.reload();
-          }}
-          size={28}
-        />
-      </div> */}
-      {/* <div
-        className="flexColumn nonMobile"
-        style={{
-          position: "fixed",
-          top: `${responsivePixels(12)}`,
-          right: `${responsivePixels(120)}`,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div>
-          <FormattedMessage
-            id="FHUFoZ"
-            description="Label for the ID used to identify a specific game."
-            defaultMessage="Game ID"
-          />
-          : {gameId}
-        </div>
-        <img src={qrCode} alt="QR Code for joining game" />
-      </div> */}
     </div>
   );
 }

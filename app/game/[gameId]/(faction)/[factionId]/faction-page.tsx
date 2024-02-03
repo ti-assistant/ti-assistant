@@ -1896,99 +1896,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
 
   return (
     <>
-      {/* <Header /> */}
       <Updater />
-      {/* <div
-        className="flexColumn"
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "800px",
-        }}
-      > */}
-      {/* <div
-          className="flexColumn"
-          style={{
-            width: "100%",
-            gap: "4px",
-            fontSize: "18px",
-          }}
-        >
-          <NextPhaseButtons />
-          {orderTitle}
-          <div
-            className="flexRow"
-            style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
-          >
-            {orderedFactions.map((faction) => {
-              const isActive =
-                (state.phase === "ACTION" || state.phase === "STRATEGY") &&
-                state.activeplayer === faction.id;
-              const color = faction.passed ? "#555" : getFactionColor(faction);
-              const cards = getStrategyCardsForFaction(
-                strategyCards,
-                faction.id
-              );
-              return (
-                <FactionCircle
-                  key={faction.id}
-                  borderColor={color}
-                  factionId={faction.id}
-                  onClick={() => swapToFaction(faction.id)}
-                  style={{
-                    backgroundColor: isActive ? "#333" : undefined,
-                    boxShadow: isActive
-                      ? color === "Black"
-                        ? "#eee 0 0 8px 4px"
-                        : "var(--border-color) 0 0 8px 4px"
-                      : undefined,
-                  }}
-                  tag={
-                    cards.length > 0 ? (
-                      <div
-                        style={{
-                          fontSize: responsivePixels(18),
-                          color: cards[0]?.used ? "#555" : cards[0]?.color,
-                        }}
-                      >
-                        {cards[0]?.order}
-                      </div>
-                    ) : undefined
-                  }
-                  tagBorderColor={cards[0]?.used ? "#555" : cards[0]?.color}
-                />
-              );
-              return (
-                <div
-                  className="flexRow"
-                  key={faction.id}
-                  style={{
-                    position: "relative",
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "8px",
-                    border: `3px solid ${color}`,
-                    boxShadow:
-                      color === "Black" ? BLACK_BORDER_GLOW : undefined,
-                  }}
-                  onClick={() => swapToFaction(faction.id)}
-                >
-                  <div
-                    className="flexRow"
-                    style={{
-                      position: "relative",
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "6px",
-                    }}
-                  >
-                    <FactionIcon factionId={faction.id} size={28} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div> */}
       <div style={{ width: "100%", margin: "4px" }}>
         <FactionCard
           faction={faction}
@@ -2007,8 +1915,6 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
           <FactionContent factionId={factionId} />
         </FactionCard>
       </div>
-      {/* </div> */}
-      {/* <Footer /> */}
     </>
   );
 }

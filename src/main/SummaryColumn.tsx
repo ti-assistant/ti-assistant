@@ -1,5 +1,8 @@
+import dynamic from "next/dynamic";
 import { useContext } from "react";
+import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../FactionSummary";
+import { Loader } from "../Loader";
 import { StaticFactionTimer } from "../Timer";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import {
@@ -11,8 +14,20 @@ import {
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import { responsivePixels } from "../util/util";
-import { FormattedMessage } from "react-intl";
-import { FactionPanel } from "../components/FactionPanel";
+
+const FactionPanel = dynamic(() => import("../components/FactionPanel"), {
+  loading: () => (
+    <div
+      className="popupIcon"
+      style={{
+        fontSize: responsivePixels(16),
+      }}
+    >
+      &#x24D8;
+    </div>
+  ),
+  ssr: false,
+});
 
 function sortByOrder(a: Faction, b: Faction) {
   if (a.order > b.order) {

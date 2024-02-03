@@ -12,7 +12,6 @@ import {
   unscoreObjectiveAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
-import { TechSelectHoverMenu } from "../main/util/TechSelectHoverMenu";
 import {
   getAttachments,
   getObjectiveScorers,
@@ -33,6 +32,7 @@ import styles from "./TacticalAction.module.scss";
 import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import { FormattedMessage, useIntl } from "react-intl";
+import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 
 export function TacticalAction({
   activeFactionId,

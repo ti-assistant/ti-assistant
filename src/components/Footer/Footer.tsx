@@ -26,10 +26,33 @@ import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import styles from "./Footer.module.scss";
 import { FormattedMessage } from "react-intl";
 import { Strings } from "../strings";
-import { TechPanel } from "../TechPanel";
-import { ObjectivePanel } from "../ObjectivePanel";
-import { PlanetPanel } from "../PlanetPanel";
-import { FactionPanel } from "../FactionPanel";
+import dynamic from "next/dynamic";
+
+const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
+  loading: () => <Loader />,
+  ssr: false,
+});
+const TechPanel = dynamic(() => import("../TechPanel"), {
+  loading: () => <Loader />,
+  ssr: false,
+});
+const PlanetPanel = dynamic(() => import("../PlanetPanel"), {
+  loading: () => <Loader />,
+  ssr: false,
+});
+const FactionPanel = dynamic(() => import("../FactionPanel"), {
+  loading: () => (
+    <div
+      className="popupIcon"
+      style={{
+        fontSize: responsivePixels(16),
+      }}
+    >
+      &#x24D8;
+    </div>
+  ),
+  ssr: false,
+});
 
 export default function Footer({}) {
   const factions = useContext(FactionContext);

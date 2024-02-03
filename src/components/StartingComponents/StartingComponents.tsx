@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
 import {
   FactionContext,
@@ -12,12 +13,11 @@ import {
   removeStartingTechAsync,
 } from "../../dynamic/api";
 import { getTechColor } from "../../util/techs";
-import { pluralize, responsivePixels } from "../../util/util";
+import { responsivePixels } from "../../util/util";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
-import styles from "./StartingComponents.module.scss";
 import { Strings } from "../strings";
-import { FormattedMessage, useIntl } from "react-intl";
+import styles from "./StartingComponents.module.scss";
 
 interface StartingComponentsProps {
   factionId: FactionId;

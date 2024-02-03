@@ -1,3 +1,5 @@
+"use client";
+
 import React, { CSSProperties, ReactNode, useContext, useState } from "react";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";

@@ -20,6 +20,7 @@ import {
 } from "../../util/techs";
 import { responsivePixels } from "../../util/util";
 import { useIntl } from "react-intl";
+import styles from "./TechSelectHoverMenu.module.scss";
 
 interface InnerTechSelectHoverMenuProps {
   factionId: FactionId;
@@ -142,7 +143,6 @@ export default function TechSelectHoverMenu({
   });
   sortTechsByName(unitUpgrades);
 
-  const className = window.innerWidth < 900 ? "flexColumn" : "flexRow";
   return (
     <ClientOnlyHoverMenu
       label={label}
@@ -150,7 +150,7 @@ export default function TechSelectHoverMenu({
       buttonStyle={{ fontSize: "14px" }}
       renderProps={(outerCloseFn) => (
         <div
-          className={className}
+          className={styles.OuterTechSelectMenu}
           style={{
             padding: responsivePixels(8),
             alignItems: "flex-start",

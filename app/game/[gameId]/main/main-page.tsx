@@ -1,7 +1,8 @@
 "use client";
 
 import { useContext, useEffect, useMemo } from "react";
-import { FullScreenLoader, Loader } from "../../../../src/Loader";
+import { FullScreenLoader } from "../../../../src/Loader";
+import { useReportWebVitals } from "next/web-vitals";
 import Footer from "../../../../src/components/Footer/Footer";
 import Header from "../../../../src/components/Header/Header";
 import Updater from "../../../../src/components/Updater/Updater";
@@ -69,7 +70,7 @@ export default function MainScreenPage() {
         </div> */}
       {/* ) : null} */}
       {/* </div> */}
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
