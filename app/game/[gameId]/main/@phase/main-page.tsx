@@ -1,19 +1,20 @@
 "use client";
 
 import { useContext, useEffect, useMemo } from "react";
-import { FullScreenLoader } from "../../../../src/Loader";
-import { useReportWebVitals } from "next/web-vitals";
-import Footer from "../../../../src/components/Footer/Footer";
-import Header from "../../../../src/components/Header/Header";
-import Updater from "../../../../src/components/Updater/Updater";
-import { GameIdContext, StateContext } from "../../../../src/context/Context";
-import ActionPhase from "../../../../src/main/ActionPhase";
-import AgendaPhase from "../../../../src/main/AgendaPhase";
-import SetupPhase from "../../../../src/main/SetupPhase";
-import StatusPhase from "../../../../src/main/StatusPhase";
-import StrategyPhase from "../../../../src/main/StrategyPhase";
-import { setGameId } from "../../../../src/util/api/util";
-import ResultsPhase from "../../../../src/main/ResultsPhase";
+import { FullScreenLoader } from "../../../../../src/Loader";
+import Header from "../../../../../src/components/Header/Header";
+import Updater from "../../../../../src/components/Updater/Updater";
+import {
+  GameIdContext,
+  StateContext,
+} from "../../../../../src/context/Context";
+import ActionPhase from "../../../../../src/main/ActionPhase";
+import AgendaPhase from "../../../../../src/main/AgendaPhase";
+import ResultsPhase from "../../../../../src/main/ResultsPhase";
+import SetupPhase from "../../../../../src/main/SetupPhase";
+import StatusPhase from "../../../../../src/main/StatusPhase";
+import StrategyPhase from "../../../../../src/main/StrategyPhase";
+import { setGameId } from "../../../../../src/util/api/util";
 
 export default function MainScreenPage() {
   const gameId = useContext(GameIdContext);

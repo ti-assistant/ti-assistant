@@ -4,15 +4,17 @@ import Footer from "../../../../src/components/Footer/Footer";
 
 export default async function Layout({
   children,
+  phase,
   summary,
 }: {
   children: React.ReactNode;
+  phase: React.ReactNode;
   summary: React.ReactNode;
 }) {
   return (
     <>
       <div className={styles.Main}>
-        {children}
+        {phase}
         {summary}
       </div>
       <Footer />
