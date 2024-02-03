@@ -1,8 +1,7 @@
 "use client";
 
-import Head from "next/head";
 import QRCode from "qrcode";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
@@ -144,10 +143,6 @@ export default function Header() {
 
   return (
     <React.Fragment>
-      <Head>
-        <title>Twilight Imperium Assistant</title>
-        <link rel="shortcut icon" href="/images/favicon.ico"></link>
-      </Head>
       <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
         <div
           style={{
