@@ -176,7 +176,7 @@ interface CSSWithNumColumns extends CSSProperties {
   "--num-columns": number;
 }
 
-export function PlanetPanel({}) {
+export default function PlanetPanel({}) {
   const factions = useContext(FactionContext);
 
   const orderedFactionIds = Object.values(factions ?? {})

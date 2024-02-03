@@ -633,7 +633,7 @@ function FactionPanelContent({
   );
 }
 
-export function FactionPanel({
+export default function FactionPanel({
   faction,
   options,
 }: {

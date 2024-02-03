@@ -270,7 +270,7 @@ interface ExtendedCSS extends CSSProperties {
   "--color": string;
 }
 
-export function ObjectivePanel() {
+export default function ObjectivePanel() {
   const actionLog = useContext(ActionLogContext);
   const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);

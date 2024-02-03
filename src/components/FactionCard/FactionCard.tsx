@@ -1,11 +1,25 @@
+import dynamic from "next/dynamic";
 import { CSSProperties, PropsWithChildren, ReactNode, useContext } from "react";
-import { Loader } from "../../Loader";
 import { OptionContext } from "../../context/Context";
 import { getFactionColor, getFactionName } from "../../util/factions";
+import { responsivePixels } from "../../util/neutral";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
-import { FactionPanel } from "../FactionPanel";
+
+const FactionPanel = dynamic(() => import("../FactionPanel"), {
+  loading: () => (
+    <div
+      className="popupIcon"
+      style={{
+        fontSize: responsivePixels(16),
+      }}
+    >
+      &#x24D8;
+    </div>
+  ),
+  ssr: false,
+});
 
 interface FactionCardOpts {
   fontSize?: string;

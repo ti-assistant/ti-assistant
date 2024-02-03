@@ -425,7 +425,7 @@ function UpgradeTechSection({}) {
   );
 }
 
-export function TechPanel({}) {
+export default function TechPanel({}) {
   return (
     <div className={styles.techGrid}>
       <FactionTechSection openedByDefault />

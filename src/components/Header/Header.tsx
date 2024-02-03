@@ -1,6 +1,6 @@
-import Cookies from "js-cookie";
+"use client";
+
 import Head from "next/head";
-import Link from "next/link";
 import QRCode from "qrcode";
 import React, { useContext, useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -21,14 +21,10 @@ import {
   repealAgendaAsync,
 } from "../../dynamic/api";
 import { computeVPs } from "../../util/factions";
-import { phaseString } from "../../util/strings";
 import { responsivePixels, validateMapString } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import GenericModal from "../GenericModal/GenericModal";
-// import LanguageSelectRadialMenu from "../LanguageSelectRadialMenu/LanguageSelectRadialMenu";
 import Map from "../Map/Map";
-import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
-import Sidebars from "../Sidebars/Sidebars";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
 
@@ -50,18 +46,7 @@ export default function Header() {
 
   const [qrCode, setQrCode] = useState<string>();
 
-  const [qrCodeSize, setQrCodeSize] = useState(164);
-
   const [showMap, setShowMap] = useState(false);
-
-  useEffect(() => {
-    setQrCodeSize(
-      Math.max(
-        164 + (328 - 164) * ((window.innerWidth - 1280) / (2560 - 1280)),
-        164
-      )
-    );
-  }, []);
 
   if (!qrCode && gameId) {
     QRCode.toDataURL(
@@ -73,7 +58,7 @@ export default function Header() {
           dark: "#eeeeeeff",
           light: "#222222ff",
         },
-        width: qrCodeSize,
+        width: 164,
         margin: 4,
       },
       (err, url) => {
@@ -190,72 +175,11 @@ export default function Header() {
           </button>
         </div>
       ) : null}
-      {/* <div className={styles.QRCode}>
-        <ClientOnlyHoverMenu
-          label={`${intl.formatMessage({
-            id: "+XKsgE",
-            description: "Text used to identify the current game.",
-            defaultMessage: "Game",
-          })}: ${gameId}`}
-        >
-          <div className="flexColumn">
-            <Link href={`/game/${gameId}`}>
-              {qrCode ? (
-                <img src={qrCode} alt="QR Code for joining game" />
-              ) : null}
-            </Link>
-          </div>
-        </ClientOnlyHoverMenu>
-      </div> */}
-      {/* <Link href={"/"} className={styles.HomeLink}>
-        <div>
-          <ResponsiveLogo size={"100%"} />
-        </div>
-        Twilight Imperium Assistant
-      </Link> */}
-      {/* <div className={styles.LangSelect}>
-        <LanguageSelectRadialMenu
-          selectedLocale={intl.locale ?? "en"}
-          locales={["en"]}
-          invalidLocales={[intl.locale ?? "en"]}
-          onSelect={(locale) => {
-            if (!locale) {
-              return;
-            }
-            Cookies.set("TI_LOCALE", locale);
-            window.location.reload();
-          }}
-          size={28}
-        />
-      </div> */}
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>
           <GameTimer frozen={state.phase === "END"} />
         </div>
       ) : null}
-      {/* <Sidebars
-        left={intl
-          .formatMessage(
-            {
-              id: "Irm2+w",
-              defaultMessage: "{phase} Phase",
-              description:
-                "Text shown on side of screen during a specific phase",
-            },
-            { phase: phaseString(state.phase, intl).toUpperCase() }
-          )
-          .toUpperCase()}
-        right={intl
-          .formatMessage(
-            {
-              id: "hhm3kX",
-              description: "The current round of the game.",
-              defaultMessage: "Round {value}",
-            },
-            { value: state.round }
-          )
-          .toUpperCase()}
-      /> */}
       <div className={styles.ControlButtons}>
         <UndoButton gameId={gameId} />
         {gameFinished ? (

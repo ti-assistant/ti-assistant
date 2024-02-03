@@ -13,11 +13,29 @@ import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import Map from "../../src/components/Map/Map";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import ResponsiveLogo from "../../src/components/ResponsiveLogo/ResponsiveLogo";
-import { SetupFactionPanel } from "../../src/components/SetupFactionPanel";
 import { Strings } from "../../src/components/strings";
 import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
 import { responsivePixels } from "../../src/util/util";
+import styles from "./setup.module.scss";
+import dynamic from "next/dynamic";
+
+const SetupFactionPanel = dynamic(
+  () => import("../../src/components/SetupFactionPanel"),
+  {
+    loading: () => (
+      <div
+        className="popupIcon"
+        style={{
+          fontSize: responsivePixels(16),
+        }}
+      >
+        &#x24D8;
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -57,8 +75,6 @@ function MobileOptions({
 
   const mapString = options["map-string"];
 
-  const [rowOrColumn, setRowOrColumn] = useState("flexRow");
-
   useEffect(() => {
     if (!mapStringRef.current) {
       return;
@@ -90,11 +106,6 @@ function MobileOptions({
       break;
   }
 
-  useEffect(() => {
-    if (window.innerWidth < 900) {
-      setRowOrColumn("flexColumn");
-    }
-  }, []);
   return (
     <div className="flexColumn" style={{ width: "100%" }}>
       <label>
@@ -230,7 +241,7 @@ function MobileOptions({
                   defaultMessage="Expansions:"
                 />
                 <div
-                  className={rowOrColumn}
+                  className={styles.Expansions}
                   style={{
                     alignItems: "flex-start",
                     justifyContent: "flex-start",
@@ -1912,7 +1923,6 @@ export default function SetupPage({
   }
 
   const maxFactions = options.expansions.has("POK") ? 8 : 6;
-  // const mapSize = (Math.min(window.innerHeight, window.innerWidth * .5) - 96) * .6;
   return (
     <React.Fragment>
       <NonGameHeader
