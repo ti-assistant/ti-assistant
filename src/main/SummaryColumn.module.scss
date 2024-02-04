@@ -1,0 +1,13 @@
+.SummaryColumn {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100svh;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 900px) {
+  .SummaryColumn {
+    display: none;
+  }
+}

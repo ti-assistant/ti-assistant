@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import { FormattedMessage } from "react-intl";
+import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechIcon from "./components/TechIcon/TechIcon";
@@ -19,7 +21,6 @@ import {
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
 import { responsivePixels } from "./util/util";
-import { FormattedMessage } from "react-intl";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
   let blueTechs = [];
@@ -66,7 +67,7 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
   });
 
   return (
-    <div className="techSummaryGrid">
+    <div className={styles.TechSummaryGrid}>
       <div className="centered">{redTechs.length || "-"}</div>
       <TechIcon type={"RED"} size={16} />
       <div>&nbsp;</div>
@@ -172,9 +173,9 @@ export function FactionSummary({
   const editable = state?.phase !== "END";
 
   return (
-    <div className="factionSummary">
+    <div className={styles.FactionSummary}>
       {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
-      <div className="vpGrid">
+      <div className={styles.VPGrid}>
         {options.showIcon ? (
           <div
             className="flexColumn"
