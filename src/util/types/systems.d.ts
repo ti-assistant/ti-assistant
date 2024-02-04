@@ -113,4 +113,7 @@ type SystemId =
   | "90B"
   | "91A"
   | "91B"
+  | 100
+  | 101
+  | 102
   | DiscordantStars.SystemId;
