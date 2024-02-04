@@ -596,6 +596,15 @@ input[type="textbox"] {
   display: none;
 }
 
+.centered {
+  text-align: center;
+}
+
+@media only screen and (max-width: 1279px) {
+  body {
+    margin: 0px 64px;
+  }
+}
 
 @media only screen and (max-width: 1023px) {
   .tabletOnly {
@@ -605,6 +614,7 @@ input[type="textbox"] {
   .nonTablet {
     display: none;
   }
+  
 }
 
 @media only screen and (max-width: 900px) {
@@ -624,8 +634,4 @@ input[type="textbox"] {
   .nonMobile {
     display: none;
   }
-}
-
-.centered {
-  text-align: center;
 }

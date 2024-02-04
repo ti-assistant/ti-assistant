@@ -61,7 +61,6 @@ export default function MainScreenPage() {
     <>
       <Updater />
       <Header />
-      {/* <div className="mainPage"> */}
       {innerContent}
       {/* {state.phase !== "SETUP" ? ( */}
       {/* <SummaryColumn order={order} subOrder={subOrder} /> */}
