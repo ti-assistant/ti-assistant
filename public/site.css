@@ -188,6 +188,30 @@ body {
   font-family: "Source Sans";
 }
 
+.icon {
+  display: flex;
+  align-items: center;
+  margin-right: var(--eight-pixel);
+  box-sizing: border-box;
+}
+
+.clickable {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.icon.positive {
+  color: darkgreen;
+  font-size: 120%;
+}
+
+.icon.negative {
+  color: firebrick;
+  font-size: 80%;
+  margin: var(--three-pixel) var(--ten-pixel) var(--three-pixel)
+    var(--three-pixel);
+}
+
 .smallFont {
   font-size: 14px;
   font-size: var(--fourteen-pixel);

@@ -49,14 +49,12 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
 
 interface AgendaRowProps {
   agenda: Agenda;
-  addAgenda?: (agendaId: AgendaId) => void;
   removeAgenda?: (agendaId: AgendaId) => void;
   hideOutcome?: boolean;
 }
 
 export function AgendaRow({
   agenda,
-  addAgenda,
   removeAgenda,
   hideOutcome,
 }: AgendaRowProps) {
@@ -66,14 +64,10 @@ export function AgendaRow({
     setShowInfoModal(true);
   }
 
-  const textColor = addAgenda && agenda.resolved ? "#777" : "#eee";
+  const textColor = agenda.resolved ? "#777" : "#eee";
 
   return (
-    <SelectableRow
-      itemId={agenda.id}
-      selectItem={addAgenda}
-      removeItem={removeAgenda}
-    >
+    <SelectableRow itemId={agenda.id} removeItem={removeAgenda}>
       <div>
         <Modal
           closeMenu={() => setShowInfoModal(false)}
