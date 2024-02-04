@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 import "../public/game.css";
-import "../public/loader.css";
 import "../public/planet_row.css";
 import "../public/resources.css";
 import "../public/site.css";

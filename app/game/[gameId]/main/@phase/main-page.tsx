@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useEffect, useMemo } from "react";
-import { FullScreenLoader } from "../../../../../src/Loader";
 import Header from "../../../../../src/components/Header/Header";
 import Updater from "../../../../../src/components/Updater/Updater";
 import {
@@ -26,8 +25,8 @@ export default function MainScreenPage() {
     }
   }, [gameId]);
 
-  const { innerContent, order, subOrder } = useMemo(() => {
-    let innerContent = <FullScreenLoader />;
+  const innerContent = useMemo(() => {
+    let innerContent = null;
     let order: "SPEAKER" | "VICTORY_POINTS" = "SPEAKER";
     let subOrder: "SPEAKER" | "INITIATIVE" = "SPEAKER";
     switch (state.phase) {
@@ -55,7 +54,7 @@ export default function MainScreenPage() {
             : "SPEAKER";
         break;
     }
-    return { innerContent, order, subOrder };
+    return innerContent;
   }, [state.phase, state.finalPhase]);
 
   return (

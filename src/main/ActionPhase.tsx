@@ -1,7 +1,6 @@
 import React, { CSSProperties, useContext } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { FullScreenLoader } from "../Loader";
 import { LockedButtons } from "../LockedButton";
 import { SmallStrategyCard } from "../StrategyCard";
 import { TechRow } from "../TechRow";
@@ -1668,10 +1667,6 @@ export default function ActionPhase() {
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
   const intl = useIntl();
-
-  if (!factions || !state || !strategyCards) {
-    return <FullScreenLoader />;
-  }
 
   const activeFaction =
     state.activeplayer && state.activeplayer !== "None"

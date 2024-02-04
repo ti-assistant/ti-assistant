@@ -1,21 +1,9 @@
-export function Loader({}) {
-  return (
-    <div
-      className="flexRow"
-      style={{ width: "100%", maxHeight: "100svh", minHeight: "70svh" }}
-    >
-      <div className="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  );
-}
+import styles from "./Loader.module.scss";
 
-export function FullScreenLoader({}) {
+export function Loader() {
   return (
-    <div className="flexRow" style={{ width: "100vw", height: "100svh" }}>
-      <div className="lds-ripple">
+    <div className={styles.Loader}>
+      <div className={styles.RippleLoader}>
         <div></div>
         <div></div>
       </div>
