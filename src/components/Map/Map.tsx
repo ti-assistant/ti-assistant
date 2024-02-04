@@ -1,5 +1,6 @@
 import NextImage from "next/image";
-import { ReactNode, useContext, useEffect, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
 import {
   AttachmentContext,
@@ -17,8 +18,6 @@ import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import styles from "./Map.module.scss";
-import { FormattedMessage } from "react-intl";
-import { useRouter, useSearchParams } from "next/navigation";
 
 interface Cube {
   q: number;
@@ -172,9 +171,15 @@ function getFactionSystemNumber(
     return "92";
   }
   if (faction.id === "Council Keleres") {
-    return faction.startswith?.faction
-      ? FACTION_TO_SYSTEM_NUMBER[faction.startswith.faction]
-      : "92";
+    switch (faction.startswith?.faction) {
+      case "Argent Flight":
+        return "101";
+      case "Xxcha Kingdom":
+        return "100";
+      case "Mentak Coalition":
+        return "102";
+    }
+    return "92";
   }
   return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "92";
 }
@@ -391,7 +396,7 @@ function validSystemNumber(number: string) {
   if (isNaN(intVal)) {
     return false;
   }
-  if ((intVal > 92 && intVal < 1001) || intVal > 1034) {
+  if ((intVal > 102 && intVal < 1001) || intVal > 1034) {
     return false;
   }
   return true;
@@ -429,15 +434,14 @@ function getRotationClassFromNumber(key: number) {
 }
 
 export function SystemImage({
+  gameId,
   showDetails,
   systemNumber,
 }: {
+  gameId: string;
   showDetails: Details;
   systemNumber: string | undefined;
 }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const gameId = searchParams?.get("gameId");
   const attachments = useContext(AttachmentContext);
   const factions = useContext(FactionContext);
   const planets = useContext(PlanetContext);
@@ -1032,7 +1036,11 @@ export default function Map({
               marginTop: `${point.y}%`,
             }}
           >
-            <SystemImage showDetails={showDetails} systemNumber={tile} />
+            <SystemImage
+              gameId={gameId}
+              showDetails={showDetails}
+              systemNumber={tile}
+            />
           </div>
         );
       })}
@@ -1060,7 +1068,11 @@ export default function Map({
             height: `${tilePercentage * HEX_RATIO}%`,
           }}
         >
-          <SystemImage showDetails={showDetails} systemNumber="51" />
+          <SystemImage
+            gameId={gameId}
+            showDetails={showDetails}
+            systemNumber="51"
+          />
         </div>
       ) : null}
       {mallice ? (
@@ -1075,6 +1087,7 @@ export default function Map({
           }}
         >
           <SystemImage
+            gameId={gameId}
             showDetails={showDetails}
             systemNumber={`82${mallice}`}
           />

@@ -450,5 +450,23 @@ export const BASE_SYSTEMS: Record<SystemId, BaseSystem> = {
   "90B": HYPERLANE_SYSTEM("90B"),
   "91A": HYPERLANE_SYSTEM("91A"),
   "91B": HYPERLANE_SYSTEM("91B"),
+  100: {
+    expansion: "CODEX THREE",
+    id: 100,
+    planets: ["Archon Ren Keleres", "Archon Tau Keleres"],
+    type: "HOME",
+  },
+  101: {
+    expansion: "CODEX THREE",
+    id: 101,
+    planets: ["Avar Keleres", "Valk Keleres", "Ylir Keleres"],
+    type: "HOME",
+  },
+  102: {
+    expansion: "CODEX THREE",
+    id: 102,
+    planets: ["Moll Primus Keleres"],
+    type: "HOME",
+  },
   ...DISCORDANT_STARS_SYSTEMS,
 };

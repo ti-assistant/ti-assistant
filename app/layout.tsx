@@ -1,18 +1,12 @@
 import { Metadata } from "next";
-import React from "react";
-import "../public/FactionSummary.css";
-import "../public/game.css";
-import "../public/loader.css";
-import "../public/planet_row.css";
-import "../public/resources.css";
-import "../public/site.css";
-import { getLocale, getMessages } from "../src/util/server";
-import Wrapper from "./wrapper";
 import Link from "next/link";
-import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";
-import styles from "./root.module.scss";
+import React from "react";
+import "../public/site.css";
 import LanguageSelectRadialMenu from "../src/components/LanguageSelectRadialMenu/LanguageSelectRadialMenu";
-import Cookies from "js-cookie";
+import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";
+import { getLocale, getMessages } from "../src/util/server";
+import styles from "./root.module.scss";
+import Wrapper from "./wrapper";
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",

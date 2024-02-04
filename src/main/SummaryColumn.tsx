@@ -14,6 +14,7 @@ import {
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import { responsivePixels } from "../util/util";
+import styles from "./SummaryColumn.module.scss";
 
 const FactionPanel = dynamic(() => import("../components/FactionPanel"), {
   loading: () => (
@@ -131,7 +132,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
 
   return (
     <div
-      className="summaryColumn"
+      className={styles.SummaryColumn}
       style={{
         gap: numFactions < 8 ? responsivePixels(12) : responsivePixels(4),
       }}

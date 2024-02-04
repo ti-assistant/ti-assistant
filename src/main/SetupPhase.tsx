@@ -118,6 +118,7 @@ export function setMapString(gameId: string | undefined, mapString: string) {
   if (!gameId || !validateMapString(mapString)) {
     return;
   }
+  console.log("Setting map string");
   changeOptionAsync(gameId, "map-string", mapString);
 }
 

@@ -1,5 +1,6 @@
 import { CSSProperties, PropsWithChildren } from "react";
 import { responsivePixels } from "./util/util";
+import styles from "./SelectableRow.module.scss";
 
 interface SelectableRowProps<Type extends string> {
   itemId: Type;
@@ -38,7 +39,7 @@ export function SelectableRow<Type extends string>({
   }
 
   return (
-    <div className="selectableRow" style={style}>
+    <div className={styles.SelectableRow} style={style}>
       {selectItem ? (
         <div
           className="icon clickable positive"

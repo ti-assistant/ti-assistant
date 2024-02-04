@@ -1,13 +1,4 @@
-
-.summaryColumn {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  height: 100svh;
-  justify-content: center;
-}
-
-.factionSummary {
+.FactionSummary {
   display: flex;
   gap: var(--sixteen-pixel);
   justify-content: space-between;
@@ -16,7 +7,7 @@
   width: 100%;
 }
 
-.vpGrid {
+.VPGrid {
   position: relative;
   align-items: center;
   display: grid;
@@ -24,11 +15,11 @@
   justify-items: center;
 }
 
-.vpGrid :last-child {
+.VPGrid :last-child {
   grid-column: 1 / 4;
 }
 
-.techSummaryGrid {
+.TechSummaryGrid {
   display: grid;
   font-size: var(--fourteen-pixel);
   gap: var(--four-pixel);
@@ -36,17 +27,6 @@
   width: min-content;
 }
 
-.techSummaryGrid .innerGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.techSummaryGrid > :last-child {
+.TechSummaryGrid > :last-child {
   grid-column: 2 / 5;
-}
-
-@media only screen and (max-width: 900px) {
-  .summaryColumn {
-    display: none;
-  }
 }

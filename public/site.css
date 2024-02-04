@@ -3,10 +3,6 @@
     calc(-12px + (-24 - -12) * ((100vw - 1280px) / (2560 - 1280))),
     -12px
   );
-  --negative-four-pixel: min(
-    calc(-4px + (-8 - -4) * ((100vw - 1280px) / (2560 - 1280))),
-    -4px
-  );
   --negative-two-pixel: min(
     calc(-2px + (-4 - -2) * ((100vw - 1280px) / (2560 - 1280))),
     -2px
@@ -123,10 +119,6 @@
     calc(140px + (280 - 140) * ((100vw - 1280px) / (2560 - 1280))),
     140px
   );
-  --one-fifty-pixel: max(
-    calc(150px + (300 - 150) * ((100vw - 1280px) / (2560 - 1280))),
-    150px
-  );
   --two-fifty-six-pixel: max(
     calc(256px + (512 - 256) * ((100vw - 1280px) / (2560 - 1280))),
     256px
@@ -186,6 +178,30 @@ body {
 
 .symbol {
   font-family: "Source Sans";
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  margin-right: var(--eight-pixel);
+  box-sizing: border-box;
+}
+
+.clickable {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.icon.positive {
+  color: darkgreen;
+  font-size: 120%;
+}
+
+.icon.negative {
+  color: firebrick;
+  font-size: 80%;
+  margin: var(--three-pixel) var(--ten-pixel) var(--three-pixel)
+    var(--three-pixel);
 }
 
 .smallFont {
@@ -294,23 +310,6 @@ input[type="textbox"] {
   outline: none;
 }
 
-.numberInput {
-  background-color: #333;
-  color: #eee;
-  border: 2px solid #777;
-  border-radius: 4px;
-  outline: none;
-  margin: 0;
-}
-
-.menuBar {
-  height: 4px;
-  width: 24px;
-  background-color: #eee;
-
-  border-radius: 4px;
-}
-
 .myriadPro {
   font-family: "Myriad Pro";
 }
@@ -329,18 +328,6 @@ input[type="textbox"] {
   justify-content: center;
   align-items: center;
   gap: var(--eight-pixel);
-}
-
-.tab {
-  padding: 4px;
-  height: 24px;
-  font-size: 20px;
-}
-
-.tab.active {
-  background-color: lightblue;
-  color: #333;
-  border-radius: 5px 5px 0px 0px;
 }
 
 .popupIcon {
@@ -572,6 +559,15 @@ input[type="textbox"] {
   display: none;
 }
 
+.centered {
+  text-align: center;
+}
+
+@media only screen and (max-width: 1279px) {
+  body {
+    margin: 0px 64px;
+  }
+}
 
 @media only screen and (max-width: 1023px) {
   .tabletOnly {
@@ -581,6 +577,7 @@ input[type="textbox"] {
   .nonTablet {
     display: none;
   }
+  
 }
 
 @media only screen and (max-width: 900px) {
@@ -600,8 +597,4 @@ input[type="textbox"] {
   .nonMobile {
     display: none;
   }
-}
-
-.centered {
-  text-align: center;
 }

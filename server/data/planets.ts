@@ -128,7 +128,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     position: TOP_LEFT,
     resources: 2,
     subFaction: "Xxcha Kingdom",
-    system: 14,
+    system: 100,
     type: "NONE",
   },
   "Archon Tau": {
@@ -155,7 +155,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     subFaction: "Xxcha Kingdom",
-    system: 14,
+    system: 100,
     type: "NONE",
   },
   "Archon Vail": {
@@ -263,7 +263,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     position: FAR_BOTTOM_RIGHT,
     resources: 1,
     subFaction: "Argent Flight",
-    system: 58,
+    system: 101,
     type: "NONE",
   },
   "Ba'kal": {
@@ -724,7 +724,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     name: "Moll Primus",
     position: HOME_MIDDLE,
     resources: 4,
-    system: 2,
+    system: 102,
     subFaction: "Mentak Coalition",
     type: "NONE",
   },
@@ -1119,7 +1119,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     position: MIDDLE_LEFT,
     resources: 2,
     subFaction: "Argent Flight",
-    system: 58,
+    system: 101,
     type: "NONE",
   },
   "Vefut II": {
@@ -1260,7 +1260,7 @@ export const BASE_PLANETS: Record<PlanetId, BasePlanet> = {
     position: TOP_RIGHT,
     resources: 0,
     subFaction: "Argent Flight",
-    system: 58,
+    system: 101,
     type: "NONE",
   },
   Zohbat: {

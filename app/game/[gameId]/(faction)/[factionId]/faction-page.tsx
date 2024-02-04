@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useContext, useRef, useState, useEffect } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useRouter } from "next/navigation";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { AddPlanetList } from "../../../../../src/AddPlanetList";
 import { AddTechList } from "../../../../../src/AddTechList";
 import { AgendaRow } from "../../../../../src/AgendaRow";
@@ -15,57 +15,54 @@ import { Tab, TabBody } from "../../../../../src/Tab";
 import { TechRow } from "../../../../../src/TechRow";
 import { StaticFactionTimer } from "../../../../../src/Timer";
 import FactionCard from "../../../../../src/components/FactionCard/FactionCard";
-import FactionCircle from "../../../../../src/components/FactionCircle/FactionCircle";
-import FactionIcon from "../../../../../src/components/FactionIcon/FactionIcon";
-import Footer from "../../../../../src/components/Footer/Footer";
-import Header from "../../../../../src/components/Header/Header";
 import LabeledDiv from "../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../src/components/LabeledLine/LabeledLine";
 import Modal from "../../../../../src/components/Modal/Modal";
 import ObjectiveRow from "../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import PlanetRow from "../../../../../src/components/PlanetRow/PlanetRow";
+import { Selector } from "../../../../../src/components/Selector/Selector";
 import StartingComponents from "../../../../../src/components/StartingComponents/StartingComponents";
 import Updater from "../../../../../src/components/Updater/Updater";
 import {
-  getTargets,
-  computeRemainingVotes,
   canFactionVote,
+  computeRemainingVotes,
+  getTargets,
 } from "../../../../../src/components/VoteBlock/VoteBlock";
 import {
   ActionLogContext,
   AgendaContext,
   AttachmentContext,
   FactionContext,
-  PlanetContext,
+  GameIdContext,
   ObjectiveContext,
   OptionContext,
+  PlanetContext,
   StateContext,
   StrategyCardContext,
   TechContext,
-  GameIdContext,
 } from "../../../../../src/context/Context";
 import {
-  markSecondaryAsync,
-  revealObjectiveAsync,
-  hideObjectiveAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-  revealAgendaAsync,
-  hideAgendaAsync,
-  selectEligibleOutcomesAsync,
-  speakerTieBreakAsync,
-  resolveAgendaAsync,
-  castVotesAsync,
-  undoAsync,
-  unclaimPlanetAsync,
-  claimPlanetAsync,
-  removeTechAsync,
   addTechAsync,
   advancePhaseAsync,
+  castVotesAsync,
+  claimPlanetAsync,
+  hideAgendaAsync,
+  hideObjectiveAsync,
+  markSecondaryAsync,
+  removeTechAsync,
+  resolveAgendaAsync,
+  revealAgendaAsync,
+  revealObjectiveAsync,
+  scoreObjectiveAsync,
+  selectEligibleOutcomesAsync,
+  speakerTieBreakAsync,
+  unclaimPlanetAsync,
+  undoAsync,
+  unscoreObjectiveAsync,
 } from "../../../../../src/dynamic/api";
 import {
-  FactionActionButtons,
   AdditionalActions,
+  FactionActionButtons,
   NextPlayerButtons,
   advanceToStatusPhase,
 } from "../../../../../src/main/ActionPhase";
@@ -81,36 +78,31 @@ import {
 } from "../../../../../src/main/StrategyPhase";
 import {
   getActiveAgenda,
-  getSelectedEligibleOutcomes,
-  getSpeakerTieBreak,
   getFactionVotes,
   getScoredObjectives,
+  getSelectedEligibleOutcomes,
+  getSpeakerTieBreak,
 } from "../../../../../src/util/actionLog";
 import {
-  getCurrentTurnLogEntries,
   getCurrentPhasePreviousLogEntries,
+  getCurrentTurnLogEntries,
 } from "../../../../../src/util/api/actionLog";
 import { getSelectedActionFromLog } from "../../../../../src/util/api/data";
 import { setGameId } from "../../../../../src/util/api/util";
-import { BLACK_BORDER_GLOW } from "../../../../../src/util/borderGlow";
-import { getFactionColor } from "../../../../../src/util/factions";
-import { getStrategyCardsForFaction } from "../../../../../src/util/helpers";
 import {
-  filterToClaimedPlanets,
   applyAllPlanetAttachments,
+  filterToClaimedPlanets,
 } from "../../../../../src/util/planets";
 import {
-  phaseString,
   objectiveTypeString,
+  phaseString,
 } from "../../../../../src/util/strings";
 import {
   filterToOwnedTechs,
   filterToUnownedTechs,
 } from "../../../../../src/util/techs";
 import { responsivePixels } from "../../../../../src/util/util";
-import { useIntl, FormattedMessage } from "react-intl";
-import { useRouter } from "next/navigation";
-import { Selector } from "../../../../../src/components/Selector/Selector";
+import styles from "./faction-page.module.scss";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -1124,9 +1116,11 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                       }}
                     >
                       Available Votes:
-                      <div className="votingBlock">
-                        <div className="influenceSymbol">&#x2B21;</div>
-                        <div className="influenceTextWrapper">{influence}</div>
+                      <div className={styles.VotingBlock}>
+                        <div className={styles.InfluenceSymbol}>&#x2B21;</div>
+                        <div className={styles.InfluenceTextWrapper}>
+                          {influence}
+                        </div>
                         <div style={{ fontSize: "16px" }}>+ {extraVotes}</div>
                       </div>
                     </div>
