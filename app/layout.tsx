@@ -2,8 +2,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 import "../public/game.css";
-import "../public/planet_row.css";
-import "../public/resources.css";
 import "../public/site.css";
 import LanguageSelectRadialMenu from "../src/components/LanguageSelectRadialMenu/LanguageSelectRadialMenu";
 import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";

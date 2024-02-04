@@ -1,0 +1,43 @@
+.VotingBlock {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 76px;
+  height: 46px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.InfluenceSymbol {
+  color: #72d4f7;
+  font-size: 45px;
+  line-height: 44px;
+  width: 42px;
+  height: 46px;
+  text-shadow: 0 0 4px #72d4f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.InfluenceTextWrapper {
+  position: absolute;
+  font-size: 14px;
+  width: 42px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.VotingBlock .InfluenceTextWrapper {
+  left: 0;
+  top: 0;
+  font-size: 14px;
+  width: 42px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
