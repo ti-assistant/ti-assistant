@@ -9,6 +9,7 @@ export function castVotes(
   gameId: string,
   faction: FactionId,
   votes: number,
+  extraVotes: number,
   target?: string
 ) {
   const data: GameUpdateData = {
@@ -16,6 +17,7 @@ export function castVotes(
     event: {
       faction,
       votes,
+      extraVotes,
       target,
     },
   };

@@ -247,6 +247,7 @@ export function getOppositeHandler(
           faction: data.event.faction,
           target: undefined,
           votes: data.event.votes,
+          extraVotes: data.event.extraVotes,
         },
       };
       return new CastVotesHandler(gameData, voteData);

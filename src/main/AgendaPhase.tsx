@@ -101,6 +101,7 @@ export function computeVotes(
         castVotes[voteEvent.target] = 0;
       }
       castVotes[voteEvent.target] += voteEvent.votes ?? 0;
+      castVotes[voteEvent.target] += voteEvent.extraVotes ?? 0;
       if (voteEvent.faction === "Empyrean" && bloodPactUsed) {
         castVotes[voteEvent.target] += 4;
       }
