@@ -302,14 +302,18 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     }
     resolveAgendaAsync(gameId, currentAgenda?.id, target);
   }
-  function castVotesLocal(target: string | undefined, votes: number) {
+  function castVotesLocal(
+    target: string | undefined,
+    votes: number,
+    extraVotes: number
+  ) {
     if (!gameId || !factionId) {
       return;
     }
     if (target === "Abstain") {
-      castVotesAsync(gameId, factionId, 0, "Abstain");
+      castVotesAsync(gameId, factionId, 0, 0, "Abstain");
     } else {
-      castVotesAsync(gameId, factionId, votes, target);
+      castVotesAsync(gameId, factionId, votes, extraVotes, target);
     }
   }
   const factionVotes = getFactionVotes(currentTurn, factionId);
@@ -317,7 +321,11 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     if (element.innerText !== "") {
       const numerical = parseInt(element.innerText);
       if (!isNaN(numerical)) {
-        castVotesLocal(factionVotes?.target, numerical);
+        castVotesLocal(
+          factionVotes?.target,
+          numerical,
+          factionVotes?.extraVotes ?? 0
+        );
         element.innerText = numerical.toString();
       }
     }
@@ -1101,9 +1109,9 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                       selectedItem={factionVotes?.target}
                       toggleItem={(itemId, add) => {
                         if (add) {
-                          castVotesLocal(itemId, 0);
+                          castVotesLocal(itemId, 0, 0);
                         } else {
-                          castVotesLocal(undefined, 0);
+                          castVotesLocal(undefined, 0, 0);
                         }
                       }}
                     />
@@ -1149,7 +1157,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                             onClick={() =>
                               castVotesLocal(
                                 factionVotes?.target,
-                                (factionVotes?.votes ?? 0) - 1
+                                (factionVotes?.votes ?? 0) - 1,
+                                factionVotes?.extraVotes ?? 0
                               )
                             }
                           ></div>
@@ -1179,7 +1188,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                             onClick={() =>
                               castVotesLocal(
                                 factionVotes.target,
-                                (factionVotes?.votes ?? 0) + 1
+                                (factionVotes?.votes ?? 0) + 1,
+                                factionVotes?.extraVotes ?? 0
                               )
                             }
                           ></div>

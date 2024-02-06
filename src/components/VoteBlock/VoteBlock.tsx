@@ -14,8 +14,10 @@ import {
 import {
   castVotesAsync,
   playActionCardAsync,
+  playPromissoryNoteAsync,
   playRiderAsync,
   unplayActionCardAsync,
+  unplayPromissoryNoteAsync,
   unplayRiderAsync,
 } from "../../dynamic/api";
 import {
@@ -43,6 +45,22 @@ import styles from "./VoteBlock.module.scss";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { Selector } from "../Selector/Selector";
 import { riderString } from "../../util/strings";
+
+// Checks whether or not a faction can use Blood Pact.
+function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
+  if (factionId === "Empyrean") {
+    return false;
+  }
+  const factionVotes = getFactionVotes(currentTurn, factionId);
+  const empyreanVotes = getFactionVotes(currentTurn, "Empyrean");
+  if (!factionVotes || !empyreanVotes) {
+    return false;
+  }
+  if (!factionVotes.target || !empyreanVotes.target) {
+    return false;
+  }
+  return factionVotes.target === empyreanVotes.target;
+}
 
 export function getTargets(
   agenda: Agenda | undefined,
@@ -669,15 +687,19 @@ function VotingSection({
     return null;
   }
 
-  function castVotesLocal(target: string | undefined, votes: number) {
+  function castVotesLocal(
+    target: string | undefined,
+    votes: number,
+    extraVotes: number
+  ) {
     if (!gameId) {
       return;
     }
 
     if (target === "Abstain") {
-      castVotesAsync(gameId, factionId, 0, "Abstain");
+      castVotesAsync(gameId, factionId, 0, 0, "Abstain");
     } else {
-      castVotesAsync(gameId, factionId, votes, target);
+      castVotesAsync(gameId, factionId, votes, extraVotes, target);
     }
   }
 
@@ -705,7 +727,7 @@ function VotingSection({
     state,
     getCurrentPhasePreviousLogEntries(actionLog ?? [])
   );
-  let castExtraVotes = 0;
+  let castExtraVotes = factionVotes?.extraVotes ?? 0;
   const usingPredictive = getActionCardTargets(
     currentTurn,
     "Predictive Intelligence"
@@ -714,6 +736,12 @@ function VotingSection({
     currentTurn,
     "Distinguished Councilor"
   )[0] as FactionId | undefined;
+  const bloodPactUser = getPromissoryTargets(currentTurn, "Blood Pact")[0] as
+    | FactionId
+    | undefined;
+  if (factionId === bloodPactUser) {
+    castExtraVotes += 4;
+  }
   if (factionId === currentCouncilor) {
     castExtraVotes += 5;
   }
@@ -744,9 +772,9 @@ function VotingSection({
             selectedItem={factionVotes?.target}
             toggleItem={(itemId, add) => {
               if (add) {
-                castVotesLocal(itemId, 0);
+                castVotesLocal(itemId, 0, 0);
               } else {
-                castVotesLocal(undefined, 0);
+                castVotesLocal(undefined, 0, 0);
               }
             }}
             style={{ minWidth: responsivePixels(154) }}
@@ -761,7 +789,7 @@ function VotingSection({
           softMax={influence}
           minValue={0}
           onChange={(votes) => {
-            castVotesLocal(factionVotes.target, votes);
+            castVotesLocal(factionVotes.target, votes, factionVotes.extraVotes);
           }}
         />
       ) : null}
@@ -783,13 +811,29 @@ function VotingSection({
                   factionVotes.votes > 0 ? Object.keys(factions).length : 0
                 } votes from Zeal`
               : null}
-            {factionId === "Xxcha Kingdom" && faction?.commander === "readied"
-              ? `+? votes from Elder Qanoj`
-              : null}
-            {factionId === "Emirates of Hacan" &&
-            faction?.commander === "readied"
-              ? `+0 votes from Gila the Silvertongue`
-              : null}
+            {canUseBloodPact(currentTurn, factionId) ? (
+              <button
+                disabled={bloodPactUser && bloodPactUser !== factionId}
+                className={bloodPactUser === factionId ? "selected" : ""}
+                style={{ fontSize: responsivePixels(14) }}
+                onClick={() => {
+                  if (!gameId) {
+                    return;
+                  }
+                  if (bloodPactUser === factionId) {
+                    unplayPromissoryNoteAsync(gameId, "Blood Pact", factionId);
+                  } else {
+                    playPromissoryNoteAsync(gameId, "Blood Pact", factionId);
+                  }
+                }}
+              >
+                <FormattedMessage
+                  id="Components.Blood Pact.Title"
+                  description="Title of Component: Blood Pact"
+                  defaultMessage="Blood Pact"
+                />
+              </button>
+            ) : null}
             {hasTech(faction, "Predictive Intelligence") ? (
               <button
                 className={
@@ -851,6 +895,26 @@ function VotingSection({
                 defaultMessage="Distinguished Councilor"
               />
             </button>
+            {hasVotableTarget ? (
+              <div
+                className="flexRow"
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                Other
+                <NumberInput
+                  value={factionVotes.extraVotes}
+                  maxValue={99}
+                  minValue={0}
+                  onChange={(votes) => {
+                    castVotesLocal(
+                      factionVotes.target,
+                      factionVotes.votes,
+                      votes
+                    );
+                  }}
+                />
+              </div>
+            ) : null}
           </div>
         </ClientOnlyHoverMenu>
       ) : null}

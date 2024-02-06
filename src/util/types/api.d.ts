@@ -179,6 +179,7 @@ interface CastVotesEvent {
   faction: FactionId;
   target?: string;
   votes: number;
+  extraVotes: number;
 }
 
 interface CastVotesData {

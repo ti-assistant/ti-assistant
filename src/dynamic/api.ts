@@ -187,10 +187,11 @@ export async function castVotesAsync(
   gameId: string,
   faction: FactionId,
   votes: number,
+  extraVotes: number,
   target?: string
 ) {
   const castVotes = await castVotesFn;
-  castVotes(gameId, faction, votes, target);
+  castVotes(gameId, faction, votes, extraVotes, target);
 }
 
 export async function changeOptionAsync(

@@ -82,6 +82,8 @@ export function computeVotes(
     currentTurn,
     "Distinguished Councilor"
   )[0] as FactionId | undefined;
+  const bloodPactUsed =
+    getPromissoryTargets(currentTurn, "Blood Pact").length > 0;
   const usingPredictive = getActionCardTargets(
     currentTurn,
     "Predictive Intelligence"
@@ -99,6 +101,10 @@ export function computeVotes(
         castVotes[voteEvent.target] = 0;
       }
       castVotes[voteEvent.target] += voteEvent.votes ?? 0;
+      castVotes[voteEvent.target] += voteEvent.extraVotes ?? 0;
+      if (voteEvent.faction === "Empyrean" && bloodPactUsed) {
+        castVotes[voteEvent.target] += 4;
+      }
       if (voteEvent.faction === currentCouncilor) {
         castVotes[voteEvent.target] += 5;
       }
