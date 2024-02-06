@@ -14,8 +14,10 @@ import {
 import {
   castVotesAsync,
   playActionCardAsync,
+  playPromissoryNoteAsync,
   playRiderAsync,
   unplayActionCardAsync,
+  unplayPromissoryNoteAsync,
   unplayRiderAsync,
 } from "../../dynamic/api";
 import {
@@ -43,6 +45,22 @@ import styles from "./VoteBlock.module.scss";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { Selector } from "../Selector/Selector";
 import { riderString } from "../../util/strings";
+
+// Checks whether or not a faction can use Blood Pact.
+function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
+  if (factionId === "Empyrean") {
+    return false;
+  }
+  const factionVotes = getFactionVotes(currentTurn, factionId);
+  const empyreanVotes = getFactionVotes(currentTurn, "Empyrean");
+  if (!factionVotes || !empyreanVotes) {
+    return false;
+  }
+  if (!factionVotes.target || !empyreanVotes.target) {
+    return false;
+  }
+  return factionVotes.target === empyreanVotes.target;
+}
 
 export function getTargets(
   agenda: Agenda | undefined,
@@ -714,6 +732,12 @@ function VotingSection({
     currentTurn,
     "Distinguished Councilor"
   )[0] as FactionId | undefined;
+  const bloodPactUser = getPromissoryTargets(currentTurn, "Blood Pact")[0] as
+    | FactionId
+    | undefineds;
+  if (factionId === bloodPactUser) {
+    castExtraVotes += 4;
+  }
   if (factionId === currentCouncilor) {
     castExtraVotes += 5;
   }
@@ -786,6 +810,29 @@ function VotingSection({
             {factionId === "Xxcha Kingdom" && faction?.commander === "readied"
               ? `+? votes from Elder Qanoj`
               : null}
+            {canUseBloodPact(currentTurn, factionId) ? (
+              <button
+                disabled={bloodPactUser && bloodPactUser !== factionId}
+                className={bloodPactUser === factionId ? "selected" : ""}
+                style={{ fontSize: responsivePixels(14) }}
+                onClick={() => {
+                  if (!gameId) {
+                    return;
+                  }
+                  if (bloodPactUser === factionId) {
+                    unplayPromissoryNoteAsync(gameId, "Blood Pact", factionId);
+                  } else {
+                    playPromissoryNoteAsync(gameId, "Blood Pact", factionId);
+                  }
+                }}
+              >
+                <FormattedMessage
+                  id="Components.Blood Pact.Title"
+                  description="Title of Component: Blood Pact"
+                  defaultMessage="Blood Pact"
+                />
+              </button>
+            ) : null}
             {factionId === "Emirates of Hacan" &&
             faction?.commander === "readied"
               ? `+0 votes from Gila the Silvertongue`
