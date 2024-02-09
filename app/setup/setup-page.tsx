@@ -1344,10 +1344,10 @@ function FactionSelect({
                         <button
                           key={color}
                           style={{
-                            width: `${responsivePixels(60)}`,
-                            writingMode: "horizontal-tb",
+                            width: responsivePixels(60),
                             backgroundColor: factionColor,
                             color: factionColor,
+                            height: responsivePixels(22),
                             opacity:
                               faction.color !== color && alreadySelected
                                 ? 0.25
@@ -1358,9 +1358,7 @@ function FactionSelect({
                             closeFn();
                             selectColor(color);
                           }}
-                        >
-                          {color}
-                        </button>
+                        ></button>
                       );
                     })}
                   </div>
