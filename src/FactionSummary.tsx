@@ -48,7 +48,7 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
     }
   }
 
-  const techOrder: TechType[] = ["RED", "GREEN", "BLUE", "YELLOW", "UPGRADE"];
+  const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
   techs.sort((a, b) => {
     const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
@@ -69,15 +69,15 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
   return (
     <div className={styles.TechSummaryGrid}>
       <div className="centered">{redTechs.length || "-"}</div>
-      <TechIcon type={"RED"} size={16} />
+      <TechIcon type={"GREEN"} size={16} />
       <div>&nbsp;</div>
       <div className="centered">{greenTechs.length || "-"}</div>
-      <TechIcon type={"GREEN"} size={16} />
-      <div className="centered">{blueTechs.length || "-"}</div>
       <TechIcon type={"BLUE"} size={16} />
+      <div className="centered">{blueTechs.length || "-"}</div>
+      <TechIcon type={"YELLOW"} size={16} />
       <div>&nbsp;</div>
       <div className="centered">{yellowTechs.length || "-"}</div>
-      <TechIcon type={"YELLOW"} size={16} />
+      <TechIcon type={"RED"} size={16} />
       <div className="centered">{upgradeTechs.length || "-"}</div>
       <div>
         <FormattedMessage

@@ -160,11 +160,11 @@ export default function TechSelectHoverMenu({
           <InnerTechSelectHoverMenu
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
-            techs={redTechs}
+            techs={greenTechs}
             label={intl.formatMessage({
-              id: "ZqAjEi",
-              description: "Title of red techs.",
-              defaultMessage: "Warfare",
+              id: "2I5JBO",
+              description: "Title of green techs.",
+              defaultMessage: "Biotic",
             })}
             prereqs={factionPreReqs}
             selectTech={selectTech}
@@ -199,11 +199,11 @@ export default function TechSelectHoverMenu({
           <InnerTechSelectHoverMenu
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
-            techs={greenTechs}
+            techs={redTechs}
             label={intl.formatMessage({
-              id: "2I5JBO",
-              description: "Title of green techs.",
-              defaultMessage: "Biotic",
+              id: "ZqAjEi",
+              description: "Title of red techs.",
+              defaultMessage: "Warfare",
             })}
             prereqs={factionPreReqs}
             selectTech={selectTech}

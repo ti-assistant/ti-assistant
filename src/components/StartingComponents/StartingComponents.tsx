@@ -36,7 +36,7 @@ const unitOrder = [
   "PDS",
 ];
 
-const techOrder: TechType[] = ["RED", "GREEN", "BLUE", "YELLOW", "UPGRADE"];
+const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
 export default function StartingComponents({
   factionId,
