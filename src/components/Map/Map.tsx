@@ -1018,81 +1018,84 @@ export default function Map({
           </LabeledDiv>
         </div>
       ) : null}
-      {spiral.map((cube, index) => {
-        const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
-        let tile = updatedSystemTiles[index];
-        if (!tile || tile === "-1") {
-          return null;
-        }
-        return (
+      <div className={styles.MapBody}>
+        {spiral.map((cube, index) => {
+          const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
+          let tile = updatedSystemTiles[index];
+          if (!tile || tile === "-1") {
+            return null;
+          }
+          return (
+            <div
+              className="flexRow"
+              key={index}
+              style={{
+                position: "absolute",
+                width: `${tilePercentage * HEX_RATIO}%`,
+                height: `${tilePercentage}%`,
+                marginLeft: `${point.x}%`,
+                marginTop: `${point.y}%`,
+              }}
+            >
+              <SystemImage
+                gameId={gameId}
+                showDetails={showDetails}
+                systemNumber={tile}
+              />
+            </div>
+          );
+        })}
+        {ghosts ? (
           <div
-            className="flexRow"
-            key={index}
             style={{
               position: "absolute",
+              right:
+                ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
+                  ? "4%"
+                  : undefined,
+              bottom:
+                ghostsCorner === "bottom-right" ||
+                ghostsCorner === "bottom-left"
+                  ? "4%"
+                  : undefined,
+              left:
+                ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
+                  ? "4%"
+                  : undefined,
+              top:
+                ghostsCorner === "top-right" || ghostsCorner === "top-left"
+                  ? "4%"
+                  : undefined,
               width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${tilePercentage}%`,
-              marginLeft: `${point.x}%`,
-              marginTop: `${point.y}%`,
+              height: `${tilePercentage * HEX_RATIO}%`,
             }}
           >
             <SystemImage
               gameId={gameId}
               showDetails={showDetails}
-              systemNumber={tile}
+              systemNumber="51"
             />
           </div>
-        );
-      })}
-      {ghosts ? (
-        <div
-          style={{
-            position: "absolute",
-            right:
-              ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
-                ? "4%"
-                : undefined,
-            bottom:
-              ghostsCorner === "bottom-right" || ghostsCorner === "bottom-left"
-                ? "4%"
-                : undefined,
-            left:
-              ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
-                ? "4%"
-                : undefined,
-            top:
-              ghostsCorner === "top-right" || ghostsCorner === "top-left"
-                ? "4%"
-                : undefined,
-            width: `${tilePercentage * HEX_RATIO}%`,
-            height: `${tilePercentage * HEX_RATIO}%`,
-          }}
-        >
-          <SystemImage
-            gameId={gameId}
-            showDetails={showDetails}
-            systemNumber="51"
-          />
-        </div>
-      ) : null}
-      {mallice ? (
-        <div
-          style={{
-            position: "absolute",
-            left: ghostsCorner !== "bottom-left" ? "4%" : undefined,
-            right: ghostsCorner === "bottom-left" ? "4%" : undefined,
-            bottom: "4%",
-            width: `${tilePercentage * HEX_RATIO}%`,
-            height: `${tilePercentage * HEX_RATIO}%`,
-          }}
-        >
-          <SystemImage
-            gameId={gameId}
-            showDetails={showDetails}
-            systemNumber={`82${mallice}`}
-          />
-        </div>
-      ) : null}
+        ) : null}
+        {mallice ? (
+          <div
+            style={{
+              position: "absolute",
+              left: ghostsCorner !== "bottom-left" ? "4%" : undefined,
+              right: ghostsCorner === "bottom-left" ? "4%" : undefined,
+              bottom: "4%",
+              width: `${tilePercentage * HEX_RATIO}%`,
+              height: `${tilePercentage * HEX_RATIO}%`,
+            }}
+          >
+            <SystemImage
+              gameId={gameId}
+              showDetails={showDetails}
+              systemNumber={`82${mallice}`}
+            />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
