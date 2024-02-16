@@ -9,7 +9,6 @@ import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "./util/api/actionLog";
 import { getHandler } from "./util/api/gameLog";
 import { updateGameData } from "./util/api/handler";
 import { fetcher } from "./util/api/util";
-import { responsivePixels } from "./util/util";
 import { Loader } from "./Loader";
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
@@ -234,7 +233,7 @@ export function GameLog({}) {
       className="flexColumn"
       style={{
         width: "100%",
-        height: responsivePixels(440),
+        height: "440px",
         overflow: "auto",
         justifyContent: "flex-start",
         alignItems: "flex-start",

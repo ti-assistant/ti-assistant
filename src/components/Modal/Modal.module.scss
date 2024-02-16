@@ -26,7 +26,7 @@
   background-color: #222;
   max-width: 85%;
   max-height: 90vh;
-  border-radius: var(--ten-pixel);
+  border-radius: 10px;
 }
 
 .Modal .Header {
@@ -35,29 +35,29 @@
   justify-content: flex-start;
   align-items: center;
 
-  padding: var(--four-pixel);
-  border-bottom: var(--one-pixel) solid grey;
+  padding: 4px;
+  border-bottom: 1px solid grey;
   z-index: 1;
   position: sticky;
   top: 0;
   background-color: #222;
-  border-radius: var(--ten-pixel) var(--ten-pixel) 0 0;
+  border-radius: 10px 10px 0 0;
 }
 
 .Modal .CloseButton {
   color: grey;
   cursor: pointer;
-  font-size: var(--twenty-pixel);
-  margin-left: var(--six-pixel);
+  font-size: 20px;
+  margin-left: 6px;
   position: absolute;
-  top: var(--four-pixel);
+  top: 4px;
 }
 
 .Modal .Title {
-  padding: var(--four-pixel) var(--thirty-two-pixel);
+  padding: 4px 32px;
   text-align: center;
   flex-basis: 100%;
-  font-size: var(--forty-pixel);
+  font-size: 40px;
 }
 
 .Modal .Body {
@@ -66,7 +66,7 @@
   justify-content: center;
   align-items: flex-start;
 
-  padding: 0 var(--four-pixel) var(--four-pixel) var(--four-pixel);
+  padding: 0 4px 4px 4px;
 }
 
 :global(.hoverInfo):has(.Modal.shown) {

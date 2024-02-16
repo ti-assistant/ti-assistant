@@ -3,30 +3,30 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: var(--two-pixel);
+  gap: 2px;
 }
 
 .ResourceSection {
   position: relative;
-  width: var(--fifty-pixel);
+  width: 50px;
   height: 100%;
-  padding-bottom: var(--two-pixel);
+  padding-bottom: 2px;
 
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   justify-content: flex-start;
-  gap: var(--eight-pixel);
+  gap: 8px;
 }
 
 .PlanetTotal {
   position: absolute;
-  width: var(--thirty-pixel);
-  height: var(--thirty-pixel);
+  width: 30px;
+  height: 30px;
   top: 0;
   right: 0;
   z-index: -1;
-  border: var(--one-pixel) solid #444;
+  border: 1px solid #444;
   border-radius: 100%;
 
   display: flex;
@@ -36,7 +36,7 @@
   gap: 0;
 
   background-color: #222;
-  font-size: var(--eighteen-pixel);
+  font-size: 18px;
 }
 
 .CountSection {
@@ -44,13 +44,13 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: var(--eight-pixel);
+  gap: 8px;
 }
 
 .PlanetTypeGrid {
   display: grid;
-  font-size: var(--fourteen-pixel);
-  gap: var(--four-pixel);
+  font-size: 14px;
+  gap: 4px;
   grid-template-columns: repeat(2, 1fr);
   justify-items: center;
   align-items: center;
@@ -61,9 +61,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: var(--eight-pixel);
-  font-size: var(--twenty-pixel);
-  line-height: var(--sixteen-pixel);
+  gap: 8px;
+  font-size: 20px;
+  line-height: 16px;
 }
 
 .centered {

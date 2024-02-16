@@ -20,7 +20,7 @@ import {
   repealAgendaAsync,
 } from "../../dynamic/api";
 import { computeVPs } from "../../util/factions";
-import { responsivePixels, validateMapString } from "../../util/util";
+import { validateMapString } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
@@ -180,7 +180,7 @@ export default function Header() {
         {gameFinished ? (
           state?.phase === "END" ? (
             <button
-              style={{ fontSize: responsivePixels(24) }}
+              style={{ fontSize: "24px" }}
               onClick={() => {
                 if (!gameId) {
                   return;
@@ -196,7 +196,7 @@ export default function Header() {
             </button>
           ) : (
             <button
-              style={{ fontFamily: "Slider", fontSize: responsivePixels(32) }}
+              style={{ fontFamily: "Slider", fontSize: "32px" }}
               onClick={() => {
                 if (!gameId) {
                   return;
@@ -226,7 +226,7 @@ export default function Header() {
           >
             <div
               className="flexColumn"
-              style={{ alignItems: "flex-start", padding: responsivePixels(8) }}
+              style={{ alignItems: "flex-start", padding: "8px" }}
             >
               {passedLaws.map((agenda) => (
                 <AgendaRow

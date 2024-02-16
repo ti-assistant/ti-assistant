@@ -9,7 +9,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { responsiveNegativePixels, responsivePixels } from "./util/util";
 import styles from "./HoverMenu.module.scss";
 
 // TODO: Clean up this component.
@@ -39,11 +38,9 @@ export function ClientOnlyHoverMenu({
           style={
             {
               "--color": borderColor,
-              border: borderless
-                ? undefined
-                : `${responsivePixels(2)} solid ${borderColor}`,
-              borderRadius: responsivePixels(5),
-              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+              border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
+              borderRadius: "5px",
+              padding: `4px 8px`,
               whiteSpace: "nowrap",
               backgroundColor: "#222",
             } as CSSProperties
@@ -176,19 +173,13 @@ export function HoverMenu({
     justifyContent: side === "left" ? "flex-end" : "flex-start",
     top: direction === "down" ? 0 : "auto",
     bottom: direction === "up" ? 0 : "auto",
-    border: borderless
-      ? undefined
-      : `${responsivePixels(2)} solid ${borderColor}`,
-    borderRadius: responsivePixels(5),
+    border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
+    borderRadius: "5px",
     backgroundColor: "#222",
     overflow: "visible",
     whiteSpace: "nowrap",
     gap: 0,
-    left: shift.left
-      ? responsiveNegativePixels(-shift.left)
-      : side === "right"
-      ? 0
-      : "auto",
+    left: shift.left ? `-${shift.left}px` : side === "right" ? 0 : "auto",
     right: shift.right ?? side === "left" ? 0 : "auto",
     ...style,
   };
@@ -221,11 +212,9 @@ export function HoverMenu({
         style={
           {
             "--color": borderColor,
-            border: borderless
-              ? undefined
-              : `${responsivePixels(2)} solid ${borderColor}`,
-            borderRadius: responsivePixels(5),
-            padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
+            border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
+            borderRadius: "5px",
+            padding: `4px 8px`,
             whiteSpace: "nowrap",
             backgroundColor: "#222",
           } as CSSProperties
@@ -240,9 +229,9 @@ export function HoverMenu({
             style={
               {
                 "--color": borderColor,
-                padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-                marginLeft: shift.left ? responsivePixels(shift.left) : 0,
-                marginRight: shift.right ? responsivePixels(shift.right) : 0,
+                padding: `4px 8px`,
+                marginLeft: shift.left ? `${shift.left}px` : 0,
+                marginRight: shift.right ? `${shift.right}px` : 0,
               } as CSSProperties
             }
           >
@@ -253,9 +242,9 @@ export function HoverMenu({
         {direction === "up" ? (
           <div
             style={{
-              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              marginLeft: shift.left ? responsivePixels(shift.left) : 0,
-              marginRight: shift.right ? responsivePixels(shift.right) : 0,
+              padding: `4px 8px`,
+              marginLeft: shift.left ? `${shift.left}px` : 0,
+              marginRight: shift.right ? `${shift.right}px` : 0,
             }}
           >
             {label}

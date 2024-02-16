@@ -1,5 +1,4 @@
 import { CSSProperties } from "react";
-import { responsivePixels } from "../../util/util";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./TechSkipIcon.module.scss";
 
@@ -15,7 +14,7 @@ export default function TechSkipIcon({
   outline?: boolean;
 }) {
   const techSkipIconCSS: TechSkipIconCSS = {
-    "--size": responsivePixels(size),
+    "--size": `${size}px`,
   };
 
   return (

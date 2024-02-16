@@ -6,7 +6,6 @@ import LegendaryPlanetIcon from "./components/LegendaryPlanetIcon/LegendaryPlane
 import PlanetIcon from "./components/PlanetIcon/PlanetIcon";
 import { GameIdContext } from "./context/Context";
 import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
-import { responsivePixels } from "./util/util";
 
 interface AttachRowProps {
   attachment: Attachment;
@@ -36,17 +35,17 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
       className="flexRow"
       style={{
         width: "100%",
-        height: responsivePixels(72),
+        height: "72px",
         justifyContent: "flex-start",
-        fontSize: responsivePixels(14),
+        fontSize: "14px",
         position: "relative",
-        gap: responsivePixels(4),
+        gap: "4px",
         whiteSpace: "nowrap",
       }}
     >
       <div style={{ flexBasis: "60%" }}>
         <button
-          style={{ fontSize: responsivePixels(14) }}
+          style={{ fontSize: "14px" }}
           onClick={toggleAttachment}
           className={
             (planet.attachments ?? []).includes(attachment.id) ? "selected" : ""
@@ -60,7 +59,7 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
         influence={attachment.influence ?? 0}
       />
       {isSkip() ? (
-        <div style={{ marginRight: responsivePixels(6) }}>
+        <div style={{ marginRight: "6px" }}>
           <FormattedMessage
             id="PnNSxg"
             description="Text between two fields linking them together."
@@ -153,8 +152,8 @@ function PlanetAttributes({
         return (
           <div
             style={{
-              width: responsivePixels(36),
-              height: responsivePixels(22),
+              width: "36px",
+              height: "22px",
             }}
           >
             ✹✹✹
@@ -173,9 +172,9 @@ function PlanetAttributes({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        width: responsivePixels(36),
+        width: "36px",
         flexWrap: "wrap",
-        gap: responsivePixels(4),
+        gap: "4px",
       }}
     >
       {attributes.map((attribute, index) => {
@@ -183,8 +182,8 @@ function PlanetAttributes({
           <div
             key={index}
             style={{
-              width: responsivePixels(16),
-              height: responsivePixels(16),
+              width: "16px",
+              height: "16px",
               position: "relative",
             }}
           >

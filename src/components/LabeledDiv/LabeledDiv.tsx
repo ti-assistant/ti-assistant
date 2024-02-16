@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import { BLACK_BORDER_GLOW, BLACK_TEXT_GLOW } from "../../util/borderGlow";
-import { responsivePixels } from "../../util/util";
 import styles from "./LabeledDiv.module.scss";
 
 interface LabeledDivProps {
@@ -52,15 +51,13 @@ export default function LabeledDiv({
     setMinWidth((labelWidth ?? 0) + 16);
   }
 
-  const padding = `${
-    !!label ? responsivePixels(10) : responsivePixels(6)
-  } ${responsivePixels(6)} ${responsivePixels(6)} ${responsivePixels(6)}`;
+  const padding = `${!!label ? "10px" : "6px"} ${"6px"} ${"6px"} ${"6px"}`;
   const divStyle: LabeledDivCSS = {
     "--color": color,
     minWidth: minWidth,
     padding: `${padding}`,
     cursor: onClick ? "pointer" : "cursor",
-    marginTop: !!label ? responsivePixels(4) : 0,
+    marginTop: !!label ? "4px" : 0,
     boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
     ...style,
   };
@@ -82,8 +79,7 @@ export default function LabeledDiv({
         >
           <div
             style={{
-              padding:
-                color === "Black" ? `0 ${responsivePixels(4)}` : undefined,
+              padding: color === "Black" ? `0 ${"4px"}` : undefined,
             }}
           >
             {label}

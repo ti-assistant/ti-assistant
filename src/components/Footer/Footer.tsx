@@ -16,7 +16,6 @@ import {
 } from "../../context/Context";
 import { setSpeakerAsync } from "../../dynamic/api";
 import { getFactionColor, getFactionName } from "../../util/factions";
-import { responsivePixels } from "../../util/util";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import GenericModal from "../GenericModal/GenericModal";
@@ -45,7 +44,7 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
     <div
       className="popupIcon"
       style={{
-        fontSize: responsivePixels(16),
+        fontSize: "16px",
       }}
     >
       &#x24D8;
@@ -173,15 +172,15 @@ export default function Footer({}) {
           className="flexColumn"
           style={{
             justifyContent: "flex-start",
-            maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
+            maxHeight: `calc(100dvh - 24px)`,
           }}
         >
           <div
             className="centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              borderRadius: responsivePixels(4),
+              padding: `4px 8px`,
+              borderRadius: "4px",
               width: "min-content",
             }}
           >
@@ -195,9 +194,7 @@ export default function Footer({}) {
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 960px, calc(100vw - ${responsivePixels(
-                24
-              )}))`,
+              width: `clamp(80vw, 960px, calc(100vw - 24px))`,
               justifyContent: "flex-start",
               overflow: "auto",
             }}
@@ -214,15 +211,15 @@ export default function Footer({}) {
           className="flexColumn"
           style={{
             justifyContent: "flex-start",
-            height: `calc(100dvh - ${responsivePixels(24)})`,
+            height: `calc(100dvh - 24px)`,
           }}
         >
           <div
             className="centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              borderRadius: responsivePixels(4),
+              padding: `4px 8px`,
+              borderRadius: "4px",
               width: "min-content",
             }}
           >
@@ -236,13 +233,11 @@ export default function Footer({}) {
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(
-                24
-              )}))`,
+              width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
               justifyContent: "flex-start",
               overflow: "auto",
               height: "fit-content",
-              paddingBottom: responsivePixels(24),
+              paddingBottom: "24px",
             }}
           >
             <ObjectivePanel />
@@ -257,15 +252,15 @@ export default function Footer({}) {
           className="flexColumn"
           style={{
             justifyContent: "flex-start",
-            maxHeight: `calc(100dvh - ${responsivePixels(24)})`,
+            maxHeight: `calc(100dvh - 24px)`,
           }}
         >
           <div
             className="centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              borderRadius: responsivePixels(4),
+              padding: `4px 8px`,
+              borderRadius: "4px",
               width: "min-content",
             }}
           >
@@ -279,9 +274,7 @@ export default function Footer({}) {
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(
-                24
-              )}))`,
+              width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
               justifyContent: "flex-start",
               overflow: "auto",
               height: "100%",
@@ -434,8 +427,8 @@ export default function Footer({}) {
               className="flexRow"
               style={{
                 position: "relative",
-                paddingTop: responsivePixels(2),
-                paddingLeft: responsivePixels(2),
+                paddingTop: "2px",
+                paddingLeft: "2px",
               }}
             >
               <CustomSizeResources resources={2} influence={3} height={24} />
@@ -515,7 +508,7 @@ export default function Footer({}) {
       <div className={styles.FactionBox}>
         <LabeledDiv
           label={orderTitle}
-          style={{ alignItems: "center", paddingTop: responsivePixels(12) }}
+          style={{ alignItems: "center", paddingTop: "12px" }}
         >
           <FactionRow onClick={(factionId) => setSelectedFaction(factionId)} />
           <LabeledDiv

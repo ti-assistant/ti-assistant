@@ -9,15 +9,15 @@
 .LangSelect {
   display: flex;
   position: fixed;
-  top: var(--thirty-two-pixel);
-  left: max(calc(30px + (60 - 30) * ((100vw - 1280px) / (2560 - 1280))), 30px);
+  top: 32px;
+  left: 30px;
   z-index: 2;
 }
 
 @media only screen and (max-width: 900px) {
   .LangSelect {
-    bottom: var(--sixty-four-pixel);
-    right: var(--thirty-two-pixel);
+    bottom: 64px;
+    right: 32px;
     left: unset;
     top: unset;
   }

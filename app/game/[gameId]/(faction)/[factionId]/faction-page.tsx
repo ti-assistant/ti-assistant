@@ -101,7 +101,6 @@ import {
   filterToOwnedTechs,
   filterToUnownedTechs,
 } from "../../../../../src/util/techs";
-import { responsivePixels } from "../../../../../src/util/util";
 import styles from "./faction-page.module.scss";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
@@ -1911,7 +1910,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
               factionId={factionId}
               width={80}
               style={{
-                fontSize: responsivePixels(16),
+                fontSize: "16px",
               }}
             />
           }

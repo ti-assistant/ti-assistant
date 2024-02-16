@@ -13,7 +13,6 @@ import {
   removeStartingTechAsync,
 } from "../../dynamic/api";
 import { getTechColor } from "../../util/techs";
-import { responsivePixels } from "../../util/util";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
@@ -169,8 +168,8 @@ export default function StartingComponents({
         <div
           className="flexRow"
           style={{
-            gap: responsivePixels(4),
-            paddingLeft: responsivePixels(4),
+            gap: "4px",
+            paddingLeft: "4px",
           }}
         >
           <FormattedMessage
@@ -203,7 +202,7 @@ export default function StartingComponents({
           <div
             style={{
               fontFamily: "Myriad Pro",
-              fontSize: responsivePixels(14),
+              fontSize: "14px",
               // paddingLeft: "4px",
             }}
           >
@@ -239,7 +238,7 @@ export default function StartingComponents({
                 whiteSpace: "nowrap",
                 fontFamily: "Myriad Pro",
                 color: getTechColor(tech),
-                fontSize: responsivePixels(14),
+                fontSize: "14px",
                 // paddingLeft: "4px",
               }}
             >
@@ -272,13 +271,13 @@ export default function StartingComponents({
           gridTemplateRows: `repeat(${Math.ceil(
             orderedUnits.length / 2
           )}, 1fr)`,
-          paddingLeft: responsivePixels(4),
-          paddingRight: responsivePixels(4),
+          paddingLeft: "4px",
+          paddingRight: "4px",
           fontFamily: "Myriad Pro",
           // justifyContent: "stretch",
           // alignItems: "flex-start",
-          columnGap: responsivePixels(8),
-          fontSize: responsivePixels(14),
+          columnGap: "8px",
+          fontSize: "14px",
           width: "100%",
           justifyContent: "space-between",
         }}

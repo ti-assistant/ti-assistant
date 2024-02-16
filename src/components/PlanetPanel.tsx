@@ -11,7 +11,6 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "../util/planets";
-import { responsivePixels } from "../util/util";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
@@ -71,7 +70,7 @@ function PlanetSection({
               top: 0,
               zIndex: 1001,
               backgroundColor: "#222",
-              paddingBottom: responsivePixels(4),
+              paddingBottom: "4px",
               borderBottom: "1px solid #555",
               width: "100%",
             }}
@@ -87,7 +86,7 @@ function PlanetSection({
           <div
             className={styles.planetList}
             style={{
-              minHeight: responsivePixels(40),
+              minHeight: "40px",
             }}
           >
             {updatedPlanets.map((planet) => {

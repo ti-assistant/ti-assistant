@@ -4,7 +4,6 @@ import { useCallback, useContext, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { ActionLogContext } from "../../context/Context";
 import { undoAsync } from "../../dynamic/api";
-import { responsivePixels } from "../../util/util";
 
 export default function UndoButton({ gameId }: { gameId?: string }) {
   const actionLog = useContext(ActionLogContext);
@@ -45,7 +44,7 @@ export default function UndoButton({ gameId }: { gameId?: string }) {
           undoAsync(gameId);
         }
       }}
-      style={{ fontSize: responsivePixels(20) }}
+      style={{ fontSize: "20px" }}
       onClick={() => undoAsync(gameId)}
     >
       <FormattedMessage

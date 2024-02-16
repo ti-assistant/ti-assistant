@@ -20,7 +20,6 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
-import { responsivePixels } from "./util/util";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
   let blueTechs = [];
@@ -194,8 +193,8 @@ export function FactionSummary({
                 position: "absolute",
                 zIndex: -1,
                 opacity: 0.5,
-                width: responsivePixels(60),
-                height: responsivePixels(60),
+                width: "60px",
+                height: "60px",
               }}
             >
               <FactionIcon factionId={factionId} size="100%" />
@@ -205,9 +204,9 @@ export function FactionSummary({
         <div
           className="flexRow"
           style={{
-            gap: responsivePixels(4),
+            gap: "4px",
             justifyContent: "space-between",
-            fontSize: responsivePixels(28),
+            fontSize: "28px",
           }}
         >
           {VPs > 0 && editable ? (
@@ -216,18 +215,18 @@ export function FactionSummary({
               onClick={() => manualVpAdjust(false)}
             ></div>
           ) : (
-            <div style={{ width: responsivePixels(12) }}></div>
+            <div style={{ width: "12px" }}></div>
           )}
-          <div className="flexRow" style={{ width: responsivePixels(24) }}>
+          <div className="flexRow" style={{ width: "24px" }}>
             {VPs}
           </div>
           {editable ? (
             <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
           ) : (
-            <div style={{ width: responsivePixels(12) }}></div>
+            <div style={{ width: "12px" }}></div>
           )}
         </div>
-        <div className="centered" style={{ fontSize: responsivePixels(20) }}>
+        <div className="centered" style={{ fontSize: "20px" }}>
           <FormattedMessage
             id="PzyYtG"
             description="Shortened version of Victory Points."

@@ -9,7 +9,6 @@ import {
 import { getStrategyCardsForFaction } from "../../util/helpers";
 import { getFactionColor } from "../../util/factions";
 import FactionCircle from "../FactionCircle/FactionCircle";
-import { responsivePixels } from "../../util/util";
 
 interface FactionRowProps {
   onClick: (factionId: FactionId) => void;
@@ -83,7 +82,7 @@ export default function FactionRow({ onClick }: FactionRowProps) {
                 cards.length > 0 ? (
                   <div
                     style={{
-                      fontSize: responsivePixels(18),
+                      fontSize: "18px",
                       color: cards[0]?.color,
                     }}
                   >

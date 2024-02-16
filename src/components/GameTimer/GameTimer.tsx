@@ -4,7 +4,6 @@ import { useSharedTimer } from "../../data/SharedTimer";
 import { useTimers } from "../../data/Timers";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
-import { responsivePixels } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import { FormattedMessage } from "react-intl";
 import { useInterval } from "../../util/client";
@@ -75,12 +74,12 @@ export default function GameTimer({ frozen = false }) {
         style={{
           alignItems: "center",
           justifyContent: "center",
-          gap: responsivePixels(4),
+          gap: "4px",
         }}
       >
         <TimerDisplay
           time={!timers ? 0 : gameTimer}
-          style={{ fontSize: responsivePixels(28) }}
+          style={{ fontSize: "28px" }}
         />
       </div>
       {frozen ? null : (

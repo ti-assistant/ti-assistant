@@ -1,6 +1,6 @@
 .Circle {
   border-radius: 100%;
-  border: var(--two-pixel) solid var(--border-color);
+  border: 2px solid var(--border-color);
   width: var(--size);
   height: var(--size);
 }

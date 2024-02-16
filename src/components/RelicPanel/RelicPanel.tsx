@@ -7,7 +7,6 @@ import {
   RelicContext,
 } from "../../context/Context";
 import { CollapsibleSection } from "../CollapsibleSection";
-import { responsivePixels } from "../../util/util";
 import { InfoRow } from "../../InfoRow";
 import { FactionSelectHoverMenu } from "../FactionSelect";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -29,9 +28,9 @@ function RelicPanelContent({}) {
             gridAutoFlow: "row",
             gridAutoColumns: "auto 1fr auto",
             width: "100%",
-            gap: responsivePixels(4),
-            padding: `0 ${responsivePixels(4)} ${responsivePixels(4)}`,
-            fontSize: responsivePixels(14),
+            gap: "4px",
+            padding: `0 4px 4px`,
+            fontSize: "14px",
             justifyContent: "stretch",
             alignItems: "stretch",
           }}
@@ -102,17 +101,17 @@ export default function RelicPanel({}) {
           style={{
             whiteSpace: "normal",
             textShadow: "none",
-            width: `clamp(80vw, 1200px, calc(100vw - ${responsivePixels(24)}))`,
+            width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
             justifyContent: "flex-start",
-            height: `calc(100dvh - ${responsivePixels(24)})`,
+            height: `calc(100dvh - 24px)`,
           }}
         >
           <div
             className="flexRow centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `${responsivePixels(4)} ${responsivePixels(8)}`,
-              borderRadius: responsivePixels(4),
+              padding: "4px 8px",
+              borderRadius: "4px",
             }}
           >
             Relics

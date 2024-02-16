@@ -23,7 +23,6 @@ import { advanceToActionPhase } from "../../../../src/main/StrategyPhase";
 import { getCurrentTurnLogEntries } from "../../../../src/util/api/actionLog";
 import { getFactionColor } from "../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../src/util/helpers";
-import { responsivePixels } from "../../../../src/util/neutral";
 import { phaseString } from "../../../../src/util/strings";
 
 function NextPhaseButtons({}) {
@@ -300,7 +299,7 @@ export default function FactionsSection({}) {
                 cards.length > 0 ? (
                   <div
                     style={{
-                      fontSize: responsivePixels(18),
+                      fontSize: "18px",
                       color: cards[0]?.used ? "#555" : cards[0]?.color,
                     }}
                   >

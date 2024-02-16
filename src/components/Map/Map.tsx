@@ -13,7 +13,6 @@ import {
   applyAllPlanetAttachments,
   getPlanetTypeColor,
 } from "../../util/planets";
-import { responsivePixels } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
@@ -545,7 +544,7 @@ export function SystemImage({
                 style={{
                   position: "absolute",
                   backgroundColor: "#222",
-                  border: `${responsivePixels(2)} solid ${getFactionColor(
+                  border: `${"2px"} solid ${getFactionColor(
                     (factions ?? {})[planet.owner]
                   )}`,
                   borderRadius: "100%",
@@ -571,9 +570,7 @@ export function SystemImage({
                 style={{
                   position: "absolute",
                   backgroundColor: "#222",
-                  border: `${responsivePixels(2)} solid ${getPlanetTypeColor(
-                    planet.type
-                  )}`,
+                  border: `${"2px"} solid ${getPlanetTypeColor(planet.type)}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -597,7 +594,7 @@ export function SystemImage({
                 style={{
                   position: "absolute",
                   backgroundColor: "#222",
-                  border: `${responsivePixels(2)} solid ${"#eee"}`,
+                  border: `${"2px"} solid ${"#eee"}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -967,7 +964,7 @@ export default function Map({
               backgroundColor: "#222",
               justifyContent: "stretch",
               alignItems: "stretch",
-              paddingTop: responsivePixels(16),
+              paddingTop: "16px",
             }}
           >
             <div className={styles.LegendContent}>

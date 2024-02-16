@@ -16,7 +16,6 @@ import {
   updateLocalAgendaTimer,
   updateLocalFactionTimer,
 } from "./util/api/timers";
-import { responsivePixels } from "./util/util";
 import { FormattedMessage } from "react-intl";
 import { useInterval } from "./util/client";
 
@@ -75,7 +74,7 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
       className="flexColumn"
       style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
     >
-      <div style={{ fontSize: responsivePixels(18) }}>
+      <div style={{ fontSize: "18px" }}>
         <FormattedMessage
           id="OpsE1E"
           defaultMessage="{num, select, 1 {First} 2 {Second} other {First}} Agenda"

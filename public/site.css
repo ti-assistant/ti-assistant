@@ -1,145 +1,7 @@
-:root {
-  --negative-twelve-pixel: min(
-    calc(-12px + (-24 - -12) * ((100vw - 1280px) / (2560 - 1280))),
-    -12px
-  );
-  --negative-two-pixel: min(
-    calc(-2px + (-4 - -2) * ((100vw - 1280px) / (2560 - 1280))),
-    -2px
-  );
-  --one-pixel: max(
-    calc(1px + (2 - 1) * ((100vw - 1280px) / (2560 - 1280))),
-    1px
-  );
-  --two-pixel: max(
-    calc(2px + (4 - 2) * ((100vw - 1280px) / (2560 - 1280))),
-    2px
-  );
-  --three-pixel: max(
-    calc(3px + (6 - 3) * ((100vw - 1280px) / (2560 - 1280))),
-    3px
-  );
-  --four-pixel: max(
-    calc(4px + (8 - 4) * ((100vw - 1280px) / (2560 - 1280))),
-    4px
-  );
-  --five-pixel: max(
-    calc(5px + (10 - 5) * ((100vw - 1280px) / (2560 - 1280))),
-    5px
-  );
-  --six-pixel: max(
-    calc(6px + (12 - 6) * ((100vw - 1280px) / (2560 - 1280))),
-    6px
-  );
-  --eight-pixel: max(
-    calc(8px + (16 - 8) * ((100vw - 1280px) / (2560 - 1280))),
-    8px
-  );
-  --ten-pixel: max(
-    calc(10px + (20 - 10) * ((100vw - 1280px) / (2560 - 1280))),
-    10px
-  );
-  --twelve-pixel: max(
-    calc(12px + (24 - 12) * ((100vw - 1280px) / (2560 - 1280))),
-    12px
-  );
-  --fourteen-pixel: max(
-    calc(14px + (28 - 14) * ((100vw - 1280px) / (2560 - 1280))),
-    14px
-  );
-  --sixteen-pixel: max(
-    calc(16px + (32 - 16) * ((100vw - 1280px) / (2560 - 1280))),
-    16px
-  );
-  --eighteen-pixel: max(
-    calc(18px + (36 - 18) * ((100vw - 1280px) / (2560 - 1280))),
-    18px
-  );
-  --twenty-pixel: max(
-    calc(20px + (40 - 20) * ((100vw - 1280px) / (2560 - 1280))),
-    20px
-  );
-  --twenty-two-pixel: max(
-    calc(22px + (44 - 22) * ((100vw - 1280px) / (2560 - 1280))),
-    22px
-  );
-  --twenty-four-pixel: max(
-    calc(24px + (48 - 24) * ((100vw - 1280px) / (2560 - 1280))),
-    24px
-  );
-  --twenty-eight-pixel: max(
-    calc(28px + (56 - 28) * ((100vw - 1280px) / (2560 - 1280))),
-    28px
-  );
-  --thirty-pixel: max(
-    calc(30px + (60 - 30) * ((100vw - 1280px) / (2560 - 1280))),
-    30px
-  );
-  --thirty-two-pixel: max(
-    calc(32px + (64 - 32) * ((100vw - 1280px) / (2560 - 1280))),
-    32px
-  );
-  --thirty-six-pixel: max(
-    calc(36px + (72 - 36) * ((100vw - 1280px) / (2560 - 1280))),
-    36px
-  );
-  --forty-pixel: max(
-    calc(40px + (80 - 40) * ((100vw - 1280px) / (2560 - 1280))),
-    40px
-  );
-  --forty-eight-pixel: max(
-    calc(48px + (96 - 48) * ((100vw - 1280px) / (2560 - 1280))),
-    48px
-  );
-  --fifty-pixel: max(
-    calc(50px + (100 - 50) * ((100vw - 1280px) / (2560 - 1280))),
-    50px
-  );
-  --sixty-four-pixel: max(
-    calc(64px + (128 - 64) * ((100vw - 1280px) / (2560 - 1280))),
-    64px
-  );
-  --eighty-pixel: max(
-    calc(80px + (160 - 80) * ((100vw - 1280px) / (2560 - 1280))),
-    80px
-  );
-  --ninety-six-pixel: max(
-    calc(96px + (192 - 96) * ((100vw - 1280px) / (2560 - 1280))),
-    96px
-  );
-  --one-eight-pixel: max(
-    calc(108px + (216 - 108) * ((100vw - 1280px) / (2560 - 1280))),
-    108px
-  );
-  --one-twenty-pixel: max(
-    calc(120px + (240 - 120) * ((100vw - 1280px) / (2560 - 1280))),
-    120px
-  );
-  --one-forty-pixel: max(
-    calc(140px + (280 - 140) * ((100vw - 1280px) / (2560 - 1280))),
-    140px
-  );
-  --two-fifty-six-pixel: max(
-    calc(256px + (512 - 256) * ((100vw - 1280px) / (2560 - 1280))),
-    256px
-  );
-  --two-eighty-pixel: max(
-    calc(280px + (560 - 280) * ((100vw - 1280px) / (2560 - 1280))),
-    280px
-  );
-  --four-twenty-pixel: max(
-    calc(420px + (840 - 420) * ((100vw - 1280px) / (2560 - 1280))),
-    420px
-  );
-  --four-seventy-pixel: max(
-    calc(470px + (940 - 470) * ((100vw - 1280px) / (2560 - 1280))),
-    470px
-  );
-}
-
 html {
   box-sizing: border-box;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -170,8 +32,8 @@ html {
 
 body {
   font-family: "slider";
-  font-size: var(--sixteen-pixel);
-  margin: 0px var(--ninety-six-pixel);
+  font-size: 16px;
+  margin: 0px 96px;
   background-color: #222;
   color: #eee;
 }
@@ -183,7 +45,7 @@ body {
 .icon {
   display: flex;
   align-items: center;
-  margin-right: var(--eight-pixel);
+  margin-right: 8px;
   box-sizing: border-box;
 }
 
@@ -200,34 +62,28 @@ body {
 .icon.negative {
   color: firebrick;
   font-size: 80%;
-  margin: var(--three-pixel) var(--ten-pixel) var(--three-pixel)
-    var(--three-pixel);
+  margin: 3px 10px 3px
+    3px;
 }
 
 .smallFont {
   font-size: 14px;
-  font-size: var(--fourteen-pixel);
 }
 
 .mediumFont {
   font-size: 16px;
-  font-size: var(--sixteen-pixel);
 }
 
 .largeFont {
   font-size: 18px;
-  font-size: var(--eighteen-pixel);
-  /* font-size: calc(12px + (40 - 12) * ((100vw - 900) / (2560 - 900))); */
 }
 
 .hugeFont {
   font-size: 20px;
-  font-size: var(--twenty-pixel);
 }
 
 .extraLargeFont {
   font-size: 24px;
-  font-size: var(--twenty-four-pixel);
 }
 
 a {
@@ -247,17 +103,17 @@ a:hover > div {
 
 button {
   all: unset;
-  font-size: var(--eighteen-pixel);
+  font-size: 18px;
   font-family: "Myriad Pro";
   background-color: #333;
   color: #eee;
   padding: 3px 5px;
-  padding: var(--three-pixel) var(--five-pixel);
-  border-radius: var(--four-pixel);
+  padding: 3px 5px;
+  border-radius: 4px;
   cursor: pointer;
   box-shadow: 0px 1px 4px black;
-  box-shadow: 0px var(--one-pixel) var(--four-pixel) black;
-  border: var(--one-pixel) solid #333;
+  box-shadow: 0px 1px 4px black;
+  border: 1px solid #333;
 }
 
 button:hover {
@@ -269,11 +125,11 @@ button.faded {
   background-color: #222;
   color: #555;
   box-sizing: border-box;
-  border: var(--one-pixel) solid #333;
+  border: 1px solid #333;
 }
 
 button.selected {
-  border: var(--one-pixel) solid #eee;
+  border: 1px solid #eee;
   background-color: #444;
   color: #fff;
 }
@@ -283,7 +139,7 @@ button:disabled {
   color: #555;
   box-shadow: none;
   box-sizing: border-box;
-  border: var(--one-pixel) solid #333;
+  border: 1px solid #333;
   cursor: default;
 }
 
@@ -292,7 +148,7 @@ button:disabled.selected {
   color: #fff;
   box-shadow: none;
   box-sizing: border-box;
-  border: var(--one-pixel) solid #eee;
+  border: 1px solid #eee;
   cursor: default;
 }
 
@@ -319,7 +175,7 @@ input[type="textbox"] {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  gap: var(--eight-pixel);
+  gap: 8px;
 }
 
 .flexColumn {
@@ -327,12 +183,12 @@ input[type="textbox"] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: var(--eight-pixel);
+  gap: 8px;
 }
 
 .popupIcon {
-  margin-left: var(--eight-pixel);
-  font-size: var(--twenty-pixel);
+  margin-left: 8px;
+  font-size: 20px;
   position: relative;
   cursor: pointer;
   z-index: inherit;
@@ -342,10 +198,10 @@ input[type="textbox"] {
   --color: #ddd;
   width: 0;
   height: 0;
-  border-left: var(--six-pixel) solid transparent;
-  border-right: var(--six-pixel) solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
 
-  border-bottom: var(--eight-pixel) solid var(--color);
+  border-bottom: 8px solid var(--color);
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -354,10 +210,10 @@ input[type="textbox"] {
   --color: #ddd;
   width: 0;
   height: 0;
-  border-left: var(--six-pixel) solid transparent;
-  border-right: var(--six-pixel) solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
 
-  border-top: var(--eight-pixel) solid var(--color);
+  border-top: 8px solid var(--color);
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -367,14 +223,14 @@ input[type="textbox"] {
   content: "";
   width: 0;
   height: 0;
-  border-left: var(--six-pixel) solid transparent;
-  border-right: var(--six-pixel) solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
 
-  border-top: var(--eight-pixel) solid #ddd;
+  border-top: 8px solid #ddd;
   box-sizing: border-box;
   cursor: pointer;
-  top: var(--eight-pixel);
-  margin-left: var(--four-pixel);
+  top: 8px;
+  margin-left: 4px;
 }
 
 .upArrow::after {
@@ -382,14 +238,14 @@ input[type="textbox"] {
   content: "";
   width: 0;
   height: 0;
-  border-left: var(--six-pixel) solid transparent;
-  border-right: var(--six-pixel) solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
 
-  border-bottom: var(--eight-pixel) solid #ddd;
+  border-bottom: 8px solid #ddd;
   box-sizing: border-box;
   cursor: pointer;
-  bottom: var(--eight-pixel);
-  margin-left: var(--four-pixel);
+  bottom: 8px;
+  margin-left: 4px;
 }
 
 .hoverInfo {

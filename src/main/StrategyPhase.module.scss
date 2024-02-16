@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: var(--two-eighty-pixel);
+  width: 280px;
   height: 100svh;
 }
 
@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
 
-  gap: var(--eight-pixel);
+  gap: 8px;
   margin-top: 40px;
   height: calc(100svh - 40px);
 }

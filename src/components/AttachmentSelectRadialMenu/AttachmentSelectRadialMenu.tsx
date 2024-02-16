@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { SymbolX } from "../../icons/svgs";
-import { responsivePixels } from "../../util/util";
 import styles from "./AttachmentSelectRadialMenu.module.scss";
 import { AttachmentContext } from "../../context/Context";
 import AttachmentIcon from "../AttachmentIcon/AttachmentIcon";
@@ -32,14 +31,10 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
 
   const center = (size * 3) / 2;
   const pos = {
-    "--y-pos": responsivePixels(
-      center - size * Math.cos(radians) - size / 2 + 2
-    ),
-    "--x-pos": responsivePixels(
-      center - size * -Math.sin(radians) - size / 2 + 2
-    ),
-    "--initial-y": responsivePixels(size + 2),
-    "--initial-x": responsivePixels(size + 2),
+    "--y-pos": `${center - size * Math.cos(radians) - size / 2 + 2}px`,
+    "--x-pos": `${center - size * -Math.sin(radians) - size / 2 + 2}px`,
+    "--initial-y": `${size + 2}px`,
+    "--initial-x": `${size + 2}px`,
   };
   return pos;
 }
@@ -96,7 +91,7 @@ export default function AttachmentSelectRadialMenu({
 
   const hoverParentStyle: AttachmentSelectRadialMenuCSS = {
     "--border-color": borderColor,
-    "--size": responsivePixels(size),
+    "--size": `${size}px`,
   };
 
   return (
@@ -133,8 +128,8 @@ export default function AttachmentSelectRadialMenu({
                   : 1;
               const factionSelectStyle: AttachmentSelectCSS = {
                 "--opacity": opacity,
-                width: responsivePixels(size - 4),
-                height: responsivePixels(size - 4),
+                width: `${size - 4}px`,
+                height: `${size - 4}px`,
                 ...getRadialPosition(index, attachments.length, size),
               };
               return (
@@ -155,8 +150,8 @@ export default function AttachmentSelectRadialMenu({
                     className="flexRow"
                     style={{
                       position: "relative",
-                      width: responsivePixels(size - 8),
-                      height: responsivePixels(size - 8),
+                      width: `${size - 8}px`,
+                      height: `${size - 8}px`,
                       whiteSpace: "pre-wrap",
                       gap: 0,
                     }}
@@ -177,24 +172,24 @@ export default function AttachmentSelectRadialMenu({
             <div
               className={`flexRow ${styles.centerCircle}`}
               style={{
-                width: responsivePixels(size - 2),
-                height: responsivePixels(size - 2),
+                width: `${size - 2}px`,
+                height: `${size - 2}px`,
               }}
             >
               <div
                 className="flexRow"
                 style={{
-                  width: responsivePixels(size - 4),
-                  height: responsivePixels(size - 4),
-                  fontSize: responsivePixels(size - 8),
+                  width: `${size - 4}px`,
+                  height: `${size - 4}px`,
+                  fontSize: `${size - 8}px`,
                 }}
               >
                 <div
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: responsivePixels(size - 10),
-                    height: responsivePixels(size - 10),
+                    width: `${size - 10}px`,
+                    height: `${size - 10}px`,
                   }}
                 >
                   {selectedAttachment ? (
@@ -213,12 +208,10 @@ export default function AttachmentSelectRadialMenu({
                   <div
                     className={`flexRow ${styles.tag}`}
                     style={{
-                      border: `${responsivePixels(1)} solid ${tagBorderColor}`,
-                      boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                        1
-                      )} ${responsivePixels(4)} black`,
-                      width: responsivePixels(24),
-                      height: responsivePixels(24),
+                      border: `${"1px"} solid ${tagBorderColor}`,
+                      boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                      width: "24px",
+                      height: "24px",
                     }}
                   >
                     {tag}

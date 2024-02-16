@@ -16,7 +16,6 @@ import ResponsiveLogo from "../../src/components/ResponsiveLogo/ResponsiveLogo";
 import { Strings } from "../../src/components/strings";
 import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
-import { responsivePixels } from "../../src/util/util";
 import styles from "./setup.module.scss";
 import dynamic from "next/dynamic";
 
@@ -27,7 +26,7 @@ const SetupFactionPanel = dynamic(
       <div
         className="popupIcon"
         style={{
-          fontSize: responsivePixels(16),
+          fontSize: "16px",
         }}
       >
         &#x24D8;
@@ -147,9 +146,7 @@ function MobileOptions({
               className="flexColumn"
               style={{
                 alignItems: "flex-start",
-                padding: `${responsivePixels(8)} ${responsivePixels(
-                  16
-                )} 0 ${responsivePixels(16)}`,
+                padding: `${"8px"} ${"16px"} 0 ${"16px"}`,
               }}
             >
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
@@ -163,7 +160,7 @@ function MobileOptions({
                   className="flexRow"
                   style={{
                     justifyContent: "flex-start",
-                    padding: `0 ${responsivePixels(20)}`,
+                    padding: `0 ${"20px"}`,
                   }}
                 >
                   <button
@@ -245,7 +242,7 @@ function MobileOptions({
                   style={{
                     alignItems: "flex-start",
                     justifyContent: "flex-start",
-                    padding: `0 ${responsivePixels(20)}`,
+                    padding: `0 ${"20px"}`,
                   }}
                 >
                   <button
@@ -323,7 +320,7 @@ function MobileOptions({
                   className="flexColumn"
                   style={{
                     fontFamily: "Myriad Pro",
-                    padding: `${responsivePixels(8)} ${responsivePixels(16)}`,
+                    padding: `8px 16px`,
                     alignItems: "flex-start",
                     whiteSpace: "pre-wrap",
                   }}
@@ -337,7 +334,7 @@ function MobileOptions({
                       />
                       <div
                         className="flexRow"
-                        style={{ paddingLeft: `${responsivePixels(16)}` }}
+                        style={{ paddingLeft: `${"16px"}` }}
                       >
                         {mapStyles.map((style) => {
                           return (
@@ -360,10 +357,7 @@ function MobileOptions({
                     description="Label for a textbox used to specify the map string."
                     defaultMessage="Map String"
                   />
-                  <span
-                    className="smallFont"
-                    style={{ paddingLeft: responsivePixels(4) }}
-                  >
+                  <span className="smallFont" style={{ paddingLeft: "4px" }}>
                     <FormattedMessage
                       id="zjv9Gr"
                       description="Part of a label explaining what the map string does."
@@ -389,7 +383,7 @@ function MobileOptions({
                     className="flexColumn"
                     style={{
                       alignItems: "flex-start",
-                      padding: `${responsivePixels(8)} ${responsivePixels(20)}`,
+                      padding: `8px 20px`,
                     }}
                   >
                     <button
@@ -510,9 +504,7 @@ function Options({
             className="flexColumn"
             style={{
               alignItems: "flex-start",
-              padding: `${responsivePixels(8)} ${responsivePixels(
-                16
-              )} 0 ${responsivePixels(16)}`,
+              padding: `${"8px"} ${"16px"} 0 ${"16px"}`,
             }}
           >
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
@@ -526,7 +518,7 @@ function Options({
                 className="flexRow"
                 style={{
                   justifyContent: "flex-start",
-                  padding: `0 ${responsivePixels(20)}`,
+                  padding: `0 ${"20px"}`,
                 }}
               >
                 {defaultVPs.map((VPs, index) => {
@@ -676,7 +668,7 @@ function Options({
                 className="flexRow"
                 style={{
                   justifyContent: "flex-start",
-                  padding: `0 ${responsivePixels(20)}`,
+                  padding: `0 ${"20px"}`,
                 }}
               >
                 <button
@@ -747,7 +739,7 @@ function Options({
                 className="flexColumn mediumFont"
                 style={{
                   alignItems: "flex-start",
-                  padding: `0 ${responsivePixels(20)}`,
+                  padding: `0 ${"20px"}`,
                 }}
               >
                 <FormattedMessage
@@ -759,7 +751,7 @@ function Options({
                   className="flexRow"
                   style={{
                     justifyContent: "flex-start",
-                    padding: `0 ${responsivePixels(20)}`,
+                    padding: `0 ${"20px"}`,
                   }}
                 >
                   <button
@@ -794,7 +786,7 @@ function Options({
                 className="flexColumn"
                 style={{
                   fontFamily: "Myriad Pro",
-                  padding: `${responsivePixels(8)} ${responsivePixels(16)}`,
+                  padding: `8px 16px`,
                   alignItems: "flex-start",
                 }}
               >
@@ -807,7 +799,7 @@ function Options({
                     />
                     <div
                       className="flexRow"
-                      style={{ paddingLeft: `${responsivePixels(16)}` }}
+                      style={{ paddingLeft: `${"16px"}` }}
                     >
                       {mapStyles.map((style) => {
                         return (
@@ -838,10 +830,7 @@ function Options({
                     description="Label for a textbox used to specify the map string."
                     defaultMessage="Map String"
                   />
-                  <span
-                    className="smallFont"
-                    style={{ paddingLeft: responsivePixels(4) }}
-                  >
+                  <span className="smallFont" style={{ paddingLeft: "4px" }}>
                     <FormattedMessage
                       id="zjv9Gr"
                       description="Part of a label explaining what the map string does."
@@ -868,7 +857,7 @@ function Options({
                   className="flexColumn"
                   style={{
                     alignItems: "flex-start",
-                    padding: `${responsivePixels(8)} ${responsivePixels(20)}`,
+                    padding: `8px 20px`,
                   }}
                 >
                   <button
@@ -894,7 +883,7 @@ function Options({
                   className="flexRow"
                   style={{
                     alignItems: "flex-start",
-                    padding: `${responsivePixels(8)} ${responsivePixels(20)}`,
+                    padding: `8px 20px`,
                   }}
                 >
                   {variants.map((variant) => {
@@ -1203,8 +1192,8 @@ function FactionSelect({
           width: "100%",
           alignItems: "flex-start",
           whiteSpace: "nowrap",
-          gap: responsivePixels(4),
-          padding: responsivePixels(8),
+          gap: "4px",
+          padding: "8px",
           boxSizing: "border-box",
         }}
       >
@@ -1225,7 +1214,7 @@ function FactionSelect({
               <SelectableRow
                 itemId={availableFactions[faction.id].name}
                 removeItem={() => selectFaction(undefined)}
-                style={{ height: responsivePixels(32.67) }}
+                style={{ height: "32.67px" }}
               >
                 {availableFactions[faction.id].name}
                 <SetupFactionPanel
@@ -1248,8 +1237,8 @@ function FactionSelect({
                     display: "grid",
                     gridAutoFlow: "column",
                     gridTemplateRows: "repeat(10, minmax(0, 1fr))",
-                    gap: responsivePixels(4),
-                    padding: responsivePixels(8),
+                    gap: "4px",
+                    padding: "8px",
                     maxWidth: "min(85vw, 750px)",
                     overflowX: "auto",
                   }}
@@ -1264,7 +1253,7 @@ function FactionSelect({
                         style={{
                           justifyContent: "flex-start",
                           alignItems: "center",
-                          fontSize: responsivePixels(16),
+                          fontSize: "16px",
                         }}
                         onClick={() => selectFaction(faction.id)}
                       >
@@ -1328,12 +1317,12 @@ function FactionSelect({
                   <div
                     className="flexRow"
                     style={{
-                      padding: `${responsivePixels(8)}`,
+                      padding: `${"8px"}`,
                       display: "grid",
                       gridAutoFlow: "column",
                       gridTemplateRows: "repeat(3, auto)",
                       overflowX: "auto",
-                      gap: `${responsivePixels(4)}`,
+                      gap: `${"4px"}`,
                       justifyContent: "flex-start",
                     }}
                   >
@@ -1344,10 +1333,10 @@ function FactionSelect({
                         <button
                           key={color}
                           style={{
-                            width: responsivePixels(60),
+                            width: "60px",
                             backgroundColor: factionColor,
                             color: factionColor,
-                            height: responsivePixels(22),
+                            height: "22px",
                             opacity:
                               faction.color !== color && alreadySelected
                                 ? 0.25
@@ -1785,17 +1774,17 @@ export default function SetupPage({
     let height = "0";
     switch (numFactions) {
       case 3:
-        height = responsivePixels(114);
+        height = "114px";
         break;
       case 4:
         if (options["map-style"] !== "standard") {
-          height = responsivePixels(114);
+          height = "114px";
           break;
         }
         return null;
       case 5:
         if (options["map-style"] !== "warp") {
-          height = responsivePixels(114);
+          height = "114px";
           break;
         }
         return null;
@@ -1806,81 +1795,72 @@ export default function SetupPage({
   }
 
   function RightTopGapDiv({}) {
-    let height = responsivePixels(80);
+    let height = "80px";
     switch (numFactions) {
       case 3:
-        height = responsivePixels(60);
+        height = "60px";
         break;
       case 4:
-        height =
-          options["map-style"] === "standard"
-            ? responsivePixels(110)
-            : responsivePixels(60);
+        height = options["map-style"] === "standard" ? "110px" : "60px";
         break;
       case 5:
       case 6:
-        height = responsivePixels(60);
+        height = "60px";
         break;
       case 7:
         if (options["map-style"] === "warp") {
-          height = responsivePixels(80);
+          height = "80px";
           break;
         }
       case 8:
-        height = responsivePixels(24);
+        height = "24px";
         break;
     }
     return <div style={{ height: height }}></div>;
   }
 
   function SideGapDiv({}) {
-    let height = responsivePixels(80);
+    let height = "80px";
     switch (numFactions) {
       default:
         return null;
       case 4:
-        height =
-          options["map-style"] === "standard"
-            ? responsivePixels(0)
-            : responsivePixels(36);
+        height = options["map-style"] === "standard" ? "0px" : "36px";
         break;
       case 5:
       case 6:
-        height = responsivePixels(36);
+        height = "36px";
         break;
       case 7:
       case 8:
-        height = responsivePixels(0);
+        height = "0px";
         break;
     }
     return <div style={{ height: height }}></div>;
   }
 
   function LeftTopGapDiv({}) {
-    let height = responsivePixels(68);
+    let height = "68px";
     switch (numFactions) {
       case 3:
-        height = responsivePixels(48);
+        height = "48px";
         break;
       case 4:
-        height =
-          options["map-style"] === "standard"
-            ? responsivePixels(148)
-            : responsivePixels(44);
+        height = options["map-style"] === "standard" ? "148px" : "44px";
         break;
       case 5:
       case 6:
-        height = responsivePixels(44);
+        height = "44px";
         break;
       case 7:
       case 8:
-        height = responsivePixels(8);
+        height = "8px";
         break;
     }
     return <div style={{ height: height }}></div>;
   }
   function LeftBottomGapDiv({}) {
-    let height = responsivePixels(80);
+    let height = "80px";
     switch (numFactions) {
       case 3:
       case 4:
@@ -1893,28 +1873,25 @@ export default function SetupPage({
     return <div style={{ height: height }}></div>;
   }
   function RightBottomGapDiv({}) {
-    let height = responsivePixels(64);
+    let height = "64px";
     switch (numFactions) {
       case 3:
-        height = responsivePixels(244);
+        height = "244px";
         break;
       case 4:
-        height =
-          options["map-style"] === "standard"
-            ? responsivePixels(168)
-            : responsivePixels(23);
+        height = options["map-style"] === "standard" ? "168px" : "23px";
         break;
       case 5:
       case 6:
-        height = responsivePixels(23);
+        height = "23px";
         break;
       case 7:
         if (options["map-style"] === "warp") {
-          height = responsivePixels(64);
+          height = "64px";
           break;
         }
       case 8:
-        height = responsivePixels(22);
+        height = "22px";
         break;
     }
     return <div style={{ height: height }}></div>;
@@ -1945,7 +1922,7 @@ export default function SetupPage({
         style={{
           alignItems: "flex-start",
           justifyContent: "center",
-          margin: `${responsivePixels(48)} 0 0 0`,
+          margin: `${"48px"} 0 0 0`,
           width: "100%",
         }}
       >
@@ -1954,7 +1931,7 @@ export default function SetupPage({
           style={{
             height: "100%",
             justifyContent: "flex-start",
-            marginTop: responsivePixels(12),
+            marginTop: "12px",
           }}
         >
           <Options
@@ -2195,7 +2172,7 @@ export default function SetupPage({
           <div className="flexColumn" style={{ width: "100%" }}>
             <button
               style={{
-                fontSize: `${responsivePixels(40)}`,
+                fontSize: `${"40px"}`,
                 fontFamily: "Slider",
                 color: creatingGame ? "#222" : undefined,
                 position: "relative",
@@ -2236,7 +2213,7 @@ export default function SetupPage({
             {!creatingGame && disableNextButton() && !invalidCouncil() ? (
               <div
                 className="flexColumn centered"
-                style={{ color: "firebrick", maxWidth: responsivePixels(240) }}
+                style={{ color: "firebrick", maxWidth: "240px" }}
               >
                 <FormattedMessage
                   id="LYA+Dm"
@@ -2261,7 +2238,7 @@ export default function SetupPage({
         className="flexColumn mobileOnly"
         style={{
           width: "100%",
-          marginTop: responsivePixels(56),
+          marginTop: "56px",
           boxSizing: "border-box",
           overflow: "hidden",
         }}
@@ -2270,17 +2247,14 @@ export default function SetupPage({
           className="flexColumn"
           style={{
             alignItems: "flex-start",
-            gap: responsivePixels(12),
+            gap: "12px",
             width: "100%",
             justifyContent: "flex-start",
             height: "88svh",
             overflowY: "auto",
           }}
         >
-          <div
-            className="flexRow"
-            style={{ width: "100%", fontSize: responsivePixels(20) }}
-          >
+          <div className="flexRow" style={{ width: "100%", fontSize: "20px" }}>
             <FormattedMessage
               id="9DZz2w"
               description="Text identifying that this is the setup step."
@@ -2350,7 +2324,7 @@ export default function SetupPage({
           <div className="flexColumn" style={{ width: "100%" }}>
             <button
               style={{
-                fontSize: `${responsivePixels(40)}`,
+                fontSize: `${"40px"}`,
                 fontFamily: "Slider",
               }}
               onClick={startGame}
@@ -2361,7 +2335,7 @@ export default function SetupPage({
             {!creatingGame && disableNextButton() && !invalidCouncil() ? (
               <div
                 className="flexColumn centered"
-                style={{ color: "firebrick", maxWidth: responsivePixels(240) }}
+                style={{ color: "firebrick", maxWidth: "240px" }}
               >
                 Select all factions and colors
                 {options["game-variant"].startsWith("alliance")

@@ -1,6 +1,5 @@
 import React, { CSSProperties, ReactNode, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
-import { responsivePixels } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./FactionSelectRadialMenu.module.scss";
@@ -25,14 +24,10 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
 
   const center = (size * 3) / 2;
   const pos = {
-    "--y-pos": responsivePixels(
-      center - size * Math.cos(radians) - size / 2 + 2
-    ),
-    "--x-pos": responsivePixels(
-      center - size * -Math.sin(radians) - size / 2 + 2
-    ),
-    "--initial-y": responsivePixels(size + 2),
-    "--initial-x": responsivePixels(size + 2),
+    "--y-pos": `${center - size * Math.cos(radians) - size / 2 + 2}px`,
+    "--x-pos": `${center - size * -Math.sin(radians) - size / 2 + 2}px`,
+    "--initial-y": `${size + 2}px`,
+    "--initial-x": `${size + 2}px`,
   };
   return pos;
 }
@@ -76,7 +71,7 @@ export default function FactionSelectRadialMenu({
 
   const hoverParentStyle: FactionSelectRadialMenuCSS = {
     "--border-color": borderColor,
-    "--size": responsivePixels(size),
+    "--size": `${size}px`,
   };
 
   return (
@@ -111,8 +106,8 @@ export default function FactionSelectRadialMenu({
                   : 1;
               const factionSelectStyle: FactionSelectCSS = {
                 "--opacity": opacity,
-                width: responsivePixels(size - 4),
-                height: responsivePixels(size - 4),
+                width: `${size - 4}px`,
+                height: `${size - 4}px`,
                 pointerEvents: isInvalid ? "none" : undefined,
                 ...getRadialPosition(index, factions.length, size),
               };
@@ -132,8 +127,8 @@ export default function FactionSelectRadialMenu({
                 >
                   <div
                     style={{
-                      width: responsivePixels(size - 10),
-                      height: responsivePixels(size - 10),
+                      width: `${size - 10}px`,
+                      height: `${size - 10}px`,
                     }}
                   >
                     {factionId === selectedFaction && !isInvalid ? (
@@ -148,24 +143,24 @@ export default function FactionSelectRadialMenu({
             <div
               className={`flexRow ${styles.centerCircle}`}
               style={{
-                width: responsivePixels(size - 2),
-                height: responsivePixels(size - 2),
+                width: `${size - 2}px`,
+                height: `${size - 2}px`,
               }}
             >
               <div
                 className="flexRow"
                 style={{
-                  width: responsivePixels(size - 4),
-                  height: responsivePixels(size - 4),
-                  fontSize: responsivePixels(size - 8),
+                  width: `${size - 4}px`,
+                  height: `${size - 4}px`,
+                  fontSize: `${size - 8}px`,
                 }}
               >
                 <div
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: responsivePixels(size - 10),
-                    height: responsivePixels(size - 10),
+                    width: `${size - 10}px`,
+                    height: `${size - 10}px`,
                   }}
                 >
                   {selectedFaction ? (
@@ -179,12 +174,10 @@ export default function FactionSelectRadialMenu({
                   <div
                     className={`flexRow ${styles.tag}`}
                     style={{
-                      border: `${responsivePixels(1)} solid ${tagBorderColor}`,
-                      boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                        1
-                      )} ${responsivePixels(4)} black`,
-                      width: responsivePixels(24),
-                      height: responsivePixels(24),
+                      border: `${"1px"} solid ${tagBorderColor}`,
+                      boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                      width: "24px",
+                      height: "24px",
                     }}
                   >
                     {tag}

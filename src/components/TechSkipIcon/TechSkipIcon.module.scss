@@ -4,5 +4,5 @@
 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  row-gap: var(--one-pixel);
+  row-gap: 1px;
 }

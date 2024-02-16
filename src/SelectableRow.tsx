@@ -1,5 +1,4 @@
 import { CSSProperties, PropsWithChildren } from "react";
-import { responsivePixels } from "./util/util";
 import styles from "./SelectableRow.module.scss";
 
 interface SelectableRowProps<Type extends string> {
@@ -25,15 +24,15 @@ export function SelectableRow<Type extends string>({
       style.fontSize.valueOf();
       const baseSize = parseInt(fontSizeValue.replace("px", ""));
       const size = parseInt(fontSizeValue.replace("px", ""));
-      iconStyle.fontSize = responsivePixels(size);
-      iconStyle.width = responsivePixels(size);
-      iconStyle.height = responsivePixels(size);
-      iconStyle.lineHeight = responsivePixels(size);
-      iconStyle.marginRight = responsivePixels(3);
+      iconStyle.fontSize = `${size}px`;
+      iconStyle.width = `${size}px`;
+      iconStyle.height = `${size}px`;
+      iconStyle.lineHeight = `${size}px`;
+      iconStyle.marginRight = "3px";
       iconStyle.marginLeft = 0;
       style = {
         ...style,
-        fontSize: responsivePixels(baseSize),
+        fontSize: `${baseSize}px`,
       };
     }
   }

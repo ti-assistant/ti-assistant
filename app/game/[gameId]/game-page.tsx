@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Loader } from "../../../src/Loader";
+import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import {
@@ -14,7 +13,6 @@ import {
 } from "../../../src/context/Context";
 import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
-import { responsivePixels } from "../../../src/util/util";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -53,20 +51,20 @@ export default function SelectFactionPage() {
         className="flexColumn"
         style={{
           alignItems: "stretch",
-          maxWidth: `${responsivePixels(500)}`,
+          maxWidth: `${"500px"}`,
           width: "100%",
         }}
       >
         <Link href={`/game/${gameId}/main`}>
           <div
             style={{
-              border: `${responsivePixels(3)} solid grey`,
-              borderRadius: responsivePixels(5),
+              border: `${"3px"} solid grey`,
+              borderRadius: "5px",
               height: `10vh`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: `${responsivePixels(24)}`,
+              fontSize: `${"24px"}`,
               cursor: "pointer",
             }}
           >
@@ -80,13 +78,13 @@ export default function SelectFactionPage() {
         <Link href={`/game/${gameId}/objectives`}>
           <div
             style={{
-              border: `${responsivePixels(3)} solid grey`,
-              borderRadius: responsivePixels(5),
+              border: `${"3px"} solid grey`,
+              borderRadius: "5px",
               height: `8vh`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: `${responsivePixels(24)}`,
+              fontSize: `${"24px"}`,
               cursor: "pointer",
             }}
           >
@@ -118,7 +116,7 @@ export default function SelectFactionPage() {
                   className="flexColumn"
                   style={{
                     height: "5vh",
-                    fontSize: responsivePixels(20),
+                    fontSize: "20px",
                     width: "100%",
                     zIndex: 0,
                   }}

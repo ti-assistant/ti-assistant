@@ -1,7 +1,6 @@
 import { PropsWithChildren, ReactNode, useState } from "react";
 
 import Modal from "./components/Modal/Modal";
-import { responsivePixels } from "./util/util";
 
 interface InfoRowProps {
   infoContent: ReactNode;
@@ -34,13 +33,13 @@ export function InfoRow({
           className="myriadPro"
           style={{
             boxSizing: "border-box",
-            maxWidth: responsivePixels(800),
+            maxWidth: "800px",
             width: "100%",
-            minWidth: responsivePixels(320),
-            padding: responsivePixels(4),
+            minWidth: "320px",
+            padding: "4px",
             whiteSpace: "pre-line",
             textAlign: "center",
-            fontSize: responsivePixels(32),
+            fontSize: "32px",
           }}
         >
           {infoContent}
@@ -50,7 +49,7 @@ export function InfoRow({
       <div
         className="popupIcon"
         style={{
-          fontSize: responsivePixels(16),
+          fontSize: "16px",
         }}
         onClick={displayInfo}
       >

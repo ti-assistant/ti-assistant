@@ -1,13 +1,13 @@
 .StrategyCardElement {
-  height: var(--forty-eight-pixel);
+  height: 48px;
 
   display: grid;
 
   grid-template-columns: subgrid;
   grid-auto-flow: row;
   // flex-direction: column;
-  border: var(--three-pixel) solid var(--color);
-  border-radius: var(--six-pixel);
+  border: 3px solid var(--color);
+  border-radius: 6px;
   justify-content: center;
   // justify-items: center;
   align-items: center;

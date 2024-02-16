@@ -50,7 +50,7 @@ import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { applyAllPlanetAttachments } from "../../util/planets";
-import { pluralize, responsivePixels } from "../../util/util";
+import { pluralize } from "../../util/util";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Selector } from "../../components/Selector/Selector";
 
@@ -67,10 +67,10 @@ function InfoContent({ component }: { component: Component }) {
         boxSizing: "border-box",
         width: "100%",
         minWidth: "320px",
-        padding: responsivePixels(4),
+        padding: "4px",
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: responsivePixels(32),
+        fontSize: "32px",
       }}
     >
       <div className="flexColumn">{description}</div>
@@ -137,11 +137,11 @@ function ComponentSelect({
 
   const innerStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: responsivePixels(8),
+    padding: "8px",
     display: "grid",
     gridAutoFlow: "column",
     gridTemplateRows: "repeat(10, auto)",
-    gap: responsivePixels(4),
+    gap: "4px",
     maxWidth: "85vw",
     overflowX: "auto",
     justifyContent: "flex-start",
@@ -153,9 +153,9 @@ function ComponentSelect({
     <div
       className={className}
       style={{
-        padding: responsivePixels(8),
+        padding: "8px",
         alignItems: "stretch",
-        gap: responsivePixels(4),
+        gap: "4px",
         justifyContent: "flex-start",
         maxWidth: "85vw",
       }}
@@ -237,7 +237,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: responsivePixels(8) }}
+            style={{ alignItems: "stretch", padding: "8px" }}
           >
             {leaders.map((component) => {
               return (
@@ -277,9 +277,9 @@ function ComponentSelect({
           <div
             className="flexColumn"
             style={{
-              gap: responsivePixels(4),
+              gap: "4px",
               alignItems: "stretch",
-              padding: responsivePixels(8),
+              padding: "8px",
             }}
           >
             {exploration.map((component) => {
@@ -313,7 +313,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: responsivePixels(8) }}
+            style={{ alignItems: "stretch", padding: "8px" }}
           >
             {Object.entries(promissoryByFaction).map(([id, components]) => {
               const faction = factions[id as FactionId];
@@ -358,7 +358,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: responsivePixels(8) }}
+            style={{ alignItems: "stretch", padding: "8px" }}
           >
             {others.map((component) => {
               if (component.type === "FLAGSHIP") {
@@ -1094,9 +1094,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         selectedFaction ? factions[selectedFaction] : undefined
       );
       innerContent = (
-        <div style={{ width: "100%", minHeight: responsivePixels(12) }}>
+        <div style={{ width: "100%", minHeight: "12px" }}>
           {selectedFaction ? (
-            <div style={{ paddingTop: responsivePixels(12) }}>
+            <div style={{ paddingTop: "12px" }}>
               <TacticalAction
                 activeFactionId={selectedFaction}
                 attachments={attachments ?? {}}
@@ -1176,11 +1176,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     //   });
     //   const selectStyle: CSSProperties = {
     //     fontFamily: "Myriad Pro",
-    //     padding: responsivePixels(8),
+    //     padding: "8px",
     //     display: "grid",
     //     gridAutoFlow: "column",
     //     gridTemplateRows: "repeat(14, auto)",
-    //     gap: responsivePixels(4),
+    //     gap: "4px",
     //     maxWidth: "85vw",
     //     overflowX: "auto",
     //     justifyContent: "flex-start",
@@ -1270,10 +1270,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     return null;
   }
   return (
-    <div
-      className="flexColumn"
-      style={{ width: "100%", gap: responsivePixels(4) }}
-    >
+    <div className="flexColumn" style={{ width: "100%", gap: "4px" }}>
       <LabeledLine
         leftLabel={leftLabel}
         label={label}
@@ -1452,10 +1449,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
         title={
-          <div
-            className="flexColumn"
-            style={{ fontSize: responsivePixels(40) }}
-          >
+          <div className="flexColumn" style={{ fontSize: "40px" }}>
             {component.name}
           </div>
         }
@@ -1485,16 +1479,13 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
             <div
               className="popupIcon"
               onClick={displayInfo}
-              style={{ fontSize: responsivePixels(16) }}
+              style={{ fontSize: "16px" }}
             >
               &#x24D8;
             </div>
           </SelectableRow>
           {component.id === "Ssruu" ? (
-            <div
-              className="flexRow"
-              style={{ paddingLeft: responsivePixels(16) }}
-            >
+            <div className="flexRow" style={{ paddingLeft: "16px" }}>
               Using the ability of
               <Selector
                 hoverMenuLabel="Select Agent"
