@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import QRCode from "qrcode";
 import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -159,16 +160,14 @@ export default function Header() {
           />
         </div>
       </GenericModal>
-      {validateMapString((options ?? {})["map-string"] ?? "") ? (
-        <div className={styles.Map}>
-          <button onClick={() => setShowMap(true)}>
-            <FormattedMessage
-              id="xDzJ9/"
-              description="Text shown on a button that opens the map."
-              defaultMessage="View Map"
-            />
-          </button>
-        </div>
+      {validateMapString(options["map-string"] ?? "") ? (
+        <button className={styles.Map} onClick={() => setShowMap(true)}>
+          <FormattedMessage
+            id="xDzJ9/"
+            description="Text shown on a button that opens the map."
+            defaultMessage="View Map"
+          />
+        </button>
       ) : null}
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>

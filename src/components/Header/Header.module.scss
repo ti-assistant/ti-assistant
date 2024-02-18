@@ -71,6 +71,12 @@
   position: fixed;
   top: 108px;
   left: 96px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
 @media only screen and (max-width: 1279px) {

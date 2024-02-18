@@ -3,10 +3,6 @@
     "defaultMessage": "After an Agenda is Revealed",
     "description": "Label on hover menu for actions that happen after an agenda is revealed."
   },
-  "+/Qpw/": {
-    "defaultMessage": "Continue Game",
-    "description": "A button that will rejoin the previous game."
-  },
   "+8kwFc": {
     "defaultMessage": "Take Control of Planet",
     "description": "Text on a hover menu allowing a player to take control of planets."
@@ -14,10 +10,6 @@
   "+BcBcX": {
     "defaultMessage": "Eligible Outcomes",
     "description": "Label for a section showing the eligible outcomes."
-  },
-  "+HPhsr": {
-    "defaultMessage": "New Game",
-    "description": "A button that will start a new game."
   },
   "+IA3Oz": {
     "defaultMessage": "Promissory",
@@ -91,14 +83,6 @@
     "defaultMessage": "Unit Upgrades",
     "description": "Title of uprade techs."
   },
-  "2jNcVD": {
-    "defaultMessage": "Expansions:",
-    "description": "A label for a selector specifying which expansions should be enabled."
-  },
-  "3Taw9H": {
-    "defaultMessage": "Codex I",
-    "description": "Text on a button that will enable/disable Codex I."
-  },
   "3qIvsL": {
     "defaultMessage": "Research Tech",
     "description": "Label on a hover menu used to research tech."
@@ -106,10 +90,6 @@
   "43UU69": {
     "defaultMessage": "Component",
     "description": "Text on a button that will select a component action."
-  },
-  "46dzNs": {
-    "defaultMessage": "Map:",
-    "description": "A label for a section of options related to the map."
   },
   "49oatW": {
     "defaultMessage": "Undo",
@@ -123,14 +103,6 @@
     "defaultMessage": "Warp",
     "description": "Text on a button specifying that the map style should be warp."
   },
-  "4Z//RZ": {
-    "defaultMessage": "Supporters",
-    "description": "A button that will open the supporters page."
-  },
-  "4n1LQO": {
-    "defaultMessage": "Enter Player Name...",
-    "description": "Initial text in a textbox used to input a player's name"
-  },
   "4wSR75": {
     "defaultMessage": "Standard",
     "description": "Text on a button specifying that the map style should be standard."
@@ -142,10 +114,6 @@
   "5ChhqO": {
     "defaultMessage": "Take Another Action",
     "description": "Text on a button that will let the player take another action."
-  },
-  "5R8kPv": {
-    "defaultMessage": "Speaker Actions",
-    "description": "Label for a section for actions by the speaker."
   },
   "5WXn8l": {
     "defaultMessage": "Start Next Round",
@@ -190,10 +158,6 @@
   "9DZz2w": {
     "defaultMessage": "Setup Game",
     "description": "Text identifying that this is the setup step."
-  },
-  "A5p5qF": {
-    "defaultMessage": "Report Issue",
-    "description": "A button that will open the Github issues page."
   },
   "AO8lj8": {
     "defaultMessage": "Cultural Planets Exhausted",
@@ -698,10 +662,6 @@
   "Agendas.Wormhole Research.Title": {
     "defaultMessage": "Wormhole Research",
     "description": "Title of Agenda Card: Wormhole Research"
-  },
-  "Alcp4i": {
-    "defaultMessage": "Buy me a coffee",
-    "description": "A button that will open the Buy me a coffee page."
   },
   "Arborec.Abilities.Mitosis.Description": {
     "defaultMessage": "Your space docks cannot produce infantry. At the start of the status phase, place 1 infantry from your reinforcements on any planet you control.",
@@ -1791,10 +1751,6 @@
     "defaultMessage": "Omniopiares",
     "description": "Title of Faction Unit: Omniopiares"
   },
-  "Cw3noi": {
-    "defaultMessage": "Pick Faction",
-    "description": "Text on a hover menu for selecting a player's faction"
-  },
   "D82kvD": {
     "defaultMessage": "ANTI-FIGHTER BARRAGE {value}",
     "description": "A unit ability that allows a unit to destroy fighters."
@@ -2395,25 +2351,13 @@
     "defaultMessage": "Revealed {type} {count, plural, one {Objective} other {Objectives}}",
     "description": "A label for revealed objectives."
   },
-  "Irm2+w": {
-    "defaultMessage": "{phase} Phase",
-    "description": "Text shown on side of screen during a specific phase"
-  },
   "J21D/U": {
     "defaultMessage": "Stage I",
     "description": "The title of public objectives that grant 1 victory point."
   },
-  "JS92Jj": {
-    "defaultMessage": "Make Speaker",
-    "description": "Text on a button that will make a faction the speaker."
-  },
   "Jdx9F+": {
     "defaultMessage": "Remove Command Tokens",
     "description": "Instruction telling players to remove command tokens."
-  },
-  "Jh0WRk": {
-    "defaultMessage": "Player Count",
-    "description": "Label for a selector to change the number of players"
   },
   "K1ks2a": {
     "defaultMessage": "SPACE CANNON {value}",
@@ -2547,17 +2491,9 @@
     "defaultMessage": "Gather Starting Components",
     "description": "A step in the setup phase: Gather starting components."
   },
-  "LYA+Dm": {
-    "defaultMessage": "Select all factions and colors",
-    "description": "Error message explaining that all factions and colors need to be selected."
-  },
   "LaXLjN": {
     "defaultMessage": "Abstain",
     "description": "Outcome choosing not to vote."
-  },
-  "Lm8L7/": {
-    "defaultMessage": "Color",
-    "description": "Text on a hover menu for picking a player's color."
   },
   "Lrn2Da": {
     "defaultMessage": "Update Objectives",
@@ -2782,10 +2718,6 @@
   "NEiUw9": {
     "defaultMessage": "No Starting Tech",
     "description": "Message explaining that a faction has no starting tech."
-  },
-  "NUNF0C": {
-    "defaultMessage": "Faction Details",
-    "description": "Label for a section of faction details."
   },
   "Naalu Collective.Abilities.Foresight.Description": {
     "defaultMessage": "After another player moves ships into a system that contains 1 or more of your ships, you may place 1 token from your strategy pool in an adjacent system that does not contain another player's ships; move your ships from the active system into that system.",
@@ -4075,10 +4007,6 @@
     "defaultMessage": "{count} {count, plural, one {Mech} other {Mechs}}",
     "description": "A number of Mech units."
   },
-  "PrGqwQ": {
-    "defaultMessage": "Add Planet",
-    "description": "Label for adding a planet."
-  },
   "Promissories.Political Secret.Title": {
     "defaultMessage": "Political Secret",
     "description": "Title of Promissory: Political Secret"
@@ -4086,10 +4014,6 @@
   "PzyYtG": {
     "defaultMessage": "{count, plural, =0 {VPs} one {VP} other {VPs}}",
     "description": "Shortened version of Victory Points."
-  },
-  "QFhw/l": {
-    "defaultMessage": "Join Game",
-    "description": "A button that will join the game with a specified ID."
   },
   "QrrIrN": {
     "defaultMessage": "Secrets",
@@ -5119,10 +5043,6 @@
     "defaultMessage": "{count} {count, plural, one {PDS} other {PDS}}",
     "description": "A number of PDS units."
   },
-  "X7zR7a": {
-    "defaultMessage": "Help support TI Assistant",
-    "description": "Label for a section about helping TI Assistant"
-  },
   "XG4lKH": {
     "defaultMessage": "Return Tech",
     "description": "Label on a hover menu used to return a tech."
@@ -5511,14 +5431,6 @@
     "defaultMessage": "Reveal and Read one Agenda",
     "description": "Instruction telling the speaker to reveal an agenda."
   },
-  "ZZ/Lhe": {
-    "defaultMessage": "Map Type:",
-    "description": "A label for a selector for selecting which map style to use."
-  },
-  "ZlvDZB": {
-    "defaultMessage": "Discordant Stars",
-    "description": "Text on a button that will enable/disable the Discordant Stars expansion."
-  },
   "ZqAjEi": {
     "defaultMessage": "Warfare",
     "description": "Title of red techs."
@@ -5550,10 +5462,6 @@
   "cqWqzv": {
     "defaultMessage": "Gained Relic",
     "description": "Label for section listing the relic gained."
-  },
-  "d0uSBF": {
-    "defaultMessage": "Options",
-    "description": "Label on a menu for changing game options"
   },
   "dNmJ1r": {
     "defaultMessage": "Unpause",
@@ -5607,10 +5515,6 @@
     "defaultMessage": "Secret",
     "description": "Label for selecting a secret objective."
   },
-  "hCXyLw": {
-    "defaultMessage": "Select Strategy Card",
-    "description": "Label telling a player to select a strategy card."
-  },
   "hIFcXI": {
     "defaultMessage": "PLANETARY SHIELD",
     "description": "A unit ability that prevents BOMBARDMENT."
@@ -5619,6 +5523,10 @@
     "defaultMessage": "Laws",
     "description": "Agendas that apply a continuing effect to the game."
   },
+  "j3n7Nr": {
+    "defaultMessage": "Tech Skips",
+    "description": "Text on a button that will show planets with tech skips."
+  },
   "jGX605": {
     "defaultMessage": "Play Rider",
     "description": "Text on hover menu for selecting a rider to play."
@@ -5626,10 +5534,6 @@
   "jgVoqe": {
     "defaultMessage": "{count} {count, plural, one {Carrier} other {Carriers}}",
     "description": "A number of Carrier units."
-  },
-  "knYKVl": {
-    "defaultMessage": "Codex II",
-    "description": "Text on a button that will enable/disable Codex II."
   },
   "knjCH0": {
     "defaultMessage": "Speaker",
@@ -5683,14 +5587,6 @@
     "defaultMessage": "Draw 5 stage I objectives",
     "description": "A step in the setup phase: Draw 5 stage I objectives."
   },
-  "p9XVGB": {
-    "defaultMessage": "Prophecy of Kings",
-    "description": "Text on a button that will enable/disable the Prophecy of Kings expansion."
-  },
-  "pKlkVZ": {
-    "defaultMessage": "FAQ",
-    "description": "A button that will open the Frequently Asked Questions page."
-  },
   "pPpzkR": {
     "defaultMessage": "Relics",
     "description": "The title of relic cards."
@@ -5698,10 +5594,6 @@
   "pTiYPm": {
     "defaultMessage": "New Speaker",
     "description": "Label for a selector selecting a new speaker."
-  },
-  "r2htpd": {
-    "defaultMessage": "Factions",
-    "description": "Text on a button that will randomize factions."
   },
   "rEazHY": {
     "defaultMessage": "{count} {count, plural, one {War Sun} other {War Suns}}",
@@ -5714,10 +5606,6 @@
   "rlGbdz": {
     "defaultMessage": "Starting Components",
     "description": "A label for a section of components that a faction starts with."
-  },
-  "rqdwvE": {
-    "defaultMessage": "Colors",
-    "description": "Text on a button that will randomize colors."
   },
   "sJ5zBj": {
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
@@ -5747,10 +5635,6 @@
     "defaultMessage": "Directives",
     "description": "Agenda cards that do not have an ongoing effect."
   },
-  "tocXJ4": {
-    "defaultMessage": "Reset",
-    "description": "Text on a button that will reset selections."
-  },
   "uEqy1T": {
     "defaultMessage": "Close to continue",
     "description": "Text telling the user to close the dialog to resume."
@@ -5774,18 +5658,6 @@
   "wHhicR": {
     "defaultMessage": "Researched {count, plural, one {Tech} other {Techs}}",
     "description": "Label for a section listing researched techs."
-  },
-  "wOb6Wx": {
-    "defaultMessage": "Become a Patron",
-    "description": "A button that will open the Patreon page."
-  },
-  "weIxIg": {
-    "defaultMessage": "Homebrew:",
-    "description": "A label for a selector specifying expansions that are homemade."
-  },
-  "x42AMg": {
-    "defaultMessage": "Randomize",
-    "description": "Label for a section that involves randomly selecting things."
   },
   "x5JPkJ": {
     "defaultMessage": "{count} {count, plural, one {Flagship} other {Flagships}}",
@@ -5814,17 +5686,5 @@
   "ys7uwX": {
     "defaultMessage": "Techs",
     "description": "Shortened version of technologies."
-  },
-  "zXrdrP": {
-    "defaultMessage": "Codex III",
-    "description": "Text on a button that will enable/disable Codex III."
-  },
-  "zjv9Gr": {
-    "defaultMessage": "(filters out non-claimable planets)",
-    "description": "Part of a label explaining what the map string does."
-  },
-  "zlpl9F": {
-    "defaultMessage": "Score Secret Objective",
-    "description": "Message telling a player to score a secret objective."
   }
 }

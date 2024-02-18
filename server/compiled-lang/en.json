@@ -5,12 +5,6 @@
       "value": "After an Agenda is Revealed"
     }
   ],
-  "+/Qpw/": [
-    {
-      "type": 0,
-      "value": "Continue Game"
-    }
-  ],
   "+8kwFc": [
     {
       "type": 0,
@@ -21,12 +15,6 @@
     {
       "type": 0,
       "value": "Eligible Outcomes"
-    }
-  ],
-  "+HPhsr": [
-    {
-      "type": 0,
-      "value": "New Game"
     }
   ],
   "+IA3Oz": [
@@ -137,18 +125,6 @@
       "value": "Unit Upgrades"
     }
   ],
-  "2jNcVD": [
-    {
-      "type": 0,
-      "value": "Expansions:"
-    }
-  ],
-  "3Taw9H": [
-    {
-      "type": 0,
-      "value": "Codex I"
-    }
-  ],
   "3qIvsL": [
     {
       "type": 0,
@@ -159,12 +135,6 @@
     {
       "type": 0,
       "value": "Component"
-    }
-  ],
-  "46dzNs": [
-    {
-      "type": 0,
-      "value": "Map:"
     }
   ],
   "49oatW": [
@@ -193,18 +163,6 @@
       "value": "Warp"
     }
   ],
-  "4Z//RZ": [
-    {
-      "type": 0,
-      "value": "Supporters"
-    }
-  ],
-  "4n1LQO": [
-    {
-      "type": 0,
-      "value": "Enter Player Name..."
-    }
-  ],
   "4wSR75": [
     {
       "type": 0,
@@ -221,12 +179,6 @@
     {
       "type": 0,
       "value": "Take Another Action"
-    }
-  ],
-  "5R8kPv": [
-    {
-      "type": 0,
-      "value": "Speaker Actions"
     }
   ],
   "5WXn8l": [
@@ -301,12 +253,6 @@
     {
       "type": 0,
       "value": "Setup Game"
-    }
-  ],
-  "A5p5qF": [
-    {
-      "type": 0,
-      "value": "Report Issue"
     }
   ],
   "AO8lj8": [
@@ -1583,12 +1529,6 @@
     {
       "type": 0,
       "value": "Wormhole Research"
-    }
-  ],
-  "Alcp4i": [
-    {
-      "type": 0,
-      "value": "Buy me a coffee"
     }
   ],
   "Arborec.Abilities.Mitosis.Description": [
@@ -3599,12 +3539,6 @@
       "value": "Omniopiares"
     }
   ],
-  "Cw3noi": [
-    {
-      "type": 0,
-      "value": "Pick Faction"
-    }
-  ],
   "D82kvD": [
     {
       "type": 0,
@@ -4829,38 +4763,16 @@
       "value": "count"
     }
   ],
-  "Irm2+w": [
-    {
-      "type": 1,
-      "value": "phase"
-    },
-    {
-      "type": 0,
-      "value": " Phase"
-    }
-  ],
   "J21D/U": [
     {
       "type": 0,
       "value": "Stage I"
     }
   ],
-  "JS92Jj": [
-    {
-      "type": 0,
-      "value": "Make Speaker"
-    }
-  ],
   "Jdx9F+": [
     {
       "type": 0,
       "value": "Remove Command Tokens"
-    }
-  ],
-  "Jh0WRk": [
-    {
-      "type": 0,
-      "value": "Player Count"
     }
   ],
   "K1ks2a": [
@@ -5113,22 +5025,10 @@
       "value": "Gather Starting Components"
     }
   ],
-  "LYA+Dm": [
-    {
-      "type": 0,
-      "value": "Select all factions and colors"
-    }
-  ],
   "LaXLjN": [
     {
       "type": 0,
       "value": "Abstain"
-    }
-  ],
-  "Lm8L7/": [
-    {
-      "type": 0,
-      "value": "Color"
     }
   ],
   "Lrn2Da": [
@@ -5577,12 +5477,6 @@
     {
       "type": 0,
       "value": "No Starting Tech"
-    }
-  ],
-  "NUNF0C": [
-    {
-      "type": 0,
-      "value": "Faction Details"
     }
   ],
   "Naalu Collective.Abilities.Foresight.Description": [
@@ -7771,12 +7665,6 @@
       "value": "count"
     }
   ],
-  "PrGqwQ": [
-    {
-      "type": 0,
-      "value": "Add Planet"
-    }
-  ],
   "Promissories.Political Secret.Title": [
     {
       "type": 0,
@@ -7815,12 +7703,6 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
-    }
-  ],
-  "QFhw/l": [
-    {
-      "type": 0,
-      "value": "Join Game"
     }
   ],
   "QrrIrN": [
@@ -9733,12 +9615,6 @@
       "value": "count"
     }
   ],
-  "X7zR7a": [
-    {
-      "type": 0,
-      "value": "Help support TI Assistant"
-    }
-  ],
   "XG4lKH": [
     {
       "type": 0,
@@ -10485,18 +10361,6 @@
       "value": "Reveal and Read one Agenda"
     }
   ],
-  "ZZ/Lhe": [
-    {
-      "type": 0,
-      "value": "Map Type:"
-    }
-  ],
-  "ZlvDZB": [
-    {
-      "type": 0,
-      "value": "Discordant Stars"
-    }
-  ],
   "ZqAjEi": [
     {
       "type": 0,
@@ -10543,12 +10407,6 @@
     {
       "type": 0,
       "value": "Gained Relic"
-    }
-  ],
-  "d0uSBF": [
-    {
-      "type": 0,
-      "value": "Options"
     }
   ],
   "dNmJ1r": [
@@ -10657,12 +10515,6 @@
       "value": "Secret"
     }
   ],
-  "hCXyLw": [
-    {
-      "type": 0,
-      "value": "Select Strategy Card"
-    }
-  ],
   "hIFcXI": [
     {
       "type": 0,
@@ -10673,6 +10525,12 @@
     {
       "type": 0,
       "value": "Laws"
+    }
+  ],
+  "j3n7Nr": [
+    {
+      "type": 0,
+      "value": "Tech Skips"
     }
   ],
   "jGX605": [
@@ -10713,12 +10571,6 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
-    }
-  ],
-  "knYKVl": [
-    {
-      "type": 0,
-      "value": "Codex II"
     }
   ],
   "knjCH0": [
@@ -10912,18 +10764,6 @@
       "value": "Draw 5 stage I objectives"
     }
   ],
-  "p9XVGB": [
-    {
-      "type": 0,
-      "value": "Prophecy of Kings"
-    }
-  ],
-  "pKlkVZ": [
-    {
-      "type": 0,
-      "value": "FAQ"
-    }
-  ],
   "pPpzkR": [
     {
       "type": 0,
@@ -10934,12 +10774,6 @@
     {
       "type": 0,
       "value": "New Speaker"
-    }
-  ],
-  "r2htpd": [
-    {
-      "type": 0,
-      "value": "Factions"
     }
   ],
   "rEazHY": [
@@ -10986,12 +10820,6 @@
     {
       "type": 0,
       "value": "Starting Components"
-    }
-  ],
-  "rqdwvE": [
-    {
-      "type": 0,
-      "value": "Colors"
     }
   ],
   "sJ5zBj": [
@@ -11120,12 +10948,6 @@
       "value": "Directives"
     }
   ],
-  "tocXJ4": [
-    {
-      "type": 0,
-      "value": "Reset"
-    }
-  ],
   "uEqy1T": [
     {
       "type": 0,
@@ -11212,24 +11034,6 @@
       "value": "count"
     }
   ],
-  "wOb6Wx": [
-    {
-      "type": 0,
-      "value": "Become a Patron"
-    }
-  ],
-  "weIxIg": [
-    {
-      "type": 0,
-      "value": "Homebrew:"
-    }
-  ],
-  "x42AMg": [
-    {
-      "type": 0,
-      "value": "Randomize"
-    }
-  ],
   "x5JPkJ": [
     {
       "type": 1,
@@ -11298,24 +11102,6 @@
     {
       "type": 0,
       "value": "Techs"
-    }
-  ],
-  "zXrdrP": [
-    {
-      "type": 0,
-      "value": "Codex III"
-    }
-  ],
-  "zjv9Gr": [
-    {
-      "type": 0,
-      "value": "(filters out non-claimable planets)"
-    }
-  ],
-  "zlpl9F": [
-    {
-      "type": 0,
-      "value": "Score Secret Objective"
     }
   ]
 }

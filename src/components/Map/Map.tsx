@@ -17,6 +17,8 @@ import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import styles from "./Map.module.scss";
+import { getTechTypeColor } from "../../util/techs";
+import TechIcon from "../TechIcon/TechIcon";
 
 interface Cube {
   q: number;
@@ -610,6 +612,60 @@ export function SystemImage({
                 </div>
               </div>
             );
+            break;
+          }
+          case "TECH_SKIPS": {
+            let color: TechType | undefined;
+            let size: string;
+            for (const attribute of planet.attributes) {
+              switch (attribute) {
+                case "red-skip":
+                  color = "RED";
+                  size = "100%";
+                  break;
+                case "blue-skip":
+                  color = "BLUE";
+                  size = "95%";
+                  break;
+                case "green-skip":
+                  color = "GREEN";
+                  size = "100%";
+                  break;
+                case "yellow-skip":
+                  color = "YELLOW";
+                  size = "90%";
+                  break;
+              }
+            }
+            if (color && size) {
+              detailsSymbol = (
+                <div
+                  className="flexRow"
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "#222",
+                    border: `2px solid ${getTechTypeColor(color)}`,
+                    borderRadius: "100%",
+                    width: "24%",
+                    height: height,
+                    marginLeft: `${planet.position?.x}%` ?? 0,
+                    marginTop: `${planet.position?.y}%` ?? 0,
+                  }}
+                >
+                  <div
+                    className="flexRow"
+                    style={{
+                      position: "relative",
+                      width: "70%",
+                      height: "70%",
+                    }}
+                  >
+                    <TechIcon type={color} size={size} />
+                  </div>
+                </div>
+              );
+            }
+            break;
           }
         }
 
@@ -790,7 +846,7 @@ interface MapProps {
 //   "/images/systems/ST_92.png",
 // ];
 
-type Details = "NONE" | "ATTACHMENTS" | "OWNERS" | "TYPES";
+type Details = "NONE" | "ATTACHMENTS" | "OWNERS" | "TECH_SKIPS" | "TYPES";
 
 export default function Map({
   mapString,
@@ -994,6 +1050,21 @@ export default function Map({
                   id="wDLqxZ"
                   description="Text on a button that will show planet types."
                   defaultMessage="Types"
+                />
+              </button>
+              <button
+                className={showDetails === "TECH_SKIPS" ? "selected" : ""}
+                onClick={(e) => {
+                  const newValue =
+                    showDetails === "TECH_SKIPS" ? "NONE" : "TECH_SKIPS";
+                  setShowDetails(newValue);
+                  e.stopPropagation();
+                }}
+              >
+                <FormattedMessage
+                  id="j3n7Nr"
+                  description="Text on a button that will show planets with tech skips."
+                  defaultMessage="Tech Skips"
                 />
               </button>
               <button
