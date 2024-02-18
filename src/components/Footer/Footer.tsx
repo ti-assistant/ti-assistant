@@ -312,7 +312,7 @@ export default function Footer({}) {
               selectedFaction={state.speaker}
               factions={orderedFactions.map((faction) => faction.id)}
               invalidFactions={[state.speaker]}
-              size={36}
+              size={30}
               onSelect={async (factionId, _) => {
                 if (!gameId || !factionId) {
                   return;
@@ -465,6 +465,7 @@ export default function Footer({}) {
                   selectedFaction={state.speaker}
                   factions={orderedFactions.map((faction) => faction.id)}
                   invalidFactions={[state.speaker]}
+                  size={40}
                   onSelect={async (factionId, _) => {
                     if (!gameId || !factionId) {
                       return;
