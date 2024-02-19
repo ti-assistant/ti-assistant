@@ -616,7 +616,7 @@ export function SystemImage({
           }
           case "TECH_SKIPS": {
             let color: TechType | undefined;
-            let size: string;
+            let size: string | undefined;
             for (const attribute of planet.attributes) {
               switch (attribute) {
                 case "red-skip":

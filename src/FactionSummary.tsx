@@ -19,7 +19,11 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { filterToOwnedTechs } from "./util/techs";
+import {
+  filterToOwnedTechs,
+  getTechColor,
+  getTechTypeColor,
+} from "./util/techs";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
   let blueTechs = [];
@@ -67,15 +71,15 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
 
   return (
     <div className={styles.TechSummaryGrid}>
-      <div className="centered">{redTechs.length || "-"}</div>
+      <div className="centered">{greenTechs.length || "-"}</div>
       <TechIcon type={"GREEN"} size={16} />
       <div>&nbsp;</div>
-      <div className="centered">{greenTechs.length || "-"}</div>
-      <TechIcon type={"BLUE"} size={16} />
       <div className="centered">{blueTechs.length || "-"}</div>
+      <TechIcon type={"BLUE"} size={16} />
+      <div className="centered">{yellowTechs.length || "-"}</div>
       <TechIcon type={"YELLOW"} size={16} />
       <div>&nbsp;</div>
-      <div className="centered">{yellowTechs.length || "-"}</div>
+      <div className="centered">{redTechs.length || "-"}</div>
       <TechIcon type={"RED"} size={16} />
       <div className="centered">{upgradeTechs.length || "-"}</div>
       <div>
