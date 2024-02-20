@@ -10,6 +10,9 @@ interface SetupOptions {
   "secondary-victory-points": number;
   "game-variant": GameVariant;
   expansions: Set<Expansion>;
+  "hide-objectives": boolean;
+  "hide-planets": boolean;
+  "hide-techs": boolean;
   [key: string]: any;
 }
 

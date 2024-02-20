@@ -38,23 +38,9 @@ export default function LabeledDiv({
   color = "#999",
   opts = {},
 }: PropsWithChildren<LabeledDivProps>) {
-  const [minWidth, setMinWidth] = useState<number | undefined>();
-  const labelRef = useRef<HTMLDivElement>(null);
-
-  const labelWidth = labelRef.current?.clientWidth;
-  useEffect(() => {
-    changeLabelWidth();
-  }, [labelWidth, label]);
-
-  function changeLabelWidth() {
-    const labelWidth = labelRef.current?.clientWidth;
-    setMinWidth((labelWidth ?? 0) + 16);
-  }
-
   const padding = `${!!label ? "10px" : "6px"} ${"6px"} ${"6px"} ${"6px"}`;
   const divStyle: LabeledDivCSS = {
     "--color": color,
-    minWidth: minWidth,
     padding: `${padding}`,
     cursor: onClick ? "pointer" : "cursor",
     marginTop: !!label ? "4px" : 0,
@@ -71,7 +57,6 @@ export default function LabeledDiv({
       {!!label ? (
         <div
           className={`${styles.label} ${styles.left}`}
-          ref={labelRef}
           style={{
             maxWidth: opts.fixedWidth ? "calc(100% - 14px)" : undefined,
             textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,

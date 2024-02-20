@@ -18,6 +18,11 @@ import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
 import styles from "./setup.module.scss";
 import dynamic from "next/dynamic";
+import Circle from "../../src/components/Circle/Circle";
+import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
+import ToggleTag from "../../src/components/ToggleTag/ToggleTag";
+import { CustomSizeResources, FullResources } from "../../src/Resources";
+import Image from "next/image";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -1384,6 +1389,9 @@ const INITIAL_OPTIONS: SetupOptions = {
   "game-variant": "normal",
   "map-style": "standard",
   "map-string": "",
+  "hide-objectives": false,
+  "hide-planets": false,
+  "hide-techs": false,
   "victory-points": 10,
   "secondary-victory-points": 10,
 };
@@ -1770,131 +1778,57 @@ export default function SetupPage({
     setOptions(currentOptions);
   }
 
-  function MiddleTopGapDiv({}) {
-    let height = "0";
+  function getGridTemplateAreas() {
+    let gapLine = `". map ."`;
     switch (numFactions) {
       case 3:
-        height = "114px";
-        break;
+        return `"opt top rand"
+        ${gapLine}
+        "left-top map right-top"
+        ${gapLine}
+        ${gapLine}
+        ${gapLine}
+        ${gapLine}
+        "trac bot start"`;
       case 4:
-        if (options["map-style"] !== "standard") {
-          height = "114px";
-          break;
+        if (options["map-style"] === "standard") {
+          return `"opt top rand"
+              ${gapLine}
+              ". map right-top"
+              "left-top map right-top"
+              "left-top map ."
+              ${gapLine}
+              "trac bot start"`;
         }
-        return null;
-      case 5:
-        if (options["map-style"] !== "warp") {
-          height = "114px";
-          break;
-        }
-        return null;
-      default:
-        return null;
-    }
-    return <div style={{ flex: `${height} 0 0` }}></div>;
-  }
-
-  function RightTopGapDiv({}) {
-    let height = "80px";
-    switch (numFactions) {
-      case 3:
-        height = "60px";
-        break;
-      case 4:
-        height = options["map-style"] === "standard" ? "110px" : "60px";
-        break;
+      // Fall-through
       case 5:
       case 6:
-        height = "60px";
-        break;
+        return `"opt top rand"
+        ${gapLine}
+        "left-top map right-top"
+        ${gapLine}
+        "left-mid map right-mid"
+        ${gapLine}
+        "trac bot start"`;
       case 7:
         if (options["map-style"] === "warp") {
-          height = "80px";
-          break;
+          return `"opt top rand"
+          "left-top map ."
+          "left-top map right-top"
+          "left-mid map right-top"
+          "left-mid map right-mid"
+          "left-bot map right-mid"
+          "left-bot map ."
+          "trac bot start"`;
         }
+      // Fall-through
       case 8:
-        height = "24px";
-        break;
+        return `"opt top rand"
+        "left-top map right-top"
+        "left-mid map right-mid"
+        "left-bot map right-bot"
+        "trac bot start"`;
     }
-    return <div style={{ height: height }}></div>;
-  }
-
-  function SideGapDiv({}) {
-    let height = "80px";
-    switch (numFactions) {
-      default:
-        return null;
-      case 4:
-        height = options["map-style"] === "standard" ? "0px" : "36px";
-        break;
-      case 5:
-      case 6:
-        height = "36px";
-        break;
-      case 7:
-      case 8:
-        height = "0px";
-        break;
-    }
-    return <div style={{ height: height }}></div>;
-  }
-
-  function LeftTopGapDiv({}) {
-    let height = "68px";
-    switch (numFactions) {
-      case 3:
-        height = "48px";
-        break;
-      case 4:
-        height = options["map-style"] === "standard" ? "148px" : "44px";
-        break;
-      case 5:
-      case 6:
-        height = "44px";
-        break;
-      case 7:
-      case 8:
-        height = "8px";
-        break;
-    }
-    return <div style={{ height: height }}></div>;
-  }
-  function LeftBottomGapDiv({}) {
-    let height = "80px";
-    switch (numFactions) {
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-        return null;
-    }
-    return <div style={{ height: height }}></div>;
-  }
-  function RightBottomGapDiv({}) {
-    let height = "64px";
-    switch (numFactions) {
-      case 3:
-        height = "244px";
-        break;
-      case 4:
-        height = options["map-style"] === "standard" ? "168px" : "23px";
-        break;
-      case 5:
-      case 6:
-        height = "23px";
-        break;
-      case 7:
-        if (options["map-style"] === "warp") {
-          height = "64px";
-          break;
-        }
-      case 8:
-        height = "22px";
-        break;
-    }
-    return <div style={{ height: height }}></div>;
   }
 
   const maxFactions = options.expansions.has("POK") ? 8 : 6;
@@ -1918,20 +1852,18 @@ export default function SetupPage({
       />
       {/* Large Screen */}
       <div
-        className="flexRow nonMobile"
+        className={`${styles.SetupGrid} nonMobile`}
         style={{
-          alignItems: "flex-start",
-          justifyContent: "center",
-          margin: `${"48px"} 0 0 0`,
-          width: "100%",
+          gridTemplateAreas: getGridTemplateAreas(),
         }}
       >
         <div
           className="flexColumn"
           style={{
             height: "100%",
-            justifyContent: "flex-start",
-            marginTop: "12px",
+            justifyContent: "center",
+            gridArea: "opt",
+            minHeight: "114px",
           }}
         >
           <Options
@@ -1943,7 +1875,8 @@ export default function SetupPage({
             maxFactions={maxFactions}
             isCouncil={isCouncilInGame()}
           />
-          <LeftTopGapDiv />
+        </div>
+        <div style={{ gridArea: "left-top" }}>
           <FactionSelect
             colors={colors}
             factions={setupFactions}
@@ -1957,9 +1890,10 @@ export default function SetupPage({
             setAlliancePartner={updateAlliancePartner}
             options={options}
           />
-          <SideGapDiv />
-          {numFactions > 3 &&
-          !(numFactions === 4 && options["map-style"] === "standard") ? (
+        </div>
+        {numFactions > 3 &&
+        !(numFactions === 4 && options["map-style"] === "standard") ? (
+          <div style={{ gridArea: "left-mid" }}>
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -1973,9 +1907,10 @@ export default function SetupPage({
               setAlliancePartner={updateAlliancePartner}
               options={options}
             />
-          ) : null}
-          <SideGapDiv />
-          {numFactions > 6 ? (
+          </div>
+        ) : null}
+        {numFactions > 6 ? (
+          <div style={{ gridArea: "left-bot" }}>
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -1989,21 +1924,118 @@ export default function SetupPage({
               setAlliancePartner={updateAlliancePartner}
               options={options}
             />
-          ) : null}
-          <LeftBottomGapDiv />
-        </div>
-        <div
+          </div>
+        ) : null}
+        {/* Track Section */}
+        {/* <div
           className="flexColumn"
-          style={{
-            flex: `30vw 0 0`,
-            height: "100%",
-            justifyContent: "flex-start",
-          }}
+          style={{ height: "100%", gridArea: "trac", minHeight: "114px" }}
         >
-          <MiddleTopGapDiv />
-          {numFactions > 3 &&
-          !(numFactions === 4 && options["map-style"] !== "standard") &&
-          !(numFactions === 5 && options["map-style"] !== "warp") ? (
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="tDgufj"
+                description="Label on a section showing what can be tracked by the app."
+                defaultMessage="Track"
+              />
+            }
+          >
+            <div
+              className="flexRow"
+              style={{
+                width: "100%",
+                minWidth: "240px",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <div
+                className="flexColumn"
+                style={{ fontSize: "12px", gap: "2px", width: "60px" }}
+              >
+                <FormattedMessage
+                  id="1fNqTf"
+                  defaultMessage="Planets"
+                  description="Planets."
+                />
+                <Circle
+                  blur={false}
+                  onClick={() => {
+                    toggleOption(!options["hide-planets"], "hide-planets");
+                  }}
+                  tag={<ToggleTag value={!options["hide-planets"]} />}
+                  tagBorderColor={options["hide-planets"] ? "red" : "green"}
+                >
+                  <div
+                    className="flexRow"
+                    style={{
+                      position: "relative",
+                      paddingTop: "2px",
+                      paddingLeft: "2px",
+                    }}
+                  >
+                    <CustomSizeResources
+                      resources={3}
+                      influence={2}
+                      height={32}
+                    />
+                  </div>
+                </Circle>
+              </div>
+              <div
+                className="flexColumn"
+                style={{ fontSize: "12px", gap: "2px", width: "60px" }}
+              >
+                <FormattedMessage
+                  id="ys7uwX"
+                  defaultMessage="Techs"
+                  description="Shortened version of technologies."
+                />
+                <Circle
+                  blur={false}
+                  onClick={() => {
+                    toggleOption(!options["hide-techs"], "hide-techs");
+                  }}
+                  tag={<ToggleTag value={!options["hide-techs"]} />}
+                  tagBorderColor={options["hide-techs"] ? "red" : "green"}
+                >
+                  <TechSkipIcon size={28} outline />
+                </Circle>
+              </div>
+              <div
+                className="flexColumn"
+                style={{ fontSize: "12px", gap: "2px", width: "60px" }}
+              >
+                <FormattedMessage
+                  id="5Bl4Ek"
+                  defaultMessage="Objectives"
+                  description="Cards that define how to score victory points."
+                />
+                <Circle
+                  blur={false}
+                  onClick={() => {
+                    toggleOption(
+                      !options["hide-objectives"],
+                      "hide-objectives"
+                    );
+                  }}
+                  tag={<ToggleTag value={!options["hide-objectives"]} />}
+                  tagBorderColor={options["hide-objectives"] ? "red" : "green"}
+                >
+                  <Image
+                    src={`/images/objectives_icon_two.svg`}
+                    alt={`Objectives Icon`}
+                    fill
+                    style={{ objectFit: "contain" }}
+                  />
+                </Circle>
+              </div>
+            </div>
+          </LabeledDiv>
+        </div> */}
+        {numFactions > 3 &&
+        !(numFactions === 4 && options["map-style"] !== "standard") &&
+        !(numFactions === 5 && options["map-style"] !== "warp") ? (
+          <div style={{ gridArea: "top" }}>
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -2017,32 +2049,31 @@ export default function SetupPage({
               setAlliancePartner={updateAlliancePartner}
               options={options}
             />
-          ) : null}
-          <div
-            className="flexRow"
-            style={{
-              flexShrink: 0,
-              flexGrow: 0,
-              position: "relative",
-              width: "30vw",
-              height: "30vw",
-            }}
-          >
-            {/* TODO: Add zoom button 
-              <div style={{position: "absolute", right: 24, top: 24}}>
-                Icon button zoom
-              </div>
-            */}
-            <Map
-              mapStyle={options["map-style"]}
-              mapString={options["map-string"]}
-              mallice={options["expansions"].has("POK") ? "A" : undefined}
-              factions={activeFactions}
-            />
           </div>
-          {!(numFactions === 4 && options["map-style"] !== "standard") &&
-          !(numFactions === 5 && options["map-style"] === "warp") &&
-          !(numFactions === 7 && options["map-style"] !== "warp") ? (
+        ) : null}
+        {/* Map Section */}
+        <div
+          className="flexRow"
+          style={{
+            flexShrink: 0,
+            flexGrow: 0,
+            position: "relative",
+            width: "350px",
+            aspectRatio: 1,
+            gridArea: "map",
+          }}
+        >
+          <Map
+            mapStyle={options["map-style"]}
+            mapString={options["map-string"]}
+            mallice={options["expansions"].has("POK") ? "A" : undefined}
+            factions={activeFactions}
+          />
+        </div>
+        {!(numFactions === 4 && options["map-style"] !== "standard") &&
+        !(numFactions === 5 && options["map-style"] === "warp") &&
+        !(numFactions === 7 && options["map-style"] !== "warp") ? (
+          <div style={{ gridArea: "bot" }}>
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -2056,71 +2087,59 @@ export default function SetupPage({
               setAlliancePartner={updateAlliancePartner}
               options={options}
             />
-          ) : null}
-        </div>
-        <div
-          className="flexColumn"
-          style={{
-            height: "100%",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-          }}
-        >
-          <div className="flexColumn" style={{ width: "100%" }}>
-            <LabeledDiv
-              label={
-                <FormattedMessage
-                  id="x42AMg"
-                  description="Label for a section that involves randomly selecting things."
-                  defaultMessage="Randomize"
-                />
-              }
-            >
-              <div
-                className="flexRow"
-                style={{ whiteSpace: "nowrap", width: "100%" }}
-              >
-                <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
-                  <Strings.Speaker />
-                </button>
-                <button
-                  style={{ textAlign: "center" }}
-                  onClick={randomFactions}
-                  disabled={disableRandomizeFactionButton()}
-                >
-                  <FormattedMessage
-                    id="r2htpd"
-                    description="Text on a button that will randomize factions."
-                    defaultMessage="Factions"
-                  />
-                </button>
-                <button
-                  style={{ textAlign: "center" }}
-                  onClick={randomColors}
-                  disabled={disableRandomizeColorsButton()}
-                >
-                  <FormattedMessage
-                    id="rqdwvE"
-                    description="Text on a button that will randomize colors."
-                    defaultMessage="Colors"
-                  />
-                </button>
-              </div>
-            </LabeledDiv>
-            <button onClick={reset}>
-              <FormattedMessage
-                id="tocXJ4"
-                description="Text on a button that will reset selections."
-                defaultMessage="Reset"
-              />
-            </button>
-
-            {/* </div> */}
           </div>
-
-          {/* Spacing Div */}
-          <RightTopGapDiv />
-
+        ) : null}
+        {/* Randomize Section */}
+        <div className="flexColumn" style={{ gridArea: "rand" }}>
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="x42AMg"
+                description="Label for a section that involves randomly selecting things."
+                defaultMessage="Randomize"
+              />
+            }
+          >
+            <div
+              className="flexRow"
+              style={{ whiteSpace: "nowrap", minWidth: "280px" }}
+            >
+              <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
+                <Strings.Speaker />
+              </button>
+              <button
+                style={{ textAlign: "center" }}
+                onClick={randomFactions}
+                disabled={disableRandomizeFactionButton()}
+              >
+                <FormattedMessage
+                  id="r2htpd"
+                  description="Text on a button that will randomize factions."
+                  defaultMessage="Factions"
+                />
+              </button>
+              <button
+                style={{ textAlign: "center" }}
+                onClick={randomColors}
+                disabled={disableRandomizeColorsButton()}
+              >
+                <FormattedMessage
+                  id="rqdwvE"
+                  description="Text on a button that will randomize colors."
+                  defaultMessage="Colors"
+                />
+              </button>
+            </div>
+          </LabeledDiv>
+          <button onClick={reset}>
+            <FormattedMessage
+              id="tocXJ4"
+              description="Text on a button that will reset selections."
+              defaultMessage="Reset"
+            />
+          </button>
+        </div>
+        <div style={{ gridArea: "right-top" }}>
           <FactionSelect
             colors={colors}
             factions={setupFactions}
@@ -2134,9 +2153,10 @@ export default function SetupPage({
             setAlliancePartner={updateAlliancePartner}
             options={options}
           />
-          <SideGapDiv />
-          {numFactions > 3 &&
-          !(numFactions === 4 && options["map-style"] === "standard") ? (
+        </div>
+        {numFactions > 3 &&
+        !(numFactions === 4 && options["map-style"] === "standard") ? (
+          <div style={{ gridArea: "right-mid" }}>
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -2150,10 +2170,11 @@ export default function SetupPage({
               setAlliancePartner={updateAlliancePartner}
               options={options}
             />
-          ) : null}
-          <SideGapDiv />
-          {(numFactions > 6 && options["map-style"] === "standard") ||
-          numFactions > 7 ? (
+          </div>
+        ) : null}
+        {(numFactions > 6 && options["map-style"] === "standard") ||
+        numFactions > 7 ? (
+          <div style={{ gridArea: "right-bot" }}>
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -2167,70 +2188,73 @@ export default function SetupPage({
               setAlliancePartner={updateAlliancePartner}
               options={options}
             />
-          ) : null}
-          <RightBottomGapDiv />
-          <div className="flexColumn" style={{ width: "100%" }}>
-            <button
-              style={{
-                fontSize: `${"40px"}`,
-                fontFamily: "Slider",
-                color: creatingGame ? "#222" : undefined,
-                position: "relative",
-              }}
-              onClick={startGame}
-              disabled={disableNextButton()}
-            >
-              <FormattedMessage
-                id="lYD2yu"
-                description="Text on a button that will start a game."
-                defaultMessage="Start Game"
-              />
-              {creatingGame ? (
+          </div>
+        ) : null}
+        {/* Start Game Section */}
+        <div
+          className="flexColumn"
+          style={{ width: "100%", gridArea: "start", minHeight: "114px" }}
+        >
+          <button
+            style={{
+              fontSize: `${"40px"}`,
+              fontFamily: "Slider",
+              color: creatingGame ? "#222" : undefined,
+              position: "relative",
+            }}
+            onClick={startGame}
+            disabled={disableNextButton()}
+          >
+            <FormattedMessage
+              id="lYD2yu"
+              description="Text on a button that will start a game."
+              defaultMessage="Start Game"
+            />
+            {creatingGame ? (
+              <div
+                className="flexColumn"
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                }}
+              >
                 <div
-                  className="flexColumn"
                   style={{
-                    height: "100%",
-                    width: "100%",
-                    position: "absolute",
-                    left: 0,
-                    top: 0,
+                    position: "relative",
+                    aspectRatio: 1,
+                    height: "80%",
+                    opacity: 0.5,
+                    animation: "spin 2s linear infinite",
                   }}
                 >
-                  <div
-                    style={{
-                      position: "relative",
-                      aspectRatio: 1,
-                      height: "80%",
-                      opacity: 0.5,
-                      animation: "spin 2s linear infinite",
-                    }}
-                  >
-                    <ResponsiveLogo size="100%" />
-                  </div>
+                  <ResponsiveLogo size="100%" />
                 </div>
-              ) : null}
-            </button>
-            {!creatingGame && disableNextButton() && !invalidCouncil() ? (
-              <div
-                className="flexColumn centered"
-                style={{ color: "firebrick", maxWidth: "240px" }}
-              >
-                <FormattedMessage
-                  id="LYA+Dm"
-                  description="Error message explaining that all factions and colors need to be selected."
-                  defaultMessage="Select all factions and colors"
-                />
-                {options["game-variant"].startsWith("alliance")
-                  ? " and alliance partners"
-                  : ""}
               </div>
             ) : null}
-            {invalidCouncil() ? (
-              <div style={{ color: "firebrick" }}>
-                No sub-factions available for Council Keleres
-              </div>
-            ) : null}
-          </div>
+          </button>
+          {!creatingGame && disableNextButton() && !invalidCouncil() ? (
+            <div
+              className="flexColumn centered"
+              style={{ color: "firebrick", maxWidth: "240px" }}
+            >
+              <FormattedMessage
+                id="LYA+Dm"
+                description="Error message explaining that all factions and colors need to be selected."
+                defaultMessage="Select all factions and colors"
+              />
+              {options["game-variant"].startsWith("alliance")
+                ? " and alliance partners"
+                : ""}
+            </div>
+          ) : null}
+          {invalidCouncil() ? (
+            <div style={{ color: "firebrick" }}>
+              No sub-factions available for Council Keleres
+            </div>
+          ) : null}
         </div>
       </div>
       {/* Mobile Screen */}

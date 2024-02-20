@@ -6,6 +6,17 @@
   gap: 8px;
 }
 
+.SetupGrid {
+  margin: 48px 0 0 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-items: center;
+  row-gap: 4px;
+}
+
 @media only screen and (max-width: 900px) {
   .Expansions {
     display: flex;

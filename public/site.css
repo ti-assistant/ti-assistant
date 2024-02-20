@@ -451,6 +451,6 @@ input[type="textbox"] {
   }
 
   .nonMobile {
-    display: none;
+    display: none !important;
   }
 }

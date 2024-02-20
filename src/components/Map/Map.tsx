@@ -13,12 +13,12 @@ import {
   applyAllPlanetAttachments,
   getPlanetTypeColor,
 } from "../../util/planets";
+import { getTechTypeColor } from "../../util/techs";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
-import styles from "./Map.module.scss";
-import { getTechTypeColor } from "../../util/techs";
 import TechIcon from "../TechIcon/TechIcon";
+import styles from "./Map.module.scss";
 
 interface Cube {
   q: number;
