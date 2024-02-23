@@ -26,11 +26,13 @@ import {
   TechContext,
 } from "../context/Context";
 import {
+  addAttachmentAsync,
   addTechAsync,
   advancePhaseAsync,
   claimPlanetAsync,
   endTurnAsync,
   markSecondaryAsync,
+  removeAttachmentAsync,
   removeTechAsync,
   scoreObjectiveAsync,
   selectActionAsync,
@@ -40,7 +42,7 @@ import {
   unselectActionAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
-import { getResearchedTechs } from "../util/actionLog";
+import { getAttachments, getResearchedTechs } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import {
   getNewSpeakerEventFromLog,
@@ -55,6 +57,8 @@ import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import styles from "./ActionPhase.module.scss";
 import { FormattedMessage, useIntl } from "react-intl";
 import { phaseString } from "../util/strings";
+import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -428,7 +432,7 @@ export function AdditionalActions({
         logEntry.data.event.faction === activeFaction.id
     )
     .map((logEntry) => {
-      return (logEntry.data as ClaimPlanetData).event.planet;
+      return (logEntry.data as ClaimPlanetData).event;
     });
   const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
     if (!planets) {
@@ -441,13 +445,13 @@ export function AdditionalActions({
       return false;
     }
     for (const claimedPlanet of claimedPlanets) {
-      if (claimedPlanet === planet.id) {
+      if (claimedPlanet.planet === planet.id) {
         return false;
       }
     }
     if (claimedPlanets.length > 0) {
       const claimedPlanet = claimedPlanets[0]
-        ? planets[claimedPlanets[0]]
+        ? planets[claimedPlanets[0].planet]
         : null;
       if (claimedPlanet?.faction) {
         return planet.faction === claimedPlanet.faction;
@@ -871,9 +875,12 @@ export function AdditionalActions({
             >
               <React.Fragment>
                 {claimedPlanets.length > 0 ? (
-                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
+                  <div
+                    className="flexColumn"
+                    style={{ alignItems: "stretch", width: "100%" }}
+                  >
                     {claimedPlanets.map((planet) => {
-                      const planetObj = planets[planet];
+                      const planetObj = planets[planet.planet];
                       if (!planetObj) {
                         return null;
                       }
@@ -881,15 +888,103 @@ export function AdditionalActions({
                         planetObj,
                         attachments ?? {}
                       );
+                      const currentAttachment = getAttachments(
+                        currentTurn,
+                        planet.planet
+                      )[0];
+                      const claimedAttachments = new Set<AttachmentId>();
+                      for (const planet of Object.values(planets)) {
+                        for (const attachment of planet.attachments ?? []) {
+                          claimedAttachments.add(attachment);
+                        }
+                      }
+                      const availableAttachments = Object.values(attachments)
+                        .filter(
+                          (attachment) =>
+                            ((adjustedPlanet.type === "ALL" &&
+                              attachment.required.type) ||
+                              attachment.required.type ===
+                                adjustedPlanet.type) &&
+                            (attachment.id === currentAttachment ||
+                              !claimedAttachments.has(attachment.id))
+                        )
+                        .map((attachment) => attachment.id);
                       return (
-                        <PlanetRow
-                          key={planet}
-                          factionId={activeFaction.id}
-                          planet={adjustedPlanet}
-                          removePlanet={() =>
-                            removePlanet(activeFaction.id, planet)
-                          }
-                        />
+                        <div
+                          key={planet.planet}
+                          className="flexRow"
+                          style={{ width: "100%" }}
+                        >
+                          <div style={{ width: "100%" }}>
+                            <PlanetRow
+                              factionId={"Xxcha Kingdom"}
+                              planet={adjustedPlanet}
+                              removePlanet={() => {
+                                removePlanet("Xxcha Kingdom", planet.planet);
+                              }}
+                            />
+                          </div>
+                          {availableAttachments.length > 0 &&
+                          !planet.prevOwner ? (
+                            <div
+                              className="flexRow"
+                              style={{ justifyContent: "center" }}
+                            >
+                              <AttachmentSelectRadialMenu
+                                attachments={availableAttachments}
+                                hasSkip={adjustedPlanet.attributes.reduce(
+                                  (hasSkip, attribute) => {
+                                    if (attribute.includes("skip")) {
+                                      if (
+                                        currentAttachment &&
+                                        attachments[currentAttachment]
+                                          ?.attribute === attribute
+                                      ) {
+                                        return planetObj.attributes.reduce(
+                                          (hasSkip, attribute) => {
+                                            if (attribute.includes("skip")) {
+                                              return true;
+                                            }
+                                            return hasSkip;
+                                          },
+                                          false
+                                        );
+                                      }
+                                      return true;
+                                    }
+                                    return hasSkip;
+                                  },
+                                  false
+                                )}
+                                onSelect={(attachmentId, prevAttachment) => {
+                                  if (prevAttachment) {
+                                    removeAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      prevAttachment
+                                    );
+                                  }
+                                  if (attachmentId) {
+                                    addAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      attachmentId
+                                    );
+                                  }
+                                }}
+                                selectedAttachment={currentAttachment}
+                                tag={
+                                  adjustedPlanet.type === "ALL" ? undefined : (
+                                    <PlanetIcon
+                                      type={adjustedPlanet.type}
+                                      size="60%"
+                                    />
+                                  )
+                                }
+                              />
+                            </div>
+                          ) : null}
+                        </div>
                       );
                     })}
                   </div>
@@ -949,7 +1044,7 @@ export function AdditionalActions({
               logEntry.data.event.faction === "Xxcha Kingdom"
           )
           .map((logEntry) => {
-            return (logEntry.data as ClaimPlanetData).event.planet;
+            return (logEntry.data as ClaimPlanetData).event;
           });
         const nonXxchaPlanets = Object.values(planets ?? {}).filter(
           (planet) => {
@@ -960,13 +1055,13 @@ export function AdditionalActions({
               return false;
             }
             for (const claimedPlanet of claimedPlanets) {
-              if (claimedPlanet === planet.id) {
+              if (claimedPlanet.planet === planet.id) {
                 return false;
               }
             }
             if (claimedPlanets.length > 0) {
               const claimedPlanet = claimedPlanets[0]
-                ? planets[claimedPlanets[0]]
+                ? planets[claimedPlanets[0].planet]
                 : undefined;
               if (claimedPlanet?.system) {
                 return planet.system === claimedPlanet.system;
@@ -1011,7 +1106,7 @@ export function AdditionalActions({
                     style={{ alignItems: "stretch", width: "100%" }}
                   >
                     {xxchaPlanets.map((planet) => {
-                      const planetObj = planets[planet];
+                      const planetObj = planets[planet.planet];
                       if (!planetObj) {
                         return null;
                       }
@@ -1019,18 +1114,103 @@ export function AdditionalActions({
                         planetObj,
                         attachments ?? {}
                       );
+                      const currentAttachment = getAttachments(
+                        currentTurn,
+                        planet.planet
+                      )[0];
+                      const claimedAttachments = new Set<AttachmentId>();
+                      for (const planet of Object.values(planets)) {
+                        for (const attachment of planet.attachments ?? []) {
+                          claimedAttachments.add(attachment);
+                        }
+                      }
+                      const availableAttachments = Object.values(attachments)
+                        .filter(
+                          (attachment) =>
+                            ((adjustedPlanet.type === "ALL" &&
+                              attachment.required.type) ||
+                              attachment.required.type ===
+                                adjustedPlanet.type) &&
+                            (attachment.id === currentAttachment ||
+                              !claimedAttachments.has(attachment.id))
+                        )
+                        .map((attachment) => attachment.id);
                       return (
-                        <PlanetRow
-                          key={planet}
-                          factionId={"Xxcha Kingdom"}
-                          planet={adjustedPlanet}
-                          removePlanet={() => {
-                            // if (gameId) {
-                            //   markSecondary(gameId, "Xxcha Kingdom", "PENDING");
-                            // }
-                            removePlanet("Xxcha Kingdom", planet);
-                          }}
-                        />
+                        <div
+                          key={planet.planet}
+                          className="flexRow"
+                          style={{ width: "100%" }}
+                        >
+                          <div style={{ width: "100%" }}>
+                            <PlanetRow
+                              factionId={"Xxcha Kingdom"}
+                              planet={adjustedPlanet}
+                              removePlanet={() => {
+                                removePlanet("Xxcha Kingdom", planet.planet);
+                              }}
+                            />
+                          </div>
+                          {availableAttachments.length > 0 &&
+                          !planet.prevOwner ? (
+                            <div
+                              className="flexRow"
+                              style={{ justifyContent: "center" }}
+                            >
+                              <AttachmentSelectRadialMenu
+                                attachments={availableAttachments}
+                                hasSkip={adjustedPlanet.attributes.reduce(
+                                  (hasSkip, attribute) => {
+                                    if (attribute.includes("skip")) {
+                                      if (
+                                        currentAttachment &&
+                                        attachments[currentAttachment]
+                                          ?.attribute === attribute
+                                      ) {
+                                        return planetObj.attributes.reduce(
+                                          (hasSkip, attribute) => {
+                                            if (attribute.includes("skip")) {
+                                              return true;
+                                            }
+                                            return hasSkip;
+                                          },
+                                          false
+                                        );
+                                      }
+                                      return true;
+                                    }
+                                    return hasSkip;
+                                  },
+                                  false
+                                )}
+                                onSelect={(attachmentId, prevAttachment) => {
+                                  if (prevAttachment) {
+                                    removeAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      prevAttachment
+                                    );
+                                  }
+                                  if (attachmentId) {
+                                    addAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      attachmentId
+                                    );
+                                  }
+                                }}
+                                selectedAttachment={currentAttachment}
+                                tag={
+                                  adjustedPlanet.type === "ALL" ? undefined : (
+                                    <PlanetIcon
+                                      type={adjustedPlanet.type}
+                                      size="60%"
+                                    />
+                                  )
+                                }
+                              />
+                            </div>
+                          ) : null}
+                        </div>
                       );
                     })}
                   </div>
@@ -1055,9 +1235,6 @@ export function AdditionalActions({
                               width: "90px",
                             }}
                             onClick={() => {
-                              // if (gameId) {
-                              //   markSecondary(gameId, "Xxcha Kingdom", "DONE");
-                              // }
                               addPlanet("Xxcha Kingdom", planet);
                             }}
                           >
@@ -1072,7 +1249,7 @@ export function AdditionalActions({
             </LabeledDiv>
             <SecondaryCheck
               activeFactionId={activeFaction.id}
-              gameId={gameId ?? ""}
+              gameId={gameId}
               orderedFactions={orderedFactions}
             />
           </div>
