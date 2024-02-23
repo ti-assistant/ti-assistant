@@ -169,20 +169,6 @@ export default function FactionSelectRadialMenu({
                     <SymbolX />
                   )}
                 </div>
-
-                {tag ? (
-                  <div
-                    className={`flexRow ${styles.tag}`}
-                    style={{
-                      border: `${"1px"} solid ${tagBorderColor}`,
-                      boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                      width: "24px",
-                      height: "24px",
-                    }}
-                  >
-                    {tag}
-                  </div>
-                ) : null}
               </div>
             </div>
           </div>
