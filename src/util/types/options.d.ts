@@ -23,8 +23,6 @@ interface Options {
   "game-variant": GameVariant;
   "map-string"?: string;
   "map-style": MapStyle;
-  "hide-planets": boolean;
-  "hide-techs": boolean;
   "victory-points": number;
   [key: string]: any;
 }
