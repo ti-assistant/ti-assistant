@@ -9,7 +9,6 @@ import {
 } from "../../context/Context";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";
-import { responsivePixels } from "../../util/util";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
@@ -147,7 +146,7 @@ export default function PlanetRow({
           width: "100%",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingTop: responsivePixels(4),
+          paddingTop: "4px",
           boxSizing: "border-box",
           // opacity: isDragging ? 0.25 : undefined,
         }}
@@ -159,12 +158,12 @@ export default function PlanetRow({
               position: "absolute",
               color: claimedColor,
               backgroundColor: "#222",
-              borderRadius: responsivePixels(5),
-              border: `${responsivePixels(1)} solid ${claimedColor}`,
-              padding: `0 ${responsivePixels(4)}`,
-              fontSize: responsivePixels(12),
-              bottom: responsivePixels(0),
-              left: responsivePixels(24),
+              borderRadius: "5px",
+              border: `${"1px"} solid ${claimedColor}`,
+              padding: `0 ${"4px"}`,
+              fontSize: "12px",
+              bottom: "0px",
+              left: "24px",
             }}
           >
             Controlled by {claimed}
@@ -183,10 +182,10 @@ export default function PlanetRow({
           <div
             style={{
               position: "relative",
-              top: responsivePixels(-4),
-              marginLeft: responsivePixels(-12),
+              top: "-4px",
+              marginLeft: "-12px",
               opacity: "60%",
-              height: responsivePixels(28),
+              height: "28px",
               zIndex: -1,
             }}
           >
@@ -201,13 +200,13 @@ export default function PlanetRow({
           <div
             className="flexRow"
             style={{
-              width: responsivePixels(40),
-              paddingRight: responsivePixels(6),
+              width: "40px",
+              paddingRight: "6px",
             }}
           >
             {canAttach() ? (
               <button
-                style={{ fontSize: responsivePixels(10) }}
+                style={{ fontSize: "10px" }}
                 className="hiddenButton"
                 onClick={displayAttachMenu}
               >
@@ -223,8 +222,8 @@ export default function PlanetRow({
         />
         <div
           style={{
-            margin: `0 ${responsivePixels(4)} 0 ${responsivePixels(8)}`,
-            width: responsivePixels(24),
+            margin: `0 4px 8px`,
+            width: "24px",
           }}
         >
           <PlanetAttributes
@@ -235,7 +234,7 @@ export default function PlanetRow({
         </div>
         <div className="flexColumn" style={{ height: "100%" }}>
           {opts.showAttachButton ? (
-            <div style={{ width: responsivePixels(56) }}>
+            <div style={{ width: "56px" }}>
               {canAttach() ? (
                 <button onClick={() => displayAttachMenu()}>Attach</button>
               ) : null}
@@ -331,8 +330,8 @@ function PlanetAttributes({
         return (
           <div
             style={{
-              width: responsivePixels(36),
-              height: responsivePixels(22),
+              width: "36px",
+              height: "22px",
             }}
           >
             ✹✹✹
@@ -351,9 +350,9 @@ function PlanetAttributes({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        width: responsivePixels(36),
+        width: "36px",
         flexWrap: "wrap",
-        gap: responsivePixels(4),
+        gap: "4px",
       }}
     >
       {attributes.map((attribute, index) => {
@@ -361,8 +360,8 @@ function PlanetAttributes({
           <div
             key={index}
             style={{
-              width: responsivePixels(16),
-              height: responsivePixels(16),
+              width: "16px",
+              height: "16px",
               position: "relative",
             }}
           >
@@ -398,7 +397,7 @@ function AttachMenu({
         className="flexColumn"
         style={{
           boxSizing: "border-box",
-          padding: responsivePixels(4),
+          padding: "4px",
           overflowY: "auto",
           width: "100%",
           maxHeight: "75vh",
@@ -442,17 +441,17 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
       className="flexRow"
       style={{
         width: "100%",
-        height: responsivePixels(72),
+        height: "72px",
         justifyContent: "flex-start",
-        fontSize: responsivePixels(14),
+        fontSize: "14px",
         position: "relative",
-        gap: responsivePixels(4),
+        gap: "4px",
         whiteSpace: "nowrap",
       }}
     >
       <div style={{ flexBasis: "60%" }}>
         <button
-          style={{ fontSize: responsivePixels(14) }}
+          style={{ fontSize: "14px" }}
           onClick={toggleAttachment}
           className={
             (planet.attachments ?? []).includes(attachment.id) ? "selected" : ""
@@ -466,7 +465,7 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
         influence={attachment.influence ?? 0}
       />
       {isSkip() ? (
-        <div style={{ marginRight: responsivePixels(6) }}>
+        <div style={{ marginRight: "6px" }}>
           <FormattedMessage
             id="PnNSxg"
             description="Text between two fields linking them together."

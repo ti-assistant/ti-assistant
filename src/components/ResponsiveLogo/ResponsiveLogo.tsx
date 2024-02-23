@@ -2,7 +2,6 @@ import Image from "next/image";
 import { CSSProperties } from "react";
 import Logo from "../../../public/images/android-chrome-512x512.png";
 import styles from "./ResponsiveLogo.module.scss";
-import { responsivePixels } from "../../util/neutral";
 
 type Size = `${number}%` | number;
 
@@ -12,7 +11,7 @@ interface ResponsiveLogoCSS extends CSSProperties {
 
 export default function ResponsiveLogo({ size }: { size: Size }) {
   const style: ResponsiveLogoCSS = {
-    "--size": typeof size === "string" ? size : responsivePixels(size),
+    "--size": typeof size === "string" ? size : `${size}px`,
   };
 
   return (

@@ -22,7 +22,7 @@ import {
 } from "../dynamic/api";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
-import { responsivePixels, validateMapString } from "../util/util";
+import { validateMapString } from "../util/util";
 import styles from "./SetupPhase.module.scss";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { objectiveTypeString } from "../util/strings";
@@ -186,7 +186,7 @@ export default function SetupPhase() {
             className="flexColumn mediumFont"
             style={{
               fontFamily: "Myriad Pro",
-              paddingTop: responsivePixels(8),
+              paddingTop: "8px",
               alignItems: "flex-start",
               whiteSpace: "nowrap",
             }}
@@ -202,7 +202,7 @@ export default function SetupPhase() {
               type="textbox"
               className="smallFont"
               style={{
-                width: `min(75vw, ${responsivePixels(268)})`,
+                width: `min(75vw, 268px)`,
               }}
               onChange={(event) =>
                 setMapString(gameId, event.currentTarget.value)
@@ -230,8 +230,8 @@ export default function SetupPhase() {
                 gridAutoFlow: "row",
                 width: "100%",
                 gridTemplateColumns: "1fr",
-                gap: responsivePixels(8),
-                paddingTop: responsivePixels(6),
+                gap: "8px",
+                paddingTop: "6px",
               }}
             >
               {Object.values(orderedFactions).map((faction) => {
@@ -244,7 +244,7 @@ export default function SetupPhase() {
                     <div
                       className="flexColumn"
                       style={{
-                        paddingTop: `${responsivePixels(2)}`,
+                        paddingTop: `${"2px"}`,
                         alignItems: "flex-start",
                         height: "100%",
                         width: "100%",
@@ -356,12 +356,12 @@ export default function SetupPhase() {
                     <div
                       className="flexRow"
                       style={{
-                        padding: `${responsivePixels(8)}`,
+                        padding: `${"8px"}`,
                         display: "grid",
                         gridAutoFlow: "column",
                         gridTemplateRows: "repeat(5, auto)",
                         justifyContent: "flex-start",
-                        gap: `${responsivePixels(4)}`,
+                        gap: `${"4px"}`,
                         maxWidth: "80vw",
                         overflowX: "auto",
                       }}
@@ -422,7 +422,7 @@ export default function SetupPhase() {
                   }
                   startFirstRound(gameId);
                 },
-                style: { fontSize: responsivePixels(40) },
+                style: { fontSize: "40px" },
               },
             ]}
           />
@@ -433,11 +433,11 @@ export default function SetupPhase() {
           className="flexColumn"
           style={{
             alignItems: "center",
-            marginTop: responsivePixels(40),
+            marginTop: "40px",
             boxSizing: "border-box",
             margin: 0,
             whiteSpace: "nowrap",
-            gap: responsivePixels(8),
+            gap: "8px",
           }}
         >
           <div className="flexColumn" style={{ width: "100%" }}>
@@ -452,8 +452,8 @@ export default function SetupPhase() {
               display: "grid",
               gridAutoFlow: "row",
               gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-              gap: responsivePixels(8),
-              paddingTop: responsivePixels(6),
+              gap: "8px",
+              paddingTop: "6px",
             }}
           >
             {Object.values(orderedFactions).map((faction) => {
@@ -466,7 +466,7 @@ export default function SetupPhase() {
                   <div
                     className="flexColumn"
                     style={{
-                      paddingTop: `${responsivePixels(2)}`,
+                      paddingTop: `${"2px"}`,
                       alignItems: "flex-start",
                       height: "100%",
                       width: "100%",
@@ -505,7 +505,7 @@ export default function SetupPhase() {
                     }
                     startFirstRound(gameId);
                   },
-                  style: { fontSize: responsivePixels(40) },
+                  style: { fontSize: "40px" },
                 },
               ]}
             />

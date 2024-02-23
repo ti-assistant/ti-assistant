@@ -27,6 +27,10 @@
     "defaultMessage": "AND",
     "description": "Text between two fields linking them together."
   },
+  "+XKsgE": {
+    "defaultMessage": "Game",
+    "description": "Text used to identify the current game."
+  },
   "+mUg6N": {
     "defaultMessage": "Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
@@ -190,6 +194,10 @@
   "9DZz2w": {
     "defaultMessage": "Setup Game",
     "description": "Text identifying that this is the setup step."
+  },
+  "9m91nk": {
+    "defaultMessage": "Objective View",
+    "description": "Text on a button that opens the objective view of the assistant."
   },
   "A5p5qF": {
     "defaultMessage": "Report Issue",
@@ -5619,6 +5627,14 @@
     "defaultMessage": "Laws",
     "description": "Agendas that apply a continuing effect to the game."
   },
+  "hhm3kX": {
+    "defaultMessage": "Round {value}",
+    "description": "The current round of the game."
+  },
+  "j3n7Nr": {
+    "defaultMessage": "Tech Skips",
+    "description": "Text on a button that will show planets with tech skips."
+  },
   "jGX605": {
     "defaultMessage": "Play Rider",
     "description": "Text on hover menu for selecting a rider to play."
@@ -5747,6 +5763,10 @@
     "defaultMessage": "Directives",
     "description": "Agenda cards that do not have an ongoing effect."
   },
+  "tDgufj": {
+    "defaultMessage": "Track",
+    "description": "Label on a section showing what can be tracked by the app."
+  },
   "tocXJ4": {
     "defaultMessage": "Reset",
     "description": "Text on a button that will reset selections."
@@ -5806,6 +5826,10 @@
   "xu0llf": {
     "defaultMessage": "Select all Faction Choices",
     "description": "Error message telling the user to select all faction choices."
+  },
+  "yBACfb": {
+    "defaultMessage": "Main Screen",
+    "description": "Text on a button that opens the main screen of the assistant."
   },
   "ymJxS0": {
     "defaultMessage": "For",

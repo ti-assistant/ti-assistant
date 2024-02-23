@@ -21,7 +21,6 @@ import { hasTech } from "../util/api/techs";
 import { hasScoredObjective } from "../util/api/util";
 import { getFactionColor } from "../util/factions";
 import { applyPlanetAttachments } from "../util/planets";
-import { responsivePixels } from "../util/util";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
@@ -136,11 +135,11 @@ export function TacticalAction({
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: responsivePixels(8),
+    padding: "8px",
     display: "grid",
     gridAutoFlow: "column",
     gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
-    gap: responsivePixels(4),
+    gap: "4px",
     justifyContent: "flex-start",
     overflowX: "auto",
     maxWidth: "85vw",
@@ -148,7 +147,7 @@ export function TacticalAction({
 
   const secretButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: responsivePixels(8),
+    padding: "8px",
     alignItems: "stretch",
     display: "grid",
     gridAutoFlow: "column",
@@ -159,7 +158,7 @@ export function TacticalAction({
       10,
       scorableObjectives.length
     )}, auto)`,
-    gap: responsivePixels(4),
+    gap: "4px",
   };
   function getResearchableTechs(factionId: FactionId) {
     const faction = factions[factionId];
@@ -400,7 +399,7 @@ export function TacticalAction({
                   <button
                     key={planet.id}
                     style={{
-                      width: responsivePixels(90),
+                      width: "90px",
                     }}
                     onClick={() => {
                       closeFn();
@@ -562,8 +561,8 @@ export function TacticalAction({
                     className="flexRow hiddenButtonParent"
                     style={{
                       position: "relative",
-                      width: responsivePixels(32),
-                      height: responsivePixels(32),
+                      width: "32px",
+                      height: "32px",
                     }}
                   >
                     <FactionIcon factionId={factionId} size="100%" />
@@ -576,11 +575,9 @@ export function TacticalAction({
                         borderRadius: "100%",
                         marginLeft: "60%",
                         marginTop: "60%",
-                        boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                          1
-                        )} ${responsivePixels(4)} black`,
-                        width: responsivePixels(20),
-                        height: responsivePixels(20),
+                        boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                        width: "20px",
+                        height: "20px",
                         color: current ? "green" : "red",
                       }}
                       onClick={() => {
@@ -598,8 +595,8 @@ export function TacticalAction({
                         <div
                           className="symbol"
                           style={{
-                            fontSize: responsivePixels(16),
-                            lineHeight: responsivePixels(16),
+                            fontSize: "16px",
+                            lineHeight: "16px",
                           }}
                         >
                           ✓

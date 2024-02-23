@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import BorderedDiv from "../components/BorderedDiv/BorderedDiv";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import { GameIdContext } from "../context/Context";
-import { responsivePixels } from "../util/util";
 import { GameLog } from "../GameLog";
 
 export default function ResultsPhase() {
@@ -28,7 +27,7 @@ export default function ResultsPhase() {
           <BorderedDiv>Download Game Data</BorderedDiv>
         </a>
       </div>
-      <div style={{ marginTop: responsivePixels(144), width: "100%" }}>
+      <div style={{ marginTop: "144px", width: "100%" }}>
         {viewing === "Game Log" ? (
           <LabeledDiv label="Game Log (Beta)">
             <GameLog />

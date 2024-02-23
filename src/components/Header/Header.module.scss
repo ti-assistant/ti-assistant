@@ -5,51 +5,51 @@
   position: fixed;
   justify-content: center;
   background-color: #222;
-  top: var(--sixteen-pixel);
-  left: var(--ninety-six-pixel);
-  font-size: var(--twenty-four-pixel);
-  gap: var(--eight-pixel);
+  top: 16px;
+  left: 96px;
+  font-size: 24px;
+  gap: 8px;
 }
 
 .HomeLink > div {
   position: relative;
-  width: var(--thirty-two-pixel);
-  height: var(--thirty-two-pixel);
+  width: 32px;
+  height: 32px;
 }
 
 .LangSelect {
   display: flex;
   position: fixed;
-  top: var(--thirty-two-pixel);
-  left: var(--thirty-two-pixel);
+  top: 32px;
+  left: 32px;
   z-index: 2;
 }
 
 .GameTimer {
   display: flex;
   flex-direction: column;
-  gap: var(--eight-pixel);
+  gap: 8px;
 
   position: fixed;
-  top: var(--sixty-four-pixel);
-  left: var(--two-fifty-six-pixel);
-  padding-left: var(--twelve-pixel);
+  top: 64px;
+  left: 256px;
+  padding-left: 12px;
   align-items: center;
   justify-content: center;
 }
 
 .PassedLaws {
   position: fixed;
-  top: var(--twenty-pixel);
-  right: var(--four-twenty-pixel);
+  top: 20px;
+  right: 420px;
 
   z-index: 1;
 }
 
 .QRCode {
   position: fixed;
-  top: var(--sixty-four-pixel);
-  left: var(--ninety-six-pixel);
+  top: 64px;
+  left: 96px;
 
   z-index: 1;
 }
@@ -57,20 +57,26 @@
 .ControlButtons {
   display: flex;
   flex-direction: row;
-  gap: var(--eight-pixel);
+  gap: 8px;
   justify-content: space-evenly;
   align-items: center;
 
   position: fixed;
-  top: var(--sixteen-pixel);
-  left: var(--four-seventy-pixel);
-  font-size: var(--twenty-four-pixel);
+  top: 16px;
+  left: 470px;
+  font-size: 24px;
 }
 
 .Map {
   position: fixed;
-  top: var(--one-eight-pixel);
-  left: var(--ninety-six-pixel);
+  top: 108px;
+  left: 96px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
 @media only screen and (max-width: 1279px) {
@@ -107,8 +113,8 @@
   .HomeLink {
     text-align: center;
     position: sticky;
-    padding-top: var(--twelve-pixel);
-    padding-bottom: var(--twelve-pixel);
+    padding-top: 12px;
+    padding-bottom: 12px;
     top: 0;
     left: 0;
     width: 100%;
@@ -120,13 +126,13 @@
 
   .HomeLink > div {
     position: relative;
-    width: var(--twenty-eight-pixel);
-    height: var(--twenty-eight-pixel);
+    width: 28px;
+    height: 28px;
   }
 
   .LangSelect {
-    bottom: var(--thirty-six-pixel);
-    right: var(--thirty-six-pixel);
+    bottom: 36px;
+    right: 36px;
     left: unset;
     top: unset;
   }

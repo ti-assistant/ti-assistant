@@ -69,7 +69,6 @@ import {
   outcomeString,
   phaseString,
 } from "../util/strings";
-import { responsivePixels } from "../util/util";
 import styles from "./AgendaPhase.module.scss";
 import { Selector } from "../components/Selector/Selector";
 
@@ -281,7 +280,7 @@ function AgendaDetails() {
           style={{
             width: "100%",
             justifyContent: "flex-start",
-            paddingLeft: responsivePixels(12),
+            paddingLeft: "12px",
           }}
         >
           <FormattedMessage
@@ -319,8 +318,8 @@ function AgendaDetails() {
                   <div
                     className="symbol"
                     style={{
-                      fontSize: responsivePixels(18),
-                      lineHeight: responsivePixels(18),
+                      fontSize: "18px",
+                      lineHeight: "18px",
                     }}
                   >
                     ✓
@@ -754,9 +753,9 @@ function AgendaSteps() {
       {agendaNum > 2 ? (
         <div
           style={{
-            fontSize: responsivePixels(40),
+            fontSize: "40px",
             textAlign: "center",
-            marginTop: responsivePixels(120),
+            marginTop: "120px",
             width: "100%",
           }}
         >
@@ -773,7 +772,7 @@ function AgendaSteps() {
           style={{
             margin: "0",
             padding: "0",
-            fontSize: responsivePixels(18),
+            fontSize: "18px",
             alignItems: "stretch",
           }}
         >
@@ -794,7 +793,7 @@ function AgendaSteps() {
                 style={{
                   width: "100%",
                   alignItems: "flex-start",
-                  padding: responsivePixels(8),
+                  padding: "8px",
                   paddingTop: 0,
                 }}
               >
@@ -859,8 +858,8 @@ function AgendaSteps() {
                     <div
                       className="flexRow"
                       style={{
-                        padding: responsivePixels(8),
-                        gap: responsivePixels(4),
+                        padding: "8px",
+                        gap: "4px",
                         display: "grid",
                         gridAutoFlow: "column",
                         gridTemplateRows: "repeat(10, auto)",
@@ -874,7 +873,7 @@ function AgendaSteps() {
                             key={agenda.id}
                             className={agenda.resolved ? "faded" : ""}
                             style={{
-                              fontSize: responsivePixels(14),
+                              fontSize: "14px",
                               writingMode: "horizontal-tb",
                             }}
                             onClick={() => selectAgenda(agenda.id)}
@@ -943,7 +942,7 @@ function AgendaSteps() {
                 <div
                   className="flexColumn"
                   style={{
-                    padding: responsivePixels(8),
+                    padding: "8px",
                     paddingTop: 0,
                     alignItems: "flex-start",
                   }}
@@ -973,8 +972,8 @@ function AgendaSteps() {
                             className="flexRow hiddenButtonParent"
                             style={{
                               position: "relative",
-                              width: responsivePixels(32),
-                              height: responsivePixels(32),
+                              width: "32px",
+                              height: "32px",
                             }}
                           >
                             <FactionIcon factionId={faction.id} size="100%" />
@@ -987,13 +986,9 @@ function AgendaSteps() {
                                 marginLeft: "60%",
                                 cursor: "pointer",
                                 marginTop: "60%",
-                                boxShadow: `${responsivePixels(
-                                  1
-                                )} ${responsivePixels(1)} ${responsivePixels(
-                                  4
-                                )} black`,
-                                width: responsivePixels(20),
-                                height: responsivePixels(20),
+                                boxShadow: `${"1px"} ${"1px"} ${"1px"} black`,
+                                width: "20px",
+                                height: "20px",
                                 color: politicalSecret ? "green" : "red",
                               }}
                               onClick={() => {
@@ -1019,8 +1014,8 @@ function AgendaSteps() {
                                 <div
                                   className="symbol"
                                   style={{
-                                    fontSize: responsivePixels(18),
-                                    lineHeight: responsivePixels(18),
+                                    fontSize: "18px",
+                                    lineHeight: "18px",
                                   }}
                                 >
                                   ✓
@@ -1063,7 +1058,7 @@ function AgendaSteps() {
                 className="flexColumn"
                 style={{
                   alignItems: "flex-start",
-                  padding: responsivePixels(8),
+                  padding: "8px",
                   paddingTop: 0,
                 }}
               >
@@ -1160,11 +1155,11 @@ function AgendaSteps() {
                 <div
                   className={flexDirection}
                   style={{
-                    gap: responsivePixels(4),
-                    padding: `${responsivePixels(8)} ${responsivePixels(20)}`,
+                    gap: "4px",
+                    padding: `8px 20px`,
                     alignItems: "flex-start",
-                    border: `${responsivePixels(1)} solid #555`,
-                    borderRadius: responsivePixels(10),
+                    border: `${"1px"} solid #555`,
+                    borderRadius: "10px",
                     width: "100%",
                   }}
                 >
@@ -1253,7 +1248,7 @@ function AgendaSteps() {
               {readyToResolve() ? (
                 <div
                   className="flexColumn"
-                  style={{ paddingTop: responsivePixels(8), width: "100%" }}
+                  style={{ paddingTop: "8px", width: "100%" }}
                 >
                   <button onClick={completeAgenda}>
                     Resolve with Outcome:{" "}
@@ -1339,7 +1334,7 @@ function DistinguishedCouncilor({}) {
       style={{
         justifyContent: "center",
         alignItems: "center",
-        fontSize: responsivePixels(14),
+        fontSize: "14px",
       }}
     >
       Distinguished Councilor:
@@ -1413,7 +1408,7 @@ function DictatePolicy({}) {
       className="flexRow"
       style={{
         justifyContent: "center",
-        marginTop: responsivePixels(12),
+        marginTop: "12px",
       }}
     >
       <ObjectiveRow objective={dictatePolicy} hideScorers />
@@ -1447,8 +1442,8 @@ function DictatePolicy({}) {
               className="flexRow hiddenButtonParent"
               style={{
                 position: "relative",
-                width: responsivePixels(32),
-                height: responsivePixels(32),
+                width: "32px",
+                height: "32px",
               }}
             >
               <FactionIcon factionId={factionId} size="100%" />
@@ -1461,11 +1456,9 @@ function DictatePolicy({}) {
                   borderRadius: "100%",
                   marginLeft: "60%",
                   marginTop: "60%",
-                  boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                    1
-                  )} ${responsivePixels(4)} black`,
-                  width: responsivePixels(20),
-                  height: responsivePixels(20),
+                  boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                  width: "20px",
+                  height: "20px",
                   color: current ? "green" : "red",
                 }}
                 onClick={() => {
@@ -1483,8 +1476,8 @@ function DictatePolicy({}) {
                   <div
                     className="symbol"
                     style={{
-                      fontSize: responsivePixels(18),
-                      lineHeight: responsivePixels(18),
+                      fontSize: "18px",
+                      lineHeight: "18px",
                     }}
                   >
                     ✓
@@ -1631,8 +1624,8 @@ export default function AgendaPhase() {
       <div
         className={`flexColumn ${styles.MiddleColumn}`}
         style={{
-          paddingTop: agendaNum > 2 ? responsivePixels(160) : undefined,
-          gap: numFactions > 7 ? 0 : responsivePixels(8),
+          paddingTop: agendaNum > 2 ? "160px" : undefined,
+          gap: numFactions > 7 ? 0 : "8px",
         }}
       >
         {agendaNum > 2 ? (
@@ -1648,9 +1641,9 @@ export default function AgendaPhase() {
             </div>
             <div
               style={{
-                fontSize: responsivePixels(40),
+                fontSize: "40px",
                 textAlign: "center",
-                marginTop: responsivePixels(120),
+                marginTop: "120px",
               }}
             >
               <FormattedMessage
@@ -1667,7 +1660,7 @@ export default function AgendaPhase() {
             checksAndBalances.activeRound === state?.round ? (
               <div
                 style={{
-                  fontSize: responsivePixels(28),
+                  fontSize: "28px",
                 }}
               >
                 <FormattedMessage
@@ -1680,7 +1673,7 @@ export default function AgendaPhase() {
             ) : (
               <div
                 style={{
-                  fontSize: responsivePixels(28),
+                  fontSize: "28px",
                 }}
               >
                 <FormattedMessage
@@ -1693,8 +1686,8 @@ export default function AgendaPhase() {
             )}
             <button
               style={{
-                marginTop: responsivePixels(12),
-                fontSize: responsivePixels(24),
+                marginTop: "12px",
+                fontSize: "24px",
               }}
               onClick={() => nextPhase()}
             >
@@ -1712,9 +1705,9 @@ export default function AgendaPhase() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
-                paddingBottom: responsivePixels(8),
+                paddingBottom: "8px",
                 alignItems: "flex-end",
-                maxWidth: responsivePixels(400),
+                maxWidth: "400px",
               }}
             >
               <div
@@ -1741,17 +1734,17 @@ export default function AgendaPhase() {
                   <div className="flexRow">Extra</div>
                 </div>
                 {/* <div
-                  style={{ textAlign: "center", width: responsivePixels(80) }}
+                  style={{ textAlign: "center", width: "80px" }}
                 >
                   Available Votes
                 </div>
                 <div
-                  style={{ textAlign: "center", width: responsivePixels(40) }}
+                  style={{ textAlign: "center", width: "40px" }}
                 >
                   Cast Votes
                 </div>
                 <div
-                  style={{ textAlign: "center", width: responsivePixels(120) }}
+                  style={{ textAlign: "center", width: "120px" }}
                 >
                   Extra Votes
                 </div> */}
@@ -1786,8 +1779,8 @@ export default function AgendaPhase() {
                         style={{
                           alignItems: "stretch",
                           justifyContent: "flex-start",
-                          gap: responsivePixels(4),
-                          padding: responsivePixels(8),
+                          gap: "4px",
+                          padding: "8px",
                           display: "grid",
                           gridAutoFlow: "column",
                           gridTemplateRows: `repeat(${items}, auto)`,
@@ -1799,7 +1792,7 @@ export default function AgendaPhase() {
                                 <button
                                   key={target}
                                   style={{
-                                    fontSize: responsivePixels(14),
+                                    fontSize: "14px",
                                     writingMode: "horizontal-tb",
                                   }}
                                   onClick={() => selectSpeakerTieBreak(target)}
@@ -1816,7 +1809,7 @@ export default function AgendaPhase() {
                                 <button
                                   key={target.id}
                                   style={{
-                                    fontSize: responsivePixels(14),
+                                    fontSize: "14px",
                                     writingMode: "horizontal-tb",
                                   }}
                                   onClick={() =>
@@ -1849,7 +1842,7 @@ export default function AgendaPhase() {
             <LockedButtons
               unlocked={false}
               style={{
-                marginTop: responsivePixels(12),
+                marginTop: "12px",
                 justifyContent: "center",
               }}
               buttons={[
@@ -1861,7 +1854,7 @@ export default function AgendaPhase() {
                       "Text on a button that will start the next round.",
                   }),
                   style: {
-                    fontSize: responsivePixels(24),
+                    fontSize: "24px",
                   },
                   onClick: nextPhase,
                 },

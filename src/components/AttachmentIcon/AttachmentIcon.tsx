@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
 import { SymbolX } from "../../icons/svgs";
-import { responsivePixels } from "../../util/util";
 import styles from "./AttachmentIcon.module.scss";
 import TechIcon from "../TechIcon/TechIcon";
 import { CustomSizeResources } from "../../Resources";
@@ -35,8 +34,8 @@ export default function AttachmentIcon({
           className="flexRow"
           style={{
             position: "relative",
-            width: responsivePixels(size - 10),
-            height: responsivePixels(size - 10),
+            width: `${size - 10}px`,
+            height: `${size - 10}px`,
           }}
         >
           <Image
@@ -66,10 +65,10 @@ export default function AttachmentIcon({
             aspectRatio: 1,
             border: hideBorder
               ? undefined
-              : `${responsivePixels(2)} solid ${getTechTypeColor(techType)}`,
+              : `2px solid ${getTechTypeColor(techType)}`,
             borderRadius: "100%",
-            paddingTop: hasSkip ? responsivePixels(4) : undefined,
-            paddingLeft: hasSkip ? responsivePixels(1) : undefined,
+            paddingTop: hasSkip ? "4px" : undefined,
+            paddingLeft: hasSkip ? "1px" : undefined,
           }}
         >
           {hasSkip ? (
@@ -92,7 +91,7 @@ export default function AttachmentIcon({
       return (
         <div
           className="flexRow"
-          style={{ width: responsivePixels(size), aspectRatio: 1, gap: 0 }}
+          style={{ width: `${size}px`, aspectRatio: 1, gap: 0 }}
         >
           <div
             style={{
@@ -126,8 +125,8 @@ export default function AttachmentIcon({
           justifyContent: "center",
           width: "100%",
           aspectRatio: 1,
-          paddingTop: responsivePixels(4),
-          paddingLeft: responsivePixels(1),
+          paddingTop: "4px",
+          paddingLeft: "1px",
         }}
       >
         <CustomSizeResources
@@ -151,8 +150,8 @@ export default function AttachmentIcon({
   }, [attachment, hasSkip, hideBorder, size]);
 
   const attachmentIconStyle: AttachmentIconCSS = {
-    "--size": typeof size === "string" ? size : responsivePixels(size),
-    // border: `${responsivePixels(1)} solid red`,
+    "--size": typeof size === "string" ? size : `${size}px`,
+    // border: `${"1px"} solid red`,
     // borderRadius: "100%",
   };
   return (

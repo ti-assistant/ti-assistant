@@ -6,7 +6,6 @@ import { addTechAsync, removeTechAsync } from "../dynamic/api";
 import { hasTech, isTechReplaced } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getTechTypeColor, sortTechs } from "../util/techs";
-import { responsivePixels } from "../util/util";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import TechIcon from "./TechIcon/TechIcon";
@@ -109,7 +108,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                 <div
                   className="flexColumn"
                   style={{
-                    gap: responsivePixels(4),
+                    gap: "4px",
                     alignItems: "stretch",
                     width: "100%",
                   }}
@@ -117,7 +116,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                   {faction.id === "Nekro Virus" ? (
                     <>
                       <Selector
-                        buttonStyle={{ fontSize: responsivePixels(14) }}
+                        buttonStyle={{ fontSize: "14px" }}
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs}
                         toggleItem={(techId, add) => {
@@ -154,7 +153,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                         selectedItem={nekroFactionTechs[0]}
                       />
                       <Selector
-                        buttonStyle={{ fontSize: responsivePixels(14) }}
+                        buttonStyle={{ fontSize: "14px" }}
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs}
                         toggleItem={(techId, add) => {

@@ -1,5 +1,4 @@
 import { CSSProperties } from "react";
-import { responsivePixels } from "../../util/util";
 import styles from "./NumberInput.module.scss";
 
 interface NumberInputCSS extends CSSProperties {
@@ -47,7 +46,7 @@ export default function NumberInput({
           onClick={() => onChange(value - 1)}
         ></div>
       ) : (
-        <div style={{ width: responsivePixels(12) }}></div>
+        <div style={{ width: "12px" }}></div>
       )}
       <div
         className={styles.InputBox}
@@ -66,7 +65,7 @@ export default function NumberInput({
           onClick={() => onChange(value + 1)}
         ></div>
       ) : (
-        <div style={{ width: responsivePixels(12) }}></div>
+        <div style={{ width: "12px" }}></div>
       )}
     </div>
   );

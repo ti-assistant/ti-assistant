@@ -1,10 +1,5 @@
-import {
-  CSSProperties,
-  PropsWithChildren, useRef,
-  useState
-} from "react";
+import { CSSProperties, PropsWithChildren, useRef, useState } from "react";
 import { SymbolX } from "../icons/svgs";
-import { responsivePixels } from "../util/util";
 import FactionCircle from "./FactionCircle/FactionCircle";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionSelect.module.scss";
@@ -38,8 +33,8 @@ export function FactionSelectHoverMenu({
 
   const hoverMenuStyle: CSSProperties = {
     left: 0,
-    borderRadius: responsivePixels(Math.floor(size / 2)),
-    border: `${responsivePixels(2)} solid #444`,
+    borderRadius: `${Math.floor(size / 2)}px`,
+    border: `${"2px"} solid #444`,
   };
 
   return (
@@ -69,9 +64,9 @@ export function FactionSelectHoverMenu({
           className="flexRow"
           style={{
             position: "relative",
-            width: responsivePixels(size - 4),
-            height: responsivePixels(size - 4),
-            fontSize: responsivePixels(size - 8),
+            width: `${size - 4}px`,
+            height: `${size - 4}px`,
+            fontSize: `${size - 8}px`,
             color: "#777",
           }}
         >
@@ -79,8 +74,8 @@ export function FactionSelectHoverMenu({
             className="flexRow"
             style={{
               position: "relative",
-              width: responsivePixels(size - 10),
-              height: responsivePixels(size - 10),
+              width: `${size - 10}px`,
+              height: `${size - 10}px`,
             }}
           >
             <SymbolX />
@@ -92,8 +87,8 @@ export function FactionSelectHoverMenu({
               key={factionId}
               className={`flexRow ${styles.oldFactionSelect}`}
               style={{
-                width: responsivePixels(size - 4),
-                height: responsivePixels(size - 4),
+                width: `${size - 4}px`,
+                height: `${size - 4}px`,
               }}
               onClick={() => {
                 closeFn();

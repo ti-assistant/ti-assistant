@@ -19,8 +19,11 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { filterToOwnedTechs } from "./util/techs";
-import { responsivePixels } from "./util/util";
+import {
+  filterToOwnedTechs,
+  getTechColor,
+  getTechTypeColor,
+} from "./util/techs";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
   let blueTechs = [];
@@ -48,7 +51,7 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
     }
   }
 
-  const techOrder: TechType[] = ["RED", "GREEN", "BLUE", "YELLOW", "UPGRADE"];
+  const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
   techs.sort((a, b) => {
     const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
@@ -68,16 +71,16 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
 
   return (
     <div className={styles.TechSummaryGrid}>
-      <div className="centered">{redTechs.length || "-"}</div>
-      <TechIcon type={"RED"} size={16} />
-      <div>&nbsp;</div>
       <div className="centered">{greenTechs.length || "-"}</div>
       <TechIcon type={"GREEN"} size={16} />
+      <div>&nbsp;</div>
       <div className="centered">{blueTechs.length || "-"}</div>
       <TechIcon type={"BLUE"} size={16} />
-      <div>&nbsp;</div>
       <div className="centered">{yellowTechs.length || "-"}</div>
       <TechIcon type={"YELLOW"} size={16} />
+      <div>&nbsp;</div>
+      <div className="centered">{redTechs.length || "-"}</div>
+      <TechIcon type={"RED"} size={16} />
       <div className="centered">{upgradeTechs.length || "-"}</div>
       <div>
         <FormattedMessage
@@ -194,8 +197,8 @@ export function FactionSummary({
                 position: "absolute",
                 zIndex: -1,
                 opacity: 0.5,
-                width: responsivePixels(60),
-                height: responsivePixels(60),
+                width: "60px",
+                height: "60px",
               }}
             >
               <FactionIcon factionId={factionId} size="100%" />
@@ -205,9 +208,9 @@ export function FactionSummary({
         <div
           className="flexRow"
           style={{
-            gap: responsivePixels(4),
+            gap: "4px",
             justifyContent: "space-between",
-            fontSize: responsivePixels(28),
+            fontSize: "28px",
           }}
         >
           {VPs > 0 && editable ? (
@@ -216,18 +219,18 @@ export function FactionSummary({
               onClick={() => manualVpAdjust(false)}
             ></div>
           ) : (
-            <div style={{ width: responsivePixels(12) }}></div>
+            <div style={{ width: "12px" }}></div>
           )}
-          <div className="flexRow" style={{ width: responsivePixels(24) }}>
+          <div className="flexRow" style={{ width: "24px" }}>
             {VPs}
           </div>
           {editable ? (
             <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
           ) : (
-            <div style={{ width: responsivePixels(12) }}></div>
+            <div style={{ width: "12px" }}></div>
           )}
         </div>
-        <div className="centered" style={{ fontSize: responsivePixels(20) }}>
+        <div className="centered" style={{ fontSize: "20px" }}>
           <FormattedMessage
             id="PzyYtG"
             description="Shortened version of Victory Points."

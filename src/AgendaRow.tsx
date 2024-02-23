@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import { SelectableRow } from "./SelectableRow";
 import Modal from "./components/Modal/Modal";
-import { responsivePixels } from "./util/util";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
   let target = null;
@@ -29,15 +28,15 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
         boxSizing: "border-box",
         width: "100%",
         minWidth: "320px",
-        padding: responsivePixels(4),
+        padding: "4px",
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: responsivePixels(32),
+        fontSize: "32px",
       }}
     >
       <div className="flexColumn">
         {target ? (
-          <div style={{ padding: responsivePixels(12), fontFamily: "Slider" }}>
+          <div style={{ padding: "12px", fontFamily: "Slider" }}>
             Elect {target}
           </div>
         ) : null}
@@ -73,10 +72,7 @@ export function AgendaRow({
           closeMenu={() => setShowInfoModal(false)}
           visible={showInfoModal}
           title={
-            <div
-              className="flexColumn"
-              style={{ fontSize: responsivePixels(40) }}
-            >
+            <div className="flexColumn" style={{ fontSize: "40px" }}>
               {agenda.name}
               <div style={{ fontSize: "24px" }}>[{agenda.type}]</div>
             </div>
@@ -102,7 +98,7 @@ export function AgendaRow({
           <div
             className="popupIcon"
             onClick={displayInfo}
-            style={{ fontSize: responsivePixels(16) }}
+            style={{ fontSize: "16px" }}
           >
             &#x24D8;
           </div>

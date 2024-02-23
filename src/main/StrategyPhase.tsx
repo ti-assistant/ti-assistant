@@ -26,7 +26,6 @@ import {
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getOnDeckFaction } from "../util/helpers";
-import { responsivePixels } from "../util/util";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import { StrategyCardElement } from "../components/StrategyCardElement/StrategyCardElement";
 import styles from "./StrategyPhase.module.scss";
@@ -88,7 +87,7 @@ function ChecksAndBalancesMenu({
     <div
       className="flexRow"
       style={{
-        fontSize: responsivePixels(16),
+        fontSize: "16px",
         alignItems: "center",
         justifyContent: "flex-end",
         width: "100%",
@@ -160,8 +159,8 @@ function QuantumDatahubNode({
         <div
           className="flexColumn"
           style={{
-            padding: responsivePixels(8),
-            gap: responsivePixels(4),
+            padding: "8px",
+            gap: "4px",
             boxSizing: "border-box",
             alignItems: "flex-start",
             width: "100%",
@@ -226,7 +225,7 @@ function QuantumDatahubNode({
           <div
             className="flexColumn"
             style={{
-              paddingTop: responsivePixels(4),
+              paddingTop: "4px",
               boxSizing: "border-box",
               width: "100%",
             }}
@@ -305,8 +304,8 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
         <div
           className="flexColumn"
           style={{
-            padding: responsivePixels(8),
-            gap: responsivePixels(4),
+            padding: "8px",
+            gap: "4px",
             alignItems: "flex-start",
             boxSizing: "border-box",
             width: "100%",
@@ -371,7 +370,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
           <div
             className="flexColumn"
             style={{
-              paddingTop: responsivePixels(4),
+              paddingTop: "4px",
               boxSizing: "border-box",
               width: "100%",
             }}
@@ -408,7 +407,7 @@ function InfoContent({ children }: PropsWithChildren) {
         padding: "4px",
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: responsivePixels(32),
+        fontSize: "32px",
       }}
     >
       {children}
@@ -464,7 +463,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
         display: "grid",
         gridTemplate: "repeat(8, 1fr) / 14% 2fr 2fr 1fr",
         gridAutoFlow: "column",
-        gap: responsivePixels(4),
+        gap: "4px",
       }}
     >
       {orderedStrategyCards.map((card) => {
@@ -703,11 +702,7 @@ export default function StrategyPhase() {
       <Modal
         closeMenu={() => setInfoModal({ show: false })}
         visible={infoModal.show}
-        title={
-          <div style={{ fontSize: responsivePixels(40) }}>
-            {infoModal.title}
-          </div>
-        }
+        title={<div style={{ fontSize: "40px" }}>{infoModal.title}</div>}
       >
         <InfoContent>{infoModal.content}</InfoContent>
       </Modal>
@@ -826,7 +821,7 @@ export default function StrategyPhase() {
       <div className={styles.MainColumn}>
         <div
           className="flexRow"
-          style={{ position: "relative", maxWidth: responsivePixels(420) }}
+          style={{ position: "relative", maxWidth: "420px" }}
         >
           {activefaction ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
@@ -837,21 +832,21 @@ export default function StrategyPhase() {
               />
               <FactionCard
                 faction={activefaction}
-                style={{ height: responsivePixels(80) }}
+                style={{ height: "80px" }}
                 opts={{
-                  iconSize: responsivePixels(60),
+                  iconSize: "60px",
                 }}
               >
                 <div
                   className="flexColumn"
                   style={{
-                    paddingBottom: responsivePixels(4),
+                    paddingBottom: "4px",
                     height: "100%",
                   }}
                 >
                   <FactionTimer
                     factionId={activefaction.id}
-                    style={{ fontSize: responsivePixels(28) }}
+                    style={{ fontSize: "28px" }}
                   />
                 </div>
               </FactionCard>
@@ -859,8 +854,8 @@ export default function StrategyPhase() {
           ) : (
             <div
               style={{
-                fontSize: responsivePixels(28),
-                // paddingTop: responsivePixels(24),
+                fontSize: "28px",
+                // paddingTop: "24px",
               }}
             >
               <FormattedMessage
@@ -880,23 +875,23 @@ export default function StrategyPhase() {
               />
               <FactionCard
                 faction={onDeckFaction}
-                style={{ height: responsivePixels(64) }}
+                style={{ height: "64px" }}
                 opts={{
-                  iconSize: responsivePixels(44),
-                  fontSize: responsivePixels(24),
+                  iconSize: "44px",
+                  fontSize: "24px",
                 }}
               >
                 <div
                   className="flexColumn"
                   style={{
-                    paddingBottom: responsivePixels(4),
+                    paddingBottom: "4px",
                     height: "100%",
                   }}
                 >
                   <StaticFactionTimer
                     factionId={onDeckFaction.id}
                     style={{
-                      fontSize: responsivePixels(18),
+                      fontSize: "18px",
                     }}
                     width={96}
                   />
@@ -908,18 +903,15 @@ export default function StrategyPhase() {
         <div
           className="flexColumn"
           style={{
-            gap: responsivePixels(4),
+            gap: "4px",
             alignItems: "stretch",
-            marginTop: responsivePixels(8),
+            marginTop: "8px",
           }}
         >
           <StrategyCardSelectList mobile={false} />
         </div>
         {activefaction ? null : (
-          <button
-            style={{ fontSize: responsivePixels(20) }}
-            onClick={() => nextPhase()}
-          >
+          <button style={{ fontSize: "20px" }} onClick={() => nextPhase()}>
             <FormattedMessage
               id="8/h2ME"
               description="Text on a button that will advance the game to a specific phase."

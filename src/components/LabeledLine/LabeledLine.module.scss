@@ -1,6 +1,6 @@
 .LabeledLine {
   position: relative;
-  border-radius: var(--five-pixel);
+  border-radius: 5px;
   width: 100%;
   align-items: flex-start;
   gap: 0;
@@ -9,26 +9,26 @@
 
 .LabeledLine hr {
   width: 100%;
-  border: var(--one-pixel) solid var(--color);
-  margin: var(--eight-pixel) 0;
+  border: 1px solid var(--color);
+  margin: 8px 0;
 }
 
 .label {
-  --side-spacing: var(--six-pixel);
+  --side-spacing: 6px;
 
   position: absolute;
-  font-size: var(--sixteen-pixel);
+  font-size: 16px;
   white-space: nowrap;
   background-color: #222;
-  border-radius: var(--five-pixel);
-  padding: var(--two-pixel) var(--four-pixel);
+  border-radius: 5px;
+  padding: 2px 4px;
 }
 
 .label.left {
   left: var(--side-spacing);
 }
 .label.center {
-  top: var(--negative-two-pixel);
+  top: -2px;
 }
 .label.right {
   right: var(--side-spacing);

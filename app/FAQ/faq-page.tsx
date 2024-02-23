@@ -4,7 +4,6 @@ import Link from "next/link";
 import BorderedDiv from "../../src/components/BorderedDiv/BorderedDiv";
 import LabeledLine from "../../src/components/LabeledLine/LabeledLine";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
-import { responsivePixels } from "../../src/util/util";
 
 export default function FAQPage() {
   return (
@@ -13,13 +12,13 @@ export default function FAQPage() {
       <div
         className="flexColumn"
         style={{
-          maxWidth: responsivePixels(800),
+          maxWidth: "800px",
           height: "100dvh",
           width: "100%",
         }}
       >
         <div className="flexRow largeFont">Frequently Asked Questions</div>
-        <div className="flexColumn" style={{ gap: responsivePixels(16) }}>
+        <div className="flexColumn" style={{ gap: "16px" }}>
           <div
             className="flexColumn"
             style={{
@@ -31,7 +30,7 @@ export default function FAQPage() {
             <div
               style={{
                 fontFamily: "Myriad Pro",
-                marginLeft: responsivePixels(8),
+                marginLeft: "8px",
               }}
             >
               Post the question on{" "}
@@ -56,7 +55,7 @@ export default function FAQPage() {
             <div
               style={{
                 fontFamily: "Myriad Pro",
-                marginLeft: responsivePixels(8),
+                marginLeft: "8px",
               }}
             >
               Display the Main Screen or Objective View on a larger screen that
@@ -74,7 +73,7 @@ export default function FAQPage() {
             <div
               style={{
                 fontFamily: "Myriad Pro",
-                marginLeft: responsivePixels(8),
+                marginLeft: "8px",
               }}
             >
               Nope! There&apos;s a couple bits of information that are required
@@ -93,7 +92,7 @@ export default function FAQPage() {
             <div
               style={{
                 fontFamily: "Myriad Pro",
-                marginLeft: responsivePixels(8),
+                marginLeft: "8px",
               }}
             >
               The assistant locks the button to prevent accidental clicks before
@@ -110,7 +109,7 @@ export default function FAQPage() {
           <div
             style={{
               fontFamily: "Myriad Pro",
-              marginLeft: responsivePixels(8),
+              marginLeft: "8px",
             }}
           >
             If you&apos;re in the middle of a game, try refreshing the page to
@@ -125,12 +124,12 @@ export default function FAQPage() {
             , and I&apos;ll get back to you as soon as I can.
           </div>
         </div>
-        <Link href={`/`} style={{ marginTop: responsivePixels(12) }}>
-          <BorderedDiv style={{ minWidth: responsivePixels(190) }}>
+        <Link href={`/`} style={{ marginTop: "12px" }}>
+          <BorderedDiv style={{ minWidth: "190px" }}>
             <div
               className="flexColumn"
               style={{
-                minWidth: responsivePixels(190),
+                minWidth: "190px",
               }}
             >
               Back

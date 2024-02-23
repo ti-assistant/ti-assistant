@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import QRCode from "qrcode";
 import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -20,7 +21,7 @@ import {
   repealAgendaAsync,
 } from "../../dynamic/api";
 import { computeVPs } from "../../util/factions";
-import { responsivePixels, validateMapString } from "../../util/util";
+import { validateMapString } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
@@ -159,16 +160,14 @@ export default function Header() {
           />
         </div>
       </GenericModal>
-      {validateMapString((options ?? {})["map-string"] ?? "") ? (
-        <div className={styles.Map}>
-          <button onClick={() => setShowMap(true)}>
-            <FormattedMessage
-              id="xDzJ9/"
-              description="Text shown on a button that opens the map."
-              defaultMessage="View Map"
-            />
-          </button>
-        </div>
+      {validateMapString(options["map-string"] ?? "") ? (
+        <button className={styles.Map} onClick={() => setShowMap(true)}>
+          <FormattedMessage
+            id="xDzJ9/"
+            description="Text shown on a button that opens the map."
+            defaultMessage="View Map"
+          />
+        </button>
       ) : null}
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>
@@ -180,7 +179,7 @@ export default function Header() {
         {gameFinished ? (
           state?.phase === "END" ? (
             <button
-              style={{ fontSize: responsivePixels(24) }}
+              style={{ fontSize: "24px" }}
               onClick={() => {
                 if (!gameId) {
                   return;
@@ -196,7 +195,7 @@ export default function Header() {
             </button>
           ) : (
             <button
-              style={{ fontFamily: "Slider", fontSize: responsivePixels(32) }}
+              style={{ fontFamily: "Slider", fontSize: "32px" }}
               onClick={() => {
                 if (!gameId) {
                   return;
@@ -226,7 +225,7 @@ export default function Header() {
           >
             <div
               className="flexColumn"
-              style={{ alignItems: "flex-start", padding: responsivePixels(8) }}
+              style={{ alignItems: "flex-start", padding: "8px" }}
             >
               {passedLaws.map((agenda) => (
                 <AgendaRow

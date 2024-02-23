@@ -7,8 +7,8 @@
 
 .UpdateBox {
   position: fixed;
-  bottom: var(--sixteen-pixel);
-  left: var(--ninety-six-pixel);
+  bottom: 16px;
+  left: 96px;
 
   z-index: 1;
 }
@@ -30,7 +30,7 @@
 
 @media only screen and (max-width: 900px) {
   .UpdateBox {
-    left: var(--sixteen-pixel);
+    left: 16px;
   }
 
   .FactionBox {
@@ -38,8 +38,8 @@
     display: flex;
     z-index: 1;
 
-    right: var(--sixteen-pixel);
-    bottom: var(--sixteen-pixel);
+    right: 16px;
+    bottom: 16px;
   }
 }
 

@@ -1,10 +1,10 @@
 .BorderedDiv {
   align-items: flex-start;
-  border: var(--two-pixel) solid var(--color);
-  border-radius: var(--five-pixel);
+  border: 2px solid var(--color);
+  border-radius: 5px;
   box-sizing: border-box;
-  gap: var(--eight-pixel);
-  padding: var(--six-pixel);
+  gap: 8px;
+  padding: 6px;
   position: relative;
   width: 100%;
 }

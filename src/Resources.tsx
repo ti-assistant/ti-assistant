@@ -1,5 +1,3 @@
-import { responsivePixels } from "./util/util";
-
 interface ResourcesProps {
   resources: number;
   influence: number;
@@ -13,24 +11,24 @@ export function ResponsiveResources({ resources, influence }: ResourcesProps) {
       style={{
         position: "relative",
         flexShrink: 0,
-        width: responsivePixels(36),
-        height: responsivePixels(50),
+        width: "36px",
+        height: "50px",
       }}
     >
       <div
         style={{
           color: "#fad54d",
-          lineHeight: responsivePixels(22),
-          fontSize: responsivePixels(22),
-          textShadow: `0 0 ${responsivePixels(4)} #fad54d`,
+          lineHeight: "22px",
+          fontSize: "22px",
+          textShadow: `0 0 ${"4px"} #fad54d`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           left: 0,
           top: 0,
-          width: responsivePixels(22),
-          height: responsivePixels(22),
+          width: "22px",
+          height: "22px",
           fontWeight: "bold",
         }}
       >
@@ -38,16 +36,16 @@ export function ResponsiveResources({ resources, influence }: ResourcesProps) {
       </div>
       <div
         style={{
-          lineHeight: responsivePixels(22),
-          fontSize: responsivePixels(12),
+          lineHeight: "22px",
+          fontSize: "12px",
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           left: 0,
           top: 0,
-          width: responsivePixels(22),
-          height: responsivePixels(22),
+          width: "22px",
+          height: "22px",
         }}
       >
         {resources}
@@ -55,33 +53,33 @@ export function ResponsiveResources({ resources, influence }: ResourcesProps) {
       <div
         style={{
           color: "#72d4f7",
-          lineHeight: responsivePixels(35),
-          fontSize: responsivePixels(35),
-          textShadow: `0 0 ${responsivePixels(4)} #72d4f7`,
+          lineHeight: "35px",
+          fontSize: "35px",
+          textShadow: `0 0 ${"4px"} #72d4f7`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           bottom: 0,
           right: 0,
-          width: responsivePixels(28),
-          height: responsivePixels(35),
+          width: "28px",
+          height: "35px",
         }}
       >
         &#x2B21;
       </div>
       <div
         style={{
-          lineHeight: responsivePixels(35),
-          fontSize: responsivePixels(12),
+          lineHeight: "35px",
+          fontSize: "12px",
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           bottom: 0,
           right: 0,
-          width: responsivePixels(28),
-          height: responsivePixels(35),
+          width: "28px",
+          height: "35px",
         }}
       >
         {influence}
@@ -106,7 +104,7 @@ export function FullResources({ resources, influence }: ResourcesProps) {
           color: "#fad54d",
           lineHeight: "44%",
           fontSize: "44%",
-          textShadow: `0 0 ${responsivePixels(4)} #fad54d`,
+          textShadow: `0 0 ${"4px"} #fad54d`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
@@ -141,7 +139,7 @@ export function FullResources({ resources, influence }: ResourcesProps) {
           color: "#72d4f7",
           lineHeight: "70%",
           fontSize: "70%",
-          textShadow: `0 0 ${responsivePixels(4)} #72d4f7`,
+          textShadow: `0 0 ${"4px"} #72d4f7`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
@@ -185,24 +183,24 @@ export function CustomSizeResources({
       style={{
         position: "relative",
         flexShrink: 0,
-        width: responsivePixels(height * 0.72),
-        height: responsivePixels(height),
+        width: `${height * 0.72}px`,
+        height: `${height}px`,
       }}
     >
       <div
         style={{
           color: "#fad54d",
-          lineHeight: responsivePixels(height * 0.44),
-          fontSize: responsivePixels(height * 0.44),
-          textShadow: `0 0 ${responsivePixels(4)} #fad54d`,
+          lineHeight: `${height * 0.44}px`,
+          fontSize: `${height * 0.44}px`,
+          textShadow: `0 0 ${"4px"} #fad54d`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           left: 0,
           top: 0,
-          width: responsivePixels(height * 0.44),
-          height: responsivePixels(height * 0.44),
+          width: `${height * 0.44}px`,
+          height: `${height * 0.44}px`,
           fontWeight: "bold",
         }}
       >
@@ -210,16 +208,16 @@ export function CustomSizeResources({
       </div>
       <div
         style={{
-          lineHeight: responsivePixels(height * 0.44),
-          fontSize: responsivePixels(height * 0.24),
+          lineHeight:`${height * 0.44}px`,
+          fontSize: `${height * 0.24}px`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           left: 0,
           top: 0,
-          width: responsivePixels(height * 0.44),
-          height: responsivePixels(height * 0.44),
+          width: `${height * 0.44}px`,
+          height: `${height * 0.44}px`,
         }}
       >
         {resources}
@@ -227,33 +225,33 @@ export function CustomSizeResources({
       <div
         style={{
           color: "#72d4f7",
-          lineHeight: responsivePixels(height * 0.7),
-          fontSize: responsivePixels(height * 0.7),
-          textShadow: `0 0 ${responsivePixels(4)} #72d4f7`,
+          lineHeight: `${height * 0.7}px`,
+          fontSize: `${height * 0.7}px`,
+          textShadow: `0 0 ${"4px"} #72d4f7`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           bottom: 0,
           right: 0,
-          width: responsivePixels(height * 0.56),
-          height: responsivePixels(height * 0.7),
+          width: `${height * 0.56}px`,
+          height: `${height * 0.7}px`,
         }}
       >
         &#x2B21;
       </div>
       <div
         style={{
-          lineHeight: responsivePixels(height * 0.7),
-          fontSize: responsivePixels(height * 0.24),
+          lineHeight: `${height * 0.7}px`,
+          fontSize: `${height * 0.24}px`,
           position: "absolute",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           bottom: 0,
           right: 0,
-          width: responsivePixels(height * 0.56),
-          height: responsivePixels(height * 0.7),
+          width: `${height * 0.56}px`,
+          height: `${height * 0.7}px`,
         }}
       >
         {influence}

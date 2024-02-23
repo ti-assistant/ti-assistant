@@ -36,7 +36,6 @@ import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
-import { responsivePixels } from "../util/util";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import styles from "./StatusPhase.module.scss";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -49,11 +48,11 @@ function InfoContent({ children }: PropsWithChildren) {
       className="myriadPro"
       style={{
         width: "100%",
-        minWidth: responsivePixels(320),
-        padding: responsivePixels(4),
+        minWidth: "320px",
+        padding: "4px",
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: responsivePixels(32),
+        fontSize: "32px",
       }}
     >
       {children}
@@ -118,7 +117,7 @@ function CommandTokenGains() {
         style={{
           justifyContent: "flex-start",
           alignItems: "stretch",
-          paddingTop: responsivePixels(2),
+          paddingTop: "2px",
         }}
       >
         {Object.entries(numberOfCommandTokens).map(
@@ -149,8 +148,8 @@ function CommandTokenGains() {
                           className="flexRow"
                           style={{
                             position: "relative",
-                            width: responsivePixels(32),
-                            height: responsivePixels(32),
+                            width: "32px",
+                            height: "32px",
                           }}
                         >
                           <FactionIcon factionId={faction.id} size="100%" />
@@ -222,7 +221,7 @@ function ActionCardDraws() {
           justifyContent: "space-evenly",
           alignItems: "stretch",
           flexWrap: "wrap",
-          paddingTop: responsivePixels(2),
+          paddingTop: "2px",
         }}
       >
         {Object.entries(numberOfActionCards).map(([number, localFactions]) => {
@@ -260,8 +259,8 @@ function ActionCardDraws() {
                         className="flexRow"
                         style={{
                           position: "relative",
-                          width: responsivePixels(32),
-                          height: responsivePixels(32),
+                          width: "32px",
+                          height: "32px",
                         }}
                       >
                         <FactionIcon factionId={faction.id} size="100%" />
@@ -546,9 +545,9 @@ export function MiddleColumn() {
                       style={{
                         position: "relative",
                         opacity: 0.5,
-                        top: responsivePixels(2),
-                        width: responsivePixels(40),
-                        height: responsivePixels(40),
+                        top: "2px",
+                        width: "40px",
+                        height: "40px",
                       }}
                     >
                       {faction ? (
@@ -878,10 +877,7 @@ export default function StatusPhase() {
               label="
             Start of Status Phase Abilities"
             >
-              <div
-                className="flexColumn"
-                style={{ padding: responsivePixels(8) }}
-              >
+              <div className="flexColumn" style={{ padding: "8px" }}>
                 {Object.entries(getStartOfStatusPhaseAbilities())
                   .sort((a, b) => {
                     if (!factions) {
@@ -1078,10 +1074,7 @@ export default function StatusPhase() {
         {!hasEndOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
             <ClientOnlyHoverMenu label="End of Status Phase Abilities">
-              <div
-                className="flexColumn"
-                style={{ padding: responsivePixels(8) }}
-              >
+              <div className="flexColumn" style={{ padding: "8px" }}>
                 {Object.entries(getEndOfStatusPhaseAbilities())
                   .sort((a, b) => {
                     if (!factions) {
@@ -1151,8 +1144,8 @@ export default function StatusPhase() {
                         className="flexRow hiddenButtonParent"
                         style={{
                           position: "relative",
-                          width: responsivePixels(32),
-                          height: responsivePixels(32),
+                          width: "32px",
+                          height: "32px",
                         }}
                       >
                         <FactionIcon factionId={crownFaction} size="100%" />
@@ -1165,13 +1158,9 @@ export default function StatusPhase() {
                             borderRadius: "100%",
                             marginLeft: "60%",
                             marginTop: "60%",
-                            boxShadow: `${responsivePixels(
-                              1
-                            )} ${responsivePixels(1)} ${responsivePixels(
-                              4
-                            )} black`,
-                            width: responsivePixels(20),
-                            height: responsivePixels(20),
+                            boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                            width: "20px",
+                            height: "20px",
                             zIndex: 2,
                             color: scoredCrown ? "green" : "red",
                           }}
@@ -1198,8 +1187,8 @@ export default function StatusPhase() {
                             <div
                               className="symbol"
                               style={{
-                                fontSize: responsivePixels(18),
-                                lineHeight: responsivePixels(18),
+                                fontSize: "18px",
+                                lineHeight: "18px",
                               }}
                             >
                               ✓

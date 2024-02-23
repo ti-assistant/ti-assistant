@@ -8,7 +8,7 @@ import {
 } from "../context/Context";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
-import { pluralize, responsivePixels } from "../util/util";
+import { pluralize } from "../util/util";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TimerDisplay from "./TimerDisplay/TimerDisplay";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
@@ -58,8 +58,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -73,8 +73,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -111,7 +111,7 @@ export function LogEntryElement({
             <TimerDisplay
               time={endTimeSeconds - startTimeSeconds}
               style={{
-                fontSize: responsivePixels(16),
+                fontSize: "16px",
               }}
               width={84}
             />
@@ -124,7 +124,7 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
+            padding: `0 ${"10px"}`,
             width: "100%",
             justifyContent: "space-between",
           }}
@@ -136,7 +136,7 @@ export function LogEntryElement({
           <TimerDisplay
             time={endTimeSeconds - startTimeSeconds}
             style={{
-              fontSize: responsivePixels(16),
+              fontSize: "16px",
             }}
             width={84}
           />
@@ -157,7 +157,7 @@ export function LogEntryElement({
             <TimerDisplay
               time={endTimeSeconds - startTimeSeconds}
               style={{
-                fontSize: responsivePixels(16),
+                fontSize: "16px",
               }}
               width={84}
             />
@@ -170,8 +170,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -192,8 +192,8 @@ export function LogEntryElement({
       //     <div
       //       className="flexRow"
       //       style={{
-      //         padding: `0 ${responsivePixels(10)}`,
-      //         gap: responsivePixels(4),
+      //         padding: `0 ${"10px"}`,
+      //         gap: "4px",
       //         fontFamily: "Myriad Pro",
       //       }}
       //     >
@@ -209,8 +209,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -228,8 +228,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -245,8 +245,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -261,8 +261,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -276,8 +276,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -291,8 +291,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -310,8 +310,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -326,8 +326,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -350,8 +350,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -369,8 +369,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -390,8 +390,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -412,8 +412,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -430,8 +430,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
-            gap: responsivePixels(4),
+            padding: `0 ${"10px"}`,
+            gap: "4px",
             fontFamily: "Myriad Pro",
           }}
         >
@@ -453,7 +453,7 @@ export function LogEntryElement({
           <div
             className="flexRow"
             style={{
-              padding: `0 ${responsivePixels(10)}`,
+              padding: `0 ${"10px"}`,
             }}
           >
             <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -465,7 +465,7 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
+            padding: `0 ${"10px"}`,
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -481,7 +481,7 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
+            padding: `0 ${"10px"}`,
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -495,7 +495,7 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
+            padding: `0 ${"10px"}`,
           }}
         >
           Speaker broke the tie in favor of {logEntry.data.event.tieBreak}
@@ -514,7 +514,7 @@ export function LogEntryElement({
             <TimerDisplay
               time={endTimeSeconds - startTimeSeconds}
               style={{
-                fontSize: responsivePixels(16),
+                fontSize: "16px",
               }}
               width={84}
             />
@@ -530,7 +530,7 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
+            padding: `0 ${"10px"}`,
           }}
         >
           Agenda Vetoed
@@ -546,7 +546,7 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${responsivePixels(10)}`,
+            padding: `0 ${"10px"}`,
           }}
         >
           Revealed Objective: <ObjectiveRow objective={objective} hideScorers />

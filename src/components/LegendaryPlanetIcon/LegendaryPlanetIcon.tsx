@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useState } from "react";
-import { responsivePixels } from "../../util/util";
 import Modal from "../Modal/Modal";
 
 function InfoContent({ ability }: { ability: string }) {
@@ -10,10 +9,10 @@ function InfoContent({ ability }: { ability: string }) {
       className="myriadPro"
       style={{
         width: "100%",
-        padding: responsivePixels(4),
+        padding: "4px",
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: responsivePixels(32),
+        fontSize: "32px",
       }}
     >
       {description}
@@ -38,9 +37,7 @@ export default function LegendaryPlanetIcon({
           closeMenu={() => setShowInfoModal(false)}
           level={2}
           visible={showInfoModal}
-          title={
-            <div style={{ fontSize: responsivePixels(40) }}>{planetName}</div>
-          }
+          title={<div style={{ fontSize: "40px" }}>{planetName}</div>}
         >
           <InfoContent ability={ability} />
         </Modal>
@@ -51,22 +48,20 @@ export default function LegendaryPlanetIcon({
           cursor: cursor,
           display: "flex",
           alignItems: "flex-start",
-          borderRadius: responsivePixels(22),
-          height: responsivePixels(16),
-          width: responsivePixels(16),
-          paddingTop: responsivePixels(2),
-          paddingLeft: responsivePixels(2),
-          boxShadow: `0px 0px ${responsivePixels(2)} ${responsivePixels(
-            1
-          )} purple`,
+          borderRadius: "22px",
+          height: "16px",
+          width: "16px",
+          paddingTop: "2px",
+          paddingLeft: "2px",
+          boxShadow: `0px 0px ${"2px"} ${"1px"} purple`,
           backgroundColor: "black",
         }}
       >
         <div
           style={{
             position: "relative",
-            width: responsivePixels(12),
-            height: responsivePixels(12),
+            width: "12px",
+            height: "12px",
           }}
         >
           <Image

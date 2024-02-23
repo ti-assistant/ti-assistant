@@ -2,7 +2,6 @@ import React, { CSSProperties, ReactNode, useEffect } from "react";
 import { ClientOnlyHoverMenu } from "./HoverMenu";
 import { SelectableRow } from "./SelectableRow";
 import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
-import { responsivePixels } from "./util/util";
 
 interface SelectorProps<Type extends string> {
   autoSelect?: boolean;
@@ -81,8 +80,8 @@ export function Selector<Type extends string>({
   }
 
   const innerStyle: CSSProperties = {
-    padding: responsivePixels(8),
-    gap: responsivePixels(4),
+    padding: "8px",
+    gap: "4px",
     alignItems: "stretch",
     justifyContent: "flex-start",
     maxWidth: "88vw",
@@ -112,7 +111,7 @@ export function Selector<Type extends string>({
               <button
                 key={option}
                 className={fadedOptions.includes(option) ? "faded" : ""}
-                style={{ fontSize: responsivePixels(14) }}
+                style={{ fontSize: "14px" }}
                 onClick={() => {
                   closeFn();
                   toggleItem(option, true);

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { CSSProperties } from "react";
-import { responsivePixels } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./PlanetIcon.module.scss";
 
@@ -47,7 +46,7 @@ export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
   }
 
   const planetIconStyle: PlanetIconCSS = {
-    "--size": typeof size === "string" ? size : responsivePixels(size),
+    "--size": typeof size === "string" ? size : `${size}px`,
   };
   return (
     <div className={styles.PlanetIcon} style={planetIconStyle}>

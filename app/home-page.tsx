@@ -9,7 +9,6 @@ import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { gameIdString } from "../src/util/strings";
-import { responsivePixels } from "../src/util/util";
 
 export default function HomePage() {
   const intl = useIntl();
@@ -60,7 +59,7 @@ export default function HomePage() {
               className="flexColumn"
               style={{
                 width: "100%",
-                fontSize: responsivePixels(44),
+                fontSize: "44px",
               }}
             >
               <FormattedMessage
@@ -78,7 +77,7 @@ export default function HomePage() {
                 className="flexColumn"
                 style={{
                   width: "100%",
-                  fontSize: responsivePixels(32),
+                  fontSize: "32px",
                 }}
               >
                 <FormattedMessage
@@ -275,10 +274,10 @@ export default function HomePage() {
         className="flexColumn"
         style={{
           position: "absolute",
-          bottom: responsivePixels(8),
-          fontSize: responsivePixels(10),
+          bottom: "8px",
+          fontSize: "10px",
           textAlign: "center",
-          gap: responsivePixels(4),
+          gap: "4px",
         }}
       >
         <div>

@@ -5,8 +5,8 @@
   height: 0;
   top: 0;
   left: 0;
-  border-right: var(--twelve-pixel) solid transparent;
-  border-top: var(--twelve-pixel) solid var(--color);
+  border-right: 12px solid transparent;
+  border-top: 12px solid var(--color);
   box-sizing: border-box;
   border-radius: 4px;
   cursor: pointer;
@@ -19,8 +19,8 @@
   height: 0;
   top: -2px;
   left: -2px;
-  border-right: var(--twelve-pixel) solid transparent;
-  border-top: var(--twelve-pixel) solid var(--color);
+  border-right: 12px solid transparent;
+  border-top: 12px solid var(--color);
   box-sizing: border-box;
   border-radius: 4px;
   cursor: pointer;

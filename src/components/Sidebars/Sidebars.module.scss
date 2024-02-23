@@ -1,13 +1,13 @@
 .Sidebar {
-  --edge-distance: var(--sixteen-pixel);
+  --edge-distance: 16px;
 
   background-color: #333;
-  box-shadow: 0px 0px var(--eight-pixel) var(--one-pixel) #111;
+  box-shadow: 0px 0px 8px 1px #111;
   color: #eee;
-  font-size: var(--thirty-six-pixel);
-  letter-spacing: var(--three-pixel);
-  line-height: var(--thirty-six-pixel);
-  padding: var(--twelve-pixel) 0;
+  font-size: 36px;
+  letter-spacing: 3px;
+  line-height: 36px;
+  padding: 12px 0;
   position: fixed;
   text-align: center;
   top: 100%;
@@ -33,11 +33,11 @@
 
 @media only screen and (max-width: 1279px) {
   .Sidebar {
-    --edge-distance: var(--eight-pixel);
+    --edge-distance: 8px;
     color: #eee;
-    font-size: var(--twenty-four-pixel);
-    line-height: var(--twenty-four-pixel);
-    padding: var(--eight-pixel) 0;
+    font-size: 24px;
+    line-height: 24px;
+    padding: 8px 0;
   }
 }
 
@@ -51,7 +51,7 @@
     position: sticky;
     top: 52px;
     width: 100%;
-    margin-bottom: var(--four-pixel);
+    margin-bottom: 4px;
     z-index: 1;
 
     background-color: #222;

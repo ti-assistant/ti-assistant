@@ -25,7 +25,6 @@ import {
 } from "../dynamic/api";
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
-import { responsivePixels } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -43,17 +42,15 @@ function GridHeader({ children }: PropsWithChildren) {
       style={{
         height: "100%",
         justifyContent: "flex-end",
-        fontSize: responsivePixels(14),
-        minWidth: responsivePixels(62),
-        maxWidth: responsivePixels(92),
-        padding: `0 ${responsivePixels(2)}`,
+        fontSize: "14px",
+        minWidth: "62px",
+        maxWidth: "92px",
+        padding: `0 ${"2px"}`,
         whiteSpace: "normal",
         textAlign: "center",
       }}
     >
-      <div style={{ maxWidth: responsivePixels(84), height: "100%" }}>
-        {children}
-      </div>
+      <div style={{ maxWidth: "84px", height: "100%" }}>{children}</div>
     </div>
   );
 }
@@ -67,13 +64,13 @@ function InfoContent({ objective }: InfoContentProps) {
       className="myriadPro"
       style={{
         boxSizing: "border-box",
-        maxWidth: responsivePixels(800),
+        maxWidth: "800px",
         width: "100%",
-        minWidth: responsivePixels(320),
-        padding: responsivePixels(4),
+        minWidth: "320px",
+        padding: "4px",
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: responsivePixels(32),
+        fontSize: "32px",
       }}
     >
       {objective.description}
@@ -105,9 +102,7 @@ function ObjectiveColumn({
       <Modal
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
-        title={
-          <div style={{ fontSize: responsivePixels(40) }}>{objective.name}</div>
-        }
+        title={<div style={{ fontSize: "40px" }}>{objective.name}</div>}
         level={2}
       >
         <InfoContent objective={objective} />
@@ -118,10 +113,10 @@ function ObjectiveColumn({
           style={{
             height: "100%",
             justifyContent: "space-between",
-            gap: responsivePixels(2),
+            gap: "2px",
             position: "relative",
             fontFamily: description ? "Myriad Pro" : undefined,
-            fontSize: description ? responsivePixels(12) : undefined,
+            fontSize: description ? "12px" : undefined,
           }}
         >
           {numScorers === 0 ? (
@@ -154,7 +149,7 @@ function ObjectiveColumn({
           {description ? null : (
             <div
               className="popupIcon"
-              style={{ paddingRight: responsivePixels(8) }}
+              style={{ paddingRight: "8px" }}
               onClick={() => setShowInfoModal(true)}
             >
               &#x24D8;
@@ -222,7 +217,7 @@ function SecretModalContent({
       className="flexColumn"
       style={{
         width: "100%",
-        padding: responsivePixels(8),
+        padding: "8px",
         alignItems: "center",
       }}
     >
@@ -502,8 +497,8 @@ export default function ObjectivePanel() {
             style={{
               width: "100%",
               height: "fit-content",
-              fontSize: responsivePixels(18),
-              paddingBottom: responsivePixels(8),
+              fontSize: "18px",
+              paddingBottom: "8px",
             }}
           >
             <div>
@@ -512,9 +507,9 @@ export default function ObjectivePanel() {
                   display: "grid",
                   gridAutoFlow: "row",
                   gridTemplateColumns: "repeat(2, 1fr)",
-                  padding: responsivePixels(8),
+                  padding: "8px",
                   paddingBottom: 0,
-                  gap: responsivePixels(8),
+                  gap: "8px",
                   isolation: "isolate",
                 }}
               >
@@ -551,7 +546,7 @@ export default function ObjectivePanel() {
                         className="flexRow"
                         style={{
                           justifyContent: "center",
-                          fontSize: responsivePixels(28),
+                          fontSize: "28px",
                           width: "100%",
                         }}
                       >
@@ -561,12 +556,9 @@ export default function ObjectivePanel() {
                             onClick={() => manualVpAdjust(false, name)}
                           ></div>
                         ) : (
-                          <div style={{ width: responsivePixels(12) }}></div>
+                          <div style={{ width: "12px" }}></div>
                         )}
-                        <div
-                          className="flexRow"
-                          style={{ width: responsivePixels(24) }}
-                        >
+                        <div className="flexRow" style={{ width: "24px" }}>
                           {VPs}
                         </div>
                         <div
@@ -595,15 +587,15 @@ export default function ObjectivePanel() {
               style={{
                 width: "100%",
                 height: "fit-content",
-                fontSize: responsivePixels(18),
-                paddingBottom: responsivePixels(8),
+                fontSize: "18px",
+                paddingBottom: "8px",
               }}
             >
               <div
                 className={`flexColumn ${styles.collapsibleRow}`}
                 style={{
                   display: "flex",
-                  marginLeft: responsivePixels(8),
+                  marginLeft: "8px",
                   width: "min-content",
                   flexDirection: "column",
                   alignItems: "stretch",
@@ -620,7 +612,7 @@ export default function ObjectivePanel() {
                     }
                     return (
                       <button
-                        style={{ fontSize: responsivePixels(14) }}
+                        style={{ fontSize: "14px" }}
                         onClick={() => {
                           toggleItem(itemId, true);
                         }}
@@ -650,7 +642,7 @@ export default function ObjectivePanel() {
                     }
                     return (
                       <button
-                        style={{ fontSize: responsivePixels(14) }}
+                        style={{ fontSize: "14px" }}
                         onClick={() => {
                           toggleItem(itemId, true);
                         }}
@@ -678,8 +670,8 @@ export default function ObjectivePanel() {
                 style={{
                   position: "relative",
                   alignItems: "flex-start",
-                  width: responsivePixels(72),
-                  height: responsivePixels(72),
+                  width: "72px",
+                  height: "72px",
                 }}
               >
                 <Image
@@ -936,8 +928,8 @@ export default function ObjectivePanel() {
               style={{
                 width: "100%",
                 height: "fit-content",
-                fontSize: responsivePixels(18),
-                paddingBottom: responsivePixels(8),
+                fontSize: "18px",
+                paddingBottom: "8px",
               }}
             >
               <div className="flexRow" style={{ width: "100%" }}>
@@ -979,13 +971,9 @@ export default function ObjectivePanel() {
                               borderRadius: "100%",
                               marginLeft: "44%",
                               marginTop: "44%",
-                              boxShadow: `${responsivePixels(
-                                1
-                              )} ${responsivePixels(1)} ${responsivePixels(
-                                4
-                              )} black`,
-                              width: responsivePixels(24),
-                              height: responsivePixels(24),
+                              boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                              width: "24px",
+                              height: "24px",
                               zIndex: 2,
                             }}
                           >
@@ -1009,8 +997,8 @@ export default function ObjectivePanel() {
               style={{
                 width: "100%",
                 height: "fit-content",
-                fontSize: responsivePixels(18),
-                paddingBottom: responsivePixels(8),
+                fontSize: "18px",
+                paddingBottom: "8px",
               }}
             >
               <div className="flexRow" style={{ width: "100%" }}>
@@ -1041,17 +1029,13 @@ export default function ObjectivePanel() {
                               top: -4,
                               fontFamily: "Myriad Pro",
                               fontWeight: "bold",
-                              height: responsivePixels(16),
-                              width: responsivePixels(16),
-                              border: `${responsivePixels(1)} solid #333`,
+                              height: "16px",
+                              width: "16px",
+                              border: `${"1px"} solid #333`,
                               borderRadius: "100%",
-                              fontSize: responsivePixels(12),
+                              fontSize: "12px",
                               backgroundColor: "#222",
-                              boxShadow: `${responsivePixels(
-                                1
-                              )} ${responsivePixels(1)} ${responsivePixels(
-                                4
-                              )} black`,
+                              boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                               cursor: "pointer",
                               zIndex: 2,
                             }}
@@ -1076,18 +1060,14 @@ export default function ObjectivePanel() {
                             right: 0,
                             top: -4,
                             fontFamily: "Myriad Pro",
-                            border: `${responsivePixels(1)} solid #333`,
+                            border: `${"1px"} solid #333`,
                             fontWeight: "bold",
                             borderRadius: "100%",
-                            height: responsivePixels(16),
-                            width: responsivePixels(16),
-                            fontSize: responsivePixels(12),
+                            height: "16px",
+                            width: "16px",
+                            fontSize: "12px",
                             backgroundColor: "#222",
-                            boxShadow: `${responsivePixels(
-                              1
-                            )} ${responsivePixels(1)} ${responsivePixels(
-                              4
-                            )} black`,
+                            boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                             cursor: "pointer",
                             zIndex: 2,
                           }}
@@ -1113,13 +1093,9 @@ export default function ObjectivePanel() {
                             borderRadius: "100%",
                             marginLeft: "60%",
                             marginTop: "60%",
-                            boxShadow: `${responsivePixels(
-                              1
-                            )} ${responsivePixels(1)} ${responsivePixels(
-                              4
-                            )} black`,
-                            width: responsivePixels(24),
-                            height: responsivePixels(24),
+                            boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                            width: "24px",
+                            height: "24px",
                             zIndex: 2,
                           }}
                         >
@@ -1143,8 +1119,8 @@ export default function ObjectivePanel() {
             style={{
               width: "100%",
               height: "fit-content",
-              fontSize: responsivePixels(18),
-              paddingBottom: responsivePixels(8),
+              fontSize: "18px",
+              paddingBottom: "8px",
             }}
           >
             <div className={`flexRow ${styles.collapsibleRow}`}>
@@ -1206,8 +1182,8 @@ export default function ObjectivePanel() {
             style={{
               width: "100%",
               height: "fit-content",
-              fontSize: responsivePixels(18),
-              paddingBottom: responsivePixels(8),
+              fontSize: "18px",
+              paddingBottom: "8px",
             }}
           >
             <div
@@ -1294,7 +1270,7 @@ export default function ObjectivePanel() {
                   >
                     <ObjectiveRow objective={mutiny} hideScorers />
                     <button
-                      style={{ fontSize: responsivePixels(14) }}
+                      style={{ fontSize: "14px" }}
                       onClick={() => {
                         if (!gameId) {
                           return;
@@ -1427,24 +1403,24 @@ export default function ObjectivePanel() {
           justifyContent: "flex-start",
           alignItems: "flex-start",
           width: "100%",
-          padding: responsivePixels(8),
+          padding: "8px",
           paddingLeft: (options["game-variant"] ?? "normal").startsWith(
             "alliance"
           )
-            ? responsivePixels(24)
+            ? "24px"
             : undefined,
           height: "100%",
-          gap: responsivePixels(24),
+          gap: "24px",
           isolation: "isolate",
           backgroundColor: "#222",
-          borderRadius: responsivePixels(8),
+          borderRadius: "8px",
         }}
       >
         <div
           style={{
             position: "relative",
             display: "grid",
-            rowGap: responsivePixels(4),
+            rowGap: "4px",
             justifyContent: "flex-start",
             alignItems: "flex-start",
             width: "100%",
@@ -1466,7 +1442,7 @@ export default function ObjectivePanel() {
               );
             }}
             style={{
-              fontSize: responsivePixels(16),
+              fontSize: "16px",
               position: "absolute",
               top: 0,
               right: 0,
@@ -1493,11 +1469,11 @@ export default function ObjectivePanel() {
                 className="flexColumn"
                 style={{
                   justifyContent: "center",
-                  padding: `0 ${responsivePixels(8)}`,
+                  padding: `0 ${"8px"}`,
                   height: "100%",
                   position: "relative",
-                  borderRadius: responsivePixels(5),
-                  border: `${responsivePixels(2)} solid ${getFactionColor(
+                  borderRadius: "5px",
+                  border: `${"2px"} solid ${getFactionColor(
                     (factions ?? {})[name]
                   )}`,
                   boxShadow:
@@ -1517,7 +1493,7 @@ export default function ObjectivePanel() {
                       transform: "rotate(270deg)",
                       transformOrigin: "left bottom",
                       backgroundColor: "#222",
-                      padding: `0 ${responsivePixels(4)}`,
+                      padding: `0 ${"4px"}`,
                     }}
                   >
                     Alliance
@@ -1544,7 +1520,7 @@ export default function ObjectivePanel() {
               height: "100%",
               width: "100%",
               justifyContent: "flex-end",
-              padding: `0 ${responsivePixels(8)}`,
+              padding: `0 ${"8px"}`,
             }}
           >
             <FormattedMessage
@@ -1562,7 +1538,7 @@ export default function ObjectivePanel() {
                 style={{
                   width: "100%",
                   height: "100%",
-                  fontSize: responsivePixels(24),
+                  fontSize: "24px",
                 }}
               >
                 {computeVPs(factions ?? {}, name, objectives ?? {})}
@@ -1578,7 +1554,7 @@ export default function ObjectivePanel() {
               alignItems: "center",
               justifyContent: "flex-end",
               width: "100%",
-              paddingTop: responsivePixels(36),
+              paddingTop: "36px",
             }}
           >
             <LabeledDiv
@@ -1607,7 +1583,7 @@ export default function ObjectivePanel() {
                   }
                   return (
                     <button
-                      style={{ fontSize: responsivePixels(14) }}
+                      style={{ fontSize: "14px" }}
                       onClick={() => {
                         toggleItem(itemId, true);
                       }}
@@ -1637,7 +1613,7 @@ export default function ObjectivePanel() {
                   }
                   return (
                     <button
-                      style={{ fontSize: responsivePixels(14) }}
+                      style={{ fontSize: "14px" }}
                       onClick={() => {
                         toggleItem(itemId, true);
                       }}
@@ -1694,17 +1670,17 @@ export default function ObjectivePanel() {
               } / ${3 + numStageOneObjectives + numStageTwoObjectives + 1}`,
               gridRow: "1 / 2",
               borderRadius: "100%",
-              fontSize: responsivePixels(80),
+              fontSize: "80px",
             }}
           >
             <div
               className="flexRow"
               style={{
-                border: `${responsivePixels(5)} solid red`,
-                width: responsivePixels(60),
-                height: responsivePixels(60),
+                border: `${"5px"} solid red`,
+                width: "60px",
+                height: "60px",
                 borderRadius: "100%",
-                fontSize: responsivePixels(44),
+                fontSize: "44px",
               }}
             >
               <FormattedMessage
@@ -1723,18 +1699,18 @@ export default function ObjectivePanel() {
               height: "100%",
               gridColumn: `3 / ${numStageOneObjectives + 3}`,
               gridRow: `2 / ${numRows + 1}`,
-              borderLeft: `${responsivePixels(1)} solid orange`,
+              borderLeft: `${"1px"} solid orange`,
             }}
           >
             <div
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: responsivePixels(-68),
+                marginBottom: "-68px",
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
-                padding: `0 ${responsivePixels(4)}`,
+                padding: `0 ${"4px"}`,
                 color: "orange",
                 whiteSpace: "nowrap",
               }}
@@ -1753,18 +1729,18 @@ export default function ObjectivePanel() {
                 numStageOneObjectives + numStageTwoObjectives + 3
               }`,
               gridRow: `2 / ${numRows + 1}`,
-              borderLeft: `${responsivePixels(1)} solid royalblue`,
+              borderLeft: `${"1px"} solid royalblue`,
             }}
           >
             <div
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: responsivePixels(-72),
+                marginBottom: "-72px",
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
-                padding: `0 ${responsivePixels(4)}`,
+                padding: `0 ${"4px"}`,
                 color: "royalblue",
                 whiteSpace: "nowrap",
               }}
@@ -1783,19 +1759,19 @@ export default function ObjectivePanel() {
                 numStageOneObjectives + numStageTwoObjectives + 3
               } / ${numStageOneObjectives + numStageTwoObjectives + 4}`,
               gridRow: `2 / ${numRows + 1}`,
-              borderLeft: `${responsivePixels(1)} solid red`,
-              borderRight: `${responsivePixels(1)} solid grey`,
+              borderLeft: `${"1px"} solid red`,
+              borderRight: `${"1px"} solid grey`,
             }}
           >
             <div
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: responsivePixels(-68),
+                marginBottom: "-68px",
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
-                padding: `0 ${responsivePixels(4)}`,
+                padding: `0 ${"4px"}`,
                 color: "red",
               }}
             >
@@ -1836,7 +1812,7 @@ export default function ObjectivePanel() {
                   position: "relative",
                   width: "100%",
                   height: "100%",
-                  padding: `0 ${responsivePixels(8)}`,
+                  padding: `0 ${"8px"}`,
                 }}
                 onClick={() => {
                   setFactionId(name);
@@ -1860,11 +1836,9 @@ export default function ObjectivePanel() {
                       borderRadius: "100%",
                       marginLeft: "44%",
                       marginTop: "44%",
-                      boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                        1
-                      )} ${responsivePixels(4)} black`,
-                      width: responsivePixels(24),
-                      height: responsivePixels(24),
+                      boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                      width: "24px",
+                      height: "24px",
                       zIndex: 2,
                     }}
                   >
@@ -1879,8 +1853,8 @@ export default function ObjectivePanel() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
-            gap: responsivePixels(8),
-            paddingBottom: responsivePixels(4),
+            gap: "8px",
+            paddingBottom: "4px",
             width: "100%",
           }}
         >
@@ -1893,8 +1867,8 @@ export default function ObjectivePanel() {
               style={{
                 position: "relative",
                 alignItems: "flex-start",
-                width: responsivePixels(72),
-                height: responsivePixels(72),
+                width: "72px",
+                height: "72px",
               }}
             >
               <Image
@@ -2039,8 +2013,8 @@ export default function ObjectivePanel() {
                     className="flexRow hiddenButtonParent"
                     style={{
                       position: "relative",
-                      width: responsivePixels(36),
-                      height: responsivePixels(36),
+                      width: "36px",
+                      height: "36px",
                     }}
                   >
                     {imperialPoints > 0 ? (
@@ -2052,15 +2026,13 @@ export default function ObjectivePanel() {
                           top: -4,
                           fontFamily: "Myriad Pro",
                           fontWeight: "bold",
-                          height: responsivePixels(16),
-                          width: responsivePixels(16),
-                          border: `${responsivePixels(1)} solid #333`,
+                          height: "16px",
+                          width: "16px",
+                          border: `${"1px"} solid #333`,
                           borderRadius: "100%",
-                          fontSize: responsivePixels(12),
+                          fontSize: "12px",
                           backgroundColor: "#222",
-                          boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                            1
-                          )} ${responsivePixels(4)} black`,
+                          boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                           cursor: "pointer",
                           zIndex: 2,
                         }}
@@ -2085,16 +2057,14 @@ export default function ObjectivePanel() {
                         right: 0,
                         top: -4,
                         fontFamily: "Myriad Pro",
-                        border: `${responsivePixels(1)} solid #333`,
+                        border: `${"1px"} solid #333`,
                         fontWeight: "bold",
                         borderRadius: "100%",
-                        height: responsivePixels(16),
-                        width: responsivePixels(16),
-                        fontSize: responsivePixels(12),
+                        height: "16px",
+                        width: "16px",
+                        fontSize: "12px",
                         backgroundColor: "#222",
-                        boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                          1
-                        )} ${responsivePixels(4)} black`,
+                        boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                         cursor: "pointer",
                         zIndex: 2,
                       }}
@@ -2116,11 +2086,9 @@ export default function ObjectivePanel() {
                         borderRadius: "100%",
                         marginLeft: "60%",
                         marginTop: "60%",
-                        boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                          1
-                        )} ${responsivePixels(4)} black`,
-                        width: responsivePixels(24),
-                        height: responsivePixels(24),
+                        boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                        width: "24px",
+                        height: "24px",
                         zIndex: 2,
                       }}
                     >
@@ -2248,7 +2216,7 @@ export default function ObjectivePanel() {
                 >
                   <ObjectiveRow objective={mutiny} hideScorers />
                   <button
-                    style={{ fontSize: responsivePixels(14) }}
+                    style={{ fontSize: "14px" }}
                     onClick={() => {
                       if (!gameId) {
                         return;
@@ -2400,22 +2368,20 @@ function SimpleScorable({
       <Modal
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
-        title={
-          <div style={{ fontSize: responsivePixels(40) }}>{objective.name}</div>
-        }
+        title={<div style={{ fontSize: "40px" }}>{objective.name}</div>}
         level={2}
       >
         <div
           className="flexRow myriadPro"
           style={{
             boxSizing: "border-box",
-            maxWidth: responsivePixels(800),
+            maxWidth: "800px",
             width: "100%",
-            minWidth: responsivePixels(320),
-            padding: responsivePixels(4),
+            minWidth: "320px",
+            padding: "4px",
             whiteSpace: "pre-line",
             textAlign: "center",
-            fontSize: responsivePixels(32),
+            fontSize: "32px",
           }}
         >
           {info}
@@ -2479,7 +2445,7 @@ function SimpleScorable({
               tag={
                 <div
                   className="popupIcon hoverParent"
-                  style={{ paddingRight: responsivePixels(8), color: "#999" }}
+                  style={{ paddingRight: "8px", color: "#999" }}
                   onClick={() => setShowInfoModal(true)}
                 >
                   &#x24D8;

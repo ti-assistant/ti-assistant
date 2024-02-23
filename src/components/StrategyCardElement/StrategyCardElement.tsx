@@ -2,7 +2,6 @@ import Image from "next/image";
 import React, { CSSProperties, PropsWithChildren, useContext } from "react";
 import styles from "./StrategyCardElement.module.scss";
 import { FactionContext } from "../../context/Context";
-import { responsivePixels } from "../../util/util";
 import FactionTile from "../FactionTile/FactionTile";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import { getFactionColor, getFactionName } from "../../util/factions";
@@ -37,7 +36,7 @@ export function StrategyCardElement({
   const strategyCardElementCSS: StrategyCardElementCSS = {
     "--color": color,
     "--text-color": textColor,
-    fontSize: responsivePixels(fontSize),
+    fontSize: `${fontSize}px`,
     cursor: onClick ? "pointer" : "auto",
   };
   return (
@@ -50,9 +49,7 @@ export function StrategyCardElement({
         className="flexRow"
         style={{
           width: "100%",
-          padding: `${responsivePixels(4)} ${responsivePixels(
-            4
-          )} ${responsivePixels(4)} 0`,
+          padding: `${"4px"} $["4px"} ${"4px"} 0`,
           justifyContent: "flex-start",
           alignItems: "center",
         }}
@@ -60,7 +57,7 @@ export function StrategyCardElement({
       <div
         className={styles.Number}
         style={{
-          fontSize: responsivePixels(fontSize + 8),
+          fontSize: `${fontSize + 8}px`,
         }}
       >
         {card.order}
@@ -73,8 +70,8 @@ export function StrategyCardElement({
             style={{
               whiteSpace: "nowrap",
               gridColumn: "3 / 5",
-              paddingLeft: responsivePixels(4),
-              paddingRight: responsivePixels(3),
+              paddingLeft: "4px",
+              paddingRight: "3px",
             }}
           >
             <FactionTile faction={faction} fontSize={16} iconSize={32} />
@@ -94,7 +91,7 @@ export function StrategyCardElement({
             style={{
               width: "100%",
               justifyContent: "flex-end",
-              paddingRight: responsivePixels(0),
+              paddingRight: "0px",
             }}
           >
             {children}
@@ -104,18 +101,18 @@ export function StrategyCardElement({
               className="flexRow"
               style={{
                 justifyContent: "flex-end",
-                padding: `0 ${responsivePixels(16)}`,
+                padding: `0 ${"16px"}`,
                 color: "#efe383",
-                gap: responsivePixels(4),
+                gap: "4px",
               }}
             >
-              <div className="centered" style={{ width: responsivePixels(20) }}>
+              <div className="centered" style={{ width: "20px" }}>
                 {card.tradeGoods}
               </div>
               <div
                 style={{
-                  width: responsivePixels(22),
-                  height: responsivePixels(23),
+                  width: "22px",
+                  height: "23px",
                   position: "relative",
                 }}
               >
@@ -132,9 +129,9 @@ export function StrategyCardElement({
               className="flexRow"
               style={{
                 flexShrink: 0,
-                height: responsivePixels(4),
-                width: responsivePixels(40),
-                padding: `0 ${responsivePixels(16)}`,
+                height: "4px",
+                width: "40px",
+                padding: `0 ${"16px"}`,
               }}
             ></div>
           )}
@@ -168,7 +165,7 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
       ? factions[cards[0].faction]
       : undefined;
 
-  const height = cards.length === 1 ? responsivePixels(54) : "auto";
+  const height = cards.length === 1 ? "54px" : "auto";
 
   const borderColor = !faction?.passed ? getFactionColor(faction) : "#555";
   return (
@@ -178,16 +175,14 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
       style={{
         display: "flex",
         flexDirection: "column",
-        fontSize: responsivePixels(24),
+        fontSize: "24px",
         height: height,
       }}
     >
       <div
         className="flexRow"
         style={{
-          padding: `${responsivePixels(4)} ${responsivePixels(
-            4
-          )} ${responsivePixels(4)} 0`,
+          padding: `${"4px"} ${"4px"} ${"4px"} 0`,
           justifyContent: "flex-start",
           alignItems: "center",
         }}
@@ -195,8 +190,8 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
         <div
           style={{
             flexBasis: "14%",
-            minWidth: responsivePixels(32),
-            fontSize: responsivePixels(32),
+            minWidth: "32px",
+            fontSize: "32px",
             display: "flex",
             justifyContent: "center",
             color: faction?.passed ? "#555" : "#eee",

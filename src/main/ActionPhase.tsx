@@ -26,11 +26,13 @@ import {
   TechContext,
 } from "../context/Context";
 import {
+  addAttachmentAsync,
   addTechAsync,
   advancePhaseAsync,
   claimPlanetAsync,
   endTurnAsync,
   markSecondaryAsync,
+  removeAttachmentAsync,
   removeTechAsync,
   scoreObjectiveAsync,
   selectActionAsync,
@@ -40,7 +42,7 @@ import {
   unselectActionAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
-import { getResearchedTechs } from "../util/actionLog";
+import { getAttachments, getResearchedTechs } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import {
   getNewSpeakerEventFromLog,
@@ -50,12 +52,13 @@ import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
 import { applyPlanetAttachments } from "../util/planets";
-import { responsivePixels } from "../util/util";
 import { ComponentAction } from "./util/ComponentAction";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import styles from "./ActionPhase.module.scss";
 import { FormattedMessage, useIntl } from "react-intl";
 import { phaseString } from "../util/strings";
+import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -131,8 +134,8 @@ function SecondaryCheck({
                       <div
                         className="symbol"
                         style={{
-                          fontSize: responsivePixels(18),
-                          lineHeight: responsivePixels(18),
+                          fontSize: "18px",
+                          lineHeight: "18px",
                         }}
                       >
                         ✓
@@ -262,8 +265,8 @@ export function FactionActionButtons({
 
 export function FactionActions({ factionId }: { factionId: FactionId }) {
   return (
-    <div className="flexColumn" style={{ gap: responsivePixels(4) }}>
-      <div style={{ fontSize: responsivePixels(20) }}>
+    <div className="flexColumn" style={{ gap: "4px" }}>
+      <div style={{ fontSize: "20px" }}>
         <FormattedMessage
           id="YeYE6S"
           description="Label telling the user to select the action a player took."
@@ -272,7 +275,7 @@ export function FactionActions({ factionId }: { factionId: FactionId }) {
       </div>
       <FactionActionButtons
         factionId={factionId}
-        buttonStyle={{ fontSize: responsivePixels(18) }}
+        buttonStyle={{ fontSize: "18px" }}
       />
     </div>
   );
@@ -429,7 +432,7 @@ export function AdditionalActions({
         logEntry.data.event.faction === activeFaction.id
     )
     .map((logEntry) => {
-      return (logEntry.data as ClaimPlanetData).event.planet;
+      return (logEntry.data as ClaimPlanetData).event;
     });
   const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
     if (!planets) {
@@ -442,13 +445,13 @@ export function AdditionalActions({
       return false;
     }
     for (const claimedPlanet of claimedPlanets) {
-      if (claimedPlanet === planet.id) {
+      if (claimedPlanet.planet === planet.id) {
         return false;
       }
     }
     if (claimedPlanets.length > 0) {
       const claimedPlanet = claimedPlanets[0]
-        ? planets[claimedPlanets[0]]
+        ? planets[claimedPlanets[0].planet]
         : null;
       if (claimedPlanet?.faction) {
         return planet.faction === claimedPlanet.faction;
@@ -491,11 +494,11 @@ export function AdditionalActions({
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: responsivePixels(8),
+    padding: "8px",
     display: "grid",
     gridAutoFlow: "column",
     gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
-    gap: responsivePixels(4),
+    gap: "4px",
     justifyContent: "flex-start",
     overflowX: "auto",
     maxWidth: "85vw",
@@ -607,15 +610,9 @@ export function AdditionalActions({
         ) : null;
       }
       return (
-        <div
-          className="flexColumn largeFont"
-          style={{ ...style, gap: responsivePixels(4) }}
-        >
+        <div className="flexColumn largeFont" style={{ ...style, gap: "4px" }}>
           {activeFaction.id !== "Nekro Virus" ? (
-            <div
-              className="flexColumn"
-              style={{ gap: responsivePixels(4), width: "100%" }}
-            >
+            <div className="flexColumn" style={{ gap: "4px", width: "100%" }}>
               <LabeledLine
                 leftLabel={
                   <FormattedMessage
@@ -672,10 +669,7 @@ export function AdditionalActions({
               </div>
             </div>
           ) : null}
-          <div
-            className="flexColumn"
-            style={{ gap: responsivePixels(4), width: "100%" }}
-          >
+          <div className="flexColumn" style={{ gap: "4px", width: "100%" }}>
             <LabeledLine
               leftLabel={
                 <FormattedMessage
@@ -688,7 +682,7 @@ export function AdditionalActions({
             <div
               className="flexRow mediumFont"
               style={{
-                paddingTop: responsivePixels(4),
+                paddingTop: "4px",
                 width: "100%",
                 flexWrap: "wrap",
               }}
@@ -806,7 +800,7 @@ export function AdditionalActions({
               className="flexRow largeFont"
               style={{
                 justifyContent: "flex-start",
-                paddingLeft: responsivePixels(24),
+                paddingLeft: "24px",
                 width: "100%",
               }}
             >
@@ -881,9 +875,12 @@ export function AdditionalActions({
             >
               <React.Fragment>
                 {claimedPlanets.length > 0 ? (
-                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
+                  <div
+                    className="flexColumn"
+                    style={{ alignItems: "stretch", width: "100%" }}
+                  >
                     {claimedPlanets.map((planet) => {
-                      const planetObj = planets[planet];
+                      const planetObj = planets[planet.planet];
                       if (!planetObj) {
                         return null;
                       }
@@ -891,15 +888,103 @@ export function AdditionalActions({
                         planetObj,
                         attachments ?? {}
                       );
+                      const currentAttachment = getAttachments(
+                        currentTurn,
+                        planet.planet
+                      )[0];
+                      const claimedAttachments = new Set<AttachmentId>();
+                      for (const planet of Object.values(planets)) {
+                        for (const attachment of planet.attachments ?? []) {
+                          claimedAttachments.add(attachment);
+                        }
+                      }
+                      const availableAttachments = Object.values(attachments)
+                        .filter(
+                          (attachment) =>
+                            ((adjustedPlanet.type === "ALL" &&
+                              attachment.required.type) ||
+                              attachment.required.type ===
+                                adjustedPlanet.type) &&
+                            (attachment.id === currentAttachment ||
+                              !claimedAttachments.has(attachment.id))
+                        )
+                        .map((attachment) => attachment.id);
                       return (
-                        <PlanetRow
-                          key={planet}
-                          factionId={activeFaction.id}
-                          planet={adjustedPlanet}
-                          removePlanet={() =>
-                            removePlanet(activeFaction.id, planet)
-                          }
-                        />
+                        <div
+                          key={planet.planet}
+                          className="flexRow"
+                          style={{ width: "100%" }}
+                        >
+                          <div style={{ width: "100%" }}>
+                            <PlanetRow
+                              factionId={"Xxcha Kingdom"}
+                              planet={adjustedPlanet}
+                              removePlanet={() => {
+                                removePlanet("Xxcha Kingdom", planet.planet);
+                              }}
+                            />
+                          </div>
+                          {availableAttachments.length > 0 &&
+                          !planet.prevOwner ? (
+                            <div
+                              className="flexRow"
+                              style={{ justifyContent: "center" }}
+                            >
+                              <AttachmentSelectRadialMenu
+                                attachments={availableAttachments}
+                                hasSkip={adjustedPlanet.attributes.reduce(
+                                  (hasSkip, attribute) => {
+                                    if (attribute.includes("skip")) {
+                                      if (
+                                        currentAttachment &&
+                                        attachments[currentAttachment]
+                                          ?.attribute === attribute
+                                      ) {
+                                        return planetObj.attributes.reduce(
+                                          (hasSkip, attribute) => {
+                                            if (attribute.includes("skip")) {
+                                              return true;
+                                            }
+                                            return hasSkip;
+                                          },
+                                          false
+                                        );
+                                      }
+                                      return true;
+                                    }
+                                    return hasSkip;
+                                  },
+                                  false
+                                )}
+                                onSelect={(attachmentId, prevAttachment) => {
+                                  if (prevAttachment) {
+                                    removeAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      prevAttachment
+                                    );
+                                  }
+                                  if (attachmentId) {
+                                    addAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      attachmentId
+                                    );
+                                  }
+                                }}
+                                selectedAttachment={currentAttachment}
+                                tag={
+                                  adjustedPlanet.type === "ALL" ? undefined : (
+                                    <PlanetIcon
+                                      type={adjustedPlanet.type}
+                                      size="60%"
+                                    />
+                                  )
+                                }
+                              />
+                            </div>
+                          ) : null}
+                        </div>
                       );
                     })}
                   </div>
@@ -922,7 +1007,7 @@ export function AdditionalActions({
                             key={planet.id}
                             style={{
                               writingMode: "horizontal-tb",
-                              width: responsivePixels(90),
+                              width: "90px",
                             }}
                             onClick={() => addPlanet(activeFaction.id, planet)}
                           >
@@ -959,7 +1044,7 @@ export function AdditionalActions({
               logEntry.data.event.faction === "Xxcha Kingdom"
           )
           .map((logEntry) => {
-            return (logEntry.data as ClaimPlanetData).event.planet;
+            return (logEntry.data as ClaimPlanetData).event;
           });
         const nonXxchaPlanets = Object.values(planets ?? {}).filter(
           (planet) => {
@@ -970,13 +1055,13 @@ export function AdditionalActions({
               return false;
             }
             for (const claimedPlanet of claimedPlanets) {
-              if (claimedPlanet === planet.id) {
+              if (claimedPlanet.planet === planet.id) {
                 return false;
               }
             }
             if (claimedPlanets.length > 0) {
               const claimedPlanet = claimedPlanets[0]
-                ? planets[claimedPlanets[0]]
+                ? planets[claimedPlanets[0].planet]
                 : undefined;
               if (claimedPlanet?.system) {
                 return planet.system === claimedPlanet.system;
@@ -1021,7 +1106,7 @@ export function AdditionalActions({
                     style={{ alignItems: "stretch", width: "100%" }}
                   >
                     {xxchaPlanets.map((planet) => {
-                      const planetObj = planets[planet];
+                      const planetObj = planets[planet.planet];
                       if (!planetObj) {
                         return null;
                       }
@@ -1029,18 +1114,103 @@ export function AdditionalActions({
                         planetObj,
                         attachments ?? {}
                       );
+                      const currentAttachment = getAttachments(
+                        currentTurn,
+                        planet.planet
+                      )[0];
+                      const claimedAttachments = new Set<AttachmentId>();
+                      for (const planet of Object.values(planets)) {
+                        for (const attachment of planet.attachments ?? []) {
+                          claimedAttachments.add(attachment);
+                        }
+                      }
+                      const availableAttachments = Object.values(attachments)
+                        .filter(
+                          (attachment) =>
+                            ((adjustedPlanet.type === "ALL" &&
+                              attachment.required.type) ||
+                              attachment.required.type ===
+                                adjustedPlanet.type) &&
+                            (attachment.id === currentAttachment ||
+                              !claimedAttachments.has(attachment.id))
+                        )
+                        .map((attachment) => attachment.id);
                       return (
-                        <PlanetRow
-                          key={planet}
-                          factionId={"Xxcha Kingdom"}
-                          planet={adjustedPlanet}
-                          removePlanet={() => {
-                            // if (gameId) {
-                            //   markSecondary(gameId, "Xxcha Kingdom", "PENDING");
-                            // }
-                            removePlanet("Xxcha Kingdom", planet);
-                          }}
-                        />
+                        <div
+                          key={planet.planet}
+                          className="flexRow"
+                          style={{ width: "100%" }}
+                        >
+                          <div style={{ width: "100%" }}>
+                            <PlanetRow
+                              factionId={"Xxcha Kingdom"}
+                              planet={adjustedPlanet}
+                              removePlanet={() => {
+                                removePlanet("Xxcha Kingdom", planet.planet);
+                              }}
+                            />
+                          </div>
+                          {availableAttachments.length > 0 &&
+                          !planet.prevOwner ? (
+                            <div
+                              className="flexRow"
+                              style={{ justifyContent: "center" }}
+                            >
+                              <AttachmentSelectRadialMenu
+                                attachments={availableAttachments}
+                                hasSkip={adjustedPlanet.attributes.reduce(
+                                  (hasSkip, attribute) => {
+                                    if (attribute.includes("skip")) {
+                                      if (
+                                        currentAttachment &&
+                                        attachments[currentAttachment]
+                                          ?.attribute === attribute
+                                      ) {
+                                        return planetObj.attributes.reduce(
+                                          (hasSkip, attribute) => {
+                                            if (attribute.includes("skip")) {
+                                              return true;
+                                            }
+                                            return hasSkip;
+                                          },
+                                          false
+                                        );
+                                      }
+                                      return true;
+                                    }
+                                    return hasSkip;
+                                  },
+                                  false
+                                )}
+                                onSelect={(attachmentId, prevAttachment) => {
+                                  if (prevAttachment) {
+                                    removeAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      prevAttachment
+                                    );
+                                  }
+                                  if (attachmentId) {
+                                    addAttachmentAsync(
+                                      gameId,
+                                      planet.planet,
+                                      attachmentId
+                                    );
+                                  }
+                                }}
+                                selectedAttachment={currentAttachment}
+                                tag={
+                                  adjustedPlanet.type === "ALL" ? undefined : (
+                                    <PlanetIcon
+                                      type={adjustedPlanet.type}
+                                      size="60%"
+                                    />
+                                  )
+                                }
+                              />
+                            </div>
+                          ) : null}
+                        </div>
                       );
                     })}
                   </div>
@@ -1062,12 +1232,9 @@ export function AdditionalActions({
                             key={planet.id}
                             style={{
                               writingMode: "horizontal-tb",
-                              width: responsivePixels(90),
+                              width: "90px",
                             }}
                             onClick={() => {
-                              // if (gameId) {
-                              //   markSecondary(gameId, "Xxcha Kingdom", "DONE");
-                              // }
                               addPlanet("Xxcha Kingdom", planet);
                             }}
                           >
@@ -1082,7 +1249,7 @@ export function AdditionalActions({
             </LabeledDiv>
             <SecondaryCheck
               activeFactionId={activeFaction.id}
-              gameId={gameId ?? ""}
+              gameId={gameId}
               orderedFactions={orderedFactions}
             />
           </div>
@@ -1167,7 +1334,7 @@ export function AdditionalActions({
 
       const secretButtonStyle: CSSProperties = {
         fontFamily: "Myriad Pro",
-        padding: responsivePixels(8),
+        padding: "8px",
         alignItems: "stretch",
         display: "grid",
         gridAutoFlow: "column",
@@ -1178,7 +1345,7 @@ export function AdditionalActions({
           availablePublicObjectives.length,
           8
         )}, auto)`,
-        gap: responsivePixels(4),
+        gap: "4px",
       };
       return (
         <div
@@ -1197,7 +1364,7 @@ export function AdditionalActions({
           <div
             style={{
               backdropFilter: "blur(4px)",
-              padding: `${responsivePixels(2)} 0`,
+              padding: `${"2px"} 0`,
             }}
           >
             {hasImperialPoint ? (
@@ -1336,7 +1503,7 @@ export function AdditionalActions({
           className="flexRow largeFont"
           style={{
             justifyContent: "center",
-            paddingTop: responsivePixels(12),
+            paddingTop: "12px",
             width: "100%",
             whiteSpace: "nowrap",
           }}
@@ -1371,8 +1538,8 @@ export function AdditionalActions({
                   <div
                     className="symbol"
                     style={{
-                      fontSize: responsivePixels(18),
-                      lineHeight: responsivePixels(18),
+                      fontSize: "18px",
+                      lineHeight: "18px",
                     }}
                   >
                     ✓
@@ -1528,19 +1695,19 @@ export function ActivePlayerColumn({
             rightLabel={
               <FactionTimer
                 factionId={activeFaction.id}
-                style={{ fontSize: responsivePixels(16), width: "auto" }}
+                style={{ fontSize: "16px", width: "auto" }}
               />
             }
             opts={{
-              iconSize: responsivePixels(200),
-              fontSize: responsivePixels(32),
+              iconSize: "200px",
+              fontSize: "32px",
             }}
           >
             <div className={styles.ActivePlayerSection}>
               <FactionActions factionId={activeFaction.id} />
               <AdditionalActions
                 factionId={activeFaction.id}
-                style={{ minWidth: responsivePixels(350) }}
+                style={{ minWidth: "350px" }}
               />
             </div>
           </FactionCard>
@@ -1565,7 +1732,7 @@ export function ActivePlayerColumn({
                 <StaticFactionTimer
                   factionId={onDeckFaction.id}
                   style={{
-                    fontSize: responsivePixels(16),
+                    fontSize: "16px",
                   }}
                   width={84}
                 />
@@ -1573,17 +1740,17 @@ export function ActivePlayerColumn({
               color={getFactionColor(onDeckFaction)}
               style={{
                 width: "fit-content",
-                minWidth: responsivePixels(200),
-                fontSize: responsivePixels(24),
+                minWidth: "200px",
+                fontSize: "24px",
               }}
             >
               <div
                 className="flexColumn"
                 style={{
                   width: "100%",
-                  height: responsivePixels(44),
+                  height: "44px",
                   whiteSpace: "nowrap",
-                  gap: responsivePixels(4),
+                  gap: "4px",
                 }}
               >
                 {getFactionName(onDeckFaction)}
@@ -1591,8 +1758,8 @@ export function ActivePlayerColumn({
                   className="flexRow"
                   style={{
                     position: "absolute",
-                    width: responsivePixels(44),
-                    height: responsivePixels(44),
+                    width: "44px",
+                    height: "44px",
                     zIndex: -1,
                     opacity: 0.7,
                   }}
@@ -1602,25 +1769,25 @@ export function ActivePlayerColumn({
               </div>
               {/* <FactionCard
               faction={onDeckFaction}
-              style={{ width: "auto", height: responsivePixels(100) }}
+              style={{ width: "auto", height: "100px" }}
               opts={{
-                iconSize: responsivePixels(80),
-                fontSize: responsivePixels(24),
+                iconSize: "80px",
+                fontSize: "24px",
               }}
             >
               <div
                 className="flexColumn"
                 style={{
                   height: "100%",
-                  width: responsivePixels(160),
-                  paddingBottom: responsivePixels(4),
-                  fontSize: responsivePixels(12),
+                  width: "160px",
+                  paddingBottom: "4px",
+                  fontSize: "12px",
                 }}
               >
                 <StaticFactionTimer
                   factionId={onDeckFaction.id}
                   style={{
-                    fontSize: responsivePixels(24),
+                    fontSize: "24px",
                   }}
                   width={132}
                 />
@@ -1632,7 +1799,7 @@ export function ActivePlayerColumn({
       </div>
       <LockedButtons
         unlocked={!activeFaction}
-        style={{ marginTop: responsivePixels(12) }}
+        style={{ marginTop: "12px" }}
         buttons={[
           {
             text: intl.formatMessage(
@@ -1696,8 +1863,7 @@ export default function ActionPhase() {
         className={styles.LeftColumn}
         style={
           {
-            "--gap":
-              numFactions > 7 ? responsivePixels(4) : responsivePixels(8),
+            "--gap": numFactions > 7 ? "4px" : "8px",
           } as CSSProperties
         }
       >
@@ -1710,7 +1876,7 @@ export default function ActionPhase() {
           );
         })}
       </div>
-      <div className="flexColumn" style={{ gap: responsivePixels(16) }}>
+      <div className="flexColumn" style={{ gap: "16px" }}>
         <div className="flexColumn" style={{ width: "100%" }}>
           {activeFaction && onDeckFaction ? (
             <ActivePlayerColumn
@@ -1721,7 +1887,7 @@ export default function ActionPhase() {
             <div className="flexColumn" style={{ height: "100svh" }}>
               <div
                 style={{
-                  fontSize: responsivePixels(42),
+                  fontSize: "42px",
                 }}
               >
                 <FormattedMessage

@@ -5,10 +5,10 @@
   flex-direction: column;
   align-items: center;
 
-  border: var(--three-pixel) solid var(--color);
-  border-radius: var(--five-pixel);
+  border: 3px solid var(--color);
+  border-radius: 5px;
   background-color: #222;
-  padding: 0 var(--four-pixel);
+  padding: 0 4px;
 
   white-space: nowrap;
 }
@@ -18,9 +18,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: var(--four-pixel);
+  gap: 4px;
 
-  padding: 0 var(--four-pixel);
+  padding: 0 4px;
 }
 
 .FactionTile .Icon {

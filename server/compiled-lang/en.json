@@ -41,6 +41,12 @@
       "value": "AND"
     }
   ],
+  "+XKsgE": [
+    {
+      "type": 0,
+      "value": "Game"
+    }
+  ],
   "+mUg6N": [
     {
       "type": 0,
@@ -301,6 +307,12 @@
     {
       "type": 0,
       "value": "Setup Game"
+    }
+  ],
+  "9m91nk": [
+    {
+      "type": 0,
+      "value": "Objective View"
     }
   ],
   "A5p5qF": [
@@ -10675,6 +10687,22 @@
       "value": "Laws"
     }
   ],
+  "hhm3kX": [
+    {
+      "type": 0,
+      "value": "Round "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    }
+  ],
+  "j3n7Nr": [
+    {
+      "type": 0,
+      "value": "Tech Skips"
+    }
+  ],
   "jGX605": [
     {
       "type": 0,
@@ -11120,6 +11148,12 @@
       "value": "Directives"
     }
   ],
+  "tDgufj": [
+    {
+      "type": 0,
+      "value": "Track"
+    }
+  ],
   "tocXJ4": [
     {
       "type": 0,
@@ -11286,6 +11320,12 @@
     {
       "type": 0,
       "value": "Select all Faction Choices"
+    }
+  ],
+  "yBACfb": [
+    {
+      "type": 0,
+      "value": "Main Screen"
     }
   ],
   "ymJxS0": [

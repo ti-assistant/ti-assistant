@@ -4,7 +4,6 @@ import Link from "next/link";
 import BorderedDiv from "../../src/components/BorderedDiv/BorderedDiv";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
-import { responsivePixels } from "../../src/util/util";
 
 export default function Supporters() {
   return (
@@ -13,7 +12,7 @@ export default function Supporters() {
       <div
         className="flexColumn"
         style={{
-          maxWidth: responsivePixels(800),
+          maxWidth: "800px",
           height: "100dvh",
           width: "100%",
         }}
@@ -36,9 +35,9 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
-              paddingBottom: responsivePixels(4),
+              paddingBottom: "4px",
               width: "100%",
-              fontSize: responsivePixels(24),
+              fontSize: "24px",
             }}
           >
             <div className="flexRow centered" style={{ width: "100%" }}>
@@ -73,9 +72,9 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
-              paddingBottom: responsivePixels(4),
+              paddingBottom: "4px",
               width: "100%",
-              fontSize: responsivePixels(24),
+              fontSize: "24px",
             }}
           >
             <div className="flexRow centered" style={{ width: "100%" }}>
@@ -87,12 +86,12 @@ export default function Supporters() {
           </div>
         </LabeledDiv>
 
-        <Link href={`/`} style={{ marginTop: responsivePixels(12) }}>
+        <Link href={`/`} style={{ marginTop: "12px" }}>
           <BorderedDiv>
             <div
               className="flexColumn mediumFont"
               style={{
-                minWidth: responsivePixels(190),
+                minWidth: "190px",
               }}
             >
               Back

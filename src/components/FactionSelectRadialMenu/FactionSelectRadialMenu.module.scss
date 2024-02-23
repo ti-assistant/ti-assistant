@@ -28,7 +28,7 @@
 .hoverBackground {
   position: absolute;
   border-radius: 100%;
-  border: var(--one-pixel) solid var(--border-color);
+  border: 1px solid var(--border-color);
   background-color: #222;
   top: 0;
   left: 0;
@@ -105,8 +105,8 @@
 .centerCircle {
   position: relative;
   border-radius: 100%;
-  border: var(--one-pixel) solid var(--border-color);
-  box-shadow: 0px 0px var(--eight-pixel) black;
+  border: 1px solid var(--border-color);
+  box-shadow: 0px 0px 8px black;
   background-color: #222;
 }
 

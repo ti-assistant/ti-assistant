@@ -1,8 +1,8 @@
 .FactionSummary {
   display: flex;
-  gap: var(--sixteen-pixel);
+  gap: 16px;
   justify-content: space-between;
-  padding: 0 0 0 var(--eight-pixel);
+  padding: 0 0 0 8px;
   position: relative;
   width: 100%;
 }
@@ -11,7 +11,7 @@
   position: relative;
   align-items: center;
   display: grid;
-  font-size: var(--twenty-eight-pixel);
+  font-size: 28px;
   justify-items: center;
 }
 
@@ -21,8 +21,8 @@
 
 .TechSummaryGrid {
   display: grid;
-  font-size: var(--fourteen-pixel);
-  gap: var(--four-pixel);
+  font-size: 14px;
+  gap: 4px;
   grid-template-columns: repeat(5, 1fr);
   width: min-content;
 }

@@ -18,7 +18,6 @@ import {
   sortTechsByName,
   sortTechsByPreReqAndExpansion,
 } from "../../util/techs";
-import { responsivePixels } from "../../util/util";
 import { useIntl } from "react-intl";
 import styles from "./TechSelectHoverMenu.module.scss";
 
@@ -54,8 +53,8 @@ function InnerTechSelectHoverMenu({
         <div
           className="flexColumn"
           style={{
-            padding: responsivePixels(8),
-            gap: responsivePixels(4),
+            padding: "8px",
+            gap: "4px",
             alignItems: "stretch",
           }}
         >
@@ -81,7 +80,7 @@ function InnerTechSelectHoverMenu({
                     ? ""
                     : "faded"
                 }
-                style={{ fontSize: responsivePixels(16) }}
+                style={{ fontSize: "16px" }}
               >
                 {tech.name}
               </button>
@@ -152,7 +151,7 @@ export default function TechSelectHoverMenu({
         <div
           className={styles.OuterTechSelectMenu}
           style={{
-            padding: responsivePixels(8),
+            padding: "8px",
             alignItems: "flex-start",
             overflow: "visible",
           }}
@@ -160,11 +159,11 @@ export default function TechSelectHoverMenu({
           <InnerTechSelectHoverMenu
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
-            techs={redTechs}
+            techs={greenTechs}
             label={intl.formatMessage({
-              id: "ZqAjEi",
-              description: "Title of red techs.",
-              defaultMessage: "Warfare",
+              id: "2I5JBO",
+              description: "Title of green techs.",
+              defaultMessage: "Biotic",
             })}
             prereqs={factionPreReqs}
             selectTech={selectTech}
@@ -199,11 +198,11 @@ export default function TechSelectHoverMenu({
           <InnerTechSelectHoverMenu
             factionId={factionId}
             ignorePrereqs={ignorePrereqs}
-            techs={greenTechs}
+            techs={redTechs}
             label={intl.formatMessage({
-              id: "2I5JBO",
-              description: "Title of green techs.",
-              defaultMessage: "Biotic",
+              id: "ZqAjEi",
+              description: "Title of red techs.",
+              defaultMessage: "Warfare",
             })}
             prereqs={factionPreReqs}
             selectTech={selectTech}

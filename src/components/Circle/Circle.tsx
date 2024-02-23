@@ -1,8 +1,5 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
-import { SymbolX } from "../../icons/svgs";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
-import { responsivePixels } from "../../util/util";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./Circle.module.scss";
 
 interface CircleProps {
@@ -34,12 +31,12 @@ export default function Circle({
 }: PropsWithChildren<CircleProps>) {
   const factionCircleStyle: CircleCSS = {
     "--border-color": borderColor,
-    "--size": responsivePixels(size),
+    "--size": `${size}px`,
     backgroundColor: blur ? undefined : "#222",
     backdropFilter: blur ? "blur(4px)" : undefined,
     boxShadow: borderColor === "Black" ? BLACK_BORDER_GLOW : undefined,
     cursor: onClick ? "pointer" : undefined,
-    fontSize: responsivePixels(size - 8),
+    fontSize: `${size - 8}px`,
     ...style,
   };
 
@@ -53,16 +50,16 @@ export default function Circle({
         className="flexRow"
         style={{
           position: "relative",
-          width: responsivePixels(size - 4),
-          height: responsivePixels(size - 4),
+          width: `${size - 4}px`,
+          height: `${size - 4}px`,
         }}
       >
         <div
           className="flexRow"
           style={{
             position: "relative",
-            width: responsivePixels(size - 10),
-            height: responsivePixels(size - 10),
+            width: `${size - 10}px`,
+            height: `${size - 10}px`,
             opacity: fade ? 0.5 : undefined,
           }}
         >
@@ -72,12 +69,10 @@ export default function Circle({
           <div
             className={`flexRow ${styles.tag}`}
             style={{
-              border: `${responsivePixels(1)} solid ${tagBorderColor}`,
-              boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                1
-              )} ${responsivePixels(4)} black`,
-              width: responsivePixels(24),
-              height: responsivePixels(24),
+              border: `${"1px"} solid ${tagBorderColor}`,
+              boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+              width: `${size / 2}px`,
+              height: `${size / 2}px`,
             }}
           >
             {tag}

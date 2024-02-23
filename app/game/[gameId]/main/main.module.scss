@@ -2,7 +2,7 @@
   align-items: flex-start;
   display: flex;
   flex-direction: row;
-  gap: var(--forty-pixel);
+  gap: 40px;
   justify-content: space-between;
   width: 100%;
 }
@@ -18,6 +18,6 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: var(--eight-pixel);
+    gap: 8px;
   }
 }

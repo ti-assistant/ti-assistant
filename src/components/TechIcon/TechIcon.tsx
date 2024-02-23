@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
-import { responsivePixels } from "../../util/util";
 import styles from "./TechIcon.module.scss";
 
 const RED_RATIO = 61 / 50;
@@ -11,7 +10,7 @@ const YELLOW_RATIO = 50 / 50;
 interface TechIconProps {
   outline?: boolean;
   type: TechType;
-  size: number;
+  size: string | number;
 }
 
 interface TechIconCSS extends CSSProperties {
@@ -60,12 +59,12 @@ export default function TechIcon({
   }, [type, outline]);
 
   const outerIconStyle: TechIconCSS = {
-    "--width": responsivePixels(size),
-    "--height": responsivePixels(size),
+    "--width": typeof size === "string" ? size : `${size}px`,
+    "--height": typeof size === "string" ? size : `${size}px`,
   };
   const techIconStyle: TechIconCSS = {
-    "--width": responsivePixels(size / ratio),
-    "--height": responsivePixels(size),
+    "--width": typeof size === "string" ? size : `${size / ratio}px`,
+    "--height": typeof size === "string" ? size : `${size}px`,
   };
   return (
     <div className={styles.OuterIcon} style={outerIconStyle}>

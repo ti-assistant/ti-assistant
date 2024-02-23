@@ -13,10 +13,11 @@ import {
   applyAllPlanetAttachments,
   getPlanetTypeColor,
 } from "../../util/planets";
-import { responsivePixels } from "../../util/util";
+import { getTechTypeColor } from "../../util/techs";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
+import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
 
 interface Cube {
@@ -545,7 +546,7 @@ export function SystemImage({
                 style={{
                   position: "absolute",
                   backgroundColor: "#222",
-                  border: `${responsivePixels(2)} solid ${getFactionColor(
+                  border: `${"2px"} solid ${getFactionColor(
                     (factions ?? {})[planet.owner]
                   )}`,
                   borderRadius: "100%",
@@ -571,9 +572,7 @@ export function SystemImage({
                 style={{
                   position: "absolute",
                   backgroundColor: "#222",
-                  border: `${responsivePixels(2)} solid ${getPlanetTypeColor(
-                    planet.type
-                  )}`,
+                  border: `${"2px"} solid ${getPlanetTypeColor(planet.type)}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -597,7 +596,7 @@ export function SystemImage({
                 style={{
                   position: "absolute",
                   backgroundColor: "#222",
-                  border: `${responsivePixels(2)} solid ${"#eee"}`,
+                  border: `${"2px"} solid ${"#eee"}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -613,6 +612,60 @@ export function SystemImage({
                 </div>
               </div>
             );
+            break;
+          }
+          case "TECH_SKIPS": {
+            let color: TechType | undefined;
+            let size: string | undefined;
+            for (const attribute of planet.attributes) {
+              switch (attribute) {
+                case "red-skip":
+                  color = "RED";
+                  size = "100%";
+                  break;
+                case "blue-skip":
+                  color = "BLUE";
+                  size = "95%";
+                  break;
+                case "green-skip":
+                  color = "GREEN";
+                  size = "100%";
+                  break;
+                case "yellow-skip":
+                  color = "YELLOW";
+                  size = "90%";
+                  break;
+              }
+            }
+            if (color && size) {
+              detailsSymbol = (
+                <div
+                  className="flexRow"
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "#222",
+                    border: `2px solid ${getTechTypeColor(color)}`,
+                    borderRadius: "100%",
+                    width: "24%",
+                    height: height,
+                    marginLeft: `${planet.position?.x}%` ?? 0,
+                    marginTop: `${planet.position?.y}%` ?? 0,
+                  }}
+                >
+                  <div
+                    className="flexRow"
+                    style={{
+                      position: "relative",
+                      width: "70%",
+                      height: "70%",
+                    }}
+                  >
+                    <TechIcon type={color} size={size} />
+                  </div>
+                </div>
+              );
+            }
+            break;
           }
         }
 
@@ -793,7 +846,7 @@ interface MapProps {
 //   "/images/systems/ST_92.png",
 // ];
 
-type Details = "NONE" | "ATTACHMENTS" | "OWNERS" | "TYPES";
+type Details = "NONE" | "ATTACHMENTS" | "OWNERS" | "TECH_SKIPS" | "TYPES";
 
 export default function Map({
   mapString,
@@ -967,7 +1020,7 @@ export default function Map({
               backgroundColor: "#222",
               justifyContent: "stretch",
               alignItems: "stretch",
-              paddingTop: responsivePixels(16),
+              paddingTop: "16px",
             }}
           >
             <div className={styles.LegendContent}>
@@ -1000,6 +1053,21 @@ export default function Map({
                 />
               </button>
               <button
+                className={showDetails === "TECH_SKIPS" ? "selected" : ""}
+                onClick={(e) => {
+                  const newValue =
+                    showDetails === "TECH_SKIPS" ? "NONE" : "TECH_SKIPS";
+                  setShowDetails(newValue);
+                  e.stopPropagation();
+                }}
+              >
+                <FormattedMessage
+                  id="j3n7Nr"
+                  description="Text on a button that will show planets with tech skips."
+                  defaultMessage="Tech Skips"
+                />
+              </button>
+              <button
                 className={showDetails === "ATTACHMENTS" ? "selected" : ""}
                 onClick={(e) => {
                   const newValue =
@@ -1018,81 +1086,84 @@ export default function Map({
           </LabeledDiv>
         </div>
       ) : null}
-      {spiral.map((cube, index) => {
-        const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
-        let tile = updatedSystemTiles[index];
-        if (!tile || tile === "-1") {
-          return null;
-        }
-        return (
+      <div className={styles.MapBody}>
+        {spiral.map((cube, index) => {
+          const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
+          let tile = updatedSystemTiles[index];
+          if (!tile || tile === "-1") {
+            return null;
+          }
+          return (
+            <div
+              className="flexRow"
+              key={index}
+              style={{
+                position: "absolute",
+                width: `${tilePercentage * HEX_RATIO}%`,
+                height: `${tilePercentage}%`,
+                marginLeft: `${point.x}%`,
+                marginTop: `${point.y}%`,
+              }}
+            >
+              <SystemImage
+                gameId={gameId}
+                showDetails={showDetails}
+                systemNumber={tile}
+              />
+            </div>
+          );
+        })}
+        {ghosts ? (
           <div
-            className="flexRow"
-            key={index}
             style={{
               position: "absolute",
+              right:
+                ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
+                  ? "4%"
+                  : undefined,
+              bottom:
+                ghostsCorner === "bottom-right" ||
+                ghostsCorner === "bottom-left"
+                  ? "4%"
+                  : undefined,
+              left:
+                ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
+                  ? "4%"
+                  : undefined,
+              top:
+                ghostsCorner === "top-right" || ghostsCorner === "top-left"
+                  ? "4%"
+                  : undefined,
               width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${tilePercentage}%`,
-              marginLeft: `${point.x}%`,
-              marginTop: `${point.y}%`,
+              height: `${tilePercentage * HEX_RATIO}%`,
             }}
           >
             <SystemImage
               gameId={gameId}
               showDetails={showDetails}
-              systemNumber={tile}
+              systemNumber="51"
             />
           </div>
-        );
-      })}
-      {ghosts ? (
-        <div
-          style={{
-            position: "absolute",
-            right:
-              ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
-                ? "4%"
-                : undefined,
-            bottom:
-              ghostsCorner === "bottom-right" || ghostsCorner === "bottom-left"
-                ? "4%"
-                : undefined,
-            left:
-              ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
-                ? "4%"
-                : undefined,
-            top:
-              ghostsCorner === "top-right" || ghostsCorner === "top-left"
-                ? "4%"
-                : undefined,
-            width: `${tilePercentage * HEX_RATIO}%`,
-            height: `${tilePercentage * HEX_RATIO}%`,
-          }}
-        >
-          <SystemImage
-            gameId={gameId}
-            showDetails={showDetails}
-            systemNumber="51"
-          />
-        </div>
-      ) : null}
-      {mallice ? (
-        <div
-          style={{
-            position: "absolute",
-            left: ghostsCorner !== "bottom-left" ? "4%" : undefined,
-            right: ghostsCorner === "bottom-left" ? "4%" : undefined,
-            bottom: "4%",
-            width: `${tilePercentage * HEX_RATIO}%`,
-            height: `${tilePercentage * HEX_RATIO}%`,
-          }}
-        >
-          <SystemImage
-            gameId={gameId}
-            showDetails={showDetails}
-            systemNumber={`82${mallice}`}
-          />
-        </div>
-      ) : null}
+        ) : null}
+        {mallice ? (
+          <div
+            style={{
+              position: "absolute",
+              left: ghostsCorner !== "bottom-left" ? "4%" : undefined,
+              right: ghostsCorner === "bottom-left" ? "4%" : undefined,
+              bottom: "4%",
+              width: `${tilePercentage * HEX_RATIO}%`,
+              height: `${tilePercentage * HEX_RATIO}%`,
+            }}
+          >
+            <SystemImage
+              gameId={gameId}
+              showDetails={showDetails}
+              systemNumber={`82${mallice}`}
+            />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

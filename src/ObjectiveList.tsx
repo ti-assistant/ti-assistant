@@ -79,7 +79,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
     }
   }
 
-  const maxHeight = screen.height - 450;
+  const maxHeight = "calc(100dvh - 450px)";
 
   function editModeButton(objs: Set<Objective>) {
     if (editMode) {
@@ -122,7 +122,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
           <div
             className="flexColumn largeFont"
             style={{
-              maxHeight: `${maxHeight}px`,
+              maxHeight: maxHeight,
               overflow: "auto",
               display: "flex",
               padding: "4px 0px",
@@ -312,7 +312,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
     }
   }
 
-  const maxHeight = screen.height - 420;
+  const maxHeight = "calc(100dvh - 420px)";
 
   return (
     <div>
@@ -345,7 +345,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
             <div
               className="flexColumn"
               style={{
-                maxHeight: `${maxHeight}px`,
+                maxHeight: maxHeight,
                 overflow: "auto",
                 display: "flex",
                 padding: "4px 0px",
@@ -385,7 +385,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
             <div
               className="flexColumn"
               style={{
-                maxHeight: `${maxHeight}px`,
+                maxHeight: maxHeight,
                 overflow: "auto",
                 display: "flex",
                 padding: "4px 0px",
@@ -426,7 +426,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
             <div
               className="flexColumn"
               style={{
-                maxHeight: `${maxHeight}px`,
+                maxHeight: maxHeight,
                 overflow: "auto",
                 display: "flex",
                 padding: "4px 0px",

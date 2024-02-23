@@ -1,11 +1,11 @@
 .LabeledDiv {
   position: relative;
-  gap: var(--eight-pixel);
-  border: var(--two-pixel) solid var(--color);
-  border-radius: var(--five-pixel);
+  gap: 8px;
+  border: 2px solid var(--color);
+  border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-  padding: var(--six-pixel);
+  padding: 6px;
   align-items: flex-start;
 }
 
@@ -14,24 +14,24 @@
   box-sizing: border-box;
   left: 0;
   top: 0;
-  border-radius: var(--five-pixel);
+  border-radius: 5px;
   position: absolute;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(var(--four-pixel));
+  backdrop-filter: blur(4px);
   filter: blur(0);
 }
 
 .label {
-  --side-spacing: var(--six-pixel);
+  --side-spacing: 6px;
 
   position: absolute;
   white-space: nowrap;
-  font-size: var(--sixteen-pixel);
-  top: var(--negative-twelve-pixel);
+  font-size: 16px;
+  top: -12px;
   background-color: #222;
-  border-radius: var(--five-pixel);
-  padding: 0 var(--four-pixel);
+  border-radius: 5px;
+  padding: 0 4px;
   color: var(--color);
 }
 
@@ -42,7 +42,7 @@
 .label.left > div {
   overflow: hidden;
   text-overflow: clip;
-  margin: var(--two-pixel) var(--two-pixel);
+  margin: 2px 2px;
 }
 
 .label.right {

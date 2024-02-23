@@ -29,7 +29,7 @@
     "build": "next build",
     "lint": "next lint",
     "start": "NODE_ENV=production node server/app.js",
-    "extract": "formatjs extract '{pages,server,src}/**/*.{js,ts,tsx}' --ignore '{pages,server,src}/**/*.d.ts' --out-file server/lang/en.json",
+    "extract": "formatjs extract '{app,pages,server,src}/**/*.{js,ts,tsx}' --ignore '{app,pages,server,src}/**/*.d.ts' --out-file server/lang/en.json",
     "compile": "formatjs compile-folder --ast server/lang server/compiled-lang"
   },
   "keywords": [],

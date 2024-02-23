@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { SelectableRow } from "../../SelectableRow";
-import { responsivePixels } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import Modal from "../Modal/Modal";
 
@@ -14,13 +13,13 @@ function InfoContent({ objective }: InfoContentProps) {
       className="myriadPro"
       style={{
         boxSizing: "border-box",
-        maxWidth: responsivePixels(800),
+        maxWidth: "800px",
         width: "100%",
-        minWidth: responsivePixels(320),
-        padding: responsivePixels(4),
+        minWidth: "320px",
+        padding: "4px",
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: responsivePixels(32),
+        fontSize: "32px",
       }}
     >
       {objective.description}
@@ -73,9 +72,7 @@ export default function ObjectiveRow({
       <Modal
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
-        title={
-          <div style={{ fontSize: responsivePixels(40) }}>{objective.name}</div>
-        }
+        title={<div style={{ fontSize: "40px" }}>{objective.name}</div>}
         level={2}
       >
         <InfoContent objective={objective} />
@@ -99,7 +96,7 @@ export default function ObjectiveRow({
             </div>
             <div
               className="popupIcon"
-              style={{ paddingRight: responsivePixels(8) }}
+              style={{ paddingRight: "8px" }}
               onClick={() => setShowInfoModal(true)}
             >
               &#x24D8;
@@ -108,7 +105,7 @@ export default function ObjectiveRow({
           <div className="flexColumn">
             {canScore() && scoreObjective ? (
               <button
-                style={{ fontSize: responsivePixels(12) }}
+                style={{ fontSize: "12px" }}
                 onClick={() => scoreObjective(objective.id, true)}
               >
                 Score
@@ -133,19 +130,19 @@ export default function ObjectiveRow({
                     className="flexRow"
                     style={{
                       position: "relative",
-                      width: responsivePixels(32),
-                      height: responsivePixels(32),
+                      width: "32px",
+                      height: "32px",
                     }}
                   >
                     <div
                       style={{
                         cursor: "pointer",
-                        width: responsivePixels(12),
-                        fontSize: responsivePixels(8),
-                        lineHeight: responsivePixels(8),
-                        height: responsivePixels(12),
+                        width: "12px",
+                        fontSize: "8px",
+                        lineHeight: "8px",
+                        height: "12px",
                         top: 0,
-                        left: responsivePixels(20),
+                        left: "20px",
                         position: "absolute",
                         zIndex: 1,
                         backgroundColor: "#222",
@@ -154,10 +151,8 @@ export default function ObjectiveRow({
                         alignItems: "center",
                         fontWeight: "bold",
                         justifyContent: "center",
-                        borderRadius: responsivePixels(12),
-                        boxShadow: `${responsivePixels(1)} ${responsivePixels(
-                          1
-                        )} ${responsivePixels(4)} black`,
+                        borderRadius: "12px",
+                        boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                       }}
                       onClick={() => scoreObjective(objective.id, false)}
                     >
@@ -174,8 +169,8 @@ export default function ObjectiveRow({
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: responsivePixels(32),
-                    height: responsivePixels(32),
+                    width: "32px",
+                    height: "32px",
                   }}
                 >
                   <FactionIcon factionId={scorer} size="100%" />
