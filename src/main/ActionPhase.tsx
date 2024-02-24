@@ -470,6 +470,13 @@ export function AdditionalActions({
         logEntry.data.event.faction === activeFaction.id
     )
     .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.objective);
+  const scoredActionPhaseObjectives = scoredObjectives.filter((objective) => {
+    const objectiveObj = objectives[objective];
+    if (!objectiveObj) {
+      return false;
+    }
+    return objectiveObj.phase === "ACTION";
+  });
   const scorableObjectives = Object.values(objectives ?? {}).filter(
     (objective) => {
       const scorers = objective.scorers ?? [];
@@ -1320,9 +1327,6 @@ export function AdditionalActions({
         }
       );
       const scoredPublics = scoredObjectives.filter((objective) => {
-        if (!objectives) {
-          return false;
-        }
         const objectiveObj = objectives[objective];
         if (!objectiveObj) {
           return false;
@@ -1470,7 +1474,7 @@ export function AdditionalActions({
       return <ComponentAction factionId={activeFaction.id} />;
     case "Pass":
       let hasProveEndurance = false;
-      scoredObjectives.forEach((objective) => {
+      scoredActionPhaseObjectives.forEach((objective) => {
         if (objective === "Prove Endurance") {
           hasProveEndurance = true;
         }
@@ -1582,7 +1586,7 @@ export function AdditionalActions({
           objectives={objectives ?? {}}
           planets={planets ?? {}}
           scorableObjectives={scorableObjectives}
-          scoredObjectives={scoredObjectives}
+          scoredObjectives={scoredActionPhaseObjectives}
           style={style}
           techs={techs ?? {}}
         />

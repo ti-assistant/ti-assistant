@@ -950,6 +950,15 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         return true;
       });
       const scoredObjectives = getScoredObjectives(currentTurn, factionId);
+      const scoredActionPhaseObjectives = scoredObjectives.filter(
+        (objective) => {
+          const objectiveObj = objectives[objective];
+          if (!objectiveObj) {
+            return false;
+          }
+          return objectiveObj.phase === "ACTION";
+        }
+      );
       const scorableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           const scorers = objective.scorers ?? [];
@@ -988,7 +997,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           gameid={gameId ?? ""}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
-          scoredObjectives={scoredObjectives}
+          scoredObjectives={scoredActionPhaseObjectives}
           scorableObjectives={scorableObjectives}
           style={{ width: "100%" }}
           techs={techs ?? {}}
@@ -1037,7 +1046,16 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       const scoredObjectives = selectedFaction
         ? getScoredObjectives(currentTurn, selectedFaction)
         : [];
-      const scorableObjectives = Object.values(objectives ?? {}).filter(
+      const scoredActionPhaseObjectives = scoredObjectives.filter(
+        (objective) => {
+          const objectiveObj = objectives[objective];
+          if (!objectiveObj) {
+            return false;
+          }
+          return objectiveObj.phase === "ACTION";
+        }
+      );
+      const scorableObjectives = Object.values(objectives).filter(
         (objective) => {
           const scorers = objective.scorers ?? [];
           if (selectedFaction && scorers.includes(selectedFaction)) {
@@ -1108,7 +1126,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 objectives={objectives ?? {}}
                 planets={planets ?? {}}
                 scorableObjectives={scorableObjectives}
-                scoredObjectives={scoredObjectives}
+                scoredObjectives={scoredActionPhaseObjectives}
                 style={{ width: "100%" }}
                 techs={techs ?? {}}
               />
