@@ -35,6 +35,10 @@
     "defaultMessage": "Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
   },
+  "+tb/XA": {
+    "defaultMessage": "Gained {count, plural, one {Tech} other {Techs}}",
+    "description": "Label for a section listing gained techs."
+  },
   "+x4AIR": {
     "defaultMessage": "Pending",
     "description": "Text on a hover menu for selecting a rider target."
@@ -5762,10 +5766,6 @@
   "t6v2oN": {
     "defaultMessage": "Directives",
     "description": "Agenda cards that do not have an ongoing effect."
-  },
-  "tDgufj": {
-    "defaultMessage": "Track",
-    "description": "Label on a section showing what can be tracked by the app."
   },
   "tocXJ4": {
     "defaultMessage": "Reset",

@@ -547,12 +547,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       }
       if (factionId === "Nekro Virus") {
         innerContent = (
-          <FormattedMessage
-            id="t5fXQR"
-            description="Text telling a player how many command tokens to gain."
-            defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
-            values={{ count: 3 }}
-          />
+          <div className="flexRow" style={{ width: "100%" }}>
+            <FormattedMessage
+              id="t5fXQR"
+              description="Text telling a player how many command tokens to gain."
+              defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
+              values={{ count: 3 }}
+            />
+          </div>
         );
         break;
       }
@@ -600,6 +602,77 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             techs={availableTechs}
             selectTech={addTechLocal}
           />
+        );
+      }
+      break;
+    }
+    case "Plagiarize": {
+      const faction = factions[factionId];
+      if (!faction) {
+        return null;
+      }
+
+      const researchedTech = getResearchedTechs(currentTurn, factionId);
+      const possibleTechs = new Set<TechId>();
+      Object.values(factions).forEach((otherFaction) => {
+        Object.keys(otherFaction.techs).forEach((id) => {
+          const techId = id as TechId;
+          const tech = techs[techId];
+          if (!tech || tech.faction) {
+            return;
+          }
+          if (!hasTech(faction, techId) && !researchedTech.includes(techId)) {
+            possibleTechs.add(techId);
+          }
+        });
+      });
+      const availableTechs = Array.from(possibleTechs).map(
+        (techId) => techs[techId] as Tech
+      );
+
+      if (researchedTech.length > 0) {
+        leftLabel = (
+          <FormattedMessage
+            id="+tb/XA"
+            description="Label for a section listing gained techs."
+            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
+            values={{ count: researchedTech.length }}
+          />
+        );
+        innerContent = (
+          <div className="flexColumn" style={{ width: "100%" }}>
+            {researchedTech.map((tech) => {
+              if (!techs) {
+                return null;
+              }
+              const techObj = techs[tech];
+              if (!techObj) {
+                return null;
+              }
+              return (
+                <TechRow
+                  key={tech}
+                  tech={techObj}
+                  removeTech={() => removeTechLocal(tech)}
+                />
+              );
+            })}
+          </div>
+        );
+      } else {
+        innerContent = (
+          <div className="flexColumn" style={{ width: "100%" }}>
+            <TechSelectHoverMenu
+              factionId={factionId}
+              label={intl.formatMessage({
+                id: "McKqpw",
+                description: "Label on a hover menu used to gain tech.",
+                defaultMessage: "Gain Tech",
+              })}
+              techs={availableTechs}
+              selectTech={addTechLocal}
+            />
+          </div>
         );
       }
       break;
@@ -1147,7 +1220,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       });
 
       if (researchedTech.length > 0) {
-        leftLabel = "Gained Tech";
+        leftLabel = (
+          <FormattedMessage
+            id="+tb/XA"
+            description="Label for a section listing gained techs."
+            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
+            values={{ count: researchedTech.length }}
+          />
+        );
         innerContent = (
           <React.Fragment>
             {researchedTech.map((tech) => {

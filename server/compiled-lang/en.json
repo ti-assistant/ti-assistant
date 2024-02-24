@@ -53,6 +53,36 @@
       "value": "Build the Galaxy"
     }
   ],
+  "+tb/XA": [
+    {
+      "type": 0,
+      "value": "Gained "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Tech"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Techs"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "+x4AIR": [
     {
       "type": 0,
@@ -11146,12 +11176,6 @@
     {
       "type": 0,
       "value": "Directives"
-    }
-  ],
-  "tDgufj": [
-    {
-      "type": 0,
-      "value": "Track"
     }
   ],
   "tocXJ4": [
