@@ -1,11 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import Map from "../../../src/components/Map/Map";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
-import { CustomSizeResources } from "../../Resources";
 import {
   FactionContext,
   GameIdContext,
@@ -20,12 +21,10 @@ import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import GenericModal from "../GenericModal/GenericModal";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import RelicPanel from "../RelicPanel/RelicPanel";
+import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
-import styles from "./Footer.module.scss";
-import { FormattedMessage } from "react-intl";
 import { Strings } from "../strings";
-import dynamic from "next/dynamic";
+import styles from "./Footer.module.scss";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -431,7 +430,7 @@ export default function Footer({}) {
                 paddingLeft: "2px",
               }}
             >
-              <CustomSizeResources resources={2} influence={3} height={24} />
+              <ResourcesIcon resources={2} influence={3} height={24} />
             </div>
           </button>
           <FormattedMessage

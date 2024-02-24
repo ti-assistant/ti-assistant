@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
-import { ResponsiveResources } from "./Resources";
 import LegendaryPlanetIcon from "./components/LegendaryPlanetIcon/LegendaryPlanetIcon";
 import PlanetIcon from "./components/PlanetIcon/PlanetIcon";
+import ResourcesIcon from "./components/ResourcesIcon/ResourcesIcon";
 import { GameIdContext } from "./context/Context";
 import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
 
@@ -54,9 +54,10 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
           {attachment.name}
         </button>
       </div>
-      <ResponsiveResources
+      <ResourcesIcon
         resources={attachment.resources ?? 0}
         influence={attachment.influence ?? 0}
+        height={50}
       />
       {isSkip() ? (
         <div style={{ marginRight: "6px" }}>
