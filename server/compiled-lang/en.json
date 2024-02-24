@@ -4775,6 +4775,12 @@
       "value": " Phase Complete"
     }
   ],
+  "GyiC2A": [
+    {
+      "type": 0,
+      "value": "Frontier Exploration"
+    }
+  ],
   "H3n/oR": [
     {
       "type": 0,
@@ -10725,6 +10731,16 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "iFF5UN": [
+    {
+      "type": 0,
+      "value": "Claim "
+    },
+    {
+      "type": 1,
+      "value": "planet"
     }
   ],
   "j3n7Nr": [

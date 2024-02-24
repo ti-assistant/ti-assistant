@@ -26,6 +26,7 @@ import {
 import {
   addAttachmentAsync,
   addTechAsync,
+  claimPlanetAsync,
   gainRelicAsync,
   loseRelicAsync,
   playComponentAsync,
@@ -33,10 +34,12 @@ import {
   removeTechAsync,
   selectFactionAsync,
   selectSubComponentAsync,
+  unclaimPlanetAsync,
   unplayComponentAsync,
   updatePlanetStateAsync,
 } from "../../dynamic/api";
 import {
+  getAttachments,
   getClaimedPlanets,
   getGainedRelic,
   getPurgedPlanet,
@@ -49,10 +52,16 @@ import {
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
-import { applyAllPlanetAttachments } from "../../util/planets";
+import {
+  applyAllPlanetAttachments,
+  applyPlanetAttachments,
+} from "../../util/planets";
 import { pluralize } from "../../util/util";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Selector } from "../../components/Selector/Selector";
+import AttachmentSelectRadialMenu from "../../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import PlanetIcon from "../../components/PlanetIcon/PlanetIcon";
+import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -806,6 +815,29 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
+    case "Exploration Probe":
+      const gainedRelic = getGainedRelic(currentTurn);
+      const claimedPlanets = getClaimedPlanets(currentTurn, factionId);
+      const mirageClaimed = claimedPlanets.reduce((claimed, planet) => {
+        if (planet.planet === "Mirage") {
+          return true;
+        }
+        return claimed;
+      }, false);
+      if (mirageClaimed) {
+        leftLabel = "Mirage";
+      }
+      if (gainedRelic) {
+        leftLabel = (
+          <FormattedMessage
+            id="cqWqzv"
+            description="Label for section listing the relic gained."
+            defaultMessage="Gained Relic"
+          />
+        );
+      }
+      innerContent = <FrontierExploration factionId={factionId} />;
+      break;
     case "Gain Relic":
     case "Black Market Forgery":
     case "Hesh and Prit":
@@ -814,13 +846,15 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       const unownedRelics = Object.values(relics).filter(
         (relic) => !relic.owner || gainedRelic === relic.id
       );
-      leftLabel = (
-        <FormattedMessage
-          id="cqWqzv"
-          description="Label for section listing the relic gained."
-          defaultMessage="Gained Relic"
-        />
-      );
+      if (gainedRelic) {
+        leftLabel = (
+          <FormattedMessage
+            id="cqWqzv"
+            description="Label for section listing the relic gained."
+            defaultMessage="Gained Relic"
+          />
+        );
+      }
       innerContent =
         unownedRelics.length > 0 ? (
           <Selector
@@ -851,7 +885,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 </div>
               );
             }}
-            selectedItem={getGainedRelic(currentTurn)}
+            selectedItem={gainedRelic}
             toggleItem={(relicId, add) => {
               if (add) {
                 addRelic(relicId);
@@ -1067,6 +1101,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           conqueredPlanets={conqueredPlanets}
           currentTurn={getCurrentTurnLogEntries(actionLog)}
           factions={factions ?? {}}
+          frontier={false}
           gameid={gameId ?? ""}
           objectives={objectives ?? {}}
           planets={planets ?? {}}

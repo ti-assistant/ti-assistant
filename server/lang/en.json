@@ -2383,6 +2383,10 @@
     "defaultMessage": "{phase} Phase Complete",
     "description": "Text showing that the current phase is complete"
   },
+  "GyiC2A": {
+    "defaultMessage": "Frontier Exploration",
+    "description": "Text on a hover menu for selecting the result of frontier exploration."
+  },
   "H3n/oR": {
     "defaultMessage": "SUSTAIN DAMAGE",
     "description": "A unit ability that allows a unit to cancel a hit."
@@ -5634,6 +5638,10 @@
   "hhm3kX": {
     "defaultMessage": "Round {value}",
     "description": "The current round of the game."
+  },
+  "iFF5UN": {
+    "defaultMessage": "Claim {planet}",
+    "description": "Text on a button that allows a player to claim a planet."
   },
   "j3n7Nr": {
     "defaultMessage": "Tech Skips",
