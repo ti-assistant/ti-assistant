@@ -1,12 +1,13 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { GameIdContext, StateContext } from "../../context/Context";
 import { useSharedTimer } from "../../data/SharedTimer";
 import { useTimers } from "../../data/Timers";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
-import TimerDisplay from "../TimerDisplay/TimerDisplay";
-import { FormattedMessage } from "react-intl";
 import { useInterval } from "../../util/client";
+import TimerDisplay from "../TimerDisplay/TimerDisplay";
+import styles from "./GameTimer.module.scss";
 
 export default function GameTimer({ frozen = false }) {
   const [gameTimer, setGameTimer] = useState(0);
@@ -68,7 +69,10 @@ export default function GameTimer({ frozen = false }) {
   }
 
   return (
-    <div className="flexColumn" style={{ width: "100%", whiteSpace: "nowrap" }}>
+    <div
+      className={styles.GameTimer}
+      style={{ width: "100%", whiteSpace: "nowrap" }}
+    >
       <div
         className="flexColumn"
         style={{
@@ -84,7 +88,7 @@ export default function GameTimer({ frozen = false }) {
       </div>
       {frozen ? null : (
         <div className="flexRow">
-          <button onClick={togglePause}>
+          <button className={styles.PauseButton} onClick={togglePause}>
             {paused ? (
               <FormattedMessage
                 id="dNmJ1r"

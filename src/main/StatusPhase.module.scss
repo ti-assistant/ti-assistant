@@ -59,15 +59,20 @@
 
 @media only screen and (max-width: 600px) {
   .LeftColumn {
-    height: fit-content;
+    height: unset;
     align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: 48px;
+    height: calc(100dvh - 130px);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .EmbeddedObjectives {
     display: flex;
     padding-top: 12px;
     white-space: normal;
-    width: 100%;
+    width: calc(100vw - 80px);
     justify-content: center;
   }
 

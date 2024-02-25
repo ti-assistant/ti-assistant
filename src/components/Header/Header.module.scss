@@ -138,7 +138,15 @@
   }
 
   .GameTimer {
-    display: none;
+    top: 72px;
+    left: 8px;
+    padding: 4px;
+    z-index: 1;
+    // background-color: #222;
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    border: 2px solid #222;
+    // display: none;
     // TODO: Decide whether or not to display game timer on mobile.
   }
 
@@ -158,7 +166,9 @@
   }
 
   .ControlButtons {
-    display: none;
-    // TODO: Decide whether or not to display control buttons on mobile.
+    left: unset;
+    right: 20px;
+    top: 80px;
+    z-index: 1;
   }
 }

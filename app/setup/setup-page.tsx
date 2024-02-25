@@ -66,8 +66,9 @@ function MobileOptions({
   options,
   numFactions,
   maxFactions,
+  reset,
   isCouncil,
-}: OptionsProps) {
+}: OptionsProps & { reset: () => void }) {
   const mapStringRef = useRef<HTMLInputElement>(null);
   const otherPointsRef = useRef<HTMLDivElement>(null);
   const intl = useIntl();
@@ -130,7 +131,7 @@ function MobileOptions({
       </div>
       <div
         className="flexRow"
-        style={{ width: "100%", justifyContent: "flex-start" }}
+        style={{ width: "100%", justifyContent: "space-between" }}
       >
         <ClientOnlyHoverMenu
           label={
@@ -141,7 +142,7 @@ function MobileOptions({
             />
           }
         >
-          <div style={{ width: "90vw", overflowX: "scroll" }}>
+          <div style={{ width: "90vw", overflowX: "auto" }}>
             <div
               className="flexColumn"
               style={{
@@ -357,6 +358,7 @@ function MobileOptions({
                     description="Label for a textbox used to specify the map string."
                     defaultMessage="Map String"
                   />
+                  :
                   <span className="smallFont" style={{ paddingLeft: "4px" }}>
                     <FormattedMessage
                       id="zjv9Gr"
@@ -364,12 +366,11 @@ function MobileOptions({
                       defaultMessage="(filters out non-claimable planets)"
                     />
                   </span>
-                  :
                   <input
                     ref={mapStringRef}
                     type="textbox"
                     className="mediumFont"
-                    style={{ width: "100%" }}
+                    style={{ width: "75vw" }}
                     onChange={(event) =>
                       toggleOption(event.currentTarget.value, "map-string")
                     }
@@ -405,6 +406,7 @@ function MobileOptions({
             </div>
           </div>
         </ClientOnlyHoverMenu>
+        <button onClick={reset}>Reset</button>
       </div>
     </div>
   );
@@ -1241,7 +1243,7 @@ function FactionSelect({
                     gridTemplateRows: "repeat(10, minmax(0, 1fr))",
                     gap: "4px",
                     padding: "8px",
-                    maxWidth: "min(85vw, 750px)",
+                    maxWidth: "min(80vw, 750px)",
                     overflowX: "auto",
                   }}
                 >
@@ -2259,7 +2261,6 @@ export default function SetupPage({
         className="flexColumn mobileOnly"
         style={{
           width: "100%",
-          marginTop: "56px",
           boxSizing: "border-box",
           overflow: "hidden",
         }}
@@ -2268,11 +2269,10 @@ export default function SetupPage({
           className="flexColumn"
           style={{
             alignItems: "flex-start",
-            gap: "12px",
+            gap: "8px",
             width: "100%",
             justifyContent: "flex-start",
-            height: "88svh",
-            overflowY: "auto",
+            paddingBottom: "8px",
           }}
         >
           <div className="flexRow" style={{ width: "100%", fontSize: "20px" }}>
@@ -2290,6 +2290,7 @@ export default function SetupPage({
             numFactions={numFactions}
             maxFactions={maxFactions}
             isCouncil={isCouncilInGame()}
+            reset={reset}
           />
           {setupFactions.map((_, index) => {
             if (index >= numFactions) {
@@ -2338,7 +2339,6 @@ export default function SetupPage({
                 </button>
               </div>
             </LabeledDiv>
-            <button onClick={reset}>Reset</button>
 
             {/* </div> */}
           </div>

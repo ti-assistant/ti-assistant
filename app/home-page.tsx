@@ -9,6 +9,7 @@ import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { gameIdString } from "../src/util/strings";
+import styles from "./home-page.module.scss";
 
 export default function HomePage() {
   const intl = useIntl();
@@ -43,16 +44,7 @@ export default function HomePage() {
   return (
     <div className="flexColumn" style={{ gap: "16px" }}>
       <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="TI ASSISTANT" />
-      <div
-        className="flexColumn"
-        style={{
-          alignItems: "stretch",
-          textAlign: "center",
-          marginTop: "10svh",
-          height: "80svh",
-          gap: "20px",
-        }}
-      >
+      <div className={styles.CenterColumn}>
         <Link href={"/setup"}>
           <BorderedDiv>
             <div

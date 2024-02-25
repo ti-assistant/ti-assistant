@@ -13,6 +13,7 @@ import {
 } from "../../../src/context/Context";
 import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
+import styles from "./game-page.module.scss";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -43,10 +44,7 @@ export default function SelectFactionPage() {
 
   // TODO: Fix height on mobile.
   return (
-    <div
-      className="flexColumn"
-      style={{ alignItems: "center", height: "100svh" }}
-    >
+    <div className={styles.GamePage}>
       <div
         className="flexColumn"
         style={{

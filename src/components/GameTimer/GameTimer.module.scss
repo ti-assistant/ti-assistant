@@ -1,0 +1,17 @@
+.GameTimer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.PauseButton {
+  font-size: 12px;
+}
+
+@media only screen and (max-width: 900px) {
+  .GameTimer {
+    flex-direction: row;
+  }
+}

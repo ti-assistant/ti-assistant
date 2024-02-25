@@ -1,0 +1,17 @@
+.CenterColumn {
+  height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 20px;
+
+  text-align: center;
+}
+
+@media only screen and (max-width: 1279px) {
+  .CenterColumn {
+    height: calc(100dvh - 104px);
+  }
+}
