@@ -265,7 +265,7 @@ export function FactionActionButtons({
 
 export function FactionActions({ factionId }: { factionId: FactionId }) {
   return (
-    <div className="flexColumn" style={{ gap: "4px" }}>
+    <div className="flexColumn" style={{ gap: "4px", width: "100%" }}>
       <div style={{ fontSize: "20px" }}>
         <FormattedMessage
           id="YeYE6S"
@@ -1888,10 +1888,16 @@ export default function ActionPhase() {
               onDeckFaction={onDeckFaction}
             />
           ) : (
-            <div className="flexColumn" style={{ height: "100svh" }}>
+            <div
+              className="flexColumn"
+              style={{ height: "calc(100dvh - 180px) " }}
+            >
               <div
+                className="flexRow"
                 style={{
-                  fontSize: "42px",
+                  fontSize: "28px",
+                  textAlign: "center",
+                  width: "100%",
                 }}
               >
                 <FormattedMessage

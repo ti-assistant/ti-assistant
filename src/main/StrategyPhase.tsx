@@ -855,7 +855,6 @@ export default function StrategyPhase() {
             <div
               style={{
                 fontSize: "28px",
-                // paddingTop: "24px",
               }}
             >
               <FormattedMessage

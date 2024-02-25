@@ -1,0 +1,14 @@
+.GamePage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  height: 100dvh;
+}
+
+@media only screen and (max-width: 900px) {
+  .GamePage {
+    height: calc(100dvh - 74px);
+  }
+}

@@ -859,6 +859,8 @@ function AgendaSteps() {
                       className="flexRow"
                       style={{
                         padding: "8px",
+                        maxWidth: "70vw",
+                        overflowX: "auto",
                         gap: "4px",
                         display: "grid",
                         gridAutoFlow: "column",
@@ -1175,6 +1177,7 @@ function AgendaSteps() {
               {getSelectedOutcome(selectedTargets, currentTurn) ? (
                 currentAgenda && currentAgenda.id === "Covert Legislation" ? (
                   <Selector
+                    style={{ maxWidth: "70vw" }}
                     hoverMenuLabel={
                       <FormattedMessage
                         id="Agendas.Covert Legislation.Title"
@@ -1779,6 +1782,8 @@ export default function AgendaPhase() {
                         style={{
                           alignItems: "stretch",
                           justifyContent: "flex-start",
+                          maxWidth: "92vw",
+                          overflowX: "auto",
                           gap: "4px",
                           padding: "8px",
                           display: "grid",

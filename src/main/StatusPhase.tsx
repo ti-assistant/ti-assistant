@@ -573,6 +573,7 @@ export function MiddleColumn() {
                             defaultMessage="Secret"
                           />
                         }
+                        style={{ maxWidth: "calc(88vw - 50px)" }}
                         itemsPerColumn={10}
                         toggleItem={(objectiveId, add) => {
                           if (!card.faction) {
@@ -1006,6 +1007,7 @@ export default function StatusPhase() {
                         );
                       }
                     )}
+                    style={{ maxWidth: "calc(88vw - 40px)" }}
                     toggleItem={(objectiveId, add) => {
                       if (add) {
                         addObj(objectiveId);
