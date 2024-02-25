@@ -1,10 +1,11 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useContext } from "react";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { TechRow } from "../TechRow";
 import {
   addAttachmentAsync,
   addTechAsync,
   claimPlanetAsync,
+  loseRelicAsync,
   removeAttachmentAsync,
   removeTechAsync,
   scoreObjectiveAsync,
@@ -14,6 +15,7 @@ import {
 import { SymbolX } from "../icons/svgs";
 import {
   getAttachments,
+  getGainedRelic,
   getObjectiveScorers,
   getResearchedTechs,
 } from "../util/actionLog";
@@ -32,6 +34,10 @@ import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentS
 import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import { FormattedMessage, useIntl } from "react-intl";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
+import FrontierExploration from "./FrontierExploration/FrontierExploration";
+import { GameIdContext, RelicContext } from "../context/Context";
+import { SelectableRow } from "../SelectableRow";
+import { InfoRow } from "../InfoRow";
 
 export function TacticalAction({
   activeFactionId,
@@ -40,6 +46,7 @@ export function TacticalAction({
   conqueredPlanets,
   currentTurn,
   factions,
+  frontier = true,
   gameid,
   objectives,
   planets,
@@ -54,6 +61,7 @@ export function TacticalAction({
   conqueredPlanets: ClaimPlanetEvent[];
   currentTurn: ActionLogEntry[];
   factions: Partial<Record<FactionId, Faction>>;
+  frontier?: boolean;
   gameid: string;
   objectives: Partial<Record<ObjectiveId, Objective>>;
   planets: Partial<Record<PlanetId, Planet>>;
@@ -62,6 +70,8 @@ export function TacticalAction({
   style?: CSSProperties;
   techs: Partial<Record<TechId, Tech>>;
 }) {
+  const gameId = useContext(GameIdContext);
+  const relics = useContext(RelicContext);
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
 
   const intl = useIntl();
@@ -244,6 +254,14 @@ export function TacticalAction({
       claimedAttachments.add(attachment);
     }
   }
+
+  const faction = factions[activeFactionId];
+  if (!faction) {
+    return null;
+  }
+
+  const gainedRelic = getGainedRelic(currentTurn);
+  const relic = gainedRelic ? relics[gainedRelic] : undefined;
 
   return (
     <div
@@ -492,6 +510,31 @@ export function TacticalAction({
           )}
         ></ClientOnlyHoverMenu>
       ) : null}
+      {relic ? (
+        <LabeledDiv
+          label={
+            <FormattedMessage
+              id="cqWqzv"
+              description="Label for section listing the relic gained."
+              defaultMessage="Gained Relic"
+            />
+          }
+        >
+          <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
+            <SelectableRow
+              itemId={relic.id}
+              removeItem={(relicId) => {
+                loseRelicAsync(gameId, activeFactionId, relicId);
+              }}
+            >
+              <InfoRow infoTitle={relic.name} infoContent={relic.description}>
+                {relic.name}
+              </InfoRow>
+            </SelectableRow>
+            {relic.id === "Shard of the Throne" ? <div>+1 VP</div> : null}
+          </div>
+        </LabeledDiv>
+      ) : null}
       {activeFactionId === "Nekro Virus" &&
       (nekroTechs.length > 0 || researchableTechs.length > 0) ? (
         <React.Fragment>
@@ -619,6 +662,35 @@ export function TacticalAction({
             )}
           </div>
         </div>
+      ) : null}
+      {frontier &&
+      hasTech(faction, "Dark Energy Tap") &&
+      conqueredPlanets.length === 0 &&
+      !relic ? (
+        <React.Fragment>
+          <ClientOnlyHoverMenu
+            label={
+              <FormattedMessage
+                id="GyiC2A"
+                description="Text on a hover menu for selecting the result of frontier exploration."
+                defaultMessage="Frontier Exploration"
+              />
+            }
+            style={{ whiteSpace: "nowrap" }}
+            buttonStyle={{ fontSize: "14px" }}
+          >
+            <div
+              className={styles.OuterTechSelectMenu}
+              style={{
+                padding: "8px",
+                alignItems: "flex-start",
+                overflow: "visible",
+              }}
+            >
+              <FrontierExploration factionId={activeFactionId} />
+            </div>
+          </ClientOnlyHoverMenu>
+        </React.Fragment>
       ) : null}
     </div>
   );

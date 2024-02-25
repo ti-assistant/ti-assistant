@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -17,12 +18,6 @@ import { Strings } from "../../src/components/strings";
 import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
 import styles from "./setup.module.scss";
-import dynamic from "next/dynamic";
-import Circle from "../../src/components/Circle/Circle";
-import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
-import ToggleTag from "../../src/components/ToggleTag/ToggleTag";
-import { CustomSizeResources, FullResources } from "../../src/Resources";
-import Image from "next/image";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -1152,6 +1147,7 @@ function FactionSelect({
   const label = (
     <input
       ref={nameRef}
+      tabIndex={position + 1}
       type="textbox"
       spellCheck={false}
       defaultValue={intl.formatMessage({
@@ -1163,6 +1159,7 @@ function FactionSelect({
         fontFamily: "Slider",
         borderColor: factionColor,
       }}
+      onFocus={(e) => (e.currentTarget.value = "")}
       onClick={(e) => (e.currentTarget.value = "")}
       onBlur={(e) => savePlayerName(e.currentTarget)}
     />

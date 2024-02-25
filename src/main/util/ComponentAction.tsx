@@ -26,6 +26,7 @@ import {
 import {
   addAttachmentAsync,
   addTechAsync,
+  claimPlanetAsync,
   gainRelicAsync,
   loseRelicAsync,
   playComponentAsync,
@@ -33,10 +34,12 @@ import {
   removeTechAsync,
   selectFactionAsync,
   selectSubComponentAsync,
+  unclaimPlanetAsync,
   unplayComponentAsync,
   updatePlanetStateAsync,
 } from "../../dynamic/api";
 import {
+  getAttachments,
   getClaimedPlanets,
   getGainedRelic,
   getPurgedPlanet,
@@ -49,10 +52,16 @@ import {
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
-import { applyAllPlanetAttachments } from "../../util/planets";
+import {
+  applyAllPlanetAttachments,
+  applyPlanetAttachments,
+} from "../../util/planets";
 import { pluralize } from "../../util/util";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Selector } from "../../components/Selector/Selector";
+import AttachmentSelectRadialMenu from "../../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import PlanetIcon from "../../components/PlanetIcon/PlanetIcon";
+import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -547,12 +556,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       }
       if (factionId === "Nekro Virus") {
         innerContent = (
-          <FormattedMessage
-            id="t5fXQR"
-            description="Text telling a player how many command tokens to gain."
-            defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
-            values={{ count: 3 }}
-          />
+          <div className="flexRow" style={{ width: "100%" }}>
+            <FormattedMessage
+              id="t5fXQR"
+              description="Text telling a player how many command tokens to gain."
+              defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
+              values={{ count: 3 }}
+            />
+          </div>
         );
         break;
       }
@@ -600,6 +611,77 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             techs={availableTechs}
             selectTech={addTechLocal}
           />
+        );
+      }
+      break;
+    }
+    case "Plagiarize": {
+      const faction = factions[factionId];
+      if (!faction) {
+        return null;
+      }
+
+      const researchedTech = getResearchedTechs(currentTurn, factionId);
+      const possibleTechs = new Set<TechId>();
+      Object.values(factions).forEach((otherFaction) => {
+        Object.keys(otherFaction.techs).forEach((id) => {
+          const techId = id as TechId;
+          const tech = techs[techId];
+          if (!tech || tech.faction) {
+            return;
+          }
+          if (!hasTech(faction, techId) && !researchedTech.includes(techId)) {
+            possibleTechs.add(techId);
+          }
+        });
+      });
+      const availableTechs = Array.from(possibleTechs).map(
+        (techId) => techs[techId] as Tech
+      );
+
+      if (researchedTech.length > 0) {
+        leftLabel = (
+          <FormattedMessage
+            id="+tb/XA"
+            description="Label for a section listing gained techs."
+            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
+            values={{ count: researchedTech.length }}
+          />
+        );
+        innerContent = (
+          <div className="flexColumn" style={{ width: "100%" }}>
+            {researchedTech.map((tech) => {
+              if (!techs) {
+                return null;
+              }
+              const techObj = techs[tech];
+              if (!techObj) {
+                return null;
+              }
+              return (
+                <TechRow
+                  key={tech}
+                  tech={techObj}
+                  removeTech={() => removeTechLocal(tech)}
+                />
+              );
+            })}
+          </div>
+        );
+      } else {
+        innerContent = (
+          <div className="flexColumn" style={{ width: "100%" }}>
+            <TechSelectHoverMenu
+              factionId={factionId}
+              label={intl.formatMessage({
+                id: "McKqpw",
+                description: "Label on a hover menu used to gain tech.",
+                defaultMessage: "Gain Tech",
+              })}
+              techs={availableTechs}
+              selectTech={addTechLocal}
+            />
+          </div>
         );
       }
       break;
@@ -733,6 +815,29 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
+    case "Exploration Probe":
+      const gainedRelic = getGainedRelic(currentTurn);
+      const claimedPlanets = getClaimedPlanets(currentTurn, factionId);
+      const mirageClaimed = claimedPlanets.reduce((claimed, planet) => {
+        if (planet.planet === "Mirage") {
+          return true;
+        }
+        return claimed;
+      }, false);
+      if (mirageClaimed) {
+        leftLabel = "Mirage";
+      }
+      if (gainedRelic) {
+        leftLabel = (
+          <FormattedMessage
+            id="cqWqzv"
+            description="Label for section listing the relic gained."
+            defaultMessage="Gained Relic"
+          />
+        );
+      }
+      innerContent = <FrontierExploration factionId={factionId} />;
+      break;
     case "Gain Relic":
     case "Black Market Forgery":
     case "Hesh and Prit":
@@ -741,13 +846,15 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       const unownedRelics = Object.values(relics).filter(
         (relic) => !relic.owner || gainedRelic === relic.id
       );
-      leftLabel = (
-        <FormattedMessage
-          id="cqWqzv"
-          description="Label for section listing the relic gained."
-          defaultMessage="Gained Relic"
-        />
-      );
+      if (gainedRelic) {
+        leftLabel = (
+          <FormattedMessage
+            id="cqWqzv"
+            description="Label for section listing the relic gained."
+            defaultMessage="Gained Relic"
+          />
+        );
+      }
       innerContent =
         unownedRelics.length > 0 ? (
           <Selector
@@ -778,7 +885,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 </div>
               );
             }}
-            selectedItem={getGainedRelic(currentTurn)}
+            selectedItem={gainedRelic}
             toggleItem={(relicId, add) => {
               if (add) {
                 addRelic(relicId);
@@ -950,6 +1057,15 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         return true;
       });
       const scoredObjectives = getScoredObjectives(currentTurn, factionId);
+      const scoredActionPhaseObjectives = scoredObjectives.filter(
+        (objective) => {
+          const objectiveObj = objectives[objective];
+          if (!objectiveObj) {
+            return false;
+          }
+          return objectiveObj.phase === "ACTION";
+        }
+      );
       const scorableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           const scorers = objective.scorers ?? [];
@@ -985,10 +1101,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           conqueredPlanets={conqueredPlanets}
           currentTurn={getCurrentTurnLogEntries(actionLog)}
           factions={factions ?? {}}
+          frontier={false}
           gameid={gameId ?? ""}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
-          scoredObjectives={scoredObjectives}
+          scoredObjectives={scoredActionPhaseObjectives}
           scorableObjectives={scorableObjectives}
           style={{ width: "100%" }}
           techs={techs ?? {}}
@@ -1037,7 +1154,16 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       const scoredObjectives = selectedFaction
         ? getScoredObjectives(currentTurn, selectedFaction)
         : [];
-      const scorableObjectives = Object.values(objectives ?? {}).filter(
+      const scoredActionPhaseObjectives = scoredObjectives.filter(
+        (objective) => {
+          const objectiveObj = objectives[objective];
+          if (!objectiveObj) {
+            return false;
+          }
+          return objectiveObj.phase === "ACTION";
+        }
+      );
+      const scorableObjectives = Object.values(objectives).filter(
         (objective) => {
           const scorers = objective.scorers ?? [];
           if (selectedFaction && scorers.includes(selectedFaction)) {
@@ -1108,7 +1234,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 objectives={objectives ?? {}}
                 planets={planets ?? {}}
                 scorableObjectives={scorableObjectives}
-                scoredObjectives={scoredObjectives}
+                scoredObjectives={scoredActionPhaseObjectives}
                 style={{ width: "100%" }}
                 techs={techs ?? {}}
               />
@@ -1129,7 +1255,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       });
 
       if (researchedTech.length > 0) {
-        leftLabel = "Gained Tech";
+        leftLabel = (
+          <FormattedMessage
+            id="+tb/XA"
+            description="Label for a section listing gained techs."
+            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
+            values={{ count: researchedTech.length }}
+          />
+        );
         innerContent = (
           <React.Fragment>
             {researchedTech.map((tech) => {

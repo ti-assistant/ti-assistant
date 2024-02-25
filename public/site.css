@@ -120,6 +120,10 @@ button:hover {
   background-color: #444;
 }
 
+button:focus {
+  border: 1px solid #999
+}
+
 
 button.faded {
   background-color: #222;

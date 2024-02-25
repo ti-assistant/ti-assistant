@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useContext, useState } from "react";
-import { CustomSizeResources, ResponsiveResources } from "../../Resources";
+import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
 import {
   AttachmentContext,
@@ -12,7 +12,7 @@ import { getFactionColor } from "../../util/factions";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
-import { FormattedMessage } from "react-intl";
+import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -215,7 +215,7 @@ export default function PlanetRow({
             ) : null}
           </div>
         ) : null}
-        <CustomSizeResources
+        <ResourcesIcon
           resources={planet.resources}
           influence={planet.influence}
           height={36}
@@ -460,9 +460,10 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
           {attachment.name}
         </button>
       </div>
-      <ResponsiveResources
+      <ResourcesIcon
         resources={attachment.resources ?? 0}
         influence={attachment.influence ?? 0}
+        height={50}
       />
       {isSkip() ? (
         <div style={{ marginRight: "6px" }}>

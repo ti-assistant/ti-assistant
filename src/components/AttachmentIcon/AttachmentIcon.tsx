@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
 import { SymbolX } from "../../icons/svgs";
-import styles from "./AttachmentIcon.module.scss";
-import TechIcon from "../TechIcon/TechIcon";
-import { CustomSizeResources } from "../../Resources";
 import { getTechTypeColor } from "../../util/techs";
+import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
+import TechIcon from "../TechIcon/TechIcon";
+import styles from "./AttachmentIcon.module.scss";
 
 interface AttachmentIconProps {
   attachment?: Attachment;
@@ -72,7 +72,7 @@ export default function AttachmentIcon({
           }}
         >
           {hasSkip ? (
-            <CustomSizeResources
+            <ResourcesIcon
               resources={attachment.resources ?? 0}
               influence={attachment.influence ?? 0}
               height={hideBorder ? size : size - 8}
@@ -108,7 +108,7 @@ export default function AttachmentIcon({
               style={{ objectFit: "contain" }}
             />
           </div>
-          <CustomSizeResources
+          <ResourcesIcon
             resources={attachment.resources ?? 0}
             influence={attachment.influence ?? 0}
             height={size - 8}
@@ -129,7 +129,7 @@ export default function AttachmentIcon({
           paddingLeft: "1px",
         }}
       >
-        <CustomSizeResources
+        <ResourcesIcon
           resources={attachment.resources ?? 0}
           influence={attachment.influence ?? 0}
           height={size}

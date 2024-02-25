@@ -35,6 +35,10 @@
     "defaultMessage": "Build the Galaxy",
     "description": "A step in the setup phase: Build the Galaxy."
   },
+  "+tb/XA": {
+    "defaultMessage": "Gained {count, plural, one {Tech} other {Techs}}",
+    "description": "Label for a section listing gained techs."
+  },
   "+x4AIR": {
     "defaultMessage": "Pending",
     "description": "Text on a hover menu for selecting a rider target."
@@ -2378,6 +2382,10 @@
   "Gns4AS": {
     "defaultMessage": "{phase} Phase Complete",
     "description": "Text showing that the current phase is complete"
+  },
+  "GyiC2A": {
+    "defaultMessage": "Frontier Exploration",
+    "description": "Text on a hover menu for selecting the result of frontier exploration."
   },
   "H3n/oR": {
     "defaultMessage": "SUSTAIN DAMAGE",
@@ -5631,6 +5639,10 @@
     "defaultMessage": "Round {value}",
     "description": "The current round of the game."
   },
+  "iFF5UN": {
+    "defaultMessage": "Claim {planet}",
+    "description": "Text on a button that allows a player to claim a planet."
+  },
   "j3n7Nr": {
     "defaultMessage": "Tech Skips",
     "description": "Text on a button that will show planets with tech skips."
@@ -5762,10 +5774,6 @@
   "t6v2oN": {
     "defaultMessage": "Directives",
     "description": "Agenda cards that do not have an ongoing effect."
-  },
-  "tDgufj": {
-    "defaultMessage": "Track",
-    "description": "Label on a section showing what can be tracked by the app."
   },
   "tocXJ4": {
     "defaultMessage": "Reset",

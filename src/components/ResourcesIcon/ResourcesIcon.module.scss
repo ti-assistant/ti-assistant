@@ -1,0 +1,62 @@
+.ResourcesIcon {
+  position: relative;
+
+  width: calc(var(--height) * 0.72);
+  height: var(--height);
+}
+
+.ResourcesIcon > div {
+  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  line-height: var(--size);
+  font-size: var(--font-size);
+  width: var(--width);
+  height: var(--size);
+}
+
+.ResourceValue {
+  --size: calc(var(--height) * 0.44);
+  --font-size: calc(var(--height) * 0.24);
+  --width: var(--size);
+
+  top: 0;
+  left: 0;
+}
+
+.ResourceSymbol {
+  --size: calc(var(--height) * 0.44);
+  --font-size: var(--size);
+  --width: var(--size);
+
+  top: 0;
+  left: 0;
+
+  color: #fad54d;
+  text-shadow: 0 0 4px #fad54d;
+  font-weight: bold;
+}
+
+.InfluenceValue {
+  --size: calc(var(--height) * 0.7);
+  --font-size: calc(var(--height) * 0.24);
+  --width: calc(var(--height) * 0.56);
+
+  bottom: 0;
+  right: 0;
+}
+
+.InfluenceSymbol {
+  --size: calc(var(--height) * 0.7);
+  --font-size: var(--size);
+  --width: calc(var(--height) * 0.56);
+
+  bottom: 0;
+  right: 0;
+
+  color: #72d4f7;
+  text-shadow: 0 0 4px #72d4f7;
+}

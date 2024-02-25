@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { ResponsiveResources } from "../../Resources";
 import { OptionContext } from "../../context/Context";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import styles from "./PlanetSummary.module.scss";
+import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 
 interface PlanetSummaryProps {
   planets: Planet[];
@@ -71,7 +71,11 @@ export default function PlanetSummary({
   return (
     <div className={styles.PlanetSummary}>
       <div className={styles.ResourceSection}>
-        <ResponsiveResources resources={resources} influence={influence} />
+        <ResourcesIcon
+          resources={resources}
+          influence={influence}
+          height={50}
+        />
         <div className={styles.PlanetTotal}>{numPlanets}</div>
       </div>
       <div className={styles.CountSection}>
