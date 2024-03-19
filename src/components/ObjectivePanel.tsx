@@ -5,7 +5,6 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Selector } from "../Selector";
 import {
   ActionLogContext,
   FactionContext,
@@ -34,6 +33,7 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import { FormattedMessage, useIntl } from "react-intl";
 import { objectiveTypeString } from "../util/strings";
+import { Selector } from "./Selector/Selector";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -243,7 +243,7 @@ function SecretModalContent({
         {scoredSecrets.length < 6 ? (
           <Selector
             hoverMenuLabel="Score Secret Objective"
-            options={availableSecrets.map((secret) => secret.id)}
+            options={availableSecrets}
             toggleItem={(itemId) => {
               if (!gameId) {
                 return;
@@ -603,21 +603,18 @@ export default function ObjectivePanel() {
                 }}
               >
                 <Selector
-                  options={remainingStageOneObjectives.map((obj) => obj.id)}
+                  options={remainingStageOneObjectives}
                   hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
-                  renderButton={(itemId, toggleItem) => {
-                    const objective = objectives[itemId];
-                    if (!objective) {
-                      return null;
-                    }
+                  renderButton={(itemId, itemName, toggleItem) => {
                     return (
                       <button
+                        key={itemId}
                         style={{ fontSize: "14px" }}
                         onClick={() => {
                           toggleItem(itemId, true);
                         }}
                       >
-                        {objective.name}
+                        {itemName}
                       </button>
                     );
                   }}
@@ -633,21 +630,18 @@ export default function ObjectivePanel() {
                   }}
                 />
                 <Selector
-                  options={remainingStageTwoObjectives.map((obj) => obj.id)}
+                  options={remainingStageTwoObjectives}
                   hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
-                  renderButton={(itemId, toggleItem) => {
-                    const objective = objectives[itemId];
-                    if (!objective) {
-                      return null;
-                    }
+                  renderButton={(itemId, itemName, toggleItem) => {
                     return (
                       <button
+                        key={itemId}
                         style={{ fontSize: "14px" }}
                         onClick={() => {
                           toggleItem(itemId, true);
                         }}
                       >
-                        {objective.name}
+                        {itemName}
                       </button>
                     );
                   }}
@@ -1574,21 +1568,18 @@ export default function ObjectivePanel() {
               }}
             >
               <Selector
-                options={remainingStageOneObjectives.map((obj) => obj.id)}
+                options={remainingStageOneObjectives}
                 hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
-                renderButton={(itemId, toggleItem) => {
-                  const objective = objectives[itemId];
-                  if (!objective) {
-                    return null;
-                  }
+                renderButton={(itemId, itemName, toggleItem) => {
                   return (
                     <button
+                      key={itemId}
                       style={{ fontSize: "14px" }}
                       onClick={() => {
                         toggleItem(itemId, true);
                       }}
                     >
-                      {objective.name}
+                      {itemName}
                     </button>
                   );
                 }}
@@ -1604,21 +1595,18 @@ export default function ObjectivePanel() {
                 }}
               />
               <Selector
-                options={remainingStageTwoObjectives.map((obj) => obj.id)}
+                options={remainingStageTwoObjectives}
                 hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
-                renderButton={(itemId, toggleItem) => {
-                  const objective = objectives[itemId];
-                  if (!objective) {
-                    return null;
-                  }
+                renderButton={(itemId, itemName, toggleItem) => {
                   return (
                     <button
+                      key={itemId}
                       style={{ fontSize: "14px" }}
                       onClick={() => {
                         toggleItem(itemId, true);
                       }}
                     >
-                      {objective.name}
+                      {itemName}
                     </button>
                   );
                 }}

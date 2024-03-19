@@ -55,14 +55,14 @@ export function Selector<Id extends string, Name extends string>({
   const shouldAutoSelect = !!autoSelect && options.length <= 1;
 
   useEffect(() => {
-    if (shouldAutoSelect) {
+    if (shouldAutoSelect && !selectedItem) {
       const option = options[0];
       if (!option) {
         return;
       }
       toggleItem(option.id, true);
     }
-  }, [options, toggleItem, shouldAutoSelect]);
+  }, [options, toggleItem, shouldAutoSelect, selectedItem]);
 
   if (selectedItem) {
     const selectedOption = getItemWithId(selectedItem, options);
