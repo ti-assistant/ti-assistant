@@ -1,5 +1,4 @@
 import React, { CSSProperties, useContext, useState } from "react";
-import { Selector } from "../Selector";
 import { TechRow } from "../TechRow";
 import { FactionContext, GameIdContext, TechContext } from "../context/Context";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
@@ -10,6 +9,7 @@ import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
+import { Selector } from "./Selector/Selector";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useContext(FactionContext);
@@ -31,7 +31,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
     return -1;
   });
 
-  const nekroFactionTechs = Object.keys(
+  const nekroFactionTechIds = Object.keys(
     (factions ?? {})["Nekro Virus"]?.techs ?? {}
   )
     .filter((id) => {
@@ -43,20 +43,17 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
       return !!techObj.faction;
     })
     .map((id) => id as TechId);
-  const availableNekroTechs = Object.values(techs ?? {})
-    .filter((tech) => {
-      const isResearched = orderedFactions.reduce((isResearched, faction) => {
-        return isResearched || hasTech(faction, tech.id);
-      }, false);
-      return (
-        isResearched &&
-        tech.faction &&
-        !!(factions ?? {})[tech.faction] &&
-        !nekroFactionTechs.includes(tech.id) &&
-        tech.id !== "IIHQ Modernization"
-      );
-    })
-    .map((tech) => tech.id);
+  const availableNekroTechs = Object.values(techs ?? {}).filter((tech) => {
+    const isResearched = orderedFactions.reduce((isResearched, faction) => {
+      return isResearched || hasTech(faction, tech.id);
+    }, false);
+    return (
+      isResearched &&
+      tech.faction &&
+      !!(factions ?? {})[tech.faction] &&
+      tech.id !== "IIHQ Modernization"
+    );
+  });
 
   return (
     <div className={styles.factionTechsColumn}>
@@ -118,7 +115,9 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                       <Selector
                         buttonStyle={{ fontSize: "14px" }}
                         hoverMenuLabel="Valefar Assimilator"
-                        options={availableNekroTechs}
+                        options={availableNekroTechs.filter(
+                          (tech) => tech.id !== nekroFactionTechIds[1]
+                        )}
                         toggleItem={(techId, add) => {
                           if (!gameId) {
                             return;
@@ -150,12 +149,14 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                             </div>
                           );
                         }}
-                        selectedItem={nekroFactionTechs[0]}
+                        selectedItem={nekroFactionTechIds[0]}
                       />
                       <Selector
                         buttonStyle={{ fontSize: "14px" }}
                         hoverMenuLabel="Valefar Assimilator"
-                        options={availableNekroTechs}
+                        options={availableNekroTechs.filter(
+                          (tech) => tech.id !== nekroFactionTechIds[0]
+                        )}
                         toggleItem={(techId, add) => {
                           if (!gameId) {
                             return;
@@ -187,7 +188,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                             </div>
                           );
                         }}
-                        selectedItem={nekroFactionTechs[1]}
+                        selectedItem={nekroFactionTechIds[1]}
                       />
                     </>
                   ) : (

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./GenericModal.module.scss";
 
@@ -15,12 +15,19 @@ export default function GenericModal({
   visible,
 }: PropsWithChildren<ModalProps>) {
   const zIndex = 900 * (level ?? 1);
+  const nodeRef = useRef<HTMLDivElement>(null);
 
-  function onExited(node: HTMLElement) {
-    node.style.display = "none";
+  function onExited() {
+    if (!nodeRef.current) {
+      return;
+    }
+    nodeRef.current.style.display = "none";
   }
-  function onEnter(node: HTMLElement) {
-    node.style.display = "flex";
+  function onEnter() {
+    if (!nodeRef.current) {
+      return;
+    }
+    nodeRef.current.style.display = "flex";
   }
   return (
     <CSSTransition
@@ -29,8 +36,10 @@ export default function GenericModal({
       classNames="fade"
       onEnter={onEnter}
       onExited={onExited}
+      nodeRef={nodeRef}
     >
       <div
+        ref={nodeRef}
         className={`${styles.Modal} ${visible ? styles.shown : ""}`}
         style={{
           zIndex: zIndex + 3,
