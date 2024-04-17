@@ -52,26 +52,56 @@ function AbilitySection({
   );
 }
 
-const KEYWORDS = ["ACTION:", "DEPLOY:", "UNLOCK:"];
+const KEYWORDS = [
+  // ACTION
+  "ACTION:",
+  "AKTION:",
+  // DEPLOY
+  "DEPLOY:",
+  "EINSATZ:",
+  // UNLOCK
+  "UNLOCK:",
+];
 
 const ABILITY_REGEX = [
+  // PRODUCTION
   /PRODUCTION( [1-9]| X)?/gi,
+  /PRODUKTION( [1-9]| X)?/gi,
+  // ANTI-FIGHTER BARRAGE
   /ANTI-FIGHTER BARRAGE( [1-9] \(x[1-9]\))?/gi,
+  // BOMBARDMENT
   /BOMBARDMENT( [1-9] \(x[1-9]\))?/gi,
+  /BOMBARDEMENT( [1-9] \(x[1-9]\))?/gi,
+  // SPACE CANNON
   /SPACE CANNON( [1-9]( \(x[1-9]\))?)?/gi,
+  /WELTRAUMKANONE( [1-9]( \(x[1-9]\))?)?/gi,
+  // SUSTAIN DAMAGE
   /SUSTAIN DAMAGE/gi,
+  /SCHADENSRESISTENZ/gi,
+  // PLANETARY SHIELD
   /PLANETARY SHIELD/gi,
+  /PLANETARER SCHILD/gi,
   // Faction specific keywords
   /MITOSIS/gi,
+  /ZELLTEILUNG/gi,
   /AWAKEN/gi,
+  /ERWECKEN/gi,
   /STAR FORGE/gi,
+  /STERNENSCHMIEDE/gi,
   /ORBITAL DROP/gi,
+  /ORBITALE LANDUNG/gi,
   /PILLAGE/gi,
+  /PLÜNDERN/gi,
   /TELEPATHIC/gi,
+  /TELEPATHIE/gi,
   /TECHNOLOGICAL SINGULARITY/gi,
+  /TECHNOLOGISCHE SINGULARITÄT/gi,
   /FRAGILE/gi,
+  /ZERBRECHLICH/gi,
   /INDOCTRINATION/gi,
+  /MISSIONIEREN/gi,
   /STALL TACTICS/gi,
+  /VERZÖGERUNGSTAKTIK/gi,
   // DS Faction specific keywords
   /RALLY TO THE CAUSE/gi,
   /RECYCLED MATERIALS/gi,
