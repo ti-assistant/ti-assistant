@@ -50,7 +50,7 @@
   "+mUg6N": [
     {
       "type": 0,
-      "value": "Baut die Galaxie"
+      "value": "Galaxie aufbauen"
     }
   ],
   "+tb/XA": [
@@ -122,7 +122,7 @@
   "0MawcE": [
     {
       "type": 0,
-      "value": "Sobald eine Agenda aufgedeckt worden ist"
+      "value": "Sobald eine Agenda aufgedeckt wird"
     }
   ],
   "0NYmNN": [
@@ -165,6 +165,12 @@
     {
       "type": 0,
       "value": "Biotechnik"
+    }
+  ],
+  "2dmEIv": [
+    {
+      "type": 0,
+      "value": "Fähigkeiten"
     }
   ],
   "2hHU0G": [
@@ -238,7 +244,7 @@
   "4n1LQO": [
     {
       "type": 0,
-      "value": "Spielername..."
+      "value": "Name..."
     }
   ],
   "4wSR75": [
@@ -247,16 +253,28 @@
       "value": "Standard"
     }
   ],
+  "5/RTAm": [
+    {
+      "type": 0,
+      "value": "Gesetz"
+    }
+  ],
   "5Bl4Ek": [
     {
       "type": 0,
-      "value": "Auftragskarten"
+      "value": "Siegpunkte"
     }
   ],
   "5ChhqO": [
     {
       "type": 0,
-      "value": "Eine weitere Aktion durchführen"
+      "value": "Weitere Aktion durchführen"
+    }
+  ],
+  "5FWWeX": [
+    {
+      "type": 0,
+      "value": "Verfügbar"
     }
   ],
   "5R8kPv": [
@@ -292,7 +310,7 @@
   "6L07nG": [
     {
       "type": 0,
-      "value": "Öffentlichen Auftrag aufdecken"
+      "value": "Auftrag aufdecken"
     }
   ],
   "73882v": [
@@ -339,10 +357,40 @@
       "value": "Spielaufbau"
     }
   ],
+  "9eqKm5": [
+    {
+      "type": 0,
+      "value": "Einzigartige "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Einheit"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Einheiten"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "9m91nk": [
     {
       "type": 0,
-      "value": "Auftrags-Ansicht"
+      "value": "Punkteübersicht"
     }
   ],
   "A5p5qF": [
@@ -908,7 +956,7 @@
     },
     {
       "type": 0,
-      "value": "Nachdem der Besitzer diser Karte seine Massenprodukte aufgefüllt hat, erhält er 1 Handelsware pro Spieler, dessen Nachbar er ist."
+      "value": "Nachdem der Besitzer dieser Karte seine Massenprodukte aufgefüllt hat, erhält er 1 Handelsware pro Spieler, dessen Nachbar er ist."
     }
   ],
   "Agendas.Minister of Commerce.Title": [
@@ -2412,7 +2460,7 @@
   "CKpFBk": [
     {
       "type": 0,
-      "value": "Ziehe 2 geheime Aufträge und behaltet 1"
+      "value": "2 geheime Aufträge ziehen und 1 behalten"
     }
   ],
   "COzTbT": [
@@ -2424,7 +2472,7 @@
   "ChW/ih": [
     {
       "type": 0,
-      "value": "Ziehe 5 Stufe-II-Auftragskarten"
+      "value": "5 Stufe-II-Auftragskarten ziehen"
     }
   ],
   "Clan of Saar.Abilities.Nomadic.Description": [
@@ -3690,7 +3738,7 @@
   "Dw1fzR": [
     {
       "type": 0,
-      "value": "Planeten aktualisieren"
+      "value": "Planeten ändern"
     }
   ],
   "E9UhAA": [
@@ -3721,6 +3769,16 @@
     {
       "type": 0,
       "value": " neulich erobert"
+    }
+  ],
+  "EAsvAe": [
+    {
+      "type": 0,
+      "value": "Wähle "
+    },
+    {
+      "type": 1,
+      "value": "outcomeType"
     }
   ],
   "Ecx237": [
@@ -4557,6 +4615,16 @@
       "value": "Tausch bestätigen"
     }
   ],
+  "GR4fXA": [
+    {
+      "type": 0,
+      "value": "Alternative abhandeln: "
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    }
+  ],
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": [
     {
       "type": 0,
@@ -4902,13 +4970,13 @@
   "Jdx9F+": [
     {
       "type": 0,
-      "value": "Entfernt Kommandomarker"
+      "value": "Kommandomarker entfernen"
     }
   ],
   "Jh0WRk": [
     {
       "type": 0,
-      "value": "Spieleranzahl"
+      "value": "Anzahl Spieler"
     }
   ],
   "K1ks2a": [
@@ -4925,6 +4993,12 @@
     {
       "type": 0,
       "value": "Endstand"
+    }
+  ],
+  "Kqms7v": [
+    {
+      "type": 0,
+      "value": "Anlegen"
     }
   ],
   "KzTGw5": [
@@ -5173,6 +5247,12 @@
       "value": "Enthalten"
     }
   ],
+  "Leaders.Hero.Unlock": [
+    {
+      "type": 0,
+      "value": "Du musst 3 gewertete Aufträge haben."
+    }
+  ],
   "Lm8L7/": [
     {
       "type": 0,
@@ -5182,7 +5262,7 @@
   "Lrn2Da": [
     {
       "type": 0,
-      "value": "Aufträge aktualisieren"
+      "value": "Aufträge ändern"
     }
   ],
   "M0ywrk": [
@@ -6474,7 +6554,7 @@
   "NxpzKH": [
     {
       "type": 0,
-      "value": "Ende des Zuges"
+      "value": "Zug beenden"
     }
   ],
   "OVn1wE": [
@@ -8152,7 +8232,7 @@
   "S0vXJt": [
     {
       "type": 0,
-      "value": "Einsatzbereit"
+      "value": "In Bereitschaft"
     }
   ],
   "SOC2Bh": [
@@ -8393,6 +8473,12 @@
     {
       "type": 0,
       "value": "Kriegsführung"
+    }
+  ],
+  "Sw+CbI": [
+    {
+      "type": 0,
+      "value": "Held"
     }
   ],
   "SyY9is": [
@@ -9094,7 +9180,97 @@
   "USnh0f": [
     {
       "type": 0,
-      "value": "Technologien aktualisieren"
+      "value": "Technologien ändern"
+    }
+  ],
+  "Unit.Stats.Capacity": [
+    {
+      "type": 0,
+      "value": "KAPAZITÄT"
+    }
+  ],
+  "Unit.Stats.Combat": [
+    {
+      "type": 0,
+      "value": "KAMPF"
+    }
+  ],
+  "Unit.Stats.Cost": [
+    {
+      "type": 0,
+      "value": "KOSTEN"
+    }
+  ],
+  "Unit.Stats.Move": [
+    {
+      "type": 0,
+      "value": "BEWEGUNG"
+    }
+  ],
+  "Units.Carrier": [
+    {
+      "type": 0,
+      "value": "Träger"
+    }
+  ],
+  "Units.Cruiser": [
+    {
+      "type": 0,
+      "value": "Kreuzer"
+    }
+  ],
+  "Units.Destroyer": [
+    {
+      "type": 0,
+      "value": "Zerstörer"
+    }
+  ],
+  "Units.Dreadnought": [
+    {
+      "type": 0,
+      "value": "Schlachtschiff"
+    }
+  ],
+  "Units.Fighter": [
+    {
+      "type": 0,
+      "value": "Jäger"
+    }
+  ],
+  "Units.Flagship": [
+    {
+      "type": 0,
+      "value": "Flaggschiff"
+    }
+  ],
+  "Units.Infantry": [
+    {
+      "type": 0,
+      "value": "Infanterie"
+    }
+  ],
+  "Units.Mech": [
+    {
+      "type": 0,
+      "value": "Mech"
+    }
+  ],
+  "Units.PDS": [
+    {
+      "type": 0,
+      "value": "PVS"
+    }
+  ],
+  "Units.Space Dock": [
+    {
+      "type": 0,
+      "value": "Raumwerft"
+    }
+  ],
+  "Units.War Sun": [
+    {
+      "type": 0,
+      "value": "Kriegssonne"
     }
   ],
   "Universities of Jol-Nar.Abilities.Analytical.Description": [
@@ -9293,10 +9469,22 @@
       "value": "Schildpalisade"
     }
   ],
+  "V7viK1": [
+    {
+      "type": 0,
+      "value": "Unbeanspruchte Planeten"
+    }
+  ],
+  "VIWZO7": [
+    {
+      "type": 0,
+      "value": "Stimmen"
+    }
+  ],
   "VjlCY0": [
     {
       "type": 0,
-      "value": "Aktualisieren"
+      "value": "Angaben ändern"
     }
   ],
   "Vuil'raith Cabal.Abilities.Amalgamation.Description": [
@@ -9795,6 +9983,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "X3VPhD": [
+    {
+      "type": 0,
+      "value": "Extra"
     }
   ],
   "X7zR7a": [
@@ -10642,7 +10836,7 @@
   "e1q7sg": [
     {
       "type": 0,
-      "value": "Beschreibungen anzeigen"
+      "value": "Ziele anzeigen"
     }
   ],
   "e8vqxH": [
@@ -10682,7 +10876,13 @@
   "eGEjSH": [
     {
       "type": 0,
-      "value": "Imperium-Punkte"
+      "value": "Punkte durch Imperium"
+    }
+  ],
+  "eO0b2t": [
+    {
+      "type": 0,
+      "value": "Agent"
     }
   ],
   "entq4x": [
@@ -10694,7 +10894,7 @@
   "fCdj3q": [
     {
       "type": 0,
-      "value": "Werte Auftrag während Aktionsphase"
+      "value": "Auftrag während Aktionsphase werten"
     }
   ],
   "fVAave": [
@@ -10703,10 +10903,22 @@
       "value": "Details"
     }
   ],
+  "frzrrT": [
+    {
+      "type": 0,
+      "value": "FREISCHALTEN:"
+    }
+  ],
+  "fxKsk7": [
+    {
+      "type": 0,
+      "value": "Commander"
+    }
+  ],
   "g92Jbl": [
     {
       "type": 0,
-      "value": "Aktualisierungen pausiert"
+      "value": "Änderungen sind pausiert"
     }
   ],
   "gQ0twG": [
@@ -10757,6 +10969,12 @@
     {
       "type": 0,
       "value": " beanspruchen"
+    }
+  ],
+  "ifN0t/": [
+    {
+      "type": 0,
+      "value": "Alternative"
     }
   ],
   "j3n7Nr": [
@@ -11003,7 +11221,7 @@
   "p4V2Yv": [
     {
       "type": 0,
-      "value": "Ziehe 5 Stufe-I-Auftragskarten"
+      "value": "5 Stufe-I-Auftragskarten ziehen"
     }
   ],
   "p9XVGB": [
@@ -11214,6 +11432,12 @@
       "value": "Verordnungen"
     }
   ],
+  "tM6gjG": [
+    {
+      "type": 0,
+      "value": "Verordnung"
+    }
+  ],
   "tocXJ4": [
     {
       "type": 0,
@@ -11228,10 +11452,6 @@
   ],
   "urcttb": [
     {
-      "type": 0,
-      "value": "Mache "
-    },
-    {
       "options": {
         "3": {
           "value": [
@@ -11245,7 +11465,7 @@
           "value": [
             {
               "type": 0,
-              "value": "all"
+              "value": "Alle"
             }
           ]
         }
@@ -11255,7 +11475,13 @@
     },
     {
       "type": 0,
-      "value": " Planeten spielbereit, dann"
+      "value": " Planeten spielbereit machen"
+    }
+  ],
+  "uxvbkq": [
+    {
+      "type": 0,
+      "value": "Resultate"
     }
   ],
   "vTtJ6S": [
@@ -11386,6 +11612,42 @@
     {
       "type": 0,
       "value": "Hauptanzeige"
+    }
+  ],
+  "yXj5iL": [
+    {
+      "type": 0,
+      "value": "Vertrags"
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "karte"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "karten"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "yctdL8": [
+    {
+      "type": 0,
+      "value": "Fraktionstechnologien"
     }
   ],
   "ymJxS0": [

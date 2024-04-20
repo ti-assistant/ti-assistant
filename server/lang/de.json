@@ -32,7 +32,7 @@
     "description": "Text used to identify the current game."
   },
   "+mUg6N": {
-    "defaultMessage": "Baut die Galaxie",
+    "defaultMessage": "Galaxie aufbauen",
     "description": "A step in the setup phase: Build the Galaxy."
   },
   "+tb/XA": {
@@ -64,7 +64,7 @@
     "description": "Strategy card."
   },
   "0MawcE": {
-    "defaultMessage": "Sobald eine Agenda aufgedeckt worden ist",
+    "defaultMessage": "Sobald eine Agenda aufgedeckt wird",
     "description": "Label on hover menu for actions that happen when an agenda is revealed."
   },
   "0NYmNN": {
@@ -94,6 +94,10 @@
   "2I5JBO": {
     "defaultMessage": "Biotechnik",
     "description": "Title of green techs."
+  },
+    "2dmEIv": {
+    "defaultMessage": "Fähigkeiten",
+    "description": "Header for a section listing out abilities."
   },
   "2hHU0G": {
     "defaultMessage": "Aufwertungen für Einheiten",
@@ -136,20 +140,28 @@
     "description": "A button that will open the supporters page."
   },
   "4n1LQO": {
-    "defaultMessage": "Spielername...",
+    "defaultMessage": "Name...",
     "description": "Initial text in a textbox used to input a player's name"
   },
   "4wSR75": {
     "defaultMessage": "Standard",
     "description": "Text on a button specifying that the map style should be standard."
   },
+    "5/RTAm": {
+    "defaultMessage": "Gesetz",
+    "description": "Agenda type that has an ongoing effect if passed."
+  },
   "5Bl4Ek": {
-    "defaultMessage": "Auftragskarten",
+    "defaultMessage": "Siegpunkte",
     "description": "Cards that define how to score victory points."
   },
   "5ChhqO": {
-    "defaultMessage": "Eine weitere Aktion durchführen",
+    "defaultMessage": "Weitere Aktion durchführen",
     "description": "Text on a button that will let the player take another action."
+  },
+    "5FWWeX": {
+    "defaultMessage": "Verfügbar",
+    "description": "Header for column listing how many votes players have available."
   },
   "5R8kPv": {
     "defaultMessage": "Sprecher-Aktionen",
@@ -172,7 +184,7 @@
     "description": "Label for selecting a public objective."
   },
   "6L07nG": {
-    "defaultMessage": "Öffentlichen Auftrag aufdecken",
+    "defaultMessage": "Auftrag aufdecken",
     "description": "Text telling the user to reveal an objective."
   },
   "73882v": {
@@ -199,8 +211,12 @@
     "defaultMessage": "Spielaufbau",
     "description": "Text identifying that this is the setup step."
   },
+    "9eqKm5": {
+    "defaultMessage": "Einzigartige {count, plural, one {Einheit} other {Einheiten}}",
+    "description": "Header for section listing out unique units."
+  },
   "9m91nk": {
-    "defaultMessage": "Auftrags-Ansicht",
+    "defaultMessage": "Punkteübersicht",
     "description": "Text on a button that opens the objective view of the assistant."
   },
   "A5p5qF": {
@@ -428,7 +444,7 @@
     "description": "Title of Agenda Card: Minister of Antiques"
   },
   "Agendas.Minister of Commerce.Description": {
-    "defaultMessage": "Der gewählte Spieler erhält diese Karte.{br}Nachdem der Besitzer diser Karte seine Massenprodukte aufgefüllt hat, erhält er 1 Handelsware pro Spieler, dessen Nachbar er ist.",
+    "defaultMessage": "Der gewählte Spieler erhält diese Karte.{br}Nachdem der Besitzer dieser Karte seine Massenprodukte aufgefüllt hat, erhält er 1 Handelsware pro Spieler, dessen Nachbar er ist.",
     "description": "Description for Agenda Card: Minister of Commerce"
   },
   "Agendas.Minister of Commerce.Title": {
@@ -1132,7 +1148,7 @@
     "description": "Text showing that something will occur at the end of a specific phase."
   },
   "CKpFBk": {
-    "defaultMessage": "Ziehe 2 geheime Aufträge und behaltet 1",
+    "defaultMessage": "2 geheime Aufträge ziehen und 1 behalten",
     "description": "A step in the setup phase: Draw 2 secret objectives and keep 1."
   },
   "COzTbT": {
@@ -1140,7 +1156,7 @@
     "description": "Text shown on a button that will pause the game."
   },
   "ChW/ih": {
-    "defaultMessage": "Ziehe 5 Stufe-II-Auftragskarten",
+    "defaultMessage": "5 Stufe-II-Auftragskarten ziehen",
     "description": "A step in the setup phase: Draw 5 stage I objectives."
   },
   "Clan of Saar.Abilities.Nomadic.Description": {
@@ -1816,12 +1832,16 @@
     "description": "Label for section of scored action phase objectives."
   },
   "Dw1fzR": {
-    "defaultMessage": "Planeten aktualisieren",
+    "defaultMessage": "Planeten ändern",
     "description": "Text shown on a button that opens the update planets panel."
   },
   "E9UhAA": {
     "defaultMessage": "{count, plural, one {Planet wurde} other {Planeten wurden}} neulich erobert",
     "description": "Label for section of newly controlled planets."
+  },
+    "EAsvAe": {
+    "defaultMessage": "Wähle {outcomeType}",
+    "description": "Text explaining what players should be voting for."
   },
   "Ecx237": {
     "defaultMessage": "Skinny",
@@ -2267,6 +2287,10 @@
     "defaultMessage": "Tausch bestätigen",
     "description": "Text on a button that will apply a Strategy Card swap."
   },
+    "GR4fXA": {
+    "defaultMessage": "Alternative abhandeln: {outcome}",
+    "description": "Text on a button that resolves the current agenda with a specific outcome."
+  },
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": {
     "defaultMessage": "Sobald der Spielplan zusammengesetzt wird, platziere das Tor von Creuss (Tafel Nr. 17) dort, wo normalerweise dein Heimat-System platziert werden würde. Das Tor von Creuss ist kein Heimat-System. Platziere dann dein Heimat-System (Tafel Nr. 51) in deinem Spielbereich.",
     "description": "Description for Faction Ability: Creuss Gate"
@@ -2424,11 +2448,11 @@
     "description": "Text on a button that will make a faction the speaker."
   },
   "Jdx9F+": {
-    "defaultMessage": "Entfernt Kommandomarker",
+    "defaultMessage": "Kommandomarker entfernen",
     "description": "Instruction telling players to remove command tokens."
   },
   "Jh0WRk": {
-    "defaultMessage": "Spieleranzahl",
+    "defaultMessage": "Anzahl Spieler",
     "description": "Label for a selector to change the number of players"
   },
   "K1ks2a": {
@@ -2438,6 +2462,10 @@
   "KiioBO": {
     "defaultMessage": "Endstand",
     "description": "An ordering of factions based on end game scoring."
+  },
+    "Kqms7v": {
+    "defaultMessage": "Anlegen",
+    "description": "Text on a button that displays the attachment menu for a planet."
   },
   "KzTGw5": {
     "defaultMessage": "Veto oder Antrag ablehnen oder Politische Gefälligkeit",
@@ -2571,12 +2599,16 @@
     "defaultMessage": "Enthalten",
     "description": "Outcome choosing not to vote."
   },
+    "Leaders.Hero.Unlock": {
+    "defaultMessage": "Du musst 3 gewertete Aufträge haben.",
+    "description": "Unlock condition for all heroes."
+  },
   "Lm8L7/": {
     "defaultMessage": "Farbe",
     "description": "Text on a hover menu for picking a player's color."
   },
   "Lrn2Da": {
-    "defaultMessage": "Aufträge aktualisieren",
+    "defaultMessage": "Aufträge ändern",
     "description": "Text shown on a button that opens the update objectives panel."
   },
   "M0ywrk": {
@@ -3240,7 +3272,7 @@
     "description": "Title of blue techs."
   },
   "NxpzKH": {
-    "defaultMessage": "Ende des Zuges",
+    "defaultMessage": "Zug beenden",
     "description": "Text on a button that will end the player's turn."
   },
   "OVn1wE": {
@@ -4272,7 +4304,7 @@
     "description": "The faction that Council Keleres chooses."
   },
   "S0vXJt": {
-    "defaultMessage": "Einsatzbereit",
+    "defaultMessage": "In Bereitschaft",
     "description": "Label showing that the specific player is up next."
   },
   "SOC2Bh": {
@@ -4402,6 +4434,10 @@
   "Strategy Cards.Warfare.Title": {
     "defaultMessage": "Kriegsführung",
     "description": "Title of Strategy Card: Warfare"
+  },
+    "Sw+CbI": {
+    "defaultMessage": "Held",
+    "description": "The title of a hero: a leader that gets used once per game."
   },
   "SyY9is": {
     "defaultMessage": "{count} {count, plural, one {Schlachtschiff} other {Schlachtschiffe}}",
@@ -4796,8 +4832,68 @@
     "description": "Text on a hover menu for claiming an empty planet."
   },
   "USnh0f": {
-    "defaultMessage": "Technologien aktualisieren",
+    "defaultMessage": "Technologien ändern",
     "description": "Text shown on a button that opens the update techs panel."
+  },
+    "Unit.Stats.Capacity": {
+    "defaultMessage": "KAPAZITÄT",
+    "description": "Label for unit stat block - capacity value of the unit."
+  },
+  "Unit.Stats.Combat": {
+    "defaultMessage": "KAMPF",
+    "description": "Label for unit stat block - combat value of the unit."
+  },
+  "Unit.Stats.Cost": {
+    "defaultMessage": "KOSTEN",
+    "description": "Label for unit stat block - cost of the unit."
+  },
+  "Unit.Stats.Move": {
+    "defaultMessage": "BEWEGUNG",
+    "description": "Label for unit stat block - move value of the unit."
+  },
+  "Units.Carrier": {
+    "defaultMessage": "Träger",
+    "description": "Title of Carrier."
+  },
+  "Units.Cruiser": {
+    "defaultMessage": "Kreuzer",
+    "description": "Title of Cruiser."
+  },
+  "Units.Destroyer": {
+    "defaultMessage": "Zerstörer",
+    "description": "Title of Destroyer."
+  },
+  "Units.Dreadnought": {
+    "defaultMessage": "Schlachtschiff",
+    "description": "Title of Dreadnought."
+  },
+  "Units.Fighter": {
+    "defaultMessage": "Jäger",
+    "description": "Title of Fighter."
+  },
+  "Units.Flagship": {
+    "defaultMessage": "Flaggschiff",
+    "description": "Title of Flagship."
+  },
+  "Units.Infantry": {
+    "defaultMessage": "Infanterie",
+    "description": "Title of Infantry."
+  },
+  "Units.Mech": {
+    "defaultMessage": "Mech",
+    "description": "Title of Mech."
+  },
+  "Units.PDS": {
+    "defaultMessage": "PVS",
+    "description": "Title of PDS."
+  },
+  "Units.Space Dock": {
+    "defaultMessage": "Raumwerft",
+    "description": "Title of Space Dock."
+  },
+  "Units.War Sun": {
+    "defaultMessage": "Kriegssonne",
+    "description": "Title of War Sun."
   },
   "Universities of Jol-Nar.Abilities.Analytical.Description": {
     "defaultMessage": "Sobald du eine Technologien erforschst, die keine Aufwertungstechnologie für eine Einheit ist, darfst du 1 Voraussetzung ignorieren.",
@@ -4903,8 +4999,16 @@
     "defaultMessage": "Schildpalisade",
     "description": "Title of Faction Unit: Shield Paling"
   },
+    "V7viK1": {
+    "defaultMessage": "Unbeanspruchte Planeten",
+    "description": "Header for a section of planets that no player controls."
+  },
+  "VIWZO7": {
+    "defaultMessage": "Stimmen",
+    "description": "Header for column listing how many votes players have cast."
+  },
   "VjlCY0": {
-    "defaultMessage": "Aktualisieren",
+    "defaultMessage": "Angaben ändern",
     "description": "Text specifying a section that includes update operations."
   },
   "Vuil'raith Cabal.Abilities.Amalgamation.Description": {
@@ -5134,6 +5238,10 @@
   "WpoPPE": {
     "defaultMessage": "{count} {count, plural, one {PVS} other {PVS}}",
     "description": "A number of PDS units."
+  },
+    "X3VPhD": {
+    "defaultMessage": "Extra",
+    "description": "Header for column listing how many extra votes players have cast."
   },
   "X7zR7a": {
     "defaultMessage": "Unterstütze TI Assistant",
@@ -5588,7 +5696,7 @@
     "description": "Type of action involving activating a system."
   },
   "e1q7sg": {
-    "defaultMessage": "Beschreibungen anzeigen",
+    "defaultMessage": "Ziele anzeigen",
     "description": "Text on a button that will display descriptions."
   },
   "e8vqxH": {
@@ -5596,23 +5704,35 @@
     "description": "A number of Fighter units."
   },
   "eGEjSH": {
-    "defaultMessage": "Imperium-Punkte",
+    "defaultMessage": "Punkte durch Imperium",
     "description": "The title of points granted from using Imperial."
+  },
+    "eO0b2t": {
+    "defaultMessage": "Agent",
+    "description": "The title of an agent: a leader that can get used once per round."
   },
   "entq4x": {
     "defaultMessage": "Titel anzeigen",
     "description": "Text on a button that will display titles."
   },
   "fCdj3q": {
-    "defaultMessage": "Werte Auftrag während Aktionsphase",
+    "defaultMessage": "Auftrag während Aktionsphase werten",
     "description": "Text on a hover menu allowing a player to score an action phase objective."
   },
   "fVAave": {
     "defaultMessage": "Details",
     "description": "Label for a section containing additional details."
   },
+    "frzrrT": {
+    "defaultMessage": "FREISCHALTEN:",
+    "description": "Text that gets pre-fixed to a leader unlock condition."
+  },
+  "fxKsk7": {
+    "defaultMessage": "Commander",
+    "description": "The title of a commander: a leader that provides a passive ability."
+  },
   "g92Jbl": {
-    "defaultMessage": "Aktualisierungen pausiert",
+    "defaultMessage": "Änderungen sind pausiert",
     "description": "Text telling the user that updates are paused."
   },
   "gQ0twG": {
@@ -5642,6 +5762,10 @@
   "iFF5UN": {
     "defaultMessage": "{planet} beanspruchen",
     "description": "Text on a button that allows a player to claim a planet."
+  },
+    "ifN0t/": {
+    "defaultMessage": "Alternative",
+    "description": "Header for column listing what voting outcome players have selected."
   },
   "j3n7Nr": {
     "defaultMessage": "Technologie-Planeten",
@@ -5708,7 +5832,7 @@
     "description": "Text on a hover menu that will display the current laws that have been passed."
   },
   "p4V2Yv": {
-    "defaultMessage": "Ziehe 5 Stufe-I-Auftragskarten",
+    "defaultMessage": "5 Stufe-I-Auftragskarten ziehen",
     "description": "A step in the setup phase: Draw 5 stage I objectives."
   },
   "p9XVGB": {
@@ -5775,6 +5899,10 @@
     "defaultMessage": "Verordnungen",
     "description": "Agenda cards that do not have an ongoing effect."
   },
+    "tM6gjG": {
+    "defaultMessage": "Verordnung",
+    "description": "Agenda type that does not have an ongoing effect."
+  },
   "tocXJ4": {
     "defaultMessage": "Zurücksetzen",
     "description": "Text on a button that will reset selections."
@@ -5784,8 +5912,12 @@
     "description": "Text telling the user to close the dialog to resume."
   },
   "urcttb": {
-    "defaultMessage": "Mache {num, select, 3 {3} other {all}} Planeten spielbereit, dann",
+    "defaultMessage": "{num, select, 3 {3} other {Alle}} Planeten spielbereit machen",
     "description": "Text explaining how many planets to ready."
+  },
+    "uxvbkq": {
+    "defaultMessage": "Resultate",
+    "description": "Label for section describing the results of voting on an agenda."
   },
   "vTtJ6S": {
     "defaultMessage": "Aktiver Spieler",
@@ -5838,6 +5970,14 @@
   "yBACfb": {
     "defaultMessage": "Hauptanzeige",
     "description": "Text on a button that opens the main screen of the assistant."
+  },
+    "yXj5iL": {
+    "defaultMessage": "Vertrags{count, plural, one {karte} other {karten}}",
+    "description": "Header for a section listing out promissory notes."
+  },
+  "yctdL8": {
+    "defaultMessage": "Fraktionstechnologien",
+    "description": "Header for a section listing out various faction technologies."
   },
   "ymJxS0": {
     "defaultMessage": "Dafür",
