@@ -187,6 +187,76 @@ export function getTargets(
   return [];
 }
 
+export function translateOutcome(
+  target: string | undefined,
+  elect: OutcomeType | undefined,
+  planets: Partial<Record<PlanetId, Planet>>,
+  factions: Partial<Record<FactionId, Faction>>,
+  objectives: Partial<Record<ObjectiveId, Objective>>,
+  agendas: Partial<Record<AgendaId, Agenda>>,
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
+  intl: IntlShape
+) {
+  if (!target || !elect) {
+    return undefined;
+  }
+  let displayText = target;
+  switch (elect) {
+    case "Cultural Planet":
+    case "Hazardous Planet":
+    case "Industrial Planet":
+    case "Non-Home Planet Other Than Mecatol Rex":
+    case "Planet":
+      const planet = planets[target as PlanetId];
+      if (!planet) {
+        break;
+      }
+      displayText = planet.name;
+      break;
+    case "Player":
+      const faction = factions[target as FactionId];
+      displayText = getFactionName(faction);
+      break;
+    case "Scored Secret Objective":
+      const objective = objectives[target as ObjectiveId];
+      if (!objective) {
+        break;
+      }
+      displayText = objective.name;
+      break;
+    case "Law":
+      const agenda = agendas[target as AgendaId];
+      if (!agenda) {
+        break;
+      }
+      displayText = agenda.name;
+      break;
+    case "Strategy Card":
+      const card = strategyCards[target as StrategyCardId];
+      if (!card) {
+        break;
+      }
+      displayText = card.name;
+      break;
+    case "For/Against":
+      if (target === "For") {
+        displayText = intl.formatMessage({
+          id: "ymJxS0",
+          defaultMessage: "For",
+          description: "Outcome choosing to pass a law.",
+        });
+      } else {
+        displayText = intl.formatMessage({
+          id: "SOC2Bh",
+          defaultMessage: "Against",
+          description: "Outcome choosing to vote down a law.",
+        });
+      }
+      break;
+  }
+  return displayText;
+}
+
 export function canFactionPredict(
   factionId: FactionId,
   currentTurn: ActionLogEntry[]
@@ -412,7 +482,10 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
   const state = useContext(StateContext);
+  const strategyCards = useContext(StrategyCardContext);
 
   const intl = useIntl();
 
@@ -467,7 +540,17 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
                   &#x2715;
                 </div>
               )}
-              <i>{riderString(rider.rider, intl)}</i>: {rider.outcome}
+              <i>{riderString(rider.rider, intl)}</i>:{" "}
+              {translateOutcome(
+                rider.outcome,
+                agenda?.elect,
+                planets,
+                factions,
+                objectives,
+                agendas,
+                strategyCards,
+                intl
+              )}
             </div>
           );
         })}
@@ -899,7 +982,11 @@ function VotingSection({
                 className="flexRow"
                 style={{ width: "100%", justifyContent: "center" }}
               >
-                Other
+                <FormattedMessage
+                  id="sgqLYB"
+                  defaultMessage="Other"
+                  description="Text on a button used to select a non-listed value"
+                />
                 <NumberInput
                   value={factionVotes.extraVotes}
                   maxValue={99}

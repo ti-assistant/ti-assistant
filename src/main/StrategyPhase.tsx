@@ -558,7 +558,11 @@ export default function StrategyPhase() {
       aiRevolution.activeRound === state?.round
     ) {
       abilities["Every Player"].push({
-        name: "Anti-Intellectual Revolution [Against]",
+        name: `${aiRevolution.name} [${intl.formatMessage({
+          id: "SOC2Bh",
+          defaultMessage: "Against",
+          description: "Outcome choosing to vote down a law.",
+        })}]`,
         description: aiRevolution.failedText ?? aiRevolution.description,
       });
     }
@@ -570,7 +574,11 @@ export default function StrategyPhase() {
       armsReduction.activeRound === state?.round
     ) {
       abilities["Every Player"].push({
-        name: "Arms Reduction [Against]",
+        name: `${armsReduction.name} [${intl.formatMessage({
+          id: "SOC2Bh",
+          defaultMessage: "Against",
+          description: "Outcome choosing to vote down a law.",
+        })}]`,
         description: armsReduction.failedText ?? armsReduction.description,
       });
     }
@@ -582,7 +590,11 @@ export default function StrategyPhase() {
       newConstitution.activeRound === state?.round
     ) {
       abilities["Every Player"].push({
-        name: "New Constitution [For]",
+        name: `${newConstitution.name} [${intl.formatMessage({
+          id: "ymJxS0",
+          defaultMessage: "For",
+          description: "Outcome choosing to pass a law.",
+        })}]`,
         description: newConstitution.passedText ?? newConstitution.description,
       });
     }

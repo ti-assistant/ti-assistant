@@ -1,25 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
+import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import Modal from "./components/Modal/Modal";
+import { translateOutcome } from "./components/VoteBlock/VoteBlock";
+import {
+  AgendaContext,
+  FactionContext,
+  ObjectiveContext,
+  PlanetContext,
+  StrategyCardContext,
+} from "./context/Context";
+import { agendaTypeString, outcomeString } from "./util/strings";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
-  let target = null;
-  switch (agenda.elect) {
-    case "Planet":
-      target = "Any Planet";
-      break;
-    case "Cultural Planet":
-    case "Hazardous Planet":
-    case "Industrial Planet":
-    case "Player":
-    case "Strategy Card":
-    case "Law":
-    case "Scored Secret Objective":
-    case "Non-Home Planet Other Than Mecatol Rex":
-      target = agenda.elect;
-      break;
-  }
+  const intl = useIntl();
+
   const description = agenda.description.replaceAll("\\n", "\n");
   return (
     <div
@@ -35,9 +31,14 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
       }}
     >
       <div className="flexColumn">
-        {target ? (
+        {agenda.elect !== "For/Against" ? (
           <div style={{ padding: "12px", fontFamily: "Slider" }}>
-            Elect {target}
+            <FormattedMessage
+              id="EAsvAe"
+              defaultMessage="Elect {outcomeType}"
+              description="Text explaining what players should be voting for."
+              values={{ outcomeType: outcomeString(agenda.elect, intl) }}
+            />
           </div>
         ) : null}
         {description}
@@ -57,7 +58,14 @@ export function AgendaRow({
   removeAgenda,
   hideOutcome,
 }: AgendaRowProps) {
+  const agendas = useContext(AgendaContext);
+  const factions = useContext(FactionContext);
+  const objectives = useContext(ObjectiveContext);
+  const planets = useContext(PlanetContext);
+  const strategyCards = useContext(StrategyCardContext);
   const [showInfoModal, setShowInfoModal] = useState(false);
+
+  const intl = useIntl();
 
   function displayInfo() {
     setShowInfoModal(true);
@@ -74,7 +82,9 @@ export function AgendaRow({
           title={
             <div className="flexColumn" style={{ fontSize: "40px" }}>
               {agenda.name}
-              <div style={{ fontSize: "24px" }}>[{agenda.type}]</div>
+              <div style={{ fontSize: "24px" }}>
+                [{agendaTypeString(agenda.type, intl)}]
+              </div>
             </div>
           }
           level={2}
@@ -92,7 +102,20 @@ export function AgendaRow({
           >
             <div>{agenda.name}</div>
             {agenda.target && !hideOutcome ? (
-              <div>[{agenda.target}]</div>
+              <div>
+                [
+                {translateOutcome(
+                  agenda.target,
+                  agenda.elect,
+                  planets,
+                  factions,
+                  objectives,
+                  agendas,
+                  strategyCards,
+                  intl
+                )}
+                ]
+              </div>
             ) : null}
           </div>
           <div

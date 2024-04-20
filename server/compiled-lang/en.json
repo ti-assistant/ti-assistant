@@ -167,6 +167,12 @@
       "value": "Biotic"
     }
   ],
+  "2dmEIv": [
+    {
+      "type": 0,
+      "value": "Abilities"
+    }
+  ],
   "2hHU0G": [
     {
       "type": 0,
@@ -247,6 +253,12 @@
       "value": "Standard"
     }
   ],
+  "5/RTAm": [
+    {
+      "type": 0,
+      "value": "Law"
+    }
+  ],
   "5Bl4Ek": [
     {
       "type": 0,
@@ -257,6 +269,12 @@
     {
       "type": 0,
       "value": "Take Another Action"
+    }
+  ],
+  "5FWWeX": [
+    {
+      "type": 0,
+      "value": "Available"
     }
   ],
   "5R8kPv": [
@@ -337,6 +355,36 @@
     {
       "type": 0,
       "value": "Setup Game"
+    }
+  ],
+  "9eqKm5": [
+    {
+      "type": 0,
+      "value": "Unique "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unit"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Units"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "9m91nk": [
@@ -3723,6 +3771,16 @@
       "value": "count"
     }
   ],
+  "EAsvAe": [
+    {
+      "type": 0,
+      "value": "Elect "
+    },
+    {
+      "type": 1,
+      "value": "outcomeType"
+    }
+  ],
   "Ecx237": [
     {
       "type": 0,
@@ -4557,6 +4615,16 @@
       "value": "Confirm Swap"
     }
   ],
+  "GR4fXA": [
+    {
+      "type": 0,
+      "value": "Resolve with Outcome: "
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    }
+  ],
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": [
     {
       "type": 0,
@@ -4927,6 +4995,12 @@
       "value": "Final Score"
     }
   ],
+  "Kqms7v": [
+    {
+      "type": 0,
+      "value": "Attach"
+    }
+  ],
   "KzTGw5": [
     {
       "type": 0,
@@ -5171,6 +5245,12 @@
     {
       "type": 0,
       "value": "Abstain"
+    }
+  ],
+  "Leaders.Hero.Unlock": [
+    {
+      "type": 0,
+      "value": "Have 3 scored objectives."
     }
   ],
   "Lm8L7/": [
@@ -8387,6 +8467,12 @@
       "value": "Warfare"
     }
   ],
+  "Sw+CbI": [
+    {
+      "type": 0,
+      "value": "Hero"
+    }
+  ],
   "SyY9is": [
     {
       "type": 1,
@@ -9089,6 +9175,96 @@
       "value": "Update Techs"
     }
   ],
+  "Unit.Stats.Capacity": [
+    {
+      "type": 0,
+      "value": "CAPACITY"
+    }
+  ],
+  "Unit.Stats.Combat": [
+    {
+      "type": 0,
+      "value": "COMBAT"
+    }
+  ],
+  "Unit.Stats.Cost": [
+    {
+      "type": 0,
+      "value": "COST"
+    }
+  ],
+  "Unit.Stats.Move": [
+    {
+      "type": 0,
+      "value": "MOVE"
+    }
+  ],
+  "Units.Carrier": [
+    {
+      "type": 0,
+      "value": "Carrier"
+    }
+  ],
+  "Units.Cruiser": [
+    {
+      "type": 0,
+      "value": "Cruiser"
+    }
+  ],
+  "Units.Destroyer": [
+    {
+      "type": 0,
+      "value": "Destroyer"
+    }
+  ],
+  "Units.Dreadnought": [
+    {
+      "type": 0,
+      "value": "Dreadnought"
+    }
+  ],
+  "Units.Fighter": [
+    {
+      "type": 0,
+      "value": "Fighter"
+    }
+  ],
+  "Units.Flagship": [
+    {
+      "type": 0,
+      "value": "Flagship"
+    }
+  ],
+  "Units.Infantry": [
+    {
+      "type": 0,
+      "value": "Infantry"
+    }
+  ],
+  "Units.Mech": [
+    {
+      "type": 0,
+      "value": "Mech"
+    }
+  ],
+  "Units.PDS": [
+    {
+      "type": 0,
+      "value": "PDS"
+    }
+  ],
+  "Units.Space Dock": [
+    {
+      "type": 0,
+      "value": "Space Dock"
+    }
+  ],
+  "Units.War Sun": [
+    {
+      "type": 0,
+      "value": "War Sun"
+    }
+  ],
   "Universities of Jol-Nar.Abilities.Analytical.Description": [
     {
       "type": 0,
@@ -9283,6 +9459,18 @@
     {
       "type": 0,
       "value": "Shield Paling"
+    }
+  ],
+  "V7viK1": [
+    {
+      "type": 0,
+      "value": "Unclaimed Planets"
+    }
+  ],
+  "VIWZO7": [
+    {
+      "type": 0,
+      "value": "Votes"
     }
   ],
   "VjlCY0": [
@@ -9779,6 +9967,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "X3VPhD": [
+    {
+      "type": 0,
+      "value": "Extra"
     }
   ],
   "X7zR7a": [
@@ -10669,6 +10863,12 @@
       "value": "Imperial Points"
     }
   ],
+  "eO0b2t": [
+    {
+      "type": 0,
+      "value": "Agent"
+    }
+  ],
   "entq4x": [
     {
       "type": 0,
@@ -10685,6 +10885,18 @@
     {
       "type": 0,
       "value": "Details"
+    }
+  ],
+  "frzrrT": [
+    {
+      "type": 0,
+      "value": "UNLOCK:"
+    }
+  ],
+  "fxKsk7": [
+    {
+      "type": 0,
+      "value": "Commander"
     }
   ],
   "g92Jbl": [
@@ -10741,6 +10953,12 @@
     {
       "type": 1,
       "value": "planet"
+    }
+  ],
+  "ifN0t/": [
+    {
+      "type": 0,
+      "value": "Outcome"
     }
   ],
   "j3n7Nr": [
@@ -11194,6 +11412,12 @@
       "value": "Directives"
     }
   ],
+  "tM6gjG": [
+    {
+      "type": 0,
+      "value": "Directive"
+    }
+  ],
   "tocXJ4": [
     {
       "type": 0,
@@ -11236,6 +11460,12 @@
     {
       "type": 0,
       "value": " planets, then"
+    }
+  ],
+  "uxvbkq": [
+    {
+      "type": 0,
+      "value": "Results"
     }
   ],
   "vTtJ6S": [
@@ -11366,6 +11596,42 @@
     {
       "type": 0,
       "value": "Main Screen"
+    }
+  ],
+  "yXj5iL": [
+    {
+      "type": 0,
+      "value": "Promissory "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Note"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Notes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "yctdL8": [
+    {
+      "type": 0,
+      "value": "Faction Techs"
     }
   ],
   "ymJxS0": [

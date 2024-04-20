@@ -95,6 +95,10 @@
     "defaultMessage": "Biotic",
     "description": "Title of green techs."
   },
+  "2dmEIv": {
+    "defaultMessage": "Abilities",
+    "description": "Header for a section listing out abilities."
+  },
   "2hHU0G": {
     "defaultMessage": "Unit Upgrades",
     "description": "Title of uprade techs."
@@ -143,6 +147,10 @@
     "defaultMessage": "Standard",
     "description": "Text on a button specifying that the map style should be standard."
   },
+  "5/RTAm": {
+    "defaultMessage": "Law",
+    "description": "Agenda type that has an ongoing effect if passed."
+  },
   "5Bl4Ek": {
     "defaultMessage": "Objectives",
     "description": "Cards that define how to score victory points."
@@ -150,6 +158,10 @@
   "5ChhqO": {
     "defaultMessage": "Take Another Action",
     "description": "Text on a button that will let the player take another action."
+  },
+  "5FWWeX": {
+    "defaultMessage": "Available",
+    "description": "Header for column listing how many votes players have available."
   },
   "5R8kPv": {
     "defaultMessage": "Speaker Actions",
@@ -198,6 +210,10 @@
   "9DZz2w": {
     "defaultMessage": "Setup Game",
     "description": "Text identifying that this is the setup step."
+  },
+  "9eqKm5": {
+    "defaultMessage": "Unique {count, plural, one {Unit} other {Units}}",
+    "description": "Header for section listing out unique units."
   },
   "9m91nk": {
     "defaultMessage": "Objective View",
@@ -1823,6 +1839,10 @@
     "defaultMessage": "Newly Controlled {count, plural, one {Planet} other {Planets}}",
     "description": "Label for section of newly controlled planets."
   },
+  "EAsvAe": {
+    "defaultMessage": "Elect {outcomeType}",
+    "description": "Text explaining what players should be voting for."
+  },
   "Ecx237": {
     "defaultMessage": "Skinny",
     "description": "Text on a button specifying that the map style should be skinny."
@@ -2267,6 +2287,10 @@
     "defaultMessage": "Confirm Swap",
     "description": "Text on a button that will apply a Strategy Card swap."
   },
+  "GR4fXA": {
+    "defaultMessage": "Resolve with Outcome: {outcome}",
+    "description": "Text on a button that resolves the current agenda with a specific outcome."
+  },
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": {
     "defaultMessage": "When you create the game board, place the Creuss Gate (tile 17) where your home system would normally be placed. The Creuss Gate system is not a home system. Then, place your home system (tile 51) in your play area.",
     "description": "Description for Faction Ability: Creuss Gate"
@@ -2439,6 +2463,10 @@
     "defaultMessage": "Final Score",
     "description": "An ordering of factions based on end game scoring."
   },
+  "Kqms7v": {
+    "defaultMessage": "Attach",
+    "description": "Text on a button that displays the attachment menu for a planet."
+  },
   "KzTGw5": {
     "defaultMessage": "Veto or Quash or Political Favor",
     "description": "Text on a button for replacing the current agenda."
@@ -2570,6 +2598,10 @@
   "LaXLjN": {
     "defaultMessage": "Abstain",
     "description": "Outcome choosing not to vote."
+  },
+  "Leaders.Hero.Unlock": {
+    "defaultMessage": "Have 3 scored objectives.",
+    "description": "Unlock condition for all heroes."
   },
   "Lm8L7/": {
     "defaultMessage": "Color",
@@ -4403,6 +4435,10 @@
     "defaultMessage": "Warfare",
     "description": "Title of Strategy Card: Warfare"
   },
+  "Sw+CbI": {
+    "defaultMessage": "Hero",
+    "description": "The title of a hero: a leader that gets used once per game."
+  },
   "SyY9is": {
     "defaultMessage": "{count} {count, plural, one {Dreadnought} other {Dreadnoughts}}",
     "description": "A number of Dreadnought units."
@@ -4799,6 +4835,66 @@
     "defaultMessage": "Update Techs",
     "description": "Text shown on a button that opens the update techs panel."
   },
+  "Unit.Stats.Capacity": {
+    "defaultMessage": "CAPACITY",
+    "description": "Label for unit stat block - capacity value of the unit."
+  },
+  "Unit.Stats.Combat": {
+    "defaultMessage": "COMBAT",
+    "description": "Label for unit stat block - combat value of the unit."
+  },
+  "Unit.Stats.Cost": {
+    "defaultMessage": "COST",
+    "description": "Label for unit stat block - cost of the unit."
+  },
+  "Unit.Stats.Move": {
+    "defaultMessage": "MOVE",
+    "description": "Label for unit stat block - move value of the unit."
+  },
+  "Units.Carrier": {
+    "defaultMessage": "Carrier",
+    "description": "Title of Carrier."
+  },
+  "Units.Cruiser": {
+    "defaultMessage": "Cruiser",
+    "description": "Title of Cruiser."
+  },
+  "Units.Destroyer": {
+    "defaultMessage": "Destroyer",
+    "description": "Title of Destroyer."
+  },
+  "Units.Dreadnought": {
+    "defaultMessage": "Dreadnought",
+    "description": "Title of Dreadnought."
+  },
+  "Units.Fighter": {
+    "defaultMessage": "Fighter",
+    "description": "Title of Fighter."
+  },
+  "Units.Flagship": {
+    "defaultMessage": "Flagship",
+    "description": "Title of Flagship."
+  },
+  "Units.Infantry": {
+    "defaultMessage": "Infantry",
+    "description": "Title of Infantry."
+  },
+  "Units.Mech": {
+    "defaultMessage": "Mech",
+    "description": "Title of Mech."
+  },
+  "Units.PDS": {
+    "defaultMessage": "PDS",
+    "description": "Title of PDS."
+  },
+  "Units.Space Dock": {
+    "defaultMessage": "Space Dock",
+    "description": "Title of Space Dock."
+  },
+  "Units.War Sun": {
+    "defaultMessage": "War Sun",
+    "description": "Title of War Sun."
+  },
   "Universities of Jol-Nar.Abilities.Analytical.Description": {
     "defaultMessage": "When you research a technology that is not a unit upgrade technology, you may ignore 1 prerequisite.",
     "description": "Description for Faction Ability: Analytical"
@@ -4902,6 +4998,14 @@
   "Universities of Jol-Nar.Units.Shield Paling.Title": {
     "defaultMessage": "Shield Paling",
     "description": "Title of Faction Unit: Shield Paling"
+  },
+  "V7viK1": {
+    "defaultMessage": "Unclaimed Planets",
+    "description": "Header for a section of planets that no player controls."
+  },
+  "VIWZO7": {
+    "defaultMessage": "Votes",
+    "description": "Header for column listing how many votes players have cast."
   },
   "VjlCY0": {
     "defaultMessage": "Update",
@@ -5134,6 +5238,10 @@
   "WpoPPE": {
     "defaultMessage": "{count} {count, plural, one {PDS} other {PDS}}",
     "description": "A number of PDS units."
+  },
+  "X3VPhD": {
+    "defaultMessage": "Extra",
+    "description": "Header for column listing how many extra votes players have cast."
   },
   "X7zR7a": {
     "defaultMessage": "Help support TI Assistant",
@@ -5599,6 +5707,10 @@
     "defaultMessage": "Imperial Points",
     "description": "The title of points granted from using Imperial."
   },
+  "eO0b2t": {
+    "defaultMessage": "Agent",
+    "description": "The title of an agent: a leader that can get used once per round."
+  },
   "entq4x": {
     "defaultMessage": "Display Titles",
     "description": "Text on a button that will display titles."
@@ -5610,6 +5722,14 @@
   "fVAave": {
     "defaultMessage": "Details",
     "description": "Label for a section containing additional details."
+  },
+  "frzrrT": {
+    "defaultMessage": "UNLOCK:",
+    "description": "Text that gets pre-fixed to a leader unlock condition."
+  },
+  "fxKsk7": {
+    "defaultMessage": "Commander",
+    "description": "The title of a commander: a leader that provides a passive ability."
   },
   "g92Jbl": {
     "defaultMessage": "Updates Paused",
@@ -5642,6 +5762,10 @@
   "iFF5UN": {
     "defaultMessage": "Claim {planet}",
     "description": "Text on a button that allows a player to claim a planet."
+  },
+  "ifN0t/": {
+    "defaultMessage": "Outcome",
+    "description": "Header for column listing what voting outcome players have selected."
   },
   "j3n7Nr": {
     "defaultMessage": "Tech Skips",
@@ -5775,6 +5899,10 @@
     "defaultMessage": "Directives",
     "description": "Agenda cards that do not have an ongoing effect."
   },
+  "tM6gjG": {
+    "defaultMessage": "Directive",
+    "description": "Agenda type that does not have an ongoing effect."
+  },
   "tocXJ4": {
     "defaultMessage": "Reset",
     "description": "Text on a button that will reset selections."
@@ -5786,6 +5914,10 @@
   "urcttb": {
     "defaultMessage": "Ready {num, select, 3 {3} other {all}} planets, then",
     "description": "Text explaining how many planets to ready."
+  },
+  "uxvbkq": {
+    "defaultMessage": "Results",
+    "description": "Label for section describing the results of voting on an agenda."
   },
   "vTtJ6S": {
     "defaultMessage": "Active Player",
@@ -5838,6 +5970,14 @@
   "yBACfb": {
     "defaultMessage": "Main Screen",
     "description": "Text on a button that opens the main screen of the assistant."
+  },
+  "yXj5iL": {
+    "defaultMessage": "Promissory {count, plural, one {Note} other {Notes}}",
+    "description": "Header for a section listing out promissory notes."
+  },
+  "yctdL8": {
+    "defaultMessage": "Faction Techs",
+    "description": "Header for a section listing out various faction technologies."
   },
   "ymJxS0": {
     "defaultMessage": "For",

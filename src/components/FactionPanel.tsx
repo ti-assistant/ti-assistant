@@ -1,6 +1,6 @@
 import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode, useContext, useState } from "react";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { GameIdContext, TechContext } from "../context/Context";
 import { buildLeaders } from "../data/GameData";
 import { updateLeaderStateAsync } from "../dynamic/api";
@@ -11,6 +11,7 @@ import styles from "./FactionPanel.module.scss";
 import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
+import { leaderTypeString, unitTypeString } from "../util/strings";
 
 function AbilitySection({
   leftLabel,
@@ -246,7 +247,16 @@ function FactionPanelContent({
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
         {factionLeaders.length > 0 ? (
-          <CollapsibleSection title="Leaders" style={{ width: "100%" }}>
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="/MkeMw"
+                defaultMessage="Leaders"
+                description="Agent, commander, and hero cards."
+              />
+            }
+            style={{ width: "100%" }}
+          >
             <div
               className="flexColumn"
               style={{
@@ -361,10 +371,22 @@ function FactionPanelContent({
                             );
                           }}
                         >
-                          {formatDescription("UNLOCK: ")}
+                          {formatDescription(
+                            intl.formatMessage({
+                              id: "frzrrT",
+                              defaultMessage: "UNLOCK: ",
+                              description:
+                                "Text that gets pre-fixed to a leader unlock condition.",
+                            })
+                          )}
                         </span>
                         {formatDescription(
-                          leader.unlock ?? "Have 3 scored objectives"
+                          leader.unlock ??
+                            intl.formatMessage({
+                              id: "Leaders.Hero.Unlock",
+                              defaultMessage: "Have 3 scored objectives.",
+                              description: "Unlock condition for all heroes.",
+                            })
                         )}
                       </div>
                     );
@@ -460,7 +482,10 @@ function FactionPanelContent({
                   <AbilitySection
                     key={leader.name}
                     leftLabel={leftLabel}
-                    rightLabel={leader.type}
+                    rightLabel={leaderTypeString(
+                      leader.type,
+                      intl
+                    ).toUpperCase()}
                   >
                     {innerContent}
                   </AbilitySection>
@@ -471,7 +496,15 @@ function FactionPanelContent({
         ) : null}
 
         {factionTechs.length > 0 ? (
-          <CollapsibleSection title="Faction Tech">
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="yctdL8"
+                defaultMessage="Faction Techs"
+                description="Header for a section listing out various faction technologies."
+              />
+            }
+          >
             <div
               className="flexColumn"
               style={{
@@ -538,7 +571,16 @@ function FactionPanelContent({
         className="flexColumn"
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
-        <CollapsibleSection title="Abilities" style={{ width: "100%" }}>
+        <CollapsibleSection
+          title={
+            <FormattedMessage
+              id="2dmEIv"
+              defaultMessage="Abilities"
+              description="Header for a section listing out abilities."
+            />
+          }
+          style={{ width: "100%" }}
+        >
           <div
             className="flexColumn"
             style={{
@@ -567,7 +609,17 @@ function FactionPanelContent({
             })}
           </div>
         </CollapsibleSection>
-        <CollapsibleSection title="Promissory Note" style={{ width: "100%" }}>
+        <CollapsibleSection
+          title={
+            <FormattedMessage
+              id="yXj5iL"
+              defaultMessage="Promissory {count, plural, one {Note} other {Notes}}"
+              description="Header for a section listing out promissory notes."
+              values={{ count: faction.promissories.length }}
+            />
+          }
+          style={{ width: "100%" }}
+        >
           <div
             className="flexColumn"
             style={{
@@ -594,7 +646,16 @@ function FactionPanelContent({
           </div>
         </CollapsibleSection>
       </div>
-      <CollapsibleSection title="Faction Unique Units">
+      <CollapsibleSection
+        title={
+          <FormattedMessage
+            id="9eqKm5"
+            defaultMessage="Unique {count, plural, one {Unit} other {Units}}"
+            description="Header for section listing out unique units."
+            values={{ count: faction.units.length }}
+          />
+        }
+      >
         <div
           className="flexColumn"
           style={{
@@ -610,7 +671,7 @@ function FactionPanelContent({
               <AbilitySection
                 key={index}
                 leftLabel={leftLabel}
-                rightLabel={localUnit.type.toUpperCase()}
+                rightLabel={unitTypeString(localUnit.type, intl).toUpperCase()}
               >
                 {localUnit.description
                   ? formatDescription(localUnit.description).map(
