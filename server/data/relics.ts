@@ -188,12 +188,15 @@ export function getBaseRelics(intl: IntlShape): Record<RelicId, BaseRelic> {
       timing: "PASSIVE",
     },
     "The Obsidian": {
-      description: intl.formatMessage({
-        id: "Relics.The Obsidian.Description",
-        description: "Description for Relic: The Obsidian",
-        defaultMessage:
-          "When you gain this card, draw 1 secret objective. You can have 1 additional scored or unscored secret objective.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Relics.The Obsidian.Description",
+          description: "Description for Relic: The Obsidian",
+          defaultMessage:
+            "When you gain this card, draw 1 secret objective. You can have 1 additional scored or unscored secret objective.",
+        },
+        { br: "\n\n" }
+      ),
       expansion: "POK",
       id: "The Obsidian",
       name: intl.formatMessage({

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-const SUPPORTED_LOCALES = ["en"];
+const SUPPORTED_LOCALES = ["en", "de"];
 
 export default async function RootLayout({
   children,

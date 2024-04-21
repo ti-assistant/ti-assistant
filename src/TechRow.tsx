@@ -5,8 +5,9 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import Modal from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
 import { getTechColor } from "./util/techs";
+import { FormattedMessage } from "react-intl";
 
-function UnitStat({ name, stat }: { name: string; stat: number | string }) {
+function UnitStat({ name, stat }: { name: ReactNode; stat: number | string }) {
   return (
     <div
       style={{
@@ -46,10 +47,46 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
         boxSizing: "border-box",
       }}
     >
-      <UnitStat name="COST" stat={stats.cost ?? "-"} />
-      <UnitStat name="COMBAT" stat={stats.combat ?? "-"} />
-      <UnitStat name="MOVE" stat={stats.move ?? "-"} />
-      <UnitStat name="CAPACITY" stat={stats.capacity ?? "-"} />
+      <UnitStat
+        name={
+          <FormattedMessage
+            id="Unit.Stats.Cost"
+            defaultMessage="COST"
+            description="Label for unit stat block - cost of the unit."
+          />
+        }
+        stat={stats.cost ?? "-"}
+      />
+      <UnitStat
+        name={
+          <FormattedMessage
+            id="Unit.Stats.Combat"
+            defaultMessage="COMBAT"
+            description="Label for unit stat block - combat value of the unit."
+          />
+        }
+        stat={stats.combat ?? "-"}
+      />
+      <UnitStat
+        name={
+          <FormattedMessage
+            id="Unit.Stats.Move"
+            defaultMessage="MOVE"
+            description="Label for unit stat block - move value of the unit."
+          />
+        }
+        stat={stats.move ?? "-"}
+      />
+      <UnitStat
+        name={
+          <FormattedMessage
+            id="Unit.Stats.Capacity"
+            defaultMessage="CAPACITY"
+            description="Label for unit stat block - capacity value of the unit."
+          />
+        }
+        stat={stats.capacity ?? "-"}
+      />
     </div>
   );
 }

@@ -693,9 +693,17 @@ export default function StatusPhase() {
       const factionAbilities: Ability[] = [];
       if (faction.id === "Arborec") {
         factionAbilities.push({
-          name: "Mitosis",
-          description:
-            "Place 1 Infantry from your reinforcements on any planet you control",
+          name: intl.formatMessage({
+            id: "Arborec.Abilities.Mitosis.Title",
+            defaultMessage: "Mitosis",
+            description: "Title of Faction Ability: Mitosis",
+          }),
+          description: intl.formatMessage({
+            id: "Arborec.Abilities.Mitosis.Description",
+            defaultMessage:
+              "Your space docks cannot produce infantry. At the start of the status phase, place 1 infantry from your reinforcements on any planet you control.",
+            description: "Description for Faction Ability: Mitosis",
+          }),
         });
       }
       if (
@@ -703,9 +711,17 @@ export default function StatusPhase() {
         hasTech(faction, "Wormhole Generator")
       ) {
         factionAbilities.push({
-          name: "Wormhole Generator",
-          description:
-            "Place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships",
+          name: intl.formatMessage({
+            id: "Ghosts of Creuss.Techs.Wormhole Generator.Title",
+            defaultMessage: "Wormhole Generator",
+            description: "Title of Tech: Wormhole Generator",
+          }),
+          description: intl.formatMessage({
+            id: "Ghosts of Creuss.Techs.Wormhole Generator.Description",
+            defaultMessage:
+              "At the start of the status phase, place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
+            description: "Description for Tech: Wormhole Generator",
+          }),
         });
       }
       if (factionAbilities.length > 0) {
@@ -764,16 +780,32 @@ export default function StatusPhase() {
       const factionAbilities: Ability[] = [];
       if (faction.id === "Federation of Sol") {
         factionAbilities.push({
-          name: "Flagship: Genesis",
-          description:
-            "If your flagship is on the game board, place 1 Infantry from your reinforcements in its system's space area",
+          name: intl.formatMessage({
+            id: "Federation of Sol.Units.Genesis.Title",
+            defaultMessage: "Genesis",
+            description: "Title of Faction Unit: Genesis",
+          }),
+          description: intl.formatMessage({
+            id: "Federation of Sol.Units.Genesis.Description",
+            defaultMessage:
+              "At the end of the status phase, place 1 infantry from your reinforcements in this system's space area.",
+            description: "Description for Faction Unit: Genesis",
+          }),
         });
       }
       if (hasTech(faction, "Bioplasmosis")) {
         factionAbilities.push({
-          name: "Bioplasmosis",
-          description:
-            "You may remove any number of Infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems",
+          name: intl.formatMessage({
+            id: "Arborec.Techs.Bioplasmosis.Title",
+            defaultMessage: "Bioplasmosis",
+            description: "Title of Tech: Bioplasmosis",
+          }),
+          description: intl.formatMessage({
+            id: "Arborec.Techs.Bioplasmosis.Description",
+            defaultMessage:
+              "At the end of the status phase, you may remove any number of your infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems.",
+            description: "Description for Tech: Bioplasmosis",
+          }),
         });
       }
       if (
@@ -782,7 +814,11 @@ export default function StatusPhase() {
         ministerOfPolicy.target == faction.id
       ) {
         factionAbilities.push({
-          name: "Minister of Policy",
+          name: intl.formatMessage({
+            id: "Agendas.Minister of Policy.Title",
+            defaultMessage: "Minister of Policy",
+            description: "Title of Agenda Card: Minister of Policy",
+          }),
           description:
             ministerOfPolicy.passedText ?? ministerOfPolicy.description,
         });
@@ -1075,7 +1111,16 @@ export default function StatusPhase() {
         </NumberedItem>
         {!hasEndOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
-            <ClientOnlyHoverMenu label="End of Status Phase Abilities">
+            <ClientOnlyHoverMenu
+              label={
+                <FormattedMessage
+                  id="CG2MQj"
+                  description="Text showing that something will occur at the end of a specific phase."
+                  defaultMessage="End of {phase} Phase"
+                  values={{ phase: phaseString("STATUS", intl) }}
+                />
+              }
+            >
               <div className="flexColumn" style={{ padding: "8px" }}>
                 {Object.entries(getEndOfStatusPhaseAbilities())
                   .sort((a, b) => {

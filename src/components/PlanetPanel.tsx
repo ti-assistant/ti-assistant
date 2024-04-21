@@ -16,6 +16,7 @@ import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import PlanetSummary from "./PlanetSummary/PlanetSummary";
+import { FormattedMessage } from "react-intl";
 
 interface ExtendedCSS extends CSSProperties {
   "--color": string;
@@ -128,7 +129,11 @@ function UnclaimedPlanetSection({}: {}) {
         className={styles.planetTitle}
         onClick={() => setCollapsed(!collapsed)}
       >
-        Unclaimed Planets
+        <FormattedMessage
+          id="V7viK1"
+          defaultMessage="Unclaimed Planets"
+          description="Header for a section of planets that no player controls."
+        />
       </div>
       <div
         className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}

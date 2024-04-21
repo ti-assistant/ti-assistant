@@ -10,6 +10,8 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
 import { Selector } from "./Selector/Selector";
+import { FormattedMessage, useIntl } from "react-intl";
+import { techTypeString } from "../util/strings";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useContext(FactionContext);
@@ -61,7 +63,11 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
         className={styles.techTitle}
         onClick={() => setCollapsed(!collapsed)}
       >
-        Faction Techs
+        <FormattedMessage
+          id="yctdL8"
+          defaultMessage="Faction Techs"
+          description="Header for a section listing out various faction technologies."
+        />
       </div>
       <div
         className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
@@ -235,14 +241,6 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   );
 }
 
-const TECH_TITLES: Record<TechType, string> = {
-  BLUE: "Propulsion",
-  GREEN: "Biotic",
-  YELLOW: "Cybernetic",
-  RED: "Warfare",
-  UPGRADE: "Unit Upgrades",
-};
-
 interface NumFactionsCSS extends CSSProperties {
   "--num-factions": number;
 }
@@ -327,6 +325,7 @@ function TechSection({
 }) {
   const factions = useContext(FactionContext);
   const techs = useContext(TechContext);
+  const intl = useIntl();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
 
@@ -357,7 +356,7 @@ function TechSection({
         onClick={() => setCollapsed(!collapsed)}
       >
         <TechIcon type={type} size={20} />
-        {TECH_TITLES[type]}
+        {techTypeString(type, intl)}
         <TechIcon type={type} size={20} />
       </div>
       <div
@@ -382,6 +381,7 @@ function TechSection({
 function UpgradeTechSection({}) {
   const factions = useContext(FactionContext);
   const techs = useContext(TechContext);
+  const intl = useIntl();
 
   const [collapsed, setCollapsed] = useState(true);
 
@@ -404,7 +404,7 @@ function UpgradeTechSection({}) {
         className="centered largeFont"
         onClick={() => setCollapsed(!collapsed)}
       >
-        {TECH_TITLES["UPGRADE"]}
+        {techTypeString("UPGRADE", intl)}
       </div>
       <div
         className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}

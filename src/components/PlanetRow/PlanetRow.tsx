@@ -236,7 +236,13 @@ export default function PlanetRow({
           {opts.showAttachButton ? (
             <div style={{ width: "56px" }}>
               {canAttach() ? (
-                <button onClick={() => displayAttachMenu()}>Attach</button>
+                <button onClick={() => displayAttachMenu()}>
+                  <FormattedMessage
+                    id="Kqms7v"
+                    defaultMessage="Attach"
+                    description="Text on a button that displays the attachment menu for a planet."
+                  />
+                </button>
               ) : null}
             </div>
           ) : null}

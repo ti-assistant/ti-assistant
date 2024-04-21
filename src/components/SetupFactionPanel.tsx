@@ -10,8 +10,9 @@ import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 // import { updateLeaderStateAsync } from "../dynamic/api";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useSearchParams } from "next/navigation";
+import { leaderTypeString, unitTypeString } from "../util/strings";
 
 function AbilitySection({
   leftLabel,
@@ -52,26 +53,56 @@ function AbilitySection({
   );
 }
 
-const KEYWORDS = ["ACTION:", "DEPLOY:", "UNLOCK:"];
+const KEYWORDS = [
+  // ACTION
+  "ACTION:",
+  "AKTION:",
+  // DEPLOY
+  "DEPLOY:",
+  "EINSATZ:",
+  // UNLOCK
+  "UNLOCK:",
+];
 
 const ABILITY_REGEX = [
+  // PRODUCTION
   /PRODUCTION( [1-9]| X)?/gi,
+  /PRODUKTION( [1-9]| X)?/gi,
+  // ANTI-FIGHTER BARRAGE
   /ANTI-FIGHTER BARRAGE( [1-9] \(x[1-9]\))?/gi,
+  // BOMBARDMENT
   /BOMBARDMENT( [1-9] \(x[1-9]\))?/gi,
+  /BOMBARDEMENT( [1-9] \(x[1-9]\))?/gi,
+  // SPACE CANNON
   /SPACE CANNON( [1-9]( \(x[1-9]\))?)?/gi,
+  /WELTRAUMKANONE( [1-9]( \(x[1-9]\))?)?/gi,
+  // SUSTAIN DAMAGE
   /SUSTAIN DAMAGE/gi,
+  /SCHADENSRESISTENZ/gi,
+  // PLANETARY SHIELD
   /PLANETARY SHIELD/gi,
+  /PLANETARER SCHILD/gi,
   // Faction specific keywords
   /MITOSIS/gi,
+  /ZELLTEILUNG/gi,
   /AWAKEN/gi,
+  /ERWECKEN/gi,
   /STAR FORGE/gi,
+  /STERNENSCHMIEDE/gi,
   /ORBITAL DROP/gi,
+  /ORBITALE LANDUNG/gi,
   /PILLAGE/gi,
+  /PLÜNDERN/gi,
   /TELEPATHIC/gi,
+  /TELEPATHIE/gi,
   /TECHNOLOGICAL SINGULARITY/gi,
+  /TECHNOLOGISCHE SINGULARITÄT/gi,
   /FRAGILE/gi,
+  /ZERBRECHLICH/gi,
   /INDOCTRINATION/gi,
+  /MISSIONIEREN/gi,
   /STALL TACTICS/gi,
+  /VERZÖGERUNGSTAKTIK/gi,
   // DS Faction specific keywords
   /RALLY TO THE CAUSE/gi,
   /RECYCLED MATERIALS/gi,
@@ -221,7 +252,16 @@ function FactionPanelContent({
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
         {factionLeaders.length > 0 ? (
-          <CollapsibleSection title="Leaders" style={{ width: "100%" }}>
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="/MkeMw"
+                defaultMessage="Leaders"
+                description="Agent, commander, and hero cards."
+              />
+            }
+            style={{ width: "100%" }}
+          >
             <div
               className="flexColumn"
               style={{
@@ -323,7 +363,10 @@ function FactionPanelContent({
                   <AbilitySection
                     key={leader.name}
                     leftLabel={leftLabel}
-                    rightLabel={leader.type}
+                    rightLabel={leaderTypeString(
+                      leader.type,
+                      intl
+                    ).toUpperCase()}
                   >
                     {innerContent}
                   </AbilitySection>
@@ -334,7 +377,15 @@ function FactionPanelContent({
         ) : null}
 
         {factionTechs.length > 0 ? (
-          <CollapsibleSection title="Faction Tech">
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="yctdL8"
+                defaultMessage="Faction Techs"
+                description="Header for a section listing out various faction technologies."
+              />
+            }
+          >
             <div
               className="flexColumn"
               style={{
@@ -401,7 +452,16 @@ function FactionPanelContent({
         className="flexColumn"
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
-        <CollapsibleSection title="Abilities" style={{ width: "100%" }}>
+        <CollapsibleSection
+          title={
+            <FormattedMessage
+              id="2dmEIv"
+              defaultMessage="Abilities"
+              description="Header for a section listing out abilities."
+            />
+          }
+          style={{ width: "100%" }}
+        >
           <div
             className="flexColumn"
             style={{
@@ -430,7 +490,17 @@ function FactionPanelContent({
             })}
           </div>
         </CollapsibleSection>
-        <CollapsibleSection title="Promissory Note" style={{ width: "100%" }}>
+        <CollapsibleSection
+          title={
+            <FormattedMessage
+              id="yXj5iL"
+              defaultMessage="Promissory {count, plural, one {Note} other {Notes}}"
+              description="Header for a section listing out promissory notes."
+              values={{ count: faction.promissories.length }}
+            />
+          }
+          style={{ width: "100%" }}
+        >
           <div
             className="flexColumn"
             style={{
@@ -457,7 +527,16 @@ function FactionPanelContent({
           </div>
         </CollapsibleSection>
       </div>
-      <CollapsibleSection title="Faction Unique Units">
+      <CollapsibleSection
+        title={
+          <FormattedMessage
+            id="9eqKm5"
+            defaultMessage="Unique {count, plural, one {Unit} other {Units}}"
+            description="Header for section listing out unique units."
+            values={{ count: faction.units.length }}
+          />
+        }
+      >
         <div
           className="flexColumn"
           style={{
@@ -473,7 +552,7 @@ function FactionPanelContent({
               <AbilitySection
                 key={index}
                 leftLabel={leftLabel}
-                rightLabel={localUnit.type.toUpperCase()}
+                rightLabel={unitTypeString(localUnit.type, intl).toUpperCase()}
               >
                 {localUnit.description
                   ? formatDescription(localUnit.description).map(

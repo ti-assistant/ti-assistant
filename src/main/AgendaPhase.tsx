@@ -11,7 +11,10 @@ import FactionIcon from "../components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
-import VoteBlock, { getTargets } from "../components/VoteBlock/VoteBlock";
+import VoteBlock, {
+  getTargets,
+  translateOutcome,
+} from "../components/VoteBlock/VoteBlock";
 import {
   ActionLogContext,
   AgendaContext,
@@ -1152,7 +1155,15 @@ function AgendaSteps() {
           {/* {currentAgenda ? <DistinguishedCouncilor /> : null} */}
           {(votes && Object.keys(votes).length > 0) ||
           getSelectedOutcome(selectedTargets, currentTurn) ? (
-            <LabeledDiv label="Results">
+            <LabeledDiv
+              label={
+                <FormattedMessage
+                  id="uxvbkq"
+                  defaultMessage="Results"
+                  description="Label for section describing the results of voting on an agenda."
+                />
+              }
+            >
               {votes && Object.keys(votes).length > 0 ? (
                 <div
                   className={flexDirection}
@@ -1166,9 +1177,19 @@ function AgendaSteps() {
                   }}
                 >
                   {Object.entries(votes).map(([target, voteCount]) => {
+                    let displayText = translateOutcome(
+                      target,
+                      localAgenda?.elect,
+                      planets,
+                      factions,
+                      objectives,
+                      agendas,
+                      strategyCards,
+                      intl
+                    );
                     return (
                       <div key={target}>
-                        {target}: {voteCount}
+                        {displayText}: {voteCount}
                       </div>
                     );
                   })}
@@ -1254,8 +1275,23 @@ function AgendaSteps() {
                   style={{ paddingTop: "8px", width: "100%" }}
                 >
                   <button onClick={completeAgenda}>
-                    Resolve with Outcome:{" "}
-                    {getSelectedOutcome(selectedTargets, currentTurn)}
+                    <FormattedMessage
+                      id="GR4fXA"
+                      defaultMessage="Resolve with Outcome: {outcome}"
+                      description="Text on a button that resolves the current agenda with a specific outcome."
+                      values={{
+                        outcome: translateOutcome(
+                          getSelectedOutcome(selectedTargets, currentTurn),
+                          localAgenda?.elect,
+                          planets,
+                          factions,
+                          objectives,
+                          agendas,
+                          strategyCards,
+                          intl
+                        ),
+                      }}
+                    />
                   </button>
                 </div>
               ) : null}
@@ -1720,7 +1756,13 @@ export default function AgendaPhase() {
                   gridTemplateColumns: "subgrid",
                 }}
               >
-                <div style={{ textAlign: "center" }}>Outcome</div>
+                <div style={{ textAlign: "center" }}>
+                  <FormattedMessage
+                    id="ifN0t/"
+                    defaultMessage="Outcome"
+                    description="Header for column listing what voting outcome players have selected."
+                  />
+                </div>
                 <div
                   className="flexColumn"
                   style={{
@@ -1732,9 +1774,27 @@ export default function AgendaPhase() {
                   {/* <div className="flexRow" style={{ gridColumn: "span 3" }}>
                     Votes
                   </div> */}
-                  <div className="flexRow">Available</div>
-                  <div className="flexRow">Votes</div>
-                  <div className="flexRow">Extra</div>
+                  <div className="flexRow">
+                    <FormattedMessage
+                      id="5FWWeX"
+                      defaultMessage="Available"
+                      description="Header for column listing how many votes players have available."
+                    />
+                  </div>
+                  <div className="flexRow">
+                    <FormattedMessage
+                      id="VIWZO7"
+                      defaultMessage="Votes"
+                      description="Header for column listing how many votes players have cast."
+                    />
+                  </div>
+                  <div className="flexRow">
+                    <FormattedMessage
+                      id="X3VPhD"
+                      defaultMessage="Extra"
+                      description="Header for column listing how many extra votes players have cast."
+                    />
+                  </div>
                 </div>
                 {/* <div
                   style={{ textAlign: "center", width: "80px" }}

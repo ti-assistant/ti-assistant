@@ -180,6 +180,32 @@ export function objectiveTypeString(type: ObjectiveType, intl: IntlShape) {
   }
 }
 
+export function leaderTypeString(type: LeaderType, intl: IntlShape) {
+  switch (type) {
+    case "AGENT":
+      return intl.formatMessage({
+        id: "eO0b2t",
+        description:
+          "The title of an agent: a leader that can get used once per round.",
+        defaultMessage: "Agent",
+      });
+    case "COMMANDER":
+      return intl.formatMessage({
+        id: "fxKsk7",
+        description:
+          "The title of a commander: a leader that provides a passive ability.",
+        defaultMessage: "Commander",
+      });
+    case "HERO":
+      return intl.formatMessage({
+        id: "Sw+CbI",
+        description:
+          "The title of a hero: a leader that gets used once per game.",
+        defaultMessage: "Hero",
+      });
+  }
+}
+
 export function outcomeString(type: OutcomeType, intl: IntlShape) {
   switch (type) {
     case "For/Against":
@@ -316,4 +342,127 @@ export function riderString(rider: string, intl: IntlShape) {
       });
   }
   return "";
+}
+
+export function techTypeString(type: TechType, intl: IntlShape) {
+  switch (type) {
+    case "BLUE":
+      return intl.formatMessage({
+        id: "Nr4DLa",
+        defaultMessage: "Propulsion",
+        description: "Title of blue techs.",
+      });
+    case "GREEN":
+      return intl.formatMessage({
+        id: "2I5JBO",
+        defaultMessage: "Biotic",
+        description: "Title of green techs.",
+      });
+    case "RED":
+      return intl.formatMessage({
+        id: "ZqAjEi",
+        defaultMessage: "Warfare",
+        description: "Title of red techs.",
+      });
+    case "YELLOW":
+      return intl.formatMessage({
+        id: "W9OGxl",
+        defaultMessage: "Cybernetic",
+        description: "Title of yellow techs.",
+      });
+    case "UPGRADE":
+      return intl.formatMessage({
+        id: "2hHU0G",
+        defaultMessage: "Unit Upgrades",
+        description: "Title of uprade techs.",
+      });
+  }
+}
+
+export function unitTypeString(type: UnitType, intl: IntlShape) {
+  switch (type) {
+    case "Carrier":
+      return intl.formatMessage({
+        id: "Units.Carrier",
+        defaultMessage: "Carrier",
+        description: "Title of Carrier.",
+      });
+    case "Cruiser":
+      return intl.formatMessage({
+        id: "Units.Cruiser",
+        defaultMessage: "Cruiser",
+        description: "Title of Cruiser.",
+      });
+    case "Destroyer":
+      return intl.formatMessage({
+        id: "Units.Destroyer",
+        defaultMessage: "Destroyer",
+        description: "Title of Destroyer.",
+      });
+    case "Dreadnought":
+      return intl.formatMessage({
+        id: "Units.Dreadnought",
+        defaultMessage: "Dreadnought",
+        description: "Title of Dreadnought.",
+      });
+    case "Fighter":
+      return intl.formatMessage({
+        id: "Units.Fighter",
+        defaultMessage: "Fighter",
+        description: "Title of Fighter.",
+      });
+    case "Flagship":
+      return intl.formatMessage({
+        id: "Units.Flagship",
+        defaultMessage: "Flagship",
+        description: "Title of Flagship.",
+      });
+    case "Infantry":
+      return intl.formatMessage({
+        id: "Units.Infantry",
+        defaultMessage: "Infantry",
+        description: "Title of Infantry.",
+      });
+    case "Mech":
+      return intl.formatMessage({
+        id: "Units.Mech",
+        defaultMessage: "Mech",
+        description: "Title of Mech.",
+      });
+    case "PDS":
+      return intl.formatMessage({
+        id: "Units.PDS",
+        defaultMessage: "PDS",
+        description: "Title of PDS.",
+      });
+    case "Space Dock":
+      return intl.formatMessage({
+        id: "Units.Space Dock",
+        defaultMessage: "Space Dock",
+        description: "Title of Space Dock.",
+      });
+    case "War Sun":
+      return intl.formatMessage({
+        id: "Units.War Sun",
+        defaultMessage: "War Sun",
+        description: "Title of War Sun.",
+      });
+  }
+}
+
+export function agendaTypeString(type: AgendaType, intl: IntlShape) {
+  switch (type) {
+    case "DIRECTIVE":
+      return intl.formatMessage({
+        id: "tM6gjG",
+        defaultMessage: "Directive",
+        description: "Agenda type that does not have an ongoing effect.",
+      });
+    case "LAW":
+      return intl.formatMessage({
+        id: "5/RTAm",
+        defaultMessage: "Law",
+        description: "Agenda type that has an ongoing effect if passed.",
+      });
+  }
 }
