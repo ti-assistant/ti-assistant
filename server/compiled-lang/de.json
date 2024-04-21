@@ -14,7 +14,7 @@
   "+8kwFc": [
     {
       "type": 0,
-      "value": "Übernehme die Kontrolle eines Planeten"
+      "value": "Die Kontrolle eines Planeten übernehmen"
     }
   ],
   "+BcBcX": [
@@ -10788,7 +10788,7 @@
   "cHsAYk": [
     {
       "type": 0,
-      "value": "Wähle Alternative"
+      "value": "Alternative wählen"
     }
   ],
   "cKaLW8": [
@@ -10918,7 +10918,7 @@
   "g92Jbl": [
     {
       "type": 0,
-      "value": "Änderungen sind pausiert"
+      "value": "Aktualisierungen sind pausiert"
     }
   ],
   "gQ0twG": [
@@ -10936,7 +10936,7 @@
   "hCXyLw": [
     {
       "type": 0,
-      "value": "Wähle Strategiekarte"
+      "value": "Strategiekarte wählen"
     }
   ],
   "hIFcXI": [
@@ -10986,7 +10986,7 @@
   "jGX605": [
     {
       "type": 0,
-      "value": "Spiele Nachtrag"
+      "value": "Nachtrag spielen"
     }
   ],
   "jgVoqe": [
@@ -11055,10 +11055,6 @@
   ],
   "lDBTCO": [
     {
-      "type": 0,
-      "value": "Decke "
-    },
-    {
       "style": null,
       "type": 2,
       "value": "count"
@@ -11101,7 +11097,7 @@
     },
     {
       "type": 0,
-      "value": " auf"
+      "value": " aufdecken"
     }
   ],
   "lGDH2d": [

@@ -8,7 +8,7 @@
     "description": "A button that will rejoin the previous game."
   },
   "+8kwFc": {
-    "defaultMessage": "Übernehme die Kontrolle eines Planeten",
+    "defaultMessage": "Die Kontrolle eines Planeten übernehmen",
     "description": "Text on a hover menu allowing a player to take control of planets."
   },
   "+BcBcX": {
@@ -5664,7 +5664,7 @@
     "description": "Label for section describing the faction that has has Assassinate Representative played on them."
   },
   "cHsAYk": {
-    "defaultMessage": "Wähle Alternative",
+    "defaultMessage": "Alternative wählen",
     "description": "Text on hover menu for selecting voting outcome."
   },
   "cKaLW8": {
@@ -5732,7 +5732,7 @@
     "description": "The title of a commander: a leader that provides a passive ability."
   },
   "g92Jbl": {
-    "defaultMessage": "Änderungen sind pausiert",
+    "defaultMessage": "Aktualisierungen sind pausiert",
     "description": "Text telling the user that updates are paused."
   },
   "gQ0twG": {
@@ -5744,7 +5744,7 @@
     "description": "Label for selecting a secret objective."
   },
   "hCXyLw": {
-    "defaultMessage": "Wähle Strategiekarte",
+    "defaultMessage": "Strategiekarte wählen",
     "description": "Label telling a player to select a strategy card."
   },
   "hIFcXI": {
@@ -5772,7 +5772,7 @@
     "description": "Text on a button that will show planets with tech skips."
   },
   "jGX605": {
-    "defaultMessage": "Spiele Nachtrag",
+    "defaultMessage": "Nachtrag spielen",
     "description": "Text on hover menu for selecting a rider to play."
   },
   "jgVoqe": {
@@ -5792,7 +5792,7 @@
     "description": "Text describing which strategy card a player is swapping for a different card."
   },
   "lDBTCO": {
-    "defaultMessage": "Decke {count, number} {type} {count, plural, one {Auftrag} other {Aufträge}} auf",
+    "defaultMessage": "{count, number} {type} {count, plural, one {Auftrag} other {Aufträge}} aufdecken",
     "description": "Instruction telling the speaker to reveal objectives."
   },
   "lGDH2d": {
