@@ -185,6 +185,12 @@
       "value": "Expansions:"
     }
   ],
+  "355TBA": [
+    {
+      "type": 0,
+      "value": "Contributors"
+    }
+  ],
   "3Taw9H": [
     {
       "type": 0,
@@ -9969,6 +9975,12 @@
       "value": "count"
     }
   ],
+  "X3Nzbr": [
+    {
+      "type": 0,
+      "value": "Patrons"
+    }
+  ],
   "X3VPhD": [
     {
       "type": 0,
@@ -10793,6 +10805,12 @@
       "value": "Options"
     }
   ],
+  "dENKlQ": [
+    {
+      "type": 0,
+      "value": "Supporters"
+    }
+  ],
   "dNmJ1r": [
     {
       "type": 0,
@@ -11017,6 +11035,16 @@
     {
       "type": 0,
       "value": "Speaker"
+    }
+  ],
+  "kq4/fY": [
+    {
+      "type": 0,
+      "value": "German Translation: "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "l6pQCt": [
