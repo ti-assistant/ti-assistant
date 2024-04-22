@@ -107,6 +107,10 @@
     "defaultMessage": "Expansions:",
     "description": "A label for a selector specifying which expansions should be enabled."
   },
+  "355TBA": {
+    "defaultMessage": "Contributors",
+    "description": "Label for section listing out people that worked on TI Assistant."
+  },
   "3Taw9H": {
     "defaultMessage": "Codex I",
     "description": "Text on a button that will enable/disable Codex I."
@@ -5239,6 +5243,10 @@
     "defaultMessage": "{count} {count, plural, one {PDS} other {PDS}}",
     "description": "A number of PDS units."
   },
+  "X3Nzbr": {
+    "defaultMessage": "Patrons",
+    "description": "Label for section listing out people that regularly donate to TI Assistant."
+  },
   "X3VPhD": {
     "defaultMessage": "Extra",
     "description": "Header for column listing how many extra votes players have cast."
@@ -5679,6 +5687,10 @@
     "defaultMessage": "Options",
     "description": "Label on a menu for changing game options"
   },
+  "dENKlQ": {
+    "defaultMessage": "Supporters",
+    "description": "Label for section listing out everyone that has donated to TI Assistant."
+  },
   "dNmJ1r": {
     "defaultMessage": "Unpause",
     "description": "Text shown on a button that will unpause the game."
@@ -5786,6 +5798,10 @@
   "knjCH0": {
     "defaultMessage": "Speaker",
     "description": "The title of the player that has the Speaker token."
+  },
+  "kq4/fY": {
+    "defaultMessage": "German Translation: {name}",
+    "description": "Credit for the german translation of TI Assistant."
   },
   "l6pQCt": {
     "defaultMessage": "Swap {firstCard} for {secondCard}",
