@@ -39,6 +39,12 @@ function PlanetSection({
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
+  updatedPlanets.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
 
   return (
     <div
@@ -119,9 +125,15 @@ function UnclaimedPlanetSection({}: {}) {
 
   const [collapsed, setCollapsed] = useState(true);
 
-  const unownedPlanets = Object.values(planets).filter(
-    (planet) => !planet.owner
-  );
+  const unownedPlanets = Object.values(planets)
+    .filter((planet) => !planet.owner)
+    .sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
 
   return (
     <div className={`${styles.planetColumn} ${styles.unclaimedColumn}`}>

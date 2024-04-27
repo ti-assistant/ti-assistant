@@ -74,6 +74,19 @@ export function TacticalAction({
   const relics = useContext(RelicContext);
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
 
+  claimablePlanets.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
+  conqueredPlanets.sort((a, b) => {
+    if (a.planet > b.planet) {
+      return 1;
+    }
+    return -1;
+  });
+
   const intl = useIntl();
 
   const custodiansScorer = getObjectiveScorers(

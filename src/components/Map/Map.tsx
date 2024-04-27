@@ -397,7 +397,7 @@ function validSystemNumber(number: string) {
   if (isNaN(intVal)) {
     return false;
   }
-  if ((intVal > 102 && intVal < 1001) || intVal > 1034) {
+  if ((intVal > 102 && intVal < 1001) || intVal > 1060) {
     return false;
   }
   return true;
@@ -870,6 +870,10 @@ export default function Map({
   updatedSystemTiles = systemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
     if (tile === "0" && updatedTile && updatedTile !== "0") {
+      const parsedTile = parseInt(updatedTile);
+      if (parsedTile > 4200) {
+        return (parsedTile - 3200).toString();
+      }
       return updatedTile;
     }
     return tile;

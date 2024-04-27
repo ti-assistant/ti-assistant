@@ -217,7 +217,34 @@ declare namespace DiscordantStars {
     | "Vaylar"
     | "Rhune"
     | "Zelian"
-    | "Gen";
+    | "Gen"
+    | "Silence"
+    | "Echo"
+    | "Tarrock"
+    | "Prism"
+    | "Troac"
+    | "Etir V"
+    | "Vioss"
+    | "Fakrenn"
+    | "San-Vit"
+    | "Lodran"
+    | "Dorvok"
+    | "Derbrae"
+    | "Rysaa"
+    | "Moln"
+    | "Salin"
+    | "Gwiyun"
+    | "Inan"
+    | "Swog"
+    | "Detic"
+    | "Lliot"
+    | "Qaak"
+    | "Larred"
+    | "Nairb"
+    | "Sierpin"
+    | "Mandle"
+    | "Regnem"
+    | "Domna";
   type SystemId =
     | 1001
     | 1002
@@ -252,7 +279,31 @@ declare namespace DiscordantStars {
     | 1031
     | 1032
     | 1033
-    | 1034;
+    | 1034
+    | 1037
+    | 1038
+    | 1039
+    | 1040
+    | 1041
+    | 1042
+    | 1043
+    | 1044
+    | 1045
+    | 1046
+    | 1047
+    | 1048
+    | 1049
+    | 1050
+    | 1051
+    | 1052
+    | 1053
+    | 1054
+    | 1055
+    | 1056
+    | 1057
+    | 1058
+    | 1059
+    | 1060;
   type TechId =
     | "Rift Engines"
     | "Emergency Deployment"

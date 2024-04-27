@@ -490,10 +490,19 @@ export function buildPlanets(storedGameData: StoredGameData) {
       !planet.faction &&
       !inGameSystems.includes(planet.system)
     ) {
-      return;
+      // TODO: Remove once Milty Draft site fixes numbering
+      if (typeof planet.system === "number") {
+        const maybeSystem = planet.system + 3200;
+        if (!inGameSystems.includes(maybeSystem as SystemId)) {
+          return;
+        }
+      } else {
+        return;
+      }
     }
-    // Maybe filter out PoK agendas.
+    // Maybe filter out PoK/DS systems. Only do it this way if not using the map to filter.
     if (
+      !isValidMapString &&
       planet.expansion !== "BASE" &&
       planet.expansion !== "BASE ONLY" &&
       !gameOptions.expansions.includes(planet.expansion)
