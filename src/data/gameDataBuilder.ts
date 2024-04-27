@@ -361,10 +361,19 @@ export function buildPlanets(
       !planet.faction &&
       !inGameSystems.includes(planet.system)
     ) {
-      return;
+      // TODO: Remove once Milty Draft site fixes numbering
+      if (typeof planet.system === "number") {
+        const maybeSystem = planet.system + 3200;
+        if (!inGameSystems.includes(maybeSystem as SystemId)) {
+          return;
+        }
+      } else {
+        return;
+      }
     }
     // Maybe filter out PoK agendas.
     if (
+      !isValidMapString &&
       planet.expansion !== "BASE" &&
       planet.expansion !== "BASE ONLY" &&
       !gameOptions.expansions.includes(planet.expansion)
