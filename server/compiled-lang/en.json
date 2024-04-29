@@ -101,6 +101,12 @@
       "value": "Leaders"
     }
   ],
+  "/amsA1": [
+    {
+      "type": 0,
+      "value": "Back"
+    }
+  ],
   "/lAAq/": [
     {
       "type": 0,
@@ -177,6 +183,12 @@
     {
       "type": 0,
       "value": "Abilities"
+    }
+  ],
+  "2fB0Ox": [
+    {
+      "type": 0,
+      "value": "Base Game"
     }
   ],
   "2hHU0G": [
@@ -6569,6 +6581,12 @@
       "value": "End Turn"
     }
   ],
+  "OAXWRP": [
+    {
+      "type": 0,
+      "value": "Map Builder"
+    }
+  ],
   "OVn1wE": [
     {
       "type": 0,
@@ -10967,6 +10985,12 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "i4Uu4m": [
+    {
+      "type": 0,
+      "value": "Hyperspace"
     }
   ],
   "iFF5UN": [

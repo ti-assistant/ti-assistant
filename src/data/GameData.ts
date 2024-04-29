@@ -643,7 +643,7 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
       leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
       leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
     }
-    
+
     if (
       leader.subFaction &&
       factions["Council Keleres"]?.startswith.faction !== leader.subFaction
@@ -705,4 +705,15 @@ export function buildBaseLeaders(options: Options, intl: IntlShape) {
   });
 
   return leaders;
+}
+
+export function buildBaseSystems() {
+  const systems: Partial<Record<SystemId, BaseSystem>> = {};
+  Object.entries(BASE_SYSTEMS).forEach(([systemId, system]) => {
+    systems[systemId as SystemId] = {
+      ...system,
+    };
+  });
+
+  return systems;
 }

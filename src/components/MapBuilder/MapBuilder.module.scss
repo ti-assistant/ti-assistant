@@ -1,0 +1,57 @@
+.rotateSixty {
+  transform: rotate(60deg);
+}
+.rotateOneTwenty {
+  transform: rotate(120deg);
+}
+.rotateOneEighty {
+  transform: rotate(180deg);
+}
+.rotateTwoForty {
+  transform: rotate(240deg);
+}
+.rotateThreeHundred {
+  transform: rotate(300deg);
+}
+
+.Map {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  width: 100%;
+}
+
+.MapBody {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.Legend {
+  position: absolute;
+  margin-left: -120%;
+  background-color: #222;
+}
+
+.LegendContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  .Map {
+    flex-direction: column;
+  }
+
+  .Legend {
+    margin-left: 0;
+    bottom: -20dvh;
+  }
+}

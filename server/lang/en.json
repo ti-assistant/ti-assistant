@@ -51,6 +51,10 @@
     "defaultMessage": "Leaders",
     "description": "Agent, commander, and hero cards."
   },
+  "/amsA1": {
+    "defaultMessage": "Back",
+    "description": "Label for selector describing the type of system tile (red or blue)."
+  },
   "/lAAq/": {
     "defaultMessage": "Score Crown of Emphidia?",
     "description": "Message asking if a specific player scored the Crown of Emphidia relic."
@@ -102,6 +106,10 @@
   "2dmEIv": {
     "defaultMessage": "Abilities",
     "description": "Header for a section listing out abilities."
+  },
+  "2fB0Ox": {
+    "defaultMessage": "Base Game",
+    "description": "Text on a button that will show/hide features related to the base game."
   },
   "2hHU0G": {
     "defaultMessage": "Unit Upgrades",
@@ -3283,6 +3291,10 @@
     "defaultMessage": "End Turn",
     "description": "Text on a button that will end the player's turn."
   },
+  "OAXWRP": {
+    "defaultMessage": "Map Builder",
+    "description": "A button that will open the map builder."
+  },
   "OVn1wE": {
     "defaultMessage": "Ready Cards",
     "description": "Instruction telling players to ready cards."
@@ -5774,6 +5786,10 @@
   "hhm3kX": {
     "defaultMessage": "Round {value}",
     "description": "The current round of the game."
+  },
+  "i4Uu4m": {
+    "defaultMessage": "Hyperspace",
+    "description": "Text on a button that will show/hide hyperspace tiles."
   },
   "iFF5UN": {
     "defaultMessage": "Claim {planet}",

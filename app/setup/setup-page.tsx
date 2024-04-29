@@ -18,6 +18,7 @@ import { Strings } from "../../src/components/strings";
 import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
 import styles from "./setup.module.scss";
+import Toggle from "../../src/components/Toggle/Toggle";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -673,69 +674,54 @@ function Options({
                   padding: `0 ${"20px"}`,
                 }}
               >
-                <button
-                  className={options.expansions.has("POK") ? "selected" : ""}
-                  onClick={() =>
-                    toggleExpansion(!options.expansions.has("POK"), "POK")
-                  }
+                <Toggle
+                  selected={options.expansions.has("POK")}
+                  toggleFn={(prevValue) => {
+                    toggleExpansion(!prevValue, "POK");
+                  }}
                 >
                   <FormattedMessage
                     id="p9XVGB"
                     description="Text on a button that will enable/disable the Prophecy of Kings expansion."
                     defaultMessage="Prophecy of Kings"
                   />
-                </button>
-                <button
-                  className={
-                    options.expansions.has("CODEX ONE") ? "selected" : ""
-                  }
-                  onClick={() =>
-                    toggleExpansion(
-                      !options.expansions.has("CODEX ONE"),
-                      "CODEX ONE"
-                    )
-                  }
+                </Toggle>
+                <Toggle
+                  selected={options.expansions.has("CODEX ONE")}
+                  toggleFn={(prevValue) => {
+                    toggleExpansion(!prevValue, "CODEX ONE");
+                  }}
                 >
                   <FormattedMessage
                     id="3Taw9H"
                     description="Text on a button that will enable/disable Codex I."
                     defaultMessage="Codex I"
                   />
-                </button>
-                <button
-                  className={
-                    options.expansions.has("CODEX TWO") ? "selected" : ""
-                  }
-                  onClick={() =>
-                    toggleExpansion(
-                      !options.expansions.has("CODEX TWO"),
-                      "CODEX TWO"
-                    )
-                  }
+                </Toggle>
+                <Toggle
+                  selected={options.expansions.has("CODEX TWO")}
+                  toggleFn={(prevValue) => {
+                    toggleExpansion(!prevValue, "CODEX TWO");
+                  }}
                 >
                   <FormattedMessage
                     id="knYKVl"
                     description="Text on a button that will enable/disable Codex II."
                     defaultMessage="Codex II"
                   />
-                </button>
-                <button
-                  className={
-                    options.expansions.has("CODEX THREE") ? "selected" : ""
-                  }
-                  onClick={() =>
-                    toggleExpansion(
-                      !options.expansions.has("CODEX THREE"),
-                      "CODEX THREE"
-                    )
-                  }
+                </Toggle>
+                <Toggle
+                  selected={options.expansions.has("CODEX THREE")}
+                  toggleFn={(prevValue) => {
+                    toggleExpansion(!prevValue, "CODEX THREE");
+                  }}
                 >
                   <FormattedMessage
                     id="zXrdrP"
                     description="Text on a button that will enable/disable Codex III."
                     defaultMessage="Codex III"
                   />
-                </button>
+                </Toggle>
               </div>
               <div
                 className="flexColumn mediumFont"
@@ -756,25 +742,18 @@ function Options({
                     padding: `0 ${"20px"}`,
                   }}
                 >
-                  <button
-                    className={
-                      options.expansions.has("DISCORDANT STARS")
-                        ? "selected"
-                        : ""
-                    }
-                    onClick={() =>
-                      toggleExpansion(
-                        !options.expansions.has("DISCORDANT STARS"),
-                        "DISCORDANT STARS"
-                      )
-                    }
+                  <Toggle
+                    selected={options.expansions.has("DISCORDANT STARS")}
+                    toggleFn={(prevValue) => {
+                      toggleExpansion(!prevValue, "DISCORDANT STARS");
+                    }}
                   >
                     <FormattedMessage
                       id="ZlvDZB"
                       description="Text on a button that will enable/disable the Discordant Stars expansion."
                       defaultMessage="Discordant Stars"
                     />
-                  </button>
+                  </Toggle>
                 </div>
               </div>
             </div>
