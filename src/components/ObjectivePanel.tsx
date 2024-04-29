@@ -1402,7 +1402,7 @@ export default function ObjectivePanel() {
             "alliance"
           )
             ? "24px"
-            : undefined,
+            : "8px",
           height: "100%",
           gap: "24px",
           isolation: "isolate",
