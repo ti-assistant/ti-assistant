@@ -31,7 +31,10 @@ export default function FactionTile({
           minWidth: `${iconSize}px`,
         }}
       >
-        <div className={styles.Icon} style={{ height: `${iconSize}px` }}>
+        <div
+          className={styles.Icon}
+          style={{ height: `${iconSize}px`, opacity: "60%" }}
+        >
           <FactionIcon factionId={faction.id} size="100%" />
         </div>
         <div className={styles.Name}>{getFactionName(faction)}</div>

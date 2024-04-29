@@ -13,6 +13,9 @@ export const FactionContext = createContext<
   Partial<Record<FactionId, Faction>>
 >({});
 export const GameIdContext = createContext<string>("");
+export const LeaderContext = createContext<Partial<Record<LeaderId, Leader>>>(
+  {}
+);
 export const ObjectiveContext = createContext<
   Partial<Record<ObjectiveId, Objective>>
 >({});

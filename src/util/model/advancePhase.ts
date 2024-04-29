@@ -91,6 +91,20 @@ export class AdvancePhaseHandler implements Handler {
           updates[`strategycards.${strategyCard.id}.order`] = "DELETE";
           updates[`strategycards.${strategyCard.id}.used`] = "DELETE";
         }
+        for (const [componentId, component] of Object.entries(
+          this.gameData.components ?? {}
+        )) {
+          if (component.state === "exhausted") {
+            updates[`components.${componentId}.state`] = "DELETE";
+          }
+        }
+        for (const [leaderId, leader] of Object.entries(
+          this.gameData.leaders ?? {}
+        )) {
+          if (leader.state === "exhausted") {
+            updates[`leaders.${leaderId}.state`] = "DELETE";
+          }
+        }
         if (this.data.event.skipAgenda) {
           updates[`state.phase`] = "STRATEGY";
           updates[`state.round`] = this.gameData.state.round + 1;

@@ -51,4 +51,14 @@
     width: 28px;
     height: 28px;
   }
+
+  .LangSelect {
+    display: flex;
+    position: fixed;
+    top: unset;
+    bottom: 32px;
+    right: 30px;
+    left: unset;
+    z-index: 2;
+  }
 }

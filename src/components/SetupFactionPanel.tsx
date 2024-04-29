@@ -1,6 +1,6 @@
 import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode, useState } from "react";
-import { buildBaseTechs, buildLeaders } from "../data/GameData";
+import { buildBaseTechs, buildBaseLeaders } from "../data/GameData";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import GenericModal from "./GenericModal/GenericModal";
@@ -204,7 +204,7 @@ function FactionPanelContent({
   const gameId = searchParams?.get("gameid");
   const intl = useIntl();
   const techs = buildBaseTechs(options, intl);
-  const leaders = buildLeaders(options, intl);
+  const leaders = buildBaseLeaders(options, intl);
 
   if (!faction) {
     return null;

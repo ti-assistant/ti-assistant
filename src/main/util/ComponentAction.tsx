@@ -1,15 +1,18 @@
 "use client";
 
 import React, { CSSProperties, ReactNode, useContext, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
 import { TechRow } from "../../TechRow";
 import FactionSelectRadialMenu from "../../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../components/LabeledLine/LabeledLine";
 import Modal from "../../components/Modal/Modal";
 import PlanetRow from "../../components/PlanetRow/PlanetRow";
+import { Selector } from "../../components/Selector/Selector";
 import { TacticalAction } from "../../components/TacticalAction";
 import TechSelectHoverMenu from "../../components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
@@ -18,6 +21,7 @@ import {
   ComponentContext,
   FactionContext,
   GameIdContext,
+  LeaderContext,
   ObjectiveContext,
   PlanetContext,
   RelicContext,
@@ -26,7 +30,6 @@ import {
 import {
   addAttachmentAsync,
   addTechAsync,
-  claimPlanetAsync,
   gainRelicAsync,
   loseRelicAsync,
   playComponentAsync,
@@ -34,12 +37,10 @@ import {
   removeTechAsync,
   selectFactionAsync,
   selectSubComponentAsync,
-  unclaimPlanetAsync,
   unplayComponentAsync,
-  updatePlanetStateAsync,
+  updatePlanetStateAsync
 } from "../../dynamic/api";
 import {
-  getAttachments,
   getClaimedPlanets,
   getGainedRelic,
   getPurgedPlanet,
@@ -47,21 +48,15 @@ import {
   getResearchedTechs,
   getScoredObjectives,
   getSelectedFaction,
-  getSelectedSubComponent,
+  getSelectedSubComponent
 } from "../../util/actionLog";
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import {
-  applyAllPlanetAttachments,
-  applyPlanetAttachments,
+  applyAllPlanetAttachments
 } from "../../util/planets";
 import { pluralize } from "../../util/util";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Selector } from "../../components/Selector/Selector";
-import AttachmentSelectRadialMenu from "../../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
-import PlanetIcon from "../../components/PlanetIcon/PlanetIcon";
-import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -95,6 +90,8 @@ function ComponentSelect({
   selectComponent: (componentName: string) => void;
 }) {
   const factions = useContext(FactionContext);
+  const leaders = useContext(LeaderContext);
+
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
       (component) => component.type !== "TECH"
@@ -103,8 +100,15 @@ function ComponentSelect({
     (component) => component.type === "CARD"
   );
   const techs = components.filter((component) => component.type === "TECH");
-  const leaders = nonTechComponents
+  const leaderComponents = nonTechComponents
     .filter((component) => component.type === "LEADER")
+    .filter((component) => {
+      const leader = leaders[component.id as LeaderId];
+      if (!leader) {
+        return false;
+      }
+      return leader.state !== "purged";
+    })
     .sort((a, b) => {
       if (a.leader === "AGENT") {
         return -1;
@@ -234,7 +238,7 @@ function ComponentSelect({
           </div>
         </ClientOnlyHoverMenu>
       ) : null}
-      {leaders.length > 0 ? (
+      {leaderComponents.length > 0 ? (
         <ClientOnlyHoverMenu
           label={
             <FormattedMessage
@@ -248,7 +252,11 @@ function ComponentSelect({
             className="flexColumn"
             style={{ alignItems: "stretch", padding: "8px" }}
           >
-            {leaders.map((component) => {
+            {leaderComponents.map((component) => {
+              const leader = leaders[component.id as LeaderId];
+              if (!leader || leader.state === "purged") {
+                return null;
+              }
               return (
                 <div className="flexColumn" key={component.id}>
                   <LabeledDiv
@@ -256,12 +264,7 @@ function ComponentSelect({
                     label={capitalizeFirstLetter(component.leader ?? "")}
                   >
                     <button
-                      className={
-                        component.state === "exhausted" ||
-                        component.state === "used"
-                          ? "faded"
-                          : ""
-                      }
+                      className={leader.state === "exhausted" ? "faded" : ""}
                       onClick={() => selectComponent(component.id)}
                     >
                       {component.name}
@@ -912,6 +915,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       const destroyedPlanet = getPurgedPlanet(currentTurn);
       if (destroyedPlanet) {
         leftLabel = "Destroyed Planet";
+        nonHomeNonLegendaryNonMecatolPlanets.push({
+          id: destroyedPlanet,
+          name: destroyedPlanet,
+        } as Planet);
       }
       innerContent = (
         <div
@@ -1425,6 +1432,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   const components = useContext(ComponentContext);
   const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
+  const leaders = useContext(LeaderContext);
   const relics = useContext(RelicContext);
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);

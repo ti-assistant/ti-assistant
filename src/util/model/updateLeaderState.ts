@@ -12,20 +12,8 @@ export class UpdateLeaderStateHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`leaders.${this.data.event.leaderId}.state`]: this.data.event.state,
     };
-
-    switch (this.data.event.leaderType) {
-      case "COMMANDER": {
-        updates[`factions.${this.data.event.factionId}.commander`] =
-          this.data.event.state;
-        break;
-      }
-      case "HERO": {
-        updates[`factions.${this.data.event.factionId}.hero`] =
-          this.data.event.state;
-        break;
-      }
-    }
 
     return updates;
   }
@@ -40,10 +28,12 @@ export class UpdateLeaderStateHandler implements Handler {
   getActionLogAction(entry: ActionLogEntry): ActionLogAction {
     if (
       entry.data.action === "UPDATE_LEADER_STATE" &&
-      entry.data.event.factionId === this.data.event.factionId &&
-      entry.data.event.leaderType === this.data.event.leaderType
+      entry.data.event.leaderId === this.data.event.leaderId
     ) {
-      return "DELETE";
+      if (entry.data.event.prevState === this.data.event.state) {
+        return "DELETE";
+      }
+      return "IGNORE";
     }
     return "IGNORE";
   }

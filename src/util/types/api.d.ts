@@ -81,6 +81,7 @@ interface GameData {
   attachments?: Partial<Record<AttachmentId, Attachment>>;
   components?: Record<string, Component>;
   factions: Partial<Record<FactionId, Faction>>;
+  leaders: Partial<Record<LeaderId, Leader>>;
   objectives?: Partial<Record<ObjectiveId, Objective>>;
   options: Options;
   planets: Partial<Record<PlanetId, Planet>>;
@@ -97,6 +98,7 @@ interface StoredGameData {
   attachments?: Partial<Record<AttachmentId, GameAttachment>>;
   components?: Record<string, GameComponent>;
   factions: Partial<Record<FactionId, GameFaction>>;
+  leaders?: Partial<Record<LeaderId, GameLeader>>;
   objectives?: Record<string, GameObjective>;
   options: Options;
   planets: Partial<Record<PlanetId, GamePlanet>>;
@@ -537,9 +539,9 @@ interface UnswapStrategyCardsData {
 }
 
 interface UpdateLeaderStateEvent {
-  factionId: FactionId;
-  leaderType: LeaderType;
+  leaderId: LeaderId;
   state: LeaderState;
+  prevState?: LeaderState;
 }
 
 interface UpdateLeaderStateData {

@@ -8,7 +8,13 @@ type ComponentType =
   | "RELIC"
   | "TECH";
 
-type ComponentState = "exhausted" | "purged" | "used" | "one-left";
+type ComponentState =
+  | "exhausted"
+  | "purged"
+  | "used"
+  | "one-left"
+  | "readied"
+  | "locked";
 
 type Timing =
   | "AGENDA_PHASE"
@@ -43,6 +49,12 @@ interface BaseLeader {
   type: LeaderType;
   unlock?: string;
 }
+
+interface GameLeader {
+  state?: LeaderState;
+}
+
+type Leader = BaseLeader & GameLeader;
 
 interface BaseTechComponent {
   description: string;
