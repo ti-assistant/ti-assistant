@@ -374,12 +374,12 @@ function FactionPanelContent({
                           {formatDescription(
                             intl.formatMessage({
                               id: "frzrrT",
-                              defaultMessage: "UNLOCK: ",
+                              defaultMessage: "UNLOCK:",
                               description:
                                 "Text that gets pre-fixed to a leader unlock condition.",
                             })
                           )}
-                        </span>
+                        </span>{" "}
                         {formatDescription(
                           leader.unlock ??
                             intl.formatMessage({
