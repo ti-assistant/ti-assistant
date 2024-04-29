@@ -8,6 +8,7 @@ import {
   ObjectiveContext,
   OptionContext,
   PlanetContext,
+  RelicContext,
   StateContext,
   StrategyCardContext,
 } from "../../context/Context";
@@ -26,6 +27,7 @@ import {
   getPlayedRiders,
   getAllVotes,
   getFactionVotes,
+  getPlayedRelic,
 } from "../../util/actionLog";
 import {
   getCurrentPhasePreviousLogEntries,
@@ -756,6 +758,7 @@ function VotingSection({
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
+  const relics = useContext(RelicContext);
   const state = useContext(StateContext);
   const strategycards = useContext(StrategyCardContext);
 
@@ -799,7 +802,7 @@ function VotingSection({
   const hasVotableTarget =
     !!factionVotes?.target && factionVotes?.target !== "Abstain";
 
-  const { influence } = computeRemainingVotes(
+  let { influence } = computeRemainingVotes(
     factionId,
     factions,
     planets,
@@ -809,6 +812,17 @@ function VotingSection({
     state,
     getCurrentPhasePreviousLogEntries(actionLog ?? [])
   );
+
+  const mawOfWorlds = relics["Maw of Worlds"];
+  if (mawOfWorlds && mawOfWorlds.owner === factionId) {
+    const mawEvent: MawOfWorldsEvent | undefined = getPlayedRelic(
+      actionLog,
+      "Maw of Worlds"
+    ) as MawOfWorldsEvent | undefined;
+    if (mawEvent) {
+      influence = 0;
+    }
+  }
   let castExtraVotes = factionVotes?.extraVotes ?? 0;
   const usingPredictive = getActionCardTargets(
     currentTurn,
@@ -1020,9 +1034,10 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   const factions = useContext(FactionContext);
   const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
+  const relics = useContext(RelicContext);
   const state = useContext(StateContext);
 
-  const { influence, extraVotes } = computeRemainingVotes(
+  let { influence, extraVotes } = computeRemainingVotes(
     factionId,
     factions,
     planets,
@@ -1032,6 +1047,16 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
     state,
     getCurrentPhasePreviousLogEntries(actionLog)
   );
+  const mawOfWorlds = relics["Maw of Worlds"];
+  if (mawOfWorlds && mawOfWorlds.owner === factionId) {
+    const mawEvent: MawOfWorldsEvent | undefined = getPlayedRelic(
+      actionLog,
+      "Maw of Worlds"
+    ) as MawOfWorldsEvent | undefined;
+    if (mawEvent) {
+      influence = 0;
+    }
+  }
 
   const availableVotesStyle: AvailableVotesStyle = {
     "--height": "35px",

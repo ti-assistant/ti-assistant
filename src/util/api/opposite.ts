@@ -18,6 +18,7 @@ import { MarkSecondaryHandler } from "../model/markSecondary";
 import { UnplayActionCardHandler } from "../model/playActionCard";
 import { UnplayComponentHandler } from "../model/playComponent";
 import { UnplayPromissoryNoteHandler } from "../model/playPromissoryNote";
+import { UnplayRelicHandler } from "../model/playRelic";
 import { UnplayRiderHandler } from "../model/playRider";
 import {
   RepealAgendaHandler,
@@ -417,6 +418,15 @@ export function getOppositeHandler(
     }
     case "START_VOTING": {
       return new UnstartVotingHandler(gameData, data);
+    }
+    case "PLAY_RELIC": {
+      return new UnplayRelicHandler(gameData, {
+        action: "UNPLAY_RELIC",
+        event: data.event,
+      });
+    }
+    case "UNPLAY_RELIC": {
+      throw new Error("UNPLAY_RELIC should not be in log");
     }
   }
 }

@@ -93,6 +93,10 @@ import { SwapStrategyCardsHandler } from "../../../../src/util/model/swapStrateg
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { NextResponse } from "next/server";
+import {
+  PlayRelicHandler,
+  UnplayRelicHandler,
+} from "../../../../src/util/model/playRelic";
 
 export async function POST(
   req: Request,
@@ -481,6 +485,14 @@ function updateInTransaction(
       }
       case "START_VOTING": {
         handler = new StartVotingHandler(gameData, data);
+        break;
+      }
+      case "PLAY_RELIC": {
+        handler = new PlayRelicHandler(gameData, data);
+        break;
+      }
+      case "UNPLAY_RELIC": {
+        handler = new UnplayRelicHandler(gameData, data);
         break;
       }
       case "UNDO": {

@@ -74,6 +74,7 @@ import {
 } from "../util/strings";
 import styles from "./AgendaPhase.module.scss";
 import { Selector } from "../components/Selector/Selector";
+import MawOfWorlds from "../components/MawOfWorlds/MawOfWorlds";
 
 export function computeVotes(
   agenda: Agenda | undefined,
@@ -836,6 +837,7 @@ function AgendaSteps() {
                   }}
                   selectedItem={ancientBurialSites}
                 />
+                <MawOfWorlds />
               </div>
             </ClientOnlyHoverMenu>
           ) : null}
