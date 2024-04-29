@@ -569,7 +569,7 @@ interface StartVotingData {
 type PlayRelicEvent =
   | MawOfWorldsEvent
   | {
-      relic: Exclude<"Maw of Worlds", RelicId>;
+      relic: Exclude<RelicId, "Maw of Worlds">;
     };
 
 interface MawOfWorldsEvent {

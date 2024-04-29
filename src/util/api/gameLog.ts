@@ -33,6 +33,7 @@ import {
   PlayPromissoryNoteHandler,
   UnplayPromissoryNoteHandler,
 } from "../model/playPromissoryNote";
+import { PlayRelicHandler } from "../model/playRelic";
 import { PlayRiderHandler, UnplayRiderHandler } from "../model/playRider";
 import {
   RepealAgendaHandler,
@@ -109,6 +110,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new PlayComponentHandler(gameData, data);
     case "PLAY_PROMISSORY_NOTE":
       return new PlayPromissoryNoteHandler(gameData, data);
+    case "PLAY_RELIC":
+      return new PlayRelicHandler(gameData, data);
     case "PLAY_RIDER":
       return new PlayRiderHandler(gameData, data);
     case "REMOVE_ATTACHMENT":

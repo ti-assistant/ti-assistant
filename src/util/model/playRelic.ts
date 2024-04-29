@@ -1,6 +1,10 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildRelics } from "../../data/GameData";
 import { AddTechHandler, RemoveTechHandler } from "./addTech";
+import {
+  ScoreObjectiveHandler,
+  UnscoreObjectiveHandler,
+} from "./scoreObjective";
 
 export class PlayRelicHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: PlayRelicData) {}
@@ -27,18 +31,35 @@ export class PlayRelicHandler implements Handler {
       [`relics.${this.data.event.relic}.state`]: "purged",
     };
 
-    if (this.data.event.relic === "Maw of Worlds") {
-      const gainTechHandler = new AddTechHandler(this.gameData, {
-        action: "ADD_TECH",
-        event: {
-          faction: relic.owner,
-          tech: this.data.event.tech,
-        },
-      });
-      updates = {
-        ...updates,
-        ...gainTechHandler.getUpdates(),
-      };
+    switch (this.data.event.relic) {
+      case "Maw of Worlds": {
+        const gainTechHandler = new AddTechHandler(this.gameData, {
+          action: "ADD_TECH",
+          event: {
+            faction: relic.owner,
+            tech: this.data.event.tech,
+          },
+        });
+        updates = {
+          ...updates,
+          ...gainTechHandler.getUpdates(),
+        };
+        break;
+      }
+      case "The Crown of Emphidia": {
+        const scoreObjectiveHandler = new ScoreObjectiveHandler(this.gameData, {
+          action: "SCORE_OBJECTIVE",
+          event: {
+            faction: relic.owner,
+            objective: "Tomb + Crown of Emphidia",
+          },
+        });
+        updates = {
+          ...updates,
+          ...scoreObjectiveHandler.getUpdates(),
+        };
+        break;
+      }
     }
 
     return updates;
@@ -88,18 +109,38 @@ export class UnplayRelicHandler implements Handler {
       [`relics.${this.data.event.relic}.state`]: "DELETE",
     };
 
-    if (this.data.event.relic === "Maw of Worlds") {
-      const removeTechHandler = new RemoveTechHandler(this.gameData, {
-        action: "REMOVE_TECH",
-        event: {
-          faction: relic.owner,
-          tech: this.data.event.tech,
-        },
-      });
-      updates = {
-        ...updates,
-        ...removeTechHandler.getUpdates(),
-      };
+    switch (this.data.event.relic) {
+      case "Maw of Worlds": {
+        const removeTechHandler = new RemoveTechHandler(this.gameData, {
+          action: "REMOVE_TECH",
+          event: {
+            faction: relic.owner,
+            tech: this.data.event.tech,
+          },
+        });
+        updates = {
+          ...updates,
+          ...removeTechHandler.getUpdates(),
+        };
+        break;
+      }
+      case "The Crown of Emphidia": {
+        const unscoreObjectiveHandler = new UnscoreObjectiveHandler(
+          this.gameData,
+          {
+            action: "UNSCORE_OBJECTIVE",
+            event: {
+              faction: relic.owner,
+              objective: "Tomb + Crown of Emphidia",
+            },
+          }
+        );
+        updates = {
+          ...updates,
+          ...unscoreObjectiveHandler.getUpdates(),
+        };
+        break;
+      }
     }
 
     return updates;

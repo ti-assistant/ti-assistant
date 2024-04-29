@@ -4,6 +4,7 @@ import {
   AgendaContext,
   FactionContext,
   ObjectiveContext,
+  RelicContext,
   TechContext,
 } from "../context/Context";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
@@ -50,6 +51,7 @@ export function LogEntryElement({
   const agendas = useContext(AgendaContext);
   const factions = useContext(FactionContext);
   const objectives = useContext(ObjectiveContext);
+  const relics = useContext(RelicContext);
   const techs = useContext(TechContext);
 
   switch (logEntry.data.action) {
@@ -183,6 +185,31 @@ export function LogEntryElement({
     case "PLAY_COMPONENT": {
       // TODO: Add different text for different components.
       return null;
+    }
+    case "SELECT_SUB_COMPONENT":
+      return (
+        <div
+          style={{
+            padding: `0 ${"10px"}`,
+            gap: "4px",
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          Used Ssruu as {logEntry.data.event.subComponent}
+        </div>
+      );
+    case "SELECT_FACTION": {
+      return (
+        <div
+          style={{
+            padding: `0 ${"10px"}`,
+            gap: "4px",
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          Used Z'eu Ω on {logEntry.data.event.faction}
+        </div>
+      );
     }
     case "MARK_SECONDARY": {
       // TODO: Display for all but Technology
@@ -524,6 +551,56 @@ export function LogEntryElement({
     }
     case "PLAY_ACTION_CARD": {
       return null;
+    }
+    case "PLAY_RELIC": {
+      console.log("Relic" + logEntry.data.event);
+      const relicOwner = relics[logEntry.data.event.relic]?.owner;
+      if (!relicOwner) {
+        return null;
+      }
+      switch (logEntry.data.event.relic) {
+        case "Maw of Worlds": {
+          const tech = techs[logEntry.data.event.tech];
+          if (!tech) {
+            return null;
+          }
+          return (
+            <div
+              className="flexRow"
+              style={{
+                padding: `0 ${"10px"}`,
+                gap: "4px",
+                fontFamily: "Myriad Pro",
+              }}
+            >
+              <ColoredFactionName factionId={relicOwner} />
+              purged Maw of Worlds to gain
+              <span style={{ color: getTechColor(tech) }}>
+                {logEntry.data.event.tech}
+              </span>
+            </div>
+          );
+        }
+        case "The Crown of Emphidia": {
+          const objective = objectives["Tomb + Crown of Emphidia"];
+          if (!objective) {
+            return null;
+          }
+          return (
+            <div
+              className="flexRow"
+              style={{
+                padding: `0 ${"10px"}`,
+                gap: "4px",
+                fontFamily: "Myriad Pro",
+              }}
+            >
+              <ColoredFactionName factionId={relicOwner} />
+              scored <ObjectiveRow objective={objective} hideScorers />
+            </div>
+          );
+        }
+      }
     }
     case "HIDE_AGENDA": {
       return (

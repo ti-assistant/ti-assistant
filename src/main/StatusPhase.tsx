@@ -26,12 +26,14 @@ import {
 import {
   advancePhaseAsync,
   hideObjectiveAsync,
+  playRelicAsync,
   revealObjectiveAsync,
   scoreObjectiveAsync,
+  unplayRelicAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
-import { getObjectiveScorers } from "../util/actionLog";
+import { getObjectiveScorers, getPlayedRelic } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -41,6 +43,7 @@ import styles from "./StatusPhase.module.scss";
 import { FormattedMessage, useIntl } from "react-intl";
 import { objectiveTypeString, phaseString } from "../util/strings";
 import { Selector } from "../components/Selector/Selector";
+import CrownOfEmphidia from "../components/CrownOfEmphidia/CrownOfEmphidia";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -733,33 +736,16 @@ export default function StatusPhase() {
 
   const crownOfEmphidia = (relics ?? {})["The Crown of Emphidia"];
 
-  let crownScorer: FactionId | undefined;
-  if (crownOfEmphidia && crownOfEmphidia.owner) {
-    const crownObjective = (objectives ?? {})["Tomb + Crown of Emphidia"];
-    if (
-      crownObjective &&
-      !crownObjective.scorers?.includes(crownOfEmphidia.owner)
-    ) {
-      for (const planet of Object.values(planets ?? {})) {
-        if (
-          planet.owner === crownOfEmphidia.owner &&
-          planet.attachments?.includes("Tomb of Emphidia")
-        ) {
-          crownScorer = crownOfEmphidia.owner;
-          break;
-        }
-      }
-    }
-  }
-  const scoredCrown = getObjectiveScorers(
-    currentTurn,
-    "Tomb + Crown of Emphidia"
-  )[0];
 
-  const crownFaction = crownScorer || scoredCrown;
+  const wasCrownPlayedThisTurn = getPlayedRelic(
+    currentTurn,
+    "The Crown of Emphidia"
+  );
+  const isCrownPurged = relics["The Crown of Emphidia"]?.state === "purged";
+  const crownOwner = relics["The Crown of Emphidia"]?.owner;
 
   function hasEndOfStatusPhaseAbilities() {
-    if (crownScorer || scoredCrown) {
+    if (crownOwner && (wasCrownPlayedThisTurn || !isCrownPurged)) {
       return true;
     }
     for (const ability of Object.values(getEndOfStatusPhaseAbilities())) {
@@ -1178,84 +1164,7 @@ export default function StatusPhase() {
                       </LabeledDiv>
                     );
                   })}
-                {crownFaction ? (
-                  <LabeledDiv
-                    key={crownFaction}
-                    label={getFactionName((factions ?? {})[crownFaction])}
-                    color={getFactionColor((factions ?? {})[crownFaction])}
-                  >
-                    <div className="flexRow">
-                      Purge Crown of Emphidia to score 1 VP?
-                      <div
-                        key={crownFaction}
-                        className="flexRow hiddenButtonParent"
-                        style={{
-                          position: "relative",
-                          width: "32px",
-                          height: "32px",
-                        }}
-                      >
-                        <FactionIcon factionId={crownFaction} size="100%" />
-                        <div
-                          className="flexRow"
-                          style={{
-                            position: "absolute",
-                            backgroundColor: "#222",
-                            cursor: "pointer",
-                            borderRadius: "100%",
-                            marginLeft: "60%",
-                            marginTop: "60%",
-                            boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                            width: "20px",
-                            height: "20px",
-                            zIndex: 2,
-                            color: scoredCrown ? "green" : "red",
-                          }}
-                          onClick={() => {
-                            if (!gameId) {
-                              return;
-                            }
-                            if (scoredCrown) {
-                              unscoreObjectiveAsync(
-                                gameId,
-                                crownFaction,
-                                "Tomb + Crown of Emphidia"
-                              );
-                            } else {
-                              scoreObjectiveAsync(
-                                gameId,
-                                crownFaction,
-                                "Tomb + Crown of Emphidia"
-                              );
-                            }
-                          }}
-                        >
-                          {scoredCrown ? (
-                            <div
-                              className="symbol"
-                              style={{
-                                fontSize: "18px",
-                                lineHeight: "18px",
-                              }}
-                            >
-                              ✓
-                            </div>
-                          ) : (
-                            <div
-                              className="flexRow"
-                              style={{
-                                width: "80%",
-                                height: "80%",
-                              }}
-                            >
-                              <SymbolX color="red" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </LabeledDiv>
-                ) : null}
+                <CrownOfEmphidia />
               </div>
             </ClientOnlyHoverMenu>
           </NumberedItem>
