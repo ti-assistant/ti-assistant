@@ -49,6 +49,7 @@ type GameUpdateData =
   | SetObjectivePointsData
   | SpeakerTieBreakData
   | StartVotingData
+  | (PlayRelicData | UnplayRelicData)
   // TODO
   | UndoData;
 
@@ -563,4 +564,25 @@ interface StartVotingEvent {}
 interface StartVotingData {
   action: "START_VOTING";
   event: StartVotingEvent;
+}
+
+type PlayRelicEvent =
+  | MawOfWorldsEvent
+  | {
+      relic: Exclude<RelicId, "Maw of Worlds">;
+    };
+
+interface MawOfWorldsEvent {
+  relic: "Maw of Worlds";
+  tech: TechId;
+}
+
+interface PlayRelicData {
+  action: "PLAY_RELIC";
+  event: PlayRelicEvent;
+}
+
+interface UnplayRelicData {
+  action: "UNPLAY_RELIC";
+  event: PlayRelicEvent;
 }

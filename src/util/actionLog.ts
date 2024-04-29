@@ -212,3 +212,13 @@ export function getSpeakerTieBreak(actionLog: ActionLogEntry[]) {
       (logEntry) => (logEntry.data as SpeakerTieBreakData).event.tieBreak
     )[0];
 }
+
+export function getPlayedRelic(actionLog: ActionLogEntry[], relic: RelicId) {
+  return actionLog
+    .filter(
+      (logEntry) =>
+        logEntry.data.action === "PLAY_RELIC" &&
+        logEntry.data.event.relic === relic
+    )
+    .map((logEntry) => (logEntry.data as PlayRelicData).event)[0];
+}

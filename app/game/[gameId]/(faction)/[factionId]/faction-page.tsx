@@ -37,6 +37,7 @@ import {
   ObjectiveContext,
   OptionContext,
   PlanetContext,
+  RelicContext,
   StateContext,
   StrategyCardContext,
   TechContext,
@@ -79,6 +80,7 @@ import {
 import {
   getActiveAgenda,
   getFactionVotes,
+  getPlayedRelic,
   getScoredObjectives,
   getSelectedEligibleOutcomes,
   getSpeakerTieBreak,
@@ -154,6 +156,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const planets = useContext(PlanetContext);
   const objectives = useContext(ObjectiveContext);
   const options = useContext(OptionContext);
+  const relics = useContext(RelicContext);
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
   const voteRef = useRef<HTMLDivElement>(null);
@@ -269,7 +272,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
   const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
-  const { influence, extraVotes } = computeRemainingVotes(
+  let { influence, extraVotes } = computeRemainingVotes(
     factionId,
     factions,
     planets,
@@ -279,6 +282,16 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     state,
     getCurrentPhasePreviousLogEntries(actionLog)
   );
+  const mawOfWorlds = relics["Maw of Worlds"];
+  if (mawOfWorlds && mawOfWorlds.owner === factionId) {
+    const mawEvent: MawOfWorldsEvent | undefined = getPlayedRelic(
+      actionLog,
+      "Maw of Worlds"
+    ) as MawOfWorldsEvent | undefined;
+    if (mawEvent) {
+      influence = 0;
+    }
+  }
 
   const faction = factions[factionId];
   if (!faction) {

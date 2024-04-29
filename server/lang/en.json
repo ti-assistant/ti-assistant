@@ -51,6 +51,10 @@
     "defaultMessage": "Leaders",
     "description": "Agent, commander, and hero cards."
   },
+  "/lAAq/": {
+    "defaultMessage": "Score Crown of Emphidia?",
+    "description": "Message asking if a specific player scored the Crown of Emphidia relic."
+  },
   "/sF4zW": {
     "defaultMessage": "Choose Starting Tech",
     "description": "Label on a hover menu used to select starting techs."

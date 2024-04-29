@@ -58,6 +58,9 @@ const playComponentFn = import("../util/api/playComponent").then(
 const playPromissoryNoteFn = import("../util/api/playPromissoryNote").then(
   (mod) => mod.playPromissoryNote
 );
+const playRelicFn = import("../util/api/playRelic").then(
+  (mod) => mod.playRelic
+);
 const playRiderFn = import("../util/api/playRider").then(
   (mod) => mod.playRider
 );
@@ -130,6 +133,9 @@ const unplayComponentFn = import("../util/api/playComponent").then(
 );
 const unplayPromissoryNoteFn = import("../util/api/playPromissoryNote").then(
   (mod) => mod.unplayPromissoryNote
+);
+const unplayRelicFn = import("../util/api/playRelic").then(
+  (mod) => mod.unplayRelic
 );
 const unplayRiderFn = import("../util/api/playRider").then(
   (mod) => mod.unplayRider
@@ -329,6 +335,11 @@ export async function playPromissoryNoteAsync(
   playPromissoryNote(gameId, card, target);
 }
 
+export async function playRelicAsync(gameId: string, event: PlayRelicEvent) {
+  const playRelic = await playRelicFn;
+  playRelic(gameId, event);
+}
+
 export async function playRiderAsync(
   gameId: string,
   rider: string,
@@ -518,6 +529,11 @@ export async function unplayPromissoryNoteAsync(
 ) {
   const unplayPromissoryNote = await unplayPromissoryNoteFn;
   unplayPromissoryNote(gameId, card, target);
+}
+
+export async function unplayRelicAsync(gameId: string, event: PlayRelicEvent) {
+  const unplayRelic = await unplayRelicFn;
+  unplayRelic(gameId, event);
 }
 
 export async function unplayRiderAsync(gameId: string, rider: string) {
