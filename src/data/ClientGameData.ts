@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { getBaseAgendas } from "../../server/data/agendas";
 import { getBaseAttachments } from "../../server/data/attachments";
 import { getBaseComponents } from "../../server/data/components";
+import { getBaseLeaders } from "../../server/data/leaders";
 import { getBaseObjectives } from "../../server/data/objectives";
 import { BASE_OPTIONS } from "../../server/data/options";
 import { BASE_PLANETS } from "../../server/data/planets";
@@ -47,6 +48,7 @@ export function useGameData(
       attachments: getBaseAttachments(intl),
       components: getBaseComponents(intl),
       factions: {},
+      leaders: getBaseLeaders(intl),
       objectives: getBaseObjectives(intl),
       options: BASE_OPTIONS,
       planets: BASE_PLANETS,
