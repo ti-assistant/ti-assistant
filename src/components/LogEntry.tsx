@@ -207,7 +207,7 @@ export function LogEntryElement({
             fontFamily: "Myriad Pro",
           }}
         >
-          Used Z'eu Ω on {logEntry.data.event.faction}
+          Used Z&apos;eu Ω on {logEntry.data.event.faction}
         </div>
       );
     }
