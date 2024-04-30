@@ -1,7 +1,12 @@
 import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { GameIdContext, TechContext } from "../context/Context";
+import {
+  ComponentContext,
+  GameIdContext,
+  LeaderContext,
+  TechContext,
+} from "../context/Context";
 import { buildLeaders } from "../data/GameData";
 import { updateLeaderStateAsync } from "../dynamic/api";
 import { getFactionName } from "../util/factions";
@@ -203,9 +208,9 @@ function FactionPanelContent({
   options: Options;
 }) {
   const intl = useIntl();
-  const leaders = buildLeaders(options, intl);
   // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
   const gameId = useContext(GameIdContext);
+  const leaders = useContext(LeaderContext);
   const techs = useContext(TechContext);
 
   const factionTechs = Object.values(techs).filter(
@@ -267,19 +272,19 @@ function FactionPanelContent({
               }}
             >
               {factionLeaders.map((leader) => {
-                let state: LeaderState = "readied";
-                switch (leader.type) {
-                  case "COMMANDER":
-                    if ("commander" in faction) {
-                      state = faction.commander;
-                    }
-                    break;
-                  case "HERO":
-                    if ("hero" in faction) {
-                      state = faction.hero;
-                    }
-                    break;
+                let state = leader.state;
+                if (!state) {
+                  switch (leader.type) {
+                    case "AGENT":
+                      state = "readied";
+                      break;
+                    case "COMMANDER":
+                    case "HERO":
+                      state = "locked";
+                      break;
+                  }
                 }
+
                 let innerContent = undefined;
                 let leftLabel = undefined;
                 switch (state) {
@@ -306,8 +311,7 @@ function FactionPanelContent({
                               }
                               updateLeaderStateAsync(
                                 gameId,
-                                faction.id,
-                                leader.type,
+                                leader.id,
                                 "locked"
                               );
                             }}
@@ -346,8 +350,7 @@ function FactionPanelContent({
                             }
                             updateLeaderStateAsync(
                               gameId,
-                              faction.id,
-                              leader.type,
+                              leader.id,
                               "readied"
                             );
                           }}
@@ -365,8 +368,7 @@ function FactionPanelContent({
                             }
                             updateLeaderStateAsync(
                               gameId,
-                              faction.id,
-                              leader.type,
+                              leader.id,
                               "readied"
                             );
                           }}
@@ -374,12 +376,12 @@ function FactionPanelContent({
                           {formatDescription(
                             intl.formatMessage({
                               id: "frzrrT",
-                              defaultMessage: "UNLOCK: ",
+                              defaultMessage: "UNLOCK:",
                               description:
                                 "Text that gets pre-fixed to a leader unlock condition.",
                             })
                           )}
-                        </span>
+                        </span>{" "}
                         {formatDescription(
                           leader.unlock ??
                             intl.formatMessage({
@@ -456,7 +458,11 @@ function FactionPanelContent({
                               cursor: "pointer",
                             }}
                             onClick={() => {
-                              alert("WIP - Will unpurge later");
+                              updateLeaderStateAsync(
+                                gameId,
+                                leader.id,
+                                "readied"
+                              );
                             }}
                           >
                             UNPURGE

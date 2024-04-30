@@ -8,6 +8,7 @@ export function buildCompleteGameData(
     attachments: buildAttachments(storedGameData, baseData),
     components: buildComponents(storedGameData, baseData),
     factions: buildFactions(storedGameData, baseData),
+    leaders: buildLeaders(storedGameData, baseData),
     objectives: buildObjectives(storedGameData, baseData),
     options: storedGameData.options,
     planets: buildPlanets(storedGameData, baseData),
@@ -180,6 +181,8 @@ export function buildComponents(
     }
 
     components[componentId] = {
+      ...components[componentId],
+      ...(gameComponents[componentId] ?? {}),
       ...leader,
       type: "LEADER",
       leader: leader.type,
@@ -498,4 +501,46 @@ export function buildTechs(storedGameData: StoredGameData, baseData: BaseData) {
   });
 
   return techs;
+}
+
+export function buildLeaders(
+  storedGameData: StoredGameData,
+  baseData: BaseData
+) {
+  const factions = storedGameData.factions;
+  const options = storedGameData.options;
+  const storedLeaders = storedGameData.leaders ?? {};
+  const leaders: Partial<Record<LeaderId, Leader>> = {};
+  Object.entries(baseData.leaders).forEach(([leaderId, leader]) => {
+    // Maybe filter out PoK technologies.
+    if (!options.expansions.includes("POK") && leader.expansion === "POK") {
+      return;
+    }
+    const leaderCopy = { ...leader };
+
+    // Maybe update techs for codices.
+    if (leader.omega && options.expansions.includes(leader.omega.expansion)) {
+      leaderCopy.abilityName =
+        leader.omega.abilityName ?? leaderCopy.abilityName;
+      leaderCopy.name = leader.omega.name ?? leaderCopy.name;
+      leaderCopy.description =
+        leader.omega.description ?? leaderCopy.description;
+      leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
+      leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
+    }
+
+    if (
+      leader.subFaction &&
+      factions["Council Keleres"]?.startswith.faction !== leader.subFaction
+    ) {
+      return;
+    }
+
+    leaders[leaderId as LeaderId] = {
+      ...leaderCopy,
+      ...(storedLeaders[leaderId as LeaderId] ?? {}),
+    };
+  });
+
+  return leaders;
 }

@@ -94,6 +94,7 @@ export function buildCompleteGameData(
     attachments: buildAttachments(storedGameData, intl),
     components: buildComponents(storedGameData, intl),
     factions: buildFactions(storedGameData, intl),
+    leaders: buildLeaders(storedGameData, intl),
     objectives: buildObjectives(storedGameData, intl),
     options: storedGameData.options,
     planets: buildPlanets(storedGameData),
@@ -248,12 +249,6 @@ export function buildComponents(
         }
       }
       return [leaderId, updatedLeader];
-    })
-    // Filter out leaders that have the wrong timing.
-    .filter(([_, leader]) => {
-      return (
-        leader.timing === "COMPONENT_ACTION" || leader.timing === "MULTIPLE"
-      );
     });
 
   let isYssarilComponent = false;
@@ -263,6 +258,8 @@ export function buildComponents(
     }
 
     components[componentId] = {
+      ...components[componentId],
+      ...(gameComponents[componentId] ?? {}),
       ...leader,
       type: "LEADER",
       leader: leader.type,
@@ -623,6 +620,46 @@ export function buildTechs(storedGameData: StoredGameData, intl: IntlShape) {
   return techs;
 }
 
+export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
+  const factions = storedGameData.factions;
+  const options = storedGameData.options;
+  const storedLeaders = storedGameData.leaders ?? {};
+
+  const leaders: Record<string, Leader> = {};
+  Object.entries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
+    // Maybe filter out PoK technologies.
+    if (!options.expansions.includes("POK") && leader.expansion === "POK") {
+      return;
+    }
+    const leaderCopy = { ...leader };
+
+    // Maybe update techs for codices.
+    if (leader.omega && options.expansions.includes(leader.omega.expansion)) {
+      leaderCopy.abilityName =
+        leader.omega.abilityName ?? leaderCopy.abilityName;
+      leaderCopy.name = leader.omega.name ?? leaderCopy.name;
+      leaderCopy.description =
+        leader.omega.description ?? leaderCopy.description;
+      leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
+      leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
+    }
+    
+    if (
+      leader.subFaction &&
+      factions["Council Keleres"]?.startswith.faction !== leader.subFaction
+    ) {
+      return;
+    }
+
+    leaders[leaderId as LeaderId] = {
+      ...leaderCopy,
+      ...(storedLeaders[leaderId as LeaderId] ?? {}),
+    };
+  });
+
+  return leaders;
+}
+
 export function buildBaseTechs(options: Options, intl: IntlShape) {
   const techs: Partial<Record<TechId, Tech>> = {};
   Object.values(getBaseTechs(intl)).forEach((tech) => {
@@ -644,7 +681,7 @@ export function buildBaseTechs(options: Options, intl: IntlShape) {
   return techs;
 }
 
-export function buildLeaders(options: Options, intl: IntlShape) {
+export function buildBaseLeaders(options: Options, intl: IntlShape) {
   const leaders: Record<string, BaseLeader> = {};
   Object.entries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.

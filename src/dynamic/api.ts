@@ -558,12 +558,11 @@ export async function unscoreObjectiveAsync(
 
 export async function updateLeaderStateAsync(
   gameId: string,
-  factionId: FactionId,
-  leaderType: LeaderType,
+  leaderId: LeaderId,
   state: LeaderState
 ) {
   const updateLeaderState = await updateLeaderStateFn;
-  updateLeaderState(gameId, factionId, leaderType, state);
+  updateLeaderState(gameId, leaderId, state);
 }
 
 export async function updatePlanetStateAsync(

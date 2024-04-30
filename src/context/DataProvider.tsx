@@ -11,6 +11,7 @@ import {
   ComponentContext,
   FactionContext,
   GameIdContext,
+  LeaderContext,
   ObjectiveContext,
   OptionContext,
   PlanetContext,
@@ -78,6 +79,7 @@ export default function DataProvider({
     seedData.components ?? {}
   );
   const factions = useStableValue(gameData.factions, {});
+  const leaders = useStableValue(gameData.leaders, {});
   const objectives = useStableValue(
     gameData.objectives ?? {},
     seedData.objectives ?? {}
@@ -106,23 +108,25 @@ export default function DataProvider({
           <ComponentContext.Provider value={components}>
             <FactionContext.Provider value={factions}>
               <GameIdContext.Provider value={gameId}>
-                <ObjectiveContext.Provider value={objectives}>
-                  <OptionContext.Provider value={options}>
-                    <PlanetContext.Provider value={planets}>
-                      <RelicContext.Provider value={relics}>
-                        <StateContext.Provider value={state}>
-                          <StrategyCardContext.Provider value={strategycards}>
-                            <SystemContext.Provider value={systems}>
-                              <TechContext.Provider value={techs}>
-                                {children}
-                              </TechContext.Provider>
-                            </SystemContext.Provider>
-                          </StrategyCardContext.Provider>
-                        </StateContext.Provider>
-                      </RelicContext.Provider>
-                    </PlanetContext.Provider>
-                  </OptionContext.Provider>
-                </ObjectiveContext.Provider>
+                <LeaderContext.Provider value={leaders}>
+                  <ObjectiveContext.Provider value={objectives}>
+                    <OptionContext.Provider value={options}>
+                      <PlanetContext.Provider value={planets}>
+                        <RelicContext.Provider value={relics}>
+                          <StateContext.Provider value={state}>
+                            <StrategyCardContext.Provider value={strategycards}>
+                              <SystemContext.Provider value={systems}>
+                                <TechContext.Provider value={techs}>
+                                  {children}
+                                </TechContext.Provider>
+                              </SystemContext.Provider>
+                            </StrategyCardContext.Provider>
+                          </StateContext.Provider>
+                        </RelicContext.Provider>
+                      </PlanetContext.Provider>
+                    </OptionContext.Provider>
+                  </ObjectiveContext.Provider>
+                </LeaderContext.Provider>
               </GameIdContext.Provider>
             </FactionContext.Provider>
           </ComponentContext.Provider>

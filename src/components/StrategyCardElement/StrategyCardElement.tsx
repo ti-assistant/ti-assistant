@@ -38,6 +38,7 @@ export function StrategyCardElement({
     "--text-color": textColor,
     fontSize: `${fontSize}px`,
     cursor: onClick ? "pointer" : "auto",
+    backgroundColor: active ? undefined : "#222",
   };
   return (
     <div

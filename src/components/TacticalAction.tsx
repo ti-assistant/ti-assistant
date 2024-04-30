@@ -177,10 +177,7 @@ export function TacticalAction({
     maxWidth: "85vw",
     justifyContent: "flex-start",
     overflowX: "auto",
-    gridTemplateRows: `repeat(${Math.min(
-      10,
-      scorableObjectives.length
-    )}, auto)`,
+    gridTemplateRows: `repeat(${Math.min(5, scorableObjectives.length)}, auto)`,
     gap: "4px",
   };
   function getResearchableTechs(factionId: FactionId) {
