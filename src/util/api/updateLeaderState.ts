@@ -4,8 +4,6 @@ import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
-import { buildComponents, buildLeaders } from "../../data/GameData";
-import { createIntlCache, createIntl } from "react-intl";
 
 export function updateLeaderState(
   gameId: string,
@@ -32,7 +30,9 @@ export function updateLeaderState(
 
         const leader = (currentData.leaders ?? {})[data.event.leaderId];
         if (leader) {
-          data.event.prevState = leader.state;
+          data.event.prevState = leader.state ?? "locked";
+        } else {
+          data.event.prevState = "locked";
         }
 
         const handler = new UpdateLeaderStateHandler(currentData, data);

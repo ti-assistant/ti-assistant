@@ -507,6 +507,7 @@ export function buildLeaders(
   storedGameData: StoredGameData,
   baseData: BaseData
 ) {
+  const factions = storedGameData.factions;
   const options = storedGameData.options;
   const storedLeaders = storedGameData.leaders ?? {};
   const leaders: Partial<Record<LeaderId, Leader>> = {};
@@ -526,6 +527,13 @@ export function buildLeaders(
         leader.omega.description ?? leaderCopy.description;
       leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
       leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
+    }
+
+    if (
+      leader.subFaction &&
+      factions["Council Keleres"]?.startswith.faction !== leader.subFaction
+    ) {
+      return;
     }
 
     leaders[leaderId as LeaderId] = {

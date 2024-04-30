@@ -621,6 +621,7 @@ export function buildTechs(storedGameData: StoredGameData, intl: IntlShape) {
 }
 
 export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
+  const factions = storedGameData.factions;
   const options = storedGameData.options;
   const storedLeaders = storedGameData.leaders ?? {};
 
@@ -641,6 +642,13 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
         leader.omega.description ?? leaderCopy.description;
       leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
       leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
+    }
+    
+    if (
+      leader.subFaction &&
+      factions["Council Keleres"]?.startswith.faction !== leader.subFaction
+    ) {
+      return;
     }
 
     leaders[leaderId as LeaderId] = {
