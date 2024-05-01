@@ -101,6 +101,12 @@
       "value": "Anführer"
     }
   ],
+  "/lAAq/": [
+    {
+      "type": 0,
+      "value": "Krone der Emphidia werten?"
+    }
+  ],
   "/sF4zW": [
     {
       "type": 0,
@@ -170,7 +176,7 @@
   "2dmEIv": [
     {
       "type": 0,
-      "value": "Fähigkeiten"
+      "value": "Fraktionsfähigkeiten"
     }
   ],
   "2hHU0G": [
@@ -183,6 +189,12 @@
     {
       "type": 0,
       "value": "Erweiterungen:"
+    }
+  ],
+  "355TBA": [
+    {
+      "type": 0,
+      "value": "Contributors"
     }
   ],
   "3Taw9H": [
@@ -359,17 +371,13 @@
   ],
   "9eqKm5": [
     {
-      "type": 0,
-      "value": "Einzigartige "
-    },
-    {
       "offset": 0,
       "options": {
         "one": {
           "value": [
             {
               "type": 0,
-              "value": "Einheit"
+              "value": "Einheitenfähigkeit"
             }
           ]
         },
@@ -377,7 +385,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Einheiten"
+              "value": "Einheitenfähigkeiten"
             }
           ]
         }
@@ -7820,7 +7828,7 @@
   "Phase.Action": [
     {
       "type": 0,
-      "value": "Aktion"
+      "value": "Aktions"
     }
   ],
   "Phase.Agenda": [
@@ -7838,7 +7846,7 @@
   "Phase.Setup": [
     {
       "type": 0,
-      "value": "Spielaufbau"
+      "value": "Spielaufbau-"
     }
   ],
   "Phase.Status": [
@@ -9985,6 +9993,12 @@
       "value": "count"
     }
   ],
+  "X3Nzbr": [
+    {
+      "type": 0,
+      "value": "Patrons"
+    }
+  ],
   "X3VPhD": [
     {
       "type": 0,
@@ -10809,6 +10823,12 @@
       "value": "Optionen"
     }
   ],
+  "dENKlQ": [
+    {
+      "type": 0,
+      "value": "Supporters"
+    }
+  ],
   "dNmJ1r": [
     {
       "type": 0,
@@ -11033,6 +11053,16 @@
     {
       "type": 0,
       "value": "Sprecher"
+    }
+  ],
+  "kq4/fY": [
+    {
+      "type": 0,
+      "value": "Deutsche Übersetzung: "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "l6pQCt": [
