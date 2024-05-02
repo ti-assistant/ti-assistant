@@ -51,6 +51,10 @@
     "defaultMessage": "Anführer",
     "description": "Agent, commander, and hero cards."
   },
+   "/lAAq/": {
+    "defaultMessage": "Krone der Emphidia werten?",
+    "description": "Message asking if a specific player scored the Crown of Emphidia relic."
+  },
   "/sF4zW": {
     "defaultMessage": "Wähle Starttechnologien",
     "description": "Label on a hover menu used to select starting techs."
@@ -96,7 +100,7 @@
     "description": "Title of green techs."
   },
     "2dmEIv": {
-    "defaultMessage": "Fähigkeiten",
+    "defaultMessage": "Fraktionsfähigkeiten",
     "description": "Header for a section listing out abilities."
   },
   "2hHU0G": {
@@ -106,6 +110,10 @@
   "2jNcVD": {
     "defaultMessage": "Erweiterungen:",
     "description": "A label for a selector specifying which expansions should be enabled."
+  },
+    "355TBA": {
+    "defaultMessage": "Contributors",
+    "description": "Label for section listing out people that worked on TI Assistant."
   },
   "3Taw9H": {
     "defaultMessage": "Codex I",
@@ -212,7 +220,7 @@
     "description": "Text identifying that this is the setup step."
   },
     "9eqKm5": {
-    "defaultMessage": "Einzigartige {count, plural, one {Einheit} other {Einheiten}}",
+    "defaultMessage": "{count, plural, one {Einheitenfähigkeit} other {Einheitenfähigkeiten}}",
     "description": "Header for section listing out unique units."
   },
   "9m91nk": {
@@ -4088,7 +4096,7 @@
     "description": "The alternate ability for a strategy card."
   },
   "Phase.Action": {
-    "defaultMessage": "Aktion",
+    "defaultMessage": "Aktions",
     "description": "Phase title for Action phase."
   },
   "Phase.Agenda": {
@@ -4100,7 +4108,7 @@
     "description": "Phase title for end of game."
   },
   "Phase.Setup": {
-    "defaultMessage": "Spielaufbau",
+    "defaultMessage": "Spielaufbau-",
     "description": "Phase title for Setup phase."
   },
   "Phase.Status": {
@@ -5239,6 +5247,10 @@
     "defaultMessage": "{count} {count, plural, one {PVS} other {PVS}}",
     "description": "A number of PDS units."
   },
+    "X3Nzbr": {
+    "defaultMessage": "Patrons",
+    "description": "Label for section listing out people that regularly donate to TI Assistant."
+  },
     "X3VPhD": {
     "defaultMessage": "Extra",
     "description": "Header for column listing how many extra votes players have cast."
@@ -5679,6 +5691,10 @@
     "defaultMessage": "Optionen",
     "description": "Label on a menu for changing game options"
   },
+    "dENKlQ": {
+    "defaultMessage": "Supporters",
+    "description": "Label for section listing out everyone that has donated to TI Assistant."
+  },
   "dNmJ1r": {
     "defaultMessage": "Pause aufheben",
     "description": "Text shown on a button that will unpause the game."
@@ -5786,6 +5802,10 @@
   "knjCH0": {
     "defaultMessage": "Sprecher",
     "description": "The title of the player that has the Speaker token."
+  },
+    "kq4/fY": {
+    "defaultMessage": "Deutsche Übersetzung: {name}",
+    "description": "Credit for the german translation of TI Assistant."
   },
   "l6pQCt": {
     "defaultMessage": "Tausche {firstCard} für {secondCard}",

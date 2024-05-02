@@ -1,15 +1,16 @@
 import parse from "html-react-parser";
+import { useSearchParams } from "next/navigation";
 import { PropsWithChildren, ReactNode, useState } from "react";
-import { buildBaseTechs, buildBaseLeaders } from "../data/GameData";
+import { FormattedMessage, useIntl } from "react-intl";
+import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
+import { leaderTypeString, unitTypeString } from "../util/strings";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import styles from "./SetupFactionPanel.module.scss";
 import TechIcon from "./TechIcon/TechIcon";
-import { useSearchParams } from "next/navigation";
-import { FormattedMessage, useIntl } from "react-intl";
-import { leaderTypeString, unitTypeString } from "../util/strings";
+import { UnitStat } from "../TechRow";
 
 function AbilitySection({
   leftLabel,
@@ -147,48 +148,62 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
         }}
       >
         {stats.cost ? (
-          <UnitStat name="COST" stat={stats.cost ?? "-"} />
+          <UnitStat
+            name={
+              <FormattedMessage
+                id="Unit.Stats.Cost"
+                defaultMessage="COST"
+                description="Label for unit stat block - cost of the unit."
+              />
+            }
+            stat={stats.cost ?? "-"}
+          />
         ) : (
           <div></div>
         )}
         {stats.combat ? (
-          <UnitStat name="COMBAT" stat={stats.combat ?? "-"} />
+          <UnitStat
+            name={
+              <FormattedMessage
+                id="Unit.Stats.Combat"
+                defaultMessage="COMBAT"
+                description="Label for unit stat block - combat value of the unit."
+              />
+            }
+            stat={stats.combat ?? "-"}
+          />
         ) : (
           <div></div>
         )}
         {stats.move ? (
-          <UnitStat name="MOVE" stat={stats.move ?? "-"} />
+          <UnitStat
+            name={
+              <FormattedMessage
+                id="Unit.Stats.Move"
+                defaultMessage="MOVE"
+                description="Label for unit stat block - move value of the unit."
+              />
+            }
+            stat={stats.move ?? "-"}
+          />
         ) : (
           <div></div>
         )}
         {stats.capacity ? (
-          <UnitStat name="CAPACITY" stat={stats.capacity ?? "-"} />
+          <UnitStat
+            name={
+              <FormattedMessage
+                id="Unit.Stats.Capacity"
+                defaultMessage="CAPACITY"
+                description="Label for unit stat block - capacity value of the unit."
+              />
+            }
+            stat={stats.capacity ?? "-"}
+          />
         ) : (
           <div></div>
         )}
       </div>
-    </div>
-  );
-}
-function UnitStat({ name, stat }: { name: string; stat: number | string }) {
-  return (
-    <div
-      className="centered"
-      style={{
-        width: "80px",
-        border: "1px solid #eee",
-        borderRadius: "10px",
-      }}
-    >
-      <div
-        style={{
-          fontSize: "24px",
-          borderBottom: "1px solid #eee",
-        }}
-      >
-        {stat}
-      </div>
-      <div style={{ fontSize: "14px", padding: "0px 6px" }}>{name}</div>
     </div>
   );
 }
