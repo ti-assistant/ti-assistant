@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   ActionLogContext,
   FactionContext,
@@ -24,6 +25,7 @@ import {
 } from "../dynamic/api";
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
+import { objectiveTypeString } from "../util/strings";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -31,8 +33,6 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import Modal from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
-import { FormattedMessage, useIntl } from "react-intl";
-import { objectiveTypeString } from "../util/strings";
 import { Selector } from "./Selector/Selector";
 
 function GridHeader({ children }: PropsWithChildren) {
@@ -2216,7 +2216,17 @@ export default function ObjectivePanel() {
                       }
                     }}
                   >
-                    {mutinyDirection}
+                    {mutinyDirection === "[For]"
+                      ? `[${intl.formatMessage({
+                          id: "ymJxS0",
+                          defaultMessage: "For",
+                          description: "Outcome choosing to pass a law.",
+                        })}]`
+                      : `[${intl.formatMessage({
+                          id: "SOC2Bh",
+                          defaultMessage: "Against",
+                          description: "Outcome choosing to vote down a law.",
+                        })}]`}
                   </button>
                 </div>
                 <div

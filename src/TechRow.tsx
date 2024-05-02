@@ -1,15 +1,22 @@
 import { ReactNode, useState } from "react";
 
+import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import Modal from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
 import { getTechColor } from "./util/techs";
-import { FormattedMessage } from "react-intl";
 
-function UnitStat({ name, stat }: { name: ReactNode; stat: number | string }) {
+export function UnitStat({
+  name,
+  stat,
+}: {
+  name: ReactNode;
+  stat: number | string;
+}) {
   return (
     <div
+      className="centered"
       style={{
         width: "82px",
         boxSizing: "border-box",
@@ -25,7 +32,9 @@ function UnitStat({ name, stat }: { name: ReactNode; stat: number | string }) {
       >
         {stat}
       </div>
-      <div style={{ fontSize: "14px", padding: "0px 6px" }}>{name}</div>
+      <div style={{ lineHeight: "18px", fontSize: "11px", padding: "0px 6px" }}>
+        {name}
+      </div>
     </div>
   );
 }
