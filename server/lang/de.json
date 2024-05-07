@@ -103,6 +103,10 @@
     "defaultMessage": "Fraktionsfähigkeiten",
     "description": "Header for a section listing out abilities."
   },
+    "2fB0Ox": {
+    "defaultMessage": "Basisspiel",
+    "description": "Text on a button that will show/hide features related to the base game."
+  },
   "2hHU0G": {
     "defaultMessage": "Aufwertungen für Einheiten",
     "description": "Title of uprade techs."
@@ -3283,6 +3287,10 @@
     "defaultMessage": "Zug beenden",
     "description": "Text on a button that will end the player's turn."
   },
+    "OAXWRP": {
+    "defaultMessage": "Spielplan bauen",
+    "description": "A button that will open the map builder."
+  },
   "OVn1wE": {
     "defaultMessage": "Karten spielbereit machen",
     "description": "Instruction telling players to ready cards."
@@ -5774,6 +5782,10 @@
   "hhm3kX": {
     "defaultMessage": "Runde {value}",
     "description": "The current round of the game."
+  },
+  "i4Uu4m": {
+    "defaultMessage": "Hyperraum",
+    "description": "Text on a button that will show/hide hyperspace tiles."
   },
   "iFF5UN": {
     "defaultMessage": "{planet} beanspruchen",
