@@ -179,6 +179,12 @@
       "value": "Fraktionsfähigkeiten"
     }
   ],
+  "2fB0Ox": [
+    {
+      "type": 0,
+      "value": "Basisspiel"
+    }
+  ],
   "2hHU0G": [
     {
       "type": 0,
@@ -6565,6 +6571,12 @@
       "value": "Zug beenden"
     }
   ],
+  "OAXWRP": [
+    {
+      "type": 0,
+      "value": "Spielplan bauen"
+    }
+  ],
   "OVn1wE": [
     {
       "type": 0,
@@ -10979,6 +10991,12 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "i4Uu4m": [
+    {
+      "type": 0,
+      "value": "Hyperraum"
     }
   ],
   "iFF5UN": [
