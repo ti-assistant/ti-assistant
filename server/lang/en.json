@@ -51,10 +51,6 @@
     "defaultMessage": "Leaders",
     "description": "Agent, commander, and hero cards."
   },
-  "/amsA1": {
-    "defaultMessage": "Back",
-    "description": "Label for selector describing the type of system tile (red or blue)."
-  },
   "/lAAq/": {
     "defaultMessage": "Score Crown of Emphidia?",
     "description": "Message asking if a specific player scored the Crown of Emphidia relic."
