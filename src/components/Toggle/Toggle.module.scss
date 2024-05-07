@@ -1,0 +1,46 @@
+.ToggleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 20px;
+  gap: 0;
+  white-space: nowrap;
+  padding-right: 6px;
+  cursor: pointer;
+
+  font-size: 14px;
+}
+
+.ToggleContainer > input[type="checkbox"] {
+  appearance: none;
+}
+
+.ToggleContainer > input[type="checkbox"]::after {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  width: 16px;
+  height: 16px;
+}
+
+.ToggleContainer > input[type="checkbox"]:not(:checked)::after {
+  content: "⤬";
+  font-size: 16px;
+  line-height: 8px;
+  color: red;
+}
+
+.ToggleContainer > input[type="checkbox"]:checked::after {
+  content: "✓";
+  font-size: 14px;
+  line-height: 14px;
+  color: green;
+}
+
+.ToggleContainer > * {
+  cursor: pointer;
+}

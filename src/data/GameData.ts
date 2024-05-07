@@ -1,9 +1,9 @@
-// import stableHash from "stable-hash";
-// import useSWR from "swr";
-// import { BASE_OPTIONS } from "../../server/data/options";
-// import { fetcher } from "../util/api/util";
-// import { validateMapString } from "../util/util";
 import { IntlShape } from "react-intl";
+import {
+  updateMapString,
+  isValidMapString,
+  validSystemNumber,
+} from "../util/map";
 
 let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
   return {};
@@ -453,10 +453,20 @@ export function buildPlanets(storedGameData: StoredGameData) {
   const gameFactions = storedGameData.factions ?? {};
   const gameOptions = storedGameData.options;
 
+  const numFactions = Object.keys(gameFactions).length;
   const mapString = gameOptions["map-string"] ?? "";
-  const isValidMapString = validateMapString(mapString);
+  const mapStyle = gameOptions["map-style"] ?? "standard";
+  const updatedMapString = updateMapString(mapString, mapStyle, numFactions);
+  const validMapString = isValidMapString(updatedMapString, numFactions);
   const inGameSystems = mapString
     .split(" ")
+    .filter(validSystemNumber)
+    .filter(
+      (systemNumber) =>
+        systemNumber !== "-1" &&
+        systemNumber !== "0" &&
+        !isNaN(parseInt(systemNumber))
+    )
     .map((system) => parseInt(system) as SystemId);
 
   let planets = {} as Partial<Record<PlanetId, Planet>>;
@@ -479,7 +489,8 @@ export function buildPlanets(storedGameData: StoredGameData) {
       return;
     }
     if (
-      isValidMapString &&
+      validMapString &&
+      inGameSystems.length > 0 &&
       planet.system &&
       planet.id !== "Mirage" &&
       planet.id !== "Mallice" &&
@@ -643,7 +654,7 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
       leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
       leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
     }
-    
+
     if (
       leader.subFaction &&
       factions["Council Keleres"]?.startswith.faction !== leader.subFaction
@@ -705,4 +716,15 @@ export function buildBaseLeaders(options: Options, intl: IntlShape) {
   });
 
   return leaders;
+}
+
+export function buildBaseSystems() {
+  const systems: Partial<Record<SystemId, BaseSystem>> = {};
+  Object.entries(BASE_SYSTEMS).forEach(([systemId, system]) => {
+    systems[systemId as SystemId] = {
+      ...system,
+    };
+  });
+
+  return systems;
 }

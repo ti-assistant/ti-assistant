@@ -19,6 +19,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
+import { updateMapString, validSystemNumber } from "../../util/map";
 
 interface Cube {
   q: number;
@@ -185,224 +186,6 @@ function getFactionSystemNumber(
   return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "92";
 }
 
-function getBaseSystemTiles(
-  factions: {
-    name?: string;
-    startswith?: {
-      faction?: FactionId;
-    };
-  }[],
-  mapStyle: MapStyle
-) {
-  let systemTiles: string[] = new Array(61).fill("0", 0);
-  systemTiles[0] = "18";
-  switch (factions.length) {
-    case 3:
-      delete systemTiles[19];
-      delete systemTiles[20];
-      systemTiles[22] = getFactionSystemNumber(factions[0]);
-      delete systemTiles[24];
-      delete systemTiles[25];
-      delete systemTiles[26];
-      systemTiles[28] = getFactionSystemNumber(factions[1]);
-      delete systemTiles[30];
-      delete systemTiles[31];
-      delete systemTiles[32];
-      systemTiles[34] = getFactionSystemNumber(factions[2]);
-      delete systemTiles[36];
-      break;
-    case 4:
-      switch (mapStyle) {
-        case "standard":
-          systemTiles[36] = getFactionSystemNumber(factions[0]);
-          systemTiles[23] = getFactionSystemNumber(factions[1]);
-          systemTiles[27] = getFactionSystemNumber(factions[2]);
-          systemTiles[32] = getFactionSystemNumber(factions[3]);
-          break;
-        case "skinny":
-          delete systemTiles[19];
-          systemTiles[21] = getFactionSystemNumber(factions[0]);
-          delete systemTiles[22];
-          delete systemTiles[23];
-          delete systemTiles[24];
-          delete systemTiles[25];
-          systemTiles[26] = getFactionSystemNumber(factions[1]);
-          delete systemTiles[28];
-          systemTiles[30] = getFactionSystemNumber(factions[2]);
-          delete systemTiles[31];
-          delete systemTiles[32];
-          delete systemTiles[33];
-          delete systemTiles[34];
-          systemTiles[35] = getFactionSystemNumber(factions[3]);
-
-          break;
-        case "warp":
-          systemTiles[1] = "rotateOneEighty:86A";
-          systemTiles[4] = "86A";
-          systemTiles[8] = "rotateOneEighty:87A";
-          systemTiles[12] = "88A";
-          systemTiles[14] = "87A";
-          systemTiles[18] = "rotateOneEighty:88A";
-          systemTiles[19] = "rotateOneEighty:85A";
-          systemTiles[20] = "rotateOneEighty:84A";
-          systemTiles[22] = getFactionSystemNumber(factions[0]);
-          systemTiles[25] = getFactionSystemNumber(factions[1]);
-          systemTiles[27] = "83A";
-          systemTiles[28] = "85A";
-          systemTiles[29] = "84A";
-          systemTiles[31] = getFactionSystemNumber(factions[2]);
-          systemTiles[34] = getFactionSystemNumber(factions[3]);
-          systemTiles[36] = "rotateOneEighty:83A";
-          break;
-      }
-      break;
-    case 5:
-      switch (mapStyle) {
-        case "standard":
-          systemTiles[21] = getFactionSystemNumber(factions[0]);
-          systemTiles[25] = getFactionSystemNumber(factions[1]);
-          systemTiles[28] = getFactionSystemNumber(factions[2]);
-          systemTiles[31] = getFactionSystemNumber(factions[3]);
-          systemTiles[35] = getFactionSystemNumber(factions[4]);
-          break;
-        case "skinny":
-          systemTiles[21] = getFactionSystemNumber(factions[0]);
-          delete systemTiles[22];
-          systemTiles[24] = getFactionSystemNumber(factions[1]);
-          delete systemTiles[25];
-          delete systemTiles[26];
-          systemTiles[28] = getFactionSystemNumber(factions[2]);
-          delete systemTiles[30];
-          delete systemTiles[31];
-          systemTiles[32] = getFactionSystemNumber(factions[3]);
-          delete systemTiles[34];
-          systemTiles[35] = getFactionSystemNumber(factions[4]);
-          break;
-        case "warp":
-          systemTiles[4] = "86A";
-          systemTiles[12] = "88A";
-          systemTiles[14] = "87A";
-          systemTiles[19] = getFactionSystemNumber(factions[0]);
-          systemTiles[22] = getFactionSystemNumber(factions[1]);
-          systemTiles[25] = getFactionSystemNumber(factions[2]);
-          systemTiles[27] = "83A";
-          systemTiles[28] = "85A";
-          systemTiles[29] = "84A";
-          systemTiles[31] = getFactionSystemNumber(factions[3]);
-          systemTiles[34] = getFactionSystemNumber(factions[4]);
-          break;
-      }
-      break;
-    case 6:
-      switch (mapStyle) {
-        case "standard":
-          systemTiles[19] = getFactionSystemNumber(factions[0]);
-          systemTiles[22] = getFactionSystemNumber(factions[1]);
-          systemTiles[25] = getFactionSystemNumber(factions[2]);
-          systemTiles[28] = getFactionSystemNumber(factions[3]);
-          systemTiles[31] = getFactionSystemNumber(factions[4]);
-          systemTiles[34] = getFactionSystemNumber(factions[5]);
-          break;
-        case "large":
-          systemTiles[37] = getFactionSystemNumber(factions[0]);
-          systemTiles[41] = getFactionSystemNumber(factions[1]);
-          systemTiles[45] = getFactionSystemNumber(factions[2]);
-          systemTiles[49] = getFactionSystemNumber(factions[3]);
-          systemTiles[53] = getFactionSystemNumber(factions[4]);
-          systemTiles[57] = getFactionSystemNumber(factions[5]);
-          break;
-      }
-      break;
-    case 7:
-      switch (mapStyle) {
-        case "standard":
-          systemTiles[13] = "86A";
-          systemTiles[27] = "88A";
-          systemTiles[29] = "87A";
-          systemTiles[37] = getFactionSystemNumber(factions[0]);
-          systemTiles[40] = getFactionSystemNumber(factions[1]);
-          systemTiles[43] = getFactionSystemNumber(factions[2]);
-          systemTiles[46] = getFactionSystemNumber(factions[3]);
-          systemTiles[48] = "83A";
-          systemTiles[49] = "85A";
-          systemTiles[50] = "84A";
-          systemTiles[52] = getFactionSystemNumber(factions[4]);
-          systemTiles[55] = getFactionSystemNumber(factions[5]);
-          systemTiles[58] = getFactionSystemNumber(factions[6]);
-          break;
-        case "warp":
-          systemTiles[1] = "85B";
-          systemTiles[4] = "84B";
-          systemTiles[5] = "90B";
-          systemTiles[20] = "rotateOneEighty:88B";
-          systemTiles[22] = getFactionSystemNumber(factions[1]);
-          systemTiles[25] = getFactionSystemNumber(factions[2]);
-          systemTiles[27] = "86B";
-          systemTiles[33] = "rotateOneTwenty:83B";
-          systemTiles[37] = getFactionSystemNumber(factions[0]);
-          for (let i = 39; i < 48; i++) {
-            delete systemTiles[i];
-          }
-          systemTiles[49] = getFactionSystemNumber(factions[3]);
-          systemTiles[52] = getFactionSystemNumber(factions[4]);
-          delete systemTiles[53];
-          delete systemTiles[54];
-          systemTiles[55] = getFactionSystemNumber(factions[5]);
-          delete systemTiles[57];
-          systemTiles[58] = getFactionSystemNumber(factions[6]);
-          break;
-      }
-      break;
-    case 8:
-      switch (mapStyle) {
-        case "standard":
-          systemTiles[37] = getFactionSystemNumber(factions[0]);
-          systemTiles[40] = getFactionSystemNumber(factions[1]);
-          systemTiles[43] = getFactionSystemNumber(factions[2]);
-          systemTiles[46] = getFactionSystemNumber(factions[3]);
-          systemTiles[49] = getFactionSystemNumber(factions[4]);
-          systemTiles[52] = getFactionSystemNumber(factions[5]);
-          systemTiles[55] = getFactionSystemNumber(factions[6]);
-          systemTiles[58] = getFactionSystemNumber(factions[7]);
-          break;
-        case "warp":
-          systemTiles[1] = "rotateSixty:87A";
-          systemTiles[2] = "rotateOneEighty:90B";
-          systemTiles[4] = "rotateOneTwenty:88A";
-          systemTiles[5] = "89B";
-          systemTiles[24] = "rotateOneTwenty:85B";
-          systemTiles[33] = "rotateOneTwenty:85B";
-          systemTiles[37] = getFactionSystemNumber(factions[0]);
-          systemTiles[40] = getFactionSystemNumber(factions[1]);
-          delete systemTiles[41];
-          delete systemTiles[42];
-          systemTiles[43] = getFactionSystemNumber(factions[2]);
-          delete systemTiles[45];
-          systemTiles[46] = getFactionSystemNumber(factions[3]);
-          systemTiles[49] = getFactionSystemNumber(factions[4]);
-          systemTiles[52] = getFactionSystemNumber(factions[5]);
-          delete systemTiles[53];
-          delete systemTiles[54];
-          systemTiles[55] = getFactionSystemNumber(factions[6]);
-          delete systemTiles[57];
-          systemTiles[58] = getFactionSystemNumber(factions[7]);
-          break;
-      }
-  }
-  return systemTiles;
-}
-
-function validSystemNumber(number: string) {
-  let intVal = parseInt(number);
-  if (isNaN(intVal)) {
-    return false;
-  }
-  if ((intVal > 102 && intVal < 1001) || intVal > 1060) {
-    return false;
-  }
-  return true;
-}
-
 function getRotationClass(key: string) {
   switch (key) {
     case "rotateSixty":
@@ -486,6 +269,11 @@ export function SystemImage({
         />
       </div>
     );
+  }
+
+  const parsedNum = parseInt(systemNumber);
+  if (parsedNum > 4200) {
+    systemNumber = (parsedNum - 3200).toString();
   }
 
   let systemPlanets = Object.values(planets ?? {}).filter((planet) => {
@@ -846,6 +634,23 @@ interface MapProps {
 //   "/images/systems/ST_92.png",
 // ];
 
+function fillHomeSystems(a: string, numFactions: number) {
+  let currentIndex = 0;
+  return a
+    .split(" ")
+    .map((tile) => {
+      if (tile === "0") {
+        currentIndex++;
+        if (currentIndex > numFactions) {
+          return "-1";
+        }
+        return `P${currentIndex}`;
+      }
+      return tile;
+    })
+    .join(" ");
+}
+
 type Details = "NONE" | "ATTACHMENTS" | "OWNERS" | "TECH_SKIPS" | "TYPES";
 
 export default function Map({
@@ -865,9 +670,14 @@ export default function Map({
   //   }
   // }, []);
 
-  const systemTiles = getBaseSystemTiles(factions, mapStyle);
-  let updatedSystemTiles = ["18"].concat(...mapString.split(" "));
-  updatedSystemTiles = systemTiles.map((tile, index) => {
+  const updatedMapString = updateMapString(
+    mapString,
+    mapStyle,
+    factions.length
+  );
+  let updatedSystemTiles = ["18"].concat(updatedMapString.split(" "));
+  // mapString !== "" ? ["18"].concat(...mapString.split(" ")) : systemTiles;
+  updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
     if (tile === "0" && updatedTile && updatedTile !== "0") {
       const parsedTile = parseInt(updatedTile);
@@ -876,13 +686,19 @@ export default function Map({
       }
       return updatedTile;
     }
+    if (tile.startsWith("P")) {
+      const number = tile.at(tile.length - 1);
+      if (!number) {
+        return tile;
+      }
+      const factionIndex = parseInt(number);
+      return getFactionSystemNumber(factions[factionIndex - 1]);
+    }
     return tile;
   });
 
-  let numRings = 4;
-  if (factions.length > 6 || mapStyle === "large") {
-    numRings = 5;
-  }
+  const numTiles = updatedSystemTiles.length;
+  let numRings = Math.ceil((3 + Math.sqrt(9 - 12 * (1 - numTiles))) / 6);
   const largestDimension = numRings * 2 - 1;
   const tilePercentage = 98 / largestDimension;
 

@@ -160,7 +160,7 @@ export default function Header() {
           />
         </div>
       </GenericModal>
-      {validateMapString(options["map-string"] ?? "") ? (
+      {options["map-string"] !== "" ? (
         <button className={styles.Map} onClick={() => setShowMap(true)}>
           <FormattedMessage
             id="xDzJ9/"

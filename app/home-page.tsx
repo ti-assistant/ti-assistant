@@ -133,6 +133,22 @@ export default function HomePage() {
             className="flexColumn"
             style={{ width: "85%", alignItems: "stretch" }}
           >
+            <Link href={"/map-builder"}>
+              <BorderedDiv>
+                <div
+                  className="flexRow mediumFont"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <FormattedMessage
+                    id="OAXWRP"
+                    defaultMessage="Map Builder"
+                    description="A button that will open the map builder."
+                  />
+                </div>
+              </BorderedDiv>
+            </Link>
             <Link href={`/supporters`}>
               <BorderedDiv>
                 <div

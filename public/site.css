@@ -120,7 +120,7 @@ button:hover {
   background-color: #444;
 }
 
-button:focus {
+button:focus-visible {
   border: 1px solid #999
 }
 
