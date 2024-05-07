@@ -1,5 +1,5 @@
-import MapBuilder from "./map-builder-page";
+import MapBuilderPage from "./map-builder-page";
 
 export default function Page({}) {
-  return <MapBuilder />;
+  return <MapBuilderPage />;
 }

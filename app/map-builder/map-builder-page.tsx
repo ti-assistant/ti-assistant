@@ -1,22 +1,19 @@
 "use client";
 
+import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
-import Map, {
-  SystemImage,
-  getDefaultMapString,
-} from "../../src/components/MapBuilder/MapBuilder";
-import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
-import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
-import { mapStyleString } from "../../src/util/strings";
-import Image from "next/image";
+import MapBuilder, {
+  SystemImage,
+} from "../../src/components/MapBuilder/MapBuilder";
+import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { buildBaseSystems } from "../../src/data/GameData";
-
-const DEFAULT_MAP_STRING =
-  "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0";
+import { getDefaultMapString } from "../../src/util/map";
+import { mapStyleString } from "../../src/util/strings";
 
 type Filter =
   | "BASE_GAME"
@@ -123,22 +120,11 @@ function mapValuePriority(a?: string, b?: string) {
   return a;
 }
 
-function mergeMapStrings(a: string, b: string) {
-  let output = [];
-  const aArray = a.split(" ");
-  const bArray = b.split(" ");
-  let totalLength = Math.max(aArray.length, bArray.length);
-  for (let i = 0; i < totalLength; i++) {
-    const aValue = aArray[i];
-    const bValue = bArray[i];
-    output.push(mapValuePriority(aValue, bValue));
-  }
-  return output.join(" ");
-}
-
-export default function MapBuilder() {
+export default function MapBuilderPage() {
   const intl = useIntl();
-  const [mapString, setMapString] = useState(DEFAULT_MAP_STRING);
+  const [mapString, setMapString] = useState(
+    getDefaultMapString(6, "standard")
+  );
   const [mapStyle, setMapStyle] = useState<MapStyle>("standard");
   const [numFactions, setNumFactions] = useState(6);
   const [filters, setFilters] = useState<Set<Filter>>(
@@ -376,10 +362,10 @@ export default function MapBuilder() {
               }}
             >
               <div style={{ width: "100%", aspectRatio: 1 }}>
-                <SystemImage gameId="" index={0} systemNumber={"-1"} />
+                <SystemImage index={0} systemNumber={"-1"} />
               </div>
               <div style={{ width: "100%", aspectRatio: 1 }}>
-                <SystemImage gameId="" index={0} systemNumber={"0"} />
+                <SystemImage index={0} systemNumber={"0"} />
               </div>
               {tileNumbers.map((number) => {
                 const inMapString = mapString
@@ -392,7 +378,7 @@ export default function MapBuilder() {
                 }
                 return (
                   <div key={number} style={{ width: "100%", aspectRatio: 1 }}>
-                    <SystemImage gameId="" index={0} systemNumber={number} />
+                    <SystemImage index={0} systemNumber={number} />
                   </div>
                 );
               })}
@@ -447,30 +433,6 @@ export default function MapBuilder() {
                         setNumFactions(number);
                         setMapStyle("standard");
                         setMapString(getDefaultMapString(number, "standard"));
-                        // setMapString((mapString) => {
-                        //   const homeSystems = defaultHomeSystemIndices(
-                        //     number,
-                        //     "standard"
-                        //   );
-                        //   const tiles = mapString.split(" ");
-                        //   const baseTiles = defaultTiles(number, "standard");
-                        //   return tiles
-                        //     .map((tile, index) => {
-                        //       if (baseTiles[index]) {
-                        //         return baseTiles[index];
-                        //       }
-                        //       const homeSystemIndex =
-                        //         homeSystems.indexOf(index);
-                        //       if (homeSystemIndex !== -1) {
-                        //         return `P${homeSystemIndex + 1}`;
-                        //       }
-                        //       if (isHomeSystem(tile)) {
-                        //         return "0";
-                        //       }
-                        //       return tile;
-                        //     })
-                        //     .join(" ");
-                        // });
                       }}
                       className={numFactions === number ? "selected" : ""}
                     >
@@ -530,7 +492,7 @@ export default function MapBuilder() {
                 aspectRatio: 1,
               }}
             >
-              <Map
+              <MapBuilder
                 mapString={mapString}
                 updateMapString={(dragItem, dropItem) => {
                   setMapString((prevString) => {
@@ -582,5 +544,4 @@ export default function MapBuilder() {
       ></input>
     </>
   );
-  return;
 }

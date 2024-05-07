@@ -19,7 +19,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
-import { getDefaultMapString, isHomeSystem } from "../MapBuilder/MapBuilder";
+import { updateMapString, validSystemNumber } from "../../util/map";
 
 interface Cube {
   q: number;
@@ -184,30 +184,6 @@ function getFactionSystemNumber(
     return "92";
   }
   return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "92";
-}
-
-function validSystemNumber(number: string) {
-  let intVal = parseInt(number);
-  if (isNaN(intVal)) {
-    return isHomeSystem(number);
-  }
-  if (intVal > 4260) {
-    return false;
-  }
-  if (intVal > 4236) {
-    return true;
-  }
-  if (intVal > 1060) {
-    return false;
-  }
-  if (intVal > 1000) {
-    return true;
-  }
-  if (intVal > 102) {
-    return false;
-  }
-
-  return true;
 }
 
 function getRotationClass(key: string) {
@@ -658,57 +634,6 @@ interface MapProps {
 //   "/images/systems/ST_92.png",
 // ];
 
-function isValidMapString(mapString: string, numFactions: number) {
-  let numFactionSystems = 0;
-  const systems = mapString.split(" ");
-  for (const system of systems) {
-    if (!validSystemNumber(system)) {
-      console.log(`System ${system} is invalid`);
-      return false;
-    }
-    if (isHomeSystem(system)) {
-      numFactionSystems++;
-    }
-  }
-  if (numFactionSystems !== numFactions) {
-    console.log(`Only ${numFactionSystems}`);
-    return false;
-  }
-  return true;
-}
-
-function mapValuePriority(a?: string, b?: string) {
-  if (!a) {
-    if (!b) {
-      throw new Error("Both values missing!");
-    }
-    return b;
-  }
-  if (!b) {
-    return a;
-  }
-  if (a === "0") {
-    return b;
-  }
-  if (b === "0") {
-    return a;
-  }
-  return a;
-}
-
-function mergeMapStrings(a: string, b: string) {
-  let output = [];
-  const aArray = a.split(" ");
-  const bArray = b.split(" ");
-  let totalLength = Math.max(aArray.length, bArray.length);
-  for (let i = 0; i < aArray.length; i++) {
-    const aValue = aArray[i];
-    const bValue = bArray[i];
-    output.push(mapValuePriority(aValue, bValue));
-  }
-  return output.join(" ");
-}
-
 function fillHomeSystems(a: string, numFactions: number) {
   let currentIndex = 0;
   return a
@@ -745,16 +670,11 @@ export default function Map({
   //   }
   // }, []);
 
-  const defaultMapString = getDefaultMapString(factions.length, mapStyle);
-  let updatedMapString =
-    mapString !== ""
-      ? mergeMapStrings(mapString, defaultMapString)
-      : defaultMapString;
-
-  if (!isValidMapString(updatedMapString, factions.length)) {
-    updatedMapString = defaultMapString;
-  }
-
+  const updatedMapString = updateMapString(
+    mapString,
+    mapStyle,
+    factions.length
+  );
   let updatedSystemTiles = ["18"].concat(updatedMapString.split(" "));
   // mapString !== "" ? ["18"].concat(...mapString.split(" ")) : systemTiles;
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {

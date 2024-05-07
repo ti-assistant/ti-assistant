@@ -1,25 +1,8 @@
 import NextImage from "next/image";
-import { ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
-import Hexagon from "../../../public/images/systems/Hexagon.png";
-import {
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-  PlanetContext,
-} from "../../context/Context";
-import { getFactionColor } from "../../util/factions";
-import {
-  applyAllPlanetAttachments,
-  getPlanetTypeColor,
-} from "../../util/planets";
-import { getTechTypeColor } from "../../util/techs";
-import FactionIcon from "../FactionIcon/FactionIcon";
-import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import PlanetIcon from "../PlanetIcon/PlanetIcon";
-import TechIcon from "../TechIcon/TechIcon";
-import styles from "./MapBuilder.module.scss";
 import { useDrag, useDrop } from "react-dnd";
+import Hexagon from "../../../public/images/systems/Hexagon.png";
+import { isHomeSystem, validSystemNumber } from "../../util/map";
+import styles from "./MapBuilder.module.scss";
 
 interface Cube {
   q: number;
@@ -96,137 +79,6 @@ function CubeToPixel(hex: Cube, size: number) {
   return Point(x, y);
 }
 
-function validSystemNumber(number: string) {
-  let intVal = parseInt(number);
-  if (isNaN(intVal)) {
-    return isHomeSystem(number);
-  }
-  if ((intVal > 102 && intVal < 1001) || intVal > 1060) {
-    return false;
-  }
-  return true;
-}
-
-export function isHomeSystem(systemNumber?: string) {
-  if (!systemNumber) {
-    return false;
-  }
-  return systemNumber.match(/^P[1-8]$/);
-}
-
-export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
-  switch (numFactions) {
-    case 3:
-      return (
-        "0 0 0 0 0 0 " +
-        "0 0 0 0 0 0 0 0 0 0 0 0 " +
-        "-1 -1 0 P1 0 -1 -1 -1 0 P2 0 -1 -1 -1 0 P3 0 -1"
-      );
-    case 4:
-      switch (mapStyle) {
-        case "standard":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "0 0 0 0 P1 0 0 0 P2 0 0 0 0 P3 0 0 0 P4"
-          );
-        case "skinny":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "-1 0 P1 -1 -1 -1 -1 P2 0 -1 0 P3 -1 -1 -1 -1 P4 0"
-          );
-        case "warp":
-          return (
-            "85A3 0 0 85A 0 0 " +
-            "0 87A3 0 0 0 88A 0 87A 0 0 0 88A3 " +
-            "86A3 84A3 0 P1 0 0 P2 0 83A 86A 84A 0 P3 0 0 P4 0 83A3"
-          );
-      }
-      break;
-    case 5:
-      switch (mapStyle) {
-        case "standard":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "0 0 P1 0 0 0 P2 0 0 P3 0 0 P4 0 0 0 P5 0"
-          );
-        case "skinny":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "0 0 P1 -1 0 P2 -1 -1 0 P3 0 -1 -1 P4 0 -1 P5 0"
-          );
-        case "warp":
-          return (
-            "0 0 0 85A 0 0 " +
-            "0 0 0 0 0 88A 0 87A 0 0 0 0 " +
-            "P1 0 0 P2 0 0 P3 0 83A 86A 84A 0 P4 0 0 P5 0 0"
-          );
-      }
-      break;
-    case 6:
-      switch (mapStyle) {
-        case "standard":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0"
-          );
-        case "large":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "P1 0 0 0 P2 0 0 0 P3 0 0 0 P4 0 0 0 P5 0 0 0 P6 0 0 0"
-          );
-      }
-      break;
-    case 7:
-      switch (mapStyle) {
-        case "standard":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 85A 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 88A 0 87A 0 0 0 0 0 0 0 " +
-            "P1 0 0 P2 0 0 P3 0 0 P4 0 83A 86A 84A 0 P5 0 0 P6 0 0 P7 0 0"
-          );
-        case "warp":
-          return (
-            "85B 0 0 84B 90B 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "0 88B3 0 P2 0 0 P3 0 86B 0 0 0 0 0 83B2 0 0 0 " +
-            "P1 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 0 P4 0 0 P5 -1 -1 P6 0 -1 P7 0 0"
-          );
-      }
-      break;
-    case 8:
-      switch (mapStyle) {
-        case "standard":
-          return (
-            "0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0 P7 0 0 P8 0 0"
-          );
-        case "warp":
-          return (
-            "87A1 90B3 0 88A2 89B 0 " +
-            "0 0 0 0 0 0 0 0 0 0 0 0 " +
-            "0 0 0 0 0 85B2 0 0 0 0 0 0 0 0 83B2 0 0 0 " +
-            "P1 0 0 P2 -1 -1 P3 0 -1 P4 0 0 P5 0 0 P6 -1 -1 P7 0 -1 P8 0 0"
-          );
-      }
-      break;
-  }
-  return (
-    "0 0 0 0 0 0 " +
-    "0 0 0 0 0 0 0 0 0 0 0 0 " +
-    "P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0"
-  );
-}
-
 function getRotationClass(key: string) {
   switch (key) {
     case "rotateSixty":
@@ -259,21 +111,15 @@ function getRotationClassFromNumber(key: number) {
 }
 
 export function SystemImage({
-  gameId,
   index,
   systemNumber,
   onDrop,
 }: {
-  gameId: string;
   index: number;
   systemNumber: string | undefined;
   onDrop?: (dragItem: any, dropItem: any) => void;
 }) {
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
-  const planets = useContext(PlanetContext);
-
-  const [{ isDragging }, drag, dragPreview] = useDrag(() => {
+  const [{ isDragging }, drag] = useDrag(() => {
     return {
       canDrag: () => systemNumber !== "18",
       collect: (monitor) => ({
@@ -284,15 +130,14 @@ export function SystemImage({
     };
   }, [systemNumber, index]);
 
-  const [{ canDrop, isOver }, drop] = useDrop(() => {
+  const [{ isOver }, drop] = useDrop(() => {
     return {
       accept: "SYSTEM_TILE",
       canDrop: () => systemNumber !== "18",
       collect: (monitor) => ({
-        canDrop: monitor.canDrop() && onDrop,
         isOver: monitor.isOver() && onDrop,
       }),
-      drop: (dragItem, monitor) => {
+      drop: (dragItem) => {
         if (!onDrop) {
           return;
         }
@@ -537,9 +382,7 @@ interface MapProps {
   updateMapString: (dragItem: any, dropItem: any) => void;
 }
 
-export default function Map({ mapString, updateMapString }: MapProps) {
-  const gameId = useContext(GameIdContext);
-
+export default function MapBuilder({ mapString, updateMapString }: MapProps) {
   let updatedSystemTiles = ["18"].concat(...mapString.split(" "));
   updatedSystemTiles = updatedSystemTiles
     .map((tile, index) => {
@@ -583,7 +426,6 @@ export default function Map({ mapString, updateMapString }: MapProps) {
               }}
             >
               <SystemImage
-                gameId={gameId}
                 index={index}
                 systemNumber={tile}
                 onDrop={(dragItem, dropItem) => {

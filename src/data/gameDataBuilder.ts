@@ -1,3 +1,9 @@
+import {
+  isValidMapString,
+  updateMapString,
+  validSystemNumber,
+} from "../util/map";
+
 export function buildCompleteGameData(
   storedGameData: StoredGameData,
   baseData: BaseData
@@ -330,10 +336,20 @@ export function buildPlanets(
   const gameFactions = storedGameData.factions ?? {};
   const gameOptions = storedGameData.options;
 
+  const numFactions = Object.keys(gameFactions).length;
   const mapString = gameOptions["map-string"] ?? "";
-  const isValidMapString = validateMapString(mapString);
+  const mapStyle = gameOptions["map-style"] ?? "standard";
+  const updatedMapString = updateMapString(mapString, mapStyle, numFactions);
+  const validMapString = isValidMapString(updatedMapString, numFactions);
   const inGameSystems = mapString
     .split(" ")
+    .filter(validSystemNumber)
+    .filter(
+      (systemNumber) =>
+        systemNumber !== "-1" &&
+        systemNumber !== "0" &&
+        !isNaN(parseInt(systemNumber))
+    )
     .map((system) => parseInt(system) as SystemId);
 
   let planets = {} as Partial<Record<PlanetId, Planet>>;
@@ -356,7 +372,8 @@ export function buildPlanets(
       return;
     }
     if (
-      isValidMapString &&
+      validMapString &&
+      inGameSystems.length > 0 &&
       planet.system &&
       planet.id !== "Mirage" &&
       planet.id !== "Mallice" &&

@@ -115,10 +115,10 @@ function getSetupPhaseText(
 }
 
 export function setMapString(gameId: string | undefined, mapString: string) {
-  if (!gameId || !validateMapString(mapString)) {
+  if (!gameId) {
     return;
   }
-  console.log("Setting map string");
+
   changeOptionAsync(gameId, "map-string", mapString);
 }
 
