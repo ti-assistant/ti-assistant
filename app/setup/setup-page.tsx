@@ -19,6 +19,7 @@ import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
 import styles from "./setup.module.scss";
 import Toggle from "../../src/components/Toggle/Toggle";
+import NumberInput from "../../src/components/NumberInput/NumberInput";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -151,87 +152,30 @@ function MobileOptions({
                 padding: `${"8px"} ${"16px"} 0 ${"16px"}`,
               }}
             >
-              <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+              <div className="flexRow" style={{ alignItems: "flex-start" }}>
                 <FormattedMessage
                   id="R06tnh"
                   description="A label for a selector specifying the number of victory points required."
                   defaultMessage="Victory Points"
                 />
                 :
-                <div
-                  className="flexRow"
-                  style={{
-                    justifyContent: "flex-start",
-                    padding: `0 ${"20px"}`,
-                  }}
-                >
-                  <button
-                    className={
-                      options["victory-points"] === 10 ? "selected" : ""
-                    }
-                    onClick={() => {
-                      toggleOption(10, "victory-points");
-                    }}
-                  >
-                    10
-                  </button>
-                  <button
-                    className={
-                      options["victory-points"] === 14 ? "selected" : ""
-                    }
-                    onClick={() => {
-                      toggleOption(14, "victory-points");
-                    }}
-                  >
-                    14
-                  </button>
-                  <button
-                    className={
-                      options["victory-points"] !== 14 &&
-                      options["victory-points"] !== 10
-                        ? "selected"
-                        : ""
-                    }
-                    onClick={() => {
-                      toggleOption(
-                        parseInt(otherPointsRef.current?.innerText ?? "10"),
-                        "victory-points"
-                      );
-                    }}
-                  >
-                    <FormattedMessage
-                      id="sgqLYB"
-                      description="Text on a button used to select a non-listed value"
-                      defaultMessage="Other"
-                    />
-                  </button>
-                  <div
-                    ref={otherPointsRef}
-                    spellCheck={false}
-                    contentEditable={true}
-                    suppressContentEditableWarning={true}
-                    onClick={(e) => (e.currentTarget.innerText = "")}
-                    onBlur={(e) => {
-                      const victoryPoints = parseInt(e.target.innerText);
-                      if (isNaN(victoryPoints) || victoryPoints <= 0) {
-                        if (
-                          options["victory-points"] !== 10 &&
-                          options["victory-points"] !== 14
-                        ) {
-                          e.currentTarget.innerText =
-                            options["victory-points"].toString();
-                        } else {
-                          e.currentTarget.innerText = "12";
-                        }
-                      } else {
-                        toggleOption(victoryPoints, "victory-points");
-                        e.currentTarget.innerText = victoryPoints.toString();
+                <NumberInput
+                  value={options["victory-points"]}
+                  onChange={(newVal) => toggleOption(newVal, "victory-points")}
+                  minValue={0}
+                />
+                {options["game-variant"] === "alliance-separate" ? (
+                  <>
+                    &
+                    <NumberInput
+                      value={options["secondary-victory-points"]}
+                      onChange={(newVal) =>
+                        toggleOption(newVal, "secondary-victory-points")
                       }
-                    }}
-                  >
-                    12
-                  </div>
-                </div>
+                      minValue={0}
+                    />
+                  </>
+                ) : null}
               </div>
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
                 <FormattedMessage
@@ -247,69 +191,87 @@ function MobileOptions({
                     padding: `0 ${"20px"}`,
                   }}
                 >
-                  <button
-                    className={options.expansions.has("POK") ? "selected" : ""}
-                    onClick={() =>
-                      toggleExpansion(!options.expansions.has("POK"), "POK")
-                    }
+                  <Toggle
+                    selected={options.expansions.has("POK")}
+                    toggleFn={(prevValue) => {
+                      toggleExpansion(!prevValue, "POK");
+                    }}
                   >
                     <FormattedMessage
                       id="p9XVGB"
                       description="Text on a button that will enable/disable the Prophecy of Kings expansion."
                       defaultMessage="Prophecy of Kings"
                     />
-                  </button>
-                  <button
-                    className={
-                      options.expansions.has("CODEX ONE") ? "selected" : ""
-                    }
-                    onClick={() =>
-                      toggleExpansion(
-                        !options.expansions.has("CODEX ONE"),
-                        "CODEX ONE"
-                      )
-                    }
+                  </Toggle>
+                  <Toggle
+                    selected={options.expansions.has("CODEX ONE")}
+                    toggleFn={(prevValue) => {
+                      toggleExpansion(!prevValue, "CODEX ONE");
+                    }}
                   >
                     <FormattedMessage
                       id="3Taw9H"
                       description="Text on a button that will enable/disable Codex I."
                       defaultMessage="Codex I"
                     />
-                  </button>
-                  <button
-                    className={
-                      options.expansions.has("CODEX TWO") ? "selected" : ""
-                    }
-                    onClick={() =>
-                      toggleExpansion(
-                        !options.expansions.has("CODEX TWO"),
-                        "CODEX TWO"
-                      )
-                    }
+                  </Toggle>
+                  <Toggle
+                    selected={options.expansions.has("CODEX TWO")}
+                    toggleFn={(prevValue) => {
+                      toggleExpansion(!prevValue, "CODEX TWO");
+                    }}
                   >
                     <FormattedMessage
                       id="knYKVl"
                       description="Text on a button that will enable/disable Codex II."
                       defaultMessage="Codex II"
                     />
-                  </button>
-                  <button
-                    className={
-                      options.expansions.has("CODEX THREE") ? "selected" : ""
-                    }
-                    onClick={() =>
-                      toggleExpansion(
-                        !options.expansions.has("CODEX THREE"),
-                        "CODEX THREE"
-                      )
-                    }
+                  </Toggle>
+                  <Toggle
+                    selected={options.expansions.has("CODEX THREE")}
+                    toggleFn={(prevValue) => {
+                      toggleExpansion(!prevValue, "CODEX THREE");
+                    }}
                   >
                     <FormattedMessage
                       id="zXrdrP"
                       description="Text on a button that will enable/disable Codex III."
                       defaultMessage="Codex III"
                     />
-                  </button>
+                  </Toggle>
+                </div>
+                <div
+                  className="flexColumn mediumFont"
+                  style={{
+                    alignItems: "flex-start",
+                    padding: `0 ${"20px"}`,
+                  }}
+                >
+                  <FormattedMessage
+                    id="weIxIg"
+                    description="A label for a selector specifying expansions that are homemade."
+                    defaultMessage="Homebrew:"
+                  />
+                  <div
+                    className="flexRow"
+                    style={{
+                      justifyContent: "flex-start",
+                      padding: `0 ${"20px"}`,
+                    }}
+                  >
+                    <Toggle
+                      selected={options.expansions.has("DISCORDANT STARS")}
+                      toggleFn={(prevValue) => {
+                        toggleExpansion(!prevValue, "DISCORDANT STARS");
+                      }}
+                    >
+                      <FormattedMessage
+                        id="ZlvDZB"
+                        description="Text on a button that will enable/disable the Discordant Stars expansion."
+                        defaultMessage="Discordant Stars"
+                      />
+                    </Toggle>
+                  </div>
                 </div>
               </div>
               <div>
@@ -510,156 +472,34 @@ function Options({
               padding: `${"8px"} ${"16px"} 0 ${"16px"}`,
             }}
           >
-            <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+            <div className="flexRow" style={{ alignItems: "flex-start" }}>
               <FormattedMessage
                 id="R06tnh"
                 description="A label for a selector specifying the number of victory points required."
                 defaultMessage="Victory Points"
               />
               :
-              <div
-                className="flexRow"
-                style={{
-                  justifyContent: "flex-start",
-                  padding: `0 ${"20px"}`,
-                }}
-              >
-                {defaultVPs.map((VPs, index) => {
-                  return (
-                    <button
-                      key={index}
-                      className={
-                        options["victory-points"] === VPs ? "selected" : ""
-                      }
-                      onClick={() => {
-                        toggleOption(VPs, "victory-points");
-                      }}
-                    >
-                      {VPs}
-                    </button>
-                  );
-                })}
-                <button
-                  className={
-                    !defaultVPs.includes(options["victory-points"])
-                      ? "selected"
-                      : ""
-                  }
-                  onClick={() => {
-                    toggleOption(
-                      parseInt(otherPointsRef.current?.innerText ?? "10"),
-                      "victory-points"
-                    );
-                  }}
-                >
+              <NumberInput
+                value={options["victory-points"]}
+                onChange={(newVal) => toggleOption(newVal, "victory-points")}
+                minValue={0}
+              />
+              {options["game-variant"] === "alliance-separate" ? (
+                <>
                   <FormattedMessage
-                    id="sgqLYB"
-                    description="Text on a button used to select a non-listed value"
-                    defaultMessage="Other"
+                    id="+WkrHz"
+                    description="Text between two fields linking them together."
+                    defaultMessage="AND"
                   />
-                </button>
-                <div
-                  ref={otherPointsRef}
-                  spellCheck={false}
-                  contentEditable={true}
-                  suppressContentEditableWarning={true}
-                  onClick={(e) => (e.currentTarget.innerText = "")}
-                  onBlur={(e) => {
-                    const victoryPoints = parseInt(e.target.innerText);
-                    if (isNaN(victoryPoints) || victoryPoints <= 0) {
-                      if (defaultVPs.includes(options["victory-points"])) {
-                        e.currentTarget.innerText =
-                          options["victory-points"].toString();
-                      } else {
-                        e.currentTarget.innerText = otherDefault.toString();
-                      }
-                    } else {
-                      toggleOption(victoryPoints, "victory-points");
-                      e.currentTarget.innerText = victoryPoints.toString();
+                  <NumberInput
+                    value={options["secondary-victory-points"]}
+                    onChange={(newVal) =>
+                      toggleOption(newVal, "secondary-victory-points")
                     }
-                  }}
-                >
-                  {otherDefault}
-                </div>
-                {options["game-variant"] === "alliance-separate" ? (
-                  <>
-                    <div>
-                      <FormattedMessage
-                        id="+WkrHz"
-                        description="Text between two fields linking them together."
-                        defaultMessage="AND"
-                      />
-                    </div>
-                    {defaultVPs.map((VPs, index) => {
-                      return (
-                        <button
-                          key={index}
-                          className={
-                            options["secondary-victory-points"] === VPs
-                              ? "selected"
-                              : ""
-                          }
-                          onClick={() => {
-                            toggleOption(VPs, "secondary-victory-points");
-                          }}
-                        >
-                          {VPs}
-                        </button>
-                      );
-                    })}
-                    <button
-                      className={
-                        options["secondary-victory-points"] !== 14 &&
-                        options["secondary-victory-points"] !== 10
-                          ? "selected"
-                          : ""
-                      }
-                      onClick={() => {
-                        toggleOption(
-                          parseInt(otherPointsRef.current?.innerText ?? "10"),
-                          "secondary-victory-points"
-                        );
-                      }}
-                    >
-                      <FormattedMessage
-                        id="sgqLYB"
-                        description="Text on a button used to select a non-listed value"
-                        defaultMessage="Other"
-                      />
-                    </button>
-                    <div
-                      ref={otherPointsRef}
-                      spellCheck={false}
-                      contentEditable={true}
-                      suppressContentEditableWarning={true}
-                      onClick={(e) => (e.currentTarget.innerText = "")}
-                      onBlur={(e) => {
-                        const victoryPoints = parseInt(e.target.innerText);
-                        if (isNaN(victoryPoints) || victoryPoints <= 0) {
-                          if (
-                            defaultVPs.includes(
-                              options["secondary-victory-points"]
-                            )
-                          ) {
-                            e.currentTarget.innerText =
-                              options["secondary-victory-points"].toString();
-                          } else {
-                            e.currentTarget.innerText = otherDefault.toString();
-                          }
-                        } else {
-                          toggleOption(
-                            victoryPoints,
-                            "secondary-victory-points"
-                          );
-                          e.currentTarget.innerText = victoryPoints.toString();
-                        }
-                      }}
-                    >
-                      {otherDefault}
-                    </div>
-                  </>
-                ) : null}
-              </div>
+                    minValue={0}
+                  />
+                </>
+              ) : null}
             </div>
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
               <FormattedMessage
@@ -671,7 +511,7 @@ function Options({
                 className="flexRow"
                 style={{
                   justifyContent: "flex-start",
-                  padding: `0 ${"20px"}`,
+                  padding: `0 16px`,
                 }}
               >
                 <Toggle
@@ -727,7 +567,7 @@ function Options({
                 className="flexColumn mediumFont"
                 style={{
                   alignItems: "flex-start",
-                  padding: `0 ${"20px"}`,
+                  padding: `0 16px`,
                 }}
               >
                 <FormattedMessage
@@ -739,7 +579,7 @@ function Options({
                   className="flexRow"
                   style={{
                     justifyContent: "flex-start",
-                    padding: `0 ${"20px"}`,
+                    padding: `0 16px`,
                   }}
                 >
                   <Toggle
