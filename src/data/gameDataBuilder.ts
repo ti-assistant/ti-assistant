@@ -393,7 +393,7 @@ export function buildPlanets(
     }
     // Maybe filter out PoK agendas.
     if (
-      !isValidMapString &&
+      inGameSystems.length === 0 &&
       planet.expansion !== "BASE" &&
       planet.expansion !== "BASE ONLY" &&
       !gameOptions.expansions.includes(planet.expansion)

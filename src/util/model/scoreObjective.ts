@@ -1,6 +1,11 @@
 import { createIntl, createIntlCache } from "react-intl";
-import { buildObjectives } from "../../data/GameData";
+import {
+  buildFactions,
+  buildLeaders,
+  buildObjectives,
+} from "../../data/GameData";
 import { arrayRemove, arrayUnion } from "../api/util";
+import { UpdateLeaderStateHandler } from "./updateLeaderState";
 
 export class ScoreObjectiveHandler implements Handler {
   constructor(
@@ -21,7 +26,7 @@ export class ScoreObjectiveHandler implements Handler {
 
     let scorers = objective?.scorers ?? [];
 
-    const updates: Record<string, any> = {
+    let updates: Record<string, any> = {
       [`state.paused`]: false,
     };
 
@@ -44,20 +49,32 @@ export class ScoreObjectiveHandler implements Handler {
         `objectives.${this.data.event.objective}.keyedScorers.${this.data.event.key}`
       ] = keyedScorers;
     }
-
-    const faction = this.gameData.factions[this.data.event.faction];
-    if (faction && faction.hero === "locked") {
-      const numScored = Object.values(
-        buildObjectives(this.gameData, intl)
-      ).filter((objective) => {
-        return (
-          objective.type !== "OTHER" &&
-          ((objective.scorers ?? []).includes(this.data.event.faction) ||
-            objective.id === this.data.event.objective)
-        );
-      }).length;
-      if (numScored >= 3) {
-        updates[`factions.${this.data.event.faction}.hero`] = "readied";
+    const numScored = Object.values(
+      buildObjectives(this.gameData, intl)
+    ).filter((objective) => {
+      return (
+        objective.type !== "OTHER" &&
+        ((objective.scorers ?? []).includes(this.data.event.faction) ||
+          objective.id === this.data.event.objective)
+      );
+    }).length;
+    if (numScored >= 3) {
+      const leaders = buildLeaders(this.gameData, intl);
+      const heroes = Object.values(leaders).filter(
+        (leader) =>
+          leader.faction === this.data.event.faction && leader.type === "HERO"
+      );
+      for (const hero of heroes) {
+        if (!hero.state || hero.state === "locked") {
+          const handler = new UpdateLeaderStateHandler(this.gameData, {
+            action: "UPDATE_LEADER_STATE",
+            event: { leaderId: hero.id, state: "readied" },
+          });
+          updates = {
+            ...updates,
+            ...handler.getUpdates(),
+          };
+        }
       }
     }
 
@@ -104,7 +121,7 @@ export class UnscoreObjectiveHandler implements Handler {
 
     let scorers = objective?.scorers ?? [];
 
-    const updates: Record<string, any> = {
+    let updates: Record<string, any> = {
       [`state.paused`]: false,
     };
 
@@ -130,19 +147,32 @@ export class UnscoreObjectiveHandler implements Handler {
       ] = keyedScorers;
     }
 
-    const faction = this.gameData.factions[this.data.event.faction];
-    if (faction && faction.hero === "readied") {
-      const numScored = Object.values(
-        buildObjectives(this.gameData, intl)
-      ).filter((objective) => {
-        return (
-          objective.type !== "OTHER" &&
-          (objective.scorers ?? []).includes(this.data.event.faction) &&
-          objective.id !== this.data.event.objective
-        );
-      }).length;
-      if (numScored < 3) {
-        updates[`factions.${this.data.event.faction}.hero`] = "locked";
+    const numScored = Object.values(
+      buildObjectives(this.gameData, intl)
+    ).filter((objective) => {
+      return (
+        objective.type !== "OTHER" &&
+        (objective.scorers ?? []).includes(this.data.event.faction) &&
+        objective.id !== this.data.event.objective
+      );
+    }).length;
+    if (numScored < 3) {
+      const leaders = buildLeaders(this.gameData, intl);
+      const heroes = Object.values(leaders).filter(
+        (leader) =>
+          leader.faction === this.data.event.faction && leader.type === "HERO"
+      );
+      for (const hero of heroes) {
+        if (hero.state === "readied") {
+          const handler = new UpdateLeaderStateHandler(this.gameData, {
+            action: "UPDATE_LEADER_STATE",
+            event: { leaderId: hero.id, state: "locked" },
+          });
+          updates = {
+            ...updates,
+            ...handler.getUpdates(),
+          };
+        }
       }
     }
 
