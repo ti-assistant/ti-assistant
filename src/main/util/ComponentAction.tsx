@@ -38,7 +38,7 @@ import {
   selectFactionAsync,
   selectSubComponentAsync,
   unplayComponentAsync,
-  updatePlanetStateAsync
+  updatePlanetStateAsync,
 } from "../../dynamic/api";
 import {
   getClaimedPlanets,
@@ -48,14 +48,12 @@ import {
   getResearchedTechs,
   getScoredObjectives,
   getSelectedFaction,
-  getSelectedSubComponent
+  getSelectedSubComponent,
 } from "../../util/actionLog";
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
-import {
-  applyAllPlanetAttachments
-} from "../../util/planets";
+import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize } from "../../util/util";
 
 function capitalizeFirstLetter(string: string) {
@@ -1541,12 +1539,14 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
           return false;
         }
 
-        if (
-          "leader" in component &&
-          component.leader === "HERO" &&
-          faction.hero !== "readied"
-        ) {
-          return false;
+        if ("leader" in component && component.leader === "HERO") {
+          const hero = leaders[component.id as LeaderId];
+          if (!hero) {
+            return false;
+          }
+          if (hero.state !== "readied") {
+            return false;
+          }
         }
 
         return true;
