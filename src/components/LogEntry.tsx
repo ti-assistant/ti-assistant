@@ -600,6 +600,7 @@ export function LogEntryElement({
           );
         }
       }
+      return null;
     }
     case "PLAY_ADJUDICATOR_BAAL": {
       return (
@@ -612,7 +613,8 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId="Embers of Muaat" />
-          used Adjudicator Ba'al to replace system {logEntry.data.event.systemId} with Muaat supernova.
+          used Adjudicator Ba&apos;al to replace system{" "}
+          {logEntry.data.event.systemId} with Muaat supernova.
         </div>
       );
     }
