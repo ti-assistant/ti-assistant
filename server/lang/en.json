@@ -5715,6 +5715,10 @@
     "defaultMessage": "Re-shuffle secret objectives",
     "description": "A step in the setup phase: Re-shuffle secret objectives."
   },
+  "dsGVrU": {
+    "defaultMessage": "Replaced System {system}",
+    "description": "Message telling a player which system was replaced by the Muaat hero"
+  },
   "e01Ge2": {
     "defaultMessage": "Tactical Action",
     "description": "Type of action involving activating a system."

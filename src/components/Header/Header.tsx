@@ -75,8 +75,13 @@ export default function Header() {
   );
   let mallice;
   if (options && (options["expansions"] ?? []).includes("POK")) {
-    mallice = "A";
-    if (planets && (planets["Mallice"] ?? {}).owner) {
+    const malliceObj = planets["Mallice"];
+    if (!malliceObj) {
+      mallice = "PURGED";
+    } else {
+      mallice = "A";
+    }
+    if ((planets["Mallice"] ?? {}).owner) {
       mallice = "B";
     }
   }

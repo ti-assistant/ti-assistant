@@ -1,19 +1,35 @@
-import React, { CSSProperties, useContext } from "react";
+import React, { CSSProperties, useContext, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
+import { InfoRow } from "../InfoRow";
+import { SelectableRow } from "../SelectableRow";
 import { TechRow } from "../TechRow";
+import {
+  ActionLogContext,
+  FactionContext,
+  GameIdContext,
+  LeaderContext,
+  OptionContext,
+  PlanetContext,
+  RelicContext,
+  SystemContext,
+} from "../context/Context";
 import {
   addAttachmentAsync,
   addTechAsync,
   claimPlanetAsync,
   loseRelicAsync,
+  playAdjudicatorBaalAsync,
   removeAttachmentAsync,
   removeTechAsync,
   scoreObjectiveAsync,
   unclaimPlanetAsync,
+  undoAdjudicatorBaalAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
 import {
+  getAdjudicatorBaalSystem,
   getAttachments,
   getGainedRelic,
   getObjectiveScorers,
@@ -23,21 +39,18 @@ import { hasTech } from "../util/api/techs";
 import { hasScoredObjective } from "../util/api/util";
 import { getFactionColor } from "../util/factions";
 import { applyPlanetAttachments } from "../util/planets";
+import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
-import PlanetRow from "./PlanetRow/PlanetRow";
+import SystemSelect from "./Map/SystemSelect";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
-import styles from "./TacticalAction.module.scss";
-import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "./PlanetIcon/PlanetIcon";
-import { FormattedMessage, useIntl } from "react-intl";
+import PlanetRow from "./PlanetRow/PlanetRow";
+import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
-import FrontierExploration from "./FrontierExploration/FrontierExploration";
-import { GameIdContext, RelicContext } from "../context/Context";
-import { SelectableRow } from "../SelectableRow";
-import { InfoRow } from "../InfoRow";
 
 export function TacticalAction({
   activeFactionId,
@@ -702,6 +715,126 @@ export function TacticalAction({
           </ClientOnlyHoverMenu>
         </React.Fragment>
       ) : null}
+      {activeFactionId === "Embers of Muaat" ? <AdjudicatorBaal /> : null}
     </div>
+  );
+}
+
+function AdjudicatorBaal() {
+  const actionLog = useContext(ActionLogContext);
+  const factions = useContext(FactionContext);
+  const gameId = useContext(GameIdContext);
+  const options = useContext(OptionContext);
+  const leaders = useContext(LeaderContext);
+  const planets = useContext(PlanetContext);
+  const systems = useContext(SystemContext);
+
+  const [testing, setTesting] = useState(options["map-string"] ?? "");
+
+  let mallice;
+  if (options && (options["expansions"] ?? []).includes("POK")) {
+    const malliceObj = planets["Mallice"];
+    if (!malliceObj) {
+      mallice = "PURGED";
+    } else {
+      mallice = "A";
+    }
+    if (planets && (planets["Mallice"] ?? {}).owner) {
+      mallice = "B";
+    }
+  }
+
+  const mapOrderedFactions = Object.values(factions).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
+
+  const adjudicatorBaalSystem = getAdjudicatorBaalSystem(actionLog);
+
+  const mapString = options["map-string"];
+  if (!mapString) {
+    return null;
+  }
+
+  const adjudicatorBaal = leaders["Adjudicator Ba'al"];
+  if (!adjudicatorBaal) {
+    return null;
+  }
+
+  if (adjudicatorBaalSystem) {
+    const system = systems[adjudicatorBaalSystem];
+    if (!system) {
+      return null;
+    }
+    const planetString = system.planets.join("/");
+    return (
+      <LabeledDiv label={adjudicatorBaal.name}>
+        <SelectableRow
+          itemId={`${adjudicatorBaalSystem}`}
+          removeItem={() => {
+            undoAdjudicatorBaalAsync(gameId, adjudicatorBaalSystem);
+          }}
+          style={{ fontSize: "14px" }}
+        >
+          <FormattedMessage
+            id="dsGVrU"
+            defaultMessage="Replaced System {system}"
+            description="Message telling a player which system was replaced by the Muaat hero"
+            values={{ system: adjudicatorBaalSystem }}
+          />
+          {planetString !== "" ? ` (${planetString})` : ""}
+        </SelectableRow>
+      </LabeledDiv>
+    );
+  }
+
+  if (adjudicatorBaal.state !== "readied") {
+    return null;
+  }
+  return (
+    <ClientOnlyHoverMenu
+      label={adjudicatorBaal.name}
+      buttonStyle={{ fontSize: "14px" }}
+    >
+      <div
+        className="flexColumn"
+        style={{ width: "320px", height: "320px", marginBottom: "16px" }}
+      >
+        <SystemSelect
+          mapString={mapString}
+          mapStyle={options["map-style"]}
+          factions={mapOrderedFactions}
+          canSelectSystem={(systemId) => {
+            const systemNumber = parseInt(systemId);
+            if (
+              systemNumber < 19 ||
+              (systemNumber > 50 && systemNumber < 59) ||
+              (systemNumber > 80 && systemNumber < 82) ||
+              (systemNumber > 82 && systemNumber < 1037)
+            ) {
+              return false;
+            }
+            return true;
+          }}
+          onSelect={(systemId) => {
+            const systemNumber = parseInt(systemId);
+            if (!systemNumber) {
+              return;
+            }
+
+            if (
+              systemNumber < 19 ||
+              (systemNumber > 50 && systemNumber < 59) ||
+              (systemNumber > 80 && systemNumber < 82) ||
+              (systemNumber > 82 && systemNumber < 1037)
+            ) {
+              return;
+            }
+
+            playAdjudicatorBaalAsync(gameId, systemId as SystemId);
+          }}
+          mallice={mallice}
+        />
+      </div>
+    </ClientOnlyHoverMenu>
   );
 }

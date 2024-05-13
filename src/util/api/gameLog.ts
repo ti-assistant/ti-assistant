@@ -25,6 +25,7 @@ import {
   PlayActionCardHandler,
   UnplayActionCardHandler,
 } from "../model/playActionCard";
+import { PlayAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 import {
   PlayComponentHandler,
   UnplayComponentHandler,
@@ -174,5 +175,7 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new UnswapStrategyCardsHandler(gameData, data);
     case "UPDATE_PLANET_STATE":
       return new UpdatePlanetStateHandler(gameData, data);
+    case "PLAY_ADJUDICATOR_BAAL":
+      return new PlayAdjudicatorBaalHandler(gameData, data);
   }
 }

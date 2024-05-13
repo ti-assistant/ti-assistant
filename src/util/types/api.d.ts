@@ -50,6 +50,7 @@ type GameUpdateData =
   | SpeakerTieBreakData
   | StartVotingData
   | (PlayRelicData | UnplayRelicData)
+  | (PlayAdjudicatorBaalData | UndoAdjudicatorBaalData)
   // TODO
   | UndoData;
 
@@ -587,4 +588,18 @@ interface PlayRelicData {
 interface UnplayRelicData {
   action: "UNPLAY_RELIC";
   event: PlayRelicEvent;
+}
+
+interface AdjudicatorBaalEvent {
+  systemId: SystemId;
+}
+
+interface PlayAdjudicatorBaalData {
+  action: "PLAY_ADJUDICATOR_BAAL";
+  event: AdjudicatorBaalEvent;
+}
+
+interface UndoAdjudicatorBaalData {
+  action: "UNDO_ADJUDICATOR_BAAL";
+  event: AdjudicatorBaalEvent;
 }

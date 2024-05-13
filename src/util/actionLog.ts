@@ -222,3 +222,11 @@ export function getPlayedRelic(actionLog: ActionLogEntry[], relic: RelicId) {
     )
     .map((logEntry) => (logEntry.data as PlayRelicData).event)[0];
 }
+
+export function getAdjudicatorBaalSystem(actionLog: ActionLogEntry[]) {
+  return actionLog
+    .filter((logEntry) => logEntry.data.action === "PLAY_ADJUDICATOR_BAAL")
+    .map(
+      (logEntry) => (logEntry.data as PlayAdjudicatorBaalData).event.systemId
+    )[0];
+}

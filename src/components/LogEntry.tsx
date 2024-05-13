@@ -553,7 +553,6 @@ export function LogEntryElement({
       return null;
     }
     case "PLAY_RELIC": {
-      console.log("Relic" + logEntry.data.event);
       const relicOwner = relics[logEntry.data.event.relic]?.owner;
       if (!relicOwner) {
         return null;
@@ -601,6 +600,21 @@ export function LogEntryElement({
           );
         }
       }
+    }
+    case "PLAY_ADJUDICATOR_BAAL": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${"10px"}`,
+            gap: "4px",
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId="Embers of Muaat" />
+          used Adjudicator Ba'al to replace system {logEntry.data.event.systemId} with Muaat supernova.
+        </div>
+      );
     }
     case "HIDE_AGENDA": {
       return (

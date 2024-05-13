@@ -97,6 +97,10 @@ import {
   PlayRelicHandler,
   UnplayRelicHandler,
 } from "../../../../src/util/model/playRelic";
+import {
+  UndoAdjudicatorBaalHandler,
+  PlayAdjudicatorBaalHandler,
+} from "../../../../src/util/model/playAdjudicatorBaal";
 
 export async function POST(
   req: Request,
@@ -495,6 +499,12 @@ function updateInTransaction(
         handler = new UnplayRelicHandler(gameData, data);
         break;
       }
+      case "PLAY_ADJUDICATOR_BAAL":
+        handler = new PlayAdjudicatorBaalHandler(gameData, data);
+        break;
+      case "UNDO_ADJUDICATOR_BAAL":
+        handler = new UndoAdjudicatorBaalHandler(gameData, data);
+        break;
       case "UNDO": {
         const actionToUndo = (gameData.actionLog ?? [])[0];
 
