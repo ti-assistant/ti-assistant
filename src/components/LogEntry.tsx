@@ -553,7 +553,6 @@ export function LogEntryElement({
       return null;
     }
     case "PLAY_RELIC": {
-      console.log("Relic" + logEntry.data.event);
       const relicOwner = relics[logEntry.data.event.relic]?.owner;
       if (!relicOwner) {
         return null;

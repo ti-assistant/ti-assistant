@@ -123,7 +123,6 @@ export function isValidMapString(mapString: string, numFactions: number) {
   const systems = mapString.split(" ");
   for (const system of systems) {
     if (!validSystemNumber(system)) {
-      console.log(`${system} NOT VALID`);
       return false;
     }
     if (isHomeSystem(system)) {
@@ -131,7 +130,6 @@ export function isValidMapString(mapString: string, numFactions: number) {
     }
   }
   if (numFactionSystems !== numFactions) {
-    console.log(`${numFactionSystems} NOT VALID`);
     return false;
   }
   return true;

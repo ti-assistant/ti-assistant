@@ -765,7 +765,6 @@ function AdjudicatorBaal() {
     if (!system) {
       return null;
     }
-    console.log(system.planets);
     const planetString = system.planets.join("/");
     return (
       <LabeledDiv label={adjudicatorBaal.name}>
