@@ -979,7 +979,7 @@ export default function Map({
             <SystemImage
               gameId={gameId}
               showDetails={showDetails}
-              systemNumber={`82${mallice}`}
+              systemNumber={mallice === "PURGED" ? "81" : `82${mallice}`}
             />
           </div>
         ) : null}

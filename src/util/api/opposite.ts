@@ -45,6 +45,7 @@ import { UnstartVotingHandler } from "../model/startVoting";
 import { UnswapStrategyCardsHandler } from "../model/swapStrategyCards";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
+import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -413,5 +414,12 @@ export function getOppositeHandler(
     case "UNPLAY_RELIC": {
       throw new Error("UNPLAY_RELIC should not be in log");
     }
+    case "PLAY_ADJUDICATOR_BAAL":
+      return new UndoAdjudicatorBaalHandler(gameData, {
+        action: "UNDO_ADJUDICATOR_BAAL",
+        event: data.event,
+      });
+    case "UNDO_ADJUDICATOR_BAAL":
+      throw new Error("UNDO_ADJUDICATOR_BAAL should not be in log");
   }
 }

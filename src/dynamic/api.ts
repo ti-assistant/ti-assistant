@@ -152,6 +152,7 @@ const updateLeaderStateFn = import("../util/api/updateLeaderState").then(
 const updatePlanetStateFn = import("../util/api/updatePlanetState").then(
   (mod) => mod.updatePlanetState
 );
+const playAdjudicatorBaalModule = import("../util/api/playAdjudicatorBaal");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -508,6 +509,14 @@ export async function unclaimPlanetAsync(
   unclaimPlanet(gameId, faction, planet);
 }
 
+export async function undoAdjudicatorBaalAsync(
+  gameId: string,
+  systemId: SystemId
+) {
+  const mod = await playAdjudicatorBaalModule;
+  mod.undoAdjudicatorBaal(gameId, systemId);
+}
+
 export async function unplayActionCardAsync(
   gameId: string,
   card: string,
@@ -572,4 +581,12 @@ export async function updatePlanetStateAsync(
 ) {
   const updatePlanetState = await updatePlanetStateFn;
   updatePlanetState(gameId, planet, state);
+}
+
+export async function playAdjudicatorBaalAsync(
+  gameId: string,
+  systemId: SystemId
+) {
+  const mod = await playAdjudicatorBaalModule;
+  mod.playAdjudicatorBaal(gameId, systemId);
 }
