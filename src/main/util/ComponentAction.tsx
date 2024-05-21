@@ -83,9 +83,11 @@ function InfoContent({ component }: { component: Component }) {
 function ComponentSelect({
   components,
   selectComponent,
+  factionId,
 }: {
   components: Component[];
   selectComponent: (componentName: string) => void;
+  factionId: FactionId;
 }) {
   const factions = useContext(FactionContext);
   const leaders = useContext(LeaderContext);
@@ -160,6 +162,8 @@ function ComponentSelect({
 
   const className = window.innerWidth < 900 ? "flexColumn" : "flexRow";
 
+  const faction = factions[factionId];
+
   return (
     <div
       className={className}
@@ -217,16 +221,15 @@ function ComponentSelect({
             }}
           >
             {techs.map((component) => {
+              if (!faction) {
+                return null;
+              }
+              const gameTech = faction.techs[component.id as TechId];
               return (
                 <button
                   key={component.id}
                   style={{ writingMode: "horizontal-tb" }}
-                  className={
-                    component.state === "exhausted" ||
-                    component.state === "used"
-                      ? "faded"
-                      : ""
-                  }
+                  className={gameTech && !gameTech.ready ? "faded" : ""}
                   onClick={() => selectComponent(component.id)}
                 >
                   {component.name}
@@ -1566,6 +1569,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         <ComponentSelect
           components={filteredComponents}
           selectComponent={selectComponent}
+          factionId={factionId}
         />
       </ClientOnlyHoverMenu>
     );
