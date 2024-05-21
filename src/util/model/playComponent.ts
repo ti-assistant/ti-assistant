@@ -29,7 +29,6 @@ export class PlayComponentHandler implements Handler {
 
     switch (component.type) {
       case "CARD":
-      case "TECH":
         updates[`components.${this.data.event.name}.state`] = "used";
         break;
       case "RELIC":
@@ -44,6 +43,9 @@ export class PlayComponentHandler implements Handler {
             updates[`components.${this.data.event.name}.state`] = "exhausted";
             break;
         }
+        break;
+      case "TECH":
+        updates[`components.${this.data.event.name}.state`] = "exhausted";
         break;
       case "LEADER":
         let newState: LeaderState = "exhausted";
