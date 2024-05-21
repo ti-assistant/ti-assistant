@@ -86,6 +86,7 @@ export class AdvancePhaseHandler implements Handler {
       case "STATUS": {
         updates[`state.activeplayer`] = this.gameData.state.speaker;
         const strategyCards = buildStrategyCards(this.gameData, intl);
+        const factions = buildFactions(this.gameData, intl);
         for (const strategyCard of Object.values(strategyCards)) {
           updates[`strategycards.${strategyCard.id}.faction`] = "DELETE";
           updates[`strategycards.${strategyCard.id}.order`] = "DELETE";
@@ -96,6 +97,13 @@ export class AdvancePhaseHandler implements Handler {
         )) {
           if (component.state === "exhausted") {
             updates[`components.${componentId}.state`] = "DELETE";
+          }
+        }
+        for (const [factionId, faction] of Object.entries(factions)) {
+          for (const [techId, tech] of Object.entries(faction.techs)) {
+            if (!tech.ready) {
+              updates[`factions.${factionId}.techs.${techId}.ready`] = true;
+            }
           }
         }
         for (const [leaderId, leader] of Object.entries(

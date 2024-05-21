@@ -1,5 +1,5 @@
 import { createIntl, createIntlCache } from "react-intl";
-import { buildComponents } from "../../data/GameData";
+import { buildComponents, buildState } from "../../data/GameData";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
 import { UpdateLeaderStateHandler } from "./updateLeaderState";
 
@@ -17,6 +17,7 @@ export class PlayComponentHandler implements Handler {
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
     const components = buildComponents(this.gameData, intl);
+    const state = buildState(this.gameData);
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
@@ -29,7 +30,6 @@ export class PlayComponentHandler implements Handler {
 
     switch (component.type) {
       case "CARD":
-      case "TECH":
         updates[`components.${this.data.event.name}.state`] = "used";
         break;
       case "RELIC":
@@ -44,6 +44,14 @@ export class PlayComponentHandler implements Handler {
             updates[`components.${this.data.event.name}.state`] = "exhausted";
             break;
         }
+        break;
+      case "TECH":
+        if (!state.activeplayer || state.activeplayer === "None") {
+          break;
+        }
+        updates[
+          `factions.${state.activeplayer}.techs.${this.data.event.name}.ready`
+        ] = false;
         break;
       case "LEADER":
         let newState: LeaderState = "exhausted";
