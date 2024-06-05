@@ -20,34 +20,41 @@ export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
     return factionId ? <FactionIcon factionId={factionId} size={size} /> : null;
   }
 
+  const planetIconStyle: PlanetIconCSS = {
+    "--size": typeof size === "string" ? size : `${size}px`,
+  };
+
   if (type === "ALL") {
     return (
-      <div className={styles.TripleIcon}>
-        <Image
-          src="/images/industrial_icon.svg"
-          alt="Industrial Planet Icon"
-          width={18}
-          height={18}
-        />
-        <Image
-          src="/images/cultural_icon.svg"
-          alt="Cultural Planet Icon"
-          width={18}
-          height={18}
-        />
-        <Image
-          src="/images/hazardous_icon.svg"
-          alt="Hazardous Planet Icon"
-          width={18}
-          height={18}
-        />
+      <div className={styles.TripleIcon} style={planetIconStyle}>
+        <div>
+          <Image
+            src="/images/industrial_icon.svg"
+            alt="Industrial Planet Icon"
+            fill
+            style={{ objectFit: "contain" }}
+          />
+        </div>
+        <div>
+          <Image
+            src="/images/cultural_icon.svg"
+            alt="Cultural Planet Icon"
+            fill
+            style={{ objectFit: "contain" }}
+          />
+        </div>
+        <div>
+          <Image
+            src="/images/hazardous_icon.svg"
+            alt="Hazardous Planet Icon"
+            fill
+            style={{ objectFit: "contain" }}
+          />
+        </div>
       </div>
     );
   }
 
-  const planetIconStyle: PlanetIconCSS = {
-    "--size": typeof size === "string" ? size : `${size}px`,
-  };
   return (
     <div className={styles.PlanetIcon} style={planetIconStyle}>
       <Image
