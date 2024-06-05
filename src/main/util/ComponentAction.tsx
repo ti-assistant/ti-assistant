@@ -23,6 +23,7 @@ import {
   GameIdContext,
   LeaderContext,
   ObjectiveContext,
+  OptionContext,
   PlanetContext,
   RelicContext,
   TechContext,
@@ -30,6 +31,7 @@ import {
 import {
   addAttachmentAsync,
   addTechAsync,
+  changeOptionAsync,
   gainRelicAsync,
   loseRelicAsync,
   playComponentAsync,
@@ -37,6 +39,7 @@ import {
   removeTechAsync,
   selectFactionAsync,
   selectSubComponentAsync,
+  swapMapTilesAsync,
   unplayComponentAsync,
   updatePlanetStateAsync,
 } from "../../dynamic/api";
@@ -49,12 +52,20 @@ import {
   getScoredObjectives,
   getSelectedFaction,
   getSelectedSubComponent,
+  wereTilesSwapped,
 } from "../../util/actionLog";
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize } from "../../util/util";
+import MapBuilder, {
+  SystemImage,
+} from "../../components/MapBuilder/MapBuilder";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import Map, { getFactionSystemNumber } from "../../components/Map/Map";
+import { updateMapString } from "../../util/map";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -418,6 +429,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
   const objectives = useContext(ObjectiveContext);
+  const options = useContext(OptionContext);
   const planets = useContext(PlanetContext);
   const relics = useContext(RelicContext);
   const techs = useContext(TechContext);
@@ -1405,6 +1417,119 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         )}`}</React.Fragment>
       );
       break;
+    }
+    case "Dark Energy Tap": {
+      const mapString = options["map-string"];
+      if (!mapString) {
+        break;
+      }
+      const mapOrderedFactions = Object.values(factions).sort(
+        (a, b) => a.mapPosition - b.mapPosition
+      );
+      let updatedMapString = updateMapString(
+        mapString,
+        options["map-style"],
+        mapOrderedFactions.length
+      );
+      let updatedSystemTiles = updatedMapString.split(" ");
+      updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
+        const updatedTile = updatedSystemTiles[index];
+        if (tile === "0" && updatedTile && updatedTile !== "0") {
+          const parsedTile = parseInt(updatedTile);
+          if (parsedTile > 4200) {
+            return (parsedTile - 3200).toString();
+          }
+          return updatedTile;
+        }
+        if (tile.startsWith("P")) {
+          const number = tile.at(tile.length - 1);
+          if (!number) {
+            return tile;
+          }
+          const factionIndex = parseInt(number);
+          return getFactionSystemNumber(mapOrderedFactions[factionIndex - 1]);
+        }
+        return tile;
+      });
+      updatedMapString = updatedSystemTiles.join(" ");
+      let tileNumbers: string[] = [];
+      for (let i = 19; i < 51; i++) {
+        tileNumbers.push(i.toString());
+      }
+      if (options.expansions.includes("POK")) {
+        for (let i = 59; i < 81; i++) {
+          tileNumbers.push(i.toString());
+        }
+      }
+      if (options.expansions.includes("DISCORDANT STARS")) {
+        for (let i = 1037; i < 1061; i++) {
+          tileNumbers.push(i.toString());
+        }
+      }
+      const alreadyUsed = wereTilesSwapped(actionLog);
+      leftLabel = alreadyUsed ? "Updated Map" : "Add System";
+      innerContent = alreadyUsed ? (
+        <div style={{ position: "relative", width: "100%", aspectRatio: 1 }}>
+          <Map
+            mapString={mapString}
+            mapStyle={options["map-style"]}
+            factions={mapOrderedFactions}
+            hideLegend
+          />
+        </div>
+      ) : (
+        <div style={{ position: "relative", width: "100%" }}>
+          <DndProvider backend={HTML5Backend}>
+            <div style={{ width: "100%", aspectRatio: 1 }}>
+              <MapBuilder
+                mapString={updatedMapString}
+                updateMapString={(dragItem, dropItem) => {
+                  swapMapTilesAsync(gameId, dropItem, dragItem);
+                }}
+                dropOnly
+                exploration
+              ></MapBuilder>
+            </div>
+            <LabeledDiv
+              label="Unused Tiles"
+              style={{
+                height: "80px",
+                justifyContent: "flex-start",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridAutoFlow: "row",
+                  gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+                  columnGap: "8px",
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                  height: "100%",
+                }}
+              >
+                {tileNumbers.map((number) => {
+                  const inMapString = mapString
+                    .split(" ")
+                    .reduce((found, systemNumber) => {
+                      return found || number == systemNumber;
+                    }, false);
+                  if (inMapString) {
+                    return null;
+                  }
+                  return (
+                    <div key={number} style={{ width: "100%", aspectRatio: 1 }}>
+                      <SystemImage index={0} systemNumber={number} />
+                    </div>
+                  );
+                })}
+              </div>
+            </LabeledDiv>
+          </DndProvider>
+        </div>
+      );
     }
   }
   if (!innerContent) {

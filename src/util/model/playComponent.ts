@@ -147,6 +147,14 @@ export class UnplayComponentHandler implements Handler {
         ...updateLeaderStateHandler.getUpdates(),
       };
     }
+    if (component.type === "TECH") {
+      const state = buildState(this.gameData);
+      if (state.activeplayer && state.activeplayer !== "None") {
+        updates[
+          `factions.${state.activeplayer}.techs.${this.data.event.name}.ready`
+        ] = true;
+      }
+    }
 
     if (this.data.event.name === "Ul the Progenitor") {
       const handler = new RemoveAttachmentHandler(this.gameData, {

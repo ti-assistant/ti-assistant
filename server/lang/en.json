@@ -5911,6 +5911,10 @@
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
     "description": "A number of Cruiser units."
   },
+  "sZua2x": {
+    "defaultMessage": "Age of Exploration",
+    "description": "Name of scenario in which players can add new tiles to the map."
+  },
   "sgqLYB": {
     "defaultMessage": "Other",
     "description": "Text on a button used to select a non-listed value"

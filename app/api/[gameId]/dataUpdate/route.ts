@@ -101,6 +101,7 @@ import {
   UndoAdjudicatorBaalHandler,
   PlayAdjudicatorBaalHandler,
 } from "../../../../src/util/model/playAdjudicatorBaal";
+import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
 
 export async function POST(
   req: Request,
@@ -504,6 +505,9 @@ function updateInTransaction(
         break;
       case "UNDO_ADJUDICATOR_BAAL":
         handler = new UndoAdjudicatorBaalHandler(gameData, data);
+        break;
+      case "SWAP_MAP_TILES":
+        handler = new SwapMapTilesHandler(gameData, data);
         break;
       case "UNDO": {
         const actionToUndo = (gameData.actionLog ?? [])[0];

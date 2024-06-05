@@ -177,16 +177,25 @@ export default function MapBuilderPage() {
       tileNumbers.push(`${i}B${rotation !== 0 ? rotation : ""}`);
     }
   }
-  if (filters.has("DISCORDANT_STARS")) {
-    for (let i = 1037; i < 1061; i++) {
-      tileNumbers.push(i.toString());
+  if (filters.has("HOME_SYSTEMS")) {
+    if (filters.has("BASE_GAME")) {
+      for (let i = 1; i < 18; i++) {
+        tileNumbers.push(i.toString());
+      }
+    }
+    if (filters.has("PROPHECY_OF_KINGS")) {
+      for (let i = 52; i < 59; i++) {
+        tileNumbers.push(i.toString());
+      }
+    }
+    if (filters.has("DISCORDANT_STARS")) {
+      for (let i = 1001; i < 1035; i++) {
+        tileNumbers.push(i.toString());
+      }
     }
   }
-  if (filters.has("HOME_SYSTEMS")) {
-    for (let i = 1; i < 18; i++) {
-      tileNumbers.push(i.toString());
-    }
-    for (let i = 52; i < 59; i++) {
+  if (filters.has("DISCORDANT_STARS")) {
+    for (let i = 1037; i < 1061; i++) {
       tileNumbers.push(i.toString());
     }
   }

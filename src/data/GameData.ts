@@ -289,6 +289,17 @@ export function buildComponents(
       };
     });
 
+  if (storedGameData.options.scenario === "AGE_OF_EXPLORATION") {
+    components["Dark Energy Tap"] = {
+      description:
+        "ACTION: You may exhaust DARK ENERGY TAP and roll 1 die. On a result of 1-4, draw a random unused red tile, on a result of 5-10, draw a random unused blue tile; place that tile adjacent to any border system that contains your ships. Place a frontier token in the newly placed system if it does not contain any planets.",
+      expansion: "BASE", // TODO: Add expansion when it comes out.
+      id: "Dark Energy Tap",
+      name: "Age of Exploration",
+      type: "TECH",
+    };
+  }
+
   Object.values(components).forEach((component) => {
     if (component.replaces) {
       delete components[component.replaces];

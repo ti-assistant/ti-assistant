@@ -46,6 +46,7 @@ import { UnswapStrategyCardsHandler } from "../model/swapStrategyCards";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
+import { SwapMapTilesHandler } from "../model/swapMapTiles";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -421,5 +422,19 @@ export function getOppositeHandler(
       });
     case "UNDO_ADJUDICATOR_BAAL":
       throw new Error("UNDO_ADJUDICATOR_BAAL should not be in log");
+    case "SWAP_MAP_TILES":
+      return new SwapMapTilesHandler(gameData, {
+        action: "SWAP_MAP_TILES",
+        event: {
+          oldItem: {
+            systemNumber: data.event.newItem.systemNumber,
+            index: data.event.oldItem.index,
+          },
+          newItem: {
+            systemNumber: data.event.oldItem.systemNumber,
+            index: data.event.newItem.index,
+          },
+        },
+      });
   }
 }
