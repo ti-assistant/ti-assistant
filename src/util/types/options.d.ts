@@ -7,6 +7,8 @@ type Expansion =
   | "DISCORDANT STARS"
   | "BASE ONLY";
 
+type Scenario = "AGE_OF_EXPLORATION";
+
 type OptionUpdateAction = "SET_OPTION";
 
 interface OptionUpdateData {
@@ -24,5 +26,6 @@ interface Options {
   "map-string"?: string;
   "map-style": MapStyle;
   "victory-points": number;
+  scenario?: Scenario;
   [key: string]: any;
 }

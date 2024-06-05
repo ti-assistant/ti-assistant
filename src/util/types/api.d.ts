@@ -51,6 +51,7 @@ type GameUpdateData =
   | StartVotingData
   | (PlayRelicData | UnplayRelicData)
   | (PlayAdjudicatorBaalData | UndoAdjudicatorBaalData)
+  | SwapMapTilesData
   // TODO
   | UndoData;
 
@@ -602,4 +603,20 @@ interface PlayAdjudicatorBaalData {
 interface UndoAdjudicatorBaalData {
   action: "UNDO_ADJUDICATOR_BAAL";
   event: AdjudicatorBaalEvent;
+}
+
+interface SwapMapTilesEvent {
+  oldItem: {
+    systemNumber: string;
+    index: number;
+  };
+  newItem: {
+    systemNumber: string;
+    index: number;
+  };
+}
+
+interface SwapMapTilesData {
+  action: "SWAP_MAP_TILES";
+  event: SwapMapTilesEvent;
 }

@@ -30,6 +30,10 @@ function Point(x: number, y: number): Point {
   };
 }
 
+function cube_equals(a: Cube, b: Cube) {
+  return a.q === b.q && a.r === b.r && a.s === b.s;
+}
+
 const HEX_RATIO = 2 / Math.sqrt(3);
 
 const CUBE_DIRECTIONS = [
@@ -114,14 +118,16 @@ export function SystemImage({
   index,
   systemNumber,
   onDrop,
+  blockDrag,
 }: {
   index: number;
   systemNumber: string | undefined;
   onDrop?: (dragItem: any, dropItem: any) => void;
+  blockDrag?: boolean;
 }) {
   const [{ isDragging }, drag] = useDrag(() => {
     return {
-      canDrag: () => systemNumber !== "18",
+      canDrag: () => !blockDrag && systemNumber !== "18",
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -380,9 +386,17 @@ export function SystemImage({
 interface MapProps {
   mapString: string;
   updateMapString: (dragItem: any, dropItem: any) => void;
+
+  dropOnly?: boolean;
+  exploration?: boolean;
 }
 
-export default function MapBuilder({ mapString, updateMapString }: MapProps) {
+export default function MapBuilder({
+  mapString,
+  updateMapString,
+  dropOnly,
+  exploration,
+}: MapProps) {
   let updatedSystemTiles = ["18"].concat(...mapString.split(" "));
   updatedSystemTiles = updatedSystemTiles
     .map((tile, index) => {
@@ -413,6 +427,27 @@ export default function MapBuilder({ mapString, updateMapString }: MapProps) {
           if (!tile) {
             tile = "-1";
           }
+          let canDrop = true;
+          if (exploration) {
+            if (tile !== "-1") {
+              canDrop = false;
+            }
+            let hasSystemNeighbor = false;
+            for (const direction of CUBE_DIRECTIONS) {
+              const neighbor = cube_neighbor(cube, direction);
+              spiral.forEach((cube, index) => {
+                if (cube_equals(cube, neighbor)) {
+                  const neighborTile = updatedSystemTiles[index];
+                  if (neighborTile && neighborTile !== "-1") {
+                    hasSystemNeighbor = true;
+                  }
+                }
+              });
+            }
+            if (!hasSystemNeighbor) {
+              canDrop = false;
+            }
+          }
           return (
             <div
               className="flexRow"
@@ -428,9 +463,14 @@ export default function MapBuilder({ mapString, updateMapString }: MapProps) {
               <SystemImage
                 index={index}
                 systemNumber={tile}
-                onDrop={(dragItem, dropItem) => {
-                  updateMapString(dragItem, dropItem);
-                }}
+                onDrop={
+                  !canDrop
+                    ? undefined
+                    : (dragItem, dropItem) => {
+                        updateMapString(dragItem, dropItem);
+                      }
+                }
+                blockDrag={dropOnly}
               />
             </div>
           );

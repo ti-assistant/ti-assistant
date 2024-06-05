@@ -158,7 +158,7 @@ const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
   "Zelian Purifier": "1034",
 } as const;
 
-function getFactionSystemNumber(
+export function getFactionSystemNumber(
   faction:
     | {
         id?: FactionId;
@@ -525,6 +525,7 @@ interface MapProps {
       faction?: FactionId;
     };
   }[];
+  hideLegend?: boolean;
 }
 
 // const IMAGES_TO_PRELOAD = [
@@ -658,6 +659,7 @@ export default function Map({
   mapStyle,
   mallice,
   factions,
+  hideLegend,
 }: MapProps) {
   const gameId = useContext(GameIdContext);
 
@@ -833,7 +835,7 @@ export default function Map({
 
   return (
     <div className={styles.Map}>
-      {gameId ? (
+      {gameId && !hideLegend ? (
         <div className={styles.Legend}>
           <LabeledDiv
             label={

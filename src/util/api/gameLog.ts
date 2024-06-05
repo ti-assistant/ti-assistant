@@ -60,6 +60,7 @@ import { SelectSubComponentHandler } from "../model/selectSubComponent";
 import { SetObjectivePointsHandler } from "../model/setObjectivePoints";
 import { SetSpeakerHandler } from "../model/setSpeaker";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
+import { SwapMapTilesHandler } from "../model/swapMapTiles";
 import {
   SwapStrategyCardsHandler,
   UnswapStrategyCardsHandler,
@@ -177,5 +178,7 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new UpdatePlanetStateHandler(gameData, data);
     case "PLAY_ADJUDICATOR_BAAL":
       return new PlayAdjudicatorBaalHandler(gameData, data);
+    case "SWAP_MAP_TILES":
+      return new SwapMapTilesHandler(gameData, data);
   }
 }

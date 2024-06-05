@@ -230,3 +230,10 @@ export function getAdjudicatorBaalSystem(actionLog: ActionLogEntry[]) {
       (logEntry) => (logEntry.data as PlayAdjudicatorBaalData).event.systemId
     )[0];
 }
+
+export function wereTilesSwapped(actionLog: ActionLogEntry[]) {
+  return (
+    actionLog.filter((logEntry) => logEntry.data.action === "SWAP_MAP_TILES")
+      .length > 0
+  );
+}

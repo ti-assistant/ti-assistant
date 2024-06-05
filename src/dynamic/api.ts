@@ -153,6 +153,7 @@ const updatePlanetStateFn = import("../util/api/updatePlanetState").then(
   (mod) => mod.updatePlanetState
 );
 const playAdjudicatorBaalModule = import("../util/api/playAdjudicatorBaal");
+const swapMapTilesModule = import("../util/api/swapMapTiles");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -483,6 +484,21 @@ export async function speakerTieBreakAsync(gameId: string, tieBreak: string) {
 export async function startVotingAsync(gameId: string) {
   const startVoting = await startVotingFn;
   startVoting(gameId);
+}
+
+export async function swapMapTilesAsync(
+  gameId: string,
+  oldItem: {
+    systemNumber: string;
+    index: number;
+  },
+  newItem: {
+    systemNumber: string;
+    index: number;
+  }
+) {
+  const mod = await swapMapTilesModule;
+  mod.swapMapTiles(gameId, oldItem, newItem);
 }
 
 export async function swapStrategyCardsAsync(

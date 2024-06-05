@@ -340,6 +340,30 @@ function MobileOptions({
                   ></input>
                 </div>
               </div>
+              <div>
+                Scenarios:
+                <div
+                  className="flexRow"
+                  style={{ alignItems: "flex-start", padding: "8px 20px" }}
+                >
+                  <Toggle
+                    selected={options.scenario === "AGE_OF_EXPLORATION"}
+                    toggleFn={(prevValue) => {
+                      if (prevValue) {
+                        toggleOption(undefined, "scenario");
+                      } else {
+                        toggleOption("AGE_OF_EXPLORATION", "scenario");
+                      }
+                    }}
+                  >
+                    <FormattedMessage
+                      id="sZua2x"
+                      defaultMessage="Age of Exploration"
+                      description="Name of scenario in which players can add new tiles to the map."
+                    />
+                  </Toggle>
+                </div>
+              </div>
               {/* {isCouncil ? (
                 <div>
                   Council Keleres:
@@ -697,6 +721,30 @@ function Options({
                 </div>
               </div>
             ) : null} */}
+            <div>
+              Scenarios:
+              <div
+                className="flexRow"
+                style={{ alignItems: "flex-start", padding: "8px 20px" }}
+              >
+                <Toggle
+                  selected={options.scenario === "AGE_OF_EXPLORATION"}
+                  toggleFn={(prevValue) => {
+                    if (prevValue) {
+                      toggleOption(undefined, "scenario");
+                    } else {
+                      toggleOption("AGE_OF_EXPLORATION", "scenario");
+                    }
+                  }}
+                >
+                  <FormattedMessage
+                    id="sZua2x"
+                    defaultMessage="Age of Exploration"
+                    description="Name of scenario in which players can add new tiles to the map."
+                  />
+                </Toggle>
+              </div>
+            </div>
             {variants.length > 1 ? (
               <div>
                 Variants (WIP):
