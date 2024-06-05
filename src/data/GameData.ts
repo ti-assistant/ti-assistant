@@ -471,7 +471,11 @@ export function buildPlanets(storedGameData: StoredGameData) {
 
   let planets = {} as Partial<Record<PlanetId, Planet>>;
   Object.entries(BASE_PLANETS).forEach(([_, planet]) => {
-    if (planet.faction && !gameFactions[planet.faction]) {
+    let isPlanetInMap = planet.system && inGameSystems.includes(planet.system);
+    if (planet.id === "Creuss" && inGameSystems.includes(17)) {
+      isPlanetInMap = true;
+    }
+    if (planet.faction && !gameFactions[planet.faction] && !isPlanetInMap) {
       if (!gameFactions["Council Keleres"]) {
         return;
       }
@@ -491,12 +495,12 @@ export function buildPlanets(storedGameData: StoredGameData) {
     if (
       validMapString &&
       inGameSystems.length > 0 &&
+      !isPlanetInMap &&
       planet.system &&
       planet.id !== "Mirage" &&
       planet.id !== "Mallice" &&
       planet.id !== "Mecatol Rex" &&
-      !planet.faction &&
-      !inGameSystems.includes(planet.system)
+      !planet.faction
     ) {
       // TODO: Remove once Milty Draft site fixes numbering
       if (typeof planet.system === "number") {

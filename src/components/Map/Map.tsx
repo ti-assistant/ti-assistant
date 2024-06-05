@@ -822,6 +822,14 @@ export default function Map({
       ghosts = true;
     }
   });
+  if (!ghosts) {
+    mapString.split(" ").forEach((system) => {
+      if (system === "17") {
+        ghosts = true;
+        ghostsCorner = "bottom-right";
+      }
+    });
+  }
 
   return (
     <div className={styles.Map}>

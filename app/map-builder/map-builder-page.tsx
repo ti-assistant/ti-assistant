@@ -23,7 +23,8 @@ type Filter =
   | "NO_PLANETS"
   | "ONE_PLANET"
   | "TWO_PLANETS"
-  | "THREE_PLANETS";
+  | "THREE_PLANETS"
+  | "HOME_SYSTEMS";
 
 function getFilterButtonText(filter: Filter, intl: IntlShape) {
   switch (filter) {
@@ -53,6 +54,12 @@ function getFilterButtonText(filter: Filter, intl: IntlShape) {
         description:
           "Text on a button that will enable/disable the Discordant Stars expansion.",
         defaultMessage: "Discordant Stars",
+      });
+    case "HOME_SYSTEMS":
+      return intl.formatMessage({
+        id: "22b12K",
+        description: "Home system planets.",
+        defaultMessage: "Home",
       });
     case "NO_PLANETS":
       return 0;
@@ -175,6 +182,14 @@ export default function MapBuilderPage() {
       tileNumbers.push(i.toString());
     }
   }
+  if (filters.has("HOME_SYSTEMS")) {
+    for (let i = 1; i < 18; i++) {
+      tileNumbers.push(i.toString());
+    }
+    for (let i = 52; i < 59; i++) {
+      tileNumbers.push(i.toString());
+    }
+  }
 
   tileNumbers = tileNumbers.filter((number) => {
     const system = systems[number as SystemId];
@@ -277,6 +292,11 @@ export default function MapBuilderPage() {
                 />
                 <FilterButton
                   filter="DISCORDANT_STARS"
+                  filters={filters}
+                  setFilters={setFilters}
+                />
+                <FilterButton
+                  filter="HOME_SYSTEMS"
                   filters={filters}
                   setFilters={setFilters}
                 />
