@@ -5,7 +5,24 @@
 }
 
 .TripleIcon {
-  margin-left: 8px;
-  height: 36px;
-  width: 36px;
+  height: var(--size);
+  width: var(--size);
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: row;
+
+  justify-items: center;
+  align-items: center;
+}
+
+.TripleIcon > div {
+  position: relative;
+  height: 100%;
+
+  aspect-ratio: 1;
+}
+
+.TripleIcon > div:last-child {
+  grid-column: 1/-1;
 }

@@ -343,8 +343,8 @@ function PlanetAttributes({
             ✹✹✹
           </div>
         );
-      case "all-types":
-        return <PlanetIcon type="ALL" size={36} />;
+      // case "all-types":
+      //   return <PlanetIcon type="ALL" size={36} />;
       default:
         return null;
     }

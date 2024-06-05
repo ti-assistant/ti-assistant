@@ -539,6 +539,13 @@ export function buildPlanets(storedGameData: StoredGameData) {
       ...(gamePlanets[planet.id] ?? {}),
     };
 
+    if (planet.faction && isPlanetInMap && !gameFactions[planet.faction]) {
+      const attributes = new Set(planet.attributes);
+      attributes.add("all-types");
+      planet.attributes = Array.from(attributes);
+      planet.type = "ALL";
+    }
+
     planets[planet.id] = planet;
   });
 
