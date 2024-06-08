@@ -49,6 +49,7 @@ export default function TechIcon({
               outline ? "svg" : "webp"
             }`}
             alt={`${type.toLowerCase()} tech`}
+            sizes="20px"
             fill
             style={{ objectFit: "contain" }}
           />

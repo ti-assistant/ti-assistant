@@ -264,8 +264,10 @@ export function SystemImage({
         <NextImage
           src={Hexagon}
           alt={`System Tile`}
+          sizes="64px"
           fill
           style={{ opacity: "10%", objectFit: "contain" }}
+          priority
         />
       </div>
     );
@@ -313,8 +315,14 @@ export function SystemImage({
       <NextImage
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
+        sizes="128px"
         fill
         style={{ objectFit: "contain" }}
+        priority={
+          systemNumber === "92" ||
+          systemNumber === "18" ||
+          systemNumber === "82A"
+        }
       />
       {systemPlanets.map((planet) => {
         let detailsSymbol: ReactNode | null = null;
