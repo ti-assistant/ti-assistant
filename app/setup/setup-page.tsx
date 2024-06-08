@@ -2129,7 +2129,6 @@ export default function SetupPage({
         style={{
           width: "100%",
           boxSizing: "border-box",
-          overflow: "hidden",
         }}
       >
         <div
