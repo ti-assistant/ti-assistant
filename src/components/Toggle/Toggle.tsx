@@ -1,5 +1,30 @@
-import { PropsWithChildren } from "react";
+import { CSSProperties, PropsWithChildren } from "react";
 import styles from "./Toggle.module.scss";
+
+interface SelectedCSSProperties extends CSSProperties {
+  "--border-color": "green";
+  "--background-color": "#444";
+}
+
+interface UnselectedCSSProperties extends CSSProperties {
+  "--border-color": "red";
+  "--background-color": "#333";
+}
+
+type ToggleCSSProperties = SelectedCSSProperties | UnselectedCSSProperties;
+
+function getToggleStyle(selected: boolean): ToggleCSSProperties {
+  if (selected) {
+    return {
+      "--border-color": "green",
+      "--background-color": "#444",
+    };
+  }
+  return {
+    "--border-color": "red",
+    "--background-color": "#333",
+  };
+}
 
 interface ToggleProps {
   selected: boolean;
@@ -11,25 +36,15 @@ export default function Toggle({
   toggleFn,
   children,
 }: PropsWithChildren<ToggleProps>) {
-  const border = `1px solid ${selected ? "green" : "red"}`;
-  const backgroundColor = selected ? "#444" : "#333";
+  let toggleStyle = getToggleStyle(selected);
   return (
-    <div
-      className={styles.ToggleContainer}
-      style={{
-        border,
-        backgroundColor,
-      }}
-      onClick={() => toggleFn(selected)}
-    >
-      <input type="checkbox" checked={selected}></input>
-      <label
-        style={{
-          cursor: "pointer",
-        }}
-      >
-        {children}
-      </label>
-    </div>
+    <label className={styles.ToggleContainer} style={toggleStyle}>
+      <input
+        type="checkbox"
+        onChange={() => toggleFn(selected)}
+        checked={selected}
+      ></input>
+      {children}
+    </label>
   );
 }
