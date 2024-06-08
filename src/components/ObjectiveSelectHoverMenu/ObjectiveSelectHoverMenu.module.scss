@@ -1,0 +1,36 @@
+.Description {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "Myriad Pro";
+  width: 100%;
+  text-align: center;
+  min-height: 22px;
+  white-space: pre-wrap;
+
+  padding: 8px;
+}
+
+.ObjectiveGrid {
+  --font-size: unset;
+  --num-items: 5;
+  --per-column: 5;
+
+  padding-left: 8px;
+  padding-right: 8px;
+
+  display: grid;
+  justify-content: flex-start;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(min(var(--num-items), var(--per-column)), auto);
+  gap: 4px;
+
+  max-width: 80vw;
+  overflow-x: auto;
+}
+
+.ObjectiveButton {
+  font-size: var(--font-size);
+}

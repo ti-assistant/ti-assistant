@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LockedButtons } from "../LockedButton";
 import { NumberedItem } from "../NumberedItem";
@@ -22,10 +22,10 @@ import {
 } from "../dynamic/api";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
-import { validateMapString } from "../util/util";
 import styles from "./SetupPhase.module.scss";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { objectiveTypeString } from "../util/strings";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 
 export function startFirstRound(gameId: string) {
   advancePhaseAsync(gameId);
@@ -130,6 +130,8 @@ export default function SetupPhase() {
   const options = useContext(OptionContext);
   const state = useContext(StateContext);
 
+  const [testing, setTesting] = useState<string | undefined>();
+
   const intl = useIntl();
 
   const mapStringRef = useRef<HTMLInputElement>(null);
@@ -191,12 +193,6 @@ export default function SetupPhase() {
               whiteSpace: "nowrap",
             }}
           >
-            <FormattedMessage
-              id="UJSVtn"
-              description="Label for a textbox used to specify the map string."
-              defaultMessage="Map String"
-            />
-            :
             <input
               ref={mapStringRef}
               type="textbox"
@@ -204,7 +200,14 @@ export default function SetupPhase() {
               style={{
                 width: `min(75vw, 268px)`,
               }}
-              onChange={(event) =>
+              pattern={"([0-9]{1,4}((A|B)[0-5]?)?($|\\s))*"}
+              placeholder={intl.formatMessage({
+                id: "UJSVtn",
+                description:
+                  "Label for a textbox used to specify the map string.",
+                defaultMessage: "Map String",
+              })}
+              onBlur={(event) =>
                 setMapString(gameId, event.currentTarget.value)
               }
             ></input>
@@ -336,11 +339,12 @@ export default function SetupPhase() {
             ) : null}
             {revealedObjectives.length < 2 ? (
               <LabeledDiv
-                label={getFactionName((factions ?? {})[state?.speaker ?? ""])}
-                color={getFactionColor((factions ?? {})[state?.speaker ?? ""])}
+                label={getFactionName(factions[state.speaker])}
+                color={getFactionColor(factions[state.speaker])}
                 style={{ width: "100%" }}
               >
-                <ClientOnlyHoverMenu
+                <ObjectiveSelectHoverMenu
+                  action={revealObjectiveAsync}
                   label={
                     <FormattedMessage
                       id="lDBTCO"
@@ -352,44 +356,12 @@ export default function SetupPhase() {
                       }}
                     />
                   }
-                  renderProps={(closeFn) => (
-                    <div
-                      className="flexRow"
-                      style={{
-                        padding: `${"8px"}`,
-                        display: "grid",
-                        gridAutoFlow: "column",
-                        gridTemplateRows: "repeat(5, auto)",
-                        justifyContent: "flex-start",
-                        gap: `${"4px"}`,
-                        maxWidth: "80vw",
-                        overflowX: "auto",
-                      }}
-                    >
-                      {Object.values(availableObjectives)
-                        .filter((objective) => {
-                          return objective.type === "STAGE ONE";
-                        })
-                        .map((objective) => {
-                          return (
-                            <button
-                              key={objective.id}
-                              style={{ writingMode: "horizontal-tb" }}
-                              onClick={() => {
-                                if (!gameId) {
-                                  return;
-                                }
-                                closeFn();
-                                revealObjectiveAsync(gameId, objective.id);
-                              }}
-                            >
-                              {objective.name}
-                            </button>
-                          );
-                        })}
-                    </div>
+                  objectives={Object.values(availableObjectives).filter(
+                    (objective) => {
+                      return objective.type === "STAGE ONE";
+                    }
                   )}
-                ></ClientOnlyHoverMenu>
+                />
               </LabeledDiv>
             ) : null}
           </div>

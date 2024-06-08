@@ -75,6 +75,7 @@ import {
 import styles from "./AgendaPhase.module.scss";
 import { Selector } from "../components/Selector/Selector";
 import MawOfWorlds from "../components/MawOfWorlds/MawOfWorlds";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 
 export function computeVotes(
   agenda: Agenda | undefined,
@@ -357,62 +358,50 @@ function AgendaDetails() {
           return objective.type === type && !objective.selected;
         }
       );
-      agendaSelection = (
-        <Selector
-          hoverMenuLabel={
-            <FormattedMessage
-              id="lDBTCO"
-              description="Instruction telling the speaker to reveal objectives."
-              defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
-              values={{
-                count: 1,
-                type: objectiveTypeString(type, intl),
-              }}
+      const revealedObjective = getRevealedObjectives(currentTurn)[0];
+      const revealedObjectiveObj = revealedObjective
+        ? objectives[revealedObjective]
+        : null;
+      agendaSelection =
+        revealedObjective && revealedObjectiveObj ? (
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="IfyaDZ"
+                description="A label for revealed objectives."
+                defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
+                values={{
+                  count: 1,
+                  type: type,
+                }}
+              />
+            }
+          >
+            <ObjectiveRow
+              objective={revealedObjectiveObj}
+              removeObjective={() =>
+                hideObjectiveAsync(gameId, revealedObjective)
+              }
+              hideScorers={true}
             />
-          }
-          options={availableObjectives}
-          renderItem={(objectiveId) => {
-            const objective = (objectives ?? {})[objectiveId];
-            if (!objective || !gameId) {
-              return null;
+          </LabeledDiv>
+        ) : (
+          <ObjectiveSelectHoverMenu
+            action={revealObjectiveAsync}
+            label={
+              <FormattedMessage
+                id="lDBTCO"
+                description="Instruction telling the speaker to reveal objectives."
+                defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                values={{
+                  count: 1,
+                  type: objectiveTypeString(type, intl),
+                }}
+              />
             }
-            return (
-              <LabeledDiv
-                label={
-                  <FormattedMessage
-                    id="IfyaDZ"
-                    description="A label for revealed objectives."
-                    defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
-                    values={{
-                      count: 1,
-                      type: type,
-                    }}
-                  />
-                }
-              >
-                <ObjectiveRow
-                  objective={objective}
-                  removeObjective={() =>
-                    hideObjectiveAsync(gameId, objectiveId)
-                  }
-                  hideScorers={true}
-                />
-              </LabeledDiv>
-            );
-          }}
-          selectedItem={getRevealedObjectives(currentTurn)[0]}
-          toggleItem={(objectiveId, add) => {
-            if (!gameId) {
-              return;
-            }
-            if (add) {
-              revealObjectiveAsync(gameId, objectiveId);
-            } else {
-              hideObjectiveAsync(gameId, objectiveId);
-            }
-          }}
-        />
-      );
+            objectives={availableObjectives}
+          />
+        );
       break;
     }
     case "Colonial Redistribution": {
