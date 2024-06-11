@@ -210,7 +210,6 @@ function mapValuePriority(a?: string, b?: string) {
   if (!a) {
     if (!b) {
       return a;
-      throw new Error("Both values missing!");
     }
     return b;
   }

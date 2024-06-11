@@ -130,8 +130,6 @@ export default function SetupPhase() {
   const options = useContext(OptionContext);
   const state = useContext(StateContext);
 
-  const [testing, setTesting] = useState<string | undefined>();
-
   const intl = useIntl();
 
   const mapStringRef = useRef<HTMLInputElement>(null);
