@@ -170,6 +170,14 @@ input[type="textbox"] {
   outline: none;
 }
 
+input[type="textbox"]:invalid {
+  background-color: #333;
+  color: #eee;
+  border: 2px solid red;
+  border-radius: 4px;
+  outline: none;
+}
+
 .myriadPro {
   font-family: "Myriad Pro";
 }

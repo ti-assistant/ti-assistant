@@ -44,6 +44,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { objectiveTypeString, phaseString } from "../util/strings";
 import { Selector } from "../components/Selector/Selector";
 import CrownOfEmphidia from "../components/CrownOfEmphidia/CrownOfEmphidia";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -509,27 +510,47 @@ export function MiddleColumn() {
                       }}
                     >
                       <div style={{ width: "fit-content" }}>
-                        <Selector
-                          options={availableObjectives}
-                          selectedItem={scoredPublics[0]}
-                          hoverMenuLabel={
-                            <FormattedMessage
-                              id="6EVvXu"
-                              description="Label for selecting a public objective."
-                              defaultMessage="Public"
-                            />
-                          }
-                          toggleItem={(objectiveId, add) => {
-                            if (!card.faction) {
-                              return;
+                        {scoredPublics[0] ? (
+                          <Selector
+                            options={availableObjectives}
+                            selectedItem={scoredPublics[0]}
+                            hoverMenuLabel={
+                              <FormattedMessage
+                                id="6EVvXu"
+                                description="Label for selecting a public objective."
+                                defaultMessage="Public"
+                              />
                             }
-                            if (add) {
+                            toggleItem={(objectiveId, add) => {
+                              if (!card.faction) {
+                                return;
+                              }
+                              if (add) {
+                                scoreObj(card.faction, objectiveId);
+                              } else {
+                                unscoreObj(card.faction, objectiveId);
+                              }
+                            }}
+                          />
+                        ) : (
+                          <ObjectiveSelectHoverMenu
+                            action={(_, objectiveId) => {
+                              if (!card.faction) {
+                                return;
+                              }
                               scoreObj(card.faction, objectiveId);
-                            } else {
-                              unscoreObj(card.faction, objectiveId);
+                            }}
+                            label={
+                              <FormattedMessage
+                                id="6EVvXu"
+                                description="Label for selecting a public objective."
+                                defaultMessage="Public"
+                              />
                             }
-                          }}
-                        />
+                            objectives={availableObjectives}
+                            fontSize="14px"
+                          />
+                        )}
                       </div>
                     </div>
                   )}
@@ -566,29 +587,50 @@ export function MiddleColumn() {
                     }}
                   >
                     <div style={{ width: "fit-content" }}>
-                      <Selector
-                        options={secrets}
-                        selectedItem={scoredSecrets[0]}
-                        hoverMenuLabel={
-                          <FormattedMessage
-                            id="ggO0Am"
-                            description="Label for selecting a secret objective."
-                            defaultMessage="Secret"
-                          />
-                        }
-                        style={{ maxWidth: "calc(88vw - 50px)" }}
-                        itemsPerColumn={10}
-                        toggleItem={(objectiveId, add) => {
-                          if (!card.faction) {
-                            return;
+                      {scoredSecrets[0] ? (
+                        <Selector
+                          options={secrets}
+                          selectedItem={scoredSecrets[0]}
+                          hoverMenuLabel={
+                            <FormattedMessage
+                              id="ggO0Am"
+                              description="Label for selecting a secret objective."
+                              defaultMessage="Secret"
+                            />
                           }
-                          if (add) {
+                          style={{ maxWidth: "calc(88vw - 50px)" }}
+                          itemsPerColumn={10}
+                          toggleItem={(objectiveId, add) => {
+                            if (!card.faction) {
+                              return;
+                            }
+                            if (add) {
+                              scoreObj(card.faction, objectiveId);
+                            } else {
+                              unscoreObj(card.faction, objectiveId);
+                            }
+                          }}
+                        />
+                      ) : (
+                        <ObjectiveSelectHoverMenu
+                          action={(_, objectiveId) => {
+                            if (!card.faction) {
+                              return;
+                            }
                             scoreObj(card.faction, objectiveId);
-                          } else {
-                            unscoreObj(card.faction, objectiveId);
+                          }}
+                          label={
+                            <FormattedMessage
+                              id="ggO0Am"
+                              description="Label for selecting a secret objective."
+                              defaultMessage="Secret"
+                            />
                           }
-                        }}
-                      />
+                          objectives={secrets}
+                          fontSize="14px"
+                          perColumn={10}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -735,7 +777,6 @@ export default function StatusPhase() {
   }
 
   const crownOfEmphidia = (relics ?? {})["The Crown of Emphidia"];
-
 
   const wasCrownPlayedThisTurn = getPlayedRelic(
     currentTurn,
@@ -1000,13 +1041,14 @@ export default function StatusPhase() {
               </LabeledDiv>
             ) : (
               <LabeledDiv
-                label={getFactionName((factions ?? {})[state?.speaker ?? ""])}
-                color={getFactionColor((factions ?? {})[state?.speaker ?? ""])}
+                label={getFactionName(factions[state.speaker])}
+                color={getFactionColor(factions[state.speaker])}
                 style={{ width: "100%" }}
               >
                 <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
-                  <Selector
-                    hoverMenuLabel={
+                  <ObjectiveSelectHoverMenu
+                    action={(_, objectiveId) => addObj(objectiveId)}
+                    label={
                       <FormattedMessage
                         id="lDBTCO"
                         description="Instruction telling the speaker to reveal objectives."
@@ -1020,8 +1062,7 @@ export default function StatusPhase() {
                         }}
                       />
                     }
-                    selectedItem={undefined}
-                    options={Object.values(availableObjectives).filter(
+                    objectives={Object.values(availableObjectives).filter(
                       (objective) => {
                         return (
                           objective.type ===
@@ -1029,14 +1070,6 @@ export default function StatusPhase() {
                         );
                       }
                     )}
-                    style={{ maxWidth: "calc(88vw - 40px)" }}
-                    toggleItem={(objectiveId, add) => {
-                      if (add) {
-                        addObj(objectiveId);
-                      } else {
-                        removeObj(objectiveId);
-                      }
-                    }}
                   />
                 </div>
               </LabeledDiv>

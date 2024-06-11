@@ -59,6 +59,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { phaseString } from "../util/strings";
 import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1420,7 +1421,10 @@ export function AdditionalActions({
               ) : null}
               {scoredPublics.length < 1 ? (
                 availablePublicObjectives.length > 0 ? (
-                  <ClientOnlyHoverMenu
+                  <ObjectiveSelectHoverMenu
+                    action={(_, objectiveId) =>
+                      addObjective(activeFaction.id, objectiveId)
+                    }
                     label={
                       <FormattedMessage
                         id="73882v"
@@ -1428,25 +1432,8 @@ export function AdditionalActions({
                         defaultMessage="Score Public Objective"
                       />
                     }
-                  >
-                    <div
-                      className="flexColumn"
-                      style={{ ...secretButtonStyle }}
-                    >
-                      {availablePublicObjectives.map((objective) => {
-                        return (
-                          <button
-                            key={objective.id}
-                            onClick={() =>
-                              addObjective(activeFaction.id, objective.id)
-                            }
-                          >
-                            {objective.name}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </ClientOnlyHoverMenu>
+                    objectives={availablePublicObjectives}
+                  />
                 ) : (
                   "No unscored public objectives"
                 )

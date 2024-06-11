@@ -209,7 +209,7 @@ function mergeMapStrings(a: string, b: string) {
 function mapValuePriority(a?: string, b?: string) {
   if (!a) {
     if (!b) {
-      throw new Error("Both values missing!");
+      return a;
     }
     return b;
   }

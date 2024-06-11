@@ -21,13 +21,13 @@ export default function GenericModal({
     if (!nodeRef.current) {
       return;
     }
-    nodeRef.current.style.display = "none";
+    nodeRef.current.style.visibility = "hidden";
   }
   function onEnter() {
     if (!nodeRef.current) {
       return;
     }
-    nodeRef.current.style.display = "flex";
+    nodeRef.current.style.visibility = "visible";
   }
   return (
     <CSSTransition

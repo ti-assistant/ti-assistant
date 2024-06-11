@@ -175,11 +175,13 @@ export function SystemImage({
           src={Hexagon}
           alt={`System ${systemNumber} Tile`}
           fill
+          sizes="128px"
           style={{
             opacity: "10%",
             objectFit: "contain",
             filter: "invert(0.9)",
           }}
+          priority
         />
         {isOver ? (
           <div
@@ -224,6 +226,7 @@ export function SystemImage({
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
+            sizes="128px"
             style={{ objectFit: "contain" }}
           />
         </div>
@@ -248,7 +251,9 @@ export function SystemImage({
           src={Hexagon}
           alt={`System Tile`}
           fill
+          sizes="128px"
           style={{ opacity: "10%", objectFit: "contain" }}
+          priority
         />
         {isOver ? (
           <div
@@ -285,8 +290,10 @@ export function SystemImage({
         <NextImage
           src={`/images/systems/ST_92.png`}
           alt={`Player Home System`}
+          sizes="128px"
           fill
           style={{ objectFit: "contain" }}
+          priority
         />
         <div
           className="flexRow"
@@ -352,7 +359,9 @@ export function SystemImage({
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         fill
+        sizes="128px"
         style={{ objectFit: "contain" }}
+        priority={systemNumber === "18"}
       />
       <div
         className="flexRow"

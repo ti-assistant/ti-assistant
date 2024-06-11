@@ -34,6 +34,7 @@ import Modal from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import { Selector } from "./Selector/Selector";
+import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -1565,61 +1566,20 @@ export default function ObjectivePanel() {
                 width: "min-content",
                 alignItems: "stretch",
                 gridRow: "1 / 2",
+                fontSize: "14px",
               }}
             >
-              <Selector
-                options={remainingStageOneObjectives}
-                hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
-                renderButton={(itemId, itemName, toggleItem) => {
-                  return (
-                    <button
-                      key={itemId}
-                      style={{ fontSize: "14px" }}
-                      onClick={() => {
-                        toggleItem(itemId, true);
-                      }}
-                    >
-                      {itemName}
-                    </button>
-                  );
-                }}
-                toggleItem={(objectiveId, add) => {
-                  if (!gameId) {
-                    return;
-                  }
-                  if (add) {
-                    revealObjectiveAsync(gameId, objectiveId);
-                  } else {
-                    hideObjectiveAsync(gameId, objectiveId);
-                  }
-                }}
+              <ObjectiveSelectHoverMenu
+                action={revealObjectiveAsync}
+                label={objectiveTypeString("STAGE ONE", intl)}
+                objectives={remainingStageOneObjectives}
+                fontSize="14px"
               />
-              <Selector
-                options={remainingStageTwoObjectives}
-                hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
-                renderButton={(itemId, itemName, toggleItem) => {
-                  return (
-                    <button
-                      key={itemId}
-                      style={{ fontSize: "14px" }}
-                      onClick={() => {
-                        toggleItem(itemId, true);
-                      }}
-                    >
-                      {itemName}
-                    </button>
-                  );
-                }}
-                toggleItem={(objectiveId, add) => {
-                  if (!gameId) {
-                    return;
-                  }
-                  if (add) {
-                    revealObjectiveAsync(gameId, objectiveId);
-                  } else {
-                    hideObjectiveAsync(gameId, objectiveId);
-                  }
-                }}
+              <ObjectiveSelectHoverMenu
+                action={revealObjectiveAsync}
+                label={objectiveTypeString("STAGE TWO", intl)}
+                objectives={remainingStageTwoObjectives}
+                fontSize="14px"
               />
             </LabeledDiv>
           </div>

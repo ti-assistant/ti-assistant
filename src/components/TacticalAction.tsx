@@ -51,6 +51,7 @@ import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
+import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 
 export function TacticalAction({
   activeFactionId,
@@ -506,7 +507,10 @@ export function TacticalAction({
         </LabeledDiv>
       ) : null}
       {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
-        <ClientOnlyHoverMenu
+        <ObjectiveSelectHoverMenu
+          action={(_, objectiveId) => {
+            addObjective(activeFactionId, objectiveId);
+          }}
           label={
             <FormattedMessage
               id="fCdj3q"
@@ -514,24 +518,8 @@ export function TacticalAction({
               defaultMessage="Score Action Phase Objective"
             />
           }
-          renderProps={(closeFn) => (
-            <div className="flexColumn" style={{ ...secretButtonStyle }}>
-              {scorableObjectives.map((objective) => {
-                return (
-                  <button
-                    key={objective.id}
-                    onClick={() => {
-                      closeFn();
-                      addObjective(activeFactionId, objective.id);
-                    }}
-                  >
-                    {objective.name}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        ></ClientOnlyHoverMenu>
+          objectives={scorableObjectives}
+        />
       ) : null}
       {relic ? (
         <LabeledDiv

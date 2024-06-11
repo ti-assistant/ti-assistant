@@ -135,6 +135,10 @@
     "defaultMessage": "Map:",
     "description": "A label for a section of options related to the map."
   },
+  "49U8Wl": {
+    "defaultMessage": "Hover to see full text.",
+    "description": "Text telling the user that they can hover over objectives to see the full text."
+  },
   "49oatW": {
     "defaultMessage": "Undo",
     "description": "Text shown on a button that will undo the previous action."
