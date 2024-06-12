@@ -71,7 +71,7 @@ export function AgendaRow({
     setShowInfoModal(true);
   }
 
-  const textColor = agenda.resolved ? "#777" : "#eee";
+  const textColor = "#eee";
 
   return (
     <SelectableRow itemId={agenda.id} removeItem={removeAgenda}>

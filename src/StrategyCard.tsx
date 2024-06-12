@@ -4,6 +4,7 @@ import FactionTile from "./components/FactionTile/FactionTile";
 import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
 import { FactionContext } from "./context/Context";
 import { getFactionColor, getFactionName } from "./util/factions";
+import LabeledLine from "./components/LabeledLine/LabeledLine";
 
 interface StrategyCardOpts {
   fontSize?: string;
@@ -194,6 +195,7 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
             display: "flex",
             justifyContent: "center",
             color: faction?.passed ? "#555" : "#eee",
+            transition: "color 120ms",
           }}
         >
           {initiative}

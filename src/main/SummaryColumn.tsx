@@ -171,12 +171,18 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
                   width={84}
                 />
               }
-              color={getFactionColor(faction)}
+              color={faction.passed ? "#555" : getFactionColor(faction)}
             >
-              <FactionSummary
-                factionId={faction?.id}
-                options={factionSummaryOptions}
-              />
+              <div
+                style={{
+                  filter: faction?.passed ? "brightness(0.6)" : "unset",
+                }}
+              >
+                <FactionSummary
+                  factionId={faction?.id}
+                  options={factionSummaryOptions}
+                />
+              </div>
             </LabeledDiv>
           </div>
         );

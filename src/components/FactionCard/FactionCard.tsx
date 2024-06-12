@@ -83,6 +83,7 @@ export default function FactionCard({
                 top: 0,
                 width: opts.iconSize ? opts.iconSize : "100%",
                 height: opts.iconSize ? opts.iconSize : "100%",
+                userSelect: "none",
               }}
             >
               <FactionIcon factionId={faction.id} size="100%" />

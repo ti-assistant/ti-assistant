@@ -17,9 +17,11 @@ import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRad
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
+import FactionIcon from "../FactionIcon/FactionIcon";
 
 interface StartingComponentsProps {
   factionId: FactionId;
+  showFactionIcon?: boolean;
 }
 
 const unitOrder = [
@@ -39,6 +41,7 @@ const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
 export default function StartingComponents({
   factionId,
+  showFactionIcon = false,
 }: StartingComponentsProps) {
   const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
@@ -164,6 +167,11 @@ export default function StartingComponents({
 
   return (
     <div className={styles.StartingComponents}>
+      {showFactionIcon ? (
+        <div className={styles.FactionIcon}>
+          <FactionIcon factionId={factionId} size={60} />
+        </div>
+      ) : null}
       {startswith.planetchoice ? (
         <div
           className="flexRow"
@@ -279,7 +287,6 @@ export default function StartingComponents({
           columnGap: "8px",
           fontSize: "14px",
           width: "100%",
-          justifyContent: "space-between",
         }}
       >
         {orderedUnits.map(([unit, number]) => {

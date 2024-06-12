@@ -60,6 +60,7 @@ import { phaseString } from "../util/strings";
 import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
 import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1680,7 +1681,7 @@ export function ActivePlayerColumn({
         defaultMessage="Active Player"
       />
       <SwitchTransition>
-        <CSSTransition key={activeFaction.id} timeout={500} classNames="fade">
+        <CSSTransition key={activeFaction.id} timeout={120} classNames="fade">
           <FactionCard
             faction={activeFaction}
             rightLabel={
@@ -1710,7 +1711,7 @@ export function ActivePlayerColumn({
         style={{ width: "100%", justifyContent: "center" }}
       >
         <SwitchTransition>
-          <CSSTransition key={onDeckFaction.id} timeout={500} classNames="fade">
+          <CSSTransition key={onDeckFaction.id} timeout={120} classNames="fade">
             <LabeledDiv
               label={
                 <FormattedMessage
@@ -1753,6 +1754,7 @@ export function ActivePlayerColumn({
                     height: "44px",
                     zIndex: -1,
                     opacity: 0.7,
+                    userSelect: "none",
                   }}
                 >
                   <FactionIcon factionId={onDeckFaction.id} size="100%" />
@@ -1859,11 +1861,20 @@ export default function ActionPhase() {
         }
       >
         {Object.values(cardsByFaction).map((cards) => {
+          const isActivePlayer = cards[0]?.faction === state.activeplayer;
           return (
-            <SmallStrategyCard
+            <div
               key={cards[0] ? cards[0].id : "Error"}
-              cards={cards}
-            />
+              style={{
+                transition: "padding 120ms",
+                paddingRight:
+                  isActivePlayer && activeFaction && onDeckFaction ? 0 : "40px",
+                paddingLeft:
+                  isActivePlayer && activeFaction && onDeckFaction ? "40px" : 0,
+              }}
+            >
+              <SmallStrategyCard cards={cards} />
+            </div>
           );
         })}
       </div>

@@ -1,12 +1,4 @@
-import {
-  CSSProperties,
-  PropsWithChildren,
-  ReactNode,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { BLACK_BORDER_GLOW, BLACK_TEXT_GLOW } from "../../util/borderGlow";
 import styles from "./LabeledDiv.module.scss";
 

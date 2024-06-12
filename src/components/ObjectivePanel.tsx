@@ -242,15 +242,20 @@ function SecretModalContent({
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
         {scoredSecrets.length < 6 ? (
-          <Selector
-            hoverMenuLabel="Score Secret Objective"
-            options={availableSecrets}
-            toggleItem={(itemId) => {
-              if (!gameId) {
-                return;
-              }
-              scoreObjectiveAsync(gameId, factionId, itemId);
-            }}
+          <ObjectiveSelectHoverMenu
+            action={(gameId, objectiveId) =>
+              scoreObjectiveAsync(gameId, factionId, objectiveId)
+            }
+            fontSize="14px"
+            label={
+              <FormattedMessage
+                id="zlpl9F"
+                defaultMessage="Score Secret Objective"
+                description="Message telling a player to score a secret objective."
+              />
+            }
+            objectives={availableSecrets}
+            perColumn={10}
           />
         ) : null}
       </div>

@@ -374,7 +374,9 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
               />
             }
           >
-            <div style={{ fontSize: "16px", whiteSpace: "nowrap" }}>
+            <div
+              style={{ width: "100%", fontSize: "16px", whiteSpace: "nowrap" }}
+            >
               <StartingComponents factionId={faction.id} />
             </div>
           </LabeledDiv>
