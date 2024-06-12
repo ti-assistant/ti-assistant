@@ -332,6 +332,7 @@ function MobileOptions({
                   <input
                     ref={mapStringRef}
                     type="textbox"
+                    pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
                     className="mediumFont"
                     style={{ width: "75vw" }}
                     onChange={(event) =>
@@ -687,6 +688,7 @@ function Options({
                 <input
                   ref={mapStringRef}
                   type="textbox"
+                  pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
                   className="mediumFont"
                   style={{ width: "100%" }}
                   onChange={(event) =>

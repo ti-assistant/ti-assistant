@@ -198,7 +198,7 @@ export default function SetupPhase() {
               style={{
                 width: `min(75vw, 268px)`,
               }}
-              pattern={"([0-9]{1,4}((A|B)[0-5]?)?($|\\s))*"}
+              pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
               placeholder={intl.formatMessage({
                 id: "UJSVtn",
                 description:
