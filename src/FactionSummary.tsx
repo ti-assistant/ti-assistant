@@ -20,9 +20,7 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import {
-  filterToOwnedTechs,
-  getTechColor,
-  getTechTypeColor,
+  filterToOwnedTechs
 } from "./util/techs";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
@@ -199,6 +197,7 @@ export function FactionSummary({
                 opacity: 0.5,
                 width: "60px",
                 height: "60px",
+                userSelect: "none",
               }}
             >
               <FactionIcon factionId={factionId} size="100%" />

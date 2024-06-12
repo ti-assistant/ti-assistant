@@ -251,7 +251,10 @@ export default function SetupPhase() {
                         width: "100%",
                       }}
                     >
-                      <StartingComponents factionId={faction.id} />
+                      <StartingComponents
+                        factionId={faction.id}
+                        showFactionIcon
+                      />
                     </div>
                   </LabeledDiv>
                 );
@@ -442,7 +445,10 @@ export default function SetupPhase() {
                       width: "100%",
                     }}
                   >
-                    <StartingComponents factionId={faction.id} />
+                    <StartingComponents
+                      factionId={faction.id}
+                      showFactionIcon
+                    />
                   </div>
                 </LabeledDiv>
               );

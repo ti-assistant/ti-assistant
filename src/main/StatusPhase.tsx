@@ -938,8 +938,14 @@ export default function StatusPhase() {
         {!hasStartOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
             <ClientOnlyHoverMenu
-              label="
-            Start of Status Phase Abilities"
+              label={
+                <FormattedMessage
+                  id="4PYolM"
+                  defaultMessage="Start of {phase} Phase"
+                  description="Text showing that something will occur at the start of a specific phase."
+                  values={{ phase: phaseString("STATUS", intl) }}
+                />
+              }
             >
               <div className="flexColumn" style={{ padding: "8px" }}>
                 {Object.entries(getStartOfStatusPhaseAbilities())
