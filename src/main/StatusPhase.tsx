@@ -144,7 +144,6 @@ function CommandTokenGains() {
                       justifyContent: "flex-start",
                     }}
                   >
-                    {" "}
                     {localFactions.map((faction) => {
                       return (
                         <div
@@ -154,6 +153,7 @@ function CommandTokenGains() {
                             position: "relative",
                             width: "32px",
                             height: "32px",
+                            userSelect: "none",
                           }}
                         >
                           <FactionIcon factionId={faction.id} size="100%" />
@@ -265,6 +265,7 @@ function ActionCardDraws() {
                           position: "relative",
                           width: "32px",
                           height: "32px",
+                          userSelect: "none",
                         }}
                       >
                         <FactionIcon factionId={faction.id} size="100%" />
@@ -572,6 +573,7 @@ export function MiddleColumn() {
                         top: "2px",
                         width: "40px",
                         height: "40px",
+                        userSelect: "none",
                       }}
                     >
                       {faction ? (

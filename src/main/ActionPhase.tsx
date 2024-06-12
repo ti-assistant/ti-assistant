@@ -1754,6 +1754,7 @@ export function ActivePlayerColumn({
                     height: "44px",
                     zIndex: -1,
                     opacity: 0.7,
+                    userSelect: "none",
                   }}
                 >
                   <FactionIcon factionId={onDeckFaction.id} size="100%" />
