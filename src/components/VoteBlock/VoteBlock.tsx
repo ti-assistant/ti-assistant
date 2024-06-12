@@ -489,6 +489,8 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
   const state = useContext(StateContext);
   const strategyCards = useContext(StrategyCardContext);
 
+  const [overrideVotingBlock, setOverrideVotingBlock] = useState(false);
+
   const intl = useIntl();
 
   const faction = factions[factionId];
@@ -579,23 +581,29 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
           <PredictionSection factionId={factionId} agenda={agenda} />
         ) : null}
         {agenda && state.votingStarted ? (
-          !canFactionVote(faction, agendas, state, currentTurn) ? (
-            completeRiders.length > 0 ? null : (
-              <div
-                className="flexRow"
-                style={{
-                  boxSizing: "border-box",
-                  width: "100%",
-                  gridColumn: "span 4",
-                }}
+          !canFactionVote(faction, agendas, state, currentTurn) &&
+          !overrideVotingBlock ? (
+            <div
+              className="flexRow"
+              style={{
+                boxSizing: "border-box",
+                width: "100%",
+                gridColumn: "span 4",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <FormattedMessage
+                id="c4LYqr"
+                description="Text informing a player that they cannot vote."
+                defaultMessage="Cannot Vote"
+              />
+              <button
+                style={{ fontSize: "10px" }}
+                onClick={() => setOverrideVotingBlock(true)}
               >
-                <FormattedMessage
-                  id="c4LYqr"
-                  description="Text informing a player that they cannot vote."
-                  defaultMessage="Cannot Vote"
-                />
-              </div>
-            )
+                Allow Voting
+              </button>
+            </div>
           ) : (
             <VotingSection factionId={factionId} agenda={agenda} />
           )
