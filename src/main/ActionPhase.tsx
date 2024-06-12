@@ -1864,6 +1864,7 @@ export default function ActionPhase() {
           const isActivePlayer = cards[0]?.faction === state.activeplayer;
           return (
             <div
+              key={cards[0] ? cards[0].id : "Error"}
               style={{
                 transition: "padding 120ms",
                 paddingRight:
@@ -1872,10 +1873,7 @@ export default function ActionPhase() {
                   isActivePlayer && activeFaction && onDeckFaction ? "40px" : 0,
               }}
             >
-              <SmallStrategyCard
-                key={cards[0] ? cards[0].id : "Error"}
-                cards={cards}
-              />
+              <SmallStrategyCard cards={cards} />
             </div>
           );
         })}
