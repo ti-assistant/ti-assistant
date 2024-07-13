@@ -31,17 +31,12 @@
 
 .Modal .Header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 
-  padding: 4px;
+  padding: 4px 36px 4px 36px;
   border-bottom: 1px solid grey;
-  z-index: 1;
-  position: sticky;
-  top: 0;
-  background-color: #222;
-  border-radius: 10px 10px 0 0;
 }
 
 .Modal .CloseButton {
@@ -51,12 +46,11 @@
   margin-left: 6px;
   position: absolute;
   top: 4px;
+  left: 4px;
 }
 
 .Modal .Title {
-  padding: 4px 32px;
   text-align: center;
-  flex-basis: 100%;
   font-size: 40px;
 }
 
