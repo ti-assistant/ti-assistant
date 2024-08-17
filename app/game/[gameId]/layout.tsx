@@ -1,17 +1,15 @@
+import Link from "next/link";
 import QRCode from "qrcode";
 import { PropsWithChildren } from "react";
 import { createIntl, createIntlCache } from "react-intl";
 import "server-only";
-import { getGameData } from "../../../server/util/fetch";
+import { getGameData, getTimers } from "../../../server/util/fetch";
+import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
 import DataProvider from "../../../src/context/DataProvider";
 import { buildCompleteGameData } from "../../../src/data/GameData";
-import { getBaseData } from "../../../src/data/baseData";
 import { getLocale, getMessages } from "../../../src/util/server";
 import DynamicSidebars from "./dynamic-sidebars";
 import styles from "./game.module.scss";
-import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
-import Link from "next/link";
-import Footer from "../../../src/components/Footer/Footer";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -28,8 +26,9 @@ export default async function Layout({
   const intl = createIntl({ locale, messages }, cache);
 
   const storedGameData = await getGameData(gameId);
-  const baseData = getBaseData(intl);
   const gameData = buildCompleteGameData(storedGameData, intl);
+
+  const storedTimers = await getTimers(gameId);
 
   const qrCode = await new Promise<string>((resolve) => {
     QRCode.toDataURL(
@@ -52,7 +51,7 @@ export default async function Layout({
   });
 
   return (
-    <DataProvider gameId={gameId} baseData={baseData} seedData={gameData}>
+    <DataProvider gameId={gameId} seedData={gameData} seedTimers={storedTimers}>
       <DynamicSidebars />
       <div className={styles.QRCode}>
         <ClientOnlyHoverMenu

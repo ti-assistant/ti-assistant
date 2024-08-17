@@ -1,23 +1,21 @@
-import { PropsWithChildren, ReactNode, useContext } from "react";
-import styles from "./FactionRow.module.scss";
-import LabeledLine from "../LabeledLine/LabeledLine";
 import {
-  FactionContext,
-  StateContext,
-  StrategyCardContext,
-} from "../../context/Context";
-import { getStrategyCardsForFaction } from "../../util/helpers";
+  useFactions,
+  useGameState,
+  useStrategyCards,
+} from "../../context/dataHooks";
 import { getFactionColor } from "../../util/factions";
+import { getStrategyCardsForFaction } from "../../util/helpers";
 import FactionCircle from "../FactionCircle/FactionCircle";
+import styles from "./FactionRow.module.scss";
 
 interface FactionRowProps {
   onClick: (factionId: FactionId) => void;
 }
 
 export default function FactionRow({ onClick }: FactionRowProps) {
-  const factions = useContext(FactionContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const factions = useFactions();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   let orderedFactions: Faction[] = [];
   switch (state?.phase) {

@@ -2,7 +2,11 @@ import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 
 export class AdvancePhaseHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {}
+  constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {
+    this.data.event.factions = gameData.factions;
+    this.data.event.state = gameData.state;
+    this.data.event.strategycards = gameData.strategycards ?? {};
+  }
 
   validate(): boolean {
     const cache = createIntlCache();

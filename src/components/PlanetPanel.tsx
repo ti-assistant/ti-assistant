@@ -1,10 +1,5 @@
 import { CSSProperties, useContext, useState } from "react";
-import {
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-  PlanetContext,
-} from "../context/Context";
+import { GameIdContext } from "../context/Context";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
 import { getFactionColor, getFactionName } from "../util/factions";
 import {
@@ -17,6 +12,12 @@ import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import PlanetSummary from "./PlanetSummary/PlanetSummary";
 import { FormattedMessage } from "react-intl";
+import {
+  useAttachments,
+  useFaction,
+  useFactions,
+  usePlanets,
+} from "../context/dataHooks";
 
 interface ExtendedCSS extends CSSProperties {
   "--color": string;
@@ -29,10 +30,11 @@ function PlanetSection({
   factionId: FactionId;
   openedByDefault: boolean;
 }) {
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const planets = useContext(PlanetContext);
+
+  const attachments = useAttachments();
+  const faction = useFaction(factionId);
+  const planets = usePlanets();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
 
@@ -51,7 +53,7 @@ function PlanetSection({
       className={styles.planetColumn}
       style={
         {
-          "--color": getFactionColor(factions[factionId]),
+          "--color": getFactionColor(faction),
         } as ExtendedCSS
       }
     >
@@ -60,7 +62,7 @@ function PlanetSection({
         onClick={() => setCollapsed(!collapsed)}
       >
         <FactionIcon factionId={factionId} size={20} />
-        {getFactionName(factions[factionId])}
+        {getFactionName(faction)}
         <FactionIcon factionId={factionId} size={20} />
       </div>
       <div
@@ -85,8 +87,7 @@ function PlanetSection({
             <PlanetSummary
               planets={updatedPlanets}
               hasXxchaHero={
-                factionId === "Xxcha Kingdom" &&
-                factions[factionId]?.hero === "readied"
+                factionId === "Xxcha Kingdom" && faction?.hero === "readied"
               }
             />
           </div>
@@ -118,10 +119,10 @@ function PlanetSection({
   );
 }
 
-function UnclaimedPlanetSection({}: {}) {
-  const factions = useContext(FactionContext);
+function UnclaimedPlanetSection() {
   const gameId = useContext(GameIdContext);
-  const planets = useContext(PlanetContext);
+  const factions = useFactions();
+  const planets = usePlanets();
 
   const [collapsed, setCollapsed] = useState(true);
 
@@ -193,7 +194,7 @@ interface CSSWithNumColumns extends CSSProperties {
 }
 
 export default function PlanetPanel({}) {
-  const factions = useContext(FactionContext);
+  const factions = useFactions();
 
   const orderedFactionIds = Object.values(factions ?? {})
     .map((faction) => faction.id)

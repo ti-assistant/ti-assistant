@@ -1,6 +1,5 @@
-import { mutate } from "swr";
+import DataManager from "../../context/DataManager";
 import { poster } from "./util";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 
 interface ChangeOptionData {
   option: string;
@@ -13,19 +12,16 @@ export function changeOption(gameId: string, option: string, value: any) {
     value,
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/changeOption`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        currentData.options[option] = value;
+  const now = Date.now();
 
-        return structuredClone(currentData);
-      },
-      revalidate: false,
-    }
-  );
+  const updatePromise = poster(`/api/${gameId}/changeOption`, data, now);
+
+  DataManager.update((storedGameData) => {
+    storedGameData.options[option] = value;
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise;
 }

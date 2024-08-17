@@ -23,6 +23,7 @@ export function buildCompleteGameData(
     strategycards: buildStrategyCards(storedGameData, baseData),
     systems: buildSystems(storedGameData, baseData),
     techs: buildTechs(storedGameData, baseData),
+    timers: storedGameData.timers,
   };
 
   return completeGameData;

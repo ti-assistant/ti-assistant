@@ -6,14 +6,14 @@ import React, {
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { GameIdContext } from "../context/Context";
 import {
-  ActionLogContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  OptionContext,
-  StateContext,
-} from "../context/Context";
+  useActionLog,
+  useFactions,
+  useGameState,
+  useObjectives,
+  useOptions,
+} from "../context/dataHooks";
 import {
   changeOptionAsync,
   hideObjectiveAsync,
@@ -33,8 +33,8 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import Modal from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
-import { Selector } from "./Selector/Selector";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import { Selector } from "./Selector/Selector";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -200,7 +200,7 @@ function SecretModalContent({
   factionId: FactionId;
   gameId: string;
 }) {
-  const objectives = useContext(ObjectiveContext);
+  const objectives = useObjectives();
 
   const secrets = Object.values(objectives ?? {}).filter(
     (objective) => objective.type === "SECRET"
@@ -272,19 +272,19 @@ interface ExtendedCSS extends CSSProperties {
 }
 
 export default function ObjectivePanel() {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const state = useContext(StateContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const state = useGameState();
 
   const intl = useIntl();
 
   const [factionId, setFactionId] = useState<FactionId>("Vuil'raith Cabal");
   const [secretModal, setSecretModal] = useState(false);
 
-  const includesPoK = ((options ?? {}).expansions ?? []).includes("POK");
+  const includesPoK = (options.expansions ?? []).includes("POK");
 
   if (state && !factionId) {
     if (state.activeplayer && state.activeplayer !== "None") {
@@ -2318,7 +2318,7 @@ function SimpleScorable({
   numScorers?: number;
   info?: string;
 }) {
-  const factions = useContext(FactionContext);
+  const factions = useFactions();
 
   const [showInfoModal, setShowInfoModal] = useState(false);
   if (!objective) {

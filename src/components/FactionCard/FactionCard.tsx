@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
 import { CSSProperties, PropsWithChildren, ReactNode, useContext } from "react";
-import { OptionContext } from "../../context/Context";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
+import { useOptions } from "../../context/dataHooks";
 
 const FactionPanel = dynamic(() => import("../FactionPanel"), {
   loading: () => (
@@ -43,7 +43,7 @@ export default function FactionCard({
   style = {},
   opts = {},
 }: PropsWithChildren<FactionCardProps>) {
-  const options = useContext(OptionContext);
+  const options = useOptions();
 
   return (
     <LabeledDiv

@@ -49,8 +49,12 @@ export async function fetcher(url: string) {
   return data;
 }
 
-export async function poster(url: string, data: any): Promise<any> {
-  data.timestamp = Date.now();
+export async function poster(
+  url: string,
+  data: any,
+  timestamp: number
+): Promise<any> {
+  data.timestamp = timestamp;
   const res = await fetch(url, {
     method: "POST",
     headers: {

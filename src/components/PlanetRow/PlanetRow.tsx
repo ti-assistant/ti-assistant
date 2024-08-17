@@ -2,17 +2,14 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import {
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-} from "../../context/Context";
+import { GameIdContext } from "../../context/Context";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
+import { useAttachments, useFactions } from "../../context/dataHooks";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -37,8 +34,8 @@ export default function PlanetRow({
   opts = {},
   prevOwner,
 }: PlanetRowProps) {
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
+  const attachments = useAttachments();
+  const factions = useFactions();
   // const [{ isDragging }, dragRef] = useDrag(
   //   () => ({
   //     type: "PLANET",
@@ -51,10 +48,6 @@ export default function PlanetRow({
   // );
 
   const [showAttachModal, setShowAttachModal] = useState(false);
-
-  if (!attachments || !factions) {
-    return <div>Loading...</div>;
-  }
 
   function canAttach() {
     return (

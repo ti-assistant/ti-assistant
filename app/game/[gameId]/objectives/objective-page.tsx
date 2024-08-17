@@ -3,7 +3,6 @@
 import { useContext, useEffect } from "react";
 import { useIntl } from "react-intl";
 import ObjectivePanel from "../../../../src/components/ObjectivePanel";
-import Updater from "../../../../src/components/Updater/Updater";
 import { GameIdContext } from "../../../../src/context/Context";
 import { setGameId } from "../../../../src/util/api/util";
 
@@ -26,7 +25,7 @@ function InnerObjectivesPage() {
       className="flexColumn"
       style={{ height: "100%", alignItems: "center" }}
     >
-      <Updater />
+      {/* <Updater /> */}
       <div
         style={{
           position: "relative",

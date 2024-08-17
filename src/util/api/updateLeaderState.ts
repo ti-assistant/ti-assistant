@@ -1,9 +1,8 @@
-import { mutate } from "swr";
-import { poster } from "./util";
+import DataManager from "../../context/DataManager";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function updateLeaderState(
   gameId: string,
@@ -18,38 +17,24 @@ export function updateLeaderState(
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        // Translations not needed, so just create an english one.
+  const now = Date.now();
 
-        const leader = (currentData.leaders ?? {})[data.event.leaderId];
-        if (leader) {
-          data.event.prevState = leader.state ?? "locked";
-        } else {
-          data.event.prevState = "locked";
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        const handler = new UpdateLeaderStateHandler(currentData, data);
+  DataManager.update((storedGameData) => {
+    const handler = new UpdateLeaderStateHandler(storedGameData, data);
 
-        if (!handler.validate()) {
-          return currentData;
-        }
-
-        const updates = handler.getUpdates();
-
-        updateActionLog(currentData, handler);
-
-        updateGameData(currentData, updates);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise;
 }

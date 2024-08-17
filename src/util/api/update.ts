@@ -2,7 +2,11 @@ import { TURN_BOUNDARIES } from "./actionLog";
 import { updateGameData } from "./handler";
 import { getOppositeHandler } from "./opposite";
 
-export function updateActionLog(currentData: StoredGameData, handler: Handler) {
+export function updateActionLog(
+  currentData: StoredGameData,
+  handler: Handler,
+  timestamp: number
+) {
   const actionLog = currentData.actionLog ?? [];
   let lastCheck = false;
   for (let i = 0; i < actionLog.length; ++i) {
@@ -24,7 +28,9 @@ export function updateActionLog(currentData: StoredGameData, handler: Handler) {
         actionLog.splice(i, 1);
         return;
       case "REPLACE":
-        actionLog.splice(i, 1, handler.getLogEntry());
+        const entry = handler.getLogEntry();
+        entry.timestampMillis = timestamp;
+        actionLog.splice(i, 1, entry);
         return;
       case "REWIND_AND_DELETE":
         for (let j = 0; j < i; ++j) {
@@ -52,12 +58,16 @@ export function updateActionLog(currentData: StoredGameData, handler: Handler) {
           }
           updateGameData(currentData, undoHandler.getUpdates());
         }
-        actionLog.splice(0, i + 1, handler.getLogEntry());
+        const newEntry = handler.getLogEntry();
+        newEntry.timestampMillis = timestamp;
+        actionLog.splice(0, i + 1, newEntry);
         return;
     }
   }
 
-  actionLog.unshift(handler.getLogEntry());
+  const newEntry = handler.getLogEntry();
+  newEntry.timestampMillis = timestamp;
+  actionLog.unshift(newEntry);
 
   return;
 }

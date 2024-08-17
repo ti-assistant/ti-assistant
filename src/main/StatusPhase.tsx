@@ -4,47 +4,44 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LockedButtons } from "../LockedButton";
 import { NumberedItem } from "../NumberedItem";
+import CrownOfEmphidia from "../components/CrownOfEmphidia/CrownOfEmphidia";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../components/LabeledLine/LabeledLine";
 import Modal from "../components/Modal/Modal";
+import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import { Selector } from "../components/Selector/Selector";
+import { GameIdContext } from "../context/Context";
 import {
-  ActionLogContext,
-  AgendaContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  OptionContext,
-  PlanetContext,
-  RelicContext,
-  StateContext,
-  StrategyCardContext,
-} from "../context/Context";
+  useActionLog,
+  useAgenda,
+  useFactions,
+  useGameState,
+  useObjectives,
+  useOptions,
+  usePlanets,
+  useRelics,
+  useStrategyCards,
+} from "../context/dataHooks";
 import {
   advancePhaseAsync,
   hideObjectiveAsync,
-  playRelicAsync,
   revealObjectiveAsync,
   scoreObjectiveAsync,
-  unplayRelicAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
-import { SymbolX } from "../icons/svgs";
-import { getObjectiveScorers, getPlayedRelic } from "../util/actionLog";
+import { getPlayedRelic } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
-import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
-import styles from "./StatusPhase.module.scss";
-import { FormattedMessage, useIntl } from "react-intl";
 import { objectiveTypeString, phaseString } from "../util/strings";
-import { Selector } from "../components/Selector/Selector";
-import CrownOfEmphidia from "../components/CrownOfEmphidia/CrownOfEmphidia";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import styles from "./StatusPhase.module.scss";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -65,8 +62,8 @@ function InfoContent({ children }: PropsWithChildren) {
 }
 
 function CommandTokenGains() {
-  const factions = useContext(FactionContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const factions = useFactions();
+  const strategyCards = useStrategyCards();
 
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
@@ -172,8 +169,8 @@ function CommandTokenGains() {
 }
 
 function ActionCardDraws() {
-  const factions = useContext(FactionContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const factions = useFactions();
+  const strategyCards = useStrategyCards();
 
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
@@ -283,12 +280,12 @@ function ActionCardDraws() {
 }
 
 export function MiddleColumn() {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const strategyCards = useStrategyCards();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -673,16 +670,16 @@ export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
 }
 
 export default function StatusPhase() {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const relics = useContext(RelicContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const relics = useRelics();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
+
+  const ministerOfPolicy = useAgenda("Minister of Policy");
 
   const intl = useIntl();
 
@@ -800,11 +797,7 @@ export default function StatusPhase() {
   }
 
   function getEndOfStatusPhaseAbilities() {
-    if (!factions || !agendas) {
-      return {};
-    }
     let abilities: Partial<Record<FactionId, Ability[]>> = {};
-    const ministerOfPolicy = agendas["Minister of Policy"];
     for (const faction of Object.values(factions ?? {})) {
       const factionAbilities: Ability[] = [];
       if (faction.id === "Federation of Sol") {

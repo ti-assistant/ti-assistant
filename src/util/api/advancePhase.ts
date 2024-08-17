@@ -1,9 +1,8 @@
-import { mutate } from "swr";
+import DataManager from "../../context/DataManager";
 import { AdvancePhaseHandler } from "../model/advancePhase";
-import { poster } from "./util";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function advancePhase(gameId: string, skipAgenda: boolean = false) {
   const data: GameUpdateData = {
@@ -13,31 +12,24 @@ export function advancePhase(gameId: string, skipAgenda: boolean = false) {
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        data.event.factions = currentData.factions;
-        data.event.state = currentData.state;
-        data.event.strategycards = currentData.strategycards ?? {};
+  const now = Date.now();
 
-        const handler = new AdvancePhaseHandler(currentData, data);
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  DataManager.update((storedGameData) => {
+    const handler = new AdvancePhaseHandler(storedGameData, data);
 
-        updateGameData(currentData, handler.getUpdates());
-
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise;
 }

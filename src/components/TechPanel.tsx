@@ -1,6 +1,6 @@
 import React, { CSSProperties, useContext, useState } from "react";
 import { TechRow } from "../TechRow";
-import { FactionContext, GameIdContext, TechContext } from "../context/Context";
+import { GameIdContext } from "../context/Context";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
 import { hasTech, isTechReplaced } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -12,20 +12,21 @@ import styles from "./TechPanel.module.scss";
 import { Selector } from "./Selector/Selector";
 import { FormattedMessage, useIntl } from "react-intl";
 import { techTypeString } from "../util/strings";
+import { useFactions, useTechs } from "../context/dataHooks";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const techs = useContext(TechContext);
+  const factions = useFactions();
+  const techs = useTechs();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
 
-  const typedTechs = Object.values(techs ?? {}).filter(
-    (tech) => tech.faction && !!(factions ?? {})[tech.faction]
+  const typedTechs = Object.values(techs).filter(
+    (tech) => tech.faction && !!factions[tech.faction]
   );
   sortTechs(typedTechs);
 
-  const orderedFactions = Object.values(factions ?? {});
+  const orderedFactions = Object.values(factions);
   orderedFactions.sort((a, b) => {
     if (a.name > b.name) {
       return 1;
@@ -33,9 +34,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
     return -1;
   });
 
-  const nekroFactionTechIds = Object.keys(
-    (factions ?? {})["Nekro Virus"]?.techs ?? {}
-  )
+  const nekroFactionTechIds = Object.keys(factions["Nekro Virus"]?.techs ?? {})
     .filter((id) => {
       const techId = id as TechId;
       const techObj = (techs ?? {})[techId];
@@ -52,7 +51,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
     return (
       isResearched &&
       tech.faction &&
-      !!(factions ?? {})[tech.faction] &&
+      !!factions[tech.faction] &&
       tech.id !== "IIHQ Modernization"
     );
   });
@@ -323,8 +322,8 @@ function TechSection({
   type: TechType;
   openedByDefault?: boolean;
 }) {
-  const factions = useContext(FactionContext);
-  const techs = useContext(TechContext);
+  const factions = useFactions();
+  const techs = useTechs();
   const intl = useIntl();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
@@ -334,7 +333,7 @@ function TechSection({
   );
   sortTechs(typedTechs);
 
-  const orderedFactions = Object.values(factions ?? {});
+  const orderedFactions = Object.values(factions);
   orderedFactions.sort((a, b) => {
     if (a.name > b.name) {
       return 1;
@@ -379,8 +378,8 @@ function TechSection({
 }
 
 function UpgradeTechSection({}) {
-  const factions = useContext(FactionContext);
-  const techs = useContext(TechContext);
+  const factions = useFactions();
+  const techs = useTechs();
   const intl = useIntl();
 
   const [collapsed, setCollapsed] = useState(true);
@@ -390,7 +389,7 @@ function UpgradeTechSection({}) {
   );
   sortTechs(typedTechs);
 
-  const orderedFactions = Object.values(factions ?? {});
+  const orderedFactions = Object.values(factions);
   orderedFactions.sort((a, b) => {
     if (a.name > b.name) {
       return 1;

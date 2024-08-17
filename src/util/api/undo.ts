@@ -1,41 +1,41 @@
-import { mutate } from "swr";
-import { BASE_GAME_DATA } from "../../../server/data/data";
+import DataManager from "../../context/DataManager";
 import { updateGameData } from "./handler";
-import { poster } from "./util";
 import { getOppositeHandler } from "./opposite";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function undo(gameId: string) {
   const data: GameUpdateData = {
     action: "UNDO",
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const actionLog = currentData.actionLog ?? [];
-        let actionToUndo = actionLog[0];
-        if (!actionToUndo) {
-          return currentData;
-        }
+  const now = Date.now();
 
-        const handler = getOppositeHandler(currentData, actionToUndo.data);
-        if (!handler) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
-
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+  DataManager.update((storedGameData) => {
+    const actionLog = storedGameData.actionLog ?? [];
+    let actionToUndo = actionLog[0];
+    if (!actionToUndo) {
+      return storedGameData;
     }
-  );
+
+    const handler = getOppositeHandler(storedGameData, actionToUndo.data);
+    if (!handler) {
+      return storedGameData;
+    }
+
+    if (!handler.validate()) {
+      return storedGameData;
+    }
+
+    updateGameData(storedGameData, handler.getUpdates());
+    updateActionLog(storedGameData, handler, now);
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise;
 }

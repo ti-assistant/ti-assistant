@@ -7,9 +7,8 @@ import {
   useState,
 } from "react";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
-import { GameIdContext, StateContext } from "./context/Context";
+import { GameIdContext } from "./context/Context";
 import { useSharedTimer } from "./data/SharedTimer";
-import { useTimers } from "./data/Timers";
 import {
   saveAgendaTimer,
   saveFactionTimer,
@@ -18,13 +17,16 @@ import {
 } from "./util/api/timers";
 import { FormattedMessage } from "react-intl";
 import { useInterval } from "./util/client";
+import { useGameState, useTimers } from "./context/dataHooks";
 
 export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const timers = useTimers(gameId);
+  const state = useGameState();
+  const timers = useTimers();
 
-  const [agendaTimer, setAgendaTimer] = useState(0);
+  const [agendaTimer, setAgendaTimer] = useState(
+    agendaNum === 1 ? timers.firstAgenda ?? 0 : timers.secondAgenda ?? 0
+  );
   const { addSubscriber, removeSubscriber } = useSharedTimer();
 
   const timerRef = useRef(0);
@@ -99,8 +101,9 @@ export function StaticFactionTimer({
   width,
 }: FactionTimerProps) {
   const gameId = useContext(GameIdContext);
-  const timers = useTimers(gameId);
-  const [factionTimer, setFactionTimer] = useState(0);
+  // const state = useGameState);
+  const timers = useTimers();
+  const [factionTimer, setFactionTimer] = useState(timers[factionId] ?? 0);
   const prevFaction = useRef<string>();
 
   const timerRef = useRef(0);
@@ -139,15 +142,15 @@ export function StaticFactionTimer({
 }
 
 export function FactionTimer({ factionId, style }: FactionTimerProps) {
-  const [factionTimer, setFactionTimer] = useState(0);
+  const gameId = useContext(GameIdContext);
+  const state = useGameState();
+  const timers = useTimers();
+
+  const [factionTimer, setFactionTimer] = useState(timers[factionId] ?? 0);
   const prevFaction = useRef<string>();
 
   const timerRef = useRef(0);
   const lastUpdate = useRef(0);
-
-  const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const timers = useTimers(gameId);
 
   const { addSubscriber, removeSubscriber } = useSharedTimer();
 

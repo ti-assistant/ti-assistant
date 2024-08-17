@@ -2,14 +2,12 @@
 
 import { useIntl } from "react-intl";
 import Sidebars from "../../../src/components/Sidebars/Sidebars";
-import { useContext } from "react";
-import { StateContext } from "../../../src/context/Context";
 import { phaseString } from "../../../src/util/strings";
+import { useGameState } from "../../../src/context/dataHooks";
 
 export default function DynamicSidebars() {
   const intl = useIntl();
-
-  const state = useContext(StateContext);
+  const state = useGameState();
 
   return (
     <Sidebars

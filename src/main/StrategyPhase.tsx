@@ -10,13 +10,7 @@ import { NumberedItem } from "../NumberedItem";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import FactionCard from "../components/FactionCard/FactionCard";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import {
-  AgendaContext,
-  FactionContext,
-  GameIdContext,
-  StateContext,
-  StrategyCardContext,
-} from "../context/Context";
+import { GameIdContext } from "../context/Context";
 import {
   advancePhaseAsync,
   assignStrategyCardAsync,
@@ -33,23 +27,28 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { phaseString } from "../util/strings";
 import { Selector } from "../components/Selector/Selector";
 import Modal from "../components/Modal/Modal";
+import {
+  useAgenda,
+  useAgendas,
+  useFactions,
+  useGameState,
+  useStrategyCards,
+} from "../context/dataHooks";
 
 function ChecksAndBalancesMenu({
   faction,
   factions,
   strategyCards,
-  agendas,
   onSelect,
   mobile,
 }: {
   faction: Faction | undefined;
   factions: Partial<Record<FactionId, Faction>>;
   strategyCards: StrategyCard[];
-  agendas: Partial<Record<AgendaId, Agenda>>;
   onSelect: (factionId: FactionId) => void;
   mobile: boolean;
 }) {
-  const checksAndBalances = agendas["Checks and Balances"];
+  const checksAndBalances = useAgenda("Checks and Balances");
   if (!faction || !checksAndBalances || !checksAndBalances.passed) {
     return null;
   }
@@ -254,9 +253,9 @@ function QuantumDatahubNode({
 }
 
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
-  const agendas = useContext(AgendaContext);
+  const arbiter = useAgenda("Imperial Arbiter");
   const gameId = useContext(GameIdContext);
-  const factions = useContext(FactionContext);
+  const factions = useFactions();
 
   const [quantum, setQuantum] = useState<{
     mainCard: StrategyCardId | undefined;
@@ -265,7 +264,6 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
     mainCard: undefined,
     otherCard: undefined,
   });
-  const arbiter = agendas["Imperial Arbiter"];
 
   function quantumDatahubNode() {
     if (!gameId || !quantum.mainCard || !quantum.otherCard) {
@@ -427,11 +425,11 @@ const CARD_ORDER: Record<StrategyCardId, number> = {
 };
 
 export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const checksAndBalancesAgenda = useAgenda("Checks and Balances");
+  const factions = useFactions();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   function pickStrategyCard(
     card: StrategyCard,
@@ -453,9 +451,9 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
     factions && state.activeplayer && state.activeplayer !== "None"
       ? factions[state?.activeplayer]
       : undefined;
-  const cab = (agendas ?? {})["Checks and Balances"];
 
-  const checksAndBalances = !!cab && !!cab.passed;
+  const checksAndBalances =
+    !!checksAndBalancesAgenda && !!checksAndBalancesAgenda.passed;
 
   return (
     <div
@@ -489,7 +487,6 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
               factions={factions ?? {}}
               strategyCards={orderedStrategyCards}
               mobile={mobile}
-              agendas={agendas ?? {}}
               onSelect={(factionId) => {
                 const faction = (factions ?? {})[factionId];
                 if (!faction || !activefaction) {
@@ -510,11 +507,16 @@ export function advanceToActionPhase(gameId: string) {
 }
 
 export default function StrategyPhase() {
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  // Agendas
+  const aiRevolution = useAgenda("Anti-Intellectual Revolution");
+  const armsReduction = useAgenda("Arms Reduction");
+  const imperialArbiter = useAgenda("Imperial Arbiter");
+  const newConstitution = useAgenda("New Constitution");
+
+  const factions = useFactions();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
   const intl = useIntl();
 
   const [infoModal, setInfoModal] = useState<{
@@ -548,9 +550,6 @@ export default function StrategyPhase() {
   function getStartOfStrategyPhaseAbilities() {
     let abilities: Partial<Record<FactionId | "Every Player", Ability[]>> = {};
     abilities["Every Player"] = [];
-    const aiRevolution = agendas
-      ? agendas["Anti-Intellectual Revolution"]
-      : undefined;
     if (
       aiRevolution &&
       aiRevolution.resolved &&
@@ -566,7 +565,6 @@ export default function StrategyPhase() {
         description: aiRevolution.failedText ?? aiRevolution.description,
       });
     }
-    const armsReduction = agendas ? agendas["Arms Reduction"] : undefined;
     if (
       armsReduction &&
       armsReduction.resolved &&
@@ -582,7 +580,6 @@ export default function StrategyPhase() {
         description: armsReduction.failedText ?? armsReduction.description,
       });
     }
-    const newConstitution = agendas ? agendas["New Constitution"] : undefined;
     if (
       newConstitution &&
       newConstitution.resolved &&
@@ -649,11 +646,7 @@ export default function StrategyPhase() {
     if (nekro && hasTech(nekro, "Quantum Datahub Node")) {
       return true;
     }
-    if (!agendas) {
-      return false;
-    }
-    const arbiter = agendas["Imperial Arbiter"];
-    if (arbiter && arbiter.resolved && arbiter.target) {
+    if (imperialArbiter && imperialArbiter.resolved && imperialArbiter.target) {
       return true;
     }
     return false;

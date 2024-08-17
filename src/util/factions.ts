@@ -53,7 +53,14 @@ export function computeVPs(
     return 0;
   }
   const factionVPs = faction.vps ?? 0;
-  const scoredVPs = Object.values(objectives)
+  return factionVPs + computeScoredVPs(factionId, objectives);
+}
+
+export function computeScoredVPs(
+  factionId: FactionId,
+  objectives: Partial<Record<ObjectiveId, Objective>>
+) {
+  return Object.values(objectives)
     .filter((objective) => {
       return (objective.scorers ?? []).includes(factionId);
     })
@@ -66,6 +73,4 @@ export function computeVPs(
       }, 0);
       return Math.max(0, total + count * objective.points);
     }, 0);
-
-  return factionVPs + scoredVPs;
 }

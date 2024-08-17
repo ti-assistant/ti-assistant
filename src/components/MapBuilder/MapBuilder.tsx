@@ -155,15 +155,11 @@ export function SystemImage({
     };
   }, [systemNumber, index, onDrop]);
 
+  const dragFunc = onDrop ? drag : (node: any) => drag(drop(node));
+
   if (systemNumber === "-1") {
-    return (
+    return dragFunc(
       <div
-        ref={(node) => {
-          if (!onDrop) {
-            return drag(node);
-          }
-          return drag(drop(node));
-        }}
         className={`flexRow ${styles.SystemImage}`}
         style={{
           position: "relative",
@@ -207,14 +203,9 @@ export function SystemImage({
     if (systemNumber && systemNumber.split(":").length > 1) {
       const classNames = getRotationClass(systemNumber.split(":")[0] ?? "");
       systemNumber = systemNumber.split(":")[1] ?? "";
-      return (
+      const dragFunc = onDrop ? drag : (node: any) => drag(drop(node));
+      return dragFunc(
         <div
-          ref={(node) => {
-            if (!onDrop) {
-              return drag(node);
-            }
-            return drag(drop(node));
-          }}
           className={`flexRow ${classNames} ${styles.SystemImage}`}
           style={{
             position: "relative",
@@ -232,14 +223,9 @@ export function SystemImage({
         </div>
       );
     }
-    return (
+    const dragFunc = onDrop ? drag : (node: any) => drag(drop(node));
+    return dragFunc(
       <div
-        ref={(node) => {
-          if (!onDrop) {
-            return drag(node);
-          }
-          return drag(drop(node));
-        }}
         className={`flexRow ${styles.SystemImage}`}
         style={{
           position: "relative",
@@ -272,14 +258,10 @@ export function SystemImage({
   }
 
   if (isHomeSystem(systemNumber)) {
-    return (
+    const dragFunc = onDrop ? drag : (node: any) => drag(drop(node));
+
+    return dragFunc(
       <div
-        ref={(node) => {
-          if (!onDrop) {
-            return drag(node);
-          }
-          return drag(drop(node));
-        }}
         className={`flexRow ${styles.SystemImage}`}
         style={{
           position: "relative",
@@ -337,14 +319,8 @@ export function SystemImage({
     systemNumber = `${systemNumber.split("B")[0] ?? ""}B`;
   }
 
-  return (
+  return dragFunc(
     <div
-      ref={(node) => {
-        if (!onDrop) {
-          return drag(node);
-        }
-        return drag(drop(node));
-      }}
       className={`flexRow ${styles.SystemImage}`}
       style={{
         position: "relative",

@@ -7,10 +7,10 @@ import React, {
 } from "react";
 import { SymbolX } from "../../icons/svgs";
 import styles from "./AttachmentSelectRadialMenu.module.scss";
-import { AttachmentContext } from "../../context/Context";
 import AttachmentIcon from "../AttachmentIcon/AttachmentIcon";
 import Circle from "../Circle/Circle";
 import { getTechTypeColor } from "../../util/techs";
+import { useAttachments } from "../../context/dataHooks";
 
 interface AttachmentSelectRadialMenuProps {
   selectedAttachment?: AttachmentId;
@@ -62,7 +62,7 @@ export default function AttachmentSelectRadialMenu({
   tag,
   tagBorderColor = "#444",
 }: AttachmentSelectRadialMenuProps) {
-  const attachmentData = useContext(AttachmentContext);
+  const attachmentData = useAttachments();
 
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);

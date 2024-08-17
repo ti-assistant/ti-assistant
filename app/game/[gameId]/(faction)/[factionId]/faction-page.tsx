@@ -22,26 +22,25 @@ import ObjectiveRow from "../../../../../src/components/ObjectiveRow/ObjectiveRo
 import PlanetRow from "../../../../../src/components/PlanetRow/PlanetRow";
 import { Selector } from "../../../../../src/components/Selector/Selector";
 import StartingComponents from "../../../../../src/components/StartingComponents/StartingComponents";
-import Updater from "../../../../../src/components/Updater/Updater";
 import {
   canFactionVote,
   computeRemainingVotes,
   getTargets,
 } from "../../../../../src/components/VoteBlock/VoteBlock";
+import { GameIdContext } from "../../../../../src/context/Context";
 import {
-  ActionLogContext,
-  AgendaContext,
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  OptionContext,
-  PlanetContext,
-  RelicContext,
-  StateContext,
-  StrategyCardContext,
-  TechContext,
-} from "../../../../../src/context/Context";
+  useActionLog,
+  useAgendas,
+  useAttachments,
+  useFactions,
+  useGameState,
+  useObjectives,
+  useOptions,
+  usePlanets,
+  useRelics,
+  useStrategyCards,
+  useTechs,
+} from "../../../../../src/context/dataHooks";
 import {
   addTechAsync,
   advancePhaseAsync,
@@ -148,17 +147,17 @@ function SecondaryCheck({
 }
 
 function PhaseSection({ factionId }: { factionId: FactionId }) {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const planets = useContext(PlanetContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const relics = useContext(RelicContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const planets = usePlanets();
+  const relics = useRelics();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
   const voteRef = useRef<HTMLDivElement>(null);
 
   const intl = useIntl();
@@ -1333,15 +1332,17 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
 
 function FactionContent({ factionId }: { factionId: FactionId }) {
   const router = useRouter();
+  const gameId = useContext(GameIdContext);
+
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const techs = useTechs();
+
   const [showAddTech, setShowAddTech] = useState(false);
   const [showAddPlanet, setShowAddPlanet] = useState(false);
   const [tabShown, setTabShown] = useState<string>("");
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
-  const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const techs = useContext(TechContext);
 
   const faction = factions[factionId];
 
@@ -1640,21 +1641,15 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
 
 export default function FactionPage({ factionId }: { factionId: FactionId }) {
   const router = useRouter();
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const options = useOptions();
+  const planets = usePlanets();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   const intl = useIntl();
-
-  const [showMenu, setShowMenu] = useState(false);
-  const [showMap, setShowMap] = useState(false);
-  const [showPlanetModal, setShowPlanetModal] = useState(false);
-  const [showObjectiveModal, setShowObjectiveModal] = useState(false);
-  const [showTechModal, setShowTechModal] = useState(false);
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   const revealedObjectives = currentTurn
@@ -1914,7 +1909,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
 
   return (
     <>
-      <Updater />
+      {/* <Updater /> */}
       <div style={{ width: "100%", margin: "4px" }}>
         <FactionCard
           faction={faction}

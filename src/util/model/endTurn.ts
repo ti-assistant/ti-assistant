@@ -1,9 +1,18 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
+import { getSelectedAction } from "../api/data";
 import { getOnDeckFaction } from "../helpers";
 
 export class EndTurnHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: EndTurnData) {}
+  constructor(public gameData: StoredGameData, public data: EndTurnData) {
+    this.data.event.prevFaction = gameData.state.activeplayer;
+    this.data.event.selectedAction = getSelectedAction(gameData);
+    const secondaries: Record<string, Secondary> = {};
+    for (const faction of Object.values(gameData.factions)) {
+      secondaries[faction.id] = faction.secondary ?? "PENDING";
+    }
+    this.data.event.secondaries = secondaries;
+  }
 
   validate(): boolean {
     if (

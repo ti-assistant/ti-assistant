@@ -2,137 +2,14 @@ import Image from "next/image";
 import React, { PropsWithChildren, useContext } from "react";
 import FactionTile from "./components/FactionTile/FactionTile";
 import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
-import { FactionContext } from "./context/Context";
 import { getFactionColor, getFactionName } from "./util/factions";
 import LabeledLine from "./components/LabeledLine/LabeledLine";
+import { useFaction, useFactions } from "./context/dataHooks";
 
 interface StrategyCardOpts {
   fontSize?: string;
   hideName?: boolean;
   noColor?: boolean;
-}
-
-interface StrategyCardProps {
-  active?: boolean;
-  card: StrategyCard;
-  fontSize: number;
-  onClick?: () => void;
-  opts?: StrategyCardOpts;
-}
-
-function StrategyCardElement({
-  active,
-  card,
-  children,
-  fontSize,
-  onClick,
-  opts = {},
-}: PropsWithChildren<StrategyCardProps>) {
-  const factions = useContext(FactionContext);
-
-  const faction = card.faction && factions ? factions[card.faction] : undefined;
-
-  const color = active && !opts.noColor ? card.color : "#555";
-  const textColor = active ? "#eee" : "#555";
-  return (
-    <div
-      onClick={onClick}
-      style={{
-        borderRadius: "5px",
-        display: "flex",
-        flexDirection: "column",
-        border: `${"3px"} solid ${color}`,
-        fontSize: `${fontSize}px`,
-        position: "relative",
-        cursor: onClick ? "pointer" : "auto",
-        height: "48px",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        className="flexRow"
-        style={{
-          padding: `${"4px"} ${"4px"} ${"4px"} 0`,
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            flexBasis: "14%",
-            minWidth: `${fontSize + 8}px`,
-            fontSize: `${fontSize + 8}px`,
-            display: "flex",
-            flexShrink: 0,
-            justifyContent: "center",
-            color: textColor,
-          }}
-        >
-          {card.order}
-        </div>
-        {opts.hideName ? null : (
-          <div style={{ flexBasis: "40%", color: textColor }}>{card.name}</div>
-        )}
-        {faction ? (
-          <div style={{ flexGrow: 4, whiteSpace: "nowrap" }}>
-            <FactionTile faction={faction} fontSize={16} iconSize={32} />
-          </div>
-        ) : (
-          <React.Fragment>
-            <div
-              className="flexRow"
-              style={{
-                width: "100%",
-                justifyContent: "flex-end",
-                paddingRight: "0px",
-              }}
-            >
-              {children}
-            </div>
-            {card.tradeGoods ? (
-              <div
-                className="flexRow"
-                style={{
-                  justifyContent: "flex-end",
-                  padding: `0 ${"16px"}`,
-                  color: "#efe383",
-                  gap: "4px",
-                }}
-              >
-                <div className="centered" style={{ width: "20px" }}>
-                  {card.tradeGoods}
-                </div>
-                <div
-                  style={{
-                    width: "22px",
-                    height: "23px",
-                    position: "relative",
-                  }}
-                >
-                  <Image
-                    src="/images/trade_good.png"
-                    alt="TGs"
-                    fill
-                    style={{ objectFit: "contain" }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div
-                className="flexRow"
-                style={{
-                  flexShrink: 0,
-                  height: "4px",
-                  width: "78px",
-                  padding: `0 ${"16px"}`,
-                }}
-              ></div>
-            )}
-          </React.Fragment>
-        )}
-      </div>
-    </div>
-  );
 }
 
 interface SmallStrategyCardProps {
@@ -142,7 +19,7 @@ interface SmallStrategyCardProps {
 }
 
 export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
-  const factions = useContext(FactionContext);
+  const factions = useFactions();
 
   if (!cards[0]) {
     return null;
@@ -154,9 +31,7 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
   );
 
   const faction =
-    cards[0] && cards[0].faction && factions
-      ? factions[cards[0].faction]
-      : undefined;
+    cards[0] && cards[0].faction ? factions[cards[0].faction] : undefined;
 
   const numFactions = Object.keys(factions).length;
 

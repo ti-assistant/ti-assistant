@@ -1,19 +1,20 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { ClientOnlyHoverMenu } from "../HoverMenu";
+import { useContext, useEffect, useMemo, useRef } from "react";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { LockedButtons } from "../LockedButton";
 import { NumberedItem } from "../NumberedItem";
 import { SelectableRow } from "../SelectableRow";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import StartingComponents from "../components/StartingComponents/StartingComponents";
+import { GameIdContext } from "../context/Context";
 import {
-  ActionLogContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  OptionContext,
-  StateContext,
-} from "../context/Context";
+  useActionLog,
+  useFactions,
+  useGameState,
+  useObjectives,
+  useOptions,
+} from "../context/dataHooks";
 import {
   advancePhaseAsync,
   changeOptionAsync,
@@ -22,10 +23,8 @@ import {
 } from "../dynamic/api";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
-import styles from "./SetupPhase.module.scss";
-import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { objectiveTypeString } from "../util/strings";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import styles from "./SetupPhase.module.scss";
 
 export function startFirstRound(gameId: string) {
   advancePhaseAsync(gameId);
@@ -123,12 +122,12 @@ export function setMapString(gameId: string | undefined, mapString: string) {
 }
 
 export default function SetupPhase() {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const state = useContext(StateContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const state = useGameState();
 
   const intl = useIntl();
 

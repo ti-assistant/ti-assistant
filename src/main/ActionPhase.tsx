@@ -1,30 +1,35 @@
 import React, { CSSProperties, useContext } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LockedButtons } from "../LockedButton";
 import { SmallStrategyCard } from "../StrategyCard";
 import { TechRow } from "../TechRow";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
+import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import FactionCard from "../components/FactionCard/FactionCard";
 import FactionCircle from "../components/FactionCircle/FactionCircle";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../components/LabeledLine/LabeledLine";
+import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
 import PlanetRow from "../components/PlanetRow/PlanetRow";
 import { TacticalAction } from "../components/TacticalAction";
 import TechSelectHoverMenu from "../components/TechSelectHoverMenu/TechSelectHoverMenu";
+import { GameIdContext } from "../context/Context";
 import {
-  ActionLogContext,
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  PlanetContext,
-  StateContext,
-  StrategyCardContext,
-  TechContext,
-} from "../context/Context";
+  useActionLog,
+  useAttachments,
+  useFactions,
+  useGameState,
+  useObjectives,
+  usePlanets,
+  useStrategyCards,
+  useTechs,
+} from "../context/dataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -52,15 +57,9 @@ import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
 import { applyPlanetAttachments } from "../util/planets";
-import { ComponentAction } from "./util/ComponentAction";
-import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
-import styles from "./ActionPhase.module.scss";
-import { FormattedMessage, useIntl } from "react-intl";
 import { phaseString } from "../util/strings";
-import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
-import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import { BLACK_TEXT_GLOW } from "../util/borderGlow";
+import styles from "./ActionPhase.module.scss";
+import { ComponentAction } from "./util/ComponentAction";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -162,14 +161,10 @@ export function FactionActionButtons({
   factionId,
   buttonStyle,
 }: FactionActionButtonsProps) {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const strategyCards = useContext(StrategyCardContext);
-
-  if (!factions) {
-    return null;
-  }
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const strategyCards = useStrategyCards();
 
   function canFactionPass(factionId: FactionId) {
     for (const card of getStrategyCardsForFaction(strategyCards, factionId)) {
@@ -297,20 +292,16 @@ export function AdditionalActions({
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
-  const actionLog = useContext(ActionLogContext);
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
-  const techs = useContext(TechContext);
+  const actionLog = useActionLog();
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const state = useGameState();
+  const techs = useTechs();
 
   const intl = useIntl();
-
-  if (!factions || !techs) {
-    return null;
-  }
 
   const activeFaction = factions[factionId];
 
@@ -479,27 +470,25 @@ export function AdditionalActions({
     }
     return objectiveObj.phase === "ACTION";
   });
-  const scorableObjectives = Object.values(objectives ?? {}).filter(
-    (objective) => {
-      const scorers = objective.scorers ?? [];
-      if (scorers.includes(activeFaction.id)) {
-        return false;
-      }
-      if (scoredObjectives.includes(objective.id)) {
-        return false;
-      }
-      if (
-        objective.id === "Become a Martyr" ||
-        objective.id === "Prove Endurance"
-      ) {
-        return false;
-      }
-      if (objective.type === "SECRET" && scorers.length > 0) {
-        return false;
-      }
-      return objective.phase === "ACTION";
+  const scorableObjectives = Object.values(objectives).filter((objective) => {
+    const scorers = objective.scorers ?? [];
+    if (scorers.includes(activeFaction.id)) {
+      return false;
     }
-  );
+    if (scoredObjectives.includes(objective.id)) {
+      return false;
+    }
+    if (
+      objective.id === "Become a Martyr" ||
+      objective.id === "Prove Endurance"
+    ) {
+      return false;
+    }
+    if (objective.type === "SECRET" && scorers.length > 0) {
+      return false;
+    }
+    return objective.phase === "ACTION";
+  });
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
@@ -1590,8 +1579,8 @@ interface NextPlayerButtonsProps {
 export function NextPlayerButtons({
   buttonStyle = {},
 }: NextPlayerButtonsProps) {
-  const actionLog = useContext(ActionLogContext);
   const gameId = useContext(GameIdContext);
+  const actionLog = useActionLog();
   const selectedAction = getSelectedActionFromLog(actionLog);
   const newSpeaker = getNewSpeakerEventFromLog(actionLog);
 
@@ -1822,10 +1811,10 @@ export function advanceToStatusPhase(gameId: string) {
 }
 
 export default function ActionPhase() {
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const factions = useFactions();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
   const intl = useIntl();
 
   const activeFaction =

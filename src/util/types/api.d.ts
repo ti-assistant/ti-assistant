@@ -92,6 +92,7 @@ interface GameData {
   strategycards?: Partial<Record<StrategyCardId, StrategyCard>>;
   systems?: Partial<Record<SystemId, System>>;
   techs?: Partial<Record<TechId, Tech>>;
+  timers?: Record<string, number>;
 }
 
 interface StoredGameData {
@@ -111,6 +112,8 @@ interface StoredGameData {
   updates?: Record<string, { timestamp: Timestamp }>;
   // Secrets
   [key: string]: any;
+  // Metadata
+  lastUpdate?: number;
 }
 
 interface AddAttachmentEvent {
@@ -556,6 +559,7 @@ type PlanetState = "READIED" | "EXHAUSTED" | "PURGED";
 interface UpdatePlanetStateEvent {
   planet: PlanetId;
   state: PlanetState;
+  prevState?: PlanetState;
 }
 
 interface UpdatePlanetStateData {

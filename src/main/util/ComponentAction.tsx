@@ -1,6 +1,8 @@
 "use client";
 
 import React, { CSSProperties, ReactNode, useContext, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { InfoRow } from "../../InfoRow";
@@ -10,28 +12,31 @@ import FactionSelectRadialMenu from "../../components/FactionSelectRadialMenu/Fa
 import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../components/LabeledLine/LabeledLine";
+import Map, { getFactionSystemNumber } from "../../components/Map/Map";
+import MapBuilder, {
+  SystemImage,
+} from "../../components/MapBuilder/MapBuilder";
 import Modal from "../../components/Modal/Modal";
 import PlanetRow from "../../components/PlanetRow/PlanetRow";
 import { Selector } from "../../components/Selector/Selector";
 import { TacticalAction } from "../../components/TacticalAction";
 import TechSelectHoverMenu from "../../components/TechSelectHoverMenu/TechSelectHoverMenu";
+import { GameIdContext } from "../../context/Context";
 import {
-  ActionLogContext,
-  AttachmentContext,
-  ComponentContext,
-  FactionContext,
-  GameIdContext,
-  LeaderContext,
-  ObjectiveContext,
-  OptionContext,
-  PlanetContext,
-  RelicContext,
-  TechContext,
-} from "../../context/Context";
+  useActionLog,
+  useAttachments,
+  useComponents,
+  useFactions,
+  useLeaders,
+  useObjectives,
+  useOptions,
+  usePlanets,
+  useRelics,
+  useTechs,
+} from "../../context/dataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,
-  changeOptionAsync,
   gainRelicAsync,
   loseRelicAsync,
   playComponentAsync,
@@ -57,15 +62,9 @@ import {
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
+import { updateMapString } from "../../util/map";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize } from "../../util/util";
-import MapBuilder, {
-  SystemImage,
-} from "../../components/MapBuilder/MapBuilder";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import Map, { getFactionSystemNumber } from "../../components/Map/Map";
-import { updateMapString } from "../../util/map";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -100,8 +99,8 @@ function ComponentSelect({
   selectComponent: (componentName: string) => void;
   factionId: FactionId;
 }) {
-  const factions = useContext(FactionContext);
-  const leaders = useContext(LeaderContext);
+  const factions = useFactions();
+  const leaders = useLeaders();
 
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
@@ -424,15 +423,15 @@ function ComponentSelect({
 }
 
 function ComponentDetails({ factionId }: { factionId: FactionId }) {
-  const actionLog = useContext(ActionLogContext);
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const relics = useContext(RelicContext);
-  const techs = useContext(TechContext);
+  const actionLog = useActionLog();
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const planets = usePlanets();
+  const relics = useRelics();
+  const techs = useTechs();
 
   const intl = useIntl();
 
@@ -1554,12 +1553,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 }
 
 export function ComponentAction({ factionId }: { factionId: FactionId }) {
-  const actionLog = useContext(ActionLogContext);
-  const components = useContext(ComponentContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const leaders = useContext(LeaderContext);
-  const relics = useContext(RelicContext);
+
+  const actionLog = useActionLog();
+  const components = useComponents();
+  const factions = useFactions();
+  const leaders = useLeaders();
+  const relics = useRelics();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -1573,7 +1573,9 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
     .map((logEntry) => (logEntry.data as PlayComponentData).event.name)[0];
 
-  const component = (components ?? {})[playedComponent ?? ""] ?? null;
+  const component = playedComponent
+    ? components[playedComponent as ComponentId]
+    : null;
 
   async function selectComponent(componentName: string) {
     if (!gameId) {
@@ -1613,73 +1615,71 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     .map((relic) => relic.id);
 
   if (!component) {
-    const filteredComponents = Object.values(components ?? {}).filter(
-      (component) => {
-        if (component.type === "PROMISSORY") {
-          if (
-            component.faction &&
-            (!factions[component.faction] || component.faction === faction.id)
-          ) {
-            return false;
-          }
-        }
+    const filteredComponents = Object.values(components).filter((component) => {
+      if (component.type === "PROMISSORY") {
         if (
           component.faction &&
-          component.type !== "PROMISSORY" &&
-          component.type !== "TECH"
-        ) {
-          if (component.faction !== faction.id) {
-            return false;
-          }
-        }
-
-        if (
-          unownedRelics.length === 0 &&
-          (component.id === "Gain Relic" ||
-            component.id === "Black Market Forgery")
+          (!factions[component.faction] || component.faction === faction.id)
         ) {
           return false;
         }
-
-        if (
-          "subFaction" in component &&
-          component.subFaction &&
-          component.subFaction !== faction.startswith.faction
-        ) {
-          return false;
-        }
-
-        if (component.type === "RELIC") {
-          const relic = (relics ?? {})[component.id as RelicId];
-          if (!relic) {
-            return false;
-          }
-          if (relic.owner !== factionId) {
-            return false;
-          }
-        }
-
-        if (component.type === "TECH" && !hasTech(faction, component.id)) {
-          return false;
-        }
-
-        if (component.state === "purged") {
-          return false;
-        }
-
-        if ("leader" in component && component.leader === "HERO") {
-          const hero = leaders[component.id as LeaderId];
-          if (!hero) {
-            return false;
-          }
-          if (hero.state !== "readied") {
-            return false;
-          }
-        }
-
-        return true;
       }
-    );
+      if (
+        component.faction &&
+        component.type !== "PROMISSORY" &&
+        component.type !== "TECH"
+      ) {
+        if (component.faction !== faction.id) {
+          return false;
+        }
+      }
+
+      if (
+        unownedRelics.length === 0 &&
+        (component.id === "Gain Relic" ||
+          component.id === "Black Market Forgery")
+      ) {
+        return false;
+      }
+
+      if (
+        "subFaction" in component &&
+        component.subFaction &&
+        component.subFaction !== faction.startswith.faction
+      ) {
+        return false;
+      }
+
+      if (component.type === "RELIC") {
+        const relic = (relics ?? {})[component.id as RelicId];
+        if (!relic) {
+          return false;
+        }
+        if (relic.owner !== factionId) {
+          return false;
+        }
+      }
+
+      if (component.type === "TECH" && !hasTech(faction, component.id)) {
+        return false;
+      }
+
+      if (component.state === "purged") {
+        return false;
+      }
+
+      if ("leader" in component && component.leader === "HERO") {
+        const hero = leaders[component.id as LeaderId];
+        if (!hero) {
+          return false;
+        }
+        if (hero.state !== "readied") {
+          return false;
+        }
+      }
+
+      return true;
+    });
 
     return (
       <ClientOnlyHoverMenu

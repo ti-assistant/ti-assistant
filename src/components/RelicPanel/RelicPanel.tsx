@@ -1,22 +1,19 @@
 import { useContext, useState } from "react";
 import styles from "./RelicPanel.module.scss";
 import GenericModal from "../GenericModal/GenericModal";
-import {
-  FactionContext,
-  GameIdContext,
-  RelicContext,
-} from "../../context/Context";
+import { GameIdContext } from "../../context/Context";
 import { CollapsibleSection } from "../CollapsibleSection";
 import { InfoRow } from "../../InfoRow";
 import { FactionSelectHoverMenu } from "../FactionSelect";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";
+import { useFactions, useRelics } from "../../context/dataHooks";
 
 function RelicPanelContent({}) {
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const relics = useContext(RelicContext);
+  const factions = useFactions();
+  const relics = useRelics();
 
   return (
     <div className={styles.factionInfoGrid}>

@@ -7,14 +7,7 @@ import { FormattedMessage } from "react-intl";
 import Map from "../../../src/components/Map/Map";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
-import {
-  FactionContext,
-  GameIdContext,
-  OptionContext,
-  PlanetContext,
-  StateContext,
-  StrategyCardContext,
-} from "../../context/Context";
+import { GameIdContext } from "../../context/Context";
 import { setSpeakerAsync } from "../../dynamic/api";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionRow from "../FactionRow/FactionRow";
@@ -25,6 +18,14 @@ import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
+import {
+  useFactions,
+  useGameState,
+  useOptions,
+  usePlanet,
+  usePlanets,
+  useStrategyCards,
+} from "../../context/dataHooks";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -53,12 +54,12 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
 });
 
 export default function Footer({}) {
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
-  const options = useContext(OptionContext);
+  const factions = useFactions();
+  const options = useOptions();
+  const mallice = usePlanet("Mallice");
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -133,11 +134,11 @@ export default function Footer({}) {
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
-  let mallice;
+  let malliceSide;
   if (options && (options["expansions"] ?? []).includes("POK")) {
-    mallice = "A";
-    if (planets && (planets["Mallice"] ?? {}).owner) {
-      mallice = "B";
+    malliceSide = "A";
+    if (mallice?.owner) {
+      malliceSide = "B";
     }
   }
 
@@ -158,7 +159,7 @@ export default function Footer({}) {
               mapStyle={
                 options ? options["map-style"] ?? "standard" : "standard"
               }
-              mallice={mallice}
+              mallice={malliceSide}
             />
           </div>
         </div>
@@ -533,10 +534,12 @@ export default function Footer({}) {
             }
             style={{ width: "fit-content" }}
           >
-            <FactionSummary
-              factionId={selectedFaction}
-              options={{ showIcon: true }}
-            />
+            {selectedFaction ? (
+              <FactionSummary
+                factionId={selectedFaction}
+                options={{ showIcon: true }}
+              />
+            ) : null}
           </LabeledDiv>
         </LabeledDiv>
       </div>

@@ -2,12 +2,7 @@ import NextImage from "next/image";
 import { ReactNode, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
-import {
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-  PlanetContext,
-} from "../../context/Context";
+import { GameIdContext } from "../../context/Context";
 import { getFactionColor } from "../../util/factions";
 import {
   applyAllPlanetAttachments,
@@ -20,6 +15,11 @@ import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
 import { updateMapString, validSystemNumber } from "../../util/map";
+import {
+  useAttachments,
+  useFactions,
+  usePlanets,
+} from "../../context/dataHooks";
 
 interface Cube {
   q: number;
@@ -226,9 +226,9 @@ export function SystemImage({
   showDetails: Details;
   systemNumber: string | undefined;
 }) {
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
-  const planets = useContext(PlanetContext);
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const planets = usePlanets();
 
   if (
     !systemNumber ||

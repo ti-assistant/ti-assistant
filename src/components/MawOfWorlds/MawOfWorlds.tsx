@@ -1,28 +1,28 @@
 import { useContext } from "react";
-import {
-  ActionLogContext,
-  FactionContext,
-  GameIdContext,
-  RelicContext,
-  TechContext,
-} from "../../context/Context";
-import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import { getFactionColor, getFactionName } from "../../util/factions";
-import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { FormattedMessage, useIntl } from "react-intl";
+import { GameIdContext } from "../../context/Context";
+import {
+  useActionLog,
+  useFactions,
+  useRelics,
+  useTechs,
+} from "../../context/dataHooks";
 import { playRelicAsync, unplayRelicAsync } from "../../dynamic/api";
-import { hasTech } from "../../util/api/techs";
-import { getPlayedRelic } from "../../util/actionLog";
 import { TechRow } from "../../TechRow";
+import { getPlayedRelic } from "../../util/actionLog";
+import { hasTech } from "../../util/api/techs";
+import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionIcon from "../FactionIcon/FactionIcon";
+import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 
 export default function MawOfWorlds({}) {
   const intl = useIntl();
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const relics = useContext(RelicContext);
-  const techs = useContext(TechContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const relics = useRelics();
+  const techs = useTechs();
 
   const maw = relics["Maw of Worlds"];
 
