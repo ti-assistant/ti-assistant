@@ -9,4 +9,5 @@ export const BASE_GAME_DATA: StoredGameData = {
     speaker: "Vuil'raith Cabal",
     round: 1,
   },
+  sequenceNum: 1,
 };
