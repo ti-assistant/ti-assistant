@@ -12,6 +12,7 @@ export class SelectActionHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
@@ -86,6 +87,7 @@ export class UnselectActionHandler implements Handler {
     const intl = createIntl({ locale: "en" }, cache);
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
     if (this.data.event.action === "Imperial") {
       const mecatol = buildPlanets(this.gameData)["Mecatol Rex"];

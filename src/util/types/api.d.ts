@@ -114,6 +114,7 @@ interface StoredGameData {
   [key: string]: any;
   // Metadata
   lastUpdate?: number;
+  sequenceNum: number;
 }
 
 interface AddAttachmentEvent {

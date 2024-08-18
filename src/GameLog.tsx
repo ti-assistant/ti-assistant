@@ -157,6 +157,7 @@ function buildInitialGameData(
     planets: basePlanets,
     options: setupData.options,
     objectives: baseObjectives,
+    sequenceNum: 1,
   };
 
   return gameState;
@@ -235,13 +236,14 @@ export function GameLog({}) {
       }}
     >
       {reversedActionLog.map((logEntry, index) => {
+        const storedGameData = structuredClone(initialGameData);
         let startTimeSeconds = logEntry.gameSeconds ?? 0;
         let endTimeSeconds = 0;
-        const handler = getHandler(dynamicGameData, logEntry.data);
+        const handler = getHandler(storedGameData, logEntry.data);
         if (!handler) {
           return null;
         }
-        updateGameData(dynamicGameData, handler.getUpdates());
+        updateGameData(storedGameData, handler.getUpdates());
         switch (logEntry.data.action) {
           case "ADVANCE_PHASE": {
             for (let i = index + 1; i < reversedActionLog.length; i++) {
@@ -301,8 +303,8 @@ export function GameLog({}) {
           <LogEntryElement
             key={logEntry.timestampMillis}
             logEntry={logEntry}
-            currRound={dynamicGameData.state.round}
-            activePlayer={dynamicGameData.state.activeplayer}
+            currRound={storedGameData.state.round}
+            activePlayer={storedGameData.state.activeplayer}
             startTimeSeconds={startTimeSeconds}
             endTimeSeconds={endTimeSeconds}
           />

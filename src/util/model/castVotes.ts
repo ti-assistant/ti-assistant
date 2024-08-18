@@ -8,6 +8,7 @@ export class CastVotesHandler implements Handler {
   getUpdates(): Record<string, any> {
     return {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
   }
 

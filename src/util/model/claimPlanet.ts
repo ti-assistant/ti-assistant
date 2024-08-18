@@ -37,6 +37,7 @@ export class ClaimPlanetHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.owner`]: this.data.event.faction,
     };
 
@@ -123,6 +124,7 @@ export class UnclaimPlanetHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.owner`]: prevOwner ?? "DELETE",
     };
 

@@ -9,6 +9,7 @@ export class StartVotingHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`state.votingStarted`]: true,
     };
 
@@ -37,6 +38,7 @@ export class UnstartVotingHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`state.votingStarted`]: false,
     };
 

@@ -28,6 +28,7 @@ export class ScoreObjectiveHandler implements Handler {
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     if (objective?.repeatable) {
@@ -123,6 +124,7 @@ export class UnscoreObjectiveHandler implements Handler {
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     if (objective?.repeatable) {

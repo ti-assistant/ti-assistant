@@ -21,6 +21,7 @@ export class PlayComponentHandler implements Handler {
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     const component = components[this.data.event.name];
@@ -122,6 +123,7 @@ export class UnplayComponentHandler implements Handler {
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`components.${this.data.event.name}.state`]: "DELETE",
     };
 

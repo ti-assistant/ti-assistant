@@ -20,6 +20,7 @@ export class SetSpeakerHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`state.speaker`]: this.data.event.newSpeaker,
     };
 

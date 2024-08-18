@@ -12,6 +12,7 @@ export class PlayPromissoryNoteHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     return updates;
@@ -42,6 +43,7 @@ export class UnplayPromissoryNoteHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     return updates;

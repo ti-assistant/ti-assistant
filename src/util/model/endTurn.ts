@@ -35,6 +35,7 @@ export class EndTurnHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
     if (!this.data.event.samePlayer) {
       updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.id : "None";
@@ -87,6 +88,7 @@ export class UnendTurnHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`state.activeplayer`]: this.data.event.prevFaction,
     };
 

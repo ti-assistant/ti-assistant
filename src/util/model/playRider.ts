@@ -8,6 +8,7 @@ export class PlayRiderHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     return updates;
@@ -41,6 +42,7 @@ export class UnplayRiderHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     return updates;

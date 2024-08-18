@@ -20,6 +20,7 @@ export class MarkSecondaryHandler implements Handler {
   getUpdates(): Record<string, any> {
     return {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.faction}.secondary`]: this.data.event.state,
     };
   }

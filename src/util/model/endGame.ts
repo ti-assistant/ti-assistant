@@ -8,6 +8,7 @@ export class EndGameHandler implements Handler {
   getUpdates(): Record<string, any> {
     return {
       [`state.finalPhase`]: this.gameData.state.phase,
+      [`sequenceNum`]: "INCREMENT",
       [`state.phase`]: "END",
       [`deleteAt`]: "DELETE",
     };
@@ -35,6 +36,7 @@ export class ContinueGameHandler implements Handler {
   getUpdates(): Record<string, any> {
     return {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`state.finalPhase`]: "DELETE",
       [`state.phase`]: this.gameData.state.finalPhase,
     };

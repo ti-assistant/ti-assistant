@@ -19,6 +19,7 @@ export class UpdatePlanetStateHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.state`]: this.data.event.state,
     };
 

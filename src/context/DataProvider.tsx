@@ -18,13 +18,11 @@ export default function DataProvider({
   const intl = useIntl();
   seedData.timers = seedTimers;
 
-  DataManager.init(seedData, intl);
+  DataManager.init(gameId, seedData, intl);
 
   useEffect(() => {
-    DataManager.listen(gameId);
+    return DataManager.listen(gameId);
   }, [gameId]);
-
-  // DataManager.init(seedData, intl, gameId);
 
   return (
     <GameIdContext.Provider value={gameId}>{children}</GameIdContext.Provider>

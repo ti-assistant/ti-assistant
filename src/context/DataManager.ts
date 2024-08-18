@@ -40,10 +40,15 @@ function hasMatchingTimestamp(timestamp: number, log: ActionLogEntry[]) {
 // }
 
 export default class DataManager {
+  private static gameId: string;
   private static instance: DataManager;
 
-  public static init(data: GameData, intl: IntlShape) {
-    if (!this.instance) {
+  public static init(gameId: string, data: GameData, intl: IntlShape) {
+    if (!this.instance || this.gameId !== gameId) {
+      if (this.instance) {
+        console.log("Overriding instance"); 
+      }
+      this.gameId = gameId;
       this.instance = new DataManager(data, intl);
     }
     return this.instance;
@@ -53,7 +58,7 @@ export default class DataManager {
     if (!this.instance) {
       throw new Error("init must be called before listen");
     }
-    this.instance.listen(gameId);
+    return this.instance.listen(gameId);
   }
 
   public static get() {
@@ -68,6 +73,9 @@ export default class DataManager {
   }
 
   public static subscribe(callback: CallbackFn<any>, path: string) {
+    if (!this.instance) {
+      return () => {};
+    }
     return this.instance.subscribe(callback, path);
   }
 
@@ -88,7 +96,8 @@ export default class DataManager {
   private data: GameData;
   private baseData: BaseData;
   private storedData: StoredGameData;
-  private lastUpdate: number;
+  private lastLocalSequenceNum: number;
+  private lastServerSequenceNum: number;
 
   public value() {
     return structuredClone(this.data);
@@ -98,7 +107,8 @@ export default class DataManager {
     this.data = data;
     this.baseData = getBaseData(intl);
     this.storedData = BASE_GAME_DATA;
-    this.lastUpdate = 0;
+    this.lastLocalSequenceNum = 0;
+    this.lastServerSequenceNum = 0;
   }
 
   private listen(gameId: string) {
@@ -113,33 +123,38 @@ export default class DataManager {
     unlistenFns.push(
       onSnapshot(actionLogQuery, (querySnapshot) => {
         // Check for updates to entries that we currently have.
-        let forceUpdate = false;
-        for (const change of querySnapshot.docChanges()) {
-          if (change.type === "modified" || change.type === "removed") {
-            if (
-              hasMatchingTimestamp(
-                change.doc.data().timestampMillis as number,
-                this.storedData.actionLog ?? []
-              )
-            ) {
-              forceUpdate = true;
-              break;
-            }
-          }
-        }
+        // let forceUpdate = false;
+        // for (const change of querySnapshot.docChanges()) {
+        //   if (change.type === "modified" || change.type === "removed") {
+        //     if (
+        //       hasMatchingTimestamp(
+        //         change.doc.data().timestampMillis as number,
+        //         this.storedData.actionLog ?? []
+        //       )
+        //     ) {
+        //       forceUpdate = true;
+        //       break;
+        //     }
+        //   }
+        // }
 
         const actionLog: ActionLogEntry[] = [];
         querySnapshot.forEach((doc) => {
           actionLog.push(doc.data() as ActionLogEntry);
         });
 
-        const latestTimestamp = actionLog[0]?.timestampMillis ?? 0;
-        if (
-          !forceUpdate &&
-          latestTimestamp < (this.storedData.lastUpdate ?? 0)
-        ) {
+        // If we are ahead of the server, don't update.
+        if (this.lastLocalSequenceNum > this.lastServerSequenceNum) {
           return;
         }
+
+        // const latestTimestamp = actionLog[0]?.timestampMillis ?? 0;
+        // if (
+        //   !forceUpdate &&
+        //   latestTimestamp < (this.storedData.lastUpdate ?? 0)
+        // ) {
+        //   return;
+        // }
 
         this.storedData.actionLog = actionLog;
         this.data.actionLog = actionLog;
@@ -163,10 +178,10 @@ export default class DataManager {
       onSnapshot(doc(db, "games", gameId), (doc) => {
         const storedData = doc.data() as StoredGameData;
 
-        if (
-          storedData.lastUpdate &&
-          storedData.lastUpdate < (this.storedData.lastUpdate ?? 0)
-        ) {
+        this.lastServerSequenceNum = storedData.sequenceNum;
+
+        // If we are ahead of the server, don't update.
+        if (this.storedData.sequenceNum > this.lastServerSequenceNum) {
           return;
         }
 
@@ -210,6 +225,8 @@ export default class DataManager {
       this.instance.storedData,
       this.instance.baseData
     );
+
+    this.instance.lastLocalSequenceNum = this.instance.storedData.sequenceNum;
 
     this.instance.publish();
   }

@@ -31,6 +31,7 @@ export class SwapStrategyCardsHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`strategycards.${this.data.event.cardOne}.faction`]: factionTwo,
       [`strategycards.${this.data.event.cardOne}.order`]: "DELETE",
       [`strategycards.${this.data.event.cardTwo}.faction`]: factionOne,

@@ -19,6 +19,7 @@ export class UpdateLeaderStateHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`leaders.${this.data.event.leaderId}.state`]: this.data.event.state,
     };
 
