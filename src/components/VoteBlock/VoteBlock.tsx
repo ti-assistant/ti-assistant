@@ -612,15 +612,16 @@ function PredictionSection({
   })[0];
 
   const remainingRiders = RIDERS.filter((rider) => {
-    if (rider === "Keleres Rider" && factions && !factions["Council Keleres"]) {
-      return false;
-    }
-    if (rider === "Galactic Threat" && factions && !factions["Nekro Virus"]) {
-      return false;
+    if (rider === "Keleres Rider") {
+      if (factionId === "Council Keleres" || !factions["Council Keleres"]) {
+        return false;
+      }
     }
     const secrets = getPromissoryTargets(currentTurn, "Political Secret");
-    if (rider === "Galactic Threat" && secrets.includes("Nekro Virus")) {
-      return false;
+    if (rider === "Galactic Threat") {
+      if (factionId !== "Nekro Virus" || secrets.includes("Nekro Virus")) {
+        return false;
+      }
     }
     if (
       rider === "Sanction" &&
