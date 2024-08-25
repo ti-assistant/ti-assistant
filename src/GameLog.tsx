@@ -9,6 +9,7 @@ import { updateGameData } from "./util/api/handler";
 import { fetcher } from "./util/api/util";
 import { Loader } from "./Loader";
 import { useActionLog, useGameData } from "./context/dataHooks";
+import { updateActionLog } from "./util/api/update";
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
@@ -216,13 +217,11 @@ export function GameLog({}) {
     return buildInitialGameData(setupGameData, intl);
   }, [setupGameData, intl]);
 
-  const dynamicGameData = useMemo(() => {
-    return buildCompleteGameData(initialGameData, intl);
-  }, [initialGameData, intl]);
-
   if (reversedActionLog.length === 0) {
     return <Loader />;
   }
+
+  const dynamicGameData = structuredClone(initialGameData);
 
   return (
     <div
@@ -236,14 +235,13 @@ export function GameLog({}) {
       }}
     >
       {reversedActionLog.map((logEntry, index) => {
-        const storedGameData = structuredClone(initialGameData);
         let startTimeSeconds = logEntry.gameSeconds ?? 0;
         let endTimeSeconds = 0;
-        const handler = getHandler(storedGameData, logEntry.data);
+        const handler = getHandler(dynamicGameData, logEntry.data);
         if (!handler) {
           return null;
         }
-        updateGameData(storedGameData, handler.getUpdates());
+        updateGameData(dynamicGameData, handler.getUpdates());
         switch (logEntry.data.action) {
           case "ADVANCE_PHASE": {
             for (let i = index + 1; i < reversedActionLog.length; i++) {
@@ -303,8 +301,8 @@ export function GameLog({}) {
           <LogEntryElement
             key={logEntry.timestampMillis}
             logEntry={logEntry}
-            currRound={storedGameData.state.round}
-            activePlayer={storedGameData.state.activeplayer}
+            currRound={dynamicGameData.state.round}
+            activePlayer={dynamicGameData.state.activeplayer}
             startTimeSeconds={startTimeSeconds}
             endTimeSeconds={endTimeSeconds}
           />
