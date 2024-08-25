@@ -140,7 +140,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
 
       {orderedFactions.map((faction, index) => {
         return (
-          <div key={index}>
+          <div key={faction.id}>
             <LabeledDiv
               label={
                 faction ? (

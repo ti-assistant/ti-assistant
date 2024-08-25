@@ -128,6 +128,7 @@ export function FactionSummary({
     : [];
   updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
+  console.log(`Faction: ${factionId}`, faction.vps);
   VPs = computeScoredVPs(factionId, objectives) + (faction.vps ?? 0);
 
   factionHero = faction.hero;
