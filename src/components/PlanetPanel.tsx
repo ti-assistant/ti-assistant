@@ -127,7 +127,7 @@ function UnclaimedPlanetSection() {
   const [collapsed, setCollapsed] = useState(true);
 
   const unownedPlanets = Object.values(planets)
-    .filter((planet) => !planet.owner)
+    .filter((planet) => !planet.owner && !planet.locked)
     .sort((a, b) => {
       if (a.name > b.name) {
         return 1;

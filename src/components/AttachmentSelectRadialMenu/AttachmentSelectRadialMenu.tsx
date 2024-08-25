@@ -210,8 +210,8 @@ export default function AttachmentSelectRadialMenu({
                     style={{
                       border: `${"1px"} solid ${tagBorderColor}`,
                       boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                      width: "24px",
-                      height: "24px",
+                      width: `${size / 2}px`,
+                      height: `${size / 2}px`,
                     }}
                   >
                     {tag}

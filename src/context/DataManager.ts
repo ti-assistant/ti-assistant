@@ -44,10 +44,11 @@ export default class DataManager {
   private static instance: DataManager;
 
   public static init(gameId: string, data: GameData, intl: IntlShape) {
-    if (!this.instance || this.gameId !== gameId) {
-      if (this.instance) {
-        console.log("Overriding instance"); 
-      }
+    const shouldOverride =
+      !this.instance ||
+      this.gameId !== gameId ||
+      this.instance.data.sequenceNum < data.sequenceNum;
+    if (shouldOverride) {
       this.gameId = gameId;
       this.instance = new DataManager(data, intl);
     }

@@ -88,6 +88,7 @@ interface GameData {
   options: Options;
   planets: Partial<Record<PlanetId, Planet>>;
   relics?: Partial<Record<RelicId, Relic>>;
+  sequenceNum: number;
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, StrategyCard>>;
   systems?: Partial<Record<SystemId, System>>;

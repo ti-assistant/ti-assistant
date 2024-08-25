@@ -411,8 +411,8 @@ export function AdditionalActions({
   }
 
   function lastFaction() {
-    const numFactions = Object.keys(factions ?? {}).length;
-    const numPassed = Object.values(factions ?? {}).filter(
+    const numFactions = Object.keys(factions).length;
+    const numPassed = Object.values(factions).filter(
       (faction) => faction.passed
     ).length;
     return numFactions - 1 === numPassed;
@@ -629,7 +629,7 @@ export function AdditionalActions({
                   {researchedTech.length > 0 ? (
                     <div
                       className="flexColumn"
-                      style={{ alignItems: "stretch" }}
+                      style={{ alignItems: "stretch", gap: 0 }}
                     >
                       {researchedTech.map((tech) => {
                         const techObj = techs[tech];

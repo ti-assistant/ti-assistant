@@ -99,6 +99,7 @@ export function buildCompleteGameData(
     options: storedGameData.options,
     planets: buildPlanets(storedGameData),
     relics: buildRelics(storedGameData, intl),
+    sequenceNum: storedGameData.sequenceNum,
     state: buildState(storedGameData),
     strategycards: buildStrategyCards(storedGameData, intl),
     systems: buildSystems(storedGameData),
