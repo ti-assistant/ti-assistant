@@ -14,31 +14,6 @@ import { getBaseData } from "../data/baseData";
 import DBConnection from "../data/DBConnection";
 import { buildCompleteGameData } from "../data/gameDataBuilder";
 
-// interface HandlerType<Data> {
-//   new (gameData: StoredGameData, data: Data): Handler;
-// }
-
-function hasMatchingTimestamp(timestamp: number, log: ActionLogEntry[]) {
-  for (const entry of log) {
-    if (entry.timestampMillis === timestamp) {
-      return true;
-    }
-  }
-  return false;
-}
-
-// function logsEqual(serverLog: ActionLogEntry[], clientLog: ActionLogEntry[]) {
-//   let localServerLog = structuredClone(serverLog);
-//   let localClientLog = structuredClone(clientLog);
-//   while (localServerLog.length > localClientLog.length) {
-//     localServerLog.pop();
-//   }
-//   while (localClientLog.length > localServerLog.length) {
-//     localClientLog.pop();
-//   }
-//   return stableHash(localClientLog) === stableHash(localServerLog);
-// }
-
 export default class DataManager {
   private static gameId: string;
   private static instance: DataManager;
@@ -60,10 +35,6 @@ export default class DataManager {
       throw new Error("init must be called before listen");
     }
     return this.instance.listen(gameId);
-  }
-
-  public static get() {
-    return this.instance;
   }
 
   public static getValue<Type>(path: string): Type | undefined {
@@ -96,31 +67,15 @@ export default class DataManager {
     this.instance.publish();
   }
 
-  // public static update<Data>(handlerType: HandlerType<Data>, data: Data) {
-  //   if (!this.instance) {
-  //     return;
-  //   }
-  //   this.instance.updateData(handlerType, data);
-  // }
-
-  // private updateData<Data>(handlerType: HandlerType<Data>, data: Data) {
-  //   const handler = new handlerType(this.storedData, data);
-
-  //   updateGameData(this.storedData, handler.getUpdates());
-  //   updateActionLog(this.storedData, handler);
-  // }
-
   private data: GameData;
   private baseData: BaseData;
   private storedData: StoredGameData;
 
+  // Used to rollback in case of error.
   private latestServerData: StoredGameData;
-  private lastLocalSequenceNum: number;
-  private lastServerSequenceNum: number;
 
-  public value() {
-    return structuredClone(this.data);
-  }
+  // Used to know if the server is ahead of the client.
+  private lastLocalSequenceNum: number;
 
   private constructor(data: GameData, intl: IntlShape) {
     this.data = data;
@@ -128,7 +83,6 @@ export default class DataManager {
     this.storedData = BASE_GAME_DATA;
     this.latestServerData = BASE_GAME_DATA;
     this.lastLocalSequenceNum = 0;
-    this.lastServerSequenceNum = 0;
   }
 
   private listen(gameId: string) {
@@ -142,22 +96,6 @@ export default class DataManager {
     );
     unlistenFns.push(
       onSnapshot(actionLogQuery, (querySnapshot) => {
-        // Check for updates to entries that we currently have.
-        // let forceUpdate = false;
-        // for (const change of querySnapshot.docChanges()) {
-        //   if (change.type === "modified" || change.type === "removed") {
-        //     if (
-        //       hasMatchingTimestamp(
-        //         change.doc.data().timestampMillis as number,
-        //         this.storedData.actionLog ?? []
-        //       )
-        //     ) {
-        //       forceUpdate = true;
-        //       break;
-        //     }
-        //   }
-        // }
-
         const actionLog: ActionLogEntry[] = [];
         querySnapshot.forEach((doc) => {
           actionLog.push(doc.data() as ActionLogEntry);
@@ -169,14 +107,6 @@ export default class DataManager {
         if (this.lastLocalSequenceNum > this.latestServerData.sequenceNum) {
           return;
         }
-
-        // const latestTimestamp = actionLog[0]?.timestampMillis ?? 0;
-        // if (
-        //   !forceUpdate &&
-        //   latestTimestamp < (this.storedData.lastUpdate ?? 0)
-        // ) {
-        //   return;
-        // }
 
         this.storedData.actionLog = actionLog;
         this.data.actionLog = actionLog;
@@ -232,14 +162,6 @@ export default class DataManager {
     };
   }
 
-  // private update(updateData: StoredGameData, timestamp: number) {
-  //   this.storedData.lastUpdate = timestamp;
-  //   this.storedData = updateData;
-  //   this.data = buildCompleteGameData(this.storedData, this.baseData);
-
-  //   this.publish();
-  // }
-
   public static update(
     updateFn: (storedGameData: StoredGameData) => StoredGameData
   ) {
@@ -282,7 +204,7 @@ export default class DataManager {
     };
   }
 
-  protected publish() {
+  private publish() {
     const updatedHashes = structuredClone(this.hashes);
     for (const subscriber of Object.values(this.subscribers)) {
       const value = getValueAtPath(this.data, subscriber.path);
@@ -325,11 +247,6 @@ function makeid(length: number) {
 }
 
 type CallbackFn<DataType> = (data: DataType) => void;
-
-// interface Subscriber {
-//   callbackFn: CallbackFn<any>;
-//   factionId: FactionId;
-// }
 
 interface Subscriber {
   callbackFn: CallbackFn<any>;
