@@ -80,6 +80,22 @@ export default class DataManager {
     return this.instance.subscribe(callback, path);
   }
 
+  // Resets to the last data received from the server.
+  public static reset() {
+    if (!this.instance) {
+      return;
+    }
+    this.instance.storedData = structuredClone(this.instance.latestServerData);
+    this.instance.data = buildCompleteGameData(
+      this.instance.storedData,
+      this.instance.baseData
+    );
+
+    this.instance.lastLocalSequenceNum = this.instance.storedData.sequenceNum;
+
+    this.instance.publish();
+  }
+
   // public static update<Data>(handlerType: HandlerType<Data>, data: Data) {
   //   if (!this.instance) {
   //     return;
@@ -97,6 +113,8 @@ export default class DataManager {
   private data: GameData;
   private baseData: BaseData;
   private storedData: StoredGameData;
+
+  private latestServerData: StoredGameData;
   private lastLocalSequenceNum: number;
   private lastServerSequenceNum: number;
 
@@ -108,6 +126,7 @@ export default class DataManager {
     this.data = data;
     this.baseData = getBaseData(intl);
     this.storedData = BASE_GAME_DATA;
+    this.latestServerData = BASE_GAME_DATA;
     this.lastLocalSequenceNum = 0;
     this.lastServerSequenceNum = 0;
   }
@@ -144,8 +163,10 @@ export default class DataManager {
           actionLog.push(doc.data() as ActionLogEntry);
         });
 
+        this.latestServerData.actionLog = actionLog;
+
         // If we are ahead of the server, don't update.
-        if (this.lastLocalSequenceNum > this.lastServerSequenceNum) {
+        if (this.lastLocalSequenceNum > this.latestServerData.sequenceNum) {
           return;
         }
 
@@ -168,6 +189,8 @@ export default class DataManager {
       onSnapshot(doc(db, "timers", gameId), (doc) => {
         const storedTimers = doc.data() as Record<string, number>;
 
+        this.latestServerData.timers = storedTimers;
+
         this.storedData.timers = storedTimers;
         this.data.timers = storedTimers;
 
@@ -179,10 +202,14 @@ export default class DataManager {
       onSnapshot(doc(db, "games", gameId), (doc) => {
         const storedData = doc.data() as StoredGameData;
 
-        this.lastServerSequenceNum = storedData.sequenceNum;
+        const serverActionLog = this.latestServerData.actionLog ?? [];
+        const serverTimers = this.latestServerData.timers ?? {};
+        this.latestServerData = storedData;
+        this.latestServerData.actionLog = serverActionLog;
+        this.latestServerData.timers = serverTimers;
 
         // If we are ahead of the server, don't update.
-        if (this.storedData.sequenceNum > this.lastServerSequenceNum) {
+        if (this.storedData.sequenceNum > this.latestServerData.sequenceNum) {
           return;
         }
 

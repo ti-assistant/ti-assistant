@@ -31,5 +31,7 @@ export function advancePhase(gameId: string, skipAgenda: boolean = false) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

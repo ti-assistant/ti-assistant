@@ -37,7 +37,9 @@ export function claimPlanet(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unclaimPlanet(
@@ -73,5 +75,7 @@ export function unclaimPlanet(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

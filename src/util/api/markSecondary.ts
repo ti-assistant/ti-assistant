@@ -36,5 +36,7 @@ export function markSecondary(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

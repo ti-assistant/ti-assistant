@@ -39,7 +39,9 @@ export function chooseStartingTech(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function removeStartingTech(
@@ -74,5 +76,7 @@ export function removeStartingTech(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

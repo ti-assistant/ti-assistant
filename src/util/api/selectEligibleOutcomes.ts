@@ -34,5 +34,7 @@ export function selectEligibleOutcomes(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

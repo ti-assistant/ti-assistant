@@ -34,7 +34,9 @@ export function selectAction(gameId: string, action: Action) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unselectAction(gameId: string, action: Action) {
@@ -64,5 +66,7 @@ export function unselectAction(gameId: string, action: Action) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -29,5 +29,7 @@ export function startVoting(gameId: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

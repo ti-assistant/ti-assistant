@@ -29,7 +29,9 @@ export function endGame(gameId: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function continueGame(gameId: string) {
@@ -57,5 +59,7 @@ export function continueGame(gameId: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -37,5 +37,7 @@ export function undo(gameId: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

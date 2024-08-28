@@ -40,7 +40,9 @@ export function resolveAgenda(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function repealAgenda(gameId: string, agenda: AgendaId, target: string) {
@@ -72,5 +74,7 @@ export function repealAgenda(gameId: string, agenda: AgendaId, target: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

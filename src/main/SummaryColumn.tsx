@@ -1,19 +1,17 @@
 import dynamic from "next/dynamic";
-import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../FactionSummary";
-import { Loader } from "../Loader";
 import { StaticFactionTimer } from "../Timer";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
-import { getInitiativeForFaction } from "../util/helpers";
-import styles from "./SummaryColumn.module.scss";
 import {
   useFactions,
   useObjectives,
   useOptions,
   useStrategyCards,
 } from "../context/dataHooks";
+import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
+import { getInitiativeForFaction } from "../util/helpers";
+import styles from "./SummaryColumn.module.scss";
 
 const FactionPanel = dynamic(() => import("../components/FactionPanel"), {
   loading: () => (

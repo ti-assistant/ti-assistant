@@ -32,5 +32,7 @@ export function setSpeaker(gameId: string, newSpeaker: FactionId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

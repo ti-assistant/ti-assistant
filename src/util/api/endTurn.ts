@@ -31,5 +31,7 @@ export function endTurn(gameId: string, samePlayer?: boolean) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -32,7 +32,9 @@ export function gainRelic(gameId: string, faction: FactionId, relic: RelicId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function loseRelic(gameId: string, faction: FactionId, relic: RelicId) {
@@ -63,5 +65,7 @@ export function loseRelic(gameId: string, faction: FactionId, relic: RelicId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -39,7 +39,9 @@ export function playPromissoryNote(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unplayPromissoryNote(
@@ -74,5 +76,7 @@ export function unplayPromissoryNote(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

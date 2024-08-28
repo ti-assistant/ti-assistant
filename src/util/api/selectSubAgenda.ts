@@ -31,5 +31,7 @@ export function selectSubAgenda(gameId: string, subAgenda: AgendaId | "None") {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

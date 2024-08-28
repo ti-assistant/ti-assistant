@@ -23,5 +23,7 @@ export function changeOption(gameId: string, option: string, value: any) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

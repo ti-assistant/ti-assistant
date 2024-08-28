@@ -39,7 +39,9 @@ export function addAttachment(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function removeAttachment(
@@ -74,5 +76,7 @@ export function removeAttachment(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

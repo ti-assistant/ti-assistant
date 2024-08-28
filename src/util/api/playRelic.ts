@@ -29,7 +29,9 @@ export function playRelic(gameId: string, event: PlayRelicEvent) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unplayRelic(gameId: string, event: PlayRelicEvent) {
@@ -57,5 +59,7 @@ export function unplayRelic(gameId: string, event: PlayRelicEvent) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

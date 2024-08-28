@@ -32,7 +32,9 @@ export function addTech(gameId: string, faction: FactionId, techId: TechId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function removeTech(gameId: string, faction: FactionId, techId: TechId) {
@@ -63,5 +65,7 @@ export function removeTech(gameId: string, faction: FactionId, techId: TechId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

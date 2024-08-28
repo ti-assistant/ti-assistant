@@ -31,5 +31,7 @@ export function giftOfPrescience(gameId: string, faction: FactionId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

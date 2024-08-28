@@ -21,5 +21,7 @@ export function setGlobalPause(gameId: string, paused: boolean) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -31,7 +31,9 @@ export function revealAgenda(gameId: string, agenda: AgendaId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function hideAgenda(gameId: string, agenda: AgendaId, veto?: boolean) {
@@ -62,5 +64,7 @@ export function hideAgenda(gameId: string, agenda: AgendaId, veto?: boolean) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -38,7 +38,9 @@ export function playRider(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unplayRider(gameId: string, rider: string) {
@@ -68,5 +70,7 @@ export function unplayRider(gameId: string, rider: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

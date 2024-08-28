@@ -34,7 +34,9 @@ export function revealObjective(gameId: string, objective: ObjectiveId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function hideObjective(gameId: string, objective: ObjectiveId) {
@@ -64,5 +66,7 @@ export function hideObjective(gameId: string, objective: ObjectiveId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

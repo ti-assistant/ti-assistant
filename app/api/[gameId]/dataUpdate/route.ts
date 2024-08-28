@@ -124,11 +124,11 @@ export async function POST(
 
   const gameRef = db.collection("games").doc(gameId);
 
+  const data = (await req.json()) as GameUpdateData & { timestamp: number };
   try {
     let numAttempts = 3;
     let shouldRetry = true;
     while (shouldRetry && numAttempts > 0) {
-      const data = (await req.json()) as GameUpdateData & { timestamp: number };
       if (!data.action) {
         return new Response("Missing info", {
           status: 422,
@@ -137,13 +137,17 @@ export async function POST(
 
       shouldRetry = await updateInTransaction(db, gameRef, data, gameTime);
       if (shouldRetry) {
-        // Wait 1 second before retry.
-        await new Promise((r) => setTimeout(r, 1000));
+        // Backoff after failures to potentially allow other updates to complete.
+        await new Promise((r) => setTimeout(r, 100));
       }
       numAttempts--;
     }
+    if (shouldRetry && numAttempts === 0) {
+      throw new Error("Could not complete transaction.");
+    }
   } catch (e) {
     console.log("Transaction failed", e);
+    return NextResponse.error();
   }
 
   const gameData = await getGameData(gameId);

@@ -34,7 +34,9 @@ export function playComponent(gameId: string, name: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unplayComponent(gameId: string, name: string) {
@@ -64,5 +66,7 @@ export function unplayComponent(gameId: string, name: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

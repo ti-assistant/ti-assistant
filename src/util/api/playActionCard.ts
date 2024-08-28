@@ -39,7 +39,9 @@ export function playActionCard(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unplayActionCard(
@@ -74,5 +76,7 @@ export function unplayActionCard(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

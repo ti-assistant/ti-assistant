@@ -41,7 +41,9 @@ export function scoreObjective(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unscoreObjective(
@@ -78,5 +80,7 @@ export function unscoreObjective(
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -31,5 +31,7 @@ export function speakerTieBreak(gameId: string, tieBreak: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

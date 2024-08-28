@@ -31,5 +31,7 @@ export function selectSubComponent(gameId: string, subComponent: string) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

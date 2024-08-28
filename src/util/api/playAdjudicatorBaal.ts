@@ -34,7 +34,9 @@ export function playAdjudicatorBaal(gameId: string, systemId: SystemId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function undoAdjudicatorBaal(gameId: string, systemId: SystemId) {
@@ -64,5 +66,7 @@ export function undoAdjudicatorBaal(gameId: string, systemId: SystemId) {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

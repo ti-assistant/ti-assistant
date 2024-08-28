@@ -31,5 +31,7 @@ export function selectFaction(gameId: string, faction: FactionId | "None") {
     return storedGameData;
   });
 
-  return updatePromise;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
