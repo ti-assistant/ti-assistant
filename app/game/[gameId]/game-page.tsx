@@ -6,20 +6,17 @@ import { useContext, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import {
-  FactionContext,
-  GameIdContext,
-  StateContext,
-} from "../../../src/context/Context";
+import { GameIdContext } from "../../../src/context/Context";
 import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import styles from "./game-page.module.scss";
+import { useFactions, useGameState } from "../../../src/context/dataHooks";
 
 export default function SelectFactionPage() {
   const router = useRouter();
-  const factions = useContext(FactionContext);
+  const factions = useFactions();
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
+  const state = useGameState();
 
   useEffect(() => {
     if (!!gameId) {
@@ -34,7 +31,7 @@ export default function SelectFactionPage() {
     return null;
   }
 
-  const orderedFactions = Object.values(factions ?? {}).sort((a, b) => {
+  const orderedFactions = Object.values(factions).sort((a, b) => {
     if (a.order > b.order) {
       return 1;
     } else {

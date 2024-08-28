@@ -1,19 +1,19 @@
-import React, { CSSProperties, useContext, useState } from "react";
+import React, { CSSProperties, useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
 import { TechRow } from "../TechRow";
+import { GameIdContext } from "../context/Context";
 import {
-  ActionLogContext,
-  FactionContext,
-  GameIdContext,
-  LeaderContext,
-  OptionContext,
-  PlanetContext,
-  RelicContext,
-  SystemContext,
-} from "../context/Context";
+  useActionLog,
+  useFactions,
+  useLeaders,
+  useOptions,
+  usePlanets,
+  useRelics,
+  useSystems,
+} from "../context/dataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -47,11 +47,11 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import SystemSelect from "./Map/SystemSelect";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
-import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 
 export function TacticalAction({
   activeFactionId,
@@ -85,7 +85,7 @@ export function TacticalAction({
   techs: Partial<Record<TechId, Tech>>;
 }) {
   const gameId = useContext(GameIdContext);
-  const relics = useContext(RelicContext);
+  const relics = useRelics();
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
 
   claimablePlanets.sort((a, b) => {
@@ -709,18 +709,16 @@ export function TacticalAction({
 }
 
 function AdjudicatorBaal() {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const options = useContext(OptionContext);
-  const leaders = useContext(LeaderContext);
-  const planets = useContext(PlanetContext);
-  const systems = useContext(SystemContext);
-
-  const [testing, setTesting] = useState(options["map-string"] ?? "");
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const leaders = useLeaders();
+  const options = useOptions();
+  const planets = usePlanets();
+  const systems = useSystems();
 
   let mallice;
-  if (options && (options["expansions"] ?? []).includes("POK")) {
+  if (options.expansions.includes("POK")) {
     const malliceObj = planets["Mallice"];
     if (!malliceObj) {
       mallice = "PURGED";

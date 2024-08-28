@@ -8,6 +8,7 @@ export class SwapMapTilesHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     const systems = (this.gameData.options["map-string"] ?? "").split(" ");

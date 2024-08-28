@@ -1,19 +1,14 @@
 import { useContext } from "react";
+import { FormattedMessage } from "react-intl";
+import { InfoRow } from "../../InfoRow";
+import { SelectableRow } from "../../SelectableRow";
+import { GameIdContext } from "../../context/Context";
 import {
-  ActionLogContext,
-  AttachmentContext,
-  GameIdContext,
-  PlanetContext,
-  RelicContext,
-} from "../../context/Context";
-import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
-import {
-  getAttachments,
-  getClaimedPlanets,
-  getGainedRelic,
-} from "../../util/actionLog";
-import { applyPlanetAttachments } from "../../util/planets";
-import PlanetRow from "../PlanetRow/PlanetRow";
+  useActionLog,
+  useAttachments,
+  usePlanets,
+  useRelics,
+} from "../../context/dataHooks";
 import {
   addAttachmentAsync,
   claimPlanetAsync,
@@ -22,23 +17,28 @@ import {
   removeAttachmentAsync,
   unclaimPlanetAsync,
 } from "../../dynamic/api";
+import {
+  getAttachments,
+  getClaimedPlanets,
+  getGainedRelic,
+} from "../../util/actionLog";
+import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
+import { applyPlanetAttachments } from "../../util/planets";
 import AttachmentSelectRadialMenu from "../AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
+import PlanetRow from "../PlanetRow/PlanetRow";
 import { Selector } from "../Selector/Selector";
-import { FormattedMessage } from "react-intl";
-import { SelectableRow } from "../../SelectableRow";
-import { InfoRow } from "../../InfoRow";
 
 export default function FrontierExploration({
   factionId,
 }: {
   factionId: FactionId;
 }) {
-  const actionLog = useContext(ActionLogContext);
-  const attachments = useContext(AttachmentContext);
   const gameId = useContext(GameIdContext);
-  const planets = useContext(PlanetContext);
-  const relics = useContext(RelicContext);
+  const actionLog = useActionLog();
+  const attachments = useAttachments();
+  const planets = usePlanets();
+  const relics = useRelics();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const gainedRelic = getGainedRelic(currentTurn);

@@ -13,6 +13,7 @@ export class PlayAdjudicatorBaalHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`leaders.Adjudicator Ba'al.state`]: "purged",
     };
 
@@ -69,6 +70,7 @@ export class UndoAdjudicatorBaalHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`leaders.Adjudicator Ba'al.state`]: "readied",
     };
 

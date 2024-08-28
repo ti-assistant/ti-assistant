@@ -1,9 +1,8 @@
-import { mutate } from "swr";
-import { poster } from "./util";
+import DataManager from "../../context/DataManager";
 import { ContinueGameHandler, EndGameHandler } from "../model/endGame";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function endGame(gameId: string) {
   const data: GameUpdateData = {
@@ -11,29 +10,28 @@ export function endGame(gameId: string) {
     event: {},
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new EndGameHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new EndGameHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function continueGame(gameId: string) {
@@ -42,27 +40,26 @@ export function continueGame(gameId: string) {
     event: {},
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new ContinueGameHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new ContinueGameHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

@@ -1,12 +1,11 @@
-import { mutate } from "swr";
-import { BASE_GAME_DATA } from "../../../server/data/data";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import DataManager from "../../context/DataManager";
 import {
   PlayAdjudicatorBaalHandler,
   UndoAdjudicatorBaalHandler,
 } from "../model/playAdjudicatorBaal";
+import { updateGameData } from "./handler";
+import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function playAdjudicatorBaal(gameId: string, systemId: SystemId) {
   const data: GameUpdateData = {
@@ -16,29 +15,28 @@ export function playAdjudicatorBaal(gameId: string, systemId: SystemId) {
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new PlayAdjudicatorBaalHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new PlayAdjudicatorBaalHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function undoAdjudicatorBaal(gameId: string, systemId: SystemId) {
@@ -49,27 +47,26 @@ export function undoAdjudicatorBaal(gameId: string, systemId: SystemId) {
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new UndoAdjudicatorBaalHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new UndoAdjudicatorBaalHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

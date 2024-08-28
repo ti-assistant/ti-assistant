@@ -1,6 +1,5 @@
-import { mutate } from "swr";
+import DataManager from "../../context/DataManager";
 import { poster } from "./util";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 
 interface SetPauseData {
   paused: boolean;
@@ -11,19 +10,18 @@ export function setGlobalPause(gameId: string, paused: boolean) {
     paused,
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/setPause`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        currentData.state.paused = paused;
+  const now = Date.now();
 
-        return structuredClone(currentData);
-      },
-      revalidate: false,
-    }
-  );
+  const updatePromise = poster(`/api/${gameId}/setPause`, data, now);
+
+  DataManager.update((storedGameData) => {
+    storedGameData.state.paused = paused;
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

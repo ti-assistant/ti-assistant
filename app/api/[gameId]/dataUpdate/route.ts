@@ -111,6 +111,11 @@ export async function POST(
 
   const db = getFirestore();
 
+  // Uncomment to simulate latency.
+  // const delay = (ms: number) =>
+  //   new Promise((resolve) => setTimeout(resolve, ms));
+  // await delay(2500);
+
   const timerDoc = await db.collection("timers").doc(gameId).get();
 
   const timers = timerDoc.data() as Record<string, number>;
@@ -119,11 +124,11 @@ export async function POST(
 
   const gameRef = db.collection("games").doc(gameId);
 
+  const data = (await req.json()) as GameUpdateData & { timestamp: number };
   try {
     let numAttempts = 3;
     let shouldRetry = true;
     while (shouldRetry && numAttempts > 0) {
-      const data = (await req.json()) as GameUpdateData;
       if (!data.action) {
         return new Response("Missing info", {
           status: 422,
@@ -132,13 +137,17 @@ export async function POST(
 
       shouldRetry = await updateInTransaction(db, gameRef, data, gameTime);
       if (shouldRetry) {
-        // Wait 1 second before retry.
-        await new Promise((r) => setTimeout(r, 1000));
+        // Backoff after failures to potentially allow other updates to complete.
+        await new Promise((r) => setTimeout(r, 100));
       }
       numAttempts--;
     }
+    if (shouldRetry && numAttempts === 0) {
+      throw new Error("Could not complete transaction.");
+    }
   } catch (e) {
     console.log("Transaction failed", e);
+    return NextResponse.error();
   }
 
   const gameData = await getGameData(gameId);
@@ -164,7 +173,8 @@ async function updateActionLog(
   gameRef: DocumentReference<DocumentData>,
   t: Transaction,
   handler: Handler,
-  gameTime: number
+  gameTime: number,
+  timestampMillis: number
 ) {
   const turnBoundary = await t.get(
     gameRef
@@ -212,6 +222,7 @@ async function updateActionLog(
       case "REPLACE": {
         const logEntry = handler.getLogEntry();
         logEntry.gameSeconds = gameTime;
+        logEntry.timestampMillis = timestampMillis;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
           logEntry as Record<string, any>
@@ -243,6 +254,7 @@ async function updateActionLog(
         }
         const logEntry = handler.getLogEntry();
         logEntry.gameSeconds = gameTime;
+        logEntry.timestampMillis = timestampMillis;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
           logEntry as Record<string, any>
@@ -259,17 +271,19 @@ async function updateActionLog(
     return;
   }
 
-  insertLogEntry(gameRef, t, handler, gameTime);
+  insertLogEntry(gameRef, t, handler, gameTime, timestampMillis);
 }
 
 function insertLogEntry(
   gameRef: DocumentReference<DocumentData>,
   t: Transaction,
   handler: Handler,
-  gameTime: number
+  gameTime: number,
+  timestampMillis: number
 ) {
   const logEntry = handler.getLogEntry();
   logEntry.gameSeconds = gameTime;
+  logEntry.timestampMillis = timestampMillis;
 
   t.create(gameRef.collection("actionLog").doc(), logEntry);
 }
@@ -277,7 +291,7 @@ function insertLogEntry(
 function updateInTransaction(
   db: Firestore,
   gameRef: DocumentReference<DocumentData>,
-  data: GameUpdateData,
+  data: GameUpdateData & { timestamp: number },
   gameTime: number
 ) {
   return db.runTransaction(async (t) => {
@@ -532,8 +546,9 @@ function updateInTransaction(
 
     let updates = convertToServerUpdates(handler.getUpdates());
 
+    updates[`lastUpdate`] = data.timestamp;
     // Needs to happen after handler.getUpdates();
-    await updateActionLog(gameRef, t, handler, gameTime);
+    await updateActionLog(gameRef, t, handler, gameTime, data.timestamp);
 
     if (Object.keys(updates).length > 0) {
       t.update(gameRef, updates);

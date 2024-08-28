@@ -1,15 +1,16 @@
 "use client";
 
-import { useContext } from "react";
+import { useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import {
-  AttachmentContext,
-  FactionContext,
-  OptionContext,
-  PlanetContext,
-  RelicContext,
-  TechContext,
-} from "../../context/Context";
+  useAttachments,
+  useFaction,
+  useFactions,
+  useOptions,
+  usePlanets,
+  useRelics,
+  useTechs,
+} from "../../context/dataHooks";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import {
   canResearchTech,
@@ -18,7 +19,6 @@ import {
   sortTechsByName,
   sortTechsByPreReqAndExpansion,
 } from "../../util/techs";
-import { useIntl } from "react-intl";
 import styles from "./TechSelectHoverMenu.module.scss";
 
 interface InnerTechSelectHoverMenuProps {
@@ -40,10 +40,10 @@ function InnerTechSelectHoverMenu({
   selectTech,
   outerCloseFn,
 }: InnerTechSelectHoverMenuProps) {
-  const factions = useContext(FactionContext);
-  const options = useContext(OptionContext);
+  const faction = useFaction(factionId);
+  const factions = useFactions();
+  const options = useOptions();
 
-  const faction = factions[factionId];
   return techs.length > 0 ? (
     <ClientOnlyHoverMenu
       label={label}
@@ -107,12 +107,12 @@ export default function TechSelectHoverMenu({
   label,
   selectTech,
 }: TechSelectHoverMenuProps) {
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const relics = useContext(RelicContext);
-  const allTechs = useContext(TechContext);
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const options = useOptions();
+  const planets = usePlanets();
+  const relics = useRelics();
+  const allTechs = useTechs();
 
   const intl = useIntl();
 

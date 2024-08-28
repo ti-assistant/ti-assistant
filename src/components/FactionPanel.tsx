@@ -1,7 +1,7 @@
 import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { GameIdContext, LeaderContext, TechContext } from "../context/Context";
+import { GameIdContext } from "../context/Context";
 import { updateLeaderStateAsync } from "../dynamic/api";
 import { getFactionName } from "../util/factions";
 import { leaderTypeString, unitTypeString } from "../util/strings";
@@ -12,6 +12,7 @@ import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import { UnitStat } from "../TechRow";
+import { useLeaders, useTechs } from "../context/dataHooks";
 
 function AbilitySection({
   leftLabel,
@@ -219,8 +220,8 @@ function FactionPanelContent({
   const intl = useIntl();
   // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
   const gameId = useContext(GameIdContext);
-  const leaders = useContext(LeaderContext);
-  const techs = useContext(TechContext);
+  const leaders = useLeaders();
+  const techs = useTechs();
 
   const factionTechs = Object.values(techs).filter(
     (tech) => tech.faction === faction.id

@@ -1,24 +1,24 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { GameIdContext, StateContext } from "../../context/Context";
+import { GameIdContext } from "../../context/Context";
 import { useSharedTimer } from "../../data/SharedTimer";
-import { useTimers } from "../../data/Timers";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
 import { useInterval } from "../../util/client";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import styles from "./GameTimer.module.scss";
+import { useGameState, useTimers } from "../../context/dataHooks";
 
 export default function GameTimer({ frozen = false }) {
-  const [gameTimer, setGameTimer] = useState(0);
+  const gameId = useContext(GameIdContext);
+  const state = useGameState();
+  const timers = useTimers();
+
+  const [gameTimer, setGameTimer] = useState(timers.game ?? 0);
   const { addSubscriber, removeSubscriber } = useSharedTimer();
 
   const timerRef = useRef(0);
   const lastUpdate = useRef(0);
-
-  const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const timers = useTimers(gameId);
 
   useInterval(() => {
     if (!gameId) {

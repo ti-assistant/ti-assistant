@@ -1,9 +1,8 @@
-import { mutate } from "swr";
+import DataManager from "../../context/DataManager";
 import { AssignStrategyCardHandler } from "../model/assignStrategyCard";
-import { poster } from "./util";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function assignStrategyCard(
   gameId: string,
@@ -11,7 +10,7 @@ export function assignStrategyCard(
   cardId: StrategyCardId,
   pickedBy: FactionId
 ) {
-  const data: GameUpdateData = {
+  const data: AssignStrategyCardData = {
     action: "ASSIGN_STRATEGY_CARD",
     event: {
       assignedTo,
@@ -20,27 +19,26 @@ export function assignStrategyCard(
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new AssignStrategyCardHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new AssignStrategyCardHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

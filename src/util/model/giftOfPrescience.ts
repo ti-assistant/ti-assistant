@@ -26,6 +26,7 @@ export class GiftOfPrescienceHandler implements Handler {
     // Reset order for all other cards
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);

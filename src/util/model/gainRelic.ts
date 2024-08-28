@@ -13,6 +13,7 @@ export class GainRelicHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`relics.${this.data.event.relic}.owner`]: this.data.event.faction,
     };
 
@@ -56,6 +57,7 @@ export class LoseRelicHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`relics.${this.data.event.relic}.owner`]: "DELETE",
     };
 

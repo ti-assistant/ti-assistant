@@ -218,9 +218,6 @@ export function TechRow({
               // display: "flex",
               color: getTechColor(tech),
               zIndex: 0,
-
-              overflow: "hidden",
-              textOverflow: "ellipsis",
             }}
           >
             {tech.name}
@@ -228,14 +225,23 @@ export function TechRow({
               <div
                 style={{
                   position: "absolute",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                   opacity: "70%",
-                  height: "20px",
+                  height: "100%",
                   zIndex: -2,
                   top: "-4px",
                   right: "-16px",
                 }}
               >
-                <FactionIcon factionId={tech.faction} size={24} />
+                <div
+                  style={{
+                    position: "relative",
+                  }}
+                >
+                  <FactionIcon factionId={tech.faction} size={24} />
+                </div>
               </div>
             ) : null}
           </div>

@@ -2,7 +2,13 @@ import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 
 export class AdvancePhaseHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {}
+  constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {
+    this.data.event.factions = structuredClone(gameData.factions);
+    this.data.event.state = structuredClone(gameData.state);
+    this.data.event.strategycards = structuredClone(
+      gameData.strategycards ?? {}
+    );
+  }
 
   validate(): boolean {
     const cache = createIntlCache();
@@ -34,6 +40,7 @@ export class AdvancePhaseHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`state.votingStarted`]: "DELETE",
     };
     const cache = createIntlCache();
@@ -167,6 +174,7 @@ export class RewindPhaseHandler implements Handler {
     const state = this.data.event.state as GameState;
     state.paused = false;
     return {
+      [`sequenceNum`]: "INCREMENT",
       [`factions`]: this.data.event.factions,
       [`state`]: state,
       [`strategycards`]: this.data.event.strategycards,

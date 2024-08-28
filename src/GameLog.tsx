@@ -1,15 +1,15 @@
 import { useContext, useMemo } from "react";
 import { IntlShape, useIntl } from "react-intl";
-import useSWR from "swr";
 import { LogEntryElement } from "./components/LogEntry";
 import { GameIdContext } from "./context/Context";
-import { useGameData } from "./data/ClientGameData";
 import { buildCompleteGameData } from "./data/GameData";
 import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "./util/api/actionLog";
 import { getHandler } from "./util/api/gameLog";
 import { updateGameData } from "./util/api/handler";
 import { fetcher } from "./util/api/util";
 import { Loader } from "./Loader";
+import { useActionLog, useGameData } from "./context/dataHooks";
+import { updateActionLog } from "./util/api/update";
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
@@ -158,6 +158,7 @@ function buildInitialGameData(
     planets: basePlanets,
     options: setupData.options,
     objectives: baseObjectives,
+    sequenceNum: 1,
   };
 
   return gameState;
@@ -199,13 +200,9 @@ function buildSetupGameData(gameData: GameData): {
 }
 
 export function GameLog({}) {
-  const gameId = useContext(GameIdContext);
-  const { data: storedActionLog }: { data?: ActionLogEntry[] } = useSWR(
-    gameId ? `/api/${gameId}/actionLog` : null,
-    fetcher
-  );
+  const storedActionLog = useActionLog();
   const intl = useIntl();
-  const gameData = useGameData(gameId, []);
+  const gameData = useGameData();
 
   const reversedActionLog = useMemo(() => {
     const actionLog = storedActionLog ?? [];
@@ -220,13 +217,11 @@ export function GameLog({}) {
     return buildInitialGameData(setupGameData, intl);
   }, [setupGameData, intl]);
 
-  const dynamicGameData = useMemo(() => {
-    return buildCompleteGameData(initialGameData, intl);
-  }, [initialGameData, intl]);
-
   if (reversedActionLog.length === 0) {
     return <Loader />;
   }
+
+  const dynamicGameData = structuredClone(initialGameData);
 
   return (
     <div

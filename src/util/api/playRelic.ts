@@ -1,5 +1,4 @@
-import { mutate } from "swr";
-import { BASE_GAME_DATA } from "../../../server/data/data";
+import DataManager from "../../context/DataManager";
 import { PlayRelicHandler, UnplayRelicHandler } from "../model/playRelic";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
@@ -11,31 +10,28 @@ export function playRelic(gameId: string, event: PlayRelicEvent) {
     event,
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new PlayRelicHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        const updates = handler.getUpdates();
+  DataManager.update((storedGameData) => {
+    const handler = new PlayRelicHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        updateGameData(currentData, updates);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function unplayRelic(gameId: string, event: PlayRelicEvent) {
@@ -44,27 +40,26 @@ export function unplayRelic(gameId: string, event: PlayRelicEvent) {
     event,
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new UnplayRelicHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new UnplayRelicHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

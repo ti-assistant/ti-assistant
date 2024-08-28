@@ -4,24 +4,22 @@ import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechIcon from "./components/TechIcon/TechIcon";
+import { GameIdContext } from "./context/Context";
 import {
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  PlanetContext,
-  StateContext,
-  TechContext,
-} from "./context/Context";
+  useAttachments,
+  useFaction,
+  useGameState,
+  useObjectives,
+  usePlanets,
+  useTechs,
+} from "./context/dataHooks";
 import { manualVPUpdateAsync } from "./dynamic/api";
-import { computeVPs } from "./util/factions";
+import { computeScoredVPs } from "./util/factions";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import {
-  filterToOwnedTechs
-} from "./util/techs";
+import { filterToOwnedTechs } from "./util/techs";
 
 export function TechSummary({ techs }: { techs: Tech[] }) {
   let blueTechs = [];
@@ -92,35 +90,8 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
   );
 }
 
-//  function computeVPs(
-//   factions: Partial<Record<FactionId, Faction>>,
-//   factionId: FactionId,
-//   objectives: Partial<Record<ObjectiveId, Objective>>
-// ) {
-//   const faction = factions[factionId];
-//   if (!faction) {
-//     return 0;
-//   }
-//   return (
-//     (faction.vps ?? 0) +
-//     Object.values(objectives)
-//       .filter((objective) => {
-//         return (objective.scorers ?? []).includes(factionId);
-//       })
-//       .reduce((total, objective) => {
-//         const count = (objective.scorers ?? []).reduce((count, scorer) => {
-//           if (scorer === factionId) {
-//             return count + 1;
-//           }
-//           return count;
-//         }, 0);
-//         return Math.max(0, total + count * objective.points);
-//       }, 0)
-//   );
-// }
-
 interface FactionSummaryProps {
-  factionId?: FactionId;
+  factionId: FactionId;
   options?: {
     hidePlanets?: boolean;
     hideTechs?: boolean;
@@ -132,36 +103,35 @@ export function FactionSummary({
   factionId,
   options = {},
 }: FactionSummaryProps) {
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
-  const techs = useContext(TechContext);
+
+  const attachments = useAttachments();
+  const faction = useFaction(factionId);
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const state = useGameState();
+  const techs = useTechs();
 
   let ownedTechs: Tech[] = [];
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
   let factionHero: LeaderState = "locked";
-  if (factionId) {
-    const faction = factions[factionId];
 
-    if (!faction) {
-      throw new Error("Faction " + factionId + " not found");
-    }
-
-    ownedTechs = filterToOwnedTechs(techs ?? {}, faction);
-
-    const ownedPlanets = factionId
-      ? filterToClaimedPlanets(planets ?? {}, factionId)
-      : [];
-    updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
-
-    VPs = computeVPs(factions ?? {}, factionId, objectives ?? {});
-
-    factionHero = faction.hero;
+  if (!faction) {
+    throw new Error("Faction " + factionId + " not found");
   }
+
+  ownedTechs = filterToOwnedTechs(techs ?? {}, faction);
+
+  const ownedPlanets = factionId
+    ? filterToClaimedPlanets(planets ?? {}, factionId)
+    : [];
+  updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
+
+  console.log(`Faction: ${factionId}`, faction.vps);
+  VPs = computeScoredVPs(factionId, objectives) + (faction.vps ?? 0);
+
+  factionHero = faction.hero;
 
   function manualVpAdjust(increase: boolean) {
     if (!gameId || !factionId) {

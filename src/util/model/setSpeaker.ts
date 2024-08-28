@@ -1,7 +1,9 @@
 import { getCurrentTurnLogEntries } from "../api/actionLog";
 
 export class SetSpeakerHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: SetSpeakerData) {}
+  constructor(public gameData: StoredGameData, public data: SetSpeakerData) {
+    this.data.event.prevSpeaker = this.gameData.state.speaker;
+  }
 
   validate(): boolean {
     return this.gameData.state.speaker !== this.data.event.newSpeaker;
@@ -20,6 +22,7 @@ export class SetSpeakerHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`state.speaker`]: this.data.event.newSpeaker,
     };
 

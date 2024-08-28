@@ -15,17 +15,7 @@ import VoteBlock, {
   getTargets,
   translateOutcome,
 } from "../components/VoteBlock/VoteBlock";
-import {
-  ActionLogContext,
-  AgendaContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  PlanetContext,
-  RelicContext,
-  StateContext,
-  StrategyCardContext,
-} from "../context/Context";
+import { GameIdContext } from "../context/Context";
 import {
   advancePhaseAsync,
   claimPlanetAsync,
@@ -76,6 +66,16 @@ import styles from "./AgendaPhase.module.scss";
 import { Selector } from "../components/Selector/Selector";
 import MawOfWorlds from "../components/MawOfWorlds/MawOfWorlds";
 import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import {
+  useActionLog,
+  useAgendas,
+  useFactions,
+  useGameState,
+  useObjectives,
+  usePlanets,
+  useRelics,
+  useStrategyCards,
+} from "../context/dataHooks";
 
 export function computeVotes(
   agenda: Agenda | undefined,
@@ -101,23 +101,22 @@ export function computeVotes(
       voteEvent.target !== "Abstain" &&
       (voteEvent.votes ?? 0) > 0
     ) {
-      if (!castVotes[voteEvent.target]) {
-        castVotes[voteEvent.target] = 0;
-      }
-      castVotes[voteEvent.target] += voteEvent.votes ?? 0;
-      castVotes[voteEvent.target] += voteEvent.extraVotes ?? 0;
+      let votes = castVotes[voteEvent.target] ?? 0;
+      votes += voteEvent.votes ?? 0;
+      votes += voteEvent.extraVotes ?? 0;
       if (voteEvent.faction === "Empyrean" && bloodPactUsed) {
-        castVotes[voteEvent.target] += 4;
+        votes += 4;
       }
       if (voteEvent.faction === currentCouncilor) {
-        castVotes[voteEvent.target] += 5;
+        votes += 5;
       }
       if (usingPredictive.includes(voteEvent.faction)) {
-        castVotes[voteEvent.target] += 3;
+        votes += 3;
       }
       if (voteEvent.faction === "Argent Flight") {
-        castVotes[voteEvent.target] += numFactions;
+        votes += numFactions;
       }
+      castVotes[voteEvent.target] = votes;
     }
   });
   const orderedVotes: {
@@ -184,13 +183,13 @@ function canScoreObjective(
 }
 
 function AgendaDetails() {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const relics = useContext(RelicContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const relics = useRelics();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const intl = useIntl();
@@ -529,14 +528,14 @@ function AgendaDetails() {
 }
 
 function AgendaSteps() {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   const intl = useIntl();
 
@@ -1322,83 +1321,12 @@ function AgendaSteps() {
   );
 }
 
-function DistinguishedCouncilor({}) {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
-  const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
-
-  // const numLawsInPlay = Object.values(agendas ?? {}).filter((agenda) => {
-  //   return agenda.passed && agenda.type === "LAW";
-  // }).length;
-  const currentCouncilors = getActionCardTargets(
-    currentTurn,
-    "Distinguished Councilor"
-  ) as FactionId[];
-  const possibleCouncilors = new Set<FactionId>(currentCouncilors);
-  // if (currentCouncilors.length > 0) {
-  for (const faction of Object.values(factions)) {
-    const factionVotes = getFactionVotes(currentTurn, faction.id);
-    if (factionVotes && factionVotes.votes > 0) {
-      possibleCouncilors.add(faction.id);
-    }
-  }
-  // }
-  const orderedCouncilors = Array.from(possibleCouncilors).sort((a, b) => {
-    if (a > b) {
-      return 1;
-    }
-    return -1;
-  });
-  if (orderedCouncilors.length < 1) {
-    return null;
-  }
-  const color = currentCouncilors[0]
-    ? getFactionColor(factions[currentCouncilors[0]])
-    : undefined;
-  return (
-    <div
-      className="flexRow"
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        fontSize: "14px",
-      }}
-    >
-      Distinguished Councilor:
-      <FactionSelectRadialMenu
-        borderColor={color}
-        factions={orderedCouncilors}
-        selectedFaction={currentCouncilors[0]}
-        size={32}
-        onSelect={(factionId, prevFaction) => {
-          if (!gameId) {
-            return;
-          }
-          if (prevFaction) {
-            unplayActionCardAsync(
-              gameId,
-              "Distinguished Councilor",
-              prevFaction
-            );
-          }
-          if (factionId) {
-            playActionCardAsync(gameId, "Distinguished Councilor", factionId);
-          }
-        }}
-      />
-    </div>
-  );
-}
-
 function DictatePolicy({}) {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const numLawsInPlay = Object.values(agendas ?? {}).filter((agenda) => {
@@ -1533,14 +1461,14 @@ function DictatePolicy({}) {
 }
 
 export default function AgendaPhase() {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   const intl = useIntl();
 

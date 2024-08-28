@@ -31,6 +31,7 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
         speaker: "Vuil'raith Cabal",
         round: 1,
       },
+      sequenceNum: 1,
     };
   }
 

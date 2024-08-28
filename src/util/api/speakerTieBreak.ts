@@ -1,9 +1,8 @@
-import { mutate } from "swr";
-import { poster } from "./util";
+import DataManager from "../../context/DataManager";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function speakerTieBreak(gameId: string, tieBreak: string) {
   const data: GameUpdateData = {
@@ -13,29 +12,26 @@ export function speakerTieBreak(gameId: string, tieBreak: string) {
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new SpeakerTieBreakHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        const updates = handler.getUpdates();
+  DataManager.update((storedGameData) => {
+    const handler = new SpeakerTieBreakHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        updateGameData(currentData, updates);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

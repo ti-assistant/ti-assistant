@@ -10,7 +10,9 @@ export function getLogEntry(actionLog: ActionLogEntry[], action: string) {
   return null;
 }
 
-function isSelectActionData(data: GameUpdateData): data is SelectActionData {
+export function isSelectActionData(
+  data: GameUpdateData
+): data is SelectActionData {
   return data.action === "SELECT_ACTION";
 }
 

@@ -11,6 +11,7 @@ export class SelectEligibleOutcomesHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     return updates;

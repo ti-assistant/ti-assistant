@@ -38,6 +38,7 @@ export async function POST(
           if (data.timer > timer) {
             t.update(timersRef, {
               game: data.timer,
+              lastUpdate: data.timestamp,
             });
           }
           break;
@@ -52,6 +53,7 @@ export async function POST(
           if (data.timer > timer) {
             t.update(timersRef, {
               [data.faction]: data.timer,
+              lastUpdate: data.timestamp,
             });
           }
           break;
@@ -68,6 +70,7 @@ export async function POST(
           if (data.timer > timer) {
             t.update(timersRef, {
               [timerName]: data.timer,
+              lastUpdate: data.timestamp,
             });
           }
           break;
@@ -76,6 +79,7 @@ export async function POST(
           t.update(timersRef, {
             firstAgenda: FieldValue.delete(),
             secondAgenda: FieldValue.delete(),
+            lastUpdate: data.timestamp,
           });
           break;
         }

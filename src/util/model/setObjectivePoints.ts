@@ -11,6 +11,7 @@ export class SetObjectivePointsHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`objectives.${this.data.event.objective}.points`]:
         this.data.event.points,
     };

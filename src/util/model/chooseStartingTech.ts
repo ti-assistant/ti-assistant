@@ -41,6 +41,7 @@ export class ChooseStartingTechHandler implements Handler {
         .techs ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}.ready`]:
         true,
       [`factions.${this.data.event.faction}.startswith.techs`]: arrayUnion(
@@ -114,6 +115,7 @@ export class RemoveStartingTechHandler implements Handler {
         .techs ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}`]:
         "DELETE",
       [`factions.${this.data.event.faction}.startswith.techs`]: arrayRemove(

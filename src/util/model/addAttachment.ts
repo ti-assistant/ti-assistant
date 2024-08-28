@@ -2,21 +2,25 @@ import { buildPlanets } from "../../data/GameData";
 import { arrayRemove, arrayUnion } from "../api/util";
 
 export class AddAttachmentHandler implements Handler {
-  constructor(
-    public gameData: StoredGameData,
-    public data: AddAttachmentData
-  ) {}
+  constructor(public gameData: StoredGameData, public data: AddAttachmentData) {
+    for (const [planetId, planet] of Object.entries(gameData.planets)) {
+      if ((planet.attachments ?? []).includes(data.event.attachment)) {
+        this.data.event.prevPlanet = planetId as PlanetId;
+        break;
+      }
+    }
+  }
 
   validate(): boolean {
     return true;
   }
 
   getUpdates(): Record<string, any> {
-    const planets = buildPlanets(this.gameData);
     const planetAttachments =
-      planets[this.data.event.planet]?.attachments ?? [];
+      this.gameData.planets[this.data.event.planet]?.attachments ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.attachments`]: arrayUnion(
         planetAttachments,
         this.data.event.attachment
@@ -25,7 +29,7 @@ export class AddAttachmentHandler implements Handler {
 
     if (this.data.event.prevPlanet) {
       const prevPlanetAttachments =
-        planets[this.data.event.prevPlanet]?.attachments ?? [];
+        this.gameData.planets[this.data.event.prevPlanet]?.attachments ?? [];
       updates[`planets.${this.data.event.prevPlanet}.attachments`] =
         arrayRemove(prevPlanetAttachments, this.data.event.attachment);
     }
@@ -71,6 +75,7 @@ export class RemoveAttachmentHandler implements Handler {
       planets[this.data.event.planet]?.attachments ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.attachments`]: arrayRemove(
         planetAttachments,
         this.data.event.attachment

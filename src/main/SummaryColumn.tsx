@@ -1,16 +1,14 @@
 import dynamic from "next/dynamic";
-import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../FactionSummary";
-import { Loader } from "../Loader";
 import { StaticFactionTimer } from "../Timer";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import {
-  FactionContext,
-  ObjectiveContext,
-  OptionContext,
-  StrategyCardContext,
-} from "../context/Context";
+  useFactions,
+  useObjectives,
+  useOptions,
+  useStrategyCards,
+} from "../context/dataHooks";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import styles from "./SummaryColumn.module.scss";
@@ -43,10 +41,10 @@ interface SummaryColumnProps {
 }
 
 export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
-  const factions = useContext(FactionContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const strategyCards = useStrategyCards();
 
   let sortFunction = sortByOrder;
   let title = (
@@ -140,7 +138,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
 
       {orderedFactions.map((faction, index) => {
         return (
-          <div key={index}>
+          <div key={faction.id}>
             <LabeledDiv
               label={
                 faction ? (
@@ -179,7 +177,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
                 }}
               >
                 <FactionSummary
-                  factionId={faction?.id}
+                  factionId={faction.id}
                   options={factionSummaryOptions}
                 />
               </div>

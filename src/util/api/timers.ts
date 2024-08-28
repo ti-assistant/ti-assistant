@@ -1,30 +1,19 @@
-import { mutate } from "swr";
+import DataManager from "../../context/DataManager";
 import { poster } from "./util";
 
 export function updateLocalFactionTimer(
-  gameid: string,
+  gameId: string,
   factionId: FactionId,
   factionTimer: number
 ) {
-  mutate(
-    `/api/${gameid}/timers`,
-    (timers?: Record<string, number>) => {
-      if (!timers) {
-        timers = {};
-      }
-
-      timers[factionId] = factionTimer;
-
-      return structuredClone(timers);
-    },
-    {
-      revalidate: false,
-    }
-  );
+  DataManager.update((storedGameData) => {
+    storedGameData.timers[factionId] = factionTimer;
+    return storedGameData;
+  });
 }
 
 export function saveFactionTimer(
-  gameid: string,
+  gameId: string,
   factionId: FactionId,
   factionTimer: number
 ) {
@@ -34,40 +23,22 @@ export function saveFactionTimer(
     timer: factionTimer,
   };
 
-  mutate(
-    `/api/${gameid}/timers`,
-    async () => await poster(`/api/${gameid}/timerUpdate`, data),
-    {
-      optimisticData: (timers?: Record<string, number>) => {
-        if (!timers) {
-          timers = {};
-        }
+  const now = Date.now();
+  const timerPromise = poster(`/api/${gameId}/timerUpdate`, data, now);
 
-        timers[factionId] = factionTimer;
+  DataManager.update((storedGameData) => {
+    storedGameData.timers[factionId] = factionTimer;
+    return storedGameData;
+  });
 
-        return structuredClone(timers);
-      },
-      revalidate: false,
-    }
-  );
+  return timerPromise;
 }
 
 export function updateLocalGameTimer(gameid: string, timer: number) {
-  mutate(
-    `/api/${gameid}/timers`,
-    (timers?: Record<string, number>) => {
-      if (!timers) {
-        timers = {};
-      }
-
-      timers.game = timer;
-
-      return structuredClone(timers);
-    },
-    {
-      revalidate: false,
-    }
-  );
+  DataManager.update((storedGameData) => {
+    storedGameData.timers.game = timer;
+    return storedGameData;
+  });
 }
 
 export function saveGameTimer(gameId: string, timer: number) {
@@ -76,22 +47,15 @@ export function saveGameTimer(gameId: string, timer: number) {
     timer: timer,
   };
 
-  mutate(
-    `/api/${gameId}/timers`,
-    async () => await poster(`/api/${gameId}/timerUpdate`, data),
-    {
-      optimisticData: (timers?: Record<string, number>) => {
-        if (!timers) {
-          timers = {};
-        }
+  const now = Date.now();
+  const timerPromise = poster(`/api/${gameId}/timerUpdate`, data, now);
 
-        timers.game = timer;
+  DataManager.update((storedGameData) => {
+    storedGameData.timers.game = timer;
+    return storedGameData;
+  });
 
-        return structuredClone(timers);
-      },
-      revalidate: false,
-    }
-  );
+  return timerPromise;
 }
 
 export function updateLocalAgendaTimer(
@@ -99,29 +63,18 @@ export function updateLocalAgendaTimer(
   timer: number,
   agendaNum: number
 ) {
-  mutate(
-    `/api/${gameid}/timers`,
-    (timers?: Record<string, number>) => {
-      if (!timers) {
-        timers = {};
-      }
-
-      if (agendaNum === 1) {
-        timers.firstAgenda = timer;
-      } else {
-        timers.secondAgenda = timer;
-      }
-
-      return structuredClone(timers);
-    },
-    {
-      revalidate: false,
+  DataManager.update((storedGameData) => {
+    if (agendaNum === 1) {
+      storedGameData.timers.firstAgenda = timer;
+    } else {
+      storedGameData.timers.secondAgenda = timer;
     }
-  );
+    return storedGameData;
+  });
 }
 
 export function saveAgendaTimer(
-  gameid: string,
+  gameId: string,
   timer: number,
   agendaNum: number
 ) {
@@ -131,24 +84,17 @@ export function saveAgendaTimer(
     timer,
   };
 
-  mutate(
-    `/api/${gameid}/timers`,
-    async () => await poster(`/api/${gameid}/timerUpdate`, data),
-    {
-      optimisticData: (timers?: Record<string, number>) => {
-        if (!timers) {
-          timers = {};
-        }
+  const now = Date.now();
+  const timerPromise = poster(`/api/${gameId}/timerUpdate`, data, now);
 
-        if (agendaNum === 1) {
-          timers.firstAgenda = timer;
-        } else {
-          timers.secondAgenda = timer;
-        }
-
-        return structuredClone(timers);
-      },
-      revalidate: false,
+  DataManager.update((storedGameData) => {
+    if (agendaNum === 1) {
+      storedGameData.timers.firstAgenda = timer;
+    } else {
+      storedGameData.timers.secondAgenda = timer;
     }
-  );
+    return storedGameData;
+  });
+
+  return timerPromise;
 }

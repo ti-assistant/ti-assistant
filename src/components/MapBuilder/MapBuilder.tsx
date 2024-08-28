@@ -155,15 +155,15 @@ export function SystemImage({
     };
   }, [systemNumber, index, onDrop]);
 
+  function attachRef(el: HTMLDivElement) {
+    drag(el);
+    drop(el);
+  }
+
   if (systemNumber === "-1") {
     return (
       <div
-        ref={(node) => {
-          if (!onDrop) {
-            return drag(node);
-          }
-          return drag(drop(node));
-        }}
+        ref={attachRef}
         className={`flexRow ${styles.SystemImage}`}
         style={{
           position: "relative",
@@ -209,12 +209,7 @@ export function SystemImage({
       systemNumber = systemNumber.split(":")[1] ?? "";
       return (
         <div
-          ref={(node) => {
-            if (!onDrop) {
-              return drag(node);
-            }
-            return drag(drop(node));
-          }}
+          ref={attachRef}
           className={`flexRow ${classNames} ${styles.SystemImage}`}
           style={{
             position: "relative",
@@ -234,12 +229,7 @@ export function SystemImage({
     }
     return (
       <div
-        ref={(node) => {
-          if (!onDrop) {
-            return drag(node);
-          }
-          return drag(drop(node));
-        }}
+        ref={attachRef}
         className={`flexRow ${styles.SystemImage}`}
         style={{
           position: "relative",
@@ -274,12 +264,7 @@ export function SystemImage({
   if (isHomeSystem(systemNumber)) {
     return (
       <div
-        ref={(node) => {
-          if (!onDrop) {
-            return drag(node);
-          }
-          return drag(drop(node));
-        }}
+        ref={attachRef}
         className={`flexRow ${styles.SystemImage}`}
         style={{
           position: "relative",
@@ -339,12 +324,7 @@ export function SystemImage({
 
   return (
     <div
-      ref={(node) => {
-        if (!onDrop) {
-          return drag(node);
-        }
-        return drag(drop(node));
-      }}
+      ref={attachRef}
       className={`flexRow ${styles.SystemImage}`}
       style={{
         position: "relative",

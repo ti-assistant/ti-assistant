@@ -151,6 +151,7 @@ export async function POST(req: Request) {
     options: options,
     objectives: baseObjectives,
     deleteAt: Timestamp.fromDate(currentDate),
+    sequenceNum: 1,
   };
 
   let gameid = makeid(6);

@@ -17,7 +17,7 @@ app.prepare().then(async () => {
   const emulator = process.env.FIRESTORE_EMULATOR_HOST;
   if (env === "production" || !emulator) {
     console.log("Using production Firestore instance");
-    const serviceAccount = require("./twilight-imperium-360307-77d3ff625ffc.json");
+    const serviceAccount = require("./twilight-imperium-360307-ea7cce25efeb.json");
 
     initializeApp({
       credential: cert(serviceAccount),

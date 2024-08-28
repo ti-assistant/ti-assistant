@@ -23,6 +23,7 @@ export class RevealObjectiveHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`objectives.${this.data.event.objective}.selected`]: true,
     };
 
@@ -73,6 +74,7 @@ export class HideObjectiveHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`objectives.${this.data.event.objective}.selected`]: "DELETE",
       // [`objectives.${this.data.event.objective}.revealOrder`]: "DELETE",
     };

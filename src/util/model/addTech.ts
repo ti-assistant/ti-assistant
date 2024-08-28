@@ -34,6 +34,7 @@ export class AddTechHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}.ready`]:
         true,
     };
@@ -96,6 +97,7 @@ export class RemoveTechHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}`]:
         "DELETE",
     };

@@ -1,11 +1,11 @@
 "use client";
 
-import { useContext, useMemo } from "react";
-import { StateContext } from "../../../../../src/context/Context";
+import { useMemo } from "react";
 import SummaryColumn from "../../../../../src/main/SummaryColumn";
+import { useGameState } from "../../../../../src/context/dataHooks";
 
 export default function SummaryColumnPage() {
-  const state = useContext(StateContext);
+  const state = useGameState();
 
   const { order, subOrder } = useMemo(() => {
     let order: "SPEAKER" | "VICTORY_POINTS" = "SPEAKER";

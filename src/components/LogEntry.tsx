@@ -1,12 +1,5 @@
 import { useContext } from "react";
 import { AgendaRow } from "../AgendaRow";
-import {
-  AgendaContext,
-  FactionContext,
-  ObjectiveContext,
-  RelicContext,
-  TechContext,
-} from "../context/Context";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { pluralize } from "../util/util";
@@ -16,11 +9,17 @@ import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import TechIcon from "./TechIcon/TechIcon";
 import { getTechColor } from "../util/techs";
+import {
+  useAgendas,
+  useFaction,
+  useFactions,
+  useObjectives,
+  useRelics,
+  useTechs,
+} from "../context/dataHooks";
 
 function ColoredFactionName({ factionId }: { factionId: FactionId }) {
-  const factions = useContext(FactionContext);
-
-  const faction = factions[factionId];
+  const faction = useFaction(factionId);
   const color = getFactionColor(faction);
 
   return (
@@ -48,11 +47,11 @@ export function LogEntryElement({
   startTimeSeconds: number;
   endTimeSeconds: number;
 }) {
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
-  const objectives = useContext(ObjectiveContext);
-  const relics = useContext(RelicContext);
-  const techs = useContext(TechContext);
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const relics = useRelics();
+  const techs = useTechs();
 
   switch (logEntry.data.action) {
     case "ADD_ATTACHMENT": {

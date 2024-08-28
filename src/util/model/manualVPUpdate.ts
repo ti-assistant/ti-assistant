@@ -19,6 +19,7 @@ export class ManualVPUpdateHandler implements Handler {
       buildFactions(this.gameData, intl)[this.data.event.faction]?.vps ?? 0;
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.faction}.vps`]:
         factionVPs + this.data.event.vps,
     };

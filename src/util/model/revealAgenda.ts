@@ -8,6 +8,7 @@ export class RevealAgendaHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
     if (this.data.event.veto) {
       updates[`agendas.${this.data.event.agenda}.resolved`] = "DELETE";
@@ -43,6 +44,7 @@ export class HideAgendaHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
     if (this.data.event.veto) {
       updates[`agendas.${this.data.event.agenda}.resolved`] = true;

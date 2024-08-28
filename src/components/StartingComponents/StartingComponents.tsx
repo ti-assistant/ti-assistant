@@ -1,12 +1,7 @@
 import { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import {
-  FactionContext,
-  GameIdContext,
-  OptionContext,
-  TechContext,
-} from "../../context/Context";
+import { GameIdContext } from "../../context/Context";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
@@ -18,6 +13,7 @@ import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
 import FactionIcon from "../FactionIcon/FactionIcon";
+import { useFaction, useTechs } from "../../context/dataHooks";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -43,14 +39,11 @@ export default function StartingComponents({
   factionId,
   showFactionIcon = false,
 }: StartingComponentsProps) {
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const options = useContext(OptionContext);
-  const techs = useContext(TechContext);
+  const faction = useFaction(factionId);
+  const techs = useTechs();
 
   const intl = useIntl();
-
-  const faction = factions[factionId];
 
   if (!faction) {
     return null;
@@ -187,9 +180,7 @@ export default function StartingComponents({
           />
           :
           <FactionSelectRadialMenu
-            factions={startswith.planetchoice.options.filter(
-              (faction) => options["allow-double-council"] || !factions[faction]
-            )}
+            factions={startswith.planetchoice.options}
             onSelect={(faction) => {
               if (!faction) {
                 if (!startswith.faction) {

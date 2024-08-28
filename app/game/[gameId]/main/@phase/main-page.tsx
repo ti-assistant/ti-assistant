@@ -2,11 +2,8 @@
 
 import { useContext, useEffect, useMemo } from "react";
 import Header from "../../../../../src/components/Header/Header";
-import Updater from "../../../../../src/components/Updater/Updater";
-import {
-  GameIdContext,
-  StateContext,
-} from "../../../../../src/context/Context";
+import { GameIdContext } from "../../../../../src/context/Context";
+import { useGameState } from "../../../../../src/context/dataHooks";
 import ActionPhase from "../../../../../src/main/ActionPhase";
 import AgendaPhase from "../../../../../src/main/AgendaPhase";
 import ResultsPhase from "../../../../../src/main/ResultsPhase";
@@ -17,7 +14,7 @@ import { setGameId } from "../../../../../src/util/api/util";
 
 export default function MainScreenPage() {
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
+  const state = useGameState();
 
   useEffect(() => {
     if (!!gameId) {
@@ -59,7 +56,7 @@ export default function MainScreenPage() {
 
   return (
     <>
-      <Updater />
+      {/* <Updater /> */}
       <Header />
       {innerContent}
       {/* {state.phase !== "SETUP" ? ( */}

@@ -1,9 +1,8 @@
-import { mutate } from "swr";
-import { poster } from "./util";
+import DataManager from "../../context/DataManager";
 import { AddTechHandler, RemoveTechHandler } from "../model/addTech";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 export function addTech(gameId: string, faction: FactionId, techId: TechId) {
   const data: GameUpdateData = {
@@ -14,29 +13,28 @@ export function addTech(gameId: string, faction: FactionId, techId: TechId) {
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new AddTechHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new AddTechHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function removeTech(gameId: string, faction: FactionId, techId: TechId) {
@@ -48,27 +46,26 @@ export function removeTech(gameId: string, faction: FactionId, techId: TechId) {
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new RemoveTechHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new RemoveTechHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

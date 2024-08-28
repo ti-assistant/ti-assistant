@@ -5,13 +5,13 @@ import { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { LockedButtons } from "../../../../src/LockedButton";
 import FactionCircle from "../../../../src/components/FactionCircle/FactionCircle";
+import { GameIdContext } from "../../../../src/context/Context";
 import {
-  ActionLogContext,
-  FactionContext,
-  GameIdContext,
-  StateContext,
-  StrategyCardContext,
-} from "../../../../src/context/Context";
+  useActionLog,
+  useFactions,
+  useGameState,
+  useStrategyCards,
+} from "../../../../src/context/dataHooks";
 import { advancePhaseAsync } from "../../../../src/dynamic/api";
 import { advanceToStatusPhase } from "../../../../src/main/ActionPhase";
 import {
@@ -26,10 +26,10 @@ import { getStrategyCardsForFaction } from "../../../../src/util/helpers";
 import { phaseString } from "../../../../src/util/strings";
 
 function NextPhaseButtons({}) {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const state = useGameState();
 
   const intl = useIntl();
 
@@ -186,10 +186,10 @@ function NextPhaseButtons({}) {
 
 export default function FactionsSection({}) {
   const router = useRouter();
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const factions = useFactions();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   let orderedFactions: Faction[] = [];
   let orderTitle = <></>;

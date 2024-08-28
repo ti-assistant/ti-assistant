@@ -1,10 +1,8 @@
-import { mutate } from "swr";
-import { poster } from "./util";
+import DataManager from "../../context/DataManager";
 import { EndTurnHandler } from "../model/endTurn";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
-import { getCurrentTurnLogEntries } from "./actionLog";
+import { poster } from "./util";
 
 export function endTurn(gameId: string, samePlayer?: boolean) {
   const data: GameUpdateData = {
@@ -14,64 +12,26 @@ export function endTurn(gameId: string, samePlayer?: boolean) {
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const selectedAction = getSelectedAction(currentData);
-        data.event.prevFaction = currentData.state.activeplayer;
-        if (!selectedAction) {
-          return currentData;
-        }
-        data.event.selectedAction = selectedAction;
-        const secondaries: Record<string, Secondary> = {};
-        for (const faction of Object.values(currentData.factions)) {
-          secondaries[faction.id] = faction.secondary ?? "PENDING";
-        }
-        data.event.secondaries = secondaries;
+  const now = Date.now();
 
-        const handler = new EndTurnHandler(currentData, data);
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  DataManager.update((storedGameData) => {
+    const handler = new EndTurnHandler(storedGameData, data);
 
-        updateGameData(currentData, handler.getUpdates());
-
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
-}
 
-function isSelectActionData(data: GameUpdateData): data is SelectActionData {
-  return data.action === "SELECT_ACTION";
-}
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
 
-function getSelectedAction(gameData: StoredGameData) {
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+    storedGameData.lastUpdate = now;
 
-  const entry = getLogEntry(currentTurn, "SELECT_ACTION");
+    return storedGameData;
+  });
 
-  if (!entry || !isSelectActionData(entry.data)) {
-    return undefined;
-  }
-
-  return entry.data.event.action;
-}
-
-function getLogEntry(actionLog: ActionLogEntry[], action: string) {
-  for (const logEntry of actionLog) {
-    if (logEntry.data.action === action) {
-      return logEntry;
-    }
-  }
-  return null;
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

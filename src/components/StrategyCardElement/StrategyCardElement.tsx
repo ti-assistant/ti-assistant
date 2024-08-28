@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React, { CSSProperties, PropsWithChildren, useContext } from "react";
 import styles from "./StrategyCardElement.module.scss";
-import { FactionContext } from "../../context/Context";
 import FactionTile from "../FactionTile/FactionTile";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionCircle from "../FactionCircle/FactionCircle";
+import { useFactions } from "../../context/dataHooks";
 
 interface StrategyCardProps {
   active?: boolean;
@@ -26,9 +26,9 @@ export function StrategyCardElement({
   fontSize,
   onClick,
 }: PropsWithChildren<StrategyCardProps>) {
-  const factions = useContext(FactionContext);
+  const factions = useFactions();
 
-  const faction = card.faction && factions ? factions[card.faction] : undefined;
+  const faction = card.faction ? factions[card.faction] : undefined;
 
   const color = active ? card.color : "#555";
   const textColor = active ? "#eee" : "#555";
@@ -150,7 +150,7 @@ interface SmallStrategyCardProps {
 }
 
 export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
-  const factions = useContext(FactionContext);
+  const factions = useFactions();
 
   if (!cards[0]) {
     return null;

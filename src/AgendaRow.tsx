@@ -4,14 +4,14 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import Modal from "./components/Modal/Modal";
 import { translateOutcome } from "./components/VoteBlock/VoteBlock";
-import {
-  AgendaContext,
-  FactionContext,
-  ObjectiveContext,
-  PlanetContext,
-  StrategyCardContext,
-} from "./context/Context";
 import { agendaTypeString, outcomeString } from "./util/strings";
+import {
+  useAgendas,
+  useFactions,
+  useObjectives,
+  usePlanets,
+  useStrategyCards,
+} from "./context/dataHooks";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
   const intl = useIntl();
@@ -58,11 +58,11 @@ export function AgendaRow({
   removeAgenda,
   hideOutcome,
 }: AgendaRowProps) {
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const strategyCards = useStrategyCards();
   const [showInfoModal, setShowInfoModal] = useState(false);
 
   const intl = useIntl();

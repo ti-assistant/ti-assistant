@@ -1,25 +1,25 @@
 import { useContext } from "react";
+import { FormattedMessage } from "react-intl";
+import { GameIdContext } from "../../context/Context";
 import {
-  ActionLogContext,
-  FactionContext,
-  GameIdContext,
-  PlanetContext,
-  RelicContext,
-} from "../../context/Context";
+  useActionLog,
+  useFactions,
+  usePlanets,
+  useRelics,
+} from "../../context/dataHooks";
 import { playRelicAsync, unplayRelicAsync } from "../../dynamic/api";
 import { SymbolX } from "../../icons/svgs";
 import { getPlayedRelic } from "../../util/actionLog";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import { FormattedMessage } from "react-intl";
 
 export default function CrownOfEmphidia({}) {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
-  const planets = useContext(PlanetContext);
   const gameId = useContext(GameIdContext);
-  const relics = useContext(RelicContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const planets = usePlanets();
+  const relics = useRelics();
 
   const crownOfEmphidia = relics["The Crown of Emphidia"];
 

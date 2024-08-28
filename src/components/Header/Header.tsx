@@ -6,15 +6,7 @@ import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import {
-  AgendaContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  OptionContext,
-  PlanetContext,
-  StateContext,
-} from "../../context/Context";
+import { GameIdContext } from "../../context/Context";
 import {
   continueGameAsync,
   endGameAsync,
@@ -27,6 +19,14 @@ import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
+import {
+  useAgendas,
+  useFactions,
+  useGameState,
+  useObjectives,
+  useOptions,
+  usePlanet,
+} from "../../context/dataHooks";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -35,12 +35,11 @@ const BASE_URL =
 
 export default function Header() {
   const gameId = useContext(GameIdContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const mallice = usePlanet("Mallice");
+  const state = useGameState();
 
   const intl = useIntl();
 
@@ -73,31 +72,15 @@ export default function Header() {
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
-  let mallice;
-  if (options && (options["expansions"] ?? []).includes("POK")) {
-    const malliceObj = planets["Mallice"];
-    if (!malliceObj) {
-      mallice = "PURGED";
+  let malliceSide;
+  if (options.expansions.includes("POK")) {
+    if (!mallice) {
+      malliceSide = "PURGED";
+    } else if (mallice.owner) {
+      malliceSide = "B";
     } else {
-      mallice = "A";
+      malliceSide = "A";
     }
-    if ((planets["Mallice"] ?? {}).owner) {
-      mallice = "B";
-    }
-  }
-
-  const passedLaws = Object.values(agendas ?? {}).filter((agenda) => {
-    return agenda.passed && agenda.type === "LAW";
-  });
-  async function removeAgenda(agendaId: AgendaId) {
-    if (!gameId) {
-      return;
-    }
-    const target = (agendas ?? {})[agendaId]?.target;
-    if (!target) {
-      return;
-    }
-    repealAgendaAsync(gameId, agendaId, target);
   }
 
   let gameFinished = false;
@@ -161,7 +144,7 @@ export default function Header() {
             factions={mapOrderedFactions}
             mapString={options ? options["map-string"] ?? "" : ""}
             mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
-            mallice={mallice}
+            mallice={malliceSide}
           />
         </div>
       </GenericModal>
@@ -217,32 +200,57 @@ export default function Header() {
           )
         ) : null}
       </div>
-      {passedLaws.length > 0 ? (
-        <div className={styles.PassedLaws}>
-          <ClientOnlyHoverMenu
-            label={
-              <FormattedMessage
-                id="oiV4lE"
-                description="Text on a hover menu that will display the current laws that have been passed."
-                defaultMessage="Laws in Effect"
-              />
-            }
-          >
-            <div
-              className="flexColumn"
-              style={{ alignItems: "flex-start", padding: "8px" }}
-            >
-              {passedLaws.map((agenda) => (
-                <AgendaRow
-                  key={agenda.id}
-                  agenda={agenda}
-                  removeAgenda={removeAgenda}
-                />
-              ))}
-            </div>
-          </ClientOnlyHoverMenu>
-        </div>
-      ) : null}
+      <PassedLaws />
     </React.Fragment>
+  );
+}
+
+function PassedLaws() {
+  const agendas = useAgendas();
+  const gameId = useContext(GameIdContext);
+
+  const passedLaws = Object.values(agendas).filter((agenda) => {
+    return agenda.passed && agenda.type === "LAW";
+  });
+  async function removeAgenda(agendaId: AgendaId) {
+    if (!gameId) {
+      return;
+    }
+    const target = agendas[agendaId]?.target;
+    if (!target) {
+      return;
+    }
+    repealAgendaAsync(gameId, agendaId, target);
+  }
+
+  if (passedLaws.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className={styles.PassedLaws}>
+      <ClientOnlyHoverMenu
+        label={
+          <FormattedMessage
+            id="oiV4lE"
+            description="Text on a hover menu that will display the current laws that have been passed."
+            defaultMessage="Laws in Effect"
+          />
+        }
+      >
+        <div
+          className="flexColumn"
+          style={{ alignItems: "flex-start", padding: "8px" }}
+        >
+          {passedLaws.map((agenda) => (
+            <AgendaRow
+              key={agenda.id}
+              agenda={agenda}
+              removeAgenda={removeAgenda}
+            />
+          ))}
+        </div>
+      </ClientOnlyHoverMenu>
+    </div>
   );
 }

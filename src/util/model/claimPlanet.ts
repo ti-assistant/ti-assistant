@@ -2,7 +2,12 @@ import { buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
 
 export class ClaimPlanetHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: ClaimPlanetData) {}
+  constructor(public gameData: StoredGameData, public data: ClaimPlanetData) {
+    const planet = gameData.planets[data.event.planet];
+    if (planet && planet.owner) {
+      this.data.event.prevOwner = planet.owner;
+    }
+  }
 
   validate(): boolean {
     const planets = buildPlanets(this.gameData);
@@ -32,6 +37,7 @@ export class ClaimPlanetHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.owner`]: this.data.event.faction,
     };
 
@@ -118,6 +124,7 @@ export class UnclaimPlanetHandler implements Handler {
 
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.owner`]: prevOwner ?? "DELETE",
     };
 

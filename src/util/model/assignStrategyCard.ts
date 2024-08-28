@@ -41,6 +41,7 @@ export class AssignStrategyCardHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`strategycards.${this.data.event.id}.faction`]:
         this.data.event.assignedTo,
     };
@@ -88,6 +89,7 @@ export class UnassignStrategyCardHandler implements Handler {
   getUpdates(): Record<string, any> {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`strategycards.${this.data.event.id}.faction`]: "DELETE",
       [`strategycards.${this.data.event.id}.order`]: "DELETE",
     };

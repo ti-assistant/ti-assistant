@@ -1,17 +1,18 @@
-import React, { CSSProperties, useContext, useRef, useState } from "react";
+import { CSSProperties, useContext, useState } from "react";
+import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { GameIdContext } from "../../context/Context";
 import {
-  ActionLogContext,
-  AgendaContext,
-  AttachmentContext,
-  FactionContext,
-  GameIdContext,
-  ObjectiveContext,
-  OptionContext,
-  PlanetContext,
-  RelicContext,
-  StateContext,
-  StrategyCardContext,
-} from "../../context/Context";
+  useActionLog,
+  useAgendas,
+  useAttachments,
+  useFactions,
+  useGameState,
+  useObjectives,
+  useOptions,
+  usePlanets,
+  useRelics,
+  useStrategyCards,
+} from "../../context/dataHooks";
 import {
   castVotesAsync,
   playActionCardAsync,
@@ -21,31 +22,30 @@ import {
   unplayPromissoryNoteAsync,
   unplayRiderAsync,
 } from "../../dynamic/api";
+import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import {
-  getPromissoryTargets,
   getActionCardTargets,
-  getPlayedRiders,
   getAllVotes,
   getFactionVotes,
   getPlayedRelic,
+  getPlayedRiders,
+  getPromissoryTargets,
 } from "../../util/actionLog";
 import {
   getCurrentPhasePreviousLogEntries,
   getCurrentTurnLogEntries,
 } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
-import { getFactionName, getFactionColor } from "../../util/factions";
+import { getFactionColor, getFactionName } from "../../util/factions";
 import {
-  filterToClaimedPlanets,
   applyAllPlanetAttachments,
+  filterToClaimedPlanets,
 } from "../../util/planets";
-import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import NumberInput from "../NumberInput/NumberInput";
-import styles from "./VoteBlock.module.scss";
-import { FormattedMessage, IntlShape, useIntl } from "react-intl";
-import { Selector } from "../Selector/Selector";
 import { riderString } from "../../util/strings";
+import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import NumberInput from "../NumberInput/NumberInput";
+import { Selector } from "../Selector/Selector";
+import styles from "./VoteBlock.module.scss";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
@@ -66,7 +66,7 @@ function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
 export function getTargets(
   agenda: Agenda | undefined,
   factions: Partial<Record<FactionId, Faction>>,
-  strategycards: Partial<Record<StrategyCardId, StrategyCard>>,
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
   planets: Partial<Record<PlanetId, Planet>>,
   agendas: Partial<Record<AgendaId, Agenda>>,
   objectives: Partial<Record<ObjectiveId, Objective>>,
@@ -113,7 +113,7 @@ export function getTargets(
       ];
     case "Strategy Card":
       return [
-        ...Object.values(strategycards).map((card) => {
+        ...Object.values(strategyCards).map((card) => {
           return { id: card.id, name: card.name };
         }),
         abstain,
@@ -432,34 +432,6 @@ export function computeRemainingVotes(
   };
 }
 
-function ExtraVotes({ factionId }: { factionId: FactionId }) {
-  const actionLog = useContext(ActionLogContext);
-  const factions = useContext(FactionContext);
-
-  const faction = factions[factionId];
-
-  const hasCommander = faction?.commander === "readied";
-
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const factionVotes = getFactionVotes(currentTurn, factionId);
-  const hasVotableTarget =
-    !!factionVotes?.target && factionVotes?.target !== "Abstain";
-
-  return (
-    <div className="flexColumn" style={{ padding: "4px" }}>
-      {factionId === "Council Keleres" &&
-      factionVotes?.votes &&
-      factionVotes.votes > 0
-        ? `+${Object.keys(factions).length} votes from Zeal`
-        : null}
-      {factionId === "Xxcha Kingdom" && hasCommander
-        ? `+${0} votes from Elder Qanoj`
-        : null}
-      <button>Distinguished Councilor</button>
-    </div>
-  );
-}
-
 const RIDERS = [
   "Galactic Threat",
   "Leadership Rider",
@@ -480,14 +452,14 @@ interface VoteBlockProps {
 }
 
 export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const planets = useContext(PlanetContext);
-  const state = useContext(StateContext);
-  const strategyCards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const planets = usePlanets();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   const [overrideVotingBlock, setOverrideVotingBlock] = useState(false);
 
@@ -620,18 +592,18 @@ function PredictionSection({
   factionId: FactionId;
   agenda: Agenda | undefined;
 }) {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const strategycards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const planets = usePlanets();
+  const strategyCards = useStrategyCards();
 
   const intl = useIntl();
 
-  const currentTurn = getCurrentTurnLogEntries(actionLog ?? []);
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const playedRiders = getPlayedRiders(currentTurn);
 
@@ -640,15 +612,16 @@ function PredictionSection({
   })[0];
 
   const remainingRiders = RIDERS.filter((rider) => {
-    if (rider === "Keleres Rider" && factions && !factions["Council Keleres"]) {
-      return false;
-    }
-    if (rider === "Galactic Threat" && factions && !factions["Nekro Virus"]) {
-      return false;
+    if (rider === "Keleres Rider") {
+      if (factionId === "Council Keleres" || !factions["Council Keleres"]) {
+        return false;
+      }
     }
     const secrets = getPromissoryTargets(currentTurn, "Political Secret");
-    if (rider === "Galactic Threat" && secrets.includes("Nekro Virus")) {
-      return false;
+    if (rider === "Galactic Threat") {
+      if (factionId !== "Nekro Virus" || secrets.includes("Nekro Virus")) {
+        return false;
+      }
     }
     if (
       rider === "Sanction" &&
@@ -676,7 +649,7 @@ function PredictionSection({
   const targets = getTargets(
     agenda,
     factions,
-    strategycards,
+    strategyCards,
     planets,
     agendas,
     objectives,
@@ -758,17 +731,17 @@ function VotingSection({
   factionId: FactionId;
   agenda: Agenda | undefined;
 }) {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
   const gameId = useContext(GameIdContext);
-  const objectives = useContext(ObjectiveContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const relics = useContext(RelicContext);
-  const state = useContext(StateContext);
-  const strategycards = useContext(StrategyCardContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const objectives = useObjectives();
+  const options = useOptions();
+  const planets = usePlanets();
+  const relics = useRelics();
+  const state = useGameState();
+  const strategyCards = useStrategyCards();
 
   const intl = useIntl();
 
@@ -799,7 +772,7 @@ function VotingSection({
   const targets = getTargets(
     agenda,
     factions,
-    strategycards,
+    strategyCards,
     planets,
     agendas,
     objectives,
@@ -1036,14 +1009,14 @@ interface AvailableVotesStyle extends CSSProperties {
 }
 
 function AvailableVotes({ factionId }: { factionId: FactionId }) {
-  const actionLog = useContext(ActionLogContext);
-  const agendas = useContext(AgendaContext);
-  const attachments = useContext(AttachmentContext);
-  const factions = useContext(FactionContext);
-  const options = useContext(OptionContext);
-  const planets = useContext(PlanetContext);
-  const relics = useContext(RelicContext);
-  const state = useContext(StateContext);
+  const actionLog = useActionLog();
+  const agendas = useAgendas();
+  const attachments = useAttachments();
+  const factions = useFactions();
+  const options = useOptions();
+  const planets = usePlanets();
+  const relics = useRelics();
+  const state = useGameState();
 
   let { influence, extraVotes } = computeRemainingVotes(
     factionId,

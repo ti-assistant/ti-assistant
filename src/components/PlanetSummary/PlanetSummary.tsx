@@ -1,10 +1,9 @@
-import { useContext } from "react";
-import { OptionContext } from "../../context/Context";
+import { useOptions } from "../../context/dataHooks";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
+import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import styles from "./PlanetSummary.module.scss";
-import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 
 interface PlanetSummaryProps {
   planets: Planet[];
@@ -15,7 +14,7 @@ export default function PlanetSummary({
   planets,
   hasXxchaHero,
 }: PlanetSummaryProps) {
-  const options = useContext(OptionContext);
+  const options = useOptions();
 
   let numPlanets = 0;
   let resources = 0;

@@ -28,6 +28,7 @@ export class PlayRelicHandler implements Handler {
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`relics.${this.data.event.relic}.state`]: "purged",
     };
 
@@ -106,6 +107,7 @@ export class UnplayRelicHandler implements Handler {
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`relics.${this.data.event.relic}.state`]: "DELETE",
     };
 

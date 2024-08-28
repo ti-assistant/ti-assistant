@@ -1,13 +1,11 @@
-import { mutate } from "swr";
-import { buildPlanets } from "../../data/GameData";
+import DataManager from "../../context/DataManager";
 import {
   AddAttachmentHandler,
   RemoveAttachmentHandler,
 } from "../model/addAttachment";
-import { poster } from "./util";
-import { BASE_GAME_DATA } from "../../../server/data/data";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
+import { poster } from "./util";
 
 // TODO: Determine whether planet treatment is necessary.
 export function addAttachment(
@@ -22,38 +20,28 @@ export function addAttachment(
       planet,
     },
   };
+  const now = Date.now();
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const planets = buildPlanets(currentData);
-        for (const planet of Object.values(planets)) {
-          if ((planet.attachments ?? []).includes(data.event.attachment)) {
-            data.event.prevPlanet = planet.id;
-            break;
-          }
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        const handler = new AddAttachmentHandler(currentData, data);
+  DataManager.update((storedGameData) => {
+    const handler = new AddAttachmentHandler(storedGameData, data);
 
-        if (!handler.validate()) {
-          return currentData;
-        }
-
-        updateGameData(currentData, handler.getUpdates());
-
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }
 
 export function removeAttachment(
@@ -69,27 +57,26 @@ export function removeAttachment(
     },
   };
 
-  mutate(
-    `/api/${gameId}/data`,
-    async () => await poster(`/api/${gameId}/dataUpdate`, data),
-    {
-      optimisticData: (currentData?: StoredGameData) => {
-        if (!currentData) {
-          return BASE_GAME_DATA;
-        }
-        const handler = new RemoveAttachmentHandler(currentData, data);
+  const now = Date.now();
 
-        if (!handler.validate()) {
-          return currentData;
-        }
+  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-        updateGameData(currentData, handler.getUpdates());
+  DataManager.update((storedGameData) => {
+    const handler = new RemoveAttachmentHandler(storedGameData, data);
 
-        updateActionLog(currentData, handler);
-
-        return structuredClone(currentData);
-      },
-      revalidate: false,
+    if (!handler.validate()) {
+      return storedGameData;
     }
-  );
+
+    updateActionLog(storedGameData, handler, now);
+    updateGameData(storedGameData, handler.getUpdates());
+
+    storedGameData.lastUpdate = now;
+
+    return storedGameData;
+  });
+
+  return updatePromise.catch((_) => {
+    DataManager.reset();
+  });
 }

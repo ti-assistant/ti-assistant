@@ -2,11 +2,11 @@
 
 import { useCallback, useContext, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import { ActionLogContext } from "../../context/Context";
 import { undoAsync } from "../../dynamic/api";
+import { useActionLog } from "../../context/dataHooks";
 
 export default function UndoButton({ gameId }: { gameId?: string }) {
-  const actionLog = useContext(ActionLogContext);
+  const actionLog = useActionLog();
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {

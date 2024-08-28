@@ -20,6 +20,7 @@ export class ChooseSubFactionHandler implements Handler {
     }
     const updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
     };
 
     const undoing = faction.startswith.faction === this.data.event.subFaction;

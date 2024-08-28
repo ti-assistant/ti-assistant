@@ -3,7 +3,14 @@ export class UpdateLeaderStateHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
     public data: UpdateLeaderStateData
-  ) {}
+  ) {
+    const leader = (gameData.leaders ?? {})[data.event.leaderId];
+    if (leader) {
+      this.data.event.prevState = leader.state;
+    } else {
+      this.data.event.prevState = "locked";
+    }
+  }
 
   validate(): boolean {
     return true;
@@ -12,6 +19,7 @@ export class UpdateLeaderStateHandler implements Handler {
   getUpdates(): Record<string, any> {
     let updates: Record<string, any> = {
       [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
       [`leaders.${this.data.event.leaderId}.state`]: this.data.event.state,
     };
 
