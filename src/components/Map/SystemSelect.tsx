@@ -336,7 +336,11 @@ export default function SystemSelect({
     mapStyle,
     factions.length
   );
-  let updatedSystemTiles = ["18"].concat(updatedMapString.split(" "));
+  const shouldAddMecatol = !updatedMapString.includes(" 18 ");
+  let updatedSystemTiles = updatedMapString.split(" ");
+  if (shouldAddMecatol) {
+    updatedSystemTiles.unshift("18");
+  }
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
     if (tile === "0" && updatedTile && updatedTile !== "0") {

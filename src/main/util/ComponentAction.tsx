@@ -1520,7 +1520,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   }
                   return (
                     <div key={number} style={{ width: "100%", aspectRatio: 1 }}>
-                      <SystemImage index={0} systemNumber={number} />
+                      <SystemImage index={-1} systemNumber={number} />
                     </div>
                   );
                 })}
