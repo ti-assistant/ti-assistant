@@ -127,7 +127,7 @@ export function SystemImage({
 }) {
   const [{ isDragging }, drag] = useDrag(() => {
     return {
-      canDrag: () => !blockDrag && systemNumber !== "18",
+      canDrag: () => !blockDrag,
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -139,7 +139,6 @@ export function SystemImage({
   const [{ isOver }, drop] = useDrop(() => {
     return {
       accept: "SYSTEM_TILE",
-      canDrop: () => systemNumber !== "18",
       collect: (monitor) => ({
         isOver: monitor.isOver() && onDrop,
       }),
@@ -147,6 +146,7 @@ export function SystemImage({
         if (!onDrop) {
           return;
         }
+        console.log("Drop", index);
         onDrop(dragItem, {
           systemNumber,
           index,
@@ -331,7 +331,6 @@ export function SystemImage({
         width: "100%",
         height: "100%",
         opacity: isDragging ? "25%" : "100%",
-        pointerEvents: systemNumber === "18" ? "none" : undefined,
       }}
     >
       <NextImage
@@ -386,7 +385,11 @@ export default function MapBuilder({
   dropOnly,
   exploration,
 }: MapProps) {
-  let updatedSystemTiles = ["18"].concat(...mapString.split(" "));
+  const shouldAddMecatol = !mapString.includes(" 18 ");
+  let updatedSystemTiles = mapString.split(" ");
+  if (shouldAddMecatol) {
+    updatedSystemTiles.unshift("18");
+  }
   updatedSystemTiles = updatedSystemTiles
     .map((tile, index) => {
       const updatedTile = updatedSystemTiles[index];

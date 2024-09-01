@@ -391,10 +391,10 @@ export default function MapBuilderPage() {
               }}
             >
               <div style={{ width: "100%", aspectRatio: 1 }}>
-                <SystemImage index={0} systemNumber={"-1"} />
+                <SystemImage index={-1} systemNumber={"-1"} />
               </div>
               <div style={{ width: "100%", aspectRatio: 1 }}>
-                <SystemImage index={0} systemNumber={"0"} />
+                <SystemImage index={-1} systemNumber={"0"} />
               </div>
               {tileNumbers.map((number) => {
                 const inMapString = mapString
@@ -407,7 +407,7 @@ export default function MapBuilderPage() {
                 }
                 return (
                   <div key={number} style={{ width: "100%", aspectRatio: 1 }}>
-                    <SystemImage index={0} systemNumber={number} />
+                    <SystemImage index={-1} systemNumber={number} />
                   </div>
                 );
               })}
@@ -526,12 +526,15 @@ export default function MapBuilderPage() {
                 updateMapString={(dragItem, dropItem) => {
                   setMapString((prevString) => {
                     const systems = prevString.split(" ");
-                    while (systems.length < dropItem.index - 1) {
+                    if (!prevString.includes(" 18 ")) {
+                      systems.unshift("18");
+                    }
+                    while (systems.length < dropItem.index) {
                       systems.push("-1");
                     }
-                    systems[dragItem.index - 1] = dropItem.systemNumber;
-                    if (dropItem.index !== 0) {
-                      systems[dropItem.index - 1] = dragItem.systemNumber;
+                    systems[dragItem.index] = dropItem.systemNumber;
+                    if (dropItem.index !== -1) {
+                      systems[dropItem.index] = dragItem.systemNumber;
                     }
                     while (
                       systems.length > 0 &&
@@ -539,6 +542,10 @@ export default function MapBuilderPage() {
                     ) {
                       systems.pop();
                     }
+                    if (systems[0] === "18") {
+                      systems.shift();
+                    }
+                    console.log(systems);
                     return systems.join(" ");
                   });
                 }}
