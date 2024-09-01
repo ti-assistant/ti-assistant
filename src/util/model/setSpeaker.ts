@@ -35,7 +35,9 @@ export class SetSpeakerHandler implements Handler {
 
     const currentOrder =
       this.gameData.factions[this.data.event.newSpeaker]?.order ?? 1;
-    for (const [name, faction] of Object.entries(this.gameData.factions)) {
+    for (const [name, faction] of Object.entries(
+      this.gameData.factions ?? {}
+    )) {
       let factionOrder = faction.order - currentOrder + 1;
       if (factionOrder < 1) {
         factionOrder += Object.keys(this.gameData.factions).length;

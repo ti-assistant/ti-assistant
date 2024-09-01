@@ -3,7 +3,7 @@ import { arrayRemove, arrayUnion } from "../api/util";
 
 export class AddAttachmentHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: AddAttachmentData) {
-    for (const [planetId, planet] of Object.entries(gameData.planets)) {
+    for (const [planetId, planet] of Object.entries(gameData.planets ?? {})) {
       if ((planet.attachments ?? []).includes(data.event.attachment)) {
         this.data.event.prevPlanet = planetId as PlanetId;
         break;

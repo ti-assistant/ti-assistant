@@ -106,8 +106,8 @@ export class AdvancePhaseHandler implements Handler {
             updates[`components.${componentId}.state`] = "DELETE";
           }
         }
-        for (const [factionId, faction] of Object.entries(factions)) {
-          for (const [techId, tech] of Object.entries(faction.techs)) {
+        for (const [factionId, faction] of Object.entries(factions ?? {})) {
+          for (const [techId, tech] of Object.entries(faction.techs ?? {})) {
             if (!tech.ready) {
               updates[`factions.${factionId}.techs.${techId}.ready`] = true;
             }
