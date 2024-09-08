@@ -3,7 +3,6 @@ type GameVariant = "normal" | "alliance-separate" | "alliance-combined";
 type MapStyle = "standard" | "warp" | "skinny" | "large";
 
 interface SetupOptions {
-  "allow-double-council": boolean;
   "map-string": string;
   "map-style": MapStyle;
   "victory-points": number;

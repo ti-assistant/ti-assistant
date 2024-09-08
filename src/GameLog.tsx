@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { IntlShape, useIntl } from "react-intl";
 import { LogEntryElement } from "./components/LogEntry";
 import { GameIdContext } from "./context/Context";
@@ -10,6 +10,7 @@ import { fetcher } from "./util/api/util";
 import { Loader } from "./Loader";
 import { useActionLog, useGameData } from "./context/dataHooks";
 import { updateActionLog } from "./util/api/update";
+import { Optional } from "./util/types/types";
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
@@ -204,6 +205,9 @@ export function GameLog({}) {
   const intl = useIntl();
   const gameData = useGameData();
 
+  const [output, setOutput] = useState<Optional<ReactNode>>();
+  const [entries, setEntries] = useState<ReactNode[]>([]);
+
   const reversedActionLog = useMemo(() => {
     const actionLog = storedActionLog ?? [];
     return [...actionLog].reverse();
@@ -217,9 +221,109 @@ export function GameLog({}) {
     return buildInitialGameData(setupGameData, intl);
   }, [setupGameData, intl]);
 
-  if (reversedActionLog.length === 0) {
+  // TODO(jboman): Move this to a web-worker so that it can happen in the background.
+  useEffect(() => {
+    const dynamicGameData = structuredClone(initialGameData);
+
+    const processedEntries: ReactNode[] = [];
+    reversedActionLog.forEach((logEntry, index) => {
+      let startTimeSeconds = logEntry.gameSeconds ?? 0;
+      let endTimeSeconds = 0;
+      const handler = getHandler(dynamicGameData, logEntry.data);
+      if (!handler) {
+        return null;
+      }
+      updateGameData(dynamicGameData, handler.getUpdates());
+      switch (logEntry.data.action) {
+        case "ADVANCE_PHASE": {
+          for (let i = index + 1; i < reversedActionLog.length; i++) {
+            const nextEntry = reversedActionLog[i];
+            if (!nextEntry) {
+              break;
+            }
+            if (PHASE_BOUNDARIES.includes(nextEntry.data.action)) {
+              endTimeSeconds = nextEntry.gameSeconds ?? 0;
+              break;
+            }
+          }
+          break;
+        }
+        case "SELECT_ACTION": {
+          // Set to end of previous turn.
+          for (let i = index - 1; i > 0; i--) {
+            const prevEntry = reversedActionLog[i];
+            if (!prevEntry) {
+              break;
+            }
+            if (TURN_BOUNDARIES.includes(prevEntry.data.action)) {
+              startTimeSeconds = prevEntry.gameSeconds ?? 0;
+              break;
+            }
+          }
+          // Intentional fall-through.
+        }
+        case "REVEAL_AGENDA": {
+          for (let i = index + 1; i < reversedActionLog.length; i++) {
+            const nextEntry = reversedActionLog[i];
+            if (!nextEntry) {
+              break;
+            }
+            if (TURN_BOUNDARIES.includes(nextEntry.data.action)) {
+              endTimeSeconds = nextEntry.gameSeconds ?? 0;
+              break;
+            }
+          }
+          break;
+        }
+        case "ASSIGN_STRATEGY_CARD": {
+          for (let i = index - 1; i > 0; i--) {
+            const prevEntry = reversedActionLog[i];
+            if (!prevEntry) {
+              break;
+            }
+            if (TURN_BOUNDARIES.includes(prevEntry.data.action)) {
+              startTimeSeconds = prevEntry.gameSeconds ?? 0;
+              endTimeSeconds = logEntry.gameSeconds ?? 0;
+              break;
+            }
+          }
+        }
+      }
+      processedEntries.push(
+        <LogEntryElement
+          key={logEntry.timestampMillis}
+          logEntry={logEntry}
+          currRound={dynamicGameData.state.round}
+          activePlayer={dynamicGameData.state.activeplayer}
+          startTimeSeconds={startTimeSeconds}
+          endTimeSeconds={endTimeSeconds}
+        />
+      );
+    });
+
+    setEntries(processedEntries);
+  }, [initialGameData, storedActionLog]);
+
+  if (reversedActionLog.length === 0 || entries.length === 0) {
     return <Loader />;
   }
+
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        width: "100%",
+        height: "440px",
+        overflow: "auto",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+      }}
+    >
+      {entries.map((entry) => entry)}
+    </div>
+  );
+
+  return output;
 
   const dynamicGameData = structuredClone(initialGameData);
 

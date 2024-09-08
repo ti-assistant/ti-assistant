@@ -146,7 +146,6 @@ export function SystemImage({
         if (!onDrop) {
           return;
         }
-        console.log("Drop", index);
         onDrop(dragItem, {
           systemNumber,
           index,

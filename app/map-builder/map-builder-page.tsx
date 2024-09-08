@@ -545,7 +545,6 @@ export default function MapBuilderPage() {
                     if (systems[0] === "18") {
                       systems.shift();
                     }
-                    console.log(systems);
                     return systems.join(" ");
                   });
                 }}

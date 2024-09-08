@@ -2408,7 +2408,7 @@ function SimpleScorable({
               tag={
                 <div
                   className="popupIcon hoverParent"
-                  style={{ paddingRight: "8px", color: "#999" }}
+                  style={{ marginLeft: "0px", color: "#999" }}
                   onClick={() => setShowInfoModal(true)}
                 >
                   &#x24D8;
@@ -2416,7 +2416,7 @@ function SimpleScorable({
               }
               borderColor={
                 objectiveScorers[1]
-                  ? getFactionColor((factions ?? {})[objectiveScorers[1]])
+                  ? getFactionColor(factions[objectiveScorers[1]])
                   : undefined
               }
             />

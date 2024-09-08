@@ -49,7 +49,6 @@ interface OptionsProps {
   options: SetupOptions;
   numFactions: number;
   maxFactions: number;
-  isCouncil: boolean;
 }
 
 function createOptions(setupOptions: SetupOptions) {
@@ -69,7 +68,6 @@ function MobileOptions({
   numFactions,
   maxFactions,
   reset,
-  isCouncil,
 }: OptionsProps & { reset: () => void }) {
   const mapStringRef = useRef<HTMLInputElement>(null);
   const otherPointsRef = useRef<HTMLDivElement>(null);
@@ -365,32 +363,6 @@ function MobileOptions({
                   </Toggle>
                 </div>
               </div>
-              {/* {isCouncil ? (
-                <div>
-                  Council Keleres:
-                  <div
-                    className="flexColumn"
-                    style={{
-                      alignItems: "flex-start",
-                      padding: `8px 20px`,
-                    }}
-                  >
-                    <button
-                      className={
-                        options["allow-double-council"] ? "selected" : ""
-                      }
-                      onClick={() =>
-                        toggleOption(
-                          !options["allow-double-council"],
-                          "allow-double-council"
-                        )
-                      }
-                    >
-                      Allow selecting a duplicate sub-faction
-                    </button>
-                  </div>
-                </div>
-              ) : null} */}
             </div>
           </div>
         </ClientOnlyHoverMenu>
@@ -407,7 +379,6 @@ function Options({
   options,
   numFactions,
   maxFactions,
-  isCouncil,
 }: OptionsProps) {
   const mapStringRef = useRef<HTMLInputElement>(null);
   const otherPointsRef = useRef<HTMLDivElement>(null);
@@ -697,32 +668,6 @@ function Options({
                 ></input>
               </div>
             </div>
-            {/* {isCouncil ? (
-              <div>
-                Council Keleres:
-                <div
-                  className="flexColumn"
-                  style={{
-                    alignItems: "flex-start",
-                    padding: `8px 20px`,
-                  }}
-                >
-                  <button
-                    className={
-                      options["allow-double-council"] ? "selected" : ""
-                    }
-                    onClick={() =>
-                      toggleOption(
-                        !options["allow-double-council"],
-                        "allow-double-council"
-                      )
-                    }
-                  >
-                    Allow selecting a duplicate sub-faction
-                  </button>
-                </div>
-              </div>
-            ) : null} */}
             <div>
               Scenarios:
               <div
@@ -1253,7 +1198,6 @@ const INITIAL_OPTIONS: SetupOptions = {
     "CODEX TWO",
     "CODEX THREE",
   ]),
-  "allow-double-council": true,
   "game-variant": "normal",
   "map-style": "standard",
   "map-string": "",
@@ -1566,39 +1510,7 @@ export default function SetupPage({
       }
     }
 
-    if (invalidCouncil()) {
-      return true;
-    }
     return false;
-  }
-
-  function isCouncilInGame() {
-    for (let i = 0; i < numFactions; i++) {
-      const faction = setupFactions[i];
-      if (faction?.id === "Council Keleres") {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function invalidCouncil() {
-    if (options["allow-double-council"]) {
-      return false;
-    }
-    let factionCount = options.expansions.has("POK") ? 0 : 1;
-    for (let i = 0; i < numFactions; i++) {
-      const faction = setupFactions[i];
-      if (
-        faction?.id === "Xxcha Kingdom" ||
-        faction?.id === "Argent Flight" ||
-        faction?.id === "Mentak Coalition" ||
-        faction?.id === "Council Keleres"
-      ) {
-        ++factionCount;
-      }
-    }
-    return factionCount === 4;
   }
 
   function toggleOption(value: any, option: string) {
@@ -1741,7 +1653,6 @@ export default function SetupPage({
             options={options}
             numFactions={numFactions}
             maxFactions={maxFactions}
-            isCouncil={isCouncilInGame()}
           />
         </div>
         <div style={{ gridArea: "left-top" }}>
@@ -2103,7 +2014,7 @@ export default function SetupPage({
               </div>
             ) : null}
           </button>
-          {!creatingGame && disableNextButton() && !invalidCouncil() ? (
+          {!creatingGame && disableNextButton() ? (
             <div
               className="flexColumn centered"
               style={{ color: "firebrick", maxWidth: "240px" }}
@@ -2116,11 +2027,6 @@ export default function SetupPage({
               {options["game-variant"].startsWith("alliance")
                 ? " and alliance partners"
                 : ""}
-            </div>
-          ) : null}
-          {invalidCouncil() ? (
-            <div style={{ color: "firebrick" }}>
-              No sub-factions available for Council Keleres
             </div>
           ) : null}
         </div>
@@ -2157,7 +2063,6 @@ export default function SetupPage({
             options={options}
             numFactions={numFactions}
             maxFactions={maxFactions}
-            isCouncil={isCouncilInGame()}
             reset={reset}
           />
           {setupFactions.map((_, index) => {
@@ -2221,7 +2126,7 @@ export default function SetupPage({
             >
               {creatingGame ? <Loader /> : "Start Game"}
             </button>
-            {!creatingGame && disableNextButton() && !invalidCouncil() ? (
+            {!creatingGame && disableNextButton() ? (
               <div
                 className="flexColumn centered"
                 style={{ color: "firebrick", maxWidth: "240px" }}
@@ -2230,11 +2135,6 @@ export default function SetupPage({
                 {options["game-variant"].startsWith("alliance")
                   ? " and alliance partners"
                   : ""}
-              </div>
-            ) : null}
-            {invalidCouncil() ? (
-              <div style={{ color: "firebrick" }}>
-                No sub-factions available for Council Keleres
               </div>
             ) : null}
           </div>

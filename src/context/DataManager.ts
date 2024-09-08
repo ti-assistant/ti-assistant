@@ -255,6 +255,9 @@ interface Subscriber {
 
 function getValueAtPath<Type>(currentData: GameData, path: string) {
   const pathSections = path.split(".");
+  if (path === "") {
+    return currentData as Type;
+  }
   let dataRef: any = currentData;
   for (const section of pathSections) {
     if (!dataRef[section]) {
