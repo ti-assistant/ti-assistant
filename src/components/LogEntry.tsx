@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { act, useContext } from "react";
 import { AgendaRow } from "../AgendaRow";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -184,8 +184,28 @@ export function LogEntryElement({
       );
     }
     case "PLAY_COMPONENT": {
-      // TODO: Add different text for different components.
-      return null;
+      // Certain components get displayed by subsequent entries.
+      switch (logEntry.data.event.name) {
+        case "Gain Relic": {
+          return null;
+        }
+      }
+      if (!activePlayer || activePlayer === "None") {
+        return null;
+      }
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${"10px"}`,
+            gap: "4px",
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId={activePlayer} /> used{" "}
+          {logEntry.data.event.name}
+        </div>
+      );
     }
     case "SELECT_SUB_COMPONENT":
       return (
