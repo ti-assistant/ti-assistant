@@ -253,7 +253,7 @@ export function GameLog({}) {
     return () => {
       worker.current?.terminate();
     };
-  }, []);
+  }, [initialGameData, reversedActionLog]);
 
   if (reversedActionLog.length === 0 || entryData.length === 0) {
     return <Loader />;
