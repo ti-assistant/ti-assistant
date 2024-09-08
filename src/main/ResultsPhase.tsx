@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import BorderedDiv from "../components/BorderedDiv/BorderedDiv";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import { GameIdContext } from "../context/Context";
-import { GameLog } from "../GameLog";
+import { GameLog } from "../components/GameLog/GameLog";
 
 export default function ResultsPhase() {
   const gameId = useContext(GameIdContext);

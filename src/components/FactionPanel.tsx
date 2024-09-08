@@ -390,7 +390,9 @@ function FactionPanelContent({
                               description:
                                 "Text that gets pre-fixed to a leader unlock condition.",
                             })
-                          )}
+                          ).map((val, index) => (
+                            <div key={index}>{val}</div>
+                          ))}
                         </span>{" "}
                         {formatDescription(
                           leader.unlock ??
@@ -399,7 +401,9 @@ function FactionPanelContent({
                               defaultMessage: "Have 3 scored objectives.",
                               description: "Unlock condition for all heroes.",
                             })
-                        )}
+                        ).map((val, index) => (
+                          <div key={index}>{val}</div>
+                        ))}
                       </div>
                     );
                     break;

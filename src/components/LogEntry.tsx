@@ -34,19 +34,21 @@ function ColoredFactionName({ factionId }: { factionId: FactionId }) {
   );
 }
 
+export interface LogEntryElementProps {
+  logEntry: ActionLogEntry;
+  activePlayer?: FactionId | "None";
+  currRound: number;
+  startTimeSeconds: number;
+  endTimeSeconds: number;
+}
+
 export function LogEntryElement({
   logEntry,
   activePlayer,
   currRound,
   startTimeSeconds,
   endTimeSeconds,
-}: {
-  logEntry: ActionLogEntry;
-  activePlayer?: FactionId | "None";
-  currRound: number;
-  startTimeSeconds: number;
-  endTimeSeconds: number;
-}) {
+}: LogEntryElementProps) {
   const agendas = useAgendas();
   const factions = useFactions();
   const objectives = useObjectives();
