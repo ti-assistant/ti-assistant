@@ -10,6 +10,7 @@ import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import { useAttachments, useFactions } from "../../context/dataHooks";
+import { Optional } from "../../util/types/types";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -114,7 +115,7 @@ export default function PlanetRow({
   }
 
   const previousOwner = prevOwner ?? planet.owner;
-  let claimed: string | undefined =
+  let claimed: Optional<string> =
     previousOwner !== factionId || opts.showSelfOwned
       ? previousOwner
       : undefined;

@@ -1,4 +1,5 @@
 import { hasTech } from "./api/techs";
+import { Optional } from "./types/types";
 
 export function getTechColor(tech: Tech) {
   return getTechTypeColor(tech.type);
@@ -66,7 +67,7 @@ export function sortTechs(techs: Tech[]) {
 }
 
 export function getFactionPreReqs(
-  faction: Faction | undefined,
+  faction: Optional<Faction>,
   techs: Partial<Record<TechId, Tech>>,
   options: Options,
   planets: Planet[],
@@ -135,7 +136,7 @@ export function canResearchTech(
   tech: Tech,
   options: Options,
   prereqs: Record<TechType, number>,
-  faction: Faction | undefined,
+  faction: Optional<Faction>,
   isTechOwned: boolean
 ) {
   const localPrereqs = structuredClone(prereqs);

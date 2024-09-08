@@ -15,6 +15,7 @@ import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
+import { Optional } from "../../util/types/types";
 
 export default function MawOfWorlds({}) {
   const intl = useIntl();
@@ -36,10 +37,10 @@ export default function MawOfWorlds({}) {
     return null;
   }
 
-  const mawEvent: MawOfWorldsEvent | undefined = getPlayedRelic(
+  const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
     actionLog,
     "Maw of Worlds"
-  ) as MawOfWorldsEvent | undefined;
+  ) as Optional<MawOfWorldsEvent>;
 
   if (mawEvent) {
     const tech = techs[mawEvent.tech];

@@ -112,7 +112,7 @@ function buildInitialGameData(
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
   let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
-  let speakerName: FactionId | undefined;
+  let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     if (index === setupData.speaker) {
       speakerName = faction.id;

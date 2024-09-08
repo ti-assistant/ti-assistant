@@ -65,6 +65,7 @@ import { getFactionColor, getFactionName } from "../../util/factions";
 import { updateMapString } from "../../util/map";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { pluralize } from "../../util/util";
+import { Optional } from "../../util/types/types";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -542,17 +543,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     attachments ?? {}
   );
 
-  let leftLabel: ReactNode | undefined = (
+  let leftLabel: Optional<ReactNode> = (
     <FormattedMessage
       id="fVAave"
       description="Label for a section containing additional details."
       defaultMessage="Details"
     />
   );
-  let label: ReactNode | undefined;
-  let rightLabel: ReactNode | undefined;
-  let lineColor: string | undefined;
-  let innerContent: ReactNode | undefined;
+  let label: Optional<ReactNode>;
+  let rightLabel: Optional<ReactNode>;
+  let lineColor: Optional<string>;
+  let innerContent: Optional<ReactNode>;
 
   let componentName = currentTurn
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
@@ -964,7 +965,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           );
         }
       );
-      let nanoForgedPlanet: PlanetId | undefined;
+      let nanoForgedPlanet: Optional<PlanetId>;
       Object.values(planets).forEach((planet) => {
         if ((planet.attachments ?? []).includes("Nano-Forge")) {
           nanoForgedPlanet = planet.id;
@@ -1018,7 +1019,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           );
         }
       );
-      let terraformedPlanet: PlanetId | undefined;
+      let terraformedPlanet: Optional<PlanetId>;
       Object.values(planets).forEach((planet) => {
         if ((planet.attachments ?? []).includes("Terraform")) {
           terraformedPlanet = planet.id;
@@ -1394,7 +1395,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Mining Initiative": {
       let maxValue = 0;
-      let bestPlanet: PlanetId | undefined;
+      let bestPlanet: Optional<PlanetId>;
       updatedPlanets
         .filter((planet) => {
           if (planet.owner !== factionId) {

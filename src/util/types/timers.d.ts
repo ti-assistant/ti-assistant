@@ -1,4 +1,3 @@
-
 type TimerUpdateAction =
   | "SET_GAME_TIMER"
   | "SAVE_FACTION_TIMER"
@@ -17,5 +16,5 @@ interface Timers {
   firstAgenda?: number;
   game?: number;
   secondAgenda?: number;
-  [key: string]: number | undefined;
-}s
+  [key: string]: Optional<number>;
+}

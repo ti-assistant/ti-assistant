@@ -1,5 +1,6 @@
 import { buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
+import { Optional } from "../types/types";
 
 export class ClaimPlanetHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: ClaimPlanetData) {
@@ -111,7 +112,7 @@ export class UnclaimPlanetHandler implements Handler {
   getUpdates(): Record<string, any> {
     // TODO: Figure out if [0.0.0] works.
 
-    let prevOwner: string | undefined;
+    let prevOwner: Optional<string>;
     let claimedThisTurn: boolean = false;
     const currentTurn = getCurrentTurnLogEntries(this.gameData.actionLog ?? []);
     for (const entry of currentTurn) {

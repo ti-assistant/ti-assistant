@@ -4,6 +4,7 @@ import Hexagon from "../../../public/images/systems/Hexagon.png";
 import { GameIdContext } from "../../context/Context";
 import { updateMapString, validSystemNumber } from "../../util/map";
 import styles from "./Map.module.scss";
+import { Optional } from "../../util/types/types";
 
 interface Cube {
   q: number;
@@ -143,15 +144,13 @@ const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
 } as const;
 
 function getFactionSystemNumber(
-  faction:
-    | {
-        id?: FactionId;
-        name?: string;
-        startswith?: {
-          faction?: FactionId;
-        };
-      }
-    | undefined
+  faction: Optional<{
+    id?: FactionId;
+    name?: string;
+    startswith?: {
+      faction?: FactionId;
+    };
+  }>
 ) {
   if (!faction?.id) {
     return "92";
@@ -208,7 +207,7 @@ export function SystemImage({
   onClick,
 }: {
   gameId: string;
-  systemNumber: string | undefined;
+  systemNumber: Optional<string>;
   selectable: boolean;
   onClick: (systemId: string) => void;
 }) {
@@ -265,7 +264,7 @@ export function SystemImage({
   if (parsedNum > 4200) {
     systemNumber = (parsedNum - 3200).toString();
   }
-  let classNames: string | undefined = "";
+  let classNames: Optional<string> = "";
   if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
     classNames = getRotationClassFromNumber(
       parseInt(systemNumber.split("A")[1] ?? "0")

@@ -3,12 +3,13 @@ import { SymbolX } from "../icons/svgs";
 import FactionCircle from "./FactionCircle/FactionCircle";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionSelect.module.scss";
+import { Optional } from "../util/types/types";
 
 interface FactionSelectProps {
   options: FactionId[];
   onSelect: (
-    factionId: FactionId | undefined,
-    prevFaction: FactionId | undefined
+    factionId: Optional<FactionId>,
+    prevFaction: Optional<FactionId>
   ) => void;
   size: number;
 }

@@ -6,8 +6,7 @@ import {
   Firestore,
   getFirestore,
 } from "firebase/firestore";
-
-type Optional<Type> = Type | undefined;
+import { Optional } from "../util/types/types";
 
 export default class DBConnection {
   private static db: Optional<Firestore>;

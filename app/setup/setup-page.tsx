@@ -20,6 +20,7 @@ import { mapStyleString } from "../../src/util/strings";
 import styles from "./setup.module.scss";
 import Toggle from "../../src/components/Toggle/Toggle";
 import NumberInput from "../../src/components/NumberInput/NumberInput";
+import { Optional } from "../../src/util/types/types";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -835,13 +836,13 @@ interface FactionSelectProps {
   mobile?: boolean;
   numFactions: number;
   speaker: number;
-  setFaction: (index: number, factionId: FactionId | undefined) => void;
-  setColor: (index: number, colorName: string | undefined) => void;
+  setFaction: (index: number, factionId: Optional<FactionId>) => void;
+  setColor: (index: number, colorName: Optional<string>) => void;
   setSpeaker: (index: number) => void;
   setPlayerName: (index: number, playerName: string) => void;
   setAlliancePartner: (
     index: number,
-    alliancePartner: number | undefined
+    alliancePartner: Optional<number>
   ) => void;
   options: SetupOptions;
 }
@@ -906,14 +907,14 @@ function FactionSelect({
     .filter((faction, index) => !!faction.id && index < numFactions)
     .map((faction) => faction.id as FactionId);
 
-  function selectFaction(factionId: FactionId | undefined) {
+  function selectFaction(factionId: Optional<FactionId>) {
     if (factionIndex == undefined) {
       return;
     }
     setFaction(factionIndex, factionId);
   }
 
-  function selectColor(color: string | undefined) {
+  function selectColor(color: Optional<string>) {
     if (factionIndex == undefined) {
       return;
     }
@@ -942,12 +943,12 @@ function FactionSelect({
     }
   }
 
-  function selectAlliancePartner(factionId: FactionId | undefined) {
+  function selectAlliancePartner(factionId: Optional<FactionId>) {
     if (factionIndex == undefined) {
       return;
     }
     const index = factions.reduce(
-      (alliance: number | undefined, faction, index) => {
+      (alliance: Optional<number>, faction, index) => {
         if (faction.id === factionId) {
           return index;
         }
@@ -1255,10 +1256,7 @@ export default function SetupPage({
     }
   }
 
-  function updatePlayerFaction(
-    index: number,
-    factionId: FactionId | undefined
-  ) {
+  function updatePlayerFaction(index: number, factionId: Optional<FactionId>) {
     const faction = setupFactions[index];
     if (!faction) {
       return;
@@ -1277,7 +1275,7 @@ export default function SetupPage({
     );
   }
 
-  function updatePlayerColor(index: number, color: string | undefined) {
+  function updatePlayerColor(index: number, color: Optional<string>) {
     const faction = setupFactions[index];
     if (!faction) {
       return;
@@ -1309,7 +1307,7 @@ export default function SetupPage({
 
   function updateAlliancePartner(
     index: number,
-    alliancePartner: number | undefined
+    alliancePartner: Optional<number>
   ) {
     setFactions(
       setupFactions.map((faction, i) => {
@@ -1365,7 +1363,7 @@ export default function SetupPage({
       if (faction.id) {
         continue;
       }
-      let selectedFaction: FactionId | undefined;
+      let selectedFaction: Optional<FactionId>;
       while (!selectedFaction || selectedFactions.includes(selectedFaction)) {
         let randomIndex = Math.floor(Math.random() * factionKeys.length);
         selectedFaction = factionKeys[randomIndex];
@@ -1374,7 +1372,7 @@ export default function SetupPage({
     }
     setFactions(
       setupFactions.map((faction, index) => {
-        const factionId: FactionId | undefined = selectedFactions[index];
+        const factionId: Optional<FactionId> = selectedFactions[index];
         if (!factionId) {
           if (faction.id && selectedFactions.includes(faction.id)) {
             return { ...faction, name: undefined, id: undefined };
@@ -1413,7 +1411,7 @@ export default function SetupPage({
       if (faction.color) {
         continue;
       }
-      let selectedColor: string | undefined;
+      let selectedColor: Optional<string>;
       while (!selectedColor || selectedColors.includes(selectedColor)) {
         let randomIndex = Math.floor(Math.random() * filteredColors.length);
         selectedColor = filteredColors[randomIndex];

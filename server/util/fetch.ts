@@ -10,6 +10,7 @@ import {
   TURN_BOUNDARIES,
 } from "../../src/util/api/actionLog";
 import { BASE_OPTIONS } from "../data/options";
+import { Optional } from "../../src/util/types/types";
 
 /**
  * Returns the game data for a given game.
@@ -130,7 +131,7 @@ export async function getLatestActionLogEntryInTransaction(
     return undefined;
   }
 
-  let latestEntry: ActionLogEntry | undefined;
+  let latestEntry: Optional<ActionLogEntry>;
   logEntry.forEach((entry) => {
     latestEntry = entry.data() as ActionLogEntry;
   });

@@ -1,7 +1,6 @@
 import { BASE_OPTIONS } from "../../server/data/options";
+import { Optional } from "../util/types/types";
 import { useGameDataValue } from "./DataManager";
-
-type Optional<T> = T | undefined;
 
 export function useGameData() {
   return useGameDataValue<GameData>("", {

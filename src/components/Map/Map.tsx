@@ -20,6 +20,7 @@ import {
   useFactions,
   usePlanets,
 } from "../../context/dataHooks";
+import { Optional } from "../../util/types/types";
 
 interface Cube {
   q: number;
@@ -159,15 +160,13 @@ const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
 } as const;
 
 export function getFactionSystemNumber(
-  faction:
-    | {
-        id?: FactionId;
-        name?: string;
-        startswith?: {
-          faction?: FactionId;
-        };
-      }
-    | undefined
+  faction: Optional<{
+    id?: FactionId;
+    name?: string;
+    startswith?: {
+      faction?: FactionId;
+    };
+  }>
 ) {
   if (!faction?.id) {
     return "92";
@@ -224,7 +223,7 @@ export function SystemImage({
 }: {
   gameId: string;
   showDetails: Details;
-  systemNumber: string | undefined;
+  systemNumber: Optional<string>;
 }) {
   const attachments = useAttachments();
   const factions = useFactions();
@@ -289,7 +288,7 @@ export function SystemImage({
   });
   systemPlanets = applyAllPlanetAttachments(systemPlanets, attachments);
 
-  let classNames: string | undefined = "";
+  let classNames: Optional<string> = "";
   if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
     classNames = getRotationClassFromNumber(
       parseInt(systemNumber.split("A")[1] ?? "0")
@@ -325,7 +324,7 @@ export function SystemImage({
         }
       />
       {systemPlanets.map((planet) => {
-        let detailsSymbol: ReactNode | null = null;
+        let detailsSymbol: Optional<ReactNode>;
         const height =
           planet.id !== "Mallice" && planet.id !== "Creuss"
             ? `calc(24% * ${HEX_RATIO})`
@@ -411,8 +410,8 @@ export function SystemImage({
             break;
           }
           case "TECH_SKIPS": {
-            let color: TechType | undefined;
-            let size: string | undefined;
+            let color: Optional<TechType>;
+            let size: Optional<string>;
             for (const attribute of planet.attributes) {
               switch (attribute) {
                 case "red-skip":

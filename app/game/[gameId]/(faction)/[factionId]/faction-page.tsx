@@ -103,6 +103,7 @@ import {
   filterToUnownedTechs,
 } from "../../../../../src/util/techs";
 import styles from "./faction-page.module.scss";
+import { Optional } from "../../../../../src/util/types/types";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -163,7 +164,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
-  let currentAgenda: Agenda | undefined;
+  let currentAgenda: Optional<Agenda>;
   const activeAgenda = getActiveAgenda(currentTurn);
   if (activeAgenda) {
     currentAgenda = (agendas ?? {})[activeAgenda];
@@ -211,7 +212,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     }
     selectEligibleOutcomesAsync(gameId, outcome);
   }
-  function selectSpeakerTieBreak(tieBreak: string | null) {
+  function selectSpeakerTieBreak(tieBreak: Optional<string>) {
     if (!gameId) {
       return;
     }
@@ -232,7 +233,6 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     if (agenda.target || agenda.elect === "???") return;
     outcomes.add(agenda.elect);
   });
-  // let currentAgenda: Agenda | undefined;
   const agendaNum = state?.agendaNum ?? 1;
   if (agendaNum > 2) {
     return null;
@@ -283,10 +283,10 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
-    const mawEvent: MawOfWorldsEvent | undefined = getPlayedRelic(
+    const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
       actionLog,
       "Maw of Worlds"
-    ) as MawOfWorldsEvent | undefined;
+    ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {
       influence = 0;
     }
@@ -314,7 +314,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     resolveAgendaAsync(gameId, currentAgenda?.id, target);
   }
   function castVotesLocal(
-    target: string | undefined,
+    target: Optional<string>,
     votes: number,
     extraVotes: number
   ) {
@@ -343,8 +343,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     element.innerText = factionVotes?.votes?.toString() ?? "0";
   }
 
-  let leftLabel: React.ReactNode | undefined;
-  let centerLabel: React.ReactNode | undefined;
+  let leftLabel: Optional<React.ReactNode>;
+  let centerLabel: Optional<React.ReactNode>;
   let phaseContent = null;
   switch (state?.phase) {
     case "SETUP": {
@@ -1287,7 +1287,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   >
                     <SelectableRow
                       itemId={tieBreak}
-                      removeItem={() => selectSpeakerTieBreak(null)}
+                      removeItem={() => selectSpeakerTieBreak(undefined)}
                     >
                       {tieBreak}
                     </SelectableRow>

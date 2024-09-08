@@ -26,6 +26,7 @@ import {
   usePlanets,
   useStrategyCards,
 } from "../../context/dataHooks";
+import { Optional } from "../../util/types/types";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -67,9 +68,8 @@ export default function Footer({}) {
   const [showObjectiveModal, setShowObjectiveModal] = useState(false);
   const [showPlanetModal, setShowPlanetModal] = useState(false);
 
-  const [selectedFaction, setSelectedFaction] = useState<FactionId | undefined>(
-    undefined
-  );
+  const [selectedFaction, setSelectedFaction] =
+    useState<Optional<FactionId>>(undefined);
 
   useEffect(() => {
     setSelectedFaction((faction) => {

@@ -25,6 +25,7 @@ import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { objectiveTypeString } from "../util/strings";
 import styles from "./SetupPhase.module.scss";
+import { Optional } from "../util/types/types";
 
 export function startFirstRound(gameId: string) {
   advancePhaseAsync(gameId);
@@ -113,7 +114,7 @@ function getSetupPhaseText(
   );
 }
 
-export function setMapString(gameId: string | undefined, mapString: string) {
+export function setMapString(gameId: Optional<string>, mapString: string) {
   if (!gameId) {
     return;
   }

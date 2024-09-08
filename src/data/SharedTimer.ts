@@ -20,7 +20,7 @@ const useTimer = () => {
 
   const savedCallbacks = useRef<Record<string, () => void>>({});
 
-  useInterval(updateSubscribers, paused ? null : 1000);
+  useInterval(updateSubscribers, paused ? undefined : 1000);
 
   function addSubscriber(subscriber: () => void) {
     let id = makeid(12);
