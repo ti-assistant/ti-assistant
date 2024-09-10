@@ -72,6 +72,10 @@ export function usePlanet(planetId: PlanetId) {
   return useGameDataValue<Optional<Planet>>(`planets.${planetId}`, undefined);
 }
 
+export function useAllPlanets() {
+  return useGameDataValue<Planets>("allPlanets", {});
+}
+
 type Relics = Partial<Record<RelicId, Relic>>;
 export function useRelics() {
   return useGameDataValue<Relics>("relics", {});

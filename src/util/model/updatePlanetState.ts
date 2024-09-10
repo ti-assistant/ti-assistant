@@ -4,8 +4,8 @@ export class UpdatePlanetStateHandler implements Handler {
     public gameData: StoredGameData,
     public data: UpdatePlanetStateData
   ) {
-    const planet = (gameData.planets ?? {})[data.event.planet];
-    if (planet) {
+    const planet = gameData.planets[data.event.planet];
+    if (planet && planet.state) {
       this.data.event.prevState = planet.state;
     } else {
       this.data.event.prevState = "READIED";

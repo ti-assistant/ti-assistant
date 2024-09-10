@@ -3,14 +3,14 @@ import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
 import { GameIdContext } from "../../context/Context";
+import { useAttachments, useFactions } from "../../context/dataHooks";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";
+import { Optional } from "../../util/types/types";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
-import { useAttachments, useFactions } from "../../context/dataHooks";
-import { Optional } from "../../util/types/types";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;

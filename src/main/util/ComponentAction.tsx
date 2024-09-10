@@ -64,8 +64,8 @@ import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { updateMapString } from "../../util/map";
 import { applyAllPlanetAttachments } from "../../util/planets";
-import { pluralize } from "../../util/util";
 import { Optional } from "../../util/types/types";
+import { pluralize } from "../../util/util";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -965,13 +965,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           );
         }
       );
-      let nanoForgedPlanet: Optional<PlanetId>;
+      let nanoForgedPlanet: Optional<Planet>;
       Object.values(planets).forEach((planet) => {
         if ((planet.attachments ?? []).includes("Nano-Forge")) {
-          nanoForgedPlanet = planet.id;
+          nanoForgedPlanet = planet;
         }
       });
       if (nanoForgedPlanet) {
+        ownedNonHomeNonLegendaryPlanets.push(nanoForgedPlanet);
         leftLabel = "Attached to";
       }
       innerContent = (
@@ -996,10 +997,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   removePlanet={() =>
                     toggleAttachment(planetId, "Nano-Forge", false)
                   }
+                  opts={{ hideAttachButton: true }}
                 />
               );
             }}
-            selectedItem={nanoForgedPlanet}
+            selectedItem={nanoForgedPlanet?.id}
             toggleItem={(planetId, add) => {
               toggleAttachment(planetId, "Nano-Forge", add);
             }}

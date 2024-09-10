@@ -25,6 +25,8 @@ export function buildCompleteGameData(
     systems: buildSystems(storedGameData, baseData),
     techs: buildTechs(storedGameData, baseData),
     timers: storedGameData.timers,
+
+    allPlanets: buildPlanets(storedGameData, baseData, true),
   };
 
   return completeGameData;
@@ -343,7 +345,8 @@ function validateMapString(mapString: string) {
 
 export function buildPlanets(
   storedGameData: StoredGameData,
-  baseData: BaseData
+  baseData: BaseData,
+  includePurged?: boolean
 ) {
   const gamePlanets = storedGameData.planets ?? {};
   const gameFactions = storedGameData.factions ?? {};
@@ -426,7 +429,11 @@ export function buildPlanets(
       }
     }
 
-    if (gamePlanets[planet.id] && gamePlanets[planet.id]?.state === "PURGED") {
+    if (
+      !includePurged &&
+      gamePlanets[planet.id] &&
+      gamePlanets[planet.id]?.state === "PURGED"
+    ) {
       return;
     }
 

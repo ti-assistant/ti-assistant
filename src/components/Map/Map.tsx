@@ -3,24 +3,24 @@ import { ReactNode, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
 import { GameIdContext } from "../../context/Context";
+import {
+  useAllPlanets,
+  useAttachments,
+  useFactions,
+} from "../../context/dataHooks";
 import { getFactionColor } from "../../util/factions";
+import { updateMapString, validSystemNumber } from "../../util/map";
 import {
   applyAllPlanetAttachments,
   getPlanetTypeColor,
 } from "../../util/planets";
 import { getTechTypeColor } from "../../util/techs";
+import { Optional } from "../../util/types/types";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
-import { updateMapString, validSystemNumber } from "../../util/map";
-import {
-  useAttachments,
-  useFactions,
-  usePlanets,
-} from "../../context/dataHooks";
-import { Optional } from "../../util/types/types";
 
 interface Cube {
   q: number;
@@ -227,7 +227,7 @@ export function SystemImage({
 }) {
   const attachments = useAttachments();
   const factions = useFactions();
-  const planets = usePlanets();
+  const planets = useAllPlanets();
 
   if (
     !systemNumber ||
@@ -277,7 +277,7 @@ export function SystemImage({
     systemNumber = (parsedNum - 3200).toString();
   }
 
-  let systemPlanets = Object.values(planets ?? {}).filter((planet) => {
+  let systemPlanets = Object.values(planets).filter((planet) => {
     if (!systemNumber) {
       return false;
     }
@@ -329,6 +329,34 @@ export function SystemImage({
           planet.id !== "Mallice" && planet.id !== "Creuss"
             ? `calc(24% * ${HEX_RATIO})`
             : "24%";
+
+        if (planet.state === "PURGED") {
+          return (
+            <div
+              key={planet.id}
+              className="flexRow"
+              style={{ position: "absolute", width: "100%", height: "100%" }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  position: "absolute",
+                  width: "24%",
+                  height: height,
+                  marginLeft: `${planet.position?.x}%` ?? 0,
+                  marginTop: `${planet.position?.y}%` ?? 0,
+                }}
+              >
+                <NextImage
+                  src={`/images/destroyed.webp`}
+                  alt={`Destroyed Planet`}
+                  fill
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+            </div>
+          );
+        }
         switch (showDetails) {
           case "OWNERS": {
             if (!planet.owner) {
