@@ -250,6 +250,7 @@ function FactionPanelContent({
       }
       return a.name > b.name ? 1 : -1;
     });
+  console.log("Leader", factionLeaders);
 
   if (!faction) {
     return null;
@@ -299,6 +300,7 @@ function FactionPanelContent({
                 let leftLabel = undefined;
                 switch (state) {
                   case "readied":
+                  case "exhausted":
                     leftLabel = (
                       <div className="flexRow" style={{ gap: "6px" }}>
                         {leader.name}
@@ -307,6 +309,15 @@ function FactionPanelContent({
                             factionId={leader.subFaction}
                             size={16}
                           />
+                        ) : null}
+                        {gameId && state === "exhausted" ? (
+                          <span
+                            style={{
+                              fontSize: "12px",
+                            }}
+                          >
+                            [Exhausted]
+                          </span>
                         ) : null}
                         {gameId && leader.type !== "AGENT" ? (
                           <div
@@ -391,7 +402,7 @@ function FactionPanelContent({
                                 "Text that gets pre-fixed to a leader unlock condition.",
                             })
                           ).map((val, index) => (
-                            <div key={index}>{val}</div>
+                            <span key={index}>{val}</span>
                           ))}
                         </span>{" "}
                         {formatDescription(
@@ -402,7 +413,7 @@ function FactionPanelContent({
                               description: "Unlock condition for all heroes.",
                             })
                         ).map((val, index) => (
-                          <div key={index}>{val}</div>
+                          <span key={index}>{val}</span>
                         ))}
                       </div>
                     );

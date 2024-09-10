@@ -158,6 +158,7 @@ export default function PlanetRow({
               fontSize: "12px",
               bottom: "0px",
               left: "24px",
+              userSelect: "none",
             }}
           >
             Controlled by {claimed}
