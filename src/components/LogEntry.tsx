@@ -1,14 +1,4 @@
-import { act, useContext } from "react";
 import { AgendaRow } from "../AgendaRow";
-import { BLACK_TEXT_GLOW } from "../util/borderGlow";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { pluralize } from "../util/util";
-import LabeledLine from "./LabeledLine/LabeledLine";
-import TimerDisplay from "./TimerDisplay/TimerDisplay";
-import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
-import FactionIcon from "./FactionIcon/FactionIcon";
-import TechIcon from "./TechIcon/TechIcon";
-import { getTechColor } from "../util/techs";
 import {
   useAgendas,
   useFaction,
@@ -17,6 +7,14 @@ import {
   useRelics,
   useTechs,
 } from "../context/dataHooks";
+import { BLACK_TEXT_GLOW } from "../util/borderGlow";
+import { getFactionColor, getFactionName } from "../util/factions";
+import { getTechColor } from "../util/techs";
+import { pluralize } from "../util/util";
+import FactionIcon from "./FactionIcon/FactionIcon";
+import LabeledLine from "./LabeledLine/LabeledLine";
+import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
+import TimerDisplay from "./TimerDisplay/TimerDisplay";
 
 function ColoredFactionName({ factionId }: { factionId: FactionId }) {
   const faction = useFaction(factionId);
@@ -235,22 +233,6 @@ export function LogEntryElement({
     case "MARK_SECONDARY": {
       // TODO: Display for all but Technology
       return null;
-      // if (logEntry.data.event.state === "DONE") {
-      //   return (
-      //     <div
-      //       className="flexRow"
-      //       style={{
-      //         padding: `0 ${"10px"}`,
-      //         gap: "4px",
-      //         fontFamily: "Myriad Pro",
-      //       }}
-      //     >
-      //       Followed by
-      //       <ColoredFactionName factionName={logEntry.data.event.faction} />
-      //     </div>
-      //   );
-      // }
-      // return null;
     }
     case "SET_SPEAKER": {
       return (

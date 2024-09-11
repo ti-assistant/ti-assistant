@@ -72,6 +72,7 @@ export function usePlanet(planetId: PlanetId) {
   return useGameDataValue<Optional<Planet>>(`planets.${planetId}`, undefined);
 }
 
+// Includes purged planets.
 export function useAllPlanets() {
   return useGameDataValue<Planets>("allPlanets", {});
 }

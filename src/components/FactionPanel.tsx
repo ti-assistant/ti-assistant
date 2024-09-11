@@ -1,7 +1,9 @@
 import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { UnitStat } from "../TechRow";
 import { GameIdContext } from "../context/Context";
+import { useLeaders, useTechs } from "../context/dataHooks";
 import { updateLeaderStateAsync } from "../dynamic/api";
 import { getFactionName } from "../util/factions";
 import { leaderTypeString, unitTypeString } from "../util/strings";
@@ -11,8 +13,6 @@ import styles from "./FactionPanel.module.scss";
 import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
-import { UnitStat } from "../TechRow";
-import { useLeaders, useTechs } from "../context/dataHooks";
 
 function AbilitySection({
   leftLabel,
@@ -250,7 +250,6 @@ function FactionPanelContent({
       }
       return a.name > b.name ? 1 : -1;
     });
-  console.log("Leader", factionLeaders);
 
   if (!faction) {
     return null;
@@ -418,56 +417,6 @@ function FactionPanelContent({
                       </div>
                     );
                     break;
-                    leftLabel = (
-                      <div className="flexRow">
-                        {leader.name}
-                        <div className="flexRow" style={{ gap: "4px" }}>
-                          <div
-                            style={{
-                              fontSize: "8px",
-                              color: "#eee",
-                              border: "1px solid #eee",
-                              padding: "2px 2px",
-                              borderRadius: "2px",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              alert("WIP - Will lock later");
-                            }}
-                          >
-                            LOCK
-                          </div>
-                          <div
-                            style={{
-                              fontSize: "8px",
-                              color: "#eee",
-                              border: "1px solid #eee",
-                              padding: "2px 2px",
-                              borderRadius: "2px",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              alert("WIP - Will purge later");
-                            }}
-                          >
-                            PURGE
-                          </div>
-                        </div>
-                      </div>
-                    );
-                    innerContent = (
-                      <div
-                        className="flexColumn"
-                        style={{ width: "100%", alignItems: "flex-start" }}
-                      >
-                        {formatDescription(leader.description).map(
-                          (section, index) => {
-                            return <div key={index}>{section}</div>;
-                          }
-                        )}
-                      </div>
-                    );
-                    break;
                   case "purged":
                     leftLabel = (
                       <div className="flexRow">
@@ -616,9 +565,6 @@ function FactionPanelContent({
             className="flexColumn"
             style={{
               width: "100%",
-              // display: "grid",
-              // gridAutoFlow: "row",
-              // gridTemplateRows: `repeat(${faction.abilities.length}, 1fr)`,
               gap: "4px",
               padding: "4px",
               fontSize: "14px",
