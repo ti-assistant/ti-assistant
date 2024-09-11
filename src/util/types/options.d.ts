@@ -20,7 +20,6 @@ interface OptionUpdateData {
 
 interface Options {
   expansions: Expansion[];
-  "allow-double-council": boolean;
   "display-objective-description"?: boolean;
   "game-variant": GameVariant;
   "map-string"?: string;

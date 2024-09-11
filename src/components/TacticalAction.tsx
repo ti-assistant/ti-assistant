@@ -52,6 +52,7 @@ import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
+import { Optional } from "../util/types/types";
 
 export function TacticalAction({
   activeFactionId,
@@ -603,7 +604,7 @@ export function TacticalAction({
                 borderColor={getFactionColor(
                   currentMartyrs[0] ? factions[currentMartyrs[0]] : undefined
                 )}
-                selectedFaction={currentMartyrs[0] as FactionId | undefined}
+                selectedFaction={currentMartyrs[0] as Optional<FactionId>}
                 factions={orderedMartyrs}
               />
             ) : (

@@ -1,5 +1,6 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildStrategyCards } from "../../data/GameData";
+import { Optional } from "../types/types";
 
 export class SwapStrategyCardsHandler implements Handler {
   constructor(
@@ -40,7 +41,7 @@ export class SwapStrategyCardsHandler implements Handler {
 
     // If faction was going first, find first card and update order.
     // May not work for 3-4 player games.
-    let zeroFaction: string | undefined;
+    let zeroFaction: Optional<string>;
     if (cardOne.order === 0) {
       updates[`strategycards.${cardTwo.id}.order`] = 0;
       zeroFaction = factionOne;
@@ -105,7 +106,7 @@ export class UnswapStrategyCardsHandler implements Handler {
     };
 
     // If faction was going first, find first card and update order.
-    let zeroFaction: string | undefined;
+    let zeroFaction: Optional<string>;
     if (cardOne.order === 0) {
       updates[`strategycards.${cardTwo.id}.order`] = 0;
       zeroFaction = factionOne;

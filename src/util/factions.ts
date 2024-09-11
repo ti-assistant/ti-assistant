@@ -1,11 +1,13 @@
-export function getFactionColor(faction: Faction | undefined) {
+import { Optional } from "./types/types";
+
+export function getFactionColor(faction: Optional<Faction>) {
   if (!faction) {
     return "#555";
   }
   return convertToFactionColor(faction.color);
 }
 
-export function convertToFactionColor(color: string | undefined) {
+export function convertToFactionColor(color: Optional<string>) {
   if (!color) {
     return "#555";
   }
@@ -23,7 +25,7 @@ export function convertToFactionColor(color: string | undefined) {
   return color;
 }
 
-export function getFactionName(faction: Faction | undefined) {
+export function getFactionName(faction: Optional<Faction>) {
   if (!faction) {
     return "Loading Faction...";
   }
@@ -33,7 +35,7 @@ export function getFactionName(faction: Faction | undefined) {
   return faction.name;
 }
 
-export function getFactionShortName(faction: Faction | undefined) {
+export function getFactionShortName(faction: Optional<Faction>) {
   if (!faction) {
     return null;
   }

@@ -1,7 +1,6 @@
 import { BASE_OPTIONS } from "../../server/data/options";
+import { Optional } from "../util/types/types";
 import { useGameDataValue } from "./DataManager";
-
-type Optional<T> = T | undefined;
 
 export function useGameData() {
   return useGameDataValue<GameData>("", {
@@ -71,6 +70,11 @@ export function usePlanets() {
 }
 export function usePlanet(planetId: PlanetId) {
   return useGameDataValue<Optional<Planet>>(`planets.${planetId}`, undefined);
+}
+
+// Includes purged planets.
+export function useAllPlanets() {
+  return useGameDataValue<Planets>("allPlanets", {});
 }
 
 type Relics = Partial<Record<RelicId, Relic>>;

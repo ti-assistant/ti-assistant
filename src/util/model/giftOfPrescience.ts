@@ -1,5 +1,6 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildStrategyCards } from "../../data/GameData";
+import { Optional } from "../types/types";
 
 const GIFT_OF_PRESCIENCE_FACTION = "Naalu Collective" as const;
 
@@ -36,7 +37,7 @@ export class GiftOfPrescienceHandler implements Handler {
 
     // Find the first card for this faction and update it.
     const strategyCards = buildStrategyCards(this.gameData, intl);
-    let minCard: StrategyCard | undefined;
+    let minCard: Optional<StrategyCard>;
     for (const card of Object.values(strategyCards)) {
       if (
         card.faction === this.data.event.faction &&

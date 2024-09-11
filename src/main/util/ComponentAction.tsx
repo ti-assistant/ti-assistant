@@ -64,6 +64,7 @@ import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { updateMapString } from "../../util/map";
 import { applyAllPlanetAttachments } from "../../util/planets";
+import { Optional } from "../../util/types/types";
 import { pluralize } from "../../util/util";
 
 function capitalizeFirstLetter(string: string) {
@@ -542,17 +543,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     attachments ?? {}
   );
 
-  let leftLabel: ReactNode | undefined = (
+  let leftLabel: Optional<ReactNode> = (
     <FormattedMessage
       id="fVAave"
       description="Label for a section containing additional details."
       defaultMessage="Details"
     />
   );
-  let label: ReactNode | undefined;
-  let rightLabel: ReactNode | undefined;
-  let lineColor: string | undefined;
-  let innerContent: ReactNode | undefined;
+  let label: Optional<ReactNode>;
+  let rightLabel: Optional<ReactNode>;
+  let lineColor: Optional<string>;
+  let innerContent: Optional<ReactNode>;
 
   let componentName = currentTurn
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
@@ -964,13 +965,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           );
         }
       );
-      let nanoForgedPlanet: PlanetId | undefined;
+      let nanoForgedPlanet: Optional<Planet>;
       Object.values(planets).forEach((planet) => {
         if ((planet.attachments ?? []).includes("Nano-Forge")) {
-          nanoForgedPlanet = planet.id;
+          nanoForgedPlanet = planet;
         }
       });
       if (nanoForgedPlanet) {
+        ownedNonHomeNonLegendaryPlanets.push(nanoForgedPlanet);
         leftLabel = "Attached to";
       }
       innerContent = (
@@ -995,10 +997,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   removePlanet={() =>
                     toggleAttachment(planetId, "Nano-Forge", false)
                   }
+                  opts={{ hideAttachButton: true }}
                 />
               );
             }}
-            selectedItem={nanoForgedPlanet}
+            selectedItem={nanoForgedPlanet?.id}
             toggleItem={(planetId, add) => {
               toggleAttachment(planetId, "Nano-Forge", add);
             }}
@@ -1018,7 +1021,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           );
         }
       );
-      let terraformedPlanet: PlanetId | undefined;
+      let terraformedPlanet: Optional<PlanetId>;
       Object.values(planets).forEach((planet) => {
         if ((planet.attachments ?? []).includes("Terraform")) {
           terraformedPlanet = planet.id;
@@ -1394,7 +1397,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Mining Initiative": {
       let maxValue = 0;
-      let bestPlanet: PlanetId | undefined;
+      let bestPlanet: Optional<PlanetId>;
       updatedPlanets
         .filter((planet) => {
           if (planet.owner !== factionId) {

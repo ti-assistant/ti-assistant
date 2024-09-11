@@ -1,10 +1,11 @@
+import { Optional } from "./types/types";
 import { getNextIndex } from "./util";
 
 export function getOnDeckFaction(
   state: GameState,
   factions: Partial<Record<FactionId, Faction>>,
   strategyCards: Partial<Record<StrategyCardId, StrategyCard>>
-): Faction | undefined {
+): Optional<Faction> {
   switch (state.phase) {
     case "SETUP":
       // Probably not needed.

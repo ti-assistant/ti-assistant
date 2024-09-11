@@ -3,6 +3,7 @@ import { SymbolX } from "../../icons/svgs";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./FactionSelectRadialMenu.module.scss";
+import { Optional } from "../../util/types/types";
 
 interface FactionSelectRadialMenuProps {
   selectedFaction?: FactionId;
@@ -10,8 +11,8 @@ interface FactionSelectRadialMenuProps {
   fadedFactions?: FactionId[];
   invalidFactions?: FactionId[];
   onSelect: (
-    factionId: FactionId | undefined,
-    prevFaction: FactionId | undefined
+    factionId: Optional<FactionId>,
+    prevFaction: Optional<FactionId>
   ) => void;
   size?: number;
   tag?: ReactNode;

@@ -94,6 +94,9 @@ interface GameData {
   systems?: Partial<Record<SystemId, System>>;
   techs?: Partial<Record<TechId, Tech>>;
   timers?: Record<string, number>;
+
+  // Synthetic values used for specific use cases.
+  allPlanets?: Partial<Record<PlanetId, Planet>>;
 }
 
 interface StoredGameData {

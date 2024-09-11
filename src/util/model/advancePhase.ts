@@ -1,5 +1,6 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
+import { Optional } from "../types/types";
 
 export class AdvancePhaseHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {
@@ -54,7 +55,7 @@ export class AdvancePhaseHandler implements Handler {
       case "STRATEGY": {
         updates[`state.phase`] = "ACTION";
         let minCard = Number.MAX_SAFE_INTEGER;
-        let minFaction: string | undefined;
+        let minFaction: Optional<string>;
         const strategyCards = buildStrategyCards(this.gameData, intl);
         for (const strategyCard of Object.values(strategyCards)) {
           if (strategyCard.faction && strategyCard.order < minCard) {
@@ -74,7 +75,7 @@ export class AdvancePhaseHandler implements Handler {
       case "ACTION": {
         updates[`state.phase`] = "STATUS";
         let minCard = Number.MAX_SAFE_INTEGER;
-        let minFaction: string | undefined;
+        let minFaction: Optional<string>;
         const strategyCards = buildStrategyCards(this.gameData, intl);
         for (const strategyCard of Object.values(strategyCards)) {
           updates[`strategycards.${strategyCard.id}.used`] = "DELETE";

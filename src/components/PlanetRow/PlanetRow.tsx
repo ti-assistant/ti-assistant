@@ -3,13 +3,14 @@ import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
 import { GameIdContext } from "../../context/Context";
+import { useAttachments, useFactions } from "../../context/dataHooks";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";
+import { Optional } from "../../util/types/types";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
-import { useAttachments, useFactions } from "../../context/dataHooks";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -114,7 +115,7 @@ export default function PlanetRow({
   }
 
   const previousOwner = prevOwner ?? planet.owner;
-  let claimed: string | undefined =
+  let claimed: Optional<string> =
     previousOwner !== factionId || opts.showSelfOwned
       ? previousOwner
       : undefined;
@@ -157,6 +158,7 @@ export default function PlanetRow({
               fontSize: "12px",
               bottom: "0px",
               left: "24px",
+              userSelect: "none",
             }}
           >
             Controlled by {claimed}

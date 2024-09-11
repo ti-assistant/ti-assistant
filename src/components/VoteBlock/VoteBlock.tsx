@@ -46,6 +46,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
 import styles from "./VoteBlock.module.scss";
+import { Optional } from "../../util/types/types";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
@@ -64,7 +65,7 @@ function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
 }
 
 export function getTargets(
-  agenda: Agenda | undefined,
+  agenda: Optional<Agenda>,
   factions: Partial<Record<FactionId, Faction>>,
   strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
   planets: Partial<Record<PlanetId, Planet>>,
@@ -190,8 +191,8 @@ export function getTargets(
 }
 
 export function translateOutcome(
-  target: string | undefined,
-  elect: OutcomeType | undefined,
+  target: Optional<string>,
+  elect: Optional<OutcomeType>,
   planets: Partial<Record<PlanetId, Planet>>,
   factions: Partial<Record<FactionId, Faction>>,
   objectives: Partial<Record<ObjectiveId, Objective>>,
@@ -448,7 +449,7 @@ const RIDERS = [
 
 interface VoteBlockProps {
   factionId: FactionId;
-  agenda: Agenda | undefined;
+  agenda: Optional<Agenda>;
 }
 
 export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
@@ -590,7 +591,7 @@ function PredictionSection({
   agenda,
 }: {
   factionId: FactionId;
-  agenda: Agenda | undefined;
+  agenda: Optional<Agenda>;
 }) {
   const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
@@ -729,7 +730,7 @@ function VotingSection({
   agenda,
 }: {
   factionId: FactionId;
-  agenda: Agenda | undefined;
+  agenda: Optional<Agenda>;
 }) {
   const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
@@ -754,7 +755,7 @@ function VotingSection({
   }
 
   function castVotesLocal(
-    target: string | undefined,
+    target: Optional<string>,
     votes: number,
     extraVotes: number
   ) {
@@ -796,10 +797,10 @@ function VotingSection({
 
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
-    const mawEvent: MawOfWorldsEvent | undefined = getPlayedRelic(
+    const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
       actionLog,
       "Maw of Worlds"
-    ) as MawOfWorldsEvent | undefined;
+    ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {
       influence = 0;
     }
@@ -812,10 +813,11 @@ function VotingSection({
   const currentCouncilor = getActionCardTargets(
     currentTurn,
     "Distinguished Councilor"
-  )[0] as FactionId | undefined;
-  const bloodPactUser = getPromissoryTargets(currentTurn, "Blood Pact")[0] as
-    | FactionId
-    | undefined;
+  )[0] as Optional<FactionId>;
+  const bloodPactUser = getPromissoryTargets(
+    currentTurn,
+    "Blood Pact"
+  )[0] as Optional<FactionId>;
   if (factionId === bloodPactUser) {
     castExtraVotes += 4;
   }
@@ -1030,10 +1032,10 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
-    const mawEvent: MawOfWorldsEvent | undefined = getPlayedRelic(
+    const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
       actionLog,
       "Maw of Worlds"
-    ) as MawOfWorldsEvent | undefined;
+    ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {
       influence = 0;
     }

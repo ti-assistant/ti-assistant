@@ -34,6 +34,7 @@ import {
   useGameState,
   useStrategyCards,
 } from "../context/dataHooks";
+import { Optional } from "../util/types/types";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -42,7 +43,7 @@ function ChecksAndBalancesMenu({
   onSelect,
   mobile,
 }: {
-  faction: Faction | undefined;
+  faction: Optional<Faction>;
   factions: Partial<Record<FactionId, Faction>>;
   strategyCards: StrategyCard[];
   onSelect: (factionId: FactionId) => void;
@@ -111,13 +112,13 @@ function QuantumDatahubNode({
   faction,
   strategyCards,
 }: {
-  faction: Faction | undefined;
+  faction: Optional<Faction>;
   strategyCards: StrategyCard[];
 }) {
   const gameId = useContext(GameIdContext);
   const [quantum, setQuantum] = useState<{
-    mainCard: StrategyCardId | undefined;
-    otherCard: StrategyCardId | undefined;
+    mainCard: Optional<StrategyCardId>;
+    otherCard: Optional<StrategyCardId>;
   }>({
     mainCard: undefined,
     otherCard: undefined,
@@ -258,8 +259,8 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const factions = useFactions();
 
   const [quantum, setQuantum] = useState<{
-    mainCard: StrategyCardId | undefined;
-    otherCard: StrategyCardId | undefined;
+    mainCard: Optional<StrategyCardId>;
+    otherCard: Optional<StrategyCardId>;
   }>({
     mainCard: undefined,
     otherCard: undefined,
@@ -685,7 +686,7 @@ export default function StrategyPhase() {
     (a, b) => a.order - b.order
   );
 
-  function gift(factionId: FactionId | undefined) {
+  function gift(factionId: Optional<FactionId>) {
     if (!gameId) {
       return;
     }
@@ -693,7 +694,7 @@ export default function StrategyPhase() {
   }
 
   const giftFaction = Object.values(strategyCards).reduce(
-    (faction: FactionId | undefined, card) => {
+    (faction: Optional<FactionId>, card) => {
       if (card.order === 0 && card.faction !== "Naalu Collective") {
         return card.faction;
       }

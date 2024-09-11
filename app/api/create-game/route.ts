@@ -3,6 +3,7 @@ import { getBaseFactions } from "../../../server/data/factions";
 import { BASE_PLANETS } from "../../../server/data/planets";
 import { createIntl } from "react-intl";
 import { NextResponse } from "next/server";
+import { Optional } from "../../../src/util/types/types";
 
 function makeid(length: number) {
   var result = "";
@@ -94,7 +95,7 @@ export async function POST(req: Request) {
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
   let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
-  let speakerName: FactionId | undefined;
+  let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     const baseFaction = BASE_FACTIONS[faction.id];
     if (index === speaker) {

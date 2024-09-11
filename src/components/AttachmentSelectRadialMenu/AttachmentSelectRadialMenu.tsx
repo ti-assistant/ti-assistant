@@ -11,6 +11,7 @@ import AttachmentIcon from "../AttachmentIcon/AttachmentIcon";
 import Circle from "../Circle/Circle";
 import { getTechTypeColor } from "../../util/techs";
 import { useAttachments } from "../../context/dataHooks";
+import { Optional } from "../../util/types/types";
 
 interface AttachmentSelectRadialMenuProps {
   selectedAttachment?: AttachmentId;
@@ -18,8 +19,8 @@ interface AttachmentSelectRadialMenuProps {
   fadedAttachments?: AttachmentId[];
   hasSkip?: boolean;
   onSelect: (
-    attachmentId: AttachmentId | undefined,
-    prevAttachment: AttachmentId | undefined
+    attachmentId: Optional<AttachmentId>,
+    prevAttachment: Optional<AttachmentId>
   ) => void;
   size?: number;
   tag?: ReactNode;

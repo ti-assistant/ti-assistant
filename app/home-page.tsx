@@ -10,12 +10,13 @@ import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { gameIdString } from "../src/util/strings";
 import styles from "./home-page.module.scss";
+import { Optional } from "../src/util/types/types";
 
 export default function HomePage() {
   const intl = useIntl();
   const [gameId, setGameId] = useState(gameIdString(intl));
 
-  const [currentGame, setCurrentGame] = useState<string | null>(null);
+  const [currentGame, setCurrentGame] = useState<Optional<string>>();
 
   const prevGameId = getGameId();
 

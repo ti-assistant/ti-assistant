@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Optional } from "./types/types";
 
-export function useInterval(callback: () => void, delay: number | null) {
+export function useInterval(callback: () => void, delay: Optional<number>) {
   const savedCallback = useRef<() => void>(() => {});
 
   // Remember the latest callback.

@@ -76,16 +76,17 @@ import {
   useRelics,
   useStrategyCards,
 } from "../context/dataHooks";
+import { Optional } from "../util/types/types";
 
 export function computeVotes(
-  agenda: Agenda | undefined,
+  agenda: Optional<Agenda>,
   currentTurn: ActionLogEntry[],
   numFactions: number
 ) {
   const currentCouncilor = getActionCardTargets(
     currentTurn,
     "Distinguished Councilor"
-  )[0] as FactionId | undefined;
+  )[0] as Optional<FactionId>;
   const bloodPactUsed =
     getPromissoryTargets(currentTurn, "Blood Pact").length > 0;
   const usingPredictive = getActionCardTargets(
@@ -233,7 +234,7 @@ function AgendaDetails() {
   }
 
   let driveSection = null;
-  let driveTheDebate: FactionId | undefined;
+  let driveTheDebate: Optional<FactionId>;
   switch (agenda?.elect) {
     case "Player": {
       driveTheDebate = selectedOutcome as FactionId;
@@ -541,7 +542,7 @@ function AgendaSteps() {
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  let currentAgenda: Agenda | undefined;
+  let currentAgenda: Optional<Agenda>;
   const agendaNum = state?.agendaNum ?? 1;
   const activeAgenda = getActiveAgenda(currentTurn);
   if (activeAgenda) {
@@ -589,7 +590,7 @@ function AgendaSteps() {
     hideAgendaAsync(gameId, agendaId, veto);
   }
 
-  function selectSubAgendaLocal(agendaId: AgendaId | null) {
+  function selectSubAgendaLocal(agendaId: Optional<AgendaId>) {
     if (!gameId) {
       return;
     }
@@ -1215,7 +1216,7 @@ function AgendaSteps() {
                         >
                           <AgendaRow
                             agenda={agenda}
-                            removeAgenda={() => selectSubAgendaLocal(null)}
+                            removeAgenda={() => selectSubAgendaLocal(undefined)}
                           />
                         </LabeledDiv>
                       );
@@ -1224,7 +1225,7 @@ function AgendaSteps() {
                       if (add) {
                         selectSubAgendaLocal(agendaId);
                       } else {
-                        selectSubAgendaLocal(null);
+                        selectSubAgendaLocal(undefined);
                       }
                     }}
                   />
@@ -1389,7 +1390,7 @@ function DictatePolicy({}) {
               : undefined
           )}
           factions={orderedDictators}
-          selectedFaction={currentDictators[0] as FactionId | undefined}
+          selectedFaction={currentDictators[0] as Optional<FactionId>}
         />
       ) : (
         orderedDictators.map((factionId) => {
@@ -1477,7 +1478,7 @@ export default function AgendaPhase() {
   }
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  let currentAgenda: Agenda | undefined;
+  let currentAgenda: Optional<Agenda>;
   const agendaNum = state?.agendaNum ?? 1;
   const activeAgenda = getActiveAgenda(currentTurn);
   if (activeAgenda) {
@@ -1519,7 +1520,7 @@ export default function AgendaPhase() {
     intl
   );
 
-  function selectSpeakerTieBreak(tieBreak: string | null) {
+  function selectSpeakerTieBreak(tieBreak: Optional<string>) {
     if (!gameId) {
       return;
     }
@@ -1814,7 +1815,7 @@ export default function AgendaPhase() {
                   >
                     <SelectableRow
                       itemId={tieBreak}
-                      removeItem={() => selectSpeakerTieBreak(null)}
+                      removeItem={() => selectSpeakerTieBreak(undefined)}
                     >
                       {tieBreak}
                     </SelectableRow>

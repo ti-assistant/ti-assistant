@@ -2,18 +2,18 @@ import { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
 import { GameIdContext } from "../../context/Context";
+import { useFaction, useTechs } from "../../context/dataHooks";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
   removeStartingTechAsync,
 } from "../../dynamic/api";
 import { getTechColor } from "../../util/techs";
+import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
-import FactionIcon from "../FactionIcon/FactionIcon";
-import { useFaction, useTechs } from "../../context/dataHooks";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -51,13 +51,6 @@ export default function StartingComponents({
 
   const startswith = faction.startswith;
 
-  const orderedPlanets = (startswith.planets ?? []).sort((a, b) => {
-    if (a > b) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
   const orderedUnits = Object.entries(startswith.units).sort(
     (a, b) => unitOrder.indexOf(a[0]) - unitOrder.indexOf(b[0])
   );
@@ -130,22 +123,8 @@ export default function StartingComponents({
         })
     : [];
 
-  function addTech(techId: TechId) {
-    if (!gameId) {
-      return;
-    }
-    chooseStartingTechAsync(gameId, factionId, techId);
-  }
-
-  function removeTech(techId: TechId) {
-    if (!gameId) {
-      return;
-    }
-    removeStartingTechAsync(gameId, factionId, techId);
-  }
-
   function selectSubFaction(subFaction: SubFaction) {
-    if (!gameId || factionId !== "Council Keleres") {
+    if (factionId !== "Council Keleres") {
       return;
     }
     chooseSubFactionAsync(gameId, "Council Keleres", subFaction);
@@ -218,7 +197,9 @@ export default function StartingComponents({
               <SelectableRow
                 key={tech.id}
                 itemId={tech.id}
-                removeItem={() => removeTech(tech.id)}
+                removeItem={() =>
+                  removeStartingTechAsync(gameId, factionId, tech.id)
+                }
                 style={{
                   color: getTechColor(tech),
                   fontSize: "14px",
@@ -238,7 +219,6 @@ export default function StartingComponents({
                 fontFamily: "Myriad Pro",
                 color: getTechColor(tech),
                 fontSize: "14px",
-                // paddingLeft: "4px",
               }}
             >
               {tech.name}
@@ -258,7 +238,9 @@ export default function StartingComponents({
                 "Label on a hover menu used to select starting techs.",
               defaultMessage: "Choose Starting Tech",
             })}
-            selectTech={(tech) => addTech(tech.id)}
+            selectTech={(tech) =>
+              chooseStartingTechAsync(gameId, factionId, tech.id)
+            }
           />
         </div>
       ) : null}

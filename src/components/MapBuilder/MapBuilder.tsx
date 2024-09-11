@@ -3,6 +3,7 @@ import { useDrag, useDrop } from "react-dnd";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
 import { isHomeSystem, validSystemNumber } from "../../util/map";
 import styles from "./MapBuilder.module.scss";
+import { Optional } from "../../util/types/types";
 
 interface Cube {
   q: number;
@@ -121,7 +122,7 @@ export function SystemImage({
   blockDrag,
 }: {
   index: number;
-  systemNumber: string | undefined;
+  systemNumber: Optional<string>;
   onDrop?: (dragItem: any, dropItem: any) => void;
   blockDrag?: boolean;
 }) {
@@ -146,7 +147,6 @@ export function SystemImage({
         if (!onDrop) {
           return;
         }
-        console.log("Drop", index);
         onDrop(dragItem, {
           systemNumber,
           index,
@@ -308,7 +308,7 @@ export function SystemImage({
     );
   }
 
-  let classNames: string | undefined = "";
+  let classNames: Optional<string> = "";
   if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
     classNames = getRotationClassFromNumber(
       parseInt(systemNumber.split("A")[1] ?? "0")

@@ -1,25 +1,33 @@
-import { useContext, useMemo } from "react";
+import {
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IntlShape, useIntl } from "react-intl";
-import { LogEntryElement } from "./components/LogEntry";
-import { GameIdContext } from "./context/Context";
-import { buildCompleteGameData } from "./data/GameData";
-import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "./util/api/actionLog";
-import { getHandler } from "./util/api/gameLog";
-import { updateGameData } from "./util/api/handler";
-import { fetcher } from "./util/api/util";
-import { Loader } from "./Loader";
-import { useActionLog, useGameData } from "./context/dataHooks";
-import { updateActionLog } from "./util/api/update";
+import { LogEntryElement, LogEntryElementProps } from "../LogEntry";
+import { GameIdContext } from "../../context/Context";
+import { buildCompleteGameData } from "../../data/GameData";
+import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "../../util/api/actionLog";
+import { getHandler } from "../../util/api/gameLog";
+import { updateGameData } from "../../util/api/handler";
+import { fetcher } from "../../util/api/util";
+import { Loader } from "../../Loader";
+import { useActionLog, useGameData } from "../../context/dataHooks";
+import { updateActionLog } from "../../util/api/update";
+import { Optional } from "../../util/types/types";
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
 };
-import("../server/data/factions").then((module) => {
+import("../../../server/data/factions").then((module) => {
   getBaseFactions = module.getBaseFactions;
 });
 
 let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
-import("../server/data/planets").then((module) => {
+import("../../../server/data/planets").then((module) => {
   BASE_PLANETS = module.BASE_PLANETS;
 });
 
@@ -104,7 +112,7 @@ function buildInitialGameData(
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
   let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
-  let speakerName: FactionId | undefined;
+  let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     if (index === setupData.speaker) {
       speakerName = faction.id;
@@ -199,10 +207,18 @@ function buildSetupGameData(gameData: GameData): {
   };
 }
 
+type WithKey<T> = T & { key: number };
+
 export function GameLog({}) {
   const storedActionLog = useActionLog();
   const intl = useIntl();
   const gameData = useGameData();
+
+  const worker = useRef<Worker>();
+
+  const [entryData, setEntryData] = useState<WithKey<LogEntryElementProps>[]>(
+    []
+  );
 
   const reversedActionLog = useMemo(() => {
     const actionLog = storedActionLog ?? [];
@@ -217,11 +233,31 @@ export function GameLog({}) {
     return buildInitialGameData(setupGameData, intl);
   }, [setupGameData, intl]);
 
-  if (reversedActionLog.length === 0) {
+  useEffect(() => {
+    worker.current = new Worker(
+      new URL("./game-log.worker.tsx", import.meta.url),
+      {
+        name: "game-log",
+        type: "module",
+      }
+    );
+
+    worker.current.postMessage({
+      reversedActionLog,
+      initialGameData,
+    });
+
+    worker.current.onmessage = (event) => {
+      setEntryData(event.data.entryData);
+    };
+    return () => {
+      worker.current?.terminate();
+    };
+  }, [initialGameData, reversedActionLog]);
+
+  if (reversedActionLog.length === 0 || entryData.length === 0) {
     return <Loader />;
   }
-
-  const dynamicGameData = structuredClone(initialGameData);
 
   return (
     <div
@@ -234,80 +270,16 @@ export function GameLog({}) {
         alignItems: "flex-start",
       }}
     >
-      {reversedActionLog.map((logEntry, index) => {
-        let startTimeSeconds = logEntry.gameSeconds ?? 0;
-        let endTimeSeconds = 0;
-        const handler = getHandler(dynamicGameData, logEntry.data);
-        if (!handler) {
-          return null;
-        }
-        updateGameData(dynamicGameData, handler.getUpdates());
-        switch (logEntry.data.action) {
-          case "ADVANCE_PHASE": {
-            for (let i = index + 1; i < reversedActionLog.length; i++) {
-              const nextEntry = reversedActionLog[i];
-              if (!nextEntry) {
-                break;
-              }
-              if (PHASE_BOUNDARIES.includes(nextEntry.data.action)) {
-                endTimeSeconds = nextEntry.gameSeconds ?? 0;
-                break;
-              }
-            }
-            break;
-          }
-          case "SELECT_ACTION": {
-            // Set to end of previous turn.
-            for (let i = index - 1; i > 0; i--) {
-              const prevEntry = reversedActionLog[i];
-              if (!prevEntry) {
-                break;
-              }
-              if (TURN_BOUNDARIES.includes(prevEntry.data.action)) {
-                startTimeSeconds = prevEntry.gameSeconds ?? 0;
-                break;
-              }
-            }
-            // Intentional fall-through.
-          }
-          case "REVEAL_AGENDA": {
-            for (let i = index + 1; i < reversedActionLog.length; i++) {
-              const nextEntry = reversedActionLog[i];
-              if (!nextEntry) {
-                break;
-              }
-              if (TURN_BOUNDARIES.includes(nextEntry.data.action)) {
-                endTimeSeconds = nextEntry.gameSeconds ?? 0;
-                break;
-              }
-            }
-            break;
-          }
-          case "ASSIGN_STRATEGY_CARD": {
-            for (let i = index - 1; i > 0; i--) {
-              const prevEntry = reversedActionLog[i];
-              if (!prevEntry) {
-                break;
-              }
-              if (TURN_BOUNDARIES.includes(prevEntry.data.action)) {
-                startTimeSeconds = prevEntry.gameSeconds ?? 0;
-                endTimeSeconds = logEntry.gameSeconds ?? 0;
-                break;
-              }
-            }
-          }
-        }
-        return (
-          <LogEntryElement
-            key={logEntry.timestampMillis}
-            logEntry={logEntry}
-            currRound={dynamicGameData.state.round}
-            activePlayer={dynamicGameData.state.activeplayer}
-            startTimeSeconds={startTimeSeconds}
-            endTimeSeconds={endTimeSeconds}
-          />
-        );
-      })}
+      {entryData.map((entry) => (
+        <LogEntryElement
+          key={entry.key}
+          logEntry={entry.logEntry}
+          activePlayer={entry.activePlayer}
+          currRound={entry.currRound}
+          startTimeSeconds={entry.startTimeSeconds}
+          endTimeSeconds={entry.endTimeSeconds}
+        />
+      ))}
     </div>
   );
 }

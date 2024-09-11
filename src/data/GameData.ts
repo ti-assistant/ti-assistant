@@ -104,6 +104,8 @@ export function buildCompleteGameData(
     strategycards: buildStrategyCards(storedGameData, intl),
     systems: buildSystems(storedGameData),
     techs: buildTechs(storedGameData, intl),
+
+    allPlanets: buildPlanets(storedGameData, true),
   };
 
   return completeGameData;
@@ -460,7 +462,10 @@ function validateMapString(mapString: string) {
   return true;
 }
 
-export function buildPlanets(storedGameData: StoredGameData) {
+export function buildPlanets(
+  storedGameData: StoredGameData,
+  includePurged?: boolean
+) {
   const gamePlanets = storedGameData.planets ?? {};
   const gameFactions = storedGameData.factions ?? {};
   const gameOptions = storedGameData.options;
@@ -542,7 +547,11 @@ export function buildPlanets(storedGameData: StoredGameData) {
       }
     }
 
-    if (gamePlanets[planet.id] && gamePlanets[planet.id]?.state === "PURGED") {
+    if (
+      !includePurged &&
+      gamePlanets[planet.id] &&
+      gamePlanets[planet.id]?.state === "PURGED"
+    ) {
       return;
     }
 

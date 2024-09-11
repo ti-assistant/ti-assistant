@@ -13,6 +13,7 @@ import { BASE_GAME_DATA } from "../../server/data/data";
 import { getBaseData } from "../data/baseData";
 import DBConnection from "../data/DBConnection";
 import { buildCompleteGameData } from "../data/gameDataBuilder";
+import { Optional } from "../util/types/types";
 
 export default class DataManager {
   private static gameId: string;
@@ -37,7 +38,7 @@ export default class DataManager {
     return this.instance.listen(gameId);
   }
 
-  public static getValue<Type>(path: string): Type | undefined {
+  public static getValue<Type>(path: string): Optional<Type> {
     if (!this.instance) {
       return undefined;
     }
@@ -255,6 +256,9 @@ interface Subscriber {
 
 function getValueAtPath<Type>(currentData: GameData, path: string) {
   const pathSections = path.split(".");
+  if (path === "") {
+    return currentData as Type;
+  }
   let dataRef: any = currentData;
   for (const section of pathSections) {
     if (!dataRef[section]) {

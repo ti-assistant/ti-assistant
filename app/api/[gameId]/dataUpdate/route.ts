@@ -102,6 +102,7 @@ import {
   PlayAdjudicatorBaalHandler,
 } from "../../../../src/util/model/playAdjudicatorBaal";
 import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
+import { Optional } from "../../../../src/util/types/types";
 
 export async function POST(
   req: Request,
@@ -302,7 +303,7 @@ function updateInTransaction(
     );
 
     // TODO: Validate actions.
-    let handler: Handler | undefined;
+    let handler: Optional<Handler>;
     // let updates: UpdateData<any> = {};
     switch (data.action) {
       case "ADD_TECH": {

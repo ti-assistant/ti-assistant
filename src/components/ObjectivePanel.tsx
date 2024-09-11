@@ -35,6 +35,7 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
+import { Optional } from "../util/types/types";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -436,9 +437,8 @@ export default function ObjectivePanel() {
   const numRows = orderedFactionIds.length + 1;
 
   const custodiansToken = (objectives ?? {})["Custodians Token"];
-  const custodiansScorer = (custodiansToken?.scorers ?? [])[0] as
-    | FactionId
-    | undefined;
+  const custodiansScorer = (custodiansToken?.scorers ??
+    [])[0] as Optional<FactionId>;
 
   const supportForTheThrone = (objectives ?? {})["Support for the Throne"];
 
@@ -1128,7 +1128,7 @@ export default function ObjectivePanel() {
                 {orderedFactionIds.map((id) => {
                   const scorers =
                     (supportForTheThrone?.keyedScorers ?? {})[id] ?? [];
-                  const scorer = scorers[0] as FactionId | undefined;
+                  const scorer = scorers[0] as Optional<FactionId>;
                   return (
                     <div key={id}>
                       <FactionSelectRadialMenu
@@ -1887,7 +1887,7 @@ export default function ObjectivePanel() {
               {orderedFactionIds.map((factionId) => {
                 const scorers =
                   (supportForTheThrone?.keyedScorers ?? {})[factionId] ?? [];
-                const scorer = scorers[0] as FactionId | undefined;
+                const scorer = scorers[0] as Optional<FactionId>;
                 return (
                   <div
                     key={factionId}
@@ -2313,7 +2313,7 @@ function SimpleScorable({
   info,
 }: {
   gameId: string;
-  objective: Objective | undefined;
+  objective: Optional<Objective>;
   orderedFactionNames: FactionId[];
   numScorers?: number;
   info?: string;
@@ -2362,7 +2362,7 @@ function SimpleScorable({
         {objective.name}
         <div className="flexRow">
           <FactionSelectRadialMenu
-            selectedFaction={objectiveScorers[0] as FactionId | undefined}
+            selectedFaction={objectiveScorers[0] as Optional<FactionId>}
             factions={orderedFactionNames}
             onSelect={(factionId) => {
               if (!gameId) {
@@ -2388,7 +2388,7 @@ function SimpleScorable({
           {/* TODO: Only show this if The Codex has been gained */}
           {numScorers > 1 && objectiveScorers[0] ? (
             <FactionSelectRadialMenu
-              selectedFaction={objectiveScorers[1] as FactionId | undefined}
+              selectedFaction={objectiveScorers[1] as Optional<FactionId>}
               factions={orderedFactionNames}
               onSelect={(factionId) => {
                 if (!gameId) {
@@ -2408,7 +2408,7 @@ function SimpleScorable({
               tag={
                 <div
                   className="popupIcon hoverParent"
-                  style={{ paddingRight: "8px", color: "#999" }}
+                  style={{ marginLeft: "0px", color: "#999" }}
                   onClick={() => setShowInfoModal(true)}
                 >
                   &#x24D8;
@@ -2416,7 +2416,7 @@ function SimpleScorable({
               }
               borderColor={
                 objectiveScorers[1]
-                  ? getFactionColor((factions ?? {})[objectiveScorers[1]])
+                  ? getFactionColor(factions[objectiveScorers[1]])
                   : undefined
               }
             />
