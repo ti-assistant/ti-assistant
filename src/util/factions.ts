@@ -46,7 +46,7 @@ export function getFactionShortName(faction: Optional<Faction>) {
 }
 
 export function computeVPs(
-  factions: Partial<Record<FactionId, Faction>>,
+  factions: Partial<Record<FactionId, GameFaction>>,
   factionId: FactionId,
   objectives: Partial<Record<ObjectiveId, Objective>>
 ) {

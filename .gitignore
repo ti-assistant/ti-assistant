@@ -5,6 +5,7 @@ build/*
 .next/*
 
 server/twilight-imperium-360307-*.json
+server/completed-games.json
 
 # Firebase Emulator files
 .firebaserc
