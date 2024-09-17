@@ -5,6 +5,46 @@ import { createIntlCache, createIntl } from "react-intl";
 import { getLocale, getMessages } from "../../src/util/server";
 import { buildCompleteGameData } from "../../src/data/GameData";
 import { getFullActionLog } from "../../server/util/fetch";
+import { getBaseData } from "../../src/data/baseData";
+
+interface StrategyCardPick {
+  card: StrategyCardId;
+  faction: FactionId;
+}
+
+interface ProcessedRound {
+  cardPicks: StrategyCardPick[];
+}
+
+interface ProcessedLog {
+  rounds: ProcessedRound[];
+}
+
+function processLog(actionLog: ActionLogEntry[]) {
+  const processedLog: ProcessedLog = {
+    rounds: [],
+  };
+  let processedRound: ProcessedRound = { cardPicks: [] };
+  for (const logEntry of actionLog) {
+    switch (logEntry.data.action) {
+      case "ASSIGN_STRATEGY_CARD":
+        processedRound.cardPicks.push({
+          card: logEntry.data.event.id,
+          faction: logEntry.data.event.assignedTo,
+        });
+        break;
+      case "ADVANCE_PHASE":
+        if (logEntry.data.event.state?.phase === "STATUS") {
+          processedLog.rounds.push(processedRound);
+          processedRound = { cardPicks: [] };
+        }
+    }
+  }
+  if (processedRound.cardPicks.length > 0) {
+    processedLog.rounds.push(processedRound);
+  }
+  return processedLog;
+}
 
 export default async function Page({}) {
   const locale = getLocale();
@@ -93,6 +133,18 @@ export default async function Page({}) {
   //   fs.readFileSync("./action-logs.json", "utf8")
   // );
 
+  const processedLogs: Record<string, ProcessedLog> = JSON.parse(
+    fs.readFileSync("./server/processed-logs.json", "utf8")
+  );
+
+  // const processedLogs: Record<string, ProcessedLog> = {};
+  // Object.entries(actionLogs).forEach(([gameId, actionLog]) => {
+  //   const processedLog = processLog(actionLog.toReversed());
+  //   processedLogs[gameId] = processedLog;
+  // });
+
+  // console.log("Log", processLog(actionLogs["n5L5Vz"] as ActionLogEntry[]));
+
   // const actionLogs: Record<string, ActionLogEntry[]> = {};
 
   // const myAsyncLoopFunction = async (array: string[]) => {
@@ -122,7 +174,7 @@ export default async function Page({}) {
   // });
 
   // try {
-  //   fs.writeFileSync("./action-logs.json", JSON.stringify(actionLogs));
+  //   fs.writeFileSync("./processed-logs.json", JSON.stringify(processedLogs));
   //   // file written successfully
   // } catch (err) {
   //   console.error(err);
@@ -133,7 +185,15 @@ export default async function Page({}) {
   //   totalGameData[gameId] = buildCompleteGameData(data, intl);
   // });
 
+  const baseData = getBaseData(intl);
+
   // TODO: Figure out what to do with action logs.
-  const actionLogs: Record<string, ActionLogEntry[]> = {};
-  return <StatsPage completedGames={completedGames} actionLogs={actionLogs} />;
+  // const actionLogs: Record<string, ActionLogEntry[]> = {};
+  return (
+    <StatsPage
+      completedGames={completedGames}
+      baseData={baseData}
+      processedLogs={processedLogs}
+    />
+  );
 }

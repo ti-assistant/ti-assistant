@@ -2,6 +2,7 @@
 
 import {
   Dispatch,
+  Fragment,
   ReactNode,
   SetStateAction,
   useEffect,
@@ -9,19 +10,18 @@ import {
 } from "react";
 import { useIntl } from "react-intl";
 import { getBaseObjectives } from "../../server/data/objectives";
-import { getBaseTechs } from "../../server/data/techs";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import TechIcon from "../../src/components/TechIcon/TechIcon";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
-import { buildObjectives } from "../../src/data/GameData";
 import { computeVPs } from "../../src/util/factions";
 import { Optional } from "../../src/util/types/types";
 import LabeledLine from "../../src/components/LabeledLine/LabeledLine";
 import GenericModal from "../../src/components/GenericModal/GenericModal";
 import { CollapsibleSection } from "../../src/components/CollapsibleSection";
+import { buildObjectives } from "../../src/data/gameDataBuilder";
 
 function orderFactionsByVP(
   factions: Partial<Record<FactionId, GameFaction>>,
@@ -71,6 +71,40 @@ function FilterButton<T extends string | number>({
   );
 }
 
+function CountButton<T extends string | number>({
+  filter,
+  filters,
+  setFilters,
+}: {
+  filter: T;
+  filters: T;
+  setFilters: (value: T) => void;
+}) {
+  return (
+    <Toggle
+      selected={filters === filter}
+      toggleFn={(prevValue) => {
+        setFilters(filter);
+      }}
+    >
+      {filter}
+    </Toggle>
+  );
+}
+
+interface StrategyCardPick {
+  card: StrategyCardId;
+  faction: FactionId;
+}
+
+interface ProcessedRound {
+  cardPicks: StrategyCardPick[];
+}
+
+interface ProcessedLog {
+  rounds: ProcessedRound[];
+}
+
 type GameFilter =
   | "BASE_GAME"
   | "PROPHECY_OF_KINGS"
@@ -83,7 +117,7 @@ function applyFilters(
   games: Record<string, StoredGameData>,
   filters: {
     expansions: Set<Expansion>;
-    playerCounts: Set<number>;
+    playerCount: number;
     victoryPoints: Set<number>;
   }
 ) {
@@ -106,7 +140,7 @@ function applyFilters(
     }
 
     // Player Count filter
-    if (!filters.playerCounts.has(Object.keys(game.factions).length)) {
+    if (filters.playerCount !== Object.keys(game.factions).length) {
       return;
     }
 
@@ -123,10 +157,12 @@ function applyFilters(
 
 export default function StatsPage({
   completedGames,
-  actionLogs,
+  baseData,
+  processedLogs,
 }: {
   completedGames: Record<string, StoredGameData>;
-  actionLogs: Record<string, ActionLogEntry[]>;
+  baseData: BaseData;
+  processedLogs: Record<string, ProcessedLog>;
 }) {
   const [expansions, setExpansions] = useState<Set<Expansion>>(
     new Set(["BASE", "POK", "CODEX ONE", "CODEX TWO", "CODEX THREE"])
@@ -136,16 +172,17 @@ export default function StatsPage({
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(
     new Set([10])
   );
+  const [playerCount, setPlayerCount] = useState<number>(6);
 
   const [localGames, setLocalGames] = useState(
-    applyFilters(completedGames, { expansions, playerCounts, victoryPoints })
+    applyFilters(completedGames, { expansions, playerCount, victoryPoints })
   );
 
   useEffect(() => {
     setLocalGames(
-      applyFilters(completedGames, { expansions, playerCounts, victoryPoints })
+      applyFilters(completedGames, { expansions, playerCount, victoryPoints })
     );
-  }, [completedGames, expansions, playerCounts, victoryPoints]);
+  }, [completedGames, expansions, playerCount, victoryPoints]);
 
   // interface winGames {
   //   wins: number;
@@ -204,6 +241,7 @@ export default function StatsPage({
           height: "calc(100dvh - 60px)",
           marginTop: "60px",
           paddingTop: "4px",
+          fontFamily: "Source Sans",
           // justifyContent: "flex-start",
           // alignItems: "flex-start",
           // overflowY: "scroll",
@@ -244,35 +282,35 @@ export default function StatsPage({
             </div>
             <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
               Players:
-              <FilterButton
-                filters={playerCounts}
+              <CountButton
+                filters={playerCount}
                 filter={3}
-                setFilters={setPlayerCounts}
+                setFilters={setPlayerCount}
               />
-              <FilterButton
-                filters={playerCounts}
+              <CountButton
+                filters={playerCount}
                 filter={4}
-                setFilters={setPlayerCounts}
+                setFilters={setPlayerCount}
               />
-              <FilterButton
-                filters={playerCounts}
+              <CountButton
+                filters={playerCount}
                 filter={5}
-                setFilters={setPlayerCounts}
+                setFilters={setPlayerCount}
               />
-              <FilterButton
-                filters={playerCounts}
+              <CountButton
+                filters={playerCount}
                 filter={6}
-                setFilters={setPlayerCounts}
+                setFilters={setPlayerCount}
               />
-              <FilterButton
-                filters={playerCounts}
+              <CountButton
+                filters={playerCount}
                 filter={7}
-                setFilters={setPlayerCounts}
+                setFilters={setPlayerCount}
               />
-              <FilterButton
-                filters={playerCounts}
+              <CountButton
+                filters={playerCount}
                 filter={8}
-                setFilters={setPlayerCounts}
+                setFilters={setPlayerCount}
               />
             </div>
             <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
@@ -280,6 +318,11 @@ export default function StatsPage({
               <FilterButton
                 filters={victoryPoints}
                 filter={10}
+                setFilters={setVictoryPoints}
+              />
+              <FilterButton
+                filters={victoryPoints}
+                filter={12}
                 setFilters={setVictoryPoints}
               />
               <FilterButton
@@ -297,8 +340,18 @@ export default function StatsPage({
               justifyContent: "space-evenly",
             }}
           >
-            <GameDataSection games={localGames} actionLogs={actionLogs} />
-            <DetailsSection games={localGames} actionLogs={actionLogs} />
+            <GameDataSection
+              games={localGames}
+              baseData={baseData}
+              actionLogs={{}}
+            />
+            <DetailsSection
+              games={localGames}
+              baseData={baseData}
+              actionLogs={{}}
+              processedLogs={processedLogs}
+              playerCount={playerCount}
+            />
             {/* <FactionsSection games={localGames} /> */}
           </div>
         </div>
@@ -309,30 +362,58 @@ export default function StatsPage({
 
 function DetailsSection({
   games,
+  baseData,
   actionLogs,
+  processedLogs,
+  playerCount,
 }: {
   games: Record<string, StoredGameData>;
+  baseData: BaseData;
   actionLogs: Record<string, ActionLogEntry[]>;
+  processedLogs: Record<string, ProcessedLog>;
+  playerCount: number;
 }) {
   const [tab, setTab] = useState("Factions");
 
   let tabContent: Optional<ReactNode>;
 
   switch (tab) {
+    case "Strategy Cards":
+      tabContent = (
+        <StrategyCardSection
+          games={games}
+          baseData={baseData}
+          processedLogs={processedLogs}
+          playerCount={playerCount}
+        />
+      );
+      break;
     case "Techs":
-      tabContent = <TechsSection games={games} />;
+      tabContent = <TechsSection games={games} baseData={baseData} />;
       break;
     case "Factions":
-      tabContent = <FactionsSection games={games} actionLogs={actionLogs} />;
+      tabContent = (
+        <FactionsSection
+          games={games}
+          baseData={baseData}
+          actionLogs={actionLogs}
+        />
+      );
       break;
     case "Objectives":
-      tabContent = <ObjectivesSection games={games} />;
+      tabContent = <ObjectivesSection games={games} baseData={baseData} />;
       break;
   }
 
   return (
     <div className="flexColumn" style={{ paddingBottom: "8px" }}>
       <div className="flexRow">
+        <button
+          className={tab === "Strategy Cards" ? "selected" : ""}
+          onClick={() => setTab("Strategy Cards")}
+        >
+          Strategy Cards
+        </button>
         <button
           className={tab === "Factions" ? "selected" : ""}
           onClick={() => setTab("Factions")}
@@ -360,15 +441,19 @@ function DetailsSection({
 interface TechInfo {
   games: number;
   wins: number;
+  histogram: Histogram;
+  points: number;
 }
 
 interface FactionInfo {
   wins: number;
   games: number;
   points: number;
+  histogram: Histogram;
   techs: Partial<Record<TechId, TechInfo>>;
   techGames: number;
   techWins: number;
+  techPoints: number;
   techPaths: TechEntry[][];
   objectives: Partial<Record<ObjectiveId, ObjectiveInfo>>;
   objectiveGames: number;
@@ -453,24 +538,247 @@ function getMostCommonTechPath(techPaths: TechEntry[][]) {
   return result;
 }
 
+interface StrategyCardInfo {
+  rounds: {
+    pickCount: number;
+    winCount: number;
+  }[][];
+}
+
+function StrategyCardSection({
+  games,
+  baseData,
+  processedLogs,
+  playerCount,
+}: {
+  games: Record<string, StoredGameData>;
+  baseData: BaseData;
+  processedLogs: Record<string, ProcessedLog>;
+  playerCount: number;
+}) {
+  const strategyCardInfo: Partial<Record<StrategyCardId, StrategyCardInfo>> =
+    {};
+  const numRounds: Record<number, number> = {};
+  Object.entries(games).forEach(([gameId, game]) => {
+    const objectives = buildObjectives(game, baseData);
+
+    const factions = orderFactionsByVP(game.factions, objectives);
+
+    const winner = factions[0];
+    const winnerId = (winner ?? [])[0] ?? "Vuil'raith Cabal";
+    const log = processedLogs[gameId];
+    if (!log) {
+      return;
+    }
+
+    let roundNum = 1;
+    for (const round of log.rounds) {
+      let roundCount = numRounds[roundNum] ?? 0;
+      roundCount++;
+      let pickOrder = 1;
+      for (const card of round.cardPicks) {
+        if (!card.card) {
+          roundCount--;
+          break;
+        }
+        const info = strategyCardInfo[card.card] ?? { rounds: [] };
+        const roundInfo = info.rounds[roundNum] ?? [];
+        const pickRate = roundInfo[pickOrder] ?? { pickCount: 0, winCount: 0 };
+
+        pickRate.pickCount++;
+        if (card.faction === winnerId) {
+          pickRate.winCount++;
+        }
+        roundInfo[pickOrder] = pickRate;
+        info.rounds[roundNum] = roundInfo;
+        strategyCardInfo[card.card] = info;
+        pickOrder++;
+      }
+      numRounds[roundNum] = roundCount;
+      roundNum++;
+    }
+  });
+
+  const factionIndexes: number[] = [];
+  const numCards =
+    playerCount === 3 || playerCount === 4 ? playerCount * 2 : playerCount;
+  for (let i = 1; i <= numCards; i++) {
+    factionIndexes.push(i);
+  }
+
+  const orderedCards = Object.entries(strategyCardInfo).sort(
+    ([aCard, _], [bCard, __]) => {
+      switch (bCard) {
+        case "Leadership":
+          return 1;
+        case "Diplomacy":
+          switch (aCard) {
+            case "Leadership":
+              return -1;
+          }
+          return 1;
+        case "Politics":
+          switch (aCard) {
+            case "Leadership":
+            case "Diplomacy":
+              return -1;
+          }
+          return 1;
+        case "Construction":
+          switch (aCard) {
+            case "Leadership":
+            case "Diplomacy":
+            case "Politics":
+              return -1;
+          }
+          return 1;
+        case "Trade":
+          switch (aCard) {
+            case "Leadership":
+            case "Diplomacy":
+            case "Politics":
+            case "Construction":
+              return -1;
+          }
+          return 1;
+        case "Warfare":
+          switch (aCard) {
+            case "Leadership":
+            case "Diplomacy":
+            case "Politics":
+            case "Construction":
+            case "Trade":
+              return -1;
+          }
+          return 1;
+        case "Technology":
+          switch (aCard) {
+            case "Leadership":
+            case "Diplomacy":
+            case "Politics":
+            case "Construction":
+            case "Trade":
+            case "Warfare":
+              return -1;
+          }
+          return 1;
+        case "Imperial":
+          return -1;
+      }
+      return 0;
+    }
+  );
+
+  return (
+    <div className="flexColumn">
+      {orderedCards.map(([card, info]) => {
+        return (
+          <LabeledDiv key={card} label={card}>
+            <table style={{ borderSpacing: "6px" }}>
+              <thead>
+                <tr>
+                  <th style={{ fontWeight: "normal" }}></th>
+                  {factionIndexes.map((index) => {
+                    return (
+                      <th key={index} style={{ fontWeight: "normal" }}>
+                        {index === 1
+                          ? "1st"
+                          : index === 2
+                          ? "2nd"
+                          : index === 3
+                          ? "3rd"
+                          : `${index}th`}
+                      </th>
+                    );
+                  })}
+                  <th style={{ fontWeight: "normal" }}>Unpicked</th>
+                  <th style={{ fontWeight: "normal" }}>Win Rate</th>
+                </tr>
+              </thead>
+              {info.rounds.map((round, index) => {
+                let totalRounds = numRounds[index] ?? 0;
+                if (totalRounds < 5) {
+                  return null;
+                }
+                let remainingRounds = numRounds[index] ?? 0;
+                let winRounds = 0;
+                return (
+                  <tr key={index}>
+                    <td>Round {index}</td>
+                    {factionIndexes.map((index) => {
+                      const pickRate = round[index];
+                      winRounds += pickRate?.winCount ?? 0;
+                      remainingRounds -= pickRate?.pickCount ?? 0;
+                      if (!pickRate) {
+                        return (
+                          <td
+                            key={index}
+                            style={{
+                              textAlign: "right",
+                              fontFamily: "Source Sans",
+                            }}
+                          >
+                            0%
+                          </td>
+                        );
+                      }
+                      return (
+                        <td
+                          key={index}
+                          style={{
+                            textAlign: "right",
+                            fontFamily: "Source Sans",
+                          }}
+                        >
+                          {/* {Math.floor(
+                            (pickRate.winCount / pickRate.pickCount) * 100
+                          )}
+                          %  */}
+                          {Math.round((pickRate.pickCount / totalRounds) * 100)}
+                          %
+                        </td>
+                      );
+                    })}
+                    <td
+                      style={{ textAlign: "center", fontFamily: "Source Sans" }}
+                    >
+                      {Math.round((remainingRounds / totalRounds) * 100)}%
+                    </td>
+                    <td
+                      style={{ textAlign: "center", fontFamily: "Source Sans" }}
+                    >
+                      {Math.round((winRounds / totalRounds) * 100)}%
+                    </td>
+                  </tr>
+                );
+              })}
+            </table>
+          </LabeledDiv>
+        );
+      })}
+    </div>
+  );
+}
+
 function FactionsSection({
   games,
+  baseData,
   actionLogs,
 }: {
   games: Record<string, StoredGameData>;
+  baseData: BaseData;
   actionLogs: Record<string, ActionLogEntry[]>;
 }) {
   const [shownModal, setShownModal] = useState<Optional<FactionId>>();
   const [objectiveType, setObjectiveType] =
     useState<ObjectiveType>("STAGE ONE");
 
-  const intl = useIntl();
-  const baseObjectives = getBaseObjectives(intl);
+  const baseObjectives = baseData.objectives;
   const factionInfo: Partial<Record<FactionId, FactionInfo>> = {};
   let techGames = 0;
   Object.entries(games).forEach(([gameId, game]) => {
     const factions = game.factions;
-    const objectives = buildObjectives(game, intl);
+    const objectives = buildObjectives(game, baseData);
 
     const isTechGame = Object.values(factions).reduce((isTechGame, faction) => {
       for (const techId of Object.keys(faction.techs) as TechId[]) {
@@ -503,22 +811,37 @@ function FactionsSection({
           techs: {},
           techGames: 0,
           techWins: 0,
+          techPoints: 0,
           techPaths: [],
           objectives: {},
           objectiveGames: 0,
+          histogram: {},
         };
       }
+      const points = Math.min(
+        10,
+        computeVPs(factions, factionId as FactionId, objectives)
+      );
 
       if (isTechGame) {
         for (const techId of Object.keys(faction.techs ?? {}) as TechId[]) {
           if (faction.startswith.techs?.includes(techId)) {
             continue;
           }
-          let techCount = info.techs[techId] ?? { wins: 0, games: 0 };
+          let techCount = info.techs[techId] ?? {
+            wins: 0,
+            games: 0,
+            histogram: {},
+            points: 0,
+          };
           techCount.games++;
           if (index === 0) {
             techCount.wins++;
           }
+          techCount.points += points;
+          let sum = techCount.histogram[points] ?? 0;
+          sum++;
+          techCount.histogram[points] = sum;
           info.techs[techId] = techCount;
         }
         // if (factionId === "Vuil'raith Cabal") {
@@ -530,6 +853,7 @@ function FactionsSection({
         //     info.techPaths.push(techPath);
         //   }
         // }
+        info.techPoints += points;
         info.techGames++;
         if (index === 0) {
           info.techWins++;
@@ -575,17 +899,23 @@ function FactionsSection({
       if (index === 0) {
         info.wins++;
       }
-      info.points += computeVPs(factions, factionId as FactionId, objectives);
+
+      let sum = info.histogram[points] ?? 0;
+      sum++;
+      info.histogram[points] = sum;
+      info.points += points;
       info.games++;
       factionInfo[factionId as FactionId] = info;
     });
   });
 
-  const orderedInfo = Object.entries(factionInfo).sort(([_, a], [__, b]) => {
-    const aWinRate = (1.0 * a.wins) / a.games;
-    const bWinRate = (1.0 * b.wins) / b.games;
-    return bWinRate - aWinRate;
-  });
+  const orderedInfo = Object.entries(factionInfo).sort(
+    ([aName, a], [__, b]) => {
+      const aWinRate = (1.0 * a.wins) / a.games;
+      const bWinRate = (1.0 * b.wins) / b.games;
+      return bWinRate - aWinRate;
+    }
+  );
 
   return (
     <div className="flexColumn" style={{ width: "550px" }}>
@@ -595,7 +925,7 @@ function FactionsSection({
           (prev: [string, TechInfo][], curr) => {
             const firstElement: [string, TechInfo] = prev[0] ?? [
               "",
-              { wins: 0, games: 0 },
+              { wins: 0, games: 0, histogram: {}, points: 0 },
             ];
             const prevPercentage = firstElement[1] ?? 0;
 
@@ -608,14 +938,14 @@ function FactionsSection({
             }
             return prev;
           },
-          [["", { wins: 0, games: 0 }]]
+          [["", { wins: 0, games: 0, histogram: {}, points: 0 }]]
         );
         // if (info.techPaths.length > 0) {
         //   const mostCommon = getMostCommonTechPath(info.techPaths);
         //   console.log("Most common", mostCommon);
         // }
         return (
-          <>
+          <Fragment key={id}>
             <GenericModal
               visible={shownModal === id}
               closeMenu={() => setShownModal(undefined)}
@@ -715,6 +1045,7 @@ function FactionsSection({
                           objectives={info.objectives}
                           objectiveGames={info.objectiveGames}
                           objectiveType={objectiveType}
+                          baseData={baseData}
                         />
                       </div>
                     </CollapsibleSection>
@@ -744,6 +1075,8 @@ function FactionsSection({
                           techs={info.techs}
                           techGames={info.techGames}
                           techWins={info.techWins}
+                          techPoints={info.techPoints}
+                          baseData={baseData}
                         />
                       </div>
                     </CollapsibleSection>
@@ -768,11 +1101,13 @@ function FactionsSection({
                   ({info.wins} of {info.games})
                 </>
               }
+              style={{ gap: "2px" }}
             >
-              <div>
+              <PointsHistogram histogram={info.histogram} suffix="per Game" />
+              {/* <div>
                 Average Points per Game:{" "}
                 {Math.floor(((1.0 * info.points) / info.games) * 100) / 100}
-              </div>
+              </div> */}
               <div style={{ fontSize: "14px" }}>
                 Most Common (non-starting) Tech(s):{" "}
                 {mostCommonTechs.map((tech) => tech[0]).join(", ")} (
@@ -808,7 +1143,7 @@ function FactionsSection({
                 })
               : null} */}
             </LabeledDiv>
-          </>
+          </Fragment>
         );
       })}
     </div>
@@ -826,13 +1161,15 @@ function ObjectiveTable({
   objectives,
   objectiveGames,
   objectiveType,
+  baseData,
 }: {
   objectives: Record<string, ObjectiveInfo>;
   objectiveGames: number;
   objectiveType: ObjectiveType;
+  baseData: BaseData;
 }) {
   const intl = useIntl();
-  const baseObjectives = getBaseObjectives(intl);
+  const baseObjectives = baseData.objectives;
   const orderedObjectives = Object.entries(objectives).sort((a, b) => {
     const aGames =
       a[1].type === "STAGE ONE" || a[1].type === "STAGE TWO"
@@ -923,17 +1260,16 @@ function ObjectiveTable({
           }
           const baseObj = baseObjectives[objective as ObjectiveId];
           return (
-            <tr key={objective} style={{ fontFamily: "Myriad Pro" }}>
+            <tr key={objective} style={{ fontFamily: "Source Sans" }}>
               <td
                 className="flexColumn"
                 style={{
                   alignItems: "flex-start",
                   gap: 0,
-                  fontFamily: "Slider",
                 }}
               >
                 <div>{baseObj.name}</div>
-                <div style={{ fontFamily: "Myriad Pro", fontSize: "10px" }}>
+                <div style={{ fontFamily: "Source Sans", fontSize: "10px" }}>
                   {baseObj.description}
                 </div>
               </td>
@@ -960,23 +1296,31 @@ function TechTable({
   techs,
   techGames,
   techWins,
+  techPoints,
+  baseData,
 }: {
   techs: Record<string, TechInfo>;
   techGames: number;
   techWins: number;
+  techPoints: number;
+  baseData: BaseData;
 }) {
   const intl = useIntl();
-  const baseTechs = getBaseTechs(intl);
+  const baseTechs = baseData.techs;
   const orderedTechs = Object.entries(techs).sort((a, b) => {
     return b[1].games - a[1].games;
   });
   return (
     <table style={{ fontSize: "12px", width: "100%" }}>
       <thead style={{ textAlign: "left", fontSize: "14px" }}>
-        <th style={{ fontWeight: "normal" }}></th>
-        <th style={{ fontWeight: "normal" }}>Research %</th>
-        <th style={{ fontWeight: "normal" }}>Win % w/ Tech</th>
-        <th style={{ fontWeight: "normal" }}>Win % w/o Tech</th>
+        <tr>
+          <th style={{ fontWeight: "normal" }}></th>
+          <th style={{ fontWeight: "normal" }}>Research %</th>
+          <th style={{ fontWeight: "normal" }}>Win % w/</th>
+          <th style={{ fontWeight: "normal" }}>Win % w/o</th>
+          <th style={{ fontWeight: "normal" }}>Points w/</th>
+          <th style={{ fontWeight: "normal" }}>Points w/o</th>
+        </tr>
       </thead>
       <tbody>
         {orderedTechs.map(([tech, info]) => {
@@ -985,37 +1329,49 @@ function TechTable({
             return null;
           }
           return (
-            <tr key={tech} style={{ fontFamily: "Myriad Pro" }}>
-              <td style={{ fontFamily: "Slider" }}>{baseTech.name}</td>
-              <td>
-                {Math.floor(((1.0 * info.games) / techGames) * 10000) / 100}% (
-                {info.games} of {techGames})
-              </td>
-              {info.games < 3 ? (
-                <td style={{ fontSize: "10px", fontFamily: "Myriad Pro" }}>
-                  -
-                </td>
-              ) : (
+            <>
+              <tr key={tech} style={{ fontFamily: "Source Sans" }}>
+                <td>{baseTech.name}</td>
                 <td>
-                  {Math.floor(((1.0 * info.wins) / info.games) * 10000) / 100}%
-                  ({info.wins} of {info.games})
+                  {Math.floor(((1.0 * info.games) / techGames) * 10000) / 100}%
+                  ({info.games} of {techGames})
                 </td>
-              )}
-              {techGames - info.games < 3 ? (
-                <td style={{ fontSize: "10px", fontFamily: "Myriad Pro" }}>
-                  -
+                {info.games < 3 ? (
+                  <td style={{ fontSize: "10px", fontFamily: "Source Sans" }}>
+                    -
+                  </td>
+                ) : (
+                  <td>
+                    {Math.floor(((1.0 * info.wins) / info.games) * 10000) / 100}
+                    % ({info.wins} of {info.games})
+                  </td>
+                )}
+                {techGames - info.games < 3 ? (
+                  <td style={{ fontSize: "10px", fontFamily: "Source Sans" }}>
+                    -
+                  </td>
+                ) : (
+                  <td>
+                    {Math.floor(
+                      ((1.0 * (techWins - info.wins)) /
+                        (techGames - info.games)) *
+                        10000
+                    ) / 100}
+                    % ({techWins - info.wins} of {techGames - info.games})
+                  </td>
+                )}
+                <td>
+                  {Math.floor(((1.0 * info.points) / info.games) * 100) / 100}
                 </td>
-              ) : (
                 <td>
                   {Math.floor(
-                    ((1.0 * (techWins - info.wins)) /
+                    ((1.0 * (techPoints - info.points)) /
                       (techGames - info.games)) *
-                      10000
+                      100
                   ) / 100}
-                  % ({techWins - info.wins} of {techGames - info.games})
                 </td>
-              )}
-            </tr>
+              </tr>
+            </>
           );
         })}
       </tbody>
@@ -1023,7 +1379,13 @@ function TechTable({
   );
 }
 
-function TechsSection({ games }: { games: Record<string, StoredGameData> }) {
+function TechsSection({
+  games,
+  baseData,
+}: {
+  games: Record<string, StoredGameData>;
+  baseData: BaseData;
+}) {
   const intl = useIntl();
   const [tab, setTab] = useState("Non-Faction");
   const techInfo: Partial<
@@ -1034,15 +1396,17 @@ function TechsSection({ games }: { games: Record<string, StoredGameData> }) {
         winners: number;
         owners: number;
         ownedWinners: number;
+        histogram: Histogram;
+        ownedHistogram: Histogram;
       }
     >
   > = {};
-  const baseTechs = getBaseTechs(intl);
+  const baseTechs = baseData.techs;
   let techGames = 0;
   let factionGames: Partial<Record<FactionId, number>> = {};
   Object.entries(games).forEach(([gameId, game]) => {
     const factions = game.factions;
-    const objectives = buildObjectives(game, intl);
+    const objectives = buildObjectives(game, baseData);
 
     const isTechGame = Object.values(factions).reduce((isTechGame, faction) => {
       for (const techId of Object.keys(faction.techs) as TechId[]) {
@@ -1086,17 +1450,32 @@ function TechsSection({ games }: { games: Record<string, StoredGameData> }) {
             researchers: 0,
             owners: 0,
             ownedWinners: 0,
+            histogram: {},
+            ownedHistogram: {},
           };
+          const points = Math.min(
+            10,
+            computeVPs(factions, factionId as FactionId, objectives)
+          );
           if (faction.startswith.techs?.includes(techId)) {
             if (index === 0) {
               tech.ownedWinners++;
             }
             tech.owners++;
+            let sum = tech.ownedHistogram[points] ?? 0;
+            sum++;
+            tech.ownedHistogram[points] = sum;
           } else {
             if (index === 0) {
               tech.ownedWinners++;
               tech.winners++;
             }
+            if (points === 0) {
+              console.log("Game", gameId);
+            }
+            let sum = tech.histogram[points] ?? 0;
+            sum++;
+            tech.histogram[points] = sum;
             tech.researchers++;
             tech.owners++;
           }
@@ -1159,13 +1538,16 @@ function TechsSection({ games }: { games: Record<string, StoredGameData> }) {
                 % ({info.winners} of {info.researchers})
               </div>
             }
+            style={{ gap: 0 }}
           >
             <div
               className="flexColumn"
               style={{
+                fontFamily: "Source Sans",
                 justifyContent: "flex-start",
                 alignItems: "flex-start",
-                gap: "4px",
+                gap: 0,
+                width: "100%",
               }}
             >
               <div>
@@ -1181,6 +1563,18 @@ function TechsSection({ games }: { games: Record<string, StoredGameData> }) {
                   % of Games ({info.ownedWinners} of {numGames})
                 </div>
               ) : null}
+              <div className="flexRow" style={{ width: "100%" }}>
+                <PointsHistogram
+                  histogram={info.histogram}
+                  suffix="when researched"
+                />
+                {info.winners !== info.ownedWinners ? (
+                  <PointsHistogram
+                    histogram={info.ownedHistogram}
+                    suffix="when owned"
+                  />
+                ) : null}
+              </div>
             </div>
             {tab === "Faction" ? (
               <div>
@@ -1193,20 +1587,23 @@ function TechsSection({ games }: { games: Record<string, StoredGameData> }) {
               <div
                 className="flexColumn"
                 style={{
+                  fontFamily: "Source Sans",
                   justifyContent: "flex-start",
                   alignItems: "flex-start",
-                  gap: "4px",
+                  gap: 0,
                 }}
               >
                 <div>
                   Average Researchers per Game:{" "}
                   {Math.floor(((1.0 * info.researchers) / numGames) * 100) /
-                    100}
+                    100}{" "}
+                  ({info.researchers} in {numGames})
                 </div>
                 {info.owners !== info.researchers ? (
                   <div style={{ fontSize: "14px" }}>
                     Average Owners per Game:{" "}
-                    {Math.floor(((1.0 * info.owners) / numGames) * 100) / 100}
+                    {Math.floor(((1.0 * info.owners) / numGames) * 100) / 100} (
+                    {info.owners} in {numGames})
                   </div>
                 ) : null}
               </div>
@@ -1220,8 +1617,10 @@ function TechsSection({ games }: { games: Record<string, StoredGameData> }) {
 
 function ObjectivesSection({
   games,
+  baseData,
 }: {
   games: Record<string, StoredGameData>;
+  baseData: BaseData;
 }) {
   const [tab, setTab] = useState<ObjectiveType>("STAGE ONE");
 
@@ -1232,10 +1631,12 @@ function ObjectivesSection({
       {
         games: number;
         scorers: number;
+        scoredHistogram: Histogram;
+        unscoredHistogram: Histogram;
       }
     >
   > = {};
-  const baseObjectives = getBaseObjectives(intl);
+  const baseObjectives = baseData.objectives;
   let objectiveGames = 0;
   Object.entries(games).forEach(([gameId, game]) => {
     let isObjectiveGame = Object.values(game.objectives ?? {}).reduce(
@@ -1249,18 +1650,38 @@ function ObjectivesSection({
     );
 
     if (isObjectiveGame) {
+      const objectives = buildObjectives(game, baseData);
       objectiveGames++;
       Object.entries(game.objectives ?? {}).forEach(([objId, obj]) => {
         const objInfo = objectivesByScore[objId as ObjectiveId] ?? {
           games: 0,
           scorers: 0,
+          scoredHistogram: {},
+          unscoredHistogram: {},
         };
         const baseObj = baseObjectives[objId as ObjectiveId];
         if ((tab !== "SECRET" && !obj.selected) || baseObj.type !== tab) {
           return;
         }
+        const scorers = obj.scorers ?? [];
+        for (const factionId of Object.keys(game.factions)) {
+          const points = computeVPs(
+            game.factions,
+            factionId as FactionId,
+            objectives
+          );
+          if (scorers.includes(factionId as FactionId)) {
+            let sum = objInfo.scoredHistogram[points] ?? 0;
+            sum++;
+            objInfo.scoredHistogram[points] = sum;
+          } else {
+            let sum = objInfo.unscoredHistogram[points] ?? 0;
+            sum++;
+            objInfo.unscoredHistogram[points] = sum;
+          }
+        }
         objInfo.games++;
-        let numScorers = (obj.scorers ?? []).length;
+        let numScorers = scorers.length;
         if (tab === "SECRET") {
           numScorers = Math.min(numScorers, 1);
         }
@@ -1304,11 +1725,11 @@ function ObjectivesSection({
       {orderedObjectives.map(([objId, objInfo]) => {
         return (
           <LabeledDiv key={objId} label={objId}>
-            <div style={{ fontFamily: "Myriad Pro", fontSize: "14px" }}>
+            <div style={{ fontFamily: "Source Sans", fontSize: "14px" }}>
               {baseObjectives[objId as ObjectiveId].description}
             </div>
             {tab !== "SECRET" ? (
-              <div>
+              <div style={{ width: "100%" }}>
                 Average Scorers per Game:{" "}
                 {Math.floor((objInfo.scorers / objInfo.games) * 100) / 100} - (
                 {objInfo.scorers} in {objInfo.games} Games)
@@ -1329,9 +1750,11 @@ function ObjectivesSection({
 
 function GameDataSection({
   games,
+  baseData,
   actionLogs,
 }: {
   games: Record<string, StoredGameData>;
+  baseData: BaseData;
   actionLogs: Record<string, ActionLogEntry[]>;
 }) {
   const intl = useIntl();
@@ -1343,6 +1766,12 @@ function GameDataSection({
   let roundGames = 0;
   let objectiveGames = 0;
   let custodianWinners = 0;
+  let custodianHistogram: Record<number, number> = {};
+  let custodianPoints = 0;
+  let custodianFactions = 0;
+  let nonCustodianHistogram: Record<number, number> = {};
+  let nonCustodianPoints = 0;
+  let nonCustodianFactions = 0;
   Object.entries(games).forEach(([id, game]) => {
     // if (numGames === 0) {
     //   const log = actionLogs[id];
@@ -1373,8 +1802,32 @@ function GameDataSection({
       const custodiansScorer = ((game.objectives ?? {})["Custodians Token"]
         ?.scorers ?? [])[0];
       if (custodiansScorer) {
-        const objectives = buildObjectives(game, intl);
+        const objectives = buildObjectives(game, baseData);
         const winner = orderFactionsByVP(game.factions, objectives)[0];
+        Object.keys(game.factions).forEach((factionId) => {
+          if (factionId === custodiansScorer) {
+            const points = Math.min(
+              10,
+              computeVPs(game.factions, factionId, objectives)
+            );
+            custodianPoints += points;
+            let sum = custodianHistogram[points] ?? 0;
+            sum++;
+            custodianHistogram[points] = sum;
+            custodianFactions++;
+          } else {
+            const points = Math.min(
+              10,
+              computeVPs(game.factions, factionId as FactionId, objectives)
+            );
+            nonCustodianPoints += points;
+            let sum = nonCustodianHistogram[points] ?? 0;
+            sum++;
+            nonCustodianHistogram[points] = sum;
+
+            nonCustodianFactions++;
+          }
+        });
         if (winner && winner[0] === custodiansScorer) {
           custodianWinners++;
         }
@@ -1392,7 +1845,7 @@ function GameDataSection({
   });
 
   return (
-    <div className="flexColumn" style={{ alignItems: "stretch" }}>
+    <div className="flexColumn" style={{ alignItems: "stretch", gap: "2px" }}>
       <div className="flexRow" style={{ justifyContent: "space-between" }}>
         Completed Games:<div>{Object.keys(games).length}</div>
       </div>
@@ -1400,24 +1853,24 @@ function GameDataSection({
         Average Game Length:{" "}
         <TimerDisplay
           time={Math.floor(totalGameLength / numGames)}
-          width={100}
-          style={{ fontSize: "18px" }}
+          width={72}
+          style={{ fontSize: "16px", fontFamily: "Source Sans" }}
         />
       </div>
       <div className="flexRow" style={{ justifyContent: "space-between" }}>
         Quickest Game:{" "}
         <TimerDisplay
           time={shortestGame}
-          width={100}
-          style={{ fontSize: "18px" }}
+          width={72}
+          style={{ fontSize: "16px", fontFamily: "Source Sans" }}
         />
       </div>
       <div className="flexRow" style={{ justifyContent: "space-between" }}>
         Slowest Game:{" "}
         <TimerDisplay
           time={longestGame}
-          width={100}
-          style={{ fontSize: "18px" }}
+          width={72}
+          style={{ fontSize: "16px", fontFamily: "Source Sans" }}
         />
       </div>
       <div className="flexRow" style={{ justifyContent: "space-between" }}>
@@ -1429,6 +1882,121 @@ function GameDataSection({
         <div>
           {Math.floor((custodianWinners / objectiveGames) * 10000) / 100}%
         </div>
+      </div>
+      <div className="flexColumn">
+        <PointsHistogram
+          histogram={custodianHistogram}
+          suffix="w/ Custodians"
+        />
+      </div>
+      <div>
+        <PointsHistogram
+          histogram={nonCustodianHistogram}
+          suffix="w/o Custodians"
+        />
+      </div>
+    </div>
+  );
+}
+
+type Histogram = Record<number, number>;
+
+function PointsHistogram({
+  histogram,
+  suffix,
+}: {
+  histogram: Record<number, number>;
+  suffix: string;
+}) {
+  let maxVal = Number.MIN_SAFE_INTEGER;
+  let minVal = Number.MAX_SAFE_INTEGER;
+  let sum = 0;
+  let total = 0;
+  const fullHistogram: Histogram = {};
+  for (let i = 0; i <= 10; i++) {
+    const val = histogram[i] ?? 0;
+    minVal = Math.min(val, minVal);
+    maxVal = Math.max(val, maxVal);
+    total += val;
+    sum += val * i;
+    fullHistogram[i] = val;
+  }
+  // const orderedHistogram = Object.entries(histogram).sort(([a, _], [b, __]) => {
+  //   return (a as unknown as number) - (b as unknown as number);
+  // });
+
+  // const maxVal = orderedHistogram.reduce(
+  //   (max, curr) => Math.max(max, curr[1]),
+  //   0
+  // );
+  // const minVal = orderedHistogram.reduce(
+  //   (min, curr) => Math.min(min, curr[1]),
+  //   Number.MAX_SAFE_INTEGER
+  // );
+
+  return (
+    <div
+      className="flexColumn"
+      style={{ gap: "2px", width: "100%", alignItems: "flex-start" }}
+    >
+      <div>
+        Average points{suffix ? ` ${suffix}` : ""}:{" "}
+        {Math.round((sum / total) * 100) / 100}
+      </div>
+      <div
+        className="flexRow"
+        style={{
+          position: "relative",
+          display: "grid",
+          gridAutoFlow: "column",
+          gridTemplateRows: "repeat(1, minmax(0, 1fr))",
+          height: "80px",
+          alignItems: "flex-end",
+          justifyContent: "flex-start",
+          gap: "4px",
+        }}
+      >
+        {Object.entries(fullHistogram).map(([key, value]) => {
+          const height = (value / maxVal) * 100;
+          // const color = height > 40 ? height > 60 ? "#222" : "#eee" : "#"
+          return (
+            <div
+              key={key}
+              className="flexColumn"
+              style={{ height: "100%", gap: "2px" }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  height: "100%",
+                  width: "16px",
+                  alignItems: "flex-end",
+                }}
+              >
+                <div
+                  className="flexRow"
+                  style={{
+                    height: `${height}%`,
+                    width: "20px",
+                    backgroundColor: "#666",
+                    borderTopLeftRadius: "4px",
+                    borderTopRightRadius: "4px",
+                  }}
+                ></div>
+              </div>
+              <div
+                className="flexRow"
+                style={{
+                  color: "#666",
+                  width: "16px",
+                }}
+              >
+                {key}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
