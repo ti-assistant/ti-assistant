@@ -71,6 +71,32 @@ function FilterButton<T extends string | number>({
   );
 }
 
+function wereObjectivesRecorded(
+  gameId: string,
+  game: StoredGameData,
+  baseData: BaseData
+) {
+  const foundTypes = new Set<ObjectiveType>();
+  const baseObjectives = baseData.objectives;
+  return Object.entries(game.objectives ?? {}).reduce(
+    (isObjGame, [id, curr]) => {
+      if ((curr.scorers ?? []).length !== 0) {
+        const type = baseObjectives[id as ObjectiveId].type;
+        foundTypes.add(type);
+        switch (foundTypes.size) {
+          // Consider games without stage 2, but not without any other.
+          case 3:
+            return !foundTypes.has("STAGE TWO");
+          case 4:
+            return true;
+        }
+      }
+      return isObjGame;
+    },
+    false
+  );
+}
+
 function CountButton<T extends string | number>({
   filter,
   filters,
@@ -863,15 +889,7 @@ function FactionsSection({
       return false;
     }, true);
 
-    const isObjectiveGame = Object.values(game.objectives ?? {}).reduce(
-      (isObjGame, curr) => {
-        if ((curr.scorers ?? []).length !== 0) {
-          return true;
-        }
-        return isObjGame;
-      },
-      false
-    );
+    const isObjectiveGame = wereObjectivesRecorded(gameId, game, baseData);
 
     const isPlanetGame = Object.keys(game.planets).length > 30;
 
@@ -968,6 +986,9 @@ function FactionsSection({
         )) {
           const baseObjective = baseObjectives[objectiveId as ObjectiveId];
 
+          if (objectiveId === "Custodians Token" && !objective.scorers) {
+            console.log("game", gameId);
+          }
           if (
             (baseObjective.type === "STAGE ONE" ||
               baseObjective.type === "STAGE TWO") &&
@@ -1883,16 +1904,9 @@ function ObjectivesSection({
   const baseObjectives = baseData.objectives;
   const factionGames: Partial<Record<FactionId, number>> = {};
   let objectiveGames = 0;
+  const foundTypes = new Set<ObjectiveType>();
   Object.entries(games).forEach(([gameId, game]) => {
-    let isObjectiveGame = Object.values(game.objectives ?? {}).reduce(
-      (isObjGame, curr) => {
-        if ((curr.scorers ?? []).length !== 0) {
-          return true;
-        }
-        return isObjGame;
-      },
-      false
-    );
+    let isObjectiveGame = wereObjectivesRecorded(gameId, game, baseData);
 
     if (isObjectiveGame) {
       const objectives = buildObjectives(game, baseData);
@@ -2128,7 +2142,7 @@ function GameDataSection({
   const factionWinsHistogram: Partial<Record<FactionId, number>> = {};
   const factionsHistogram: Partial<Record<FactionId, number>> = {};
   const factionWinRateHistogram: Partial<Record<FactionId, number>> = {};
-  Object.entries(games).forEach(([id, game]) => {
+  Object.entries(games).forEach(([gameId, game]) => {
     // if (numGames === 0) {
     //   const log = actionLogs[id];
     //   if (log) {
@@ -2143,15 +2157,7 @@ function GameDataSection({
       totalRounds += game.state.round;
       roundGames++;
     }
-    const isObjectiveGame = Object.values(game.objectives ?? {}).reduce(
-      (isObjGame, curr) => {
-        if ((curr.scorers ?? []).length !== 0) {
-          return true;
-        }
-        return isObjGame;
-      },
-      false
-    );
+    const isObjectiveGame = wereObjectivesRecorded(gameId, game, baseData);
 
     if (isObjectiveGame) {
       const objectives = buildObjectives(game, baseData);
