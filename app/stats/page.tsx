@@ -1,5 +1,5 @@
 import fs from "fs";
-import StatsPage from "./stats-page";
+import StatsPage, { ProcessedLog, ProcessedRound } from "./stats-page";
 import { getFirestore } from "firebase-admin/firestore";
 import { createIntlCache, createIntl } from "react-intl";
 import { getLocale, getMessages } from "../../src/util/server";
@@ -7,24 +7,12 @@ import { buildCompleteGameData } from "../../src/data/GameData";
 import { getFullActionLog } from "../../server/util/fetch";
 import { getBaseData } from "../../src/data/baseData";
 
-interface StrategyCardPick {
-  card: StrategyCardId;
-  faction: FactionId;
-}
-
-interface ProcessedRound {
-  cardPicks: StrategyCardPick[];
-}
-
-interface ProcessedLog {
-  rounds: ProcessedRound[];
-}
-
-function processLog(actionLog: ActionLogEntry[]) {
+function processLog(baseData: BaseData, actionLog: ActionLogEntry[]) {
   const processedLog: ProcessedLog = {
     rounds: [],
   };
-  let processedRound: ProcessedRound = { cardPicks: [] };
+  let systems = new Set<SystemId>();
+  let processedRound: ProcessedRound = { cardPicks: [], planetsTaken: {} };
   for (const logEntry of actionLog) {
     switch (logEntry.data.action) {
       case "ASSIGN_STRATEGY_CARD":
@@ -33,11 +21,45 @@ function processLog(actionLog: ActionLogEntry[]) {
           faction: logEntry.data.event.assignedTo,
         });
         break;
+      case "CLAIM_PLANET":
+        if (logEntry.data.event.prevOwner) {
+          const planet = baseData.planets[logEntry.data.event.planet];
+          const system = planet.system;
+          // Only count a system 1 time in a turn.
+          if (system && systems.has(system)) {
+            break;
+          }
+          if (system) {
+            systems.add(system);
+          }
+          // TODO: Consider making home planets count more.
+          let factionAgg = processedRound.planetsTaken[
+            logEntry.data.event.faction
+          ] ?? {
+            home: 0,
+            all: 0,
+            mecatol: 0,
+          };
+          factionAgg.all++;
+          if (planet.home) {
+            factionAgg.home++;
+          }
+          if (planet.id === "Mecatol Rex") {
+            factionAgg.mecatol++;
+          }
+          processedRound.planetsTaken[logEntry.data.event.faction] = factionAgg;
+        }
+        break;
+      case "END_TURN":
+        systems = new Set();
+        break;
       case "ADVANCE_PHASE":
         if (logEntry.data.event.state?.phase === "STATUS") {
           processedLog.rounds.push(processedRound);
-          processedRound = { cardPicks: [] };
+          processedRound = { cardPicks: [], planetsTaken: {} };
+          systems = new Set();
         }
+        break;
     }
   }
   if (processedRound.cardPicks.length > 0) {
@@ -137,9 +159,11 @@ export default async function Page({}) {
     fs.readFileSync("./server/processed-logs.json", "utf8")
   );
 
+  const baseData = getBaseData(intl);
+
   // const processedLogs: Record<string, ProcessedLog> = {};
   // Object.entries(actionLogs).forEach(([gameId, actionLog]) => {
-  //   const processedLog = processLog(actionLog.toReversed());
+  //   const processedLog = processLog(baseData, actionLog.toReversed());
   //   processedLogs[gameId] = processedLog;
   // });
 
@@ -174,7 +198,10 @@ export default async function Page({}) {
   // });
 
   // try {
-  //   fs.writeFileSync("./processed-logs.json", JSON.stringify(processedLogs));
+  //   fs.writeFileSync(
+  //     "./server/processed-logs.json",
+  //     JSON.stringify(processedLogs)
+  //   );
   //   // file written successfully
   // } catch (err) {
   //   console.error(err);
@@ -184,8 +211,6 @@ export default async function Page({}) {
   // Object.entries(completedGames).forEach(([gameId, data]) => {
   //   totalGameData[gameId] = buildCompleteGameData(data, intl);
   // });
-
-  const baseData = getBaseData(intl);
 
   // TODO: Figure out what to do with action logs.
   // const actionLogs: Record<string, ActionLogEntry[]> = {};
