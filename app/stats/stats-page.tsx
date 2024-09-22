@@ -191,7 +191,10 @@ function applyFilters(
     }, 0);
 
     // Victory point filter
-    if (!filters.victoryPoints.has(maxVPs)) {
+    if (
+      !filters.victoryPoints.has(maxVPs) &&
+      !filters.victoryPoints.has(maxVPs - 1)
+    ) {
       return;
     }
 
@@ -284,6 +287,11 @@ export default function StatsPage({
   // }
   // winningFactions[winningFaction.id]++;
   // });
+
+  const points = Array.from(victoryPoints).reduce(
+    (max, curr) => Math.max(max, curr),
+    0
+  );
 
   return (
     <>
@@ -409,6 +417,7 @@ export default function StatsPage({
               games={localGames}
               baseData={baseData}
               actionLogs={{}}
+              points={points}
             />
             <div style={{ width: "500px" }}></div>
             <DetailsSection
@@ -417,6 +426,7 @@ export default function StatsPage({
               actionLogs={{}}
               processedLogs={processedLogs}
               playerCount={playerCount}
+              points={points}
             />
             {/* <FactionsSection games={localGames} /> */}
           </div>
@@ -432,12 +442,14 @@ function DetailsSection({
   actionLogs,
   processedLogs,
   playerCount,
+  points,
 }: {
   games: Record<string, StoredGameData>;
   baseData: BaseData;
   actionLogs: Record<string, ActionLogEntry[]>;
   processedLogs: Record<string, ProcessedLog>;
   playerCount: number;
+  points: number;
 }) {
   const [tab, setTab] = useState("Factions");
 
@@ -455,7 +467,9 @@ function DetailsSection({
       );
       break;
     case "Techs":
-      tabContent = <TechsSection games={games} baseData={baseData} />;
+      tabContent = (
+        <TechsSection games={games} baseData={baseData} points={points} />
+      );
       break;
     case "Factions":
       tabContent = (
@@ -463,11 +477,14 @@ function DetailsSection({
           games={games}
           baseData={baseData}
           processedLogs={processedLogs}
+          points={points}
         />
       );
       break;
     case "Objectives":
-      tabContent = <ObjectivesSection games={games} baseData={baseData} />;
+      tabContent = (
+        <ObjectivesSection games={games} baseData={baseData} points={points} />
+      );
       break;
   }
 
@@ -533,6 +550,8 @@ interface FactionInfo {
   techPaths: TechEntry[][];
   objectives: Partial<Record<ObjectiveId, ObjectiveInfo>>;
   objectiveGames: number;
+  scoredSecrets: number;
+  imperialPoints: number;
   planetGames: number;
   planetsByRound: Record<
     number,
@@ -647,7 +666,22 @@ function StrategyCardSection({
 
     const factions = orderFactionsByVP(game.factions, objectives);
 
-    const winner = factions[0];
+    const winner = factions[0] as [FactionId, GameFaction];
+    const winnerVPs = computeVPs(
+      game.factions,
+      winner[0] as FactionId,
+      objectives
+    );
+    const second = factions[1] as [FactionId, GameFaction];
+    const secondVPs = computeVPs(
+      game.factions,
+      second[0] as FactionId,
+      objectives
+    );
+
+    if (winnerVPs === secondVPs) {
+      console.log("Bad game", gameId);
+    }
     const winnerId = (winner ?? [])[0] ?? "Vuil'raith Cabal";
     const log = processedLogs[gameId];
     if (!log) {
@@ -864,10 +898,12 @@ function FactionsSection({
   games,
   baseData,
   processedLogs,
+  points,
 }: {
   games: Record<string, StoredGameData>;
   baseData: BaseData;
   processedLogs: Record<string, ProcessedLog>;
+  points: number;
 }) {
   const [shownModal, setShownModal] = useState<Optional<FactionId>>();
   const [objectiveType, setObjectiveType] =
@@ -909,14 +945,16 @@ function FactionsSection({
           techPaths: [],
           objectives: {},
           objectiveGames: 0,
+          scoredSecrets: 0,
+          imperialPoints: 0,
           histogram: {},
           planetGames: 0,
           aggressionScore: 0,
           planetsByRound: {},
         };
       }
-      const points = Math.min(
-        10,
+      const factionPoints = Math.min(
+        points,
         computeVPs(factions, factionId as FactionId, objectives)
       );
 
@@ -930,7 +968,9 @@ function FactionsSection({
               all: 0,
               mecatol: 0,
             };
-            const planetsByRound = info.planetsByRound[index] ?? {
+            const planetsByRound = (info as FactionInfo).planetsByRound[
+              index
+            ] ?? {
               home: 0,
               all: 0,
               mecatol: 0,
@@ -938,7 +978,7 @@ function FactionsSection({
             planetsByRound.all += planetsTaken.all;
             planetsByRound.home += planetsTaken.home;
             planetsByRound.mecatol += planetsTaken.mecatol;
-            info.planetsByRound[index] = planetsByRound;
+            (info as FactionInfo).planetsByRound[index] = planetsByRound;
           });
         }
       }
@@ -958,10 +998,10 @@ function FactionsSection({
           if (index === 0) {
             techCount.wins++;
           }
-          techCount.points += points;
-          let sum = techCount.histogram[points] ?? 0;
+          techCount.points += factionPoints;
+          let sum = techCount.histogram[factionPoints] ?? 0;
           sum++;
-          techCount.histogram[points] = sum;
+          techCount.histogram[factionPoints] = sum;
           info.techs[techId] = techCount;
         }
         // if (factionId === "Vuil'raith Cabal") {
@@ -973,7 +1013,7 @@ function FactionsSection({
         //     info.techPaths.push(techPath);
         //   }
         // }
-        info.techPoints += points;
+        info.techPoints += factionPoints;
         info.techGames++;
         if (index === 0) {
           info.techWins++;
@@ -986,9 +1026,6 @@ function FactionsSection({
         )) {
           const baseObjective = baseObjectives[objectiveId as ObjectiveId];
 
-          if (objectiveId === "Custodians Token" && !objective.scorers) {
-            console.log("game", gameId);
-          }
           if (
             (baseObjective.type === "STAGE ONE" ||
               baseObjective.type === "STAGE TWO") &&
@@ -1015,6 +1052,16 @@ function FactionsSection({
               objInfo.wins++;
             }
           }
+          if (baseObjective.id === "Imperial Point") {
+            info.imperialPoints += (objective.scorers ?? []).filter(
+              (id) => id === factionId
+            ).length;
+          }
+          if (baseObjective.type === "SECRET") {
+            if ((objective.scorers ?? []).includes(factionId as FactionId)) {
+              info.scoredSecrets++;
+            }
+          }
           info.objectives[objectiveId as ObjectiveId] = objInfo;
         }
       }
@@ -1023,10 +1070,10 @@ function FactionsSection({
         info.wins++;
       }
 
-      let sum = info.histogram[points] ?? 0;
+      let sum = info.histogram[factionPoints] ?? 0;
       sum++;
-      info.histogram[points] = sum;
-      info.points += points;
+      info.histogram[factionPoints] = sum;
+      info.points += factionPoints;
       info.games++;
       factionInfo[factionId as FactionId] = info;
     });
@@ -1261,37 +1308,70 @@ function FactionsSection({
                   <FactionIcon factionId={id as FactionId} size={20} />
                 </div>
               }
-              rightLabel={
-                <>
-                  Win Rate:{" "}
-                  {Math.floor(((1.0 * info.wins) / info.games) * 10000) / 100}%
-                  ({info.wins} of {info.games})
-                </>
-              }
               style={{ gap: "2px" }}
             >
-              <PointsHistogram histogram={info.histogram} suffix="per Game" />
-              {/* <div>
-                Average Points per Game:{" "}
-                {Math.floor(((1.0 * info.points) / info.games) * 100) / 100}
-              </div> */}
-              <div style={{ fontSize: "14px" }}>
-                Most Common (non-starting) Tech(s):{" "}
-                {mostCommonTechs.map((tech) => tech[0]).join(", ")} (
-                {Math.floor(((1.0 * topPerc) / info.techGames) * 10000) / 100}%)
-              </div>
-              <div style={{ fontSize: "14px" }}>
-                Aggression Ranking:{" "}
-                {aggressionOrder.findIndex((val) => val === id) + 1} of{" "}
-                {aggressionOrder.length} (Score:{" "}
-                {computeAggressionScore(info.planetsByRound, info.planetGames)})
-              </div>
-              <button
-                style={{ fontSize: "10px" }}
-                onClick={() => setShownModal(id as FactionId)}
+              <div
+                className="flexRow"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                  gridAutoFlow: "row",
+                  alignItems: "flex-start",
+                  width: "100%",
+                  justifyContent: "center",
+                  justifyItems: "center",
+                }}
               >
-                More Stats
-              </button>
+                <div
+                  className="flexColumn"
+                  style={{
+                    justifyContent: "flex-start",
+                    alignItems: "flex-start",
+                    gap: "4px",
+                  }}
+                >
+                  <div>
+                    Win Rate:{" "}
+                    {Math.floor(((1.0 * info.wins) / info.games) * 10000) / 100}
+                    % ({info.wins} of {info.games})
+                  </div>
+
+                  <div style={{ fontSize: "14px" }}>
+                    Most Common (non-starting) Tech(s):{" "}
+                    {mostCommonTechs.map((tech) => tech[0]).join(", ")} (
+                    {Math.floor(((1.0 * topPerc) / info.techGames) * 10000) /
+                      100}
+                    %)
+                  </div>
+                  <div style={{ fontSize: "14px" }}>
+                    Aggression Ranking:{" "}
+                    {aggressionOrder.findIndex((val) => val === id) + 1} of{" "}
+                    {aggressionOrder.length} (Score:{" "}
+                    {computeAggressionScore(
+                      info.planetsByRound,
+                      info.planetGames
+                    )}
+                    )
+                  </div>
+                  <div style={{ fontSize: "14px" }}>
+                    Scored secrets per game:{" "}
+                    {Math.round(
+                      (info.scoredSecrets / info.objectiveGames) * 100
+                    ) / 100}
+                  </div>
+                  <button
+                    style={{ fontSize: "10px" }}
+                    onClick={() => setShownModal(id as FactionId)}
+                  >
+                    More Stats
+                  </button>
+                </div>
+                <PointsHistogram
+                  histogram={info.histogram}
+                  suffix="per Game"
+                  points={points}
+                />
+              </div>
               {/* <TechTable
               techs={info.techs}
               techGames={info.techGames}
@@ -1573,18 +1653,20 @@ function FactionsTable({
   factions,
   factionGames,
   objectiveType,
+  points,
 }: {
   factions: Record<string, FactionObjectiveInfo>;
   factionGames: Record<string, number>;
   objectiveType: ObjectiveType;
+  points: number;
 }) {
   const orderedFactions = Object.entries(factions).sort((a, b) => {
     const aGames =
-      objectiveType === "SECRET"
+      objectiveType === "SECRET" || objectiveType === "OTHER"
         ? factionGames[a[0] as FactionId] ?? 1
         : a[1].games;
     const bGames =
-      objectiveType === "SECRET"
+      objectiveType === "SECRET" || objectiveType === "OTHER"
         ? factionGames[b[0] as FactionId] ?? 1
         : b[1].games;
     const aRatio = a[1].scored / aGames;
@@ -1609,7 +1691,7 @@ function FactionsTable({
         ) : null} */}
         {orderedFactions.map(([factionId, info]) => {
           let games = info.games;
-          if (objectiveType === "SECRET") {
+          if (objectiveType === "SECRET" || objectiveType === "OTHER") {
             games = factionGames[factionId] ?? 0;
           }
           return (
@@ -1648,9 +1730,11 @@ function FactionsTable({
 function TechsSection({
   games,
   baseData,
+  points,
 }: {
   games: Record<string, StoredGameData>;
   baseData: BaseData;
+  points: number;
 }) {
   const intl = useIntl();
   const [tab, setTab] = useState("Non-Faction");
@@ -1719,8 +1803,8 @@ function TechsSection({
             histogram: {},
             ownedHistogram: {},
           };
-          const points = Math.min(
-            10,
+          const factionPoints = Math.min(
+            points,
             computeVPs(factions, factionId as FactionId, objectives)
           );
           if (faction.startswith.techs?.includes(techId)) {
@@ -1728,17 +1812,20 @@ function TechsSection({
               tech.ownedWinners++;
             }
             tech.owners++;
-            let sum = tech.ownedHistogram[points] ?? 0;
+            let sum = tech.ownedHistogram[factionPoints] ?? 0;
             sum++;
-            tech.ownedHistogram[points] = sum;
+            tech.ownedHistogram[factionPoints] = sum;
           } else {
             if (index === 0) {
               tech.ownedWinners++;
               tech.winners++;
             }
-            let sum = tech.histogram[points] ?? 0;
+            let sum = tech.histogram[factionPoints] ?? 0;
             sum++;
-            tech.histogram[points] = sum;
+            tech.histogram[factionPoints] = sum;
+            let ownedSum = tech.ownedHistogram[factionPoints] ?? 0;
+            ownedSum++;
+            tech.ownedHistogram[factionPoints] = ownedSum;
             tech.researchers++;
             tech.owners++;
           }
@@ -1826,15 +1913,24 @@ function TechsSection({
                   % of Games ({info.ownedWinners} of {numGames})
                 </div>
               ) : null}
-              <div className="flexRow" style={{ width: "100%" }}>
+              <div
+                className="flexRow"
+                style={{
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  gap: "32px",
+                }}
+              >
                 <PointsHistogram
                   histogram={info.histogram}
                   suffix="when researched"
+                  points={points}
                 />
                 {info.winners !== info.ownedWinners ? (
                   <PointsHistogram
                     histogram={info.ownedHistogram}
                     suffix="when owned"
+                    points={points}
                   />
                 ) : null}
               </div>
@@ -1862,13 +1958,6 @@ function TechsSection({
                     100}{" "}
                   ({info.researchers} in {numGames})
                 </div>
-                {info.owners !== info.researchers ? (
-                  <div style={{ fontSize: "14px" }}>
-                    Average Owners per Game:{" "}
-                    {Math.floor(((1.0 * info.owners) / numGames) * 100) / 100} (
-                    {info.owners} in {numGames})
-                  </div>
-                ) : null}
               </div>
             )}
           </LabeledDiv>
@@ -1881,9 +1970,11 @@ function TechsSection({
 function ObjectivesSection({
   games,
   baseData,
+  points,
 }: {
   games: Record<string, StoredGameData>;
   baseData: BaseData;
+  points: number;
 }) {
   const [shownModal, setShownModal] = useState<Optional<ObjectiveId>>();
   const [tab, setTab] = useState<ObjectiveType>("STAGE ONE");
@@ -1895,9 +1986,11 @@ function ObjectivesSection({
       {
         games: number;
         scorers: number;
+        totalScorers: number;
         scoredHistogram: Histogram;
         unscoredHistogram: Histogram;
         factionInfo: Partial<Record<FactionId, FactionObjectiveInfo>>;
+        winners: number;
       }
     >
   > = {};
@@ -1910,6 +2003,7 @@ function ObjectivesSection({
 
     if (isObjectiveGame) {
       const objectives = buildObjectives(game, baseData);
+      const winner = orderFactionsByVP(game.factions, objectives)[0];
       objectiveGames++;
       for (const factionId of Object.keys(game.factions)) {
         let factionInfo = factionGames[factionId as FactionId] ?? 0;
@@ -1920,9 +2014,11 @@ function ObjectivesSection({
         const objInfo = objectivesByScore[objId as ObjectiveId] ?? {
           games: 0,
           scorers: 0,
+          totalScorers: 0,
           scoredHistogram: {},
           unscoredHistogram: {},
           factionInfo: {},
+          winners: 0,
         };
         const baseObj = baseObjectives[objId as ObjectiveId];
         if (
@@ -1947,6 +2043,9 @@ function ObjectivesSection({
           };
           faction.games++;
           if (scorers.includes(factionId as FactionId)) {
+            if (winner && winner[0] === factionId) {
+              objInfo.winners++;
+            }
             faction.scored++;
             let sum = objInfo.scoredHistogram[points] ?? 0;
             sum++;
@@ -1960,6 +2059,8 @@ function ObjectivesSection({
         }
         objInfo.games++;
         let numScorers = scorers.length;
+        let dedupedScorers = new Set(scorers ?? []);
+        objInfo.totalScorers += dedupedScorers.size;
         if (tab === "SECRET" || tab === "OTHER") {
           numScorers = Math.min(numScorers, 1);
         }
@@ -2075,6 +2176,7 @@ function ObjectivesSection({
                           objectiveType={
                             baseObjectives[objId as ObjectiveId].type
                           }
+                          points={points}
                         />
                       </div>
                     </CollapsibleSection>
@@ -2100,6 +2202,15 @@ function ObjectivesSection({
                   % of games - ({objInfo.scorers} of {objectiveGames})
                 </div>
               )}
+              {tab === "OTHER" ? (
+                <div style={{ width: "100%" }}>
+                  Win % when scored:{" "}
+                  {Math.round(
+                    (objInfo.winners / objInfo.totalScorers) * 10000
+                  ) / 100}
+                  % ({objInfo.winners} of {objInfo.totalScorers})
+                </div>
+              ) : null}
               <button
                 style={{ fontSize: "10px" }}
                 onClick={() => setShownModal(objId as ObjectiveId)}
@@ -2118,10 +2229,12 @@ function GameDataSection({
   games,
   baseData,
   actionLogs,
+  points,
 }: {
   games: Record<string, StoredGameData>;
   baseData: BaseData;
   actionLogs: Record<string, ActionLogEntry[]>;
+  points: number;
 }) {
   const intl = useIntl();
   let shortestGame = Number.MAX_SAFE_INTEGER;
@@ -2163,13 +2276,13 @@ function GameDataSection({
       const objectives = buildObjectives(game, baseData);
       const winner = orderFactionsByVP(game.factions, objectives)[0];
       for (const factionId of Object.keys(game.factions)) {
-        const points = Math.min(
-          10,
+        const factionPoints = Math.min(
+          points,
           computeVPs(game.factions, factionId as FactionId, objectives)
         );
-        let count = pointsHistogram[points] ?? 0;
+        let count = pointsHistogram[factionPoints] ?? 0;
         count++;
-        pointsHistogram[points] = count;
+        pointsHistogram[factionPoints] = count;
         let sum = factionsHistogram[factionId as FactionId] ?? 0;
         sum++;
         factionsHistogram[factionId as FactionId] = sum;
@@ -2186,24 +2299,24 @@ function GameDataSection({
       if (custodiansScorer) {
         Object.keys(game.factions).forEach((factionId) => {
           if (factionId === custodiansScorer) {
-            const points = Math.min(
-              10,
+            const factionPoints = Math.min(
+              points,
               computeVPs(game.factions, factionId, objectives)
             );
-            custodianPoints += points;
-            let sum = custodianHistogram[points] ?? 0;
+            custodianPoints += factionPoints;
+            let sum = custodianHistogram[factionPoints] ?? 0;
             sum++;
-            custodianHistogram[points] = sum;
+            custodianHistogram[factionPoints] = sum;
             custodianFactions++;
           } else {
-            const points = Math.min(
-              10,
+            const factionPoints = Math.min(
+              points,
               computeVPs(game.factions, factionId as FactionId, objectives)
             );
-            nonCustodianPoints += points;
-            let sum = nonCustodianHistogram[points] ?? 0;
+            nonCustodianPoints += factionPoints;
+            let sum = nonCustodianHistogram[factionPoints] ?? 0;
             sum++;
-            nonCustodianHistogram[points] = sum;
+            nonCustodianHistogram[factionPoints] = sum;
 
             nonCustodianFactions++;
           }
@@ -2270,7 +2383,11 @@ function GameDataSection({
           Average Number of Rounds:{" "}
           <div>{Math.floor((totalRounds / roundGames) * 100) / 100}</div>
         </div>
-        <PointsHistogram histogram={pointsHistogram} suffix="" />
+        <PointsHistogram
+          histogram={pointsHistogram}
+          points={points}
+          suffix=""
+        />
       </div>
       <div className="flexColumn">
         {/* <LabeledDiv label="Custodians">
@@ -2308,9 +2425,11 @@ type Histogram = Record<number, number>;
 
 function PointsHistogram({
   histogram,
+  points,
   suffix,
 }: {
   histogram: Record<number, number>;
+  points: number;
   suffix: string;
 }) {
   let maxVal = Number.MIN_SAFE_INTEGER;
@@ -2318,7 +2437,7 @@ function PointsHistogram({
   let sum = 0;
   let total = 0;
   const fullHistogram: Histogram = {};
-  for (let i = 0; i <= 10; i++) {
+  for (let i = 0; i <= points; i++) {
     const val = histogram[i] ?? 0;
     minVal = Math.min(val, minVal);
     maxVal = Math.max(val, maxVal);
@@ -2342,7 +2461,7 @@ function PointsHistogram({
   return (
     <div
       className="flexColumn"
-      style={{ gap: "2px", width: "100%", alignItems: "flex-start" }}
+      style={{ gap: "2px", width: "fit-content", alignItems: "flex-start" }}
     >
       <div>
         Average points{suffix ? ` ${suffix}` : ""}:{" "}
