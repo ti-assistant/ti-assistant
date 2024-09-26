@@ -38,7 +38,10 @@ export class UpdateLeaderStateHandler implements Handler {
       entry.data.action === "UPDATE_LEADER_STATE" &&
       entry.data.event.leaderId === this.data.event.leaderId
     ) {
-      if (entry.data.event.prevState === this.data.event.state) {
+      if (
+        entry.data.event.prevState === this.data.event.state ||
+        !entry.data.event.prevState
+      ) {
         return "DELETE";
       }
       return "IGNORE";
