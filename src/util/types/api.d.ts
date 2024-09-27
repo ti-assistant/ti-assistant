@@ -106,7 +106,7 @@ interface StoredGameData {
   components?: Record<string, GameComponent>;
   factions: Partial<Record<FactionId, GameFaction>>;
   leaders?: Partial<Record<LeaderId, GameLeader>>;
-  objectives?: Record<string, GameObjective>;
+  objectives?: Partial<Record<ObjectiveId, GameObjective>>;
   options: Options;
   planets: Partial<Record<PlanetId, GamePlanet>>;
   relics?: Partial<Record<RelicId, GameRelic>>;

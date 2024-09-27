@@ -10,6 +10,7 @@ interface LabeledDivProps {
   style?: CSSProperties;
   color?: string;
   opts?: LabeledDivOpts;
+  className?: string;
 }
 
 interface LabeledDivOpts {
@@ -29,6 +30,7 @@ export default function LabeledDiv({
   style = {},
   color = "#999",
   opts = {},
+  className,
 }: PropsWithChildren<LabeledDivProps>) {
   const padding = `${!!label ? "10px" : "6px"} ${"6px"} ${"6px"} ${"6px"}`;
   const divStyle: LabeledDivCSS = {
@@ -41,7 +43,7 @@ export default function LabeledDiv({
   };
   return (
     <div
-      className={`flexColumn ${styles.LabeledDiv}`}
+      className={`flexColumn ${styles.LabeledDiv} ${className ?? ""}`}
       style={divStyle}
       onClick={onClick}
     >

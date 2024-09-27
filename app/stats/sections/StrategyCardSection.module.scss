@@ -1,0 +1,21 @@
+.StrategyCardSection {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+@media only screen and (max-width: 1023px) {
+  .StrategyCardSection {
+    width: calc(100dvw - 24px);
+  }
+
+  .Table {
+    width: 100%;
+    display: block;
+    overflow-y: scroll;
+    white-space: nowrap;
+  }
+}

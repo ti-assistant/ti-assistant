@@ -33,3 +33,15 @@ export function validateMapString(mapString: string) {
   // TODO: Load systems and ensure that they are all found.
   return true;
 }
+
+export function objectKeys<T extends string | number>(
+  obj: Partial<Record<T, any>>
+): T[] {
+  return Object.keys(obj) as T[];
+}
+
+export function objectEntries<T extends string | number, U>(
+  obj: Partial<Record<T, U>>
+): [T, U][] {
+  return Object.entries(obj) as [T, U][];
+}

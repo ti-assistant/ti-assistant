@@ -1,0 +1,84 @@
+.Filters {
+  position: fixed;
+  top: 64px;
+  width: calc(100dvw - 208px);
+}
+
+.StatsPage {
+  width: 100%;
+  height: calc(100dvh - 60px);
+  margin-top: 60px;
+  padding-top: 4px;
+  font-family: Source Sans;
+}
+
+.DataSection {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-end;
+  margin-top: 120px;
+}
+
+.GameDataSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  position: fixed;
+  top: 180px;
+  left: 96px;
+}
+
+.DetailsSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 4px;
+  height: calc(100dvh - 240px);
+  overflow-y: scroll;
+}
+
+@media only screen and (max-width: 1023px) {
+  .Filters {
+    position: relative;
+    width: 100%;
+    top: unset;
+  }
+
+  .Filters > :global(.flexRow) {
+    overflow-y: scroll;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .DataSection {
+    flex-direction: column;
+    margin-top: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .GameDataSection {
+    position: relative;
+    top: unset;
+    left: unset;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .StatsPage {
+    margin-top: 0;
+  }
+
+  .DetailsSection {
+    height: fit-content;
+    overflow-y: auto;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+}
