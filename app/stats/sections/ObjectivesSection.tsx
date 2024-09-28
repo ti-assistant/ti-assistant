@@ -8,6 +8,7 @@ import { objectEntries, objectKeys } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import { ObjectiveGameCounts } from "./types";
 import styles from "./ObjectivesSection.module.scss";
+import { FormattedMessage } from "react-intl";
 
 export default function ObjectivesSection({
   games,
@@ -173,7 +174,16 @@ export default function ObjectivesSection({
                 >
                   <div className={styles.ObjectiveModal}>
                     <div></div>
-                    <CollapsibleSection openedByDefault title="Factions">
+                    <CollapsibleSection
+                      openedByDefault
+                      title={
+                        <FormattedMessage
+                          id="r2htpd"
+                          description="Text on a button that will randomize factions."
+                          defaultMessage="Factions"
+                        />
+                      }
+                    >
                       <div
                         className="flexColumn"
                         style={{
@@ -199,31 +209,61 @@ export default function ObjectivesSection({
               </div>
               {tab !== "SECRET" && tab !== "OTHER" ? (
                 <div style={{ width: "100%" }}>
-                  Average Scorers per Game:{" "}
-                  {Math.floor((objInfo.scorers / objInfo.games) * 100) / 100} -
-                  ({objInfo.scorers} in {objInfo.games} Games)
+                  <FormattedMessage
+                    id="J2lfJ4"
+                    defaultMessage="Average Scorers per game: {number} - ({total} in {games} games)"
+                    description="Statistic about the number of scorers of a public objective."
+                    values={{
+                      number:
+                        Math.round((objInfo.scorers / objInfo.games) * 100) /
+                        100,
+                      total: objInfo.scorers,
+                      games: objInfo.games,
+                    }}
+                  />
                 </div>
               ) : (
                 <div>
-                  Scored in{" "}
-                  {Math.floor((objInfo.scorers / objectiveGames) * 10000) / 100}
-                  % of games - ({objInfo.scorers} of {objectiveGames})
+                  <FormattedMessage
+                    id="Q+AbUi"
+                    defaultMessage="Scored in {number}% of games - ({total} of {games})"
+                    description="Statistic about the number of games a secret objective was scored in."
+                    values={{
+                      number:
+                        Math.round((objInfo.scorers / objectiveGames) * 10000) /
+                        100,
+                      total: objInfo.scorers,
+                      games: objectiveGames,
+                    }}
+                  />
                 </div>
               )}
               {tab === "OTHER" ? (
                 <div style={{ width: "100%" }}>
-                  Win % when scored:{" "}
-                  {Math.round(
-                    (objInfo.winners / objInfo.totalScorers) * 10000
-                  ) / 100}
-                  % ({objInfo.winners} of {objInfo.totalScorers})
+                  <FormattedMessage
+                    id="OaywdC"
+                    defaultMessage="Win Rate when scored: {number}% - ({total} of {games})"
+                    description="Statistic about the win rate when an objective was scored."
+                    values={{
+                      number:
+                        Math.round(
+                          (objInfo.winners / objInfo.totalScorers) * 10000
+                        ) / 100,
+                      total: objInfo.winners,
+                      games: objInfo.totalScorers,
+                    }}
+                  />
                 </div>
               ) : null}
               <button
                 style={{ fontSize: "10px" }}
                 onClick={() => setShownModal(objId)}
               >
-                More Stats
+                <FormattedMessage
+                  id="8NMXES"
+                  defaultMessage="More Stats"
+                  description="Text on a button that opens a modal with more statistics."
+                />
               </button>
             </LabeledDiv>
           </Fragment>

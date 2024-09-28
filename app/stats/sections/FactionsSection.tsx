@@ -7,6 +7,7 @@ import FactionModal from "./FactionModal";
 import { PointsHistogram } from "./Histogram";
 import { FactionSummary } from "./types";
 import styles from "./FactionsSection.module.scss";
+import { FormattedMessage } from "react-intl";
 
 export default function FactionsSection({
   games,
@@ -215,7 +216,7 @@ export default function FactionsSection({
       score += planets.home * homeMultiplier * roundMultiplier;
       score += planets.mecatol * mecatolMultiplier * roundMultiplier;
     });
-    return (1000 - Math.round((score / numGames) * 100)) / 100;
+    return (500 - Math.round((score / numGames) * 100)) / 100;
   }
 
   const aggressionOrder = Object.entries(factionInfo)
@@ -280,20 +281,7 @@ export default function FactionsSection({
                 }
                 style={{ gap: "2px" }}
               >
-                <div
-                  className={styles.FactionSection}
-                  // className="flexRow"
-                  // style={{
-                  //   display: "grid",
-                  //   gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                  //   gridAutoFlow: "row",
-                  //   alignItems: "flex-start",
-                  //   width: "100%",
-                  //   justifyContent: "center",
-                  //   justifyItems: "center",
-                  //   padding: "0 4px",
-                  // }}
-                >
+                <div className={styles.FactionSection}>
                   <div
                     className="flexRow"
                     style={{
@@ -317,16 +305,29 @@ export default function FactionsSection({
                     }}
                   >
                     <div>
-                      Win Rate:{" "}
+                      <FormattedMessage
+                        id="8ntyP0"
+                        defaultMessage="Win Rate"
+                        description="Label for a section describing the win rate."
+                      />
+                      :{" "}
                       {Math.floor(
                         ((1.0 * info.games.wins) / info.games.games) * 10000
                       ) / 100}
                       % ({info.games.wins} of {info.games.games})
                     </div>
                     <div style={{ fontSize: "14px" }}>
-                      Aggression Ranking:{" "}
-                      {aggressionOrder.findIndex((val) => val === id) + 1} of{" "}
-                      {aggressionOrder.length} (Score:{" "}
+                      <FormattedMessage
+                        id="/LAhkb"
+                        defaultMessage="Aggression Ranking: {val} of {count}"
+                        description="Statistic ranking how aggressive a faction is."
+                        values={{
+                          val:
+                            aggressionOrder.findIndex((val) => val === id) + 1,
+                          count: aggressionOrder.length,
+                        }}
+                      />{" "}
+                      (
                       {computeAggressionScore(
                         info.planetsByRound,
                         info.planetGames.games
@@ -334,9 +335,16 @@ export default function FactionsSection({
                       )
                     </div>
                     <div style={{ fontSize: "14px" }}>
-                      Defense Ranking:{" "}
-                      {defenseOrder.findIndex((val) => val === id) + 1} of{" "}
-                      {defenseOrder.length} (Score:{" "}
+                      <FormattedMessage
+                        id="PWXbsW"
+                        defaultMessage="Defense Ranking: {val} of {count}"
+                        description="Statistic ranking how defensive a faction is."
+                        values={{
+                          val: defenseOrder.findIndex((val) => val === id) + 1,
+                          count: defenseOrder.length,
+                        }}
+                      />{" "}
+                      (
                       {computeDefenseScore(
                         info.lostPlanetsByRound,
                         info.planetGames.games
@@ -344,15 +352,22 @@ export default function FactionsSection({
                       )
                     </div>
                     <div style={{ fontSize: "14px" }}>
-                      Average scored secrets:{" "}
-                      {Math.round(
-                        (info.scoredSecrets / info.objectiveGames.games) * 100
-                      ) / 100}
+                      <FormattedMessage
+                        id="fW7Ivs"
+                        defaultMessage="Average scored secrets: {number}"
+                        description="Statistic for the average number of scored secrets."
+                        values={{
+                          number:
+                            Math.round(
+                              (info.scoredSecrets / info.objectiveGames.games) *
+                                100
+                            ) / 100,
+                        }}
+                      />
                     </div>
                   </div>
                   <PointsHistogram
                     histogram={info.games.histogram}
-                    suffix=""
                     points={points}
                   />
                 </div>
@@ -363,7 +378,11 @@ export default function FactionsSection({
                     setShownModal(id as FactionId);
                   }}
                 >
-                  More Stats
+                  <FormattedMessage
+                    id="8NMXES"
+                    defaultMessage="More Stats"
+                    description="Text on a button that opens a modal with more statistics."
+                  />
                 </button>
               </LabeledDiv>
             </Fragment>

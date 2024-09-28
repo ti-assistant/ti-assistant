@@ -10,6 +10,7 @@ import { PointsHistogram } from "./Histogram";
 import { HistogramData } from "./types";
 import styles from "./TechsSection.module.scss";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import { FormattedMessage } from "react-intl";
 
 interface FactionTechInfo {
   games: number;
@@ -140,14 +141,22 @@ export default function TechsSection({
           className={tab === "Non-Faction" ? "selected" : ""}
           onClick={() => setTab("Non-Faction")}
         >
-          Non-Faction
+          <FormattedMessage
+            id="nYgb4V"
+            defaultMessage="Non-Faction"
+            description="Techs that are not specific to any faction."
+          />
         </button>
         <button
           style={{ fontSize: "14px" }}
           className={tab === "Faction" ? "selected" : ""}
           onClick={() => setTab("Faction")}
         >
-          Faction
+          <FormattedMessage
+            id="LuWjGl"
+            defaultMessage="Faction"
+            description="Techs that are specific to a faction."
+          />
         </button>
       </div>
 
@@ -188,7 +197,16 @@ export default function TechsSection({
           >
             <div className={styles.TechModal}>
               <div></div>
-              <CollapsibleSection openedByDefault title="Factions">
+              <CollapsibleSection
+                openedByDefault
+                title={
+                  <FormattedMessage
+                    id="r2htpd"
+                    description="Text on a button that will randomize factions."
+                    defaultMessage="Factions"
+                  />
+                }
+              >
                 <div
                   className="flexColumn"
                   style={{
@@ -246,45 +264,57 @@ export default function TechsSection({
               }}
             >
               <div>
-                Win Rate:{" "}
-                {Math.floor(((1.0 * info.winners) / info.researchers) * 10000) /
+                <FormattedMessage
+                  id="8ntyP0"
+                  defaultMessage="Win Rate"
+                  description="Label for a section describing the win rate."
+                />
+                :{" "}
+                {Math.round(((1.0 * info.winners) / info.researchers) * 10000) /
                   100}
                 % ({info.winners} of {info.researchers})
               </div>
               <div>
-                Researched by Winner in{" "}
-                {Math.floor(((1.0 * info.winners) / numGames) * 10000) / 100}%
-                of Games ({info.winners} of {numGames})
+                <FormattedMessage
+                  id="M9w8hd"
+                  defaultMessage="Researched by winner in {perc}% of games ({wins} of {games})"
+                  description="Statistic about how frequently a tech was researched by the winner."
+                  values={{
+                    perc:
+                      Math.round(((1.0 * info.winners) / numGames) * 10000) /
+                      100,
+                    wins: info.winners,
+                    games: numGames,
+                  }}
+                />
               </div>
-              {info.winners !== info.ownedWinners ? (
+              {/* {info.winners !== info.ownedWinners ? (
                 <div style={{ fontSize: "14px" }}>
                   Owned by Winner in{" "}
-                  {Math.floor(((1.0 * info.ownedWinners) / numGames) * 10000) /
+                  {Math.round(((1.0 * info.ownedWinners) / numGames) * 10000) /
                     100}
                   % of Games ({info.ownedWinners} of {numGames})
                 </div>
-              ) : null}
+              ) : null} */}
               <div className={styles.HistogramSection}>
-                <PointsHistogram
-                  histogram={info.histogram}
-                  suffix="when researched"
-                  points={points}
-                />
-                {info.winners !== info.ownedWinners ? (
-                  <PointsHistogram
-                    histogram={info.ownedHistogram}
-                    suffix="when owned"
-                    points={points}
-                  />
-                ) : null}
+                <PointsHistogram histogram={info.histogram} points={points} />
               </div>
             </div>
             {tab === "Faction" ? (
               <div>
-                Researched in{" "}
-                {Math.floor(((1.0 * info.researchers) / numGames) * 10000) /
-                  100}
-                % of games ({info.researchers} of {numGames})
+                <FormattedMessage
+                  id="mYdPrP"
+                  defaultMessage="Researched in {perc}% of games ({count} of {games})"
+                  description="Statistic about how frequently a faction tech was researched."
+                  values={{
+                    perc:
+                      Math.round(
+                        ((1.0 * info.researchers) / numGames) * 10000
+                      ) / 100,
+                    count: info.researchers,
+                    games: numGames,
+                  }}
+                />
               </div>
             ) : (
               <div
@@ -297,10 +327,19 @@ export default function TechsSection({
                 }}
               >
                 <div>
-                  Average Researchers per Game:{" "}
-                  {Math.floor(((1.0 * info.researchers) / numGames) * 100) /
-                    100}{" "}
-                  ({info.researchers} in {numGames})
+                  <FormattedMessage
+                    id="6Dhyu4"
+                    defaultMessage="Average researchers per game: {num} ({count} of {games})"
+                    description="Statistic about the average number of researchers of a tech."
+                    values={{
+                      num:
+                        Math.round(
+                          ((1.0 * info.researchers) / numGames) * 100
+                        ) / 100,
+                      count: info.researchers,
+                      games: numGames,
+                    }}
+                  />
                 </div>
               </div>
             )}
@@ -310,7 +349,11 @@ export default function TechsSection({
                 style={{ fontSize: "10px", marginTop: "4px" }}
                 onClick={() => setShownModal(id)}
               >
-                More Stats
+                <FormattedMessage
+                  id="8NMXES"
+                  defaultMessage="More Stats"
+                  description="Text on a button that opens a modal with more statistics."
+                />
               </button>
             ) : null}
           </LabeledDiv>
@@ -343,9 +386,27 @@ function FactionsTechTable({
       <thead>
         <tr>
           <th></th>
-          <th>Research Rate</th>
-          <th>Win Rate</th>
-          <th>Average Points</th>
+          <th>
+            <FormattedMessage
+              id="+kc61r"
+              defaultMessage="Research Rate"
+              description="Label for a section describing the percentage that a tech was researched."
+            />
+          </th>
+          <th>
+            <FormattedMessage
+              id="8ntyP0"
+              defaultMessage="Win Rate"
+              description="Label for a section describing the win rate."
+            />
+          </th>
+          <th>
+            <FormattedMessage
+              id="+zFNH+"
+              defaultMessage="Average VPs"
+              description="Label for a section describing the average number of VPs."
+            />
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -365,16 +426,16 @@ function FactionsTechTable({
                 <div>{factionId}</div>
               </td>
               <td>
-                {Math.floor(((1.0 * info.researched) / games) * 10000) / 100}% (
+                {Math.round(((1.0 * info.researched) / games) * 10000) / 100}% (
                 {info.researched} of {games})
               </td>
               <td>
-                {Math.floor(((1.0 * info.wins) / info.researched) * 10000) /
+                {Math.round(((1.0 * info.wins) / info.researched) * 10000) /
                   100}
                 % ({info.wins} of {info.researched})
               </td>
               <td>
-                {Math.floor(((1.0 * info.points) / info.researched) * 100) /
+                {Math.round(((1.0 * info.points) / info.researched) * 100) /
                   100}{" "}
                 ({info.points} in {info.researched})
               </td>

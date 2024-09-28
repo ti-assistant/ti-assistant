@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import { ProcessedGame } from "../processor";
 import styles from "./StrategyCardSection.module.scss";
@@ -122,19 +123,32 @@ export default function StrategyCardSection({
                   {factionIndexes.map((index) => {
                     return (
                       <th key={index}>
-                        {index === 1
-                          ? "1st"
-                          : index === 2
-                          ? "2nd"
-                          : index === 3
-                          ? "3rd"
-                          : `${index}th`}
+                        <FormattedMessage
+                          id="+L4gCQ"
+                          defaultMessage={
+                            "{num, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}"
+                          }
+                          description="Table header showing the order of a given player."
+                          values={{ num: index }}
+                        />
                       </th>
                     );
                   })}
-                  <th>Unpicked</th>
-                  <th>Win Rate</th>
-                  <th>Avg Points</th>
+                  <th>-</th>
+                  <th>
+                    <FormattedMessage
+                      id="8ntyP0"
+                      defaultMessage="Win Rate"
+                      description="Label for a section describing the win rate."
+                    />
+                  </th>
+                  <th>
+                    <FormattedMessage
+                      id="+zFNH+"
+                      defaultMessage="Average VPs"
+                      description="Label for a section describing the average number of VPs."
+                    />
+                  </th>
                 </tr>
               </thead>
               {info.rounds.map((round, index) => {
@@ -147,7 +161,14 @@ export default function StrategyCardSection({
                 let totalPoints = 0;
                 return (
                   <tr key={index}>
-                    <td style={{ fontWeight: "bold" }}>Round {index}</td>
+                    <td style={{ fontWeight: "bold" }}>
+                      <FormattedMessage
+                        id="hhm3kX"
+                        defaultMessage="Round {value}"
+                        description="The current round of the game."
+                        values={{ value: index }}
+                      />
+                    </td>
                     {factionIndexes.map((index) => {
                       const pickRate = round[index];
                       winRounds += pickRate?.winCount ?? 0;

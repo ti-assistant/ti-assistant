@@ -114,4 +114,49 @@ export namespace Strings {
         );
     }
   }
+
+  export function Expansion({ expansion }: { expansion: Expansion }) {
+    switch (expansion) {
+      case "POK":
+        return (
+          <FormattedMessage
+            id="p9XVGB"
+            description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+            defaultMessage="Prophecy of Kings"
+          />
+        );
+      case "CODEX ONE":
+        return (
+          <FormattedMessage
+            id="3Taw9H"
+            description="Text on a button that will enable/disable Codex I."
+            defaultMessage="Codex I"
+          />
+        );
+      case "CODEX TWO":
+        return (
+          <FormattedMessage
+            id="knYKVl"
+            description="Text on a button that will enable/disable Codex II."
+            defaultMessage="Codex II"
+          />
+        );
+      case "CODEX THREE":
+        return (
+          <FormattedMessage
+            id="zXrdrP"
+            description="Text on a button that will enable/disable Codex III."
+            defaultMessage="Codex III"
+          />
+        );
+      case "DISCORDANT STARS":
+        return (
+          <FormattedMessage
+            id="ZlvDZB"
+            description="Text on a button that will enable/disable the Discordant Stars expansion."
+            defaultMessage="Discordant Stars"
+          />
+        );
+    }
+  }
 }

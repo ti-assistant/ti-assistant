@@ -1,6 +1,7 @@
 import { HistogramData } from "./types";
 import styles from "./Histogram.module.scss";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import { FormattedMessage } from "react-intl";
 
 export function Histogram({ histogram }: { histogram: HistogramData }) {
   const [maxVal, minVal] = Object.values(histogram).reduce(
@@ -64,11 +65,9 @@ export function Histogram({ histogram }: { histogram: HistogramData }) {
 export function PointsHistogram({
   histogram,
   points,
-  suffix,
 }: {
   histogram: Record<number, number>;
   points: number;
-  suffix: string;
 }) {
   let maxVal = Number.MIN_SAFE_INTEGER;
   let minVal = Number.MAX_SAFE_INTEGER;
@@ -90,8 +89,12 @@ export function PointsHistogram({
       style={{ gap: "2px", width: "fit-content", alignItems: "flex-start" }}
     >
       <div>
-        Average points{suffix ? ` ${suffix}` : ""}:{" "}
-        {Math.round((sum / total) * 100) / 100}
+        <FormattedMessage
+          id="+zFNH+"
+          defaultMessage="Average VPs"
+          description="Label for a section describing the average number of VPs."
+        />
+        : {Math.round((sum / total) * 100) / 100}
       </div>
       <Histogram histogram={fullHistogram} />
     </div>

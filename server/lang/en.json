@@ -23,6 +23,10 @@
     "defaultMessage": "Promissory",
     "description": "Promissory note actions."
   },
+  "+L4gCQ": {
+    "defaultMessage": "{num, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",
+    "description": "Table header showing the order of a given player."
+  },
   "+WkrHz": {
     "defaultMessage": "AND",
     "description": "Text between two fields linking them together."
@@ -30,6 +34,10 @@
   "+XKsgE": {
     "defaultMessage": "Game",
     "description": "Text used to identify the current game."
+  },
+  "+kc61r": {
+    "defaultMessage": "Research Rate",
+    "description": "Label for a section describing the percentage that a tech was researched."
   },
   "+mUg6N": {
     "defaultMessage": "Build the Galaxy",
@@ -43,9 +51,17 @@
     "defaultMessage": "Pending",
     "description": "Text on a hover menu for selecting a rider target."
   },
+  "+zFNH+": {
+    "defaultMessage": "Average VPs",
+    "description": "Label for a section describing the average number of VPs."
+  },
   "/KXhGz": {
     "defaultMessage": "Tactical",
     "description": "Text on a button that will select a tactical action."
+  },
+  "/LAhkb": {
+    "defaultMessage": "Aggression Ranking: {val} of {count}",
+    "description": "Statistic ranking how aggressive a faction is."
   },
   "/MkeMw": {
     "defaultMessage": "Leaders",
@@ -195,6 +211,10 @@
     "defaultMessage": "+1 VP for Custodians Token",
     "description": "Text telling the player that they gained a victory point for removing the Custodians Token."
   },
+  "6Dhyu4": {
+    "defaultMessage": "Average researchers per game: {num} ({count} of {games})",
+    "description": "Statistic about the average number of researchers of a tech."
+  },
   "6EVvXu": {
     "defaultMessage": "Public",
     "description": "Label for selecting a public objective."
@@ -219,9 +239,17 @@
     "defaultMessage": "Advance to {phase} Phase",
     "description": "Text on a button that will advance the game to a specific phase."
   },
+  "8NMXES": {
+    "defaultMessage": "More Stats",
+    "description": "Text on a button that opens a modal with more statistics."
+  },
   "8OswCT": {
     "defaultMessage": "Gain Command Tokens and Redistribute",
     "description": "Text telling the players to gain command tokens and redistribute."
+  },
+  "8ntyP0": {
+    "defaultMessage": "Win Rate",
+    "description": "Label for a section describing the win rate."
   },
   "9DZz2w": {
     "defaultMessage": "Setup Game",
@@ -238,6 +266,10 @@
   "A5p5qF": {
     "defaultMessage": "Report Issue",
     "description": "A button that will open the Github issues page."
+  },
+  "AB4nOe": {
+    "defaultMessage": "w/o Tech",
+    "description": "Label for a section for a stat without a tech."
   },
   "AO8lj8": {
     "defaultMessage": "Cultural Planets Exhausted",
@@ -1170,6 +1202,10 @@
   "COzTbT": {
     "defaultMessage": "Pause",
     "description": "Text shown on a button that will pause the game."
+  },
+  "CaHUOS": {
+    "defaultMessage": "Imperial Points per game: {perc}% ({count} of {games})",
+    "description": "Text for a stat about the average number of imperial points per game."
   },
   "ChW/ih": {
     "defaultMessage": "Draw 5 stage II objectives",
@@ -2459,6 +2495,10 @@
     "defaultMessage": "Stage I",
     "description": "The title of public objectives that grant 1 victory point."
   },
+  "J2lfJ4": {
+    "defaultMessage": "Average Scorers per game: {number} - ({total} in {games} games)",
+    "description": "Statistic about the number of scorers of a public objective."
+  },
   "JS92Jj": {
     "defaultMessage": "Make Speaker",
     "description": "Text on a button that will make a faction the speaker."
@@ -2627,9 +2667,17 @@
     "defaultMessage": "Update Objectives",
     "description": "Text shown on a button that opens the update objectives panel."
   },
+  "LuWjGl": {
+    "defaultMessage": "Faction",
+    "description": "Techs that are specific to a faction."
+  },
   "M0ywrk": {
     "defaultMessage": "Gain {count} Trade {count, plural, =0 {Goods} one {Good} other {Goods}}",
     "description": "Text telling a player how many Trade Goods to gain."
+  },
+  "M9w8hd": {
+    "defaultMessage": "Researched by winner in {perc}% of games ({wins} of {games})",
+    "description": "Statistic about how frequently a tech was researched by the winner."
   },
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": {
     "defaultMessage": "When you win a combat, place 1 command token from your opponent's reinforcements in your fleet pool if it does not already contain 1 of that player's tokens; other player's tokens in your fleet pool increase your fleet limit but cannot be redistributed.",
@@ -3298,6 +3346,10 @@
   "OVn1wE": {
     "defaultMessage": "Ready Cards",
     "description": "Instruction telling players to ready cards."
+  },
+  "OaywdC": {
+    "defaultMessage": "Win Rate when scored: {number}% - ({total} of {games})",
+    "description": "Statistic about the win rate when an objective was scored."
   },
   "Objectives.Achieve Supremacy.Description": {
     "defaultMessage": "Have your flagship or a war sun in another player's home system or the Mecatol Rex system.",
@@ -4107,6 +4159,10 @@
     "defaultMessage": "Secondary",
     "description": "The alternate ability for a strategy card."
   },
+  "PWXbsW": {
+    "defaultMessage": "Defense Ranking: {val} of {count}",
+    "description": "Statistic ranking how defensive a faction is."
+  },
   "Phase.Action": {
     "defaultMessage": "Action",
     "description": "Phase title for Action phase."
@@ -4135,6 +4191,10 @@
     "defaultMessage": "Unknown",
     "description": "Phase text shown while game is loading."
   },
+  "PmqXSZ": {
+    "defaultMessage": "Average Number of Rounds",
+    "description": "Label for the average number of rounds."
+  },
   "PnNSxg": {
     "defaultMessage": "OR",
     "description": "Text between two fields linking them together."
@@ -4155,9 +4215,17 @@
     "defaultMessage": "{count, plural, =0 {VPs} one {VP} other {VPs}}",
     "description": "Shortened version of Victory Points."
   },
+  "Q+AbUi": {
+    "defaultMessage": "Scored in {number}% of games - ({total} of {games})",
+    "description": "Statistic about the number of games a secret objective was scored in."
+  },
   "QFhw/l": {
     "defaultMessage": "Join Game",
     "description": "A button that will join the game with a specified ID."
+  },
+  "Qo4+d0": {
+    "defaultMessage": "w/ Tech",
+    "description": "Label for a section for a stat with a tech."
   },
   "QrrIrN": {
     "defaultMessage": "Secrets",
@@ -5663,6 +5731,10 @@
     "defaultMessage": "Map Type:",
     "description": "A label for a selector for selecting which map style to use."
   },
+  "Zh1T8Z": {
+    "defaultMessage": "Filters",
+    "description": "Label for a section containing filters that filter out specific games."
+  },
   "ZlvDZB": {
     "defaultMessage": "Discordant Stars",
     "description": "Text on a button that will enable/disable the Discordant Stars expansion."
@@ -5674,6 +5746,10 @@
   "a1rHE+": {
     "defaultMessage": "+1 VP for controlling Mecatol Rex",
     "description": "Message telling a player that they get a victory point."
+  },
+  "aO0PYJ": {
+    "defaultMessage": "Stats",
+    "description": "A button that will open the statistics page."
   },
   "c4LYqr": {
     "defaultMessage": "Cannot Vote",
@@ -5747,6 +5823,10 @@
     "defaultMessage": "Display Titles",
     "description": "Text on a button that will display titles."
   },
+  "etE9Xc": {
+    "defaultMessage": "Custodians Token taken in {perc}% of games ({count} of {games})",
+    "description": "Text for a stat about the number of times a faction claimed the custodians token."
+  },
   "fCdj3q": {
     "defaultMessage": "Score Action Phase Objective",
     "description": "Text on a hover menu allowing a player to score an action phase objective."
@@ -5755,6 +5835,10 @@
     "defaultMessage": "Details",
     "description": "Label for a section containing additional details."
   },
+  "fW7Ivs": {
+    "defaultMessage": "Average scored secrets: {number}",
+    "description": "Statistic for the average number of scored secrets."
+  },
   "frzrrT": {
     "defaultMessage": "UNLOCK:",
     "description": "Text that gets pre-fixed to a leader unlock condition."
@@ -5762,10 +5846,6 @@
   "fxKsk7": {
     "defaultMessage": "Commander",
     "description": "The title of a commander: a leader that provides a passive ability."
-  },
-  "g92Jbl": {
-    "defaultMessage": "Updates Paused",
-    "description": "Text telling the user that updates are paused."
   },
   "gQ0twG": {
     "defaultMessage": "Start Voting",
@@ -5791,6 +5871,14 @@
     "defaultMessage": "Round {value}",
     "description": "The current round of the game."
   },
+  "hicVw5": {
+    "defaultMessage": "Win Rate with Custodians Token: {perc}% ({count} of {games})",
+    "description": "Text for a stat about the number of times a faction won with the custodians token."
+  },
+  "i3D47t": {
+    "defaultMessage": "Faction Games",
+    "description": "Label for a chart showing the number of games per faction."
+  },
   "i4Uu4m": {
     "defaultMessage": "Hyperspace",
     "description": "Text on a button that will show/hide hyperspace tiles."
@@ -5810,6 +5898,10 @@
   "jGX605": {
     "defaultMessage": "Play Rider",
     "description": "Text on hover menu for selecting a rider to play."
+  },
+  "jOsJY8": {
+    "defaultMessage": "Strategy Cards",
+    "description": "Strategy Cards."
   },
   "jgVoqe": {
     "defaultMessage": "{count} {count, plural, one {Carrier} other {Carriers}}",
@@ -5847,6 +5939,10 @@
     "defaultMessage": "Cast votes (or abstain)",
     "description": "Text label telling players to cast votes or abstain."
   },
+  "mYdPrP": {
+    "defaultMessage": "Researched in {perc}% of games ({count} of {games})",
+    "description": "Statistic about how frequently a faction tech was researched."
+  },
   "mcZgiQ": {
     "defaultMessage": "{count} {count, plural, one {Destroyer} other {Destroyers}}",
     "description": "A number of Destroyer units."
@@ -5858,6 +5954,10 @@
   "mkUb00": {
     "defaultMessage": "Select Component",
     "description": "Text on a hover menu for selecting a component action."
+  },
+  "nYgb4V": {
+    "defaultMessage": "Non-Faction",
+    "description": "Techs that are not specific to any faction."
   },
   "nryRrR": {
     "defaultMessage": "BOMBARDMENT {value}",
@@ -5895,6 +5995,10 @@
     "defaultMessage": "Factions",
     "description": "Text on a button that will randomize factions."
   },
+  "r4GnEX": {
+    "defaultMessage": "Faction Win Rates",
+    "description": "Label for a chart showing the win rate per faction."
+  },
   "rEazHY": {
     "defaultMessage": "{count} {count, plural, one {War Sun} other {War Suns}}",
     "description": "A number of War Sun units."
@@ -5931,6 +6035,10 @@
     "defaultMessage": "Returned {count, plural, one {Tech} other {Techs}}",
     "description": "Label for a section listing returned techs."
   },
+  "ssIhWl": {
+    "defaultMessage": "Average Game Length",
+    "description": "Label for the average game length."
+  },
   "t0EFbu": {
     "defaultMessage": "Exploration/Relic",
     "description": "Abilities related to exploration and relics."
@@ -5950,10 +6058,6 @@
   "tocXJ4": {
     "defaultMessage": "Reset",
     "description": "Text on a button that will reset selections."
-  },
-  "uEqy1T": {
-    "defaultMessage": "Close to continue",
-    "description": "Text telling the user to close the dialog to resume."
   },
   "urcttb": {
     "defaultMessage": "Ready {num, select, 3 {3} other {all}} planets, then",
@@ -6030,6 +6134,10 @@
   "ys7uwX": {
     "defaultMessage": "Techs",
     "description": "Shortened version of technologies."
+  },
+  "zAhkl6": {
+    "defaultMessage": "Completed Games",
+    "description": "Label for the number of completed games."
   },
   "zXrdrP": {
     "defaultMessage": "Codex III",

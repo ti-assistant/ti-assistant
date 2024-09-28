@@ -21,15 +21,19 @@ import StrategyCardSection from "./sections/StrategyCardSection";
 import TechsSection from "./sections/TechsSection";
 import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
+import { FormattedMessage, useIntl } from "react-intl";
+import { Strings } from "../../src/components/strings";
 
 function FilterButton<T extends string | number>({
   filter,
   filters,
   setFilters,
+  text,
 }: {
   filter: T;
   filters: Set<T>;
   setFilters: Dispatch<SetStateAction<Set<T>>>;
+  text?: ReactNode;
 }) {
   return (
     <Toggle
@@ -46,7 +50,7 @@ function FilterButton<T extends string | number>({
         });
       }}
     >
-      {filter}
+      {text ?? filter}
     </Toggle>
   );
 }
@@ -148,6 +152,7 @@ export default function StatsPage({
   processedGames: Record<string, ProcessedGame>;
   baseData: BaseData;
 }) {
+  const intl = useIntl();
   const [expansions, setExpansions] = useState<Set<Expansion>>(
     new Set(["BASE", "POK", "CODEX ONE", "CODEX TWO", "CODEX THREE"])
   );
@@ -182,43 +187,74 @@ export default function StatsPage({
 
   return (
     <>
-      <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="STATS (BETA)" />
+      <NonGameHeader
+        leftSidebar="TI ASSISTANT"
+        rightSidebar={intl
+          .formatMessage({
+            id: "aO0PYJ",
+            defaultMessage: "Stats",
+            description: "A button that will open the statistics page.",
+          })
+          .toUpperCase()}
+      />
       <div className={styles.StatsPage}>
         <div
           className="flexColumn"
           style={{ justifyContent: "flex-start", alignItems: "flex-start" }}
         >
-          <LabeledDiv label="Filters" className={styles.Filters}>
+          <LabeledDiv
+            label={intl.formatMessage({
+              id: "Zh1T8Z",
+              defaultMessage: "Filters",
+              description:
+                "Label for a section containing filters that filter out specific games.",
+            })}
+            className={styles.Filters}
+          >
             <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
-              Expansions:
+              <FormattedMessage
+                id="2jNcVD"
+                defaultMessage="Expansions:"
+                description="A label for a selector specifying which expansions should be enabled."
+              />
               <FilterButton
                 filters={expansions}
                 filter="POK"
                 setFilters={setExpansions}
+                text={<Strings.Expansion expansion="POK" />}
               />
               <FilterButton
                 filters={expansions}
                 filter="CODEX ONE"
                 setFilters={setExpansions}
+                text={<Strings.Expansion expansion="CODEX ONE" />}
               />
               <FilterButton
                 filters={expansions}
                 filter="CODEX TWO"
                 setFilters={setExpansions}
+                text={<Strings.Expansion expansion="CODEX TWO" />}
               />
               <FilterButton
                 filters={expansions}
                 filter="CODEX THREE"
                 setFilters={setExpansions}
+                text={<Strings.Expansion expansion="CODEX THREE" />}
               />
               <FilterButton
                 filters={expansions}
                 filter="DISCORDANT STARS"
                 setFilters={setExpansions}
+                text={<Strings.Expansion expansion="DISCORDANT STARS" />}
               />
             </div>
             <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
-              Players:
+              <FormattedMessage
+                id="Jh0WRk"
+                defaultMessage="Player Count"
+                description="Label for a selector to change the number of players"
+              />
+              :
               <CountButton
                 filters={playerCount}
                 filter={3}
@@ -251,7 +287,12 @@ export default function StatsPage({
               />
             </div>
             <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
-              Victory Points:
+              <FormattedMessage
+                id="R06tnh"
+                description="A label for a selector specifying the number of victory points required."
+                defaultMessage="Victory Points"
+              />
+              :
               <FilterButton
                 filters={victoryPoints}
                 filter={10}
@@ -270,12 +311,7 @@ export default function StatsPage({
             </div>
           </LabeledDiv>
           <div className={styles.DataSection}>
-            <GameDataSection
-              games={localGames}
-              baseData={baseData}
-              actionLogs={{}}
-              points={points}
-            />
+            <GameDataSection games={localGames} points={points} />
             <DetailsSection
               games={localGames}
               baseData={baseData}
@@ -333,28 +369,44 @@ function DetailsSection({
           className={tab === "Factions" ? "selected" : ""}
           onClick={() => setTab("Factions")}
         >
-          Factions
+          <FormattedMessage
+            id="r2htpd"
+            description="Text on a button that will randomize factions."
+            defaultMessage="Factions"
+          />
         </button>
         <button
           style={{ fontSize: "14px" }}
           className={tab === "Objectives" ? "selected" : ""}
           onClick={() => setTab("Objectives")}
         >
-          Objectives
+          <FormattedMessage
+            id="5Bl4Ek"
+            description="Cards that define how to score victory points."
+            defaultMessage="Objectives"
+          />
         </button>
         <button
           style={{ fontSize: "14px" }}
           className={tab === "Techs" ? "selected" : ""}
           onClick={() => setTab("Techs")}
         >
-          Techs
+          <FormattedMessage
+            id="ys7uwX"
+            description="Shortened version of technologies."
+            defaultMessage="Techs"
+          />
         </button>
         <button
           style={{ fontSize: "14px" }}
           className={tab === "Strategy Cards" ? "selected" : ""}
           onClick={() => setTab("Strategy Cards")}
         >
-          Strategy Cards
+          <FormattedMessage
+            id="jOsJY8"
+            description="Strategy Cards."
+            defaultMessage="Strategy Cards"
+          />
         </button>
       </div>
       <div className={styles.DetailsSection}>{tabContent}</div>
@@ -363,17 +415,11 @@ function DetailsSection({
 }
 function GameDataSection({
   games,
-  baseData,
-  actionLogs,
   points,
 }: {
   games: Record<string, ProcessedGame>;
-  baseData: BaseData;
-  actionLogs: Record<string, ActionLogEntry[]>;
   points: number;
 }) {
-  let shortestGame = Number.MAX_SAFE_INTEGER;
-  let longestGame = Number.MIN_SAFE_INTEGER;
   let totalGameLength = 0;
   let numGames = 0;
   let totalRounds = 0;
@@ -414,8 +460,6 @@ function GameDataSection({
     if (!gameTime || gameTime < 7200) {
       return;
     }
-    longestGame = Math.max(longestGame, gameTime);
-    shortestGame = Math.min(shortestGame, gameTime);
     totalGameLength += gameTime;
     numGames++;
   });
@@ -433,10 +477,20 @@ function GameDataSection({
     <div className={styles.GameDataSection}>
       <div className="flexColumn" style={{ alignItems: "stretch", gap: "2px" }}>
         <div className="flexRow" style={{ justifyContent: "space-between " }}>
-          Completed Games:<div>{Object.keys(games).length}</div>
+          <FormattedMessage
+            id="zAhkl6"
+            defaultMessage="Completed Games"
+            description="Label for the number of completed games."
+          />
+          :<div>{Object.keys(games).length}</div>
         </div>
         <div className="flexRow" style={{ justifyContent: "space-between" }}>
-          Average Game Length:{" "}
+          <FormattedMessage
+            id="ssIhWl"
+            defaultMessage="Average Game Length"
+            description="Label for the average game length."
+          />
+          :
           <TimerDisplay
             time={Math.floor(totalGameLength / numGames)}
             width={72}
@@ -444,30 +498,14 @@ function GameDataSection({
           />
         </div>
         <div className="flexRow" style={{ justifyContent: "space-between" }}>
-          Quickest Game:{" "}
-          <TimerDisplay
-            time={shortestGame}
-            width={72}
-            style={{ fontSize: "16px", fontFamily: "Source Sans" }}
+          <FormattedMessage
+            id="PmqXSZ"
+            defaultMessage="Average Number of Rounds"
+            description="Label for the average number of rounds."
           />
+          : <div>{Math.floor((totalRounds / roundGames) * 100) / 100}</div>
         </div>
-        <div className="flexRow" style={{ justifyContent: "space-between" }}>
-          Slowest Game:{" "}
-          <TimerDisplay
-            time={longestGame}
-            width={72}
-            style={{ fontSize: "16px", fontFamily: "Source Sans" }}
-          />
-        </div>
-        <div className="flexRow" style={{ justifyContent: "space-between" }}>
-          Average Number of Rounds:{" "}
-          <div>{Math.floor((totalRounds / roundGames) * 100) / 100}</div>
-        </div>
-        <PointsHistogram
-          histogram={pointsHistogram}
-          points={points}
-          suffix=""
-        />
+        <PointsHistogram histogram={pointsHistogram} points={points} />
       </div>
       <div
         className="flexColumn"
@@ -477,9 +515,19 @@ function GameDataSection({
           width: "100%",
         }}
       >
-        Faction Games:
+        <FormattedMessage
+          id="i3D47t"
+          defaultMessage="Faction Games"
+          description="Label for a chart showing the number of games per faction."
+        />
+        :
         <FactionHistogram histogram={factionsHistogram} />
-        Faction Win Rates:
+        <FormattedMessage
+          id="r4GnEX"
+          defaultMessage="Faction Win Rates"
+          description="Label for a chart showing the win rate per faction."
+        />
+        :
         <FactionHistogram histogram={factionWinRateHistogram} />
       </div>
     </div>
