@@ -105,7 +105,6 @@ export function FactionHistogram({
 }) {
   let maxVal = Number.MIN_SAFE_INTEGER;
   let minVal = Number.MAX_SAFE_INTEGER;
-  let sum = 0;
   let total = 0;
   for (const val of Object.values(histogram)) {
     minVal = Math.min(val, minVal);
@@ -119,15 +118,6 @@ export function FactionHistogram({
     return 1;
   });
 
-  // const maxVal = orderedHistogram.reduce(
-  //   (max, curr) => Math.max(max, curr[1]),
-  //   0
-  // );
-  // const minVal = orderedHistogram.reduce(
-  //   (min, curr) => Math.min(min, curr[1]),
-  //   Number.MAX_SAFE_INTEGER
-  // );
-
   return (
     <div className={styles.OuterHistogram}>
       <div className={styles.FactionHistogram}>
@@ -136,10 +126,8 @@ export function FactionHistogram({
           if (minVal === 0) {
             height = (value / maxVal) * 100;
           } else {
-            height = 25 + (75 / (maxVal - minVal)) * (value - minVal);
+            height = 10 + (90 / (maxVal - minVal)) * (value - minVal);
           }
-          // const height = (value / maxVal) * 100;
-          // const color = height > 40 ? height > 60 ? "#222" : "#eee" : "#"
           return (
             <div
               key={key}

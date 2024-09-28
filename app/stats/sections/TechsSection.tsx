@@ -46,7 +46,7 @@ export default function TechsSection({
   const baseTechs = baseData.techs;
   let techGames = 0;
   let factionGames: Partial<Record<FactionId, number>> = {};
-  objectEntries(games).forEach(([gameId, game]) => {
+  Object.values(games).forEach((game) => {
     const factions = game.factions;
 
     if (!game.isTechGame) {
@@ -92,10 +92,8 @@ export default function TechsSection({
           points: 0,
         };
         if (faction.startingTechs.includes(techId)) {
-          info.researched++;
           if (factionId === game.winner) {
             tech.ownedWinners++;
-            info.wins++;
           }
           tech.owners++;
           let sum = tech.ownedHistogram[factionPoints] ?? 0;
@@ -104,9 +102,6 @@ export default function TechsSection({
         } else {
           info.researched++;
           info.points += factionPoints;
-          if (factionPoints === 11) {
-            console.log("11", gameId);
-          }
           if (factionId === game.winner) {
             tech.ownedWinners++;
             tech.winners++;
@@ -121,7 +116,9 @@ export default function TechsSection({
           tech.researchers++;
           tech.owners++;
         }
-        tech.factionInfo[factionId] = info;
+        if (info.researched > 0) {
+          tech.factionInfo[factionId] = info;
+        }
         techInfo[techId] = tech;
       }
     });

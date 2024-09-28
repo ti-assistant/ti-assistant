@@ -2,6 +2,7 @@
   "name": "twilight-imperium",
   "version": "2.0.0",
   "dependencies": {
+    "@google-cloud/storage": "^7.13.0",
     "firebase": "^10.12.5",
     "firebase-admin": "^12.1.1",
     "html-react-parser": "^4.2.2",
@@ -35,8 +36,8 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@next/bundle-analyzer": "^13.5.4",
     "@formatjs/cli": "^6.2.6",
+    "@next/bundle-analyzer": "^13.5.4",
     "@types/js-cookie": "^3.0.2",
     "@types/qrcode": "^1.5.0",
     "@types/react": "^18.0.28",

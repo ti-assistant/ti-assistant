@@ -1,3 +1,4 @@
+import { Storage } from "@google-cloud/storage";
 import { buildObjectives } from "../../src/data/gameDataBuilder";
 import { getHandler } from "../../src/util/api/gameLog";
 import { updateGameData } from "../../src/util/api/handler";
@@ -6,6 +7,12 @@ import { updateActionLog } from "../../src/util/api/update";
 import { computeVPs } from "../../src/util/factions";
 import { EndGameHandler } from "../../src/util/model/endGame";
 import { Optional } from "../../src/util/types/types";
+import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import { getFullActionLog, getTimers } from "../../server/util/fetch";
+import { Readable } from "stream";
+import { getBaseData } from "../../src/data/baseData";
+import { createIntlCache, createIntl } from "react-intl";
+import { getLocale, getMessages } from "../../src/util/server";
 
 export interface ProcessedGame {
   // Tags
@@ -124,6 +131,101 @@ export function isCompletedGame(
   }
 
   return true;
+}
+
+async function getJSONFileFromStorage(
+  storage: Storage
+): Promise<Record<string, ProcessedGame>> {
+  const [file] = await storage
+    .bucket("ti-assistant-datastore")
+    .file("processed-games.json")
+    .download();
+
+  return JSON.parse(file.toString("utf8"));
+}
+
+export async function rewriteProcessedGames() {
+  const locale = getLocale();
+  const messages = await getMessages(locale);
+  const cache = createIntlCache();
+  const intl = createIntl({ locale, messages }, cache);
+  const storage = new Storage({
+    keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
+  });
+
+  const baseData = getBaseData(intl);
+  const processedGames = await getJSONFileFromStorage(storage);
+
+  maybeUpdateProcessedGames(storage, processedGames, baseData);
+}
+
+const REFRESH_TIME = 86400000;
+
+export async function maybeUpdateProcessedGames(
+  storage: Storage,
+  processedGames: Record<string, ProcessedGame>,
+  baseData: BaseData
+) {
+  const [metadata] = await storage
+    .bucket("ti-assistant-datastore")
+    .file("processed-games.json")
+    .getMetadata();
+
+  const creationTime = new Date(metadata.timeCreated ?? "");
+
+  const timeDiff = Date.now() - creationTime.valueOf();
+  if (timeDiff < REFRESH_TIME) {
+    return;
+  }
+
+  const db = getFirestore();
+
+  const gamesRef = db.collection("games");
+
+  const gameData = await gamesRef.get();
+
+  let allGames: Record<string, StoredGameData> = {};
+  gameData.forEach((val) => {
+    allGames[val.id] = val.data() as StoredGameData;
+  });
+
+  // const processedGames: Record<string, ProcessedGame> = {};
+  for (const [gameId, game] of Object.entries(allGames)) {
+    if (!!processedGames[gameId]) {
+      continue;
+    }
+
+    const actionLog = await getFullActionLog(gameId);
+    if (!isCompletedGame(game, baseData, actionLog)) {
+      continue;
+    }
+    const timers = await getTimers(gameId);
+    const processedGame = processGame(game, baseData, actionLog, timers);
+    if (!processedGame) {
+      continue;
+    }
+    processedGames[gameId] = processedGame;
+
+    db.collection("games")
+      .doc(gameId)
+      .update({ deleteAt: FieldValue.delete() });
+
+    try {
+      db.collection("processed").doc(gameId).set(processedGame);
+    } catch (err) {
+      break;
+    }
+  }
+
+  const file = storage
+    .bucket("ti-assistant-datastore")
+    .file("processed-games.json");
+
+  const stream = new Readable();
+  stream.pipe(file.createWriteStream());
+
+  stream.push(JSON.stringify(processedGames));
+  stream.push(null);
 }
 
 export function processGame(

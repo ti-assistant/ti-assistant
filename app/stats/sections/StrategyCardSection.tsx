@@ -13,6 +13,28 @@ interface StrategyCardInfo {
   >[];
 }
 
+function getColorForNum(num: number) {
+  if (num === 0) {
+    return "#444";
+  }
+  if (num < 10) {
+    return "#666";
+  }
+  if (num < 20) {
+    return "#888";
+  }
+  if (num < 30) {
+    return "#aaa";
+  }
+  if (num < 40) {
+    return "#ccc";
+  }
+  if (num < 50) {
+    return "#eee";
+  }
+  return "#fff";
+}
+
 const CARD_ORDER: Record<StrategyCardId, number> = {
   Leadership: 1,
   Diplomacy: 2,
@@ -138,6 +160,7 @@ export default function StrategyCardSection({
                             style={{
                               textAlign: "right",
                               fontFamily: "Source Sans",
+                              color: getColorForNum(0),
                             }}
                           >
                             0%
@@ -150,6 +173,9 @@ export default function StrategyCardSection({
                           style={{
                             textAlign: "right",
                             fontFamily: "Source Sans",
+                            color: getColorForNum(
+                              (pickRate.pickCount / totalRounds) * 100
+                            ),
                           }}
                         >
                           {Math.round((pickRate.pickCount / totalRounds) * 100)}
@@ -158,7 +184,13 @@ export default function StrategyCardSection({
                       );
                     })}
                     <td
-                      style={{ textAlign: "center", fontFamily: "Source Sans" }}
+                      style={{
+                        textAlign: "center",
+                        fontFamily: "Source Sans",
+                        color: getColorForNum(
+                          (remainingRounds / totalRounds) * 100
+                        ),
+                      }}
                     >
                       {Math.round((remainingRounds / totalRounds) * 100)}%
                     </td>
