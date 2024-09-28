@@ -30,14 +30,6 @@ html {
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: normal;
-  src: url("OpenSans-Regular.ttf") format("truetype");
-  font-display: swap;
-}
-
 body {
   font-family: "slider";
   font-size: 16px;
