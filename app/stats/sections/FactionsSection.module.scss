@@ -1,0 +1,34 @@
+.FactionsSection {
+  width: 550px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.FactionSection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: row;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: center;
+  justify-items: center;
+  padding: 0 4px;
+  gap: 8px;
+}
+
+@media only screen and (max-width: 1023px) {
+  .FactionsSection {
+    width: calc(100dvw - 24px);
+  }
+
+  .FactionSection {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+}

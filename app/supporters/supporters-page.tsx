@@ -87,9 +87,6 @@ export default function Supporters() {
             <div className="flexRow centered" style={{ width: "100%" }}>
               Meanswell
             </div>
-            <div className="flexRow centered" style={{ width: "100%" }}>
-              Benjamin
-            </div>
           </div>
         </LabeledDiv>
         <LabeledDiv
@@ -122,7 +119,7 @@ export default function Supporters() {
             style={{
               paddingBottom: "4px",
               width: "100%",
-              fontSize: "20px",
+              fontSize: "16px",
             }}
           >
             <div className="flexRow centered" style={{ width: "100%" }}>
@@ -142,6 +139,15 @@ export default function Supporters() {
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
               Worldly-Charity-9737
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Benjamin
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Mike
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Gregory
             </div>
           </div>
         </LabeledDiv>

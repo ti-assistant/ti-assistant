@@ -196,11 +196,7 @@ function MobileOptions({
                       toggleExpansion(!prevValue, "POK");
                     }}
                   >
-                    <FormattedMessage
-                      id="p9XVGB"
-                      description="Text on a button that will enable/disable the Prophecy of Kings expansion."
-                      defaultMessage="Prophecy of Kings"
-                    />
+                    <Strings.Expansion expansion="POK" />
                   </Toggle>
                   <Toggle
                     selected={options.expansions.has("CODEX ONE")}
@@ -208,11 +204,7 @@ function MobileOptions({
                       toggleExpansion(!prevValue, "CODEX ONE");
                     }}
                   >
-                    <FormattedMessage
-                      id="3Taw9H"
-                      description="Text on a button that will enable/disable Codex I."
-                      defaultMessage="Codex I"
-                    />
+                    <Strings.Expansion expansion="CODEX ONE" />
                   </Toggle>
                   <Toggle
                     selected={options.expansions.has("CODEX TWO")}
@@ -220,11 +212,7 @@ function MobileOptions({
                       toggleExpansion(!prevValue, "CODEX TWO");
                     }}
                   >
-                    <FormattedMessage
-                      id="knYKVl"
-                      description="Text on a button that will enable/disable Codex II."
-                      defaultMessage="Codex II"
-                    />
+                    <Strings.Expansion expansion="CODEX TWO" />
                   </Toggle>
                   <Toggle
                     selected={options.expansions.has("CODEX THREE")}
@@ -232,11 +220,7 @@ function MobileOptions({
                       toggleExpansion(!prevValue, "CODEX THREE");
                     }}
                   >
-                    <FormattedMessage
-                      id="zXrdrP"
-                      description="Text on a button that will enable/disable Codex III."
-                      defaultMessage="Codex III"
-                    />
+                    <Strings.Expansion expansion="CODEX THREE" />
                   </Toggle>
                 </div>
                 <div
@@ -264,11 +248,7 @@ function MobileOptions({
                         toggleExpansion(!prevValue, "DISCORDANT STARS");
                       }}
                     >
-                      <FormattedMessage
-                        id="ZlvDZB"
-                        description="Text on a button that will enable/disable the Discordant Stars expansion."
-                        defaultMessage="Discordant Stars"
-                      />
+                      <Strings.Expansion expansion="DISCORDANT STARS" />
                     </Toggle>
                   </div>
                 </div>

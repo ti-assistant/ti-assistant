@@ -35,6 +35,60 @@
       "value": "Promissory"
     }
   ],
+  "+L4gCQ": [
+    {
+      "offset": 0,
+      "options": {
+        "few": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "rd"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "st"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "th"
+            }
+          ]
+        },
+        "two": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "nd"
+            }
+          ]
+        }
+      },
+      "pluralType": "ordinal",
+      "type": 6,
+      "value": "num"
+    }
+  ],
   "+WkrHz": [
     {
       "type": 0,
@@ -45,6 +99,12 @@
     {
       "type": 0,
       "value": "Game"
+    }
+  ],
+  "+kc61r": [
+    {
+      "type": 0,
+      "value": "Research Rate"
     }
   ],
   "+mUg6N": [
@@ -89,10 +149,34 @@
       "value": "Pending"
     }
   ],
+  "+zFNH+": [
+    {
+      "type": 0,
+      "value": "Average VPs"
+    }
+  ],
   "/KXhGz": [
     {
       "type": 0,
       "value": "Tactical"
+    }
+  ],
+  "/LAhkb": [
+    {
+      "type": 0,
+      "value": "Aggression Ranking: "
+    },
+    {
+      "type": 1,
+      "value": "val"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "count"
     }
   ],
   "/MkeMw": [
@@ -325,6 +409,36 @@
       "value": "+1 VP for Custodians Token"
     }
   ],
+  "6Dhyu4": [
+    {
+      "type": 0,
+      "value": "Average researchers per game: "
+    },
+    {
+      "type": 1,
+      "value": "num"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
   "6EVvXu": [
     {
       "type": 0,
@@ -369,10 +483,22 @@
       "value": " Phase"
     }
   ],
+  "8NMXES": [
+    {
+      "type": 0,
+      "value": "More Stats"
+    }
+  ],
   "8OswCT": [
     {
       "type": 0,
       "value": "Gain Command Tokens and Redistribute"
+    }
+  ],
+  "8ntyP0": [
+    {
+      "type": 0,
+      "value": "Win Rate"
     }
   ],
   "9DZz2w": [
@@ -421,6 +547,12 @@
     {
       "type": 0,
       "value": "Report Issue"
+    }
+  ],
+  "AB4nOe": [
+    {
+      "type": 0,
+      "value": "w/o Tech"
     }
   ],
   "AO8lj8": [
@@ -2491,6 +2623,36 @@
     {
       "type": 0,
       "value": "Pause"
+    }
+  ],
+  "CaHUOS": [
+    {
+      "type": 0,
+      "value": "Imperial Points per game: "
+    },
+    {
+      "type": 1,
+      "value": "perc"
+    },
+    {
+      "type": 0,
+      "value": "% ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
     }
   ],
   "ChW/ih": [
@@ -4985,6 +5147,36 @@
       "value": "Stage I"
     }
   ],
+  "J2lfJ4": [
+    {
+      "type": 0,
+      "value": "Average Scorers per game: "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " - ("
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": " games)"
+    }
+  ],
   "JS92Jj": [
     {
       "type": 0,
@@ -5289,6 +5481,12 @@
       "value": "Update Objectives"
     }
   ],
+  "LuWjGl": [
+    {
+      "type": 0,
+      "value": "Faction"
+    }
+  ],
   "M0ywrk": [
     {
       "type": 0,
@@ -5333,6 +5531,36 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "M9w8hd": [
+    {
+      "type": 0,
+      "value": "Researched by winner in "
+    },
+    {
+      "type": 1,
+      "value": "perc"
+    },
+    {
+      "type": 0,
+      "value": "% of games ("
+    },
+    {
+      "type": 1,
+      "value": "wins"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
     }
   ],
   "Mahact Gene-Sorcerers.Abilities.Edict.Description": [
@@ -6593,6 +6821,36 @@
       "value": "Ready Cards"
     }
   ],
+  "OaywdC": [
+    {
+      "type": 0,
+      "value": "Win Rate when scored: "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "% - ("
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
   "Objectives.Achieve Supremacy.Description": [
     {
       "type": 0,
@@ -7847,6 +8105,24 @@
       "value": "Secondary"
     }
   ],
+  "PWXbsW": [
+    {
+      "type": 0,
+      "value": "Defense Ranking: "
+    },
+    {
+      "type": 1,
+      "value": "val"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    }
+  ],
   "Phase.Action": [
     {
       "type": 0,
@@ -7887,6 +8163,12 @@
     {
       "type": 0,
       "value": "Unknown"
+    }
+  ],
+  "PmqXSZ": [
+    {
+      "type": 0,
+      "value": "Average Number of Rounds"
     }
   ],
   "PnNSxg": [
@@ -7975,10 +8257,46 @@
       "value": "count"
     }
   ],
+  "Q+AbUi": [
+    {
+      "type": 0,
+      "value": "Scored in "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "% of games - ("
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
   "QFhw/l": [
     {
       "type": 0,
       "value": "Join Game"
+    }
+  ],
+  "Qo4+d0": [
+    {
+      "type": 0,
+      "value": "w/ Tech"
     }
   ],
   "QrrIrN": [
@@ -10769,6 +11087,12 @@
       "value": "Map Type:"
     }
   ],
+  "Zh1T8Z": [
+    {
+      "type": 0,
+      "value": "Filters"
+    }
+  ],
   "ZlvDZB": [
     {
       "type": 0,
@@ -10785,6 +11109,12 @@
     {
       "type": 0,
       "value": "+1 VP for controlling Mecatol Rex"
+    }
+  ],
+  "aO0PYJ": [
+    {
+      "type": 0,
+      "value": "Stats"
     }
   ],
   "c4LYqr": [
@@ -10927,6 +11257,36 @@
       "value": "Display Titles"
     }
   ],
+  "etE9Xc": [
+    {
+      "type": 0,
+      "value": "Custodians Token taken in "
+    },
+    {
+      "type": 1,
+      "value": "perc"
+    },
+    {
+      "type": 0,
+      "value": "% of games ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
   "fCdj3q": [
     {
       "type": 0,
@@ -10939,6 +11299,16 @@
       "value": "Details"
     }
   ],
+  "fW7Ivs": [
+    {
+      "type": 0,
+      "value": "Average scored secrets: "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    }
+  ],
   "frzrrT": [
     {
       "type": 0,
@@ -10949,12 +11319,6 @@
     {
       "type": 0,
       "value": "Commander"
-    }
-  ],
-  "g92Jbl": [
-    {
-      "type": 0,
-      "value": "Updates Paused"
     }
   ],
   "gQ0twG": [
@@ -10997,6 +11361,42 @@
       "value": "value"
     }
   ],
+  "hicVw5": [
+    {
+      "type": 0,
+      "value": "Win Rate with Custodians Token: "
+    },
+    {
+      "type": 1,
+      "value": "perc"
+    },
+    {
+      "type": 0,
+      "value": "% ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "i3D47t": [
+    {
+      "type": 0,
+      "value": "Faction Games"
+    }
+  ],
   "i4Uu4m": [
     {
       "type": 0,
@@ -11029,6 +11429,12 @@
     {
       "type": 0,
       "value": "Play Rider"
+    }
+  ],
+  "jOsJY8": [
+    {
+      "type": 0,
+      "value": "Strategy Cards"
     }
   ],
   "jgVoqe": [
@@ -11198,6 +11604,36 @@
       "value": "Cast votes (or abstain)"
     }
   ],
+  "mYdPrP": [
+    {
+      "type": 0,
+      "value": "Researched in "
+    },
+    {
+      "type": 1,
+      "value": "perc"
+    },
+    {
+      "type": 0,
+      "value": "% of games ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "games"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
   "mcZgiQ": [
     {
       "type": 1,
@@ -11242,6 +11678,12 @@
     {
       "type": 0,
       "value": "Select Component"
+    }
+  ],
+  "nYgb4V": [
+    {
+      "type": 0,
+      "value": "Non-Faction"
     }
   ],
   "nryRrR": [
@@ -11300,6 +11742,12 @@
     {
       "type": 0,
       "value": "Factions"
+    }
+  ],
+  "r4GnEX": [
+    {
+      "type": 0,
+      "value": "Faction Win Rates"
     }
   ],
   "rEazHY": [
@@ -11436,6 +11884,12 @@
       "value": "count"
     }
   ],
+  "ssIhWl": [
+    {
+      "type": 0,
+      "value": "Average Game Length"
+    }
+  ],
   "t0EFbu": [
     {
       "type": 0,
@@ -11496,12 +11950,6 @@
     {
       "type": 0,
       "value": "Reset"
-    }
-  ],
-  "uEqy1T": [
-    {
-      "type": 0,
-      "value": "Close to continue"
     }
   ],
   "urcttb": [
@@ -11718,6 +12166,12 @@
     {
       "type": 0,
       "value": "Techs"
+    }
+  ],
+  "zAhkl6": [
+    {
+      "type": 0,
+      "value": "Completed Games"
     }
   ],
   "zXrdrP": [

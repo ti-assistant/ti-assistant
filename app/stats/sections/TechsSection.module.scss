@@ -1,0 +1,49 @@
+.TechModal {
+  display: grid;
+  width: 100%;
+  gap: 8px;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: flex-start;
+}
+
+.TechsSection {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.HistogramSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 32px;
+}
+
+@media only screen and (max-width: 1023px) {
+  .TechModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .TechModal > div {
+    width: 90%;
+  }
+
+  .TechsSection {
+    width: calc(100dvw - 24px);
+  }
+
+  .HistogramSection {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+}

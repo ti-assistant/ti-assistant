@@ -1,0 +1,37 @@
+.ObjectiveModal {
+  display: grid;
+  width: 100%;
+  gap: 8px;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: flex-start;
+}
+
+.ObjectivesSection {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+@media only screen and (max-width: 1023px) {
+  .ObjectiveModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ObjectiveModal > div {
+    width: 90%;
+  }
+
+  .ObjectivesSection {
+    width: calc(100dvw - 24px);
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+}
