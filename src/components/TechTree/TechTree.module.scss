@@ -1,0 +1,50 @@
+.TechTree {
+  display: flex;
+  flex-direction: column;
+}
+
+.TechTree > div {
+  padding-bottom: 1px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.TechTree :nth-child(2) {
+  padding-bottom: 0;
+}
+
+.TechTree :nth-child(n + 5) {
+  display: flex;
+  grid-column: span 2;
+  align-items: center;
+  justify-content: center;
+}
+
+.TechTreeRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 3px;
+
+  width: 100%;
+}
+
+.TechTreeElement {
+  border-radius: 100%;
+  width: 4px;
+  height: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+// .TechTree > div {
+//   padding-bottom: 1px;
+//   display: flex;
+//   width: 100%;
+//   justify-content: center;
+//   gap: 4px;
+// }
+
+// .TechTree :nth-child(2) {
+//   padding-bottom: 0;
+// }

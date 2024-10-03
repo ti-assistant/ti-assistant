@@ -1,6 +1,6 @@
 .FactionSummary {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: space-between;
   padding: 0 0 0 8px;
   position: relative;
@@ -22,11 +22,8 @@
 .TechSummaryGrid {
   display: grid;
   font-size: 14px;
-  gap: 4px;
-  grid-template-columns: repeat(5, 1fr);
+  row-gap: 2px;
+  column-gap: 2px;
+  grid-template-columns: repeat(8, 1fr);
   width: min-content;
-}
-
-.TechSummaryGrid > :last-child {
-  grid-column: 2 / 5;
 }
