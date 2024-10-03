@@ -75,21 +75,31 @@ export function TechSummary({
   return (
     <>
       <div className={styles.TechSummaryGrid}>
-        <div className="centered">{greenTechs.length || "-"}</div>
+        <div className="centered" style={{ width: "10.75px" }}>
+          {greenTechs.length || "-"}
+        </div>
         <TechIcon type={"GREEN"} size={16} />
         <TechTree type="GREEN" factionId={factionId} />
         <div>&nbsp;</div>
-        <div className="centered">{blueTechs.length || "-"}</div>
+        <div className="centered" style={{ width: "10.75px" }}>
+          {blueTechs.length || "-"}
+        </div>
         <TechIcon type={"BLUE"} size={16} />
         <TechTree type="BLUE" factionId={factionId} />
-        <div className="centered">{yellowTechs.length || "-"}</div>
+        <div className="centered" style={{ width: "10.75px" }}>
+          {yellowTechs.length || "-"}
+        </div>
         <TechIcon type={"YELLOW"} size={16} />
         <TechTree type="YELLOW" factionId={factionId} />
         <div>&nbsp;</div>
-        <div className="centered">{redTechs.length || "-"}</div>
+        <div className="centered" style={{ width: "10.75px" }}>
+          {redTechs.length || "-"}
+        </div>
         <TechIcon type={"RED"} size={16} />
         <TechTree type="RED" factionId={factionId} />
-        <div className="centered">{upgradeTechs.length || "-"}</div>
+        <div className="centered" style={{ width: "10.75px" }}>
+          {upgradeTechs.length || "-"}
+        </div>
         <div style={{ gridColumn: "2 / 8" }}>
           <FormattedMessage
             id="lGDH2d"
@@ -104,7 +114,11 @@ export function TechSummary({
           factionId={factionId}
         />
         <TechTree
-          style={{ gridColumn: "8 / 9", gridRow: "1 / 4" }}
+          style={{
+            paddingLeft: "6px",
+            gridColumn: "8 / 9",
+            gridRow: "1 / 5",
+          }}
           type="FACTION"
           factionId={factionId}
         />

@@ -1,8 +1,8 @@
 .FactionSummary {
   display: flex;
-  gap: 12px;
+  gap: 6px;
   justify-content: space-between;
-  padding: 0 0 0 8px;
+  padding: 0 0 0 4px;
   position: relative;
   width: 100%;
 }
@@ -13,6 +13,7 @@
   display: grid;
   font-size: 28px;
   justify-items: center;
+  padding-right: 6px;
 }
 
 .VPGrid :last-child {

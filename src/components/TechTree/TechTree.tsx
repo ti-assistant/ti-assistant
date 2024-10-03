@@ -36,7 +36,7 @@ export default function TechTree({
   }
 
   if (type === "FACTION") {
-    const factionTechs = Object.values(techs)
+    let factionTechs = Object.values(techs)
       .filter((tech) => tech.faction && tech.faction === factionId)
       .sort((a, b) => {
         if (a.type === b.type) {
@@ -47,12 +47,28 @@ export default function TechTree({
         }
         return TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
       });
+    let extras: string[] = [];
+    if (factionId === "Nekro Virus") {
+      factionTechs = Object.values(techs)
+        .filter((tech) => tech.faction && hasTech(faction, tech.id))
+        .sort((a, b) => {
+          if (a.type === b.type) {
+            if (a.type === "UPGRADE") {
+              return a.name > b.name ? 1 : -1;
+            }
+            return a.prereqs.length > b.prereqs.length ? 1 : -1;
+          }
+          return TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
+        });
+      while (factionTechs.length + extras.length < 2) {
+        extras.push("#eee");
+      }
+    }
 
     return (
       <div
         className="flexColumn"
         style={{
-          paddingLeft: "2px",
           gap: "4px",
           justifyContent: "center",
           ...style,
@@ -76,6 +92,19 @@ export default function TechTree({
                 } else {
                   addTechAsync(gameId, factionId, tech.id);
                 }
+              }}
+            ></div>
+          );
+        })}
+        {extras.map((color) => {
+          return (
+            <div
+              className={styles.TechTreeElement}
+              style={{
+                border: `1px solid ${color}`,
+                width: `${size}px`,
+                height: `${size}px`,
+                cursor: "unset",
               }}
             ></div>
           );
