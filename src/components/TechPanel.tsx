@@ -448,7 +448,7 @@ function TechsByFaction({
 
   const factionTechs = objectKeys(faction.techs ?? {})
     .map((techId) => techs[techId])
-    .filter((tech) => !!tech);
+    .filter((tech) => !!tech) as Tech[];
 
   sortTechs(factionTechs);
 

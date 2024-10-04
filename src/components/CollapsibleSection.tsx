@@ -9,7 +9,6 @@ interface CollapsibleSectionCSS extends CSSProperties {
 export function CollapsibleSection({
   children,
   color = "#eee",
-  contentStyle = {},
   title,
   openedByDefault = false,
   style = {},
@@ -18,7 +17,6 @@ export function CollapsibleSection({
   color?: string;
   openedByDefault?: boolean;
   style?: CSSProperties;
-  contentStyle?: CSSProperties;
 }>) {
   const [collapsed, setCollapsed] = useState(!openedByDefault);
   const [overflow, setOverflow] = useState(openedByDefault);
@@ -50,9 +48,7 @@ export function CollapsibleSection({
           collapsed ? styles.collapsed : ""
         } ${overflow ? styles.overflow : ""}`}
       >
-        <div className={styles.contentContainer} style={{ ...contentStyle }}>
-          {children}
-        </div>
+        <div className={styles.contentContainer}>{children}</div>
       </div>
     </div>
   );

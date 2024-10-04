@@ -177,15 +177,7 @@ export default function Footer({}) {
             maxHeight: `calc(100dvh - 24px)`,
           }}
         >
-          <div
-            className="flexRow centered extraLargeFont"
-            // style={{
-            //   backgroundColor: "#222",
-            //   padding: `4px 8px`,
-            //   borderRadius: "4px",
-            //   width: "min-content",
-            // }}
-          >
+          <div className="flexRow centered extraLargeFont">
             <div
               style={{
                 backgroundColor: "#222",

@@ -32,7 +32,7 @@ export default function TechTree({
 
   const faction = factions[factionId];
   if (!faction) {
-    return;
+    return null;
   }
 
   if (type === "FACTION") {
@@ -80,6 +80,7 @@ export default function TechTree({
           const color = getTechTypeColor(tech.type);
           return (
             <div
+              key={tech.id}
               title={tech.name}
               className={styles.TechTreeElement}
               style={{
@@ -98,9 +99,10 @@ export default function TechTree({
             ></div>
           );
         })}
-        {extras.map((color) => {
+        {extras.map((color, index) => {
           return (
             <div
+              key={index}
               className={styles.TechTreeElement}
               style={{
                 border: `1px solid ${color}`,
@@ -136,11 +138,15 @@ export default function TechTree({
           const filled = hasTech(faction, tech.id);
           if (isTechReplaced(factionId, tech.id)) {
             return (
-              <div style={{ width: `${size}px`, height: `${size}px` }}></div>
+              <div
+                key={tech.id}
+                style={{ width: `${size}px`, height: `${size}px` }}
+              ></div>
             );
           }
           return (
             <div
+              key={tech.id}
               title={tech.name}
               className={styles.TechTreeElement}
               style={{
@@ -184,11 +190,12 @@ export default function TechTree({
     <div className={styles.TechTree} style={style}>
       {objectEntries(techsByPrereq).map(([num, techs]) => {
         return (
-          <div className={styles.TechTreeRow}>
+          <div key={num} className={styles.TechTreeRow}>
             {techs.map((tech) => {
               const filled = hasTech(faction, tech.id);
               return (
                 <div
+                  key={tech.id}
                   title={tech.name}
                   className={styles.TechTreeElement}
                   style={{
