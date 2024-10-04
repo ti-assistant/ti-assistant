@@ -12,7 +12,12 @@ import styles from "./TechPanel.module.scss";
 import { Selector } from "./Selector/Selector";
 import { FormattedMessage, useIntl } from "react-intl";
 import { techTypeString } from "../util/strings";
-import { useFactions, useTechs } from "../context/dataHooks";
+import { useFaction, useFactions, useTechs } from "../context/dataHooks";
+import { CollapsibleSection } from "./CollapsibleSection";
+import { objectEntries, objectKeys } from "../util/util";
+import { TechSummary } from "../FactionSummary";
+import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
+import TechTree from "./TechTree/TechTree";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const gameId = useContext(GameIdContext);
@@ -424,15 +429,185 @@ function UpgradeTechSection({}) {
   );
 }
 
-export default function TechPanel({}) {
+function TechsByFaction({
+  factionId,
+  openedByDefault,
+}: {
+  factionId: FactionId;
+  openedByDefault: boolean;
+}) {
+  const factions = useFactions();
+  const techs = useTechs();
+  const gameId = useContext(GameIdContext);
+  const intl = useIntl();
+
+  const faction = factions[factionId];
+  if (!faction) {
+    return null;
+  }
+
+  const factionTechs = objectKeys(faction.techs ?? {})
+    .map((techId) => techs[techId])
+    .filter((tech) => !!tech) as Tech[];
+
+  sortTechs(factionTechs);
+
+  function getResearchableTechs(faction: Faction) {
+    if (faction.id === "Nekro Virus") {
+      const nekroTechs = new Set<TechId>();
+      Object.values(factions ?? {}).forEach((otherFaction) => {
+        Object.keys(otherFaction.techs).forEach((id) => {
+          const techId = id as TechId;
+          if (!hasTech(faction, techId)) {
+            nekroTechs.add(techId);
+          }
+        });
+      });
+      return Array.from(nekroTechs).map(
+        (techId) => (techs ?? {})[techId] as Tech
+      );
+    }
+    const replaces: TechId[] = [];
+    const availableTechs = Object.values(techs ?? {}).filter((tech) => {
+      if (hasTech(faction, tech.id)) {
+        return false;
+      }
+      if (
+        faction.id !== "Nekro Virus" &&
+        tech.faction &&
+        faction.id !== tech.faction
+      ) {
+        return false;
+      }
+      if (tech.type === "UPGRADE" && tech.replaces) {
+        replaces.push(tech.replaces);
+      }
+      return true;
+    });
+    return availableTechs.filter((tech) => !replaces.includes(tech.id));
+  }
+
   return (
-    <div className={styles.techGrid}>
-      <FactionTechSection openedByDefault />
-      <TechSection type="BLUE" />
-      <TechSection type="GREEN" />
-      <TechSection type="RED" />
-      <TechSection type="YELLOW" />
-      <UpgradeTechSection />
+    <CollapsibleSection
+      title={
+        <div
+          className="flexRow"
+          style={{ justifyContent: "center", fontSize: "18px" }}
+        >
+          <FactionIcon factionId={factionId} size={20} />
+          {getFactionName(faction)}
+          <FactionIcon factionId={factionId} size={20} />
+        </div>
+      }
+      openedByDefault={openedByDefault}
+    >
+      <div
+        className="flexColumn"
+        style={{
+          position: "relative",
+          height: "100%",
+          justifyContent: "flex-start",
+        }}
+      >
+        <div
+          className="flexRow"
+          style={{
+            top: 0,
+            left: 0,
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            opacity: 0.1,
+            userSelect: "none",
+            zIndex: 0,
+          }}
+        >
+          <FactionIcon factionId={factionId} size={120} />
+        </div>
+        <div
+          className="flexRow"
+          style={{
+            width: "100%",
+            zIndex: 1,
+          }}
+        >
+          <TechSummary techs={factionTechs} factionId={factionId} horizontal />
+        </div>
+        <div className={styles.factionTechList}>
+          {factionTechs.map((tech) => {
+            return (
+              <TechRow
+                key={tech.id}
+                tech={tech}
+                removeTech={(techId) => {
+                  removeTechAsync(gameId, factionId, techId);
+                }}
+                opts={{ hideSymbols: true }}
+              />
+            );
+          })}
+        </div>
+        <div
+          className="flexRow"
+          style={{
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            paddingLeft: "8px",
+            width: "100%",
+          }}
+        >
+          <TechSelectHoverMenu
+            factionId={factionId}
+            label={intl.formatMessage({
+              id: "3qIvsL",
+              description: "Label on a hover menu used to research tech.",
+              defaultMessage: "Research Tech",
+            })}
+            techs={getResearchableTechs(faction)}
+            selectTech={(tech) => {
+              addTechAsync(gameId, factionId, tech.id);
+            }}
+          />
+        </div>
+      </div>
+    </CollapsibleSection>
+  );
+}
+
+interface TechGridProperties extends CSSProperties {
+  "--num-columns": number;
+}
+
+export default function TechPanel({ byFaction }: { byFaction: boolean }) {
+  console.log("By Faction", byFaction);
+  const factions = useFactions();
+
+  const orderedFactions = objectKeys(factions).sort((a, b) => (a < b ? -1 : 1));
+  const techGridProperties: TechGridProperties = {
+    "--num-columns": byFaction ? Math.ceil(orderedFactions.length / 2) : 4,
+  };
+  return (
+    <div className={styles.techGrid} style={techGridProperties}>
+      {byFaction ? (
+        orderedFactions.map((factionId, index) => {
+          return (
+            <TechsByFaction
+              key={factionId}
+              factionId={factionId}
+              openedByDefault={index === 0}
+            />
+          );
+        })
+      ) : (
+        <>
+          <FactionTechSection openedByDefault />
+          <TechSection type="GREEN" />
+          <TechSection type="BLUE" />
+          <TechSection type="YELLOW" />
+          <TechSection type="RED" />
+          <UpgradeTechSection />
+        </>
+      )}
     </div>
   );
 }

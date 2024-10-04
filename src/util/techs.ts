@@ -43,20 +43,39 @@ export function filterToUnownedTechs(
   });
 }
 
-const TECH_ORDER = ["green", "blue", "yellow", "red", "upgrade"];
+const TECH_ORDER: Record<TechType, number> = {
+  GREEN: 1,
+  BLUE: 2,
+  YELLOW: 3,
+  RED: 4,
+  UPGRADE: 5,
+} as const;
 
 /**
  * Sorts techs in place into the proper order.
  */
 export function sortTechs(techs: Tech[]) {
   techs.sort((a, b) => {
-    const typeDiff = TECH_ORDER.indexOf(a.type) - TECH_ORDER.indexOf(b.type);
+    const typeDiff = TECH_ORDER[a.type] - TECH_ORDER[b.type];
     if (typeDiff !== 0) {
       return typeDiff;
+    }
+    if (a.type === "UPGRADE") {
+      if (a.name < b.name) {
+        return -1;
+      } else {
+        return 1;
+      }
     }
     const prereqDiff = a.prereqs.length - b.prereqs.length;
     if (prereqDiff !== 0) {
       return prereqDiff;
+    }
+    if (a.expansion === "POK") {
+      return 1;
+    }
+    if (b.expansion === "POK") {
+      return -1;
     }
     if (a.name < b.name) {
       return -1;

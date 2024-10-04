@@ -20,8 +20,17 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
+import TechTree from "./components/TechTree/TechTree";
 
-export function TechSummary({ techs }: { techs: Tech[] }) {
+export function TechSummary({
+  techs,
+  factionId,
+  horizontal,
+}: {
+  techs: Tech[];
+  factionId: FactionId;
+  horizontal?: boolean;
+}) {
   let blueTechs = [];
   let yellowTechs = [];
   let greenTechs = [];
@@ -65,28 +74,81 @@ export function TechSummary({ techs }: { techs: Tech[] }) {
     }
   });
 
+  const numberWidth = horizontal ? `${10.75 * 1.2}px` : `${10.75}px`;
+  const techTreeSize = horizontal ? 6 : 4;
+  const iconSize = horizontal ? 20 : 16;
+
   return (
-    <div className={styles.TechSummaryGrid}>
-      <div className="centered">{greenTechs.length || "-"}</div>
-      <TechIcon type={"GREEN"} size={16} />
-      <div>&nbsp;</div>
-      <div className="centered">{blueTechs.length || "-"}</div>
-      <TechIcon type={"BLUE"} size={16} />
-      <div className="centered">{yellowTechs.length || "-"}</div>
-      <TechIcon type={"YELLOW"} size={16} />
-      <div>&nbsp;</div>
-      <div className="centered">{redTechs.length || "-"}</div>
-      <TechIcon type={"RED"} size={16} />
-      <div className="centered">{upgradeTechs.length || "-"}</div>
-      <div>
-        <FormattedMessage
-          id="lGDH2d"
-          description="Unit upgrade techs."
-          defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
-          values={{ count: upgradeTechs.length }}
-        />
+    <>
+      <div
+        className={`${styles.TechSummaryGrid} ${
+          horizontal ? styles.Horizontal : ""
+        }`}
+      >
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {greenTechs.length || "-"}
+        </div>
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"GREEN"} size={iconSize} />
+        </div>
+        <TechTree type="GREEN" factionId={factionId} size={techTreeSize} />
+        <div>&nbsp;</div>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {blueTechs.length || "-"}
+        </div>
+
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"BLUE"} size={iconSize} />
+        </div>
+        <TechTree type="BLUE" factionId={factionId} size={techTreeSize} />
+        {horizontal ? <div>&nbsp;</div> : null}
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {yellowTechs.length || "-"}
+        </div>
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"YELLOW"} size={iconSize} />
+        </div>
+        <TechTree type="YELLOW" factionId={factionId} size={techTreeSize} />
+        <div>&nbsp;</div>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {redTechs.length || "-"}
+        </div>
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"RED"} size={iconSize} />
+        </div>
+        <TechTree type="RED" factionId={factionId} size={techTreeSize} />
+        <div
+          className={styles.UnitUpgradeText}
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {upgradeTechs.length || "-"}{" "}
+          <FormattedMessage
+            id="lGDH2d"
+            description="Unit upgrade techs."
+            defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
+            values={{ count: upgradeTechs.length }}
+          />
+        </div>
+        <div className={styles.UnitUpgradeTree}>
+          <TechTree type="UPGRADE" factionId={factionId} size={techTreeSize} />
+        </div>
+        <div className={styles.FactionTechTree}>
+          <TechTree type="FACTION" factionId={factionId} size={techTreeSize} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -144,7 +206,9 @@ export function FactionSummary({
 
   return (
     <div className={styles.FactionSummary}>
-      {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
+      {options.hideTechs ? null : (
+        <TechSummary techs={ownedTechs} factionId={factionId} />
+      )}
       <div className={styles.VPGrid}>
         {options.showIcon ? (
           <div

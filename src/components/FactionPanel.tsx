@@ -13,6 +13,7 @@ import styles from "./FactionPanel.module.scss";
 import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
+import { sortTechs } from "../util/techs";
 
 function AbilitySection({
   leftLabel,
@@ -226,6 +227,7 @@ function FactionPanelContent({
   const factionTechs = Object.values(techs).filter(
     (tech) => tech.faction === faction.id
   );
+  sortTechs(factionTechs);
   const factionLeaders = Object.values(leaders)
     .filter((leader) => leader.faction === faction.id)
     .filter((leader) =>
