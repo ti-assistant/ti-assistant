@@ -5327,6 +5327,10 @@
     "defaultMessage": "{count} {count, plural, one {PDS} other {PDS}}",
     "description": "A number of PDS units."
   },
+  "WvbM4Q": {
+    "defaultMessage": "Group by",
+    "description": "Label for a group of buttons for selecting which option to group by."
+  },
   "X3Nzbr": {
     "defaultMessage": "Patrons",
     "description": "Label for section listing out people that regularly donate to TI Assistant."

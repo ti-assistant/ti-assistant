@@ -70,6 +70,7 @@ export default function TechTree({
         className="flexColumn"
         style={{
           gap: "4px",
+          height: "100%",
           justifyContent: "center",
           ...style,
         }}
@@ -79,6 +80,7 @@ export default function TechTree({
           const color = getTechTypeColor(tech.type);
           return (
             <div
+              title={tech.name}
               className={styles.TechTreeElement}
               style={{
                 border: `1px solid ${color}`,
@@ -139,6 +141,7 @@ export default function TechTree({
           }
           return (
             <div
+              title={tech.name}
               className={styles.TechTreeElement}
               style={{
                 border: `1px solid ${color}`,
@@ -186,6 +189,7 @@ export default function TechTree({
               const filled = hasTech(faction, tech.id);
               return (
                 <div
+                  title={tech.name}
                   className={styles.TechTreeElement}
                   style={{
                     border: `1px solid ${color}`,

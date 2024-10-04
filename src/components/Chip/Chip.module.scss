@@ -1,0 +1,29 @@
+.ChipContainer {
+  --border-color: green;
+  --background-color: #444;
+
+  --font-size: 12px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--background-color);
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  gap: 0;
+  white-space: nowrap;
+  padding: calc(var(--font-size) / 3) calc(2 * var(--font-size) / 3);
+  cursor: pointer;
+}
+
+.ChipContainer > input[type="radio"] {
+  appearance: none;
+
+  margin: unset;
+}
+
+.ChipContainer > * {
+  cursor: pointer;
+}

@@ -24,7 +24,45 @@
   display: grid;
   font-size: 14px;
   row-gap: 2px;
-  column-gap: 2px;
+  column-gap: 1px;
   grid-template-columns: repeat(8, 1fr);
   width: min-content;
+}
+
+.TechSummaryGrid.Horizontal {
+  grid-template-columns: repeat(15, 1fr);
+  font-size: 18px;
+  row-gap: 3px;
+  column-gap: 3px;
+}
+
+.TechSummaryGrid.Horizontal > .UnitUpgradeNumber {
+  grid-column: 5 / 6;
+}
+
+.TechSummaryGrid > .UnitUpgradeText {
+  grid-column: 1 / 8;
+}
+
+.TechSummaryGrid.Horizontal > .UnitUpgradeText {
+  grid-column: 5 / 13;
+}
+
+.TechSummaryGrid > .UnitUpgradeTree {
+  grid-column: 1 / 8;
+}
+
+.TechSummaryGrid.Horizontal > .UnitUpgradeTree {
+  grid-column: 5 / 13;
+}
+
+.TechSummaryGrid > .FactionTechTree {
+  padding-left: 6px;
+  grid-column: 8 / 9;
+  grid-row: 1 / 5;
+}
+
+.TechSummaryGrid.Horizontal > .FactionTechTree {
+  grid-column: 16 / 17;
+  grid-row: 1 / 4;
 }

@@ -25,9 +25,11 @@ import TechTree from "./components/TechTree/TechTree";
 export function TechSummary({
   techs,
   factionId,
+  horizontal,
 }: {
   techs: Tech[];
   factionId: FactionId;
+  horizontal?: boolean;
 }) {
   let blueTechs = [];
   let yellowTechs = [];
@@ -72,35 +74,66 @@ export function TechSummary({
     }
   });
 
+  const numberWidth = horizontal ? `${10.75 * 1.2}px` : `${10.75}px`;
+  const techTreeSize = horizontal ? 6 : 4;
+  const iconSize = horizontal ? 20 : 16;
+
   return (
     <>
-      <div className={styles.TechSummaryGrid}>
-        <div className="centered" style={{ width: "10.75px" }}>
+      <div
+        className={`${styles.TechSummaryGrid} ${
+          horizontal ? styles.Horizontal : ""
+        }`}
+      >
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
           {greenTechs.length || "-"}
         </div>
-        <TechIcon type={"GREEN"} size={16} />
-        <TechTree type="GREEN" factionId={factionId} />
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"GREEN"} size={iconSize} />
+        </div>
+        <TechTree type="GREEN" factionId={factionId} size={techTreeSize} />
         <div>&nbsp;</div>
-        <div className="centered" style={{ width: "10.75px" }}>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
           {blueTechs.length || "-"}
         </div>
-        <TechIcon type={"BLUE"} size={16} />
-        <TechTree type="BLUE" factionId={factionId} />
-        <div className="centered" style={{ width: "10.75px" }}>
+
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"BLUE"} size={iconSize} />
+        </div>
+        <TechTree type="BLUE" factionId={factionId} size={techTreeSize} />
+        {horizontal ? <div>&nbsp;</div> : null}
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
           {yellowTechs.length || "-"}
         </div>
-        <TechIcon type={"YELLOW"} size={16} />
-        <TechTree type="YELLOW" factionId={factionId} />
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"YELLOW"} size={iconSize} />
+        </div>
+        <TechTree type="YELLOW" factionId={factionId} size={techTreeSize} />
         <div>&nbsp;</div>
-        <div className="centered" style={{ width: "10.75px" }}>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
           {redTechs.length || "-"}
         </div>
-        <TechIcon type={"RED"} size={16} />
-        <TechTree type="RED" factionId={factionId} />
-        <div className="centered" style={{ width: "10.75px" }}>
-          {upgradeTechs.length || "-"}
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"RED"} size={iconSize} />
         </div>
-        <div style={{ gridColumn: "2 / 8" }}>
+        <TechTree type="RED" factionId={factionId} size={techTreeSize} />
+        <div
+          className={styles.UnitUpgradeText}
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {upgradeTechs.length || "-"}{" "}
           <FormattedMessage
             id="lGDH2d"
             description="Unit upgrade techs."
@@ -108,20 +141,12 @@ export function TechSummary({
             values={{ count: upgradeTechs.length }}
           />
         </div>
-        <TechTree
-          style={{ gridColumn: "1 / 8" }}
-          type="UPGRADE"
-          factionId={factionId}
-        />
-        <TechTree
-          style={{
-            paddingLeft: "6px",
-            gridColumn: "8 / 9",
-            gridRow: "1 / 5",
-          }}
-          type="FACTION"
-          factionId={factionId}
-        />
+        <div className={styles.UnitUpgradeTree}>
+          <TechTree type="UPGRADE" factionId={factionId} size={techTreeSize} />
+        </div>
+        <div className={styles.FactionTechTree}>
+          <TechTree type="FACTION" factionId={factionId} size={techTreeSize} />
+        </div>
       </div>
     </>
   );

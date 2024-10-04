@@ -27,6 +27,7 @@ import {
   useStrategyCards,
 } from "../../context/dataHooks";
 import { Optional } from "../../util/types/types";
+import Chip from "../Chip/Chip";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -65,6 +66,7 @@ export default function Footer({}) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [showTechModal, setShowTechModal] = useState(false);
+  const [groupTechsByFaction, setGroupTechsByFaction] = useState(false);
   const [showObjectiveModal, setShowObjectiveModal] = useState(false);
   const [showPlanetModal, setShowPlanetModal] = useState(false);
 
@@ -176,19 +178,70 @@ export default function Footer({}) {
           }}
         >
           <div
-            className="centered extraLargeFont"
-            style={{
-              backgroundColor: "#222",
-              padding: `4px 8px`,
-              borderRadius: "4px",
-              width: "min-content",
-            }}
+            className="flexRow centered extraLargeFont"
+            // style={{
+            //   backgroundColor: "#222",
+            //   padding: `4px 8px`,
+            //   borderRadius: "4px",
+            //   width: "min-content",
+            // }}
           >
-            <FormattedMessage
-              id="ys7uwX"
-              description="Shortened version of technologies."
-              defaultMessage="Techs"
-            />
+            <div
+              style={{
+                backgroundColor: "#222",
+                padding: `4px 8px`,
+                borderRadius: "4px",
+                width: "min-content",
+              }}
+            >
+              <FormattedMessage
+                id="ys7uwX"
+                description="Shortened version of technologies."
+                defaultMessage="Techs"
+              />
+            </div>
+            <div
+              className="flexRow"
+              style={{
+                backgroundColor: "#222",
+                padding: `4px 8px`,
+                borderRadius: "4px",
+                width: "min-content",
+                whiteSpace: "nowrap",
+                fontSize: "12px",
+                gap: "4px",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FormattedMessage
+                id="WvbM4Q"
+                description="Label for a group of buttons for selecting which option to group by."
+                defaultMessage="Group by"
+              />
+              :
+              <Chip
+                selected={!groupTechsByFaction}
+                toggleFn={() => setGroupTechsByFaction(false)}
+                fontSize="12px"
+              >
+                <FormattedMessage
+                  id="ys7uwX"
+                  description="Shortened version of technologies."
+                  defaultMessage="Techs"
+                />
+              </Chip>
+              <Chip
+                selected={groupTechsByFaction}
+                toggleFn={() => setGroupTechsByFaction(true)}
+                fontSize="12px"
+              >
+                <FormattedMessage
+                  id="r2htpd"
+                  description="Text on a button that will randomize factions."
+                  defaultMessage="Factions"
+                />
+              </Chip>
+            </div>
           </div>
           <div
             className="flexColumn largeFont"
@@ -196,10 +249,9 @@ export default function Footer({}) {
             style={{
               width: `clamp(80vw, 960px, calc(100vw - 24px))`,
               justifyContent: "flex-start",
-              overflow: "auto",
             }}
           >
-            <TechPanel />
+            <TechPanel byFaction={groupTechsByFaction} />
           </div>
         </div>
       </GenericModal>
