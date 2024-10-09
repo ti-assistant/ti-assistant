@@ -8,8 +8,17 @@ import Map from "../../../src/components/Map/Map";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
 import { GameIdContext } from "../../context/Context";
+import {
+  useFactions,
+  useGameState,
+  useOptions,
+  usePlanet,
+  useStrategyCards,
+} from "../../context/dataHooks";
 import { setSpeakerAsync } from "../../dynamic/api";
 import { getFactionColor, getFactionName } from "../../util/factions";
+import { Optional } from "../../util/types/types";
+import Chip from "../Chip/Chip";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import GenericModal from "../GenericModal/GenericModal";
@@ -18,16 +27,7 @@ import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
-import {
-  useFactions,
-  useGameState,
-  useOptions,
-  usePlanet,
-  usePlanets,
-  useStrategyCards,
-} from "../../context/dataHooks";
-import { Optional } from "../../util/types/types";
-import Chip from "../Chip/Chip";
+import { rem } from "../../util/util";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -46,7 +46,7 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
     <div
       className="popupIcon"
       style={{
-        fontSize: "16px",
+        fontSize: rem(16),
       }}
     >
       &#x24D8;
@@ -147,7 +147,10 @@ export default function Footer({}) {
   return (
     <>
       <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
-        <div className="flexRow" style={{ height: "calc(100dvh - 16px)" }}>
+        <div
+          className="flexRow"
+          style={{ height: `calc(100dvh - ${rem(16)})` }}
+        >
           <div
             style={{
               position: "relative",
@@ -174,15 +177,15 @@ export default function Footer({}) {
           className="flexColumn"
           style={{
             justifyContent: "flex-start",
-            maxHeight: `calc(100dvh - 24px)`,
+            maxHeight: `calc(100dvh - ${rem(24)})`,
           }}
         >
           <div className="flexRow centered extraLargeFont">
             <div
               style={{
                 backgroundColor: "#222",
-                padding: `4px 8px`,
-                borderRadius: "4px",
+                padding: `${rem(4)} ${rem(8)}`,
+                borderRadius: rem(4),
                 width: "min-content",
               }}
             >
@@ -196,12 +199,12 @@ export default function Footer({}) {
               className="flexRow"
               style={{
                 backgroundColor: "#222",
-                padding: `4px 8px`,
-                borderRadius: "4px",
+                padding: `${rem(4)} ${rem(8)}`,
+                borderRadius: rem(4),
                 width: "min-content",
                 whiteSpace: "nowrap",
-                fontSize: "12px",
-                gap: "4px",
+                fontSize: rem(12),
+                gap: rem(4),
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -214,7 +217,7 @@ export default function Footer({}) {
               <Chip
                 selected={!groupTechsByFaction}
                 toggleFn={() => setGroupTechsByFaction(false)}
-                fontSize="12px"
+                fontSize={12}
               >
                 <FormattedMessage
                   id="ys7uwX"
@@ -225,7 +228,7 @@ export default function Footer({}) {
               <Chip
                 selected={groupTechsByFaction}
                 toggleFn={() => setGroupTechsByFaction(true)}
-                fontSize="12px"
+                fontSize={12}
               >
                 <FormattedMessage
                   id="r2htpd"
@@ -239,7 +242,7 @@ export default function Footer({}) {
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 960px, calc(100vw - 24px))`,
+              width: `clamp(80vw, 60rem, calc(100vw - 1.5rem))`,
               justifyContent: "flex-start",
             }}
           >
@@ -255,15 +258,15 @@ export default function Footer({}) {
           className="flexColumn"
           style={{
             justifyContent: "flex-start",
-            height: `calc(100dvh - 24px)`,
+            height: `calc(100dvh - ${rem(24)})`,
           }}
         >
           <div
             className="centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `4px 8px`,
-              borderRadius: "4px",
+              padding: `${rem(4)} ${rem(8)}`,
+              borderRadius: rem(4),
               width: "min-content",
             }}
           >
@@ -277,11 +280,11 @@ export default function Footer({}) {
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+              width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
               justifyContent: "flex-start",
               overflow: "auto",
               height: "fit-content",
-              paddingBottom: "24px",
+              paddingBottom: rem(24),
             }}
           >
             <ObjectivePanel />
@@ -296,15 +299,15 @@ export default function Footer({}) {
           className="flexColumn"
           style={{
             justifyContent: "flex-start",
-            maxHeight: `calc(100dvh - 24px)`,
+            maxHeight: `calc(100dvh - ${rem(24)})`,
           }}
         >
           <div
             className="centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `4px 8px`,
-              borderRadius: "4px",
+              padding: `${rem(4)} ${rem(8)}`,
+              borderRadius: rem(4),
               width: "min-content",
             }}
           >
@@ -318,7 +321,7 @@ export default function Footer({}) {
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+              width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
               justifyContent: "flex-start",
               overflow: "auto",
               height: "100%",
@@ -401,32 +404,6 @@ export default function Footer({}) {
               }}
             >
               <TechSkipIcon size={24} outline />
-              {/* <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                width: "80%",
-                height: "80%",
-                border: "1px solid #eee",
-                borderRadius: "100%",
-              }}
-            >
-              <div
-                className="flexRow"
-                style={{
-                  position: "relative",
-                  width: "80%",
-                  height: "80%",
-                }}
-              >
-                <Image
-                  src={`/images/tech_icon.svg`}
-                  alt={`Tech Icon`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
-            </div> */}
             </div>
           </button>
           <FormattedMessage
@@ -471,8 +448,8 @@ export default function Footer({}) {
               className="flexRow"
               style={{
                 position: "relative",
-                paddingTop: "2px",
-                paddingLeft: "2px",
+                paddingTop: rem(2),
+                paddingLeft: rem(2),
               }}
             >
               <ResourcesIcon resources={2} influence={3} height={24} />
@@ -553,7 +530,7 @@ export default function Footer({}) {
       <div className={styles.FactionBox}>
         <LabeledDiv
           label={orderTitle}
-          style={{ alignItems: "center", paddingTop: "12px" }}
+          style={{ alignItems: "center", paddingTop: rem(12) }}
         >
           <FactionRow onClick={(factionId) => setSelectedFaction(factionId)} />
           <LabeledDiv

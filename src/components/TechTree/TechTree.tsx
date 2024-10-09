@@ -4,7 +4,7 @@ import { useFactions, useTechs } from "../../context/dataHooks";
 import { removeTechAsync, addTechAsync } from "../../dynamic/api";
 import { hasTech, isTechReplaced } from "../../util/api/techs";
 import { getTechTypeColor } from "../../util/techs";
-import { objectEntries } from "../../util/util";
+import { objectEntries, rem } from "../../util/util";
 import styles from "./TechTree.module.scss";
 
 const TYPE_ORDER: Record<TechType, number> = {
@@ -69,7 +69,7 @@ export default function TechTree({
       <div
         className="flexColumn"
         style={{
-          gap: "4px",
+          gap: rem(4),
           height: "100%",
           justifyContent: "center",
           ...style,
@@ -86,8 +86,6 @@ export default function TechTree({
               style={{
                 border: `1px solid ${color}`,
                 backgroundColor: filled ? color : undefined,
-                width: `${size}px`,
-                height: `${size}px`,
               }}
               onClick={() => {
                 if (filled) {
@@ -106,8 +104,6 @@ export default function TechTree({
               className={styles.TechTreeElement}
               style={{
                 border: `1px solid ${color}`,
-                width: `${size}px`,
-                height: `${size}px`,
                 cursor: "unset",
               }}
             ></div>
@@ -120,6 +116,7 @@ export default function TechTree({
   const color = getTechTypeColor(type);
 
   if (type === "UPGRADE") {
+    const color = "#ccc";
     const sortedUpgrades = Object.values(techs)
       .filter((tech) => tech.type === type)
       .filter((tech) => !tech.faction)
@@ -140,7 +137,7 @@ export default function TechTree({
             return (
               <div
                 key={tech.id}
-                style={{ width: `${size}px`, height: `${size}px` }}
+                style={{ width: rem(size), height: rem(size) }}
               ></div>
             );
           }
@@ -152,8 +149,6 @@ export default function TechTree({
               style={{
                 border: `1px solid ${color}`,
                 backgroundColor: filled ? color : undefined,
-                width: `${size}px`,
-                height: `${size}px`,
               }}
               onClick={() => {
                 if (filled) {
@@ -201,8 +196,6 @@ export default function TechTree({
                   style={{
                     border: `1px solid ${color}`,
                     backgroundColor: filled ? color : undefined,
-                    width: `${size}px`,
-                    height: `${size}px`,
                   }}
                   onClick={() => {
                     if (filled) {

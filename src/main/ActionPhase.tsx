@@ -58,6 +58,7 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
 import { applyPlanetAttachments } from "../util/planets";
 import { phaseString } from "../util/strings";
+import { rem } from "../util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./util/ComponentAction";
 
@@ -135,8 +136,8 @@ function SecondaryCheck({
                       <div
                         className="symbol"
                         style={{
-                          fontSize: "18px",
-                          lineHeight: "18px",
+                          fontSize: rem(18),
+                          lineHeight: rem(18),
                         }}
                       >
                         ✓
@@ -197,7 +198,7 @@ export function FactionActionButtons({
     <div
       className="flexRow"
       style={{
-        padding: "0px 8px",
+        padding: `0 ${rem(8)}`,
         boxSizing: "border-box",
         width: "100%",
         flexWrap: "wrap",
@@ -262,8 +263,8 @@ export function FactionActionButtons({
 
 export function FactionActions({ factionId }: { factionId: FactionId }) {
   return (
-    <div className="flexColumn" style={{ gap: "4px", width: "100%" }}>
-      <div style={{ fontSize: "20px" }}>
+    <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
+      <div style={{ fontSize: rem(20) }}>
         <FormattedMessage
           id="YeYE6S"
           description="Label telling the user to select the action a player took."
@@ -272,7 +273,7 @@ export function FactionActions({ factionId }: { factionId: FactionId }) {
       </div>
       <FactionActionButtons
         factionId={factionId}
-        buttonStyle={{ fontSize: "18px" }}
+        buttonStyle={{ fontSize: rem(18) }}
       />
     </div>
   );
@@ -492,11 +493,11 @@ export function AdditionalActions({
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: "8px",
+    padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",
     gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
-    gap: "4px",
+    gap: rem(4),
     justifyContent: "flex-start",
     overflowX: "auto",
     maxWidth: "85vw",
@@ -608,9 +609,9 @@ export function AdditionalActions({
         ) : null;
       }
       return (
-        <div className="flexColumn largeFont" style={{ ...style, gap: "4px" }}>
+        <div className="flexColumn largeFont" style={{ ...style, gap: rem(4) }}>
           {activeFaction.id !== "Nekro Virus" ? (
-            <div className="flexColumn" style={{ gap: "4px", width: "100%" }}>
+            <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
               <LabeledLine
                 leftLabel={
                   <FormattedMessage
@@ -667,7 +668,7 @@ export function AdditionalActions({
               </div>
             </div>
           ) : null}
-          <div className="flexColumn" style={{ gap: "4px", width: "100%" }}>
+          <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
             <LabeledLine
               leftLabel={
                 <FormattedMessage
@@ -680,7 +681,7 @@ export function AdditionalActions({
             <div
               className="flexRow mediumFont"
               style={{
-                paddingTop: "4px",
+                paddingTop: rem(4),
                 width: "100%",
                 flexWrap: "wrap",
               }}
@@ -782,7 +783,7 @@ export function AdditionalActions({
       return (
         <div
           className="flexColumn"
-          style={{ gap: "4px", width: "100%", ...style }}
+          style={{ gap: rem(4), width: "100%", ...style }}
         >
           <React.Fragment>
             <LabeledLine
@@ -798,7 +799,7 @@ export function AdditionalActions({
               className="flexRow largeFont"
               style={{
                 justifyContent: "flex-start",
-                paddingLeft: "24px",
+                paddingLeft: rem(24),
                 width: "100%",
               }}
             >
@@ -1005,7 +1006,7 @@ export function AdditionalActions({
                             key={planet.id}
                             style={{
                               writingMode: "horizontal-tb",
-                              width: "90px",
+                              width: rem(90),
                             }}
                             onClick={() => addPlanet(activeFaction.id, planet)}
                           >
@@ -1230,7 +1231,7 @@ export function AdditionalActions({
                             key={planet.id}
                             style={{
                               writingMode: "horizontal-tb",
-                              width: "90px",
+                              width: rem(90),
                             }}
                             onClick={() => {
                               addPlanet("Xxcha Kingdom", planet);
@@ -1329,7 +1330,7 @@ export function AdditionalActions({
 
       const secretButtonStyle: CSSProperties = {
         fontFamily: "Myriad Pro",
-        padding: "8px",
+        padding: rem(8),
         alignItems: "stretch",
         display: "grid",
         gridAutoFlow: "column",
@@ -1340,7 +1341,7 @@ export function AdditionalActions({
           availablePublicObjectives.length,
           8
         )}, auto)`,
-        gap: "4px",
+        gap: rem(4),
       };
       return (
         <div
@@ -1358,8 +1359,8 @@ export function AdditionalActions({
           />
           <div
             style={{
-              backdropFilter: "blur(4px)",
-              padding: `${"2px"} 0`,
+              backdropFilter: `blur(${rem(4)})`,
+              padding: `${rem(2)} 0`,
             }}
           >
             {hasImperialPoint ? (
@@ -1484,7 +1485,7 @@ export function AdditionalActions({
           className="flexRow largeFont"
           style={{
             justifyContent: "center",
-            paddingTop: "12px",
+            paddingTop: rem(12),
             width: "100%",
             whiteSpace: "nowrap",
           }}
@@ -1519,8 +1520,8 @@ export function AdditionalActions({
                   <div
                     className="symbol"
                     style={{
-                      fontSize: "18px",
-                      lineHeight: "18px",
+                      fontSize: rem(18),
+                      lineHeight: rem(18),
                     }}
                   >
                     ✓
@@ -1611,7 +1612,7 @@ export function NextPlayerButtons({
     return null;
   } else {
     return (
-      <div className="flexRow" style={{ gap: "16px" }}>
+      <div className="flexRow" style={{ gap: rem(16) }}>
         <button
           onClick={completeActions}
           className={styles.EndTurnButton}
@@ -1625,7 +1626,7 @@ export function NextPlayerButtons({
         </button>
         {selectedAction !== "Pass" ? (
           <React.Fragment>
-            <div style={{ fontSize: "16px" }}>
+            <div style={{ fontSize: rem(16) }}>
               <FormattedMessage
                 id="PnNSxg"
                 description="Text between two fields linking them together."
@@ -1676,19 +1677,19 @@ export function ActivePlayerColumn({
             rightLabel={
               <FactionTimer
                 factionId={activeFaction.id}
-                style={{ fontSize: "16px", width: "auto" }}
+                style={{ fontSize: rem(16), width: "auto" }}
               />
             }
             opts={{
-              iconSize: "200px",
-              fontSize: "32px",
+              iconSize: rem(200),
+              fontSize: rem(32),
             }}
           >
             <div className={styles.ActivePlayerSection}>
               <FactionActions factionId={activeFaction.id} />
               <AdditionalActions
                 factionId={activeFaction.id}
-                style={{ minWidth: "350px" }}
+                style={{ minWidth: rem(350) }}
               />
             </div>
           </FactionCard>
@@ -1713,7 +1714,7 @@ export function ActivePlayerColumn({
                 <StaticFactionTimer
                   factionId={onDeckFaction.id}
                   style={{
-                    fontSize: "16px",
+                    fontSize: rem(16),
                   }}
                   width={84}
                 />
@@ -1721,17 +1722,17 @@ export function ActivePlayerColumn({
               color={getFactionColor(onDeckFaction)}
               style={{
                 width: "fit-content",
-                minWidth: "200px",
-                fontSize: "24px",
+                minWidth: rem(200),
+                fontSize: rem(24),
               }}
             >
               <div
                 className="flexColumn"
                 style={{
                   width: "100%",
-                  height: "44px",
+                  height: rem(44),
                   whiteSpace: "nowrap",
-                  gap: "4px",
+                  gap: rem(4),
                 }}
               >
                 {getFactionName(onDeckFaction)}
@@ -1739,8 +1740,8 @@ export function ActivePlayerColumn({
                   className="flexRow"
                   style={{
                     position: "absolute",
-                    width: "44px",
-                    height: "44px",
+                    width: rem(44),
+                    height: rem(44),
                     zIndex: -1,
                     opacity: 0.7,
                     userSelect: "none",
@@ -1749,39 +1750,13 @@ export function ActivePlayerColumn({
                   <FactionIcon factionId={onDeckFaction.id} size="100%" />
                 </div>
               </div>
-              {/* <FactionCard
-              faction={onDeckFaction}
-              style={{ width: "auto", height: "100px" }}
-              opts={{
-                iconSize: "80px",
-                fontSize: "24px",
-              }}
-            >
-              <div
-                className="flexColumn"
-                style={{
-                  height: "100%",
-                  width: "160px",
-                  paddingBottom: "4px",
-                  fontSize: "12px",
-                }}
-              >
-                <StaticFactionTimer
-                  factionId={onDeckFaction.id}
-                  style={{
-                    fontSize: "24px",
-                  }}
-                  width={132}
-                />
-              </div>
-            </FactionCard> */}
             </LabeledDiv>
           </CSSTransition>
         </SwitchTransition>
       </div>
       <LockedButtons
         unlocked={!activeFaction}
-        style={{ marginTop: "12px" }}
+        style={{ marginTop: rem(12) }}
         buttons={[
           {
             text: intl.formatMessage(
@@ -1845,7 +1820,7 @@ export default function ActionPhase() {
         className={styles.LeftColumn}
         style={
           {
-            "--gap": numFactions > 7 ? "4px" : "8px",
+            "--gap": numFactions > 7 ? rem(4) : rem(8),
           } as CSSProperties
         }
       >
@@ -1857,9 +1832,13 @@ export default function ActionPhase() {
               style={{
                 transition: "padding 120ms",
                 paddingRight:
-                  isActivePlayer && activeFaction && onDeckFaction ? 0 : "40px",
+                  isActivePlayer && activeFaction && onDeckFaction
+                    ? 0
+                    : rem(40),
                 paddingLeft:
-                  isActivePlayer && activeFaction && onDeckFaction ? "40px" : 0,
+                  isActivePlayer && activeFaction && onDeckFaction
+                    ? rem(40)
+                    : 0,
               }}
             >
               <SmallStrategyCard cards={cards} />
@@ -1867,7 +1846,7 @@ export default function ActionPhase() {
           );
         })}
       </div>
-      <div className="flexColumn" style={{ gap: "16px" }}>
+      <div className="flexColumn" style={{ gap: rem(16) }}>
         <div className="flexColumn" style={{ width: "100%" }}>
           {activeFaction && onDeckFaction ? (
             <ActivePlayerColumn
@@ -1877,12 +1856,12 @@ export default function ActionPhase() {
           ) : (
             <div
               className="flexColumn"
-              style={{ height: "calc(100dvh - 180px) " }}
+              style={{ height: `calc(100dvh - ${rem(180)})` }}
             >
               <div
                 className="flexRow"
                 style={{
-                  fontSize: "28px",
+                  fontSize: rem(28),
                   textAlign: "center",
                   width: "100%",
                 }}

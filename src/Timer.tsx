@@ -18,6 +18,7 @@ import {
 import { FormattedMessage } from "react-intl";
 import { useInterval } from "./util/client";
 import { useGameState, useTimers } from "./context/dataHooks";
+import { rem } from "./util/util";
 
 export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   const gameId = useContext(GameIdContext);
@@ -74,9 +75,14 @@ export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   return (
     <div
       className="flexColumn"
-      style={{ alignItems: "center", gap: 0, justifyContent: "center" }}
+      style={{
+        alignItems: "center",
+        gap: 0,
+        justifyContent: "center",
+        fontSize: rem(24),
+      }}
     >
-      <div style={{ fontSize: "18px" }}>
+      <div style={{ fontSize: rem(18) }}>
         <FormattedMessage
           id="OpsE1E"
           defaultMessage="{num, select, 1 {First} 2 {Second} other {First}} Agenda"

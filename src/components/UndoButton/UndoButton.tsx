@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-import { undoAsync } from "../../dynamic/api";
 import { useActionLog } from "../../context/dataHooks";
+import { undoAsync } from "../../dynamic/api";
+import { rem } from "../../util/util";
 
 export default function UndoButton({ gameId }: { gameId?: string }) {
   const actionLog = useActionLog();
@@ -44,7 +45,7 @@ export default function UndoButton({ gameId }: { gameId?: string }) {
           undoAsync(gameId);
         }
       }}
-      style={{ fontSize: "20px" }}
+      style={{ fontSize: rem(20) }}
       onClick={() => undoAsync(gameId)}
     >
       <FormattedMessage

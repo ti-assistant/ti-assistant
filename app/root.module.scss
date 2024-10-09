@@ -1,42 +1,48 @@
+.NavBar {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  justify-content: flex-start;
+  align-items: center;
+  top: 1rem;
+  left: 4rem;
+  font-size: 1.5rem;
+  gap: 0.5rem;
+}
+
 .HomeLink {
   display: flex;
   flex-direction: row;
   cursor: pointer;
-  position: fixed;
   justify-content: center;
+  align-items: center;
   background-color: #222;
-  top: 16px;
-  left: 96px;
-  font-size: 24px;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .LangSelect {
-  display: flex;
-  position: fixed;
-  top: 32px;
-  left: 30px;
-  z-index: 2;
-}
-
-.HomeLink > div {
   position: relative;
-  width: 32px;
-  height: 32px;
+  z-index: 4;
 }
 
-@media only screen and (max-width: 1279px) {
+.Logo {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+}
+
+@media only screen and (max-width: 75rem) {
   .HomeLink {
-    left: 64px;
+    left: 4rem;
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 56.25rem) {
   .HomeLink {
     text-align: center;
     position: sticky;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
     top: 0;
     left: 0;
     width: 100%;
@@ -48,16 +54,16 @@
 
   .HomeLink > div {
     position: relative;
-    width: 28px;
-    height: 28px;
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
   .LangSelect {
     display: flex;
     position: fixed;
     top: unset;
-    bottom: 32px;
-    right: 30px;
+    bottom: 2rem;
+    right: 1.875rem;
     left: unset;
     z-index: 2;
   }

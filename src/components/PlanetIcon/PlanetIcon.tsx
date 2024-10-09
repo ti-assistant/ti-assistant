@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CSSProperties } from "react";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./PlanetIcon.module.scss";
+import { rem } from "../../util/util";
 
 type Size = `${number}%` | number;
 
@@ -21,7 +22,7 @@ export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
   }
 
   const planetIconStyle: PlanetIconCSS = {
-    "--size": typeof size === "string" ? size : `${size}px`,
+    "--size": typeof size === "string" ? size : rem(size),
   };
 
   if (type === "ALL") {

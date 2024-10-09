@@ -3,6 +3,7 @@ import { CSSProperties, useMemo } from "react";
 import { SymbolX } from "../../icons/svgs";
 import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
 import styles from "./FactionIcon.module.scss";
+import { rem } from "../../util/util";
 
 type Size = `${number}%` | number;
 
@@ -31,7 +32,7 @@ export default function FactionIcon({ factionId, size }: FactionIconProps) {
       <Image
         src={`/images/factions/${adjustedFactionName}.webp`}
         alt={`${factionId} Icon`}
-        sizes="200px"
+        sizes={rem(200)}
         fill
         style={{ objectFit: "contain" }}
         priority
@@ -40,7 +41,7 @@ export default function FactionIcon({ factionId, size }: FactionIconProps) {
   }, [factionId]);
 
   const factionIconStyle: FactionIconCSS = {
-    "--size": typeof size === "string" ? size : `${size}px`,
+    "--size": typeof size === "string" ? size : rem(size),
   };
   return (
     <div className={styles.FactionIcon} style={factionIconStyle}>

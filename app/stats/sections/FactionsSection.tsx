@@ -8,6 +8,7 @@ import { PointsHistogram } from "./Histogram";
 import { FactionSummary } from "./types";
 import styles from "./FactionsSection.module.scss";
 import { FormattedMessage } from "react-intl";
+import { rem } from "../../../src/util/util";
 
 export default function FactionsSection({
   games,
@@ -273,13 +274,13 @@ export default function FactionsSection({
               <LabeledDiv
                 key={id}
                 label={
-                  <div className="flexRow" style={{ gap: "4px" }}>
+                  <div className="flexRow" style={{ gap: rem(4) }}>
                     <FactionIcon factionId={id as FactionId} size={20} />
                     {id}
                     <FactionIcon factionId={id as FactionId} size={20} />
                   </div>
                 }
-                style={{ gap: "2px" }}
+                style={{ gap: rem(2) }}
               >
                 <div className={styles.FactionSection}>
                   <div
@@ -300,7 +301,7 @@ export default function FactionsSection({
                     style={{
                       justifyContent: "flex-start",
                       alignItems: "flex-start",
-                      gap: "2px",
+                      gap: rem(2),
                       width: "100%",
                     }}
                   >
@@ -316,7 +317,7 @@ export default function FactionsSection({
                       ) / 100}
                       % ({info.games.wins} of {info.games.games})
                     </div>
-                    <div style={{ fontSize: "14px" }}>
+                    <div style={{ fontSize: rem(14) }}>
                       <FormattedMessage
                         id="/LAhkb"
                         defaultMessage="Aggression Ranking: {val} of {count}"
@@ -334,7 +335,7 @@ export default function FactionsSection({
                       )}
                       )
                     </div>
-                    <div style={{ fontSize: "14px" }}>
+                    <div style={{ fontSize: rem(14) }}>
                       <FormattedMessage
                         id="PWXbsW"
                         defaultMessage="Defense Ranking: {val} of {count}"
@@ -351,7 +352,7 @@ export default function FactionsSection({
                       )}
                       )
                     </div>
-                    <div style={{ fontSize: "14px" }}>
+                    <div style={{ fontSize: rem(14) }}>
                       <FormattedMessage
                         id="fW7Ivs"
                         defaultMessage="Average scored secrets: {number}"
@@ -372,7 +373,7 @@ export default function FactionsSection({
                   />
                 </div>
                 <button
-                  style={{ fontSize: "10px", marginTop: "2px" }}
+                  style={{ fontSize: rem(10), marginTop: rem(2) }}
                   onClick={() => {
                     setModalInfo(info);
                     setShownModal(id as FactionId);

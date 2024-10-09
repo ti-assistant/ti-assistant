@@ -4,7 +4,7 @@ import GenericModal from "../../../src/components/GenericModal/GenericModal";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import TechIcon from "../../../src/components/TechIcon/TechIcon";
 import { Optional } from "../../../src/util/types/types";
-import { objectEntries } from "../../../src/util/util";
+import { objectEntries, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import { PointsHistogram } from "./Histogram";
 import { HistogramData } from "./types";
@@ -137,7 +137,7 @@ export default function TechsSection({
     <div className={styles.TechsSection}>
       <div className="flexRow">
         <button
-          style={{ fontSize: "14px" }}
+          style={{ fontSize: rem(14) }}
           className={tab === "Non-Faction" ? "selected" : ""}
           onClick={() => setTab("Non-Faction")}
         >
@@ -148,7 +148,7 @@ export default function TechsSection({
           />
         </button>
         <button
-          style={{ fontSize: "14px" }}
+          style={{ fontSize: rem(14) }}
           className={tab === "Faction" ? "selected" : ""}
           onClick={() => setTab("Faction")}
         >
@@ -169,17 +169,17 @@ export default function TechsSection({
           style={{
             whiteSpace: "normal",
             textShadow: "none",
-            width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
             justifyContent: "flex-start",
-            height: `calc(100dvh - 24px)`,
+            height: `calc(100dvh - ${rem(24)})`,
           }}
         >
           <div
             className="flexColumn centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `4px 8px`,
-              borderRadius: "4px",
+              padding: `${rem(4)} ${rem(8)}`,
+              borderRadius: rem(4),
               gap: 0,
             }}
           >
@@ -189,7 +189,7 @@ export default function TechsSection({
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+              width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
               justifyContent: "flex-start",
               overflow: "auto",
               height: "fit-content",
@@ -211,8 +211,8 @@ export default function TechsSection({
                   className="flexColumn"
                   style={{
                     width: "100%",
-                    padding: `0 4px 4px`,
-                    fontSize: "14px",
+                    padding: `0 ${rem(4)} ${rem(4)}`,
+                    fontSize: rem(14),
                   }}
                 >
                   <FactionsTechTable
@@ -241,7 +241,7 @@ export default function TechsSection({
           <LabeledDiv
             key={id}
             label={
-              <div className="flexRow" style={{ gap: "4px" }}>
+              <div className="flexRow" style={{ gap: rem(4) }}>
                 {tech.type !== "UPGRADE" ? (
                   <TechIcon type={tech.type} size={20} />
                 ) : null}
@@ -289,7 +289,7 @@ export default function TechsSection({
                 />
               </div>
               {/* {info.winners !== info.ownedWinners ? (
-                <div style={{ fontSize: "14px" }}>
+                <div style={{ fontSize: rem(14) }}>
                   Owned by Winner in{" "}
                   {Math.round(((1.0 * info.ownedWinners) / numGames) * 10000) /
                     100}
@@ -346,7 +346,7 @@ export default function TechsSection({
 
             {tab !== "Faction" ? (
               <button
-                style={{ fontSize: "10px", marginTop: "4px" }}
+                style={{ fontSize: rem(10), marginTop: rem(4) }}
                 onClick={() => setShownModal(id)}
               >
                 <FormattedMessage
@@ -382,7 +382,7 @@ function FactionsTechTable({
   //   ([_, info]) => info.type === "STAGE TWO" && info.games >= 2
   // );
   return (
-    <table style={{ fontSize: "12px", width: "100%", borderSpacing: "0" }}>
+    <table style={{ fontSize: rem(12), width: "100%", borderSpacing: "0" }}>
       <thead>
         <tr>
           <th></th>
@@ -418,7 +418,7 @@ function FactionsTechTable({
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  gap: "8px",
+                  gap: rem(8),
                   alignItems: "flex-start",
                 }}
               >

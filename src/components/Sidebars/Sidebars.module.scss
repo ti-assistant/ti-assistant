@@ -1,13 +1,13 @@
 .Sidebar {
-  --edge-distance: 16px;
+  --edge-distance: 0.5rem;
 
   background-color: #333;
   box-shadow: 0px 0px 8px 1px #111;
   color: #eee;
-  font-size: 36px;
+  font-size: 1.5rem;
   letter-spacing: 3px;
-  line-height: 36px;
-  padding: 12px 0;
+  line-height: 1.5rem;
+  padding: 0.5rem 0;
   position: fixed;
   text-align: center;
   top: 100%;
@@ -31,17 +31,17 @@
   transform-origin: 100% 0px;
 }
 
-@media only screen and (max-width: 1279px) {
+@media only screen and (max-width: 75rem) {
   .Sidebar {
-    --edge-distance: 8px;
+    --edge-distance: 0.5rem;
     color: #eee;
-    font-size: 24px;
-    line-height: 24px;
-    padding: 8px 0;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    padding: 0.5rem 0;
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 56.25rem) {
   .Sidebar {
     display: none;
   }
@@ -49,9 +49,9 @@
   .SidebarLine {
     display: flex;
     position: sticky;
-    top: 52px;
+    top: 3.25rem;
     width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 0.25rem;
     z-index: 1;
 
     background-color: #222;

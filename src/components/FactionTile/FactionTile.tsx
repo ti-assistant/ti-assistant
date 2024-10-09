@@ -1,5 +1,6 @@
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
 import { getFactionColor, getFactionName } from "../../util/factions";
+import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./FactionTile.module.scss";
 
@@ -19,7 +20,7 @@ export default function FactionTile({
   const factionTileCSS = {
     "--color": color,
     boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
-    fontSize: `${fontSize}px`,
+    fontSize: rem(fontSize),
   };
 
   return (
@@ -27,14 +28,14 @@ export default function FactionTile({
       <div
         className={styles.Body}
         style={{
-          height: `${iconSize}px`,
-          minWidth: `${iconSize}px`,
+          height: rem(iconSize),
+          minWidth: rem(iconSize),
         }}
       >
         <div
           className={styles.Icon}
           style={{
-            height: `${iconSize}px`,
+            height: rem(iconSize),
             opacity: "60%",
             userSelect: "none",
           }}

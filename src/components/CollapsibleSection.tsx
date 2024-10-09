@@ -1,6 +1,6 @@
 import { CSSProperties, PropsWithChildren, ReactNode, useState } from "react";
-import styles from "./CollapsibleSection.module.scss";
 import { Optional } from "../util/types/types";
+import styles from "./CollapsibleSection.module.scss";
 
 interface CollapsibleSectionCSS extends CSSProperties {
   "--color": Optional<string>;

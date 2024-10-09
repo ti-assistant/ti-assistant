@@ -3,6 +3,7 @@ import BorderedDiv from "../components/BorderedDiv/BorderedDiv";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import { GameIdContext } from "../context/Context";
 import { GameLog } from "../components/GameLog/GameLog";
+import { rem } from "../util/util";
 
 export default function ResultsPhase() {
   const gameId = useContext(GameIdContext);
@@ -27,7 +28,7 @@ export default function ResultsPhase() {
           <BorderedDiv>Download Game Data</BorderedDiv>
         </a>
       </div>
-      <div style={{ marginTop: "144px", width: "100%" }}>
+      <div style={{ marginTop: rem(144), width: "100%" }}>
         {viewing === "Game Log" ? (
           <LabeledDiv label="Game Log (Beta)">
             <GameLog />

@@ -13,14 +13,16 @@ import FactionSelectRadialMenu from "../../src/components/FactionSelectRadialMen
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import Map from "../../src/components/Map/Map";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
+import NumberInput from "../../src/components/NumberInput/NumberInput";
 import ResponsiveLogo from "../../src/components/ResponsiveLogo/ResponsiveLogo";
+import Toggle from "../../src/components/Toggle/Toggle";
 import { Strings } from "../../src/components/strings";
 import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
-import styles from "./setup.module.scss";
-import Toggle from "../../src/components/Toggle/Toggle";
-import NumberInput from "../../src/components/NumberInput/NumberInput";
 import { Optional } from "../../src/util/types/types";
+import styles from "./setup.module.scss";
+import { rem } from "../../src/util/util";
+import Chip from "../../src/components/Chip/Chip";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -29,7 +31,7 @@ const SetupFactionPanel = dynamic(
       <div
         className="popupIcon"
         style={{
-          fontSize: "16px",
+          fontSize: rem(16),
         }}
       >
         &#x24D8;
@@ -116,17 +118,17 @@ function MobileOptions({
           description="Label for a selector to change the number of players"
         />
       </label>
-      <div className="flexRow">
+      <div className="flexRow" style={{ gap: rem(4) }}>
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
           return (
-            <button
+            <Chip
+              selected={numFactions === number}
               key={number}
-              onClick={() => updatePlayerCount(number)}
-              className={numFactions === number ? "selected" : ""}
+              toggleFn={() => updatePlayerCount(number)}
             >
               {number}
-            </button>
+            </Chip>
           );
         })}
       </div>
@@ -148,7 +150,7 @@ function MobileOptions({
               className="flexColumn"
               style={{
                 alignItems: "flex-start",
-                padding: `${"8px"} ${"16px"} 0 ${"16px"}`,
+                padding: `${rem(8)} ${rem(16)} 0 ${rem(16)}`,
               }}
             >
               <div className="flexRow" style={{ alignItems: "flex-start" }}>
@@ -187,7 +189,7 @@ function MobileOptions({
                   style={{
                     alignItems: "flex-start",
                     justifyContent: "flex-start",
-                    padding: `0 ${"20px"}`,
+                    padding: `0 ${rem(20)}`,
                   }}
                 >
                   <Toggle
@@ -227,7 +229,7 @@ function MobileOptions({
                   className="flexColumn mediumFont"
                   style={{
                     alignItems: "flex-start",
-                    padding: `0 ${"20px"}`,
+                    padding: `0 ${rem(20)}`,
                   }}
                 >
                   <FormattedMessage
@@ -239,7 +241,7 @@ function MobileOptions({
                     className="flexRow"
                     style={{
                       justifyContent: "flex-start",
-                      padding: `0 ${"20px"}`,
+                      padding: `0 ${rem(20)}`,
                     }}
                   >
                     <Toggle
@@ -263,7 +265,7 @@ function MobileOptions({
                   className="flexColumn"
                   style={{
                     fontFamily: "Myriad Pro",
-                    padding: `8px 16px`,
+                    padding: `${rem(8)} ${rem(16)}`,
                     alignItems: "flex-start",
                     whiteSpace: "pre-wrap",
                   }}
@@ -277,19 +279,17 @@ function MobileOptions({
                       />
                       <div
                         className="flexRow"
-                        style={{ paddingLeft: `${"16px"}` }}
+                        style={{ paddingLeft: `${rem(16)}`, gap: rem(4) }}
                       >
                         {mapStyles.map((style) => {
                           return (
-                            <button
+                            <Chip
                               key={style}
-                              className={
-                                options["map-style"] === style ? "selected" : ""
-                              }
-                              onClick={() => toggleOption(style, "map-style")}
+                              selected={options["map-style"] === style}
+                              toggleFn={() => toggleOption(style, "map-style")}
                             >
                               {mapStyleString(style, intl)}
-                            </button>
+                            </Chip>
                           );
                         })}
                       </div>
@@ -301,7 +301,7 @@ function MobileOptions({
                     defaultMessage="Map String"
                   />
                   :
-                  <span className="smallFont" style={{ paddingLeft: "4px" }}>
+                  <span className="smallFont" style={{ paddingLeft: rem(4) }}>
                     <FormattedMessage
                       id="zjv9Gr"
                       description="Part of a label explaining what the map string does."
@@ -324,7 +324,10 @@ function MobileOptions({
                 Scenarios:
                 <div
                   className="flexRow"
-                  style={{ alignItems: "flex-start", padding: "8px 20px" }}
+                  style={{
+                    alignItems: "flex-start",
+                    padding: `${rem(8)} ${rem(20)}`,
+                  }}
                 >
                   <Toggle
                     selected={options.scenario === "AGE_OF_EXPLORATION"}
@@ -418,17 +421,17 @@ function Options({
           description="Label for a selector to change the number of players"
         />
       </label>
-      <div className="flexRow">
+      <div className="flexRow" style={{ gap: rem(4) }}>
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
           return (
-            <button
+            <Chip
+              selected={numFactions === number}
               key={number}
-              onClick={() => updatePlayerCount(number)}
-              className={numFactions === number ? "selected" : ""}
+              toggleFn={() => updatePlayerCount(number)}
             >
               {number}
-            </button>
+            </Chip>
           );
         })}
       </div>
@@ -446,7 +449,7 @@ function Options({
             className="flexColumn"
             style={{
               alignItems: "flex-start",
-              padding: `${"8px"} ${"16px"} 0 ${"16px"}`,
+              padding: `${rem(8)} ${rem(16)} 0 ${rem(16)}`,
             }}
           >
             <div className="flexRow" style={{ alignItems: "flex-start" }}>
@@ -488,7 +491,7 @@ function Options({
                 className="flexRow"
                 style={{
                   justifyContent: "flex-start",
-                  padding: `0 16px`,
+                  padding: `0 ${rem(16)}`,
                 }}
               >
                 <Toggle
@@ -544,7 +547,7 @@ function Options({
                 className="flexColumn mediumFont"
                 style={{
                   alignItems: "flex-start",
-                  padding: `0 16px`,
+                  padding: `0 ${rem(16)}`,
                 }}
               >
                 <FormattedMessage
@@ -556,7 +559,7 @@ function Options({
                   className="flexRow"
                   style={{
                     justifyContent: "flex-start",
-                    padding: `0 16px`,
+                    padding: `0 ${rem(16)}`,
                   }}
                 >
                   <Toggle
@@ -584,7 +587,7 @@ function Options({
                 className="flexColumn"
                 style={{
                   fontFamily: "Myriad Pro",
-                  padding: `8px 16px`,
+                  padding: `${rem(8)} ${rem(16)}`,
                   alignItems: "flex-start",
                 }}
               >
@@ -597,19 +600,17 @@ function Options({
                     />
                     <div
                       className="flexRow"
-                      style={{ paddingLeft: `${"16px"}` }}
+                      style={{ paddingLeft: rem(16), gap: rem(4) }}
                     >
                       {mapStyles.map((style) => {
                         return (
-                          <button
+                          <Chip
                             key={style}
-                            className={
-                              options["map-style"] === style ? "selected" : ""
-                            }
-                            onClick={() => toggleOption(style, "map-style")}
+                            selected={options["map-style"] === style}
+                            toggleFn={() => toggleOption(style, "map-style")}
                           >
                             {mapStyleString(style, intl)}
-                          </button>
+                          </Chip>
                         );
                       })}
                     </div>
@@ -628,7 +629,7 @@ function Options({
                     description="Label for a textbox used to specify the map string."
                     defaultMessage="Map String"
                   />
-                  <span className="smallFont" style={{ paddingLeft: "4px" }}>
+                  <span className="smallFont" style={{ paddingLeft: rem(4) }}>
                     <FormattedMessage
                       id="zjv9Gr"
                       description="Part of a label explaining what the map string does."
@@ -653,7 +654,10 @@ function Options({
               Scenarios:
               <div
                 className="flexRow"
-                style={{ alignItems: "flex-start", padding: "8px 20px" }}
+                style={{
+                  alignItems: "flex-start",
+                  padding: `${rem(8)} ${rem(20)}`,
+                }}
               >
                 <Toggle
                   selected={options.scenario === "AGE_OF_EXPLORATION"}
@@ -680,7 +684,9 @@ function Options({
                   className="flexRow"
                   style={{
                     alignItems: "flex-start",
-                    padding: `8px 20px`,
+                    padding: `${rem(8)} ${rem(20)}`,
+                    gap: rem(4),
+                    fontFamily: "Myriad Pro",
                   }}
                 >
                   {variants.map((variant) => {
@@ -697,19 +703,17 @@ function Options({
                         break;
                     }
                     return (
-                      <button
+                      <Chip
                         key={variant}
-                        className={
-                          options["game-variant"] === variant ? "selected" : ""
-                        }
-                        onClick={() => {
+                        selected={options["game-variant"] === variant}
+                        toggleFn={() => {
                           toggleOption(baseVPs, "victory-points");
                           toggleOption(10, "secondary-victory-points");
                           toggleOption(variant, "game-variant");
                         }}
                       >
                         {variantText}
-                      </button>
+                      </Chip>
                     );
                   })}
                 </div>
@@ -955,6 +959,7 @@ function FactionSelect({
       style={{
         fontFamily: "Slider",
         borderColor: factionColor,
+        fontSize: rem(13.33),
       }}
       onFocus={(e) => (e.currentTarget.value = "")}
       onClick={(e) => (e.currentTarget.value = "")}
@@ -991,8 +996,8 @@ function FactionSelect({
           width: "100%",
           alignItems: "flex-start",
           whiteSpace: "nowrap",
-          gap: "4px",
-          padding: "8px",
+          gap: rem(4),
+          padding: rem(8),
           boxSizing: "border-box",
         }}
       >
@@ -1013,7 +1018,7 @@ function FactionSelect({
               <SelectableRow
                 itemId={availableFactions[faction.id].name}
                 removeItem={() => selectFaction(undefined)}
-                style={{ height: "32.67px" }}
+                style={{ height: rem(32.67) }}
               >
                 {availableFactions[faction.id].name}
                 <SetupFactionPanel
@@ -1036,9 +1041,9 @@ function FactionSelect({
                     display: "grid",
                     gridAutoFlow: "column",
                     gridTemplateRows: "repeat(10, minmax(0, 1fr))",
-                    gap: "4px",
-                    padding: "8px",
-                    maxWidth: "min(80vw, 750px)",
+                    gap: rem(4),
+                    padding: rem(8),
+                    maxWidth: `min(80vw, ${rem(750)})`,
                     overflowX: "auto",
                   }}
                 >
@@ -1052,7 +1057,7 @@ function FactionSelect({
                         style={{
                           justifyContent: "flex-start",
                           alignItems: "center",
-                          fontSize: "16px",
+                          fontSize: rem(16),
                         }}
                         onClick={() => selectFaction(faction.id)}
                       >
@@ -1116,12 +1121,12 @@ function FactionSelect({
                   <div
                     className="flexRow"
                     style={{
-                      padding: `${"8px"}`,
+                      padding: `${rem(8)}`,
                       display: "grid",
                       gridAutoFlow: "column",
                       gridTemplateRows: "repeat(3, auto)",
                       overflowX: "auto",
-                      gap: `${"4px"}`,
+                      gap: `${rem(4)}`,
                       justifyContent: "flex-start",
                     }}
                   >
@@ -1132,10 +1137,10 @@ function FactionSelect({
                         <button
                           key={color}
                           style={{
-                            width: "60px",
+                            width: rem(60),
                             backgroundColor: factionColor,
                             color: factionColor,
-                            height: "22px",
+                            height: rem(22),
                             opacity:
                               faction.color !== color && alreadySelected
                                 ? 0.25
@@ -1621,7 +1626,7 @@ export default function SetupPage({
             height: "100%",
             justifyContent: "center",
             gridArea: "opt",
-            minHeight: "114px",
+            minHeight: rem(114),
           }}
         >
           <Options
@@ -1683,112 +1688,6 @@ export default function SetupPage({
             />
           </div>
         ) : null}
-        {/* Track Section */}
-        {/* <div
-          className="flexColumn"
-          style={{ height: "100%", gridArea: "trac", minHeight: "114px" }}
-        >
-          <LabeledDiv
-            label={
-              <FormattedMessage
-                id="tDgufj"
-                description="Label on a section showing what can be tracked by the app."
-                defaultMessage="Track"
-              />
-            }
-          >
-            <div
-              className="flexRow"
-              style={{
-                width: "100%",
-                minWidth: "240px",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <div
-                className="flexColumn"
-                style={{ fontSize: "12px", gap: "2px", width: "60px" }}
-              >
-                <FormattedMessage
-                  id="1fNqTf"
-                  defaultMessage="Planets"
-                  description="Planets."
-                />
-                <Circle
-                  blur={false}
-                  onClick={() => {
-                    toggleOption(!options["hide-planets"], "hide-planets");
-                  }}
-                  tag={<ToggleTag value={!options["hide-planets"]} />}
-                  tagBorderColor={options["hide-planets"] ? "red" : "green"}
-                >
-                  <div
-                    className="flexRow"
-                    style={{
-                      position: "relative",
-                      paddingTop: "2px",
-                      paddingLeft: "2px",
-                    }}
-                  >
-                    <CustomSizeResources
-                      resources={3}
-                      influence={2}
-                      height={32}
-                    />
-                  </div>
-                </Circle>
-              </div>
-              <div
-                className="flexColumn"
-                style={{ fontSize: "12px", gap: "2px", width: "60px" }}
-              >
-                <FormattedMessage
-                  id="ys7uwX"
-                  defaultMessage="Techs"
-                  description="Shortened version of technologies."
-                />
-                <Circle
-                  blur={false}
-                  onClick={() => {
-                    toggleOption(!options["hide-techs"], "hide-techs");
-                  }}
-                  tag={<ToggleTag value={!options["hide-techs"]} />}
-                  tagBorderColor={options["hide-techs"] ? "red" : "green"}
-                >
-                  <TechSkipIcon size={28} outline />
-                </Circle>
-              </div>
-              <div
-                className="flexColumn"
-                style={{ fontSize: "12px", gap: "2px", width: "60px" }}
-              >
-                <FormattedMessage
-                  id="5Bl4Ek"
-                  defaultMessage="Objectives"
-                  description="Cards that define how to score victory points."
-                />
-                <Circle
-                  blur={false}
-                  onClick={() => {
-                    toggleOption(
-                      !options["hide-objectives"],
-                      "hide-objectives"
-                    );
-                  }}
-                  tag={<ToggleTag value={!options["hide-objectives"]} />}
-                  tagBorderColor={options["hide-objectives"] ? "red" : "green"}
-                >
-                  <Image
-                    src={`/images/objectives_icon_two.svg`}
-                    alt={`Objectives Icon`}
-                    fill
-                    style={{ objectFit: "contain" }}
-                  />
-                </Circle>
-              </div>
-            </div>
-          </LabeledDiv>
-        </div> */}
         {numFactions > 3 &&
         !(numFactions === 4 && options["map-style"] !== "standard") &&
         !(numFactions === 5 && options["map-style"] !== "warp") ? (
@@ -1815,7 +1714,7 @@ export default function SetupPage({
             flexShrink: 0,
             flexGrow: 0,
             position: "relative",
-            width: "350px",
+            width: rem(350),
             aspectRatio: 1,
             gridArea: "map",
           }}
@@ -1859,7 +1758,7 @@ export default function SetupPage({
           >
             <div
               className="flexRow"
-              style={{ whiteSpace: "nowrap", minWidth: "280px" }}
+              style={{ whiteSpace: "nowrap", minWidth: rem(280) }}
             >
               <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
                 <Strings.Speaker />
@@ -1950,11 +1849,11 @@ export default function SetupPage({
         {/* Start Game Section */}
         <div
           className="flexColumn"
-          style={{ width: "100%", gridArea: "start", minHeight: "114px" }}
+          style={{ width: "100%", gridArea: "start", minHeight: rem(114) }}
         >
           <button
             style={{
-              fontSize: `${"40px"}`,
+              fontSize: rem(40),
               fontFamily: "Slider",
               color: creatingGame ? "#222" : undefined,
               position: "relative",
@@ -1995,7 +1894,7 @@ export default function SetupPage({
           {!creatingGame && disableNextButton() ? (
             <div
               className="flexColumn centered"
-              style={{ color: "firebrick", maxWidth: "240px" }}
+              style={{ color: "firebrick", maxWidth: rem(240) }}
             >
               <FormattedMessage
                 id="LYA+Dm"
@@ -2021,13 +1920,13 @@ export default function SetupPage({
           className="flexColumn"
           style={{
             alignItems: "flex-start",
-            gap: "8px",
+            gap: rem(8),
             width: "100%",
             justifyContent: "flex-start",
-            paddingBottom: "8px",
+            paddingBottom: rem(8),
           }}
         >
-          <div className="flexRow" style={{ width: "100%", fontSize: "20px" }}>
+          <div className="flexRow" style={{ width: "100%", fontSize: rem(20) }}>
             <FormattedMessage
               id="9DZz2w"
               description="Text identifying that this is the setup step."
@@ -2096,7 +1995,7 @@ export default function SetupPage({
           <div className="flexColumn" style={{ width: "100%" }}>
             <button
               style={{
-                fontSize: `${"40px"}`,
+                fontSize: rem(40),
                 fontFamily: "Slider",
               }}
               onClick={startGame}
@@ -2107,7 +2006,7 @@ export default function SetupPage({
             {!creatingGame && disableNextButton() ? (
               <div
                 className="flexColumn centered"
-                style={{ color: "firebrick", maxWidth: "240px" }}
+                style={{ color: "firebrick", maxWidth: rem(240) }}
               >
                 Select all factions and colors
                 {options["game-variant"].startsWith("alliance")

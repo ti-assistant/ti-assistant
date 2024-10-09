@@ -1,16 +1,16 @@
 .LeftColumn {
-  padding-top: 140px;
-  width: 332px;
+  padding-top: 8.75rem;
+  width: 20.75rem;
 }
 
 .MiddleColumn {
-  padding-top: 80px;
+  padding-top: 5rem;
   align-items: stretch;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 37.5rem) {
   .LeftColumn {
-    padding-top: 48px;
+    padding-top: 3rem;
   }
 
   .MiddleColumn {

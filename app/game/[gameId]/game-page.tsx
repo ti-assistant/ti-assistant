@@ -11,6 +11,7 @@ import { setGameId } from "../../../src/util/api/util";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import styles from "./game-page.module.scss";
 import { useFactions, useGameState } from "../../../src/context/dataHooks";
+import { rem } from "../../../src/util/util";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function SelectFactionPage() {
         className="flexColumn"
         style={{
           alignItems: "stretch",
-          maxWidth: `${"500px"}`,
+          maxWidth: rem(500),
           width: "100%",
         }}
       >
@@ -54,12 +55,12 @@ export default function SelectFactionPage() {
           <div
             style={{
               border: `${"3px"} solid grey`,
-              borderRadius: "5px",
+              borderRadius: rem(5),
               height: `10vh`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: `${"24px"}`,
+              fontSize: rem(24),
               cursor: "pointer",
             }}
           >
@@ -74,12 +75,12 @@ export default function SelectFactionPage() {
           <div
             style={{
               border: `${"3px"} solid grey`,
-              borderRadius: "5px",
+              borderRadius: rem(5),
               height: `8vh`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: `${"24px"}`,
+              fontSize: rem(24),
               cursor: "pointer",
             }}
           >
@@ -111,7 +112,7 @@ export default function SelectFactionPage() {
                   className="flexColumn"
                   style={{
                     height: "5vh",
-                    fontSize: "20px",
+                    fontSize: rem(20),
                     width: "100%",
                     zIndex: 0,
                   }}

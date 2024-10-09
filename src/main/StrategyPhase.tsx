@@ -4,13 +4,23 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { Loader } from "../Loader";
 import { NumberedItem } from "../NumberedItem";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import FactionCard from "../components/FactionCard/FactionCard";
+import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import Modal from "../components/Modal/Modal";
+import { Selector } from "../components/Selector/Selector";
+import { StrategyCardElement } from "../components/StrategyCardElement/StrategyCardElement";
 import { GameIdContext } from "../context/Context";
+import {
+  useAgenda,
+  useFactions,
+  useGameState,
+  useStrategyCards,
+} from "../context/dataHooks";
 import {
   advancePhaseAsync,
   assignStrategyCardAsync,
@@ -20,21 +30,10 @@ import {
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getOnDeckFaction } from "../util/helpers";
-import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
-import { StrategyCardElement } from "../components/StrategyCardElement/StrategyCardElement";
-import styles from "./StrategyPhase.module.scss";
-import { FormattedMessage, useIntl } from "react-intl";
 import { phaseString } from "../util/strings";
-import { Selector } from "../components/Selector/Selector";
-import Modal from "../components/Modal/Modal";
-import {
-  useAgenda,
-  useAgendas,
-  useFactions,
-  useGameState,
-  useStrategyCards,
-} from "../context/dataHooks";
 import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
+import styles from "./StrategyPhase.module.scss";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -87,7 +86,7 @@ function ChecksAndBalancesMenu({
     <div
       className="flexRow"
       style={{
-        fontSize: "16px",
+        fontSize: rem(16),
         alignItems: "center",
         justifyContent: "flex-end",
         width: "100%",
@@ -159,8 +158,8 @@ function QuantumDatahubNode({
         <div
           className="flexColumn"
           style={{
-            padding: "8px",
-            gap: "4px",
+            padding: rem(8),
+            gap: rem(4),
             boxSizing: "border-box",
             alignItems: "flex-start",
             width: "100%",
@@ -225,7 +224,7 @@ function QuantumDatahubNode({
           <div
             className="flexColumn"
             style={{
-              paddingTop: "4px",
+              paddingTop: rem(4),
               boxSizing: "border-box",
               width: "100%",
             }}
@@ -303,8 +302,8 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
         <div
           className="flexColumn"
           style={{
-            padding: "8px",
-            gap: "4px",
+            padding: rem(8),
+            gap: rem(4),
             alignItems: "flex-start",
             boxSizing: "border-box",
             width: "100%",
@@ -369,7 +368,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
           <div
             className="flexColumn"
             style={{
-              paddingTop: "4px",
+              paddingTop: rem(4),
               boxSizing: "border-box",
               width: "100%",
             }}
@@ -402,11 +401,11 @@ function InfoContent({ children }: PropsWithChildren) {
     <div
       className="myriadPro"
       style={{
-        minWidth: "320px",
-        padding: "4px",
+        minWidth: rem(320),
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       {children}
@@ -462,7 +461,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
         display: "grid",
         gridTemplate: "repeat(8, 1fr) / 14% 2fr 2fr 1fr",
         gridAutoFlow: "column",
-        gap: "4px",
+        gap: rem(4),
       }}
     >
       {orderedStrategyCards.map((card) => {
@@ -708,7 +707,7 @@ export default function StrategyPhase() {
       <Modal
         closeMenu={() => setInfoModal({ show: false })}
         visible={infoModal.show}
-        title={<div style={{ fontSize: "40px" }}>{infoModal.title}</div>}
+        title={<div style={{ fontSize: rem(40) }}>{infoModal.title}</div>}
       >
         <InfoContent>{infoModal.content}</InfoContent>
       </Modal>
@@ -827,7 +826,7 @@ export default function StrategyPhase() {
       <div className={styles.MainColumn}>
         <div
           className="flexRow"
-          style={{ position: "relative", maxWidth: "420px" }}
+          style={{ position: "relative", maxWidth: rem(420) }}
         >
           {activefaction ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
@@ -838,21 +837,21 @@ export default function StrategyPhase() {
               />
               <FactionCard
                 faction={activefaction}
-                style={{ height: "80px" }}
+                style={{ height: rem(80) }}
                 opts={{
-                  iconSize: "60px",
+                  iconSize: rem(60),
                 }}
               >
                 <div
                   className="flexColumn"
                   style={{
-                    paddingBottom: "4px",
+                    paddingBottom: rem(4),
                     height: "100%",
                   }}
                 >
                   <FactionTimer
                     factionId={activefaction.id}
-                    style={{ fontSize: "28px" }}
+                    style={{ fontSize: rem(28) }}
                   />
                 </div>
               </FactionCard>
@@ -860,7 +859,7 @@ export default function StrategyPhase() {
           ) : (
             <div
               style={{
-                fontSize: "28px",
+                fontSize: rem(28),
               }}
             >
               <FormattedMessage
@@ -880,23 +879,23 @@ export default function StrategyPhase() {
               />
               <FactionCard
                 faction={onDeckFaction}
-                style={{ height: "64px" }}
+                style={{ height: rem(64) }}
                 opts={{
-                  iconSize: "44px",
-                  fontSize: "24px",
+                  iconSize: rem(44),
+                  fontSize: rem(24),
                 }}
               >
                 <div
                   className="flexColumn"
                   style={{
-                    paddingBottom: "4px",
+                    paddingBottom: rem(4),
                     height: "100%",
                   }}
                 >
                   <StaticFactionTimer
                     factionId={onDeckFaction.id}
                     style={{
-                      fontSize: "18px",
+                      fontSize: rem(18),
                     }}
                     width={96}
                   />
@@ -908,15 +907,15 @@ export default function StrategyPhase() {
         <div
           className="flexColumn"
           style={{
-            gap: "4px",
+            gap: rem(4),
             alignItems: "stretch",
-            marginTop: "8px",
+            marginTop: rem(8),
           }}
         >
           <StrategyCardSelectList mobile={false} />
         </div>
         {activefaction ? null : (
-          <button style={{ fontSize: "20px" }} onClick={() => nextPhase()}>
+          <button style={{ fontSize: rem(20) }} onClick={() => nextPhase()}>
             <FormattedMessage
               id="8/h2ME"
               description="Text on a button that will advance the game to a specific phase."

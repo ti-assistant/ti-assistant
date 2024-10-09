@@ -1,21 +1,10 @@
-import Image from "next/image";
-import React, { PropsWithChildren, useContext } from "react";
-import FactionTile from "./components/FactionTile/FactionTile";
 import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
+import { useFactions } from "./context/dataHooks";
 import { getFactionColor, getFactionName } from "./util/factions";
-import LabeledLine from "./components/LabeledLine/LabeledLine";
-import { useFaction, useFactions } from "./context/dataHooks";
-
-interface StrategyCardOpts {
-  fontSize?: string;
-  hideName?: boolean;
-  noColor?: boolean;
-}
+import { rem } from "./util/util";
 
 interface SmallStrategyCardProps {
-  // card: StrategyCard;
   cards: StrategyCard[];
-  // active?: boolean;
 }
 
 export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
@@ -37,9 +26,9 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
 
   let height = "auto";
   if (numFactions > 7) {
-    height = "44px";
+    height = rem(44);
   } else if (cards.length === 1) {
-    height = "50px";
+    height = rem(50);
   }
 
   const borderColor = !faction?.passed ? getFactionColor(faction) : "#555";
@@ -50,14 +39,13 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
       style={{
         display: "flex",
         flexDirection: "column",
-        fontSize: numFactions > 7 ? "20px" : "24px",
         height: height,
       }}
     >
       <div
         className="flexRow"
         style={{
-          padding: `${"4px"} ${"4px"} ${"4px"} 0`,
+          padding: `${rem(4)} ${rem(4)} ${rem(4)} 0`,
           justifyContent: "flex-start",
           alignItems: "center",
         }}
@@ -65,8 +53,8 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
         <div
           style={{
             flexBasis: "14%",
-            minWidth: "32px",
-            fontSize: numFactions > 7 ? "28px" : "32px",
+            minWidth: rem(32),
+            fontSize: numFactions > 7 ? rem(28) : rem(32),
             display: "flex",
             justifyContent: "center",
             color: faction?.passed ? "#555" : "#eee",
@@ -77,7 +65,11 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
         </div>
         <div
           className="flexColumn"
-          style={{ flexBasis: "40%", alignItems: "flex-start" }}
+          style={{
+            flexBasis: "40%",
+            alignItems: "flex-start",
+            fontSize: numFactions > 7 ? rem(20) : rem(24),
+          }}
         >
           {cards.map((card) => {
             const textColor = !card.used ? "#eee" : "#555";

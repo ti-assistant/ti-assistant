@@ -1,13 +1,14 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { GameIdContext } from "../../context/Context";
+import { useGameState, useTimers } from "../../context/dataHooks";
 import { useSharedTimer } from "../../data/SharedTimer";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
 import { useInterval } from "../../util/client";
+import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import styles from "./GameTimer.module.scss";
-import { useGameState, useTimers } from "../../context/dataHooks";
 
 export default function GameTimer({ frozen = false }) {
   const gameId = useContext(GameIdContext);
@@ -78,12 +79,12 @@ export default function GameTimer({ frozen = false }) {
         style={{
           alignItems: "center",
           justifyContent: "center",
-          gap: "4px",
+          gap: rem(4),
         }}
       >
         <TimerDisplay
           time={!timers ? 0 : gameTimer}
-          style={{ fontSize: "28px" }}
+          style={{ fontSize: rem(28) }}
         />
       </div>
       {frozen ? null : (

@@ -6,21 +6,28 @@ import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechIcon from "./components/TechIcon/TechIcon";
 import { GameIdContext } from "./context/Context";
 import {
+  useActionLog,
   useAttachments,
   useFaction,
+  useFactions,
   useGameState,
   useObjectives,
   usePlanets,
   useTechs,
 } from "./context/dataHooks";
-import { manualVPUpdateAsync } from "./dynamic/api";
-import { computeScoredVPs } from "./util/factions";
+import {
+  manualVPUpdateAsync,
+  scoreObjectiveAsync,
+  unscoreObjectiveAsync,
+} from "./dynamic/api";
+import { computeScoredVPs, getFactionColor } from "./util/factions";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
 import TechTree from "./components/TechTree/TechTree";
+import { objectEntries, rem } from "./util/util";
 
 export function TechSummary({
   techs,
@@ -74,7 +81,7 @@ export function TechSummary({
     }
   });
 
-  const numberWidth = horizontal ? `${10.75 * 1.2}px` : `${10.75}px`;
+  const numberWidth = horizontal ? rem(10.75 * 1.2) : rem(10.75);
   const techTreeSize = horizontal ? 6 : 4;
   const iconSize = horizontal ? 20 : 16;
 
@@ -227,9 +234,9 @@ export function FactionSummary({
               style={{
                 position: "absolute",
                 zIndex: -1,
-                opacity: 0.5,
-                width: "60px",
-                height: "60px",
+                opacity: 0.25,
+                width: rem(60),
+                height: rem(60),
                 userSelect: "none",
               }}
             >
@@ -240,9 +247,9 @@ export function FactionSummary({
         <div
           className="flexRow"
           style={{
-            gap: "4px",
+            gap: rem(4),
+            height: "100%",
             justifyContent: "space-between",
-            fontSize: "28px",
           }}
         >
           {VPs > 0 && editable ? (
@@ -251,18 +258,24 @@ export function FactionSummary({
               onClick={() => manualVpAdjust(false)}
             ></div>
           ) : (
-            <div style={{ width: "12px" }}></div>
+            <div style={{ width: rem(12) }}></div>
           )}
-          <div className="flexRow" style={{ width: "24px" }}>
+          <div
+            className="flexRow"
+            style={{ width: rem(24), lineHeight: rem(20) }}
+          >
             {VPs}
           </div>
           {editable ? (
             <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
           ) : (
-            <div style={{ width: "12px" }}></div>
+            <div style={{ width: rem(12) }}></div>
           )}
         </div>
-        <div className="centered" style={{ fontSize: "20px" }}>
+        <div
+          className="centered"
+          style={{ fontSize: rem(20), lineHeight: rem(20) }}
+        >
           <FormattedMessage
             id="PzyYtG"
             description="Shortened version of Victory Points."
@@ -270,6 +283,7 @@ export function FactionSummary({
             values={{ count: VPs }}
           />
         </div>
+        <ObjectiveDots factionId={factionId} />
       </div>
       {options.hidePlanets ? null : (
         <PlanetSummary
@@ -279,6 +293,239 @@ export function FactionSummary({
           }
         />
       )}
+    </div>
+  );
+}
+
+function ObjectiveDots({ factionId }: { factionId: FactionId }) {
+  const actionLog = useActionLog();
+  const gameId = useContext(GameIdContext);
+  const objectives = useObjectives();
+  const factions = useFactions();
+
+  const faction = factions[factionId];
+
+  if (!faction) {
+    return null;
+  }
+
+  const revealOrder: Partial<Record<ObjectiveId, number>> = {};
+  let order = 1;
+  [...(actionLog ?? [])]
+    .reverse()
+    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+    .forEach((logEntry) => {
+      const objectiveId = (logEntry.data as RevealObjectiveData).event
+        .objective;
+      revealOrder[objectiveId] = order;
+      ++order;
+    });
+
+  const stageOnes = Object.values(objectives)
+    .filter((obj) => obj.type === "STAGE ONE" && obj.selected)
+    .sort((a, b) => {
+      const aRevealOrder = revealOrder[a.id];
+      const bRevealOrder = revealOrder[b.id];
+      if (!aRevealOrder && !bRevealOrder) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        return -1;
+      }
+      if (!aRevealOrder) {
+        return -1;
+      }
+      if (!bRevealOrder) {
+        return 1;
+      }
+      if (aRevealOrder > bRevealOrder) {
+        return 1;
+      }
+      return -1;
+    });
+  const stageTwos = Object.values(objectives)
+    .filter((obj) => obj.type === "STAGE TWO" && obj.selected)
+    .sort((a, b) => {
+      const aRevealOrder = revealOrder[a.id];
+      const bRevealOrder = revealOrder[b.id];
+      if (!aRevealOrder && !bRevealOrder) {
+        if (a.name > b.name) {
+          return 1;
+        }
+        return -1;
+      }
+      if (!aRevealOrder) {
+        return -1;
+      }
+      if (!bRevealOrder) {
+        return 1;
+      }
+      if (aRevealOrder > bRevealOrder) {
+        return 1;
+      }
+      return -1;
+    });
+
+  const secrets = Object.values(objectives).filter(
+    (obj) => obj.type === "SECRET" && (obj.scorers ?? []).includes(factionId)
+  );
+
+  const others = Object.values(objectives).filter(
+    (obj) => obj.type === "OTHER" && (obj.scorers ?? []).includes(factionId)
+  );
+
+  return (
+    <div className="flexColumn" style={{ width: "100%", gap: rem(4) }}>
+      <div
+        className="flexRow"
+        style={{
+          gap: rem(2),
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="flexRow" style={{ gap: rem(2) }}>
+          {stageOnes.map((obj) => {
+            const scored = (obj.scorers ?? []).includes(factionId);
+            return (
+              <div
+                key={obj.id}
+                title={obj.name}
+                style={{
+                  width: rem(4),
+                  height: rem(4),
+                  border: "1px solid orange",
+                  borderRadius: "100%",
+                  backgroundColor: scored ? "orange" : undefined,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (scored) {
+                    unscoreObjectiveAsync(gameId, factionId, obj.id);
+                  } else {
+                    scoreObjectiveAsync(gameId, factionId, obj.id);
+                  }
+                }}
+              ></div>
+            );
+          })}
+        </div>
+
+        <div className="flexRow" style={{ gap: rem(2) }}>
+          {secrets.map((obj) => {
+            return (
+              <div
+                key={obj.id}
+                title={obj.name}
+                style={{
+                  width: rem(4),
+                  height: rem(4),
+                  border: "1px solid red",
+                  borderRadius: "100%",
+                  backgroundColor: "red",
+                }}
+              ></div>
+            );
+          })}
+        </div>
+      </div>
+      <div
+        className="flexRow"
+        style={{
+          gap: rem(2),
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="flexRow" style={{ gap: rem(2) }}>
+          {stageTwos.map((obj) => {
+            const scored = (obj.scorers ?? []).includes(factionId);
+
+            return (
+              <div
+                key={obj.id}
+                title={obj.name}
+                style={{
+                  width: rem(4),
+                  height: rem(4),
+                  border: "1px solid royalblue",
+                  borderRadius: "100%",
+                  backgroundColor: scored ? "royalblue" : undefined,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (scored) {
+                    unscoreObjectiveAsync(gameId, factionId, obj.id);
+                  } else {
+                    scoreObjectiveAsync(gameId, factionId, obj.id);
+                  }
+                }}
+              ></div>
+            );
+          })}
+        </div>
+
+        <div className="flexRow" style={{ gap: rem(2) }}>
+          {others.map((obj) => {
+            if (obj.id === "Support for the Throne") {
+              return (
+                <>
+                  {objectEntries(obj.keyedScorers ?? {}).map(
+                    ([faction, scorers]) => {
+                      if (!scorers.includes(factionId)) {
+                        return null;
+                      }
+                      return (
+                        <div
+                          key={`${obj.id} - ${faction}`}
+                          title={`${obj.name} - ${faction}`}
+                          style={{
+                            width: rem(4),
+                            height: rem(4),
+                            border: `1px solid #ccc`,
+                            borderRadius: "100%",
+                            backgroundColor: "#ccc",
+                          }}
+                        ></div>
+                      );
+                    }
+                  )}
+                </>
+              );
+            }
+
+            const scorers = obj.scorers ?? [];
+            const color =
+              obj.id === "Mutiny" && obj.points === -1 ? "#555" : "#ccc";
+            const title =
+              obj.id === "Mutiny"
+                ? `${obj.name} - ${obj.points === 1 ? "For" : "Against"}`
+                : obj.name;
+            return (
+              <>
+                {scorers.map((scorer, index) => {
+                  if (scorer !== factionId) {
+                    return null;
+                  }
+                  return (
+                    <div
+                      key={`${obj.id} - ${index}`}
+                      title={title}
+                      style={{
+                        width: rem(4),
+                        height: rem(4),
+                        border: `1px solid ${color}`,
+                        borderRadius: "100%",
+                        backgroundColor: color,
+                      }}
+                    ></div>
+                  );
+                })}
+              </>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

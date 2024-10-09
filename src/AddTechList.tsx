@@ -5,6 +5,7 @@ import { Tab, TabBody } from "./Tab";
 import { TechRow } from "./TechRow";
 import { sortTechsByName, sortTechsByPreReqAndExpansion } from "./util/techs";
 import { FormattedMessage } from "react-intl";
+import { rem } from "./util/util";
 
 interface AddTechListProps {
   techs: Tech[];
@@ -42,13 +43,13 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
         style={{
           backgroundColor: "#222",
           zIndex: 902,
-          padding: "8px 4px 0px 4px",
+          padding: `${rem(8)} ${rem(4)} 0 ${rem(4)}`,
           boxSizing: "border-box",
           width: "100%",
         }}
       >
         <Tab selectTab={setTabShown} id="blue" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: "24px", height: "28px" }}>
+          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
             <Image
               src="/images/blue_tech.webp"
               alt="Blue Tech Skip"
@@ -58,7 +59,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="green" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: "24px", height: "28px" }}>
+          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
             <Image
               src="/images/green_tech.webp"
               alt="Green Tech Skip"
@@ -68,7 +69,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="yellow" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: "24px", height: "28px" }}>
+          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
             <Image
               src="/images/yellow_tech.webp"
               alt="Yellow Tech Skip"
@@ -78,7 +79,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="red" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: "24px", height: "28px" }}>
+          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
             <Image
               src="/images/red_tech.webp"
               alt="Red Tech Skip"
@@ -88,7 +89,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="upgrades" selectedId={tabShown}>
-          <div className="flexRow" style={{ height: "28px" }}>
+          <div className="flexRow" style={{ height: rem(28) }}>
             <FormattedMessage
               id="2hHU0G"
               description="Title of uprade techs."
@@ -106,7 +107,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             alignItems: "stretch",
           }}
         >
@@ -124,7 +125,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             alignItems: "stretch",
           }}
         >
@@ -142,7 +143,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             alignItems: "stretch",
           }}
         >
@@ -160,7 +161,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             alignItems: "stretch",
           }}
         >
@@ -178,7 +179,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             alignItems: "stretch",
           }}
         >

@@ -10,12 +10,25 @@ import FactionCircle from "../components/FactionCircle/FactionCircle";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import MawOfWorlds from "../components/MawOfWorlds/MawOfWorlds";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import { Selector } from "../components/Selector/Selector";
 import VoteBlock, {
   getTargets,
   translateOutcome,
 } from "../components/VoteBlock/VoteBlock";
 import { GameIdContext } from "../context/Context";
+import {
+  useActionLog,
+  useAgendas,
+  useFactions,
+  useGameState,
+  useObjectives,
+  usePlanets,
+  useRelics,
+  useStrategyCards,
+} from "../context/dataHooks";
 import {
   advancePhaseAsync,
   claimPlanetAsync,
@@ -43,7 +56,6 @@ import {
   getActionCardTargets,
   getActiveAgenda,
   getAllVotes,
-  getFactionVotes,
   getGainedRelic,
   getNewOwner,
   getObjectiveScorers,
@@ -62,21 +74,9 @@ import {
   outcomeString,
   phaseString,
 } from "../util/strings";
-import styles from "./AgendaPhase.module.scss";
-import { Selector } from "../components/Selector/Selector";
-import MawOfWorlds from "../components/MawOfWorlds/MawOfWorlds";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import {
-  useActionLog,
-  useAgendas,
-  useFactions,
-  useGameState,
-  useObjectives,
-  usePlanets,
-  useRelics,
-  useStrategyCards,
-} from "../context/dataHooks";
 import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
+import styles from "./AgendaPhase.module.scss";
 
 export function computeVotes(
   agenda: Optional<Agenda>,
@@ -285,7 +285,7 @@ function AgendaDetails() {
           style={{
             width: "100%",
             justifyContent: "flex-start",
-            paddingLeft: "12px",
+            paddingLeft: rem(12),
           }}
         >
           <FormattedMessage
@@ -323,8 +323,8 @@ function AgendaDetails() {
                   <div
                     className="symbol"
                     style={{
-                      fontSize: "18px",
-                      lineHeight: "18px",
+                      fontSize: rem(18),
+                      lineHeight: rem(18),
                     }}
                   >
                     ✓
@@ -746,9 +746,9 @@ function AgendaSteps() {
       {agendaNum > 2 ? (
         <div
           style={{
-            fontSize: "40px",
+            fontSize: rem(40),
             textAlign: "center",
-            marginTop: "120px",
+            marginTop: rem(120),
             width: "100%",
           }}
         >
@@ -765,7 +765,7 @@ function AgendaSteps() {
           style={{
             margin: "0",
             padding: "0",
-            fontSize: "18px",
+            fontSize: rem(18),
             alignItems: "stretch",
           }}
         >
@@ -786,7 +786,7 @@ function AgendaSteps() {
                 style={{
                   width: "100%",
                   alignItems: "flex-start",
-                  padding: "8px",
+                  padding: rem(8),
                   paddingTop: 0,
                 }}
               >
@@ -852,10 +852,10 @@ function AgendaSteps() {
                     <div
                       className="flexRow"
                       style={{
-                        padding: "8px",
+                        padding: rem(8),
                         maxWidth: "70vw",
                         overflowX: "auto",
-                        gap: "4px",
+                        gap: rem(4),
                         display: "grid",
                         gridAutoFlow: "column",
                         gridTemplateRows: "repeat(10, auto)",
@@ -869,7 +869,7 @@ function AgendaSteps() {
                             key={agenda.id}
                             className={agenda.resolved ? "faded" : ""}
                             style={{
-                              fontSize: "14px",
+                              fontSize: rem(14),
                               writingMode: "horizontal-tb",
                             }}
                             onClick={() => selectAgenda(agenda.id)}
@@ -938,7 +938,7 @@ function AgendaSteps() {
                 <div
                   className="flexColumn"
                   style={{
-                    padding: "8px",
+                    padding: rem(8),
                     paddingTop: 0,
                     alignItems: "flex-start",
                   }}
@@ -968,8 +968,8 @@ function AgendaSteps() {
                             className="flexRow hiddenButtonParent"
                             style={{
                               position: "relative",
-                              width: "32px",
-                              height: "32px",
+                              width: rem(32),
+                              height: rem(32),
                             }}
                           >
                             <FactionIcon factionId={faction.id} size="100%" />
@@ -983,8 +983,8 @@ function AgendaSteps() {
                                 cursor: "pointer",
                                 marginTop: "60%",
                                 boxShadow: `${"1px"} ${"1px"} ${"1px"} black`,
-                                width: "20px",
-                                height: "20px",
+                                width: rem(20),
+                                height: rem(20),
                                 color: politicalSecret ? "green" : "red",
                               }}
                               onClick={() => {
@@ -1010,8 +1010,8 @@ function AgendaSteps() {
                                 <div
                                   className="symbol"
                                   style={{
-                                    fontSize: "18px",
-                                    lineHeight: "18px",
+                                    fontSize: rem(18),
+                                    lineHeight: rem(18),
                                   }}
                                 >
                                   ✓
@@ -1054,7 +1054,7 @@ function AgendaSteps() {
                 className="flexColumn"
                 style={{
                   alignItems: "flex-start",
-                  padding: "8px",
+                  padding: rem(8),
                   paddingTop: 0,
                 }}
               >
@@ -1159,11 +1159,11 @@ function AgendaSteps() {
                 <div
                   className={flexDirection}
                   style={{
-                    gap: "4px",
-                    padding: `8px 20px`,
+                    gap: rem(4),
+                    padding: `${rem(8)} ${rem(20)}`,
                     alignItems: "flex-start",
                     border: `${"1px"} solid #555`,
-                    borderRadius: "10px",
+                    borderRadius: rem(10),
                     width: "100%",
                   }}
                 >
@@ -1263,7 +1263,7 @@ function AgendaSteps() {
               {readyToResolve() ? (
                 <div
                   className="flexColumn"
-                  style={{ paddingTop: "8px", width: "100%" }}
+                  style={{ paddingTop: rem(8), width: "100%" }}
                 >
                   <button onClick={completeAgenda}>
                     <FormattedMessage
@@ -1367,7 +1367,7 @@ function DictatePolicy({}) {
       className="flexRow"
       style={{
         justifyContent: "center",
-        marginTop: "12px",
+        marginTop: rem(12),
       }}
     >
       <ObjectiveRow objective={dictatePolicy} hideScorers />
@@ -1401,8 +1401,8 @@ function DictatePolicy({}) {
               className="flexRow hiddenButtonParent"
               style={{
                 position: "relative",
-                width: "32px",
-                height: "32px",
+                width: rem(32),
+                height: rem(32),
               }}
             >
               <FactionIcon factionId={factionId} size="100%" />
@@ -1416,8 +1416,8 @@ function DictatePolicy({}) {
                   marginLeft: "60%",
                   marginTop: "60%",
                   boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                  width: "20px",
-                  height: "20px",
+                  width: rem(20),
+                  height: rem(20),
                   color: current ? "green" : "red",
                 }}
                 onClick={() => {
@@ -1435,8 +1435,8 @@ function DictatePolicy({}) {
                   <div
                     className="symbol"
                     style={{
-                      fontSize: "18px",
-                      lineHeight: "18px",
+                      fontSize: rem(18),
+                      lineHeight: rem(18),
                     }}
                   >
                     ✓
@@ -1583,8 +1583,8 @@ export default function AgendaPhase() {
       <div
         className={`flexColumn ${styles.MiddleColumn}`}
         style={{
-          paddingTop: agendaNum > 2 ? "160px" : undefined,
-          gap: numFactions > 7 ? 0 : "8px",
+          paddingTop: agendaNum > 2 ? rem(160) : undefined,
+          gap: numFactions > 7 ? 0 : rem(8),
         }}
       >
         {agendaNum > 2 ? (
@@ -1600,9 +1600,9 @@ export default function AgendaPhase() {
             </div>
             <div
               style={{
-                fontSize: "40px",
+                fontSize: rem(40),
                 textAlign: "center",
-                marginTop: "120px",
+                marginTop: rem(120),
               }}
             >
               <FormattedMessage
@@ -1619,7 +1619,7 @@ export default function AgendaPhase() {
             checksAndBalances.activeRound === state?.round ? (
               <div
                 style={{
-                  fontSize: "28px",
+                  fontSize: rem(28),
                 }}
               >
                 <FormattedMessage
@@ -1632,7 +1632,7 @@ export default function AgendaPhase() {
             ) : (
               <div
                 style={{
-                  fontSize: "28px",
+                  fontSize: rem(28),
                 }}
               >
                 <FormattedMessage
@@ -1645,8 +1645,8 @@ export default function AgendaPhase() {
             )}
             <button
               style={{
-                marginTop: "12px",
-                fontSize: "24px",
+                marginTop: rem(12),
+                fontSize: rem(24),
               }}
               onClick={() => nextPhase()}
             >
@@ -1664,9 +1664,9 @@ export default function AgendaPhase() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
-                paddingBottom: "8px",
+                paddingBottom: rem(8),
                 alignItems: "flex-end",
-                maxWidth: "400px",
+                maxWidth: rem(400),
               }}
             >
               <div
@@ -1691,9 +1691,6 @@ export default function AgendaPhase() {
                     gridColumn: "span 3",
                   }}
                 >
-                  {/* <div className="flexRow" style={{ gridColumn: "span 3" }}>
-                    Votes
-                  </div> */}
                   <div className="flexRow">
                     <FormattedMessage
                       id="5FWWeX"
@@ -1716,21 +1713,6 @@ export default function AgendaPhase() {
                     />
                   </div>
                 </div>
-                {/* <div
-                  style={{ textAlign: "center", width: "80px" }}
-                >
-                  Available Votes
-                </div>
-                <div
-                  style={{ textAlign: "center", width: "40px" }}
-                >
-                  Cast Votes
-                </div>
-                <div
-                  style={{ textAlign: "center", width: "120px" }}
-                >
-                  Extra Votes
-                </div> */}
               </div>
               {votingOrder.map((faction) => {
                 return (
@@ -1764,8 +1746,8 @@ export default function AgendaPhase() {
                           justifyContent: "flex-start",
                           maxWidth: "92vw",
                           overflowX: "auto",
-                          gap: "4px",
-                          padding: "8px",
+                          gap: rem(4),
+                          padding: rem(8),
                           display: "grid",
                           gridAutoFlow: "column",
                           gridTemplateRows: `repeat(${items}, auto)`,
@@ -1777,7 +1759,7 @@ export default function AgendaPhase() {
                                 <button
                                   key={target}
                                   style={{
-                                    fontSize: "14px",
+                                    fontSize: rem(14),
                                     writingMode: "horizontal-tb",
                                   }}
                                   onClick={() => selectSpeakerTieBreak(target)}
@@ -1794,7 +1776,7 @@ export default function AgendaPhase() {
                                 <button
                                   key={target.id}
                                   style={{
-                                    fontSize: "14px",
+                                    fontSize: rem(14),
                                     writingMode: "horizontal-tb",
                                   }}
                                   onClick={() =>
@@ -1827,7 +1809,7 @@ export default function AgendaPhase() {
             <LockedButtons
               unlocked={false}
               style={{
-                marginTop: "12px",
+                marginTop: rem(12),
                 justifyContent: "center",
               }}
               buttons={[
@@ -1839,7 +1821,7 @@ export default function AgendaPhase() {
                       "Text on a button that will start the next round.",
                   }),
                   style: {
-                    fontSize: "24px",
+                    fontSize: rem(24),
                   },
                   onClick: nextPhase,
                 },

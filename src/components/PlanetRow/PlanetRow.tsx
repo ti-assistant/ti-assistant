@@ -11,6 +11,7 @@ import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
+import { rem } from "../../util/util";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -37,16 +38,6 @@ export default function PlanetRow({
 }: PlanetRowProps) {
   const attachments = useAttachments();
   const factions = useFactions();
-  // const [{ isDragging }, dragRef] = useDrag(
-  //   () => ({
-  //     type: "PLANET",
-  //     item: { id: planet.id },
-  //     collect: (monitor) => ({
-  //       isDragging: !!monitor.isDragging(),
-  //     }),
-  //   }),
-  //   []
-  // );
 
   const [showAttachModal, setShowAttachModal] = useState(false);
 
@@ -140,7 +131,7 @@ export default function PlanetRow({
           width: "100%",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingTop: "4px",
+          paddingTop: rem(4),
           boxSizing: "border-box",
           // opacity: isDragging ? 0.25 : undefined,
         }}
@@ -152,12 +143,12 @@ export default function PlanetRow({
               position: "absolute",
               color: claimedColor,
               backgroundColor: "#222",
-              borderRadius: "5px",
+              borderRadius: rem(5),
               border: `${"1px"} solid ${claimedColor}`,
-              padding: `0 ${"4px"}`,
-              fontSize: "12px",
-              bottom: "0px",
-              left: "24px",
+              padding: `0 ${rem(4)}`,
+              fontSize: rem(12),
+              bottom: 0,
+              left: rem(24),
               userSelect: "none",
             }}
           >
@@ -177,10 +168,10 @@ export default function PlanetRow({
           <div
             style={{
               position: "relative",
-              top: "-4px",
-              marginLeft: "-12px",
+              top: rem(-4),
+              marginLeft: rem(-12),
               opacity: "60%",
-              height: "28px",
+              height: rem(28),
               zIndex: -1,
             }}
           >
@@ -195,13 +186,13 @@ export default function PlanetRow({
           <div
             className="flexRow"
             style={{
-              width: "40px",
-              paddingRight: "6px",
+              width: rem(40),
+              paddingRight: rem(6),
             }}
           >
             {canAttach() ? (
               <button
-                style={{ fontSize: "10px" }}
+                style={{ fontSize: rem(10) }}
                 className="hiddenButton"
                 onClick={displayAttachMenu}
               >
@@ -217,8 +208,8 @@ export default function PlanetRow({
         />
         <div
           style={{
-            margin: `0 4px 8px`,
-            width: "24px",
+            margin: `0 ${rem(4)} ${rem(8)}`,
+            width: rem(24),
           }}
         >
           <PlanetAttributes
@@ -229,7 +220,7 @@ export default function PlanetRow({
         </div>
         <div className="flexColumn" style={{ height: "100%" }}>
           {opts.showAttachButton ? (
-            <div style={{ width: "56px" }}>
+            <div style={{ width: rem(56) }}>
               {canAttach() ? (
                 <button onClick={() => displayAttachMenu()}>
                   <FormattedMessage
@@ -331,8 +322,8 @@ function PlanetAttributes({
         return (
           <div
             style={{
-              width: "36px",
-              height: "22px",
+              width: rem(36),
+              height: rem(22),
             }}
           >
             ✹✹✹
@@ -349,9 +340,9 @@ function PlanetAttributes({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        width: "36px",
+        width: rem(36),
         flexWrap: "wrap",
-        gap: "4px",
+        gap: rem(4),
       }}
     >
       {attributes.map((attribute, index) => {
@@ -359,8 +350,8 @@ function PlanetAttributes({
           <div
             key={index}
             style={{
-              width: "16px",
-              height: "16px",
+              width: rem(16),
+              height: rem(16),
               position: "relative",
             }}
           >
@@ -396,7 +387,7 @@ function AttachMenu({
         className="flexColumn"
         style={{
           boxSizing: "border-box",
-          padding: "4px",
+          padding: rem(4),
           overflowY: "auto",
           width: "100%",
           maxHeight: "75vh",
@@ -440,17 +431,17 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
       className="flexRow"
       style={{
         width: "100%",
-        height: "72px",
+        height: rem(72),
         justifyContent: "flex-start",
-        fontSize: "14px",
+        fontSize: rem(14),
         position: "relative",
-        gap: "4px",
+        gap: rem(4),
         whiteSpace: "nowrap",
       }}
     >
       <div style={{ flexBasis: "60%" }}>
         <button
-          style={{ fontSize: "14px" }}
+          style={{ fontSize: rem(14) }}
           onClick={toggleAttachment}
           className={
             (planet.attachments ?? []).includes(attachment.id) ? "selected" : ""
@@ -465,7 +456,7 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
         height={50}
       />
       {isSkip() ? (
-        <div style={{ marginRight: "6px" }}>
+        <div style={{ marginRight: rem(6) }}>
           <FormattedMessage
             id="PnNSxg"
             description="Text between two fields linking them together."

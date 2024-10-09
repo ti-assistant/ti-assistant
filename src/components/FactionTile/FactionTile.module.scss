@@ -6,9 +6,9 @@
   align-items: center;
 
   border: 3px solid var(--color);
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   background-color: #222;
-  padding: 0 4px;
+  padding: 0 0.25rem;
 
   white-space: nowrap;
 }
@@ -18,9 +18,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 4px;
+  gap: 0.25rem;
 
-  padding: 0 4px;
+  padding: 0 0.25rem;
 }
 
 .FactionTile .Icon {

@@ -2,8 +2,9 @@ import NextImage from "next/image";
 import { useDrag, useDrop } from "react-dnd";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
 import { isHomeSystem, validSystemNumber } from "../../util/map";
-import styles from "./MapBuilder.module.scss";
 import { Optional } from "../../util/types/types";
+import styles from "./MapBuilder.module.scss";
+import { rem } from "../../util/util";
 
 interface Cube {
   q: number;
@@ -175,7 +176,7 @@ export function SystemImage({
           src={Hexagon}
           alt={`System ${systemNumber} Tile`}
           fill
-          sizes="128px"
+          sizes={rem(128)}
           style={{
             opacity: "10%",
             objectFit: "contain",
@@ -188,8 +189,8 @@ export function SystemImage({
             style={{
               borderRadius: "100%",
               position: "absolute",
-              width: "4px",
-              height: "4px",
+              width: rem(4),
+              height: rem(4),
               backgroundColor: "white",
               boxShadow: "0 0 8px 8px white",
             }}
@@ -221,7 +222,7 @@ export function SystemImage({
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
-            sizes="128px"
+            sizes={rem(128)}
             style={{ objectFit: "contain" }}
           />
         </div>
@@ -241,7 +242,7 @@ export function SystemImage({
           src={Hexagon}
           alt={`System Tile`}
           fill
-          sizes="128px"
+          sizes={rem(128)}
           style={{ opacity: "10%", objectFit: "contain" }}
           priority
         />
@@ -250,8 +251,8 @@ export function SystemImage({
             style={{
               borderRadius: "100%",
               position: "absolute",
-              width: "4px",
-              height: "4px",
+              width: rem(4),
+              height: rem(4),
               backgroundColor: "white",
               boxShadow: "0 0 8px 8px white",
             }}
@@ -275,7 +276,7 @@ export function SystemImage({
         <NextImage
           src={`/images/systems/ST_92.png`}
           alt={`Player Home System`}
-          sizes="128px"
+          sizes={rem(128)}
           fill
           style={{ objectFit: "contain" }}
           priority
@@ -286,7 +287,7 @@ export function SystemImage({
             width: "100%",
             height: "100%",
             position: "absolute",
-            fontSize: "28px",
+            fontSize: rem(28),
             textShadow: "0 0 4px black, 0 0 4px black",
           }}
         >
@@ -297,8 +298,8 @@ export function SystemImage({
             style={{
               borderRadius: "100%",
               position: "absolute",
-              width: "4px",
-              height: "4px",
+              width: rem(4),
+              height: rem(4),
               backgroundColor: "white",
               boxShadow: "0 0 8px 8px white",
             }}
@@ -338,7 +339,7 @@ export function SystemImage({
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         fill
-        sizes="128px"
+        sizes={rem(128)}
         style={{ objectFit: "contain" }}
         priority={systemNumber === "18"}
       />
@@ -349,7 +350,7 @@ export function SystemImage({
           height: "60%",
           top: 0,
           position: "absolute",
-          fontSize: "18px",
+          fontSize: rem(18),
           textShadow: "0 0 4px black, 0 0 4px black",
         }}
       >
@@ -360,8 +361,8 @@ export function SystemImage({
           style={{
             borderRadius: "100%",
             position: "absolute",
-            width: "4px",
-            height: "4px",
+            width: rem(4),
+            height: rem(4),
             backgroundColor: "white",
             boxShadow: "0 0 8px 8px white",
           }}

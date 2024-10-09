@@ -2,6 +2,7 @@ import { FormattedMessage } from "react-intl";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import { ProcessedGame } from "../processor";
 import styles from "./StrategyCardSection.module.scss";
+import { rem } from "../../../src/util/util";
 
 interface StrategyCardInfo {
   rounds: Record<
@@ -116,7 +117,7 @@ export default function StrategyCardSection({
       {orderedCards.map(([card, info]) => {
         return (
           <LabeledDiv key={card} label={card}>
-            <table className={styles.Table} style={{ borderSpacing: "6px" }}>
+            <table className={styles.Table} style={{ borderSpacing: rem(6) }}>
               <thead>
                 <tr>
                   <th style={{ fontWeight: "normal" }}></th>

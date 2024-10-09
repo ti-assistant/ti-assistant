@@ -9,8 +9,9 @@ import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
 import { getGameId } from "../src/util/api/util";
 import { gameIdString } from "../src/util/strings";
-import styles from "./home-page.module.scss";
 import { Optional } from "../src/util/types/types";
+import { rem } from "../src/util/util";
+import styles from "./home-page.module.scss";
 
 export default function HomePage() {
   const intl = useIntl();
@@ -43,7 +44,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flexColumn" style={{ gap: "16px" }}>
+    <div className="flexColumn" style={{ gap: rem(16) }}>
       <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="TI ASSISTANT" />
       <div className={styles.CenterColumn}>
         <Link href={"/setup"}>
@@ -52,7 +53,7 @@ export default function HomePage() {
               className="flexColumn"
               style={{
                 width: "100%",
-                fontSize: "44px",
+                fontSize: rem(44),
               }}
             >
               <FormattedMessage
@@ -70,7 +71,7 @@ export default function HomePage() {
                 className="flexColumn"
                 style={{
                   width: "100%",
-                  fontSize: "32px",
+                  fontSize: rem(32),
                 }}
               >
                 <FormattedMessage
@@ -83,7 +84,7 @@ export default function HomePage() {
           </Link>
         ) : null}
 
-        <div className="flexRow" style={{ gap: "8px" }}>
+        <div className="flexRow" style={{ gap: rem(8) }}>
           {validGameId() ? (
             <Link
               href={validGameId() ? `/game/${gameId}` : {}}
@@ -218,13 +219,22 @@ export default function HomePage() {
                       width: "100%",
                     }}
                   >
-                    <Image
-                      src="/images/patreon-icon.svg"
-                      alt="icon"
-                      width={18}
-                      height={18}
-                      style={{ width: "20%" }}
-                    />
+                    <div
+                      style={{
+                        position: "relative",
+                        width: rem(18),
+                        height: rem(18),
+                        flexBasis: "20%",
+                      }}
+                    >
+                      <Image
+                        src="/images/patreon-icon.svg"
+                        alt="icon"
+                        sizes={rem(18)}
+                        fill
+                        style={{ contain: "layout" }}
+                      />
+                    </div>
                     <div style={{ width: "80%" }}>
                       <FormattedMessage
                         id="wOb6Wx"
@@ -246,13 +256,22 @@ export default function HomePage() {
                       width: "100%",
                     }}
                   >
-                    <Image
-                      src="/images/bmc-icon.svg"
-                      alt="icon"
-                      width={18}
-                      height={18}
-                      style={{ width: "20%" }}
-                    />
+                    <div
+                      style={{
+                        position: "relative",
+                        width: rem(18),
+                        height: rem(18),
+                        flexBasis: "20%",
+                      }}
+                    >
+                      <Image
+                        src="/images/bmc-icon.svg"
+                        alt="icon"
+                        sizes={rem(18)}
+                        fill
+                        style={{ contain: "layout" }}
+                      />
+                    </div>
                     <div style={{ width: "80%" }}>
                       <FormattedMessage
                         id="Alcp4i"
@@ -274,13 +293,22 @@ export default function HomePage() {
                       width: "100%",
                     }}
                   >
-                    <Image
-                      src="/images/github-icon.svg"
-                      alt="icon"
-                      width={18}
-                      height={18}
-                      style={{ width: "20%" }}
-                    />
+                    <div
+                      style={{
+                        position: "relative",
+                        width: rem(18),
+                        height: rem(18),
+                        flexBasis: "20%",
+                      }}
+                    >
+                      <Image
+                        src="/images/github-icon.svg"
+                        alt="icon"
+                        sizes={rem(18)}
+                        fill
+                        style={{ contain: "layout" }}
+                      />
+                    </div>
                     <div style={{ width: "80%" }}>
                       <FormattedMessage
                         id="A5p5qF"
@@ -299,10 +327,10 @@ export default function HomePage() {
         className="flexColumn"
         style={{
           position: "absolute",
-          bottom: "8px",
-          fontSize: "10px",
+          bottom: rem(8),
+          fontSize: rem(10),
           textAlign: "center",
-          gap: "4px",
+          gap: rem(4),
         }}
       >
         <div>

@@ -24,15 +24,15 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 3px;
+  gap: 0.125rem;
 
   width: 100%;
 }
 
 .TechTreeElement {
-  border-radius: 100%;
-  width: 4px;
-  height: 4px;
+  border-radius: 50%;
+  width: 0.25rem;
+  height: 0.25rem;
   cursor: pointer;
   box-sizing: border-box;
 }

@@ -3,18 +3,18 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 76px;
-  height: 46px;
+  width: 4.75rem;
+  height: 2.875rem;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .InfluenceSymbol {
   color: #72d4f7;
-  font-size: 45px;
-  line-height: 44px;
-  width: 42px;
-  height: 46px;
+  font-size: 2.8125rem;
+  line-height: 2.75rem;
+  width: 2.625rem;
+  height: 2.875rem;
   text-shadow: 0 0 4px #72d4f7;
   display: flex;
   justify-content: center;
@@ -23,9 +23,9 @@
 
 .InfluenceTextWrapper {
   position: absolute;
-  font-size: 14px;
-  width: 42px;
-  height: 46px;
+  font-size: 0.875rem;
+  width: 2.625rem;
+  height: 2.875rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,9 +34,9 @@
 .VotingBlock .InfluenceTextWrapper {
   left: 0;
   top: 0;
-  font-size: 14px;
-  width: 42px;
-  height: 46px;
+  font-size: 0.875rem;
+  width: 2.625rem;
+  height: 2.875rem;
   display: flex;
   align-items: center;
   justify-content: center;

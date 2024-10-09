@@ -39,6 +39,7 @@ import { hasTech } from "../util/api/techs";
 import { hasScoredObjective } from "../util/api/util";
 import { getFactionColor } from "../util/factions";
 import { applyPlanetAttachments } from "../util/planets";
+import { Optional } from "../util/types/types";
 import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -52,7 +53,7 @@ import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
-import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
 
 export function TacticalAction({
   activeFactionId,
@@ -173,11 +174,11 @@ export function TacticalAction({
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: "8px",
+    padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",
     gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
-    gap: "4px",
+    gap: rem(4),
     justifyContent: "flex-start",
     overflowX: "auto",
     maxWidth: "85vw",
@@ -185,7 +186,7 @@ export function TacticalAction({
 
   const secretButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: "8px",
+    padding: rem(8),
     alignItems: "stretch",
     display: "grid",
     gridAutoFlow: "column",
@@ -193,7 +194,7 @@ export function TacticalAction({
     justifyContent: "flex-start",
     overflowX: "auto",
     gridTemplateRows: `repeat(${Math.min(5, scorableObjectives.length)}, auto)`,
-    gap: "4px",
+    gap: rem(4),
   };
   function getResearchableTechs(factionId: FactionId) {
     const faction = factions[factionId];
@@ -442,7 +443,7 @@ export function TacticalAction({
                   <button
                     key={planet.id}
                     style={{
-                      width: "90px",
+                      width: rem(90),
                     }}
                     onClick={() => {
                       closeFn();
@@ -616,8 +617,8 @@ export function TacticalAction({
                     className="flexRow hiddenButtonParent"
                     style={{
                       position: "relative",
-                      width: "32px",
-                      height: "32px",
+                      width: rem(32),
+                      height: rem(32),
                     }}
                   >
                     <FactionIcon factionId={factionId} size="100%" />
@@ -631,8 +632,8 @@ export function TacticalAction({
                         marginLeft: "60%",
                         marginTop: "60%",
                         boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                        width: "20px",
-                        height: "20px",
+                        width: rem(20),
+                        height: rem(20),
                         color: current ? "green" : "red",
                       }}
                       onClick={() => {
@@ -650,8 +651,8 @@ export function TacticalAction({
                         <div
                           className="symbol"
                           style={{
-                            fontSize: "16px",
-                            lineHeight: "16px",
+                            fontSize: rem(16),
+                            lineHeight: rem(16),
                           }}
                         >
                           ✓
@@ -689,12 +690,12 @@ export function TacticalAction({
               />
             }
             style={{ whiteSpace: "nowrap" }}
-            buttonStyle={{ fontSize: "14px" }}
+            buttonStyle={{ fontSize: rem(14) }}
           >
             <div
               className={styles.OuterTechSelectMenu}
               style={{
-                padding: "8px",
+                padding: rem(8),
                 alignItems: "flex-start",
                 overflow: "visible",
               }}
@@ -760,7 +761,7 @@ function AdjudicatorBaal() {
           removeItem={() => {
             undoAdjudicatorBaalAsync(gameId, adjudicatorBaalSystem);
           }}
-          style={{ fontSize: "14px" }}
+          style={{ fontSize: rem(14) }}
         >
           <FormattedMessage
             id="dsGVrU"
@@ -780,11 +781,11 @@ function AdjudicatorBaal() {
   return (
     <ClientOnlyHoverMenu
       label={adjudicatorBaal.name}
-      buttonStyle={{ fontSize: "14px" }}
+      buttonStyle={{ fontSize: rem(14) }}
     >
       <div
         className="flexColumn"
-        style={{ width: "320px", height: "320px", marginBottom: "16px" }}
+        style={{ width: rem(320), height: rem(320), marginBottom: rem(16) }}
       >
         <SystemSelect
           mapString={mapString}

@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import styles from "./NumberInput.module.scss";
+import { rem } from "../../util/util";
 
 interface NumberInputCSS extends CSSProperties {
   "--up-arrow-color": string;
@@ -46,7 +47,7 @@ export default function NumberInput({
           onClick={() => onChange(value - 1)}
         ></div>
       ) : (
-        <div style={{ width: "12px" }}></div>
+        <div style={{ width: rem(12) }}></div>
       )}
       <div
         className={styles.InputBox}
@@ -65,7 +66,7 @@ export default function NumberInput({
           onClick={() => onChange(value + 1)}
         ></div>
       ) : (
-        <div style={{ width: "12px" }}></div>
+        <div style={{ width: rem(12) }}></div>
       )}
     </div>
   );

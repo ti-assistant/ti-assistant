@@ -10,7 +10,7 @@ import {
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getTechColor } from "../util/techs";
-import { pluralize } from "../util/util";
+import { pluralize, rem } from "../util/util";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
@@ -59,8 +59,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -74,8 +74,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -112,7 +112,7 @@ export function LogEntryElement({
             <TimerDisplay
               time={endTimeSeconds - startTimeSeconds}
               style={{
-                fontSize: "16px",
+                fontSize: rem(16),
               }}
               width={84}
             />
@@ -125,7 +125,7 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
+            padding: `0 ${rem(10)}`,
             width: "100%",
             justifyContent: "space-between",
           }}
@@ -137,7 +137,7 @@ export function LogEntryElement({
           <TimerDisplay
             time={endTimeSeconds - startTimeSeconds}
             style={{
-              fontSize: "16px",
+              fontSize: rem(16),
             }}
             width={84}
           />
@@ -158,7 +158,7 @@ export function LogEntryElement({
             <TimerDisplay
               time={endTimeSeconds - startTimeSeconds}
               style={{
-                fontSize: "16px",
+                fontSize: rem(16),
               }}
               width={84}
             />
@@ -171,8 +171,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -195,8 +195,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -209,8 +209,8 @@ export function LogEntryElement({
       return (
         <div
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -221,8 +221,8 @@ export function LogEntryElement({
       return (
         <div
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -239,8 +239,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -258,8 +258,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -275,8 +275,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -291,8 +291,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -306,8 +306,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -321,8 +321,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -340,8 +340,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -356,8 +356,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -380,8 +380,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -399,8 +399,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -420,8 +420,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -442,8 +442,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -460,8 +460,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -483,7 +483,8 @@ export function LogEntryElement({
           <div
             className="flexRow"
             style={{
-              padding: `0 ${"10px"}`,
+              padding: `0 ${rem(10)}`,
+              gap: rem(4),
             }}
           >
             <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -495,7 +496,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -511,7 +513,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -525,7 +528,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
           }}
         >
           Speaker broke the tie in favor of {logEntry.data.event.tieBreak}
@@ -544,7 +548,7 @@ export function LogEntryElement({
             <TimerDisplay
               time={endTimeSeconds - startTimeSeconds}
               style={{
-                fontSize: "16px",
+                fontSize: rem(16),
               }}
               width={84}
             />
@@ -570,8 +574,8 @@ export function LogEntryElement({
             <div
               className="flexRow"
               style={{
-                padding: `0 ${"10px"}`,
-                gap: "4px",
+                padding: `0 ${rem(10)}`,
+                gap: rem(4),
                 fontFamily: "Myriad Pro",
               }}
             >
@@ -592,8 +596,8 @@ export function LogEntryElement({
             <div
               className="flexRow"
               style={{
-                padding: `0 ${"10px"}`,
-                gap: "4px",
+                padding: `0 ${rem(10)}`,
+                gap: rem(4),
                 fontFamily: "Myriad Pro",
               }}
             >
@@ -610,8 +614,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
-            gap: "4px",
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
             fontFamily: "Myriad Pro",
           }}
         >
@@ -626,7 +630,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
           }}
         >
           Agenda Vetoed
@@ -642,7 +647,8 @@ export function LogEntryElement({
         <div
           className="flexRow"
           style={{
-            padding: `0 ${"10px"}`,
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
           }}
         >
           Revealed Objective: <ObjectiveRow objective={objective} hideScorers />

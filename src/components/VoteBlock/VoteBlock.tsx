@@ -42,11 +42,12 @@ import {
   filterToClaimedPlanets,
 } from "../../util/planets";
 import { riderString } from "../../util/strings";
+import { Optional } from "../../util/types/types";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
 import styles from "./VoteBlock.module.scss";
-import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
@@ -497,12 +498,12 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
               key={rider.rider}
               className="flexRow"
               style={{
-                gap: "4px",
-                fontSize: "14px",
+                gap: rem(4),
+                fontSize: rem(14),
               }}
             >
               {state.votingStarted ? (
-                <div style={{ height: "20px" }}></div>
+                <div style={{ height: rem(20) }}></div>
               ) : (
                 <div
                   className="icon clickable negative"
@@ -538,7 +539,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
           display: "grid",
           gridColumn: "span 4",
           gridTemplateColumns: "subgrid",
-          gap: "16px",
+          gap: rem(16),
           width: "100%",
           justifyContent: "space-between",
           alignItems: "center",
@@ -571,7 +572,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
                 defaultMessage="Cannot Vote"
               />
               <button
-                style={{ fontSize: "10px" }}
+                style={{ fontSize: rem(10) }}
                 onClick={() => setOverrideVotingBlock(true)}
               >
                 Allow Voting
@@ -662,8 +663,8 @@ function PredictionSection({
       <>
         <div
           style={{
-            paddingLeft: "4px",
-            fontSize: "14px",
+            paddingLeft: rem(4),
+            fontSize: rem(14),
           }}
         >
           Cannot Predict
@@ -717,7 +718,7 @@ function PredictionSection({
               }
               playRiderAsync(gameId, pendingRider.rider, factionId, itemId);
             }}
-            style={{ minWidth: "154px" }}
+            style={{ minWidth: rem(154) }}
           />
         </div>
       ) : null}
@@ -856,7 +857,7 @@ function VotingSection({
                 castVotesLocal(undefined, 0, 0);
               }
             }}
-            style={{ minWidth: "154px" }}
+            style={{ minWidth: rem(154) }}
           />
         ) : null}
       </div>
@@ -875,13 +876,13 @@ function VotingSection({
       {hasVotableTarget && factionVotes.votes > 0 ? (
         <ClientOnlyHoverMenu
           label={castExtraVotes === 0 ? "-" : `+${castExtraVotes}`}
-          buttonStyle={{ minWidth: "48px" }}
+          buttonStyle={{ minWidth: rem(48) }}
         >
           <div
             className="flexColumn"
             style={{
-              padding: "4px",
-              fontSize: "16px",
+              padding: rem(4),
+              fontSize: rem(16),
               alignItems: "flex-start",
             }}
           >
@@ -894,7 +895,7 @@ function VotingSection({
               <button
                 disabled={bloodPactUser && bloodPactUser !== factionId}
                 className={bloodPactUser === factionId ? "selected" : ""}
-                style={{ fontSize: "14px" }}
+                style={{ fontSize: rem(14) }}
                 onClick={() => {
                   if (!gameId) {
                     return;
@@ -918,7 +919,7 @@ function VotingSection({
                 className={
                   usingPredictive.includes(factionId) ? "selected" : ""
                 }
-                style={{ fontSize: "14px" }}
+                style={{ fontSize: rem(14) }}
                 onClick={() => {
                   if (!gameId) {
                     return;
@@ -948,7 +949,7 @@ function VotingSection({
             <button
               disabled={currentCouncilor && currentCouncilor !== factionId}
               className={currentCouncilor === factionId ? "selected" : ""}
-              style={{ fontSize: "14px" }}
+              style={{ fontSize: rem(14) }}
               onClick={() => {
                 if (!gameId) {
                   return;
@@ -1042,8 +1043,8 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   }
 
   const availableVotesStyle: AvailableVotesStyle = {
-    "--height": "35px",
-    "--width": "28px",
+    "--height": rem(35),
+    "--width": rem(28),
   };
 
   return (

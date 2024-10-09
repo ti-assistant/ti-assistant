@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Modal from "../Modal/Modal";
+import { rem } from "../../util/util";
 
 function InfoContent({ ability }: { ability: string }) {
   const description = ability.replaceAll("\\n", "\n");
@@ -9,10 +10,10 @@ function InfoContent({ ability }: { ability: string }) {
       className="myriadPro"
       style={{
         width: "100%",
-        padding: "4px",
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       {description}
@@ -37,7 +38,7 @@ export default function LegendaryPlanetIcon({
           closeMenu={() => setShowInfoModal(false)}
           level={2}
           visible={showInfoModal}
-          title={<div style={{ fontSize: "40px" }}>{planetName}</div>}
+          title={<div style={{ fontSize: rem(40) }}>{planetName}</div>}
         >
           <InfoContent ability={ability} />
         </Modal>
@@ -48,11 +49,11 @@ export default function LegendaryPlanetIcon({
           cursor: cursor,
           display: "flex",
           alignItems: "flex-start",
-          borderRadius: "22px",
-          height: "16px",
-          width: "16px",
-          paddingTop: "2px",
-          paddingLeft: "2px",
+          borderRadius: rem(22),
+          height: rem(16),
+          width: rem(16),
+          paddingTop: rem(2),
+          paddingLeft: rem(2),
           boxShadow: `0px 0px ${"2px"} ${"1px"} purple`,
           backgroundColor: "black",
         }}
@@ -60,8 +61,8 @@ export default function LegendaryPlanetIcon({
         <div
           style={{
             position: "relative",
-            width: "12px",
-            height: "12px",
+            width: rem(12),
+            height: rem(12),
           }}
         >
           <Image

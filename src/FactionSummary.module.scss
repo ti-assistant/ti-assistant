@@ -1,8 +1,8 @@
 .FactionSummary {
   display: flex;
-  gap: 6px;
+  gap: 0.375rem;
   justify-content: space-between;
-  padding: 0 0 0 4px;
+  padding: 0 0 0 0.25rem;
   position: relative;
   width: 100%;
 }
@@ -10,10 +10,12 @@
 .VPGrid {
   position: relative;
   align-items: center;
-  display: grid;
-  font-size: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font-size: 1.75rem;
   justify-items: center;
-  padding-right: 6px;
+  padding-right: 0.375rem;
 }
 
 .VPGrid :last-child {
@@ -22,18 +24,18 @@
 
 .TechSummaryGrid {
   display: grid;
-  font-size: 14px;
-  row-gap: 2px;
-  column-gap: 1px;
+  font-size: 0.875rem;
+  row-gap: 0.125rem;
+  column-gap: 0.0625rem;
   grid-template-columns: repeat(8, 1fr);
   width: min-content;
 }
 
 .TechSummaryGrid.Horizontal {
   grid-template-columns: repeat(15, 1fr);
-  font-size: 18px;
-  row-gap: 3px;
-  column-gap: 3px;
+  font-size: 1.125rem;
+  row-gap: 0.1875rem;
+  column-gap: 0.1875rem;
 }
 
 .TechSummaryGrid.Horizontal > .UnitUpgradeNumber {
@@ -57,7 +59,7 @@
 }
 
 .TechSummaryGrid > .FactionTechTree {
-  padding-left: 6px;
+  padding-left: 0.375rem;
   grid-column: 8 / 9;
   grid-row: 1 / 5;
 }

@@ -65,7 +65,7 @@ import { getFactionColor, getFactionName } from "../../util/factions";
 import { updateMapString } from "../../util/map";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
-import { pluralize } from "../../util/util";
+import { pluralize, rem } from "../../util/util";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -79,11 +79,11 @@ function InfoContent({ component }: { component: Component }) {
       style={{
         boxSizing: "border-box",
         width: "100%",
-        minWidth: "320px",
-        padding: "4px",
+        minWidth: rem(20),
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       <div className="flexColumn">{description}</div>
@@ -161,11 +161,11 @@ function ComponentSelect({
 
   const innerStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
-    padding: "8px",
+    padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",
     gridTemplateRows: "repeat(10, auto)",
-    gap: "4px",
+    gap: rem(4),
     maxWidth: "85vw",
     overflowX: "auto",
     justifyContent: "flex-start",
@@ -179,9 +179,9 @@ function ComponentSelect({
     <div
       className={className}
       style={{
-        padding: "8px",
+        padding: rem(8),
         alignItems: "stretch",
-        gap: "4px",
+        gap: rem(4),
         justifyContent: "flex-start",
         maxWidth: "85vw",
       }}
@@ -262,7 +262,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: "8px" }}
+            style={{ alignItems: "stretch", padding: rem(8) }}
           >
             {leaderComponents.map((component) => {
               const leader = leaders[component.id as LeaderId];
@@ -301,9 +301,9 @@ function ComponentSelect({
           <div
             className="flexColumn"
             style={{
-              gap: "4px",
+              gap: rem(4),
               alignItems: "stretch",
-              padding: "8px",
+              padding: rem(8),
             }}
           >
             {exploration.map((component) => {
@@ -337,7 +337,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: "8px" }}
+            style={{ alignItems: "stretch", padding: rem(8) }}
           >
             {Object.entries(promissoryByFaction).map(([id, components]) => {
               const faction = factions[id as FactionId];
@@ -382,7 +382,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: "8px" }}
+            style={{ alignItems: "stretch", padding: rem(8) }}
           >
             {others.map((component) => {
               if (component.type === "FLAGSHIP") {
@@ -1242,9 +1242,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         selectedFaction ? factions[selectedFaction] : undefined
       );
       innerContent = (
-        <div style={{ width: "100%", minHeight: "12px" }}>
+        <div style={{ width: "100%", minHeight: rem(12) }}>
           {selectedFaction ? (
-            <div style={{ paddingTop: "12px" }}>
+            <div style={{ paddingTop: rem(12) }}>
               <TacticalAction
                 activeFactionId={selectedFaction}
                 attachments={attachments ?? {}}
@@ -1331,11 +1331,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     //   });
     //   const selectStyle: CSSProperties = {
     //     fontFamily: "Myriad Pro",
-    //     padding: "8px",
+    //     padding: rem(8),
     //     display: "grid",
     //     gridAutoFlow: "column",
     //     gridTemplateRows: "repeat(14, auto)",
-    //     gap: "4px",
+    //     gap: rem(4),
     //     maxWidth: "85vw",
     //     overflowX: "auto",
     //     justifyContent: "flex-start",
@@ -1495,7 +1495,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             <LabeledDiv
               label="Unused Tiles"
               style={{
-                height: "80px",
+                height: rem(80),
                 justifyContent: "flex-start",
               }}
             >
@@ -1504,7 +1504,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   display: "grid",
                   gridAutoFlow: "row",
                   gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
-                  columnGap: "8px",
+                  columnGap: rem(8),
                   width: "100%",
                   justifyContent: "flex-start",
                   overflowY: "auto",
@@ -1538,7 +1538,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     return null;
   }
   return (
-    <div className="flexColumn" style={{ width: "100%", gap: "4px" }}>
+    <div className="flexColumn" style={{ width: "100%", gap: rem(4) }}>
       <LabeledLine
         leftLabel={leftLabel}
         label={label}
@@ -1722,7 +1722,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
         title={
-          <div className="flexColumn" style={{ fontSize: "40px" }}>
+          <div className="flexColumn" style={{ fontSize: rem(40) }}>
             {component.name}
           </div>
         }
@@ -1752,13 +1752,13 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
             <div
               className="popupIcon"
               onClick={displayInfo}
-              style={{ fontSize: "16px" }}
+              style={{ fontSize: rem(16) }}
             >
               &#x24D8;
             </div>
           </SelectableRow>
           {component.id === "Ssruu" ? (
-            <div className="flexRow" style={{ paddingLeft: "16px" }}>
+            <div className="flexRow" style={{ paddingLeft: rem(16) }}>
               Using the ability of
               <Selector
                 hoverMenuLabel="Select Agent"

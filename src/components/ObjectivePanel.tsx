@@ -26,6 +26,7 @@ import {
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { objectiveTypeString } from "../util/strings";
+import { Optional } from "../util/types/types";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -35,7 +36,7 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
-import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -44,15 +45,15 @@ function GridHeader({ children }: PropsWithChildren) {
       style={{
         height: "100%",
         justifyContent: "flex-end",
-        fontSize: "14px",
-        minWidth: "62px",
-        maxWidth: "92px",
-        padding: `0 ${"2px"}`,
+        fontSize: rem(14),
+        minWidth: rem(62),
+        maxWidth: rem(92),
+        padding: `0 ${rem(2)}`,
         whiteSpace: "normal",
         textAlign: "center",
       }}
     >
-      <div style={{ maxWidth: "84px", height: "100%" }}>{children}</div>
+      <div style={{ maxWidth: rem(84), height: "100%" }}>{children}</div>
     </div>
   );
 }
@@ -66,13 +67,13 @@ function InfoContent({ objective }: InfoContentProps) {
       className="myriadPro"
       style={{
         boxSizing: "border-box",
-        maxWidth: "800px",
+        maxWidth: rem(800),
         width: "100%",
-        minWidth: "320px",
-        padding: "4px",
+        minWidth: rem(320),
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       {objective.description}
@@ -104,7 +105,7 @@ function ObjectiveColumn({
       <Modal
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
-        title={<div style={{ fontSize: "40px" }}>{objective.name}</div>}
+        title={<div style={{ fontSize: rem(40) }}>{objective.name}</div>}
         level={2}
       >
         <InfoContent objective={objective} />
@@ -115,10 +116,10 @@ function ObjectiveColumn({
           style={{
             height: "100%",
             justifyContent: "space-between",
-            gap: "2px",
+            gap: rem(2),
             position: "relative",
             fontFamily: description ? "Myriad Pro" : undefined,
-            fontSize: description ? "12px" : undefined,
+            fontSize: description ? rem(12) : undefined,
           }}
         >
           {numScorers === 0 ? (
@@ -151,7 +152,7 @@ function ObjectiveColumn({
           {description ? null : (
             <div
               className="popupIcon"
-              style={{ paddingRight: "8px" }}
+              style={{ paddingRight: rem(8) }}
               onClick={() => setShowInfoModal(true)}
             >
               &#x24D8;
@@ -219,7 +220,7 @@ function SecretModalContent({
       className="flexColumn"
       style={{
         width: "100%",
-        padding: "8px",
+        padding: rem(8),
         alignItems: "center",
       }}
     >
@@ -247,7 +248,7 @@ function SecretModalContent({
             action={(gameId, objectiveId) =>
               scoreObjectiveAsync(gameId, factionId, objectiveId)
             }
-            fontSize="14px"
+            fontSize={rem(14)}
             label={
               <FormattedMessage
                 id="zlpl9F"
@@ -503,8 +504,8 @@ export default function ObjectivePanel() {
             style={{
               width: "100%",
               height: "fit-content",
-              fontSize: "18px",
-              paddingBottom: "8px",
+              fontSize: rem(18),
+              paddingBottom: rem(8),
             }}
           >
             <div>
@@ -513,9 +514,9 @@ export default function ObjectivePanel() {
                   display: "grid",
                   gridAutoFlow: "row",
                   gridTemplateColumns: "repeat(2, 1fr)",
-                  padding: "8px",
+                  padding: rem(8),
                   paddingBottom: 0,
-                  gap: "8px",
+                  gap: rem(8),
                   isolation: "isolate",
                 }}
               >
@@ -552,7 +553,7 @@ export default function ObjectivePanel() {
                         className="flexRow"
                         style={{
                           justifyContent: "center",
-                          fontSize: "28px",
+                          fontSize: rem(28),
                           width: "100%",
                         }}
                       >
@@ -562,9 +563,9 @@ export default function ObjectivePanel() {
                             onClick={() => manualVpAdjust(false, name)}
                           ></div>
                         ) : (
-                          <div style={{ width: "12px" }}></div>
+                          <div style={{ width: rem(12) }}></div>
                         )}
-                        <div className="flexRow" style={{ width: "24px" }}>
+                        <div className="flexRow" style={{ width: rem(24) }}>
                           {VPs}
                         </div>
                         <div
@@ -593,15 +594,15 @@ export default function ObjectivePanel() {
               style={{
                 width: "100%",
                 height: "fit-content",
-                fontSize: "18px",
-                paddingBottom: "8px",
+                fontSize: rem(18),
+                paddingBottom: rem(8),
               }}
             >
               <div
                 className={`flexColumn ${styles.collapsibleRow}`}
                 style={{
                   display: "flex",
-                  marginLeft: "8px",
+                  marginLeft: rem(8),
                   width: "min-content",
                   flexDirection: "column",
                   alignItems: "stretch",
@@ -615,7 +616,7 @@ export default function ObjectivePanel() {
                     return (
                       <button
                         key={itemId}
-                        style={{ fontSize: "14px" }}
+                        style={{ fontSize: rem(14) }}
                         onClick={() => {
                           toggleItem(itemId, true);
                         }}
@@ -642,7 +643,7 @@ export default function ObjectivePanel() {
                     return (
                       <button
                         key={itemId}
-                        style={{ fontSize: "14px" }}
+                        style={{ fontSize: rem(14) }}
                         onClick={() => {
                           toggleItem(itemId, true);
                         }}
@@ -670,8 +671,8 @@ export default function ObjectivePanel() {
                 style={{
                   position: "relative",
                   alignItems: "flex-start",
-                  width: "72px",
-                  height: "72px",
+                  width: rem(72),
+                  height: rem(72),
                 }}
               >
                 <Image
@@ -928,14 +929,14 @@ export default function ObjectivePanel() {
               style={{
                 width: "100%",
                 height: "fit-content",
-                fontSize: "18px",
-                paddingBottom: "8px",
+                fontSize: rem(18),
+                paddingBottom: rem(8),
               }}
             >
               <div className="flexRow" style={{ width: "100%" }}>
                 <div
                   className="flexRow"
-                  style={{ padding: "0 8px 0 4px", width: "100%" }}
+                  style={{ padding: `0 ${rem(8)} 0 ${rem(4)}`, width: "100%" }}
                 >
                   {orderedFactionIds.map((name) => {
                     const factionSecrets = secretsByFaction[name] ?? [];
@@ -972,8 +973,8 @@ export default function ObjectivePanel() {
                               marginLeft: "44%",
                               marginTop: "44%",
                               boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                              width: "24px",
-                              height: "24px",
+                              width: rem(24),
+                              height: rem(24),
                               zIndex: 2,
                             }}
                           >
@@ -997,14 +998,14 @@ export default function ObjectivePanel() {
               style={{
                 width: "100%",
                 height: "fit-content",
-                fontSize: "18px",
-                paddingBottom: "8px",
+                fontSize: rem(18),
+                paddingBottom: rem(8),
               }}
             >
               <div className="flexRow" style={{ width: "100%" }}>
                 <div
                   className="flexRow"
-                  style={{ padding: "0 8px 0 4px", width: "100%" }}
+                  style={{ padding: `0 ${rem(8)} 0 ${rem(4)}`, width: "100%" }}
                 >
                   {orderedFactionIds.map((faction) => {
                     const imperialPoints = (
@@ -1026,14 +1027,14 @@ export default function ObjectivePanel() {
                             style={{
                               position: "absolute",
                               left: 0,
-                              top: -4,
+                              top: rem(-4),
                               fontFamily: "Myriad Pro",
                               fontWeight: "bold",
-                              height: "16px",
-                              width: "16px",
+                              height: rem(16),
+                              width: rem(16),
                               border: `${"1px"} solid #333`,
                               borderRadius: "100%",
-                              fontSize: "12px",
+                              fontSize: rem(12),
                               backgroundColor: "#222",
                               boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                               cursor: "pointer",
@@ -1058,14 +1059,14 @@ export default function ObjectivePanel() {
                           style={{
                             position: "absolute",
                             right: 0,
-                            top: -4,
+                            top: rem(-4),
                             fontFamily: "Myriad Pro",
                             border: `${"1px"} solid #333`,
                             fontWeight: "bold",
                             borderRadius: "100%",
-                            height: "16px",
-                            width: "16px",
-                            fontSize: "12px",
+                            height: rem(16),
+                            width: rem(16),
+                            fontSize: rem(12),
                             backgroundColor: "#222",
                             boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                             cursor: "pointer",
@@ -1094,8 +1095,8 @@ export default function ObjectivePanel() {
                             marginLeft: "60%",
                             marginTop: "60%",
                             boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                            width: "24px",
-                            height: "24px",
+                            width: rem(24),
+                            height: rem(24),
                             zIndex: 2,
                           }}
                         >
@@ -1119,8 +1120,8 @@ export default function ObjectivePanel() {
             style={{
               width: "100%",
               height: "fit-content",
-              fontSize: "18px",
-              paddingBottom: "8px",
+              fontSize: rem(18),
+              paddingBottom: rem(8),
             }}
           >
             <div className={`flexRow ${styles.collapsibleRow}`}>
@@ -1182,8 +1183,8 @@ export default function ObjectivePanel() {
             style={{
               width: "100%",
               height: "fit-content",
-              fontSize: "18px",
-              paddingBottom: "8px",
+              fontSize: rem(18),
+              paddingBottom: rem(8),
             }}
           >
             <div
@@ -1270,7 +1271,7 @@ export default function ObjectivePanel() {
                   >
                     <ObjectiveRow objective={mutiny} hideScorers />
                     <button
-                      style={{ fontSize: "14px" }}
+                      style={{ fontSize: rem(14) }}
                       onClick={() => {
                         if (!gameId) {
                           return;
@@ -1403,24 +1404,24 @@ export default function ObjectivePanel() {
           justifyContent: "flex-start",
           alignItems: "flex-start",
           width: "100%",
-          padding: "8px",
+          padding: rem(8),
           paddingLeft: (options["game-variant"] ?? "normal").startsWith(
             "alliance"
           )
-            ? "24px"
-            : "8px",
+            ? rem(24)
+            : rem(8),
           height: "100%",
-          gap: "24px",
+          gap: rem(24),
           isolation: "isolate",
           backgroundColor: "#222",
-          borderRadius: "8px",
+          borderRadius: rem(8),
         }}
       >
         <div
           style={{
             position: "relative",
             display: "grid",
-            rowGap: "4px",
+            rowGap: rem(4),
             justifyContent: "flex-start",
             alignItems: "flex-start",
             width: "100%",
@@ -1442,7 +1443,7 @@ export default function ObjectivePanel() {
               );
             }}
             style={{
-              fontSize: "16px",
+              fontSize: rem(16),
               position: "absolute",
               top: 0,
               right: 0,
@@ -1469,10 +1470,10 @@ export default function ObjectivePanel() {
                 className="flexColumn"
                 style={{
                   justifyContent: "center",
-                  padding: `0 ${"8px"}`,
+                  padding: `0 ${rem(4)}`,
                   height: "100%",
                   position: "relative",
-                  borderRadius: "5px",
+                  borderRadius: rem(3),
                   border: `${"2px"} solid ${getFactionColor(
                     (factions ?? {})[name]
                   )}`,
@@ -1489,11 +1490,11 @@ export default function ObjectivePanel() {
                   <div
                     style={{
                       position: "absolute",
-                      left: "-4px",
+                      left: rem(-4),
                       transform: "rotate(270deg)",
                       transformOrigin: "left bottom",
                       backgroundColor: "#222",
-                      padding: `0 ${"4px"}`,
+                      padding: `0 ${rem(4)}`,
                     }}
                   >
                     Alliance
@@ -1520,7 +1521,7 @@ export default function ObjectivePanel() {
               height: "100%",
               width: "100%",
               justifyContent: "flex-end",
-              padding: `0 ${"8px"}`,
+              padding: `0 ${rem(4)}`,
             }}
           >
             <FormattedMessage
@@ -1538,7 +1539,7 @@ export default function ObjectivePanel() {
                 style={{
                   width: "100%",
                   height: "100%",
-                  fontSize: "24px",
+                  fontSize: rem(24),
                 }}
               >
                 {computeVPs(factions ?? {}, name, objectives ?? {})}
@@ -1554,7 +1555,7 @@ export default function ObjectivePanel() {
               alignItems: "center",
               justifyContent: "flex-end",
               width: "100%",
-              paddingTop: "36px",
+              paddingTop: rem(36),
             }}
           >
             <LabeledDiv
@@ -1571,20 +1572,20 @@ export default function ObjectivePanel() {
                 width: "min-content",
                 alignItems: "stretch",
                 gridRow: "1 / 2",
-                fontSize: "14px",
+                fontSize: rem(14),
               }}
             >
               <ObjectiveSelectHoverMenu
                 action={revealObjectiveAsync}
                 label={objectiveTypeString("STAGE ONE", intl)}
                 objectives={remainingStageOneObjectives}
-                fontSize="14px"
+                fontSize={rem(14)}
               />
               <ObjectiveSelectHoverMenu
                 action={revealObjectiveAsync}
                 label={objectiveTypeString("STAGE TWO", intl)}
                 objectives={remainingStageTwoObjectives}
-                fontSize="14px"
+                fontSize={rem(14)}
               />
             </LabeledDiv>
           </div>
@@ -1623,17 +1624,17 @@ export default function ObjectivePanel() {
               } / ${3 + numStageOneObjectives + numStageTwoObjectives + 1}`,
               gridRow: "1 / 2",
               borderRadius: "100%",
-              fontSize: "80px",
+              fontSize: rem(80),
             }}
           >
             <div
               className="flexRow"
               style={{
                 border: `${"5px"} solid red`,
-                width: "60px",
-                height: "60px",
+                width: rem(60),
+                height: rem(60),
                 borderRadius: "100%",
-                fontSize: "44px",
+                fontSize: rem(44),
               }}
             >
               <FormattedMessage
@@ -1659,11 +1660,11 @@ export default function ObjectivePanel() {
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: "-68px",
+                marginBottom: rem(-68),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
-                padding: `0 ${"4px"}`,
+                padding: `0 ${rem(4)}`,
                 color: "orange",
                 whiteSpace: "nowrap",
               }}
@@ -1689,11 +1690,11 @@ export default function ObjectivePanel() {
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: "-72px",
+                marginBottom: rem(-72),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
-                padding: `0 ${"4px"}`,
+                padding: `0 ${rem(4)}`,
                 color: "royalblue",
                 whiteSpace: "nowrap",
               }}
@@ -1720,11 +1721,11 @@ export default function ObjectivePanel() {
               style={{
                 position: "absolute",
                 left: 0,
-                marginBottom: "-68px",
+                marginBottom: rem(-72),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
                 backgroundColor: "#222",
-                padding: `0 ${"4px"}`,
+                padding: `0 ${rem(4)}`,
                 color: "red",
               }}
             >
@@ -1765,7 +1766,7 @@ export default function ObjectivePanel() {
                   position: "relative",
                   width: "100%",
                   height: "100%",
-                  padding: `0 ${"8px"}`,
+                  padding: `0 ${rem(4)}`,
                 }}
                 onClick={() => {
                   setFactionId(name);
@@ -1790,8 +1791,8 @@ export default function ObjectivePanel() {
                       marginLeft: "44%",
                       marginTop: "44%",
                       boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                      width: "24px",
-                      height: "24px",
+                      width: rem(24),
+                      height: rem(24),
                       zIndex: 2,
                     }}
                   >
@@ -1806,8 +1807,8 @@ export default function ObjectivePanel() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
-            gap: "8px",
-            paddingBottom: "4px",
+            gap: rem(8),
+            paddingBottom: rem(4),
             width: "100%",
           }}
         >
@@ -1820,8 +1821,8 @@ export default function ObjectivePanel() {
               style={{
                 position: "relative",
                 alignItems: "flex-start",
-                width: "72px",
-                height: "72px",
+                width: rem(72),
+                height: rem(72),
               }}
             >
               <Image
@@ -1966,8 +1967,8 @@ export default function ObjectivePanel() {
                     className="flexRow hiddenButtonParent"
                     style={{
                       position: "relative",
-                      width: "36px",
-                      height: "36px",
+                      width: rem(36),
+                      height: rem(36),
                     }}
                   >
                     {imperialPoints > 0 ? (
@@ -1976,14 +1977,14 @@ export default function ObjectivePanel() {
                         style={{
                           position: "absolute",
                           left: 0,
-                          top: -4,
+                          top: rem(-4),
                           fontFamily: "Myriad Pro",
                           fontWeight: "bold",
-                          height: "16px",
-                          width: "16px",
+                          height: rem(16),
+                          width: rem(16),
                           border: `${"1px"} solid #333`,
                           borderRadius: "100%",
-                          fontSize: "12px",
+                          fontSize: rem(12),
                           backgroundColor: "#222",
                           boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                           cursor: "pointer",
@@ -2008,14 +2009,14 @@ export default function ObjectivePanel() {
                       style={{
                         position: "absolute",
                         right: 0,
-                        top: -4,
+                        top: rem(-4),
                         fontFamily: "Myriad Pro",
                         border: `${"1px"} solid #333`,
                         fontWeight: "bold",
                         borderRadius: "100%",
-                        height: "16px",
-                        width: "16px",
-                        fontSize: "12px",
+                        height: rem(16),
+                        width: rem(16),
+                        fontSize: rem(12),
                         backgroundColor: "#222",
                         boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                         cursor: "pointer",
@@ -2040,8 +2041,8 @@ export default function ObjectivePanel() {
                         marginLeft: "60%",
                         marginTop: "60%",
                         boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                        width: "24px",
-                        height: "24px",
+                        width: rem(24),
+                        height: rem(24),
                         zIndex: 2,
                       }}
                     >
@@ -2169,7 +2170,7 @@ export default function ObjectivePanel() {
                 >
                   <ObjectiveRow objective={mutiny} hideScorers />
                   <button
-                    style={{ fontSize: "14px" }}
+                    style={{ fontSize: rem(14) }}
                     onClick={() => {
                       if (!gameId) {
                         return;
@@ -2331,20 +2332,20 @@ function SimpleScorable({
       <Modal
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
-        title={<div style={{ fontSize: "40px" }}>{objective.name}</div>}
+        title={<div style={{ fontSize: rem(40) }}>{objective.name}</div>}
         level={2}
       >
         <div
           className="flexRow myriadPro"
           style={{
             boxSizing: "border-box",
-            maxWidth: "800px",
+            maxWidth: rem(800),
             width: "100%",
-            minWidth: "320px",
-            padding: "4px",
+            minWidth: rem(320),
+            padding: rem(4),
             whiteSpace: "pre-line",
             textAlign: "center",
-            fontSize: "32px",
+            fontSize: rem(32),
           }}
         >
           {info}
@@ -2408,7 +2409,7 @@ function SimpleScorable({
               tag={
                 <div
                   className="popupIcon hoverParent"
-                  style={{ marginLeft: "0px", color: "#999" }}
+                  style={{ marginLeft: 0, color: "#999" }}
                   onClick={() => setShowInfoModal(true)}
                 >
                   &#x24D8;

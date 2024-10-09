@@ -12,6 +12,7 @@ import ObjectiveRow from "./components/ObjectiveRow/ObjectiveRow";
 import { objectiveTypeString } from "./util/strings";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useObjectives } from "./context/dataHooks";
+import { rem } from "./util/util";
 
 function sortObjectivesByName(objectives: Objective[]) {
   objectives.sort((a, b) => {
@@ -80,7 +81,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
     }
   }
 
-  const maxHeight = "calc(100dvh - 450px)";
+  const maxHeight = `calc(100dvh - ${rem(450)})`;
 
   function editModeButton(objs: Set<Objective>) {
     if (editMode) {
@@ -90,7 +91,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
     // 3 normally, 1 from Obsidian, and 1 from Classified Document Leaks.
     if (objs.size <= 4) {
       return (
-        <div className="flexColumn" style={{ gap: "4px" }}>
+        <div className="flexColumn" style={{ gap: rem(4) }}>
           <button onClick={toggleEditMode}>
             <FormattedMessage
               id="6L07nG"
@@ -98,15 +99,15 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
               defaultMessage="Reveal Objective"
             />
           </button>
-          <div style={{ fontSize: "16px", textAlign: "center" }}>
+          <div style={{ fontSize: rem(16), textAlign: "center" }}>
             Secret Objectives will only be revealed to other players when scored
           </div>
         </div>
       );
     } else {
       return (
-        <div className="flexColumn" style={{ gap: "4px" }}>
-          <div style={{ fontSize: "16px", textAlign: "center" }}>
+        <div className="flexColumn" style={{ gap: rem(4) }}>
+          <div style={{ fontSize: rem(16), textAlign: "center" }}>
             Secret Objectives will only be revealed to other players when scored
           </div>
         </div>
@@ -126,7 +127,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
               maxHeight: maxHeight,
               overflow: "auto",
               display: "flex",
-              padding: "4px 0px",
+              padding: `${rem(4)} 0px`,
               justifyContent: "stretch",
               alignItems: "stretch",
             }}
@@ -145,7 +146,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
             })}
           </div>
         ) : null}
-        <div className="flexRow" style={{ padding: "4px" }}>
+        <div className="flexRow" style={{ padding: rem(4) }}>
           {editModeButton(factionSecrets)}
         </div>
       </div>
@@ -271,7 +272,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
       case "SECRET":
         if (secretObjectives.length < 3) {
           return (
-            <div className="flexColumn" style={{ gap: "4px" }}>
+            <div className="flexColumn" style={{ gap: rem(4) }}>
               <button onClick={toggleEditMode}>
                 <FormattedMessage
                   id="6L07nG"
@@ -313,7 +314,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
     }
   }
 
-  const maxHeight = "calc(100dvh - 420px)";
+  const maxHeight = `calc(100dvh - ${rem(420)})`;
 
   return (
     <div>
@@ -321,9 +322,9 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
         className="flexRow"
         style={{
           position: "sticky",
-          top: "41px",
+          top: rem(41),
           backgroundColor: "#222",
-          padding: "4px 4px 0px 4px",
+          padding: `${rem(4)} ${rem(4)} 0px ${rem(4)}`,
         }}
       >
         <Tab selectTab={changeTab} id="STAGE ONE" selectedId={tabShown}>
@@ -349,7 +350,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
                 maxHeight: maxHeight,
                 overflow: "auto",
                 display: "flex",
-                padding: "4px 0px",
+                padding: `${rem(4)} 0px`,
                 justifyContent: "stretch",
                 alignItems: "stretch",
               }}
@@ -373,7 +374,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
             </div>
           ) : null}
           {editModeButton("STAGE ONE") ? (
-            <div className="flexRow" style={{ padding: "8px 0px" }}>
+            <div className="flexRow" style={{ padding: `${rem(8)} 0px` }}>
               {editModeButton("STAGE ONE")}
             </div>
           ) : null}
@@ -389,7 +390,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
                 maxHeight: maxHeight,
                 overflow: "auto",
                 display: "flex",
-                padding: "4px 0px",
+                padding: `${rem(4)} 0px`,
                 justifyContent: "stretch",
                 alignItems: "stretch",
               }}
@@ -411,7 +412,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
             </div>
           ) : null}
           {editModeButton("STAGE TWO") ? (
-            <div className="flexRow" style={{ padding: "8px 0px" }}>
+            <div className="flexRow" style={{ padding: `${rem(8)} 0px` }}>
               {editModeButton("STAGE TWO")}
             </div>
           ) : null}
@@ -430,7 +431,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
                 maxHeight: maxHeight,
                 overflow: "auto",
                 display: "flex",
-                padding: "4px 0px",
+                padding: `${rem(4)} 0px`,
                 justifyContent: "stretch",
                 alignItems: "stretch",
               }}
@@ -452,7 +453,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
             </div>
           ) : null}
           {editModeButton("OTHER") ? (
-            <div className="flexRow" style={{ padding: "8px 0px" }}>
+            <div className="flexRow" style={{ padding: `${rem(8)} 0px` }}>
               {editModeButton("OTHER")}
             </div>
           ) : null}

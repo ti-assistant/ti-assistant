@@ -3,15 +3,11 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { CollapsibleSection } from "../../../src/components/CollapsibleSection";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import GenericModal from "../../../src/components/GenericModal/GenericModal";
-import { Optional } from "../../../src/util/types/types";
-import {
-  FactionSummary,
-  GameCounts,
-  HistogramData,
-  ObjectiveGameCounts,
-} from "./types";
-import styles from "./FactionModal.module.scss";
 import { objectiveTypeString } from "../../../src/util/strings";
+import { Optional } from "../../../src/util/types/types";
+import { rem } from "../../../src/util/util";
+import styles from "./FactionModal.module.scss";
+import { FactionSummary, GameCounts, ObjectiveGameCounts } from "./types";
 
 export default function FactionModal({
   baseData,
@@ -38,17 +34,17 @@ export default function FactionModal({
         style={{
           whiteSpace: "normal",
           textShadow: "none",
-          width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
           justifyContent: "flex-start",
-          height: `calc(100dvh - 24px)`,
+          height: `calc(100dvh - ${rem(24)})`,
         }}
       >
         <div
           className="flexRow centered extraLargeFont"
           style={{
             backgroundColor: "#222",
-            padding: `4px 8px`,
-            borderRadius: "4px",
+            padding: `${rem(4)} ${rem(8)}`,
+            borderRadius: rem(4),
           }}
         >
           <FactionIcon factionId={id} size={36} />
@@ -59,7 +55,7 @@ export default function FactionModal({
           className="flexColumn largeFont"
           onClick={(e) => e.stopPropagation()}
           style={{
-            width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
             justifyContent: "flex-start",
             overflow: "auto",
             height: "fit-content",
@@ -82,7 +78,7 @@ export default function FactionModal({
                     defaultMessage="Objectives"
                   />
                   <button
-                    style={{ fontSize: "10px" }}
+                    style={{ fontSize: rem(10) }}
                     className={objectiveType === "STAGE ONE" ? "selected" : ""}
                     onClick={(event) => {
                       setObjectiveType("STAGE ONE");
@@ -92,7 +88,7 @@ export default function FactionModal({
                     {objectiveTypeString("STAGE ONE", intl)}
                   </button>
                   <button
-                    style={{ fontSize: "10px" }}
+                    style={{ fontSize: rem(10) }}
                     className={objectiveType === "STAGE TWO" ? "selected" : ""}
                     onClick={(event) => {
                       setObjectiveType("STAGE TWO");
@@ -102,7 +98,7 @@ export default function FactionModal({
                     {objectiveTypeString("STAGE TWO", intl)}
                   </button>
                   <button
-                    style={{ fontSize: "10px" }}
+                    style={{ fontSize: rem(10) }}
                     className={objectiveType === "OTHER" ? "selected" : ""}
                     onClick={(event) => {
                       setObjectiveType("OTHER");
@@ -118,9 +114,9 @@ export default function FactionModal({
                 className="flexColumn"
                 style={{
                   width: "100%",
-                  gap: "4px",
-                  padding: `0 4px 4px`,
-                  fontSize: "14px",
+                  gap: rem(4),
+                  padding: `0 ${rem(4)} ${rem(4)}`,
+                  fontSize: rem(14),
                 }}
               >
                 {info ? (
@@ -154,9 +150,9 @@ export default function FactionModal({
                 className="flexColumn"
                 style={{
                   width: "100%",
-                  gap: "4px",
-                  padding: `0 4px 4px`,
-                  fontSize: "14px",
+                  gap: rem(4),
+                  padding: `0 ${rem(4)} ${rem(4)}`,
+                  fontSize: rem(14),
                 }}
               >
                 {info ? (
@@ -284,7 +280,7 @@ function ObjectiveTable({
   }
 
   return (
-    <table style={{ fontSize: "12px", width: "100%", borderSpacing: "0" }}>
+    <table style={{ fontSize: rem(12), width: "100%", borderSpacing: "0" }}>
       <tbody>
         {filteredObjectives.map(([objective, info]) => {
           const type = baseObjectives[objective as ObjectiveId].type;
@@ -307,7 +303,7 @@ function ObjectiveTable({
                 }}
               >
                 <div>{baseObj.name}</div>
-                <div style={{ fontFamily: "Source Sans", fontSize: "10px" }}>
+                <div style={{ fontFamily: "Source Sans", fontSize: rem(10) }}>
                   {baseObj.description}
                 </div>
               </td>
@@ -340,8 +336,8 @@ function TechTable({
     return b[1].games - a[1].games;
   });
   return (
-    <table style={{ fontSize: "12px", width: "100%" }}>
-      <thead style={{ textAlign: "left", fontSize: "14px" }}>
+    <table style={{ fontSize: rem(12), width: "100%" }}>
+      <thead style={{ textAlign: "left", fontSize: rem(14) }}>
         <tr style={{ textAlign: "left" }}>
           <th colSpan={2}></th>
           <th colSpan={2} style={{ fontWeight: "normal" }}>
@@ -413,7 +409,7 @@ function TechTable({
                   ({info.games} of {techGames})
                 </td>
                 {info.games < 3 ? (
-                  <td style={{ fontSize: "10px", fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
                     -
                   </td>
                 ) : (
@@ -423,7 +419,7 @@ function TechTable({
                   </td>
                 )}
                 {techGames - info.games < 3 ? (
-                  <td style={{ fontSize: "10px", fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
                     -
                   </td>
                 ) : (
@@ -437,7 +433,7 @@ function TechTable({
                   </td>
                 )}
                 {info.games < 3 ? (
-                  <td style={{ fontSize: "10px", fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
                     -
                   </td>
                 ) : (
@@ -446,7 +442,7 @@ function TechTable({
                   </td>
                 )}
                 {techGames - info.games < 3 ? (
-                  <td style={{ fontSize: "10px", fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
                     -
                   </td>
                 ) : (

@@ -20,6 +20,7 @@ import {
   sortTechsByPreReqAndExpansion,
 } from "../../util/techs";
 import styles from "./TechSelectHoverMenu.module.scss";
+import { rem } from "../../util/util";
 
 interface InnerTechSelectHoverMenuProps {
   factionId: FactionId;
@@ -47,14 +48,14 @@ function InnerTechSelectHoverMenu({
   return techs.length > 0 ? (
     <ClientOnlyHoverMenu
       label={label}
-      buttonStyle={{ fontSize: "14px" }}
+      buttonStyle={{ fontSize: rem(14) }}
       borderColor={getTechTypeColor(techs[0]?.type ?? "UPGRADE")}
       renderProps={(innerCloseFn) => (
         <div
           className="flexColumn"
           style={{
-            padding: "8px",
-            gap: "4px",
+            padding: rem(8),
+            gap: rem(4),
             alignItems: "stretch",
           }}
         >
@@ -80,7 +81,7 @@ function InnerTechSelectHoverMenu({
                     ? ""
                     : "faded"
                 }
-                style={{ fontSize: "16px" }}
+                style={{ fontSize: rem(16) }}
               >
                 {tech.name}
               </button>
@@ -146,12 +147,12 @@ export default function TechSelectHoverMenu({
     <ClientOnlyHoverMenu
       label={label}
       style={{ whiteSpace: "nowrap" }}
-      buttonStyle={{ fontSize: "14px" }}
+      buttonStyle={{ fontSize: rem(14) }}
       renderProps={(outerCloseFn) => (
         <div
           className={styles.OuterTechSelectMenu}
           style={{
-            padding: "8px",
+            padding: rem(8),
             alignItems: "flex-start",
             overflow: "visible",
           }}

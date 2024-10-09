@@ -14,6 +14,7 @@ import Toggle from "../../src/components/Toggle/Toggle";
 import { buildBaseSystems } from "../../src/data/GameData";
 import { getDefaultMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
+import { rem } from "../../src/util/util";
 
 type Filter =
   | "BASE_GAME"
@@ -257,7 +258,7 @@ export default function MapBuilderPage() {
         className="flexRow"
         style={{
           width: "100%",
-          height: "calc(100dvh - 52px)",
+          height: `calc(100dvh - ${rem(52)})`,
           justifyContent: "flex-start",
           alignItems: "flex-start",
         }}
@@ -266,8 +267,8 @@ export default function MapBuilderPage() {
           <LabeledDiv
             label="Tile Pool"
             style={{
-              marginTop: "72px",
-              height: "calc(100dvh - 140px)",
+              marginTop: rem(72),
+              height: `calc(100dvh - ${rem(140)})`,
               justifyContent: "flex-start",
             }}
           >
@@ -277,7 +278,7 @@ export default function MapBuilderPage() {
                 justifyContent: "space-between",
                 alignItems: "flex-start",
                 width: "100%",
-                fontSize: "12px",
+                fontSize: rem(12),
               }}
             >
               <div
@@ -309,7 +310,7 @@ export default function MapBuilderPage() {
                   filters={filters}
                   setFilters={setFilters}
                 />
-                <div className="flexRow" style={{ gap: "4px" }}>
+                <div className="flexRow" style={{ gap: rem(4) }}>
                   <FormattedMessage
                     id="1fNqTf"
                     defaultMessage="Planets"
@@ -382,7 +383,7 @@ export default function MapBuilderPage() {
                 display: "grid",
                 gridAutoFlow: "row",
                 gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-                columnGap: "8px",
+                columnGap: rem(8),
                 width: "100%",
                 justifyContent: "flex-start",
                 overflowY: "auto",
@@ -428,8 +429,8 @@ export default function MapBuilderPage() {
               className="flexColumn"
               style={{
                 position: "absolute",
-                left: "16px",
-                top: "16px",
+                left: rem(16),
+                top: rem(16),
                 zIndex: 2,
               }}
             >
@@ -474,14 +475,14 @@ export default function MapBuilderPage() {
             <div
               style={{
                 position: "absolute",
-                right: "16px",
-                top: "16px",
+                right: rem(16),
+                top: rem(16),
                 zIndex: 2,
               }}
             >
               {mapStyles.length > 1 ? (
                 <>
-                  <div className="flexRow" style={{ paddingLeft: `${"16px"}` }}>
+                  <div className="flexRow" style={{ paddingLeft: rem(16) }}>
                     {mapStyles.map((style) => {
                       return (
                         <button
@@ -552,7 +553,7 @@ export default function MapBuilderPage() {
             </div>
             <div
               className="flexRow"
-              style={{ position: "absolute", right: "16px", bottom: "16px" }}
+              style={{ position: "absolute", right: rem(16), bottom: rem(16) }}
             >
               <button
                 onClick={() => {

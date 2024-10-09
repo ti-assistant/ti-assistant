@@ -3,10 +3,10 @@
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat(1, minmax(0, 1fr));
-  height: 80px;
+  height: 5rem;
   align-items: flex-end;
   justify-content: flex-start;
-  gap: 4px;
+  gap: 0.25rem;
 }
 
 .FactionHistogram {
@@ -14,19 +14,19 @@
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat(1, minmax(0, 1fr));
-  height: 80px;
+  height: 5rem;
   align-items: flex-end;
   justify-content: flex-start;
-  gap: 4px;
+  gap: 0.25rem;
 }
 
 .OuterHistogram {
-  gap: 2px;
+  gap: 0.125rem;
   width: 100%;
   align-items: flex-start;
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 56.25rem) {
   .FactionHistogram {
     overflow-y: scroll;
   }

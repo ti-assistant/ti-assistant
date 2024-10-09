@@ -1,19 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../src/components/BorderedDiv/BorderedDiv";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
-import { FormattedMessage } from "react-intl";
+import { rem } from "../../src/util/util";
 
 export default function Supporters() {
   return (
-    <div className="flexColumn" style={{ gap: "16px" }}>
+    <div className="flexColumn" style={{ gap: rem(16) }}>
       <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="SUPPORTERS" />
       <div
         className="flexColumn"
         style={{
-          maxWidth: "800px",
+          maxWidth: rem(800),
           height: "100dvh",
           width: "100%",
         }}
@@ -30,9 +31,9 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
-              paddingBottom: "4px",
+              paddingBottom: rem(4),
               width: "100%",
-              fontSize: "24px",
+              fontSize: rem(24),
             }}
           >
             <div>
@@ -73,9 +74,9 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
-              paddingBottom: "4px",
+              paddingBottom: rem(4),
               width: "100%",
-              fontSize: "20px",
+              fontSize: rem(20),
             }}
           >
             <div className="flexRow centered" style={{ width: "100%" }}>
@@ -117,9 +118,9 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
-              paddingBottom: "4px",
+              paddingBottom: rem(4),
               width: "100%",
-              fontSize: "16px",
+              fontSize: rem(16),
             }}
           >
             <div className="flexRow centered" style={{ width: "100%" }}>
@@ -152,12 +153,12 @@ export default function Supporters() {
           </div>
         </LabeledDiv>
 
-        <Link href={`/`} style={{ marginTop: "12px" }}>
+        <Link href={`/`} style={{ marginTop: rem(12) }}>
           <BorderedDiv>
             <div
               className="flexColumn mediumFont"
               style={{
-                minWidth: "190px",
+                minWidth: rem(190),
               }}
             >
               Back

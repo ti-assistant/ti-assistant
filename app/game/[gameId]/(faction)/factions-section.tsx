@@ -24,6 +24,7 @@ import { getCurrentTurnLogEntries } from "../../../../src/util/api/actionLog";
 import { getFactionColor } from "../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../src/util/helpers";
 import { phaseString } from "../../../../src/util/strings";
+import { rem } from "../../../../src/util/util";
 
 function NextPhaseButtons({}) {
   const gameId = useContext(GameIdContext);
@@ -41,7 +42,7 @@ function NextPhaseButtons({}) {
   switch (state.phase) {
     case "SETUP":
       return (
-        <div className="flexColumn" style={{ marginTop: "8px" }}>
+        <div className="flexColumn" style={{ marginTop: rem(8) }}>
           <LockedButtons
             unlocked={setupPhaseComplete(factions, revealedObjectives)}
             buttons={[
@@ -65,7 +66,7 @@ function NextPhaseButtons({}) {
     case "STRATEGY":
       if (state.activeplayer === "None") {
         return (
-          <div className="flexColumn" style={{ marginTop: "8px" }}>
+          <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <button
               onClick={() => {
                 if (!gameId) {
@@ -89,7 +90,7 @@ function NextPhaseButtons({}) {
       return null;
     case "ACTION":
       return (
-        <div className="flexColumn" style={{ marginTop: "8px" }}>
+        <div className="flexColumn" style={{ marginTop: rem(8) }}>
           <LockedButtons
             unlocked={state.activeplayer === "None"}
             buttons={[
@@ -149,7 +150,7 @@ function NextPhaseButtons({}) {
         },
       });
       return (
-        <div className="flexColumn" style={{ marginTop: "8px" }}>
+        <div className="flexColumn" style={{ marginTop: rem(8) }}>
           <LockedButtons
             unlocked={statusPhaseComplete(getCurrentTurnLogEntries(actionLog))}
             buttons={buttons}
@@ -158,7 +159,7 @@ function NextPhaseButtons({}) {
       );
     case "AGENDA":
       return (
-        <div className="flexColumn" style={{ marginTop: "8px" }}>
+        <div className="flexColumn" style={{ marginTop: rem(8) }}>
           <LockedButtons
             unlocked={state.agendaNum === 3}
             buttons={[
@@ -265,8 +266,8 @@ export default function FactionsSection({}) {
       className="flexColumn"
       style={{
         width: "100%",
-        gap: "4px",
-        fontSize: "18px",
+        gap: rem(4),
+        fontSize: rem(18),
       }}
     >
       <NextPhaseButtons />
@@ -299,7 +300,7 @@ export default function FactionsSection({}) {
                 cards.length > 0 ? (
                   <div
                     style={{
-                      fontSize: "18px",
+                      fontSize: rem(18),
                       color: cards[0]?.used ? "#555" : cards[0]?.color,
                     }}
                   >

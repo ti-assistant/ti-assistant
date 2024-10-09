@@ -21,6 +21,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
+import { rem } from "../../util/util";
 
 interface Cube {
   q: number;
@@ -263,7 +264,7 @@ export function SystemImage({
         <NextImage
           src={Hexagon}
           alt={`System Tile`}
-          sizes="64px"
+          sizes={rem(64)}
           fill
           style={{ opacity: "10%", objectFit: "contain" }}
           priority
@@ -314,7 +315,7 @@ export function SystemImage({
       <NextImage
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
-        sizes="128px"
+        sizes={rem(128)}
         fill
         style={{ objectFit: "contain" }}
         priority={
@@ -502,49 +503,29 @@ export function SystemImage({
           </div>
         );
       })}
-      {
-        gameId && systemNumber === "18" && !systemPlanets[0]?.owner ? (
+      {gameId && systemNumber === "18" && !systemPlanets[0]?.owner ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            borderRadius: "100%",
+            width: "40%",
+            height: `calc(40% * ${HEX_RATIO})`,
+          }}
+        >
           <div
             className="flexRow"
-            style={{
-              position: "absolute",
-              borderRadius: "100%",
-              width: "40%",
-              height: `calc(40% * ${HEX_RATIO})`,
-            }}
+            style={{ position: "relative", width: "90%", height: "90%" }}
           >
-            <div
-              className="flexRow"
-              style={{ position: "relative", width: "90%", height: "90%" }}
-            >
-              <NextImage
-                src={`/images/custodians.png`}
-                alt={`Custodians Token`}
-                fill
-                style={{ objectFit: "contain" }}
-              />
-            </div>
+            <NextImage
+              src={`/images/custodians.png`}
+              alt={`Custodians Token`}
+              fill
+              style={{ objectFit: "contain" }}
+            />
           </div>
-        ) : null
-        // <div
-        //   className="flexRow"
-        //   style={{
-        //     position: "absolute",
-        //     backgroundColor: "#222",
-        //     borderRadius: "100%",
-        //     width: "20%",
-        //     height: `calc(20% * ${HEX_RATIO})`,
-        //     border: "1px solid red",
-        //   }}
-        // >
-        //   <div
-        //     className="flexRow"
-        //     style={{ position: "relative", width: "90%", height: "90%" }}
-        //   >
-        //     <FullFactionSymbol faction={"Vuil'raith Cabal"} />
-        //   </div>
-        // </div>
-      }
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -889,7 +870,7 @@ export default function Map({
               backgroundColor: "#222",
               justifyContent: "stretch",
               alignItems: "stretch",
-              paddingTop: "16px",
+              paddingTop: rem(16),
             }}
           >
             <div className={styles.LegendContent}>

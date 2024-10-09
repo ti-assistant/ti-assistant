@@ -1,11 +1,12 @@
 "use client";
 
+import Cookies from "js-cookie";
+import Image from "next/image";
 import React, { CSSProperties, ReactNode, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
-import styles from "./LanguageSelectRadialMenu.module.scss";
+import { rem } from "../../util/util";
 import Circle from "../Circle/Circle";
-import Image from "next/image";
-import Cookies from "js-cookie";
+import styles from "./LanguageSelectRadialMenu.module.scss";
 
 interface LanguageSelectRadialMenuProps {
   selectedLocale?: string;
@@ -23,10 +24,10 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
 
   const center = (size * 3) / 2;
   const pos = {
-    "--y-pos": `${center - size * Math.cos(radians) - size / 2 + 2}px`,
-    "--x-pos": `${center - size * -Math.sin(radians) - size / 2 + 2}px`,
-    "--initial-y": `${size + 2}px`,
-    "--initial-x": `${size + 2}px`,
+    "--y-pos": rem(center - size * Math.cos(radians) - size / 2 + 2),
+    "--x-pos": rem(center - size * -Math.sin(radians) - size / 2 + 2),
+    "--initial-y": rem(size + 2),
+    "--initial-x": rem(size + 2),
   };
   return pos;
 }
@@ -84,7 +85,7 @@ export default function LanguageSelectRadialMenu({
 
   const hoverParentStyle: LanguageSelectRadialMenuCSS = {
     "--border-color": borderColor,
-    "--size": `${size}px`,
+    "--size": rem(size),
   };
 
   return (
@@ -118,8 +119,8 @@ export default function LanguageSelectRadialMenu({
                   : 1;
               const languageSelectStyle: LanguageSelectCSS = {
                 "--opacity": opacity,
-                width: `${size - 4}px`,
-                height: `${size - 4}px`,
+                width: rem(size - 4),
+                height: rem(size - 4),
                 pointerEvents: isInvalid ? "none" : undefined,
                 ...getRadialPosition(index, locales.length, size),
               };
@@ -139,8 +140,8 @@ export default function LanguageSelectRadialMenu({
                 >
                   <div
                     style={{
-                      width: `${size - 10}px`,
-                      height: `${size - 10}px`,
+                      width: rem(size - 10),
+                      height: rem(size - 10),
                     }}
                   >
                     {locale === selectedLocale && !isInvalid ? (
@@ -155,24 +156,24 @@ export default function LanguageSelectRadialMenu({
             <div
               className={`flexRow ${styles.centerCircle}`}
               style={{
-                width: `${size - 2}px`,
-                height: `${size - 2}px`,
+                width: rem(size - 2),
+                height: rem(size - 2),
               }}
             >
               <div
                 className="flexRow"
                 style={{
-                  width: `${size - 4}px`,
-                  height: `${size - 4}px`,
-                  fontSize: `${size - 8}px`,
+                  width: rem(size - 4),
+                  height: rem(size - 4),
+                  fontSize: rem(size - 8),
                 }}
               >
                 <div
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: `${size - 10}px`,
-                    height: `${size - 10}px`,
+                    width: rem(size - 10),
+                    height: rem(size - 10),
                   }}
                 >
                   {selectedLocale ? (
@@ -188,8 +189,8 @@ export default function LanguageSelectRadialMenu({
                     style={{
                       border: `${"1px"} solid ${tagBorderColor}`,
                       boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                      width: "24px",
-                      height: "24px",
+                      width: rem(24),
+                      height: rem(24),
                     }}
                   >
                     {tag}

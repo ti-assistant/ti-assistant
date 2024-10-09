@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
 import styles from "./TechIcon.module.scss";
+import { rem } from "../../util/util";
 
 const RED_RATIO = 61 / 50;
 const GREEN_RATIO = 58 / 50;
@@ -49,7 +50,7 @@ export default function TechIcon({
               outline ? "svg" : "webp"
             }`}
             alt={`${type.toLowerCase()} tech`}
-            sizes="20px"
+            sizes={rem(20)}
             fill
             style={{ objectFit: "contain" }}
           />
@@ -60,12 +61,12 @@ export default function TechIcon({
   }, [type, outline]);
 
   const outerIconStyle: TechIconCSS = {
-    "--width": typeof size === "string" ? size : `${size}px`,
-    "--height": typeof size === "string" ? size : `${size}px`,
+    "--width": typeof size === "string" ? size : rem(size),
+    "--height": typeof size === "string" ? size : rem(size),
   };
   const techIconStyle: TechIconCSS = {
-    "--width": typeof size === "string" ? size : `${size / ratio}px`,
-    "--height": typeof size === "string" ? size : `${size}px`,
+    "--width": typeof size === "string" ? size : rem(size / ratio),
+    "--height": typeof size === "string" ? size : rem(size),
   };
   return (
     <div className={styles.OuterIcon} style={outerIconStyle}>

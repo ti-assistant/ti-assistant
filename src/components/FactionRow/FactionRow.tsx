@@ -5,6 +5,7 @@ import {
 } from "../../context/dataHooks";
 import { getFactionColor } from "../../util/factions";
 import { getStrategyCardsForFaction } from "../../util/helpers";
+import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import styles from "./FactionRow.module.scss";
 
@@ -80,7 +81,7 @@ export default function FactionRow({ onClick }: FactionRowProps) {
                 cards.length > 0 ? (
                   <div
                     style={{
-                      fontSize: "18px",
+                      fontSize: rem(18),
                       color: cards[0]?.color,
                     }}
                   >
