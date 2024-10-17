@@ -4,9 +4,9 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import { CSSProperties, PropsWithChildren, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
+import { rem } from "../../util/util";
 import Circle from "../Circle/Circle";
 import styles from "./LangSelectHoverMenu.module.scss";
-import { rem } from "../../util/util";
 
 interface FactionSelectProps {
   selectedLocale?: string;
@@ -57,7 +57,7 @@ export default function LangSelectHoverMenu({
 
   const hoverMenuStyle: CSSProperties = {
     left: 0,
-    borderRadius: `${size / 8}rem`,
+    borderRadius: rem(size / 2),
     border: `${"2px"} solid #444`,
   };
 
@@ -90,8 +90,8 @@ export default function LangSelectHoverMenu({
           className="flexRow"
           style={{
             position: "relative",
-            width: rem(size - 4),
-            height: rem(size - 4),
+            width: `calc(${rem(size)} - 4px)`,
+            height: `calc(${rem(size)} - 4px)`,
             fontSize: rem(size - 8),
             color: "#777",
           }}
@@ -116,8 +116,8 @@ export default function LangSelectHoverMenu({
               : 1;
           const languageSelectStyle: LanguageSelectCSS = {
             "--opacity": opacity,
-            width: rem(size - 4),
-            height: rem(size - 4),
+            width: `calc(${rem(size)} - 4px)`,
+            height: `calc(${rem(size)} - 4px)`,
             pointerEvents: isInvalid ? "none" : undefined,
           };
           if (locale === selectedLocale) {

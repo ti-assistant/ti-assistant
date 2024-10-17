@@ -365,51 +365,51 @@ function DetailsSection({
 
   return (
     <div className="flexColumn" style={{ paddingBottom: rem(8) }}>
-      <div className="flexRow">
-        <button
-          style={{ fontSize: rem(14) }}
-          className={tab === "Factions" ? "selected" : ""}
-          onClick={() => setTab("Factions")}
+      <div className="flexRow" style={{ gap: rem(4) }}>
+        <Chip
+          fontSize={14}
+          selected={tab === "Factions"}
+          toggleFn={() => setTab("Factions")}
         >
           <FormattedMessage
             id="r2htpd"
             description="Text on a button that will randomize factions."
             defaultMessage="Factions"
           />
-        </button>
-        <button
-          style={{ fontSize: rem(14) }}
-          className={tab === "Objectives" ? "selected" : ""}
-          onClick={() => setTab("Objectives")}
+        </Chip>
+        <Chip
+          fontSize={14}
+          selected={tab === "Objectives"}
+          toggleFn={() => setTab("Objectives")}
         >
           <FormattedMessage
             id="5Bl4Ek"
             description="Cards that define how to score victory points."
             defaultMessage="Objectives"
           />
-        </button>
-        <button
-          style={{ fontSize: rem(14) }}
-          className={tab === "Techs" ? "selected" : ""}
-          onClick={() => setTab("Techs")}
+        </Chip>
+        <Chip
+          fontSize={14}
+          selected={tab === "Techs"}
+          toggleFn={() => setTab("Techs")}
         >
           <FormattedMessage
             id="ys7uwX"
             description="Shortened version of technologies."
             defaultMessage="Techs"
           />
-        </button>
-        <button
-          style={{ fontSize: rem(14) }}
-          className={tab === "Strategy Cards" ? "selected" : ""}
-          onClick={() => setTab("Strategy Cards")}
+        </Chip>
+        <Chip
+          fontSize={14}
+          selected={tab === "Strategy Cards"}
+          toggleFn={() => setTab("Strategy Cards")}
         >
           <FormattedMessage
             id="jOsJY8"
             description="Strategy Cards."
             defaultMessage="Strategy Cards"
           />
-        </button>
+        </Chip>
       </div>
       <div className={styles.DetailsSection}>{tabContent}</div>
     </div>
