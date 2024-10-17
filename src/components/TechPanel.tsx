@@ -1,6 +1,5 @@
 import React, { CSSProperties, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { TechSummary } from "../FactionSummary";
 import { TechRow } from "../TechRow";
 import { GameIdContext } from "../context/Context";
 import { useFactions, useTechs } from "../context/dataHooks";
@@ -17,6 +16,7 @@ import { Selector } from "./Selector/Selector";
 import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
+import { FullTechSummary } from "./TechSummary/TechSummary";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const gameId = useContext(GameIdContext);
@@ -530,7 +530,7 @@ function TechsByFaction({
             zIndex: 1,
           }}
         >
-          <TechSummary techs={factionTechs} factionId={factionId} horizontal />
+          <FullTechSummary techs={factionTechs} factionId={factionId} />
         </div>
         <div className={styles.factionTechList}>
           {factionTechs.map((tech) => {
