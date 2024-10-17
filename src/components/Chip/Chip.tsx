@@ -35,17 +35,19 @@ interface ChipProps {
   selected: boolean;
   toggleFn: (prevValue: boolean) => void;
   fontSize?: number;
+  style?: CSSProperties;
 }
 
 export default function Chip({
   selected,
   toggleFn,
   fontSize = 12,
+  style = {},
   children,
 }: PropsWithChildren<ChipProps>) {
   let chipStyle = getChipStyle(selected, fontSize);
   return (
-    <label className={styles.ChipContainer} style={chipStyle}>
+    <label className={styles.ChipContainer} style={{ ...chipStyle, ...style }}>
       <input
         type="radio"
         onChange={() => toggleFn(selected)}

@@ -61,10 +61,10 @@ import { phaseString } from "../util/strings";
 import { rem } from "../util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./util/ComponentAction";
+import Chip from "../components/Chip/Chip";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
-  buttonStyle?: CSSProperties;
 }
 
 function SecondaryCheck({
@@ -158,10 +158,7 @@ function SecondaryCheck({
   );
 }
 
-export function FactionActionButtons({
-  factionId,
-  buttonStyle,
-}: FactionActionButtonsProps) {
+export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
   const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
@@ -202,6 +199,9 @@ export function FactionActionButtons({
         boxSizing: "border-box",
         width: "100%",
         flexWrap: "wrap",
+        fontFamily: "Myriad Pro",
+        gap: rem(4),
+        justifyContent: "center",
       }}
     >
       {getStrategyCardsForFaction(strategyCards, activeFaction.id).map(
@@ -210,52 +210,51 @@ export function FactionActionButtons({
             return null;
           }
           return (
-            <button
+            <Chip
               key={card.id}
-              className={selectedAction === card.id ? "selected" : ""}
-              style={buttonStyle}
-              onClick={() => toggleAction(card.id)}
+              selected={selectedAction === card.id}
+              fontSize={18}
+              toggleFn={() => toggleAction(card.id)}
             >
               {card.name}
-            </button>
+            </Chip>
           );
         }
       )}
-      <button
-        className={selectedAction === "Tactical" ? "selected" : ""}
-        style={buttonStyle}
-        onClick={() => toggleAction("Tactical")}
+      <Chip
+        selected={selectedAction === "Tactical"}
+        fontSize={18}
+        toggleFn={() => toggleAction("Tactical")}
       >
         <FormattedMessage
           id="/KXhGz"
           description="Text on a button that will select a tactical action."
           defaultMessage="Tactical"
         />
-      </button>
-      <button
-        className={selectedAction === "Component" ? "selected" : ""}
-        style={buttonStyle}
-        onClick={() => toggleAction("Component")}
+      </Chip>
+      <Chip
+        selected={selectedAction === "Component"}
+        fontSize={18}
+        toggleFn={() => toggleAction("Component")}
       >
         <FormattedMessage
           id="43UU69"
           description="Text on a button that will select a component action."
           defaultMessage="Component"
         />
-      </button>
+      </Chip>
       {canFactionPass(activeFaction.id) ? (
-        <button
-          className={selectedAction === "Pass" ? "selected" : ""}
-          style={buttonStyle}
-          disabled={!canFactionPass(activeFaction.id)}
-          onClick={() => toggleAction("Pass")}
+        <Chip
+          selected={selectedAction === "Pass"}
+          fontSize={18}
+          toggleFn={() => toggleAction("Pass")}
         >
           <FormattedMessage
             id="7ECd6J"
             description="Text on a button that will pass."
             defaultMessage="Pass"
           />
-        </button>
+        </Chip>
       ) : null}
     </div>
   );
@@ -271,10 +270,7 @@ export function FactionActions({ factionId }: { factionId: FactionId }) {
           defaultMessage="Select Action"
         />
       </div>
-      <FactionActionButtons
-        factionId={factionId}
-        buttonStyle={{ fontSize: rem(18) }}
-      />
+      <FactionActionButtons factionId={factionId} />
     </div>
   );
 }

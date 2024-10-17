@@ -14,6 +14,7 @@
   border: 1px solid var(--border-color);
   gap: 0;
   white-space: nowrap;
+  font-size: var(--font-size);
   padding: calc(var(--font-size) / 6) calc(2 * var(--font-size) / 3);
   cursor: pointer;
 }

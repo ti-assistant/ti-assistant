@@ -188,49 +188,28 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
       ++order;
     });
 
-  const stageOnes = Object.values(objectives)
-    .filter((obj) => obj.type === "STAGE ONE" && obj.selected)
-    .sort((a, b) => {
-      const aRevealOrder = revealOrder[a.id];
-      const bRevealOrder = revealOrder[b.id];
-      if (!aRevealOrder && !bRevealOrder) {
-        if (a.name > b.name) {
-          return 1;
+  const stageOnes = {
+    scored: 0,
+    revealed: 0,
+  };
+  const stageTwos = {
+    scored: 0,
+    revealed: 0,
+  };
+  Object.values(objectives)
+    .filter((obj) => obj.selected)
+    .forEach((obj) => {
+      if (obj.type === "STAGE ONE") {
+        if (obj.scorers?.includes(factionId)) {
+          stageOnes.scored++;
         }
-        return -1;
-      }
-      if (!aRevealOrder) {
-        return -1;
-      }
-      if (!bRevealOrder) {
-        return 1;
-      }
-      if (aRevealOrder > bRevealOrder) {
-        return 1;
-      }
-      return -1;
-    });
-  const stageTwos = Object.values(objectives)
-    .filter((obj) => obj.type === "STAGE TWO" && obj.selected)
-    .sort((a, b) => {
-      const aRevealOrder = revealOrder[a.id];
-      const bRevealOrder = revealOrder[b.id];
-      if (!aRevealOrder && !bRevealOrder) {
-        if (a.name > b.name) {
-          return 1;
+        stageOnes.revealed++;
+      } else if (obj.type === "STAGE TWO") {
+        if (obj.scorers?.includes(factionId)) {
+          stageTwos.scored++;
         }
-        return -1;
+        stageTwos.revealed++;
       }
-      if (!aRevealOrder) {
-        return -1;
-      }
-      if (!bRevealOrder) {
-        return 1;
-      }
-      if (aRevealOrder > bRevealOrder) {
-        return 1;
-      }
-      return -1;
     });
 
   const secrets = Object.values(objectives).filter(
@@ -251,33 +230,53 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
           justifyContent: "space-between",
         }}
       >
-        <div className="flexRow" style={{ gap: rem(2) }}>
-          {stageOnes.map((obj) => {
-            const scored = (obj.scorers ?? []).includes(factionId);
-            return (
-              <div
-                key={obj.id}
-                title={obj.name}
-                style={{
-                  width: rem(4),
-                  height: rem(4),
-                  border: "1px solid orange",
-                  borderRadius: "100%",
-                  backgroundColor: scored ? "orange" : undefined,
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  if (scored) {
-                    unscoreObjectiveAsync(gameId, factionId, obj.id);
-                  } else {
-                    scoreObjectiveAsync(gameId, factionId, obj.id);
-                  }
-                }}
-              ></div>
-            );
-          })}
+        <div className="flexRow" style={{ gap: rem(2), height: rem(4) }}>
+          {Array(stageOnes.revealed)
+            .fill(0)
+            .map((_, index) => {
+              const scored = index < stageOnes.scored;
+              return (
+                <div
+                  key={index}
+                  style={{
+                    width: rem(4),
+                    height: rem(4),
+                    border: "1px solid orange",
+                    borderRadius: "100%",
+                    backgroundColor: scored ? "orange" : undefined,
+                  }}
+                ></div>
+              );
+            })}
         </div>
-
+        <div className="flexRow" style={{ gap: rem(2), height: rem(4) }}>
+          {Array(stageTwos.revealed)
+            .fill(0)
+            .map((_, index) => {
+              const scored = index < stageTwos.scored;
+              return (
+                <div
+                  key={index}
+                  style={{
+                    width: rem(4),
+                    height: rem(4),
+                    border: "1px solid royalblue",
+                    borderRadius: "100%",
+                    backgroundColor: scored ? "royalblue" : undefined,
+                  }}
+                ></div>
+              );
+            })}
+        </div>
+      </div>
+      <div
+        className="flexRow"
+        style={{
+          gap: rem(2),
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
         <div className="flexRow" style={{ gap: rem(2) }}>
           {secrets.map((obj) => {
             return (
@@ -290,42 +289,6 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                   border: "1px solid red",
                   borderRadius: "100%",
                   backgroundColor: "red",
-                }}
-              ></div>
-            );
-          })}
-        </div>
-      </div>
-      <div
-        className="flexRow"
-        style={{
-          gap: rem(2),
-          width: "100%",
-          justifyContent: "space-between",
-        }}
-      >
-        <div className="flexRow" style={{ gap: rem(2) }}>
-          {stageTwos.map((obj) => {
-            const scored = (obj.scorers ?? []).includes(factionId);
-
-            return (
-              <div
-                key={obj.id}
-                title={obj.name}
-                style={{
-                  width: rem(4),
-                  height: rem(4),
-                  border: "1px solid royalblue",
-                  borderRadius: "100%",
-                  backgroundColor: scored ? "royalblue" : undefined,
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  if (scored) {
-                    unscoreObjectiveAsync(gameId, factionId, obj.id);
-                  } else {
-                    scoreObjectiveAsync(gameId, factionId, obj.id);
-                  }
                 }}
               ></div>
             );
