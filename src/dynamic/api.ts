@@ -323,9 +323,13 @@ export async function playActionCardAsync(
   playActionCard(gameId, card, target);
 }
 
-export async function playComponentAsync(gameId: string, name: string) {
+export async function playComponentAsync(
+  gameId: string,
+  name: string,
+  factionId: FactionId
+) {
   const playComponent = await playComponentFn;
-  playComponent(gameId, name);
+  playComponent(gameId, name, factionId);
 }
 
 export async function playPromissoryNoteAsync(
@@ -542,9 +546,13 @@ export async function unplayActionCardAsync(
   unplayActionCard(gameId, card, target);
 }
 
-export async function unplayComponentAsync(gameId: string, name: string) {
+export async function unplayComponentAsync(
+  gameId: string,
+  name: string,
+  factionId: FactionId
+) {
   const unplayComponent = await unplayComponentFn;
-  unplayComponent(gameId, name);
+  unplayComponent(gameId, name, factionId);
 }
 
 export async function unplayPromissoryNoteAsync(

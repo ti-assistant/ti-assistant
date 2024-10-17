@@ -334,6 +334,7 @@ interface UnplayActionCardData {
 
 interface PlayComponentEvent {
   name: string;
+  factionId: FactionId;
 }
 
 interface PlayComponentData {

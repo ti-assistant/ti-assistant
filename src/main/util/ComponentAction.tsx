@@ -1588,7 +1588,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       .replace(/\./g, "")
       .replace(/,/g, "")
       .replace(/ Ω/g, "");
-    playComponentAsync(gameId, updatedName);
+    playComponentAsync(gameId, updatedName, factionId);
   }
 
   function unselectComponent(componentName: string) {
@@ -1600,7 +1600,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       .replace(/\./g, "")
       .replace(/,/g, "")
       .replace(/ Ω/g, "");
-    unplayComponentAsync(gameId, updatedName);
+    unplayComponentAsync(gameId, updatedName, factionId);
   }
 
   if (!factions) {

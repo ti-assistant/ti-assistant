@@ -12,6 +12,7 @@ import Modal from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import { rem } from "../../util/util";
+import Toggle from "../Toggle/Toggle";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -439,16 +440,15 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
         whiteSpace: "nowrap",
       }}
     >
-      <div style={{ flexBasis: "60%" }}>
-        <button
-          style={{ fontSize: rem(14) }}
-          onClick={toggleAttachment}
-          className={
-            (planet.attachments ?? []).includes(attachment.id) ? "selected" : ""
-          }
-        >
-          {attachment.name}
-        </button>
+      <div style={{ flexBasis: "60%", fontSize: rem(14) }}>
+        <div style={{ width: "fit-content" }}>
+          <Toggle
+            toggleFn={() => toggleAttachment()}
+            selected={(planet.attachments ?? []).includes(attachment.id)}
+          >
+            {attachment.name}
+          </Toggle>
+        </div>
       </div>
       <ResourcesIcon
         resources={attachment.resources ?? 0}
