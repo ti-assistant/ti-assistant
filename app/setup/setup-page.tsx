@@ -8,6 +8,7 @@ import { getBaseFactions } from "../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../src/HoverMenu";
 import { Loader } from "../../src/Loader";
 import { SelectableRow } from "../../src/SelectableRow";
+import Chip from "../../src/components/Chip/Chip";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
@@ -20,9 +21,8 @@ import { Strings } from "../../src/components/strings";
 import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
-import styles from "./setup.module.scss";
 import { rem } from "../../src/util/util";
-import Chip from "../../src/components/Chip/Chip";
+import styles from "./setup.module.scss";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -61,6 +61,31 @@ function createOptions(setupOptions: SetupOptions) {
     expansions: expansions,
   };
   return optionsToSend;
+}
+
+function getMapStyles(numFactions: number) {
+  let mapStyles: MapStyle[] = [];
+  switch (numFactions) {
+    case 3:
+      mapStyles = ["standard"];
+      break;
+    case 4:
+      mapStyles = ["standard", "warp", "skinny"];
+      break;
+    case 5:
+      mapStyles = ["standard", "warp", "skinny"];
+      break;
+    case 6:
+      mapStyles = ["standard", "large"];
+      break;
+    case 7:
+      mapStyles = ["standard", "warp"];
+      break;
+    case 8:
+      mapStyles = ["standard", "warp"];
+      break;
+  }
+  return mapStyles;
 }
 
 function MobileOptions({
@@ -118,13 +143,17 @@ function MobileOptions({
           description="Label for a selector to change the number of players"
         />
       </label>
-      <div className="flexRow" style={{ gap: rem(4) }}>
+      <div
+        className="flexRow"
+        style={{ gap: rem(4), fontFamily: "Myriad Pro" }}
+      >
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
           return (
             <Chip
-              selected={numFactions === number}
               key={number}
+              selected={numFactions === number}
+              fontSize={16}
               toggleFn={() => updatePlayerCount(number)}
             >
               {number}
@@ -413,7 +442,7 @@ function Options({
   }
 
   return (
-    <div className="flexColumn">
+    <div className="flexColumn" style={{ justifyContent: "flex-start" }}>
       <label>
         <FormattedMessage
           id="Jh0WRk"
@@ -421,20 +450,49 @@ function Options({
           description="Label for a selector to change the number of players"
         />
       </label>
-      <div className="flexRow" style={{ gap: rem(4) }}>
+      <div
+        className="flexRow"
+        style={{ gap: rem(4), fontFamily: "Myriad Pro" }}
+      >
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
           return (
             <Chip
-              selected={numFactions === number}
               key={number}
+              selected={numFactions === number}
               toggleFn={() => updatePlayerCount(number)}
+              fontSize={16}
             >
               {number}
             </Chip>
           );
         })}
       </div>
+      {/* <div className="flexRow" style={{ alignItems: "flex-start" }}>
+        <FormattedMessage
+          id="R06tnh"
+          description="A label for a selector specifying the number of victory points required."
+          defaultMessage="Victory Points"
+        />
+        :
+        <NumberInput
+          value={options["victory-points"]}
+          onChange={(newVal) => toggleOption(newVal, "victory-points")}
+          minValue={0}
+        />
+        {options["game-variant"] === "alliance-separate" ? (
+          <>
+            &
+            <NumberInput
+              value={options["secondary-victory-points"]}
+              onChange={(newVal) =>
+                toggleOption(newVal, "secondary-victory-points")
+              }
+              minValue={0}
+            />
+          </>
+        ) : null}
+      </div> */}
       <ClientOnlyHoverMenu
         label={
           <FormattedMessage
@@ -1605,13 +1663,8 @@ export default function SetupPage({
             defaultMessage: "Setup Game",
           })
           .toUpperCase()}
-        rightSidebar={intl
-          .formatMessage({
-            id: "9DZz2w",
-            description: "Text identifying that this is the setup step.",
-            defaultMessage: "Setup Game",
-          })
-          .toUpperCase()}
+        rightSidebar={""}
+        mobileSidebars
       />
       {/* Large Screen */}
       <div
@@ -1709,7 +1762,7 @@ export default function SetupPage({
         ) : null}
         {/* Map Section */}
         <div
-          className="flexRow"
+          className="flexColumn"
           style={{
             flexShrink: 0,
             flexGrow: 0,
@@ -1719,6 +1772,68 @@ export default function SetupPage({
             gridArea: "map",
           }}
         >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "min-content 1fr",
+              gridAutoFlow: "row",
+              fontFamily: "Myriad Pro",
+              fontSize: rem(12),
+              width: "100%",
+              whiteSpace: "nowrap",
+              columnGap: rem(8),
+              rowGap: rem(4),
+              justifyContent: "flex-start",
+            }}
+          >
+            {getMapStyles(numFactions).length > 1 ? (
+              <>
+                <div>
+                  <FormattedMessage
+                    id="ZZ/Lhe"
+                    description="A label for a selector for selecting which map style to use."
+                    defaultMessage="Map Type:"
+                  />
+                </div>
+                <div
+                  className="flexRow"
+                  style={{ gap: rem(4), justifyContent: "flex-start" }}
+                >
+                  {getMapStyles(numFactions).map((style) => {
+                    return (
+                      <Chip
+                        key={style}
+                        selected={options["map-style"] === style}
+                        toggleFn={() => toggleOption(style, "map-style")}
+                      >
+                        {mapStyleString(style, intl)}
+                      </Chip>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div style={{ height: rem(20), gridColumn: "1 / 3" }}></div>
+            )}
+            <div>
+              <FormattedMessage
+                id="UJSVtn"
+                description="Label for a textbox used to specify the map string."
+                defaultMessage="Map String"
+              />
+              :
+            </div>
+            <input
+              placeholder="Map String"
+              type="textbox"
+              pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
+              style={{ width: "100%", fontSize: rem(12) }}
+              value={options["map-string"]}
+              onChange={(event) =>
+                toggleOption(event.currentTarget.value, "map-string")
+              }
+            ></input>
+          </div>
           <Map
             mapStyle={options["map-style"]}
             mapString={options["map-string"]}
@@ -1926,13 +2041,6 @@ export default function SetupPage({
             paddingBottom: rem(8),
           }}
         >
-          <div className="flexRow" style={{ width: "100%", fontSize: rem(20) }}>
-            <FormattedMessage
-              id="9DZz2w"
-              description="Text identifying that this is the setup step."
-              defaultMessage="Setup Game"
-            />
-          </div>
           <MobileOptions
             updatePlayerCount={updatePlayerCount}
             toggleOption={toggleOption}

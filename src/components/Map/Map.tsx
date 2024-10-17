@@ -344,8 +344,8 @@ export function SystemImage({
                   position: "absolute",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <NextImage
@@ -376,8 +376,8 @@ export function SystemImage({
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <FactionIcon factionId={planet.owner} size="75%" />
@@ -400,8 +400,8 @@ export function SystemImage({
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <PlanetIcon type={planet.type} size="70%" />
@@ -424,8 +424,8 @@ export function SystemImage({
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <div
@@ -472,8 +472,8 @@ export function SystemImage({
                     borderRadius: "100%",
                     width: "24%",
                     height: height,
-                    marginLeft: `${planet.position?.x}%` ?? 0,
-                    marginTop: `${planet.position?.y}%` ?? 0,
+                    marginLeft: `${planet.position?.x}%`,
+                    marginTop: `${planet.position?.y}%`,
                   }}
                 >
                   <div
@@ -969,20 +969,20 @@ export default function Map({
               position: "absolute",
               right:
                 ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
-                  ? "4%"
+                  ? 0
                   : undefined,
               bottom:
                 ghostsCorner === "bottom-right" ||
                 ghostsCorner === "bottom-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               left:
                 ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               top:
                 ghostsCorner === "top-right" || ghostsCorner === "top-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               width: `${tilePercentage * HEX_RATIO}%`,
               height: `${tilePercentage * HEX_RATIO}%`,
@@ -999,9 +999,9 @@ export default function Map({
           <div
             style={{
               position: "absolute",
-              left: ghostsCorner !== "bottom-left" ? "4%" : undefined,
-              right: ghostsCorner === "bottom-left" ? "4%" : undefined,
-              bottom: "4%",
+              left: ghostsCorner !== "bottom-left" ? 0 : undefined,
+              right: ghostsCorner === "bottom-left" ? 0 : undefined,
+              bottom: 0,
               width: `${tilePercentage * HEX_RATIO}%`,
               height: `${tilePercentage * HEX_RATIO}%`,
             }}

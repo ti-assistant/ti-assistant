@@ -8,6 +8,7 @@
   left: 4rem;
   font-size: 1.5rem;
   gap: 0.5rem;
+  z-index: 1;
 }
 
 .HomeLink {
@@ -38,9 +39,16 @@
 }
 
 @media only screen and (max-width: 56.25rem) {
+  .NavBar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #222;
+  }
+
   .HomeLink {
     text-align: center;
-    position: sticky;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     top: 0;
