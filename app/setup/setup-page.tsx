@@ -304,8 +304,9 @@ function MobileOptions({
                       <FormattedMessage
                         id="ZZ/Lhe"
                         description="A label for a selector for selecting which map style to use."
-                        defaultMessage="Map Type:"
+                        defaultMessage="Map Type"
                       />
+                      :
                       <div
                         className="flexRow"
                         style={{ paddingLeft: `${rem(16)}`, gap: rem(4) }}
@@ -1700,8 +1701,9 @@ export default function SetupPage({
                   <FormattedMessage
                     id="ZZ/Lhe"
                     description="A label for a selector for selecting which map style to use."
-                    defaultMessage="Map Type:"
+                    defaultMessage="Map Type"
                   />
+                  :
                 </div>
                 <div
                   className="flexRow"

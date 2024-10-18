@@ -38,6 +38,10 @@ body {
   color: #eee;
 }
 
+input {
+  font-size: 0.75rem;
+}
+
 .symbol {
   font-family: "Source Sans";
 }

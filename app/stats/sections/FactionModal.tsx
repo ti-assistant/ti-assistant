@@ -8,6 +8,7 @@ import { Optional } from "../../../src/util/types/types";
 import { rem } from "../../../src/util/util";
 import styles from "./FactionModal.module.scss";
 import { FactionSummary, GameCounts, ObjectiveGameCounts } from "./types";
+import Chip from "../../../src/components/Chip/Chip";
 
 export default function FactionModal({
   baseData,
@@ -70,6 +71,7 @@ export default function FactionModal({
                   style={{
                     alignItems: "center",
                     justifyContent: "center",
+                    gap: rem(4),
                   }}
                 >
                   <FormattedMessage
@@ -77,36 +79,33 @@ export default function FactionModal({
                     description="Cards that define how to score victory points."
                     defaultMessage="Objectives"
                   />
-                  <button
-                    style={{ fontSize: rem(10) }}
-                    className={objectiveType === "STAGE ONE" ? "selected" : ""}
-                    onClick={(event) => {
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "STAGE ONE"}
+                    toggleFn={() => {
                       setObjectiveType("STAGE ONE");
-                      event.preventDefault();
                     }}
                   >
                     {objectiveTypeString("STAGE ONE", intl)}
-                  </button>
-                  <button
-                    style={{ fontSize: rem(10) }}
-                    className={objectiveType === "STAGE TWO" ? "selected" : ""}
-                    onClick={(event) => {
+                  </Chip>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "STAGE TWO"}
+                    toggleFn={() => {
                       setObjectiveType("STAGE TWO");
-                      event.preventDefault();
                     }}
                   >
                     {objectiveTypeString("STAGE TWO", intl)}
-                  </button>
-                  <button
-                    style={{ fontSize: rem(10) }}
-                    className={objectiveType === "OTHER" ? "selected" : ""}
-                    onClick={(event) => {
+                  </Chip>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "OTHER"}
+                    toggleFn={() => {
                       setObjectiveType("OTHER");
-                      event.preventDefault();
                     }}
                   >
                     {objectiveTypeString("OTHER", intl)}
-                  </button>
+                  </Chip>
                 </div>
               }
             >

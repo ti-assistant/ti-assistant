@@ -9,6 +9,7 @@ import { objectEntries, objectKeys, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import styles from "./ObjectivesSection.module.scss";
 import { ObjectiveGameCounts } from "./types";
+import Chip from "../../../src/components/Chip/Chip";
 
 export default function ObjectivesSection({
   games,
@@ -100,35 +101,35 @@ export default function ObjectivesSection({
 
   return (
     <div className={styles.ObjectivesSection}>
-      <div className="flexRow">
-        <button
+      <div className="flexRow" style={{ gap: rem(4) }}>
+        <Chip
           style={{ fontSize: rem(14) }}
-          className={tab === "STAGE ONE" ? "selected" : ""}
-          onClick={() => setTab("STAGE ONE")}
+          selected={tab === "STAGE ONE"}
+          toggleFn={() => setTab("STAGE ONE")}
         >
           Stage I
-        </button>
-        <button
+        </Chip>
+        <Chip
           style={{ fontSize: rem(14) }}
-          className={tab === "STAGE TWO" ? "selected" : ""}
-          onClick={() => setTab("STAGE TWO")}
+          selected={tab === "STAGE TWO"}
+          toggleFn={() => setTab("STAGE TWO")}
         >
           Stage II
-        </button>
-        <button
+        </Chip>
+        <Chip
           style={{ fontSize: rem(14) }}
-          className={tab === "SECRET" ? "selected" : ""}
-          onClick={() => setTab("SECRET")}
+          selected={tab === "SECRET"}
+          toggleFn={() => setTab("SECRET")}
         >
           Secrets
-        </button>
-        <button
+        </Chip>
+        <Chip
           style={{ fontSize: rem(14) }}
-          className={tab === "OTHER" ? "selected" : ""}
-          onClick={() => setTab("OTHER")}
+          selected={tab === "OTHER"}
+          toggleFn={() => setTab("OTHER")}
         >
           Other
-        </button>
+        </Chip>
       </div>
 
       {orderedObjectives.map(([objId, objInfo]) => {

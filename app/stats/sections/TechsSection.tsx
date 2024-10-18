@@ -11,6 +11,7 @@ import { HistogramData } from "./types";
 import styles from "./TechsSection.module.scss";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import { FormattedMessage } from "react-intl";
+import Chip from "../../../src/components/Chip/Chip";
 
 interface FactionTechInfo {
   games: number;
@@ -135,29 +136,29 @@ export default function TechsSection({
 
   return (
     <div className={styles.TechsSection}>
-      <div className="flexRow">
-        <button
-          style={{ fontSize: rem(14) }}
-          className={tab === "Non-Faction" ? "selected" : ""}
-          onClick={() => setTab("Non-Faction")}
+      <div className="flexRow" style={{ gap: rem(4) }}>
+        <Chip
+          fontSize={14}
+          selected={tab === "Non-Faction"}
+          toggleFn={() => setTab("Non-Faction")}
         >
           <FormattedMessage
             id="nYgb4V"
             defaultMessage="Non-Faction"
             description="Techs that are not specific to any faction."
           />
-        </button>
-        <button
-          style={{ fontSize: rem(14) }}
-          className={tab === "Faction" ? "selected" : ""}
-          onClick={() => setTab("Faction")}
+        </Chip>
+        <Chip
+          fontSize={14}
+          selected={tab === "Faction"}
+          toggleFn={() => setTab("Faction")}
         >
           <FormattedMessage
             id="LuWjGl"
             defaultMessage="Faction"
             description="Techs that are specific to a faction."
           />
-        </button>
+        </Chip>
       </div>
 
       <GenericModal

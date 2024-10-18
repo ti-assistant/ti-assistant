@@ -15,6 +15,7 @@ import { buildBaseSystems } from "../../src/data/GameData";
 import { getDefaultMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { rem } from "../../src/util/util";
+import Chip from "../../src/components/Chip/Chip";
 
 type Filter =
   | "BASE_GAME"
@@ -429,7 +430,7 @@ export default function MapBuilderPage() {
               className="flexColumn"
               style={{
                 position: "absolute",
-                left: rem(16),
+                left: rem(8),
                 top: rem(16),
                 zIndex: 2,
               }}
@@ -441,13 +442,16 @@ export default function MapBuilderPage() {
                   description="Label for a selector to change the number of players"
                 />
               </label>
-              <div className="flexRow">
+              <div
+                className="flexRow"
+                style={{ fontFamily: "Myriad Pro", gap: rem(4) }}
+              >
                 {[...Array(6)].map((e, index) => {
                   const number = index + 3;
                   return (
-                    <button
+                    <Chip
                       key={number}
-                      onClick={() => {
+                      toggleFn={() => {
                         const prevDefault = getDefaultMapString(
                           numFactions,
                           mapStyle
@@ -464,10 +468,11 @@ export default function MapBuilderPage() {
                         setMapStyle("standard");
                         setMapString(getDefaultMapString(number, "standard"));
                       }}
-                      className={numFactions === number ? "selected" : ""}
+                      selected={numFactions === number}
+                      fontSize={16}
                     >
                       {number}
-                    </button>
+                    </Chip>
                   );
                 })}
               </div>
@@ -475,20 +480,33 @@ export default function MapBuilderPage() {
             <div
               style={{
                 position: "absolute",
-                right: rem(16),
+                right: rem(8),
                 top: rem(16),
                 zIndex: 2,
               }}
             >
               {mapStyles.length > 1 ? (
-                <>
-                  <div className="flexRow" style={{ paddingLeft: rem(16) }}>
+                <div className="flexColumn">
+                  <label>
+                    <FormattedMessage
+                      id="ZZ/Lhe"
+                      defaultMessage="Map Type"
+                      description="A label for a selector for selecting which map style to use."
+                    />
+                  </label>
+                  <div
+                    className="flexRow"
+                    style={{
+                      gap: rem(4),
+                      fontFamily: "Myriad Pro",
+                    }}
+                  >
                     {mapStyles.map((style) => {
                       return (
-                        <button
+                        <Chip
                           key={style}
-                          className={mapStyle === style ? "selected" : ""}
-                          onClick={() => {
+                          selected={mapStyle === style}
+                          toggleFn={() => {
                             const prevDefault = getDefaultMapString(
                               numFactions,
                               mapStyle
@@ -506,13 +524,14 @@ export default function MapBuilderPage() {
                               getDefaultMapString(numFactions, style)
                             );
                           }}
+                          fontSize={16}
                         >
                           {mapStyleString(style, intl)}
-                        </button>
+                        </Chip>
                       );
                     })}
                   </div>
-                </>
+                </div>
               ) : null}
             </div>
             <div
