@@ -375,18 +375,22 @@ export function SystemImage({
 interface MapProps {
   mapString: string;
   updateMapString: (dragItem: any, dropItem: any) => void;
+  mallice?: string | SystemId;
 
   dropOnly?: boolean;
   exploration?: boolean;
+  riftWalker?: boolean;
 }
 
 export default function MapBuilder({
   mapString,
   updateMapString,
+  mallice,
   dropOnly,
   exploration,
+  riftWalker,
 }: MapProps) {
-  const shouldAddMecatol = !mapString.includes(" 18 ");
+  const shouldAddMecatol = !mapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = mapString.split(" ");
   if (shouldAddMecatol) {
     updatedSystemTiles.unshift("18");
@@ -407,7 +411,9 @@ export default function MapBuilder({
   const largestDimension = numRings * 2 - 1;
   const tilePercentage = 98 / largestDimension;
 
-  numRings += 1;
+  if (!riftWalker) {
+    numRings += 1;
+  }
 
   const spiral = cubeSpiral(Cube(0, 0, 0), numRings);
 
@@ -419,6 +425,9 @@ export default function MapBuilder({
           let tile = updatedSystemTiles[index];
           if (!tile) {
             tile = "-1";
+          }
+          if (riftWalker && tile === "-1") {
+            return null;
           }
           let canDrop = true;
           if (exploration) {
@@ -468,7 +477,46 @@ export default function MapBuilder({
             </div>
           );
         })}
+        {mallice ? (
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              bottom: 0,
+              width: `${tilePercentage * HEX_RATIO}%`,
+              height: `${tilePercentage * HEX_RATIO}%`,
+            }}
+          >
+            <SystemImage
+              index={-2}
+              systemNumber={getMalliceSystemNum(mallice)}
+              blockDrag={
+                !riftWalker || (mallice !== "PURGED" && mallice !== "81")
+              }
+              onDrop={
+                !riftWalker || (mallice !== "PURGED" && mallice !== "81")
+                  ? undefined
+                  : (dragItem, dropItem) => {
+                      updateMapString(dragItem, dropItem);
+                    }
+              }
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );
+}
+
+function getMalliceSystemNum(mallice: string | SystemId) {
+  if (mallice === "PURGED") {
+    return "81";
+  }
+  if (mallice === "A") {
+    return "82A";
+  }
+  if (mallice === "B") {
+    return "82B";
+  }
+  return (mallice as SystemId).toString();
 }

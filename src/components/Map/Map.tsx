@@ -534,7 +534,7 @@ export function SystemImage({
 interface MapProps {
   mapString: string;
   mapStyle: MapStyle;
-  mallice?: string;
+  mallice?: string | SystemId;
   factions: {
     id?: FactionId;
     name?: string;
@@ -694,7 +694,8 @@ export default function Map({
     mapStyle,
     factions.length
   );
-  const shouldAddMecatol = !updatedMapString.includes(" 18 ");
+  const shouldAddMecatol =
+    !updatedMapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = updatedMapString.split(" ");
   if (shouldAddMecatol) {
     updatedSystemTiles.unshift("18");
@@ -1007,11 +1008,24 @@ export default function Map({
             <SystemImage
               gameId={gameId}
               showDetails={showDetails}
-              systemNumber={mallice === "PURGED" ? "81" : `82${mallice}`}
+              systemNumber={getMalliceSystemNum(mallice)}
             />
           </div>
         ) : null}
       </div>
     </div>
   );
+}
+
+function getMalliceSystemNum(mallice: string | SystemId) {
+  if (mallice === "PURGED") {
+    return "81";
+  }
+  if (mallice === "A") {
+    return "82A";
+  }
+  if (mallice === "B") {
+    return "82B";
+  }
+  return (mallice as SystemId).toString();
 }

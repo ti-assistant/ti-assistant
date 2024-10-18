@@ -25,16 +25,18 @@ export function SelectableRow<Type extends string>({
       style.fontSize.valueOf();
       const baseSize = parseInt(fontSizeValue.replace("px", ""));
       const size = parseInt(fontSizeValue.replace("px", ""));
-      iconStyle.fontSize = rem(size);
-      iconStyle.width = rem(size);
-      iconStyle.height = rem(size);
-      iconStyle.lineHeight = rem(size);
-      iconStyle.marginRight = rem(3);
-      iconStyle.marginLeft = 0;
-      style = {
-        ...style,
-        fontSize: rem(baseSize),
-      };
+      if (baseSize !== 0) {
+        iconStyle.fontSize = rem(size);
+        iconStyle.width = rem(size);
+        iconStyle.height = rem(size);
+        iconStyle.lineHeight = rem(size);
+        iconStyle.marginRight = rem(3);
+        iconStyle.marginLeft = 0;
+        style = {
+          ...style,
+          fontSize: rem(baseSize),
+        };
+      }
     }
   }
 

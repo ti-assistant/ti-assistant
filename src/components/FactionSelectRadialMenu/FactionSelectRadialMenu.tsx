@@ -85,12 +85,14 @@ export default function FactionSelectRadialMenu({
           return;
         }
         menu.current.classList.add(styles.hover);
+        menu.current.classList.add("hover");
       }}
       onMouseLeave={() => {
         if (!menu.current || !styles.hover) {
           return;
         }
         menu.current.classList.remove(styles.hover);
+        menu.current.classList.remove("hover");
       }}
       ref={menu}
     >

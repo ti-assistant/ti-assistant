@@ -353,6 +353,10 @@ input[type="textbox"]:invalid {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
 }
 
+.hoverInfo:has(.hover)  {
+  clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%) !important;
+}
+
 .hoverInfo:has(.modal.shown) {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
 }

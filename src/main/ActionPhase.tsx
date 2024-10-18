@@ -62,6 +62,7 @@ import { rem } from "../util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./util/ComponentAction";
 import Chip from "../components/Chip/Chip";
+import PromissoryMenu from "../components/PromissoryMenu/PromissoryMenu";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1682,6 +1683,9 @@ export function ActivePlayerColumn({
             }}
           >
             <div className={styles.ActivePlayerSection}>
+              <div className={styles.PromissoryMenu}>
+                <PromissoryMenu factionId={activeFaction.id} />
+              </div>
               <FactionActions factionId={activeFaction.id} />
               <AdditionalActions
                 factionId={activeFaction.id}

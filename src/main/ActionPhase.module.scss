@@ -18,6 +18,7 @@
 }
 
 .ActivePlayerSection {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -27,6 +28,12 @@
   width: 100%;
   min-width: 22.5rem;
   min-height: 13.75rem;
+}
+
+.PromissoryMenu {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .EndTurnButton {

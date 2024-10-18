@@ -73,7 +73,9 @@ export default function Header() {
   );
   let malliceSide;
   if (options.expansions.includes("POK")) {
-    if (!mallice) {
+    if (options.mallice) {
+      malliceSide = options.mallice;
+    } else if (!mallice) {
       malliceSide = "PURGED";
     } else if (mallice.owner) {
       malliceSide = "B";

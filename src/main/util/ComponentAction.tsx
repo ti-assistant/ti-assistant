@@ -32,6 +32,7 @@ import {
   useOptions,
   usePlanets,
   useRelics,
+  useSystems,
   useTechs,
 } from "../../context/dataHooks";
 import {
@@ -271,17 +272,15 @@ function ComponentSelect({
               }
               return (
                 <div className="flexColumn" key={component.id}>
-                  <LabeledDiv
-                    noBlur={true}
-                    label={capitalizeFirstLetter(component.leader ?? "")}
+                  <LabeledLine
+                    leftLabel={capitalizeFirstLetter(component.leader ?? "")}
+                  />
+                  <button
+                    className={leader.state === "exhausted" ? "faded" : ""}
+                    onClick={() => selectComponent(component.id)}
                   >
-                    <button
-                      className={leader.state === "exhausted" ? "faded" : ""}
-                      onClick={() => selectComponent(component.id)}
-                    >
-                      {component.name}
-                    </button>
-                  </LabeledDiv>
+                    {component.name}
+                  </button>
                 </div>
               );
             })}
@@ -337,7 +336,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: rem(8) }}
+            style={{ alignItems: "stretch", padding: rem(8), width: "100%" }}
           >
             {Object.entries(promissoryByFaction).map(([id, components]) => {
               const faction = factions[id as FactionId];
@@ -345,25 +344,31 @@ function ComponentSelect({
                 return null;
               }
               return (
-                <div className="flexColumn" key={faction.id}>
-                  <LabeledDiv noBlur={true} label={getFactionName(faction)}>
-                    {components.map((component) => {
-                      return (
-                        <button
-                          key={component.id}
-                          className={
-                            component.state === "exhausted" ||
-                            component.state === "used"
-                              ? "faded"
-                              : ""
-                          }
-                          onClick={() => selectComponent(component.id)}
-                        >
-                          {component.name}
-                        </button>
-                      );
-                    })}
-                  </LabeledDiv>
+                <div
+                  className="flexColumn"
+                  key={faction.id}
+                  style={{ width: "100%", alignItems: "flex-start" }}
+                >
+                  <LabeledLine
+                    leftLabel={getFactionName(faction)}
+                    style={{ width: "100%" }}
+                  />
+                  {components.map((component) => {
+                    return (
+                      <button
+                        key={component.id}
+                        className={
+                          component.state === "exhausted" ||
+                          component.state === "used"
+                            ? "faded"
+                            : ""
+                        }
+                        onClick={() => selectComponent(component.id)}
+                      >
+                        {component.name}
+                      </button>
+                    );
+                  })}
                 </div>
               );
             })}
@@ -388,22 +393,20 @@ function ComponentSelect({
               if (component.type === "FLAGSHIP") {
                 return (
                   <div className="flexColumn" key={component.id}>
-                    <LabeledDiv
-                      noBlur={true}
-                      label={capitalizeFirstLetter(component.type)}
+                    <LabeledLine
+                      leftLabel={capitalizeFirstLetter(component.type)}
+                    />
+                    <button
+                      className={
+                        component.state === "exhausted" ||
+                        component.state === "used"
+                          ? "faded"
+                          : ""
+                      }
+                      onClick={() => selectComponent(component.id)}
                     >
-                      <button
-                        className={
-                          component.state === "exhausted" ||
-                          component.state === "used"
-                            ? "faded"
-                            : ""
-                        }
-                        onClick={() => selectComponent(component.id)}
-                      >
-                        {component.name}
-                      </button>
-                    </LabeledDiv>
+                      {component.name}
+                    </button>
                   </div>
                 );
               }
@@ -1135,6 +1138,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
+    case "Riftwalker Meian": {
+      innerContent = <RiftwalkerMeian />;
+      break;
+    }
     case "Z'eu": {
       const factionPicked = getSelectedFaction(currentTurn);
       const selectedFaction =
@@ -1468,7 +1475,20 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           tileNumbers.push(i.toString());
         }
       }
-      const alreadyUsed = wereTilesSwapped(actionLog);
+      let mallice;
+      if (options.expansions.includes("POK")) {
+        const malliceObj = planets["Mallice"];
+        if (options.mallice) {
+          mallice = options.mallice;
+        } else if (!malliceObj) {
+          mallice = "PURGED";
+        } else if (malliceObj.owner) {
+          mallice = "B";
+        } else {
+          mallice = "A";
+        }
+      }
+      const alreadyUsed = wereTilesSwapped(getCurrentTurnLogEntries(actionLog));
       leftLabel = alreadyUsed ? "Updated Map" : "Add System";
       innerContent = alreadyUsed ? (
         <div style={{ position: "relative", width: "100%", aspectRatio: 1 }}>
@@ -1477,6 +1497,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             mapStyle={options["map-style"]}
             factions={mapOrderedFactions}
             hideLegend
+            mallice={mallice}
           />
         </div>
       ) : (
@@ -1490,6 +1511,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 }}
                 dropOnly
                 exploration
+                mallice={mallice}
               ></MapBuilder>
             </div>
             <LabeledDiv
@@ -1784,4 +1806,110 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   );
 
   return null;
+}
+
+function RiftwalkerMeian() {
+  const gameId = useContext(GameIdContext);
+  const actionLog = useActionLog();
+  const factions = useFactions();
+  const leaders = useLeaders();
+  const options = useOptions();
+  const planets = usePlanets();
+  const systems = useSystems();
+
+  let mallice;
+  if (options.expansions.includes("POK")) {
+    const malliceObj = planets["Mallice"];
+    if (options.mallice) {
+      mallice = options.mallice;
+    } else if (!malliceObj) {
+      mallice = "PURGED";
+    } else if (malliceObj.owner) {
+      mallice = "B";
+    } else {
+      mallice = "A";
+    }
+  }
+  console.log("Mallice", mallice);
+
+  const mapString = options["map-string"];
+  if (!mapString) {
+    return null;
+  }
+
+  const riftwalkerMeian = leaders["Riftwalker Meian"];
+  if (!riftwalkerMeian) {
+    return null;
+  }
+
+  const mapOrderedFactions = Object.values(factions).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
+  let updatedMapString = updateMapString(
+    mapString,
+    options["map-style"],
+    mapOrderedFactions.length
+  );
+  let updatedSystemTiles = updatedMapString.split(" ");
+  updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
+    const updatedTile = updatedSystemTiles[index];
+    if (tile === "0" && updatedTile && updatedTile !== "0") {
+      const parsedTile = parseInt(updatedTile);
+      if (parsedTile > 4200) {
+        return (parsedTile - 3200).toString();
+      }
+      return updatedTile;
+    }
+    if (tile.startsWith("P")) {
+      const number = tile.at(tile.length - 1);
+      if (!number) {
+        return tile;
+      }
+      const factionIndex = parseInt(number);
+      return getFactionSystemNumber(mapOrderedFactions[factionIndex - 1]);
+    }
+    return tile;
+  });
+  updatedMapString = updatedSystemTiles.join(" ");
+  const alreadyUsed = wereTilesSwapped(getCurrentTurnLogEntries(actionLog));
+  if (alreadyUsed) {
+    return (
+      <div style={{ position: "relative", width: "100%", aspectRatio: 1 }}>
+        <Map
+          mapString={mapString}
+          mapStyle={options["map-style"]}
+          factions={mapOrderedFactions}
+          mallice={mallice}
+          hideLegend
+        />
+      </div>
+    );
+  }
+  return (
+    <div
+      className="flexColumn"
+      style={{ width: rem(320), height: rem(320), marginBottom: rem(16) }}
+    >
+      <div style={{ position: "relative", width: "100%" }}>
+        <DndProvider backend={HTML5Backend}>
+          <div style={{ width: "100%", aspectRatio: 1 }}>
+            <MapBuilder
+              mapString={updatedMapString}
+              updateMapString={(dragItem, dropItem) => {
+                if (dragItem.index === dropItem.index) {
+                  return;
+                }
+                console.log(dragItem.index);
+                swapMapTilesAsync(gameId, dropItem, dragItem);
+              }}
+              riftWalker
+              mallice={
+                mallice === "PURGED" || mallice === "81" ? mallice : undefined
+              }
+            ></MapBuilder>
+          </div>
+        </DndProvider>
+      </div>
+    </div>
+  );
 }

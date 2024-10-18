@@ -335,7 +335,8 @@ export default function SystemSelect({
     mapStyle,
     factions.length
   );
-  const shouldAddMecatol = !updatedMapString.includes(" 18 ");
+  const shouldAddMecatol =
+    !updatedMapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = updatedMapString.split(" ");
   if (shouldAddMecatol) {
     updatedSystemTiles.unshift("18");
