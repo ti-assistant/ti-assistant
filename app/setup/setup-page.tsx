@@ -468,7 +468,7 @@ function Options({
           );
         })}
       </div>
-      {/* <div className="flexRow" style={{ alignItems: "flex-start" }}>
+      <div className="flexRow">
         <FormattedMessage
           id="R06tnh"
           description="A label for a selector specifying the number of victory points required."
@@ -482,7 +482,11 @@ function Options({
         />
         {options["game-variant"] === "alliance-separate" ? (
           <>
-            &
+            <FormattedMessage
+              id="+WkrHz"
+              description="Text between two fields linking them together."
+              defaultMessage="AND"
+            />
             <NumberInput
               value={options["secondary-victory-points"]}
               onChange={(newVal) =>
@@ -492,7 +496,7 @@ function Options({
             />
           </>
         ) : null}
-      </div> */}
+      </div>
       <ClientOnlyHoverMenu
         label={
           <FormattedMessage
@@ -510,35 +514,6 @@ function Options({
               padding: `${rem(8)} ${rem(16)} 0 ${rem(16)}`,
             }}
           >
-            <div className="flexRow" style={{ alignItems: "flex-start" }}>
-              <FormattedMessage
-                id="R06tnh"
-                description="A label for a selector specifying the number of victory points required."
-                defaultMessage="Victory Points"
-              />
-              :
-              <NumberInput
-                value={options["victory-points"]}
-                onChange={(newVal) => toggleOption(newVal, "victory-points")}
-                minValue={0}
-              />
-              {options["game-variant"] === "alliance-separate" ? (
-                <>
-                  <FormattedMessage
-                    id="+WkrHz"
-                    description="Text between two fields linking them together."
-                    defaultMessage="AND"
-                  />
-                  <NumberInput
-                    value={options["secondary-victory-points"]}
-                    onChange={(newVal) =>
-                      toggleOption(newVal, "secondary-victory-points")
-                    }
-                    minValue={0}
-                  />
-                </>
-              ) : null}
-            </div>
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
               <FormattedMessage
                 id="2jNcVD"
@@ -1531,7 +1506,7 @@ export default function SetupPage({
     switch (numFactions) {
       case 3:
         return `"opt top rand"
-        ${gapLine}
+        "opt map ."
         ${gapLine}
         "left-top map right-top"
         ${gapLine}
@@ -1542,7 +1517,7 @@ export default function SetupPage({
       case 4:
         if (options["map-style"] === "standard") {
           return `"opt top rand"
-        ${gapLine}
+              "opt map ."
               ${gapLine}
               ". map right-top"
               "left-top map right-top"
@@ -1554,7 +1529,7 @@ export default function SetupPage({
       case 5:
       case 6:
         return `"opt top rand"
-        ${gapLine}
+        "opt map ."
         ${gapLine}
         "left-top map right-top"
         ${gapLine}
@@ -1564,7 +1539,7 @@ export default function SetupPage({
       case 7:
         if (options["map-style"] === "warp") {
           return `"opt top rand"
-          ${gapLine}
+          "opt map ."
           "left-top map ."
           "left-top map right-top"
           "left-mid map right-top"
@@ -1576,7 +1551,7 @@ export default function SetupPage({
       // Fall-through
       case 8:
         return `"opt top rand"
-        ${gapLine}
+        "opt map ."
         "left-top map right-top"
         "left-mid map right-mid"
         "left-bot map right-bot"
@@ -1609,7 +1584,8 @@ export default function SetupPage({
           className="flexColumn"
           style={{
             height: "100%",
-            justifyContent: "center",
+            justifyContent: "flex-start",
+            paddingTop: rem(16),
             gridArea: "opt",
             minHeight: rem(114),
           }}
@@ -1793,7 +1769,16 @@ export default function SetupPage({
           </div>
         ) : null}
         {/* Randomize Section */}
-        <div className="flexColumn" style={{ gridArea: "rand" }}>
+        <div
+          className="flexColumn"
+          style={{
+            gridArea: "rand",
+            justifyContent: "flex-start",
+            height: "100%",
+            paddingTop: rem(16),
+            minHeight: rem(114),
+          }}
+        >
           <LabeledDiv
             label={
               <FormattedMessage
