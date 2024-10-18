@@ -202,7 +202,7 @@ export default function StartingComponents({
                 }
                 style={{
                   color: getTechColor(tech),
-                  fontSize: rem(14),
+                  fontSize: "14px",
                   whiteSpace: "nowrap",
                   fontFamily: "Myriad Pro",
                 }}

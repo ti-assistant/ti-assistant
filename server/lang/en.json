@@ -5959,6 +5959,10 @@
     "defaultMessage": "Select Component",
     "description": "Text on a hover menu for selecting a component action."
   },
+  "n8jSwp": {
+    "defaultMessage": "None",
+    "description": "Text on a button that will show no overlay."
+  },
   "nYgb4V": {
     "defaultMessage": "Non-Faction",
     "description": "Techs that are not specific to any faction."

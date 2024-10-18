@@ -22,6 +22,7 @@ import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
 import { rem } from "../../util/util";
+import Chip from "../Chip/Chip";
 
 interface Cube {
   q: number;
@@ -856,7 +857,7 @@ export default function Map({
   return (
     <div className={styles.Map}>
       {gameId && !hideLegend ? (
-        <div className={styles.Legend}>
+        <div className={styles.Legend} onClick={(e) => e.stopPropagation()}>
           <LabeledDiv
             label={
               <FormattedMessage
@@ -874,64 +875,61 @@ export default function Map({
             }}
           >
             <div className={styles.LegendContent}>
-              <button
-                className={showDetails === "OWNERS" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue = showDetails === "OWNERS" ? "NONE" : "OWNERS";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              <Chip
+                fontSize={16}
+                selected={showDetails === "NONE"}
+                toggleFn={() => setShowDetails("NONE")}
+              >
+                <FormattedMessage
+                  id="n8jSwp"
+                  description="Text on a button that will show no overlay."
+                  defaultMessage="None"
+                />
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "OWNERS"}
+                toggleFn={() => setShowDetails("OWNERS")}
               >
                 <FormattedMessage
                   id="FhKQXR"
                   description="Text on a button that will show planet ownership."
                   defaultMessage="Owners"
                 />
-              </button>
-              <button
-                className={showDetails === "TYPES" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue = showDetails === "TYPES" ? "NONE" : "TYPES";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "TYPES"}
+                toggleFn={() => setShowDetails("TYPES")}
               >
                 <FormattedMessage
                   id="wDLqxZ"
                   description="Text on a button that will show planet types."
                   defaultMessage="Types"
                 />
-              </button>
-              <button
-                className={showDetails === "TECH_SKIPS" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue =
-                    showDetails === "TECH_SKIPS" ? "NONE" : "TECH_SKIPS";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "TECH_SKIPS"}
+                toggleFn={() => setShowDetails("TECH_SKIPS")}
               >
                 <FormattedMessage
                   id="j3n7Nr"
                   description="Text on a button that will show planets with tech skips."
                   defaultMessage="Tech Skips"
                 />
-              </button>
-              <button
-                className={showDetails === "ATTACHMENTS" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue =
-                    showDetails === "ATTACHMENTS" ? "NONE" : "ATTACHMENTS";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "ATTACHMENTS"}
+                toggleFn={() => setShowDetails("ATTACHMENTS")}
               >
                 <FormattedMessage
                   id="1odgd1"
                   description="Text on a button that will show planet attachments."
                   defaultMessage="Attachments"
                 />
-              </button>
+              </Chip>
             </div>
           </LabeledDiv>
         </div>
