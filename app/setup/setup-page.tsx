@@ -635,79 +635,6 @@ function Options({
                 </div>
               </div>
             </div>
-            <div style={{ width: "100%" }}>
-              <FormattedMessage
-                id="46dzNs"
-                description="A label for a section of options related to the map."
-                defaultMessage="Map:"
-              />
-              <div
-                className="flexColumn"
-                style={{
-                  fontFamily: "Myriad Pro",
-                  padding: `${rem(8)} ${rem(16)}`,
-                  alignItems: "flex-start",
-                }}
-              >
-                {mapStyles.length > 1 ? (
-                  <React.Fragment>
-                    <FormattedMessage
-                      id="ZZ/Lhe"
-                      description="A label for a selector for selecting which map style to use."
-                      defaultMessage="Map Type:"
-                    />
-                    <div
-                      className="flexRow"
-                      style={{ paddingLeft: rem(16), gap: rem(4) }}
-                    >
-                      {mapStyles.map((style) => {
-                        return (
-                          <Chip
-                            key={style}
-                            selected={options["map-style"] === style}
-                            toggleFn={() => toggleOption(style, "map-style")}
-                          >
-                            {mapStyleString(style, intl)}
-                          </Chip>
-                        );
-                      })}
-                    </div>
-                  </React.Fragment>
-                ) : null}
-                <div
-                  className="flexRow"
-                  style={{
-                    gap: 0,
-                    width: "100%",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <FormattedMessage
-                    id="UJSVtn"
-                    description="Label for a textbox used to specify the map string."
-                    defaultMessage="Map String"
-                  />
-                  <span className="smallFont" style={{ paddingLeft: rem(4) }}>
-                    <FormattedMessage
-                      id="zjv9Gr"
-                      description="Part of a label explaining what the map string does."
-                      defaultMessage="(filters out non-claimable planets)"
-                    />
-                  </span>
-                  :
-                </div>
-                <input
-                  ref={mapStringRef}
-                  type="textbox"
-                  pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
-                  className="mediumFont"
-                  style={{ width: "100%" }}
-                  onChange={(event) =>
-                    toggleOption(event.target.value, "map-string")
-                  }
-                ></input>
-              </div>
-            </div>
             <div>
               Scenarios:
               <div
@@ -1605,6 +1532,7 @@ export default function SetupPage({
       case 3:
         return `"opt top rand"
         ${gapLine}
+        ${gapLine}
         "left-top map right-top"
         ${gapLine}
         ${gapLine}
@@ -1614,6 +1542,7 @@ export default function SetupPage({
       case 4:
         if (options["map-style"] === "standard") {
           return `"opt top rand"
+        ${gapLine}
               ${gapLine}
               ". map right-top"
               "left-top map right-top"
@@ -1626,6 +1555,7 @@ export default function SetupPage({
       case 6:
         return `"opt top rand"
         ${gapLine}
+        ${gapLine}
         "left-top map right-top"
         ${gapLine}
         "left-mid map right-mid"
@@ -1634,6 +1564,7 @@ export default function SetupPage({
       case 7:
         if (options["map-style"] === "warp") {
           return `"opt top rand"
+          ${gapLine}
           "left-top map ."
           "left-top map right-top"
           "left-mid map right-top"
@@ -1645,6 +1576,7 @@ export default function SetupPage({
       // Fall-through
       case 8:
         return `"opt top rand"
+        ${gapLine}
         "left-top map right-top"
         "left-mid map right-mid"
         "left-bot map right-bot"
@@ -1767,7 +1699,7 @@ export default function SetupPage({
             flexShrink: 0,
             flexGrow: 0,
             position: "relative",
-            width: rem(350),
+            width: rem(360),
             aspectRatio: 1,
             gridArea: "map",
           }}
