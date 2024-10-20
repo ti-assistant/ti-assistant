@@ -1,7 +1,7 @@
 .Modal {
   position: fixed;
   left: 0;
-  top: 0px;
+  top: 0;
   width: 100vw;
   height: 100dvh;
 
@@ -26,7 +26,7 @@
   background-color: #222;
   max-width: 85%;
   max-height: 90vh;
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 .Modal .Header {
@@ -35,23 +35,23 @@
   justify-content: flex-start;
   align-items: center;
 
-  padding: 4px 36px 4px 36px;
+  padding: 0.25rem 2.25rem;
   border-bottom: 1px solid grey;
 }
 
 .Modal .CloseButton {
   color: grey;
   cursor: pointer;
-  font-size: 20px;
-  margin-left: 6px;
+  font-size: 1.25rem;
+  margin-left: 0.375rem;
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 0.25rem;
+  left: 0.25rem;
 }
 
 .Modal .Title {
   text-align: center;
-  font-size: 40px;
+  font-size: 2.5rem;
 }
 
 .Modal .Body {
@@ -60,7 +60,7 @@
   justify-content: center;
   align-items: flex-start;
 
-  padding: 0 4px 4px 4px;
+  padding: 0 0.25rem 0.25rem 0.25rem;
 }
 
 :global(.hoverInfo):has(.Modal.shown) {

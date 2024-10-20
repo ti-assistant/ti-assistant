@@ -9,7 +9,7 @@
   z-index: 1000;
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 37.5rem) {
   .hoverMenu {
     flex-direction: column;
     clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
@@ -17,29 +17,18 @@
 }
 
 .hoverRadial {
-  // background-color: #222;
-  // overflow: visible;
   position: absolute;
   top: 0;
   left: 0;
-  // padding-left: calc(var(--size) * 1px);
-  // padding-top: calc(var(--size) * 1px);
   justify-content: flex-start;
   white-space: nowrap;
   z-index: 1;
-  // width: var(--size)px;
-  // height: var(--size)px;
   top: calc(var(--size) * -1);
   left: calc(var(--size) * -1);
   width: calc(var(--size) * 3);
   height: calc(var(--size) * 3);
-  // clip-path: circle(0%);
   clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
   transition: clip-path 200ms;
-  // transform-origin: 50% 50%;
-  // overflow: hidden;
-  // width: 96px;
-  // height: 96px;
 }
 
 .hoverBackground {
@@ -51,15 +40,12 @@
   left: 0;
   width: calc(var(--size) * 1);
   height: calc(var(--size) * 1);
-  // z-index: -1;
   transition: top 100ms linear, left 100ms linear, width 100ms linear,
     height 100ms linear, opacity 0ms linear 100ms;
   opacity: 0;
 }
 
 :global(.hoverParent.hover) > .hoverRadial {
-  // clip-path: circle(100%);
-  // clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
   top: calc(var(--size) * -1);
   left: calc(var(--size) * -1);
   width: calc(var(--size) * 3);
@@ -77,7 +63,7 @@
   transition: top 250ms, left 250ms, width 250ms, height 250ms;
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 37.5rem) {
   .hoverMenu {
     flex-direction: column;
     clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
@@ -104,11 +90,6 @@
   cursor: pointer;
   border-radius: 100%;
   transition: top 250ms, left 250ms, opacity 150ms;
-  // z-index: -2;
-  // top: var(--size);
-  // left: var(--size);
-  // top: calc(var(--y-pos) * 1);
-  // left: calc(var(--x-pos) * 1);
   top: calc(var(--initial-y) * 1);
   left: calc(var(--initial-x) * 1);
   opacity: 0;

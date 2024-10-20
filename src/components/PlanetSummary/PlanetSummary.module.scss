@@ -3,28 +3,28 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 0.125rem;
 
   position: relative;
 }
 
 .ResourceSection {
   position: relative;
-  width: 50px;
-  height: 56px;
-  padding-bottom: 2px;
+  width: 3.125rem;
+  height: 3.5rem;
+  padding-bottom: 0.125rem;
 
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .PlanetTotal {
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 1.875rem;
+  height: 1.875rem;
   top: 0;
   right: 0;
   z-index: -1;
@@ -37,7 +37,7 @@
   align-items: center;
   gap: 0;
 
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .CountSection {
@@ -45,13 +45,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .PlanetTypeGrid {
   display: grid;
-  font-size: 14px;
-  gap: 4px;
+  font-size: 1rem;
+  column-gap: 0.25rem;
+  row-gap: 0.125rem;
   grid-template-columns: repeat(2, 1fr);
   justify-items: center;
   align-items: center;
@@ -62,9 +63,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 20px;
-  line-height: 16px;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1rem;
 }
 
 .centered {

@@ -13,6 +13,7 @@ import { getPlayedRelic } from "../../util/actionLog";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import { rem } from "../../util/util";
 
 export default function CrownOfEmphidia({}) {
   const gameId = useContext(GameIdContext);
@@ -64,8 +65,8 @@ export default function CrownOfEmphidia({}) {
           className="flexRow hiddenButtonParent"
           style={{
             position: "relative",
-            width: "32px",
-            height: "32px",
+            width: rem(32),
+            height: rem(32),
           }}
         >
           <FactionIcon factionId={crownOfEmphidia.owner} size="100%" />
@@ -79,8 +80,8 @@ export default function CrownOfEmphidia({}) {
               marginLeft: "60%",
               marginTop: "60%",
               boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-              width: "20px",
-              height: "20px",
+              width: rem(20),
+              height: rem(20),
               zIndex: 2,
               color: wasPlayedThisTurn ? "green" : "red",
             }}
@@ -103,8 +104,8 @@ export default function CrownOfEmphidia({}) {
               <div
                 className="symbol"
                 style={{
-                  fontSize: "18px",
-                  lineHeight: "18px",
+                  fontSize: rem(18),
+                  lineHeight: rem(18),
                 }}
               >
                 ✓

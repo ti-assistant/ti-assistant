@@ -7,8 +7,8 @@
 
 .UpdateBox {
   position: fixed;
-  bottom: 16px;
-  left: 96px;
+  bottom: 1rem;
+  left: 4rem;
 
   z-index: 1;
 }
@@ -22,15 +22,15 @@
   display: none;
 }
 
-@media only screen and (max-width: 1279px) {
+@media only screen and (max-width: 75rem) {
   .UpdateBox {
-    left: 64px;
+    left: 4rem;
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 56.25rem) {
   .UpdateBox {
-    left: 16px;
+    left: 1rem;
   }
 
   .FactionBox {
@@ -38,12 +38,12 @@
     display: flex;
     z-index: 1;
 
-    right: 16px;
-    bottom: 16px;
+    right: 1rem;
+    bottom: 1rem;
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 37.5rem) {
   .UpdateBox {
     display: none;
   }
@@ -54,10 +54,10 @@
 
   .MobileMenuButton {
     position: fixed;
-    left: 16px;
-    bottom: 16px;
+    left: 1rem;
+    bottom: 1rem;
 
-    width: 48px;
+    width: 3rem;
     aspect-ratio: 1;
     padding: 0;
 
@@ -65,7 +65,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 0.25rem;
     border-radius: 100%;
 
     z-index: 1;
@@ -73,31 +73,31 @@
   }
 
   .MenuBar {
-    height: 4px;
-    width: 24px;
+    height: 0.25rem;
+    width: 1.5rem;
     background-color: #eee;
 
-    border-radius: 4px;
+    border-radius: 0.25rem;
   }
 
   .MobileMenu {
     position: fixed;
-    left: 12px;
-    bottom: 16px;
+    left: 0.75rem;
+    bottom: 1rem;
 
-    padding: 8px;
+    padding: 0.5rem;
 
     display: flex;
     opacity: 0;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 8px;
+    gap: 0.5rem;
     pointer-events: none;
 
     z-index: 0;
-    backdrop-filter: blur(8px);
-    border-radius: 8px;
+    backdrop-filter: blur(0.5rem);
+    border-radius: 0.5rem;
     border: 2px solid #222;
 
     transition: bottom 400ms, opacity 400ms;
@@ -105,7 +105,7 @@
 
   .MobileMenu.shown {
     opacity: 1;
-    bottom: 70px;
+    bottom: 4.375rem;
     pointer-events: auto;
 
     transition: bottom 400ms, opacity 100ms;
@@ -120,11 +120,11 @@
     align-items: center;
     gap: 0;
 
-    width: 30px;
+    width: 1.875rem;
     aspect-ratio: 1;
     border-radius: 100%;
     border: none;
-    padding: 3px;
+    padding: 0.1875rem;
     -webkit-tap-highlight-color: transparent;
   }
 }

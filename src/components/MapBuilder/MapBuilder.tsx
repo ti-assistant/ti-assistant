@@ -2,8 +2,9 @@ import NextImage from "next/image";
 import { useDrag, useDrop } from "react-dnd";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
 import { isHomeSystem, validSystemNumber } from "../../util/map";
-import styles from "./MapBuilder.module.scss";
 import { Optional } from "../../util/types/types";
+import styles from "./MapBuilder.module.scss";
+import { rem } from "../../util/util";
 
 interface Cube {
   q: number;
@@ -175,7 +176,7 @@ export function SystemImage({
           src={Hexagon}
           alt={`System ${systemNumber} Tile`}
           fill
-          sizes="128px"
+          sizes={rem(128)}
           style={{
             opacity: "10%",
             objectFit: "contain",
@@ -188,8 +189,8 @@ export function SystemImage({
             style={{
               borderRadius: "100%",
               position: "absolute",
-              width: "4px",
-              height: "4px",
+              width: rem(4),
+              height: rem(4),
               backgroundColor: "white",
               boxShadow: "0 0 8px 8px white",
             }}
@@ -221,7 +222,7 @@ export function SystemImage({
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
-            sizes="128px"
+            sizes={rem(128)}
             style={{ objectFit: "contain" }}
           />
         </div>
@@ -241,7 +242,7 @@ export function SystemImage({
           src={Hexagon}
           alt={`System Tile`}
           fill
-          sizes="128px"
+          sizes={rem(128)}
           style={{ opacity: "10%", objectFit: "contain" }}
           priority
         />
@@ -250,8 +251,8 @@ export function SystemImage({
             style={{
               borderRadius: "100%",
               position: "absolute",
-              width: "4px",
-              height: "4px",
+              width: rem(4),
+              height: rem(4),
               backgroundColor: "white",
               boxShadow: "0 0 8px 8px white",
             }}
@@ -275,7 +276,7 @@ export function SystemImage({
         <NextImage
           src={`/images/systems/ST_92.png`}
           alt={`Player Home System`}
-          sizes="128px"
+          sizes={rem(128)}
           fill
           style={{ objectFit: "contain" }}
           priority
@@ -286,7 +287,7 @@ export function SystemImage({
             width: "100%",
             height: "100%",
             position: "absolute",
-            fontSize: "28px",
+            fontSize: rem(28),
             textShadow: "0 0 4px black, 0 0 4px black",
           }}
         >
@@ -297,8 +298,8 @@ export function SystemImage({
             style={{
               borderRadius: "100%",
               position: "absolute",
-              width: "4px",
-              height: "4px",
+              width: rem(4),
+              height: rem(4),
               backgroundColor: "white",
               boxShadow: "0 0 8px 8px white",
             }}
@@ -338,7 +339,7 @@ export function SystemImage({
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         fill
-        sizes="128px"
+        sizes={rem(128)}
         style={{ objectFit: "contain" }}
         priority={systemNumber === "18"}
       />
@@ -349,7 +350,7 @@ export function SystemImage({
           height: "60%",
           top: 0,
           position: "absolute",
-          fontSize: "18px",
+          fontSize: rem(18),
           textShadow: "0 0 4px black, 0 0 4px black",
         }}
       >
@@ -360,8 +361,8 @@ export function SystemImage({
           style={{
             borderRadius: "100%",
             position: "absolute",
-            width: "4px",
-            height: "4px",
+            width: rem(4),
+            height: rem(4),
             backgroundColor: "white",
             boxShadow: "0 0 8px 8px white",
           }}
@@ -374,18 +375,22 @@ export function SystemImage({
 interface MapProps {
   mapString: string;
   updateMapString: (dragItem: any, dropItem: any) => void;
+  mallice?: string | SystemId;
 
   dropOnly?: boolean;
   exploration?: boolean;
+  riftWalker?: boolean;
 }
 
 export default function MapBuilder({
   mapString,
   updateMapString,
+  mallice,
   dropOnly,
   exploration,
+  riftWalker,
 }: MapProps) {
-  const shouldAddMecatol = !mapString.includes(" 18 ");
+  const shouldAddMecatol = !mapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = mapString.split(" ");
   if (shouldAddMecatol) {
     updatedSystemTiles.unshift("18");
@@ -406,7 +411,9 @@ export default function MapBuilder({
   const largestDimension = numRings * 2 - 1;
   const tilePercentage = 98 / largestDimension;
 
-  numRings += 1;
+  if (!riftWalker) {
+    numRings += 1;
+  }
 
   const spiral = cubeSpiral(Cube(0, 0, 0), numRings);
 
@@ -418,6 +425,9 @@ export default function MapBuilder({
           let tile = updatedSystemTiles[index];
           if (!tile) {
             tile = "-1";
+          }
+          if (riftWalker && tile === "-1") {
+            return null;
           }
           let canDrop = true;
           if (exploration) {
@@ -467,7 +477,46 @@ export default function MapBuilder({
             </div>
           );
         })}
+        {mallice ? (
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              bottom: 0,
+              width: `${tilePercentage * HEX_RATIO}%`,
+              height: `${tilePercentage * HEX_RATIO}%`,
+            }}
+          >
+            <SystemImage
+              index={-2}
+              systemNumber={getMalliceSystemNum(mallice)}
+              blockDrag={
+                !riftWalker || (mallice !== "PURGED" && mallice !== "81")
+              }
+              onDrop={
+                !riftWalker || (mallice !== "PURGED" && mallice !== "81")
+                  ? undefined
+                  : (dragItem, dropItem) => {
+                      updateMapString(dragItem, dropItem);
+                    }
+              }
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );
+}
+
+function getMalliceSystemNum(mallice: string | SystemId) {
+  if (mallice === "PURGED") {
+    return "81";
+  }
+  if (mallice === "A") {
+    return "82A";
+  }
+  if (mallice === "B") {
+    return "82B";
+  }
+  return (mallice as SystemId).toString();
 }

@@ -6,6 +6,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import { useFactions } from "../../context/dataHooks";
+import { rem } from "../../util/util";
 
 interface StrategyCardProps {
   active?: boolean;
@@ -36,7 +37,7 @@ export function StrategyCardElement({
   const strategyCardElementCSS: StrategyCardElementCSS = {
     "--color": color,
     "--text-color": textColor,
-    fontSize: `${fontSize}px`,
+    fontSize: rem(fontSize),
     cursor: onClick ? "pointer" : "auto",
     backgroundColor: active ? undefined : "#222",
   };
@@ -46,19 +47,10 @@ export function StrategyCardElement({
       onClick={onClick}
       style={strategyCardElementCSS}
     >
-      {/* <div
-        className="flexRow"
-        style={{
-          width: "100%",
-          padding: `${"4px"} $["4px"} ${"4px"} 0`,
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      > */}
       <div
         className={styles.Number}
         style={{
-          fontSize: `${fontSize + 8}px`,
+          fontSize: rem(fontSize + 8),
         }}
       >
         {card.order}
@@ -71,8 +63,8 @@ export function StrategyCardElement({
             style={{
               whiteSpace: "nowrap",
               gridColumn: "3 / 5",
-              paddingLeft: "4px",
-              paddingRight: "3px",
+              paddingLeft: rem(4),
+              paddingRight: rem(3),
             }}
           >
             <FactionTile faction={faction} fontSize={16} iconSize={32} />
@@ -102,18 +94,18 @@ export function StrategyCardElement({
               className="flexRow"
               style={{
                 justifyContent: "flex-end",
-                padding: `0 ${"16px"}`,
+                padding: `0 ${rem(16)}`,
                 color: "#efe383",
-                gap: "4px",
+                gap: rem(4),
               }}
             >
-              <div className="centered" style={{ width: "20px" }}>
+              <div className="centered" style={{ width: rem(20) }}>
                 {card.tradeGoods}
               </div>
               <div
                 style={{
-                  width: "22px",
-                  height: "23px",
+                  width: rem(22),
+                  height: rem(23),
                   position: "relative",
                 }}
               >
@@ -130,9 +122,9 @@ export function StrategyCardElement({
               className="flexRow"
               style={{
                 flexShrink: 0,
-                height: "4px",
-                width: "40px",
-                padding: `0 ${"16px"}`,
+                height: rem(4),
+                width: rem(40),
+                padding: `0 ${rem(16)}`,
               }}
             ></div>
           )}
@@ -140,80 +132,5 @@ export function StrategyCardElement({
       )}
     </div>
     // </div>
-  );
-}
-
-interface SmallStrategyCardProps {
-  // card: StrategyCard;
-  cards: StrategyCard[];
-  // active?: boolean;
-}
-
-export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
-  const factions = useFactions();
-
-  if (!cards[0]) {
-    return null;
-  }
-
-  const initiative = cards.reduce(
-    (lowestInitiative, card) => Math.min(lowestInitiative, card.order),
-    Number.MAX_SAFE_INTEGER
-  );
-
-  const faction =
-    cards[0] && cards[0].faction && factions
-      ? factions[cards[0].faction]
-      : undefined;
-
-  const height = cards.length === 1 ? "54px" : "auto";
-
-  const borderColor = !faction?.passed ? getFactionColor(faction) : "#555";
-  return (
-    <LabeledDiv
-      label={getFactionName(faction)}
-      color={borderColor}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        fontSize: "24px",
-        height: height,
-      }}
-    >
-      <div
-        className="flexRow"
-        style={{
-          padding: `${"4px"} ${"4px"} ${"4px"} 0`,
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            flexBasis: "14%",
-            minWidth: "32px",
-            fontSize: "32px",
-            display: "flex",
-            justifyContent: "center",
-            color: faction?.passed ? "#555" : "#eee",
-          }}
-        >
-          {initiative}
-        </div>
-        <div
-          className="flexColumn"
-          style={{ flexBasis: "40%", alignItems: "flex-start" }}
-        >
-          {cards.map((card) => {
-            const textColor = !card.used ? "#eee" : "#555";
-            return (
-              <div key={card.id} style={{ color: textColor }}>
-                {card.name}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </LabeledDiv>
   );
 }

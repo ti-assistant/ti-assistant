@@ -6,6 +6,7 @@ import PlanetIcon from "./components/PlanetIcon/PlanetIcon";
 import ResourcesIcon from "./components/ResourcesIcon/ResourcesIcon";
 import { GameIdContext } from "./context/Context";
 import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
+import { rem } from "./util/util";
 
 interface AttachRowProps {
   attachment: Attachment;
@@ -35,17 +36,17 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
       className="flexRow"
       style={{
         width: "100%",
-        height: "72px",
+        height: rem(72),
         justifyContent: "flex-start",
-        fontSize: "14px",
+        fontSize: rem(14),
         position: "relative",
-        gap: "4px",
+        gap: rem(4),
         whiteSpace: "nowrap",
       }}
     >
       <div style={{ flexBasis: "60%" }}>
         <button
-          style={{ fontSize: "14px" }}
+          style={{ fontSize: rem(14) }}
           onClick={toggleAttachment}
           className={
             (planet.attachments ?? []).includes(attachment.id) ? "selected" : ""
@@ -60,7 +61,7 @@ export function AttachRow({ attachment, planet }: AttachRowProps) {
         height={50}
       />
       {isSkip() ? (
-        <div style={{ marginRight: "6px" }}>
+        <div style={{ marginRight: rem(6) }}>
           <FormattedMessage
             id="PnNSxg"
             description="Text between two fields linking them together."
@@ -153,8 +154,8 @@ function PlanetAttributes({
         return (
           <div
             style={{
-              width: "36px",
-              height: "22px",
+              width: rem(36),
+              height: rem(22),
             }}
           >
             ✹✹✹
@@ -173,9 +174,9 @@ function PlanetAttributes({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        width: "36px",
+        width: rem(36),
         flexWrap: "wrap",
-        gap: "4px",
+        gap: rem(4),
       }}
     >
       {attributes.map((attribute, index) => {
@@ -183,8 +184,8 @@ function PlanetAttributes({
           <div
             key={index}
             style={{
-              width: "16px",
-              height: "16px",
+              width: rem(16),
+              height: rem(16),
               position: "relative",
             }}
           >

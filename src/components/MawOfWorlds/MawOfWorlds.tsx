@@ -12,10 +12,11 @@ import { TechRow } from "../../TechRow";
 import { getPlayedRelic } from "../../util/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
+import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
-import { Optional } from "../../util/types/types";
 
 export default function MawOfWorlds({}) {
   const intl = useIntl();
@@ -63,7 +64,7 @@ export default function MawOfWorlds({}) {
         }
         color={getFactionColor(owner)}
         noBlur
-        style={{ fontSize: "14px" }}
+        style={{ fontSize: rem(14) }}
       >
         <TechRow
           tech={tech}

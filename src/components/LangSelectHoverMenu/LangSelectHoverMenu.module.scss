@@ -1,0 +1,117 @@
+.hoverMenu {
+  background-color: #222;
+  overflow: visible;
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: flex-start;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+@media only screen and (max-width: 37.5rem) {
+  .hoverMenu {
+    flex-direction: column;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+  }
+}
+
+.hoverRadial {
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: flex-start;
+  white-space: nowrap;
+  z-index: 1;
+  top: calc(var(--size) * -1);
+  left: calc(var(--size) * -1);
+  width: calc(var(--size) * 3);
+  height: calc(var(--size) * 3);
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  transition: clip-path 200ms;
+}
+
+.hoverBackground {
+  position: absolute;
+  border-radius: 100%;
+  border: 1px solid var(--border-color);
+  background-color: #222;
+  top: 0;
+  left: 0;
+  width: calc(var(--size) * 1);
+  height: calc(var(--size) * 1);
+  transition: top 100ms linear, left 100ms linear, width 100ms linear,
+    height 100ms linear, opacity 0ms linear 100ms;
+  opacity: 0;
+}
+
+:global(.hoverParent.hover) > .hoverRadial {
+  top: calc(var(--size) * -1);
+  left: calc(var(--size) * -1);
+  width: calc(var(--size) * 3);
+  height: calc(var(--size) * 3);
+  padding-left: 0;
+  padding-top: 0;
+}
+
+:global(.hoverParent.hover) > .hoverBackground {
+  top: calc(var(--size) * -1);
+  left: calc(var(--size) * -1);
+  width: calc(var(--size) * 3);
+  height: calc(var(--size) * 3);
+  opacity: 1;
+  transition: top 250ms, left 250ms, width 250ms, height 250ms;
+}
+
+@media only screen and (max-width: 37.5rem) {
+  .hoverMenu {
+    flex-direction: column;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+  }
+}
+
+.faded {
+  opacity: 0.25;
+}
+
+.tag {
+  position: absolute;
+  background-color: #222;
+  border-radius: 100%;
+  margin-top: 58%;
+  margin-left: 60%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.factionSelect {
+  position: relative;
+  cursor: pointer;
+  border-radius: 100%;
+  transition: top 250ms, left 250ms, opacity 150ms;
+  top: calc(var(--initial-y) * 1);
+  left: calc(var(--initial-x) * 1);
+  opacity: 0;
+}
+
+.oldFactionSelect {
+  position: relative;
+  cursor: pointer;
+  border-radius: 100%;
+}
+
+:global(.hoverParent.hover) > .hoverRadio > .factionSelect {
+  top: calc(var(--y-pos) * 1);
+  left: calc(var(--x-pos) * 1);
+  opacity: var(--opacity);
+  transition: top 300ms, left 300ms;
+}
+
+.factionSelect:hover {
+  background-color: #333;
+}
+
+.oldFactionSelect:hover {
+  background-color: #333;
+}

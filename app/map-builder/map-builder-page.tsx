@@ -14,6 +14,8 @@ import Toggle from "../../src/components/Toggle/Toggle";
 import { buildBaseSystems } from "../../src/data/GameData";
 import { getDefaultMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
+import { rem } from "../../src/util/util";
+import Chip from "../../src/components/Chip/Chip";
 
 type Filter =
   | "BASE_GAME"
@@ -257,7 +259,7 @@ export default function MapBuilderPage() {
         className="flexRow"
         style={{
           width: "100%",
-          height: "calc(100dvh - 52px)",
+          height: `calc(100dvh - ${rem(52)})`,
           justifyContent: "flex-start",
           alignItems: "flex-start",
         }}
@@ -266,8 +268,8 @@ export default function MapBuilderPage() {
           <LabeledDiv
             label="Tile Pool"
             style={{
-              marginTop: "72px",
-              height: "calc(100dvh - 140px)",
+              marginTop: rem(72),
+              height: `calc(100dvh - ${rem(140)})`,
               justifyContent: "flex-start",
             }}
           >
@@ -277,7 +279,7 @@ export default function MapBuilderPage() {
                 justifyContent: "space-between",
                 alignItems: "flex-start",
                 width: "100%",
-                fontSize: "12px",
+                fontSize: rem(12),
               }}
             >
               <div
@@ -309,7 +311,7 @@ export default function MapBuilderPage() {
                   filters={filters}
                   setFilters={setFilters}
                 />
-                <div className="flexRow" style={{ gap: "4px" }}>
+                <div className="flexRow" style={{ gap: rem(4) }}>
                   <FormattedMessage
                     id="1fNqTf"
                     defaultMessage="Planets"
@@ -382,7 +384,7 @@ export default function MapBuilderPage() {
                 display: "grid",
                 gridAutoFlow: "row",
                 gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-                columnGap: "8px",
+                columnGap: rem(8),
                 width: "100%",
                 justifyContent: "flex-start",
                 overflowY: "auto",
@@ -428,8 +430,8 @@ export default function MapBuilderPage() {
               className="flexColumn"
               style={{
                 position: "absolute",
-                left: "16px",
-                top: "16px",
+                left: rem(8),
+                top: rem(16),
                 zIndex: 2,
               }}
             >
@@ -440,13 +442,16 @@ export default function MapBuilderPage() {
                   description="Label for a selector to change the number of players"
                 />
               </label>
-              <div className="flexRow">
+              <div
+                className="flexRow"
+                style={{ fontFamily: "Myriad Pro", gap: rem(4) }}
+              >
                 {[...Array(6)].map((e, index) => {
                   const number = index + 3;
                   return (
-                    <button
+                    <Chip
                       key={number}
-                      onClick={() => {
+                      toggleFn={() => {
                         const prevDefault = getDefaultMapString(
                           numFactions,
                           mapStyle
@@ -463,10 +468,11 @@ export default function MapBuilderPage() {
                         setMapStyle("standard");
                         setMapString(getDefaultMapString(number, "standard"));
                       }}
-                      className={numFactions === number ? "selected" : ""}
+                      selected={numFactions === number}
+                      fontSize={16}
                     >
                       {number}
-                    </button>
+                    </Chip>
                   );
                 })}
               </div>
@@ -474,20 +480,33 @@ export default function MapBuilderPage() {
             <div
               style={{
                 position: "absolute",
-                right: "16px",
-                top: "16px",
+                right: rem(8),
+                top: rem(16),
                 zIndex: 2,
               }}
             >
               {mapStyles.length > 1 ? (
-                <>
-                  <div className="flexRow" style={{ paddingLeft: `${"16px"}` }}>
+                <div className="flexColumn">
+                  <label>
+                    <FormattedMessage
+                      id="ZZ/Lhe"
+                      defaultMessage="Map Type"
+                      description="A label for a selector for selecting which map style to use."
+                    />
+                  </label>
+                  <div
+                    className="flexRow"
+                    style={{
+                      gap: rem(4),
+                      fontFamily: "Myriad Pro",
+                    }}
+                  >
                     {mapStyles.map((style) => {
                       return (
-                        <button
+                        <Chip
                           key={style}
-                          className={mapStyle === style ? "selected" : ""}
-                          onClick={() => {
+                          selected={mapStyle === style}
+                          toggleFn={() => {
                             const prevDefault = getDefaultMapString(
                               numFactions,
                               mapStyle
@@ -505,13 +524,14 @@ export default function MapBuilderPage() {
                               getDefaultMapString(numFactions, style)
                             );
                           }}
+                          fontSize={16}
                         >
                           {mapStyleString(style, intl)}
-                        </button>
+                        </Chip>
                       );
                     })}
                   </div>
-                </>
+                </div>
               ) : null}
             </div>
             <div
@@ -552,7 +572,7 @@ export default function MapBuilderPage() {
             </div>
             <div
               className="flexRow"
-              style={{ position: "absolute", right: "16px", bottom: "16px" }}
+              style={{ position: "absolute", right: rem(16), bottom: rem(16) }}
             >
               <button
                 onClick={() => {

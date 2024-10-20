@@ -1,19 +1,19 @@
 .factionInfoGrid {
   display: grid;
   width: 100%;
-  gap: 8px;
+  gap: 0.5rem;
   grid-auto-flow: row;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: flex-start;
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 56.25rem) {
   .factionInfoGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 37.5rem) {
   .factionInfoGrid {
     grid-auto-flow: row;
     grid-template-columns: repeat(1, minmax(0, 1fr));

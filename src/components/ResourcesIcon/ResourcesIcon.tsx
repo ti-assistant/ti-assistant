@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import styles from "./ResourcesIcon.module.scss";
+import { rem } from "../../util/util";
 
 interface ResourcesProps {
   resources: number;
@@ -8,7 +9,7 @@ interface ResourcesProps {
 }
 
 interface ResourcesIconCSS extends CSSProperties {
-  "--height": `${number}px`;
+  "--height": `${number}rem`;
 }
 
 export default function ResourcesIcon({
@@ -17,7 +18,7 @@ export default function ResourcesIcon({
   height,
 }: ResourcesProps) {
   const resourcesIconCSS: ResourcesIconCSS = {
-    "--height": `${height}px`,
+    "--height": rem(height),
   };
 
   return (

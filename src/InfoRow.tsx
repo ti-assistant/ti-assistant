@@ -33,13 +33,13 @@ export function InfoRow({
           className="myriadPro"
           style={{
             boxSizing: "border-box",
-            maxWidth: "800px",
+            maxWidth: "50rem",
             width: "100%",
-            minWidth: "320px",
-            padding: "4px",
+            minWidth: "20rem",
+            padding: "0.25rem",
             whiteSpace: "pre-line",
             textAlign: "center",
-            fontSize: "32px",
+            fontSize: "2rem",
           }}
         >
           {infoContent}
@@ -49,7 +49,7 @@ export function InfoRow({
       <div
         className="popupIcon"
         style={{
-          fontSize: "16px",
+          fontSize: "1rem",
         }}
         onClick={displayInfo}
       >

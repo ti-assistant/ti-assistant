@@ -6,12 +6,12 @@
 
   width: 100%;
   background-color: #222;
-  border-radius: 4px;
-  padding: 4px 0;
-  gap: 4px;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0;
+  gap: 0.25rem;
   height: 100%;
 
-  font-size: 14px;
+  font-size: 0.875rem;
 
   border: 1px solid var(--color);
 }
@@ -20,7 +20,7 @@
   width: 100%;
   height: 100%;
   display: grid;
-  gap: 8px;
+  gap: 0.5rem;
   grid-template-rows: repeat(2, minmax(0, 1fr));
   grid-template-columns: repeat(calc(var(--num-columns) - 1), minmax(0, 2fr)) 3fr;
   grid-auto-flow: column;
@@ -58,19 +58,19 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   width: 100%;
-  padding-bottom: 4px;
+  padding-bottom: 0.25rem;
 
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .collapsible {
   display: grid;
-  gap: 8px;
+  gap: 0.5rem;
   width: 100%;
   height: 100%;
-  padding: 0 4px;
+  padding: 0 0.25rem;
 }
 
 .collapsiblePlanetColumn {
@@ -80,7 +80,7 @@
   justify-content: flex-start;
 
   white-space: pre-wrap;
-  gap: 4px;
+  gap: 0.25rem;
 
   width: 100%;
   height: 100%;
@@ -88,7 +88,7 @@
   transition: padding 500ms;
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 56.25rem) {
   .planetGrid {
     grid-template-rows: unset;
     grid-template-columns: repeat(2, 1fr);
@@ -106,7 +106,7 @@
   }
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 37.5rem) {
   .collapsiblePlanetColumn {
     overflow: hidden;
   }

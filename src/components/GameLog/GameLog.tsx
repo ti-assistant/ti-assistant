@@ -1,23 +1,10 @@
-import {
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { IntlShape, useIntl } from "react-intl";
-import { LogEntryElement, LogEntryElementProps } from "../LogEntry";
-import { GameIdContext } from "../../context/Context";
-import { buildCompleteGameData } from "../../data/GameData";
-import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "../../util/api/actionLog";
-import { getHandler } from "../../util/api/gameLog";
-import { updateGameData } from "../../util/api/handler";
-import { fetcher } from "../../util/api/util";
 import { Loader } from "../../Loader";
 import { useActionLog, useGameData } from "../../context/dataHooks";
-import { updateActionLog } from "../../util/api/update";
 import { Optional } from "../../util/types/types";
+import { LogEntryElement, LogEntryElementProps } from "../LogEntry";
+import { rem } from "../../util/util";
 
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
@@ -264,7 +251,7 @@ export function GameLog({}) {
       className="flexColumn"
       style={{
         width: "100%",
-        height: "440px",
+        height: rem(440),
         overflow: "auto",
         justifyContent: "flex-start",
         alignItems: "flex-start",

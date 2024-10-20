@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { PropsWithChildren, ReactNode, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
+import { UnitStat } from "../TechRow";
 import { leaderTypeString, unitTypeString } from "../util/strings";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
@@ -10,7 +11,7 @@ import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import styles from "./SetupFactionPanel.module.scss";
 import TechIcon from "./TechIcon/TechIcon";
-import { UnitStat } from "../TechRow";
+import { rem } from "../util/util";
 
 function AbilitySection({
   leftLabel,
@@ -28,7 +29,7 @@ function AbilitySection({
       style={{
         position: "relative",
         width: "100%",
-        gap: "4px",
+        gap: rem(4),
       }}
     >
       <LabeledLine
@@ -42,7 +43,7 @@ function AbilitySection({
           fontFamily: "Myriad Pro",
           alignItems: "flex-start",
           width: "100%",
-          padding: `0 ${"8px"}`,
+          padding: `0 ${rem(8)}`,
         }}
       >
         {children}
@@ -141,7 +142,7 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
           display: "grid",
           gridAutoFlow: "column",
           gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-          gap: "4px",
+          gap: rem(4),
           fontFamily: "Slider",
           width: "fit-content",
           boxSizing: "border-box",
@@ -278,9 +279,9 @@ function FactionPanelContent({
               className="flexColumn"
               style={{
                 width: "100%",
-                gap: "4px",
-                padding: `0 4px 4px`,
-                fontSize: "14px",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
               }}
             >
               {factionLeaders.map((leader) => {
@@ -290,7 +291,7 @@ function FactionPanelContent({
                 switch (state) {
                   case "readied":
                     leftLabel = (
-                      <div className="flexRow" style={{ gap: "6px" }}>
+                      <div className="flexRow" style={{ gap: rem(6) }}>
                         {leader.name}
                         {leader.subFaction ? (
                           <FactionIcon
@@ -302,7 +303,7 @@ function FactionPanelContent({
                           <div
                             className="flexRow"
                             style={{
-                              gap: "4px",
+                              gap: rem(4),
                               cursor: "pointer",
                             }}
                             onClick={() => {
@@ -332,41 +333,6 @@ function FactionPanelContent({
                             return <div key={index}>{section}</div>;
                           }
                         )}
-                      </div>
-                    );
-                    break;
-                    leftLabel = (
-                      <div className="flexRow">
-                        {leader.name}
-                        <div className="flexRow" style={{ gap: "4px" }}>
-                          <div
-                            style={{
-                              fontSize: "8px",
-                              color: "#eee",
-                              border: "1px solid #eee",
-                              padding: "2px 2px",
-                              borderRadius: "2px",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              alert("WIP - Will unpurge later");
-                            }}
-                          >
-                            UNPURGE
-                          </div>
-                        </div>
-                      </div>
-                    );
-                    innerContent = (
-                      <div
-                        className="flexRow"
-                        style={{
-                          width: "100%",
-                          fontSize: "20px",
-                          fontFamily: "Slider",
-                        }}
-                      >
-                        PURGED
                       </div>
                     );
                     break;
@@ -401,9 +367,9 @@ function FactionPanelContent({
             <div
               className="flexColumn"
               style={{
-                gap: "4px",
-                padding: "4px",
-                fontSize: "14px",
+                gap: rem(4),
+                padding: rem(4),
+                fontSize: rem(14),
               }}
             >
               {factionTechs.map((tech) => {
@@ -411,7 +377,7 @@ function FactionPanelContent({
                   <AbilitySection
                     key={tech.id}
                     leftLabel={
-                      <div className="flexRow" style={{ gap: "4px" }}>
+                      <div className="flexRow" style={{ gap: rem(4) }}>
                         {tech.name}
                         {tech.prereqs.map((prereq, index) => {
                           return (
@@ -438,8 +404,8 @@ function FactionPanelContent({
                               whiteSpace: "nowrap",
                               gridTemplateColumns: "repeat(2, 1fr)",
                               fontFamily: "Slider",
-                              paddingLeft: "8px",
-                              rowGap: "2px",
+                              paddingLeft: rem(8),
+                              rowGap: rem(2),
                               width: "100%",
                             }}
                           >
@@ -481,9 +447,9 @@ function FactionPanelContent({
               // display: "grid",
               // gridAutoFlow: "row",
               // gridTemplateRows: `repeat(${faction.abilities.length}, 1fr)`,
-              gap: "4px",
-              padding: "4px",
-              fontSize: "14px",
+              gap: rem(4),
+              padding: rem(4),
+              fontSize: rem(14),
             }}
           >
             {faction.abilities.map((ability) => {
@@ -516,9 +482,9 @@ function FactionPanelContent({
           <div
             className="flexColumn"
             style={{
-              gap: "4px",
-              padding: "4px",
-              fontSize: "14px",
+              gap: rem(4),
+              padding: rem(4),
+              fontSize: rem(14),
               width: "100%",
             }}
           >
@@ -552,9 +518,9 @@ function FactionPanelContent({
         <div
           className="flexColumn"
           style={{
-            gap: "4px",
-            padding: "4px",
-            fontSize: "14px",
+            gap: rem(4),
+            padding: rem(4),
+            fontSize: rem(14),
           }}
         >
           {faction.units.map((unit, index) => {
@@ -581,8 +547,8 @@ function FactionPanelContent({
                       whiteSpace: "nowrap",
                       gridTemplateColumns: "repeat(2, 1fr)",
                       fontFamily: "Slider",
-                      paddingLeft: "8px",
-                      rowGap: "2px",
+                      paddingLeft: rem(8),
+                      rowGap: rem(2),
                       width: "100%",
                     }}
                   >
@@ -618,17 +584,17 @@ export default function SetupFactionPanel({
           style={{
             whiteSpace: "normal",
             textShadow: "none",
-            width: `clamp(80vw, 1200px, calc(100vw - 24px}))`,
+            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
             justifyContent: "flex-start",
-            height: `calc(100dvh - 24px)`,
+            height: `calc(100dvh - ${rem(24)})`,
           }}
         >
           <div
             className="flexRow centered extraLargeFont"
             style={{
               backgroundColor: "#222",
-              padding: `4px 8px`,
-              borderRadius: "4px",
+              padding: `${rem(4)} ${rem(8)}`,
+              borderRadius: rem(4),
             }}
           >
             <FactionIcon factionId={faction.id} size={36} />
@@ -639,7 +605,7 @@ export default function SetupFactionPanel({
             className="flexColumn largeFont"
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+              width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
               justifyContent: "flex-start",
               overflow: "auto",
               height: "fit-content",
@@ -652,7 +618,7 @@ export default function SetupFactionPanel({
       <div
         className="popupIcon"
         style={{
-          fontSize: "16px",
+          fontSize: rem(16),
         }}
         onClick={() => setShowPanel(true)}
       >

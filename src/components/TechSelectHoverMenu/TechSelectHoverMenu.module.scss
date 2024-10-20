@@ -3,10 +3,10 @@
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 56.25rem) {
   .OuterTechSelectMenu {
     display: flex;
     flex-direction: column;

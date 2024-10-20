@@ -5732,7 +5732,7 @@
     "description": "Instruction telling the speaker to reveal an agenda."
   },
   "ZZ/Lhe": {
-    "defaultMessage": "Map Type:",
+    "defaultMessage": "Map Type",
     "description": "A label for a selector for selecting which map style to use."
   },
   "Zh1T8Z": {
@@ -5958,6 +5958,10 @@
   "mkUb00": {
     "defaultMessage": "Select Component",
     "description": "Text on a hover menu for selecting a component action."
+  },
+  "n8jSwp": {
+    "defaultMessage": "None",
+    "description": "Text on a button that will show no overlay."
   },
   "nYgb4V": {
     "defaultMessage": "Non-Faction",

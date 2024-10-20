@@ -3,8 +3,8 @@ import { useContext } from "react";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
 import { GameIdContext } from "../../context/Context";
 import { updateMapString, validSystemNumber } from "../../util/map";
-import styles from "./Map.module.scss";
 import { Optional } from "../../util/types/types";
+import styles from "./Map.module.scss";
 
 interface Cube {
   q: number;
@@ -335,7 +335,8 @@ export default function SystemSelect({
     mapStyle,
     factions.length
   );
-  const shouldAddMecatol = !updatedMapString.includes(" 18 ");
+  const shouldAddMecatol =
+    !updatedMapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = updatedMapString.split(" ");
   if (shouldAddMecatol) {
     updatedSystemTiles.unshift("18");

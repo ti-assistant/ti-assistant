@@ -1,9 +1,10 @@
 import { CSSProperties, PropsWithChildren, useRef, useState } from "react";
 import { SymbolX } from "../icons/svgs";
+import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
 import FactionCircle from "./FactionCircle/FactionCircle";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionSelect.module.scss";
-import { Optional } from "../util/types/types";
 
 interface FactionSelectProps {
   options: FactionId[];
@@ -34,7 +35,7 @@ export function FactionSelectHoverMenu({
 
   const hoverMenuStyle: CSSProperties = {
     left: 0,
-    borderRadius: `${Math.floor(size / 2)}px`,
+    borderRadius: rem(Math.floor(size / 2)),
     border: `${"2px"} solid #444`,
   };
 
@@ -65,9 +66,9 @@ export function FactionSelectHoverMenu({
           className="flexRow"
           style={{
             position: "relative",
-            width: `${size - 4}px`,
-            height: `${size - 4}px`,
-            fontSize: `${size - 8}px`,
+            width: `calc(${rem(size)} - 4px)`,
+            height: `calc(${rem(size)} - 4px)`,
+            fontSize: rem(size - 8),
             color: "#777",
           }}
         >
@@ -75,8 +76,8 @@ export function FactionSelectHoverMenu({
             className="flexRow"
             style={{
               position: "relative",
-              width: `${size - 10}px`,
-              height: `${size - 10}px`,
+              width: rem(size - 10),
+              height: rem(size - 10),
             }}
           >
             <SymbolX />
@@ -88,8 +89,8 @@ export function FactionSelectHoverMenu({
               key={factionId}
               className={`flexRow ${styles.oldFactionSelect}`}
               style={{
-                width: `${size - 4}px`,
-                height: `${size - 4}px`,
+                width: `calc(${rem(size)} - 4px)`,
+                height: `calc(${rem(size)} - 4px)`,
               }}
               onClick={() => {
                 closeFn();

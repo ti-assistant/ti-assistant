@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SelectableRow } from "../../SelectableRow";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import Modal from "../Modal/Modal";
+import { rem } from "../../util/util";
 
 interface InfoContentProps {
   objective: Objective;
@@ -13,13 +14,13 @@ function InfoContent({ objective }: InfoContentProps) {
       className="myriadPro"
       style={{
         boxSizing: "border-box",
-        maxWidth: "800px",
+        maxWidth: rem(800),
         width: "100%",
-        minWidth: "320px",
-        padding: "4px",
+        minWidth: rem(320),
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       {objective.description}
@@ -72,7 +73,7 @@ export default function ObjectiveRow({
       <Modal
         closeMenu={() => setShowInfoModal(false)}
         visible={showInfoModal}
-        title={<div style={{ fontSize: "40px" }}>{objective.name}</div>}
+        title={<div style={{ fontSize: rem(40) }}>{objective.name}</div>}
         level={2}
       >
         <InfoContent objective={objective} />
@@ -96,7 +97,7 @@ export default function ObjectiveRow({
             </div>
             <div
               className="popupIcon"
-              style={{ paddingRight: "8px" }}
+              style={{ paddingRight: rem(8) }}
               onClick={() => setShowInfoModal(true)}
             >
               &#x24D8;
@@ -105,7 +106,7 @@ export default function ObjectiveRow({
           <div className="flexColumn">
             {canScore() && scoreObjective ? (
               <button
-                style={{ fontSize: "12px" }}
+                style={{ fontSize: rem(12) }}
                 onClick={() => scoreObjective(objective.id, true)}
               >
                 Score
@@ -130,19 +131,19 @@ export default function ObjectiveRow({
                     className="flexRow"
                     style={{
                       position: "relative",
-                      width: "32px",
-                      height: "32px",
+                      width: rem(32),
+                      height: rem(32),
                     }}
                   >
                     <div
                       style={{
                         cursor: "pointer",
-                        width: "12px",
-                        fontSize: "8px",
-                        lineHeight: "8px",
-                        height: "12px",
+                        width: rem(12),
+                        fontSize: rem(8),
+                        lineHeight: rem(8),
+                        height: rem(12),
                         top: 0,
-                        left: "20px",
+                        left: rem(20),
                         position: "absolute",
                         zIndex: 1,
                         backgroundColor: "#222",
@@ -151,7 +152,7 @@ export default function ObjectiveRow({
                         alignItems: "center",
                         fontWeight: "bold",
                         justifyContent: "center",
-                        borderRadius: "12px",
+                        borderRadius: rem(12),
                         boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                       }}
                       onClick={() => scoreObjective(objective.id, false)}
@@ -169,8 +170,8 @@ export default function ObjectiveRow({
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: "32px",
-                    height: "32px",
+                    width: rem(32),
+                    height: rem(32),
                   }}
                 >
                   <FactionIcon factionId={scorer} size="100%" />

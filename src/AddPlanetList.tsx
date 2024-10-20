@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Tab, TabBody } from "./Tab";
 import PlanetRow from "./components/PlanetRow/PlanetRow";
+import { rem } from "./util/util";
 
 function sortPlanetsByFaction(planets: Planet[]) {
   planets.sort((a, b) => {
@@ -60,7 +61,10 @@ export function AddPlanetList({
     <div className="flexColumn" style={{ alignItems: "stretch" }}>
       <div
         className="flexRow"
-        style={{ backgroundColor: "#222", padding: "4px 4px 0px 4px" }}
+        style={{
+          backgroundColor: "#222",
+          padding: `${rem(4)} ${rem(4)} 0px ${rem(4)}`,
+        }}
       >
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown}>
           <FormattedMessage
@@ -97,7 +101,7 @@ export function AddPlanetList({
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             zIndex: 1,
             position: "relative",
           }}
@@ -123,7 +127,7 @@ export function AddPlanetList({
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             zIndex: 1,
             position: "relative",
           }}
@@ -149,7 +153,7 @@ export function AddPlanetList({
             overflowX: "hidden",
             maxHeight: "75vh",
             boxSizing: "border-box",
-            padding: "4px",
+            padding: rem(4),
             zIndex: 1,
             position: "relative",
           }}

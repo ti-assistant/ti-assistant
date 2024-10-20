@@ -12,6 +12,7 @@ import {
   usePlanets,
   useStrategyCards,
 } from "./context/dataHooks";
+import { rem } from "./util/util";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
   const intl = useIntl();
@@ -23,16 +24,16 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
       style={{
         boxSizing: "border-box",
         width: "100%",
-        minWidth: "320px",
-        padding: "4px",
+        minWidth: rem(320),
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       <div className="flexColumn">
         {agenda.elect !== "For/Against" ? (
-          <div style={{ padding: "12px", fontFamily: "Slider" }}>
+          <div style={{ padding: rem(12), fontFamily: "Slider" }}>
             <FormattedMessage
               id="EAsvAe"
               defaultMessage="Elect {outcomeType}"
@@ -80,9 +81,9 @@ export function AgendaRow({
           closeMenu={() => setShowInfoModal(false)}
           visible={showInfoModal}
           title={
-            <div className="flexColumn" style={{ fontSize: "40px" }}>
+            <div className="flexColumn" style={{ fontSize: rem(40) }}>
               {agenda.name}
-              <div style={{ fontSize: "24px" }}>
+              <div style={{ fontSize: rem(24) }}>
                 [{agendaTypeString(agenda.type, intl)}]
               </div>
             </div>
@@ -121,7 +122,7 @@ export function AgendaRow({
           <div
             className="popupIcon"
             onClick={displayInfo}
-            style={{ fontSize: "16px" }}
+            style={{ fontSize: rem(16) }}
           >
             &#x24D8;
           </div>

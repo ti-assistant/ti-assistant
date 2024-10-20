@@ -309,6 +309,11 @@ export function processGame(
 function isObjectiveGame(game: StoredGameData, baseData: BaseData) {
   const foundTypes = new Set<ObjectiveType>();
   const baseObjectives = baseData.objectives;
+  for (const faction of Object.values(game.factions)) {
+    if (faction.vps !== 0) {
+      return false;
+    }
+  }
   return Object.entries(game.objectives ?? {}).reduce(
     (isObjGame, [id, curr]) => {
       if ((curr.scorers ?? []).length !== 0) {
@@ -368,8 +373,10 @@ function rewindGame(
   output.actionLog = structuredClone(log);
   output.options["victory-points"] = maxPoints;
 
+  let numSteps = 0;
   let lastEntry: Optional<ActionLogEntry>;
-  while (hasWinningFaction(output, baseData)) {
+  while (numSteps < 20 && hasWinningFaction(output, baseData)) {
+    numSteps++;
     lastEntry = output.actionLog[0];
     if (!lastEntry) {
       break;
@@ -389,6 +396,10 @@ function rewindGame(
     }
     updateGameData(output, handler.getUpdates());
     updateActionLog(output, handler, Date.now());
+  }
+
+  if (numSteps === 20) {
+    return;
   }
 
   if (!lastEntry) {

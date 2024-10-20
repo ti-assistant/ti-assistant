@@ -165,7 +165,7 @@ export function getOnDeckFaction(
           ? factions[state.activeplayer]
           : undefined;
       return Object.values(factions).find(
-        (faction) => faction.order === currentFaction?.order ?? 0 + 1
+        (faction) => faction.order === (currentFaction?.order ?? 0) + 1
       );
     }
   }

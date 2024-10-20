@@ -1,14 +1,15 @@
 import { Fragment, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { CollapsibleSection } from "../../../src/components/CollapsibleSection";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import GenericModal from "../../../src/components/GenericModal/GenericModal";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import { Optional } from "../../../src/util/types/types";
-import { objectEntries, objectKeys } from "../../../src/util/util";
+import { objectEntries, objectKeys, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
-import { ObjectiveGameCounts } from "./types";
 import styles from "./ObjectivesSection.module.scss";
-import { FormattedMessage } from "react-intl";
+import { ObjectiveGameCounts } from "./types";
+import Chip from "../../../src/components/Chip/Chip";
 
 export default function ObjectivesSection({
   games,
@@ -100,35 +101,35 @@ export default function ObjectivesSection({
 
   return (
     <div className={styles.ObjectivesSection}>
-      <div className="flexRow">
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "STAGE ONE" ? "selected" : ""}
-          onClick={() => setTab("STAGE ONE")}
+      <div className="flexRow" style={{ gap: rem(4) }}>
+        <Chip
+          style={{ fontSize: rem(14) }}
+          selected={tab === "STAGE ONE"}
+          toggleFn={() => setTab("STAGE ONE")}
         >
           Stage I
-        </button>
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "STAGE TWO" ? "selected" : ""}
-          onClick={() => setTab("STAGE TWO")}
+        </Chip>
+        <Chip
+          style={{ fontSize: rem(14) }}
+          selected={tab === "STAGE TWO"}
+          toggleFn={() => setTab("STAGE TWO")}
         >
           Stage II
-        </button>
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "SECRET" ? "selected" : ""}
-          onClick={() => setTab("SECRET")}
+        </Chip>
+        <Chip
+          style={{ fontSize: rem(14) }}
+          selected={tab === "SECRET"}
+          toggleFn={() => setTab("SECRET")}
         >
           Secrets
-        </button>
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "OTHER" ? "selected" : ""}
-          onClick={() => setTab("OTHER")}
+        </Chip>
+        <Chip
+          style={{ fontSize: rem(14) }}
+          selected={tab === "OTHER"}
+          toggleFn={() => setTab("OTHER")}
         >
           Other
-        </button>
+        </Chip>
       </div>
 
       {orderedObjectives.map(([objId, objInfo]) => {
@@ -143,22 +144,22 @@ export default function ObjectivesSection({
                 style={{
                   whiteSpace: "normal",
                   textShadow: "none",
-                  width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+                  width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
                   justifyContent: "flex-start",
-                  height: `calc(100dvh - 24px)`,
+                  height: `calc(100dvh - ${rem(24)})`,
                 }}
               >
                 <div
                   className="flexColumn centered extraLargeFont"
                   style={{
                     backgroundColor: "#222",
-                    padding: `4px 8px`,
-                    borderRadius: "4px",
+                    padding: `${rem(4)} ${rem(8)}`,
+                    borderRadius: rem(4),
                     gap: 0,
                   }}
                 >
                   {objId}
-                  <div style={{ fontSize: "14px" }}>
+                  <div style={{ fontSize: rem(14) }}>
                     {baseObjectives[objId].description}
                   </div>
                 </div>
@@ -166,7 +167,9 @@ export default function ObjectivesSection({
                   className="flexColumn largeFont"
                   onClick={(e) => e.stopPropagation()}
                   style={{
-                    width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+                    width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(
+                      24
+                    )}))`,
                     justifyContent: "flex-start",
                     overflow: "auto",
                     height: "fit-content",
@@ -188,8 +191,8 @@ export default function ObjectivesSection({
                         className="flexColumn"
                         style={{
                           width: "100%",
-                          padding: `0 4px 4px`,
-                          fontSize: "14px",
+                          padding: `0 ${rem(4)} ${rem(4)}`,
+                          fontSize: rem(14),
                         }}
                       >
                         <FactionsTable
@@ -203,8 +206,8 @@ export default function ObjectivesSection({
                 </div>
               </div>
             </GenericModal>
-            <LabeledDiv key={objId} label={objId} style={{ gap: "4px" }}>
-              <div style={{ fontFamily: "Source Sans", fontSize: "14px" }}>
+            <LabeledDiv key={objId} label={objId} style={{ gap: rem(4) }}>
+              <div style={{ fontFamily: "Source Sans", fontSize: rem(14) }}>
                 {baseObjectives[objId].description}
               </div>
               {tab !== "SECRET" && tab !== "OTHER" ? (
@@ -256,7 +259,7 @@ export default function ObjectivesSection({
                 </div>
               ) : null}
               <button
-                style={{ fontSize: "10px" }}
+                style={{ fontSize: rem(10) }}
                 onClick={() => setShownModal(objId)}
               >
                 <FormattedMessage
@@ -299,7 +302,7 @@ function FactionsTable({
     return bRatio - aRatio;
   });
   return (
-    <table style={{ fontSize: "12px", width: "100%", borderSpacing: "0" }}>
+    <table style={{ fontSize: rem(12), width: "100%", borderSpacing: "0" }}>
       <tbody>
         {orderedFactions.map(([factionId, info]) => {
           let games = info.games;
@@ -312,7 +315,7 @@ function FactionsTable({
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  gap: "8px",
+                  gap: rem(8),
                   alignItems: "flex-start",
                 }}
               >

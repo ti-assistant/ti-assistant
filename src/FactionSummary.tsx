@@ -3,154 +3,30 @@ import { FormattedMessage } from "react-intl";
 import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
-import TechIcon from "./components/TechIcon/TechIcon";
 import { GameIdContext } from "./context/Context";
 import {
+  useActionLog,
   useAttachments,
   useFaction,
+  useFactions,
   useGameState,
   useObjectives,
   usePlanets,
   useTechs,
 } from "./context/dataHooks";
-import { manualVPUpdateAsync } from "./dynamic/api";
+import {
+  manualVPUpdateAsync,
+  scoreObjectiveAsync,
+  unscoreObjectiveAsync,
+} from "./dynamic/api";
 import { computeScoredVPs } from "./util/factions";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
-import TechTree from "./components/TechTree/TechTree";
-
-export function TechSummary({
-  techs,
-  factionId,
-  horizontal,
-}: {
-  techs: Tech[];
-  factionId: FactionId;
-  horizontal?: boolean;
-}) {
-  let blueTechs = [];
-  let yellowTechs = [];
-  let greenTechs = [];
-  let redTechs = [];
-  let upgradeTechs = [];
-  for (const tech of techs) {
-    switch (tech.type) {
-      case "RED":
-        redTechs.push(tech);
-        break;
-      case "YELLOW":
-        yellowTechs.push(tech);
-        break;
-      case "GREEN":
-        greenTechs.push(tech);
-        break;
-      case "BLUE":
-        blueTechs.push(tech);
-        break;
-      case "UPGRADE":
-        upgradeTechs.push(tech);
-        break;
-    }
-  }
-
-  const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
-
-  techs.sort((a, b) => {
-    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
-    if (typeDiff !== 0) {
-      return typeDiff;
-    }
-    const prereqDiff: number = a.prereqs.length - b.prereqs.length;
-    if (prereqDiff !== 0) {
-      return prereqDiff;
-    }
-    if (a.name < b.name) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
-
-  const numberWidth = horizontal ? `${10.75 * 1.2}px` : `${10.75}px`;
-  const techTreeSize = horizontal ? 6 : 4;
-  const iconSize = horizontal ? 20 : 16;
-
-  return (
-    <>
-      <div
-        className={`${styles.TechSummaryGrid} ${
-          horizontal ? styles.Horizontal : ""
-        }`}
-      >
-        <div
-          className="flexRow centered"
-          style={{ height: "100%", width: numberWidth }}
-        >
-          {greenTechs.length || "-"}
-        </div>
-        <div className="flexRow" style={{ height: "100%" }}>
-          <TechIcon type={"GREEN"} size={iconSize} />
-        </div>
-        <TechTree type="GREEN" factionId={factionId} size={techTreeSize} />
-        <div>&nbsp;</div>
-        <div
-          className="flexRow centered"
-          style={{ height: "100%", width: numberWidth }}
-        >
-          {blueTechs.length || "-"}
-        </div>
-
-        <div className="flexRow" style={{ height: "100%" }}>
-          <TechIcon type={"BLUE"} size={iconSize} />
-        </div>
-        <TechTree type="BLUE" factionId={factionId} size={techTreeSize} />
-        {horizontal ? <div>&nbsp;</div> : null}
-        <div
-          className="flexRow centered"
-          style={{ height: "100%", width: numberWidth }}
-        >
-          {yellowTechs.length || "-"}
-        </div>
-        <div className="flexRow" style={{ height: "100%" }}>
-          <TechIcon type={"YELLOW"} size={iconSize} />
-        </div>
-        <TechTree type="YELLOW" factionId={factionId} size={techTreeSize} />
-        <div>&nbsp;</div>
-        <div
-          className="flexRow centered"
-          style={{ height: "100%", width: numberWidth }}
-        >
-          {redTechs.length || "-"}
-        </div>
-        <div className="flexRow" style={{ height: "100%" }}>
-          <TechIcon type={"RED"} size={iconSize} />
-        </div>
-        <TechTree type="RED" factionId={factionId} size={techTreeSize} />
-        <div
-          className={styles.UnitUpgradeText}
-          style={{ whiteSpace: "nowrap" }}
-        >
-          {upgradeTechs.length || "-"}{" "}
-          <FormattedMessage
-            id="lGDH2d"
-            description="Unit upgrade techs."
-            defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
-            values={{ count: upgradeTechs.length }}
-          />
-        </div>
-        <div className={styles.UnitUpgradeTree}>
-          <TechTree type="UPGRADE" factionId={factionId} size={techTreeSize} />
-        </div>
-        <div className={styles.FactionTechTree}>
-          <TechTree type="FACTION" factionId={factionId} size={techTreeSize} />
-        </div>
-      </div>
-    </>
-  );
-}
+import { objectEntries, rem } from "./util/util";
+import TechSummary from "./components/TechSummary/TechSummary";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -206,9 +82,7 @@ export function FactionSummary({
 
   return (
     <div className={styles.FactionSummary}>
-      {options.hideTechs ? null : (
-        <TechSummary techs={ownedTechs} factionId={factionId} />
-      )}
+      {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
       <div className={styles.VPGrid}>
         {options.showIcon ? (
           <div
@@ -227,9 +101,9 @@ export function FactionSummary({
               style={{
                 position: "absolute",
                 zIndex: -1,
-                opacity: 0.5,
-                width: "60px",
-                height: "60px",
+                opacity: 0.25,
+                width: rem(60),
+                height: rem(60),
                 userSelect: "none",
               }}
             >
@@ -240,9 +114,9 @@ export function FactionSummary({
         <div
           className="flexRow"
           style={{
-            gap: "4px",
+            gap: rem(4),
+            height: "100%",
             justifyContent: "space-between",
-            fontSize: "28px",
           }}
         >
           {VPs > 0 && editable ? (
@@ -251,18 +125,24 @@ export function FactionSummary({
               onClick={() => manualVpAdjust(false)}
             ></div>
           ) : (
-            <div style={{ width: "12px" }}></div>
+            <div style={{ width: rem(12) }}></div>
           )}
-          <div className="flexRow" style={{ width: "24px" }}>
+          <div
+            className="flexRow"
+            style={{ width: rem(24), lineHeight: rem(20) }}
+          >
             {VPs}
           </div>
           {editable ? (
             <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
           ) : (
-            <div style={{ width: "12px" }}></div>
+            <div style={{ width: rem(12) }}></div>
           )}
         </div>
-        <div className="centered" style={{ fontSize: "20px" }}>
+        <div
+          className="centered"
+          style={{ fontSize: rem(20), lineHeight: rem(20) }}
+        >
           <FormattedMessage
             id="PzyYtG"
             description="Shortened version of Victory Points."
@@ -270,6 +150,7 @@ export function FactionSummary({
             values={{ count: VPs }}
           />
         </div>
+        <ObjectiveDots factionId={factionId} />
       </div>
       {options.hidePlanets ? null : (
         <PlanetSummary
@@ -279,6 +160,202 @@ export function FactionSummary({
           }
         />
       )}
+    </div>
+  );
+}
+
+function ObjectiveDots({ factionId }: { factionId: FactionId }) {
+  const actionLog = useActionLog();
+  const gameId = useContext(GameIdContext);
+  const objectives = useObjectives();
+  const factions = useFactions();
+
+  const faction = factions[factionId];
+
+  if (!faction) {
+    return null;
+  }
+
+  const revealOrder: Partial<Record<ObjectiveId, number>> = {};
+  let order = 1;
+  [...(actionLog ?? [])]
+    .reverse()
+    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
+    .forEach((logEntry) => {
+      const objectiveId = (logEntry.data as RevealObjectiveData).event
+        .objective;
+      revealOrder[objectiveId] = order;
+      ++order;
+    });
+
+  const stageOnes = {
+    scored: 0,
+    revealed: 0,
+  };
+  const stageTwos = {
+    scored: 0,
+    revealed: 0,
+  };
+  Object.values(objectives)
+    .filter((obj) => obj.selected)
+    .forEach((obj) => {
+      if (obj.type === "STAGE ONE") {
+        if (obj.scorers?.includes(factionId)) {
+          stageOnes.scored++;
+        }
+        stageOnes.revealed++;
+      } else if (obj.type === "STAGE TWO") {
+        if (obj.scorers?.includes(factionId)) {
+          stageTwos.scored++;
+        }
+        stageTwos.revealed++;
+      }
+    });
+
+  const secrets = Object.values(objectives).filter(
+    (obj) => obj.type === "SECRET" && (obj.scorers ?? []).includes(factionId)
+  );
+
+  const others = Object.values(objectives).filter(
+    (obj) => obj.type === "OTHER" && (obj.scorers ?? []).includes(factionId)
+  );
+
+  return (
+    <div className="flexColumn" style={{ width: "100%", gap: rem(4) }}>
+      <div
+        className="flexRow"
+        style={{
+          gap: rem(2),
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="flexRow" style={{ gap: rem(2), height: rem(4) }}>
+          {Array(stageOnes.revealed)
+            .fill(0)
+            .map((_, index) => {
+              const scored = index < stageOnes.scored;
+              return (
+                <div
+                  key={index}
+                  style={{
+                    width: rem(4),
+                    height: rem(4),
+                    border: "1px solid orange",
+                    borderRadius: "100%",
+                    backgroundColor: scored ? "orange" : undefined,
+                  }}
+                ></div>
+              );
+            })}
+        </div>
+        <div className="flexRow" style={{ gap: rem(2), height: rem(4) }}>
+          {Array(stageTwos.revealed)
+            .fill(0)
+            .map((_, index) => {
+              const scored = index < stageTwos.scored;
+              return (
+                <div
+                  key={index}
+                  style={{
+                    width: rem(4),
+                    height: rem(4),
+                    border: "1px solid royalblue",
+                    borderRadius: "100%",
+                    backgroundColor: scored ? "royalblue" : undefined,
+                  }}
+                ></div>
+              );
+            })}
+        </div>
+      </div>
+      <div
+        className="flexRow"
+        style={{
+          gap: rem(2),
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="flexRow" style={{ gap: rem(2) }}>
+          {secrets.map((obj) => {
+            return (
+              <div
+                key={obj.id}
+                title={obj.name}
+                style={{
+                  width: rem(4),
+                  height: rem(4),
+                  border: "1px solid red",
+                  borderRadius: "100%",
+                  backgroundColor: "red",
+                }}
+              ></div>
+            );
+          })}
+        </div>
+
+        <div className="flexRow" style={{ gap: rem(2) }}>
+          {others.map((obj) => {
+            if (obj.id === "Support for the Throne") {
+              return (
+                <>
+                  {objectEntries(obj.keyedScorers ?? {}).map(
+                    ([faction, scorers]) => {
+                      if (!scorers.includes(factionId)) {
+                        return null;
+                      }
+                      return (
+                        <div
+                          key={`${obj.id} - ${faction}`}
+                          title={`${obj.name} - ${faction}`}
+                          style={{
+                            width: rem(4),
+                            height: rem(4),
+                            border: `1px solid #ccc`,
+                            borderRadius: "100%",
+                            backgroundColor: "#ccc",
+                          }}
+                        ></div>
+                      );
+                    }
+                  )}
+                </>
+              );
+            }
+
+            const scorers = obj.scorers ?? [];
+            const color =
+              obj.id === "Mutiny" && obj.points === -1 ? "#555" : "#ccc";
+            const title =
+              obj.id === "Mutiny"
+                ? `${obj.name} - ${obj.points === 1 ? "For" : "Against"}`
+                : obj.name;
+            return (
+              <>
+                {scorers.map((scorer, index) => {
+                  if (scorer !== factionId) {
+                    return null;
+                  }
+                  return (
+                    <div
+                      key={`${obj.id} - ${index}`}
+                      title={title}
+                      style={{
+                        width: rem(4),
+                        height: rem(4),
+                        border: `1px solid ${color}`,
+                        borderRadius: "100%",
+                        backgroundColor: color,
+                      }}
+                    ></div>
+                  );
+                })}
+              </>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

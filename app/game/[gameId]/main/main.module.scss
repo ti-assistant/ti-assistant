@@ -2,23 +2,23 @@
   align-items: flex-start;
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  gap: 2.5rem;
   justify-content: space-between;
   width: 100%;
 }
 
-@media only screen and (max-width: 1279px) {
+@media only screen and (max-width: 56.25rem) {
   .Main {
-    gap: 24px;
+    gap: 1.5rem;
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 37.5rem) {
   .Main {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 8px;
-    padding-bottom: 8px;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 }

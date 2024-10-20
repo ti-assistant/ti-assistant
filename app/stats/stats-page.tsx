@@ -12,7 +12,7 @@ import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Optional } from "../../src/util/types/types";
-import { objectEntries } from "../../src/util/util";
+import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "./processor";
 import FactionsSection from "./sections/FactionsSection";
 import { FactionHistogram, PointsHistogram } from "./sections/Histogram";
@@ -23,6 +23,7 @@ import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Strings } from "../../src/components/strings";
+import Chip from "../../src/components/Chip/Chip";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -65,14 +66,15 @@ function CountButton<T extends string | number>({
   setFilters: (value: T) => void;
 }) {
   return (
-    <Toggle
+    <Chip
       selected={filters === filter}
       toggleFn={(prevValue) => {
         setFilters(filter);
       }}
+      fontSize={14}
     >
       {filter}
-    </Toggle>
+    </Chip>
   );
 }
 
@@ -211,7 +213,7 @@ export default function StatsPage({
             })}
             className={styles.Filters}
           >
-            <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
+            <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
               <FormattedMessage
                 id="2jNcVD"
                 defaultMessage="Expansions:"
@@ -248,7 +250,7 @@ export default function StatsPage({
                 text={<Strings.Expansion expansion="DISCORDANT STARS" />}
               />
             </div>
-            <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
+            <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
               <FormattedMessage
                 id="Jh0WRk"
                 defaultMessage="Player Count"
@@ -286,7 +288,7 @@ export default function StatsPage({
                 setFilters={setPlayerCount}
               />
             </div>
-            <div className="flexRow" style={{ fontSize: "12px", gap: "4px" }}>
+            <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
               <FormattedMessage
                 id="R06tnh"
                 description="A label for a selector specifying the number of victory points required."
@@ -362,52 +364,52 @@ function DetailsSection({
   }
 
   return (
-    <div className="flexColumn" style={{ paddingBottom: "8px" }}>
-      <div className="flexRow">
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "Factions" ? "selected" : ""}
-          onClick={() => setTab("Factions")}
+    <div className="flexColumn" style={{ paddingBottom: rem(8) }}>
+      <div className="flexRow" style={{ gap: rem(4) }}>
+        <Chip
+          fontSize={14}
+          selected={tab === "Factions"}
+          toggleFn={() => setTab("Factions")}
         >
           <FormattedMessage
             id="r2htpd"
             description="Text on a button that will randomize factions."
             defaultMessage="Factions"
           />
-        </button>
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "Objectives" ? "selected" : ""}
-          onClick={() => setTab("Objectives")}
+        </Chip>
+        <Chip
+          fontSize={14}
+          selected={tab === "Objectives"}
+          toggleFn={() => setTab("Objectives")}
         >
           <FormattedMessage
             id="5Bl4Ek"
             description="Cards that define how to score victory points."
             defaultMessage="Objectives"
           />
-        </button>
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "Techs" ? "selected" : ""}
-          onClick={() => setTab("Techs")}
+        </Chip>
+        <Chip
+          fontSize={14}
+          selected={tab === "Techs"}
+          toggleFn={() => setTab("Techs")}
         >
           <FormattedMessage
             id="ys7uwX"
             description="Shortened version of technologies."
             defaultMessage="Techs"
           />
-        </button>
-        <button
-          style={{ fontSize: "14px" }}
-          className={tab === "Strategy Cards" ? "selected" : ""}
-          onClick={() => setTab("Strategy Cards")}
+        </Chip>
+        <Chip
+          fontSize={14}
+          selected={tab === "Strategy Cards"}
+          toggleFn={() => setTab("Strategy Cards")}
         >
           <FormattedMessage
             id="jOsJY8"
             description="Strategy Cards."
             defaultMessage="Strategy Cards"
           />
-        </button>
+        </Chip>
       </div>
       <div className={styles.DetailsSection}>{tabContent}</div>
     </div>
@@ -475,7 +477,10 @@ function GameDataSection({
 
   return (
     <div className={styles.GameDataSection}>
-      <div className="flexColumn" style={{ alignItems: "stretch", gap: "2px" }}>
+      <div
+        className="flexColumn"
+        style={{ alignItems: "stretch", gap: rem(2) }}
+      >
         <div className="flexRow" style={{ justifyContent: "space-between " }}>
           <FormattedMessage
             id="zAhkl6"
@@ -494,7 +499,7 @@ function GameDataSection({
           <TimerDisplay
             time={Math.floor(totalGameLength / numGames)}
             width={72}
-            style={{ fontSize: "16px", fontFamily: "Source Sans" }}
+            style={{ fontSize: rem(16), fontFamily: "Source Sans" }}
           />
         </div>
         <div className="flexRow" style={{ justifyContent: "space-between" }}>

@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { rem } from "../../util/util";
 
 interface TimerDisplayProps {
   time: number;
@@ -27,9 +28,8 @@ export default function TimerDisplay({
   }
 
   const timerStyle = {
-    width: `${width}px`,
-    fontSize: "24px",
-    gap: "0px",
+    width: rem(width),
+    gap: 0,
     fontFamily: "Slider",
     justifyContent: "center",
     display: "grid",

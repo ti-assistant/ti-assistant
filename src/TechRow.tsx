@@ -6,6 +6,7 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import Modal from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
 import { getTechColor } from "./util/techs";
+import { rem } from "./util/util";
 
 export function UnitStat({
   name,
@@ -18,21 +19,27 @@ export function UnitStat({
     <div
       className="centered"
       style={{
-        width: "82px",
+        width: rem(82),
         boxSizing: "border-box",
         border: "1px solid #eee",
-        borderRadius: "10px",
+        borderRadius: rem(10),
       }}
     >
       <div
         style={{
-          fontSize: "24px",
+          fontSize: rem(24),
           borderBottom: "1px solid #eee",
         }}
       >
         {stat}
       </div>
-      <div style={{ lineHeight: "18px", fontSize: "11px", padding: "0px 6px" }}>
+      <div
+        style={{
+          lineHeight: rem(18),
+          fontSize: rem(11),
+          padding: `0 ${rem(6)}`,
+        }}
+      >
         {name}
       </div>
     </div>
@@ -47,9 +54,9 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
     <div
       className="flexRow"
       style={{
-        gap: "3px",
-        padding: `0px ${"4px"}`,
-        margin: "4px 4px 4px 0px",
+        gap: rem(3),
+        padding: `0 ${rem(4)}`,
+        margin: `${rem(4)} ${rem(4)} ${rem(4)} 0`,
         fontFamily: "Slider",
         alignItems: "stretch",
         justifyContent: "center",
@@ -107,10 +114,10 @@ function InfoContent({ tech }: { tech: Tech }) {
         className="myriadPro flexColumn"
         style={{
           width: "100%",
-          padding: "4px",
+          padding: rem(4),
           whiteSpace: "pre-line",
           textAlign: "center",
-          fontSize: "32px",
+          fontSize: rem(32),
         }}
       >
         {tech.description ? tech.description.replaceAll("\\n", "\n") : null}
@@ -122,8 +129,8 @@ function InfoContent({ tech }: { tech: Tech }) {
               whiteSpace: "nowrap",
               gridTemplateColumns: "repeat(2, 1fr)",
               fontFamily: "Slider",
-              paddingLeft: "8px",
-              rowGap: "2px",
+              paddingLeft: rem(8),
+              rowGap: rem(2),
               width: "100%",
             }}
           >
@@ -142,10 +149,10 @@ function InfoContent({ tech }: { tech: Tech }) {
       className="myriadPro"
       style={{
         width: "100%",
-        padding: "4px",
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       {description}
@@ -197,7 +204,7 @@ export function TechRow({
           closeMenu={() => setShowInfoModal(false)}
           level={2}
           visible={showInfoModal}
-          title={<div style={{ fontSize: "40px" }}>{tech.name}</div>}
+          title={<div style={{ fontSize: rem(40) }}>{tech.name}</div>}
         >
           <InfoContent tech={tech} />
         </Modal>
@@ -231,8 +238,8 @@ export function TechRow({
                   opacity: "70%",
                   height: "100%",
                   zIndex: -2,
-                  top: "-4px",
-                  right: "-16px",
+                  top: rem(-4),
+                  right: rem(-16),
                 }}
               >
                 <div
@@ -250,7 +257,7 @@ export function TechRow({
             className="popupIcon"
             style={{
               display: opts.hideInfo ? "none" : "block",
-              fontSize: "16px",
+              fontSize: rem(16),
             }}
             onClick={(e) => {
               e.stopPropagation();

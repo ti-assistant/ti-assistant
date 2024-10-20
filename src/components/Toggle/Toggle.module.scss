@@ -8,14 +8,14 @@
   align-items: center;
 
   background-color: var(--background-color);
-  border-radius: 20px;
+  border-radius: 1.25rem;
   border: 1px solid var(--border-color);
   gap: 0;
   white-space: nowrap;
-  padding-right: 6px;
+  padding-right: 0.375rem;
   cursor: pointer;
 
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .ToggleContainer > input[type="checkbox"] {
@@ -28,21 +28,21 @@
   align-items: center;
   cursor: pointer;
   font-weight: bold;
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
 }
 
 .ToggleContainer > input[type="checkbox"]:not(:checked)::after {
   content: "⤬";
-  font-size: 16px;
-  line-height: 8px;
+  font-size: 1rem;
+  line-height: 0.5rem;
   color: red;
 }
 
 .ToggleContainer > input[type="checkbox"]:checked::after {
   content: "✓";
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 0.875rem;
+  line-height: 0.875rem;
   color: green;
 }
 

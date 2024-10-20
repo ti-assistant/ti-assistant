@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 280px;
+  width: 17.5rem;
   height: 100svh;
 }
 
@@ -14,14 +14,14 @@
   justify-content: center;
   align-items: center;
 
-  gap: 8px;
-  margin-top: 40px;
-  height: calc(100svh - 40px);
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  height: calc(100svh - 2.5rem);
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 56.25rem) {
   .LeftColumn {
-    height: calc(100svh - 240px);
+    height: calc(100svh - 15rem);
   }
 
   .MainColumn {
@@ -30,12 +30,12 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 37.5rem) {
   .LeftColumn {
     display: none;
   }
 
   .MainColumn {
-    padding-top: 48px;
+    padding-top: 3rem;
   }
 }

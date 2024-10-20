@@ -2,6 +2,7 @@ import { createIntl, createIntlCache } from "react-intl";
 import { buildComponents, buildState } from "../../data/GameData";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
 import { UpdateLeaderStateHandler } from "./updateLeaderState";
+import { AddTechHandler, RemoveTechHandler } from "./addTech";
 
 export class PlayComponentHandler implements Handler {
   constructor(
@@ -91,6 +92,20 @@ export class PlayComponentHandler implements Handler {
       };
     }
 
+    if (this.data.event.name === "Fires of the Gashlai") {
+      const handler = new AddTechHandler(this.gameData, {
+        action: "ADD_TECH",
+        event: {
+          faction: this.data.event.factionId,
+          tech: "War Sun",
+        },
+      });
+      updates = {
+        ...updates,
+        ...handler.getUpdates(),
+      };
+    }
+
     return updates;
   }
 
@@ -164,6 +179,20 @@ export class UnplayComponentHandler implements Handler {
         event: {
           planet: "Elysium",
           attachment: "Ul the Progenitor",
+        },
+      });
+      updates = {
+        ...updates,
+        ...handler.getUpdates(),
+      };
+    }
+
+    if (this.data.event.name === "Fires of the Gashlai") {
+      const handler = new RemoveTechHandler(this.gameData, {
+        action: "REMOVE_TECH",
+        event: {
+          faction: this.data.event.factionId,
+          tech: "War Sun",
         },
       });
       updates = {

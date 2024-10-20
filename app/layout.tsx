@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 import "../public/site.css";
-import LanguageSelectRadialMenu from "../src/components/LanguageSelectRadialMenu/LanguageSelectRadialMenu";
+import LangSelectHoverMenu from "../src/components/LangSelectHoverMenu/LangSelectHoverMenu";
 import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";
 import { getLocale, getMessages } from "../src/util/server";
 import styles from "./root.module.scss";
@@ -30,19 +30,21 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
-        <Link href={"/"} className={styles.HomeLink}>
-          <div>
-            <ResponsiveLogo size={"100%"} />
+        <div className={styles.NavBar}>
+          <Link href={"/"} className={styles.HomeLink}>
+            <div className={styles.Logo}>
+              <ResponsiveLogo size={"100%"} />
+            </div>
+            Twilight Imperium Assistant
+          </Link>
+          <div className={styles.LangSelect}>
+            <LangSelectHoverMenu
+              selectedLocale={locale}
+              locales={SUPPORTED_LOCALES}
+              invalidLocales={[locale]}
+              size={28}
+            />
           </div>
-          Twilight Imperium Assistant
-        </Link>
-        <div className={styles.LangSelect}>
-          <LanguageSelectRadialMenu
-            selectedLocale={locale}
-            locales={SUPPORTED_LOCALES}
-            invalidLocales={[locale]}
-            size={28}
-          />
         </div>
         <Wrapper locale={locale} messages={messages}>
           {children}

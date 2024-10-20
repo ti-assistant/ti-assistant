@@ -5,13 +5,13 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  gap: 20px;
+  gap: 1.25rem;
 
   text-align: center;
 }
 
-@media only screen and (max-width: 1279px) {
+@media only screen and (max-width: 75rem) {
   .CenterColumn {
-    height: calc(100dvh - 104px);
+    height: calc(100dvh - 6.5rem);
   }
 }

@@ -1,12 +1,14 @@
 .SummaryColumn {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+
   flex-shrink: 0;
   height: 100svh;
   justify-content: center;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 56.25rem) {
   .SummaryColumn {
     display: none;
   }

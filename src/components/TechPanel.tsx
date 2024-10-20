@@ -1,23 +1,22 @@
 import React, { CSSProperties, useContext, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { TechRow } from "../TechRow";
 import { GameIdContext } from "../context/Context";
+import { useFactions, useTechs } from "../context/dataHooks";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
 import { hasTech, isTechReplaced } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
+import { techTypeString } from "../util/strings";
 import { getTechTypeColor, sortTechs } from "../util/techs";
+import { objectKeys, rem } from "../util/util";
+import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
+import { Selector } from "./Selector/Selector";
 import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
-import { Selector } from "./Selector/Selector";
-import { FormattedMessage, useIntl } from "react-intl";
-import { techTypeString } from "../util/strings";
-import { useFaction, useFactions, useTechs } from "../context/dataHooks";
-import { CollapsibleSection } from "./CollapsibleSection";
-import { objectEntries, objectKeys } from "../util/util";
-import { TechSummary } from "../FactionSummary";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
-import TechTree from "./TechTree/TechTree";
+import { FullTechSummary } from "./TechSummary/TechSummary";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const gameId = useContext(GameIdContext);
@@ -115,7 +114,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                 <div
                   className="flexColumn"
                   style={{
-                    gap: "4px",
+                    gap: rem(4),
                     alignItems: "stretch",
                     width: "100%",
                   }}
@@ -123,7 +122,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                   {faction.id === "Nekro Virus" ? (
                     <>
                       <Selector
-                        buttonStyle={{ fontSize: "14px" }}
+                        buttonStyle={{ fontSize: rem(14) }}
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs.filter(
                           (tech) => tech.id !== nekroFactionTechIds[1]
@@ -162,7 +161,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                         selectedItem={nekroFactionTechIds[0]}
                       />
                       <Selector
-                        buttonStyle={{ fontSize: "14px" }}
+                        buttonStyle={{ fontSize: rem(14) }}
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs.filter(
                           (tech) => tech.id !== nekroFactionTechIds[0]
@@ -492,7 +491,7 @@ function TechsByFaction({
       title={
         <div
           className="flexRow"
-          style={{ justifyContent: "center", fontSize: "18px" }}
+          style={{ justifyContent: "center", fontSize: rem(18) }}
         >
           <FactionIcon factionId={factionId} size={20} />
           {getFactionName(faction)}
@@ -531,7 +530,7 @@ function TechsByFaction({
             zIndex: 1,
           }}
         >
-          <TechSummary techs={factionTechs} factionId={factionId} horizontal />
+          <FullTechSummary techs={factionTechs} factionId={factionId} />
         </div>
         <div className={styles.factionTechList}>
           {factionTechs.map((tech) => {
@@ -552,7 +551,7 @@ function TechsByFaction({
           style={{
             justifyContent: "flex-start",
             alignItems: "flex-start",
-            paddingLeft: "8px",
+            paddingLeft: rem(8),
             width: "100%",
           }}
         >

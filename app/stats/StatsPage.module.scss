@@ -1,14 +1,14 @@
 .Filters {
   position: fixed;
-  top: 64px;
-  width: calc(100dvw - 208px);
+  top: 4rem;
+  width: calc(100dvw - 9rem);
 }
 
 .StatsPage {
   width: 100%;
-  height: calc(100dvh - 60px);
-  margin-top: 60px;
-  padding-top: 4px;
+  height: calc(100dvh - 3.75rem);
+  margin-top: 3.75rem;
+  padding-top: 0.25rem;
   font-family: Source Sans;
 }
 
@@ -18,26 +18,26 @@
   width: 100%;
   align-items: flex-start;
   justify-content: space-evenly;
-  margin-top: 120px;
+  margin-top: 7.5rem;
 }
 
 .GameDataSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 0.125rem;
 }
 
 .DetailsSection {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 4px;
-  height: calc(100dvh - 240px);
+  padding: 0.25rem;
+  height: calc(100dvh - 15rem);
   overflow-y: scroll;
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 56.25rem) {
   .Filters {
     position: relative;
     width: 100%;
@@ -55,7 +55,7 @@
     margin-top: 0;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .GameDataSection {
@@ -77,5 +77,5 @@
   }
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 37.5rem) {
 }

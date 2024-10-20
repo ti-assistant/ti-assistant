@@ -12,18 +12,10 @@ import {
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import styles from "./SummaryColumn.module.scss";
+import { rem } from "../util/util";
 
 const FactionPanel = dynamic(() => import("../components/FactionPanel"), {
-  loading: () => (
-    <div
-      className="popupIcon"
-      style={{
-        fontSize: "16px",
-      }}
-    >
-      &#x24D8;
-    </div>
-  ),
+  loading: () => <div className="popupIcon">&#x24D8;</div>,
   ssr: false,
 });
 
@@ -131,7 +123,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
     <div
       className={styles.SummaryColumn}
       style={{
-        gap: numFactions < 8 ? "12px" : "4px",
+        gap: numFactions < 8 ? rem(12) : rem(4),
       }}
     >
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
@@ -149,23 +141,13 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
                 ) : (
                   <div className="flexRow" style={{ gap: 0 }}>
                     Loading Faction
-                    <div
-                      className="popupIcon"
-                      style={{
-                        fontSize: "16px",
-                      }}
-                    >
-                      &#x24D8;
-                    </div>
+                    <div className="popupIcon">&#x24D8;</div>
                   </div>
                 )
               }
               rightLabel={
                 <StaticFactionTimer
                   factionId={faction?.id ?? "Unknown"}
-                  style={{
-                    fontSize: "16px",
-                  }}
                   width={84}
                 />
               }

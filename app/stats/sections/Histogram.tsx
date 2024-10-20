@@ -2,6 +2,7 @@ import { HistogramData } from "./types";
 import styles from "./Histogram.module.scss";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import { FormattedMessage } from "react-intl";
+import { rem } from "../../../src/util/util";
 
 export function Histogram({ histogram }: { histogram: HistogramData }) {
   const [maxVal, minVal] = Object.values(histogram).reduce(
@@ -24,14 +25,14 @@ export function Histogram({ histogram }: { histogram: HistogramData }) {
           <div
             key={key}
             className="flexColumn"
-            style={{ height: "100%", gap: "2px" }}
+            style={{ height: "100%", gap: rem(2) }}
           >
             <div
               className="flexRow"
               style={{
                 position: "relative",
                 height: "100%",
-                width: "16px",
+                width: rem(16),
                 alignItems: "flex-end",
               }}
             >
@@ -39,10 +40,10 @@ export function Histogram({ histogram }: { histogram: HistogramData }) {
                 className="flexRow"
                 style={{
                   height: `${height}%`,
-                  width: "20px",
+                  width: rem(20),
                   backgroundColor: "#666",
-                  borderTopLeftRadius: "4px",
-                  borderTopRightRadius: "4px",
+                  borderTopLeftRadius: rem(4),
+                  borderTopRightRadius: rem(4),
                 }}
               ></div>
             </div>
@@ -50,7 +51,7 @@ export function Histogram({ histogram }: { histogram: HistogramData }) {
               className="flexRow"
               style={{
                 color: "#666",
-                width: "16px",
+                width: rem(16),
               }}
             >
               {key}
@@ -86,7 +87,7 @@ export function PointsHistogram({
   return (
     <div
       className="flexColumn"
-      style={{ gap: "2px", width: "fit-content", alignItems: "flex-start" }}
+      style={{ gap: rem(2), width: "fit-content", alignItems: "flex-start" }}
     >
       <div>
         <FormattedMessage
@@ -135,14 +136,14 @@ export function FactionHistogram({
             <div
               key={key}
               className="flexColumn"
-              style={{ height: "100%", gap: "2px" }}
+              style={{ height: "100%", gap: rem(2) }}
             >
               <div
                 className="flexRow"
                 style={{
                   position: "relative",
                   height: "100%",
-                  width: "16px",
+                  width: rem(16),
                   alignItems: "flex-end",
                 }}
               >
@@ -150,10 +151,10 @@ export function FactionHistogram({
                   className="flexRow"
                   style={{
                     height: `${height}%`,
-                    width: "20px",
+                    width: rem(20),
                     backgroundColor: "#666",
-                    borderTopLeftRadius: "4px",
-                    borderTopRightRadius: "4px",
+                    borderTopLeftRadius: rem(4),
+                    borderTopRightRadius: rem(4),
                   }}
                 ></div>
               </div>
@@ -161,7 +162,7 @@ export function FactionHistogram({
                 className="flexRow"
                 style={{
                   color: "#666",
-                  width: "16px",
+                  width: rem(16),
                 }}
               >
                 <FactionIcon factionId={key as FactionId} size={16} />

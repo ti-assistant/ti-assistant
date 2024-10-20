@@ -1,0 +1,36 @@
+.TechSummaryGrid {
+  display: grid;
+  font-size: 0.875rem;
+  column-gap: 0.25rem;
+  row-gap: 0.125rem;
+  grid-template-columns: repeat(5, 1fr);
+  width: min-content;
+}
+
+.TechSummaryGrid > :last-child {
+  grid-column: 2 / 5;
+}
+
+.TechSummaryGrid.Horizontal {
+  grid-template-columns: repeat(15, 1fr);
+  font-size: 1.125rem;
+  row-gap: 0.1875rem;
+  column-gap: 0.1875rem;
+}
+
+.TechSummaryGrid.Horizontal > .UnitUpgradeNumber {
+  grid-column: 5 / 6;
+}
+
+.TechSummaryGrid.Horizontal > .UnitUpgradeText {
+  grid-column: 5 / 13;
+}
+
+.TechSummaryGrid.Horizontal > .UnitUpgradeTree {
+  grid-column: 5 / 13;
+}
+
+.TechSummaryGrid.Horizontal > .FactionTechTree {
+  grid-column: 16 / 17;
+  grid-row: 1 / 4;
+}

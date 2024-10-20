@@ -1,22 +1,22 @@
 .ObjectiveModal {
   display: grid;
   width: 100%;
-  gap: 8px;
+  gap: 0.5rem;
   grid-auto-flow: row;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: flex-start;
 }
 
 .ObjectivesSection {
-  width: 550px;
+  width: 34.375rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 56.25rem) {
   .ObjectiveModal {
     display: flex;
     flex-direction: column;
@@ -28,10 +28,10 @@
   }
 
   .ObjectivesSection {
-    width: calc(100dvw - 24px);
-    font-size: 14px;
+    width: calc(100dvw - 1.5rem);
+    font-size: 0.875rem;
   }
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 37.5rem) {
 }

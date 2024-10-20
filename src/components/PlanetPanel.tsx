@@ -1,5 +1,12 @@
 import { CSSProperties, useContext, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { GameIdContext } from "../context/Context";
+import {
+  useAttachments,
+  useFaction,
+  useFactions,
+  usePlanets,
+} from "../context/dataHooks";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
 import { getFactionColor, getFactionName } from "../util/factions";
 import {
@@ -11,13 +18,7 @@ import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import PlanetSummary from "./PlanetSummary/PlanetSummary";
-import { FormattedMessage } from "react-intl";
-import {
-  useAttachments,
-  useFaction,
-  useFactions,
-  usePlanets,
-} from "../context/dataHooks";
+import { rem } from "../util/util";
 
 interface ExtendedCSS extends CSSProperties {
   "--color": string;
@@ -79,7 +80,7 @@ function PlanetSection({
               top: 0,
               zIndex: 1001,
               backgroundColor: "#222",
-              paddingBottom: "4px",
+              paddingBottom: rem(4),
               borderBottom: "1px solid #555",
               width: "100%",
             }}
@@ -94,7 +95,7 @@ function PlanetSection({
           <div
             className={styles.planetList}
             style={{
-              minHeight: "40px",
+              minHeight: rem(40),
             }}
           >
             {updatedPlanets.map((planet) => {

@@ -2,7 +2,7 @@
   --border-color: green;
   --background-color: #444;
 
-  --font-size: 12px;
+  --font-size: 0.75rem;
 
   display: flex;
   flex-direction: row;
@@ -10,11 +10,12 @@
   align-items: center;
 
   background-color: var(--background-color);
-  border-radius: 20px;
+  border-radius: 1.25rem;
   border: 1px solid var(--border-color);
   gap: 0;
   white-space: nowrap;
-  padding: calc(var(--font-size) / 3) calc(2 * var(--font-size) / 3);
+  font-size: var(--font-size);
+  padding: 0.125rem calc(2 * var(--font-size) / 3);
   cursor: pointer;
 }
 

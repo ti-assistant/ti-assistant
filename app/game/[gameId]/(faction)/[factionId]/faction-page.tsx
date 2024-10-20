@@ -104,6 +104,7 @@ import {
 } from "../../../../../src/util/techs";
 import styles from "./faction-page.module.scss";
 import { Optional } from "../../../../../src/util/types/types";
+import { rem } from "../../../../../src/util/util";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -374,7 +375,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
             }
           >
             <div
-              style={{ width: "100%", fontSize: "16px", whiteSpace: "nowrap" }}
+              style={{ width: "100%", fontSize: rem(16), whiteSpace: "nowrap" }}
             >
               <StartingComponents factionId={faction.id} />
             </div>
@@ -432,8 +433,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                     gridTemplateRows: "repeat(10, auto)",
                     justifyContent: "flex-start",
                     whiteSpace: "nowrap",
-                    padding: "8px",
-                    gap: "4px",
+                    padding: rem(8),
+                    gap: rem(4),
                     alignItems: "stretch",
                     maxWidth: "85vw",
                     overflowX: "auto",
@@ -483,7 +484,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
           <div className="flexColumn" style={{ width: "100%" }}>
             <div
               className="flexColumn "
-              style={{ alignItems: "stretch", width: "100%", gap: "4px" }}
+              style={{ alignItems: "stretch", width: "100%", gap: rem(4) }}
             >
               <StrategyCardSelectList mobile={true} />
             </div>
@@ -730,7 +731,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
           <div
             className="flexColumn"
             style={{
-              padding: "0 8px",
+              padding: `0 ${rem(8)}`,
               flexWrap: "wrap",
               width: "100%",
               alignItems: "flex-start",
@@ -768,8 +769,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   className="flexColumn"
                   style={{
                     whiteSpace: "nowrap",
-                    padding: "8px",
-                    gap: "4px",
+                    padding: rem(8),
+                    gap: rem(4),
                     alignItems: "stretch",
                   }}
                 >
@@ -823,8 +824,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                     gridTemplateRows: "repeat(9, auto)",
                     justifyContent: "flex-start",
                     whiteSpace: "nowrap",
-                    padding: "8px",
-                    gap: "4px",
+                    padding: rem(8),
+                    gap: rem(4),
                     alignItems: "stretch",
                     maxWidth: "85vw",
                     overflowX: "auto",
@@ -894,15 +895,15 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                       }}
                     />
                   }
-                  style={{ maxHeight: "400px" }}
+                  style={{ maxHeight: rem(400) }}
                 >
                   <div
                     className="flexRow"
                     style={{
                       maxWidth: "85vw",
-                      gap: "4px",
+                      gap: rem(4),
                       whiteSpace: "nowrap",
-                      padding: "8px",
+                      padding: rem(8),
                       display: "grid",
                       gridAutoFlow: "column",
                       gridTemplateRows: "repeat(10, auto)",
@@ -963,7 +964,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   defaultMessage="Speaker Actions"
                 />
               }
-              style={{ marginTop: "4px", paddingTop: "12px" }}
+              style={{ marginTop: rem(4), paddingTop: rem(12) }}
             >
               <ClientOnlyHoverMenu
                 label={
@@ -978,12 +979,12 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   className="flexRow"
                   style={{
                     maxWidth: "85vw",
-                    gap: "4px",
+                    gap: rem(4),
                     display: "grid",
                     gridAutoFlow: "column",
                     gridTemplateRows: "repeat(8, auto)",
                     whiteSpace: "nowrap",
-                    padding: "8px",
+                    padding: rem(8),
                     alignItems: "stretch",
                     justifyContent: "flex-start",
                     overflowX: "auto",
@@ -1028,13 +1029,13 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         defaultMessage="Eligible Outcomes"
                       />
                     }
-                    style={{ paddingTop: "8px" }}
+                    style={{ paddingTop: rem(8) }}
                   >
                     <SelectableRow
                       itemId={eligibleOutcomes}
                       removeItem={() => selectEligibleOutcome("None")}
                     >
-                      <div style={{ display: "flex", fontSize: "18px" }}>
+                      <div style={{ display: "flex", fontSize: rem(18) }}>
                         {eligibleOutcomes}
                       </div>
                     </SelectableRow>
@@ -1048,7 +1049,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         defaultMessage="Speaker Actions"
                       />
                     }
-                    style={{ marginTop: "4px", paddingTop: "12px" }}
+                    style={{ marginTop: rem(4), paddingTop: rem(12) }}
                   >
                     <ClientOnlyHoverMenu
                       label={
@@ -1062,8 +1063,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                       <div
                         className="flexColumn"
                         style={{
-                          padding: "8px",
-                          gap: "4px",
+                          padding: rem(8),
+                          gap: rem(4),
                           alignItems: "stretch",
                           justifyContent: "flex-start",
                         }}
@@ -1104,7 +1105,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   <div
                     className="flexColumn"
                     style={{
-                      paddingLeft: "8px",
+                      paddingLeft: rem(8),
                       width: "100%",
                       alignItems: "flex-start",
                     }}
@@ -1142,7 +1143,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         <div className={styles.InfluenceTextWrapper}>
                           {influence}
                         </div>
-                        <div style={{ fontSize: "16px" }}>+ {extraVotes}</div>
+                        <div style={{ fontSize: rem(16) }}>+ {extraVotes}</div>
                       </div>
                     </div>
                     <div
@@ -1159,9 +1160,9 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         style={{
                           justifyContent: "flex-start",
                           flexShrink: 0,
-                          gap: "12px",
-                          fontSize: "24px",
-                          paddingLeft: "12px",
+                          gap: rem(12),
+                          fontSize: rem(24),
+                          paddingLeft: rem(12),
                         }}
                       >
                         {factionVotes?.votes ?? 0 > 0 ? (
@@ -1176,7 +1177,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                             }
                           ></div>
                         ) : (
-                          <div style={{ width: "12px" }}></div>
+                          <div style={{ width: rem(12) }}></div>
                         )}
                         <div
                           className="flexRow"
@@ -1190,7 +1191,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                             e.currentTarget.innerText = "";
                           }}
                           onBlur={(e) => saveCastVotes(e.currentTarget)}
-                          style={{ width: "32px" }}
+                          style={{ width: rem(32) }}
                         >
                           {factionVotes?.votes ?? 0}
                         </div>
@@ -1223,7 +1224,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         defaultMessage="Speaker Actions"
                       />
                     }
-                    style={{ paddingTop: "12px" }}
+                    style={{ paddingTop: rem(12) }}
                   >
                     <ClientOnlyHoverMenu
                       label={
@@ -1238,9 +1239,9 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         className="flexRow"
                         style={{
                           maxWidth: "85vw",
-                          gap: "4px",
+                          gap: rem(4),
                           whiteSpace: "nowrap",
-                          padding: "8px",
+                          padding: rem(8),
                           alignItems: "stretch",
                           display: "grid",
                           gridAutoFlow: "column",
@@ -1283,7 +1284,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                 ) : (
                   <LabeledDiv
                     label="SPEAKER TIE BREAK"
-                    style={{ paddingTop: "8px" }}
+                    style={{ paddingTop: rem(8) }}
                   >
                     <SelectableRow
                       itemId={tieBreak}
@@ -1433,7 +1434,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
   }
 
   return (
-    <div className="flexColumn" style={{ gap: "8px", width: "100%" }}>
+    <div className="flexColumn" style={{ gap: rem(8), width: "100%" }}>
       <Modal
         closeMenu={toggleAddTechMenu}
         visible={showAddTech}
@@ -1468,7 +1469,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
       <div
         style={{
           width: "100%",
-          maxWidth: "800px",
+          maxWidth: rem(800),
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
@@ -1484,7 +1485,11 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
         >
           <div
             className="flexColumn"
-            style={{ width: "100%", alignItems: "stretch", padding: "0px 8px" }}
+            style={{
+              width: "100%",
+              alignItems: "stretch",
+              padding: `0 ${rem(8)}`,
+            }}
           >
             <PhaseSection factionId={factionId} />
             <LabeledLine
@@ -1503,7 +1508,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
               {/* Tabs */}
               <div
                 className="flexRow"
-                style={{ width: "100%", margin: "0px 4px" }}
+                style={{ width: "100%", margin: `0 ${rem(4)}` }}
               >
                 <Tab
                   selectTab={toggleTabShown}
@@ -1542,7 +1547,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
               <TabBody id="techs" selectedId={tabShown}>
                 <div>
                   <LabeledLine />
-                  <div className="flexRow" style={{ height: "32px" }}>
+                  <div className="flexRow" style={{ height: rem(32) }}>
                     <button onClick={toggleAddTechMenu}>
                       <FormattedMessage
                         id="3qIvsL"
@@ -1554,8 +1559,8 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
                   <div
                     className="flexColumn largeFont"
                     style={{
-                      gap: "8px",
-                      padding: "6px",
+                      gap: rem(8),
+                      padding: rem(6),
                       overflow: "auto",
                       justifyContent: "space-between",
                       alignItems: "stretch",
@@ -1576,7 +1581,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
               <TabBody id="planets" selectedId={tabShown}>
                 <div>
                   <LabeledLine />
-                  <div className="flexRow" style={{ height: "40px" }}>
+                  <div className="flexRow" style={{ height: rem(40) }}>
                     <button onClick={toggleAddPlanetMenu}>
                       <FormattedMessage
                         id="PrGqwQ"
@@ -1589,7 +1594,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
                     className="largeFont"
                     style={{
                       boxSizing: "border-box",
-                      paddingBottom: "4px",
+                      paddingBottom: rem(4),
                     }}
                   >
                     {updatedPlanets.map((planet) => {
@@ -1749,7 +1754,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
     switch (state?.phase) {
       case "SETUP":
         return (
-          <div className="flexColumn" style={{ marginTop: "8px" }}>
+          <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <LockedButtons
               unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
               buttons={[
@@ -1773,7 +1778,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
       case "STRATEGY":
         if (state?.activeplayer === "None") {
           return (
-            <div className="flexColumn" style={{ marginTop: "8px" }}>
+            <div className="flexColumn" style={{ marginTop: rem(8) }}>
               <button
                 onClick={() => {
                   if (!gameId) {
@@ -1797,7 +1802,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
         return null;
       case "ACTION":
         return (
-          <div className="flexColumn" style={{ marginTop: "8px" }}>
+          <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <LockedButtons
               unlocked={state?.activeplayer === "None"}
               buttons={[
@@ -1857,7 +1862,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
           },
         });
         return (
-          <div className="flexColumn" style={{ marginTop: "8px" }}>
+          <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <LockedButtons
               unlocked={statusPhaseComplete(
                 getCurrentTurnLogEntries(actionLog)
@@ -1868,7 +1873,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
         );
       case "AGENDA":
         return (
-          <div className="flexColumn" style={{ marginTop: "8px" }}>
+          <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <LockedButtons
               unlocked={state?.agendaNum === 3}
               buttons={[
@@ -1910,7 +1915,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
   return (
     <>
       {/* <Updater /> */}
-      <div style={{ width: "100%", margin: "4px" }}>
+      <div style={{ width: "100%", margin: rem(4) }}>
         <FactionCard
           faction={faction}
           hideIcon
@@ -1920,7 +1925,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
               factionId={factionId}
               width={80}
               style={{
-                fontSize: "16px",
+                fontSize: rem(16),
               }}
             />
           }

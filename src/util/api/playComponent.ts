@@ -7,11 +7,16 @@ import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
 import { poster } from "./util";
 
-export function playComponent(gameId: string, name: string) {
+export function playComponent(
+  gameId: string,
+  name: string,
+  factionId: FactionId
+) {
   const data: GameUpdateData = {
     action: "PLAY_COMPONENT",
     event: {
       name,
+      factionId,
     },
   };
 
@@ -39,11 +44,16 @@ export function playComponent(gameId: string, name: string) {
   });
 }
 
-export function unplayComponent(gameId: string, name: string) {
+export function unplayComponent(
+  gameId: string,
+  name: string,
+  factionId: FactionId
+) {
   const data: GameUpdateData = {
     action: "UNPLAY_COMPONENT",
     event: {
       name,
+      factionId,
     },
   };
 

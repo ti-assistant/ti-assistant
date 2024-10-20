@@ -26,6 +26,7 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { objectiveTypeString } from "../util/strings";
 import styles from "./SetupPhase.module.scss";
 import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
 
 export function startFirstRound(gameId: string) {
   advancePhaseAsync(gameId);
@@ -187,7 +188,7 @@ export default function SetupPhase() {
               className="flexColumn mediumFont"
               style={{
                 fontFamily: "Myriad Pro",
-                paddingTop: "8px",
+                paddingTop: rem(8),
                 alignItems: "flex-start",
                 whiteSpace: "nowrap",
               }}
@@ -197,7 +198,7 @@ export default function SetupPhase() {
                 type="textbox"
                 className="smallFont"
                 style={{
-                  width: `min(75vw, 268px)`,
+                  width: `min(75vw, ${rem(268)})`,
                 }}
                 pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|-1)($|\\s))+"}
                 placeholder={intl.formatMessage({
@@ -232,8 +233,8 @@ export default function SetupPhase() {
                   gridAutoFlow: "row",
                   width: "100%",
                   gridTemplateColumns: "1fr",
-                  gap: "8px",
-                  paddingTop: "6px",
+                  gap: rem(8),
+                  paddingTop: rem(6),
                 }}
               >
                 {Object.values(orderedFactions).map((faction) => {
@@ -246,7 +247,7 @@ export default function SetupPhase() {
                       <div
                         className="flexColumn"
                         style={{
-                          paddingTop: `${"2px"}`,
+                          paddingTop: rem(2),
                           alignItems: "flex-start",
                           height: "100%",
                           width: "100%",
@@ -396,7 +397,7 @@ export default function SetupPhase() {
                     }
                     startFirstRound(gameId);
                   },
-                  style: { fontSize: "40px" },
+                  style: { fontSize: rem(40) },
                 },
               ]}
             />
@@ -408,11 +409,11 @@ export default function SetupPhase() {
           className="flexColumn"
           style={{
             alignItems: "center",
-            marginTop: "40px",
+            marginTop: rem(40),
             boxSizing: "border-box",
             margin: 0,
             whiteSpace: "nowrap",
-            gap: "8px",
+            gap: rem(8),
           }}
         >
           <div className="flexColumn" style={{ width: "100%" }}>
@@ -427,8 +428,8 @@ export default function SetupPhase() {
               display: "grid",
               gridAutoFlow: "row",
               gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-              gap: "8px",
-              paddingTop: "6px",
+              gap: rem(8),
+              paddingTop: rem(6),
             }}
           >
             {Object.values(orderedFactions).map((faction) => {
@@ -441,7 +442,7 @@ export default function SetupPhase() {
                   <div
                     className="flexColumn"
                     style={{
-                      paddingTop: `${"2px"}`,
+                      paddingTop: rem(2),
                       alignItems: "flex-start",
                       height: "100%",
                       width: "100%",
@@ -483,7 +484,7 @@ export default function SetupPhase() {
                     }
                     startFirstRound(gameId);
                   },
-                  style: { fontSize: "40px" },
+                  style: { fontSize: rem(40) },
                 },
               ]}
             />

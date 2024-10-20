@@ -1,5 +1,6 @@
 import { CSSProperties, PropsWithChildren } from "react";
 import styles from "./SelectableRow.module.scss";
+import { rem } from "./util/util";
 
 interface SelectableRowProps<Type extends string> {
   itemId: Type;
@@ -24,16 +25,18 @@ export function SelectableRow<Type extends string>({
       style.fontSize.valueOf();
       const baseSize = parseInt(fontSizeValue.replace("px", ""));
       const size = parseInt(fontSizeValue.replace("px", ""));
-      iconStyle.fontSize = `${size}px`;
-      iconStyle.width = `${size}px`;
-      iconStyle.height = `${size}px`;
-      iconStyle.lineHeight = `${size}px`;
-      iconStyle.marginRight = "3px";
-      iconStyle.marginLeft = 0;
-      style = {
-        ...style,
-        fontSize: `${baseSize}px`,
-      };
+      if (baseSize !== 0) {
+        iconStyle.fontSize = rem(size);
+        iconStyle.width = rem(size);
+        iconStyle.height = rem(size);
+        iconStyle.lineHeight = rem(size);
+        iconStyle.marginRight = rem(3);
+        iconStyle.marginLeft = 0;
+        style = {
+          ...style,
+          fontSize: rem(baseSize),
+        };
+      }
     }
   }
 

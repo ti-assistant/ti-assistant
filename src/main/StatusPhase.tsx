@@ -41,6 +41,7 @@ import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import { objectiveTypeString, phaseString } from "../util/strings";
+import { rem } from "../util/util";
 import styles from "./StatusPhase.module.scss";
 
 function InfoContent({ children }: PropsWithChildren) {
@@ -49,11 +50,11 @@ function InfoContent({ children }: PropsWithChildren) {
       className="myriadPro"
       style={{
         width: "100%",
-        minWidth: "320px",
-        padding: "4px",
+        minWidth: rem(320),
+        padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
-        fontSize: "32px",
+        fontSize: rem(32),
       }}
     >
       {children}
@@ -118,7 +119,7 @@ function CommandTokenGains() {
         style={{
           justifyContent: "flex-start",
           alignItems: "stretch",
-          paddingTop: "2px",
+          paddingTop: rem(2),
         }}
       >
         {Object.entries(numberOfCommandTokens).map(
@@ -148,8 +149,8 @@ function CommandTokenGains() {
                           className="flexRow"
                           style={{
                             position: "relative",
-                            width: "32px",
-                            height: "32px",
+                            width: rem(32),
+                            height: rem(32),
                             userSelect: "none",
                           }}
                         >
@@ -222,7 +223,7 @@ function ActionCardDraws() {
           justifyContent: "space-evenly",
           alignItems: "stretch",
           flexWrap: "wrap",
-          paddingTop: "2px",
+          paddingTop: rem(2),
         }}
       >
         {Object.entries(numberOfActionCards).map(([number, localFactions]) => {
@@ -260,8 +261,8 @@ function ActionCardDraws() {
                         className="flexRow"
                         style={{
                           position: "relative",
-                          width: "32px",
-                          height: "32px",
+                          width: rem(32),
+                          height: rem(32),
                           userSelect: "none",
                         }}
                       >
@@ -546,7 +547,7 @@ export function MiddleColumn() {
                               />
                             }
                             objectives={availableObjectives}
-                            fontSize="14px"
+                            fontSize={rem(14)}
                           />
                         )}
                       </div>
@@ -567,9 +568,9 @@ export function MiddleColumn() {
                       style={{
                         position: "relative",
                         opacity: 0.5,
-                        top: "2px",
-                        width: "40px",
-                        height: "40px",
+                        top: rem(2),
+                        width: rem(40),
+                        height: rem(40),
                         userSelect: "none",
                       }}
                     >
@@ -597,7 +598,7 @@ export function MiddleColumn() {
                               defaultMessage="Secret"
                             />
                           }
-                          style={{ maxWidth: "calc(88vw - 50px)" }}
+                          style={{ maxWidth: `calc(88vw - ${rem(50)})` }}
                           itemsPerColumn={10}
                           toggleItem={(objectiveId, add) => {
                             if (!card.faction) {
@@ -626,7 +627,7 @@ export function MiddleColumn() {
                             />
                           }
                           objectives={secrets}
-                          fontSize="14px"
+                          fontSize={rem(14)}
                           perColumn={10}
                         />
                       )}
@@ -942,7 +943,7 @@ export default function StatusPhase() {
                 />
               }
             >
-              <div className="flexColumn" style={{ padding: "8px" }}>
+              <div className="flexColumn" style={{ padding: rem(8) }}>
                 {Object.entries(getStartOfStatusPhaseAbilities())
                   .sort((a, b) => {
                     if (!factions) {
@@ -1141,7 +1142,7 @@ export default function StatusPhase() {
                 />
               }
             >
-              <div className="flexColumn" style={{ padding: "8px" }}>
+              <div className="flexColumn" style={{ padding: rem(8) }}>
                 {Object.entries(getEndOfStatusPhaseAbilities())
                   .sort((a, b) => {
                     if (!factions) {

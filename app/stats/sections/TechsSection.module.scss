@@ -1,19 +1,19 @@
 .TechModal {
   display: grid;
   width: 100%;
-  gap: 8px;
+  gap: 0.5rem;
   grid-auto-flow: row;
   grid-template-columns: 1fr 2fr 1fr;
   align-items: flex-start;
 }
 
 .TechsSection {
-  width: 550px;
+  width: 34.375rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .HistogramSection {
@@ -21,10 +21,10 @@
   flex-direction: row;
   justify-content: flex-start;
   width: 100%;
-  gap: 32px;
+  gap: 2rem;
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 56.25rem) {
   .TechModal {
     display: flex;
     flex-direction: column;
@@ -36,14 +36,14 @@
   }
 
   .TechsSection {
-    width: calc(100dvw - 24px);
+    width: calc(100dvw - 1.5rem);
   }
 
   .HistogramSection {
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
   }
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 37.5rem) {
 }

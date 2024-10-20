@@ -1,5 +1,5 @@
 .StrategyCardElement {
-  height: 48px;
+  height: 3rem;
 
   display: grid;
 
@@ -7,7 +7,7 @@
   grid-auto-flow: row;
   // flex-direction: column;
   border: 3px solid var(--color);
-  border-radius: 6px;
+  border-radius: 0.375rem;
   justify-content: center;
   // justify-items: center;
   align-items: center;
@@ -36,7 +36,7 @@
   display: none;
 }
 
-@media only screen and (max-width: 1279px) {
+@media only screen and (max-width: 75rem) {
   .FactionCircle {
     display: flex;
     grid-column: 3 / 5;

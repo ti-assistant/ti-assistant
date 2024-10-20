@@ -22,6 +22,7 @@
 
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .MapBody {
@@ -51,10 +52,10 @@
   flex-direction: column;
   justify-content: stretch;
   align-items: stretch;
-  gap: 8px;
+  gap: 0.25rem;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 37.5rem) {
   .Map {
     flex-direction: column;
   }

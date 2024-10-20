@@ -1,6 +1,7 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { BLACK_BORDER_GLOW, BLACK_TEXT_GLOW } from "../../util/borderGlow";
 import styles from "./LabeledDiv.module.scss";
+import { rem } from "../../util/util";
 
 interface LabeledDivProps {
   label: ReactNode;
@@ -32,12 +33,12 @@ export default function LabeledDiv({
   opts = {},
   className,
 }: PropsWithChildren<LabeledDivProps>) {
-  const padding = `${!!label ? "10px" : "6px"} ${"6px"} ${"6px"} ${"6px"}`;
+  const padding = `${!!label ? rem(10) : rem(6)} ${rem(6)} ${rem(6)} ${rem(6)}`;
   const divStyle: LabeledDivCSS = {
     "--color": color,
     padding: `${padding}`,
     cursor: onClick ? "pointer" : "cursor",
-    marginTop: !!label ? "4px" : 0,
+    marginTop: !!label ? rem(4) : 0,
     boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
     ...style,
   };
@@ -52,17 +53,11 @@ export default function LabeledDiv({
         <div
           className={`${styles.label} ${styles.left}`}
           style={{
-            maxWidth: opts.fixedWidth ? "calc(100% - 14px)" : undefined,
+            maxWidth: opts.fixedWidth ? `calc(100% - ${rem(14)})` : undefined,
             textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
           }}
         >
-          <div
-            style={{
-              padding: color === "Black" ? `0 ${"4px"}` : undefined,
-            }}
-          >
-            {label}
-          </div>
+          <div>{label}</div>
         </div>
       ) : null}
       {!!rightLabel ? (

@@ -22,6 +22,7 @@ interface Options {
   expansions: Expansion[];
   "display-objective-description"?: boolean;
   "game-variant": GameVariant;
+  mallice?: string;
   "map-string"?: string;
   "map-style": MapStyle;
   "victory-points": number;

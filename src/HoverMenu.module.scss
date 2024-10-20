@@ -5,10 +5,10 @@
   height: 0;
   top: 0;
   left: 0;
-  border-right: 12px solid transparent;
-  border-top: 12px solid var(--color);
+  border-right: 0.75rem solid transparent;
+  border-top: 0.75rem solid var(--color);
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   cursor: pointer;
 }
 
@@ -17,11 +17,12 @@
   content: "";
   width: 0;
   height: 0;
+  // Based on the border width
   top: -2px;
   left: -2px;
-  border-right: 12px solid transparent;
-  border-top: 12px solid var(--color);
+  border-right: 0.75rem solid transparent;
+  border-top: 0.75rem solid var(--color);
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   cursor: pointer;
 }

@@ -14,6 +14,7 @@ import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRad
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
+import { rem } from "../../util/util";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -148,8 +149,8 @@ export default function StartingComponents({
         <div
           className="flexRow"
           style={{
-            gap: "4px",
-            paddingLeft: "4px",
+            gap: rem(4),
+            paddingLeft: rem(4),
           }}
         >
           <FormattedMessage
@@ -180,8 +181,7 @@ export default function StartingComponents({
           <div
             style={{
               fontFamily: "Myriad Pro",
-              fontSize: "14px",
-              // paddingLeft: "4px",
+              fontSize: rem(14),
             }}
           >
             <FormattedMessage
@@ -218,7 +218,7 @@ export default function StartingComponents({
                 whiteSpace: "nowrap",
                 fontFamily: "Myriad Pro",
                 color: getTechColor(tech),
-                fontSize: "14px",
+                fontSize: rem(14),
               }}
             >
               {tech.name}
@@ -252,13 +252,13 @@ export default function StartingComponents({
           gridTemplateRows: `repeat(${Math.ceil(
             orderedUnits.length / 2
           )}, 1fr)`,
-          paddingLeft: "4px",
-          paddingRight: "4px",
+          paddingLeft: rem(4),
+          paddingRight: rem(4),
           fontFamily: "Myriad Pro",
           // justifyContent: "stretch",
           // alignItems: "flex-start",
-          columnGap: "8px",
-          fontSize: "14px",
+          columnGap: rem(8),
+          fontSize: rem(14),
           width: "100%",
         }}
       >

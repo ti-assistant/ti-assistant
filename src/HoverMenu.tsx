@@ -18,7 +18,6 @@ export function ClientOnlyHoverMenu({
   label,
   style,
   borderless,
-  shift = {},
   buttonStyle = {},
   children,
   renderProps,
@@ -40,8 +39,8 @@ export function ClientOnlyHoverMenu({
             {
               "--color": borderColor,
               border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
-              borderRadius: "5px",
-              padding: `4px 8px`,
+              borderRadius: "0.3125rem",
+              padding: `0.25rem 0.5rem`,
               whiteSpace: "nowrap",
               backgroundColor: "#222",
             } as CSSProperties
@@ -58,7 +57,6 @@ export function ClientOnlyHoverMenu({
       label={label}
       style={style}
       borderless={borderless}
-      shift={shift}
       buttonStyle={buttonStyle}
       borderColor={borderColor}
       renderProps={renderProps}
@@ -69,17 +67,11 @@ export function ClientOnlyHoverMenu({
   );
 }
 
-interface Shift {
-  left?: number;
-  right?: number;
-}
-
 interface HoverMenuProps {
   renderProps?: (closeFn: () => void) => ReactNode;
   label?: ReactNode;
   style?: CSSProperties;
   borderless?: boolean;
-  shift?: Shift;
   buttonStyle?: CSSProperties;
   borderColor?: string;
   postContent?: ReactNode;
@@ -89,7 +81,6 @@ export function HoverMenu({
   label,
   style,
   borderless,
-  shift = {},
   buttonStyle = {},
   children,
   renderProps,
@@ -178,13 +169,13 @@ export function HoverMenu({
     top: direction === "down" ? 0 : "auto",
     bottom: direction === "up" ? 0 : "auto",
     border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
-    borderRadius: "5px",
+    borderRadius: "0.3125rem",
     backgroundColor: "#222",
     overflow: "visible",
     whiteSpace: "nowrap",
     gap: 0,
-    left: shift.left ? `-${shift.left}px` : side === "right" ? 0 : "auto",
-    right: shift.right ?? side === "left" ? 0 : "auto",
+    left: side === "right" ? 0 : "auto",
+    right: side === "left" ? 0 : "auto",
     ...style,
   };
 
@@ -217,8 +208,8 @@ export function HoverMenu({
           {
             "--color": borderColor,
             border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
-            borderRadius: "5px",
-            padding: `4px 8px`,
+            borderRadius: "0.3125rem",
+            padding: `0.25rem 0.5rem`,
             whiteSpace: "nowrap",
             backgroundColor: "#222",
           } as CSSProperties
@@ -233,9 +224,7 @@ export function HoverMenu({
             style={
               {
                 "--color": borderColor,
-                padding: `4px 8px`,
-                marginLeft: shift.left ? `${shift.left}px` : 0,
-                marginRight: shift.right ? `${shift.right}px` : 0,
+                padding: `0.25rem 0.5rem`,
               } as CSSProperties
             }
           >
@@ -248,9 +237,7 @@ export function HoverMenu({
         {direction === "up" ? (
           <div
             style={{
-              padding: `4px 8px`,
-              marginLeft: shift.left ? `${shift.left}px` : 0,
-              marginRight: shift.right ? `${shift.right}px` : 0,
+              padding: `0.25rem 0.5rem`,
             }}
           >
             {label}

@@ -21,6 +21,8 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
+import { rem } from "../../util/util";
+import Chip from "../Chip/Chip";
 
 interface Cube {
   q: number;
@@ -263,7 +265,7 @@ export function SystemImage({
         <NextImage
           src={Hexagon}
           alt={`System Tile`}
-          sizes="64px"
+          sizes={rem(64)}
           fill
           style={{ opacity: "10%", objectFit: "contain" }}
           priority
@@ -314,7 +316,7 @@ export function SystemImage({
       <NextImage
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
-        sizes="128px"
+        sizes={rem(128)}
         fill
         style={{ objectFit: "contain" }}
         priority={
@@ -343,8 +345,8 @@ export function SystemImage({
                   position: "absolute",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <NextImage
@@ -375,8 +377,8 @@ export function SystemImage({
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <FactionIcon factionId={planet.owner} size="75%" />
@@ -399,8 +401,8 @@ export function SystemImage({
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <PlanetIcon type={planet.type} size="70%" />
@@ -423,8 +425,8 @@ export function SystemImage({
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
-                  marginLeft: `${planet.position?.x}%` ?? 0,
-                  marginTop: `${planet.position?.y}%` ?? 0,
+                  marginLeft: `${planet.position?.x}%`,
+                  marginTop: `${planet.position?.y}%`,
                 }}
               >
                 <div
@@ -471,8 +473,8 @@ export function SystemImage({
                     borderRadius: "100%",
                     width: "24%",
                     height: height,
-                    marginLeft: `${planet.position?.x}%` ?? 0,
-                    marginTop: `${planet.position?.y}%` ?? 0,
+                    marginLeft: `${planet.position?.x}%`,
+                    marginTop: `${planet.position?.y}%`,
                   }}
                 >
                   <div
@@ -502,49 +504,29 @@ export function SystemImage({
           </div>
         );
       })}
-      {
-        gameId && systemNumber === "18" && !systemPlanets[0]?.owner ? (
+      {gameId && systemNumber === "18" && !systemPlanets[0]?.owner ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            borderRadius: "100%",
+            width: "40%",
+            height: `calc(40% * ${HEX_RATIO})`,
+          }}
+        >
           <div
             className="flexRow"
-            style={{
-              position: "absolute",
-              borderRadius: "100%",
-              width: "40%",
-              height: `calc(40% * ${HEX_RATIO})`,
-            }}
+            style={{ position: "relative", width: "90%", height: "90%" }}
           >
-            <div
-              className="flexRow"
-              style={{ position: "relative", width: "90%", height: "90%" }}
-            >
-              <NextImage
-                src={`/images/custodians.png`}
-                alt={`Custodians Token`}
-                fill
-                style={{ objectFit: "contain" }}
-              />
-            </div>
+            <NextImage
+              src={`/images/custodians.png`}
+              alt={`Custodians Token`}
+              fill
+              style={{ objectFit: "contain" }}
+            />
           </div>
-        ) : null
-        // <div
-        //   className="flexRow"
-        //   style={{
-        //     position: "absolute",
-        //     backgroundColor: "#222",
-        //     borderRadius: "100%",
-        //     width: "20%",
-        //     height: `calc(20% * ${HEX_RATIO})`,
-        //     border: "1px solid red",
-        //   }}
-        // >
-        //   <div
-        //     className="flexRow"
-        //     style={{ position: "relative", width: "90%", height: "90%" }}
-        //   >
-        //     <FullFactionSymbol faction={"Vuil'raith Cabal"} />
-        //   </div>
-        // </div>
-      }
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -552,7 +534,7 @@ export function SystemImage({
 interface MapProps {
   mapString: string;
   mapStyle: MapStyle;
-  mallice?: string;
+  mallice?: string | SystemId;
   factions: {
     id?: FactionId;
     name?: string;
@@ -712,7 +694,8 @@ export default function Map({
     mapStyle,
     factions.length
   );
-  const shouldAddMecatol = !updatedMapString.includes(" 18 ");
+  const shouldAddMecatol =
+    !updatedMapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = updatedMapString.split(" ");
   if (shouldAddMecatol) {
     updatedSystemTiles.unshift("18");
@@ -875,7 +858,7 @@ export default function Map({
   return (
     <div className={styles.Map}>
       {gameId && !hideLegend ? (
-        <div className={styles.Legend}>
+        <div className={styles.Legend} onClick={(e) => e.stopPropagation()}>
           <LabeledDiv
             label={
               <FormattedMessage
@@ -889,68 +872,65 @@ export default function Map({
               backgroundColor: "#222",
               justifyContent: "stretch",
               alignItems: "stretch",
-              paddingTop: "16px",
+              paddingTop: rem(16),
             }}
           >
             <div className={styles.LegendContent}>
-              <button
-                className={showDetails === "OWNERS" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue = showDetails === "OWNERS" ? "NONE" : "OWNERS";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              <Chip
+                fontSize={16}
+                selected={showDetails === "NONE"}
+                toggleFn={() => setShowDetails("NONE")}
+              >
+                <FormattedMessage
+                  id="n8jSwp"
+                  description="Text on a button that will show no overlay."
+                  defaultMessage="None"
+                />
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "OWNERS"}
+                toggleFn={() => setShowDetails("OWNERS")}
               >
                 <FormattedMessage
                   id="FhKQXR"
                   description="Text on a button that will show planet ownership."
                   defaultMessage="Owners"
                 />
-              </button>
-              <button
-                className={showDetails === "TYPES" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue = showDetails === "TYPES" ? "NONE" : "TYPES";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "TYPES"}
+                toggleFn={() => setShowDetails("TYPES")}
               >
                 <FormattedMessage
                   id="wDLqxZ"
                   description="Text on a button that will show planet types."
                   defaultMessage="Types"
                 />
-              </button>
-              <button
-                className={showDetails === "TECH_SKIPS" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue =
-                    showDetails === "TECH_SKIPS" ? "NONE" : "TECH_SKIPS";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "TECH_SKIPS"}
+                toggleFn={() => setShowDetails("TECH_SKIPS")}
               >
                 <FormattedMessage
                   id="j3n7Nr"
                   description="Text on a button that will show planets with tech skips."
                   defaultMessage="Tech Skips"
                 />
-              </button>
-              <button
-                className={showDetails === "ATTACHMENTS" ? "selected" : ""}
-                onClick={(e) => {
-                  const newValue =
-                    showDetails === "ATTACHMENTS" ? "NONE" : "ATTACHMENTS";
-                  setShowDetails(newValue);
-                  e.stopPropagation();
-                }}
+              </Chip>
+              <Chip
+                fontSize={16}
+                selected={showDetails === "ATTACHMENTS"}
+                toggleFn={() => setShowDetails("ATTACHMENTS")}
               >
                 <FormattedMessage
                   id="1odgd1"
                   description="Text on a button that will show planet attachments."
                   defaultMessage="Attachments"
                 />
-              </button>
+              </Chip>
             </div>
           </LabeledDiv>
         </div>
@@ -988,20 +968,20 @@ export default function Map({
               position: "absolute",
               right:
                 ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
-                  ? "4%"
+                  ? 0
                   : undefined,
               bottom:
                 ghostsCorner === "bottom-right" ||
                 ghostsCorner === "bottom-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               left:
                 ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               top:
                 ghostsCorner === "top-right" || ghostsCorner === "top-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               width: `${tilePercentage * HEX_RATIO}%`,
               height: `${tilePercentage * HEX_RATIO}%`,
@@ -1018,9 +998,9 @@ export default function Map({
           <div
             style={{
               position: "absolute",
-              left: ghostsCorner !== "bottom-left" ? "4%" : undefined,
-              right: ghostsCorner === "bottom-left" ? "4%" : undefined,
-              bottom: "4%",
+              left: ghostsCorner !== "bottom-left" ? 0 : undefined,
+              right: ghostsCorner === "bottom-left" ? 0 : undefined,
+              bottom: 0,
               width: `${tilePercentage * HEX_RATIO}%`,
               height: `${tilePercentage * HEX_RATIO}%`,
             }}
@@ -1028,11 +1008,24 @@ export default function Map({
             <SystemImage
               gameId={gameId}
               showDetails={showDetails}
-              systemNumber={mallice === "PURGED" ? "81" : `82${mallice}`}
+              systemNumber={getMalliceSystemNum(mallice)}
             />
           </div>
         ) : null}
       </div>
     </div>
   );
+}
+
+function getMalliceSystemNum(mallice: string | SystemId) {
+  if (mallice === "PURGED") {
+    return "81";
+  }
+  if (mallice === "A") {
+    return "82A";
+  }
+  if (mallice === "B") {
+    return "82B";
+  }
+  return (mallice as SystemId).toString();
 }

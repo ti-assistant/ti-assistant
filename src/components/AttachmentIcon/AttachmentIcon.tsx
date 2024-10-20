@@ -5,6 +5,7 @@ import { getTechTypeColor } from "../../util/techs";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./AttachmentIcon.module.scss";
+import { rem } from "../../util/util";
 
 interface AttachmentIconProps {
   attachment?: Attachment;
@@ -34,8 +35,8 @@ export default function AttachmentIcon({
           className="flexRow"
           style={{
             position: "relative",
-            width: `${size - 10}px`,
-            height: `${size - 10}px`,
+            width: rem(size - 10),
+            height: rem(size - 10),
           }}
         >
           <Image
@@ -67,8 +68,8 @@ export default function AttachmentIcon({
               ? undefined
               : `2px solid ${getTechTypeColor(techType)}`,
             borderRadius: "100%",
-            paddingTop: hasSkip ? "4px" : undefined,
-            paddingLeft: hasSkip ? "1px" : undefined,
+            paddingTop: hasSkip ? rem(4) : undefined,
+            paddingLeft: hasSkip ? rem(1) : undefined,
           }}
         >
           {hasSkip ? (
@@ -91,7 +92,7 @@ export default function AttachmentIcon({
       return (
         <div
           className="flexRow"
-          style={{ width: `${size}px`, aspectRatio: 1, gap: 0 }}
+          style={{ width: rem(size), aspectRatio: 1, gap: 0 }}
         >
           <div
             style={{
@@ -125,8 +126,8 @@ export default function AttachmentIcon({
           justifyContent: "center",
           width: "100%",
           aspectRatio: 1,
-          paddingTop: "4px",
-          paddingLeft: "1px",
+          paddingTop: rem(4),
+          paddingLeft: rem(1),
         }}
       >
         <ResourcesIcon
@@ -150,7 +151,7 @@ export default function AttachmentIcon({
   }, [attachment, hasSkip, hideBorder, size]);
 
   const attachmentIconStyle: AttachmentIconCSS = {
-    "--size": typeof size === "string" ? size : `${size}px`,
+    "--size": typeof size === "string" ? size : rem(size),
     // border: `${"1px"} solid red`,
     // borderRadius: "100%",
   };

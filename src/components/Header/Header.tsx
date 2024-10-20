@@ -1,24 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import QRCode from "qrcode";
 import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { GameIdContext } from "../../context/Context";
-import {
-  continueGameAsync,
-  endGameAsync,
-  repealAgendaAsync,
-} from "../../dynamic/api";
-import { computeVPs } from "../../util/factions";
-import { validateMapString } from "../../util/util";
-import GameTimer from "../GameTimer/GameTimer";
-import GenericModal from "../GenericModal/GenericModal";
-import Map from "../Map/Map";
-import UndoButton from "../UndoButton/UndoButton";
-import styles from "./Header.module.scss";
 import {
   useAgendas,
   useFactions,
@@ -27,6 +14,18 @@ import {
   useOptions,
   usePlanet,
 } from "../../context/dataHooks";
+import {
+  continueGameAsync,
+  endGameAsync,
+  repealAgendaAsync,
+} from "../../dynamic/api";
+import { computeVPs } from "../../util/factions";
+import GameTimer from "../GameTimer/GameTimer";
+import GenericModal from "../GenericModal/GenericModal";
+import Map from "../Map/Map";
+import UndoButton from "../UndoButton/UndoButton";
+import styles from "./Header.module.scss";
+import { rem } from "../../util/util";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -74,7 +73,9 @@ export default function Header() {
   );
   let malliceSide;
   if (options.expansions.includes("POK")) {
-    if (!mallice) {
+    if (options.mallice) {
+      malliceSide = options.mallice;
+    } else if (!mallice) {
       malliceSide = "PURGED";
     } else if (mallice.owner) {
       malliceSide = "B";
@@ -167,7 +168,7 @@ export default function Header() {
         {gameFinished ? (
           state?.phase === "END" ? (
             <button
-              style={{ fontSize: "24px" }}
+              style={{ fontSize: rem(24) }}
               onClick={() => {
                 if (!gameId) {
                   return;
@@ -183,7 +184,7 @@ export default function Header() {
             </button>
           ) : (
             <button
-              style={{ fontFamily: "Slider", fontSize: "32px" }}
+              style={{ fontFamily: "Slider", fontSize: rem(32) }}
               onClick={() => {
                 if (!gameId) {
                   return;
@@ -240,7 +241,7 @@ function PassedLaws() {
       >
         <div
           className="flexColumn"
-          style={{ alignItems: "flex-start", padding: "8px" }}
+          style={{ alignItems: "flex-start", padding: rem(8) }}
         >
           {passedLaws.map((agenda) => (
             <AgendaRow

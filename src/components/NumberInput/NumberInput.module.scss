@@ -5,8 +5,8 @@
   display: grid;
   grid-auto-flow: column;
   align-items: center;
-  gap: 4px;
-  font-size: 20px;
+  gap: 0.25rem;
+  font-size: 1.25rem;
 
   grid-template-columns: 1fr auto 1fr;
 }
@@ -14,27 +14,27 @@
 .arrow {
   width: 0;
   height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
+  border-left: 0.375rem solid transparent;
+  border-right: 0.375rem solid transparent;
   cursor: pointer;
 }
 
 .arrowUp {
-  border-bottom: 8px solid var(--up-arrow-color);
+  border-bottom: 0.5rem solid var(--up-arrow-color);
 }
 
 .arrowDown {
-  border-top: 8px solid var(--down-arrow-color);
+  border-top: 0.5rem solid var(--down-arrow-color);
 }
 
 .InputBox {
   display: flex;
   justify-content: center;
 
-  width: 36px;
+  width: 2.25rem;
 
   background-color: #333;
   color: #eee;
   border: 2px solid #777;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
