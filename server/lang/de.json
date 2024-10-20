@@ -51,7 +51,7 @@
     "defaultMessage": "Anführer",
     "description": "Agent, commander, and hero cards."
   },
-  "/lAAq/": {
+   "/lAAq/": {
     "defaultMessage": "Krone der Emphidia werten?",
     "description": "Message asking if a specific player scored the Crown of Emphidia relic."
   },
@@ -99,11 +99,11 @@
     "defaultMessage": "Biotechnik",
     "description": "Title of green techs."
   },
-  "2dmEIv": {
+    "2dmEIv": {
     "defaultMessage": "Fraktionsfähigkeiten",
     "description": "Header for a section listing out abilities."
   },
-  "2fB0Ox": {
+    "2fB0Ox": {
     "defaultMessage": "Basisspiel",
     "description": "Text on a button that will show/hide features related to the base game."
   },
@@ -115,7 +115,7 @@
     "defaultMessage": "Erweiterungen:",
     "description": "A label for a selector specifying which expansions should be enabled."
   },
-  "355TBA": {
+    "355TBA": {
     "defaultMessage": "Contributors",
     "description": "Label for section listing out people that worked on TI Assistant."
   },
@@ -159,7 +159,7 @@
     "defaultMessage": "Standard",
     "description": "Text on a button specifying that the map style should be standard."
   },
-  "5/RTAm": {
+    "5/RTAm": {
     "defaultMessage": "Gesetz",
     "description": "Agenda type that has an ongoing effect if passed."
   },
@@ -171,7 +171,7 @@
     "defaultMessage": "Weitere Aktion durchführen",
     "description": "Text on a button that will let the player take another action."
   },
-  "5FWWeX": {
+    "5FWWeX": {
     "defaultMessage": "Verfügbar",
     "description": "Header for column listing how many votes players have available."
   },
@@ -223,7 +223,7 @@
     "defaultMessage": "Spielaufbau",
     "description": "Text identifying that this is the setup step."
   },
-  "9eqKm5": {
+    "9eqKm5": {
     "defaultMessage": "{count, plural, one {Einheitenfähigkeit} other {Einheitenfähigkeiten}}",
     "description": "Header for section listing out unique units."
   },
@@ -1851,7 +1851,7 @@
     "defaultMessage": "{count, plural, one {Planet wurde} other {Planeten wurden}} neulich erobert",
     "description": "Label for section of newly controlled planets."
   },
-  "EAsvAe": {
+    "EAsvAe": {
     "defaultMessage": "Wähle {outcomeType}",
     "description": "Text explaining what players should be voting for."
   },
@@ -2299,7 +2299,7 @@
     "defaultMessage": "Tausch bestätigen",
     "description": "Text on a button that will apply a Strategy Card swap."
   },
-  "GR4fXA": {
+    "GR4fXA": {
     "defaultMessage": "Alternative abhandeln: {outcome}",
     "description": "Text on a button that resolves the current agenda with a specific outcome."
   },
@@ -2475,7 +2475,7 @@
     "defaultMessage": "Endstand",
     "description": "An ordering of factions based on end game scoring."
   },
-  "Kqms7v": {
+    "Kqms7v": {
     "defaultMessage": "Anlegen",
     "description": "Text on a button that displays the attachment menu for a planet."
   },
@@ -2611,7 +2611,7 @@
     "defaultMessage": "Enthalten",
     "description": "Outcome choosing not to vote."
   },
-  "Leaders.Hero.Unlock": {
+    "Leaders.Hero.Unlock": {
     "defaultMessage": "Du musst 3 gewertete Aufträge haben.",
     "description": "Unlock condition for all heroes."
   },
@@ -3287,7 +3287,7 @@
     "defaultMessage": "Zug beenden",
     "description": "Text on a button that will end the player's turn."
   },
-  "OAXWRP": {
+    "OAXWRP": {
     "defaultMessage": "Spielplan bauen",
     "description": "A button that will open the map builder."
   },
@@ -4177,7 +4177,7 @@
   },
   "Relics.Dynamis Core.Description": {
     "defaultMessage": "Solange diese Karte in deinem Spielbereich ist, erhöht sich dein Massenproduktwert um 2.{br}AKTION: Vernichte diese Karte, um Handelswaren in Höhe deines aufgedruckten Massenproduktwerts +2 zu erhalten.",
-    "description": "Description for Relic: Dynamis Core"
+	"description": "Description for Relic: Dynamis Core"
   },
   "Relics.Dynamis Core.Title": {
     "defaultMessage": "Dynamis-Kern",
@@ -4451,7 +4451,7 @@
     "defaultMessage": "Kriegsführung",
     "description": "Title of Strategy Card: Warfare"
   },
-  "Sw+CbI": {
+    "Sw+CbI": {
     "defaultMessage": "Held",
     "description": "The title of a hero: a leader that gets used once per game."
   },
@@ -4851,7 +4851,7 @@
     "defaultMessage": "Technologien ändern",
     "description": "Text shown on a button that opens the update techs panel."
   },
-  "Unit.Stats.Capacity": {
+    "Unit.Stats.Capacity": {
     "defaultMessage": "KAPAZITÄT",
     "description": "Label for unit stat block - capacity value of the unit."
   },
@@ -5015,7 +5015,7 @@
     "defaultMessage": "Schildpalisade",
     "description": "Title of Faction Unit: Shield Paling"
   },
-  "V7viK1": {
+    "V7viK1": {
     "defaultMessage": "Unbeanspruchte Planeten",
     "description": "Header for a section of planets that no player controls."
   },
@@ -5255,11 +5255,11 @@
     "defaultMessage": "{count} {count, plural, one {PVS} other {PVS}}",
     "description": "A number of PDS units."
   },
-  "X3Nzbr": {
+    "X3Nzbr": {
     "defaultMessage": "Patrons",
     "description": "Label for section listing out people that regularly donate to TI Assistant."
   },
-  "X3VPhD": {
+    "X3VPhD": {
     "defaultMessage": "Extra",
     "description": "Header for column listing how many extra votes players have cast."
   },
@@ -5656,7 +5656,7 @@
     "description": "Instruction telling the speaker to reveal an agenda."
   },
   "ZZ/Lhe": {
-    "defaultMessage": "Map Type",
+    "defaultMessage": "Map Type:",
     "description": "A label for a selector for selecting which map style to use."
   },
   "ZlvDZB": {
@@ -5699,7 +5699,7 @@
     "defaultMessage": "Optionen",
     "description": "Label on a menu for changing game options"
   },
-  "dENKlQ": {
+    "dENKlQ": {
     "defaultMessage": "Supporters",
     "description": "Label for section listing out everyone that has donated to TI Assistant."
   },
@@ -5731,7 +5731,7 @@
     "defaultMessage": "Punkte durch Imperium",
     "description": "The title of points granted from using Imperial."
   },
-  "eO0b2t": {
+    "eO0b2t": {
     "defaultMessage": "Agent",
     "description": "The title of an agent: a leader that can get used once per round."
   },
@@ -5747,7 +5747,7 @@
     "defaultMessage": "Details",
     "description": "Label for a section containing additional details."
   },
-  "frzrrT": {
+    "frzrrT": {
     "defaultMessage": "FREISCHALTEN:",
     "description": "Text that gets pre-fixed to a leader unlock condition."
   },
@@ -5791,7 +5791,7 @@
     "defaultMessage": "{planet} beanspruchen",
     "description": "Text on a button that allows a player to claim a planet."
   },
-  "ifN0t/": {
+    "ifN0t/": {
     "defaultMessage": "Alternative",
     "description": "Header for column listing what voting outcome players have selected."
   },
@@ -5815,7 +5815,7 @@
     "defaultMessage": "Sprecher",
     "description": "The title of the player that has the Speaker token."
   },
-  "kq4/fY": {
+    "kq4/fY": {
     "defaultMessage": "Deutsche Übersetzung: {name}",
     "description": "Credit for the german translation of TI Assistant."
   },
@@ -5931,7 +5931,7 @@
     "defaultMessage": "Verordnungen",
     "description": "Agenda cards that do not have an ongoing effect."
   },
-  "tM6gjG": {
+    "tM6gjG": {
     "defaultMessage": "Verordnung",
     "description": "Agenda type that does not have an ongoing effect."
   },
@@ -5947,7 +5947,7 @@
     "defaultMessage": "{num, select, 3 {3} other {Alle}} Planeten spielbereit machen",
     "description": "Text explaining how many planets to ready."
   },
-  "uxvbkq": {
+    "uxvbkq": {
     "defaultMessage": "Resultate",
     "description": "Label for section describing the results of voting on an agenda."
   },
@@ -6003,7 +6003,7 @@
     "defaultMessage": "Hauptanzeige",
     "description": "Text on a button that opens the main screen of the assistant."
   },
-  "yXj5iL": {
+    "yXj5iL": {
     "defaultMessage": "Vertrags{count, plural, one {karte} other {karten}}",
     "description": "Header for a section listing out promissory notes."
   },
