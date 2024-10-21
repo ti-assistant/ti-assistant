@@ -12,7 +12,7 @@ import MapBuilder, {
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { buildBaseSystems } from "../../src/data/GameData";
-import { getDefaultMapString } from "../../src/util/map";
+import { getDefaultMapString, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { rem } from "../../src/util/util";
 import Chip from "../../src/components/Chip/Chip";
@@ -158,7 +158,7 @@ export default function MapBuilderPage() {
     tileNumbers.push(`P${i + 1}`);
   }
   if (filters.has("BASE_GAME")) {
-    for (let i = 19; i < 51; i++) {
+    for (let i = 18; i < 51; i++) {
       tileNumbers.push(i.toString());
     }
   }
@@ -181,7 +181,7 @@ export default function MapBuilderPage() {
   }
   if (filters.has("HOME_SYSTEMS")) {
     if (filters.has("BASE_GAME")) {
-      for (let i = 1; i < 18; i++) {
+      for (let i = 1; i < 19; i++) {
         tileNumbers.push(i.toString());
       }
     }
@@ -546,9 +546,6 @@ export default function MapBuilderPage() {
                 updateMapString={(dragItem, dropItem) => {
                   setMapString((prevString) => {
                     const systems = prevString.split(" ");
-                    if (!prevString.includes(" 18 ")) {
-                      systems.unshift("18");
-                    }
                     while (systems.length < dropItem.index) {
                       systems.push("-1");
                     }
@@ -561,9 +558,6 @@ export default function MapBuilderPage() {
                       systems[systems.length - 1] === "-1"
                     ) {
                       systems.pop();
-                    }
-                    if (systems[0] === "18") {
-                      systems.shift();
                     }
                     return systems.join(" ");
                   });
@@ -594,7 +588,9 @@ export default function MapBuilderPage() {
         }}
         value={mapString}
         onChange={(element) => {
-          setMapString(element.target.value);
+          setMapString(
+            processMapString(element.target.value, mapStyle, numFactions)
+          );
         }}
       ></input>
     </>

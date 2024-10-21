@@ -12,7 +12,7 @@ import {
   useGameState,
   useObjectives,
   useOptions,
-  usePlanet,
+  usePlanets,
 } from "../../context/dataHooks";
 import {
   continueGameAsync,
@@ -20,12 +20,13 @@ import {
   repealAgendaAsync,
 } from "../../dynamic/api";
 import { computeVPs } from "../../util/factions";
+import { getMalliceSystemNumber } from "../../util/map";
+import { rem } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
-import { rem } from "../../util/util";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -37,7 +38,7 @@ export default function Header() {
   const factions = useFactions();
   const objectives = useObjectives();
   const options = useOptions();
-  const mallice = usePlanet("Mallice");
+  const planets = usePlanets();
   const state = useGameState();
 
   const intl = useIntl();
@@ -71,18 +72,6 @@ export default function Header() {
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
-  let malliceSide;
-  if (options.expansions.includes("POK")) {
-    if (options.mallice) {
-      malliceSide = options.mallice;
-    } else if (!mallice) {
-      malliceSide = "PURGED";
-    } else if (mallice.owner) {
-      malliceSide = "B";
-    } else {
-      malliceSide = "A";
-    }
-  }
 
   let gameFinished = false;
   if (options && factions) {
@@ -145,7 +134,7 @@ export default function Header() {
             factions={mapOrderedFactions}
             mapString={options ? options["map-string"] ?? "" : ""}
             mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
-            mallice={malliceSide}
+            mallice={getMalliceSystemNumber(options, planets, factions)}
           />
         </div>
       </GenericModal>

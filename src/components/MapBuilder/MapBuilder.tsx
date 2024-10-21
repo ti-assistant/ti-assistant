@@ -390,11 +390,11 @@ export default function MapBuilder({
   exploration,
   riftWalker,
 }: MapProps) {
-  const shouldAddMecatol = !mapString.includes(" 18 ") && mallice !== "18";
+  // const shouldAddMecatol = !mapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = mapString.split(" ");
-  if (shouldAddMecatol) {
-    updatedSystemTiles.unshift("18");
-  }
+  // if (shouldAddMecatol) {
+  //   updatedSystemTiles.unshift("18");
+  // }
   updatedSystemTiles = updatedSystemTiles
     .map((tile, index) => {
       const updatedTile = updatedSystemTiles[index];
@@ -430,6 +430,13 @@ export default function MapBuilder({
             return null;
           }
           let canDrop = true;
+          let canDrag = !dropOnly;
+          if (riftWalker) {
+            if (tile.includes("A") || tile.includes("B")) {
+              canDrop = false;
+              canDrag = false;
+            }
+          }
           if (exploration) {
             if (tile !== "-1") {
               canDrop = false;
@@ -440,7 +447,12 @@ export default function MapBuilder({
               spiral.forEach((cube, index) => {
                 if (cube_equals(cube, neighbor)) {
                   const neighborTile = updatedSystemTiles[index];
-                  if (neighborTile && neighborTile !== "-1") {
+                  if (
+                    neighborTile &&
+                    neighborTile !== "-1" &&
+                    !neighborTile.includes("A") &&
+                    !neighborTile.includes("B")
+                  ) {
                     hasSystemNeighbor = true;
                   }
                 }
@@ -472,7 +484,7 @@ export default function MapBuilder({
                         updateMapString(dragItem, dropItem);
                       }
                 }
-                blockDrag={dropOnly}
+                blockDrag={!canDrag}
               />
             </div>
           );

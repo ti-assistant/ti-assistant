@@ -23,7 +23,10 @@ interface Options {
   "display-objective-description"?: boolean;
   "game-variant": GameVariant;
   mallice?: string;
+  // The processed map string.
   "map-string"?: string;
+  // The string displayed to the user in map-string fields.
+  "user-map-string"?: string;
   "map-style": MapStyle;
   "victory-points": number;
   scenario?: Scenario;

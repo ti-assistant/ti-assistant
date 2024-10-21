@@ -54,6 +54,7 @@ import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { rem } from "../util/util";
+import { getMalliceSystemNumber } from "../util/map";
 
 export function TacticalAction({
   activeFactionId,
@@ -719,19 +720,6 @@ function AdjudicatorBaal() {
   const planets = usePlanets();
   const systems = useSystems();
 
-  let mallice;
-  if (options.expansions.includes("POK")) {
-    const malliceObj = planets["Mallice"];
-    if (!malliceObj) {
-      mallice = "PURGED";
-    } else {
-      mallice = "A";
-    }
-    if (planets && (planets["Mallice"] ?? {}).owner) {
-      mallice = "B";
-    }
-  }
-
   const mapOrderedFactions = Object.values(factions).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
@@ -820,7 +808,7 @@ function AdjudicatorBaal() {
 
             playAdjudicatorBaalAsync(gameId, systemId as SystemId);
           }}
-          mallice={mallice}
+          mallice={getMalliceSystemNumber(options, planets, factions)}
         />
       </div>
     </ClientOnlyHoverMenu>

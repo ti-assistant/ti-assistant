@@ -9,7 +9,11 @@ import {
   useFactions,
 } from "../../context/dataHooks";
 import { getFactionColor } from "../../util/factions";
-import { updateMapString, validSystemNumber } from "../../util/map";
+import {
+  getFactionSystemNumber,
+  updateMapString,
+  validSystemNumber,
+} from "../../util/map";
 import {
   applyAllPlanetAttachments,
   getPlanetTypeColor,
@@ -97,94 +101,6 @@ function CubeToPixel(hex: Cube, size: number) {
   const x = size * ((3 / 2) * hex.s);
   const y = size * ((Math.sqrt(3) / 2) * hex.s + Math.sqrt(3) * hex.q);
   return Point(x, y);
-}
-
-const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
-  "Council Keleres": "92",
-  "Federation of Sol": "1",
-  "Mentak Coalition": "2",
-  "Yin Brotherhood": "3",
-  "Embers of Muaat": "4",
-  Arborec: "5",
-  "L1Z1X Mindnet": "6",
-  Winnu: "7",
-  "Nekro Virus": "8",
-  "Naalu Collective": "9",
-  "Barony of Letnev": "10",
-  "Clan of Saar": "11",
-  "Universities of Jol-Nar": "12",
-  "Sardakk N'orr": "13",
-  "Xxcha Kingdom": "14",
-  "Yssaril Tribes": "15",
-  "Emirates of Hacan": "16",
-  "Ghosts of Creuss": "17",
-  "Mahact Gene-Sorcerers": "52",
-  Nomad: "53",
-  "Vuil'raith Cabal": "54",
-  "Titans of Ul": "55",
-  Empyrean: "56",
-  "Naaz-Rokha Alliance": "57",
-  "Argent Flight": "58",
-  "Augurs of Ilyxum": "1001",
-  "Bentor Conglomerate": "1002",
-  "Berserkers of Kjalengard": "1003",
-  "Celdauri Trade Confederation": "1004",
-  "Cheiran Hordes": "1005",
-  "Dih-Mohn Flotilla": "1006",
-  "Edyn Mandate": "1007",
-  "Florzen Profiteers": "1008",
-  "Free Systems Compact": "1009",
-  "Ghemina Raiders": "1010",
-  "Ghoti Wayfarers": "1011",
-  "Gledge Union": "1012",
-  "Glimmer of Mortheus": "1013",
-  "Kollecc Society": "1014",
-  "Kortali Tribunal": "1015",
-  "Kyro Sodality": "1016",
-  "Lanefir Remnants": "1017",
-  "Li-Zho Dynasty": "1018",
-  "L'tokk Khrask": "1019",
-  "Mirveda Protectorate": "1020",
-  "Monks of Kolume": "1021",
-  "Myko-Mentori": "1022",
-  "Nivyn Star Kings": "1023",
-  "Nokar Sellships": "1024",
-  "Olradin League": "1025",
-  "Roh'Dhna Mechatronics": "1026",
-  "Savages of Cymiae": "1027",
-  "Shipwrights of Axis": "1028",
-  "Tnelis Syndicate": "1029",
-  "Vaden Banking Clans": "1030",
-  "Vaylerian Scourge": "1031",
-  "Veldyr Sovereignty": "1032",
-  "Zealots of Rhodun": "1033",
-  "Zelian Purifier": "1034",
-} as const;
-
-export function getFactionSystemNumber(
-  faction: Optional<{
-    id?: FactionId;
-    name?: string;
-    startswith?: {
-      faction?: FactionId;
-    };
-  }>
-) {
-  if (!faction?.id) {
-    return "92";
-  }
-  if (faction.id === "Council Keleres") {
-    switch (faction.startswith?.faction) {
-      case "Argent Flight":
-        return "101";
-      case "Xxcha Kingdom":
-        return "100";
-      case "Mentak Coalition":
-        return "102";
-    }
-    return "92";
-  }
-  return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "92";
 }
 
 function getRotationClass(key: string) {
@@ -682,25 +598,11 @@ export default function Map({
 
   const [showDetails, setShowDetails] = useState<Details>("NONE");
 
-  // useEffect(() => {
-  //   for (const img of IMAGES_TO_PRELOAD) {
-  //     let image = new Image();
-  //     image.src = img;
-  //   }
-  // }, []);
-
-  const updatedMapString = updateMapString(
-    mapString,
-    mapStyle,
-    factions.length
-  );
-  const shouldAddMecatol =
-    !updatedMapString.includes(" 18 ") && mallice !== "18";
+  const updatedMapString =
+    mapString === ""
+      ? updateMapString(mapString, mapStyle, factions.length)
+      : mapString;
   let updatedSystemTiles = updatedMapString.split(" ");
-  if (shouldAddMecatol) {
-    updatedSystemTiles.unshift("18");
-  }
-  // mapString !== "" ? ["18"].concat(...mapString.split(" ")) : systemTiles;
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
     if (tile === "0" && updatedTile && updatedTile !== "0") {
@@ -1002,7 +904,11 @@ export default function Map({
               right: ghostsCorner === "bottom-left" ? 0 : undefined,
               bottom: 0,
               width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${tilePercentage * HEX_RATIO}%`,
+              height: `${getMalliceHeight(
+                mallice,
+                tilePercentage,
+                HEX_RATIO
+              )}%`,
             }}
           >
             <SystemImage
@@ -1015,6 +921,17 @@ export default function Map({
       </div>
     </div>
   );
+}
+
+function getMalliceHeight(
+  mallice: string | SystemId,
+  tilePercentage: number,
+  hexRatio: number
+) {
+  if (mallice === "A" || mallice === "B") {
+    return tilePercentage * hexRatio;
+  }
+  return tilePercentage;
 }
 
 function getMalliceSystemNum(mallice: string | SystemId) {

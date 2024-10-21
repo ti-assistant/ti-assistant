@@ -27,6 +27,7 @@ import { objectiveTypeString } from "../util/strings";
 import styles from "./SetupPhase.module.scss";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
+import { processMapString } from "../util/map";
 
 export function startFirstRound(gameId: string) {
   advancePhaseAsync(gameId);
@@ -115,12 +116,22 @@ function getSetupPhaseText(
   );
 }
 
-export function setMapString(gameId: Optional<string>, mapString: string) {
+function setMapString(
+  gameId: Optional<string>,
+  mapString: string,
+  mapStyle: MapStyle,
+  numFactions: number
+) {
   if (!gameId) {
     return;
   }
 
-  changeOptionAsync(gameId, "map-string", mapString);
+  changeOptionAsync(gameId, "user-map-string", mapString);
+  changeOptionAsync(
+    gameId,
+    "map-string",
+    processMapString(mapString, mapStyle, numFactions)
+  );
 }
 
 export default function SetupPhase() {
@@ -135,14 +146,14 @@ export default function SetupPhase() {
 
   const mapStringRef = useRef<HTMLInputElement>(null);
 
-  const mapString = options["map-string"];
+  const userMapString = options["user-map-string"];
 
   useEffect(() => {
-    if (!mapStringRef.current || !mapString) {
+    if (!mapStringRef.current || !userMapString) {
       return;
     }
-    mapStringRef.current.value = mapString ?? "";
-  }, [mapString]);
+    mapStringRef.current.value = userMapString ?? "";
+  }, [userMapString]);
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   const revealedObjectives = currentTurn
@@ -200,7 +211,7 @@ export default function SetupPhase() {
                 style={{
                   width: `min(75vw, ${rem(268)})`,
                 }}
-                pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|-1)($|\\s))+"}
+                pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
                 placeholder={intl.formatMessage({
                   id: "UJSVtn",
                   description:
@@ -208,7 +219,12 @@ export default function SetupPhase() {
                   defaultMessage: "Map String",
                 })}
                 onBlur={(event) =>
-                  setMapString(gameId, event.currentTarget.value)
+                  setMapString(
+                    gameId,
+                    event.currentTarget.value,
+                    options["map-style"],
+                    Object.keys(factions).length
+                  )
                 }
               ></input>
             </div>

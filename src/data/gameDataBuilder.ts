@@ -354,9 +354,7 @@ export function buildPlanets(
 
   const numFactions = Object.keys(gameFactions).length;
   const mapString = gameOptions["map-string"] ?? "";
-  const mapStyle = gameOptions["map-style"] ?? "standard";
-  const updatedMapString = updateMapString(mapString, mapStyle, numFactions);
-  const validMapString = isValidMapString(updatedMapString, numFactions);
+  const validMapString = isValidMapString(mapString, numFactions);
   const inGameSystems = mapString
     .split(" ")
     .filter(validSystemNumber)

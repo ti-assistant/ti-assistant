@@ -13,6 +13,7 @@ import {
   useGameState,
   useOptions,
   usePlanet,
+  usePlanets,
   useStrategyCards,
 } from "../../context/dataHooks";
 import { setSpeakerAsync } from "../../dynamic/api";
@@ -28,6 +29,7 @@ import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 import { rem } from "../../util/util";
+import { getMalliceSystemNumber } from "../../util/map";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -59,7 +61,7 @@ export default function Footer({}) {
   const gameId = useContext(GameIdContext);
   const factions = useFactions();
   const options = useOptions();
-  const mallice = usePlanet("Mallice");
+  const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
 
@@ -136,13 +138,6 @@ export default function Footer({}) {
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
-  let malliceSide;
-  if (options && (options["expansions"] ?? []).includes("POK")) {
-    malliceSide = "A";
-    if (mallice?.owner) {
-      malliceSide = "B";
-    }
-  }
 
   return (
     <>
@@ -164,7 +159,7 @@ export default function Footer({}) {
               mapStyle={
                 options ? options["map-style"] ?? "standard" : "standard"
               }
-              mallice={malliceSide}
+              mallice={getMalliceSystemNumber(options, planets, factions)}
             />
           </div>
         </div>

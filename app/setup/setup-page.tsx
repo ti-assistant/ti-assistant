@@ -23,6 +23,7 @@ import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
 import { rem } from "../../src/util/util";
 import styles from "./setup.module.scss";
+import { processMapString } from "../../src/util/map";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -98,10 +99,9 @@ function MobileOptions({
   reset,
 }: OptionsProps & { reset: () => void }) {
   const mapStringRef = useRef<HTMLInputElement>(null);
-  const otherPointsRef = useRef<HTMLDivElement>(null);
   const intl = useIntl();
 
-  const mapString = options["map-string"];
+  const mapString = options["user-map-string"];
 
   useEffect(() => {
     if (!mapStringRef.current) {
@@ -316,7 +316,17 @@ function MobileOptions({
                             <Chip
                               key={style}
                               selected={options["map-style"] === style}
-                              toggleFn={() => toggleOption(style, "map-style")}
+                              toggleFn={() => {
+                                toggleOption(style, "map-style");
+                                toggleOption(
+                                  processMapString(
+                                    options["map-string"],
+                                    style,
+                                    numFactions
+                                  ),
+                                  "map-string"
+                                );
+                              }}
                             >
                               {mapStyleString(style, intl)}
                             </Chip>
@@ -341,12 +351,25 @@ function MobileOptions({
                   <input
                     ref={mapStringRef}
                     type="textbox"
-                    pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
+                    pattern={
+                      "((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|(-1))($|\\s))+"
+                    }
                     className="mediumFont"
                     style={{ width: "75vw" }}
-                    onChange={(event) =>
-                      toggleOption(event.currentTarget.value, "map-string")
-                    }
+                    onChange={(event) => {
+                      toggleOption(
+                        event.currentTarget.value,
+                        "user-map-string"
+                      );
+                      toggleOption(
+                        processMapString(
+                          event.currentTarget.value,
+                          options["map-style"],
+                          numFactions
+                        ),
+                        "map-string"
+                      );
+                    }}
                   ></input>
                 </div>
               </div>
@@ -394,43 +417,24 @@ function Options({
   numFactions,
   maxFactions,
 }: OptionsProps) {
-  const mapStringRef = useRef<HTMLInputElement>(null);
-  const otherPointsRef = useRef<HTMLDivElement>(null);
-  const intl = useIntl();
-
-  const mapString = options["map-string"];
-
-  useEffect(() => {
-    if (mapStringRef.current && mapString === "") {
-      mapStringRef.current.value = "";
-    }
-  }, [mapString]);
-
-  let mapStyles: MapStyle[] = [];
   let variants: GameVariant[] = [];
   switch (numFactions) {
     case 3:
-      mapStyles = ["standard"];
       variants = ["normal"];
       break;
     case 4:
-      mapStyles = ["standard", "warp", "skinny"];
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
     case 5:
-      mapStyles = ["standard", "warp", "skinny"];
       variants = ["normal"];
       break;
     case 6:
-      mapStyles = ["standard", "large"];
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
     case 7:
-      mapStyles = ["standard", "warp"];
       variants = ["normal"];
       break;
     case 8:
-      mapStyles = ["standard", "warp"];
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
   }
@@ -1148,6 +1152,7 @@ const INITIAL_OPTIONS: SetupOptions = {
   "game-variant": "normal",
   "map-style": "standard",
   "map-string": "",
+  "user-map-string": "",
   "hide-objectives": false,
   "hide-planets": false,
   "hide-techs": false,
@@ -1196,6 +1201,10 @@ export default function SetupPage({
     if (count % 2 !== 0) {
       toggleOption("normal", "game-variant");
     }
+    toggleOption(
+      processMapString(options["user-map-string"], "standard", count),
+      "map-string"
+    );
 
     if (speaker > count) {
       setSpeaker(0);
@@ -1714,7 +1723,17 @@ export default function SetupPage({
                       <Chip
                         key={style}
                         selected={options["map-style"] === style}
-                        toggleFn={() => toggleOption(style, "map-style")}
+                        toggleFn={() => {
+                          toggleOption(style, "map-style");
+                          toggleOption(
+                            processMapString(
+                              options["user-map-string"],
+                              style,
+                              numFactions
+                            ),
+                            "map-string"
+                          );
+                        }}
                       >
                         {mapStyleString(style, intl)}
                       </Chip>
@@ -1736,12 +1755,20 @@ export default function SetupPage({
             <input
               placeholder="Map String"
               type="textbox"
-              pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
+              pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
               style={{ width: "100%", fontSize: rem(12) }}
-              value={options["map-string"]}
-              onChange={(event) =>
-                toggleOption(event.currentTarget.value, "map-string")
-              }
+              value={options["user-map-string"]}
+              onChange={(event) => {
+                toggleOption(event.currentTarget.value, "user-map-string");
+                toggleOption(
+                  processMapString(
+                    event.currentTarget.value,
+                    options["map-style"],
+                    numFactions
+                  ),
+                  "map-string"
+                );
+              }}
             ></input>
           </div>
           <Map
