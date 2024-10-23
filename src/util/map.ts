@@ -1,4 +1,5 @@
 import { Optional } from "./types/types";
+import { objectKeys } from "./util";
 
 export function isHomeSystem(systemNumber?: string) {
   if (!systemNumber) {
@@ -137,10 +138,8 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
 export function isValidMapString(mapString: string, numFactions: number) {
   let numFactionSystems = 0;
   const systems = mapString.split(" ");
-  console.log("Systems", systems);
   for (const system of systems) {
     if (!validSystemNumber(system)) {
-      console.log("Invalid system number", system);
       return false;
     }
     if (isHomeSystem(system)) {
@@ -148,7 +147,6 @@ export function isValidMapString(mapString: string, numFactions: number) {
     }
   }
   if (numFactionSystems !== numFactions) {
-    console.log("Not enough home systems", numFactionSystems);
     return false;
   }
   return true;
@@ -452,4 +450,50 @@ export function getFactionSystemNumber(
     return "92";
   }
   return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "92";
+}
+
+export function extractFactionIds(
+  mapString: string,
+  mapStyle: MapStyle,
+  numFactions: number
+) {
+  const newSystems = mapString.split(" ");
+  newSystems.unshift("18");
+  const defaultMap = getDefaultMapString(numFactions, mapStyle);
+
+  const SYSTEMS_TO_FACTIONS: Record<string, FactionId> = {};
+  objectKeys(FACTION_TO_SYSTEM_NUMBER).forEach((key) => {
+    SYSTEMS_TO_FACTIONS[FACTION_TO_SYSTEM_NUMBER[key]] = key;
+  });
+
+  const factions: Record<number, FactionId> = {};
+  defaultMap.split(" ").forEach((system, index) => {
+    if (!isHomeSystem(system)) {
+      return;
+    }
+
+    const newSystem = newSystems[index];
+    if (!newSystem) {
+      return;
+    }
+    const factionId = SYSTEMS_TO_FACTIONS[newSystem];
+    if (!factionId) {
+      console.log("No Faction Id", newSystem);
+      return;
+    }
+
+    const factionNum = parseInt(system.slice(-1));
+    if (!factionNum || isNaN(factionNum)) {
+      return;
+    }
+
+    factions[factionNum - 1] = factionId;
+  });
+
+  console.log("Factions", factions);
+
+  if (numFactions !== Object.keys(factions).length) {
+    return;
+  }
+  return factions;
 }

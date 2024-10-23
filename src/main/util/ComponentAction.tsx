@@ -1870,7 +1870,6 @@ function RiftwalkerMeian() {
                 if (dragItem.index === dropItem.index) {
                   return;
                 }
-                console.log(dragItem.index);
                 swapMapTilesAsync(gameId, dropItem, dragItem);
               }}
               riftWalker

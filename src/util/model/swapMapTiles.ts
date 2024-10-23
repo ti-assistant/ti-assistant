@@ -1,4 +1,3 @@
-import { getDefaultMapString } from "../map";
 import { getMapString } from "../options";
 
 export class SwapMapTilesHandler implements Handler {
@@ -24,7 +23,6 @@ export class SwapMapTilesHandler implements Handler {
     }
     const systems = mapString.split(" ");
 
-    console.log("SWAP", this.data.event);
     while (
       systems.length < this.data.event.newItem.index - 1 ||
       systems.length < this.data.event.oldItem.index - 1
@@ -32,12 +30,9 @@ export class SwapMapTilesHandler implements Handler {
       systems.push("-1");
     }
     let updatedSystemTiles = mapString.split(" ");
-    console.log("Original Map String", updatedSystemTiles);
 
     const actualOldSystem = updatedSystemTiles[this.data.event.oldItem.index];
     const actualNewSystem = updatedSystemTiles[this.data.event.newItem.index];
-    console.log("System 1", updatedSystemTiles[this.data.event.oldItem.index]);
-    console.log("System 2", updatedSystemTiles[this.data.event.newItem.index]);
 
     // Mallice
     if (this.data.event.oldItem.index === -2) {
@@ -62,9 +57,7 @@ export class SwapMapTilesHandler implements Handler {
       updatedSystemTiles.pop();
     }
 
-    updates[`options.map-string`] = updatedSystemTiles.join(" ");
-
-    console.log("Updated", updatedSystemTiles.join(" "));
+    updates[`options.processed-map-string`] = updatedSystemTiles.join(" ");
 
     return updates;
   }

@@ -578,7 +578,6 @@ interface TechGridProperties extends CSSProperties {
 }
 
 export default function TechPanel({ byFaction }: { byFaction: boolean }) {
-  console.log("By Faction", byFaction);
   const factions = useFactions();
 
   const orderedFactions = objectKeys(factions).sort((a, b) => (a < b ? -1 : 1));
