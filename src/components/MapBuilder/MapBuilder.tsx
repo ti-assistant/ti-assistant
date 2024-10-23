@@ -390,11 +390,7 @@ export default function MapBuilder({
   exploration,
   riftWalker,
 }: MapProps) {
-  // const shouldAddMecatol = !mapString.includes(" 18 ") && mallice !== "18";
   let updatedSystemTiles = mapString.split(" ");
-  // if (shouldAddMecatol) {
-  //   updatedSystemTiles.unshift("18");
-  // }
   updatedSystemTiles = updatedSystemTiles
     .map((tile, index) => {
       const updatedTile = updatedSystemTiles[index];

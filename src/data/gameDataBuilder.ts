@@ -410,9 +410,9 @@ export function buildPlanets(
         return;
       }
     }
-    // Maybe filter out PoK agendas.
+    // Maybe filter out PoK/DS systems. Only do it this way if not using the map to filter.
     if (
-      inGameSystems.length === 0 &&
+      (!validMapString || inGameSystems.length === 0) &&
       planet.expansion !== "BASE" &&
       planet.expansion !== "BASE ONLY" &&
       !gameOptions.expansions.includes(planet.expansion)
