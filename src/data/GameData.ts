@@ -4,6 +4,7 @@ import {
   isValidMapString,
   validSystemNumber,
 } from "../util/map";
+import { getMapString } from "../util/options";
 
 let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
   return {};
@@ -471,10 +472,8 @@ export function buildPlanets(
   const gameOptions = storedGameData.options;
 
   const numFactions = Object.keys(gameFactions).length;
-  const mapString = gameOptions["map-string"] ?? "";
-  const mapStyle = gameOptions["map-style"] ?? "standard";
-  const updatedMapString = updateMapString(mapString, mapStyle, numFactions);
-  const validMapString = isValidMapString(updatedMapString, numFactions);
+  const mapString = getMapString(gameOptions, numFactions) ?? "";
+  const validMapString = isValidMapString(mapString, numFactions);
   const inGameSystems = mapString
     .split(" ")
     .filter(validSystemNumber)
@@ -531,7 +530,7 @@ export function buildPlanets(
     }
     // Maybe filter out PoK/DS systems. Only do it this way if not using the map to filter.
     if (
-      inGameSystems.length === 0 &&
+      (!validMapString || inGameSystems.length === 0) &&
       planet.expansion !== "BASE" &&
       planet.expansion !== "BASE ONLY" &&
       !gameOptions.expansions.includes(planet.expansion)

@@ -12,7 +12,7 @@ import FactionSelectRadialMenu from "../../components/FactionSelectRadialMenu/Fa
 import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../components/LabeledLine/LabeledLine";
-import Map, { getFactionSystemNumber } from "../../components/Map/Map";
+import Map from "../../components/Map/Map";
 import MapBuilder, {
   SystemImage,
 } from "../../components/MapBuilder/MapBuilder";
@@ -63,10 +63,15 @@ import {
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
-import { updateMapString } from "../../util/map";
+import {
+  getFactionSystemNumber,
+  getMalliceSystemNumber,
+  updateMapString,
+} from "../../util/map";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { pluralize, rem } from "../../util/util";
+import { getMapString } from "../../util/options";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1428,7 +1433,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Dark Energy Tap": {
-      const mapString = options["map-string"];
+      const mapString = getMapString(options, Object.keys(factions).length);
       if (!mapString) {
         break;
       }
@@ -1475,19 +1480,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           tileNumbers.push(i.toString());
         }
       }
-      let mallice;
-      if (options.expansions.includes("POK")) {
-        const malliceObj = planets["Mallice"];
-        if (options.mallice) {
-          mallice = options.mallice;
-        } else if (!malliceObj) {
-          mallice = "PURGED";
-        } else if (malliceObj.owner) {
-          mallice = "B";
-        } else {
-          mallice = "A";
-        }
-      }
       const alreadyUsed = wereTilesSwapped(getCurrentTurnLogEntries(actionLog));
       leftLabel = alreadyUsed ? "Updated Map" : "Add System";
       innerContent = alreadyUsed ? (
@@ -1497,7 +1489,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             mapStyle={options["map-style"]}
             factions={mapOrderedFactions}
             hideLegend
-            mallice={mallice}
+            mallice={getMalliceSystemNumber(options, planets, factions)}
           />
         </div>
       ) : (
@@ -1511,7 +1503,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 }}
                 dropOnly
                 exploration
-                mallice={mallice}
+                mallice={undefined}
               ></MapBuilder>
             </div>
             <LabeledDiv
@@ -1815,24 +1807,8 @@ function RiftwalkerMeian() {
   const leaders = useLeaders();
   const options = useOptions();
   const planets = usePlanets();
-  const systems = useSystems();
 
-  let mallice;
-  if (options.expansions.includes("POK")) {
-    const malliceObj = planets["Mallice"];
-    if (options.mallice) {
-      mallice = options.mallice;
-    } else if (!malliceObj) {
-      mallice = "PURGED";
-    } else if (malliceObj.owner) {
-      mallice = "B";
-    } else {
-      mallice = "A";
-    }
-  }
-  console.log("Mallice", mallice);
-
-  const mapString = options["map-string"];
+  const mapString = getMapString(options, Object.keys(factions).length);
   if (!mapString) {
     return null;
   }
@@ -1845,12 +1821,7 @@ function RiftwalkerMeian() {
   const mapOrderedFactions = Object.values(factions).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
-  let updatedMapString = updateMapString(
-    mapString,
-    options["map-style"],
-    mapOrderedFactions.length
-  );
-  let updatedSystemTiles = updatedMapString.split(" ");
+  let updatedSystemTiles = mapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
     if (tile === "0" && updatedTile && updatedTile !== "0") {
@@ -1870,21 +1841,21 @@ function RiftwalkerMeian() {
     }
     return tile;
   });
-  updatedMapString = updatedSystemTiles.join(" ");
   const alreadyUsed = wereTilesSwapped(getCurrentTurnLogEntries(actionLog));
   if (alreadyUsed) {
     return (
       <div style={{ position: "relative", width: "100%", aspectRatio: 1 }}>
         <Map
-          mapString={mapString}
+          mapString={updatedSystemTiles.join(" ")}
           mapStyle={options["map-style"]}
           factions={mapOrderedFactions}
-          mallice={mallice}
+          mallice={getMalliceSystemNumber(options, planets, factions)}
           hideLegend
         />
       </div>
     );
   }
+  const mallice = getMalliceSystemNumber(options, planets, factions);
   return (
     <div
       className="flexColumn"
@@ -1894,12 +1865,11 @@ function RiftwalkerMeian() {
         <DndProvider backend={HTML5Backend}>
           <div style={{ width: "100%", aspectRatio: 1 }}>
             <MapBuilder
-              mapString={updatedMapString}
+              mapString={updatedSystemTiles.join(" ")}
               updateMapString={(dragItem, dropItem) => {
                 if (dragItem.index === dropItem.index) {
                   return;
                 }
-                console.log(dragItem.index);
                 swapMapTilesAsync(gameId, dropItem, dragItem);
               }}
               riftWalker

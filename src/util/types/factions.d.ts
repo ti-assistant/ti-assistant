@@ -85,6 +85,7 @@ interface Unit {
 interface BaseFaction {
   abilities: Ability[];
   colors: Record<string, number>;
+  colorList?: string[];
   commodities: number;
   expansion: Expansion;
   id: FactionId;

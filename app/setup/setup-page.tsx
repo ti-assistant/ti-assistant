@@ -21,8 +21,9 @@ import { Strings } from "../../src/components/strings";
 import { convertToFactionColor } from "../../src/util/factions";
 import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
-import { rem } from "../../src/util/util";
+import { objectEntries, rem } from "../../src/util/util";
 import styles from "./setup.module.scss";
+import { extractFactionIds, processMapString } from "../../src/util/map";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -98,7 +99,6 @@ function MobileOptions({
   reset,
 }: OptionsProps & { reset: () => void }) {
   const mapStringRef = useRef<HTMLInputElement>(null);
-  const otherPointsRef = useRef<HTMLDivElement>(null);
   const intl = useIntl();
 
   const mapString = options["map-string"];
@@ -316,7 +316,17 @@ function MobileOptions({
                             <Chip
                               key={style}
                               selected={options["map-style"] === style}
-                              toggleFn={() => toggleOption(style, "map-style")}
+                              toggleFn={() => {
+                                toggleOption(style, "map-style");
+                                toggleOption(
+                                  processMapString(
+                                    options["map-string"],
+                                    style,
+                                    numFactions
+                                  ),
+                                  "processed-map-string"
+                                );
+                              }}
                             >
                               {mapStyleString(style, intl)}
                             </Chip>
@@ -341,12 +351,22 @@ function MobileOptions({
                   <input
                     ref={mapStringRef}
                     type="textbox"
-                    pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
+                    pattern={
+                      "((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"
+                    }
                     className="mediumFont"
                     style={{ width: "75vw" }}
-                    onChange={(event) =>
-                      toggleOption(event.currentTarget.value, "map-string")
-                    }
+                    onChange={(event) => {
+                      toggleOption(event.currentTarget.value, "map-string");
+                      toggleOption(
+                        processMapString(
+                          event.currentTarget.value,
+                          options["map-style"],
+                          numFactions
+                        ),
+                        "processed-map-string"
+                      );
+                    }}
                   ></input>
                 </div>
               </div>
@@ -394,43 +414,24 @@ function Options({
   numFactions,
   maxFactions,
 }: OptionsProps) {
-  const mapStringRef = useRef<HTMLInputElement>(null);
-  const otherPointsRef = useRef<HTMLDivElement>(null);
-  const intl = useIntl();
-
-  const mapString = options["map-string"];
-
-  useEffect(() => {
-    if (mapStringRef.current && mapString === "") {
-      mapStringRef.current.value = "";
-    }
-  }, [mapString]);
-
-  let mapStyles: MapStyle[] = [];
   let variants: GameVariant[] = [];
   switch (numFactions) {
     case 3:
-      mapStyles = ["standard"];
       variants = ["normal"];
       break;
     case 4:
-      mapStyles = ["standard", "warp", "skinny"];
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
     case 5:
-      mapStyles = ["standard", "warp", "skinny"];
       variants = ["normal"];
       break;
     case 6:
-      mapStyles = ["standard", "large"];
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
     case 7:
-      mapStyles = ["standard", "warp"];
       variants = ["normal"];
       break;
     case 8:
-      mapStyles = ["standard", "warp"];
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
   }
@@ -1196,29 +1197,94 @@ export default function SetupPage({
     if (count % 2 !== 0) {
       toggleOption("normal", "game-variant");
     }
+    toggleOption(
+      processMapString(options["map-string"], "standard", count),
+      "processed-map-string"
+    );
 
     if (speaker > count) {
       setSpeaker(0);
     }
   }
 
-  function updatePlayerFaction(index: number, factionId: Optional<FactionId>) {
-    const faction = setupFactions[index];
-    if (!faction) {
+  function getBestRemainingColor(
+    factionId: FactionId,
+    usedColors: Set<string>
+  ) {
+    const colorList = factions[factionId].colorList;
+    if (!colorList) {
       return;
     }
-    const prevValue = faction.id;
+    for (const color of colorList) {
+      if (
+        !options.expansions.has("POK") &&
+        (color === "Magenta" || color === "Orange")
+      ) {
+        continue;
+      }
+      if (!usedColors.has(color)) {
+        return color;
+      }
+    }
+    return;
+  }
+
+  function updatePlayerFaction(index: number, factionId: Optional<FactionId>) {
+    const usedColors = setupFactions.reduce((set, faction) => {
+      if (faction.id === factionId) {
+        return set;
+      }
+      if (faction.color) {
+        set.add(faction.color);
+      }
+      return set;
+    }, new Set<string>());
     setFactions(
       setupFactions.map((faction, i) => {
         if (index === i) {
-          return { ...faction, name: factionId, id: factionId };
+          const color = factionId
+            ? getBestRemainingColor(factionId, usedColors)
+            : undefined;
+          return {
+            ...faction,
+            name: factionId,
+            id: factionId,
+            color: !factionId ? undefined : faction.color ?? color,
+          };
         }
         if (factionId && faction.id === factionId) {
-          return { ...faction, name: prevValue, id: prevValue };
+          return {
+            ...faction,
+            name: undefined,
+            id: undefined,
+            color: undefined,
+          };
         }
         return faction;
       })
     );
+  }
+
+  function updateAllPlayerFactions(factions: Record<number, FactionId>) {
+    setFactions((prevFactions) => {
+      const usedColors = new Set<string>();
+      return prevFactions.map((faction, i) => {
+        const newFaction = factions[i];
+        if (!newFaction) {
+          return faction;
+        }
+        const color = getBestRemainingColor(newFaction, usedColors);
+        if (color) {
+          usedColors.add(color);
+        }
+        return {
+          ...faction,
+          name: newFaction,
+          id: newFaction,
+          color: faction.color ?? color,
+        };
+      });
+    });
   }
 
   function updatePlayerColor(index: number, color: Optional<string>) {
@@ -1279,7 +1345,9 @@ export default function SetupPage({
   }
 
   function randomFactions() {
+    const usedColors = new Set<string>();
     let selectedFactions: FactionId[] = [];
+    let selectedColors: string[] = [];
     for (let index = 0; index < numFactions; index++) {
       const faction = setupFactions[index];
       if (!faction) {
@@ -1287,6 +1355,10 @@ export default function SetupPage({
       }
       if (faction.id) {
         selectedFactions[index] = faction.id;
+      }
+      if (faction.color) {
+        usedColors.add(faction.color);
+        selectedColors[index] = faction.color;
       }
     }
     const filteredFactions = Object.values(availableFactions ?? {}).filter(
@@ -1314,6 +1386,11 @@ export default function SetupPage({
         let randomIndex = Math.floor(Math.random() * factionKeys.length);
         selectedFaction = factionKeys[randomIndex];
       }
+      const color = getBestRemainingColor(selectedFaction, usedColors);
+      if (color) {
+        usedColors.add(color);
+        selectedColors[index] = color;
+      }
       selectedFactions[index] = selectedFaction;
     }
     setFactions(
@@ -1321,59 +1398,21 @@ export default function SetupPage({
         const factionId: Optional<FactionId> = selectedFactions[index];
         if (!factionId) {
           if (faction.id && selectedFactions.includes(faction.id)) {
-            return { ...faction, name: undefined, id: undefined };
+            return {
+              ...faction,
+              name: undefined,
+              id: undefined,
+              color: undefined,
+            };
           }
           return { ...faction };
         }
-        return { ...faction, name: factionId, id: factionId };
-      })
-    );
-  }
-
-  function randomColors() {
-    let selectedColors: string[] = [];
-    for (let index = 0; index < numFactions; index++) {
-      const faction = setupFactions[index];
-      if (!faction) {
-        continue;
-      }
-      if (faction.color) {
-        selectedColors[index] = faction.color;
-      }
-    }
-    const filteredColors = colors.filter((color) => {
-      if (color === "Magenta" || color === "Orange") {
-        if (!options.expansions.has("POK")) {
-          return false;
-        }
-      }
-      return true;
-    });
-    for (let index = 0; index < numFactions; index++) {
-      const faction = setupFactions[index];
-      if (!faction) {
-        continue;
-      }
-      if (faction.color) {
-        continue;
-      }
-      let selectedColor: Optional<string>;
-      while (!selectedColor || selectedColors.includes(selectedColor)) {
-        let randomIndex = Math.floor(Math.random() * filteredColors.length);
-        selectedColor = filteredColors[randomIndex];
-      }
-      selectedColors[index] = selectedColor;
-    }
-    setFactions(
-      setupFactions.map((faction, index) => {
-        const color = selectedColors[index];
-        if (!color) {
-          if (selectedColors.includes(faction?.color ?? "")) {
-            return { ...faction, color: undefined };
-          }
-          return { ...faction };
-        }
-        return { ...faction, color: color };
+        return {
+          ...faction,
+          name: factionId,
+          id: factionId,
+          color: selectedColors[index],
+        };
       })
     );
   }
@@ -1415,19 +1454,6 @@ export default function SetupPage({
     for (let i = 0; i < numFactions; i++) {
       const faction = setupFactions[i];
       if (!faction?.id) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function disableRandomizeColorsButton() {
-    if (colors.length < numFactions) {
-      return true;
-    }
-    for (let i = 0; i < numFactions; i++) {
-      const faction = setupFactions[i];
-      if (!faction?.color) {
         return false;
       }
     }
@@ -1714,7 +1740,25 @@ export default function SetupPage({
                       <Chip
                         key={style}
                         selected={options["map-style"] === style}
-                        toggleFn={() => toggleOption(style, "map-style")}
+                        toggleFn={() => {
+                          toggleOption(style, "map-style");
+                          toggleOption(
+                            processMapString(
+                              options["map-string"],
+                              style,
+                              numFactions
+                            ),
+                            "processed-map-string"
+                          );
+                          const factionIds = extractFactionIds(
+                            options["map-string"],
+                            style,
+                            numFactions
+                          );
+                          if (factionIds) {
+                            updateAllPlayerFactions(factionIds);
+                          }
+                        }}
                       >
                         {mapStyleString(style, intl)}
                       </Chip>
@@ -1736,17 +1780,33 @@ export default function SetupPage({
             <input
               placeholder="Map String"
               type="textbox"
-              pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8]))($|\\s))+"}
+              pattern={"((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
               style={{ width: "100%", fontSize: rem(12) }}
               value={options["map-string"]}
-              onChange={(event) =>
-                toggleOption(event.currentTarget.value, "map-string")
-              }
+              onChange={(event) => {
+                toggleOption(event.currentTarget.value, "map-string");
+                toggleOption(
+                  processMapString(
+                    event.currentTarget.value,
+                    options["map-style"],
+                    numFactions
+                  ),
+                  "processed-map-string"
+                );
+                const factionIds = extractFactionIds(
+                  event.currentTarget.value,
+                  options["map-style"],
+                  numFactions
+                );
+                if (factionIds) {
+                  updateAllPlayerFactions(factionIds);
+                }
+              }}
             ></input>
           </div>
           <Map
             mapStyle={options["map-style"]}
-            mapString={options["map-string"]}
+            mapString={options["processed-map-string"] ?? ""}
             mallice={options["expansions"].has("POK") ? "A" : undefined}
             factions={activeFactions}
           />
@@ -1792,7 +1852,7 @@ export default function SetupPage({
           >
             <div
               className="flexRow"
-              style={{ whiteSpace: "nowrap", minWidth: rem(280) }}
+              style={{ whiteSpace: "nowrap", minWidth: rem(200) }}
             >
               <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
                 <Strings.Speaker />
@@ -1806,17 +1866,6 @@ export default function SetupPage({
                   id="r2htpd"
                   description="Text on a button that will randomize factions."
                   defaultMessage="Factions"
-                />
-              </button>
-              <button
-                style={{ textAlign: "center" }}
-                onClick={randomColors}
-                disabled={disableRandomizeColorsButton()}
-              >
-                <FormattedMessage
-                  id="rqdwvE"
-                  description="Text on a button that will randomize colors."
-                  defaultMessage="Colors"
                 />
               </button>
             </div>
@@ -1991,7 +2040,7 @@ export default function SetupPage({
               />
             );
           })}
-          <div className="flexColumn" style={{ width: "100%" }}>
+          <div className="flexColumn" style={{ width: "fit-content" }}>
             <LabeledDiv label="Randomize">
               <div
                 className="flexRow"
@@ -2006,13 +2055,6 @@ export default function SetupPage({
                   disabled={disableRandomizeFactionButton()}
                 >
                   Factions
-                </button>
-                <button
-                  style={{ textAlign: "center" }}
-                  onClick={randomColors}
-                  disabled={disableRandomizeColorsButton()}
-                >
-                  Colors
                 </button>
               </div>
             </LabeledDiv>

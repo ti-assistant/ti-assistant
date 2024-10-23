@@ -13,6 +13,7 @@ import {
   useGameState,
   useOptions,
   usePlanet,
+  usePlanets,
   useStrategyCards,
 } from "../../context/dataHooks";
 import { setSpeakerAsync } from "../../dynamic/api";
@@ -28,6 +29,8 @@ import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 import { rem } from "../../util/util";
+import { getMalliceSystemNumber } from "../../util/map";
+import { getMapString } from "../../util/options";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -59,7 +62,7 @@ export default function Footer({}) {
   const gameId = useContext(GameIdContext);
   const factions = useFactions();
   const options = useOptions();
-  const mallice = usePlanet("Mallice");
+  const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
 
@@ -136,13 +139,8 @@ export default function Footer({}) {
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
-  let malliceSide;
-  if (options && (options["expansions"] ?? []).includes("POK")) {
-    malliceSide = "A";
-    if (mallice?.owner) {
-      malliceSide = "B";
-    }
-  }
+
+  const mapString = getMapString(options, mapOrderedFactions.length);
 
   return (
     <>
@@ -160,11 +158,9 @@ export default function Footer({}) {
           >
             <Map
               factions={mapOrderedFactions}
-              mapString={options ? options["map-string"] ?? "" : ""}
-              mapStyle={
-                options ? options["map-style"] ?? "standard" : "standard"
-              }
-              mallice={malliceSide}
+              mapString={mapString ?? ""}
+              mapStyle={options["map-style"] ?? "standard"}
+              mallice={getMalliceSystemNumber(options, planets, factions)}
             />
           </div>
         </div>
@@ -369,7 +365,7 @@ export default function Footer({}) {
             />
           </div>
         ) : null}
-        {options["map-string"] !== "" ? (
+        {mapString ? (
           <div className="flexRow" onClick={() => setShowMap(true)}>
             <button>
               <div

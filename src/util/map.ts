@@ -1,3 +1,6 @@
+import { Optional } from "./types/types";
+import { objectKeys } from "./util";
+
 export function isHomeSystem(systemNumber?: string) {
   if (!systemNumber) {
     return false;
@@ -9,6 +12,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
   switch (numFactions) {
     case 3:
       return (
+        "18 " +
         "0 0 0 0 0 0 " +
         "0 0 0 0 0 0 0 0 0 0 0 0 " +
         "-1 -1 0 P1 0 -1 -1 -1 0 P2 0 -1 -1 -1 0 P3 0 -1"
@@ -17,18 +21,21 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 P1 0 0 0 P2 0 0 0 0 P3 0 0 0 P4"
           );
         case "skinny":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "-1 0 P1 -1 -1 -1 -1 P2 0 -1 0 P3 -1 -1 -1 -1 P4 0"
           );
         case "warp":
           return (
+            "18 " +
             "85A3 0 0 85A 0 0 " +
             "0 87A3 0 0 0 88A 0 87A 0 0 0 88A3 " +
             "86A3 84A3 0 P1 0 0 P2 0 83A 86A 84A 0 P3 0 0 P4 0 83A3"
@@ -39,18 +46,21 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 P1 0 0 0 P2 0 0 P3 0 0 P4 0 0 0 P5 0"
           );
         case "skinny":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 P1 -1 0 P2 -1 -1 0 P3 0 -1 -1 P4 0 -1 P5 0"
           );
         case "warp":
           return (
+            "18 " +
             "0 0 0 85A 0 0 " +
             "0 0 0 0 0 88A 0 87A 0 0 0 0 " +
             "P1 0 0 P2 0 0 P3 0 83A 86A 84A 0 P4 0 0 P5 0 0"
@@ -61,12 +71,14 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0"
           );
         case "large":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 " +
@@ -78,6 +90,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 85A 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 88A 0 87A 0 0 0 0 0 0 0 " +
@@ -85,6 +98,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
           );
         case "warp":
           return (
+            "18 " +
             "85B 0 0 84B 90B 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 88B3 0 P2 0 0 P3 0 86B 0 0 0 0 0 83B2 0 0 0 " +
@@ -96,6 +110,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
+            "18 " +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 " +
@@ -103,6 +118,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
           );
         case "warp":
           return (
+            "18 " +
             "87A1 90B3 0 88A2 89B 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 0 85B2 0 0 0 0 0 0 0 0 83B2 0 0 0 " +
@@ -112,6 +128,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       break;
   }
   return (
+    "18 " +
     "0 0 0 0 0 0 " +
     "0 0 0 0 0 0 0 0 0 0 0 0 " +
     "P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0"
@@ -136,6 +153,9 @@ export function isValidMapString(mapString: string, numFactions: number) {
 }
 
 export function validSystemNumber(number: string) {
+  if (number === "") {
+    return true;
+  }
   let intVal = parseInt(number);
   if (isNaN(intVal)) {
     return isHomeSystem(number);
@@ -197,7 +217,6 @@ function mergeMapStrings(a: string, b: string) {
   let output = [];
   const aArray = a.split(" ");
   const bArray = b.split(" ");
-  let totalLength = Math.max(aArray.length, bArray.length);
   for (let i = 0; i < aArray.length; i++) {
     const aValue = aArray[i];
     const bValue = bArray[i];
@@ -223,4 +242,258 @@ function mapValuePriority(a?: string, b?: string) {
     return a;
   }
   return a;
+}
+
+export function processMapString(
+  mapString: string,
+  mapStyle: MapStyle,
+  numFactions: number
+) {
+  if (!allSystemsValid(mapString)) {
+    return getDefaultMapString(numFactions, mapStyle);
+  }
+  if (allSystemsValid(mapString) && hasHomeSystems(mapString, numFactions)) {
+    return makeHomeSystemsExplicit(maybeAddMecatol(mapString), numFactions);
+  }
+  const updated = updateMapString(
+    maybeAddMecatol(mapString),
+    mapStyle,
+    numFactions
+  );
+  return updated;
+}
+
+function maybeAddMecatol(mapString: string) {
+  if (mapString.startsWith("18 ") || mapString.includes(" 18 ")) {
+    return mapString;
+  }
+  return "18 " + mapString;
+}
+
+function makeHomeSystemsExplicit(mapString: string, numFactions: number) {
+  const systems = mapString.split(" ");
+  let explicitHomeSystems = 0;
+  let implicitHomeSystems = 0;
+  for (const system of systems) {
+    if (system === "0") {
+      implicitHomeSystems++;
+    }
+    if (isHomeSystem(system)) {
+      explicitHomeSystems++;
+    }
+  }
+
+  if (explicitHomeSystems === numFactions) {
+    return mapString;
+  }
+
+  let currentNum = 1;
+  for (let i = 0; i < systems.length; ++i) {
+    if (systems[i] === "0") {
+      systems[i] = `P${currentNum}`;
+      currentNum++;
+    }
+  }
+  return systems.join(" ");
+}
+
+function allSystemsValid(mapString: string) {
+  const systems = mapString.split(" ");
+  for (const system of systems) {
+    if (!validSystemNumber(system)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function hasHomeSystems(mapString: string, numFactions: number) {
+  const systems = mapString.split(" ");
+  let explicitHomeSystems = 0;
+  let implicitHomeSystems = 0;
+  for (const system of systems) {
+    if (system === "0") {
+      implicitHomeSystems++;
+    }
+    if (isHomeSystem(system)) {
+      explicitHomeSystems++;
+    }
+  }
+
+  if (explicitHomeSystems === numFactions) {
+    return true;
+  }
+
+  return implicitHomeSystems === numFactions;
+}
+
+export function getMalliceSystemNumber(
+  options: Options,
+  planets: Partial<Record<PlanetId, Planet>>,
+  factions: Partial<Record<FactionId, Faction>>
+) {
+  if (!options.expansions.includes("POK")) {
+    return undefined;
+  }
+
+  if (options.mallice) {
+    if (!options.mallice.startsWith("P")) {
+      return options.mallice;
+    }
+    const number = options.mallice.at(options.mallice.length - 1);
+    if (!number) {
+      return options.mallice;
+    }
+    const factionIndex = parseInt(number);
+    const mapOrderedFactions = Object.values(factions).sort(
+      (a, b) => a.mapPosition - b.mapPosition
+    );
+    return getFactionSystemNumber(mapOrderedFactions[factionIndex - 1]);
+  }
+
+  const mallice = planets["Mallice"];
+
+  if (!mallice) {
+    return "PURGED";
+  }
+
+  if (mallice.owner) {
+    return "B";
+  }
+
+  return "A";
+}
+
+const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
+  "Council Keleres": "92",
+  "Federation of Sol": "1",
+  "Mentak Coalition": "2",
+  "Yin Brotherhood": "3",
+  "Embers of Muaat": "4",
+  Arborec: "5",
+  "L1Z1X Mindnet": "6",
+  Winnu: "7",
+  "Nekro Virus": "8",
+  "Naalu Collective": "9",
+  "Barony of Letnev": "10",
+  "Clan of Saar": "11",
+  "Universities of Jol-Nar": "12",
+  "Sardakk N'orr": "13",
+  "Xxcha Kingdom": "14",
+  "Yssaril Tribes": "15",
+  "Emirates of Hacan": "16",
+  "Ghosts of Creuss": "17",
+  "Mahact Gene-Sorcerers": "52",
+  Nomad: "53",
+  "Vuil'raith Cabal": "54",
+  "Titans of Ul": "55",
+  Empyrean: "56",
+  "Naaz-Rokha Alliance": "57",
+  "Argent Flight": "58",
+  "Augurs of Ilyxum": "1001",
+  "Bentor Conglomerate": "1002",
+  "Berserkers of Kjalengard": "1003",
+  "Celdauri Trade Confederation": "1004",
+  "Cheiran Hordes": "1005",
+  "Dih-Mohn Flotilla": "1006",
+  "Edyn Mandate": "1007",
+  "Florzen Profiteers": "1008",
+  "Free Systems Compact": "1009",
+  "Ghemina Raiders": "1010",
+  "Ghoti Wayfarers": "1011",
+  "Gledge Union": "1012",
+  "Glimmer of Mortheus": "1013",
+  "Kollecc Society": "1014",
+  "Kortali Tribunal": "1015",
+  "Kyro Sodality": "1016",
+  "Lanefir Remnants": "1017",
+  "Li-Zho Dynasty": "1018",
+  "L'tokk Khrask": "1019",
+  "Mirveda Protectorate": "1020",
+  "Monks of Kolume": "1021",
+  "Myko-Mentori": "1022",
+  "Nivyn Star Kings": "1023",
+  "Nokar Sellships": "1024",
+  "Olradin League": "1025",
+  "Roh'Dhna Mechatronics": "1026",
+  "Savages of Cymiae": "1027",
+  "Shipwrights of Axis": "1028",
+  "Tnelis Syndicate": "1029",
+  "Vaden Banking Clans": "1030",
+  "Vaylerian Scourge": "1031",
+  "Veldyr Sovereignty": "1032",
+  "Zealots of Rhodun": "1033",
+  "Zelian Purifier": "1034",
+} as const;
+
+export function getFactionSystemNumber(
+  faction: Optional<{
+    id?: FactionId;
+    name?: string;
+    startswith?: {
+      faction?: FactionId;
+    };
+  }>
+) {
+  if (!faction?.id) {
+    return "92";
+  }
+  if (faction.id === "Council Keleres") {
+    switch (faction.startswith?.faction) {
+      case "Argent Flight":
+        return "101";
+      case "Xxcha Kingdom":
+        return "100";
+      case "Mentak Coalition":
+        return "102";
+    }
+    return "92";
+  }
+  return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "92";
+}
+
+export function extractFactionIds(
+  mapString: string,
+  mapStyle: MapStyle,
+  numFactions: number
+) {
+  const newSystems = mapString.split(" ");
+  newSystems.unshift("18");
+  const defaultMap = getDefaultMapString(numFactions, mapStyle);
+
+  const SYSTEMS_TO_FACTIONS: Record<string, FactionId> = {};
+  objectKeys(FACTION_TO_SYSTEM_NUMBER).forEach((key) => {
+    SYSTEMS_TO_FACTIONS[FACTION_TO_SYSTEM_NUMBER[key]] = key;
+  });
+
+  const factions: Record<number, FactionId> = {};
+  defaultMap.split(" ").forEach((system, index) => {
+    if (!isHomeSystem(system)) {
+      return;
+    }
+
+    const newSystem = newSystems[index];
+    if (!newSystem) {
+      return;
+    }
+    const factionId = SYSTEMS_TO_FACTIONS[newSystem];
+    if (!factionId) {
+      console.log("No Faction Id", newSystem);
+      return;
+    }
+
+    const factionNum = parseInt(system.slice(-1));
+    if (!factionNum || isNaN(factionNum)) {
+      return;
+    }
+
+    factions[factionNum - 1] = factionId;
+  });
+
+  console.log("Factions", factions);
+
+  if (numFactions !== Object.keys(factions).length) {
+    return;
+  }
+  return factions;
 }

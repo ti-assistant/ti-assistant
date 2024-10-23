@@ -1899,22 +1899,8 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
     return null;
   }
 
-  const HEX_RATIO = 2 / Math.sqrt(3);
-
-  const mapOrderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
-  let mallice;
-  if (options && (options["expansions"] ?? []).includes("POK")) {
-    mallice = "A";
-    if (planets && (planets["Mallice"] ?? {}).owner) {
-      mallice = "B";
-    }
-  }
-
   return (
     <>
-      {/* <Updater /> */}
       <div style={{ width: "100%", margin: rem(4) }}>
         <FactionCard
           faction={faction}

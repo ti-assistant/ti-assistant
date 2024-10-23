@@ -1,4 +1,5 @@
 import { buildSystems } from "../../data/GameData";
+import { getMapString } from "../options";
 
 export class PlayAdjudicatorBaalHandler implements Handler {
   constructor(
@@ -17,7 +18,12 @@ export class PlayAdjudicatorBaalHandler implements Handler {
       [`leaders.Adjudicator Ba'al.state`]: "purged",
     };
 
-    const newMapString = (this.gameData.options["map-string"] ?? "")
+    const newMapString = (
+      getMapString(
+        this.gameData.options,
+        Object.keys(this.gameData.factions).length
+      ) ?? ""
+    )
       .split(" ")
       .map((system) => {
         if (system == this.data.event.systemId) {
@@ -74,7 +80,12 @@ export class UndoAdjudicatorBaalHandler implements Handler {
       [`leaders.Adjudicator Ba'al.state`]: "readied",
     };
 
-    const newMapString = (this.gameData.options["map-string"] ?? "")
+    const newMapString = (
+      getMapString(
+        this.gameData.options,
+        Object.keys(this.gameData.factions).length
+      ) ?? ""
+    )
       .split(" ")
       .map((system) => {
         if (system == "81") {
