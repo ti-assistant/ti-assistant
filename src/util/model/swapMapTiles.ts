@@ -1,4 +1,5 @@
 import { getDefaultMapString } from "../map";
+import { getMapString } from "../options";
 
 export class SwapMapTilesHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: SwapMapTilesData) {}
@@ -13,7 +14,14 @@ export class SwapMapTilesHandler implements Handler {
       [`sequenceNum`]: "INCREMENT",
     };
 
-    const mapString = this.gameData.options["map-string"] ?? "";
+    const mapString = getMapString(
+      this.gameData.options,
+      Object.keys(this.gameData.factions).length
+    );
+
+    if (!mapString) {
+      return {};
+    }
     const systems = mapString.split(" ");
 
     console.log("SWAP", this.data.event);

@@ -126,10 +126,10 @@ function setMapString(
     return;
   }
 
-  changeOptionAsync(gameId, "user-map-string", mapString);
+  changeOptionAsync(gameId, "map-string", mapString);
   changeOptionAsync(
     gameId,
-    "map-string",
+    "processed-map-string",
     processMapString(mapString, mapStyle, numFactions)
   );
 }
@@ -146,7 +146,7 @@ export default function SetupPhase() {
 
   const mapStringRef = useRef<HTMLInputElement>(null);
 
-  const userMapString = options["user-map-string"];
+  const userMapString = options["map-string"];
 
   useEffect(() => {
     if (!mapStringRef.current || !userMapString) {
@@ -211,7 +211,7 @@ export default function SetupPhase() {
                 style={{
                   width: `min(75vw, ${rem(268)})`,
                 }}
-                pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
+                pattern={"((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
                 placeholder={intl.formatMessage({
                   id: "UJSVtn",
                   description:

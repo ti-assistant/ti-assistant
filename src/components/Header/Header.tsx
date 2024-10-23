@@ -27,6 +27,7 @@ import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
+import { getMapString } from "../../util/options";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -120,6 +121,8 @@ export default function Header() {
     }
   }
 
+  const mapString = getMapString(options, mapOrderedFactions.length);
+
   return (
     <React.Fragment>
       <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
@@ -132,13 +135,13 @@ export default function Header() {
         >
           <Map
             factions={mapOrderedFactions}
-            mapString={options ? options["map-string"] ?? "" : ""}
+            mapString={mapString ?? ""}
             mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
             mallice={getMalliceSystemNumber(options, planets, factions)}
           />
         </div>
       </GenericModal>
-      {options["map-string"] !== "" ? (
+      {mapString ? (
         <button className={styles.Map} onClick={() => setShowMap(true)}>
           <FormattedMessage
             id="xDzJ9/"

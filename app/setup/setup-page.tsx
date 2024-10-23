@@ -101,7 +101,7 @@ function MobileOptions({
   const mapStringRef = useRef<HTMLInputElement>(null);
   const intl = useIntl();
 
-  const mapString = options["user-map-string"];
+  const mapString = options["map-string"];
 
   useEffect(() => {
     if (!mapStringRef.current) {
@@ -324,7 +324,7 @@ function MobileOptions({
                                     style,
                                     numFactions
                                   ),
-                                  "map-string"
+                                  "processed-map-string"
                                 );
                               }}
                             >
@@ -352,22 +352,19 @@ function MobileOptions({
                     ref={mapStringRef}
                     type="textbox"
                     pattern={
-                      "((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|(-1))($|\\s))+"
+                      "((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"
                     }
                     className="mediumFont"
                     style={{ width: "75vw" }}
                     onChange={(event) => {
-                      toggleOption(
-                        event.currentTarget.value,
-                        "user-map-string"
-                      );
+                      toggleOption(event.currentTarget.value, "map-string");
                       toggleOption(
                         processMapString(
                           event.currentTarget.value,
                           options["map-style"],
                           numFactions
                         ),
-                        "map-string"
+                        "processed-map-string"
                       );
                     }}
                   ></input>
@@ -1152,7 +1149,6 @@ const INITIAL_OPTIONS: SetupOptions = {
   "game-variant": "normal",
   "map-style": "standard",
   "map-string": "",
-  "user-map-string": "",
   "hide-objectives": false,
   "hide-planets": false,
   "hide-techs": false,
@@ -1202,8 +1198,8 @@ export default function SetupPage({
       toggleOption("normal", "game-variant");
     }
     toggleOption(
-      processMapString(options["user-map-string"], "standard", count),
-      "map-string"
+      processMapString(options["map-string"], "standard", count),
+      "processed-map-string"
     );
 
     if (speaker > count) {
@@ -1727,11 +1723,11 @@ export default function SetupPage({
                           toggleOption(style, "map-style");
                           toggleOption(
                             processMapString(
-                              options["user-map-string"],
+                              options["map-string"],
                               style,
                               numFactions
                             ),
-                            "map-string"
+                            "processed-map-string"
                           );
                         }}
                       >
@@ -1755,25 +1751,25 @@ export default function SetupPage({
             <input
               placeholder="Map String"
               type="textbox"
-              pattern={"((([0-9]{1,4}((A|B)[1-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
+              pattern={"((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
               style={{ width: "100%", fontSize: rem(12) }}
-              value={options["user-map-string"]}
+              value={options["map-string"]}
               onChange={(event) => {
-                toggleOption(event.currentTarget.value, "user-map-string");
+                toggleOption(event.currentTarget.value, "map-string");
                 toggleOption(
                   processMapString(
                     event.currentTarget.value,
                     options["map-style"],
                     numFactions
                   ),
-                  "map-string"
+                  "processed-map-string"
                 );
               }}
             ></input>
           </div>
           <Map
             mapStyle={options["map-style"]}
-            mapString={options["map-string"]}
+            mapString={options["processed-map-string"] ?? ""}
             mallice={options["expansions"].has("POK") ? "A" : undefined}
             factions={activeFactions}
           />

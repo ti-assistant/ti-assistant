@@ -71,6 +71,7 @@ import {
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { pluralize, rem } from "../../util/util";
+import { getMapString } from "../../util/options";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1432,7 +1433,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Dark Energy Tap": {
-      const mapString = options["map-string"];
+      const mapString = getMapString(options, Object.keys(factions).length);
       if (!mapString) {
         break;
       }
@@ -1807,7 +1808,7 @@ function RiftwalkerMeian() {
   const options = useOptions();
   const planets = usePlanets();
 
-  const mapString = options["map-string"];
+  const mapString = getMapString(options, Object.keys(factions).length);
   if (!mapString) {
     return null;
   }

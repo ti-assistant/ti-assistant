@@ -55,6 +55,7 @@ import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { rem } from "../util/util";
 import { getMalliceSystemNumber } from "../util/map";
+import { getMapString } from "../util/options";
 
 export function TacticalAction({
   activeFactionId,
@@ -726,7 +727,7 @@ function AdjudicatorBaal() {
 
   const adjudicatorBaalSystem = getAdjudicatorBaalSystem(actionLog);
 
-  const mapString = options["map-string"];
+  const mapString = getMapString(options, Object.keys(factions).length);
   if (!mapString) {
     return null;
   }

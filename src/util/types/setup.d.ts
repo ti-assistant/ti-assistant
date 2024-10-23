@@ -4,6 +4,7 @@ type MapStyle = "standard" | "warp" | "skinny" | "large";
 
 interface SetupOptions {
   "map-string": string;
+  "processed-map-string"?: string;
   "map-style": MapStyle;
   "victory-points": number;
   "secondary-victory-points": number;

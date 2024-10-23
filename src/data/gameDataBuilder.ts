@@ -3,6 +3,7 @@ import {
   updateMapString,
   validSystemNumber,
 } from "../util/map";
+import { getMapString } from "../util/options";
 
 export function buildCompleteGameData(
   storedGameData: StoredGameData,
@@ -353,7 +354,7 @@ export function buildPlanets(
   const gameOptions = storedGameData.options;
 
   const numFactions = Object.keys(gameFactions).length;
-  const mapString = gameOptions["map-string"] ?? "";
+  const mapString = getMapString(gameOptions, numFactions) ?? "";
   const validMapString = isValidMapString(mapString, numFactions);
   const inGameSystems = mapString
     .split(" ")

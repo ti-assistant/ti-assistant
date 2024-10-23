@@ -30,6 +30,7 @@ import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 import { rem } from "../../util/util";
 import { getMalliceSystemNumber } from "../../util/map";
+import { getMapString } from "../../util/options";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -139,6 +140,8 @@ export default function Footer({}) {
     (a, b) => a.mapPosition - b.mapPosition
   );
 
+  const mapString = getMapString(options, mapOrderedFactions.length);
+
   return (
     <>
       <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
@@ -155,10 +158,8 @@ export default function Footer({}) {
           >
             <Map
               factions={mapOrderedFactions}
-              mapString={options ? options["map-string"] ?? "" : ""}
-              mapStyle={
-                options ? options["map-style"] ?? "standard" : "standard"
-              }
+              mapString={mapString ?? ""}
+              mapStyle={options["map-style"] ?? "standard"}
               mallice={getMalliceSystemNumber(options, planets, factions)}
             />
           </div>
@@ -364,7 +365,7 @@ export default function Footer({}) {
             />
           </div>
         ) : null}
-        {options["map-string"] !== "" ? (
+        {mapString ? (
           <div className="flexRow" onClick={() => setShowMap(true)}>
             <button>
               <div
