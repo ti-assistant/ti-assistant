@@ -819,11 +819,7 @@ function FactionSelect({
   const currentNameRef = nameRef?.current;
   useEffect(() => {
     if (currentNameRef && !playerName) {
-      currentNameRef.value = intl.formatMessage({
-        id: "4n1LQO",
-        description: "Initial text in a textbox used to input a player's name",
-        defaultMessage: "Enter Player Name...",
-      });
+      currentNameRef.value = "";
     }
   }, [playerName, currentNameRef, intl]);
 
@@ -854,39 +850,19 @@ function FactionSelect({
     .map((faction) => faction.id as FactionId);
 
   function selectFaction(factionId: Optional<FactionId>) {
-    if (factionIndex == undefined) {
-      return;
-    }
     setFaction(factionIndex, factionId);
   }
 
   function selectColor(color: Optional<string>) {
-    if (factionIndex == undefined) {
-      return;
-    }
     setColor(factionIndex, color);
   }
 
   function savePlayerName(element: HTMLInputElement) {
-    if (factionIndex == undefined) {
+    if (element.value === "") {
+      element.value = faction.playerName ?? "";
       return;
     }
-    if (element.value !== "" && !element.value.includes("Player")) {
-      setPlayerName(factionIndex, element.value);
-    } else {
-      const faction = factions[factionIndex];
-      if (!faction) {
-        return;
-      }
-      element.value =
-        faction.playerName ??
-        intl.formatMessage({
-          id: "4n1LQO",
-          description:
-            "Initial text in a textbox used to input a player's name",
-          defaultMessage: "Enter Player Name...",
-        });
-    }
+    setPlayerName(factionIndex, element.value);
   }
 
   function selectAlliancePartner(factionId: Optional<FactionId>) {
@@ -913,13 +889,13 @@ function FactionSelect({
       tabIndex={position + 1}
       type="textbox"
       spellCheck={false}
-      defaultValue={intl.formatMessage({
+      placeholder={intl.formatMessage({
         id: "4n1LQO",
         description: "Initial text in a textbox used to input a player's name",
         defaultMessage: "Enter Player Name...",
       })}
       style={{
-        fontFamily: "Slider",
+        fontFamily: "Myriad Pro",
         borderColor: factionColor,
         fontSize: rem(13.33),
       }}
@@ -936,7 +912,7 @@ function FactionSelect({
       label={label}
       rightLabel={isSpeaker ? <Strings.Speaker /> : undefined}
       color={factionColor}
-      style={{ width: mobile ? "100%" : "22vw" }}
+      style={{ width: mobile ? "100%" : "28vw", minWidth: rem(260) }}
     >
       {faction.id ? (
         <div
@@ -949,7 +925,7 @@ function FactionSelect({
             zIndex: -1,
           }}
         >
-          <FactionIcon factionId={faction.id} size={mobile ? 52 : 80} />
+          <FactionIcon factionId={faction.id} size={mobile ? 52 : 48} />
         </div>
       ) : null}
       <div
@@ -959,7 +935,7 @@ function FactionSelect({
           alignItems: "flex-start",
           whiteSpace: "nowrap",
           gap: rem(4),
-          padding: rem(8),
+          padding: rem(4),
           boxSizing: "border-box",
         }}
       >
@@ -967,27 +943,86 @@ function FactionSelect({
           className={mobile ? "flexRow largeFont" : "flexColumn largeFont"}
           style={{
             whiteSpace: "pre-line",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
+            alignItems: "center",
+            justifyContent: "center",
             width: "100%",
           }}
         >
           <div
             className="flexRow"
-            style={{ width: "100%", justifyContent: "space-between" }}
+            style={{
+              width: "100%",
+              justifyContent: !faction.id ? "center" : "space-between",
+              alignItems: "center",
+            }}
           >
             {faction.id ? (
-              <SelectableRow
-                itemId={availableFactions[faction.id].name}
-                removeItem={() => selectFaction(undefined)}
-                style={{ height: rem(32.67) }}
-              >
-                {availableFactions[faction.id].name}
-                <SetupFactionPanel
-                  faction={availableFactions[faction.id]}
-                  options={createOptions(options)}
-                />
-              </SelectableRow>
+              <>
+                <SelectableRow
+                  itemId={availableFactions[faction.id].name}
+                  removeItem={() => selectFaction(undefined)}
+                  style={{ height: rem(32.67) }}
+                >
+                  {availableFactions[faction.id].name}
+                  <SetupFactionPanel
+                    faction={availableFactions[faction.id]}
+                    options={createOptions(options)}
+                  />
+                </SelectableRow>
+                <ClientOnlyHoverMenu
+                  label={
+                    <FormattedMessage
+                      id="Lm8L7/"
+                      description="Text on a hover menu for picking a player's color."
+                      defaultMessage="Color"
+                    />
+                  }
+                  renderProps={(closeFn) => {
+                    return (
+                      <div
+                        className="flexRow"
+                        style={{
+                          padding: `${rem(8)}`,
+                          display: "grid",
+                          gridAutoFlow: "column",
+                          gridTemplateRows: "repeat(3, auto)",
+                          overflowX: "auto",
+                          gap: `${rem(4)}`,
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        {filteredColors.map((color) => {
+                          const factionColor = convertToFactionColor(color);
+                          const alreadySelected =
+                            selectedColors.includes(color);
+                          return (
+                            <button
+                              key={color}
+                              style={{
+                                width: rem(60),
+                                backgroundColor: factionColor,
+                                color: factionColor,
+                                height: rem(22),
+                                opacity:
+                                  faction.color !== color && alreadySelected
+                                    ? 0.25
+                                    : undefined,
+                              }}
+                              className={
+                                faction.color === color ? "selected" : ""
+                              }
+                              onClick={() => {
+                                closeFn();
+                                selectColor(color);
+                              }}
+                            ></button>
+                          );
+                        })}
+                      </div>
+                    );
+                  }}
+                ></ClientOnlyHoverMenu>
+              </>
             ) : (
               <ClientOnlyHoverMenu
                 label={
@@ -1062,73 +1097,6 @@ function FactionSelect({
                 />
               </div>
             ) : null}
-          </div>
-          <div
-            className="flexRow"
-            style={{
-              width: mobile ? "auto" : "100%",
-              justifyContent: "space-between",
-            }}
-          >
-            <ClientOnlyHoverMenu
-              label={
-                <FormattedMessage
-                  id="Lm8L7/"
-                  description="Text on a hover menu for picking a player's color."
-                  defaultMessage="Color"
-                />
-              }
-              renderProps={(closeFn) => {
-                return (
-                  <div
-                    className="flexRow"
-                    style={{
-                      padding: `${rem(8)}`,
-                      display: "grid",
-                      gridAutoFlow: "column",
-                      gridTemplateRows: "repeat(3, auto)",
-                      overflowX: "auto",
-                      gap: `${rem(4)}`,
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    {filteredColors.map((color) => {
-                      const factionColor = convertToFactionColor(color);
-                      const alreadySelected = selectedColors.includes(color);
-                      return (
-                        <button
-                          key={color}
-                          style={{
-                            width: rem(60),
-                            backgroundColor: factionColor,
-                            color: factionColor,
-                            height: rem(22),
-                            opacity:
-                              faction.color !== color && alreadySelected
-                                ? 0.25
-                                : undefined,
-                          }}
-                          className={faction.color === color ? "selected" : ""}
-                          onClick={() => {
-                            closeFn();
-                            selectColor(color);
-                          }}
-                        ></button>
-                      );
-                    })}
-                  </div>
-                );
-              }}
-            ></ClientOnlyHoverMenu>
-            {mobile || isSpeaker ? null : (
-              <button onClick={() => setSpeaker(factionIndex)}>
-                <FormattedMessage
-                  id="JS92Jj"
-                  description="Text on a button that will make a faction the speaker."
-                  defaultMessage="Make Speaker"
-                />
-              </button>
-            )}
           </div>
         </div>
         {/* </ClientOnlyHoverMenu> */}
@@ -1528,64 +1496,6 @@ export default function SetupPage({
     setOptions(currentOptions);
   }
 
-  function getGridTemplateAreas() {
-    let gapLine = `". map ."`;
-    switch (numFactions) {
-      case 3:
-        return `"opt top rand"
-        "opt map ."
-        ${gapLine}
-        "left-top map right-top"
-        ${gapLine}
-        ${gapLine}
-        ${gapLine}
-        ${gapLine}
-        "trac bot start"`;
-      case 4:
-        if (options["map-style"] === "standard") {
-          return `"opt top rand"
-              "opt map ."
-              ${gapLine}
-              ". map right-top"
-              "left-top map right-top"
-              "left-top map ."
-              ${gapLine}
-              "trac bot start"`;
-        }
-      // Fall-through
-      case 5:
-      case 6:
-        return `"opt top rand"
-        "opt map ."
-        ${gapLine}
-        "left-top map right-top"
-        ${gapLine}
-        "left-mid map right-mid"
-        ${gapLine}
-        "trac bot start"`;
-      case 7:
-        if (options["map-style"] === "warp") {
-          return `"opt top rand"
-          "opt map ."
-          "left-top map ."
-          "left-top map right-top"
-          "left-mid map right-top"
-          "left-mid map right-mid"
-          "left-bot map right-mid"
-          "left-bot map ."
-          "trac bot start"`;
-        }
-      // Fall-through
-      case 8:
-        return `"opt top rand"
-        "opt map ."
-        "left-top map right-top"
-        "left-mid map right-mid"
-        "left-bot map right-bot"
-        "trac bot start"`;
-    }
-  }
-
   const maxFactions = options.expansions.has("POK") ? 8 : 6;
   return (
     <React.Fragment>
@@ -1607,12 +1517,7 @@ export default function SetupPage({
         mobileSidebars
       />
       {/* Large Screen */}
-      <div
-        className={`${styles.SetupGrid} nonMobile`}
-        style={{
-          gridTemplateAreas: getGridTemplateAreas(),
-        }}
-      >
+      <div className={styles.SetupGrid}>
         <div
           className="flexColumn"
           style={{
@@ -1632,60 +1537,79 @@ export default function SetupPage({
             maxFactions={maxFactions}
           />
         </div>
-        <div style={{ gridArea: "left-top" }}>
-          <FactionSelect
-            colors={colors}
-            factions={setupFactions}
-            position={7}
-            numFactions={numFactions}
-            speaker={speaker}
-            setFaction={updatePlayerFaction}
-            setColor={updatePlayerColor}
-            setSpeaker={setSpeaker}
-            setPlayerName={updatePlayerName}
-            setAlliancePartner={updateAlliancePartner}
-            options={options}
-          />
+        <div
+          className="flexColumn"
+          style={{
+            gridArea: "left",
+            justifyContent: "space-around",
+            alignItems: "flex-end",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <div style={{ gridArea: "left-top" }}>
+            <FactionSelect
+              colors={colors}
+              factions={setupFactions}
+              position={7}
+              numFactions={numFactions}
+              speaker={speaker}
+              setFaction={updatePlayerFaction}
+              setColor={updatePlayerColor}
+              setSpeaker={setSpeaker}
+              setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
+              options={options}
+            />
+          </div>
+          {numFactions > 3 &&
+          !(numFactions === 4 && options["map-style"] === "standard") ? (
+            <div style={{ gridArea: "left-mid" }}>
+              <FactionSelect
+                colors={colors}
+                factions={setupFactions}
+                position={6}
+                numFactions={numFactions}
+                speaker={speaker}
+                setFaction={updatePlayerFaction}
+                setColor={updatePlayerColor}
+                setSpeaker={setSpeaker}
+                setPlayerName={updatePlayerName}
+                setAlliancePartner={updateAlliancePartner}
+                options={options}
+              />
+            </div>
+          ) : null}
+          {numFactions > 6 ? (
+            <div style={{ gridArea: "left-bot" }}>
+              <FactionSelect
+                colors={colors}
+                factions={setupFactions}
+                position={5}
+                numFactions={numFactions}
+                speaker={speaker}
+                setFaction={updatePlayerFaction}
+                setColor={updatePlayerColor}
+                setSpeaker={setSpeaker}
+                setPlayerName={updatePlayerName}
+                setAlliancePartner={updateAlliancePartner}
+                options={options}
+              />
+            </div>
+          ) : null}
         </div>
-        {numFactions > 3 &&
-        !(numFactions === 4 && options["map-style"] === "standard") ? (
-          <div style={{ gridArea: "left-mid" }}>
-            <FactionSelect
-              colors={colors}
-              factions={setupFactions}
-              position={6}
-              numFactions={numFactions}
-              speaker={speaker}
-              setFaction={updatePlayerFaction}
-              setColor={updatePlayerColor}
-              setSpeaker={setSpeaker}
-              setPlayerName={updatePlayerName}
-              setAlliancePartner={updateAlliancePartner}
-              options={options}
-            />
-          </div>
-        ) : null}
-        {numFactions > 6 ? (
-          <div style={{ gridArea: "left-bot" }}>
-            <FactionSelect
-              colors={colors}
-              factions={setupFactions}
-              position={5}
-              numFactions={numFactions}
-              speaker={speaker}
-              setFaction={updatePlayerFaction}
-              setColor={updatePlayerColor}
-              setSpeaker={setSpeaker}
-              setPlayerName={updatePlayerName}
-              setAlliancePartner={updateAlliancePartner}
-              options={options}
-            />
-          </div>
-        ) : null}
-        {numFactions > 3 &&
-        !(numFactions === 4 && options["map-style"] !== "standard") &&
-        !(numFactions === 5 && options["map-style"] !== "warp") ? (
-          <div style={{ gridArea: "top" }}>
+        <div className="flexColumn" style={{ height: "100%", gridArea: "mid" }}>
+          <div
+            style={{
+              gridArea: "top",
+              visibility:
+                numFactions > 3 &&
+                !(numFactions === 4 && options["map-style"] !== "standard") &&
+                !(numFactions === 5 && options["map-style"] !== "warp")
+                  ? undefined
+                  : "hidden",
+            }}
+          >
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -1700,127 +1624,139 @@ export default function SetupPage({
               options={options}
             />
           </div>
-        ) : null}
-        {/* Map Section */}
-        <div
-          className="flexColumn"
-          style={{
-            flexShrink: 0,
-            flexGrow: 0,
-            position: "relative",
-            width: rem(360),
-            aspectRatio: 1,
-            gridArea: "map",
-          }}
-        >
+          {/* Map Section */}
           <div
+            className="flexColumn"
             style={{
-              display: "grid",
-              gridTemplateColumns: "min-content 1fr",
-              gridAutoFlow: "row",
-              fontFamily: "Myriad Pro",
-              fontSize: rem(12),
-              width: "100%",
-              whiteSpace: "nowrap",
-              columnGap: rem(8),
-              rowGap: rem(4),
-              justifyContent: "flex-start",
+              flexShrink: 0,
+              flexGrow: 0,
+              position: "relative",
+              gridArea: "map",
             }}
           >
-            {getMapStyles(numFactions).length > 1 ? (
-              <>
-                <div>
-                  <FormattedMessage
-                    id="ZZ/Lhe"
-                    description="A label for a selector for selecting which map style to use."
-                    defaultMessage="Map Type"
-                  />
-                  :
-                </div>
-                <div
-                  className="flexRow"
-                  style={{ gap: rem(4), justifyContent: "flex-start" }}
-                >
-                  {getMapStyles(numFactions).map((style) => {
-                    return (
-                      <Chip
-                        key={style}
-                        selected={options["map-style"] === style}
-                        toggleFn={() => {
-                          toggleOption(style, "map-style");
-                          toggleOption(
-                            processMapString(
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "min-content 1fr",
+                gridAutoFlow: "row",
+                fontFamily: "Myriad Pro",
+                fontSize: rem(12),
+                width: "100%",
+                whiteSpace: "nowrap",
+                columnGap: rem(8),
+                rowGap: rem(4),
+                justifyContent: "flex-start",
+              }}
+            >
+              {getMapStyles(numFactions).length > 1 ? (
+                <>
+                  <div>
+                    <FormattedMessage
+                      id="ZZ/Lhe"
+                      description="A label for a selector for selecting which map style to use."
+                      defaultMessage="Map Type"
+                    />
+                    :
+                  </div>
+                  <div
+                    className="flexRow"
+                    style={{ gap: rem(4), justifyContent: "flex-start" }}
+                  >
+                    {getMapStyles(numFactions).map((style) => {
+                      return (
+                        <Chip
+                          key={style}
+                          selected={options["map-style"] === style}
+                          toggleFn={() => {
+                            toggleOption(style, "map-style");
+                            toggleOption(
+                              processMapString(
+                                options["map-string"],
+                                style,
+                                numFactions
+                              ),
+                              "processed-map-string"
+                            );
+                            const factionIds = extractFactionIds(
                               options["map-string"],
                               style,
                               numFactions
-                            ),
-                            "processed-map-string"
-                          );
-                          const factionIds = extractFactionIds(
-                            options["map-string"],
-                            style,
-                            numFactions
-                          );
-                          if (factionIds) {
-                            updateAllPlayerFactions(factionIds);
-                          }
-                        }}
-                      >
-                        {mapStyleString(style, intl)}
-                      </Chip>
-                    );
-                  })}
-                </div>
-              </>
-            ) : (
-              <div style={{ height: rem(20), gridColumn: "1 / 3" }}></div>
-            )}
-            <div>
-              <FormattedMessage
-                id="UJSVtn"
-                description="Label for a textbox used to specify the map string."
-                defaultMessage="Map String"
-              />
-              :
-            </div>
-            <input
-              placeholder="Map String"
-              type="textbox"
-              pattern={"((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
-              style={{ width: "100%", fontSize: rem(12) }}
-              value={options["map-string"]}
-              onChange={(event) => {
-                toggleOption(event.currentTarget.value, "map-string");
-                toggleOption(
-                  processMapString(
+                            );
+                            if (factionIds) {
+                              updateAllPlayerFactions(factionIds);
+                            }
+                          }}
+                        >
+                          {mapStyleString(style, intl)}
+                        </Chip>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <div style={{ height: rem(20), gridColumn: "1 / 3" }}></div>
+              )}
+              <div>
+                <FormattedMessage
+                  id="UJSVtn"
+                  description="Label for a textbox used to specify the map string."
+                  defaultMessage="Map String"
+                />
+                :
+              </div>
+              <input
+                placeholder="Map String"
+                type="textbox"
+                pattern={"((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
+                style={{
+                  width: "100%",
+                  fontSize: rem(12),
+                  fontFamily: "Myriad Pro",
+                }}
+                value={options["map-string"]}
+                onChange={(event) => {
+                  toggleOption(event.currentTarget.value, "map-string");
+                  toggleOption(
+                    processMapString(
+                      event.currentTarget.value,
+                      options["map-style"],
+                      numFactions
+                    ),
+                    "processed-map-string"
+                  );
+                  const factionIds = extractFactionIds(
                     event.currentTarget.value,
                     options["map-style"],
                     numFactions
-                  ),
-                  "processed-map-string"
-                );
-                const factionIds = extractFactionIds(
-                  event.currentTarget.value,
-                  options["map-style"],
-                  numFactions
-                );
-                if (factionIds) {
-                  updateAllPlayerFactions(factionIds);
-                }
-              }}
-            ></input>
+                  );
+                  if (factionIds) {
+                    updateAllPlayerFactions(factionIds);
+                  }
+                }}
+              ></input>
+            </div>
+            <div
+              style={{ position: "relative", width: rem(420), aspectRatio: 1 }}
+            >
+              <Map
+                mapStyle={options["map-style"]}
+                mapString={options["processed-map-string"] ?? ""}
+                mallice={options["expansions"].has("POK") ? "A" : undefined}
+                factions={activeFactions}
+              />
+            </div>
           </div>
-          <Map
-            mapStyle={options["map-style"]}
-            mapString={options["processed-map-string"] ?? ""}
-            mallice={options["expansions"].has("POK") ? "A" : undefined}
-            factions={activeFactions}
-          />
-        </div>
-        {!(numFactions === 4 && options["map-style"] !== "standard") &&
-        !(numFactions === 5 && options["map-style"] === "warp") &&
-        !(numFactions === 7 && options["map-style"] !== "warp") ? (
-          <div style={{ gridArea: "bot" }}>
+          <div
+            style={{
+              gridArea: "bot",
+              visibility:
+                !(numFactions === 4 && options["map-style"] !== "standard") &&
+                !(numFactions === 5 && options["map-style"] === "warp") &&
+                !(numFactions === 7 && options["map-style"] !== "warp")
+                  ? undefined
+                  : "hidden",
+            }}
+          >
             <FactionSelect
               colors={colors}
               factions={setupFactions}
@@ -1835,7 +1771,7 @@ export default function SetupPage({
               options={options}
             />
           </div>
-        ) : null}
+        </div>
         {/* Randomize Section */}
         <div
           className="flexColumn"
@@ -1884,62 +1820,93 @@ export default function SetupPage({
             />
           </button>
         </div>
-        <div style={{ gridArea: "right-top" }}>
-          <FactionSelect
-            colors={colors}
-            factions={setupFactions}
-            position={1}
-            numFactions={numFactions}
-            speaker={speaker}
-            setFaction={updatePlayerFaction}
-            setColor={updatePlayerColor}
-            setSpeaker={setSpeaker}
-            setPlayerName={updatePlayerName}
-            setAlliancePartner={updateAlliancePartner}
-            options={options}
-          />
+        <div
+          className="flexColumn"
+          style={{
+            gridArea: "right",
+            justifyContent: "space-around",
+            height: "100%",
+            width: "100%",
+            alignItems: "flex-start",
+          }}
+        >
+          <div style={{ gridArea: "right-top" }}>
+            <FactionSelect
+              colors={colors}
+              factions={setupFactions}
+              position={1}
+              numFactions={numFactions}
+              speaker={speaker}
+              setFaction={updatePlayerFaction}
+              setColor={updatePlayerColor}
+              setSpeaker={setSpeaker}
+              setPlayerName={updatePlayerName}
+              setAlliancePartner={updateAlliancePartner}
+              options={options}
+            />
+          </div>
+          {numFactions > 3 &&
+          !(numFactions === 4 && options["map-style"] === "standard") ? (
+            <div style={{ gridArea: "right-mid" }}>
+              <FactionSelect
+                colors={colors}
+                factions={setupFactions}
+                position={2}
+                numFactions={numFactions}
+                speaker={speaker}
+                setFaction={updatePlayerFaction}
+                setColor={updatePlayerColor}
+                setSpeaker={setSpeaker}
+                setPlayerName={updatePlayerName}
+                setAlliancePartner={updateAlliancePartner}
+                options={options}
+              />
+            </div>
+          ) : null}
+          {(numFactions > 6 && options["map-style"] === "standard") ||
+          numFactions > 7 ? (
+            <div style={{ gridArea: "right-bot" }}>
+              <FactionSelect
+                colors={colors}
+                factions={setupFactions}
+                position={3}
+                numFactions={numFactions}
+                speaker={speaker}
+                setFaction={updatePlayerFaction}
+                setColor={updatePlayerColor}
+                setSpeaker={setSpeaker}
+                setPlayerName={updatePlayerName}
+                setAlliancePartner={updateAlliancePartner}
+                options={options}
+              />
+            </div>
+          ) : null}
         </div>
-        {numFactions > 3 &&
-        !(numFactions === 4 && options["map-style"] === "standard") ? (
-          <div style={{ gridArea: "right-mid" }}>
-            <FactionSelect
-              colors={colors}
-              factions={setupFactions}
-              position={2}
-              numFactions={numFactions}
-              speaker={speaker}
-              setFaction={updatePlayerFaction}
-              setColor={updatePlayerColor}
-              setSpeaker={setSpeaker}
-              setPlayerName={updatePlayerName}
-              setAlliancePartner={updateAlliancePartner}
-              options={options}
-            />
-          </div>
-        ) : null}
-        {(numFactions > 6 && options["map-style"] === "standard") ||
-        numFactions > 7 ? (
-          <div style={{ gridArea: "right-bot" }}>
-            <FactionSelect
-              colors={colors}
-              factions={setupFactions}
-              position={3}
-              numFactions={numFactions}
-              speaker={speaker}
-              setFaction={updatePlayerFaction}
-              setColor={updatePlayerColor}
-              setSpeaker={setSpeaker}
-              setPlayerName={updatePlayerName}
-              setAlliancePartner={updateAlliancePartner}
-              options={options}
-            />
-          </div>
-        ) : null}
         {/* Start Game Section */}
         <div
           className="flexColumn"
           style={{ width: "100%", gridArea: "start", minHeight: rem(114) }}
         >
+          <div className="flexRow">
+            Speaker:
+            <FactionSelectRadialMenu
+              selectedFaction={setupFactions[speaker]?.id}
+              borderColor={convertToFactionColor(setupFactions[speaker]?.color)}
+              size={36}
+              invalidFactions={
+                setupFactions[speaker]?.id ? [setupFactions[speaker].id] : []
+              }
+              factions={setupFactions
+                .filter((faction) => !!faction.id)
+                .map((faction) => faction.id as FactionId)}
+              onSelect={(factionId) => {
+                const index = setupFactions.findIndex(
+                  (faction) => faction.id === factionId
+                );
+                setSpeaker(index);
+              }}
+            />
+          </div>
           <button
             style={{
               fontSize: rem(40),
@@ -1983,7 +1950,11 @@ export default function SetupPage({
           {!creatingGame && disableNextButton() ? (
             <div
               className="flexColumn centered"
-              style={{ color: "firebrick", maxWidth: rem(240) }}
+              style={{
+                color: "firebrick",
+                maxWidth: rem(240),
+                fontFamily: "Myriad Pro",
+              }}
             >
               <FormattedMessage
                 id="LYA+Dm"
@@ -2068,6 +2039,20 @@ export default function SetupPage({
             {/* </div> */}
           </div>
           <div className="flexColumn" style={{ width: "100%" }}>
+            <div>
+              Speaker:
+              <FactionSelectRadialMenu
+                factions={setupFactions
+                  .filter((faction, index) => !!faction.id && speaker !== index)
+                  .map((faction) => faction.id as FactionId)}
+                onSelect={(factionId) => {
+                  const index = setupFactions.findIndex(
+                    (faction) => faction.id === factionId
+                  );
+                  setSpeaker(index);
+                }}
+              />
+            </div>
             <button
               style={{
                 fontSize: rem(40),
