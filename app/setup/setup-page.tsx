@@ -1597,7 +1597,13 @@ export default function SetupPage({
             defaultMessage: "Setup Game",
           })
           .toUpperCase()}
-        rightSidebar={""}
+        rightSidebar={intl
+          .formatMessage({
+            id: "9DZz2w",
+            description: "Text identifying that this is the setup step.",
+            defaultMessage: "Setup Game",
+          })
+          .toUpperCase()}
         mobileSidebars
       />
       {/* Large Screen */}
