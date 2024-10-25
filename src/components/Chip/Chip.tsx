@@ -3,7 +3,7 @@ import styles from "./Chip.module.scss";
 import { rem } from "../../util/util";
 
 interface SelectedCSSProperties extends CSSProperties {
-  "--border-color": "#eee";
+  "--border-color": "#999";
   "--background-color": "#444";
   "--font-size": string;
 }
@@ -19,7 +19,7 @@ type ChipCSSProperties = SelectedCSSProperties | UnselectedCSSProperties;
 function getChipStyle(selected: boolean, fontSize: number): ChipCSSProperties {
   if (selected) {
     return {
-      "--border-color": "#eee",
+      "--border-color": "#999",
       "--background-color": "#444",
       "--font-size": rem(fontSize),
     };

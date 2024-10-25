@@ -219,6 +219,7 @@ function MobileOptions({
                     alignItems: "flex-start",
                     justifyContent: "flex-start",
                     padding: `0 ${rem(20)}`,
+                    fontFamily: "Myriad Pro",
                   }}
                 >
                   <Toggle
@@ -271,6 +272,7 @@ function MobileOptions({
                     style={{
                       justifyContent: "flex-start",
                       padding: `0 ${rem(20)}`,
+                      fontFamily: "Myriad Pro",
                     }}
                   >
                     <Toggle
@@ -377,6 +379,7 @@ function MobileOptions({
                   style={{
                     alignItems: "flex-start",
                     padding: `${rem(8)} ${rem(20)}`,
+                    fontFamily: "Myriad Pro",
                   }}
                 >
                   <Toggle
@@ -527,6 +530,7 @@ function Options({
                 style={{
                   justifyContent: "flex-start",
                   padding: `0 ${rem(16)}`,
+                  fontFamily: "Myriad Pro",
                 }}
               >
                 <Toggle
@@ -595,6 +599,7 @@ function Options({
                   style={{
                     justifyContent: "flex-start",
                     padding: `0 ${rem(16)}`,
+                    fontFamily: "Myriad Pro",
                   }}
                 >
                   <Toggle
@@ -619,6 +624,7 @@ function Options({
                 style={{
                   alignItems: "flex-start",
                   padding: `${rem(8)} ${rem(20)}`,
+                  fontFamily: "Myriad Pro",
                 }}
               >
                 <Toggle
@@ -1040,7 +1046,7 @@ function FactionSelect({
                     gridTemplateRows: "repeat(10, minmax(0, 1fr))",
                     gap: rem(4),
                     padding: rem(8),
-                    maxWidth: `min(80vw, ${rem(750)})`,
+                    maxWidth: `min(80vw, ${rem(600)})`,
                     overflowX: "auto",
                   }}
                 >
