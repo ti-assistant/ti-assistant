@@ -153,14 +153,101 @@ function MobileOptions({
             <Chip
               key={number}
               selected={numFactions === number}
-              fontSize={16}
               toggleFn={() => updatePlayerCount(number)}
+              fontSize={16}
             >
               {number}
             </Chip>
           );
         })}
       </div>
+      <div className="flexRow">
+        <FormattedMessage
+          id="R06tnh"
+          description="A label for a selector specifying the number of victory points required."
+          defaultMessage="Victory Points"
+        />
+        :
+        <NumberInput
+          value={options["victory-points"]}
+          onChange={(newVal) => toggleOption(newVal, "victory-points")}
+          minValue={0}
+        />
+        {options["game-variant"] === "alliance-separate" ? (
+          <>
+            <FormattedMessage
+              id="+WkrHz"
+              description="Text between two fields linking them together."
+              defaultMessage="AND"
+            />
+            <NumberInput
+              value={options["secondary-victory-points"]}
+              onChange={(newVal) =>
+                toggleOption(newVal, "secondary-victory-points")
+              }
+              minValue={0}
+            />
+          </>
+        ) : null}
+      </div>
+      <LabeledDiv
+        label={
+          <FormattedMessage
+            id="2jNcVD"
+            description="A label for a selector specifying which expansions should be enabled."
+            defaultMessage="Expansions:"
+          />
+        }
+        style={{ width: "min-content" }}
+      >
+        <div className="flexColumn" style={{ alignItems: "center" }}>
+          <Toggle
+            selected={options.expansions.has("POK")}
+            toggleFn={(prevValue) => {
+              toggleExpansion(!prevValue, "POK");
+            }}
+          >
+            <FormattedMessage
+              id="p9XVGB"
+              description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+              defaultMessage="Prophecy of Kings"
+            />
+          </Toggle>
+          <div
+            className="flexRow"
+            style={{
+              justifyContent: "flex-start",
+              fontFamily: "Myriad Pro",
+            }}
+          >
+            Codices:
+            <Toggle
+              selected={options.expansions.has("CODEX ONE")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX ONE");
+              }}
+            >
+              I
+            </Toggle>
+            <Toggle
+              selected={options.expansions.has("CODEX TWO")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX TWO");
+              }}
+            >
+              II
+            </Toggle>
+            <Toggle
+              selected={options.expansions.has("CODEX THREE")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX THREE");
+              }}
+            >
+              III
+            </Toggle>
+          </div>
+        </div>
+      </LabeledDiv>
       <div
         className="flexRow"
         style={{ width: "100%", justifyContent: "space-between" }}
@@ -182,108 +269,28 @@ function MobileOptions({
                 padding: `${rem(8)} ${rem(16)} 0 ${rem(16)}`,
               }}
             >
-              <div className="flexRow" style={{ alignItems: "flex-start" }}>
-                <FormattedMessage
-                  id="R06tnh"
-                  description="A label for a selector specifying the number of victory points required."
-                  defaultMessage="Victory Points"
-                />
-                :
-                <NumberInput
-                  value={options["victory-points"]}
-                  onChange={(newVal) => toggleOption(newVal, "victory-points")}
-                  minValue={0}
-                />
-                {options["game-variant"] === "alliance-separate" ? (
-                  <>
-                    &
-                    <NumberInput
-                      value={options["secondary-victory-points"]}
-                      onChange={(newVal) =>
-                        toggleOption(newVal, "secondary-victory-points")
-                      }
-                      minValue={0}
-                    />
-                  </>
-                ) : null}
-              </div>
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
                 <FormattedMessage
-                  id="2jNcVD"
-                  description="A label for a selector specifying which expansions should be enabled."
-                  defaultMessage="Expansions:"
+                  id="weIxIg"
+                  description="A label for a selector specifying expansions that are homemade."
+                  defaultMessage="Homebrew:"
                 />
                 <div
-                  className={styles.Expansions}
+                  className="flexRow"
                   style={{
-                    alignItems: "flex-start",
                     justifyContent: "flex-start",
-                    padding: `0 ${rem(20)}`,
+                    padding: `0 ${rem(16)}`,
                     fontFamily: "Myriad Pro",
                   }}
                 >
                   <Toggle
-                    selected={options.expansions.has("POK")}
+                    selected={options.expansions.has("DISCORDANT STARS")}
                     toggleFn={(prevValue) => {
-                      toggleExpansion(!prevValue, "POK");
+                      toggleExpansion(!prevValue, "DISCORDANT STARS");
                     }}
                   >
-                    <Strings.Expansion expansion="POK" />
+                    <Strings.Expansion expansion="DISCORDANT STARS" />
                   </Toggle>
-                  <Toggle
-                    selected={options.expansions.has("CODEX ONE")}
-                    toggleFn={(prevValue) => {
-                      toggleExpansion(!prevValue, "CODEX ONE");
-                    }}
-                  >
-                    <Strings.Expansion expansion="CODEX ONE" />
-                  </Toggle>
-                  <Toggle
-                    selected={options.expansions.has("CODEX TWO")}
-                    toggleFn={(prevValue) => {
-                      toggleExpansion(!prevValue, "CODEX TWO");
-                    }}
-                  >
-                    <Strings.Expansion expansion="CODEX TWO" />
-                  </Toggle>
-                  <Toggle
-                    selected={options.expansions.has("CODEX THREE")}
-                    toggleFn={(prevValue) => {
-                      toggleExpansion(!prevValue, "CODEX THREE");
-                    }}
-                  >
-                    <Strings.Expansion expansion="CODEX THREE" />
-                  </Toggle>
-                </div>
-                <div
-                  className="flexColumn mediumFont"
-                  style={{
-                    alignItems: "flex-start",
-                    padding: `0 ${rem(20)}`,
-                  }}
-                >
-                  <FormattedMessage
-                    id="weIxIg"
-                    description="A label for a selector specifying expansions that are homemade."
-                    defaultMessage="Homebrew:"
-                  />
-                  <div
-                    className="flexRow"
-                    style={{
-                      justifyContent: "flex-start",
-                      padding: `0 ${rem(20)}`,
-                      fontFamily: "Myriad Pro",
-                    }}
-                  >
-                    <Toggle
-                      selected={options.expansions.has("DISCORDANT STARS")}
-                      toggleFn={(prevValue) => {
-                        toggleExpansion(!prevValue, "DISCORDANT STARS");
-                      }}
-                    >
-                      <Strings.Expansion expansion="DISCORDANT STARS" />
-                    </Toggle>
-                  </div>
                 </div>
               </div>
               <div>
@@ -439,13 +446,6 @@ function Options({
       break;
   }
 
-  let defaultVPs = [10, 14];
-  let otherDefault = 12;
-  if (options["game-variant"] === "alliance-combined") {
-    defaultVPs = [20, 22, 24];
-    otherDefault = 26;
-  }
-
   return (
     <div className="flexColumn" style={{ justifyContent: "flex-start" }}>
       <label>
@@ -502,6 +502,63 @@ function Options({
           </>
         ) : null}
       </div>
+      <LabeledDiv
+        label={
+          <FormattedMessage
+            id="2jNcVD"
+            description="A label for a selector specifying which expansions should be enabled."
+            defaultMessage="Expansions:"
+          />
+        }
+      >
+        <div className="flexColumn" style={{ alignItems: "center" }}>
+          <Toggle
+            selected={options.expansions.has("POK")}
+            toggleFn={(prevValue) => {
+              toggleExpansion(!prevValue, "POK");
+            }}
+          >
+            <FormattedMessage
+              id="p9XVGB"
+              description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+              defaultMessage="Prophecy of Kings"
+            />
+          </Toggle>
+          <div
+            className="flexRow"
+            style={{
+              justifyContent: "flex-start",
+              fontFamily: "Myriad Pro",
+            }}
+          >
+            Codices:
+            <Toggle
+              selected={options.expansions.has("CODEX ONE")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX ONE");
+              }}
+            >
+              I
+            </Toggle>
+            <Toggle
+              selected={options.expansions.has("CODEX TWO")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX TWO");
+              }}
+            >
+              II
+            </Toggle>
+            <Toggle
+              selected={options.expansions.has("CODEX THREE")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX THREE");
+              }}
+            >
+              III
+            </Toggle>
+          </div>
+        </div>
+      </LabeledDiv>
       <ClientOnlyHoverMenu
         label={
           <FormattedMessage
@@ -521,109 +578,39 @@ function Options({
           >
             <div className="flexColumn" style={{ alignItems: "flex-start" }}>
               <FormattedMessage
-                id="2jNcVD"
-                description="A label for a selector specifying which expansions should be enabled."
-                defaultMessage="Expansions:"
+                id="weIxIg"
+                description="A label for a selector specifying expansions that are homemade."
+                defaultMessage="Homebrew:"
               />
               <div
                 className="flexRow"
                 style={{
                   justifyContent: "flex-start",
-                  padding: `0 ${rem(16)}`,
+                  padding: `0 ${rem(20)}`,
                   fontFamily: "Myriad Pro",
                 }}
               >
                 <Toggle
-                  selected={options.expansions.has("POK")}
+                  selected={options.expansions.has("DISCORDANT STARS")}
                   toggleFn={(prevValue) => {
-                    toggleExpansion(!prevValue, "POK");
+                    toggleExpansion(!prevValue, "DISCORDANT STARS");
                   }}
                 >
                   <FormattedMessage
-                    id="p9XVGB"
-                    description="Text on a button that will enable/disable the Prophecy of Kings expansion."
-                    defaultMessage="Prophecy of Kings"
+                    id="ZlvDZB"
+                    description="Text on a button that will enable/disable the Discordant Stars expansion."
+                    defaultMessage="Discordant Stars"
                   />
                 </Toggle>
-                <Toggle
-                  selected={options.expansions.has("CODEX ONE")}
-                  toggleFn={(prevValue) => {
-                    toggleExpansion(!prevValue, "CODEX ONE");
-                  }}
-                >
-                  <FormattedMessage
-                    id="3Taw9H"
-                    description="Text on a button that will enable/disable Codex I."
-                    defaultMessage="Codex I"
-                  />
-                </Toggle>
-                <Toggle
-                  selected={options.expansions.has("CODEX TWO")}
-                  toggleFn={(prevValue) => {
-                    toggleExpansion(!prevValue, "CODEX TWO");
-                  }}
-                >
-                  <FormattedMessage
-                    id="knYKVl"
-                    description="Text on a button that will enable/disable Codex II."
-                    defaultMessage="Codex II"
-                  />
-                </Toggle>
-                <Toggle
-                  selected={options.expansions.has("CODEX THREE")}
-                  toggleFn={(prevValue) => {
-                    toggleExpansion(!prevValue, "CODEX THREE");
-                  }}
-                >
-                  <FormattedMessage
-                    id="zXrdrP"
-                    description="Text on a button that will enable/disable Codex III."
-                    defaultMessage="Codex III"
-                  />
-                </Toggle>
-              </div>
-              <div
-                className="flexColumn mediumFont"
-                style={{
-                  alignItems: "flex-start",
-                  padding: `0 ${rem(16)}`,
-                }}
-              >
-                <FormattedMessage
-                  id="weIxIg"
-                  description="A label for a selector specifying expansions that are homemade."
-                  defaultMessage="Homebrew:"
-                />
-                <div
-                  className="flexRow"
-                  style={{
-                    justifyContent: "flex-start",
-                    padding: `0 ${rem(16)}`,
-                    fontFamily: "Myriad Pro",
-                  }}
-                >
-                  <Toggle
-                    selected={options.expansions.has("DISCORDANT STARS")}
-                    toggleFn={(prevValue) => {
-                      toggleExpansion(!prevValue, "DISCORDANT STARS");
-                    }}
-                  >
-                    <FormattedMessage
-                      id="ZlvDZB"
-                      description="Text on a button that will enable/disable the Discordant Stars expansion."
-                      defaultMessage="Discordant Stars"
-                    />
-                  </Toggle>
-                </div>
               </div>
             </div>
-            <div>
+            <div className="flexColumn" style={{ alignItems: "flex-start" }}>
               Scenarios:
               <div
                 className="flexRow"
                 style={{
                   alignItems: "flex-start",
-                  padding: `${rem(8)} ${rem(20)}`,
+                  padding: `0 ${rem(20)}`,
                   fontFamily: "Myriad Pro",
                 }}
               >
@@ -646,13 +633,16 @@ function Options({
               </div>
             </div>
             {variants.length > 1 ? (
-              <div>
+              <div
+                className="flexColumn"
+                style={{ alignItems: "flex-start", paddingBottom: rem(8) }}
+              >
                 Variants (WIP):
                 <div
                   className="flexRow"
                   style={{
                     alignItems: "flex-start",
-                    padding: `${rem(8)} ${rem(20)}`,
+                    padding: `0 ${rem(20)}`,
                     gap: rem(4),
                     fontFamily: "Myriad Pro",
                   }}
@@ -958,7 +948,8 @@ function FactionSelect({
             className="flexRow"
             style={{
               width: "100%",
-              justifyContent: !faction.id ? "center" : "space-between",
+              justifyContent:
+                !faction.id && !mobile ? "center" : "space-between",
               alignItems: "center",
             }}
           >
@@ -1495,6 +1486,7 @@ export default function SetupPage({
       );
       if (!currentOptions.expansions.has("POK")) {
         if (numFactions > 6) {
+          console.log("Reducing player count");
           updatePlayerCount(6);
         }
       }
@@ -2045,7 +2037,7 @@ export default function SetupPage({
             {/* </div> */}
           </div>
           <div className="flexColumn" style={{ width: "100%" }}>
-            <div>
+            <div className="flexRow">
               Speaker:
               <FactionSelectRadialMenu
                 factions={setupFactions
