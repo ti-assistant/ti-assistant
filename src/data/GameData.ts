@@ -325,7 +325,7 @@ export function buildFactions(storedGameData: StoredGameData, intl: IntlShape) {
     const factionId = id as FactionId;
     const baseFaction = baseFactions[factionId];
     if (!baseFaction) {
-      throw new Error("Unable to get base version of faction.");
+      throw new Error(`Unable to get base version of faction ${factionId}.`);
     }
     factions[factionId] = {
       ...baseFaction,
@@ -359,7 +359,7 @@ export function buildFaction(
   };
   const baseFaction = localFactions[factionId];
   if (!baseFaction) {
-    throw new Error("Unable to get base version of faction.");
+    throw new Error(`Unable to get base version of faction ${factionId}.`);
   }
 
   const promissories: PromissoryNote[] = [];

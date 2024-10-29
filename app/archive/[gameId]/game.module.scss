@@ -1,0 +1,14 @@
+.QRCode {
+  position: fixed;
+  top: 4rem;
+  left: 4rem;
+
+  z-index: 1;
+}
+
+@media only screen and (max-width: 56.25rem) {
+  .QRCode {
+    display: none;
+    // TODO: Decide whether or not to display QR code on mobile.
+  }
+}

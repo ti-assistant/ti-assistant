@@ -1,7 +1,10 @@
 .factionTechRow {
-  cursor: pointer;
   opacity: 0.25;
   transition: opacity 250ms;
+}
+
+.factionTechRow:not(.viewOnly) {
+  cursor: pointer;
 }
 
 .factionTechRow.selected {
@@ -19,10 +22,10 @@
   height: 1.25rem;
 }
 @media (hover: hover) and (pointer: fine) {
-  .factionTechRow:not(.selected):hover {
+  .factionTechRow:not(.viewOnly):not(.selected):hover {
     opacity: 0.6;
   }
-  .factionTechRow.selected:hover {
+  .factionTechRow:not(.viewOnly).selected:hover {
     opacity: 0.8;
   }
 }
@@ -30,12 +33,14 @@
 .factionIconWrapper {
   width: 100%;
   height: 1.5rem;
+}
+
+.factionTechWrapper:not(.viewOnly) {
   cursor: pointer;
 }
 
 .factionIcon {
   position: relative;
-  cursor: pointer;
   opacity: 0.2;
 
   width: 1rem;
@@ -44,13 +49,17 @@
   transition: width 50ms, height 50ms, opacity 50ms;
 }
 
+.factionIcon:not(.viewOnly) {
+  cursor: pointer;
+}
+
 .factionIcon.selected {
   width: 1.5rem;
   height: 1.5rem;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .factionIcon:not(.selected):hover {
+  .factionIcon:not(.viewOnly):not(.selected):hover {
     opacity: 0.75;
     width: 1.375rem;
     height: 1.375rem;
@@ -71,7 +80,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .factionIcon:hover::before {
+  .factionIcon:not(.viewOnly):hover::before {
     opacity: 1;
   }
 }

@@ -426,7 +426,6 @@ function GameDataSection({
   let numGames = 0;
   let totalRounds = 0;
   let roundGames = 0;
-  let objectiveGames = 0;
   let pointsHistogram: HistogramData = {};
   const factionWinsHistogram: Partial<Record<FactionId, number>> = {};
   const factionsHistogram: Partial<Record<FactionId, number>> = {};
@@ -438,24 +437,21 @@ function GameDataSection({
       roundGames++;
     }
 
-    if (game.isObjectiveGame) {
-      const winner = game.winner;
-      for (const [factionId, faction] of objectEntries(game.factions)) {
-        const factionPoints = faction.points;
-        let count = pointsHistogram[factionPoints] ?? 0;
-        count++;
-        pointsHistogram[factionPoints] = count;
-        let sum = factionsHistogram[factionId] ?? 0;
-        sum++;
-        factionsHistogram[factionId] = sum;
-        let numWins = factionWinsHistogram[factionId] ?? 0;
+    const winner = game.winner;
+    for (const [factionId, faction] of objectEntries(game.factions)) {
+      const factionPoints = faction.points;
+      let count = pointsHistogram[factionPoints] ?? 0;
+      count++;
+      pointsHistogram[factionPoints] = count;
+      let sum = factionsHistogram[factionId] ?? 0;
+      sum++;
+      factionsHistogram[factionId] = sum;
+      let numWins = factionWinsHistogram[factionId] ?? 0;
 
-        if (winner && factionId === winner) {
-          numWins++;
-        }
-        factionWinsHistogram[factionId] = numWins;
+      if (winner && factionId === winner) {
+        numWins++;
       }
-      objectiveGames++;
+      factionWinsHistogram[factionId] = numWins;
     }
 
     const gameTime = game.gameTime;

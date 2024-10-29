@@ -2,69 +2,70 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
+import Chip from "../../../src/components/Chip/Chip";
+import FactionRow from "../../../src/components/FactionRow/FactionRow";
+import styles from "../../../src/components/Footer/Footer.module.scss";
+import GenericModal from "../../../src/components/GenericModal/GenericModal";
+import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import Map from "../../../src/components/Map/Map";
-import { FactionSummary } from "../../FactionSummary";
-import { Loader } from "../../Loader";
-import { GameIdContext } from "../../context/Context";
+import ResourcesIcon from "../../../src/components/ResourcesIcon/ResourcesIcon";
+import TechSkipIcon from "../../../src/components/TechSkipIcon/TechSkipIcon";
 import {
   useFactions,
   useGameState,
   useOptions,
-  usePlanet,
   usePlanets,
-  useStrategyCards,
-} from "../../context/dataHooks";
-import { setSpeakerAsync } from "../../dynamic/api";
-import { getFactionColor, getFactionName } from "../../util/factions";
-import { Optional } from "../../util/types/types";
-import Chip from "../Chip/Chip";
-import FactionRow from "../FactionRow/FactionRow";
-import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
-import GenericModal from "../GenericModal/GenericModal";
-import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
-import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
-import { Strings } from "../strings";
-import styles from "./Footer.module.scss";
-import { rem } from "../../util/util";
-import { getMalliceSystemNumber } from "../../util/map";
-import { getMapString } from "../../util/options";
+} from "../../../src/context/dataHooks";
+import { FactionSummary } from "../../../src/FactionSummary";
+import { Loader } from "../../../src/Loader";
+import { getFactionColor, getFactionName } from "../../../src/util/factions";
+import { getMalliceSystemNumber } from "../../../src/util/map";
+import { getMapString } from "../../../src/util/options";
+import { Optional } from "../../../src/util/types/types";
+import { rem } from "../../../src/util/util";
 
-const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
+const ObjectivePanel = dynamic(
+  () => import("../../../src/components/ObjectivePanel"),
+  {
+    loading: () => <Loader />,
+    ssr: false,
+  }
+);
+const TechPanel = dynamic(() => import("../../../src/components/TechPanel"), {
   loading: () => <Loader />,
   ssr: false,
 });
-const TechPanel = dynamic(() => import("../TechPanel"), {
-  loading: () => <Loader />,
-  ssr: false,
-});
-const PlanetPanel = dynamic(() => import("../PlanetPanel"), {
-  loading: () => <Loader />,
-  ssr: false,
-});
-const FactionPanel = dynamic(() => import("../FactionPanel"), {
-  loading: () => (
-    <div
-      className="popupIcon"
-      style={{
-        fontSize: rem(16),
-      }}
-    >
-      &#x24D8;
-    </div>
-  ),
-  ssr: false,
-});
+const PlanetPanel = dynamic(
+  () => import("../../../src/components/PlanetPanel"),
+  {
+    loading: () => <Loader />,
+    ssr: false,
+  }
+);
+const FactionPanel = dynamic(
+  () => import("../../../src/components/FactionPanel"),
+  {
+    loading: () => (
+      <div
+        className="popupIcon"
+        style={{
+          fontSize: rem(16),
+        }}
+      >
+        &#x24D8;
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
-export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useContext(GameIdContext);
+export default function ArchiveFooter({}) {
   const factions = useFactions();
   const options = useOptions();
   const planets = usePlanets();
   const state = useGameState();
-  const strategyCards = useStrategyCards();
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -85,57 +86,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
     });
   }, [factions]);
 
-  function shouldBlockSpeakerUpdates() {
-    if (state?.phase === "END") {
-      return true;
-    }
-    if (state?.phase !== "STRATEGY") {
-      return false;
-    }
-
-    const selectedCards = Object.values(strategyCards).filter(
-      (card) => !!card.faction
-    );
-
-    return selectedCards.length !== 0;
-  }
-
-  const orderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
-
-  let orderTitle = <></>;
-  switch (state?.phase) {
-    case "SETUP":
-    case "STRATEGY":
-      orderTitle = (
-        <FormattedMessage
-          id="L4UH+0"
-          description="An ordering of factions based on the speaker."
-          defaultMessage="Speaker Order"
-        />
-      );
-      break;
-    case "ACTION":
-    case "STATUS":
-      orderTitle = (
-        <FormattedMessage
-          id="09baik"
-          description="An ordering of factions based on initiative."
-          defaultMessage="Initiative Order"
-        />
-      );
-      break;
-    case "AGENDA":
-      orderTitle = (
-        <FormattedMessage
-          id="rbtRWF"
-          description="An ordering of factions based on voting."
-          defaultMessage="Voting Order"
-        />
-      );
-      break;
-  }
+  let orderTitle = "Final Score";
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
@@ -242,7 +193,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               justifyContent: "flex-start",
             }}
           >
-            <TechPanel byFaction={groupTechsByFaction} viewOnly={viewOnly} />
+            <TechPanel byFaction={groupTechsByFaction} />
           </div>
         </div>
       </GenericModal>
@@ -283,7 +234,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               paddingBottom: rem(24),
             }}
           >
-            <ObjectivePanel viewOnly={viewOnly} />
+            <ObjectivePanel />
           </div>
         </div>
       </GenericModal>
@@ -323,7 +274,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               height: "100%",
             }}
           >
-            <PlanetPanel viewOnly={viewOnly} />
+            <PlanetPanel />
           </div>
         </div>
       </GenericModal>
@@ -343,28 +294,6 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
       <div
         className={`${styles.MobileMenu} ${showMobileMenu ? styles.shown : ""}`}
       >
-        {!shouldBlockSpeakerUpdates() ? (
-          <div className="flexRow">
-            <Strings.Speaker />:
-            <FactionSelectRadialMenu
-              borderColor={
-                state?.speaker
-                  ? getFactionColor((factions ?? {})[state.speaker])
-                  : undefined
-              }
-              selectedFaction={state.speaker}
-              factions={orderedFactions.map((faction) => faction.id)}
-              invalidFactions={[state.speaker]}
-              size={30}
-              onSelect={async (factionId, _) => {
-                if (!gameId || !factionId) {
-                  return;
-                }
-                setSpeakerAsync(gameId, factionId);
-              }}
-            />
-          </div>
-        ) : null}
         {mapString ? (
           <div className="flexRow" onClick={() => setShowMap(true)}>
             <button>
@@ -418,12 +347,6 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
                 height: "100%",
               }}
             >
-              {/* <Image
-                src={`/images/objectives_icon.svg`}
-                alt={`Objectives Icon`}
-                fill
-                style={{ objectFit: "contain" }}
-              /> */}
               <Image
                 src={`/images/objectives_icon_two.svg`}
                 alt={`Objectives Icon`}
@@ -459,39 +382,8 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
         </div>
       </div>
       <div className={styles.UpdateBox}>
-        <LabeledDiv
-          noBlur
-          label={
-            <FormattedMessage
-              id="VjlCY0"
-              description="Text specifying a section that includes update operations."
-              defaultMessage="Update"
-            />
-          }
-        >
+        <LabeledDiv noBlur label="View">
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-            {!shouldBlockSpeakerUpdates() ? (
-              <div className="flexRow">
-                <Strings.Speaker />:
-                <FactionSelectRadialMenu
-                  borderColor={
-                    state?.speaker
-                      ? getFactionColor((factions ?? {})[state.speaker])
-                      : undefined
-                  }
-                  selectedFaction={state.speaker}
-                  factions={orderedFactions.map((faction) => faction.id)}
-                  invalidFactions={[state.speaker]}
-                  size={40}
-                  onSelect={async (factionId, _) => {
-                    if (!gameId || !factionId) {
-                      return;
-                    }
-                    setSpeakerAsync(gameId, factionId);
-                  }}
-                />
-              </div>
-            ) : null}
             <div
               className="flexRow"
               style={{ width: "100%", alignItems: "center" }}

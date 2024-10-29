@@ -73,6 +73,66 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
   };
 }
 
+export async function getArchivedGameData(
+  gameId: string
+): Promise<StoredGameData> {
+  const db = getFirestore();
+
+  const gameRef = db.collection("archive").doc(gameId);
+
+  const game = await gameRef.get();
+
+  if (!game.exists) {
+    return {
+      factions: {},
+      options: BASE_OPTIONS,
+      planets: {},
+      state: {
+        phase: "SETUP",
+        speaker: "Vuil'raith Cabal",
+        round: 1,
+      },
+      sequenceNum: 1,
+    };
+  }
+
+  const gameData = game.data() as StoredGameData;
+
+  const phaseOrTurnBoundaries =
+    gameData.state.phase === "AGENDA" || gameData.state.phase === "STRATEGY"
+      ? PHASE_BOUNDARIES
+      : TURN_BOUNDARIES;
+
+  const phaseBoundary = await gameRef
+    .collection("actionLog")
+    .orderBy("timestampMillis", "desc")
+    .where("data.action", "in", phaseOrTurnBoundaries)
+    .limit(1)
+    .get();
+
+  let firstTimestamp = 0;
+  phaseBoundary.forEach((logEntry) => {
+    firstTimestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
+  });
+
+  const actionLog = await gameRef
+    .collection("actionLog")
+    .orderBy("timestampMillis", "desc")
+    .where("timestampMillis", ">=", firstTimestamp)
+    .get();
+
+  const actionLogEntries: ActionLogEntry[] = [];
+  actionLog.forEach((logEntry) => {
+    const storedLogEntry = logEntry.data() as ActionLogEntry;
+    actionLogEntries.push(storedLogEntry);
+  });
+
+  return {
+    ...gameData,
+    actionLog: actionLogEntries,
+  };
+}
+
 export async function getGameDataInTransaction(
   gameRef: DocumentReference<DocumentData>,
   t: Transaction
@@ -171,7 +231,11 @@ export async function getTimers(gameId: string) {
     return {};
   }
 
-  return timersDoc.data() as Record<string, number>;
+  const timers = timersDoc.data() as Record<string, number>;
+
+  delete timers.deleteAt;
+
+  return timers;
 }
 
 export async function getTimersInTransaction(
@@ -184,6 +248,26 @@ export async function getTimersInTransaction(
   }
 
   const timers = timerData.data() as Record<string, number>;
+
+  delete timers.deleteAt;
+
+  return timers;
+}
+
+export async function getArchivedTimers(gameId: string) {
+  const db = getFirestore();
+
+  const timersRef = db.collection("archiveTimers").doc(gameId);
+
+  const timersDoc = await timersRef.get();
+
+  if (!timersDoc.exists) {
+    return {};
+  }
+
+  const timers = timersDoc.data() as Record<string, number>;
+
+  delete timers.deleteAt;
 
   return timers;
 }

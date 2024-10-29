@@ -1486,7 +1486,6 @@ export default function SetupPage({
       );
       if (!currentOptions.expansions.has("POK")) {
         if (numFactions > 6) {
-          console.log("Reducing player count");
           updatePlayerCount(6);
         }
       }

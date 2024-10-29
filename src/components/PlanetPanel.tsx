@@ -27,9 +27,11 @@ interface ExtendedCSS extends CSSProperties {
 function PlanetSection({
   factionId,
   openedByDefault,
+  viewOnly,
 }: {
   factionId: FactionId;
   openedByDefault: boolean;
+  viewOnly?: boolean;
 }) {
   const gameId = useContext(GameIdContext);
 
@@ -104,11 +106,18 @@ function PlanetSection({
                   key={planet.id}
                   planet={planet}
                   factionId={factionId}
-                  removePlanet={(planetId) => {
-                    if (!gameId) {
-                      return;
-                    }
-                    unclaimPlanetAsync(gameId, factionId, planetId);
+                  removePlanet={
+                    viewOnly
+                      ? undefined
+                      : (planetId) => {
+                          if (!gameId) {
+                            return;
+                          }
+                          unclaimPlanetAsync(gameId, factionId, planetId);
+                        }
+                  }
+                  opts={{
+                    hideAttachButton: viewOnly,
                   }}
                 />
               );
@@ -120,7 +129,7 @@ function PlanetSection({
   );
 }
 
-function UnclaimedPlanetSection() {
+function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
   const gameId = useContext(GameIdContext);
   const factions = useFactions();
   const planets = usePlanets();
@@ -168,18 +177,23 @@ function UnclaimedPlanetSection() {
                   gap: 0,
                 }}
               >
-                <FactionSelectHoverMenu
-                  options={Object.keys(factions) as FactionId[]}
-                  onSelect={(factionId) => {
-                    if (!gameId || !factionId) {
-                      return;
-                    }
-                    claimPlanetAsync(gameId, factionId, planet.id);
-                  }}
-                  size={28}
-                />
+                {viewOnly ? null : (
+                  <FactionSelectHoverMenu
+                    options={Object.keys(factions) as FactionId[]}
+                    onSelect={(factionId) => {
+                      if (!gameId || !factionId) {
+                        return;
+                      }
+                      claimPlanetAsync(gameId, factionId, planet.id);
+                    }}
+                    size={28}
+                  />
+                )}
                 <div style={{ width: "100%" }}>
-                  <PlanetRow planet={planet} />
+                  <PlanetRow
+                    planet={planet}
+                    opts={{ hideAttachButton: viewOnly }}
+                  />
                 </div>
               </div>
             );
@@ -194,10 +208,10 @@ interface CSSWithNumColumns extends CSSProperties {
   "--num-columns": number;
 }
 
-export default function PlanetPanel({}) {
+export default function PlanetPanel({ viewOnly }: { viewOnly?: boolean }) {
   const factions = useFactions();
 
-  const orderedFactionIds = Object.values(factions ?? {})
+  const orderedFactionIds = Object.values(factions)
     .map((faction) => faction.id)
     .sort();
 
@@ -217,10 +231,11 @@ export default function PlanetPanel({}) {
             key={factionId}
             factionId={factionId}
             openedByDefault
+            viewOnly={viewOnly}
           />
         );
       })}
-      <UnclaimedPlanetSection />
+      <UnclaimedPlanetSection viewOnly={viewOnly} />
     </div>
   );
 }

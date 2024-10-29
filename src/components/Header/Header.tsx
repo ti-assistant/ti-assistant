@@ -34,7 +34,7 @@ const BASE_URL =
     ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
     : "https://ti-assistant.com";
 
-export default function Header() {
+export default function Header({ viewOnly }: { viewOnly?: boolean }) {
   const gameId = useContext(GameIdContext);
   const factions = useFactions();
   const objectives = useObjectives();
@@ -155,50 +155,52 @@ export default function Header() {
           <GameTimer frozen={state.phase === "END"} />
         </div>
       ) : null}
-      <div className={styles.ControlButtons}>
-        <UndoButton gameId={gameId} />
-        {gameFinished ? (
-          state?.phase === "END" ? (
-            <button
-              style={{ fontSize: rem(24) }}
-              onClick={() => {
-                if (!gameId) {
-                  return;
-                }
-                continueGameAsync(gameId);
-              }}
-            >
-              <FormattedMessage
-                id="7SZHCO"
-                description="Text shown on a button that will return to the game."
-                defaultMessage="Back to Game"
-              />
-            </button>
-          ) : (
-            <button
-              style={{ fontFamily: "Slider", fontSize: rem(32) }}
-              onClick={() => {
-                if (!gameId) {
-                  return;
-                }
-                endGameAsync(gameId);
-              }}
-            >
-              <FormattedMessage
-                id="vsuOf1"
-                description="Text shown on a button that will end the game."
-                defaultMessage="End Game"
-              />
-            </button>
-          )
-        ) : null}
-      </div>
-      <PassedLaws />
+      {viewOnly ? null : (
+        <div className={styles.ControlButtons}>
+          <UndoButton gameId={gameId} />
+          {gameFinished ? (
+            state?.phase === "END" ? (
+              <button
+                style={{ fontSize: rem(24) }}
+                onClick={() => {
+                  if (!gameId) {
+                    return;
+                  }
+                  continueGameAsync(gameId);
+                }}
+              >
+                <FormattedMessage
+                  id="7SZHCO"
+                  description="Text shown on a button that will return to the game."
+                  defaultMessage="Back to Game"
+                />
+              </button>
+            ) : (
+              <button
+                style={{ fontFamily: "Slider", fontSize: rem(32) }}
+                onClick={() => {
+                  if (!gameId) {
+                    return;
+                  }
+                  endGameAsync(gameId);
+                }}
+              >
+                <FormattedMessage
+                  id="vsuOf1"
+                  description="Text shown on a button that will end the game."
+                  defaultMessage="End Game"
+                />
+              </button>
+            )
+          ) : null}
+        </div>
+      )}
+      <PassedLaws viewOnly={viewOnly} />
     </React.Fragment>
   );
 }
 
-function PassedLaws() {
+function PassedLaws({ viewOnly }: { viewOnly?: boolean }) {
   const agendas = useAgendas();
   const gameId = useContext(GameIdContext);
 
@@ -239,7 +241,7 @@ function PassedLaws() {
             <AgendaRow
               key={agenda.id}
               agenda={agenda}
-              removeAgenda={removeAgenda}
+              removeAgenda={viewOnly ? undefined : removeAgenda}
             />
           ))}
         </div>

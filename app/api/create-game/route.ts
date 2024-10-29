@@ -138,8 +138,8 @@ export async function POST(req: Request) {
     throw new Error("No speaker selected.");
   }
 
-  const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + 30);
+  const deleteDate = new Date();
+  deleteDate.setDate(deleteDate.getDate() + 30);
 
   const gameState: StoredGameData = {
     state: {
@@ -151,20 +151,27 @@ export async function POST(req: Request) {
     planets: basePlanets,
     options: options,
     objectives: baseObjectives,
-    deleteAt: Timestamp.fromDate(currentDate),
+    deleteAt: Timestamp.fromDate(deleteDate),
     sequenceNum: 1,
   };
 
   let gameid = makeid(6);
 
   let game = await db.collection("games").doc(gameid).get();
-  while (game.exists) {
+  let archive = await db.collection("archive").doc(gameid).get();
+  while (game.exists || archive.exists) {
     gameid = makeid(6);
     game = await db.collection("games").doc(gameid).get();
+    archive = await db.collection("archive").doc(gameid).get();
   }
 
   await db.collection("games").doc(gameid).set(gameState);
-  await db.collection("timers").doc(gameid).set({});
+  await db
+    .collection("timers")
+    .doc(gameid)
+    .set({
+      deleteAt: Timestamp.fromDate(deleteDate),
+    });
 
   return NextResponse.json({ gameid });
 }

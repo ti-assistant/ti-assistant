@@ -1,0 +1,37 @@
+.Main {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.QRCode {
+  position: fixed;
+  top: 4rem;
+  left: 4rem;
+
+  z-index: 1;
+}
+
+@media only screen and (max-width: 56.25rem) {
+  .Main {
+    gap: 1.5rem;
+  }
+
+  .QRCode {
+    display: none;
+    // TODO: Decide whether or not to display QR code on mobile.
+  }
+}
+
+@media only screen and (max-width: 37.5rem) {
+  .Main {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}

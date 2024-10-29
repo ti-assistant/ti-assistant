@@ -18,7 +18,13 @@ import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { FullTechSummary } from "./TechSummary/TechSummary";
 
-function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
+function FactionTechSection({
+  openedByDefault,
+  viewOnly,
+}: {
+  openedByDefault: boolean;
+  viewOnly?: boolean;
+}) {
   const gameId = useContext(GameIdContext);
   const factions = useFactions();
   const techs = useTechs();
@@ -128,7 +134,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                           (tech) => tech.id !== nekroFactionTechIds[1]
                         )}
                         toggleItem={(techId, add) => {
-                          if (!gameId) {
+                          if (viewOnly) {
                             return;
                           }
                           if (add) {
@@ -144,14 +150,21 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                           }
                           return (
                             <div
-                              onClick={() =>
-                                removeTechAsync(gameId, faction.id, techId)
+                              onClick={
+                                viewOnly
+                                  ? undefined
+                                  : () =>
+                                      removeTechAsync(
+                                        gameId,
+                                        faction.id,
+                                        techId
+                                      )
                               }
                             >
                               <TechRow
-                                className={
-                                  styles.factionTechRow + " " + styles.selected
-                                }
+                                className={`${styles.factionTechRow} ${
+                                  styles.selected
+                                } ${viewOnly ? styles.viewOnly : ""}`}
                                 tech={tech}
                                 opts={{ hideSymbols: true, hideIcon: true }}
                               />
@@ -167,7 +180,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                           (tech) => tech.id !== nekroFactionTechIds[0]
                         )}
                         toggleItem={(techId, add) => {
-                          if (!gameId) {
+                          if (viewOnly) {
                             return;
                           }
                           if (add) {
@@ -183,14 +196,21 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                           }
                           return (
                             <div
-                              onClick={() =>
-                                removeTechAsync(gameId, faction.id, techId)
+                              onClick={
+                                viewOnly
+                                  ? undefined
+                                  : () =>
+                                      removeTechAsync(
+                                        gameId,
+                                        faction.id,
+                                        techId
+                                      )
                               }
                             >
                               <TechRow
-                                className={
-                                  styles.factionTechRow + " " + styles.selected
-                                }
+                                className={`${styles.factionTechRow} ${
+                                  styles.selected
+                                } ${viewOnly ? styles.viewOnly : ""}`}
                                 tech={tech}
                                 opts={{ hideSymbols: true, hideIcon: true }}
                               />
@@ -207,7 +227,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                         <div
                           key={tech.id}
                           onClick={() => {
-                            if (!gameId) {
+                            if (viewOnly) {
                               return;
                             }
                             if (factionHasTech) {
@@ -219,11 +239,9 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                           style={{ maxWidth: "100%" }}
                         >
                           <TechRow
-                            className={
-                              styles.factionTechRow +
-                              " " +
-                              (factionHasTech ? styles.selected : "")
-                            }
+                            className={`${styles.factionTechRow} ${
+                              factionHasTech ? styles.selected : ""
+                            } ${viewOnly ? styles.viewOnly : ""}`}
                             tech={tech}
                             opts={{
                               hideSymbols: true,
@@ -251,9 +269,11 @@ interface NumFactionsCSS extends CSSProperties {
 function TechUpdateRow({
   tech,
   orderedFactions,
+  viewOnly,
 }: {
   tech: Tech;
   orderedFactions: Faction[];
+  viewOnly?: boolean;
 }) {
   const gameId = useContext(GameIdContext);
 
@@ -282,9 +302,11 @@ function TechUpdateRow({
           return (
             <div
               key={faction.id}
-              className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+              className={`flexRow ${styles.selected} ${
+                styles.factionIconWrapper
+              } ${viewOnly ? styles.viewOnly : ""}`}
               onClick={() => {
-                if (!gameId) {
+                if (viewOnly) {
                   return;
                 }
                 if (factionHasTech) {
@@ -298,7 +320,7 @@ function TechUpdateRow({
                 className={`
                   ${styles.factionIcon} ${
                   factionHasTech ? styles.selected : ""
-                }`}
+                } ${viewOnly ? styles.viewOnly : ""}`}
                 style={
                   {
                     "--color": getFactionColor(faction),
@@ -322,9 +344,11 @@ interface ExtendedCSS extends CSSProperties {
 function TechSection({
   type,
   openedByDefault = false,
+  viewOnly,
 }: {
   type: TechType;
   openedByDefault?: boolean;
+  viewOnly?: boolean;
 }) {
   const factions = useFactions();
   const techs = useTechs();
@@ -372,6 +396,7 @@ function TechSection({
                 key={tech.id}
                 tech={tech}
                 orderedFactions={orderedFactions}
+                viewOnly={viewOnly}
               />
             );
           })}
@@ -381,7 +406,7 @@ function TechSection({
   );
 }
 
-function UpgradeTechSection({}) {
+function UpgradeTechSection({ viewOnly }: { viewOnly?: boolean }) {
   const factions = useFactions();
   const techs = useTechs();
   const intl = useIntl();
@@ -419,6 +444,7 @@ function UpgradeTechSection({}) {
                 key={tech.id}
                 tech={tech}
                 orderedFactions={orderedFactions}
+                viewOnly={viewOnly}
               />
             );
           })}
@@ -431,9 +457,11 @@ function UpgradeTechSection({}) {
 function TechsByFaction({
   factionId,
   openedByDefault,
+  viewOnly,
 }: {
   factionId: FactionId;
   openedByDefault: boolean;
+  viewOnly?: boolean;
 }) {
   const factions = useFactions();
   const techs = useTechs();
@@ -530,7 +558,11 @@ function TechsByFaction({
             zIndex: 1,
           }}
         >
-          <FullTechSummary techs={factionTechs} factionId={factionId} />
+          <FullTechSummary
+            techs={factionTechs}
+            factionId={factionId}
+            viewOnly={viewOnly}
+          />
         </div>
         <div className={styles.factionTechList}>
           {factionTechs.map((tech) => {
@@ -538,36 +570,42 @@ function TechsByFaction({
               <TechRow
                 key={tech.id}
                 tech={tech}
-                removeTech={(techId) => {
-                  removeTechAsync(gameId, factionId, techId);
-                }}
+                removeTech={
+                  viewOnly
+                    ? undefined
+                    : (techId) => {
+                        removeTechAsync(gameId, factionId, techId);
+                      }
+                }
                 opts={{ hideSymbols: true }}
               />
             );
           })}
         </div>
-        <div
-          className="flexRow"
-          style={{
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            paddingLeft: rem(8),
-            width: "100%",
-          }}
-        >
-          <TechSelectHoverMenu
-            factionId={factionId}
-            label={intl.formatMessage({
-              id: "3qIvsL",
-              description: "Label on a hover menu used to research tech.",
-              defaultMessage: "Research Tech",
-            })}
-            techs={getResearchableTechs(faction)}
-            selectTech={(tech) => {
-              addTechAsync(gameId, factionId, tech.id);
+        {viewOnly ? null : (
+          <div
+            className="flexRow"
+            style={{
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              paddingLeft: rem(8),
+              width: "100%",
             }}
-          />
-        </div>
+          >
+            <TechSelectHoverMenu
+              factionId={factionId}
+              label={intl.formatMessage({
+                id: "3qIvsL",
+                description: "Label on a hover menu used to research tech.",
+                defaultMessage: "Research Tech",
+              })}
+              techs={getResearchableTechs(faction)}
+              selectTech={(tech) => {
+                addTechAsync(gameId, factionId, tech.id);
+              }}
+            />
+          </div>
+        )}
       </div>
     </CollapsibleSection>
   );
@@ -577,7 +615,13 @@ interface TechGridProperties extends CSSProperties {
   "--num-columns": number;
 }
 
-export default function TechPanel({ byFaction }: { byFaction: boolean }) {
+export default function TechPanel({
+  byFaction,
+  viewOnly,
+}: {
+  byFaction: boolean;
+  viewOnly?: boolean;
+}) {
   const factions = useFactions();
 
   const orderedFactions = objectKeys(factions).sort((a, b) => (a < b ? -1 : 1));
@@ -593,17 +637,18 @@ export default function TechPanel({ byFaction }: { byFaction: boolean }) {
               key={factionId}
               factionId={factionId}
               openedByDefault={index === 0}
+              viewOnly={viewOnly}
             />
           );
         })
       ) : (
         <>
-          <FactionTechSection openedByDefault />
-          <TechSection type="GREEN" />
-          <TechSection type="BLUE" />
-          <TechSection type="YELLOW" />
-          <TechSection type="RED" />
-          <UpgradeTechSection />
+          <FactionTechSection openedByDefault viewOnly={viewOnly} />
+          <TechSection type="GREEN" viewOnly={viewOnly} />
+          <TechSection type="BLUE" viewOnly={viewOnly} />
+          <TechSection type="YELLOW" viewOnly={viewOnly} />
+          <TechSection type="RED" viewOnly={viewOnly} />
+          <UpgradeTechSection viewOnly={viewOnly} />
         </>
       )}
     </div>
