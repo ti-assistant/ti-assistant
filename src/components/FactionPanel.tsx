@@ -298,7 +298,67 @@ function FactionPanelContent({
                   }
                 }
 
-                let innerContent = undefined;
+                let innerContent = (
+                  <div
+                    className="flexColumn"
+                    style={{
+                      gap: 0,
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
+                      width: "100%",
+                    }}
+                  >
+                    {leader.type !== "AGENT" ? (
+                      <>
+                        <div>
+                          <span>
+                            {formatDescription(
+                              intl.formatMessage({
+                                id: "frzrrT",
+                                defaultMessage: "UNLOCK:",
+                                description:
+                                  "Text that gets pre-fixed to a leader unlock condition.",
+                              })
+                            ).map((val, index) => (
+                              <span key={index}>{val}</span>
+                            ))}
+                          </span>{" "}
+                          {formatDescription(
+                            leader.unlock ??
+                              intl.formatMessage({
+                                id: "Leaders.Hero.Unlock",
+                                defaultMessage: "Have 3 scored objectives.",
+                                description: "Unlock condition for all heroes.",
+                              })
+                          ).map((val, index) => (
+                            <span key={index}>{val}</span>
+                          ))}
+                        </div>
+
+                        <hr
+                          style={{
+                            width: "100%",
+                            borderColor: "#555",
+                            margin: `${rem(4)} 0`,
+                          }}
+                        />
+                      </>
+                    ) : null}
+                    <div
+                      className="flexColumn"
+                      style={{
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      {formatDescription(leader.description).map(
+                        (section, index) => {
+                          return <div key={index}>{section}</div>;
+                        }
+                      )}
+                    </div>
+                  </div>
+                );
                 let leftLabel = undefined;
                 switch (state) {
                   case "readied":
@@ -344,18 +404,6 @@ function FactionPanelContent({
                         ) : null}
                       </div>
                     );
-                    innerContent = (
-                      <div
-                        className="flexColumn"
-                        style={{ width: "100%", alignItems: "flex-start" }}
-                      >
-                        {formatDescription(leader.description).map(
-                          (section, index) => {
-                            return <div key={index}>{section}</div>;
-                          }
-                        )}
-                      </div>
-                    );
                     break;
                   case "locked":
                     leftLabel = (
@@ -380,43 +428,6 @@ function FactionPanelContent({
                         >
                           &#128274;
                         </div>
-                      </div>
-                    );
-                    innerContent = (
-                      <div>
-                        <span
-                          onClick={() => {
-                            if (!gameId) {
-                              return;
-                            }
-                            updateLeaderStateAsync(
-                              gameId,
-                              leader.id,
-                              "readied"
-                            );
-                          }}
-                        >
-                          {formatDescription(
-                            intl.formatMessage({
-                              id: "frzrrT",
-                              defaultMessage: "UNLOCK:",
-                              description:
-                                "Text that gets pre-fixed to a leader unlock condition.",
-                            })
-                          ).map((val, index) => (
-                            <span key={index}>{val}</span>
-                          ))}
-                        </span>{" "}
-                        {formatDescription(
-                          leader.unlock ??
-                            intl.formatMessage({
-                              id: "Leaders.Hero.Unlock",
-                              defaultMessage: "Have 3 scored objectives.",
-                              description: "Unlock condition for all heroes.",
-                            })
-                        ).map((val, index) => (
-                          <span key={index}>{val}</span>
-                        ))}
                       </div>
                     );
                     break;
@@ -445,18 +456,6 @@ function FactionPanelContent({
                             UNPURGE
                           </div>
                         </div>
-                      </div>
-                    );
-                    innerContent = (
-                      <div
-                        className="flexRow"
-                        style={{
-                          width: "100%",
-                          fontSize: rem(20),
-                          fontFamily: "Slider",
-                        }}
-                      >
-                        PURGED
                       </div>
                     );
                     break;
