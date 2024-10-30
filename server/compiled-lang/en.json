@@ -543,6 +543,44 @@
       "value": "Objective View"
     }
   ],
+  "9qHL4G": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Law"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Laws"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " in Effect"
+    }
+  ],
   "A5p5qF": [
     {
       "type": 0,
@@ -5175,12 +5213,6 @@
     {
       "type": 0,
       "value": " games)"
-    }
-  ],
-  "JS92Jj": [
-    {
-      "type": 0,
-      "value": "Make Speaker"
     }
   ],
   "Jdx9F+": [
@@ -11686,6 +11718,12 @@
       "value": "Select Component"
     }
   ],
+  "n8jSwp": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "nYgb4V": [
     {
       "type": 0,
@@ -11706,12 +11744,6 @@
     {
       "type": 0,
       "value": "Other Victory Points"
-    }
-  ],
-  "oiV4lE": [
-    {
-      "type": 0,
-      "value": "Laws in Effect"
     }
   ],
   "p4V2Yv": [
@@ -11800,12 +11832,6 @@
     {
       "type": 0,
       "value": "Starting Components"
-    }
-  ],
-  "rqdwvE": [
-    {
-      "type": 0,
-      "value": "Colors"
     }
   ],
   "sJ5zBj": [

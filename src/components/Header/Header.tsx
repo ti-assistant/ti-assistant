@@ -227,9 +227,10 @@ function PassedLaws({ viewOnly }: { viewOnly?: boolean }) {
       <ClientOnlyHoverMenu
         label={
           <FormattedMessage
-            id="oiV4lE"
+            id="9qHL4G"
             description="Text on a hover menu that will display the current laws that have been passed."
-            defaultMessage="Laws in Effect"
+            defaultMessage="{count} {count, plural, one {Law} other {Laws}} in Effect"
+            values={{ count: passedLaws.length }}
           />
         }
       >
