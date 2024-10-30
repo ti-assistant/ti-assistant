@@ -34,6 +34,7 @@ import {
   useAttachments,
   useFactions,
   useGameState,
+  useLeaders,
   useObjectives,
   useOptions,
   usePlanets,
@@ -154,6 +155,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const agendas = useAgendas();
   const attachments = useAttachments();
   const factions = useFactions();
+  const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -280,7 +282,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     agendas,
     options,
     state,
-    getCurrentPhasePreviousLogEntries(actionLog)
+    getCurrentPhasePreviousLogEntries(actionLog),
+    leaders
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
@@ -1092,7 +1095,13 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
               style={{ alignItems: "stretch", width: "100%" }}
             >
               <LabeledLine leftLabel={`Vote on ${currentAgenda.name}`} />
-              {!canFactionVote(faction, agendas, state, currentTurn) ? (
+              {!canFactionVote(
+                faction,
+                agendas,
+                state,
+                currentTurn,
+                leaders
+              ) ? (
                 <div className="flexRow">
                   <FormattedMessage
                     id="c4LYqr"

@@ -51,7 +51,6 @@ export function FactionSummary({
   let ownedTechs: Tech[] = [];
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
-  let factionHero: LeaderState = "locked";
 
   if (!faction) {
     throw new Error("Faction " + factionId + " not found");
@@ -65,8 +64,6 @@ export function FactionSummary({
   updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
   VPs = computeScoredVPs(factionId, objectives) + (faction.vps ?? 0);
-
-  factionHero = faction.hero;
 
   function manualVpAdjust(increase: boolean) {
     if (!gameId || !factionId) {
