@@ -12,14 +12,19 @@ export default async function Layout({
     <>
       <div
         className="flexColumn"
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: rem(800),
-        }}
+        style={{ position: "relative", width: "100%" }}
       >
-        <FactionsSection />
-        {children}
+        <div
+          className="flexColumn"
+          style={{
+            position: "relative",
+            width: "100%",
+            maxWidth: rem(600),
+          }}
+        >
+          <FactionsSection />
+          {children}
+        </div>
       </div>
       <Footer />
     </>

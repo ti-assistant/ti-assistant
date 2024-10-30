@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CSSProperties, useContext, useState } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { GameIdContext } from "../../context/Context";
@@ -7,6 +8,7 @@ import {
   useAttachments,
   useFactions,
   useGameState,
+  useLeaders,
   useObjectives,
   useOptions,
   usePlanets,
@@ -43,11 +45,12 @@ import {
 } from "../../util/planets";
 import { riderString } from "../../util/strings";
 import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
+import Toggle from "../Toggle/Toggle";
 import styles from "./VoteBlock.module.scss";
-import { rem } from "../../util/util";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
@@ -62,6 +65,15 @@ function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
   if (!factionVotes.target || !empyreanVotes.target) {
     return false;
   }
+  const bloodPactUser = getPromissoryTargets(
+    currentTurn,
+    "Blood Pact"
+  )[0] as Optional<FactionId>;
+
+  if (bloodPactUser && bloodPactUser !== factionId) {
+    return false;
+  }
+
   return factionVotes.target === empyreanVotes.target;
 }
 
@@ -276,16 +288,14 @@ export function canFactionVote(
   faction: Faction,
   agendas: Partial<Record<AgendaId, Agenda>>,
   state: GameState,
-  currentTurn: ActionLogEntry[]
+  currentTurn: ActionLogEntry[],
+  leaders: Partial<Record<LeaderId, Leader>>
 ) {
   if (faction.id === "Nekro Virus") {
     return false;
   }
-  if (
-    faction.id === "Xxcha Kingdom" &&
-    faction &&
-    faction.commander === "readied"
-  ) {
+  const hasXxchaCommander = leaders["Elder Qanoj"]?.state === "readied";
+  if (faction.id === "Xxcha Kingdom" && faction && hasXxchaCommander) {
     return true;
   }
   const politicalSecrets = getPromissoryTargets(
@@ -328,7 +338,8 @@ export function computeRemainingVotes(
   agendas: Partial<Record<AgendaId, Agenda>>,
   options: Options,
   state: GameState,
-  currentPhasePrevious: ActionLogEntry[]
+  currentPhasePrevious: ActionLogEntry[],
+  leaders: Partial<Record<LeaderId, Leader>>
 ) {
   const representativeGovernment = agendas["Representative Government"];
 
@@ -386,25 +397,17 @@ export function computeRemainingVotes(
   let influenceNeeded = votesCast;
   let planetCount = 0;
   let remainingVotes = 0;
+  const hasXxchaHero = leaders["Xxekir Grom"]?.state === "readied";
   for (const planet of orderedPlanets) {
     let planetInfluence = planet.influence;
     if (factionId === "Xxcha Kingdom") {
-      if (
-        options.expansions.includes("CODEX THREE") &&
-        faction.hero === "readied"
-      ) {
+      if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
         planetInfluence += planet.resources;
-      }
-      if (faction.commander === "readied") {
-        planetInfluence += 1;
       }
     }
     if (influenceNeeded > 0 && planetInfluence <= influenceNeeded) {
       influenceNeeded -= planetInfluence;
       continue;
-    }
-    if (factionId === "Xxcha Kingdom" && faction.commander === "readied") {
-      planetInfluence -= 1;
     }
     planetCount++;
 
@@ -420,7 +423,8 @@ export function computeRemainingVotes(
   if (factionId === "Argent Flight") {
     extraVotes += Object.keys(factions).length;
   }
-  if (factionId === "Xxcha Kingdom" && faction.commander === "readied") {
+  const hasXxchaCommander = leaders["Elder Qanoj"]?.state === "readied";
+  if (factionId === "Xxcha Kingdom" && hasXxchaCommander) {
     extraVotes += planetCount;
   }
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
@@ -458,6 +462,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
+  const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();
@@ -555,7 +560,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
           <PredictionSection factionId={factionId} agenda={agenda} />
         ) : null}
         {agenda && state.votingStarted ? (
-          !canFactionVote(faction, agendas, state, currentTurn) &&
+          !canFactionVote(faction, agendas, state, currentTurn, leaders) &&
           !overrideVotingBlock ? (
             <div
               className="flexRow"
@@ -738,6 +743,7 @@ function VotingSection({
   const agendas = useAgendas();
   const attachments = useAttachments();
   const factions = useFactions();
+  const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -793,7 +799,8 @@ function VotingSection({
     agendas,
     options,
     state,
-    getCurrentPhasePreviousLogEntries(actionLog ?? [])
+    getCurrentPhasePreviousLogEntries(actionLog ?? []),
+    leaders
   );
 
   const mawOfWorlds = relics["Maw of Worlds"];
@@ -892,14 +899,9 @@ function VotingSection({
                 } votes from Zeal`
               : null}
             {canUseBloodPact(currentTurn, factionId) ? (
-              <button
-                disabled={bloodPactUser && bloodPactUser !== factionId}
-                className={bloodPactUser === factionId ? "selected" : ""}
-                style={{ fontSize: rem(14) }}
-                onClick={() => {
-                  if (!gameId) {
-                    return;
-                  }
+              <Toggle
+                selected={bloodPactUser === factionId}
+                toggleFn={() => {
                   if (bloodPactUser === factionId) {
                     unplayPromissoryNoteAsync(gameId, "Blood Pact", factionId);
                   } else {
@@ -912,7 +914,7 @@ function VotingSection({
                   description="Title of Component: Blood Pact"
                   defaultMessage="Blood Pact"
                 />
-              </button>
+              </Toggle>
             ) : null}
             {hasTech(faction, "Predictive Intelligence") ? (
               <button
@@ -1016,6 +1018,7 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   const agendas = useAgendas();
   const attachments = useAttachments();
   const factions = useFactions();
+  const leaders = useLeaders();
   const options = useOptions();
   const planets = usePlanets();
   const relics = useRelics();
@@ -1029,7 +1032,8 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
     agendas,
     options,
     state,
-    getCurrentPhasePreviousLogEntries(actionLog)
+    getCurrentPhasePreviousLogEntries(actionLog),
+    leaders
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
@@ -1042,6 +1046,10 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
     }
   }
 
+  const hasHacanCommander =
+    factionId === "Emirates of Hacan" &&
+    leaders["Gila the Silvertongue"]?.state === "readied";
+
   const availableVotesStyle: AvailableVotesStyle = {
     "--height": rem(35),
     "--width": rem(28),
@@ -1051,7 +1059,43 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
     <div className={styles.AvailableVotes} style={availableVotesStyle}>
       <div className={styles.InfluenceIcon}>&#x2B21;</div>
       <div className={styles.InfluenceText}>{influence}</div>
-      <div>+ {extraVotes}</div>
+      <div className="flexRow" style={{ gap: 0 }}>
+        {hasHacanCommander ? (
+          <>
+            +{" "}
+            <div
+              className="flexColumn"
+              style={{
+                gap: 0,
+                paddingLeft: rem(4),
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+              }}
+            >
+              {extraVotes}
+              <div className="flexRow" style={{ gap: rem(2) }}>
+                2x
+                <div
+                  style={{
+                    width: rem(14),
+                    height: rem(15),
+                    position: "relative",
+                  }}
+                >
+                  <Image
+                    src="/images/trade_good.png"
+                    alt="TGs"
+                    fill
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>+ {extraVotes}</>
+        )}
+      </div>
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
   useFaction,
   useFactions,
   useGameState,
+  useLeaders,
   useObjectives,
   usePlanets,
   useTechs,
@@ -41,6 +42,7 @@ export function FactionSummary({
 
   const attachments = useAttachments();
   const faction = useFaction(factionId);
+  const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();
@@ -49,7 +51,6 @@ export function FactionSummary({
   let ownedTechs: Tech[] = [];
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
-  let factionHero: LeaderState = "locked";
 
   if (!faction) {
     throw new Error("Faction " + factionId + " not found");
@@ -64,8 +65,6 @@ export function FactionSummary({
 
   VPs = computeScoredVPs(factionId, objectives) + (faction.vps ?? 0);
 
-  factionHero = faction.hero;
-
   function manualVpAdjust(increase: boolean) {
     if (!gameId || !factionId) {
       return;
@@ -75,6 +74,10 @@ export function FactionSummary({
   }
 
   const editable = state?.phase !== "END";
+
+  const hasXxchaHero =
+    factionId === "Xxcha Kingdom" &&
+    leaders["Xxekir Grom"]?.state === "readied";
 
   return (
     <div className={styles.FactionSummary}>
@@ -149,12 +152,7 @@ export function FactionSummary({
         <ObjectiveDots factionId={factionId} />
       </div>
       {options.hidePlanets ? null : (
-        <PlanetSummary
-          planets={updatedPlanets}
-          hasXxchaHero={
-            factionId === "Xxcha Kingdom" && factionHero === "readied"
-          }
-        />
+        <PlanetSummary planets={updatedPlanets} hasXxchaHero={hasXxchaHero} />
       )}
     </div>
   );
