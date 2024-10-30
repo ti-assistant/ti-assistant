@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, {
+import {
   Dispatch,
   ReactNode,
   SetStateAction,
@@ -13,12 +13,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 import Chip from "../../src/components/Chip/Chip";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
+import Sidebars from "../../src/components/Sidebars/Sidebars";
 import { Strings } from "../../src/components/strings";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
-import Sidebars from "../../src/components/Sidebars/Sidebars";
 
 function FilterButton<T extends string | number>({
   filter,

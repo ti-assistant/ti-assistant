@@ -1,5 +1,3 @@
-import Link from "next/link";
-import QRCode from "qrcode";
 import { createIntl, createIntlCache } from "react-intl";
 import "server-only";
 import {
@@ -9,16 +7,9 @@ import {
 import Footer from "../../../src/components/Footer/Footer";
 import DataProvider from "../../../src/context/DataProvider";
 import { buildCompleteGameData } from "../../../src/data/GameData";
-import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
 import { getLocale, getMessages } from "../../../src/util/server";
-import DynamicSidebars from "./dynamic-sidebars";
+import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import styles from "./main.module.scss";
-import ArchiveFooter from "./ArchiveFooter";
-
-const BASE_URL =
-  process.env.GAE_SERVICE === "dev"
-    ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
-    : "https://ti-assistant.com";
 
 export default async function Layout({
   phase,
@@ -38,26 +29,6 @@ export default async function Layout({
   const gameData = buildCompleteGameData(storedGameData, intl);
 
   const storedTimers = await getArchivedTimers(gameId);
-
-  const qrCode = await new Promise<string>((resolve) => {
-    QRCode.toDataURL(
-      `${BASE_URL}/game/${gameId}`,
-      {
-        color: {
-          dark: "#eeeeeeff",
-          light: "#222222ff",
-        },
-        width: 172,
-        margin: 2,
-      },
-      (err, url) => {
-        if (err) {
-          throw err;
-        }
-        resolve(url);
-      }
-    );
-  });
 
   return (
     <DataProvider
