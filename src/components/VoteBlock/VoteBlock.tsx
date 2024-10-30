@@ -43,11 +43,12 @@ import {
 } from "../../util/planets";
 import { riderString } from "../../util/strings";
 import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
 import styles from "./VoteBlock.module.scss";
-import { rem } from "../../util/util";
+import Toggle from "../Toggle/Toggle";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
@@ -62,6 +63,15 @@ function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
   if (!factionVotes.target || !empyreanVotes.target) {
     return false;
   }
+  const bloodPactUser = getPromissoryTargets(
+    currentTurn,
+    "Blood Pact"
+  )[0] as Optional<FactionId>;
+
+  if (bloodPactUser && bloodPactUser !== factionId) {
+    return false;
+  }
+
   return factionVotes.target === empyreanVotes.target;
 }
 
@@ -892,14 +902,9 @@ function VotingSection({
                 } votes from Zeal`
               : null}
             {canUseBloodPact(currentTurn, factionId) ? (
-              <button
-                disabled={bloodPactUser && bloodPactUser !== factionId}
-                className={bloodPactUser === factionId ? "selected" : ""}
-                style={{ fontSize: rem(14) }}
-                onClick={() => {
-                  if (!gameId) {
-                    return;
-                  }
+              <Toggle
+                selected={bloodPactUser === factionId}
+                toggleFn={() => {
                   if (bloodPactUser === factionId) {
                     unplayPromissoryNoteAsync(gameId, "Blood Pact", factionId);
                   } else {
@@ -912,7 +917,7 @@ function VotingSection({
                   description="Title of Component: Blood Pact"
                   defaultMessage="Blood Pact"
                 />
-              </button>
+              </Toggle>
             ) : null}
             {hasTech(faction, "Predictive Intelligence") ? (
               <button

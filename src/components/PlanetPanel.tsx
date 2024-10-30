@@ -5,6 +5,7 @@ import {
   useAttachments,
   useFaction,
   useFactions,
+  useLeaders,
   usePlanets,
 } from "../context/dataHooks";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
@@ -37,6 +38,7 @@ function PlanetSection({
 
   const attachments = useAttachments();
   const faction = useFaction(factionId);
+  const leaders = useLeaders();
   const planets = usePlanets();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
@@ -50,6 +52,10 @@ function PlanetSection({
     }
     return -1;
   });
+
+  const hasXxchaHero =
+    factionId === "Xxcha Kingdom" &&
+    leaders["Xxekir Grom"]?.state === "readied";
 
   return (
     <div
@@ -89,9 +95,7 @@ function PlanetSection({
           >
             <PlanetSummary
               planets={updatedPlanets}
-              hasXxchaHero={
-                factionId === "Xxcha Kingdom" && faction?.hero === "readied"
-              }
+              hasXxchaHero={hasXxchaHero}
             />
           </div>
           <div
