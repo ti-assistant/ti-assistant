@@ -1,4 +1,6 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
+import Chip from "./components/Chip/Chip";
+import { rem } from "./util/util";
 
 interface TabProps {
   selectTab: (id: string) => void;
@@ -15,13 +17,14 @@ export function Tab({
   selectTab,
 }: PropsWithChildren<TabProps>) {
   return (
-    <button
-      onClick={() => selectTab(id)}
-      className={selectedId === id ? "selected" : ""}
+    <Chip
+      selected={selectedId === id}
+      toggleFn={() => selectTab(id)}
+      style={{ fontSize: rem(16), fontFamily: "Myriad Pro" }}
     >
       {children}
       {selectedId === id && extraContent ? extraContent : null}
-    </button>
+    </Chip>
   );
 }
 
