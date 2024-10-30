@@ -66,6 +66,7 @@ export function TacticalAction({
   factions,
   frontier = true,
   gameid,
+  leaders,
   objectives,
   planets,
   scorableObjectives,
@@ -81,6 +82,7 @@ export function TacticalAction({
   factions: Partial<Record<FactionId, Faction>>;
   frontier?: boolean;
   gameid: string;
+  leaders: Partial<Record<LeaderId, Leader>>;
   objectives: Partial<Record<ObjectiveId, Objective>>;
   planets: Partial<Record<PlanetId, Planet>>;
   scorableObjectives: Objective[];
@@ -340,6 +342,9 @@ export function TacticalAction({
                       !claimedAttachments.has(attachment.id))
                 )
                 .map((attachment) => attachment.id);
+              const hasNRACommander =
+                activeFactionId === "Naaz-Rokha Alliance" &&
+                leaders["Dart and Tai"]?.state === "readied";
               return (
                 <div
                   key={planet.planet}
@@ -364,9 +369,7 @@ export function TacticalAction({
                     />
                   </div>
                   {availableAttachments.length > 0 &&
-                  (!planet.prevOwner ||
-                    (activeFactionId === "Naaz-Rokha Alliance" &&
-                      factions[activeFactionId]?.commander === "readied")) ? (
+                  (!planet.prevOwner || hasNRACommander) ? (
                     <div
                       className="flexRow"
                       style={{ justifyContent: "center" }}

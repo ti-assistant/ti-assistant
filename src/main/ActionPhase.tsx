@@ -25,6 +25,7 @@ import {
   useAttachments,
   useFactions,
   useGameState,
+  useLeaders,
   useObjectives,
   usePlanets,
   useStrategyCards,
@@ -294,6 +295,7 @@ export function AdditionalActions({
   const actionLog = useActionLog();
   const attachments = useAttachments();
   const factions = useFactions();
+  const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();
@@ -1558,6 +1560,7 @@ export function AdditionalActions({
           currentTurn={currentTurn}
           factions={factions ?? {}}
           gameid={gameId ?? ""}
+          leaders={leaders}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
           scorableObjectives={scorableObjectives}

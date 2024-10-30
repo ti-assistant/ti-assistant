@@ -436,6 +436,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const actionLog = useActionLog();
   const attachments = useAttachments();
   const factions = useFactions();
+  const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -1133,6 +1134,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           factions={factions ?? {}}
           frontier={false}
           gameid={gameId ?? ""}
+          leaders={leaders}
           objectives={objectives ?? {}}
           planets={planets ?? {}}
           scoredObjectives={scoredActionPhaseObjectives}
@@ -1265,6 +1267,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 currentTurn={getCurrentTurnLogEntries(actionLog)}
                 factions={factions ?? {}}
                 gameid={gameId ?? ""}
+                leaders={leaders}
                 objectives={objectives ?? {}}
                 planets={planets ?? {}}
                 scorableObjectives={scorableObjectives}
