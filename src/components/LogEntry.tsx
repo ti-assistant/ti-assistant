@@ -121,6 +121,10 @@ export function LogEntryElement({
       );
     }
     case "ASSIGN_STRATEGY_CARD": {
+      let cardId = logEntry.data.event.id;
+      if (!cardId) {
+        cardId = (logEntry.data.event as any).name;
+      }
       return (
         <div
           className="flexRow"
@@ -132,7 +136,7 @@ export function LogEntryElement({
         >
           <div>
             <ColoredFactionName factionId={logEntry.data.event.pickedBy} /> :{" "}
-            {logEntry.data.event.id}
+            {cardId}
           </div>
           <TimerDisplay
             time={endTimeSeconds - startTimeSeconds}

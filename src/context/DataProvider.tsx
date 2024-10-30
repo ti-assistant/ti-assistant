@@ -6,11 +6,13 @@ import { GameIdContext } from "./Context";
 import DataManager from "./DataManager";
 
 export default function DataProvider({
+  archive = false,
   children,
   gameId,
   seedData,
   seedTimers,
 }: PropsWithChildren<{
+  archive?: boolean;
   gameId: string;
   seedData: GameData;
   seedTimers: Record<string, number>;
@@ -18,7 +20,7 @@ export default function DataProvider({
   const intl = useIntl();
   seedData.timers = seedTimers;
 
-  DataManager.init(gameId, seedData, intl);
+  DataManager.init(gameId, seedData, intl, archive);
 
   useEffect(() => {
     return DataManager.listen(gameId);

@@ -478,7 +478,6 @@ export function extractFactionIds(
     }
     const factionId = SYSTEMS_TO_FACTIONS[newSystem];
     if (!factionId) {
-      console.log("No Faction Id", newSystem);
       return;
     }
 
@@ -489,8 +488,6 @@ export function extractFactionIds(
 
     factions[factionNum - 1] = factionId;
   });
-
-  console.log("Factions", factions);
 
   if (numFactions !== Object.keys(factions).length) {
     return;

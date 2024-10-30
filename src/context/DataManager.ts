@@ -19,14 +19,19 @@ export default class DataManager {
   private static gameId: string;
   private static instance: DataManager;
 
-  public static init(gameId: string, data: GameData, intl: IntlShape) {
+  public static init(
+    gameId: string,
+    data: GameData,
+    intl: IntlShape,
+    archive: boolean
+  ) {
     const shouldOverride =
       !this.instance ||
       this.gameId !== gameId ||
       this.instance.data.sequenceNum < data.sequenceNum;
     if (shouldOverride) {
       this.gameId = gameId;
-      this.instance = new DataManager(data, intl);
+      this.instance = new DataManager(data, intl, archive);
     }
     return this.instance;
   }
@@ -78,7 +83,10 @@ export default class DataManager {
   // Used to know if the server is ahead of the client.
   private lastLocalSequenceNum: number;
 
-  private constructor(data: GameData, intl: IntlShape) {
+  private archive: boolean;
+
+  private constructor(data: GameData, intl: IntlShape, archive: boolean) {
+    this.archive = archive;
     this.data = data;
     this.baseData = getBaseData(intl);
     this.storedData = BASE_GAME_DATA;
@@ -91,8 +99,11 @@ export default class DataManager {
 
     const unlistenFns: Unsubscribe[] = [];
 
+    const gameCollection = this.archive ? "archive" : "games";
+    const timerCollection = this.archive ? "archiveTimers" : "timers";
+
     const actionLogQuery = query(
-      collection(db, "games", gameId, "actionLog"),
+      collection(db, gameCollection, gameId, "actionLog"),
       orderBy("timestampMillis", "desc")
     );
     unlistenFns.push(
@@ -117,7 +128,7 @@ export default class DataManager {
     );
 
     unlistenFns.push(
-      onSnapshot(doc(db, "timers", gameId), (doc) => {
+      onSnapshot(doc(db, timerCollection, gameId), (doc) => {
         const storedTimers = doc.data() as Record<string, number>;
 
         this.latestServerData.timers = storedTimers;
@@ -130,7 +141,7 @@ export default class DataManager {
     );
 
     unlistenFns.push(
-      onSnapshot(doc(db, "games", gameId), (doc) => {
+      onSnapshot(doc(db, gameCollection, gameId), (doc) => {
         const storedData = doc.data() as StoredGameData;
 
         const serverActionLog = this.latestServerData.actionLog ?? [];

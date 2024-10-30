@@ -92,7 +92,10 @@ export class PlayComponentHandler implements Handler {
       };
     }
 
-    if (this.data.event.name === "Fires of the Gashlai") {
+    if (
+      this.data.event.name === "Fires of the Gashlai" &&
+      this.data.event.factionId
+    ) {
       const handler = new AddTechHandler(this.gameData, {
         action: "ADD_TECH",
         event: {
@@ -187,7 +190,10 @@ export class UnplayComponentHandler implements Handler {
       };
     }
 
-    if (this.data.event.name === "Fires of the Gashlai") {
+    if (
+      this.data.event.name === "Fires of the Gashlai" &&
+      this.data.event.factionId
+    ) {
       const handler = new RemoveTechHandler(this.gameData, {
         action: "REMOVE_TECH",
         event: {

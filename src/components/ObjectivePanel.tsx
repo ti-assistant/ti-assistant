@@ -87,12 +87,14 @@ function ObjectiveColumn({
   factions,
   orderedFactionIds,
   options,
+  viewOnly,
 }: {
   gameId: string;
   objective: Objective;
   factions: Partial<Record<FactionId, Faction>>;
   orderedFactionIds: FactionId[];
   options: Options;
+  viewOnly?: boolean;
 }) {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
@@ -122,7 +124,7 @@ function ObjectiveColumn({
             fontSize: description ? rem(12) : undefined,
           }}
         >
-          {numScorers === 0 ? (
+          {numScorers === 0 && !viewOnly ? (
             <div
               className="icon clickable negative"
               onClick={() => {
@@ -165,9 +167,11 @@ function ObjectiveColumn({
         return (
           <div
             key={factionId}
-            className={`flexRow ${styles.selected} ${styles.factionGridIconWrapper}`}
+            className={`flexRow ${styles.selected} ${
+              styles.factionGridIconWrapper
+            } ${viewOnly ? styles.viewOnly : ""}`}
             onClick={() => {
-              if (!gameId) {
+              if (viewOnly) {
                 return;
               }
               if (scoredObjective) {
@@ -178,8 +182,9 @@ function ObjectiveColumn({
             }}
           >
             <div
-              className={`
-  ${styles.factionIcon} ${scoredObjective ? styles.selected : ""}`}
+              className={`${styles.factionIcon} ${
+                scoredObjective ? styles.selected : ""
+              } ${viewOnly ? styles.viewOnly : ""}`}
               style={
                 {
                   "--color": getFactionColor((factions ?? {})[factionId]),
@@ -273,7 +278,7 @@ interface ExtendedCSS extends CSSProperties {
   "--color": string;
 }
 
-export default function ObjectivePanel() {
+export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
@@ -557,7 +562,7 @@ export default function ObjectivePanel() {
                           width: "100%",
                         }}
                       >
-                        {VPs > 0 ? (
+                        {!viewOnly && VPs > 0 ? (
                           <div
                             className="arrowDown"
                             onClick={() => manualVpAdjust(false, name)}
@@ -568,10 +573,14 @@ export default function ObjectivePanel() {
                         <div className="flexRow" style={{ width: rem(24) }}>
                           {VPs}
                         </div>
-                        <div
-                          className="arrowUp"
-                          onClick={() => manualVpAdjust(true, name)}
-                        ></div>
+                        {!viewOnly ? (
+                          <div
+                            className="arrowUp"
+                            onClick={() => manualVpAdjust(true, name)}
+                          ></div>
+                        ) : (
+                          <div style={{ width: rem(12) }}></div>
+                        )}
                       </div>
                     </LabeledDiv>
                   );
@@ -584,87 +593,89 @@ export default function ObjectivePanel() {
             style={{
               display: "grid",
               gridAutoFlow: "row",
-              gridTemplateColumns: "repeat(2, 1fr)",
+              gridTemplateColumns: viewOnly ? undefined : "repeat(2, 1fr)",
               width: "100%",
             }}
           >
-            <CollapsibleSection
-              title="Reveal Objective"
-              openedByDefault
-              style={{
-                width: "100%",
-                height: "fit-content",
-                fontSize: rem(18),
-                paddingBottom: rem(8),
-              }}
-            >
-              <div
-                className={`flexColumn ${styles.collapsibleRow}`}
+            {viewOnly ? null : (
+              <CollapsibleSection
+                title="Reveal Objective"
+                openedByDefault
                 style={{
-                  display: "flex",
-                  marginLeft: rem(8),
-                  width: "min-content",
-                  flexDirection: "column",
-                  alignItems: "stretch",
-                  overflow: "visible",
+                  width: "100%",
+                  height: "fit-content",
+                  fontSize: rem(18),
+                  paddingBottom: rem(8),
                 }}
               >
-                <Selector
-                  options={remainingStageOneObjectives}
-                  hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
-                  renderButton={(itemId, itemName, toggleItem) => {
-                    return (
-                      <button
-                        key={itemId}
-                        style={{ fontSize: rem(14) }}
-                        onClick={() => {
-                          toggleItem(itemId, true);
-                        }}
-                      >
-                        {itemName}
-                      </button>
-                    );
+                <div
+                  className={`flexColumn ${styles.collapsibleRow}`}
+                  style={{
+                    display: "flex",
+                    marginLeft: rem(8),
+                    width: "min-content",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    overflow: "visible",
                   }}
-                  toggleItem={(objectiveId, add) => {
-                    if (!gameId) {
-                      return;
-                    }
-                    if (add) {
-                      revealObjectiveAsync(gameId, objectiveId);
-                    } else {
-                      hideObjectiveAsync(gameId, objectiveId);
-                    }
-                  }}
-                />
-                <Selector
-                  options={remainingStageTwoObjectives}
-                  hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
-                  renderButton={(itemId, itemName, toggleItem) => {
-                    return (
-                      <button
-                        key={itemId}
-                        style={{ fontSize: rem(14) }}
-                        onClick={() => {
-                          toggleItem(itemId, true);
-                        }}
-                      >
-                        {itemName}
-                      </button>
-                    );
-                  }}
-                  toggleItem={(objectiveId, add) => {
-                    if (!gameId) {
-                      return;
-                    }
-                    if (add) {
-                      revealObjectiveAsync(gameId, objectiveId);
-                    } else {
-                      hideObjectiveAsync(gameId, objectiveId);
-                    }
-                  }}
-                />
-              </div>
-            </CollapsibleSection>
+                >
+                  <Selector
+                    options={remainingStageOneObjectives}
+                    hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
+                    renderButton={(itemId, itemName, toggleItem) => {
+                      return (
+                        <button
+                          key={itemId}
+                          style={{ fontSize: rem(14) }}
+                          onClick={() => {
+                            toggleItem(itemId, true);
+                          }}
+                        >
+                          {itemName}
+                        </button>
+                      );
+                    }}
+                    toggleItem={(objectiveId, add) => {
+                      if (!gameId) {
+                        return;
+                      }
+                      if (add) {
+                        revealObjectiveAsync(gameId, objectiveId);
+                      } else {
+                        hideObjectiveAsync(gameId, objectiveId);
+                      }
+                    }}
+                  />
+                  <Selector
+                    options={remainingStageTwoObjectives}
+                    hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
+                    renderButton={(itemId, itemName, toggleItem) => {
+                      return (
+                        <button
+                          key={itemId}
+                          style={{ fontSize: rem(14) }}
+                          onClick={() => {
+                            toggleItem(itemId, true);
+                          }}
+                        >
+                          {itemName}
+                        </button>
+                      );
+                    }}
+                    toggleItem={(objectiveId, add) => {
+                      if (!gameId) {
+                        return;
+                      }
+                      if (add) {
+                        revealObjectiveAsync(gameId, objectiveId);
+                      } else {
+                        hideObjectiveAsync(gameId, objectiveId);
+                      }
+                    }}
+                  />
+                </div>
+              </CollapsibleSection>
+            )}
             <div className="flexRow" style={{ width: "95%" }}>
               <div
                 className="flexRow"
@@ -690,7 +701,7 @@ export default function ObjectivePanel() {
                   }}
                 >
                   <FactionSelectRadialMenu
-                    factions={orderedFactionIds}
+                    factions={viewOnly ? [] : orderedFactionIds}
                     selectedFaction={custodiansScorer}
                     onSelect={(factionId) => {
                       if (!gameId) {
@@ -747,7 +758,7 @@ export default function ObjectivePanel() {
                           objective={objective}
                           hideScorers
                           removeObjective={
-                            (objective.scorers ?? []).length === 0
+                            (objective.scorers ?? []).length === 0 && !viewOnly
                               ? () => {
                                   if (!gameId) {
                                     return;
@@ -772,9 +783,11 @@ export default function ObjectivePanel() {
                             return (
                               <div
                                 key={factionId}
-                                className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                                className={`flexRow ${styles.selected} ${
+                                  styles.factionIconWrapper
+                                } ${viewOnly ? styles.viewOnly : ""}`}
                                 onClick={() => {
-                                  if (!gameId) {
+                                  if (viewOnly) {
                                     return;
                                   }
                                   if (scoredObjective) {
@@ -793,10 +806,9 @@ export default function ObjectivePanel() {
                                 }}
                               >
                                 <div
-                                  className={`
-                        ${styles.factionIcon} ${
+                                  className={`${styles.factionIcon} ${
                                     scoredObjective ? styles.selected : ""
-                                  }`}
+                                  } ${viewOnly ? styles.viewOnly : ""}`}
                                   style={
                                     {
                                       "--color": getFactionColor(
@@ -844,7 +856,7 @@ export default function ObjectivePanel() {
                           objective={objective}
                           hideScorers
                           removeObjective={
-                            (objective.scorers ?? []).length === 0
+                            (objective.scorers ?? []).length === 0 && !viewOnly
                               ? () => {
                                   if (!gameId) {
                                     return;
@@ -869,9 +881,11 @@ export default function ObjectivePanel() {
                             return (
                               <div
                                 key={factionId}
-                                className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                                className={`flexRow ${styles.selected} ${
+                                  styles.factionIconWrapper
+                                } ${viewOnly ? styles.viewOnly : ""}`}
                                 onClick={() => {
-                                  if (!gameId) {
+                                  if (viewOnly) {
                                     return;
                                   }
                                   if (scoredObjective) {
@@ -890,10 +904,9 @@ export default function ObjectivePanel() {
                                 }}
                               >
                                 <div
-                                  className={`
-                            ${styles.factionIcon} ${
+                                  className={`${styles.factionIcon} ${
                                     scoredObjective ? styles.selected : ""
-                                  }`}
+                                  } ${viewOnly ? styles.viewOnly : ""}`}
                                   style={
                                     {
                                       "--color": getFactionColor(
@@ -945,15 +958,19 @@ export default function ObjectivePanel() {
                         key={name}
                         className="flexRow"
                         style={{
-                          cursor: "pointer",
+                          cursor: viewOnly ? undefined : "pointer",
                           position: "relative",
                           width: "100%",
                           aspectRatio: 1,
                         }}
-                        onClick={() => {
-                          setFactionId(name);
-                          setSecretModal(true);
-                        }}
+                        onClick={
+                          viewOnly
+                            ? undefined
+                            : () => {
+                                setFactionId(name);
+                                setSecretModal(true);
+                              }
+                        }
                       >
                         <FactionIcon factionId={name} size="100%" />
                         <div
@@ -1021,7 +1038,7 @@ export default function ObjectivePanel() {
                           aspectRatio: 1,
                         }}
                       >
-                        {imperialPoints > 0 ? (
+                        {!viewOnly && imperialPoints > 0 ? (
                           <div
                             className="hiddenButton flexRow"
                             style={{
@@ -1041,7 +1058,7 @@ export default function ObjectivePanel() {
                               zIndex: 2,
                             }}
                             onClick={() => {
-                              if (!gameId) {
+                              if (viewOnly) {
                                 return;
                               }
                               unscoreObjectiveAsync(
@@ -1054,37 +1071,39 @@ export default function ObjectivePanel() {
                             -
                           </div>
                         ) : null}
-                        <div
-                          className="hiddenButton flexRow"
-                          style={{
-                            position: "absolute",
-                            right: 0,
-                            top: rem(-4),
-                            fontFamily: "Myriad Pro",
-                            border: `${"1px"} solid #333`,
-                            fontWeight: "bold",
-                            borderRadius: "100%",
-                            height: rem(16),
-                            width: rem(16),
-                            fontSize: rem(12),
-                            backgroundColor: "#222",
-                            boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                            cursor: "pointer",
-                            zIndex: 2,
-                          }}
-                          onClick={() => {
-                            if (!gameId) {
-                              return;
-                            }
-                            scoreObjectiveAsync(
-                              gameId,
-                              faction,
-                              "Imperial Point"
-                            );
-                          }}
-                        >
-                          +
-                        </div>
+                        {viewOnly ? null : (
+                          <div
+                            className="hiddenButton flexRow"
+                            style={{
+                              position: "absolute",
+                              right: 0,
+                              top: rem(-4),
+                              fontFamily: "Myriad Pro",
+                              border: `${"1px"} solid #333`,
+                              fontWeight: "bold",
+                              borderRadius: "100%",
+                              height: rem(16),
+                              width: rem(16),
+                              fontSize: rem(12),
+                              backgroundColor: "#222",
+                              boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                              cursor: "pointer",
+                              zIndex: 2,
+                            }}
+                            onClick={() => {
+                              if (viewOnly) {
+                                return;
+                              }
+                              scoreObjectiveAsync(
+                                gameId,
+                                faction,
+                                "Imperial Point"
+                              );
+                            }}
+                          >
+                            +
+                          </div>
+                        )}
                         <FactionIcon factionId={faction} size="100%" />
                         <div
                           className="flexRow"
@@ -1134,11 +1153,11 @@ export default function ObjectivePanel() {
                     <div key={id}>
                       <FactionSelectRadialMenu
                         key={id}
-                        factions={orderedFactionIds}
+                        factions={viewOnly ? [] : orderedFactionIds}
                         invalidFactions={[id]}
                         selectedFaction={scorer}
                         onSelect={(factionId) => {
-                          if (!gameId) {
+                          if (viewOnly) {
                             return;
                           }
                           if (scorer) {
@@ -1206,11 +1225,13 @@ export default function ObjectivePanel() {
                   orderedFactionNames={orderedFactionIds}
                   numScorers={includesPoK ? 2 : 1}
                   info="Can be scored 2x due to The Codex"
+                  viewOnly={viewOnly}
                 />
                 <SimpleScorable
                   gameId={gameId}
                   objective={politicalCensure}
                   orderedFactionNames={orderedFactionIds}
+                  viewOnly={viewOnly}
                 />
               </div>
               {includesPoK ? (
@@ -1227,11 +1248,13 @@ export default function ObjectivePanel() {
                     gameId={gameId}
                     objective={shardOfTheThrone}
                     orderedFactionNames={orderedFactionIds}
+                    viewOnly={viewOnly}
                   />
                   <SimpleScorable
                     gameId={gameId}
                     objective={tomb}
                     orderedFactionNames={orderedFactionIds}
+                    viewOnly={viewOnly}
                   />
                 </div>
               ) : null}
@@ -1241,6 +1264,7 @@ export default function ObjectivePanel() {
                 orderedFactionNames={orderedFactionIds}
                 numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
+                viewOnly={viewOnly}
               />
               {!includesPoK ? (
                 <SimpleScorable
@@ -1249,6 +1273,7 @@ export default function ObjectivePanel() {
                   orderedFactionNames={orderedFactionIds}
                   numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                   info="Can be scored 2x due to Miscount Disclosed"
+                  viewOnly={viewOnly}
                 />
               ) : null}
               <SimpleScorable
@@ -1257,6 +1282,7 @@ export default function ObjectivePanel() {
                 orderedFactionNames={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
+                viewOnly={viewOnly}
               />
               {!mutiny ? null : (
                 <div
@@ -1270,21 +1296,48 @@ export default function ObjectivePanel() {
                     style={{ alignItems: "center", justifyContent: "center" }}
                   >
                     <ObjectiveRow objective={mutiny} hideScorers />
-                    <button
-                      style={{ fontSize: rem(14) }}
-                      onClick={() => {
-                        if (!gameId) {
-                          return;
-                        }
-                        if (mutinyDirection === "[For]") {
-                          setObjectivePointsAsync(gameId, "Mutiny", -1);
-                        } else {
-                          setObjectivePointsAsync(gameId, "Mutiny", 1);
-                        }
-                      }}
-                    >
-                      {mutinyDirection}
-                    </button>
+                    {viewOnly ? (
+                      mutinyDirection === "[For]" ? (
+                        `[${intl.formatMessage({
+                          id: "ymJxS0",
+                          defaultMessage: "For",
+                          description: "Outcome choosing to pass a law.",
+                        })}]`
+                      ) : (
+                        `[${intl.formatMessage({
+                          id: "SOC2Bh",
+                          defaultMessage: "Against",
+                          description: "Outcome choosing to vote down a law.",
+                        })}]`
+                      )
+                    ) : (
+                      <button
+                        style={{ fontSize: rem(14) }}
+                        onClick={() => {
+                          if (!gameId) {
+                            return;
+                          }
+                          if (mutinyDirection === "[For]") {
+                            setObjectivePointsAsync(gameId, "Mutiny", -1);
+                          } else {
+                            setObjectivePointsAsync(gameId, "Mutiny", 1);
+                          }
+                        }}
+                      >
+                        {mutinyDirection === "[For]"
+                          ? `[${intl.formatMessage({
+                              id: "ymJxS0",
+                              defaultMessage: "For",
+                              description: "Outcome choosing to pass a law.",
+                            })}]`
+                          : `[${intl.formatMessage({
+                              id: "SOC2Bh",
+                              defaultMessage: "Against",
+                              description:
+                                "Outcome choosing to vote down a law.",
+                            })}]`}
+                      </button>
+                    )}
                   </div>
                   <div
                     className={styles.factionIconRow}
@@ -1301,9 +1354,11 @@ export default function ObjectivePanel() {
                       return (
                         <div
                           key={factionId}
-                          className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                          className={`flexRow ${styles.selected} ${
+                            styles.factionIconWrapper
+                          } ${viewOnly ? styles.viewOnly : ""}`}
                           onClick={() => {
-                            if (!gameId) {
+                            if (viewOnly) {
                               return;
                             }
                             if (scoredObjective) {
@@ -1318,10 +1373,9 @@ export default function ObjectivePanel() {
                           }}
                         >
                           <div
-                            className={`
-                ${styles.factionIcon} ${
+                            className={`${styles.factionIcon} ${
                               scoredObjective ? styles.selected : ""
-                            }`}
+                            } ${viewOnly ? styles.viewOnly : ""}`}
                             style={
                               {
                                 "--color": getFactionColor(
@@ -1361,9 +1415,11 @@ export default function ObjectivePanel() {
                       return (
                         <div
                           key={factionId}
-                          className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                          className={`flexRow ${styles.selected} ${
+                            styles.factionIconWrapper
+                          } ${viewOnly ? styles.viewOnly : ""}`}
                           onClick={() => {
-                            if (!gameId) {
+                            if (viewOnly) {
                               return;
                             }
                             if (scoredObjective) {
@@ -1374,10 +1430,9 @@ export default function ObjectivePanel() {
                           }}
                         >
                           <div
-                            className={`
-                ${styles.factionIcon} ${
+                            className={`${styles.factionIcon} ${
                               scoredObjective ? styles.selected : ""
-                            }`}
+                            } ${viewOnly ? styles.viewOnly : ""}`}
                             style={
                               {
                                 "--color": getFactionColor(
@@ -1558,36 +1613,38 @@ export default function ObjectivePanel() {
               paddingTop: rem(36),
             }}
           >
-            <LabeledDiv
-              label={
-                <FormattedMessage
-                  id="6L07nG"
-                  description="Text telling the user to reveal an objective."
-                  defaultMessage="Reveal Objective"
+            {viewOnly ? null : (
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="6L07nG"
+                    description="Text telling the user to reveal an objective."
+                    defaultMessage="Reveal Objective"
+                  />
+                }
+                noBlur={true}
+                style={{
+                  flexDirection: "row",
+                  width: "min-content",
+                  alignItems: "stretch",
+                  gridRow: "1 / 2",
+                  fontSize: rem(14),
+                }}
+              >
+                <ObjectiveSelectHoverMenu
+                  action={revealObjectiveAsync}
+                  label={objectiveTypeString("STAGE ONE", intl)}
+                  objectives={remainingStageOneObjectives}
+                  fontSize={rem(14)}
                 />
-              }
-              noBlur={true}
-              style={{
-                flexDirection: "row",
-                width: "min-content",
-                alignItems: "stretch",
-                gridRow: "1 / 2",
-                fontSize: rem(14),
-              }}
-            >
-              <ObjectiveSelectHoverMenu
-                action={revealObjectiveAsync}
-                label={objectiveTypeString("STAGE ONE", intl)}
-                objectives={remainingStageOneObjectives}
-                fontSize={rem(14)}
-              />
-              <ObjectiveSelectHoverMenu
-                action={revealObjectiveAsync}
-                label={objectiveTypeString("STAGE TWO", intl)}
-                objectives={remainingStageTwoObjectives}
-                fontSize={rem(14)}
-              />
-            </LabeledDiv>
+                <ObjectiveSelectHoverMenu
+                  action={revealObjectiveAsync}
+                  label={objectiveTypeString("STAGE TWO", intl)}
+                  objectives={remainingStageTwoObjectives}
+                  fontSize={rem(14)}
+                />
+              </LabeledDiv>
+            )}
           </div>
           {selectedStageOneObjectives.map((objective) => {
             if (!objective) {
@@ -1608,6 +1665,7 @@ export default function ObjectivePanel() {
                 factions={factions ?? {}}
                 orderedFactionIds={orderedFactionIds}
                 options={options}
+                viewOnly={viewOnly}
               />
             );
           })}
@@ -1745,6 +1803,7 @@ export default function ObjectivePanel() {
                 factions={factions ?? {}}
                 orderedFactionIds={orderedFactionIds}
                 options={options}
+                viewOnly={viewOnly}
               />
             );
           })}
@@ -1762,16 +1821,20 @@ export default function ObjectivePanel() {
                 key={name}
                 className="flexRow"
                 style={{
-                  cursor: "pointer",
+                  cursor: viewOnly ? undefined : "pointer",
                   position: "relative",
                   width: "100%",
                   height: "100%",
                   padding: `0 ${rem(4)}`,
                 }}
-                onClick={() => {
-                  setFactionId(name);
-                  setSecretModal(true);
-                }}
+                onClick={
+                  viewOnly
+                    ? undefined
+                    : () => {
+                        setFactionId(name);
+                        setSecretModal(true);
+                      }
+                }
               >
                 <FactionIcon factionId={name} size="80%" />
                 <div
@@ -1840,10 +1903,10 @@ export default function ObjectivePanel() {
                 }}
               >
                 <FactionSelectRadialMenu
-                  factions={orderedFactionIds}
+                  factions={viewOnly ? [] : orderedFactionIds}
                   selectedFaction={custodiansScorer}
                   onSelect={(factionId) => {
-                    if (!gameId) {
+                    if (viewOnly) {
                       return;
                     }
                     if (custodiansScorer) {
@@ -1900,7 +1963,7 @@ export default function ObjectivePanel() {
                   >
                     <FactionSelectRadialMenu
                       key={factionId}
-                      factions={orderedFactionIds}
+                      factions={viewOnly ? [] : orderedFactionIds}
                       invalidFactions={orderedFactions
                         .filter(
                           (faction) =>
@@ -1910,7 +1973,7 @@ export default function ObjectivePanel() {
                         .map((faction) => faction.id)}
                       selectedFaction={scorer}
                       onSelect={(selectedFactionId) => {
-                        if (!gameId) {
+                        if (viewOnly) {
                           return;
                         }
                         if (scorer) {
@@ -1971,7 +2034,7 @@ export default function ObjectivePanel() {
                       height: rem(36),
                     }}
                   >
-                    {imperialPoints > 0 ? (
+                    {!viewOnly && imperialPoints > 0 ? (
                       <div
                         className="hiddenButton flexRow"
                         style={{
@@ -1991,7 +2054,7 @@ export default function ObjectivePanel() {
                           zIndex: 2,
                         }}
                         onClick={() => {
-                          if (!gameId) {
+                          if (viewOnly) {
                             return;
                           }
                           unscoreObjectiveAsync(
@@ -2004,33 +2067,39 @@ export default function ObjectivePanel() {
                         -
                       </div>
                     ) : null}
-                    <div
-                      className="hiddenButton flexRow"
-                      style={{
-                        position: "absolute",
-                        right: 0,
-                        top: rem(-4),
-                        fontFamily: "Myriad Pro",
-                        border: `${"1px"} solid #333`,
-                        fontWeight: "bold",
-                        borderRadius: "100%",
-                        height: rem(16),
-                        width: rem(16),
-                        fontSize: rem(12),
-                        backgroundColor: "#222",
-                        boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                        cursor: "pointer",
-                        zIndex: 2,
-                      }}
-                      onClick={() => {
-                        if (!gameId) {
-                          return;
-                        }
-                        scoreObjectiveAsync(gameId, faction, "Imperial Point");
-                      }}
-                    >
-                      +
-                    </div>
+                    {viewOnly ? null : (
+                      <div
+                        className="hiddenButton flexRow"
+                        style={{
+                          position: "absolute",
+                          right: 0,
+                          top: rem(-4),
+                          fontFamily: "Myriad Pro",
+                          border: `${"1px"} solid #333`,
+                          fontWeight: "bold",
+                          borderRadius: "100%",
+                          height: rem(16),
+                          width: rem(16),
+                          fontSize: rem(12),
+                          backgroundColor: "#222",
+                          boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                          cursor: "pointer",
+                          zIndex: 2,
+                        }}
+                        onClick={() => {
+                          if (viewOnly) {
+                            return;
+                          }
+                          scoreObjectiveAsync(
+                            gameId,
+                            faction,
+                            "Imperial Point"
+                          );
+                        }}
+                      >
+                        +
+                      </div>
+                    )}
                     <FactionIcon factionId={faction} size="100%" />
                     <div
                       className="flexRow"
@@ -2060,6 +2129,7 @@ export default function ObjectivePanel() {
               orderedFactionNames={orderedFactionIds}
               numScorers={includesPoK ? 2 : 1}
               info="Can be scored 2x due to The Codex"
+              viewOnly={viewOnly}
             />
           </div>
           {includesPoK ? (
@@ -2087,11 +2157,13 @@ export default function ObjectivePanel() {
                   gameId={gameId}
                   objective={shardOfTheThrone}
                   orderedFactionNames={orderedFactionIds}
+                  viewOnly={viewOnly}
                 />
                 <SimpleScorable
                   gameId={gameId}
                   objective={tomb}
                   orderedFactionNames={orderedFactionIds}
+                  viewOnly={viewOnly}
                 />
               </div>
             </LabeledDiv>
@@ -2118,6 +2190,7 @@ export default function ObjectivePanel() {
               orderedFactionNames={orderedFactionIds}
               numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
+              viewOnly={viewOnly}
             />
             {!includesPoK ? (
               <SimpleScorable
@@ -2126,6 +2199,7 @@ export default function ObjectivePanel() {
                 orderedFactionNames={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed"
+                viewOnly={viewOnly}
               />
             ) : null}
             <SimpleScorable
@@ -2134,11 +2208,13 @@ export default function ObjectivePanel() {
               orderedFactionNames={orderedFactionIds}
               numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
+              viewOnly={viewOnly}
             />
             <SimpleScorable
               gameId={gameId}
               objective={politicalCensure}
               orderedFactionNames={orderedFactionIds}
+              viewOnly={viewOnly}
             />
           </LabeledDiv>
           <LabeledDiv
@@ -2169,31 +2245,47 @@ export default function ObjectivePanel() {
                   style={{ alignItems: "center", justifyContent: "center" }}
                 >
                   <ObjectiveRow objective={mutiny} hideScorers />
-                  <button
-                    style={{ fontSize: rem(14) }}
-                    onClick={() => {
-                      if (!gameId) {
-                        return;
-                      }
-                      if (mutinyDirection === "[For]") {
-                        setObjectivePointsAsync(gameId, "Mutiny", -1);
-                      } else {
-                        setObjectivePointsAsync(gameId, "Mutiny", 1);
-                      }
-                    }}
-                  >
-                    {mutinyDirection === "[For]"
-                      ? `[${intl.formatMessage({
-                          id: "ymJxS0",
-                          defaultMessage: "For",
-                          description: "Outcome choosing to pass a law.",
-                        })}]`
-                      : `[${intl.formatMessage({
-                          id: "SOC2Bh",
-                          defaultMessage: "Against",
-                          description: "Outcome choosing to vote down a law.",
-                        })}]`}
-                  </button>
+                  {viewOnly ? (
+                    mutinyDirection === "[For]" ? (
+                      `[${intl.formatMessage({
+                        id: "ymJxS0",
+                        defaultMessage: "For",
+                        description: "Outcome choosing to pass a law.",
+                      })}]`
+                    ) : (
+                      `[${intl.formatMessage({
+                        id: "SOC2Bh",
+                        defaultMessage: "Against",
+                        description: "Outcome choosing to vote down a law.",
+                      })}]`
+                    )
+                  ) : (
+                    <button
+                      style={{ fontSize: rem(14) }}
+                      onClick={() => {
+                        if (!gameId) {
+                          return;
+                        }
+                        if (mutinyDirection === "[For]") {
+                          setObjectivePointsAsync(gameId, "Mutiny", -1);
+                        } else {
+                          setObjectivePointsAsync(gameId, "Mutiny", 1);
+                        }
+                      }}
+                    >
+                      {mutinyDirection === "[For]"
+                        ? `[${intl.formatMessage({
+                            id: "ymJxS0",
+                            defaultMessage: "For",
+                            description: "Outcome choosing to pass a law.",
+                          })}]`
+                        : `[${intl.formatMessage({
+                            id: "SOC2Bh",
+                            defaultMessage: "Against",
+                            description: "Outcome choosing to vote down a law.",
+                          })}]`}
+                    </button>
+                  )}
                 </div>
                 <div
                   className={styles.factionIconRow}
@@ -2210,9 +2302,11 @@ export default function ObjectivePanel() {
                     return (
                       <div
                         key={factionId}
-                        className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                        className={`flexRow ${styles.selected} ${
+                          styles.factionIconWrapper
+                        } ${viewOnly ? styles.viewOnly : ""}`}
                         onClick={() => {
-                          if (!gameId) {
+                          if (viewOnly) {
                             return;
                           }
                           if (scoredObjective) {
@@ -2223,10 +2317,9 @@ export default function ObjectivePanel() {
                         }}
                       >
                         <div
-                          className={`
-                ${styles.factionIcon} ${
+                          className={`${styles.factionIcon} ${
                             scoredObjective ? styles.selected : ""
-                          }`}
+                          } ${viewOnly ? styles.viewOnly : ""}`}
                           style={
                             {
                               "--color": getFactionColor(
@@ -2266,9 +2359,11 @@ export default function ObjectivePanel() {
                     return (
                       <div
                         key={factionId}
-                        className={`flexRow ${styles.selected} ${styles.factionIconWrapper}`}
+                        className={`flexRow ${styles.selected} ${
+                          styles.factionIconWrapper
+                        } ${viewOnly ? styles.viewOnly : ""}`}
                         onClick={() => {
-                          if (!gameId) {
+                          if (viewOnly) {
                             return;
                           }
                           if (scoredObjective) {
@@ -2279,10 +2374,9 @@ export default function ObjectivePanel() {
                         }}
                       >
                         <div
-                          className={`
-                ${styles.factionIcon} ${
+                          className={`${styles.factionIcon} ${
                             scoredObjective ? styles.selected : ""
-                          }`}
+                          } ${viewOnly ? styles.viewOnly : ""}`}
                           style={
                             {
                               "--color": getFactionColor(
@@ -2312,12 +2406,14 @@ function SimpleScorable({
   orderedFactionNames,
   numScorers = 1,
   info,
+  viewOnly,
 }: {
   gameId: string;
   objective: Optional<Objective>;
   orderedFactionNames: FactionId[];
   numScorers?: number;
   info?: string;
+  viewOnly?: boolean;
 }) {
   const factions = useFactions();
 
@@ -2364,9 +2460,9 @@ function SimpleScorable({
         <div className="flexRow">
           <FactionSelectRadialMenu
             selectedFaction={objectiveScorers[0] as Optional<FactionId>}
-            factions={orderedFactionNames}
+            factions={viewOnly ? [] : orderedFactionNames}
             onSelect={(factionId) => {
-              if (!gameId) {
+              if (viewOnly) {
                 return;
               }
               if (objectiveScorers[0]) {
@@ -2390,9 +2486,9 @@ function SimpleScorable({
           {numScorers > 1 && objectiveScorers[0] ? (
             <FactionSelectRadialMenu
               selectedFaction={objectiveScorers[1] as Optional<FactionId>}
-              factions={orderedFactionNames}
+              factions={viewOnly ? [] : orderedFactionNames}
               onSelect={(factionId) => {
-                if (!gameId) {
+                if (viewOnly) {
                   return;
                 }
                 if (objectiveScorers[1]) {

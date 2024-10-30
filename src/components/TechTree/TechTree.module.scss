@@ -33,6 +33,9 @@
   border-radius: 50%;
   width: 0.25rem;
   height: 0.25rem;
-  cursor: pointer;
   box-sizing: border-box;
+}
+
+.TechTreeElement:not(.viewOnly) {
+  cursor: pointer;
 }

@@ -7,9 +7,11 @@ import styles from "./TechSummary.module.scss";
 export function FullTechSummary({
   techs,
   factionId,
+  viewOnly,
 }: {
   techs: Tech[];
   factionId: FactionId;
+  viewOnly?: boolean;
 }) {
   let blueTechs = [];
   let yellowTechs = [];
@@ -70,7 +72,12 @@ export function FullTechSummary({
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"GREEN"} size={iconSize} />
         </div>
-        <TechTree type="GREEN" factionId={factionId} size={techTreeSize} />
+        <TechTree
+          type="GREEN"
+          factionId={factionId}
+          size={techTreeSize}
+          viewOnly={viewOnly}
+        />
         <div>&nbsp;</div>
         <div
           className="flexRow centered"
@@ -82,7 +89,12 @@ export function FullTechSummary({
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"BLUE"} size={iconSize} />
         </div>
-        <TechTree type="BLUE" factionId={factionId} size={techTreeSize} />
+        <TechTree
+          type="BLUE"
+          factionId={factionId}
+          size={techTreeSize}
+          viewOnly={viewOnly}
+        />
         <div>&nbsp;</div>
         <div
           className="flexRow centered"
@@ -93,7 +105,12 @@ export function FullTechSummary({
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"YELLOW"} size={iconSize} />
         </div>
-        <TechTree type="YELLOW" factionId={factionId} size={techTreeSize} />
+        <TechTree
+          type="YELLOW"
+          factionId={factionId}
+          size={techTreeSize}
+          viewOnly={viewOnly}
+        />
         <div>&nbsp;</div>
         <div
           className="flexRow centered"
@@ -104,7 +121,12 @@ export function FullTechSummary({
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"RED"} size={iconSize} />
         </div>
-        <TechTree type="RED" factionId={factionId} size={techTreeSize} />
+        <TechTree
+          type="RED"
+          factionId={factionId}
+          size={techTreeSize}
+          viewOnly={viewOnly}
+        />
         <div
           className={styles.UnitUpgradeText}
           style={{ whiteSpace: "nowrap" }}
@@ -118,10 +140,20 @@ export function FullTechSummary({
           />
         </div>
         <div className={styles.UnitUpgradeTree}>
-          <TechTree type="UPGRADE" factionId={factionId} size={techTreeSize} />
+          <TechTree
+            type="UPGRADE"
+            factionId={factionId}
+            size={techTreeSize}
+            viewOnly={viewOnly}
+          />
         </div>
         <div className={styles.FactionTechTree}>
-          <TechTree type="FACTION" factionId={factionId} size={techTreeSize} />
+          <TechTree
+            type="FACTION"
+            factionId={factionId}
+            size={techTreeSize}
+            viewOnly={viewOnly}
+          />
         </div>
       </div>
     </>

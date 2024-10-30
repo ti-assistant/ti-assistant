@@ -7,12 +7,18 @@ import { updateActionLog } from "../../src/util/api/update";
 import { computeVPs } from "../../src/util/factions";
 import { EndGameHandler } from "../../src/util/model/endGame";
 import { Optional } from "../../src/util/types/types";
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import {
+  FieldValue,
+  getFirestore,
+  Timestamp,
+  WriteResult,
+} from "firebase-admin/firestore";
 import { getFullActionLog, getTimers } from "../../server/util/fetch";
 import { Readable } from "stream";
 import { getBaseData } from "../../src/data/baseData";
 import { createIntlCache, createIntl } from "react-intl";
 import { getLocale, getMessages } from "../../src/util/server";
+import { objectKeys } from "../../src/util/util";
 
 export interface ProcessedGame {
   // Tags
@@ -31,6 +37,8 @@ export interface ProcessedGame {
   factions: Partial<Record<FactionId, GameFactionInfo>>;
   gameTime: number;
   objectives: Partial<Record<ObjectiveId, ObjectiveInfo>>;
+
+  timestampMillis: number;
 }
 
 interface GameFactionInfo {
@@ -178,6 +186,9 @@ export async function maybeUpdateProcessedGames(
     return;
   }
 
+  const deleteDate = new Date();
+  deleteDate.setDate(deleteDate.getDate() + 30);
+
   const db = getFirestore();
 
   const gamesRef = db.collection("games");
@@ -189,32 +200,37 @@ export async function maybeUpdateProcessedGames(
     allGames[val.id] = val.data() as StoredGameData;
   });
 
-  // const processedGames: Record<string, ProcessedGame> = {};
   for (const [gameId, game] of Object.entries(allGames)) {
-    if (!!processedGames[gameId]) {
-      continue;
-    }
-
     const actionLog = await getFullActionLog(gameId);
     if (!isCompletedGame(game, baseData, actionLog)) {
       continue;
     }
+    if (!!processedGames[gameId]) {
+      continue;
+    }
+    const fixedGame = fixGame(game, baseData, actionLog);
+    if (!fixedGame) {
+      continue;
+    }
     const timers = await getTimers(gameId);
-    const processedGame = processGame(game, baseData, actionLog, timers);
+    const processedGame = processGame(
+      structuredClone(fixedGame),
+      baseData,
+      timers
+    );
     if (!processedGame) {
       continue;
     }
     processedGames[gameId] = processedGame;
+    await archiveGame(structuredClone(fixedGame), gameId, timers);
 
     db.collection("games")
       .doc(gameId)
-      .update({ deleteAt: FieldValue.delete() });
+      .update({ deleteAt: Timestamp.fromDate(deleteDate) });
 
-    try {
-      db.collection("processed").doc(gameId).set(processedGame);
-    } catch (err) {
-      break;
-    }
+    db.collection("timers")
+      .doc(gameId)
+      .update({ deleteAt: Timestamp.fromDate(deleteDate) });
   }
 
   const file = storage
@@ -228,19 +244,11 @@ export async function maybeUpdateProcessedGames(
   stream.push(null);
 }
 
-export function processGame(
-  game: StoredGameData,
+function processGame(
+  fixedGame: StoredGameData,
   baseData: BaseData,
-  log: ActionLogEntry[],
   timers: Timers
-) {
-  const fixedGame = rewindGame(game, baseData, log);
-
-  if (!fixedGame) {
-    console.log("Couldn't fix game");
-    return;
-  }
-
+): Optional<ProcessedGame> {
   let winner: FactionId = "Vuil'raith Cabal";
   let maxPoints = 0;
   const factionInfo: Partial<Record<FactionId, GameFactionInfo>> = {};
@@ -284,24 +292,27 @@ export function processGame(
     };
   }
 
-  if (fixedGame.options["victory-points"] + 1 === maxPoints) {
-    maxPoints -= 1;
-  }
+  const fixedActionLog = fixedGame.actionLog ?? [];
+  const firstTimestamp =
+    fixedActionLog[fixedActionLog.length - 1]?.timestampMillis ?? 0;
+
   const output: ProcessedGame = {
     isObjectiveGame: isObjectiveGame(fixedGame, baseData),
     isPlanetGame: isPlanetGame(fixedGame),
     isTechGame: isTechGame(fixedGame),
     isTimedGame: (timers.game ?? 0) !== 0,
 
-    victoryPoints: maxPoints,
+    victoryPoints: fixedGame.options["victory-points"],
     playerCount: Object.keys(fixedGame.factions).length,
     expansions: fixedGame.options.expansions,
 
     winner,
-    rounds: processLog(fixedGame, baseData, fixedGame.actionLog ?? []),
+    rounds: processLog(fixedGame, baseData, fixedActionLog),
     factions: factionInfo,
     gameTime: timers.game ?? 0,
     objectives: objectiveInfo,
+
+    timestampMillis: firstTimestamp,
   };
   return output;
 }
@@ -310,7 +321,7 @@ function isObjectiveGame(game: StoredGameData, baseData: BaseData) {
   const foundTypes = new Set<ObjectiveType>();
   const baseObjectives = baseData.objectives;
   for (const faction of Object.values(game.factions)) {
-    if (faction.vps !== 0) {
+    if ((faction.vps ?? 0) > 3) {
       return false;
     }
   }
@@ -348,6 +359,8 @@ function isTechGame(game: StoredGameData) {
   }, true);
 }
 
+// Rewinds game in place so that the last action is the correct last action
+// of the game. If more than 20 steps are rewound, considers the game unfinished.
 function rewindGame(
   game: StoredGameData,
   baseData: BaseData,
@@ -373,6 +386,7 @@ function rewindGame(
   output.actionLog = structuredClone(log);
   output.options["victory-points"] = maxPoints;
 
+  let finalEntry;
   let numSteps = 0;
   let lastEntry: Optional<ActionLogEntry>;
   while (numSteps < 20 && hasWinningFaction(output, baseData)) {
@@ -380,6 +394,9 @@ function rewindGame(
     lastEntry = output.actionLog[0];
     if (!lastEntry) {
       break;
+    }
+    if (!finalEntry) {
+      finalEntry = lastEntry;
     }
     let handler: any;
     try {
@@ -417,14 +434,22 @@ function rewindGame(
     return;
   }
   updateGameData(output, handler.getUpdates());
-  updateActionLog(output, handler, Date.now());
+  updateActionLog(output, handler, lastEntry.timestampMillis);
+
+  (output.actionLog[0] as ActionLogEntry).gameSeconds = lastEntry.gameSeconds;
 
   const endGameHandler = new EndGameHandler(output, {
     action: "END_GAME",
     event: {},
   });
   updateGameData(output, endGameHandler.getUpdates());
-  updateActionLog(output, endGameHandler, Date.now());
+  updateActionLog(
+    output,
+    endGameHandler,
+    finalEntry?.timestampMillis ?? Date.now()
+  );
+
+  (output.actionLog[0] as ActionLogEntry).gameSeconds = finalEntry?.gameSeconds;
 
   return output;
 }
@@ -451,7 +476,6 @@ function processLog(
         const card =
           logEntry.data.event.id ?? (logEntry.data.event as any).name;
         if (!card) {
-          console.log("Log Entry", logEntry.data);
           throw Error("EROEINOGEIN");
         }
         processedRound.cardPicks.push({
@@ -548,4 +572,118 @@ function processLog(
     rounds.push(processedRound);
   }
   return rounds;
+}
+
+function fixGame(
+  game: StoredGameData,
+  baseData: BaseData,
+  log: ActionLogEntry[]
+) {
+  const fixedGame = rewindGame(game, baseData, log);
+  if (!fixedGame) {
+    return;
+  }
+
+  const objectives = buildObjectives(fixedGame, baseData);
+  let maxPoints = 0;
+  for (const factionId of objectKeys(fixedGame.factions)) {
+    delete fixedGame.factions[factionId]?.playerName;
+    const points = computeVPs(
+      fixedGame.factions,
+      factionId as FactionId,
+      objectives
+    );
+    if (points > maxPoints) {
+      maxPoints = points;
+    }
+  }
+
+  // Adjust victory-points if needed.
+  const lastAction = (fixedGame.actionLog ?? [])[1];
+  switch (lastAction?.data.action) {
+    case "SELECT_ACTION":
+      if (lastAction.data.event.action === "Imperial") {
+        break;
+      }
+      return;
+    case "SCORE_OBJECTIVE":
+      const points =
+        baseData.objectives[lastAction.data.event.objective].points;
+      if (points === 2 && maxPoints > fixedGame.options["victory-points"]) {
+        fixedGame.options["victory-points"] -= 1;
+      }
+      break;
+    case "MANUAL_VP_UPDATE":
+      break;
+    case "GAIN_RELIC":
+      if (lastAction.data.event.relic === "Shard of the Throne") {
+        break;
+      }
+      return;
+  }
+
+  return fixedGame;
+}
+
+async function archiveGame(
+  fixedGame: StoredGameData,
+  gameId: string,
+  timers: Timers
+) {
+  const actionLog = fixedGame.actionLog ?? [];
+  delete fixedGame.actionLog;
+
+  const db = getFirestore();
+  try {
+    db.collection("archive").doc(gameId).set(fixedGame);
+  } catch (err) {
+    console.log("Error", err);
+    return;
+  }
+
+  try {
+    // Clear all old action log entries.
+    // Uncomment when needing to re-write the action logs.
+    // const oldActionLog = await db
+    //   .collection("archive")
+    //   .doc(gameId)
+    //   .collection("actionLog")
+    //   .get();
+    // const promises: Promise<WriteResult>[] = [];
+    // oldActionLog.forEach(async (entry) => {
+    //   promises.push(
+    //     db
+    //       .collection("archive")
+    //       .doc(gameId)
+    //       .collection("actionLog")
+    //       .doc(entry.id)
+    //       .delete()
+    //   );
+    // });
+    // await Promise.all(promises);
+    const count = await db
+      .collection("archive")
+      .doc(gameId)
+      .collection("actionLog")
+      .count()
+      .get();
+    if (count.data().count === 0) {
+      for (const logEntry of actionLog) {
+        db.collection("archive")
+          .doc(gameId)
+          .collection("actionLog")
+          .add(logEntry);
+      }
+    }
+  } catch (err) {
+    console.log("Error", err);
+    return;
+  }
+
+  try {
+    db.collection("archiveTimers").doc(gameId).set(timers);
+  } catch (err) {
+    console.log("Error", err);
+    return;
+  }
 }

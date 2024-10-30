@@ -20,11 +20,13 @@ export default function TechTree({
   type,
   size = 4,
   style = {},
+  viewOnly,
 }: {
   factionId: FactionId;
   type: TechType | "FACTION";
   size?: number;
   style?: CSSProperties;
+  viewOnly?: boolean;
 }) {
   const factions = useFactions();
   const techs = useTechs();
@@ -82,18 +84,24 @@ export default function TechTree({
             <div
               key={tech.id}
               title={tech.name}
-              className={styles.TechTreeElement}
+              className={`${styles.TechTreeElement} ${
+                viewOnly ? styles.viewOnly : ""
+              }`}
               style={{
                 border: `1px solid ${color}`,
                 backgroundColor: filled ? color : undefined,
               }}
-              onClick={() => {
-                if (filled) {
-                  removeTechAsync(gameId, factionId, tech.id);
-                } else {
-                  addTechAsync(gameId, factionId, tech.id);
-                }
-              }}
+              onClick={
+                viewOnly
+                  ? undefined
+                  : () => {
+                      if (filled) {
+                        removeTechAsync(gameId, factionId, tech.id);
+                      } else {
+                        addTechAsync(gameId, factionId, tech.id);
+                      }
+                    }
+              }
             ></div>
           );
         })}
@@ -145,18 +153,24 @@ export default function TechTree({
             <div
               key={tech.id}
               title={tech.name}
-              className={styles.TechTreeElement}
+              className={`${styles.TechTreeElement} ${
+                viewOnly ? styles.viewOnly : ""
+              }`}
               style={{
                 border: `1px solid ${color}`,
                 backgroundColor: filled ? color : undefined,
               }}
-              onClick={() => {
-                if (filled) {
-                  removeTechAsync(gameId, factionId, tech.id);
-                } else {
-                  addTechAsync(gameId, factionId, tech.id);
-                }
-              }}
+              onClick={
+                viewOnly
+                  ? undefined
+                  : () => {
+                      if (filled) {
+                        removeTechAsync(gameId, factionId, tech.id);
+                      } else {
+                        addTechAsync(gameId, factionId, tech.id);
+                      }
+                    }
+              }
             ></div>
           );
         })}
@@ -192,18 +206,24 @@ export default function TechTree({
                 <div
                   key={tech.id}
                   title={tech.name}
-                  className={styles.TechTreeElement}
+                  className={`${styles.TechTreeElement} ${
+                    viewOnly ? styles.viewOnly : ""
+                  }`}
                   style={{
                     border: `1px solid ${color}`,
                     backgroundColor: filled ? color : undefined,
                   }}
-                  onClick={() => {
-                    if (filled) {
-                      removeTechAsync(gameId, factionId, tech.id);
-                    } else {
-                      addTechAsync(gameId, factionId, tech.id);
-                    }
-                  }}
+                  onClick={
+                    viewOnly
+                      ? undefined
+                      : () => {
+                          if (filled) {
+                            removeTechAsync(gameId, factionId, tech.id);
+                          } else {
+                            addTechAsync(gameId, factionId, tech.id);
+                          }
+                        }
+                  }
                 ></div>
               );
             })}

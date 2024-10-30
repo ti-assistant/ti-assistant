@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
+import TechSummary from "./components/TechSummary/TechSummary";
 import { GameIdContext } from "./context/Context";
 import {
   useActionLog,
@@ -14,11 +15,7 @@ import {
   usePlanets,
   useTechs,
 } from "./context/dataHooks";
-import {
-  manualVPUpdateAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "./dynamic/api";
+import { manualVPUpdateAsync } from "./dynamic/api";
 import { computeScoredVPs } from "./util/factions";
 import {
   applyAllPlanetAttachments,
@@ -26,7 +23,6 @@ import {
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
 import { objectEntries, rem } from "./util/util";
-import TechSummary from "./components/TechSummary/TechSummary";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -166,7 +162,6 @@ export function FactionSummary({
 
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   const actionLog = useActionLog();
-  const gameId = useContext(GameIdContext);
   const objectives = useObjectives();
   const factions = useFactions();
 
@@ -299,7 +294,7 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
           {others.map((obj) => {
             if (obj.id === "Support for the Throne") {
               return (
-                <>
+                <React.Fragment key={obj.id}>
                   {objectEntries(obj.keyedScorers ?? {}).map(
                     ([faction, scorers]) => {
                       if (!scorers.includes(factionId)) {
@@ -320,7 +315,7 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                       );
                     }
                   )}
-                </>
+                </React.Fragment>
               );
             }
 
@@ -332,7 +327,7 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                 ? `${obj.name} - ${obj.points === 1 ? "For" : "Against"}`
                 : obj.name;
             return (
-              <>
+              <React.Fragment key={obj.id}>
                 {scorers.map((scorer, index) => {
                   if (scorer !== factionId) {
                     return null;
@@ -351,7 +346,7 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                     ></div>
                   );
                 })}
-              </>
+              </React.Fragment>
             );
           })}
         </div>

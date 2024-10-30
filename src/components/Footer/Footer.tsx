@@ -58,7 +58,7 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
   ssr: false,
 });
 
-export default function Footer({}) {
+export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
   const gameId = useContext(GameIdContext);
   const factions = useFactions();
   const options = useOptions();
@@ -242,7 +242,7 @@ export default function Footer({}) {
               justifyContent: "flex-start",
             }}
           >
-            <TechPanel byFaction={groupTechsByFaction} />
+            <TechPanel byFaction={groupTechsByFaction} viewOnly={viewOnly} />
           </div>
         </div>
       </GenericModal>
@@ -283,7 +283,7 @@ export default function Footer({}) {
               paddingBottom: rem(24),
             }}
           >
-            <ObjectivePanel />
+            <ObjectivePanel viewOnly={viewOnly} />
           </div>
         </div>
       </GenericModal>
@@ -323,7 +323,7 @@ export default function Footer({}) {
               height: "100%",
             }}
           >
-            <PlanetPanel />
+            <PlanetPanel viewOnly={viewOnly} />
           </div>
         </div>
       </GenericModal>
