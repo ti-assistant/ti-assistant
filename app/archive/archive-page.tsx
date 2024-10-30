@@ -373,6 +373,48 @@ export default function ArchivePage({
                     </div>
                   );
                 })}
+                <div
+                  className="flexRow"
+                  style={{
+                    width: rem(16),
+                    height: rem(16),
+                    fontSize: rem(14),
+                    fontWeight: "bold",
+                    backgroundColor: game.isObjectiveGame ? "#999" : "#333",
+                    color: "#111",
+                    borderRadius: "100%",
+                  }}
+                >
+                  {game.isObjectiveGame ? "✓" : ""}
+                </div>
+                <div
+                  className="flexRow"
+                  style={{
+                    width: rem(16),
+                    height: rem(16),
+                    fontSize: rem(14),
+                    fontWeight: "bold",
+                    backgroundColor: game.isTechGame ? "#999" : "#333",
+                    color: "#111",
+                    borderRadius: "100%",
+                  }}
+                >
+                  {game.isTechGame ? "✓" : ""}
+                </div>
+                <div
+                  className="flexRow"
+                  style={{
+                    width: rem(16),
+                    height: rem(16),
+                    fontSize: rem(14),
+                    fontWeight: "bold",
+                    backgroundColor: game.isPlanetGame ? "#999" : "#333",
+                    color: "#111",
+                    borderRadius: "100%",
+                  }}
+                >
+                  {game.isPlanetGame ? "✓" : ""}
+                </div>
               </div>
             </Link>
           );

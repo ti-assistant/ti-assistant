@@ -20,7 +20,7 @@
 
   display: grid;
   grid-auto-flow: row;
-  grid-template-columns: 1fr 2fr 3fr;
+  grid-template-columns: 1fr 2fr 3fr min-content min-content min-content;
 
   row-gap: 0.5rem;
 }
@@ -30,7 +30,7 @@
   grid-auto-flow: row;
   grid-template-columns: subgrid;
 
-  grid-column: span 3;
+  grid-column: span 6;
 }
 
 @media only screen and (max-width: 56.25rem) {
