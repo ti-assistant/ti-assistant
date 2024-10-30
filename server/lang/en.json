@@ -263,6 +263,10 @@
     "defaultMessage": "Objective View",
     "description": "Text on a button that opens the objective view of the assistant."
   },
+  "9qHL4G": {
+    "defaultMessage": "{count} {count, plural, one {Law} other {Laws}} in Effect",
+    "description": "Text on a hover menu that will display the current laws that have been passed."
+  },
   "A5p5qF": {
     "defaultMessage": "Report Issue",
     "description": "A button that will open the Github issues page."
@@ -2498,10 +2502,6 @@
   "J2lfJ4": {
     "defaultMessage": "Average Scorers per game: {number} - ({total} in {games} games)",
     "description": "Statistic about the number of scorers of a public objective."
-  },
-  "JS92Jj": {
-    "defaultMessage": "Make Speaker",
-    "description": "Text on a button that will make a faction the speaker."
   },
   "Jdx9F+": {
     "defaultMessage": "Remove Command Tokens",
@@ -5975,10 +5975,6 @@
     "defaultMessage": "Other Victory Points",
     "description": "The title of a section for assorted victory points."
   },
-  "oiV4lE": {
-    "defaultMessage": "Laws in Effect",
-    "description": "Text on a hover menu that will display the current laws that have been passed."
-  },
   "p4V2Yv": {
     "defaultMessage": "Draw 5 stage I objectives",
     "description": "A step in the setup phase: Draw 5 stage I objectives."
@@ -6018,10 +6014,6 @@
   "rlGbdz": {
     "defaultMessage": "Starting Components",
     "description": "A label for a section of components that a faction starts with."
-  },
-  "rqdwvE": {
-    "defaultMessage": "Colors",
-    "description": "Text on a button that will randomize colors."
   },
   "sJ5zBj": {
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
