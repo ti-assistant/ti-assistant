@@ -14,12 +14,12 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "../util/planets";
+import { rem } from "../util/util";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import PlanetSummary from "./PlanetSummary/PlanetSummary";
-import { rem } from "../util/util";
 
 interface ExtendedCSS extends CSSProperties {
   "--color": string;
@@ -216,8 +216,8 @@ export default function PlanetPanel({ viewOnly }: { viewOnly?: boolean }) {
   const factions = useFactions();
 
   const orderedFactionIds = Object.values(factions)
-    .map((faction) => faction.id)
-    .sort();
+    .sort((a, b) => a.mapPosition - b.mapPosition)
+    .map((faction) => faction.id);
 
   return (
     <div

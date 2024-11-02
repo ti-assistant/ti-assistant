@@ -36,13 +36,9 @@ function FactionTechSection({
   );
   sortTechs(typedTechs);
 
-  const orderedFactions = Object.values(factions);
-  orderedFactions.sort((a, b) => {
-    if (a.name > b.name) {
-      return 1;
-    }
-    return -1;
-  });
+  const orderedFactions = Object.values(factions).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
 
   const nekroFactionTechIds = Object.keys(factions["Nekro Virus"]?.techs ?? {})
     .filter((id) => {
@@ -361,13 +357,9 @@ function TechSection({
   );
   sortTechs(typedTechs);
 
-  const orderedFactions = Object.values(factions);
-  orderedFactions.sort((a, b) => {
-    if (a.name > b.name) {
-      return 1;
-    }
-    return -1;
-  });
+  const orderedFactions = Object.values(factions).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
 
   return (
     <div
@@ -418,13 +410,9 @@ function UpgradeTechSection({ viewOnly }: { viewOnly?: boolean }) {
   );
   sortTechs(typedTechs);
 
-  const orderedFactions = Object.values(factions);
-  orderedFactions.sort((a, b) => {
-    if (a.name > b.name) {
-      return 1;
-    }
-    return -1;
-  });
+  const orderedFactions = Object.values(factions).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
 
   return (
     <div className={`${styles.techColumn} ${styles.lastColumn}`}>
@@ -527,6 +515,7 @@ function TechsByFaction({
         </div>
       }
       openedByDefault={openedByDefault}
+      style={{ border: `1px solid ${getFactionColor(faction)}` }}
     >
       <div
         className="flexColumn"
@@ -534,6 +523,7 @@ function TechsByFaction({
           position: "relative",
           height: "100%",
           justifyContent: "flex-start",
+          padding: `0 ${rem(4)}`,
         }}
       >
         <div
@@ -556,6 +546,7 @@ function TechsByFaction({
           style={{
             width: "100%",
             zIndex: 1,
+            borderBottom: "1px solid #555",
           }}
         >
           <FullTechSummary
@@ -624,7 +615,9 @@ export default function TechPanel({
 }) {
   const factions = useFactions();
 
-  const orderedFactions = objectKeys(factions).sort((a, b) => (a < b ? -1 : 1));
+  const orderedFactions = Object.values(factions)
+    .sort((a, b) => a.mapPosition - b.mapPosition)
+    .map((faction) => faction.id);
   const techGridProperties: TechGridProperties = {
     "--num-columns": byFaction ? Math.ceil(orderedFactions.length / 2) : 4,
   };

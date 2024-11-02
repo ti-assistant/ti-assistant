@@ -1726,7 +1726,6 @@ export function ActivePlayerColumn({
               style={{
                 width: "fit-content",
                 minWidth: rem(200),
-                fontSize: rem(24),
               }}
             >
               <div
@@ -1736,6 +1735,7 @@ export function ActivePlayerColumn({
                   height: rem(44),
                   whiteSpace: "nowrap",
                   gap: rem(4),
+                  fontSize: rem(24),
                 }}
               >
                 {getFactionName(onDeckFaction)}
