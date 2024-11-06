@@ -1,5 +1,5 @@
 .hoverMenu {
-  background-color: var(--background-color);
+  background-color: var(--light-bg);
   overflow: visible;
   position: absolute;
   top: 0;
@@ -35,7 +35,7 @@
   position: absolute;
   border-radius: 100%;
   border: var(--border-size) solid var(--border-color);
-  background-color: var(--background-color);
+  background-color: var(--light-bg);
   top: 0;
   left: 0;
   width: calc(var(--size) * 1);
