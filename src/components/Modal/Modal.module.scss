@@ -5,19 +5,21 @@
   width: 100vw;
   height: 100dvh;
 
-  display: none;
+  visibility: hidden;
 
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #eee;
+
+  backdrop-filter: blur(0.5rem);
 }
 
 .Overlay {
   position: absolute;
   width: 100vw;
   height: 100dvh;
-  backdrop-filter: blur(0.75rem);
 }
 
 .Modal .Content {

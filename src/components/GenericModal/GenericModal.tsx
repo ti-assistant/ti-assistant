@@ -32,7 +32,7 @@ export default function GenericModal({
   return (
     <CSSTransition
       in={visible}
-      timeout={200}
+      timeout={300}
       classNames="fade"
       onEnter={onEnter}
       onExited={onExited}

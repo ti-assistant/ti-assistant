@@ -10,13 +10,7 @@
   flex-direction: column;
   align-items: center;
   color: #eee;
-}
-
-.Overlay {
-  position: absolute;
-  width: 100vw;
-  height: 100dvh;
-  backdrop-filter: blur(0.75rem);
+  backdrop-filter: blur(0.5rem);
 }
 
 .Modal .Content {

@@ -388,19 +388,23 @@ input[type="textbox"]:invalid {
 
 .fade-enter {
   opacity: 0;
+  backdrop-filter: blur(0);
 }
 .fade-enter-active {
   opacity: 1;
+  backdrop-filter: blur(0.5rem);
 }
 .fade-exit {
   opacity: 1;
+  backdrop-filter: blur(0.5rem);
 }
 .fade-exit-active {
   opacity: 0;
+  backdrop-filter: blur(0);
 }
 .fade-enter-active,
 .fade-exit-active {
-  transition: opacity 300ms;
+  transition: opacity 300ms, backdrop-filter 300ms linear;
 }
 
 .modal-enter {

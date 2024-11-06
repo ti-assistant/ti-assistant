@@ -23,11 +23,11 @@ import {
 } from "../dynamic/api";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
+import { processMapString } from "../util/map";
 import { objectiveTypeString } from "../util/strings";
-import styles from "./SetupPhase.module.scss";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
-import { processMapString } from "../util/map";
+import styles from "./SetupPhase.module.scss";
 
 export function startFirstRound(gameId: string) {
   advancePhaseAsync(gameId);
@@ -117,16 +117,17 @@ function getSetupPhaseText(
 }
 
 function setMapString(
-  gameId: Optional<string>,
+  gameId: string,
   mapString: string,
   mapStyle: MapStyle,
   numFactions: number
 ) {
-  if (!gameId) {
+  changeOptionAsync(gameId, "map-string", mapString);
+  if (mapString === "") {
+    changeOptionAsync(gameId, "processed-map-string", "");
     return;
   }
 
-  changeOptionAsync(gameId, "map-string", mapString);
   changeOptionAsync(
     gameId,
     "processed-map-string",

@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./Modal.module.scss";
 
@@ -17,12 +17,19 @@ export default function Modal({
   visible,
 }: PropsWithChildren<ModalProps>) {
   const zIndex = 900 * (level ?? 1);
+  const nodeRef = useRef<HTMLDivElement>(null);
 
-  function onExited(node: HTMLElement) {
-    node.style.display = "none";
+  function onExited() {
+    if (!nodeRef.current) {
+      return;
+    }
+    nodeRef.current.style.visibility = "hidden";
   }
-  function onEnter(node: HTMLElement) {
-    node.style.display = "flex";
+  function onEnter() {
+    if (!nodeRef.current) {
+      return;
+    }
+    nodeRef.current.style.visibility = "visible";
   }
   function closeModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
@@ -37,8 +44,10 @@ export default function Modal({
       classNames="fade"
       onEnter={onEnter}
       onExited={onExited}
+      nodeRef={nodeRef}
     >
       <div
+        ref={nodeRef}
         className={`${styles.Modal} ${visible ? styles.shown : ""}`}
         style={{ zIndex: zIndex + 3 }}
       >
