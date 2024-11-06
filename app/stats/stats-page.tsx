@@ -7,8 +7,11 @@ import {
   useEffect,
   useState,
 } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+import Chip from "../../src/components/Chip/Chip";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
+import { Strings } from "../../src/components/strings";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Optional } from "../../src/util/types/types";
@@ -21,9 +24,6 @@ import StrategyCardSection from "./sections/StrategyCardSection";
 import TechsSection from "./sections/TechsSection";
 import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Strings } from "../../src/components/strings";
-import Chip from "../../src/components/Chip/Chip";
 
 function FilterButton<T extends string | number>({
   filter,

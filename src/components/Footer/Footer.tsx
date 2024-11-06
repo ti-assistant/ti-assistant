@@ -179,7 +179,8 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
           <div className="flexRow centered extraLargeFont">
             <div
               style={{
-                backgroundColor: "#222",
+                backgroundColor: "var(--background-color)",
+                border: "1px solid var(--neutral-border)",
                 padding: `${rem(4)} ${rem(8)}`,
                 borderRadius: rem(4),
                 width: "min-content",
@@ -194,7 +195,8 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
             <div
               className="flexRow"
               style={{
-                backgroundColor: "#222",
+                backgroundColor: "var(--background-color)",
+                border: "1px solid var(--neutral-border)",
                 padding: `${rem(4)} ${rem(8)}`,
                 borderRadius: rem(4),
                 width: "min-content",
@@ -260,7 +262,8 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
           <div
             className="centered extraLargeFont"
             style={{
-              backgroundColor: "#222",
+              backgroundColor: "var(--background-color)",
+              border: "1px solid var(--neutral-border)",
               padding: `${rem(4)} ${rem(8)}`,
               borderRadius: rem(4),
               width: "min-content",
@@ -280,7 +283,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               justifyContent: "flex-start",
               overflow: "auto",
               height: "fit-content",
-              paddingBottom: rem(24),
+              paddingBottom: rem(28),
             }}
           >
             <ObjectivePanel viewOnly={viewOnly} />
@@ -301,7 +304,8 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
           <div
             className="centered extraLargeFont"
             style={{
-              backgroundColor: "#222",
+              backgroundColor: "var(--background-color)",
+              border: "1px solid var(--neutral-border)",
               padding: `${rem(4)} ${rem(8)}`,
               borderRadius: rem(4),
               width: "min-content",

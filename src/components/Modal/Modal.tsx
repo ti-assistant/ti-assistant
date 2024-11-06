@@ -33,7 +33,7 @@ export default function Modal({
   return (
     <CSSTransition
       in={visible}
-      timeout={500}
+      timeout={200}
       classNames="fade"
       onEnter={onEnter}
       onExited={onExited}
@@ -43,7 +43,7 @@ export default function Modal({
         style={{ zIndex: zIndex + 3 }}
       >
         <div className={styles.Overlay} onClick={closeModal}></div>
-        <CSSTransition in={visible} timeout={500} classNames="modal">
+        <CSSTransition in={visible} timeout={300} classNames="modal">
           <div className={styles.Content}>
             <div className={styles.Header}>
               {closeMenu ? (

@@ -5,16 +5,16 @@ import { UnitStat } from "../TechRow";
 import { GameIdContext } from "../context/Context";
 import { useLeaders, useTechs } from "../context/dataHooks";
 import { updateLeaderStateAsync } from "../dynamic/api";
-import { getFactionName } from "../util/factions";
+import { getFactionColor, getFactionName } from "../util/factions";
 import { leaderTypeString, unitTypeString } from "../util/strings";
+import { sortTechs } from "../util/techs";
+import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionPanel.module.scss";
 import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
-import { sortTechs } from "../util/techs";
-import { rem } from "../util/util";
 
 function AbilitySection({
   leftLabel,
@@ -712,7 +712,8 @@ export default function FactionPanel({
           <div
             className="flexRow centered extraLargeFont"
             style={{
-              backgroundColor: "#222",
+              backgroundColor: "var(--background-color)",
+              border: `1px solid ${getFactionColor(faction)}`,
               padding: `${rem(4)} ${rem(8)}`,
               borderRadius: rem(4),
             }}

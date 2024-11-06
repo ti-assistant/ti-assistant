@@ -5,14 +5,13 @@ import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
 import { useOptions } from "../../context/dataHooks";
-import { rem } from "../../util/util";
 
 const FactionPanel = dynamic(() => import("../FactionPanel"), {
   loading: () => (
     <div
       className="popupIcon"
       style={{
-        fontSize: rem(16),
+        fontSize: "16px",
       }}
     >
       &#x24D8;

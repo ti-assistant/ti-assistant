@@ -3,14 +3,14 @@ import styles from "./Chip.module.scss";
 import { rem } from "../../util/util";
 
 interface SelectedCSSProperties extends CSSProperties {
-  "--border-color": "#999";
-  "--background-color": "#444";
+  "--border-color": "#b8b8b8";
+  "--background-color": "var(--selected-bg)";
   "--font-size": string;
 }
 
 interface UnselectedCSSProperties extends CSSProperties {
   "--border-color": "#111";
-  "--background-color": "#333";
+  "--background-color": "var(--interactive-bg)";
   "--font-size": string;
 }
 
@@ -19,14 +19,14 @@ type ChipCSSProperties = SelectedCSSProperties | UnselectedCSSProperties;
 function getChipStyle(selected: boolean, fontSize: number): ChipCSSProperties {
   if (selected) {
     return {
-      "--border-color": "#999",
-      "--background-color": "#444",
+      "--border-color": "#b8b8b8",
+      "--background-color": "var(--selected-bg)",
       "--font-size": rem(fontSize),
     };
   }
   return {
     "--border-color": "#111",
-    "--background-color": "#333",
+    "--background-color": "var(--interactive-bg)",
     "--font-size": rem(fontSize),
   };
 }

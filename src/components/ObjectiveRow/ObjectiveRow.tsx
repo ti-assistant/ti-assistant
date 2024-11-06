@@ -146,7 +146,7 @@ export default function ObjectiveRow({
                         left: rem(20),
                         position: "absolute",
                         zIndex: 1,
-                        backgroundColor: "#222",
+                        backgroundColor: "var(--light-bg)",
                         color: "red",
                         display: "flex",
                         alignItems: "center",

@@ -55,8 +55,8 @@ export default function FactionSelectRadialMenu({
   onSelect,
   size = 44,
   tag,
-  borderColor = "#444",
-  tagBorderColor = "#444",
+  borderColor = "var(--neutral-border)",
+  tagBorderColor = "var(--neutral-border)",
 }: FactionSelectRadialMenuProps) {
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);

@@ -323,7 +323,7 @@ export function ObjectiveList({ factionId }: { factionId: FactionId }) {
         style={{
           position: "sticky",
           top: rem(41),
-          backgroundColor: "#222",
+          backgroundColor: "var(--background-color)",
           padding: `${rem(4)} ${rem(4)} 0px ${rem(4)}`,
         }}
       >

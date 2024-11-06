@@ -38,11 +38,13 @@ export function ClientOnlyHoverMenu({
           style={
             {
               "--color": borderColor,
-              border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
+              border: borderless
+                ? undefined
+                : `var(--border-size) solid ${borderColor}`,
               borderRadius: "0.3125rem",
               padding: `0.25rem 0.5rem`,
               whiteSpace: "nowrap",
-              backgroundColor: "#222",
+              backgroundColor: "var(--light-bg)",
             } as CSSProperties
           }
         >
@@ -161,16 +163,19 @@ export function HoverMenu({
     setTimeout(() => setClosing(false), 200);
   }
 
-  const hoverMenuStyle: CSSProperties = {
+  const hoverMenuStyle: CSSProperties & {
+    "--background-color": "var(--light-bg)";
+  } = {
+    "--background-color": "var(--light-bg)",
     position: "absolute",
     zIndex: 1000,
     alignItems: side === "left" ? "flex-end" : "flex-start",
     justifyContent: side === "left" ? "flex-end" : "flex-start",
     top: direction === "down" ? 0 : "auto",
     bottom: direction === "up" ? 0 : "auto",
-    border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
+    border: borderless ? undefined : `var(--border-size) solid ${borderColor}`,
     borderRadius: "0.3125rem",
-    backgroundColor: "#222",
+    backgroundColor: "var(--background-color)",
     overflow: "visible",
     whiteSpace: "nowrap",
     gap: 0,
@@ -207,11 +212,13 @@ export function HoverMenu({
         style={
           {
             "--color": borderColor,
-            border: borderless ? undefined : `${"2px"} solid ${borderColor}`,
+            border: borderless
+              ? undefined
+              : `var(--border-size) solid ${borderColor}`,
             borderRadius: "0.3125rem",
             padding: `0.25rem 0.5rem`,
             whiteSpace: "nowrap",
-            backgroundColor: "#222",
+            backgroundColor: "var(--light-bg)",
           } as CSSProperties
         }
       >

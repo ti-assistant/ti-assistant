@@ -58,7 +58,7 @@ export default function LangSelectHoverMenu({
   const hoverMenuStyle: CSSProperties = {
     left: 0,
     borderRadius: rem(size / 2),
-    border: `${"2px"} solid #444`,
+    border: `var(--border-size) solid var(--neutral-border)`,
   };
 
   return (
@@ -78,7 +78,7 @@ export default function LangSelectHoverMenu({
       }}
       ref={menu}
     >
-      <Circle borderColor="#444" size={size}>
+      <Circle borderColor="var(--neutral-border)" size={size}>
         <LanguageIcon locale={selectedLocale} />
       </Circle>
       <div
@@ -93,7 +93,6 @@ export default function LangSelectHoverMenu({
             width: `calc(${rem(size)} - 4px)`,
             height: `calc(${rem(size)} - 4px)`,
             fontSize: rem(size - 8),
-            color: "#777",
           }}
         >
           <div

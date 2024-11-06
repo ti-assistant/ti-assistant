@@ -985,7 +985,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                             className="flexRow"
                             style={{
                               position: "absolute",
-                              backgroundColor: "#222",
+                              backgroundColor: "var(--light-bg)",
                               borderRadius: "100%",
                               marginLeft: "44%",
                               marginTop: "44%",
@@ -1052,7 +1052,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                               border: `${"1px"} solid #333`,
                               borderRadius: "100%",
                               fontSize: rem(12),
-                              backgroundColor: "#222",
+                              backgroundColor: "var(--light-bg)",
                               boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                               cursor: "pointer",
                               zIndex: 2,
@@ -1085,7 +1085,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                               height: rem(16),
                               width: rem(16),
                               fontSize: rem(12),
-                              backgroundColor: "#222",
+                              backgroundColor: "var(--light-bg)",
                               boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                               cursor: "pointer",
                               zIndex: 2,
@@ -1109,7 +1109,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                           className="flexRow"
                           style={{
                             position: "absolute",
-                            backgroundColor: "#222",
+                            backgroundColor: "var(--light-bg)",
                             borderRadius: "100%",
                             marginLeft: "60%",
                             marginTop: "60%",
@@ -1468,7 +1468,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
           height: "100%",
           gap: rem(24),
           isolation: "isolate",
-          backgroundColor: "#222",
+          backgroundColor: "var(--background-color)",
           borderRadius: rem(8),
         }}
       >
@@ -1548,7 +1548,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                       left: rem(-4),
                       transform: "rotate(270deg)",
                       transformOrigin: "left bottom",
-                      backgroundColor: "#222",
+                      backgroundColor: "var(--background-color)",
                       padding: `0 ${rem(4)}`,
                     }}
                   >
@@ -1721,7 +1721,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 marginBottom: rem(-68),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
-                backgroundColor: "#222",
+                backgroundColor: "var(--background-color)",
                 padding: `0 ${rem(4)}`,
                 color: "orange",
                 whiteSpace: "nowrap",
@@ -1751,7 +1751,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 marginBottom: rem(-72),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
-                backgroundColor: "#222",
+                backgroundColor: "var(--background-color)",
                 padding: `0 ${rem(4)}`,
                 color: "royalblue",
                 whiteSpace: "nowrap",
@@ -1782,7 +1782,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 marginBottom: rem(-72),
                 transform: "rotate(270deg)",
                 transformOrigin: "left center",
-                backgroundColor: "#222",
+                backgroundColor: "var(--background-color)",
                 padding: `0 ${rem(4)}`,
                 color: "red",
               }}
@@ -1849,7 +1849,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                     className="flexRow"
                     style={{
                       position: "absolute",
-                      backgroundColor: "#222",
+                      backgroundColor: "var(--light-bg)",
                       borderRadius: "100%",
                       marginLeft: "44%",
                       marginTop: "44%",
@@ -1994,9 +1994,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                         }
                       }}
                       tag={<FactionIcon factionId={factionId} size="100%" />}
-                      tagBorderColor={getFactionColor(
-                        (factions ?? {})[factionId]
-                      )}
+                      tagBorderColor={getFactionColor(factions[factionId])}
                       borderColor={
                         scorer
                           ? getFactionColor((factions ?? {})[scorer])
@@ -2045,10 +2043,9 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                           fontWeight: "bold",
                           height: rem(16),
                           width: rem(16),
-                          border: `${"1px"} solid #333`,
                           borderRadius: "100%",
                           fontSize: rem(12),
-                          backgroundColor: "#222",
+                          backgroundColor: "var(--interactive-bg)",
                           boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                           cursor: "pointer",
                           zIndex: 2,
@@ -2075,13 +2072,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                           right: 0,
                           top: rem(-4),
                           fontFamily: "Myriad Pro",
-                          border: `${"1px"} solid #333`,
+                          // border: `${"1px"} solid #333`,
                           fontWeight: "bold",
                           borderRadius: "100%",
                           height: rem(16),
                           width: rem(16),
                           fontSize: rem(12),
-                          backgroundColor: "#222",
+                          backgroundColor: "var(--interactive-bg)",
                           boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                           cursor: "pointer",
                           zIndex: 2,
@@ -2105,7 +2102,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                       className="flexRow"
                       style={{
                         position: "absolute",
-                        backgroundColor: "#222",
+                        backgroundColor: "var(--light-bg)",
                         borderRadius: "100%",
                         marginLeft: "60%",
                         marginTop: "60%",

@@ -74,7 +74,7 @@
   width: 100%;
 
   --color: #eee;
-  background-color: #222;
+  background-color: var(--background-color);
   border-radius: 0.25rem;
   padding-top: 0.25rem;
 

@@ -2,14 +2,14 @@ import { Optional } from "./types/types";
 
 export function getFactionColor(faction: Optional<Faction>) {
   if (!faction) {
-    return "#555";
+    return "var(--neutral-border)";
   }
   return convertToFactionColor(faction.color);
 }
 
 export function convertToFactionColor(color: Optional<string>) {
   if (!color) {
-    return "#555";
+    return "var(--neutral-border)";
   }
   switch (color) {
     case "Blue":

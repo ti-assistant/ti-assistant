@@ -17,14 +17,14 @@ interface FactionCircleProps {
 
 export default function FactionCircle({
   blur,
-  borderColor = "#444",
+  borderColor = "var(--neutral-border)",
   factionId,
   fade = false,
   onClick,
   size = 44,
   style = {},
   tag,
-  tagBorderColor = "#444",
+  tagBorderColor = "var(--neutral-border)",
 }: FactionCircleProps) {
   return (
     <Circle

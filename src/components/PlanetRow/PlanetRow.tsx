@@ -143,7 +143,7 @@ export default function PlanetRow({
               fontFamily: "Myriad Pro",
               position: "absolute",
               color: claimedColor,
-              backgroundColor: "#222",
+              backgroundColor: "var(--background-color)",
               borderRadius: rem(5),
               border: `${"1px"} solid ${claimedColor}`,
               padding: `0 ${rem(4)}`,

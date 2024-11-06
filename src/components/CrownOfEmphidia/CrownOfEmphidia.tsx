@@ -74,7 +74,7 @@ export default function CrownOfEmphidia({}) {
             className="flexRow"
             style={{
               position: "absolute",
-              backgroundColor: "#222",
+              backgroundColor: "var(--light-bg)",
               cursor: "pointer",
               borderRadius: "100%",
               marginLeft: "60%",

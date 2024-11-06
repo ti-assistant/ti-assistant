@@ -286,8 +286,8 @@ export function SystemImage({
                 className="flexRow"
                 style={{
                   position: "absolute",
-                  backgroundColor: "#222",
-                  border: `${"2px"} solid ${getFactionColor(
+                  backgroundColor: "var(--background-color)",
+                  border: `var(--border-size) solid ${getFactionColor(
                     (factions ?? {})[planet.owner]
                   )}`,
                   borderRadius: "100%",
@@ -312,8 +312,10 @@ export function SystemImage({
                 className="flexRow"
                 style={{
                   position: "absolute",
-                  backgroundColor: "#222",
-                  border: `${"2px"} solid ${getPlanetTypeColor(planet.type)}`,
+                  backgroundColor: "var(--background-color)",
+                  border: `var(--border-size) solid ${getPlanetTypeColor(
+                    planet.type
+                  )}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -336,8 +338,8 @@ export function SystemImage({
                 className="flexRow"
                 style={{
                   position: "absolute",
-                  backgroundColor: "#222",
-                  border: `${"2px"} solid ${"#eee"}`,
+                  backgroundColor: "var(--background-color)",
+                  border: `var(--border-size) solid ${"#eee"}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -384,8 +386,10 @@ export function SystemImage({
                   className="flexRow"
                   style={{
                     position: "absolute",
-                    backgroundColor: "#222",
-                    border: `2px solid ${getTechTypeColor(color)}`,
+                    backgroundColor: "var(--background-color)",
+                    border: `var(--border-size) solid ${getTechTypeColor(
+                      color
+                    )}`,
                     borderRadius: "100%",
                     width: "24%",
                     height: height,
@@ -771,7 +775,7 @@ export default function Map({
             }
             style={{
               width: "fit-content",
-              backgroundColor: "#222",
+              backgroundColor: "var(--background-color)",
               justifyContent: "stretch",
               alignItems: "stretch",
               paddingTop: rem(16),

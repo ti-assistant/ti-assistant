@@ -1,18 +1,12 @@
-import React, {
-  CSSProperties,
-  ReactNode,
-  useContext,
-  useRef,
-  useState,
-} from "react";
-import { SymbolX } from "../../icons/svgs";
-import styles from "./AttachmentSelectRadialMenu.module.scss";
-import AttachmentIcon from "../AttachmentIcon/AttachmentIcon";
-import Circle from "../Circle/Circle";
-import { getTechTypeColor } from "../../util/techs";
+import React, { CSSProperties, ReactNode, useRef, useState } from "react";
 import { useAttachments } from "../../context/dataHooks";
+import { SymbolX } from "../../icons/svgs";
+import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
+import AttachmentIcon from "../AttachmentIcon/AttachmentIcon";
+import Circle from "../Circle/Circle";
+import styles from "./AttachmentSelectRadialMenu.module.scss";
 
 interface AttachmentSelectRadialMenuProps {
   selectedAttachment?: AttachmentId;
@@ -62,7 +56,7 @@ export default function AttachmentSelectRadialMenu({
   onSelect,
   size = 44,
   tag,
-  tagBorderColor = "#444",
+  tagBorderColor = "var(--neutral-border)",
 }: AttachmentSelectRadialMenuProps) {
   const attachmentData = useAttachments();
 
@@ -79,7 +73,7 @@ export default function AttachmentSelectRadialMenu({
     setTimeout(() => setClosing(false), 200);
   }
 
-  let borderColor = "#444";
+  let borderColor = "var(--neutral-border)";
   if (
     selectedAttachment &&
     attachmentData[selectedAttachment]?.attribute?.includes("-skip")

@@ -1,4 +1,8 @@
-export function SymbolX({ color = "#777" }: { color?: string }) {
+export function SymbolX({
+  color = "var(--neutral-border)",
+}: {
+  color?: string;
+}) {
   return (
     <svg viewBox="0 0 100 100" stroke={color} strokeWidth={"7px"}>
       <path d="M 22 22 L 78 78"></path>

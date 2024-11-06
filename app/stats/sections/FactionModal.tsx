@@ -43,9 +43,10 @@ export default function FactionModal({
         <div
           className="flexRow centered extraLargeFont"
           style={{
-            backgroundColor: "#222",
+            backgroundColor: "var(--background-color)",
             padding: `${rem(4)} ${rem(8)}`,
             borderRadius: rem(4),
+            border: "1px solid var(--neutral-border)",
           }}
         >
           <FactionIcon factionId={id} size={36} />

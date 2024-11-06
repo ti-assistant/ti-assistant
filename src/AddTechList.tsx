@@ -41,7 +41,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
       <div
         className="flexRow"
         style={{
-          backgroundColor: "#222",
+          backgroundColor: "var(--background-color)",
           zIndex: 902,
           padding: `${rem(8)} ${rem(4)} 0 ${rem(4)}`,
           boxSizing: "border-box",

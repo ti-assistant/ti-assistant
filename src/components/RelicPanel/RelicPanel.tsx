@@ -106,9 +106,10 @@ export default function RelicPanel({}) {
           <div
             className="flexRow centered extraLargeFont"
             style={{
-              backgroundColor: "#222",
+              backgroundColor: "var(--background-color)",
               padding: "4px 8px",
               borderRadius: "4px",
+              border: "1px solid var(--neutral-border)",
             }}
           >
             Relics

@@ -1,12 +1,11 @@
 import Image from "next/image";
-import React, { CSSProperties, PropsWithChildren, useContext } from "react";
-import styles from "./StrategyCardElement.module.scss";
-import FactionTile from "../FactionTile/FactionTile";
-import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import { getFactionColor, getFactionName } from "../../util/factions";
-import FactionCircle from "../FactionCircle/FactionCircle";
+import React, { CSSProperties, PropsWithChildren } from "react";
 import { useFactions } from "../../context/dataHooks";
+import { getFactionColor } from "../../util/factions";
 import { rem } from "../../util/util";
+import FactionCircle from "../FactionCircle/FactionCircle";
+import FactionTile from "../FactionTile/FactionTile";
+import styles from "./StrategyCardElement.module.scss";
 
 interface StrategyCardProps {
   active?: boolean;
@@ -39,7 +38,7 @@ export function StrategyCardElement({
     "--text-color": textColor,
     fontSize: rem(fontSize),
     cursor: onClick ? "pointer" : "auto",
-    backgroundColor: active ? undefined : "#222",
+    backgroundColor: active ? undefined : "var(--disabled-bg)",
   };
   return (
     <div

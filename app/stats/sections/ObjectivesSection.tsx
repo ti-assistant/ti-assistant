@@ -152,10 +152,11 @@ export default function ObjectivesSection({
                 <div
                   className="flexColumn centered extraLargeFont"
                   style={{
-                    backgroundColor: "#222",
+                    backgroundColor: "var(--background-color)",
                     padding: `${rem(4)} ${rem(8)}`,
                     borderRadius: rem(4),
                     gap: 0,
+                    border: "1px solid var(--neutral-border)",
                   }}
                 >
                   {objId}

@@ -1,16 +1,16 @@
 import Image from "next/image";
-import { rem } from "../../util/util";
-import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
-import { FormattedMessage } from "react-intl";
-import { useFactions, useObjectives } from "../../context/dataHooks";
 import { CSSProperties, useContext } from "react";
+import { FormattedMessage } from "react-intl";
 import { GameIdContext } from "../../context/Context";
+import { useFactions, useObjectives } from "../../context/dataHooks";
 import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { getFactionColor } from "../../util/factions";
-import styles from "./PromissoryMenu.module.scss";
+import { rem } from "../../util/util";
+import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledLine from "../LabeledLine/LabeledLine";
+import styles from "./PromissoryMenu.module.scss";
 
 interface NumFactionsCSS extends CSSProperties {
   "--num-factions": number;
@@ -60,7 +60,7 @@ export default function PromissoryMenu({
       label={
         <div
           className="flexRow"
-          style={{ position: "relative", width: rem(18), height: rem(18) }}
+          style={{ position: "relative", width: rem(18), height: rem(14) }}
         >
           <Image
             src="/images/promissory.svg"

@@ -29,7 +29,7 @@ export default function LabeledDiv({
   noBlur,
   onClick,
   style = {},
-  color = "#999",
+  color = "var(--neutral-border)",
   opts = {},
   className,
 }: PropsWithChildren<LabeledDivProps>) {
