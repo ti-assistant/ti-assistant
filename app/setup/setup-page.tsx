@@ -15,7 +15,7 @@ import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import Map from "../../src/components/Map/Map";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import NumberInput from "../../src/components/NumberInput/NumberInput";
-import ResponsiveLogo from "../../src/components/ResponsiveLogo/ResponsiveLogo";
+import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Strings } from "../../src/components/strings";
 import { OUTER_BLACK_BORDER_GLOW } from "../../src/util/borderGlow";
@@ -1936,7 +1936,7 @@ export default function SetupPage({
                     animation: "spin 2s linear infinite",
                   }}
                 >
-                  <ResponsiveLogo size="100%" />
+                  <SiteLogo />
                 </div>
               </div>
             ) : null}
