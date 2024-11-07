@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CSSProperties,
   useCallback,
@@ -6,8 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { FormattedMessage } from "react-intl";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
-import { GameIdContext } from "./context/Context";
+import { useGameId, useGameState, useTimers } from "./context/dataHooks";
 import { useSharedTimer } from "./data/SharedTimer";
 import {
   saveAgendaTimer,
@@ -15,13 +18,11 @@ import {
   updateLocalAgendaTimer,
   updateLocalFactionTimer,
 } from "./util/api/timers";
-import { FormattedMessage } from "react-intl";
 import { useInterval } from "./util/client";
-import { useGameState, useTimers } from "./context/dataHooks";
 import { rem } from "./util/util";
 
 export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const state = useGameState();
   const timers = useTimers();
 
@@ -106,8 +107,7 @@ export function StaticFactionTimer({
   style,
   width,
 }: FactionTimerProps) {
-  const gameId = useContext(GameIdContext);
-  // const state = useGameState);
+  const gameId = useGameId();
   const timers = useTimers();
   const [factionTimer, setFactionTimer] = useState(timers[factionId] ?? 0);
   const prevFaction = useRef<string>();
@@ -148,7 +148,7 @@ export function StaticFactionTimer({
 }
 
 export function FactionTimer({ factionId, style }: FactionTimerProps) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const state = useGameState();
   const timers = useTimers();
 

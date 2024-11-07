@@ -1,17 +1,20 @@
 import Image from "next/image";
-import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import { GameIdContext } from "../../context/Context";
-import { useAttachments, useFactions } from "../../context/dataHooks";
+import {
+  useAttachments,
+  useFactions,
+  useGameId,
+} from "../../context/dataHooks";
+import { useSharedModal } from "../../data/SharedModal";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";
 import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
-import Modal from "../Modal/Modal";
+import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
-import { rem } from "../../util/util";
 import Toggle from "../Toggle/Toggle";
 
 interface PlanetRowOpts {
@@ -40,7 +43,7 @@ export default function PlanetRow({
   const attachments = useAttachments();
   const factions = useFactions();
 
-  const [showAttachModal, setShowAttachModal] = useState(false);
+  const { openModal } = useSharedModal();
 
   function canAttach() {
     return (
@@ -100,10 +103,6 @@ export default function PlanetRow({
         };
       }, {});
     return available;
-  }
-
-  function displayAttachMenu() {
-    setShowAttachModal(!showAttachModal);
   }
 
   const previousOwner = prevOwner ?? planet.owner;
@@ -195,7 +194,14 @@ export default function PlanetRow({
               <button
                 style={{ fontSize: rem(10) }}
                 className="hiddenButton"
-                onClick={displayAttachMenu}
+                onClick={() =>
+                  openModal(
+                    <AttachMenu
+                      planet={planet}
+                      attachments={availableAttachments()}
+                    />
+                  )
+                }
               >
                 Attach
               </button>
@@ -223,7 +229,16 @@ export default function PlanetRow({
           {opts.showAttachButton ? (
             <div style={{ width: rem(56) }}>
               {canAttach() ? (
-                <button onClick={() => displayAttachMenu()}>
+                <button
+                  onClick={() =>
+                    openModal(
+                      <AttachMenu
+                        planet={planet}
+                        attachments={availableAttachments()}
+                      />
+                    )
+                  }
+                >
                   <FormattedMessage
                     id="Kqms7v"
                     defaultMessage="Attach"
@@ -235,12 +250,6 @@ export default function PlanetRow({
           ) : null}
         </div>
       </div>
-      <AttachMenu
-        visible={showAttachModal}
-        planet={planet}
-        attachments={availableAttachments()}
-        closeMenu={displayAttachMenu}
-      />
     </SelectableRow>
   );
 }
@@ -367,23 +376,11 @@ function PlanetAttributes({
 interface AttachMenuProps {
   planet: Planet;
   attachments: Partial<Record<AttachmentId, Attachment>>;
-  visible: boolean;
-  closeMenu: () => void;
 }
 
-function AttachMenu({
-  planet,
-  attachments,
-  visible,
-  closeMenu,
-}: AttachMenuProps) {
+function AttachMenu({ planet, attachments }: AttachMenuProps) {
   return (
-    <Modal
-      closeMenu={closeMenu}
-      visible={visible}
-      level={2}
-      title={"Attachments for " + planet.name}
-    >
+    <ModalContent title={"Attachments for " + planet.name}>
       <div
         className="flexColumn"
         style={{
@@ -400,7 +397,7 @@ function AttachMenu({
           );
         })}
       </div>
-    </Modal>
+    </ModalContent>
   );
 }
 
@@ -410,7 +407,7 @@ interface AttachRowProps {
 }
 
 function AttachRow({ attachment, planet }: AttachRowProps) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   function isSkip() {
     return (attachment.attribute ?? "").includes("skip");
@@ -420,6 +417,7 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
     if (!gameId) {
       return;
     }
+    console.log("Attache");
     if ((planet.attachments ?? []).includes(attachment.id)) {
       removeAttachmentAsync(gameId, planet.id, attachment.id);
     } else {

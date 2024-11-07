@@ -80,3 +80,24 @@ export default function Modal({
     </CSSTransition>
   );
 }
+
+export function ModalContent({
+  children,
+  title,
+}: PropsWithChildren<{ title: ReactNode }>) {
+  return (
+    <div className={styles.ModalContent}>
+      <div className={styles.Content}>
+        <div className={styles.Header}>
+          <div className={styles.Title}>{title}</div>
+        </div>
+        <div
+          className={styles.Body}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { useState } from "react";
-import Modal from "../Modal/Modal";
+import Modal, { ModalContent } from "../Modal/Modal";
 import { rem } from "../../util/util";
+import { useSharedModal } from "../../data/SharedModal";
 
 function InfoContent({ ability }: { ability: string }) {
   const description = ability.replaceAll("\\n", "\n");
@@ -28,23 +31,24 @@ export default function LegendaryPlanetIcon({
   planetName?: string;
   ability?: string;
 }) {
-  const [showInfoModal, setShowInfoModal] = useState(false);
+  const { openModal } = useSharedModal();
 
   const cursor = ability ? "pointer" : "auto";
   return (
     <>
-      {planetName && ability ? (
-        <Modal
-          closeMenu={() => setShowInfoModal(false)}
-          level={2}
-          visible={showInfoModal}
-          title={<div style={{ fontSize: rem(40) }}>{planetName}</div>}
-        >
-          <InfoContent ability={ability} />
-        </Modal>
-      ) : null}
       <div
-        onClick={() => setShowInfoModal(true)}
+        onClick={() => {
+          if (!planetName || !ability) {
+            return;
+          }
+          openModal(
+            <ModalContent
+              title={<div style={{ fontSize: rem(40) }}>{planetName}</div>}
+            >
+              <InfoContent ability={ability} />
+            </ModalContent>
+          );
+        }}
         style={{
           cursor: cursor,
           display: "flex",

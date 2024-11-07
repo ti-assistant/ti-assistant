@@ -1,8 +1,7 @@
 import Image from "next/image";
-import { CSSProperties, useContext } from "react";
+import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
-import { GameIdContext } from "../../context/Context";
-import { useFactions, useObjectives } from "../../context/dataHooks";
+import { useFactions, useGameId, useObjectives } from "../../context/dataHooks";
 import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { getFactionColor } from "../../util/factions";
@@ -37,7 +36,7 @@ export default function PromissoryMenu({
   factionId: FactionId;
 }) {
   const factions = useFactions();
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const objectives = useObjectives();
 
   let orderedFactions = Object.values(factions).sort((a, b) => {

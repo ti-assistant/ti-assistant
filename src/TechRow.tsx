@@ -3,10 +3,11 @@ import { ReactNode, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
-import Modal from "./components/Modal/Modal";
+import Modal, { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
 import { getTechColor } from "./util/techs";
 import { rem } from "./util/util";
+import { useSharedModal } from "./data/SharedModal";
 
 export function UnitStat({
   name,
@@ -184,11 +185,7 @@ export function TechRow({
   leftContent,
   opts = {},
 }: TechRowProps) {
-  const [showInfoModal, setShowInfoModal] = useState(false);
-
-  function displayInfo() {
-    setShowInfoModal(true);
-  }
+  const { openModal } = useSharedModal();
 
   return (
     <SelectableRow
@@ -200,14 +197,6 @@ export function TechRow({
         className="flexRow"
         style={{ width: "100%", justifyContent: "stretch" }}
       >
-        <Modal
-          closeMenu={() => setShowInfoModal(false)}
-          level={2}
-          visible={showInfoModal}
-          title={<div style={{ fontSize: rem(40) }}>{tech.name}</div>}
-        >
-          <InfoContent tech={tech} />
-        </Modal>
         {leftContent ? <div>{leftContent}</div> : null}
         <div
           className={className}
@@ -261,7 +250,13 @@ export function TechRow({
             }}
             onClick={(e) => {
               e.stopPropagation();
-              displayInfo();
+              openModal(
+                <ModalContent
+                  title={<div style={{ fontSize: rem(40) }}>{tech.name}</div>}
+                >
+                  <InfoContent tech={tech} />
+                </ModalContent>
+              );
             }}
           >
             &#x24D8;

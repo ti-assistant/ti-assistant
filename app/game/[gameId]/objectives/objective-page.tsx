@@ -1,9 +1,8 @@
 "use client";
 
-import { useContext, useEffect } from "react";
-import { useIntl } from "react-intl";
+import { useEffect } from "react";
 import ObjectivePanel from "../../../../src/components/ObjectivePanel";
-import { GameIdContext } from "../../../../src/context/Context";
+import { useGameId } from "../../../../src/context/dataHooks";
 import { setGameId } from "../../../../src/util/api/util";
 import { rem } from "../../../../src/util/util";
 
@@ -12,8 +11,7 @@ export default function ObjectivesPage() {
 }
 
 function InnerObjectivesPage() {
-  const gameId = useContext(GameIdContext);
-  const intl = useIntl();
+  const gameId = useGameId();
 
   useEffect(() => {
     if (!!gameId) {

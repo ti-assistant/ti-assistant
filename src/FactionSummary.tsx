@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary from "./components/TechSummary/TechSummary";
-import { GameIdContext } from "./context/Context";
 import {
   useActionLog,
   useAttachments,
   useFaction,
   useFactions,
+  useGameId,
   useGameState,
   useLeaders,
   useObjectives,
@@ -38,10 +38,9 @@ export function FactionSummary({
   factionId,
   options = {},
 }: FactionSummaryProps) {
-  const gameId = useContext(GameIdContext);
-
   const attachments = useAttachments();
   const faction = useFaction(factionId);
+  const gameId = useGameId();
   const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();

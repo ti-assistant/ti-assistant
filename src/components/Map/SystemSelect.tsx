@@ -1,12 +1,7 @@
 import NextImage from "next/image";
-import { useContext } from "react";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
-import { GameIdContext } from "../../context/Context";
-import {
-  getFactionSystemNumber,
-  updateMapString,
-  validSystemNumber,
-} from "../../util/map";
+import { useGameId } from "../../context/dataHooks";
+import { getFactionSystemNumber, validSystemNumber } from "../../util/map";
 import { Optional } from "../../util/types/types";
 import styles from "./Map.module.scss";
 
@@ -244,7 +239,7 @@ export default function SystemSelect({
   canSelectSystem,
   onSelect,
 }: MapProps) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   let updatedSystemTiles = mapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {

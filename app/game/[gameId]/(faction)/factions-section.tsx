@@ -5,10 +5,10 @@ import { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { LockedButtons } from "../../../../src/LockedButton";
 import FactionCircle from "../../../../src/components/FactionCircle/FactionCircle";
-import { GameIdContext } from "../../../../src/context/Context";
 import {
   useActionLog,
   useFactions,
+  useGameId,
   useGameState,
   useStrategyCards,
 } from "../../../../src/context/dataHooks";
@@ -27,9 +27,9 @@ import { phaseString } from "../../../../src/util/strings";
 import { rem } from "../../../../src/util/util";
 
 function NextPhaseButtons({}) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const state = useGameState();
 
   const intl = useIntl();
@@ -187,8 +187,8 @@ function NextPhaseButtons({}) {
 
 export default function FactionsSection({}) {
   const router = useRouter();
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const state = useGameState();
   const strategyCards = useStrategyCards();
 

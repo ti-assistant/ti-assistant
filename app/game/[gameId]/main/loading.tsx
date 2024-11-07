@@ -1,5 +1,5 @@
-import { Loader } from "../../../../src/Loader";
+import LoadingFooter from "../../../../src/components/Footer/LoadingFooter";
 
 export default function Loading() {
-  return <Loader />;
+  return <LoadingFooter />;
 }

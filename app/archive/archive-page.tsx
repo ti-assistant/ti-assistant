@@ -330,6 +330,7 @@ export default function ArchivePage({
               href={`/archive/${gameId}`}
               key={gameId}
               className={styles.ArchiveGame}
+              prefetch={false}
             >
               <div className="flexRow" style={{ justifyContent: "flex-start" }}>
                 {gameId}

@@ -6,7 +6,6 @@ import {
   query,
   Unsubscribe,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { IntlShape } from "react-intl/src/types";
 import stableHash from "stable-hash";
 import { BASE_GAME_DATA } from "../../server/data/data";
@@ -25,6 +24,7 @@ export default class DataManager {
     intl: IntlShape,
     archive: boolean
   ) {
+    console.log("Init called");
     const shouldOverride =
       !this.instance ||
       this.gameId !== gameId ||
@@ -37,6 +37,7 @@ export default class DataManager {
   }
 
   public static listen(gameId: string) {
+    console.log("Listen called");
     if (!this.instance) {
       throw new Error("init must be called before listen");
     }
@@ -162,6 +163,7 @@ export default class DataManager {
         this.storedData.timers = timers;
 
         this.data = buildCompleteGameData(this.storedData, this.baseData);
+        this.data.gameId = gameId;
 
         this.publish();
       })
@@ -187,6 +189,7 @@ export default class DataManager {
       this.instance.storedData,
       this.instance.baseData
     );
+    this.instance.data.gameId = this.gameId;
 
     this.instance.lastLocalSequenceNum = this.instance.storedData.sequenceNum;
 
@@ -231,18 +234,6 @@ export default class DataManager {
     }
     this.hashes = updatedHashes;
   }
-}
-
-export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
-  const [value, setValue] = useState<Type>(
-    DataManager.getValue(path) ?? defaultValue
-  );
-
-  useEffect(() => {
-    return DataManager.subscribe(setValue, path);
-  }, [path]);
-
-  return value;
 }
 
 function makeid(length: number) {

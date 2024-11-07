@@ -2,11 +2,11 @@ import NextImage from "next/image";
 import { ReactNode, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
-import { GameIdContext } from "../../context/Context";
 import {
   useAllPlanets,
   useAttachments,
   useFactions,
+  useGameId,
 } from "../../context/dataHooks";
 import { getFactionColor } from "../../util/factions";
 import {
@@ -20,13 +20,13 @@ import {
 } from "../../util/planets";
 import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
+import Chip from "../Chip/Chip";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
-import { rem } from "../../util/util";
-import Chip from "../Chip/Chip";
 
 interface Cube {
   q: number;
@@ -598,7 +598,7 @@ export default function Map({
   factions,
   hideLegend,
 }: MapProps) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   const [showDetails, setShowDetails] = useState<Details>("NONE");
 

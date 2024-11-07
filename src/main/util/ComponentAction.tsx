@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, ReactNode, useContext, useState } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -16,25 +16,25 @@ import Map from "../../components/Map/Map";
 import MapBuilder, {
   SystemImage,
 } from "../../components/MapBuilder/MapBuilder";
-import Modal from "../../components/Modal/Modal";
+import { ModalContent } from "../../components/Modal/Modal";
 import PlanetRow from "../../components/PlanetRow/PlanetRow";
 import { Selector } from "../../components/Selector/Selector";
 import { TacticalAction } from "../../components/TacticalAction";
 import TechSelectHoverMenu from "../../components/TechSelectHoverMenu/TechSelectHoverMenu";
-import { GameIdContext } from "../../context/Context";
 import {
   useActionLog,
   useAttachments,
   useComponents,
   useFactions,
+  useGameId,
   useLeaders,
   useObjectives,
   useOptions,
   usePlanets,
   useRelics,
-  useSystems,
   useTechs,
 } from "../../context/dataHooks";
+import { useSharedModal } from "../../data/SharedModal";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -68,10 +68,10 @@ import {
   getMalliceSystemNumber,
   updateMapString,
 } from "../../util/map";
+import { getMapString } from "../../util/options";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { pluralize, rem } from "../../util/util";
-import { getMapString } from "../../util/options";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -432,10 +432,10 @@ function ComponentSelect({
 }
 
 function ComponentDetails({ factionId }: { factionId: FactionId }) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const attachments = useAttachments();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();
@@ -1573,21 +1573,16 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 }
 
 export function ComponentAction({ factionId }: { factionId: FactionId }) {
-  const gameId = useContext(GameIdContext);
-
   const actionLog = useActionLog();
   const components = useComponents();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const relics = useRelics();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const [showInfoModal, setShowInfoModal] = useState(false);
-
-  function displayInfo() {
-    setShowInfoModal(true);
-  }
+  const { openModal } = useSharedModal();
 
   const playedComponent = currentTurn
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
@@ -1735,18 +1730,6 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
 
   return (
     <React.Fragment>
-      <Modal
-        closeMenu={() => setShowInfoModal(false)}
-        visible={showInfoModal}
-        title={
-          <div className="flexColumn" style={{ fontSize: rem(40) }}>
-            {component.name}
-          </div>
-        }
-        level={2}
-      >
-        <InfoContent component={component} />
-      </Modal>
       <div
         className="flexColumn largeFont"
         style={{ width: "100%", justifyContent: "flex-start" }}
@@ -1768,7 +1751,19 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
             {component.name}
             <div
               className="popupIcon"
-              onClick={displayInfo}
+              onClick={() =>
+                openModal(
+                  <ModalContent
+                    title={
+                      <div className="flexColumn" style={{ fontSize: rem(40) }}>
+                        {component.name}
+                      </div>
+                    }
+                  >
+                    <InfoContent component={component} />
+                  </ModalContent>
+                )
+              }
               style={{ fontSize: rem(16) }}
             >
               &#x24D8;
@@ -1804,9 +1799,9 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
 }
 
 function RiftwalkerMeian() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const options = useOptions();
   const planets = usePlanets();

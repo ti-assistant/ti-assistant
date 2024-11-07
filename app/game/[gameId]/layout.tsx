@@ -1,74 +1,53 @@
-import Link from "next/link";
-import QRCode from "qrcode";
-import { PropsWithChildren } from "react";
-import { createIntl, createIntlCache } from "react-intl";
+import { PropsWithChildren, Suspense } from "react";
+import { createIntl, createIntlCache, IntlShape } from "react-intl";
 import "server-only";
 import { getGameData, getTimers } from "../../../server/util/fetch";
-import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
-import DataProvider from "../../../src/context/DataProvider";
+import DataWrapper from "../../../src/context/DataWrapper";
 import { buildCompleteGameData } from "../../../src/data/GameData";
 import { getLocale, getMessages } from "../../../src/util/server";
 import DynamicSidebars from "./dynamic-sidebars";
+import GameCode from "./game-code";
+import GameLoader from "./game-loader";
 import styles from "./game.module.scss";
 
-const BASE_URL =
-  process.env.GAE_SERVICE === "dev"
-    ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
-    : "https://ti-assistant.com";
+async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
+  const intl = await intlPromise;
+  const dataPromise = getGameData(gameId);
+  const timerPromise = getTimers(gameId);
+
+  const [data, timers] = await Promise.all([dataPromise, timerPromise]);
+
+  const gameData = buildCompleteGameData(data, intl);
+  gameData.timers = timers;
+  gameData.gameId = gameId;
+
+  return gameData;
+}
+
+async function getIntl() {
+  const locale = getLocale();
+  const messages = await getMessages(locale);
+  const cache = createIntlCache();
+  return createIntl({ locale, messages }, cache);
+}
 
 export default async function Layout({
   children,
   params: { gameId },
 }: PropsWithChildren<{ params: { gameId: string } }>) {
-  const locale = getLocale();
-  const messages = await getMessages(locale);
-  const cache = createIntlCache();
-  const intl = createIntl({ locale, messages }, cache);
-
-  const storedGameData = await getGameData(gameId);
-  const gameData = buildCompleteGameData(storedGameData, intl);
-
-  const storedTimers = await getTimers(gameId);
-
-  const qrCode = await new Promise<string>((resolve) => {
-    QRCode.toDataURL(
-      `${BASE_URL}/game/${gameId}`,
-      {
-        color: {
-          dark: "#eeeeeeff",
-          light: "#222222ff",
-        },
-        width: 172,
-        margin: 2,
-      },
-      (err, url) => {
-        if (err) {
-          throw err;
-        }
-        resolve(url);
-      }
-    );
-  });
+  const intlPromise = getIntl();
 
   return (
-    <DataProvider gameId={gameId} seedData={gameData} seedTimers={storedTimers}>
-      <DynamicSidebars />
+    <>
       <div className={styles.QRCode}>
-        <ClientOnlyHoverMenu
-          label={`${intl.formatMessage({
-            id: "+XKsgE",
-            description: "Text used to identify the current game.",
-            defaultMessage: "Game",
-          })}: ${gameId}`}
-        >
-          <div className="flexColumn">
-            <Link href={`/game/${gameId}`}>
-              <img src={qrCode} alt="QR Code for joining game" />
-            </Link>
-          </div>
-        </ClientOnlyHoverMenu>
+        <GameCode gameId={gameId} intlPromise={intlPromise} />
       </div>
-      {children}
-    </DataProvider>
+      <Suspense fallback={<GameLoader />}>
+        <DataWrapper gameId={gameId} data={fetchGameData(gameId, intlPromise)}>
+          <DynamicSidebars />
+          {children}
+        </DataWrapper>
+      </Suspense>
+    </>
   );
 }

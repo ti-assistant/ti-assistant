@@ -1,20 +1,18 @@
-import { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import { GameIdContext } from "../../context/Context";
-import { useFaction, useTechs } from "../../context/dataHooks";
+import { useFaction, useGameId, useTechs } from "../../context/dataHooks";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
   removeStartingTechAsync,
 } from "../../dynamic/api";
 import { getTechColor } from "../../util/techs";
+import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
-import { rem } from "../../util/util";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -40,8 +38,8 @@ export default function StartingComponents({
   factionId,
   showFactionIcon = false,
 }: StartingComponentsProps) {
-  const gameId = useContext(GameIdContext);
   const faction = useFaction(factionId);
+  const gameId = useGameId();
   const techs = useTechs();
 
   const intl = useIntl();

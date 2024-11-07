@@ -1,19 +1,14 @@
 import Image from "next/image";
-import React, {
-  CSSProperties,
-  PropsWithChildren,
-  useContext,
-  useState,
-} from "react";
+import React, { CSSProperties, PropsWithChildren } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { GameIdContext } from "../context/Context";
 import {
   useActionLog,
   useFactions,
-  useGameState,
+  useGameId,
   useObjectives,
   useOptions,
 } from "../context/dataHooks";
+import { useSharedModal } from "../data/SharedModal";
 import {
   changeOptionAsync,
   hideObjectiveAsync,
@@ -27,16 +22,16 @@ import { BLACK_BORDER_GLOW } from "../util/borderGlow";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { objectiveTypeString } from "../util/strings";
 import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
-import Modal from "./Modal/Modal";
+import { ModalContent } from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
-import { rem } from "../util/util";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -96,7 +91,7 @@ function ObjectiveColumn({
   options: Options;
   viewOnly?: boolean;
 }) {
-  const [showInfoModal, setShowInfoModal] = useState(false);
+  const { openModal } = useSharedModal();
 
   const numScorers = (objective.scorers ?? []).length;
 
@@ -104,14 +99,6 @@ function ObjectiveColumn({
 
   return (
     <>
-      <Modal
-        closeMenu={() => setShowInfoModal(false)}
-        visible={showInfoModal}
-        title={<div style={{ fontSize: rem(40) }}>{objective.name}</div>}
-        level={2}
-      >
-        <InfoContent objective={objective} />
-      </Modal>
       <GridHeader>
         <div
           className="flexColumn"
@@ -155,7 +142,17 @@ function ObjectiveColumn({
             <div
               className="popupIcon"
               style={{ paddingRight: rem(8) }}
-              onClick={() => setShowInfoModal(true)}
+              onClick={() =>
+                openModal(
+                  <ModalContent
+                    title={
+                      <div style={{ fontSize: rem(40) }}>{objective.name}</div>
+                    }
+                  >
+                    <InfoContent objective={objective} />
+                  </ModalContent>
+                )
+              }
             >
               &#x24D8;
             </div>
@@ -279,28 +276,17 @@ interface ExtendedCSS extends CSSProperties {
 }
 
 export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
-  const state = useGameState();
+
+  const { openModal } = useSharedModal();
 
   const intl = useIntl();
 
-  const [factionId, setFactionId] = useState<FactionId>("Vuil'raith Cabal");
-  const [secretModal, setSecretModal] = useState(false);
-
   const includesPoK = (options.expansions ?? []).includes("POK");
-
-  if (state && !factionId) {
-    if (state.activeplayer && state.activeplayer !== "None") {
-      setFactionId(state.activeplayer);
-    } else {
-      setFactionId(state.speaker);
-    }
-    return null;
-  }
 
   let orderedFactions = Object.values(factions ?? {}).sort((a, b) => {
     if (a.mapPosition < b.mapPosition) {
@@ -480,21 +466,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
 
   return (
     <>
-      <Modal
-        title={
-          getFactionName((factions ?? {})[factionId]) +
-          " " +
-          intl.formatMessage({
-            id: "QrrIrN",
-            description: "The title of secret objectives.",
-            defaultMessage: "Secrets",
-          })
-        }
-        closeMenu={() => setSecretModal(false)}
-        visible={!!secretModal}
-      >
-        <SecretModalContent factionId={factionId} gameId={gameId} />
-      </Modal>
       <div className="tabletOnly">
         <div className={styles.objectiveGrid}>
           <CollapsibleSection
@@ -967,8 +938,25 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                           viewOnly
                             ? undefined
                             : () => {
-                                setFactionId(name);
-                                setSecretModal(true);
+                                openModal(
+                                  <ModalContent
+                                    title={
+                                      getFactionName(factions[name]) +
+                                      " " +
+                                      intl.formatMessage({
+                                        id: "QrrIrN",
+                                        description:
+                                          "The title of secret objectives.",
+                                        defaultMessage: "Secrets",
+                                      })
+                                    }
+                                  >
+                                    <SecretModalContent
+                                      factionId={name}
+                                      gameId={gameId}
+                                    />
+                                  </ModalContent>
+                                );
                               }
                         }
                       >
@@ -1831,8 +1819,24 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   viewOnly
                     ? undefined
                     : () => {
-                        setFactionId(name);
-                        setSecretModal(true);
+                        openModal(
+                          <ModalContent
+                            title={
+                              getFactionName(factions[name]) +
+                              " " +
+                              intl.formatMessage({
+                                id: "QrrIrN",
+                                description: "The title of secret objectives.",
+                                defaultMessage: "Secrets",
+                              })
+                            }
+                          >
+                            <SecretModalContent
+                              factionId={name}
+                              gameId={gameId}
+                            />
+                          </ModalContent>
+                        );
                       }
                 }
               >
@@ -1917,6 +1921,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                       );
                     }
                     if (factionId) {
+                      console.log("Game ID", gameId);
                       scoreObjectiveAsync(
                         gameId,
                         factionId,
@@ -2414,7 +2419,8 @@ function SimpleScorable({
 }) {
   const factions = useFactions();
 
-  const [showInfoModal, setShowInfoModal] = useState(false);
+  const { openModal } = useSharedModal();
+
   if (!objective) {
     return null;
   }
@@ -2422,28 +2428,6 @@ function SimpleScorable({
 
   return (
     <>
-      <Modal
-        closeMenu={() => setShowInfoModal(false)}
-        visible={showInfoModal}
-        title={<div style={{ fontSize: rem(40) }}>{objective.name}</div>}
-        level={2}
-      >
-        <div
-          className="flexRow myriadPro"
-          style={{
-            boxSizing: "border-box",
-            maxWidth: rem(800),
-            width: "100%",
-            minWidth: rem(320),
-            padding: rem(4),
-            whiteSpace: "pre-line",
-            textAlign: "center",
-            fontSize: rem(32),
-          }}
-        >
-          {info}
-        </div>
-      </Modal>
       <div
         className="flexColumn mediumFont"
         style={{
@@ -2503,7 +2487,33 @@ function SimpleScorable({
                 <div
                   className="popupIcon hoverParent"
                   style={{ marginLeft: 0, color: "#999" }}
-                  onClick={() => setShowInfoModal(true)}
+                  onClick={() =>
+                    openModal(
+                      <ModalContent
+                        title={
+                          <div style={{ fontSize: rem(40) }}>
+                            {objective.name}
+                          </div>
+                        }
+                      >
+                        <div
+                          className="flexRow myriadPro"
+                          style={{
+                            boxSizing: "border-box",
+                            maxWidth: rem(800),
+                            width: "100%",
+                            minWidth: rem(320),
+                            padding: rem(4),
+                            whiteSpace: "pre-line",
+                            textAlign: "center",
+                            fontSize: rem(32),
+                          }}
+                        >
+                          {info}
+                        </div>
+                      </ModalContent>
+                    )
+                  }
                 >
                   &#x24D8;
                 </div>

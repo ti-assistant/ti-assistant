@@ -12,6 +12,7 @@ import LabeledLine from "./LabeledLine/LabeledLine";
 import styles from "./SetupFactionPanel.module.scss";
 import TechIcon from "./TechIcon/TechIcon";
 import { rem } from "../util/util";
+import { useSharedModal } from "../data/SharedModal";
 
 function AbilitySection({
   leftLabel,
@@ -622,56 +623,69 @@ export default function SetupFactionPanel({
   faction: BaseFaction;
   options: Options;
 }) {
-  const [showPanel, setShowPanel] = useState(false);
+  const { openModal } = useSharedModal();
 
   return (
     <>
-      <GenericModal visible={showPanel} closeMenu={() => setShowPanel(false)}>
-        <div
-          className="flexColumn"
-          style={{
-            whiteSpace: "normal",
-            textShadow: "none",
-            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
-            justifyContent: "flex-start",
-            height: `calc(100dvh - ${rem(24)})`,
-          }}
-        >
-          <div
-            className="flexRow centered extraLargeFont"
-            style={{
-              backgroundColor: "var(--background-color)",
-              padding: `${rem(4)} ${rem(8)}`,
-              borderRadius: rem(4),
-            }}
-          >
-            <FactionIcon factionId={faction.id} size={36} />
-            {faction.name}
-            <FactionIcon factionId={faction.id} size={36} />
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-              justifyContent: "flex-start",
-              overflow: "auto",
-              height: "fit-content",
-            }}
-          >
-            <FactionPanelContent faction={faction} options={options} />
-          </div>
-        </div>
-      </GenericModal>
       <div
         className="popupIcon"
         style={{
           fontSize: rem(16),
         }}
-        onClick={() => setShowPanel(true)}
+        onClick={() =>
+          openModal(
+            <SetupFactionPanelModal faction={faction} options={options} />
+          )
+        }
       >
         &#x24D8;
       </div>
     </>
+  );
+}
+
+function SetupFactionPanelModal({
+  faction,
+  options,
+}: {
+  faction: BaseFaction;
+  options: Options;
+}) {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        whiteSpace: "normal",
+        textShadow: "none",
+        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
+        justifyContent: "flex-start",
+        height: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="flexRow centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+        }}
+      >
+        <FactionIcon factionId={faction.id} size={36} />
+        {faction.name}
+        <FactionIcon factionId={faction.id} size={36} />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "fit-content",
+        }}
+      >
+        <FactionPanelContent faction={faction} options={options} />
+      </div>
+    </div>
   );
 }

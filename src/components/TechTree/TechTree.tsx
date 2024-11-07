@@ -1,12 +1,7 @@
-import React, { CSSProperties, useContext } from "react";
-import { GameIdContext } from "../../context/Context";
-import { useFactions, useTechs } from "../../context/dataHooks";
-import { removeTechAsync, addTechAsync } from "../../dynamic/api";
-import {
-  getReplacementTech,
-  hasTech,
-  isTechReplaced,
-} from "../../util/api/techs";
+import { CSSProperties } from "react";
+import { useFactions, useGameId, useTechs } from "../../context/dataHooks";
+import { addTechAsync, removeTechAsync } from "../../dynamic/api";
+import { getReplacementTech, hasTech } from "../../util/api/techs";
 import { getTechTypeColor } from "../../util/techs";
 import { objectEntries, rem } from "../../util/util";
 import styles from "./TechTree.module.scss";
@@ -33,8 +28,8 @@ export default function TechTree({
   viewOnly?: boolean;
 }) {
   const factions = useFactions();
+  const gameId = useGameId();
   const techs = useTechs();
-  const gameId = useContext(GameIdContext);
 
   const faction = factions[factionId];
   if (!faction) {

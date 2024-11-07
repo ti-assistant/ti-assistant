@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import LegendaryPlanetIcon from "./components/LegendaryPlanetIcon/LegendaryPlanetIcon";
 import PlanetIcon from "./components/PlanetIcon/PlanetIcon";
 import ResourcesIcon from "./components/ResourcesIcon/ResourcesIcon";
-import { GameIdContext } from "./context/Context";
+import { useGameId } from "./context/dataHooks";
 import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
 import { rem } from "./util/util";
 
@@ -14,7 +13,7 @@ interface AttachRowProps {
 }
 
 export function AttachRow({ attachment, planet }: AttachRowProps) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   function isSkip() {
     return (attachment.attribute ?? "").includes("skip");

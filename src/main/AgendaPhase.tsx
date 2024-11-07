@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../AgendaRow";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
@@ -18,11 +18,11 @@ import VoteBlock, {
   getTargets,
   translateOutcome,
 } from "../components/VoteBlock/VoteBlock";
-import { GameIdContext } from "../context/Context";
 import {
   useActionLog,
   useAgendas,
   useFactions,
+  useGameId,
   useGameState,
   useObjectives,
   usePlanets,
@@ -184,10 +184,10 @@ function canScoreObjective(
 }
 
 function AgendaDetails() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
   const relics = useRelics();
@@ -529,10 +529,10 @@ function AgendaDetails() {
 }
 
 function AgendaSteps() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();
@@ -1323,10 +1323,10 @@ function AgendaSteps() {
 }
 
 function DictatePolicy({}) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -1462,10 +1462,10 @@ function DictatePolicy({}) {
 }
 
 export default function AgendaPhase() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();

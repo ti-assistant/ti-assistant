@@ -1,8 +1,8 @@
-import { CSSProperties, ReactNode, useContext, useState } from "react";
-import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { GameIdContext } from "../../context/Context";
-import styles from "./ObjectiveSelectHoverMenu.module.scss";
+import { CSSProperties, ReactNode, useState } from "react";
 import { useIntl } from "react-intl";
+import { ClientOnlyHoverMenu } from "../../HoverMenu";
+import { useGameId } from "../../context/dataHooks";
+import styles from "./ObjectiveSelectHoverMenu.module.scss";
 
 interface ObjectiveGridCSSProperties extends CSSProperties {
   "--font-size": string;
@@ -27,7 +27,7 @@ export default function ObjectiveSelectHoverMenu({
 }: ObjectiveSelectHoverMenuProps) {
   const intl = useIntl();
 
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   const [description, setDescription] = useState("Hover to see full text.");
 

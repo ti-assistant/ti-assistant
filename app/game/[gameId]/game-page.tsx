@@ -2,22 +2,25 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import { GameIdContext } from "../../../src/context/Context";
+import {
+  useFactions,
+  useGameId,
+  useGameState,
+} from "../../../src/context/dataHooks";
 import { setGameId } from "../../../src/util/api/util";
-import { getFactionColor, getFactionName } from "../../../src/util/factions";
-import styles from "./game-page.module.scss";
-import { useFactions, useGameState } from "../../../src/context/dataHooks";
-import { rem } from "../../../src/util/util";
 import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
+import { getFactionColor, getFactionName } from "../../../src/util/factions";
+import { rem } from "../../../src/util/util";
+import styles from "./game-page.module.scss";
 
 export default function SelectFactionPage() {
   const router = useRouter();
   const factions = useFactions();
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const state = useGameState();
 
   useEffect(() => {
@@ -33,13 +36,9 @@ export default function SelectFactionPage() {
     return null;
   }
 
-  const orderedFactions = Object.values(factions).sort((a, b) => {
-    if (a.order > b.order) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+  const orderedFactions = Object.values(factions).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
 
   // TODO: Fix height on mobile.
   return (

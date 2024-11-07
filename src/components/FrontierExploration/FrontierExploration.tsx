@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
-import { GameIdContext } from "../../context/Context";
 import {
   useActionLog,
   useAttachments,
+  useGameId,
   usePlanets,
   useRelics,
 } from "../../context/dataHooks";
@@ -34,9 +33,9 @@ export default function FrontierExploration({
 }: {
   factionId: FactionId;
 }) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const attachments = useAttachments();
+  const gameId = useGameId();
   const planets = usePlanets();
   const relics = useRelics();
   const currentTurn = getCurrentTurnLogEntries(actionLog);

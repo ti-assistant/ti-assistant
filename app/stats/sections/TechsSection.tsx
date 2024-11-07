@@ -12,12 +12,23 @@ import styles from "./TechsSection.module.scss";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import { FormattedMessage } from "react-intl";
 import Chip from "../../../src/components/Chip/Chip";
+import { useSharedModal } from "../../../src/data/SharedModal";
 
 interface FactionTechInfo {
   games: number;
   researched: number;
   wins: number;
   points: number;
+}
+
+interface TechInfo {
+  researchers: number;
+  winners: number;
+  owners: number;
+  ownedWinners: number;
+  histogram: HistogramData;
+  ownedHistogram: HistogramData;
+  factionInfo: Partial<Record<FactionId, FactionTechInfo>>;
 }
 
 export default function TechsSection({
@@ -30,21 +41,8 @@ export default function TechsSection({
   points: number;
 }) {
   const [tab, setTab] = useState("Non-Faction");
-  const [shownModal, setShownModal] = useState<Optional<TechId>>();
-  const techInfo: Partial<
-    Record<
-      TechId,
-      {
-        researchers: number;
-        winners: number;
-        owners: number;
-        ownedWinners: number;
-        histogram: HistogramData;
-        ownedHistogram: HistogramData;
-        factionInfo: Partial<Record<FactionId, FactionTechInfo>>;
-      }
-    >
-  > = {};
+  const { openModal } = useSharedModal();
+  const techInfo: Partial<Record<TechId, TechInfo>> = {};
   const baseTechs = baseData.techs;
   let techGames = 0;
   let factionGames: Partial<Record<FactionId, number>> = {};
@@ -132,8 +130,6 @@ export default function TechsSection({
     return bWinRate - aWinRate;
   });
 
-  const modalTech = shownModal ? techInfo[shownModal] : undefined;
-
   return (
     <div className={styles.TechsSection}>
       <div className="flexRow" style={{ gap: rem(4) }}>
@@ -161,72 +157,6 @@ export default function TechsSection({
         </Chip>
       </div>
 
-      <GenericModal
-        visible={!!modalTech}
-        closeMenu={() => setShownModal(undefined)}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            whiteSpace: "normal",
-            textShadow: "none",
-            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-            justifyContent: "flex-start",
-            height: `calc(100dvh - ${rem(24)})`,
-          }}
-        >
-          <div
-            className="flexColumn centered extraLargeFont"
-            style={{
-              backgroundColor: "var(--background-color)",
-              padding: `${rem(4)} ${rem(8)}`,
-              borderRadius: rem(4),
-              gap: 0,
-              border: "1px solid var(--neutral-border)",
-            }}
-          >
-            {shownModal}
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-              justifyContent: "flex-start",
-              overflow: "auto",
-              height: "fit-content",
-            }}
-          >
-            <div className={styles.TechModal}>
-              <div></div>
-              <CollapsibleSection
-                openedByDefault
-                title={
-                  <FormattedMessage
-                    id="r2htpd"
-                    description="Text on a button that will randomize factions."
-                    defaultMessage="Factions"
-                  />
-                }
-              >
-                <div
-                  className="flexColumn"
-                  style={{
-                    width: "100%",
-                    padding: `0 ${rem(4)} ${rem(4)}`,
-                    fontSize: rem(14),
-                  }}
-                >
-                  <FactionsTechTable
-                    factions={modalTech ? modalTech.factionInfo : {}}
-                    factionGames={factionGames}
-                  />
-                </div>
-              </CollapsibleSection>
-            </div>
-          </div>
-        </div>
-      </GenericModal>
       {orderedInfo.map(([id, info]) => {
         const tech = baseTechs[id];
         if (!tech) {
@@ -349,7 +279,15 @@ export default function TechsSection({
             {tab !== "Faction" ? (
               <button
                 style={{ fontSize: rem(10), marginTop: rem(4) }}
-                onClick={() => setShownModal(id)}
+                onClick={() =>
+                  openModal(
+                    <TechModalContent
+                      title={id}
+                      tech={techInfo[id]}
+                      factionGames={factionGames}
+                    />
+                  )
+                }
               >
                 <FormattedMessage
                   id="8NMXES"
@@ -446,5 +384,79 @@ function FactionsTechTable({
         })}
       </tbody>
     </table>
+  );
+}
+
+function TechModalContent({
+  title,
+  tech,
+  factionGames,
+}: {
+  title: string;
+  tech: Optional<TechInfo>;
+  factionGames: Partial<Record<FactionId, number>>;
+}) {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        whiteSpace: "normal",
+        textShadow: "none",
+        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+        justifyContent: "flex-start",
+        height: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="flexColumn centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+          gap: 0,
+          border: "1px solid var(--neutral-border)",
+        }}
+      >
+        {title}
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "fit-content",
+        }}
+      >
+        <div className={styles.TechModal}>
+          <div></div>
+          <CollapsibleSection
+            openedByDefault
+            title={
+              <FormattedMessage
+                id="r2htpd"
+                description="Text on a button that will randomize factions."
+                defaultMessage="Factions"
+              />
+            }
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              <FactionsTechTable
+                factions={tech ? tech.factionInfo : {}}
+                factionGames={factionGames}
+              />
+            </div>
+          </CollapsibleSection>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,17 +1,16 @@
 import { useContext, useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Tab, TabBody } from "./Tab";
 import LabeledLine from "./components/LabeledLine/LabeledLine";
-import { GameIdContext } from "./context/Context";
+import ObjectiveRow from "./components/ObjectiveRow/ObjectiveRow";
+import { useGameId, useObjectives } from "./context/dataHooks";
 import {
   hideObjectiveAsync,
   revealObjectiveAsync,
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
 } from "./dynamic/api";
-import ObjectiveRow from "./components/ObjectiveRow/ObjectiveRow";
 import { objectiveTypeString } from "./util/strings";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useObjectives } from "./context/dataHooks";
 import { rem } from "./util/util";
 
 function sortObjectivesByName(objectives: Objective[]) {
@@ -24,7 +23,7 @@ function sortObjectivesByName(objectives: Objective[]) {
 }
 
 function SecretTab({ factionId }: { factionId: FactionId }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const objectives = useObjectives();
 
   const [editMode, setEditMode] = useState(false);
@@ -156,7 +155,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
 
 // TODO: Rename to Objective Tab
 export function ObjectiveList({ factionId }: { factionId: FactionId }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const objectives = useObjectives();
 
   const intl = useIntl();

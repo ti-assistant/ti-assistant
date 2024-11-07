@@ -1,15 +1,38 @@
-import { createIntl, createIntlCache } from "react-intl";
+import { Suspense } from "react";
+import { createIntl, createIntlCache, IntlShape } from "react-intl";
 import "server-only";
 import {
   getArchivedGameData,
   getArchivedTimers,
 } from "../../../server/util/fetch";
 import Footer from "../../../src/components/Footer/Footer";
-import DataProvider from "../../../src/context/DataProvider";
+import DataWrapper from "../../../src/context/DataWrapper";
 import { buildCompleteGameData } from "../../../src/data/GameData";
 import { getLocale, getMessages } from "../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
+import GameLoader from "../../game/[gameId]/game-loader";
 import styles from "./main.module.scss";
+
+async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
+  const intl = await intlPromise;
+  const dataPromise = getArchivedGameData(gameId);
+  const timerPromise = getArchivedTimers(gameId);
+
+  const [data, timers] = await Promise.all([dataPromise, timerPromise]);
+
+  const gameData = buildCompleteGameData(data, intl);
+  gameData.timers = timers;
+  gameData.gameId = gameId;
+
+  return gameData;
+}
+
+async function getIntl() {
+  const locale = getLocale();
+  const messages = await getMessages(locale);
+  const cache = createIntlCache();
+  return createIntl({ locale, messages }, cache);
+}
 
 export default async function Layout({
   phase,
@@ -20,37 +43,25 @@ export default async function Layout({
   phase: React.ReactNode;
   summary: React.ReactNode;
 }) {
-  const locale = getLocale();
-  const messages = await getMessages(locale);
-  const cache = createIntlCache();
-  const intl = createIntl({ locale, messages }, cache);
-
-  const storedGameData = await getArchivedGameData(gameId);
-  const gameData = buildCompleteGameData(storedGameData, intl);
-
-  const storedTimers = await getArchivedTimers(gameId);
+  const intlPromise = getIntl();
 
   return (
-    <DataProvider
-      archive
-      gameId={gameId}
-      seedData={gameData}
-      seedTimers={storedTimers}
-    >
-      <DynamicSidebars />
-      <div className={styles.QRCode}>
-        {intl.formatMessage({
-          id: "+XKsgE",
-          description: "Text used to identify the current game.",
-          defaultMessage: "Game",
-        })}
-        : {gameId}
-      </div>
-      <div className={styles.Main}>
-        {phase}
-        {summary}
-      </div>
-      <Footer viewOnly />
-    </DataProvider>
+    <>
+      <div className={styles.QRCode}>Game: {gameId}</div>
+      <Suspense fallback={<GameLoader />}>
+        <DataWrapper
+          archive
+          gameId={gameId}
+          data={fetchGameData(gameId, intlPromise)}
+        >
+          <DynamicSidebars />
+          <div className={styles.Main}>
+            {phase}
+            {summary}
+          </div>
+          <Footer viewOnly />
+        </DataWrapper>
+      </Suspense>
+    </>
   );
 }

@@ -7,6 +7,7 @@ import SiteLogo from "../src/components/SiteLogo/SiteLogo";
 import { getLocale, getMessages } from "../src/util/server";
 import styles from "./root.module.scss";
 import Wrapper from "./wrapper";
+import SharedModal from "../src/data/SharedModal";
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           </div>
         </div>
         <Wrapper locale={locale} messages={messages}>
+          <SharedModal />
           {children}
         </Wrapper>
       </body>

@@ -1,9 +1,4 @@
-import React, {
-  PropsWithChildren,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { NumberedItem } from "../NumberedItem";
@@ -11,16 +6,17 @@ import { FactionTimer, StaticFactionTimer } from "../Timer";
 import FactionCard from "../components/FactionCard/FactionCard";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import Modal from "../components/Modal/Modal";
+import { ModalContent } from "../components/Modal/Modal";
 import { Selector } from "../components/Selector/Selector";
 import { StrategyCardElement } from "../components/StrategyCardElement/StrategyCardElement";
-import { GameIdContext } from "../context/Context";
 import {
   useAgenda,
   useFactions,
+  useGameId,
   useGameState,
   useStrategyCards,
 } from "../context/dataHooks";
+import { useSharedModal } from "../data/SharedModal";
 import {
   advancePhaseAsync,
   assignStrategyCardAsync,
@@ -114,7 +110,7 @@ function QuantumDatahubNode({
   faction: Optional<Faction>;
   strategyCards: StrategyCard[];
 }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
     otherCard: Optional<StrategyCardId>;
@@ -254,7 +250,7 @@ function QuantumDatahubNode({
 
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const arbiter = useAgenda("Imperial Arbiter");
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const factions = useFactions();
 
   const [quantum, setQuantum] = useState<{
@@ -425,7 +421,7 @@ const CARD_ORDER: Record<StrategyCardId, number> = {
 };
 
 export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const checksAndBalancesAgenda = useAgenda("Checks and Balances");
   const factions = useFactions();
   const state = useGameState();
@@ -507,7 +503,7 @@ export function advanceToActionPhase(gameId: string) {
 }
 
 export default function StrategyPhase() {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   // Agendas
   const aiRevolution = useAgenda("Anti-Intellectual Revolution");
   const armsReduction = useAgenda("Arms Reduction");
@@ -519,27 +515,13 @@ export default function StrategyPhase() {
   const strategyCards = useStrategyCards();
   const intl = useIntl();
 
-  const [infoModal, setInfoModal] = useState<{
-    show: boolean;
-    title?: string;
-    content?: ReactNode;
-  }>({
-    show: false,
-  });
+  const { openModal } = useSharedModal();
 
   function nextPhase() {
     if (!gameId) {
       return;
     }
     advanceToActionPhase(gameId);
-  }
-
-  function showInfoModal(title: string, content: ReactNode) {
-    setInfoModal({
-      show: true,
-      title: title,
-      content: content,
-    });
   }
 
   interface Ability {
@@ -704,13 +686,6 @@ export default function StrategyPhase() {
 
   return (
     <React.Fragment>
-      <Modal
-        closeMenu={() => setInfoModal({ show: false })}
-        visible={infoModal.show}
-        title={<div style={{ fontSize: rem(40) }}>{infoModal.title}</div>}
-      >
-        <InfoContent>{infoModal.content}</InfoContent>
-      </Modal>
       <div className={styles.LeftColumn}>
         {hasStartOfStrategyPhaseAbilities() ? (
           <div className="flexColumn">
@@ -755,9 +730,18 @@ export default function StrategyPhase() {
                                 <div
                                   className="popupIcon"
                                   onClick={() =>
-                                    showInfoModal(
-                                      ability.name,
-                                      ability.description
+                                    openModal(
+                                      <ModalContent
+                                        title={
+                                          <div style={{ fontSize: rem(40) }}>
+                                            {ability.name}
+                                          </div>
+                                        }
+                                      >
+                                        <InfoContent>
+                                          {ability.description}
+                                        </InfoContent>
+                                      </ModalContent>
                                     )
                                   }
                                 >

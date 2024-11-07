@@ -1,10 +1,10 @@
 import { CSSProperties, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { GameIdContext } from "../context/Context";
 import {
   useAttachments,
   useFaction,
   useFactions,
+  useGameId,
   useLeaders,
   usePlanets,
 } from "../context/dataHooks";
@@ -35,14 +35,11 @@ function PlanetSection({
   openedByDefault: boolean;
   viewOnly?: boolean;
 }) {
-  const gameId = useContext(GameIdContext);
-
   const attachments = useAttachments();
   const faction = useFaction(factionId);
+  const gameId = useGameId();
   const leaders = useLeaders();
   const planets = usePlanets();
-
-  const [collapsed, setCollapsed] = useState(!openedByDefault);
 
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
@@ -117,8 +114,8 @@ function PlanetSection({
 }
 
 function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const planets = usePlanets();
 
   const [collapsed, setCollapsed] = useState(true);
