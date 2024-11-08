@@ -533,7 +533,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
             />
           </Chip>
           <Chip
-            selected={options["group-techs-by-faction"]}
+            selected={!!options["group-techs-by-faction"]}
             toggleFn={() =>
               changeOptionAsync(gameId, "group-techs-by-faction", true)
             }
@@ -556,7 +556,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
         }}
       >
         <TechPanel
-          byFaction={options["group-techs-by-faction"]}
+          byFaction={!!options["group-techs-by-faction"]}
           viewOnly={viewOnly}
         />
       </div>

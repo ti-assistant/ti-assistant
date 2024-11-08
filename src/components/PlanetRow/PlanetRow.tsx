@@ -5,6 +5,7 @@ import {
   useAttachments,
   useFactions,
   useGameId,
+  usePlanet,
 } from "../../context/dataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
@@ -194,14 +195,7 @@ export default function PlanetRow({
               <button
                 style={{ fontSize: rem(10) }}
                 className="hiddenButton"
-                onClick={() =>
-                  openModal(
-                    <AttachMenu
-                      planet={planet}
-                      attachments={availableAttachments()}
-                    />
-                  )
-                }
+                onClick={() => openModal(<AttachMenu planetId={planet.id} />)}
               >
                 Attach
               </button>
@@ -230,14 +224,7 @@ export default function PlanetRow({
             <div style={{ width: rem(56) }}>
               {canAttach() ? (
                 <button
-                  onClick={() =>
-                    openModal(
-                      <AttachMenu
-                        planet={planet}
-                        attachments={availableAttachments()}
-                      />
-                    )
-                  }
+                  onClick={() => openModal(<AttachMenu planetId={planet.id} />)}
                 >
                   <FormattedMessage
                     id="Kqms7v"
@@ -374,11 +361,70 @@ function PlanetAttributes({
 }
 
 interface AttachMenuProps {
-  planet: Planet;
-  attachments: Partial<Record<AttachmentId, Attachment>>;
+  planetId: PlanetId;
 }
 
-function AttachMenu({ planet, attachments }: AttachMenuProps) {
+function AttachMenu({ planetId }: AttachMenuProps) {
+  const attachments = useAttachments();
+  const planet = usePlanet(planetId);
+
+  if (!planet) {
+    return null;
+  }
+
+  function availableAttachments(): Partial<Record<AttachmentId, Attachment>> {
+    if (!attachments || !planet) {
+      return {};
+    }
+    const planetAttachments = planet.attachments ?? [];
+    let available = Object.values(attachments)
+      .filter((attachment) => {
+        // If attached to this planet, always show.
+        if (planetAttachments.includes(attachment.id)) {
+          return true;
+        }
+        if (planet.id === "Mecatol Rex" && attachment.id !== "Nano-Forge") {
+          return false;
+        }
+        if (attachment.id === "Terraform" && planet.owner === "Titans of Ul") {
+          return false;
+        }
+        if (attachment.required.type !== undefined) {
+          if (
+            attachment.required.type !== planet.type &&
+            planet.type !== "ALL"
+          ) {
+            return false;
+          }
+        }
+        if (attachment.required.id !== undefined) {
+          if (attachment.required.id !== planet.id) {
+            return false;
+          }
+        }
+        if (attachment.required.home !== undefined) {
+          if (attachment.required.home !== (planet.home ?? false)) {
+            return false;
+          }
+        }
+        if (attachment.required.legendary !== undefined) {
+          if (
+            attachment.required.legendary !==
+            planet.attributes.includes("legendary")
+          ) {
+            return false;
+          }
+        }
+        return true;
+      })
+      .reduce((result, attachment) => {
+        return {
+          ...result,
+          [attachment.id]: attachment,
+        };
+      }, {});
+    return available;
+  }
   return (
     <ModalContent title={"Attachments for " + planet.name}>
       <div
@@ -391,7 +437,7 @@ function AttachMenu({ planet, attachments }: AttachMenuProps) {
           maxHeight: "75vh",
         }}
       >
-        {Object.entries(attachments).map(([name, attachment]) => {
+        {Object.entries(availableAttachments()).map(([name, attachment]) => {
           return (
             <AttachRow key={name} attachment={attachment} planet={planet} />
           );

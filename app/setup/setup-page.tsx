@@ -1737,6 +1737,7 @@ export default function SetupPage({
                 mapString={options["processed-map-string"] ?? ""}
                 mallice={options["expansions"].has("POK") ? "A" : undefined}
                 factions={activeFactions}
+                hideLegend
               />
             </div>
           </div>

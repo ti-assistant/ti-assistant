@@ -424,7 +424,7 @@ export function SystemImage({
           </div>
         );
       })}
-      {gameId && systemNumber === "18" && !systemPlanets[0]?.owner ? (
+      {systemNumber === "18" && !systemPlanets[0]?.owner ? (
         <div
           className="flexRow"
           style={{
@@ -763,7 +763,7 @@ export default function Map({
 
   return (
     <div className={styles.Map}>
-      {gameId && !hideLegend ? (
+      {!hideLegend ? (
         <div className={styles.Legend} onClick={(e) => e.stopPropagation()}>
           <LabeledDiv
             label={
