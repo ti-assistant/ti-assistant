@@ -832,14 +832,6 @@ function FactionSelect({
       return true;
     }
   );
-  const filteredColors = colors.filter((color) => {
-    if (color === "Magenta" || color === "Orange") {
-      if (!options.expansions.has("POK")) {
-        return false;
-      }
-    }
-    return true;
-  });
 
   const selectedFactions = factions
     .filter((faction, index) => !!faction.id && index < numFactions)
@@ -988,7 +980,7 @@ function FactionSelect({
                           justifyContent: "flex-start",
                         }}
                       >
-                        {filteredColors.map((color) => {
+                        {colors.map((color) => {
                           const factionColor = convertToFactionColor(color);
                           const alreadySelected =
                             selectedColors.includes(color);
@@ -1480,6 +1472,7 @@ export default function SetupPage({
           if (!currentOptions.expansions.has(currFaction.expansion)) {
             delete tempFaction.id;
             delete tempFaction.name;
+            delete tempFaction.color;
           }
           return tempFaction;
         })
