@@ -17,7 +17,7 @@
   cursor: pointer;
   justify-content: center;
   align-items: center;
-  background-color: #222;
+  background-color: var(--background-color);
   gap: 0.5rem;
 }
 
@@ -44,7 +44,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #222;
+    background-color: var(--background-color);
   }
 
   .HomeLink {
@@ -56,7 +56,7 @@
     width: 100%;
     box-sizing: border-box;
 
-    background-color: #222;
+    background-color: var(--background-color);
     z-index: 1;
   }
 

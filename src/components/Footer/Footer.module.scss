@@ -98,7 +98,7 @@
     z-index: 0;
     backdrop-filter: blur(0.5rem);
     border-radius: 0.5rem;
-    border: 2px solid #222;
+    border: 2px solid var(--neutral-border);
 
     transition: bottom 400ms, opacity 400ms;
   }

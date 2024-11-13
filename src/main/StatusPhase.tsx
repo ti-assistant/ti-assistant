@@ -1,9 +1,4 @@
-import React, {
-  PropsWithChildren,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
+import React, { PropsWithChildren } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LockedButtons } from "../LockedButton";
@@ -12,15 +7,15 @@ import CrownOfEmphidia from "../components/CrownOfEmphidia/CrownOfEmphidia";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../components/LabeledLine/LabeledLine";
-import Modal from "../components/Modal/Modal";
+import { ModalContent } from "../components/Modal/Modal";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "../components/Selector/Selector";
-import { GameIdContext } from "../context/Context";
 import {
   useActionLog,
   useAgenda,
   useFactions,
+  useGameId,
   useGameState,
   useObjectives,
   useOptions,
@@ -28,6 +23,7 @@ import {
   useRelics,
   useStrategyCards,
 } from "../context/dataHooks";
+import { useSharedModal } from "../data/SharedModal";
 import {
   advancePhaseAsync,
   hideObjectiveAsync,
@@ -281,22 +277,14 @@ function ActionCardDraws() {
 }
 
 export function MiddleColumn() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
-
-  const [infoModal, setInfoModal] = useState<{
-    show: boolean;
-    title?: string;
-    content?: ReactNode;
-  }>({
-    show: false,
-  });
 
   function scoreObj(factionId: FactionId, objectiveId: ObjectiveId) {
     if (!gameId) {
@@ -649,13 +637,6 @@ export function MiddleColumn() {
 
   return (
     <React.Fragment>
-      <Modal
-        closeMenu={() => setInfoModal({ show: false })}
-        visible={infoModal.show}
-        title={infoModal.title}
-      >
-        <InfoContent>{infoModal.content}</InfoContent>
-      </Modal>
       <div className="flexColumn" style={{ width: "100%" }}>
         {innerContent}
       </div>
@@ -671,9 +652,9 @@ export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
 }
 
 export default function StatusPhase() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
   const relics = useRelics();
@@ -686,21 +667,7 @@ export default function StatusPhase() {
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const [infoModal, setInfoModal] = useState<{
-    show: boolean;
-    title?: string;
-    content?: ReactNode;
-  }>({
-    show: false,
-  });
-
-  function showInfoModal(title: string, content: ReactNode) {
-    setInfoModal({
-      show: true,
-      title: title,
-      content: content,
-    });
-  }
+  const { openModal } = useSharedModal();
 
   function nextPhase(skipAgenda = false) {
     if (!gameId) {
@@ -922,14 +889,6 @@ export default function StatusPhase() {
 
   return (
     <React.Fragment>
-      <Modal
-        closeMenu={() => setInfoModal({ show: false })}
-        visible={infoModal.show}
-        title={infoModal.title}
-        level={2}
-      >
-        <InfoContent>{infoModal.content}</InfoContent>
-      </Modal>
       <ol className={`largeFont ${styles.LeftColumn}`}>
         {!hasStartOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
@@ -985,9 +944,10 @@ export default function StatusPhase() {
                                 <div
                                   className="popupIcon"
                                   onClick={() =>
-                                    showInfoModal(
-                                      ability.name,
-                                      ability.description
+                                    openModal(
+                                      <ModalContent title={ability.name}>
+                                        {ability.description}
+                                      </ModalContent>
                                     )
                                   }
                                 >
@@ -1184,9 +1144,10 @@ export default function StatusPhase() {
                                 <div
                                   className="popupIcon"
                                   onClick={() =>
-                                    showInfoModal(
-                                      ability.name,
-                                      ability.description
+                                    openModal(
+                                      <ModalContent title={ability.name}>
+                                        {ability.description}
+                                      </ModalContent>
                                     )
                                   }
                                 >

@@ -1,3 +1,20 @@
+:root {
+  --background-color: #131115;
+  --foreground-color: #eee;
+
+  --disabled-bg: #1a181d;
+  --light-bg: #242226;
+  --interactive-bg: #3a383c;
+  --hovered-bg: #464448;
+  --selected-bg: #4a484c;
+
+  /* 2px at 1920 */
+  --border-size: 0.084rem;
+  --disabled-border: #2a282c;
+  --neutral-border: #7a787c;
+  --selected-border: #bab8bc;
+}
+
 html {
   box-sizing: border-box;
   font-size: clamp(16px, 1.25vw, 32px)
@@ -34,7 +51,7 @@ html {
 body {
   font-family: "slider";
   margin: 0px 4rem;
-  background-color: #222;
+  background-color: var(--background-color);
   color: #eee;
 }
 
@@ -98,8 +115,8 @@ a:hover {
   color: #111;
 }
 
-a:hover > div {
-  background-color: #282828;
+a:hover > div.flexColumn {
+  background-color: var(--disabled-bg);
   /* box-shadow: 2px 2px 4px #000; */
 }
 
@@ -107,69 +124,72 @@ button {
   all: unset;
   font-size: 1.125rem;
   font-family: "Myriad Pro";
-  background-color: #333;
+  background-color: var(--interactive-bg);
   color: #eee;
   padding: 0.1875rem 0.3125rem;
   padding: 0.1875rem 0.3125rem;
   border-radius: 0.25rem;
   cursor: pointer;
-  box-shadow: 0px 1px 4px black;
-  box-shadow: 0px 1px 4px black;
-  border: 1px solid #333;
+  border: var(--border-size) solid var(--background-color);
 }
 
 button:hover {
-  background-color: #444;
+  background-color: var(--hovered-bg);
+  border: var(--border-size) solid var(--neutral-border);
 }
 
 button:focus-visible {
-  border: 1px solid #999
+  border: 1px solid var(--neutral-border);
 }
 
 
 button.faded {
-  background-color: #222;
+  background-color: var(--disabled-bg);
   color: #555;
   box-sizing: border-box;
   border: 1px solid #333;
 }
 
 button.selected {
-  border: 1px solid #eee;
-  background-color: #444;
+  border: var(--border-size) solid #aaa;
+  background-color: var(--selected-bg);
   color: #fff;
 }
 
 button:disabled {
-  background-color: #222;
-  color: #555;
+  background-color: var(--disabled-bg);
+  color: var(--interactive-bg);
   box-shadow: none;
   box-sizing: border-box;
-  border: 1px solid #333;
+  border: var(--border-size) solid var(--disabled-border);
   cursor: default;
 }
 
 button:disabled.selected {
-  background-color: #222;
+  background-color: var(--disabled-bg);
   color: #fff;
   box-shadow: none;
   box-sizing: border-box;
-  border: 1px solid #eee;
+  border: var(--border-size) solid var(--selected-border);
   cursor: default;
 }
 
 input[type="text"] {
-  background-color: #333;
-  color: #fff;
+  background-color: #282828;
+  color: #eee;
   box-sizing: border-box;
 }
 
 input[type="textbox"] {
-  background-color: #333;
+  background-color: #282828;
   color: #eee;
-  border: 2px solid #777;
+  border: 2px solid #555;
   border-radius: 0.25rem;
   outline: none;
+}
+
+input[type="textbox"]:focus {
+  border: 2px solid #aaa;
 }
 
 input[type="textbox"]:invalid {
@@ -368,19 +388,23 @@ input[type="textbox"]:invalid {
 
 .fade-enter {
   opacity: 0;
+  backdrop-filter: blur(0);
 }
 .fade-enter-active {
   opacity: 1;
+  backdrop-filter: blur(0.5rem);
 }
 .fade-exit {
   opacity: 1;
+  backdrop-filter: blur(0.5rem);
 }
 .fade-exit-active {
   opacity: 0;
+  backdrop-filter: blur(0);
 }
 .fade-enter-active,
 .fade-exit-active {
-  transition: opacity 300ms;
+  transition: opacity 300ms, backdrop-filter 300ms linear;
 }
 
 .modal-enter {

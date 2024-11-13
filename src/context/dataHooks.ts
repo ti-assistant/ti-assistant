@@ -1,6 +1,19 @@
+import { useState, useEffect } from "react";
 import { BASE_OPTIONS } from "../../server/data/options";
 import { Optional } from "../util/types/types";
-import { useGameDataValue } from "./DataManager";
+import DataManager from "./DataManager";
+
+export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
+  const [value, setValue] = useState<Type>(
+    DataManager.getValue(path) ?? defaultValue
+  );
+
+  useEffect(() => {
+    return DataManager.subscribe(setValue, path);
+  }, [path]);
+
+  return value;
+}
 
 export function useGameData() {
   return useGameDataValue<GameData>("", {
@@ -15,6 +28,10 @@ export function useGameData() {
       speaker: "Vuil'raith Cabal",
     },
   });
+}
+
+export function useGameId() {
+  return useGameDataValue<string>("gameId", "");
 }
 
 export function useActionLog() {

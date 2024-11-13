@@ -1,5 +1,5 @@
 .hoverMenu {
-  background-color: #222;
+  background-color: var(--light-bg);
   overflow: visible;
   position: absolute;
   top: 0;
@@ -34,8 +34,8 @@
 .hoverBackground {
   position: absolute;
   border-radius: 100%;
-  border: 1px solid var(--border-color);
-  background-color: #222;
+  border: var(--border-size) solid var(--border-color);
+  background-color: var(--light-bg);
   top: 0;
   left: 0;
   width: calc(var(--size) * 1);
@@ -76,7 +76,7 @@
 
 .tag {
   position: absolute;
-  background-color: #222;
+  background-color: var(--background-color);
   border-radius: 100%;
   margin-top: 58%;
   margin-left: 60%;
@@ -109,9 +109,9 @@
 }
 
 .factionSelect:hover {
-  background-color: #333;
+  background-color: var(--hovered-bg);
 }
 
 .oldFactionSelect:hover {
-  background-color: #333;
+  background-color: var(--hovered-bg);
 }

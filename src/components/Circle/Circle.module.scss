@@ -1,13 +1,13 @@
 .Circle {
   border-radius: 100%;
-  border: 2px solid var(--border-color);
+  border: var(--border-size) solid var(--border-color);
   width: var(--size);
   height: var(--size);
 }
 
 .tag {
   position: absolute;
-  background-color: #222;
+  background-color: var(--light-bg);
   border-radius: 100%;
   margin-top: 58%;
   margin-left: 60%;

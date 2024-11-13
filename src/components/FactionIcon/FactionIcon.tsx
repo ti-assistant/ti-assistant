@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
 import { SymbolX } from "../../icons/svgs";
-import ResponsiveLogo from "../ResponsiveLogo/ResponsiveLogo";
-import styles from "./FactionIcon.module.scss";
 import { rem } from "../../util/util";
+import SiteLogo from "../SiteLogo/SiteLogo";
+import styles from "./FactionIcon.module.scss";
 
 type Size = `${number}%` | number;
 
@@ -19,7 +19,7 @@ interface FactionIconCSS extends CSSProperties {
 export default function FactionIcon({ factionId, size }: FactionIconProps) {
   let innerContent = useMemo(() => {
     if (!factionId) {
-      return <ResponsiveLogo size="100%" />;
+      return <SiteLogo />;
     }
 
     if (factionId === "None") {

@@ -2,11 +2,11 @@ import NextImage from "next/image";
 import { ReactNode, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
-import { GameIdContext } from "../../context/Context";
 import {
   useAllPlanets,
   useAttachments,
   useFactions,
+  useGameId,
 } from "../../context/dataHooks";
 import { getFactionColor } from "../../util/factions";
 import {
@@ -20,13 +20,13 @@ import {
 } from "../../util/planets";
 import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
+import Chip from "../Chip/Chip";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
-import { rem } from "../../util/util";
-import Chip from "../Chip/Chip";
 
 interface Cube {
   q: number;
@@ -286,8 +286,8 @@ export function SystemImage({
                 className="flexRow"
                 style={{
                   position: "absolute",
-                  backgroundColor: "#222",
-                  border: `${"2px"} solid ${getFactionColor(
+                  backgroundColor: "var(--background-color)",
+                  border: `var(--border-size) solid ${getFactionColor(
                     (factions ?? {})[planet.owner]
                   )}`,
                   borderRadius: "100%",
@@ -312,8 +312,10 @@ export function SystemImage({
                 className="flexRow"
                 style={{
                   position: "absolute",
-                  backgroundColor: "#222",
-                  border: `${"2px"} solid ${getPlanetTypeColor(planet.type)}`,
+                  backgroundColor: "var(--background-color)",
+                  border: `var(--border-size) solid ${getPlanetTypeColor(
+                    planet.type
+                  )}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -336,8 +338,8 @@ export function SystemImage({
                 className="flexRow"
                 style={{
                   position: "absolute",
-                  backgroundColor: "#222",
-                  border: `${"2px"} solid ${"#eee"}`,
+                  backgroundColor: "var(--background-color)",
+                  border: `var(--border-size) solid ${"#eee"}`,
                   borderRadius: "100%",
                   width: "24%",
                   height: height,
@@ -384,8 +386,10 @@ export function SystemImage({
                   className="flexRow"
                   style={{
                     position: "absolute",
-                    backgroundColor: "#222",
-                    border: `2px solid ${getTechTypeColor(color)}`,
+                    backgroundColor: "var(--background-color)",
+                    border: `var(--border-size) solid ${getTechTypeColor(
+                      color
+                    )}`,
                     borderRadius: "100%",
                     width: "24%",
                     height: height,
@@ -420,7 +424,7 @@ export function SystemImage({
           </div>
         );
       })}
-      {gameId && systemNumber === "18" && !systemPlanets[0]?.owner ? (
+      {systemNumber === "18" && !systemPlanets[0]?.owner ? (
         <div
           className="flexRow"
           style={{
@@ -594,7 +598,7 @@ export default function Map({
   factions,
   hideLegend,
 }: MapProps) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   const [showDetails, setShowDetails] = useState<Details>("NONE");
 
@@ -759,7 +763,7 @@ export default function Map({
 
   return (
     <div className={styles.Map}>
-      {gameId && !hideLegend ? (
+      {!hideLegend ? (
         <div className={styles.Legend} onClick={(e) => e.stopPropagation()}>
           <LabeledDiv
             label={
@@ -771,7 +775,7 @@ export default function Map({
             }
             style={{
               width: "fit-content",
-              backgroundColor: "#222",
+              backgroundColor: "var(--background-color)",
               justifyContent: "stretch",
               alignItems: "stretch",
               paddingTop: rem(16),

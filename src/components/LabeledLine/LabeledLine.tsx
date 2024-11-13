@@ -19,7 +19,7 @@ export default function LabeledLine({
   label,
   rightLabel,
   style = {},
-  color = "#999",
+  color = "var(--neutral-border)",
 }: LabeledLineProps) {
   const labeledLineStyle: LabeledLineCSS = {
     "--color": color,

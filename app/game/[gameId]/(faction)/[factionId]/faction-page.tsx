@@ -17,7 +17,7 @@ import { StaticFactionTimer } from "../../../../../src/Timer";
 import FactionCard from "../../../../../src/components/FactionCard/FactionCard";
 import LabeledDiv from "../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../src/components/LabeledLine/LabeledLine";
-import Modal from "../../../../../src/components/Modal/Modal";
+import Modal, { ModalContent } from "../../../../../src/components/Modal/Modal";
 import ObjectiveRow from "../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import PlanetRow from "../../../../../src/components/PlanetRow/PlanetRow";
 import { Selector } from "../../../../../src/components/Selector/Selector";
@@ -27,12 +27,12 @@ import {
   computeRemainingVotes,
   getTargets,
 } from "../../../../../src/components/VoteBlock/VoteBlock";
-import { GameIdContext } from "../../../../../src/context/Context";
 import {
   useActionLog,
   useAgendas,
   useAttachments,
   useFactions,
+  useGameId,
   useGameState,
   useLeaders,
   useObjectives,
@@ -106,6 +106,7 @@ import {
 import styles from "./faction-page.module.scss";
 import { Optional } from "../../../../../src/util/types/types";
 import { rem } from "../../../../../src/util/util";
+import { useSharedModal } from "../../../../../src/data/SharedModal";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -150,11 +151,11 @@ function SecondaryCheck({
 }
 
 function PhaseSection({ factionId }: { factionId: FactionId }) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const attachments = useAttachments();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();
@@ -1342,17 +1343,17 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
 
 function FactionContent({ factionId }: { factionId: FactionId }) {
   const router = useRouter();
-  const gameId = useContext(GameIdContext);
 
   const attachments = useAttachments();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
   const techs = useTechs();
 
-  const [showAddTech, setShowAddTech] = useState(false);
-  const [showAddPlanet, setShowAddPlanet] = useState(false);
   const [tabShown, setTabShown] = useState<string>("");
+
+  const { openModal } = useSharedModal();
 
   const faction = factions[factionId];
 
@@ -1369,10 +1370,6 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
     } else {
       setTabShown(tab);
     }
-  }
-
-  function toggleAddTechMenu() {
-    setShowAddTech(!showAddTech);
   }
 
   function removePlanet(toRemove: PlanetId) {
@@ -1438,42 +1435,8 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
     }
   }
 
-  function toggleAddPlanetMenu() {
-    setShowAddPlanet(!showAddPlanet);
-  }
-
   return (
     <div className="flexColumn" style={{ gap: rem(8), width: "100%" }}>
-      <Modal
-        closeMenu={toggleAddTechMenu}
-        visible={showAddTech}
-        title={
-          <FormattedMessage
-            id="3qIvsL"
-            description="Label on a hover menu used to research tech."
-            defaultMessage="Research Tech"
-          />
-        }
-      >
-        <AddTechList techs={remainingTechs} addTech={addTechLocal} />
-      </Modal>
-      <Modal
-        closeMenu={toggleAddPlanetMenu}
-        visible={showAddPlanet}
-        title={
-          <FormattedMessage
-            id="PrGqwQ"
-            description="Label for adding a planet."
-            defaultMessage="Add Planet"
-          />
-        }
-      >
-        <AddPlanetList
-          factionId={factionId}
-          planets={planets}
-          addPlanet={addPlanet}
-        />
-      </Modal>
       <FactionSummary factionId={factionId} options={{ showIcon: true }} />
       <div
         style={{
@@ -1557,7 +1520,26 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
                 <div>
                   <LabeledLine />
                   <div className="flexRow" style={{ height: rem(32) }}>
-                    <button onClick={toggleAddTechMenu}>
+                    <button
+                      onClick={() =>
+                        openModal(
+                          <ModalContent
+                            title={
+                              <FormattedMessage
+                                id="3qIvsL"
+                                description="Label on a hover menu used to research tech."
+                                defaultMessage="Research Tech"
+                              />
+                            }
+                          >
+                            <AddTechList
+                              techs={remainingTechs}
+                              addTech={addTechLocal}
+                            />
+                          </ModalContent>
+                        )
+                      }
+                    >
                       <FormattedMessage
                         id="3qIvsL"
                         description="Label on a hover menu used to research tech."
@@ -1591,7 +1573,27 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
                 <div>
                   <LabeledLine />
                   <div className="flexRow" style={{ height: rem(40) }}>
-                    <button onClick={toggleAddPlanetMenu}>
+                    <button
+                      onClick={() =>
+                        openModal(
+                          <ModalContent
+                            title={
+                              <FormattedMessage
+                                id="PrGqwQ"
+                                description="Label for adding a planet."
+                                defaultMessage="Add Planet"
+                              />
+                            }
+                          >
+                            <AddPlanetList
+                              factionId={factionId}
+                              planets={planets}
+                              addPlanet={addPlanet}
+                            />
+                          </ModalContent>
+                        )
+                      }
+                    >
                       <FormattedMessage
                         id="PrGqwQ"
                         description="Label for adding a planet."
@@ -1655,9 +1657,9 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
 
 export default function FactionPage({ factionId }: { factionId: FactionId }) {
   const router = useRouter();
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const options = useOptions();
   const planets = usePlanets();
   const state = useGameState();

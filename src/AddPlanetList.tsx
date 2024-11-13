@@ -62,7 +62,7 @@ export function AddPlanetList({
       <div
         className="flexRow"
         style={{
-          backgroundColor: "#222",
+          backgroundColor: "var(--background-color)",
           padding: `${rem(4)} ${rem(4)} 0px ${rem(4)}`,
         }}
       >

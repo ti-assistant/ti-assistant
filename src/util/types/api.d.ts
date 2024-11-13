@@ -83,6 +83,7 @@ interface GameData {
   attachments?: Partial<Record<AttachmentId, Attachment>>;
   components?: Record<string, Component>;
   factions: Partial<Record<FactionId, Faction>>;
+  gameId?: string;
   leaders: Partial<Record<LeaderId, Leader>>;
   objectives?: Partial<Record<ObjectiveId, Objective>>;
   options: Options;

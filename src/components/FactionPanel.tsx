@@ -2,19 +2,18 @@ import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { UnitStat } from "../TechRow";
-import { GameIdContext } from "../context/Context";
-import { useLeaders, useTechs } from "../context/dataHooks";
+import { useGameId, useLeaders, useTechs } from "../context/dataHooks";
+import { useSharedModal } from "../data/SharedModal";
 import { updateLeaderStateAsync } from "../dynamic/api";
-import { getFactionName } from "../util/factions";
+import { getFactionColor, getFactionName } from "../util/factions";
 import { leaderTypeString, unitTypeString } from "../util/strings";
+import { sortTechs } from "../util/techs";
+import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionPanel.module.scss";
-import GenericModal from "./GenericModal/GenericModal";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
-import { sortTechs } from "../util/techs";
-import { rem } from "../util/util";
 
 function AbilitySection({
   leftLabel,
@@ -221,7 +220,7 @@ function FactionPanelContent({
 }) {
   const intl = useIntl();
   // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const leaders = useLeaders();
   const techs = useTechs();
 
@@ -695,55 +694,68 @@ export default function FactionPanel({
   options: Options;
 }) {
   const [showPanel, setShowPanel] = useState(false);
+  const { openModal } = useSharedModal();
 
   return (
     <>
-      <GenericModal visible={showPanel} closeMenu={() => setShowPanel(false)}>
-        <div
-          className="flexColumn"
-          style={{
-            whiteSpace: "normal",
-            textShadow: "none",
-            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-            justifyContent: "flex-start",
-            height: `calc(100dvh - ${rem(24)})`,
-          }}
-        >
-          <div
-            className="flexRow centered extraLargeFont"
-            style={{
-              backgroundColor: "#222",
-              padding: `${rem(4)} ${rem(8)}`,
-              borderRadius: rem(4),
-            }}
-          >
-            <FactionIcon factionId={faction.id} size={36} />
-            {getFactionName(faction)}
-            <FactionIcon factionId={faction.id} size={36} />
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-              justifyContent: "flex-start",
-              overflow: "auto",
-              height: "fit-content",
-            }}
-          >
-            <FactionPanelContent faction={faction} options={options} />
-          </div>
-        </div>
-      </GenericModal>
       <div
         className="popupIcon"
         style={{
           fontSize: rem(16),
         }}
-        onClick={() => setShowPanel(true)}
+        onClick={() =>
+          openModal(<FactionPanelModal faction={faction} options={options} />)
+        }
       >
         &#x24D8;
       </div>
     </>
+  );
+}
+
+function FactionPanelModal({
+  faction,
+  options,
+}: {
+  faction: Faction;
+  options: Options;
+}) {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        whiteSpace: "normal",
+        textShadow: "none",
+        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+        justifyContent: "flex-start",
+        height: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="flexRow centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          border: `1px solid ${getFactionColor(faction)}`,
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+        }}
+      >
+        <FactionIcon factionId={faction.id} size={36} />
+        {getFactionName(faction)}
+        <FactionIcon factionId={faction.id} size={36} />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "fit-content",
+        }}
+      >
+        <FactionPanelContent faction={faction} options={options} />
+      </div>
+    </div>
   );
 }

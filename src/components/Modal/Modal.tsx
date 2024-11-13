@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./Modal.module.scss";
 
@@ -17,12 +17,19 @@ export default function Modal({
   visible,
 }: PropsWithChildren<ModalProps>) {
   const zIndex = 900 * (level ?? 1);
+  const nodeRef = useRef<HTMLDivElement>(null);
 
-  function onExited(node: HTMLElement) {
-    node.style.display = "none";
+  function onExited() {
+    if (!nodeRef.current) {
+      return;
+    }
+    nodeRef.current.style.visibility = "hidden";
   }
-  function onEnter(node: HTMLElement) {
-    node.style.display = "flex";
+  function onEnter() {
+    if (!nodeRef.current) {
+      return;
+    }
+    nodeRef.current.style.visibility = "visible";
   }
   function closeModal(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
@@ -33,17 +40,19 @@ export default function Modal({
   return (
     <CSSTransition
       in={visible}
-      timeout={500}
+      timeout={200}
       classNames="fade"
       onEnter={onEnter}
       onExited={onExited}
+      nodeRef={nodeRef}
     >
       <div
+        ref={nodeRef}
         className={`${styles.Modal} ${visible ? styles.shown : ""}`}
         style={{ zIndex: zIndex + 3 }}
       >
         <div className={styles.Overlay} onClick={closeModal}></div>
-        <CSSTransition in={visible} timeout={500} classNames="modal">
+        <CSSTransition in={visible} timeout={300} classNames="modal">
           <div className={styles.Content}>
             <div className={styles.Header}>
               {closeMenu ? (
@@ -69,5 +78,26 @@ export default function Modal({
         </CSSTransition>
       </div>
     </CSSTransition>
+  );
+}
+
+export function ModalContent({
+  children,
+  title,
+}: PropsWithChildren<{ title: ReactNode }>) {
+  return (
+    <div className={styles.ModalContent}>
+      <div className={styles.Content}>
+        <div className={styles.Header}>
+          <div className={styles.Title}>{title}</div>
+        </div>
+        <div
+          className={styles.Body}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {children}
+        </div>
+      </div>
+    </div>
   );
 }

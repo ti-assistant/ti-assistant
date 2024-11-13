@@ -1,18 +1,15 @@
-import { useContext, useState } from "react";
-import styles from "./RelicPanel.module.scss";
-import GenericModal from "../GenericModal/GenericModal";
-import { GameIdContext } from "../../context/Context";
-import { CollapsibleSection } from "../CollapsibleSection";
-import { InfoRow } from "../../InfoRow";
-import { FactionSelectHoverMenu } from "../FactionSelect";
-import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import { useFactions, useGameId, useRelics } from "../../context/dataHooks";
+import { useSharedModal } from "../../data/SharedModal";
 import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
+import { InfoRow } from "../../InfoRow";
 import { getFactionColor } from "../../util/factions";
-import { useFactions, useRelics } from "../../context/dataHooks";
+import { CollapsibleSection } from "../CollapsibleSection";
+import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import styles from "./RelicPanel.module.scss";
 
 function RelicPanelContent({}) {
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const relics = useRelics();
 
   return (
@@ -88,44 +85,48 @@ function RelicPanelContent({}) {
 }
 
 export default function RelicPanel({}) {
-  const [showPanel, setShowPanel] = useState(false);
+  const { openModal } = useSharedModal();
 
   return (
     <>
-      <GenericModal visible={showPanel} closeMenu={() => setShowPanel(false)}>
-        <div
-          className="flexColumn"
-          style={{
-            whiteSpace: "normal",
-            textShadow: "none",
-            width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
-            justifyContent: "flex-start",
-            height: `calc(100dvh - 24px)`,
-          }}
-        >
-          <div
-            className="flexRow centered extraLargeFont"
-            style={{
-              backgroundColor: "#222",
-              padding: "4px 8px",
-              borderRadius: "4px",
-            }}
-          >
-            Relics
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              justifyContent: "flex-start",
-              height: "fit-content",
-            }}
-          >
-            <RelicPanelContent />
-          </div>
-        </div>
-      </GenericModal>
-      <button onClick={() => setShowPanel(true)}>Relics</button>
+      <button onClick={() => openModal(<RelicModalContent />)}>Relics</button>
     </>
+  );
+}
+
+function RelicModalContent() {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        whiteSpace: "normal",
+        textShadow: "none",
+        width: `clamp(80vw, 1200px, calc(100vw - 24px))`,
+        justifyContent: "flex-start",
+        height: `calc(100dvh - 24px)`,
+      }}
+    >
+      <div
+        className="flexRow centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          padding: "4px 8px",
+          borderRadius: "4px",
+          border: "1px solid var(--neutral-border)",
+        }}
+      >
+        Relics
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          justifyContent: "flex-start",
+          height: "fit-content",
+        }}
+      >
+        <RelicPanelContent />
+      </div>
+    </div>
   );
 }

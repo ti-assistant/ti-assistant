@@ -1,4 +1,3 @@
-import QRCode from "qrcode";
 import "server-only";
 import SelectFactionPage from "./game-page";
 

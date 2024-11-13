@@ -36,7 +36,7 @@ export function FactionSelectHoverMenu({
   const hoverMenuStyle: CSSProperties = {
     left: 0,
     borderRadius: rem(Math.floor(size / 2)),
-    border: `${"2px"} solid #444`,
+    border: `var(--border-size) solid var(--neutral-border)`,
   };
 
   return (
@@ -56,7 +56,11 @@ export function FactionSelectHoverMenu({
       }}
       ref={menu}
     >
-      <FactionCircle borderColor="#444" tagBorderColor="#444" size={size} />
+      <FactionCircle
+        borderColor="var(--neutral-border)"
+        tagBorderColor="var(--neutral-border)"
+        size={size}
+      />
       <div
         className={`flexRow hoverRadio ${styles.hoverMenu}`}
         style={hoverMenuStyle}
@@ -69,7 +73,7 @@ export function FactionSelectHoverMenu({
             width: `calc(${rem(size)} - 4px)`,
             height: `calc(${rem(size)} - 4px)`,
             fontSize: rem(size - 8),
-            color: "#777",
+            color: "var(--neutral-border)",
           }}
         >
           <div

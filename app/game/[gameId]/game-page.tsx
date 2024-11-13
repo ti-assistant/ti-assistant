@@ -2,21 +2,25 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import { GameIdContext } from "../../../src/context/Context";
+import {
+  useFactions,
+  useGameId,
+  useGameState,
+} from "../../../src/context/dataHooks";
 import { setGameId } from "../../../src/util/api/util";
+import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
-import styles from "./game-page.module.scss";
-import { useFactions, useGameState } from "../../../src/context/dataHooks";
 import { rem } from "../../../src/util/util";
+import styles from "./game-page.module.scss";
 
 export default function SelectFactionPage() {
   const router = useRouter();
   const factions = useFactions();
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const state = useGameState();
 
   useEffect(() => {
@@ -32,13 +36,9 @@ export default function SelectFactionPage() {
     return null;
   }
 
-  const orderedFactions = Object.values(factions).sort((a, b) => {
-    if (a.order > b.order) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+  const orderedFactions = Object.values(factions).sort(
+    (a, b) => a.mapPosition - b.mapPosition
+  );
 
   // TODO: Fix height on mobile.
   return (
@@ -92,9 +92,16 @@ export default function SelectFactionPage() {
           </div>
         </Link>
         {orderedFactions.map((faction) => {
+          const factionColor = getFactionColor(faction);
           return (
             <Link href={`/game/${gameId}/${faction.id}`} key={faction.id}>
-              <BorderedDiv color={getFactionColor(faction)}>
+              <BorderedDiv
+                color={factionColor}
+                style={{
+                  boxShadow:
+                    factionColor === "Black" ? BLACK_BORDER_GLOW : undefined,
+                }}
+              >
                 <div
                   className="flexRow"
                   style={{

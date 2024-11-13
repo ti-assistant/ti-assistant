@@ -1,8 +1,7 @@
 import React, { CSSProperties, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { TechRow } from "../TechRow";
-import { GameIdContext } from "../context/Context";
-import { useFactions, useTechs } from "../context/dataHooks";
+import { useFactions, useGameId, useTechs } from "../context/dataHooks";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
 import { hasTech, isTechReplaced } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -25,8 +24,8 @@ function FactionTechSection({
   openedByDefault: boolean;
   viewOnly?: boolean;
 }) {
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const techs = useTechs();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
@@ -271,7 +270,7 @@ function TechUpdateRow({
   orderedFactions: Faction[];
   viewOnly?: boolean;
 }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   const numFactions = orderedFactions.length;
 
@@ -453,7 +452,7 @@ function TechsByFaction({
 }) {
   const factions = useFactions();
   const techs = useTechs();
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const intl = useIntl();
 
   const faction = factions[factionId];

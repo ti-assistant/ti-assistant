@@ -100,7 +100,8 @@
   grid-column: 1 / 2;
 
   --color: #eee;
-  background-color: #222;
+  background-color: var(--background-color);
+  border: 1px solid var(--neutral-border);
   border-radius: 0.25rem;
   padding-top: 0.25rem;
 
@@ -113,7 +114,7 @@
   // justify-content: center;
   align-items: center;
 
-  --color: #eee;
+  --color: var(--neutral-border);
   width: 100%;
   white-space: pre-wrap;
   padding: 0.25rem 0;
@@ -123,14 +124,14 @@
 
   font-size: 0.875rem;
 
-  background-color: #222;
+  background-color: var(--background-color);
+  border: 1px solid var(--color);
 }
 
 .techColumn.lastColumn {
   grid-row: 1 / 3;
   grid-column: 4 / 5;
   align-items: stretch;
-  border: none;
 }
 
 .techGrid {

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { SelectableRow } from "../../SelectableRow";
 import FactionIcon from "../FactionIcon/FactionIcon";
-import Modal from "../Modal/Modal";
+import Modal, { ModalContent } from "../Modal/Modal";
 import { rem } from "../../util/util";
+import { useSharedModal } from "../../data/SharedModal";
 
 interface InfoContentProps {
   objective: Objective;
@@ -49,6 +50,8 @@ export default function ObjectiveRow({
 }: ObjectiveRowProps) {
   const [showInfoModal, setShowInfoModal] = useState(false);
 
+  const { openModal } = useSharedModal();
+
   function canScore() {
     if (!scoreObjective || viewing || !factionId) {
       return false;
@@ -70,14 +73,6 @@ export default function ObjectiveRow({
       selectItem={addObjective}
       removeItem={removeObjective}
     >
-      <Modal
-        closeMenu={() => setShowInfoModal(false)}
-        visible={showInfoModal}
-        title={<div style={{ fontSize: rem(40) }}>{objective.name}</div>}
-        level={2}
-      >
-        <InfoContent objective={objective} />
-      </Modal>
       <div className="flexColumn" style={{ width: "100%", gap: 0 }}>
         <div
           className="flexRow hoverParent"
@@ -98,7 +93,17 @@ export default function ObjectiveRow({
             <div
               className="popupIcon"
               style={{ paddingRight: rem(8) }}
-              onClick={() => setShowInfoModal(true)}
+              onClick={() =>
+                openModal(
+                  <ModalContent
+                    title={
+                      <div style={{ fontSize: rem(40) }}>{objective.name}</div>
+                    }
+                  >
+                    <InfoContent objective={objective} />
+                  </ModalContent>
+                )
+              }
             >
               &#x24D8;
             </div>
@@ -146,7 +151,7 @@ export default function ObjectiveRow({
                         left: rem(20),
                         position: "absolute",
                         zIndex: 1,
-                        backgroundColor: "#222",
+                        backgroundColor: "var(--light-bg)",
                         color: "red",
                         display: "flex",
                         alignItems: "center",

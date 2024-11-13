@@ -1,24 +1,19 @@
 import { Fragment, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import Chip from "../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../src/components/CollapsibleSection";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import GenericModal from "../../../src/components/GenericModal/GenericModal";
 import { objectiveTypeString } from "../../../src/util/strings";
 import { Optional } from "../../../src/util/types/types";
 import { rem } from "../../../src/util/util";
 import styles from "./FactionModal.module.scss";
 import { FactionSummary, GameCounts, ObjectiveGameCounts } from "./types";
-import Chip from "../../../src/components/Chip/Chip";
 
 export default function FactionModal({
   baseData,
-  closeFn,
-  faction,
   info,
 }: {
   baseData: BaseData;
-  closeFn: () => void;
-  faction: Optional<FactionId>;
   info: Optional<FactionSummary>;
 }) {
   const intl = useIntl();
@@ -29,146 +24,145 @@ export default function FactionModal({
   const name = info?.name ?? "Vuil'raith Cabal";
 
   return (
-    <GenericModal visible={!!faction} closeMenu={closeFn}>
+    <div
+      className="flexColumn"
+      style={{
+        whiteSpace: "normal",
+        textShadow: "none",
+        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+        justifyContent: "flex-start",
+        height: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
       <div
-        className="flexColumn"
+        className="flexRow centered extraLargeFont"
         style={{
-          whiteSpace: "normal",
-          textShadow: "none",
-          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-          justifyContent: "flex-start",
-          height: `calc(100dvh - ${rem(24)})`,
+          backgroundColor: "var(--background-color)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+          border: "1px solid var(--neutral-border)",
         }}
       >
-        <div
-          className="flexRow centered extraLargeFont"
-          style={{
-            backgroundColor: "#222",
-            padding: `${rem(4)} ${rem(8)}`,
-            borderRadius: rem(4),
-          }}
-        >
-          <FactionIcon factionId={id} size={36} />
-          {name}
-          <FactionIcon factionId={id} size={36} />
-        </div>
-        <div
-          className="flexColumn largeFont"
-          onClick={(e) => e.stopPropagation()}
-          style={{
-            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-            justifyContent: "flex-start",
-            overflow: "auto",
-            height: "fit-content",
-          }}
-        >
-          <div className={styles.FactionModal}>
-            <CollapsibleSection
-              openedByDefault
-              title={
-                <div
-                  className="flexRow"
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: rem(4),
-                  }}
-                >
-                  <FormattedMessage
-                    id="5Bl4Ek"
-                    description="Cards that define how to score victory points."
-                    defaultMessage="Objectives"
-                  />
-                  <Chip
-                    fontSize={10}
-                    selected={objectiveType === "STAGE ONE"}
-                    toggleFn={() => {
-                      setObjectiveType("STAGE ONE");
-                    }}
-                  >
-                    {objectiveTypeString("STAGE ONE", intl)}
-                  </Chip>
-                  <Chip
-                    fontSize={10}
-                    selected={objectiveType === "STAGE TWO"}
-                    toggleFn={() => {
-                      setObjectiveType("STAGE TWO");
-                    }}
-                  >
-                    {objectiveTypeString("STAGE TWO", intl)}
-                  </Chip>
-                  <Chip
-                    fontSize={10}
-                    selected={objectiveType === "OTHER"}
-                    toggleFn={() => {
-                      setObjectiveType("OTHER");
-                    }}
-                  >
-                    {objectiveTypeString("OTHER", intl)}
-                  </Chip>
-                </div>
-              }
-            >
+        <FactionIcon factionId={id} size={36} />
+        {name}
+        <FactionIcon factionId={id} size={36} />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "fit-content",
+        }}
+      >
+        <div className={styles.FactionModal}>
+          <CollapsibleSection
+            openedByDefault
+            title={
               <div
-                className="flexColumn"
+                className="flexRow"
                 style={{
-                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
                   gap: rem(4),
-                  padding: `0 ${rem(4)} ${rem(4)}`,
-                  fontSize: rem(14),
                 }}
               >
-                {info ? (
-                  <ObjectiveTable
-                    objectives={info.objectives}
-                    objectiveGames={info.objectiveGames.games}
-                    objectiveType={objectiveType}
-                    baseData={baseData}
-                  />
-                ) : null}
-              </div>
-            </CollapsibleSection>
-            <CollapsibleSection
-              title={
-                <div
-                  className="flexRow"
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
+                <FormattedMessage
+                  id="5Bl4Ek"
+                  description="Cards that define how to score victory points."
+                  defaultMessage="Objectives"
+                />
+                <Chip
+                  fontSize={10}
+                  selected={objectiveType === "STAGE ONE"}
+                  toggleFn={() => {
+                    setObjectiveType("STAGE ONE");
                   }}
                 >
-                  <FormattedMessage
-                    id="ys7uwX"
-                    description="Shortened version of technologies."
-                    defaultMessage="Techs"
-                  />
-                </div>
-              }
+                  {objectiveTypeString("STAGE ONE", intl)}
+                </Chip>
+                <Chip
+                  fontSize={10}
+                  selected={objectiveType === "STAGE TWO"}
+                  toggleFn={() => {
+                    setObjectiveType("STAGE TWO");
+                  }}
+                >
+                  {objectiveTypeString("STAGE TWO", intl)}
+                </Chip>
+                <Chip
+                  fontSize={10}
+                  selected={objectiveType === "OTHER"}
+                  toggleFn={() => {
+                    setObjectiveType("OTHER");
+                  }}
+                >
+                  {objectiveTypeString("OTHER", intl)}
+                </Chip>
+              </div>
+            }
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
             >
+              {info ? (
+                <ObjectiveTable
+                  objectives={info.objectives}
+                  objectiveGames={info.objectiveGames.games}
+                  objectiveType={objectiveType}
+                  baseData={baseData}
+                />
+              ) : null}
+            </div>
+          </CollapsibleSection>
+          <CollapsibleSection
+            title={
               <div
-                className="flexColumn"
+                className="flexRow"
                 style={{
-                  width: "100%",
-                  gap: rem(4),
-                  padding: `0 ${rem(4)} ${rem(4)}`,
-                  fontSize: rem(14),
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {info ? (
-                  <TechTable
-                    techs={info.techs}
-                    techGames={info.techGames.games}
-                    techWins={info.techGames.wins}
-                    techPoints={info.techGames.points}
-                    baseData={baseData}
-                  />
-                ) : null}
+                <FormattedMessage
+                  id="ys7uwX"
+                  description="Shortened version of technologies."
+                  defaultMessage="Techs"
+                />
               </div>
-            </CollapsibleSection>
-          </div>
+            }
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {info ? (
+                <TechTable
+                  techs={info.techs}
+                  techGames={info.techGames.games}
+                  techWins={info.techGames.wins}
+                  techPoints={info.techGames.points}
+                  baseData={baseData}
+                />
+              ) : null}
+            </div>
+          </CollapsibleSection>
         </div>
       </div>
-    </GenericModal>
+    </div>
   );
 }
 

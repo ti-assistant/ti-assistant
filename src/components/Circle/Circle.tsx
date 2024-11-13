@@ -33,7 +33,7 @@ export default function Circle({
   const factionCircleStyle: CircleCSS = {
     "--border-color": borderColor,
     "--size": rem(size),
-    backgroundColor: blur ? undefined : "#222",
+    backgroundColor: blur ? undefined : "var(--light-bg)",
     backdropFilter: blur ? `blur(${rem(4)})` : undefined,
     boxShadow: borderColor === "Black" ? BLACK_BORDER_GLOW : undefined,
     cursor: onClick ? "pointer" : undefined,
@@ -70,7 +70,7 @@ export default function Circle({
           <div
             className={`flexRow ${styles.tag}`}
             style={{
-              border: `${"1px"} solid ${tagBorderColor}`,
+              border: `1px solid ${tagBorderColor}`,
               boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
               width: rem(size / 2),
               height: rem(size / 2),

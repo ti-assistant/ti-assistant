@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
-import Modal from "./components/Modal/Modal";
+import Modal, { ModalContent } from "./components/Modal/Modal";
 import { translateOutcome } from "./components/VoteBlock/VoteBlock";
 import { agendaTypeString, outcomeString } from "./util/strings";
 import {
@@ -13,6 +13,7 @@ import {
   useStrategyCards,
 } from "./context/dataHooks";
 import { rem } from "./util/util";
+import { useSharedModal } from "./data/SharedModal";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
   const intl = useIntl();
@@ -64,34 +65,16 @@ export function AgendaRow({
   const objectives = useObjectives();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
-  const [showInfoModal, setShowInfoModal] = useState(false);
+
+  const { openModal } = useSharedModal();
 
   const intl = useIntl();
-
-  function displayInfo() {
-    setShowInfoModal(true);
-  }
 
   const textColor = "#eee";
 
   return (
     <SelectableRow itemId={agenda.id} removeItem={removeAgenda}>
       <div>
-        <Modal
-          closeMenu={() => setShowInfoModal(false)}
-          visible={showInfoModal}
-          title={
-            <div className="flexColumn" style={{ fontSize: rem(40) }}>
-              {agenda.name}
-              <div style={{ fontSize: rem(24) }}>
-                [{agendaTypeString(agenda.type, intl)}]
-              </div>
-            </div>
-          }
-          level={2}
-        >
-          <InfoContent agenda={agenda} />
-        </Modal>
         <div className="flexRow">
           <div
             className="flexColumn"
@@ -121,7 +104,22 @@ export function AgendaRow({
           </div>
           <div
             className="popupIcon"
-            onClick={displayInfo}
+            onClick={() =>
+              openModal(
+                <ModalContent
+                  title={
+                    <div className="flexColumn" style={{ fontSize: rem(40) }}>
+                      {agenda.name}
+                      <div style={{ fontSize: rem(24) }}>
+                        [{agendaTypeString(agenda.type, intl)}]
+                      </div>
+                    </div>
+                  }
+                >
+                  <InfoContent agenda={agenda} />
+                </ModalContent>
+              )
+            }
             style={{ fontSize: rem(16) }}
           >
             &#x24D8;

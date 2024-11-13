@@ -12,6 +12,7 @@ import LabeledLine from "./LabeledLine/LabeledLine";
 import styles from "./SetupFactionPanel.module.scss";
 import TechIcon from "./TechIcon/TechIcon";
 import { rem } from "../util/util";
+import { useSharedModal } from "../data/SharedModal";
 
 function AbilitySection({
   leftLabel,
@@ -286,7 +287,67 @@ function FactionPanelContent({
             >
               {factionLeaders.map((leader) => {
                 let state: LeaderState = "readied";
-                let innerContent = undefined;
+                let innerContent = (
+                  <div
+                    className="flexColumn"
+                    style={{
+                      gap: 0,
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
+                      width: "100%",
+                    }}
+                  >
+                    {leader.type !== "AGENT" ? (
+                      <>
+                        <div>
+                          <span>
+                            {formatDescription(
+                              intl.formatMessage({
+                                id: "frzrrT",
+                                defaultMessage: "UNLOCK:",
+                                description:
+                                  "Text that gets pre-fixed to a leader unlock condition.",
+                              })
+                            ).map((val, index) => (
+                              <span key={index}>{val}</span>
+                            ))}
+                          </span>{" "}
+                          {formatDescription(
+                            leader.unlock ??
+                              intl.formatMessage({
+                                id: "Leaders.Hero.Unlock",
+                                defaultMessage: "Have 3 scored objectives.",
+                                description: "Unlock condition for all heroes.",
+                              })
+                          ).map((val, index) => (
+                            <span key={index}>{val}</span>
+                          ))}
+                        </div>
+
+                        <hr
+                          style={{
+                            width: "100%",
+                            borderColor: "var(--neutral-border)",
+                            margin: `${rem(4)} 0`,
+                          }}
+                        />
+                      </>
+                    ) : null}
+                    <div
+                      className="flexColumn"
+                      style={{
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                      }}
+                    >
+                      {formatDescription(leader.description).map(
+                        (section, index) => {
+                          return <div key={index}>{section}</div>;
+                        }
+                      )}
+                    </div>
+                  </div>
+                );
                 let leftLabel = undefined;
                 switch (state) {
                   case "readied":
@@ -321,18 +382,6 @@ function FactionPanelContent({
                             &#128275;
                           </div>
                         ) : null}
-                      </div>
-                    );
-                    innerContent = (
-                      <div
-                        className="flexColumn"
-                        style={{ width: "100%", alignItems: "flex-start" }}
-                      >
-                        {formatDescription(leader.description).map(
-                          (section, index) => {
-                            return <div key={index}>{section}</div>;
-                          }
-                        )}
                       </div>
                     );
                     break;
@@ -574,56 +623,69 @@ export default function SetupFactionPanel({
   faction: BaseFaction;
   options: Options;
 }) {
-  const [showPanel, setShowPanel] = useState(false);
+  const { openModal } = useSharedModal();
 
   return (
     <>
-      <GenericModal visible={showPanel} closeMenu={() => setShowPanel(false)}>
-        <div
-          className="flexColumn"
-          style={{
-            whiteSpace: "normal",
-            textShadow: "none",
-            width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
-            justifyContent: "flex-start",
-            height: `calc(100dvh - ${rem(24)})`,
-          }}
-        >
-          <div
-            className="flexRow centered extraLargeFont"
-            style={{
-              backgroundColor: "#222",
-              padding: `${rem(4)} ${rem(8)}`,
-              borderRadius: rem(4),
-            }}
-          >
-            <FactionIcon factionId={faction.id} size={36} />
-            {faction.name}
-            <FactionIcon factionId={faction.id} size={36} />
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-              justifyContent: "flex-start",
-              overflow: "auto",
-              height: "fit-content",
-            }}
-          >
-            <FactionPanelContent faction={faction} options={options} />
-          </div>
-        </div>
-      </GenericModal>
       <div
         className="popupIcon"
         style={{
           fontSize: rem(16),
         }}
-        onClick={() => setShowPanel(true)}
+        onClick={() =>
+          openModal(
+            <SetupFactionPanelModal faction={faction} options={options} />
+          )
+        }
       >
         &#x24D8;
       </div>
     </>
+  );
+}
+
+function SetupFactionPanelModal({
+  faction,
+  options,
+}: {
+  faction: BaseFaction;
+  options: Options;
+}) {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        whiteSpace: "normal",
+        textShadow: "none",
+        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
+        justifyContent: "flex-start",
+        height: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="flexRow centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+        }}
+      >
+        <FactionIcon factionId={faction.id} size={36} />
+        {faction.name}
+        <FactionIcon factionId={faction.id} size={36} />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "fit-content",
+        }}
+      >
+        <FactionPanelContent faction={faction} options={options} />
+      </div>
+    </div>
   );
 }

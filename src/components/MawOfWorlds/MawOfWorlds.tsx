@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { GameIdContext } from "../../context/Context";
 import {
   useActionLog,
   useFactions,
+  useGameId,
   useRelics,
   useTechs,
 } from "../../context/dataHooks";
@@ -20,9 +19,9 @@ import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 
 export default function MawOfWorlds({}) {
   const intl = useIntl();
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const relics = useRelics();
   const techs = useTechs();
 

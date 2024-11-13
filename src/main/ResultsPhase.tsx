@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import BorderedDiv from "../components/BorderedDiv/BorderedDiv";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import { GameIdContext } from "../context/Context";
 import { GameLog } from "../components/GameLog/GameLog";
+import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import { useGameId } from "../context/dataHooks";
 import { rem } from "../util/util";
 
 export default function ResultsPhase() {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const [viewing, setViewing] = useState("Game Log");
 
   return (

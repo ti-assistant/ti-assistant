@@ -5,41 +5,55 @@
   width: 100vw;
   height: 100dvh;
 
-  display: none;
+  visibility: hidden;
 
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #eee;
+
+  backdrop-filter: blur(0.5rem);
 }
 
 .Overlay {
   position: absolute;
   width: 100vw;
   height: 100dvh;
-  background-color: black;
-  opacity: 50%;
+}
+.ModalContent {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #eee;
 }
 
-.Modal .Content {
+.ModalContent .Content {
   position: relative;
-  background-color: #222;
+  background-color: var(--background-color);
+  border: 1px solid var(--neutral-border);
   max-width: 85%;
   max-height: 90vh;
   border-radius: 0.625rem;
 }
 
-.Modal .Header {
+.ModalContent .Header {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 
   padding: 0.25rem 2.25rem;
-  border-bottom: 1px solid grey;
+  border-bottom: var(--border-size) solid var(--neutral-border);
 }
 
-.Modal .CloseButton {
+.ModalContent .CloseButton {
   color: grey;
   cursor: pointer;
   font-size: 1.25rem;
@@ -49,12 +63,12 @@
   left: 0.25rem;
 }
 
-.Modal .Title {
+.ModalContent .Title {
   text-align: center;
   font-size: 2.5rem;
 }
 
-.Modal .Body {
+.ModalContent .Body {
   display: flex;
   flex-direction: column;
   justify-content: center;

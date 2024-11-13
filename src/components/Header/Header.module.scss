@@ -4,7 +4,7 @@
   cursor: pointer;
   position: fixed;
   justify-content: center;
-  background-color: #222;
+  background-color: var(--background-color);
   top: 1rem;
   left: 6rem;
   font-size: 1.5rem;
@@ -120,7 +120,7 @@
     width: 100%;
     box-sizing: border-box;
 
-    background-color: #222;
+    background-color: var(--background-color);
     z-index: 1;
   }
 
@@ -142,10 +142,9 @@
     left: 0.5rem;
     padding: 0.25rem;
     z-index: 1;
-    // background-color: #222;
     backdrop-filter: blur(0.5rem);
     border-radius: 0.5rem;
-    border: 0.25rem solid #222;
+    border: 0.25rem solid var(--background-color);
     // display: none;
     // TODO: Decide whether or not to display game timer on mobile.
   }

@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
-import { GameIdContext } from "../../context/Context";
 import {
   useActionLog,
   useAgendas,
   useAttachments,
   useFactions,
+  useGameId,
   useGameState,
   useLeaders,
   useObjectives,
@@ -458,10 +458,10 @@ interface VoteBlockProps {
 }
 
 export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
@@ -599,10 +599,10 @@ function PredictionSection({
   factionId: FactionId;
   agenda: Optional<Agenda>;
 }) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -738,11 +738,11 @@ function VotingSection({
   factionId: FactionId;
   agenda: Optional<Agenda>;
 }) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const attachments = useAttachments();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();

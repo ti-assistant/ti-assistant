@@ -1,6 +1,5 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import styles from "./main.module.scss";
-import Footer from "../../../../src/components/Footer/Footer";
 
 export default async function Layout({
   children,
@@ -17,7 +16,7 @@ export default async function Layout({
         {phase}
         {summary}
       </div>
-      <Footer />
+      {children}
     </>
   );
 }

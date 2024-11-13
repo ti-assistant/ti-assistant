@@ -4,10 +4,10 @@ import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
 import { TechRow } from "../TechRow";
-import { GameIdContext } from "../context/Context";
 import {
   useActionLog,
   useFactions,
+  useGameId,
   useLeaders,
   useOptions,
   usePlanets,
@@ -90,7 +90,7 @@ export function TacticalAction({
   style?: CSSProperties;
   techs: Partial<Record<TechId, Tech>>;
 }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const relics = useRelics();
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
 
@@ -631,7 +631,7 @@ export function TacticalAction({
                       className="flexRow"
                       style={{
                         position: "absolute",
-                        backgroundColor: "#222",
+                        backgroundColor: "var(--light-bg)",
                         cursor: "pointer",
                         borderRadius: "100%",
                         marginLeft: "60%",
@@ -716,9 +716,9 @@ export function TacticalAction({
 }
 
 function AdjudicatorBaal() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const options = useOptions();
   const planets = usePlanets();

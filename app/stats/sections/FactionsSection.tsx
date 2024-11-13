@@ -9,6 +9,7 @@ import { FactionSummary } from "./types";
 import styles from "./FactionsSection.module.scss";
 import { FormattedMessage } from "react-intl";
 import { rem } from "../../../src/util/util";
+import { useSharedModal } from "../../../src/data/SharedModal";
 
 export default function FactionsSection({
   games,
@@ -19,8 +20,7 @@ export default function FactionsSection({
   baseData: BaseData;
   points: number;
 }) {
-  const [shownModal, setShownModal] = useState<Optional<FactionId>>();
-  const [modalInfo, setModalInfo] = useState<Optional<FactionSummary>>();
+  const { openModal } = useSharedModal();
 
   const baseObjectives = baseData.objectives;
   const factionInfo: Partial<Record<FactionId, FactionSummary>> = {};
@@ -262,12 +262,6 @@ export default function FactionsSection({
   return (
     <>
       <div className={styles.FactionsSection}>
-        <FactionModal
-          baseData={baseData}
-          closeFn={() => setShownModal(undefined)}
-          faction={shownModal}
-          info={modalInfo}
-        />
         {orderedInfo.map(([id, info]) => {
           return (
             <Fragment key={id}>
@@ -375,8 +369,7 @@ export default function FactionsSection({
                 <button
                   style={{ fontSize: rem(10), marginTop: rem(2) }}
                   onClick={() => {
-                    setModalInfo(info);
-                    setShownModal(id as FactionId);
+                    openModal(<FactionModal baseData={baseData} info={info} />);
                   }}
                 >
                   <FormattedMessage

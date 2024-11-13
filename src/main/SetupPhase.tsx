@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { LockedButtons } from "../LockedButton";
 import { NumberedItem } from "../NumberedItem";
@@ -7,10 +7,10 @@ import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import StartingComponents from "../components/StartingComponents/StartingComponents";
-import { GameIdContext } from "../context/Context";
 import {
   useActionLog,
   useFactions,
+  useGameId,
   useGameState,
   useObjectives,
   useOptions,
@@ -23,11 +23,10 @@ import {
 } from "../dynamic/api";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { getFactionColor, getFactionName } from "../util/factions";
-import { objectiveTypeString } from "../util/strings";
-import styles from "./SetupPhase.module.scss";
-import { Optional } from "../util/types/types";
-import { rem } from "../util/util";
 import { processMapString } from "../util/map";
+import { objectiveTypeString } from "../util/strings";
+import { rem } from "../util/util";
+import styles from "./SetupPhase.module.scss";
 
 export function startFirstRound(gameId: string) {
   advancePhaseAsync(gameId);
@@ -117,16 +116,17 @@ function getSetupPhaseText(
 }
 
 function setMapString(
-  gameId: Optional<string>,
+  gameId: string,
   mapString: string,
   mapStyle: MapStyle,
   numFactions: number
 ) {
-  if (!gameId) {
+  changeOptionAsync(gameId, "map-string", mapString);
+  if (mapString === "") {
+    changeOptionAsync(gameId, "processed-map-string", "");
     return;
   }
 
-  changeOptionAsync(gameId, "map-string", mapString);
   changeOptionAsync(
     gameId,
     "processed-map-string",
@@ -135,9 +135,9 @@ function setMapString(
 }
 
 export default function SetupPhase() {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
   const state = useGameState();

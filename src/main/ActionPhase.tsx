@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext } from "react";
+import React, { CSSProperties } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
@@ -7,6 +7,7 @@ import { SmallStrategyCard } from "../StrategyCard";
 import { TechRow } from "../TechRow";
 import { FactionTimer, StaticFactionTimer } from "../Timer";
 import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import Chip from "../components/Chip/Chip";
 import FactionCard from "../components/FactionCard/FactionCard";
 import FactionCircle from "../components/FactionCircle/FactionCircle";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
@@ -17,13 +18,14 @@ import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
 import PlanetRow from "../components/PlanetRow/PlanetRow";
+import PromissoryMenu from "../components/PromissoryMenu/PromissoryMenu";
 import { TacticalAction } from "../components/TacticalAction";
 import TechSelectHoverMenu from "../components/TechSelectHoverMenu/TechSelectHoverMenu";
-import { GameIdContext } from "../context/Context";
 import {
   useActionLog,
   useAttachments,
   useFactions,
+  useGameId,
   useGameState,
   useLeaders,
   useObjectives,
@@ -62,8 +64,6 @@ import { phaseString } from "../util/strings";
 import { rem } from "../util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./util/ComponentAction";
-import Chip from "../components/Chip/Chip";
-import PromissoryMenu from "../components/PromissoryMenu/PromissoryMenu";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -161,9 +161,9 @@ function SecondaryCheck({
 }
 
 export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const factions = useFactions();
+  const gameId = useGameId();
   const strategyCards = useStrategyCards();
 
   function canFactionPass(factionId: FactionId) {
@@ -291,10 +291,10 @@ export function AdditionalActions({
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
   const attachments = useAttachments();
   const factions = useFactions();
+  const gameId = useGameId();
   const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
@@ -1580,8 +1580,8 @@ interface NextPlayerButtonsProps {
 export function NextPlayerButtons({
   buttonStyle = {},
 }: NextPlayerButtonsProps) {
-  const gameId = useContext(GameIdContext);
   const actionLog = useActionLog();
+  const gameId = useGameId();
   const selectedAction = getSelectedActionFromLog(actionLog);
   const newSpeaker = getNewSpeakerEventFromLog(actionLog);
 
@@ -1660,7 +1660,7 @@ export function ActivePlayerColumn({
   activeFaction,
   onDeckFaction,
 }: ActivePlayerColumnProps) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const intl = useIntl();
 
   return (
@@ -1789,8 +1789,8 @@ export function advanceToStatusPhase(gameId: string) {
 }
 
 export default function ActionPhase() {
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const state = useGameState();
   const strategyCards = useStrategyCards();
   const intl = useIntl();

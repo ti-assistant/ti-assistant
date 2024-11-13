@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import React from "react";
+import { PropsWithChildren } from "react";
 import "../public/site.css";
 import LangSelectHoverMenu from "../src/components/LangSelectHoverMenu/LangSelectHoverMenu";
-import ResponsiveLogo from "../src/components/ResponsiveLogo/ResponsiveLogo";
+import SiteLogo from "../src/components/SiteLogo/SiteLogo";
 import { getLocale, getMessages } from "../src/util/server";
 import styles from "./root.module.scss";
 import Wrapper from "./wrapper";
+import SharedModal from "../src/data/SharedModal";
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",
@@ -19,11 +20,7 @@ export const metadata: Metadata = {
 
 const SUPPORTED_LOCALES = ["en", "de"];
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: PropsWithChildren) {
   const locale = getLocale();
   const messages = await getMessages(locale);
 
@@ -33,7 +30,7 @@ export default async function RootLayout({
         <div className={styles.NavBar}>
           <Link href={"/"} className={styles.HomeLink}>
             <div className={styles.Logo}>
-              <ResponsiveLogo size={"100%"} />
+              <SiteLogo />
             </div>
             Twilight Imperium Assistant
           </Link>
@@ -47,6 +44,7 @@ export default async function RootLayout({
           </div>
         </div>
         <Wrapper locale={locale} messages={messages}>
+          <SharedModal />
           {children}
         </Wrapper>
       </body>

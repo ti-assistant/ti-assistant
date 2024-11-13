@@ -1,7 +1,7 @@
 .LabeledDiv {
   position: relative;
   gap: 0.5rem;
-  border: 2px solid var(--color);
+  border: var(--border-size) solid var(--color);
   border-radius: 0.3125rem;
   width: 100%;
   box-sizing: border-box;
@@ -28,7 +28,7 @@
   position: absolute;
   white-space: nowrap;
   top: -0.75rem;
-  background-color: #222;
+  background-color: var(--background-color);
   border-radius: 0.3125rem;
   padding: 0 4px;
   color: var(--color);

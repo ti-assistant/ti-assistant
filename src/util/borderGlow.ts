@@ -1,4 +1,5 @@
 const BLACK_GLOW_COLOR = "#fff";
 export const BLACK_LINE_GLOW = `0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR}`;
 export const BLACK_BORDER_GLOW = `0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR} inset`;
+export const OUTER_BLACK_BORDER_GLOW = `0 0 4px ${BLACK_GLOW_COLOR}`;
 export const BLACK_TEXT_GLOW = `0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR}, 0 0 4px ${BLACK_GLOW_COLOR}`;

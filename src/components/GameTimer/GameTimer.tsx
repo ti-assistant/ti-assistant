@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { GameIdContext } from "../../context/Context";
-import { useGameState, useTimers } from "../../context/dataHooks";
+import { useGameId, useGameState, useTimers } from "../../context/dataHooks";
 import { useSharedTimer } from "../../data/SharedTimer";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
@@ -11,7 +10,7 @@ import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import styles from "./GameTimer.module.scss";
 
 export default function GameTimer({ frozen = false }) {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const state = useGameState();
   const timers = useTimers();
 

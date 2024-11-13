@@ -15,15 +15,16 @@ import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import Map from "../../src/components/Map/Map";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import NumberInput from "../../src/components/NumberInput/NumberInput";
-import ResponsiveLogo from "../../src/components/ResponsiveLogo/ResponsiveLogo";
+import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Strings } from "../../src/components/strings";
+import { OUTER_BLACK_BORDER_GLOW } from "../../src/util/borderGlow";
 import { convertToFactionColor } from "../../src/util/factions";
+import { extractFactionIds, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
-import { objectEntries, rem } from "../../src/util/util";
+import { rem } from "../../src/util/util";
 import styles from "./setup.module.scss";
-import { extractFactionIds, processMapString } from "../../src/util/map";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -199,6 +200,7 @@ function MobileOptions({
           />
         }
         style={{ width: "min-content" }}
+        noBlur
       >
         <div className="flexColumn" style={{ alignItems: "center" }}>
           <Toggle
@@ -884,7 +886,9 @@ function FactionSelect({
       })}
       style={{
         fontFamily: "Myriad Pro",
-        borderColor: factionColor,
+        borderColor: factionColor === "#555" ? undefined : factionColor,
+        boxShadow:
+          factionColor === "Black" ? OUTER_BLACK_BORDER_GLOW : undefined,
         fontSize: rem(13.33),
       }}
       onFocus={(e) => (e.currentTarget.value = "")}
@@ -1733,6 +1737,7 @@ export default function SetupPage({
                 mapString={options["processed-map-string"] ?? ""}
                 mallice={options["expansions"].has("POK") ? "A" : undefined}
                 factions={activeFactions}
+                hideLegend
               />
             </div>
           </div>
@@ -1901,7 +1906,7 @@ export default function SetupPage({
             style={{
               fontSize: rem(40),
               fontFamily: "Slider",
-              color: creatingGame ? "#222" : undefined,
+              color: creatingGame ? "var(--disabled-bg)" : undefined,
               position: "relative",
             }}
             onClick={startGame}
@@ -1932,7 +1937,7 @@ export default function SetupPage({
                     animation: "spin 2s linear infinite",
                   }}
                 >
-                  <ResponsiveLogo size="100%" />
+                  <SiteLogo />
                 </div>
               </div>
             ) : null}

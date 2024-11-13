@@ -1,10 +1,10 @@
 import { CSSProperties, useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { GameIdContext } from "../context/Context";
 import {
   useAttachments,
   useFaction,
   useFactions,
+  useGameId,
   useLeaders,
   usePlanets,
 } from "../context/dataHooks";
@@ -20,6 +20,7 @@ import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import PlanetSummary from "./PlanetSummary/PlanetSummary";
+import { CollapsibleSection } from "./CollapsibleSection";
 
 interface ExtendedCSS extends CSSProperties {
   "--color": string;
@@ -34,14 +35,11 @@ function PlanetSection({
   openedByDefault: boolean;
   viewOnly?: boolean;
 }) {
-  const gameId = useContext(GameIdContext);
-
   const attachments = useAttachments();
   const faction = useFaction(factionId);
+  const gameId = useGameId();
   const leaders = useLeaders();
   const planets = usePlanets();
-
-  const [collapsed, setCollapsed] = useState(!openedByDefault);
 
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
@@ -58,84 +56,66 @@ function PlanetSection({
     leaders["Xxekir Grom"]?.state === "readied";
 
   return (
-    <div
-      className={styles.planetColumn}
-      style={
-        {
-          "--color": getFactionColor(faction),
-        } as ExtendedCSS
+    <CollapsibleSection
+      color={getFactionColor(faction)}
+      openedByDefault={openedByDefault}
+      title={
+        <div className={styles.planetTitle}>
+          <FactionIcon factionId={factionId} size={20} />
+          {getFactionName(faction)}
+          <FactionIcon factionId={factionId} size={20} />
+        </div>
       }
     >
       <div
-        className={styles.planetTitle}
-        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1001,
+          backgroundColor: "var(--background-color)",
+          paddingBottom: rem(4),
+          borderBottom: "1px solid var(--neutral-border)",
+          width: "100%",
+        }}
       >
-        <FactionIcon factionId={factionId} size={20} />
-        {getFactionName(faction)}
-        <FactionIcon factionId={factionId} size={20} />
+        <PlanetSummary planets={updatedPlanets} hasXxchaHero={hasXxchaHero} />
       </div>
       <div
-        className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
-        style={{ gap: 0 }}
+        className={styles.planetList}
+        style={{
+          minHeight: rem(40),
+        }}
       >
-        <div
-          className={styles.collapsiblePlanetColumn}
-          style={{ position: "relative" }}
-        >
-          <div
-            style={{
-              position: "sticky",
-              top: 0,
-              zIndex: 1001,
-              backgroundColor: "#222",
-              paddingBottom: rem(4),
-              borderBottom: "1px solid #555",
-              width: "100%",
-            }}
-          >
-            <PlanetSummary
-              planets={updatedPlanets}
-              hasXxchaHero={hasXxchaHero}
+        {updatedPlanets.map((planet) => {
+          return (
+            <PlanetRow
+              key={planet.id}
+              planet={planet}
+              factionId={factionId}
+              removePlanet={
+                viewOnly
+                  ? undefined
+                  : (planetId) => {
+                      if (!gameId) {
+                        return;
+                      }
+                      unclaimPlanetAsync(gameId, factionId, planetId);
+                    }
+              }
+              opts={{
+                hideAttachButton: viewOnly,
+              }}
             />
-          </div>
-          <div
-            className={styles.planetList}
-            style={{
-              minHeight: rem(40),
-            }}
-          >
-            {updatedPlanets.map((planet) => {
-              return (
-                <PlanetRow
-                  key={planet.id}
-                  planet={planet}
-                  factionId={factionId}
-                  removePlanet={
-                    viewOnly
-                      ? undefined
-                      : (planetId) => {
-                          if (!gameId) {
-                            return;
-                          }
-                          unclaimPlanetAsync(gameId, factionId, planetId);
-                        }
-                  }
-                  opts={{
-                    hideAttachButton: viewOnly,
-                  }}
-                />
-              );
-            })}
-          </div>
-        </div>
+          );
+        })}
       </div>
-    </div>
+    </CollapsibleSection>
   );
 }
 
 function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const planets = usePlanets();
 
   const [collapsed, setCollapsed] = useState(true);
@@ -151,19 +131,17 @@ function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
     });
 
   return (
-    <div className={`${styles.planetColumn} ${styles.unclaimedColumn}`}>
-      <div
-        className={styles.planetTitle}
-        onClick={() => setCollapsed(!collapsed)}
-      >
-        <FormattedMessage
-          id="V7viK1"
-          defaultMessage="Unclaimed Planets"
-          description="Header for a section of planets that no player controls."
-        />
-      </div>
-      <div
-        className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
+    <div className={styles.unclaimedColumn}>
+      <CollapsibleSection
+        title={
+          <div className={styles.planetTitle}>
+            <FormattedMessage
+              id="V7viK1"
+              defaultMessage="Unclaimed Planets"
+              description="Header for a section of planets that no player controls."
+            />
+          </div>
+        }
       >
         <div
           className={styles.collapsiblePlanetColumn}
@@ -190,7 +168,7 @@ function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
                       }
                       claimPlanetAsync(gameId, factionId, planet.id);
                     }}
-                    size={28}
+                    size={32}
                   />
                 )}
                 <div style={{ width: "100%" }}>
@@ -203,7 +181,7 @@ function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
             );
           })}
         </div>
-      </div>
+      </CollapsibleSection>
     </div>
   );
 }

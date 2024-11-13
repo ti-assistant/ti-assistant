@@ -66,7 +66,7 @@ export default function AttachmentIcon({
             aspectRatio: 1,
             border: hideBorder
               ? undefined
-              : `2px solid ${getTechTypeColor(techType)}`,
+              : `var(--border-size) solid ${getTechTypeColor(techType)}`,
             borderRadius: "100%",
             paddingTop: hasSkip ? rem(4) : undefined,
             paddingLeft: hasSkip ? rem(1) : undefined,

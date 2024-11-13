@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import Chip from "../../src/components/Chip/Chip";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import MapBuilder, {
   SystemImage,
@@ -15,7 +16,6 @@ import { buildBaseSystems } from "../../src/data/GameData";
 import { getDefaultMapString, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { rem } from "../../src/util/util";
-import Chip from "../../src/components/Chip/Chip";
 
 type Filter =
   | "BASE_GAME"

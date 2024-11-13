@@ -330,6 +330,7 @@ export default function ArchivePage({
               href={`/archive/${gameId}`}
               key={gameId}
               className={styles.ArchiveGame}
+              prefetch={false}
             >
               <div className="flexRow" style={{ justifyContent: "flex-start" }}>
                 {gameId}
@@ -357,14 +358,14 @@ export default function ArchivePage({
                         className="flexRow"
                         style={{
                           position: "absolute",
-                          backgroundColor: "#222",
+                          backgroundColor: "var(--background-color)",
                           borderRadius: "100%",
-                          marginLeft: "60%",
-                          marginTop: "60%",
+                          marginLeft: "70%",
+                          marginTop: "70%",
                           fontSize: rem(12),
                           boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                          width: rem(16),
-                          height: rem(16),
+                          width: rem(18),
+                          height: rem(18),
                           zIndex: 2,
                         }}
                       >

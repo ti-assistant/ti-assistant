@@ -32,7 +32,7 @@ export default function GenericModal({
   return (
     <CSSTransition
       in={visible}
-      timeout={500}
+      timeout={300}
       classNames="fade"
       onEnter={onEnter}
       onExited={onExited}
@@ -46,7 +46,7 @@ export default function GenericModal({
         }}
       >
         <div className={styles.Overlay} onClick={closeMenu}></div>
-        <CSSTransition in={visible} timeout={500} classNames="modal">
+        <CSSTransition in={visible} timeout={300} classNames="modal">
           <div className={styles.Content} onClick={closeMenu}>
             <div className={styles.Button} onClick={closeMenu}>
               <div>&#x2715;</div>

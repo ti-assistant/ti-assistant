@@ -5,10 +5,10 @@ import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { GameIdContext } from "../../context/Context";
 import {
   useAgendas,
   useFactions,
+  useGameId,
   useGameState,
   useObjectives,
   useOptions,
@@ -28,6 +28,7 @@ import Map from "../Map/Map";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
 import { getMapString } from "../../util/options";
+import { useSharedModal } from "../../data/SharedModal";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -35,8 +36,8 @@ const BASE_URL =
     : "https://ti-assistant.com";
 
 export default function Header({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -46,7 +47,7 @@ export default function Header({ viewOnly }: { viewOnly?: boolean }) {
 
   const [qrCode, setQrCode] = useState<string>();
 
-  const [showMap, setShowMap] = useState(false);
+  const { openModal } = useSharedModal();
 
   if (!qrCode && gameId) {
     QRCode.toDataURL(
@@ -125,24 +126,30 @@ export default function Header({ viewOnly }: { viewOnly?: boolean }) {
 
   return (
     <React.Fragment>
-      <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
-        <div
-          style={{
-            position: "relative",
-            width: "min(100dvh, 100dvw)",
-            height: "min(100dvh, 100dvw)",
-          }}
-        >
-          <Map
-            factions={mapOrderedFactions}
-            mapString={mapString ?? ""}
-            mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
-            mallice={getMalliceSystemNumber(options, planets, factions)}
-          />
-        </div>
-      </GenericModal>
       {mapString ? (
-        <button className={styles.Map} onClick={() => setShowMap(true)}>
+        <button
+          className={styles.Map}
+          onClick={() =>
+            openModal(
+              <div
+                style={{
+                  position: "relative",
+                  width: "min(100dvh, 100dvw)",
+                  height: "min(100dvh, 100dvw)",
+                }}
+              >
+                <Map
+                  factions={mapOrderedFactions}
+                  mapString={mapString ?? ""}
+                  mapStyle={
+                    options ? options["map-style"] ?? "standard" : "standard"
+                  }
+                  mallice={getMalliceSystemNumber(options, planets, factions)}
+                />
+              </div>
+            )
+          }
+        >
           <FormattedMessage
             id="xDzJ9/"
             description="Text shown on a button that opens the map."
@@ -202,7 +209,7 @@ export default function Header({ viewOnly }: { viewOnly?: boolean }) {
 
 function PassedLaws({ viewOnly }: { viewOnly?: boolean }) {
   const agendas = useAgendas();
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
 
   const passedLaws = Object.values(agendas).filter((agenda) => {
     return agenda.passed && agenda.type === "LAW";

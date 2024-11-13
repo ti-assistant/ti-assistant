@@ -30,5 +30,7 @@ interface Options {
   "map-style": MapStyle;
   "victory-points": number;
   scenario?: Scenario;
+  // Game specific options - consider moving to cookies.
+  "group-techs-by-faction"?: boolean;
   [key: string]: any;
 }

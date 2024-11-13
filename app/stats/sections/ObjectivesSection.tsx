@@ -10,6 +10,15 @@ import { ProcessedGame } from "../processor";
 import styles from "./ObjectivesSection.module.scss";
 import { ObjectiveGameCounts } from "./types";
 import Chip from "../../../src/components/Chip/Chip";
+import { useSharedModal } from "../../../src/data/SharedModal";
+
+interface ObjectiveInfo {
+  games: number;
+  scorers: number;
+  totalScorers: number;
+  factionInfo: Partial<Record<FactionId, ObjectiveGameCounts>>;
+  winners: number;
+}
 
 export default function ObjectivesSection({
   games,
@@ -18,21 +27,10 @@ export default function ObjectivesSection({
   games: Record<string, ProcessedGame>;
   baseData: BaseData;
 }) {
-  const [shownModal, setShownModal] = useState<Optional<ObjectiveId>>();
+  const { openModal } = useSharedModal();
   const [tab, setTab] = useState<ObjectiveType>("STAGE ONE");
 
-  let objectivesByScore: Partial<
-    Record<
-      ObjectiveId,
-      {
-        games: number;
-        scorers: number;
-        totalScorers: number;
-        factionInfo: Partial<Record<FactionId, ObjectiveGameCounts>>;
-        winners: number;
-      }
-    >
-  > = {};
+  let objectivesByScore: Partial<Record<ObjectiveId, ObjectiveInfo>> = {};
   const baseObjectives = baseData.objectives;
   const factionGames: Partial<Record<FactionId, number>> = {};
   let objectiveGames = 0;
@@ -135,77 +133,6 @@ export default function ObjectivesSection({
       {orderedObjectives.map(([objId, objInfo]) => {
         return (
           <Fragment key={objId}>
-            <GenericModal
-              visible={shownModal === objId}
-              closeMenu={() => setShownModal(undefined)}
-            >
-              <div
-                className="flexColumn"
-                style={{
-                  whiteSpace: "normal",
-                  textShadow: "none",
-                  width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-                  justifyContent: "flex-start",
-                  height: `calc(100dvh - ${rem(24)})`,
-                }}
-              >
-                <div
-                  className="flexColumn centered extraLargeFont"
-                  style={{
-                    backgroundColor: "#222",
-                    padding: `${rem(4)} ${rem(8)}`,
-                    borderRadius: rem(4),
-                    gap: 0,
-                  }}
-                >
-                  {objId}
-                  <div style={{ fontSize: rem(14) }}>
-                    {baseObjectives[objId].description}
-                  </div>
-                </div>
-                <div
-                  className="flexColumn largeFont"
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(
-                      24
-                    )}))`,
-                    justifyContent: "flex-start",
-                    overflow: "auto",
-                    height: "fit-content",
-                  }}
-                >
-                  <div className={styles.ObjectiveModal}>
-                    <div></div>
-                    <CollapsibleSection
-                      openedByDefault
-                      title={
-                        <FormattedMessage
-                          id="r2htpd"
-                          description="Text on a button that will randomize factions."
-                          defaultMessage="Factions"
-                        />
-                      }
-                    >
-                      <div
-                        className="flexColumn"
-                        style={{
-                          width: "100%",
-                          padding: `0 ${rem(4)} ${rem(4)}`,
-                          fontSize: rem(14),
-                        }}
-                      >
-                        <FactionsTable
-                          factions={objInfo.factionInfo}
-                          factionGames={factionGames}
-                          objectiveType={baseObjectives[objId].type}
-                        />
-                      </div>
-                    </CollapsibleSection>
-                  </div>
-                </div>
-              </div>
-            </GenericModal>
             <LabeledDiv key={objId} label={objId} style={{ gap: rem(4) }}>
               <div style={{ fontFamily: "Source Sans", fontSize: rem(14) }}>
                 {baseObjectives[objId].description}
@@ -260,7 +187,16 @@ export default function ObjectivesSection({
               ) : null}
               <button
                 style={{ fontSize: rem(10) }}
-                onClick={() => setShownModal(objId)}
+                onClick={() =>
+                  openModal(
+                    <ObjectiveModalContent
+                      objId={objId}
+                      factionGames={factionGames}
+                      objInfo={objInfo}
+                      baseObjectives={baseObjectives}
+                    />
+                  )
+                }
               >
                 <FormattedMessage
                   id="8NMXES"
@@ -331,5 +267,85 @@ function FactionsTable({
         })}
       </tbody>
     </table>
+  );
+}
+
+function ObjectiveModalContent({
+  objId,
+  baseObjectives,
+  factionGames,
+  objInfo,
+}: {
+  objId: ObjectiveId;
+  baseObjectives: Record<ObjectiveId, BaseObjective>;
+  objInfo: ObjectiveInfo;
+  factionGames: Partial<Record<FactionId, number>>;
+}) {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        whiteSpace: "normal",
+        textShadow: "none",
+        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+        justifyContent: "flex-start",
+        height: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="flexColumn centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+          gap: 0,
+          border: "1px solid var(--neutral-border)",
+        }}
+      >
+        {objId}
+        <div style={{ fontSize: rem(14) }}>
+          {baseObjectives[objId].description}
+        </div>
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "fit-content",
+        }}
+      >
+        <div className={styles.ObjectiveModal}>
+          <div></div>
+          <CollapsibleSection
+            openedByDefault
+            title={
+              <FormattedMessage
+                id="r2htpd"
+                description="Text on a button that will randomize factions."
+                defaultMessage="Factions"
+              />
+            }
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              <FactionsTable
+                factions={objInfo.factionInfo}
+                factionGames={factionGames}
+                objectiveType={baseObjectives[objId].type}
+              />
+            </div>
+          </CollapsibleSection>
+        </div>
+      </div>
+    </div>
   );
 }

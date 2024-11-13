@@ -2,35 +2,34 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Map from "../../../src/components/Map/Map";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
-import { GameIdContext } from "../../context/Context";
 import {
   useFactions,
+  useGameId,
   useGameState,
   useOptions,
-  usePlanet,
   usePlanets,
   useStrategyCards,
 } from "../../context/dataHooks";
-import { setSpeakerAsync } from "../../dynamic/api";
+import { useSharedModal } from "../../data/SharedModal";
+import { changeOptionAsync, setSpeakerAsync } from "../../dynamic/api";
 import { getFactionColor, getFactionName } from "../../util/factions";
+import { getMalliceSystemNumber } from "../../util/map";
+import { getMapString } from "../../util/options";
 import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
-import GenericModal from "../GenericModal/GenericModal";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
-import { rem } from "../../util/util";
-import { getMalliceSystemNumber } from "../../util/map";
-import { getMapString } from "../../util/options";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -59,19 +58,16 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
 });
 
 export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useContext(GameIdContext);
   const factions = useFactions();
+  const gameId = useGameId();
   const options = useOptions();
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showMap, setShowMap] = useState(false);
-  const [showTechModal, setShowTechModal] = useState(false);
-  const [groupTechsByFaction, setGroupTechsByFaction] = useState(false);
-  const [showObjectiveModal, setShowObjectiveModal] = useState(false);
-  const [showPlanetModal, setShowPlanetModal] = useState(false);
+
+  const { openModal } = useSharedModal();
 
   const [selectedFaction, setSelectedFaction] =
     useState<Optional<FactionId>>(undefined);
@@ -144,189 +140,6 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
 
   return (
     <>
-      <GenericModal closeMenu={() => setShowMap(false)} visible={showMap}>
-        <div
-          className="flexRow"
-          style={{ height: `calc(100dvh - ${rem(16)})` }}
-        >
-          <div
-            style={{
-              position: "relative",
-              width: "min(100dvh, 100dvw)",
-              height: "min(100dvh, 100dvw)",
-            }}
-          >
-            <Map
-              factions={mapOrderedFactions}
-              mapString={mapString ?? ""}
-              mapStyle={options["map-style"] ?? "standard"}
-              mallice={getMalliceSystemNumber(options, planets, factions)}
-            />
-          </div>
-        </div>
-      </GenericModal>
-      <GenericModal
-        visible={showTechModal}
-        closeMenu={() => setShowTechModal(false)}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            justifyContent: "flex-start",
-            maxHeight: `calc(100dvh - ${rem(24)})`,
-          }}
-        >
-          <div className="flexRow centered extraLargeFont">
-            <div
-              style={{
-                backgroundColor: "#222",
-                padding: `${rem(4)} ${rem(8)}`,
-                borderRadius: rem(4),
-                width: "min-content",
-              }}
-            >
-              <FormattedMessage
-                id="ys7uwX"
-                description="Shortened version of technologies."
-                defaultMessage="Techs"
-              />
-            </div>
-            <div
-              className="flexRow"
-              style={{
-                backgroundColor: "#222",
-                padding: `${rem(4)} ${rem(8)}`,
-                borderRadius: rem(4),
-                width: "min-content",
-                whiteSpace: "nowrap",
-                fontSize: rem(12),
-                gap: rem(4),
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FormattedMessage
-                id="WvbM4Q"
-                description="Label for a group of buttons for selecting which option to group by."
-                defaultMessage="Group by"
-              />
-              :
-              <Chip
-                selected={!groupTechsByFaction}
-                toggleFn={() => setGroupTechsByFaction(false)}
-                fontSize={12}
-              >
-                <FormattedMessage
-                  id="ys7uwX"
-                  description="Shortened version of technologies."
-                  defaultMessage="Techs"
-                />
-              </Chip>
-              <Chip
-                selected={groupTechsByFaction}
-                toggleFn={() => setGroupTechsByFaction(true)}
-                fontSize={12}
-              >
-                <FormattedMessage
-                  id="r2htpd"
-                  description="Text on a button that will randomize factions."
-                  defaultMessage="Factions"
-                />
-              </Chip>
-            </div>
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: `clamp(80vw, 60rem, calc(100vw - 1.5rem))`,
-              justifyContent: "flex-start",
-            }}
-          >
-            <TechPanel byFaction={groupTechsByFaction} viewOnly={viewOnly} />
-          </div>
-        </div>
-      </GenericModal>
-      <GenericModal
-        visible={showObjectiveModal}
-        closeMenu={() => setShowObjectiveModal(false)}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            justifyContent: "flex-start",
-            height: `calc(100dvh - ${rem(24)})`,
-          }}
-        >
-          <div
-            className="centered extraLargeFont"
-            style={{
-              backgroundColor: "#222",
-              padding: `${rem(4)} ${rem(8)}`,
-              borderRadius: rem(4),
-              width: "min-content",
-            }}
-          >
-            <FormattedMessage
-              id="5Bl4Ek"
-              description="Cards that define how to score victory points."
-              defaultMessage="Objectives"
-            />
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
-              justifyContent: "flex-start",
-              overflow: "auto",
-              height: "fit-content",
-              paddingBottom: rem(24),
-            }}
-          >
-            <ObjectivePanel viewOnly={viewOnly} />
-          </div>
-        </div>
-      </GenericModal>
-      <GenericModal
-        visible={showPlanetModal}
-        closeMenu={() => setShowPlanetModal(false)}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            justifyContent: "flex-start",
-            maxHeight: `calc(100dvh - ${rem(24)})`,
-          }}
-        >
-          <div
-            className="centered extraLargeFont"
-            style={{
-              backgroundColor: "#222",
-              padding: `${rem(4)} ${rem(8)}`,
-              borderRadius: rem(4),
-              width: "min-content",
-            }}
-          >
-            <FormattedMessage
-              id="1fNqTf"
-              description="Planets."
-              defaultMessage="Planets"
-            />
-          </div>
-          <div
-            className="flexColumn largeFont"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
-              justifyContent: "flex-start",
-              overflow: "auto",
-              height: "100%",
-            }}
-          >
-            <PlanetPanel viewOnly={viewOnly} />
-          </div>
-        </div>
-      </GenericModal>
       <button
         className={`${styles.MobileMenuButton} ${
           showMobileMenu ? "selected" : ""
@@ -366,7 +179,36 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
           </div>
         ) : null}
         {mapString ? (
-          <div className="flexRow" onClick={() => setShowMap(true)}>
+          <div
+            className="flexRow"
+            onClick={() =>
+              openModal(
+                <div
+                  className="flexRow"
+                  style={{ height: `calc(100dvh - ${rem(16)})` }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "min(100dvh, 100dvw)",
+                      height: "min(100dvh, 100dvw)",
+                    }}
+                  >
+                    <Map
+                      factions={mapOrderedFactions}
+                      mapString={mapString ?? ""}
+                      mapStyle={options["map-style"] ?? "standard"}
+                      mallice={getMalliceSystemNumber(
+                        options,
+                        planets,
+                        factions
+                      )}
+                    />
+                  </div>
+                </div>
+              )
+            }
+          >
             <button>
               <div
                 className="flexRow"
@@ -391,7 +233,10 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
             />
           </div>
         ) : null}
-        <div className="flexRow" onClick={() => setShowTechModal(true)}>
+        <div
+          className="flexRow"
+          onClick={() => openModal(<TechModalContent viewOnly={viewOnly} />)}
+        >
           <button>
             <div
               className="flexRow"
@@ -408,7 +253,12 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
             defaultMessage="Update Techs"
           />
         </div>
-        <div className="flexRow" onClick={() => setShowObjectiveModal(true)}>
+        <div
+          className="flexRow"
+          onClick={() =>
+            openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
+          }
+        >
           <button>
             <div
               className="flexRow"
@@ -438,7 +288,10 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
             defaultMessage="Update Objectives"
           />
         </div>
-        <div className="flexRow" onClick={() => setShowPlanetModal(true)}>
+        <div
+          className="flexRow"
+          onClick={() => openModal(<PlanetModalContent viewOnly={viewOnly} />)}
+        >
           <button>
             <div
               className="flexRow"
@@ -496,7 +349,11 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               className="flexRow"
               style={{ width: "100%", alignItems: "center" }}
             >
-              <button onClick={() => setShowTechModal(true)}>
+              <button
+                onClick={() =>
+                  openModal(<TechModalContent viewOnly={viewOnly} />)
+                }
+              >
                 <FormattedMessage
                   id="ys7uwX"
                   description="Shortened version of technologies."
@@ -504,14 +361,22 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
                 />
               </button>
 
-              <button onClick={() => setShowObjectiveModal(true)}>
+              <button
+                onClick={() =>
+                  openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
+                }
+              >
                 <FormattedMessage
                   id="5Bl4Ek"
                   description="Cards that define how to score victory points."
                   defaultMessage="Objectives"
                 />
               </button>
-              <button onClick={() => setShowPlanetModal(true)}>
+              <button
+                onClick={() =>
+                  openModal(<PlanetModalContent viewOnly={viewOnly} />)
+                }
+              >
                 <FormattedMessage
                   id="1fNqTf"
                   description="Planets."
@@ -561,5 +426,181 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
         </LabeledDiv>
       </div>
     </>
+  );
+}
+
+function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        justifyContent: "flex-start",
+        height: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          border: "1px solid var(--neutral-border)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+          width: "min-content",
+        }}
+      >
+        <FormattedMessage
+          id="5Bl4Ek"
+          description="Cards that define how to score victory points."
+          defaultMessage="Objectives"
+        />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "fit-content",
+          paddingBottom: rem(28),
+        }}
+      >
+        <ObjectivePanel viewOnly={viewOnly} />
+      </div>
+    </div>
+  );
+}
+
+function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
+  const gameId = useGameId();
+  const options = useOptions();
+
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        justifyContent: "flex-start",
+        maxHeight: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div className="flexRow centered extraLargeFont">
+        <div
+          style={{
+            backgroundColor: "var(--background-color)",
+            border: "1px solid var(--neutral-border)",
+            padding: `${rem(4)} ${rem(8)}`,
+            borderRadius: rem(4),
+            width: "min-content",
+          }}
+        >
+          <FormattedMessage
+            id="ys7uwX"
+            description="Shortened version of technologies."
+            defaultMessage="Techs"
+          />
+        </div>
+        <div
+          className="flexRow"
+          style={{
+            backgroundColor: "var(--background-color)",
+            border: "1px solid var(--neutral-border)",
+            padding: `${rem(4)} ${rem(8)}`,
+            borderRadius: rem(4),
+            width: "min-content",
+            whiteSpace: "nowrap",
+            fontSize: rem(12),
+            gap: rem(4),
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <FormattedMessage
+            id="WvbM4Q"
+            description="Label for a group of buttons for selecting which option to group by."
+            defaultMessage="Group by"
+          />
+          :
+          <Chip
+            selected={!options["group-techs-by-faction"]}
+            toggleFn={() =>
+              changeOptionAsync(gameId, "group-techs-by-faction", false)
+            }
+            fontSize={12}
+          >
+            <FormattedMessage
+              id="ys7uwX"
+              description="Shortened version of technologies."
+              defaultMessage="Techs"
+            />
+          </Chip>
+          <Chip
+            selected={!!options["group-techs-by-faction"]}
+            toggleFn={() =>
+              changeOptionAsync(gameId, "group-techs-by-faction", true)
+            }
+            fontSize={12}
+          >
+            <FormattedMessage
+              id="r2htpd"
+              description="Text on a button that will randomize factions."
+              defaultMessage="Factions"
+            />
+          </Chip>
+        </div>
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, 60rem, calc(100vw - 1.5rem))`,
+          justifyContent: "flex-start",
+        }}
+      >
+        <TechPanel
+          byFaction={!!options["group-techs-by-faction"]}
+          viewOnly={viewOnly}
+        />
+      </div>
+    </div>
+  );
+}
+
+function PlanetModalContent({ viewOnly }: { viewOnly?: boolean }) {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        justifyContent: "flex-start",
+        maxHeight: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          border: "1px solid var(--neutral-border)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+          width: "min-content",
+        }}
+      >
+        <FormattedMessage
+          id="1fNqTf"
+          description="Planets."
+          defaultMessage="Planets"
+        />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "100%",
+        }}
+      >
+        <PlanetPanel viewOnly={viewOnly} />
+      </div>
+    </div>
   );
 }

@@ -1,9 +1,7 @@
 "use client";
 
-import { useContext, useEffect, useMemo } from "react";
-import Header from "../../../../../src/components/Header/Header";
-import { GameIdContext } from "../../../../../src/context/Context";
-import { useGameState } from "../../../../../src/context/dataHooks";
+import { useEffect, useMemo } from "react";
+import { useGameId, useGameState } from "../../../../../src/context/dataHooks";
 import ActionPhase from "../../../../../src/main/ActionPhase";
 import AgendaPhase from "../../../../../src/main/AgendaPhase";
 import ResultsPhase from "../../../../../src/main/ResultsPhase";
@@ -13,7 +11,7 @@ import StrategyPhase from "../../../../../src/main/StrategyPhase";
 import { setGameId } from "../../../../../src/util/api/util";
 
 export default function MainScreenPage() {
-  const gameId = useContext(GameIdContext);
+  const gameId = useGameId();
   const state = useGameState();
 
   useEffect(() => {
@@ -54,19 +52,5 @@ export default function MainScreenPage() {
     return innerContent;
   }, [state.phase, state.finalPhase]);
 
-  return (
-    <>
-      {/* <Updater /> */}
-      <Header />
-      {innerContent}
-      {/* {state.phase !== "SETUP" ? ( */}
-      {/* <SummaryColumn order={order} subOrder={subOrder} /> */}
-      {/* <div className="mobileOnly" style={{ width: "100%" }}>
-          <FactionRow onClick={() => {}} />
-        </div> */}
-      {/* ) : null} */}
-      {/* </div> */}
-      {/* <Footer /> */}
-    </>
-  );
+  return <>{innerContent}</>;
 }
