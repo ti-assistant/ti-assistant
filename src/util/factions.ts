@@ -76,3 +76,37 @@ export function computeScoredVPs(
       return Math.max(0, total + count * objective.points);
     }, 0);
 }
+
+export function computeVPsByCategory(
+  factions: Partial<Record<FactionId, GameFaction>>,
+  factionId: FactionId,
+  objectives: Partial<Record<ObjectiveId, Objective>>
+) {
+  const emptyGroup: Record<ObjectiveType, number> = {
+    "STAGE ONE": 0,
+    "STAGE TWO": 0,
+    SECRET: 0,
+    OTHER: 0,
+  };
+  const faction = factions[factionId];
+  if (!faction) {
+    return emptyGroup;
+  }
+  const group = Object.values(objectives)
+    .filter((objective) => {
+      return (objective.scorers ?? []).includes(factionId);
+    })
+    .reduce((group: Record<ObjectiveType, number>, objective) => {
+      const count = (objective.scorers ?? []).reduce((count, scorer) => {
+        if (scorer === factionId) {
+          return count + 1;
+        }
+        return count;
+      }, 0);
+      group[objective.type] += objective.points * count;
+      return group;
+    }, emptyGroup);
+  const factionVPs = faction.vps ?? 0;
+  group.OTHER += factionVPs;
+  return group;
+}

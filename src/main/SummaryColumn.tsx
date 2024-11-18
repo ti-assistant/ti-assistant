@@ -5,6 +5,7 @@ import { StaticFactionTimer } from "../Timer";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
 import {
   useFactions,
+  useGameState,
   useObjectives,
   useOptions,
   useStrategyCards,
@@ -36,6 +37,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
   const factions = useFactions();
   const objectives = useObjectives();
   const options = useOptions();
+  const state = useGameState();
   const strategyCards = useStrategyCards();
 
   let sortFunction = sortByOrder;
@@ -129,6 +131,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
 
       {orderedFactions.map((faction, index) => {
+        const fadeFaction = state.phase !== "END" && faction.passed;
         return (
           <div key={faction.id}>
             <LabeledDiv
@@ -151,11 +154,11 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
                   width={84}
                 />
               }
-              color={faction.passed ? "#555" : getFactionColor(faction)}
+              color={fadeFaction ? "#555" : getFactionColor(faction)}
             >
               <div
                 style={{
-                  filter: faction?.passed ? "brightness(0.6)" : "unset",
+                  filter: fadeFaction ? "brightness(0.6)" : "unset",
                 }}
               >
                 <FactionSummary

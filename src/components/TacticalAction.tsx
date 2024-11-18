@@ -56,6 +56,7 @@ import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { rem } from "../util/util";
 import { getMalliceSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 
 export function TacticalAction({
   activeFactionId,
@@ -728,7 +729,9 @@ function AdjudicatorBaal() {
     (a, b) => a.mapPosition - b.mapPosition
   );
 
-  const adjudicatorBaalSystem = getAdjudicatorBaalSystem(actionLog);
+  const adjudicatorBaalSystem = getAdjudicatorBaalSystem(
+    getCurrentTurnLogEntries(actionLog)
+  );
 
   const mapString = getMapString(options, Object.keys(factions).length);
   if (!mapString) {

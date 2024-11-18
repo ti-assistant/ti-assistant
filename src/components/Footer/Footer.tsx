@@ -30,6 +30,7 @@ import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
+import { useSetting, useSharedSetting } from "../../util/cookies";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -472,8 +473,9 @@ function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
 }
 
 function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useGameId();
-  const options = useOptions();
+  const [groupTechsByFaction, setGroupTechsByFaction] = useSharedSetting(
+    "group-techs-by-faction"
+  );
 
   return (
     <div
@@ -520,10 +522,8 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
           />
           :
           <Chip
-            selected={!options["group-techs-by-faction"]}
-            toggleFn={() =>
-              changeOptionAsync(gameId, "group-techs-by-faction", false)
-            }
+            selected={!groupTechsByFaction}
+            toggleFn={() => setGroupTechsByFaction(false)}
             fontSize={12}
           >
             <FormattedMessage
@@ -533,10 +533,8 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
             />
           </Chip>
           <Chip
-            selected={!!options["group-techs-by-faction"]}
-            toggleFn={() =>
-              changeOptionAsync(gameId, "group-techs-by-faction", true)
-            }
+            selected={groupTechsByFaction}
+            toggleFn={() => setGroupTechsByFaction(true)}
             fontSize={12}
           >
             <FormattedMessage
@@ -555,10 +553,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
           justifyContent: "flex-start",
         }}
       >
-        <TechPanel
-          byFaction={!!options["group-techs-by-faction"]}
-          viewOnly={viewOnly}
-        />
+        <TechPanel byFaction={groupTechsByFaction} viewOnly={viewOnly} />
       </div>
     </div>
   );

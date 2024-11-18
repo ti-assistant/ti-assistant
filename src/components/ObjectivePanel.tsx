@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { CSSProperties, PropsWithChildren } from "react";
+import React, { CSSProperties, PropsWithChildren, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
   useActionLog,
@@ -32,6 +32,9 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
+import Cookies from "js-cookie";
+import { getSettings, updateSetting } from "../util/api/util";
+import { useSetting, useSharedSetting } from "../util/cookies";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -92,10 +95,9 @@ function ObjectiveColumn({
   viewOnly?: boolean;
 }) {
   const { openModal } = useSharedModal();
+  const [description] = useSharedSetting("display-objective-description");
 
   const numScorers = (objective.scorers ?? []).length;
-
-  const description = options["display-objective-description"];
 
   return (
     <>
@@ -200,9 +202,11 @@ function ObjectiveColumn({
 function SecretModalContent({
   factionId,
   gameId,
+  viewOnly,
 }: {
   factionId: FactionId;
   gameId: string;
+  viewOnly?: boolean;
 }) {
   const objectives = useObjectives();
 
@@ -232,12 +236,16 @@ function SecretModalContent({
             key={secret.name}
             objective={secret}
             hideScorers={true}
-            removeObjective={() => {
-              if (!gameId) {
-                return;
-              }
-              unscoreObjectiveAsync(gameId, factionId, secret.id);
-            }}
+            removeObjective={
+              viewOnly
+                ? undefined
+                : () => {
+                    if (!gameId) {
+                      return;
+                    }
+                    unscoreObjectiveAsync(gameId, factionId, secret.id);
+                  }
+            }
           />
         );
       })}
@@ -245,7 +253,7 @@ function SecretModalContent({
         className="flexRow"
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
-        {scoredSecrets.length < 6 ? (
+        {scoredSecrets.length < 6 && !viewOnly ? (
           <ObjectiveSelectHoverMenu
             action={(gameId, objectiveId) =>
               scoreObjectiveAsync(gameId, factionId, objectiveId)
@@ -281,6 +289,10 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
+
+  const [displayDescription, setDisplayDescription] = useSharedSetting(
+    "display-objective-description"
+  );
 
   const { openModal } = useSharedModal();
 
@@ -453,8 +465,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
 
   const mutiny = (objectives ?? {})["Mutiny"];
   const mutinyDirection = mutiny?.points === 1 ? "[For]" : "[Against]";
-
-  const displayDescription = options["display-objective-description"];
 
   function manualVpAdjust(increase: boolean, factionId: FactionId) {
     if (!gameId) {
@@ -1476,14 +1486,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
           {/* TODO: Move to options menu */}
           <button
             onClick={() => {
-              if (!gameId) {
-                return;
-              }
-              changeOptionAsync(
-                gameId,
-                "display-objective-description",
-                !displayDescription
-              );
+              setDisplayDescription(!displayDescription);
             }}
             style={{
               fontSize: rem(16),
@@ -1809,36 +1812,33 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 key={name}
                 className="flexRow"
                 style={{
-                  cursor: viewOnly ? undefined : "pointer",
+                  cursor: "pointer",
                   position: "relative",
                   width: "100%",
                   height: "100%",
                   padding: `0 ${rem(4)}`,
                 }}
-                onClick={
-                  viewOnly
-                    ? undefined
-                    : () => {
-                        openModal(
-                          <ModalContent
-                            title={
-                              getFactionName(factions[name]) +
-                              " " +
-                              intl.formatMessage({
-                                id: "QrrIrN",
-                                description: "The title of secret objectives.",
-                                defaultMessage: "Secrets",
-                              })
-                            }
-                          >
-                            <SecretModalContent
-                              factionId={name}
-                              gameId={gameId}
-                            />
-                          </ModalContent>
-                        );
+                onClick={() => {
+                  openModal(
+                    <ModalContent
+                      title={
+                        getFactionName(factions[name]) +
+                        " " +
+                        intl.formatMessage({
+                          id: "QrrIrN",
+                          description: "The title of secret objectives.",
+                          defaultMessage: "Secrets",
+                        })
                       }
-                }
+                    >
+                      <SecretModalContent
+                        factionId={name}
+                        gameId={gameId}
+                        viewOnly={viewOnly}
+                      />
+                    </ModalContent>
+                  );
+                }}
               >
                 <FactionIcon factionId={name} size="80%" />
                 <div

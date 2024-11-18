@@ -33,7 +33,7 @@ export class PlayAdjudicatorBaalHandler implements Handler {
       })
       .join(" ");
 
-    updates[`options.map-string`] = newMapString;
+    updates[`options.processed-map-string`] = newMapString;
 
     const system = buildSystems(this.gameData)[this.data.event.systemId];
     if (!system) {
@@ -95,7 +95,7 @@ export class UndoAdjudicatorBaalHandler implements Handler {
       })
       .join(" ");
 
-    updates[`options.map-string`] = newMapString;
+    updates[`options.processed-map-string`] = newMapString;
 
     const system = buildSystems(this.gameData)[this.data.event.systemId];
     if (!system) {

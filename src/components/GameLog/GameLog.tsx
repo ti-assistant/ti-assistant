@@ -251,7 +251,7 @@ export function GameLog({}) {
       className="flexColumn"
       style={{
         width: "100%",
-        height: rem(440),
+        height: rem(512),
         overflow: "auto",
         justifyContent: "flex-start",
         alignItems: "flex-start",

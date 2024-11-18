@@ -25,7 +25,10 @@ import {
   PlayActionCardHandler,
   UnplayActionCardHandler,
 } from "../model/playActionCard";
-import { PlayAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
+import {
+  PlayAdjudicatorBaalHandler,
+  UndoAdjudicatorBaalHandler,
+} from "../model/playAdjudicatorBaal";
 import {
   PlayComponentHandler,
   UnplayComponentHandler,
@@ -34,7 +37,7 @@ import {
   PlayPromissoryNoteHandler,
   UnplayPromissoryNoteHandler,
 } from "../model/playPromissoryNote";
-import { PlayRelicHandler } from "../model/playRelic";
+import { PlayRelicHandler, UnplayRelicHandler } from "../model/playRelic";
 import { PlayRiderHandler, UnplayRiderHandler } from "../model/playRider";
 import {
   RepealAgendaHandler,
@@ -60,11 +63,13 @@ import { SelectSubComponentHandler } from "../model/selectSubComponent";
 import { SetObjectivePointsHandler } from "../model/setObjectivePoints";
 import { SetSpeakerHandler } from "../model/setSpeaker";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
+import { StartVotingHandler } from "../model/startVoting";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
 import {
   SwapStrategyCardsHandler,
   UnswapStrategyCardsHandler,
 } from "../model/swapStrategyCards";
+import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 import { getOppositeHandler } from "./opposite";
 
@@ -150,6 +155,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new SetSpeakerHandler(gameData, data);
     case "SPEAKER_TIE_BREAK":
       return new SpeakerTieBreakHandler(gameData, data);
+    case "START_VOTING":
+      return new StartVotingHandler(gameData, data);
     case "SWAP_STRATEGY_CARDS":
       return new SwapStrategyCardsHandler(gameData, data);
     case "UNASSIGN_STRATEGY_CARD":
@@ -158,6 +165,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new UnclaimPlanetHandler(gameData, data);
     case "UNDO":
       return getOppositeHandler(gameData, data);
+    case "UNDO_ADJUDICATOR_BAAL":
+      return new UndoAdjudicatorBaalHandler(gameData, data);
     case "UNEND_TURN":
       return new UnendTurnHandler(gameData, data);
     case "UNPLAY_ACTION_CARD":
@@ -166,6 +175,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new UnplayComponentHandler(gameData, data);
     case "UNPLAY_PROMISSORY_NOTE":
       return new UnplayPromissoryNoteHandler(gameData, data);
+    case "UNPLAY_RELIC":
+      return new UnplayRelicHandler(gameData, data);
     case "UNPLAY_RIDER":
       return new UnplayRiderHandler(gameData, data);
     case "UNSCORE_OBJECTIVE":
@@ -174,6 +185,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new UnselectActionHandler(gameData, data);
     case "UNSWAP_STRATEGY_CARDS":
       return new UnswapStrategyCardsHandler(gameData, data);
+    case "UPDATE_LEADER_STATE":
+      return new UpdateLeaderStateHandler(gameData, data);
     case "UPDATE_PLANET_STATE":
       return new UpdatePlanetStateHandler(gameData, data);
     case "PLAY_ADJUDICATOR_BAAL":

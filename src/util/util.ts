@@ -22,6 +22,10 @@ export function rem(pixels: number): `${number}rem` {
   return `${pixels / 16}rem`;
 }
 
+export function lerp(min: number, max: number, value: number) {
+  return (value - min) / (max - min);
+}
+
 export function validateMapString(mapString: string) {
   const systemArray = mapString.split(" ");
   switch (systemArray.length) {
