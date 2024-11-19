@@ -109,7 +109,7 @@ function applyFilters(
   games: Record<string, ProcessedGame>,
   filters: {
     expansions: Set<Expansion>;
-    playerCount: number;
+    playerCounts: Set<number>;
     victoryPoints: Set<number>;
   }
 ) {
@@ -117,27 +117,35 @@ function applyFilters(
 
   objectEntries(games).forEach(([id, game]) => {
     // Expansion Filter
-    for (const expansion of game.expansions) {
-      if (!filters.expansions.has(expansion)) {
-        return;
+    if (filters.expansions.size > 1) {
+      for (const expansion of game.expansions) {
+        if (!filters.expansions.has(expansion)) {
+          return;
+        }
       }
-    }
-    for (const expansion of Array.from(filters.expansions)) {
-      if (expansion === "BASE" || expansion === "BASE ONLY") {
-        continue;
-      }
-      if (!game.expansions.includes(expansion)) {
-        return;
+      for (const expansion of Array.from(filters.expansions)) {
+        if (expansion === "BASE" || expansion === "BASE ONLY") {
+          continue;
+        }
+        if (!game.expansions.includes(expansion)) {
+          return;
+        }
       }
     }
 
     // Player Count filter
-    if (filters.playerCount !== game.playerCount) {
+    if (
+      filters.playerCounts.size > 0 &&
+      !filters.playerCounts.has(game.playerCount)
+    ) {
       return;
     }
 
     // Victory point filter
-    if (!filters.victoryPoints.has(game.victoryPoints)) {
+    if (
+      filters.victoryPoints.size > 0 &&
+      !filters.victoryPoints.has(game.victoryPoints)
+    ) {
       return;
     }
 
@@ -162,12 +170,12 @@ export default function StatsPage({
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(
     new Set([10])
   );
-  const [playerCount, setPlayerCount] = useState<number>(6);
+  const [playerCounts, setPlayerCounts] = useState<Set<number>>(new Set([6]));
 
   const [localGames, setLocalGames] = useState(
     applyFilters(processedGames, {
       expansions,
-      playerCount,
+      playerCounts,
       victoryPoints,
     })
   );
@@ -176,16 +184,19 @@ export default function StatsPage({
     setLocalGames(
       applyFilters(processedGames, {
         expansions,
-        playerCount,
+        playerCounts,
         victoryPoints,
       })
     );
-  }, [processedGames, expansions, playerCount, victoryPoints]);
+  }, [processedGames, expansions, playerCounts, victoryPoints]);
 
-  const points = Array.from(victoryPoints).reduce(
+  let points = Array.from(victoryPoints).reduce(
     (max, curr) => Math.max(max, curr),
     0
   );
+  if (points === 0) {
+    points = 14;
+  }
 
   return (
     <>
@@ -257,35 +268,35 @@ export default function StatsPage({
                 description="Label for a selector to change the number of players"
               />
               :
-              <CountButton
-                filters={playerCount}
+              <FilterButton
+                filters={playerCounts}
                 filter={3}
-                setFilters={setPlayerCount}
+                setFilters={setPlayerCounts}
               />
-              <CountButton
-                filters={playerCount}
+              <FilterButton
+                filters={playerCounts}
                 filter={4}
-                setFilters={setPlayerCount}
+                setFilters={setPlayerCounts}
               />
-              <CountButton
-                filters={playerCount}
+              <FilterButton
+                filters={playerCounts}
                 filter={5}
-                setFilters={setPlayerCount}
+                setFilters={setPlayerCounts}
               />
-              <CountButton
-                filters={playerCount}
+              <FilterButton
+                filters={playerCounts}
                 filter={6}
-                setFilters={setPlayerCount}
+                setFilters={setPlayerCounts}
               />
-              <CountButton
-                filters={playerCount}
+              <FilterButton
+                filters={playerCounts}
                 filter={7}
-                setFilters={setPlayerCount}
+                setFilters={setPlayerCounts}
               />
-              <CountButton
-                filters={playerCount}
+              <FilterButton
+                filters={playerCounts}
                 filter={8}
-                setFilters={setPlayerCount}
+                setFilters={setPlayerCounts}
               />
             </div>
             <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
@@ -317,7 +328,7 @@ export default function StatsPage({
             <DetailsSection
               games={localGames}
               baseData={baseData}
-              playerCount={playerCount}
+              playerCounts={playerCounts}
               points={points}
             />
           </div>
@@ -330,12 +341,12 @@ export default function StatsPage({
 function DetailsSection({
   games,
   baseData,
-  playerCount,
+  playerCounts,
   points,
 }: {
   games: Record<string, ProcessedGame>;
   baseData: BaseData;
-  playerCount: number;
+  playerCounts: Set<number>;
   points: number;
 }) {
   const [tab, setTab] = useState("Factions");
@@ -345,7 +356,7 @@ function DetailsSection({
   switch (tab) {
     case "Strategy Cards":
       tabContent = (
-        <StrategyCardSection games={games} playerCount={playerCount} />
+        <StrategyCardSection games={games} playerCounts={playerCounts} />
       );
       break;
     case "Techs":

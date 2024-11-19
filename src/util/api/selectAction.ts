@@ -58,8 +58,9 @@ export function unselectAction(gameId: string, action: Action) {
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    // Requires looking at the action log.
     updateGameData(storedGameData, handler.getUpdates());
+    updateActionLog(storedGameData, handler, now);
 
     storedGameData.lastUpdate = now;
 

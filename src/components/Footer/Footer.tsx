@@ -16,7 +16,8 @@ import {
   useStrategyCards,
 } from "../../context/dataHooks";
 import { useSharedModal } from "../../data/SharedModal";
-import { changeOptionAsync, setSpeakerAsync } from "../../dynamic/api";
+import { setSpeakerAsync } from "../../dynamic/api";
+import { useSharedSetting } from "../../util/cookies";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { getMalliceSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
@@ -30,7 +31,6 @@ import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
-import { useSetting, useSharedSetting } from "../../util/cookies";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -298,11 +298,16 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               className="flexRow"
               style={{
                 position: "relative",
-                paddingTop: rem(2),
-                paddingLeft: rem(2),
+                width: "100%",
+                height: "100%",
               }}
             >
-              <ResourcesIcon resources={2} influence={3} height={24} />
+              <Image
+                src={`/images/planet.svg`}
+                alt={`Planet Icon`}
+                fill
+                style={{ objectFit: "contain" }}
+              />
             </div>
           </button>
           <FormattedMessage

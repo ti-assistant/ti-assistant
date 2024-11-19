@@ -220,6 +220,27 @@ export async function getFullActionLog(gameId: string) {
   return actionLog;
 }
 
+export async function getFullArchivedActionLog(gameId: string) {
+  const db = getFirestore();
+
+  const gameRef = db.collection("archive").doc(gameId);
+  const logEntry = await gameRef
+    .collection("actionLog")
+    .orderBy("timestampMillis", "desc")
+    .get();
+
+  if (logEntry.empty) {
+    return [];
+  }
+
+  let actionLog: ActionLogEntry[] = [];
+  logEntry.forEach((entry) => {
+    actionLog.push(entry.data() as ActionLogEntry);
+  });
+
+  return actionLog;
+}
+
 export async function getTimers(gameId: string) {
   const db = getFirestore();
 

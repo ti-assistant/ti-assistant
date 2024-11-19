@@ -50,10 +50,10 @@ const CARD_ORDER: Record<StrategyCardId, number> = {
 
 export default function StrategyCardSection({
   games,
-  playerCount,
+  playerCounts,
 }: {
   games: Record<string, ProcessedGame>;
-  playerCount: number;
+  playerCounts: Set<number>;
 }) {
   const strategyCardInfo: Partial<Record<StrategyCardId, StrategyCardInfo>> =
     {};
@@ -97,8 +97,24 @@ export default function StrategyCardSection({
   });
 
   const factionIndexes: number[] = [];
-  const numCards =
-    playerCount === 3 || playerCount === 4 ? playerCount * 2 : playerCount;
+  let numCards = Array.from(playerCounts).reduce((cards, count) => {
+    switch (count) {
+      case 3:
+      case 6:
+        return Math.max(6, cards);
+      case 4:
+      case 8:
+        return Math.max(8, cards);
+      case 5:
+        return Math.max(5, cards);
+      case 7:
+        return Math.max(7, cards);
+    }
+    return cards;
+  }, 0);
+  if (numCards === 0) {
+    numCards = 8;
+  }
   for (let i = 1; i <= numCards; i++) {
     factionIndexes.push(i);
   }

@@ -3,7 +3,11 @@ import { createIntl, createIntlCache } from "react-intl";
 import "server-only";
 import { getBaseData } from "../../src/data/baseData";
 import { getLocale, getMessages } from "../../src/util/server";
-import { maybeUpdateProcessedGames, ProcessedGame } from "../stats/processor";
+import {
+  maybeUpdateProcessedGames,
+  ProcessedGame,
+  reprocessGames,
+} from "../stats/processor";
 import ArchivePage from "./archive-page";
 
 async function getJSONFileFromStorage(

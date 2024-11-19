@@ -13,7 +13,12 @@ import {
   Timestamp,
   WriteResult,
 } from "firebase-admin/firestore";
-import { getFullActionLog, getTimers } from "../../server/util/fetch";
+import {
+  getArchivedTimers,
+  getFullActionLog,
+  getFullArchivedActionLog,
+  getTimers,
+} from "../../server/util/fetch";
 import { Readable } from "stream";
 import { getBaseData } from "../../src/data/baseData";
 import { createIntlCache, createIntl } from "react-intl";
@@ -22,6 +27,7 @@ import { objectKeys } from "../../src/util/util";
 
 export interface ProcessedGame {
   // Tags
+  isMapGame: boolean;
   isObjectiveGame: boolean;
   isPlanetGame: boolean;
   isTechGame: boolean;
@@ -244,6 +250,64 @@ export async function maybeUpdateProcessedGames(
   stream.push(null);
 }
 
+export async function reprocessGames() {
+  const locale = getLocale();
+  const messages = await getMessages(locale);
+  const cache = createIntlCache();
+  const intl = createIntl({ locale, messages }, cache);
+  const storage = new Storage({
+    keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
+  });
+
+  const baseData = getBaseData(intl);
+  const processedGames = await getJSONFileFromStorage(storage);
+
+  const db = getFirestore();
+
+  const gamesRef = db.collection("archive");
+
+  const gameData = await gamesRef.get();
+
+  let allGames: Record<string, StoredGameData> = {};
+  gameData.forEach((val) => {
+    allGames[val.id] = val.data() as StoredGameData;
+  });
+
+  for (const [gameId, game] of Object.entries(allGames)) {
+    console.log("Processing", gameId);
+    const actionLog = await getFullArchivedActionLog(gameId);
+    if (!isCompletedGame(game, baseData, actionLog)) {
+      continue;
+    }
+    const fixedGame = fixGame(game, baseData, actionLog);
+    if (!fixedGame) {
+      continue;
+    }
+    const timers = await getArchivedTimers(gameId);
+    const processedGame = processGame(
+      structuredClone(fixedGame),
+      baseData,
+      timers
+    );
+    if (!processedGame) {
+      continue;
+    }
+    processedGames[gameId] = processedGame;
+  }
+
+  console.log("Processed games", processedGames);
+
+  const file = storage
+    .bucket("ti-assistant-datastore")
+    .file("processed-games.json");
+
+  const stream = new Readable();
+  stream.pipe(file.createWriteStream());
+
+  stream.push(JSON.stringify(processedGames));
+  stream.push(null);
+}
+
 function processGame(
   fixedGame: StoredGameData,
   baseData: BaseData,
@@ -297,6 +361,7 @@ function processGame(
     fixedActionLog[fixedActionLog.length - 1]?.timestampMillis ?? 0;
 
   const output: ProcessedGame = {
+    isMapGame: fixedGame.options["map-string"] !== "",
     isObjectiveGame: isObjectiveGame(fixedGame, baseData),
     isPlanetGame: isPlanetGame(fixedGame),
     isTechGame: isTechGame(fixedGame),
