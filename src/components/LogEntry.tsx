@@ -54,6 +54,9 @@ export function LogEntryElement({
   const techs = useTechs();
 
   switch (logEntry.data.action) {
+    case "START_VOTING": {
+      return null;
+    }
     case "ADD_ATTACHMENT": {
       return (
         <div
@@ -117,6 +120,12 @@ export function LogEntryElement({
               width={84}
             />
           }
+          style={{
+            position: "sticky",
+            top: 0,
+            backgroundColor: "var(--background-color)",
+            zIndex: 1,
+          }}
         />
       );
     }
@@ -663,6 +672,19 @@ export function LogEntryElement({
       // TODO: See if anything needs to be added.
       return null;
     }
+
+    case "UPDATE_PLANET_STATE":
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+          }}
+        >
+          Purged Planet: {logEntry.data.event.planet}
+        </div>
+      );
     case "END_TURN":
       return null;
   }
