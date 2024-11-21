@@ -20,7 +20,6 @@ interface OptionUpdateData {
 
 interface Options {
   expansions: Expansion[];
-  "display-objective-description"?: boolean;
   "game-variant": GameVariant;
   mallice?: string;
   // The processed map string.
@@ -30,7 +29,5 @@ interface Options {
   "map-style": MapStyle;
   "victory-points": number;
   scenario?: Scenario;
-  // Game specific options - consider moving to cookies.
-  "group-techs-by-faction"?: boolean;
   [key: string]: any;
 }

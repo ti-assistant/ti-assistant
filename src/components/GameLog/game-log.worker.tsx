@@ -1,6 +1,7 @@
 import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "../../util/api/actionLog";
 import { getHandler } from "../../util/api/gameLog";
 import { updateGameData } from "../../util/api/handler";
+import { updateActionLog } from "../../util/api/update";
 import { LogEntryElementProps } from "../LogEntry";
 
 type WithKey<T> = T & { key: number };
@@ -32,6 +33,7 @@ function buildGameLog(
     if (!handler) {
       return null;
     }
+    updateActionLog(dynamicGameData, handler, Date.now());
     updateGameData(dynamicGameData, handler.getUpdates());
     switch (logEntry.data.action) {
       case "ADVANCE_PHASE": {

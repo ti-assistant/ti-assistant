@@ -40,7 +40,6 @@ function buildInitialGameData(
       }
 
       // Get home planets for each faction.
-      // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
       const homeBasePlanets = Object.values(BASE_PLANETS).filter(
         (planet) => planet.faction === faction.name && planet.home
       );
@@ -196,68 +195,72 @@ function buildSetupGameData(gameData: GameData): {
 
 type WithKey<T> = T & { key: number };
 
-export function GameLog({}) {
-  const storedActionLog = useActionLog();
-  const intl = useIntl();
-  const gameData = useGameData();
+export function GameLog({
+  annotatedLog,
+}: {
+  annotatedLog: WithKey<LogEntryElementProps>[];
+}) {
+  // const storedActionLog = useActionLog();
+  // const intl = useIntl();
+  // const gameData = useGameData();
 
-  const worker = useRef<Worker>();
+  // const worker = useRef<Worker>();
 
-  const [entryData, setEntryData] = useState<WithKey<LogEntryElementProps>[]>(
-    []
-  );
+  // const [entryData, setEntryData] = useState<WithKey<LogEntryElementProps>[]>(
+  //   []
+  // );
 
-  const reversedActionLog = useMemo(() => {
-    const actionLog = storedActionLog ?? [];
-    return [...actionLog].reverse();
-  }, [storedActionLog]);
+  // const reversedActionLog = useMemo(() => {
+  //   const actionLog = storedActionLog ?? [];
+  //   return [...actionLog].reverse();
+  // }, [storedActionLog]);
 
-  const setupGameData = useMemo(() => {
-    return buildSetupGameData(gameData);
-  }, [gameData]);
+  // const setupGameData = useMemo(() => {
+  //   return buildSetupGameData(gameData);
+  // }, [gameData]);
 
-  const initialGameData = useMemo(() => {
-    return buildInitialGameData(setupGameData, intl);
-  }, [setupGameData, intl]);
+  // const initialGameData = useMemo(() => {
+  //   return buildInitialGameData(setupGameData, intl);
+  // }, [setupGameData, intl]);
 
-  useEffect(() => {
-    worker.current = new Worker(
-      new URL("./game-log.worker.tsx", import.meta.url),
-      {
-        name: "game-log",
-        type: "module",
-      }
-    );
+  // useEffect(() => {
+  //   worker.current = new Worker(
+  //     new URL("./game-log.worker.tsx", import.meta.url),
+  //     {
+  //       name: "game-log",
+  //       type: "module",
+  //     }
+  //   );
 
-    worker.current.postMessage({
-      reversedActionLog,
-      initialGameData,
-    });
+  //   worker.current.postMessage({
+  //     reversedActionLog,
+  //     initialGameData,
+  //   });
 
-    worker.current.onmessage = (event) => {
-      setEntryData(event.data.entryData);
-    };
-    return () => {
-      worker.current?.terminate();
-    };
-  }, [initialGameData, reversedActionLog]);
+  //   worker.current.onmessage = (event) => {
+  //     setEntryData(event.data.entryData);
+  //   };
+  //   return () => {
+  //     worker.current?.terminate();
+  //   };
+  // }, [initialGameData, reversedActionLog]);
 
-  if (reversedActionLog.length === 0 || entryData.length === 0) {
-    return <Loader />;
-  }
+  // if (reversedActionLog.length === 0 || entryData.length === 0) {
+  //   return <Loader />;
+  // }
 
   return (
     <div
       className="flexColumn"
       style={{
         width: "100%",
-        height: rem(440),
+        height: rem(512),
         overflow: "auto",
         justifyContent: "flex-start",
         alignItems: "flex-start",
       }}
     >
-      {entryData.map((entry) => (
+      {annotatedLog.map((entry) => (
         <LogEntryElement
           key={entry.key}
           logEntry={entry.logEntry}

@@ -131,10 +131,21 @@ export class ResolveAgendaHandler implements Handler {
         );
 
         const forFactions = new Set();
+        const objectives = buildObjectives(this.gameData, intl);
         for (const votes of castVotesActions) {
           const data = votes.data as CastVotesData;
           if (data.event.target === "For") {
             forFactions.add(data.event.faction);
+            const VPs = computeVPs(
+              this.gameData.factions,
+              data.event.faction,
+              objectives
+            );
+            const factionVPs =
+              buildFactions(this.gameData, intl)[data.event.faction]?.vps ?? 0;
+            if (VPs === 0) {
+              updates[`factions.${data.event.faction}.vps`] = factionVPs + 1;
+            }
           }
         }
 

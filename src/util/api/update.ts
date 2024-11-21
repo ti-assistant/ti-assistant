@@ -7,7 +7,11 @@ export function updateActionLog(
   handler: Handler,
   timestamp: number
 ) {
-  const actionLog = currentData.actionLog ?? [];
+  let actionLog = currentData.actionLog;
+  if (!actionLog) {
+    currentData.actionLog = [];
+    actionLog = currentData.actionLog;
+  }
   let lastCheck = false;
   for (let i = 0; i < actionLog.length; ++i) {
     if (lastCheck) {

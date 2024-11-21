@@ -130,7 +130,7 @@ export function FactionHistogram({
           if (minVal === 0) {
             height = (value / maxVal) * 100;
           } else {
-            height = 10 + (90 / (maxVal - minVal)) * (value - minVal);
+            height = 25 + (90 / (maxVal - minVal)) * (value - minVal);
           }
           return (
             <div

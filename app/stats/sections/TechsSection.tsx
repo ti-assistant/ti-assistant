@@ -132,7 +132,19 @@ export default function TechsSection({
 
   return (
     <div className={styles.TechsSection}>
-      <div className="flexRow" style={{ gap: rem(4) }}>
+      <div
+        className="flexRow"
+        style={{
+          gap: rem(4),
+          position: "sticky",
+          top: 0,
+          backgroundColor: "var(--background-color)",
+          zIndex: 1,
+          width: "100%",
+          justifyContent: "center",
+          paddingBottom: rem(8),
+        }}
+      >
         <Chip
           fontSize={14}
           selected={tab === "Non-Faction"}

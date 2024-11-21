@@ -16,7 +16,8 @@ import {
   useStrategyCards,
 } from "../../context/dataHooks";
 import { useSharedModal } from "../../data/SharedModal";
-import { changeOptionAsync, setSpeakerAsync } from "../../dynamic/api";
+import { setSpeakerAsync } from "../../dynamic/api";
+import { useSharedSettings } from "../../util/cookies";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { getMalliceSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
@@ -297,11 +298,16 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               className="flexRow"
               style={{
                 position: "relative",
-                paddingTop: rem(2),
-                paddingLeft: rem(2),
+                width: "100%",
+                height: "100%",
               }}
             >
-              <ResourcesIcon resources={2} influence={3} height={24} />
+              <Image
+                src={`/images/planet.svg`}
+                alt={`Planet Icon`}
+                fill
+                style={{ objectFit: "contain" }}
+              />
             </div>
           </button>
           <FormattedMessage
@@ -472,8 +478,9 @@ function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
 }
 
 function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
-  const gameId = useGameId();
-  const options = useOptions();
+  const { settings, updateSetting } = useSharedSettings();
+
+  const groupTechsByFaction = settings["group-techs-by-faction"];
 
   return (
     <div
@@ -520,10 +527,8 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
           />
           :
           <Chip
-            selected={!options["group-techs-by-faction"]}
-            toggleFn={() =>
-              changeOptionAsync(gameId, "group-techs-by-faction", false)
-            }
+            selected={!groupTechsByFaction}
+            toggleFn={() => updateSetting("group-techs-by-faction", false)}
             fontSize={12}
           >
             <FormattedMessage
@@ -533,10 +538,8 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
             />
           </Chip>
           <Chip
-            selected={!!options["group-techs-by-faction"]}
-            toggleFn={() =>
-              changeOptionAsync(gameId, "group-techs-by-faction", true)
-            }
+            selected={groupTechsByFaction}
+            toggleFn={() => updateSetting("group-techs-by-faction", true)}
             fontSize={12}
           >
             <FormattedMessage
@@ -555,10 +558,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
           justifyContent: "flex-start",
         }}
       >
-        <TechPanel
-          byFaction={!!options["group-techs-by-faction"]}
-          viewOnly={viewOnly}
-        />
+        <TechPanel byFaction={groupTechsByFaction} viewOnly={viewOnly} />
       </div>
     </div>
   );
