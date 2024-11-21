@@ -9,18 +9,23 @@ type SettingsVal = Settings[SettingsKey];
 
 type SettingUpdater = [SettingsVal, (value: SettingsVal) => void];
 
-export function useSetting(key: keyof Settings): SettingUpdater {
-  const [setting, setSetting] = useState<SettingsVal>(getSettings()[key]);
+function useSettings() {
+  const [settings, setSettings] = useState<Settings>(getSettings());
 
-  return [
-    setting,
-    (value: SettingsVal) => {
-      updateSetting(key, value);
-      setSetting(value);
-      console.log("Updated to ", value);
+  console.log("Re-rendering!");
+  return {
+    settings,
+    updateSetting: (key: keyof Settings, val: Settings[keyof Settings]) => {
+      updateSetting(key, val);
+      setSettings((prev) => {
+        console.log("Updating");
+        return {
+          ...prev,
+          [key]: val,
+        };
+      });
     },
-  ];
+  };
 }
 
-export const useSharedSetting = (key: keyof Settings) =>
-  useBetween(() => useSetting(key));
+export const useSharedSettings = () => useBetween(useSettings);

@@ -17,7 +17,7 @@ import {
 } from "../../context/dataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { setSpeakerAsync } from "../../dynamic/api";
-import { useSharedSetting } from "../../util/cookies";
+import { useSharedSettings } from "../../util/cookies";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { getMalliceSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
@@ -478,9 +478,9 @@ function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
 }
 
 function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
-  const [groupTechsByFaction, setGroupTechsByFaction] = useSharedSetting(
-    "group-techs-by-faction"
-  );
+  const { settings, updateSetting } = useSharedSettings();
+
+  const groupTechsByFaction = settings["group-techs-by-faction"];
 
   return (
     <div
@@ -528,7 +528,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
           :
           <Chip
             selected={!groupTechsByFaction}
-            toggleFn={() => setGroupTechsByFaction(false)}
+            toggleFn={() => updateSetting("group-techs-by-faction", false)}
             fontSize={12}
           >
             <FormattedMessage
@@ -539,7 +539,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
           </Chip>
           <Chip
             selected={groupTechsByFaction}
-            toggleFn={() => setGroupTechsByFaction(true)}
+            toggleFn={() => updateSetting("group-techs-by-faction", true)}
             fontSize={12}
           >
             <FormattedMessage

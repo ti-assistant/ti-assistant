@@ -24,9 +24,15 @@ interface RoundInfo {
   victoryPoints: Partial<Record<FactionId, Record<ObjectiveType, number>>>;
 }
 
+interface TimerData {
+  longestTurn: number;
+  numTurns: number;
+}
+
 interface CondensedGameData {
   annotatedLog: WithKey<LogEntryElementProps>[];
   rounds: Record<number, RoundInfo>;
+  timerData: Partial<Record<FactionId, TimerData>>;
 }
 
 function cleanLogData(data: GameUpdateData) {
@@ -55,6 +61,8 @@ function buildGameLog(
     (a, b) => a.mapPosition - b.mapPosition
   );
   const techs = buildTechs(dynamicGameData, baseData);
+
+  const timerData: Partial<Record<FactionId, TimerData>> = {};
 
   const processedEntries: WithKey<LogEntryElementProps>[] = [];
   reversedActionLog.forEach((logEntry, index) => {
@@ -144,17 +152,6 @@ function buildGameLog(
             break;
           }
         }
-        if (logEntry.data.event.action === "Imperial") {
-          console.log("Active Player", dynamicGameData.state.activeplayer);
-          console.log(
-            "Mecatol Owner",
-            dynamicGameData.planets["Mecatol Rex"]?.owner
-          );
-          console.log(
-            "IP",
-            (dynamicGameData.objectives ?? {})["Imperial Point"]
-          );
-        }
         // Intentional fall-through.
       }
       case "REVEAL_AGENDA": {
@@ -193,6 +190,25 @@ function buildGameLog(
       endTimeSeconds,
     });
 
+    if (
+      logEntry.data.action === "SELECT_ACTION" &&
+      dynamicGameData.state.activeplayer &&
+      dynamicGameData.state.activeplayer !== "None"
+    ) {
+      const factionTimer: TimerData = timerData[
+        dynamicGameData.state.activeplayer
+      ] ?? {
+        longestTurn: 0,
+        numTurns: 0,
+      };
+      factionTimer.numTurns++;
+      factionTimer.longestTurn = Math.max(
+        factionTimer.longestTurn,
+        endTimeSeconds - startTimeSeconds
+      );
+      timerData[dynamicGameData.state.activeplayer] = factionTimer;
+    }
+
     if (currentRound !== dynamicGameData.state.round) {
       const objectives = buildObjectives(dynamicGameData, baseData);
       const points: Partial<Record<FactionId, Record<ObjectiveType, number>>> =
@@ -225,7 +241,7 @@ function buildGameLog(
     }
 
     if (processedEntries.length > 0 && processedEntries.length % 25 === 0) {
-      self.postMessage({ annotatedLog: processedEntries, rounds: rounds });
+      self.postMessage({ annotatedLog: processedEntries, rounds, timerData });
     }
   });
   const objectives = buildObjectives(dynamicGameData, baseData);
@@ -250,7 +266,7 @@ function buildGameLog(
     victoryPoints: points,
   };
 
-  self.postMessage({ annotatedLog: processedEntries, rounds: rounds });
+  self.postMessage({ annotatedLog: processedEntries, rounds, timerData });
 }
 
 self.onmessage = (event) => {

@@ -32,9 +32,7 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
-import Cookies from "js-cookie";
-import { getSettings, updateSetting } from "../util/api/util";
-import { useSetting, useSharedSetting } from "../util/cookies";
+import { useSharedSettings } from "../util/cookies";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -95,7 +93,9 @@ function ObjectiveColumn({
   viewOnly?: boolean;
 }) {
   const { openModal } = useSharedModal();
-  const [description] = useSharedSetting("display-objective-description");
+  const { settings } = useSharedSettings();
+  const description = settings["display-objective-description"];
+  console.log("Description", description);
 
   const numScorers = (objective.scorers ?? []).length;
 
@@ -290,9 +290,8 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const objectives = useObjectives();
   const options = useOptions();
 
-  const [displayDescription, setDisplayDescription] = useSharedSetting(
-    "display-objective-description"
-  );
+  const { settings, updateSetting } = useSharedSettings();
+  const description = settings["display-objective-description"];
 
   const { openModal } = useSharedModal();
 
@@ -1486,7 +1485,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
           {/* TODO: Move to options menu */}
           <button
             onClick={() => {
-              setDisplayDescription(!displayDescription);
+              updateSetting("display-objective-description", !description);
             }}
             style={{
               fontSize: rem(16),
@@ -1495,7 +1494,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               right: 0,
             }}
           >
-            {displayDescription ? (
+            {description ? (
               <FormattedMessage
                 id="entq4x"
                 description="Text on a button that will display titles."

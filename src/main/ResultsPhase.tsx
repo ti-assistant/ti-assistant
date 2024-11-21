@@ -1,9 +1,15 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { IntlShape, useIntl } from "react-intl";
+import MapLapse from "../../app/game/[gameId]/main/@phase/results/MapLapse";
+import TechGraph from "../../app/game/[gameId]/main/@phase/results/TechGraph";
+import { VictoryPointsGraph } from "../../app/game/[gameId]/main/@phase/results/VictoryPointsGraph";
 import BorderedDiv from "../components/BorderedDiv/BorderedDiv";
+import Chip from "../components/Chip/Chip";
 import { GameLog } from "../components/GameLog/GameLog";
 import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
+import { LogEntryElementProps } from "../components/LogEntry";
 import {
   useActionLog,
   useFactions,
@@ -11,20 +17,14 @@ import {
   useGameId,
   useOptions,
 } from "../context/dataHooks";
-import { rem } from "../util/util";
-import Chip from "../components/Chip/Chip";
-import { VictoryPointsGraph } from "../../app/game/[gameId]/main/@phase/results/VictoryPointsGraph";
-import TechGraph from "../../app/game/[gameId]/main/@phase/results/TechGraph";
-import { getMapString } from "../util/options";
-import MapLapse from "../../app/game/[gameId]/main/@phase/results/MapLapse";
-import { useIntl, IntlShape } from "react-intl";
-import { LogEntryElementProps } from "../components/LogEntry";
-import { Loader } from "../Loader";
-import { Optional } from "../util/types/types";
-import { COMPILER_INDEXES } from "next/dist/shared/lib/constants";
 import { getBaseData } from "../data/baseData";
+import { Loader } from "../Loader";
+import { getMapString } from "../util/options";
+import { Optional } from "../util/types/types";
+import { rem } from "../util/util";
+import Timers from "../../app/game/[gameId]/main/@phase/results/Timers";
 
-type View = "Game Log" | "Victory Points" | "Techs" | "Map Lapse";
+type View = "Game Log" | "Victory Points" | "Techs" | "Map Lapse" | "Timers";
 
 export default function ResultsPhase() {
   const factions = useFactions();
@@ -68,6 +68,12 @@ export default function ResultsPhase() {
               Map Lapse
             </Chip>
           ) : null}
+          <Chip
+            selected={viewing === "Timers"}
+            toggleFn={() => setViewing("Timers")}
+          >
+            Timers
+          </Chip>
         </LabeledDiv>
         <a
           href={`/api/${gameId}/download`}
@@ -111,9 +117,15 @@ interface RoundInfo {
   victoryPoints: Partial<Record<FactionId, Record<ObjectiveType, number>>>;
 }
 
+interface TimerData {
+  longestTurn: number;
+  numTurns: number;
+}
+
 interface CondensedGameData {
   annotatedLog: WithKey<LogEntryElementProps>[];
   rounds: Record<number, RoundInfo>;
+  timerData: Partial<Record<FactionId, TimerData>>;
 }
 
 type WithKey<T> = T & { key: number };
@@ -196,6 +208,11 @@ function InnerContent({ viewing }: { viewing: View }) {
       {viewing === "Map Lapse" ? (
         <LabeledDiv label="Map Lapse" style={{ width: "fit-content" }}>
           <MapLapse rounds={condensedData.rounds} />
+        </LabeledDiv>
+      ) : null}
+      {viewing === "Timers" ? (
+        <LabeledDiv label="Timers" style={{ width: "fit-content" }}>
+          <Timers timerData={condensedData.timerData} />
         </LabeledDiv>
       ) : null}
     </>
