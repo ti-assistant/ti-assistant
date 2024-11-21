@@ -178,7 +178,7 @@ function InnerContent({ viewing }: { viewing: View }) {
     return () => {
       worker.current?.terminate();
     };
-  }, [initialGameData, reversedActionLog]);
+  }, [initialGameData, reversedActionLog, baseData]);
 
   if (reversedActionLog.length === 0 || !condensedData) {
     return (

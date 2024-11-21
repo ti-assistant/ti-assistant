@@ -95,7 +95,7 @@ export default function TechGraph({
       }
     }
     return Object.values(factionLines);
-  }, [types, rounds]);
+  }, [types, rounds, factions]);
   return (
     <>
       <div

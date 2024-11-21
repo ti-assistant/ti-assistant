@@ -61,7 +61,7 @@ export function VictoryPointsGraph({
       }
     }
     return Object.values(factionLines);
-  }, [types, rounds]);
+  }, [types, rounds, factions]);
   return (
     <>
       <div
