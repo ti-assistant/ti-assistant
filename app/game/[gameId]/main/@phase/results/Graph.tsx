@@ -54,7 +54,7 @@ export default function Graph({
             </text>
             <line
               stroke="#eee"
-              opacity={0.25}
+              opacity={xAxis.min + index === 0 ? 0.75 : 0.25}
               strokeWidth={0.1}
               x1={x}
               x2={x}
@@ -81,7 +81,7 @@ export default function Graph({
             </text>
             <line
               stroke="#eee"
-              opacity={0.25}
+              opacity={yAxis.min + index === 0 ? 0.75 : 0.25}
               strokeWidth={0.1}
               x1="4"
               x2="132"
