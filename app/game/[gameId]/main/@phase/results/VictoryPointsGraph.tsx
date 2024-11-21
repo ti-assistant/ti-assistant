@@ -48,6 +48,9 @@ export function VictoryPointsGraph({
         return Math.min(
           innerMax,
           objectEntries(innerCurr).reduce((total, [type, vps]) => {
+            if (!types.has(type)) {
+              return total;
+            }
             return total + vps;
           }, 0)
         );

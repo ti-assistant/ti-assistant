@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   icons: {
     shortcut: "/images/favicon.ico",
   },
+  colorScheme: "dark",
 };
 
 const SUPPORTED_LOCALES = ["en", "de"];
