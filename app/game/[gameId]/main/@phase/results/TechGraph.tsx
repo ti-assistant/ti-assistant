@@ -194,7 +194,11 @@ export default function TechGraph({
               Upgrade
             </Toggle>
           </div>
-          <Graph xAxis={numRounds - 1} yAxis={maxTechs} lines={lines} />
+          <Graph
+            xAxis={{ min: 0, max: numRounds - 1 }}
+            yAxis={{ min: 0, max: maxTechs }}
+            lines={lines}
+          />
         </div>
       </div>
       <div className="flexRow" style={{ width: "100%" }}>

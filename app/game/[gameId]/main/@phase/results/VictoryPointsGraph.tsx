@@ -28,11 +28,24 @@ export function VictoryPointsGraph({
   );
 
   const numRounds = objectKeys(rounds).length;
-  const maxPoints = Object.values(rounds).reduce((max, curr) => {
+  const maxVPs = Object.values(rounds).reduce((max, curr) => {
     return Math.max(
       max,
       Object.values(curr.victoryPoints).reduce((innerMax, innerCurr) => {
         return Math.max(
+          innerMax,
+          objectEntries(innerCurr).reduce((total, [type, vps]) => {
+            return total + vps;
+          }, 0)
+        );
+      }, 0)
+    );
+  }, 0);
+  const minVPs = Object.values(rounds).reduce((max, curr) => {
+    return Math.min(
+      max,
+      Object.values(curr.victoryPoints).reduce((innerMax, innerCurr) => {
+        return Math.min(
           innerMax,
           objectEntries(innerCurr).reduce((total, [type, vps]) => {
             return total + vps;
@@ -144,7 +157,11 @@ export function VictoryPointsGraph({
               Other
             </Toggle>
           </div>
-          <Graph xAxis={numRounds - 1} yAxis={maxPoints} lines={lines} />
+          <Graph
+            xAxis={{ min: 0, max: numRounds - 1 }}
+            yAxis={{ max: maxVPs, min: minVPs }}
+            lines={lines}
+          />
         </div>
       </div>
       <div className="flexRow" style={{ width: "100%" }}>

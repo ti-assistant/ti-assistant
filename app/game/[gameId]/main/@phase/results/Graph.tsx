@@ -11,17 +11,24 @@ export interface Point {
   y: number;
 }
 
+export interface Axis {
+  min: number;
+  max: number;
+}
+
 export default function Graph({
   xAxis,
   yAxis,
   lines,
 }: {
-  xAxis: number;
-  yAxis: number;
+  xAxis: Axis;
+  yAxis: Axis;
   lines: Line[];
 }) {
-  const xGrid = new Array(xAxis + 1).fill(0);
-  const yGrid = new Array(yAxis + 1).fill(0);
+  const xRange = xAxis.max - xAxis.min;
+  const yRange = yAxis.max - yAxis.min;
+  const xGrid = new Array(xRange + 1).fill(0);
+  const yGrid = new Array(yRange + 1).fill(0);
   return (
     <svg
       viewBox="-4 -4 128 108"
@@ -32,7 +39,7 @@ export default function Graph({
       }}
     >
       {xGrid.map((_, index) => {
-        const x = 4 + lerp(0, xAxis, index) * 116;
+        const x = 4 + lerp(xAxis.min, xAxis.max, index) * 116;
         return (
           <Fragment key={index}>
             <text
@@ -43,7 +50,7 @@ export default function Graph({
               y="102"
               textAnchor="middle"
             >
-              {index}
+              {xAxis.min + index}
             </text>
             <line
               stroke="#eee"
@@ -58,7 +65,8 @@ export default function Graph({
         );
       })}
       {yGrid.map((_, index) => {
-        const y = 98 - lerp(0, yAxis, index) * 97;
+        const y = 98 - lerp(0, yRange, index) * 97;
+        console.log("Y", y);
         return (
           <Fragment key={index}>
             <text
@@ -69,7 +77,7 @@ export default function Graph({
               y={y}
               textAnchor="middle"
             >
-              {index}
+              {yAxis.min + index}
             </text>
             <line
               stroke="#eee"
@@ -87,14 +95,14 @@ export default function Graph({
         return (
           <Fragment key={index}>
             {line.points.map((point, index) => {
-              const x = 4 + lerp(0, xAxis, point.x) * 116;
-              const y = 97 - lerp(0, yAxis, point.y) * 97;
+              const x = 4 + lerp(0, xRange, point.x) * 116;
+              const y = 97 - lerp(0, yRange, point.y - yAxis.min) * 97;
               const nextPoint = line.points[index + 1];
               const nextX = nextPoint
-                ? 4 + lerp(0, xAxis, nextPoint.x) * 116
+                ? 4 + lerp(0, xRange, nextPoint.x) * 116
                 : 0;
               const nextY = nextPoint
-                ? 97 - lerp(0, yAxis, nextPoint.y) * 97
+                ? 97 - lerp(0, yRange, nextPoint.y - yAxis.min) * 97
                 : 0;
 
               return (
