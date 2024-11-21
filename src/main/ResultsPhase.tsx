@@ -38,7 +38,6 @@ export default function ResultsPhase() {
 
   const mapString = getMapString(options, mapOrderedFactions.length);
 
-  // TODO - pull data building out of sub-factions into here.
   return (
     <React.Fragment>
       <div className="flexColumn" style={{ height: "100svh", width: "25%" }}>
@@ -237,7 +236,6 @@ function buildInitialGameData(
       }
 
       // Get home planets for each faction.
-      // TODO(jboman): Handle Council Keleres choosing between Mentak, Xxcha, and Argent Flight.
       const homeBasePlanets = Object.values(BASE_PLANETS).filter(
         (planet) => planet.faction === faction.name && planet.home
       );

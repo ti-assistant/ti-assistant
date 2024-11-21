@@ -964,7 +964,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Nano-Forge": {
-      // TODO: Check if Mecatol can be Nano-Forged
       const ownedNonHomeNonLegendaryPlanets = updatedPlanets.filter(
         (planet) => {
           return (

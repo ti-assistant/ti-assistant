@@ -1446,7 +1446,6 @@ export function AdditionalActions({
           />
         </div>
       );
-    // TODO: Display buttons for various actions.
     case "Component":
       return <ComponentAction factionId={activeFaction.id} />;
     case "Pass":

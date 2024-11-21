@@ -54,28 +54,6 @@ function FilterButton<T extends string | number>({
   );
 }
 
-function CountButton<T extends string | number>({
-  filter,
-  filters,
-  setFilters,
-}: {
-  filter: T;
-  filters: T;
-  setFilters: (value: T) => void;
-}) {
-  return (
-    <Chip
-      selected={filters === filter}
-      toggleFn={(prevValue) => {
-        setFilters(filter);
-      }}
-      fontSize={14}
-    >
-      {filter}
-    </Chip>
-  );
-}
-
 function applyFilters(
   games: Record<string, ProcessedGame>,
   filters: {
@@ -165,7 +143,6 @@ export default function ArchivePage({
     return -1;
   });
 
-  // TODO: Fetch and add archived games.
   return (
     <div className={styles.GamePage}>
       <Sidebars left="TI ASSISTANT" right="ARCHIVE" />
