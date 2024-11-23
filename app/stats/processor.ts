@@ -170,7 +170,7 @@ export async function rewriteProcessedGames() {
   const baseData = getBaseData(intl);
   const processedGames = await getJSONFileFromStorage(storage);
 
-  maybeUpdateProcessedGames(storage, processedGames, baseData);
+  return maybeUpdateProcessedGames(storage, processedGames, baseData);
 }
 
 const REFRESH_TIME = 86400000;
