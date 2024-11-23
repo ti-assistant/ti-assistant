@@ -1628,6 +1628,19 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     .filter((relic) => !relic.owner)
     .map((relic) => relic.id);
 
+  const agentsForSsruu = Object.values(components ?? {}).filter((component) => {
+    if (component.type !== "LEADER") {
+      return false;
+    }
+    if (component.leader !== "AGENT") {
+      return false;
+    }
+    if (component.id === "Ssruu") {
+      return false;
+    }
+    return true;
+  });
+
   if (!component) {
     const filteredComponents = Object.values(components).filter((component) => {
       if (component.type === "PROMISSORY") {
@@ -1682,6 +1695,10 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         return false;
       }
 
+      if (component.id === "Ssruu" && agentsForSsruu.length === 0) {
+        return false; 
+      }
+
       if ("leader" in component && component.leader === "HERO") {
         const hero = leaders[component.id as LeaderId];
         if (!hero) {
@@ -1713,19 +1730,6 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       </ClientOnlyHoverMenu>
     );
   }
-
-  const agentsForSsruu = Object.values(components ?? {}).filter((component) => {
-    if (component.type !== "LEADER") {
-      return false;
-    }
-    if (component.leader !== "AGENT") {
-      return false;
-    }
-    if (component.id === "Ssruu") {
-      return false;
-    }
-    return true;
-  });
 
   return (
     <React.Fragment>
