@@ -86,6 +86,7 @@ import {
   getSpeakerTieBreak,
 } from "../../../../../src/util/actionLog";
 import {
+  getCurrentPhaseLogEntries,
   getCurrentPhasePreviousLogEntries,
   getCurrentTurnLogEntries,
 } from "../../../../../src/util/api/actionLog";
@@ -168,6 +169,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
+  const currentPhase = getCurrentPhaseLogEntries(actionLog);
   let currentAgenda: Optional<Agenda>;
   const activeAgenda = getActiveAgenda(currentTurn);
   if (activeAgenda) {
@@ -289,7 +291,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
     const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
-      actionLog,
+      currentPhase,
       "Maw of Worlds"
     ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {

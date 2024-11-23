@@ -657,6 +657,7 @@ export default function StatusPhase() {
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
+  const planets = usePlanets();
   const relics = useRelics();
   const state = useGameState();
   const strategyCards = useStrategyCards();
@@ -753,7 +754,17 @@ export default function StatusPhase() {
   const crownOwner = relics["The Crown of Emphidia"]?.owner;
 
   function hasEndOfStatusPhaseAbilities() {
-    if (crownOwner && (wasCrownPlayedThisTurn || !isCrownPurged)) {
+    let canScoreCrown = false;
+    for (const planet of Object.values(planets)) {
+      if (
+        planet.owner === crownOwner &&
+        planet.attachments?.includes("Tomb of Emphidia")
+      ) {
+        canScoreCrown = true;
+        break;
+      }
+    }
+    if (canScoreCrown && (wasCrownPlayedThisTurn || !isCrownPurged)) {
       return true;
     }
     for (const ability of Object.values(getEndOfStatusPhaseAbilities())) {

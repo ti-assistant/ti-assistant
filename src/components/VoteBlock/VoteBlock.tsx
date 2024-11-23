@@ -34,6 +34,7 @@ import {
   getPromissoryTargets,
 } from "../../util/actionLog";
 import {
+  getCurrentPhaseLogEntries,
   getCurrentPhasePreviousLogEntries,
   getCurrentTurnLogEntries,
 } from "../../util/api/actionLog";
@@ -754,6 +755,7 @@ function VotingSection({
   const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
+  const currentPhase = getCurrentPhaseLogEntries(actionLog);
 
   const faction = factions[factionId];
 
@@ -806,7 +808,7 @@ function VotingSection({
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
     const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
-      actionLog,
+      currentPhase,
       "Maw of Worlds"
     ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {
@@ -1015,6 +1017,7 @@ interface AvailableVotesStyle extends CSSProperties {
 
 function AvailableVotes({ factionId }: { factionId: FactionId }) {
   const actionLog = useActionLog();
+  const currentPhase = getCurrentPhaseLogEntries(actionLog);
   const agendas = useAgendas();
   const attachments = useAttachments();
   const factions = useFactions();
@@ -1038,7 +1041,7 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
     const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
-      actionLog,
+      currentPhase,
       "Maw of Worlds"
     ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {
