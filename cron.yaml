@@ -1,0 +1,5 @@
+cron:
+  - description: "process games for archive and stats"
+    url: /api/process-games
+    schedule: every 24 hours
+    target: default
