@@ -2,7 +2,7 @@ import { Storage } from "@google-cloud/storage";
 import { createIntl, createIntlCache } from "react-intl";
 import { getBaseData } from "../../src/data/baseData";
 import { getLocale, getMessages } from "../../src/util/server";
-import { maybeUpdateProcessedGames, ProcessedGame } from "./processor";
+import { ProcessedGame } from "./processor";
 import StatsPage from "./stats-page";
 
 async function getJSONFileFromStorage(
@@ -28,8 +28,6 @@ export default async function Page({}) {
 
   const baseData = getBaseData(intl);
   const processedGames = await getJSONFileFromStorage(storage);
-
-  maybeUpdateProcessedGames(storage, processedGames, baseData);
 
   return <StatsPage processedGames={processedGames} baseData={baseData} />;
 }

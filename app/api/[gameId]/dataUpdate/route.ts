@@ -103,7 +103,6 @@ import {
 } from "../../../../src/util/model/playAdjudicatorBaal";
 import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
 import { Optional } from "../../../../src/util/types/types";
-import { rewriteProcessedGames } from "../../../stats/processor";
 
 export async function POST(
   req: Request,
@@ -389,7 +388,6 @@ function updateInTransaction(
         break;
       }
       case "END_GAME": {
-        rewriteProcessedGames();
         handler = new EndGameHandler(gameData, data);
         break;
       }
