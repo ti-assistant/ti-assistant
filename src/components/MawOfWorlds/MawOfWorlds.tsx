@@ -16,10 +16,12 @@ import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
+import { getCurrentPhaseLogEntries } from "../../util/api/actionLog";
 
 export default function MawOfWorlds({}) {
   const intl = useIntl();
   const actionLog = useActionLog();
+  const currentPhase = getCurrentPhaseLogEntries(actionLog);
   const factions = useFactions();
   const gameId = useGameId();
   const relics = useRelics();
@@ -38,7 +40,7 @@ export default function MawOfWorlds({}) {
   }
 
   const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
-    actionLog,
+    currentPhase,
     "Maw of Worlds"
   ) as Optional<MawOfWorldsEvent>;
 
