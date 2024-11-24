@@ -94,7 +94,11 @@ function buildGameLog(
         };
       }
       rounds[0] = {
-        planets: buildPlanets(dynamicGameData, baseData),
+        planets: buildPlanets(
+          dynamicGameData,
+          baseData,
+          /* includePurged */ true
+        ),
         mapString: getMapString(
           dynamicGameData.options,
           mapOrderedFactions.length
@@ -230,7 +234,11 @@ function buildGameLog(
         );
       }
       rounds[currentRound] = {
-        planets: buildPlanets(dynamicGameData, baseData),
+        planets: buildPlanets(
+          dynamicGameData,
+          baseData,
+          /* includePurged */ true
+        ),
         mapString: getMapString(
           dynamicGameData.options,
           mapOrderedFactions.length
@@ -260,7 +268,7 @@ function buildGameLog(
     );
   }
   rounds[dynamicGameData.state.round] = {
-    planets: buildPlanets(dynamicGameData, baseData),
+    planets: buildPlanets(dynamicGameData, baseData, /* includePurged */ true),
     mapString: getMapString(dynamicGameData.options, mapOrderedFactions.length),
     techs: factionTechs,
     victoryPoints: points,

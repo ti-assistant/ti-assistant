@@ -1,13 +1,7 @@
 import NextImage from "next/image";
-import { ReactNode, useContext, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { ReactNode } from "react";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
-import {
-  useAllPlanets,
-  useAttachments,
-  useFactions,
-  useGameId,
-} from "../../context/dataHooks";
+import { useAttachments, useFactions } from "../../context/dataHooks";
 import { getFactionColor } from "../../util/factions";
 import {
   getFactionSystemNumber,
@@ -21,9 +15,7 @@ import {
 import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
-import Chip from "../Chip/Chip";
 import FactionIcon from "../FactionIcon/FactionIcon";
-import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Map.module.scss";
@@ -595,11 +587,8 @@ export default function FixedMap({
   mapStyle,
   mallice,
   factions,
-  hideLegend,
   planets,
 }: MapProps & { planets: Partial<Record<PlanetId, Planet>> }) {
-  const gameId = useGameId();
-
   const updatedMapString =
     mapString === ""
       ? updateMapString(mapString, mapStyle, factions.length)
