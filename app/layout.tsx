@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import "../public/site.css";
@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   icons: {
     shortcut: "/images/favicon.ico",
   },
+};
+
+export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
