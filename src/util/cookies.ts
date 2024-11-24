@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { getSettings, Settings, updateSetting } from "./api/util";
 import { useBetween } from "use-between";
+import { getSettings, Settings, updateSetting } from "./api/util";
 
 function useSettings() {
   const [settings, setSettings] = useState<Settings>(getSettings());
