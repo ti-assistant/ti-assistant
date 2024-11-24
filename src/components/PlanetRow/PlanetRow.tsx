@@ -463,7 +463,6 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
     if (!gameId) {
       return;
     }
-    console.log("Attache");
     if ((planet.attachments ?? []).includes(attachment.id)) {
       removeAttachmentAsync(gameId, planet.id, attachment.id);
     } else {

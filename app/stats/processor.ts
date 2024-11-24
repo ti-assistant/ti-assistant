@@ -274,7 +274,6 @@ export async function reprocessGames() {
   });
 
   for (const [gameId, game] of Object.entries(allGames)) {
-    console.log("Processing", gameId);
     const actionLog = await getFullArchivedActionLog(gameId);
     if (!isCompletedGame(game, baseData, actionLog)) {
       continue;
@@ -294,8 +293,6 @@ export async function reprocessGames() {
     }
     processedGames[gameId] = processedGame;
   }
-
-  console.log("Processed games", processedGames);
 
   const file = storage
     .bucket("ti-assistant-datastore")

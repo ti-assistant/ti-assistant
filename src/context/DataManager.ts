@@ -24,7 +24,6 @@ export default class DataManager {
     intl: IntlShape,
     archive: boolean
   ) {
-    console.log("Init called");
     const shouldOverride =
       !this.instance ||
       this.gameId !== gameId ||
@@ -37,7 +36,6 @@ export default class DataManager {
   }
 
   public static listen(gameId: string) {
-    console.log("Listen called");
     if (!this.instance) {
       throw new Error("init must be called before listen");
     }
