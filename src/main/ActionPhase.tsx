@@ -550,15 +550,11 @@ export function AdditionalActions({
                         key={tech}
                         tech={techObj}
                         removeTech={() => {
-                          // if (gameId && !isActive) {
-                          //   markSecondary(
-                          //     gameId,
-                          //     activeFaction.id,
-                          //     "PENDING"
-                          //   );
-                          // }
                           removeTechLocal(activeFaction.id, tech);
                         }}
+                        researchAgreement={
+                          activeFaction.id === "Universities of Jol-Nar"
+                        }
                       />
                     );
                   })}
@@ -642,6 +638,9 @@ export function AdditionalActions({
                             tech={techObj}
                             removeTech={() =>
                               removeTechLocal(activeFaction.id, tech)
+                            }
+                            researchAgreement={
+                              activeFaction.id === "Universities of Jol-Nar"
                             }
                           />
                         );
@@ -729,12 +728,12 @@ export function AdditionalActions({
                             key={tech}
                             tech={techObj}
                             removeTech={() => {
-                              // if (gameId) {
-                              //   markSecondary(gameId, faction.id, "PENDING");
-                              // }
                               removeTechLocal(faction.id, tech);
                             }}
                             opts={{ hideSymbols: true }}
+                            researchAgreement={
+                              faction.id === "Universities of Jol-Nar"
+                            }
                           />
                         );
                       })}

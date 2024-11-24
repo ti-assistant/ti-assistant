@@ -1,4 +1,5 @@
 import { Optional } from "./types/types";
+import { objectEntries } from "./util";
 
 export function getFactionColor(faction: Optional<Faction>) {
   if (!faction) {
@@ -109,4 +110,14 @@ export function computeVPsByCategory(
   const factionVPs = faction.vps ?? 0;
   group.OTHER += factionVPs;
   return group;
+}
+
+export function getMapOrderedFactionIds(
+  factions: Partial<Record<FactionId, Faction>>
+) {
+  return objectEntries(factions)
+    .sort(([_, a], [__, b]) => {
+      return a.mapPosition - b.mapPosition;
+    })
+    .map(([id, _]) => id);
 }
