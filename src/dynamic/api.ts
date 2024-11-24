@@ -167,10 +167,11 @@ export async function addAttachmentAsync(
 export async function addTechAsync(
   gameId: string,
   faction: FactionId,
-  techId: TechId
+  techId: TechId,
+  researchAgreement?: boolean
 ) {
   const addTech = await addTechFn;
-  addTech(gameId, faction, techId);
+  addTech(gameId, faction, techId, researchAgreement);
 }
 
 export async function advancePhaseAsync(

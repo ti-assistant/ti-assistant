@@ -66,7 +66,6 @@ export default function Graph({
       })}
       {yGrid.map((_, index) => {
         const y = 98 - lerp(0, yRange, index) * 97;
-        console.log("Y", y);
         return (
           <Fragment key={index}>
             <text

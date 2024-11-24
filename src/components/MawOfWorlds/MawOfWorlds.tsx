@@ -75,6 +75,7 @@ export default function MawOfWorlds({}) {
               tech: techId,
             });
           }}
+          researchAgreement={owner.id === "Universities of Jol-Nar"}
         />
       </LabeledDiv>
     );

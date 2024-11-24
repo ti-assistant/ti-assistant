@@ -6,8 +6,15 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import Modal, { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
 import { getTechColor } from "./util/techs";
-import { rem } from "./util/util";
+import { objectEntries, objectKeys, rem } from "./util/util";
 import { useSharedModal } from "./data/SharedModal";
+import { useActionLog, useFactions, useGameId } from "./context/dataHooks";
+import { hasTech } from "./util/api/techs";
+import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import { addTechAsync, removeTechAsync } from "./dynamic/api";
+import { getCurrentTurnLogEntries } from "./util/api/actionLog";
+import { getResearchAgreementFaction } from "./util/actionLog";
+import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 
 export function UnitStat({
   name,
@@ -168,6 +175,7 @@ interface TechRowProps {
   addTech?: (techId: TechId) => void;
   leftContent?: ReactNode;
   opts?: TechRowOptions;
+  researchAgreement?: boolean;
 }
 
 interface TechRowOptions {
@@ -183,6 +191,7 @@ export function TechRow({
   removeTech,
   addTech,
   leftContent,
+  researchAgreement,
   opts = {},
 }: TechRowProps) {
   const { openModal } = useSharedModal();
@@ -277,7 +286,93 @@ export function TechRow({
             })}
           </div>
         )}
+        {researchAgreement ? <ResearchAgreement tech={tech} /> : null}
       </div>
     </SelectableRow>
+  );
+}
+
+function ResearchAgreement({ tech }: { tech: Tech }) {
+  const actionLog = useActionLog();
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
+  const factions = useFactions();
+  const gameId = useGameId();
+  const { openModal } = useSharedModal();
+
+  const selectedFaction = getResearchAgreementFaction(currentTurn, tech.id);
+
+  const orderedFactionIds = getMapOrderedFactionIds(factions);
+  const fadedFactions = objectEntries(factions)
+    .filter(([factionId, faction]) => {
+      return hasTech(faction, tech.id) && factionId !== selectedFaction;
+    })
+    .map(([factionId, _]) => factionId);
+
+  if (!selectedFaction && fadedFactions.length === orderedFactionIds.length) {
+    return null;
+  }
+
+  return (
+    <FactionSelectRadialMenu
+      factions={orderedFactionIds}
+      borderColor={
+        selectedFaction ? getFactionColor(factions[selectedFaction]) : undefined
+      }
+      size={28}
+      invalidFactions={fadedFactions}
+      selectedFaction={selectedFaction}
+      onSelect={(factionId, prevFaction) => {
+        if (factionId) {
+          addTechAsync(gameId, factionId, tech.id, true);
+        }
+        if (prevFaction) {
+          removeTechAsync(gameId, prevFaction, tech.id);
+        }
+      }}
+      tag={
+        <div
+          className="popupIcon hoverParent"
+          style={{ marginLeft: 0, color: "#999", fontSize: rem(10) }}
+          onClick={() =>
+            openModal(
+              <ModalContent
+                title={
+                  <div style={{ fontSize: rem(40) }}>
+                    <FormattedMessage
+                      id="Universities of Jol-Nar.Promissories.Research Agreement.Title"
+                      description="Title of Faction Promissory: Research Agreement"
+                      defaultMessage="Research Agreement"
+                    />
+                  </div>
+                }
+              >
+                <div
+                  className="flexRow myriadPro"
+                  style={{
+                    boxSizing: "border-box",
+                    maxWidth: rem(800),
+                    width: "100%",
+                    minWidth: rem(320),
+                    padding: rem(4),
+                    whiteSpace: "pre-line",
+                    textAlign: "center",
+                    fontSize: rem(32),
+                  }}
+                >
+                  <FormattedMessage
+                    id="Universities of Jol-Nar.Promissories.Research Agreement.Description"
+                    description="Description for Faction Promissory: Research Agreement"
+                    defaultMessage="After the Jol-Nar player researches a technology that is not a faction technology:{br}Gain that technology.{br}Then, return this card to the Jol-Nar player."
+                    values={{ br: "\n\n" }}
+                  />
+                </div>
+              </ModalContent>
+            )
+          }
+        >
+          &#x24D8;
+        </div>
+      }
+    />
   );
 }

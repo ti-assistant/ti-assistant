@@ -141,6 +141,7 @@ interface RemoveAttachmentData {
 
 interface AddTechEvent {
   faction: FactionId;
+  researchAgreement?: boolean;
   tech: TechId;
 }
 

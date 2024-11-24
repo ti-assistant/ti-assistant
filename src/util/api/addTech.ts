@@ -4,12 +4,18 @@ import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
 import { poster } from "./util";
 
-export function addTech(gameId: string, faction: FactionId, techId: TechId) {
+export function addTech(
+  gameId: string,
+  faction: FactionId,
+  techId: TechId,
+  researchAgreement?: boolean
+) {
   const data: GameUpdateData = {
     action: "ADD_TECH",
     event: {
       faction,
       tech: techId,
+      researchAgreement,
     },
   };
 

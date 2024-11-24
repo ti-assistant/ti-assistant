@@ -6,7 +6,8 @@ export function getResearchedTechs(
     .filter(
       (logEntry) =>
         logEntry.data.action === "ADD_TECH" &&
-        logEntry.data.event.faction === factionId
+        logEntry.data.event.faction === factionId &&
+        !logEntry.data.event.researchAgreement
     )
     .map((logEntry) => (logEntry.data as AddTechData).event.tech);
 }
@@ -236,4 +237,18 @@ export function wereTilesSwapped(actionLog: ActionLogEntry[]) {
     actionLog.filter((logEntry) => logEntry.data.action === "SWAP_MAP_TILES")
       .length > 0
   );
+}
+
+export function getResearchAgreementFaction(
+  actionLog: ActionLogEntry[],
+  techId: TechId
+) {
+  return actionLog
+    .filter(
+      (logEntry) =>
+        logEntry.data.action === "ADD_TECH" &&
+        logEntry.data.event.tech === techId &&
+        logEntry.data.event.researchAgreement
+    )
+    .map((logEntry) => (logEntry.data as AddTechData).event.faction)[0];
 }

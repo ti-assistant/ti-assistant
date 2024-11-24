@@ -95,7 +95,6 @@ function ObjectiveColumn({
   const { openModal } = useSharedModal();
   const { settings } = useSharedSettings();
   const description = settings["display-objective-description"];
-  console.log("Description", description);
 
   const numScorers = (objective.scorers ?? []).length;
 
@@ -1920,7 +1919,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                       );
                     }
                     if (factionId) {
-                      console.log("Game ID", gameId);
                       scoreObjectiveAsync(
                         gameId,
                         factionId,

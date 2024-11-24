@@ -25,10 +25,7 @@ const useModal = () => {
 export const useSharedModal = () => useBetween(useModal);
 
 export default function SharedModal() {
-  console.log("Renering");
   const { modals, popModal } = useSharedModal();
-
-  console.log("Modals", modals);
 
   return (
     <>

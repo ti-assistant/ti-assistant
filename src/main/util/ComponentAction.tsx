@@ -619,6 +619,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   key={tech}
                   tech={techObj}
                   removeTech={() => removeTechLocal(tech)}
+                  researchAgreement={factionId === "Universities of Jol-Nar"}
                 />
               );
             })}
@@ -688,6 +689,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   key={tech}
                   tech={techObj}
                   removeTech={() => removeTechLocal(tech)}
+                  researchAgreement={factionId === "Universities of Jol-Nar"}
                 />
               );
             })}
@@ -781,6 +783,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                         key={tech}
                         tech={techObj}
                         removeTech={() => removeTechLocal(tech)}
+                        researchAgreement={
+                          factionId === "Universities of Jol-Nar"
+                        }
                       />
                     );
                   })}
@@ -1696,7 +1701,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       }
 
       if (component.id === "Ssruu" && agentsForSsruu.length === 0) {
-        return false; 
+        return false;
       }
 
       if ("leader" in component && component.leader === "HERO") {
