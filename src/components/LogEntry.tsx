@@ -145,7 +145,16 @@ export function LogEntryElement({
         >
           <div>
             <ColoredFactionName factionId={logEntry.data.event.pickedBy} /> :{" "}
-            {cardId}
+            {logEntry.data.event.assignedTo !== logEntry.data.event.pickedBy ? (
+              <>
+                Gave {cardId} to{" "}
+                <ColoredFactionName
+                  factionId={logEntry.data.event.assignedTo}
+                />
+              </>
+            ) : (
+              cardId
+            )}
           </div>
           <TimerDisplay
             time={endTimeSeconds - startTimeSeconds}
