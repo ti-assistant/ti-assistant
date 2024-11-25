@@ -440,12 +440,10 @@ function rewindGame(
       maxPoints = points;
     }
   }
-  if (game.options["victory-points"] + 1 === maxPoints) {
-    maxPoints -= 1;
-  }
 
   const output = structuredClone(game);
   output.actionLog = structuredClone(log);
+  const originalVPs = output.options["victory-points"];
   output.options["victory-points"] = maxPoints;
 
   let finalEntry;
@@ -511,6 +509,7 @@ function rewindGame(
     finalEntry?.timestampMillis ?? Date.now()
   );
 
+  output.options["victory-points"] = originalVPs;
   (output.actionLog[0] as ActionLogEntry).gameSeconds = finalEntry?.gameSeconds;
 
   return output;
@@ -665,20 +664,28 @@ function fixGame(
   switch (lastAction?.data.action) {
     case "SELECT_ACTION":
       if (lastAction.data.event.action === "Imperial") {
+        fixedGame.options["victory-points"] = maxPoints;
         break;
       }
       return;
     case "SCORE_OBJECTIVE":
       const points =
         baseData.objectives[lastAction.data.event.objective].points;
-      if (points === 2 && maxPoints > fixedGame.options["victory-points"]) {
-        fixedGame.options["victory-points"] -= 1;
+      if (
+        points === 2 &&
+        maxPoints === fixedGame.options["victory-points"] + 1
+      ) {
+        fixedGame.options["victory-points"] = maxPoints - 1;
+      } else {  
+        fixedGame.options["victory-points"] = maxPoints;
       }
       break;
     case "MANUAL_VP_UPDATE":
+      fixedGame.options["victory-points"] = maxPoints;
       break;
     case "GAIN_RELIC":
       if (lastAction.data.event.relic === "Shard of the Throne") {
+        fixedGame.options["victory-points"] = maxPoints;
         break;
       }
       return;
