@@ -113,9 +113,9 @@ export async function POST(
   const db = getFirestore();
 
   // Uncomment to simulate latency.
-  // const delay = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms));
-  // await delay(2500);
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+  await delay(1000);
 
   const timerDoc = await db.collection("timers").doc(gameId).get();
 
@@ -174,9 +174,9 @@ async function updateActionLog(
   gameRef: DocumentReference<DocumentData>,
   t: Transaction,
   handler: Handler,
-  gameTime: number,
-  timestampMillis: number
+  gameTime: number
 ) {
+  const currentTimestampMillis = Date.now();
   const turnBoundary = await t.get(
     gameRef
       .collection("actionLog")
@@ -223,7 +223,7 @@ async function updateActionLog(
       case "REPLACE": {
         const logEntry = handler.getLogEntry();
         logEntry.gameSeconds = gameTime;
-        logEntry.timestampMillis = timestampMillis;
+        logEntry.timestampMillis = currentTimestampMillis;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
           logEntry as Record<string, any>
@@ -255,7 +255,7 @@ async function updateActionLog(
         }
         const logEntry = handler.getLogEntry();
         logEntry.gameSeconds = gameTime;
-        logEntry.timestampMillis = timestampMillis;
+        logEntry.timestampMillis = currentTimestampMillis;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
           logEntry as Record<string, any>
@@ -272,7 +272,7 @@ async function updateActionLog(
     return;
   }
 
-  insertLogEntry(gameRef, t, handler, gameTime, timestampMillis);
+  insertLogEntry(gameRef, t, handler, gameTime, currentTimestampMillis);
 }
 
 function insertLogEntry(
@@ -549,7 +549,7 @@ function updateInTransaction(
 
     updates[`lastUpdate`] = data.timestamp;
     // Needs to happen after handler.getUpdates();
-    await updateActionLog(gameRef, t, handler, gameTime, data.timestamp);
+    await updateActionLog(gameRef, t, handler, gameTime);
 
     if (Object.keys(updates).length > 0) {
       t.update(gameRef, updates);
