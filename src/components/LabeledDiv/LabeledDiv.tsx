@@ -44,7 +44,7 @@ export default function LabeledDiv({
   };
   return (
     <div
-      className={`flexColumn ${styles.LabeledDiv} ${className ?? ""}`}
+      className={`${styles.LabeledDiv} ${className ?? ""}`}
       style={divStyle}
       onClick={onClick}
     >
@@ -70,6 +70,19 @@ export default function LabeledDiv({
           {rightLabel}
         </div>
       ) : null}
+      <div
+        className="flexRow"
+        style={{
+          height: 0,
+          visibility: "hidden",
+          zIndex: -1,
+          gap: rem(8),
+          whiteSpace: "nowrap",
+        }}
+      >
+        <div>{label}</div>
+        <div>{rightLabel}</div>
+      </div>
       {children}
     </div>
   );
