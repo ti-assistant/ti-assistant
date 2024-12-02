@@ -123,10 +123,10 @@ function buildGameLog(
       case "SELECT_ACTION":
       case "UNDO":
         updateGameData(dynamicGameData, handler.getUpdates());
-        updateActionLog(dynamicGameData, handler, Date.now());
+        updateActionLog(dynamicGameData, handler, Date.now(), startTimeSeconds);
         break;
       default:
-        updateActionLog(dynamicGameData, handler, Date.now());
+        updateActionLog(dynamicGameData, handler, Date.now(), startTimeSeconds);
         updateGameData(dynamicGameData, handler.getUpdates());
         break;
     }

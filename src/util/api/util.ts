@@ -3,11 +3,13 @@ import Cookies from "js-cookie";
 export interface Settings {
   "display-objective-description": boolean;
   "group-techs-by-faction": boolean;
+  "show-turn-timer": boolean;
 }
 
 const DEFAULT_SETTINGS: Settings = {
   "display-objective-description": false,
   "group-techs-by-faction": false,
+  "show-turn-timer": true,
 } as const;
 
 function genCookie(length: number): string {
@@ -36,7 +38,10 @@ export function getSettings() {
   if (!settings) {
     return DEFAULT_SETTINGS;
   }
-  return JSON.parse(settings) as Settings;
+  return {
+    ...DEFAULT_SETTINGS,
+    ...(JSON.parse(settings) as Settings),
+  };
 }
 
 export function updateSetting(setting: keyof Settings, value: any) {

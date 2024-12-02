@@ -1,17 +1,18 @@
 import dynamic from "next/dynamic";
-import { CSSProperties, PropsWithChildren, ReactNode, useContext } from "react";
+import { CSSProperties, PropsWithChildren, ReactNode } from "react";
+import { useOptions } from "../../context/dataHooks";
 import { getFactionColor, getFactionName } from "../../util/factions";
+import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
-import { useOptions } from "../../context/dataHooks";
 
 const FactionPanel = dynamic(() => import("../FactionPanel"), {
   loading: () => (
     <div
       className="popupIcon"
       style={{
-        fontSize: "16px",
+        fontSize: rem(16),
       }}
     >
       &#x24D8;

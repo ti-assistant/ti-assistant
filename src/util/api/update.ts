@@ -5,7 +5,8 @@ import { getOppositeHandler } from "./opposite";
 export function updateActionLog(
   currentData: StoredGameData,
   handler: Handler,
-  timestamp: number
+  timestamp: number,
+  gameTime: number
 ) {
   let actionLog = currentData.actionLog;
   if (!actionLog) {
@@ -34,6 +35,7 @@ export function updateActionLog(
       case "REPLACE":
         const entry = handler.getLogEntry();
         entry.timestampMillis = timestamp;
+        entry.gameSeconds = gameTime;
         actionLog.splice(i, 1, entry);
         return;
       case "REWIND_AND_DELETE":
@@ -64,6 +66,7 @@ export function updateActionLog(
         }
         const newEntry = handler.getLogEntry();
         newEntry.timestampMillis = timestamp;
+        newEntry.gameSeconds = gameTime;
         actionLog.splice(0, i + 1, newEntry);
         return;
     }
@@ -71,6 +74,7 @@ export function updateActionLog(
 
   const newEntry = handler.getLogEntry();
   newEntry.timestampMillis = timestamp;
+  newEntry.gameSeconds = gameTime;
   actionLog.unshift(newEntry);
 
   return;

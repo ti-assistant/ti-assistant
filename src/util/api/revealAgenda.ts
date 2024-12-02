@@ -23,7 +23,7 @@ export function revealAgenda(gameId: string, agenda: AgendaId) {
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
@@ -56,7 +56,7 @@ export function hideAgenda(gameId: string, agenda: AgendaId, veto?: boolean) {
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;

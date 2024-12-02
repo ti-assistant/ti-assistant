@@ -31,7 +31,7 @@ export function playActionCard(
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
@@ -68,7 +68,7 @@ export function unplayActionCard(
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;

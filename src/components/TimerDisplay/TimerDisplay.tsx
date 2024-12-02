@@ -4,12 +4,14 @@ import { rem } from "../../util/util";
 interface TimerDisplayProps {
   time: number;
   width?: number;
+  label?: string;
   style?: CSSProperties;
 }
 
 export default function TimerDisplay({
   time,
   width = 152,
+  label,
   style = {},
 }: TimerDisplayProps) {
   let hours = Math.min(Math.floor(time / 3600), 99);
@@ -27,7 +29,8 @@ export default function TimerDisplay({
     width = Math.floor((width * 9) / 10);
   }
 
-  const timerStyle = {
+  const timerStyle: CSSProperties = {
+    position: "relative",
     width: rem(width),
     gap: 0,
     fontFamily: "Slider",
@@ -48,6 +51,19 @@ export default function TimerDisplay({
 
   return (
     <div className="flexRow" style={timerStyle}>
+      {label ? (
+        <div
+          style={{
+            position: "absolute",
+            top: rem(-12),
+            left: rem(-12),
+            fontSize: rem(12),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          {label}
+        </div>
+      ) : null}
       {tenHours > 0 ? <span style={numberStyle}>{tenHours}</span> : null}
       <span style={numberStyle}>{oneHours}</span>
       <span style={numberStyle}>:</span>

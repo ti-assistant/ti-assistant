@@ -57,3 +57,18 @@ export function getCurrentPhasePreviousLogEntries(actionLog: ActionLogEntry[]) {
   currentPhase.reverse();
   return currentPhase;
 }
+
+export function getFinalActionOfPreviousTurn(actionLog: ActionLogEntry[]) {
+  const currentTurn: ActionLogEntry[] = [];
+  for (const logEntry of actionLog) {
+    if (
+      TURN_BOUNDARIES.includes(logEntry.data.action) &&
+      logEntry.data.action !== "RESOLVE_AGENDA"
+    ) {
+      return logEntry;
+    }
+    currentTurn.push(logEntry);
+  }
+
+  return;
+}
