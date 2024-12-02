@@ -52,6 +52,11 @@
   .EndTurnButton {
     font-size: 1.25rem;
   }
+
+  .PromissoryMenu {
+    right: unset;
+    left: 0;
+  }
 }
 
 @media only screen and (max-width: 56.25rem) {
