@@ -30,7 +30,7 @@ export function undo(gameId: string) {
     }
 
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
 
     storedGameData.lastUpdate = now;
 

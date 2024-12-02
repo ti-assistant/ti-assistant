@@ -33,7 +33,7 @@ function buildGameLog(
     if (!handler) {
       return null;
     }
-    updateActionLog(dynamicGameData, handler, Date.now());
+    updateActionLog(dynamicGameData, handler, Date.now(), startTimeSeconds);
     updateGameData(dynamicGameData, handler.getUpdates());
     switch (logEntry.data.action) {
       case "ADVANCE_PHASE": {

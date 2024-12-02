@@ -30,7 +30,7 @@ export function addTech(
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
@@ -63,7 +63,7 @@ export function removeTech(gameId: string, faction: FactionId, techId: TechId) {
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;

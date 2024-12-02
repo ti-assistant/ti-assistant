@@ -472,7 +472,7 @@ function rewindGame(
       return;
     }
     updateGameData(output, handler.getUpdates());
-    updateActionLog(output, handler, Date.now());
+    updateActionLog(output, handler, Date.now(), lastEntry.gameSeconds ?? 0);
   }
 
   if (numSteps === 20) {
@@ -494,7 +494,12 @@ function rewindGame(
     return;
   }
   updateGameData(output, handler.getUpdates());
-  updateActionLog(output, handler, lastEntry.timestampMillis);
+  updateActionLog(
+    output,
+    handler,
+    lastEntry.timestampMillis,
+    lastEntry.gameSeconds ?? 0
+  );
 
   (output.actionLog[0] as ActionLogEntry).gameSeconds = lastEntry.gameSeconds;
 
@@ -506,7 +511,8 @@ function rewindGame(
   updateActionLog(
     output,
     endGameHandler,
-    finalEntry?.timestampMillis ?? Date.now()
+    finalEntry?.timestampMillis ?? Date.now(),
+    finalEntry?.gameSeconds ?? 0
   );
 
   output.options["victory-points"] = originalVPs;
@@ -676,7 +682,7 @@ function fixGame(
         maxPoints === fixedGame.options["victory-points"] + 1
       ) {
         fixedGame.options["victory-points"] = maxPoints - 1;
-      } else {  
+      } else {
         fixedGame.options["victory-points"] = maxPoints;
       }
       break;

@@ -26,7 +26,7 @@ export function selectAction(gameId: string, action: Action) {
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
@@ -60,7 +60,7 @@ export function unselectAction(gameId: string, action: Action) {
 
     // Requires looking at the action log.
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
 
     storedGameData.lastUpdate = now;
 

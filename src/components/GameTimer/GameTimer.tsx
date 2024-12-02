@@ -8,6 +8,7 @@ import { useInterval } from "../../util/client";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import styles from "./GameTimer.module.scss";
+import TurnTimer from "../TurnTimer/TurnTimer";
 
 export default function GameTimer({ frozen = false }) {
   const gameId = useGameId();
@@ -28,7 +29,7 @@ export default function GameTimer({ frozen = false }) {
       lastUpdate.current = timerRef.current;
       saveGameTimer(gameId, timerRef.current);
     }
-  }, 15000);
+  }, 2000);
 
   const paused = state?.paused;
 
@@ -105,6 +106,7 @@ export default function GameTimer({ frozen = false }) {
           </button>
         </div>
       )}
+      {!frozen ? <TurnTimer gameTime={gameTimer} /> : null}
     </div>
   );
 }

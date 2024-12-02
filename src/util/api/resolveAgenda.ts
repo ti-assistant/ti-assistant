@@ -33,7 +33,7 @@ export function resolveAgenda(
 
     // Requires looking at action log.
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
 
     storedGameData.lastUpdate = now;
 
@@ -67,7 +67,7 @@ export function repealAgenda(gameId: string, agenda: AgendaId, target: string) {
 
     // Requires looking at action log.
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
 
     storedGameData.lastUpdate = now;
 

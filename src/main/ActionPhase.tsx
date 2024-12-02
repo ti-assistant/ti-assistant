@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useRef } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
@@ -1661,6 +1661,9 @@ export function ActivePlayerColumn({
   const gameId = useGameId();
   const intl = useIntl();
 
+  const primaryRef = useRef<HTMLDivElement>(null);
+  const secondaryRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className={styles.ActivePlayerColumn}>
       <FormattedMessage
@@ -1669,7 +1672,12 @@ export function ActivePlayerColumn({
         defaultMessage="Active Player"
       />
       <SwitchTransition>
-        <CSSTransition key={activeFaction.id} timeout={120} classNames="fade">
+        <CSSTransition
+          key={activeFaction.id}
+          timeout={120}
+          classNames="fade"
+          nodeRef={primaryRef}
+        >
           <FactionCard
             faction={activeFaction}
             rightLabel={
@@ -1683,7 +1691,7 @@ export function ActivePlayerColumn({
               fontSize: rem(32),
             }}
           >
-            <div className={styles.ActivePlayerSection}>
+            <div ref={primaryRef} className={styles.ActivePlayerSection}>
               <div className={styles.PromissoryMenu}>
                 <PromissoryMenu factionId={activeFaction.id} />
               </div>
@@ -1702,7 +1710,12 @@ export function ActivePlayerColumn({
         style={{ width: "100%", justifyContent: "center" }}
       >
         <SwitchTransition>
-          <CSSTransition key={onDeckFaction.id} timeout={120} classNames="fade">
+          <CSSTransition
+            key={onDeckFaction.id}
+            timeout={120}
+            classNames="fade"
+            nodeRef={secondaryRef}
+          >
             <LabeledDiv
               label={
                 <FormattedMessage
@@ -1727,6 +1740,7 @@ export function ActivePlayerColumn({
               }}
             >
               <div
+                ref={secondaryRef}
                 className="flexColumn"
                 style={{
                   width: "100%",

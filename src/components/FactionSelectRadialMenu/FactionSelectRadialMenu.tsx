@@ -26,8 +26,13 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
 
   const center = (size * 3) / 2;
   const pos = {
-    "--y-pos": rem(center - size * Math.cos(radians) - size / 2 + 2),
-    "--x-pos": rem(center - size * -Math.sin(radians) - size / 2 + 2),
+    "--y-pos": rem(
+      Math.round(100 * (center - size * Math.cos(radians) - size / 2 + 2)) / 100
+    ),
+    "--x-pos": rem(
+      Math.round(100 * (center - size * -Math.sin(radians) - size / 2 + 2)) /
+        100
+    ),
     "--initial-y": rem(size + 2),
     "--initial-x": rem(size + 2),
   };

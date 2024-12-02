@@ -30,7 +30,7 @@ export function playRider(
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
@@ -62,7 +62,7 @@ export function unplayRider(gameId: string, rider: string) {
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now);
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
