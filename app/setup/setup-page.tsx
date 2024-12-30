@@ -992,10 +992,10 @@ function FactionSelect({
                             <button
                               key={color}
                               style={{
-                                width: rem(60),
                                 backgroundColor: factionColor,
                                 color: factionColor,
                                 height: rem(22),
+                                width: rem(18),
                                 opacity:
                                   faction.color !== color && alreadySelected
                                     ? 0.25
