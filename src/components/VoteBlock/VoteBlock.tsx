@@ -489,8 +489,8 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
     <LabeledDiv
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
-      noBlur
       style={{
+        // TODO: Check this.
         display: "grid",
         gridColumn: "span 4",
         gridTemplateColumns: "subgrid",

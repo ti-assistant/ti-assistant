@@ -1517,6 +1517,8 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
               label="Unused Tiles"
               style={{
                 height: rem(80),
+              }}
+              innerStyle={{
                 justifyContent: "flex-start",
               }}
             >

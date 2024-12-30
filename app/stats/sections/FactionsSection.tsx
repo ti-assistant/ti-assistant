@@ -274,7 +274,7 @@ export default function FactionsSection({
                     <FactionIcon factionId={id as FactionId} size={20} />
                   </div>
                 }
-                style={{ gap: rem(2) }}
+                innerStyle={{ gap: rem(2) }}
               >
                 <div className={styles.FactionSection}>
                   <div

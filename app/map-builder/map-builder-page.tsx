@@ -269,6 +269,8 @@ export default function MapBuilderPage() {
             label="Tile Pool"
             style={{
               marginTop: rem(72),
+            }}
+            innerStyle={{
               height: `calc(100dvh - ${rem(140)})`,
               justifyContent: "flex-start",
             }}

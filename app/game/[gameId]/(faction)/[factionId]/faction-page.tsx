@@ -746,7 +746,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
             {scoredPublics[0] ? (
               <LabeledDiv
                 label="SCORED PUBLIC"
-                style={{ whiteSpace: "nowrap" }}
+                innerStyle={{ whiteSpace: "nowrap" }}
+                blur
               >
                 <SelectableRow
                   itemId={scoredPublics[0]}
@@ -803,7 +804,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
             {scoredSecrets[0] ? (
               <LabeledDiv
                 label="SCORED SECRET"
-                style={{ whiteSpace: "nowrap" }}
+                innerStyle={{ whiteSpace: "nowrap" }}
+                blur
               >
                 <SelectableRow
                   itemId={scoredSecrets[0]}
@@ -877,6 +879,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                     }}
                   />
                 }
+                blur
               >
                 <ObjectiveRow
                   objective={revealedObjectiveObj}
@@ -970,7 +973,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   defaultMessage="Speaker Actions"
                 />
               }
-              style={{ marginTop: rem(4), paddingTop: rem(12) }}
+              innerStyle={{ paddingTop: rem(12) }}
             >
               <ClientOnlyHoverMenu
                 label={
@@ -1035,7 +1038,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         defaultMessage="Eligible Outcomes"
                       />
                     }
-                    style={{ paddingTop: rem(8) }}
+                    innerStyle={{ paddingTop: rem(8) }}
                   >
                     <SelectableRow
                       itemId={eligibleOutcomes}
@@ -1055,7 +1058,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         defaultMessage="Speaker Actions"
                       />
                     }
-                    style={{ marginTop: rem(4), paddingTop: rem(12) }}
+                    style={{ marginTop: rem(4) }}
+                    innerStyle={{ paddingTop: rem(12) }}
                   >
                     <ClientOnlyHoverMenu
                       label={
@@ -1236,7 +1240,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         defaultMessage="Speaker Actions"
                       />
                     }
-                    style={{ paddingTop: rem(12) }}
+                    innerStyle={{ paddingTop: rem(12) }}
                   >
                     <ClientOnlyHoverMenu
                       label={
@@ -1296,7 +1300,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                 ) : (
                   <LabeledDiv
                     label="SPEAKER TIE BREAK"
-                    style={{ paddingTop: rem(8) }}
+                    innerStyle={{ paddingTop: rem(8) }}
                   >
                     <SelectableRow
                       itemId={tieBreak}

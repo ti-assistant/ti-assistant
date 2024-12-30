@@ -145,7 +145,7 @@ export default function ObjectivesSection({
       {orderedObjectives.map(([objId, objInfo]) => {
         return (
           <Fragment key={objId}>
-            <LabeledDiv key={objId} label={objId} style={{ gap: rem(4) }}>
+            <LabeledDiv key={objId} label={objId} innerStyle={{ gap: rem(4) }}>
               <div style={{ fontFamily: "Source Sans", fontSize: rem(14) }}>
                 {baseObjectives[objId].description}
               </div>

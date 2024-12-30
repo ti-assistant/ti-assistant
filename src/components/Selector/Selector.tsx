@@ -92,11 +92,7 @@ export function Selector<Id extends string, Name extends string>({
       </SelectableRow>
     );
     if (selectedLabel) {
-      return (
-        <LabeledDiv label={selectedLabel} noBlur={true}>
-          {innerValue}
-        </LabeledDiv>
-      );
+      return <LabeledDiv label={selectedLabel}>{innerValue}</LabeledDiv>;
     }
     return innerValue;
   }

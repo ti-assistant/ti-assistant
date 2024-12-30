@@ -377,7 +377,6 @@ export function MiddleColumn() {
               defaultMessage="Score Objectives"
             />
           }
-          noBlur={true}
         >
           <div className={styles.ScoreObjectivesSection}>
             {filteredStrategyCards.map((card) => {

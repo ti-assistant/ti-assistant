@@ -64,7 +64,26 @@
 }
 
 @media only screen and (max-width: 56.25rem) {
+  .Filters {
+    position: relative;
+    width: 100%;
+    top: unset;
+    margin-top: unset;
+  }
+
+  .FilterContent > :global(.flexRow) {
+    overflow-y: scroll;
+    white-space: nowrap;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .GamePage {
     height: calc(100dvh - 4.625rem);
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }

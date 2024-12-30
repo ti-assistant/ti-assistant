@@ -44,7 +44,7 @@
     top: unset;
   }
 
-  .Filters > :global(.flexRow) {
+  .FilterContent > :global(.flexRow) {
     overflow-y: scroll;
     width: 100%;
     justify-content: flex-start;

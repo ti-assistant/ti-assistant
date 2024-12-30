@@ -319,7 +319,6 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
       </div>
       <div className={styles.UpdateBox}>
         <LabeledDiv
-          noBlur
           label={
             <FormattedMessage
               id="VjlCY0"
@@ -397,11 +396,10 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
       <div className={styles.FactionBox}>
         <LabeledDiv
           label={orderTitle}
-          style={{ alignItems: "center", paddingTop: rem(12) }}
+          innerStyle={{ alignItems: "center", paddingTop: rem(12) }}
         >
           <FactionRow onClick={(factionId) => setSelectedFaction(factionId)} />
           <LabeledDiv
-            noBlur
             label={
               selectedFaction ? (
                 <div className="flexRow" style={{ gap: 0 }}>

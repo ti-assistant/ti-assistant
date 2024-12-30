@@ -223,6 +223,7 @@ export default function StatsPage({
                 "Label for a section containing filters that filter out specific games.",
             })}
             className={styles.Filters}
+            innerClass={styles.FilterContent}
           >
             <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
               <FormattedMessage

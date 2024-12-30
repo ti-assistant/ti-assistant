@@ -87,7 +87,6 @@ function FactionTechSection({
                 key={faction.id}
                 label={getFactionName(faction)}
                 color={getFactionColor(faction)}
-                noBlur
                 opts={{ fixedWidth: true }}
               >
                 <div
