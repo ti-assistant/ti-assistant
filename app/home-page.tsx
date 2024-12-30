@@ -135,22 +135,40 @@ export default function HomePage() {
             className="flexColumn"
             style={{ width: "85%", alignItems: "stretch" }}
           >
-            <Link href={"/stats"}>
-              <BorderedDiv>
-                <div
-                  className="flexRow mediumFont"
-                  style={{
-                    width: "100%",
-                  }}
-                >
-                  <FormattedMessage
-                    id="aO0PYJ"
-                    defaultMessage="Stats"
-                    description="A button that will open the statistics page."
-                  />
-                </div>
-              </BorderedDiv>
-            </Link>
+            <div className="flexRow" style={{ width: "100%" }}>
+              <Link href={"/archive"} style={{ width: "100%" }}>
+                <BorderedDiv>
+                  <div
+                    className="flexRow mediumFont"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <FormattedMessage
+                      id="zOtJ5A"
+                      defaultMessage="Archive"
+                      description="A button that will open the archive page."
+                    />
+                  </div>
+                </BorderedDiv>
+              </Link>
+              <Link href={"/stats"} style={{ width: "100%" }}>
+                <BorderedDiv>
+                  <div
+                    className="flexRow mediumFont"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <FormattedMessage
+                      id="aO0PYJ"
+                      defaultMessage="Stats"
+                      description="A button that will open the statistics page."
+                    />
+                  </div>
+                </BorderedDiv>
+              </Link>
+            </div>
             <Link href={"/map-builder"}>
               <BorderedDiv>
                 <div

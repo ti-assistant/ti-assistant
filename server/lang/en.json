@@ -6139,6 +6139,10 @@
     "defaultMessage": "Completed Games",
     "description": "Label for the number of completed games."
   },
+  "zOtJ5A": {
+    "defaultMessage": "Archive",
+    "description": "A button that will open the archive page."
+  },
   "zXrdrP": {
     "defaultMessage": "Codex III",
     "description": "Text on a button that will enable/disable Codex III."
