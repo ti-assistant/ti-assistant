@@ -1,7 +1,7 @@
 "use client";
 
 import QRCode from "qrcode";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
@@ -14,6 +14,7 @@ import {
   useOptions,
   usePlanets,
 } from "../../context/dataHooks";
+import { useSharedModal } from "../../data/SharedModal";
 import {
   continueGameAsync,
   endGameAsync,
@@ -21,14 +22,12 @@ import {
 } from "../../dynamic/api";
 import { computeVPs } from "../../util/factions";
 import { getMalliceSystemNumber } from "../../util/map";
+import { getMapString } from "../../util/options";
 import { rem } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
-import GenericModal from "../GenericModal/GenericModal";
 import Map from "../Map/Map";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
-import { getMapString } from "../../util/options";
-import { useSharedModal } from "../../data/SharedModal";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"

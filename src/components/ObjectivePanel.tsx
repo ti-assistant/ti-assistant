@@ -1948,7 +1948,12 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
           >
             <div
               className="flexRow"
-              style={{ justifyContent: "space-evenly", width: "100%" }}
+              style={{
+                justifyContent: "space-evenly",
+                width: "100%",
+                height: "100%",
+                alignItems: "center",
+              }}
             >
               {orderedFactionIds.map((factionId) => {
                 const scorers =
@@ -1957,6 +1962,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 return (
                   <div
                     key={factionId}
+                    className="flexColumn"
                     style={{
                       position: "relative",
                       width: "fit-content",

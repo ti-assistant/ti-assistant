@@ -458,7 +458,6 @@ export default function SetupPhase() {
                   <div
                     className="flexColumn"
                     style={{
-                      paddingTop: rem(2),
                       alignItems: "flex-start",
                       height: "100%",
                       width: "100%",

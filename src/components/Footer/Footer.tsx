@@ -27,7 +27,6 @@ import Chip from "../Chip/Chip";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
@@ -552,7 +551,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
         className="flexColumn largeFont"
         onClick={(e) => e.stopPropagation()}
         style={{
-          width: `clamp(80vw, 60rem, calc(100vw - 1.5rem))`,
+          width: `clamp(80vw, 70rem, calc(100vw - 1.5rem))`,
           justifyContent: "flex-start",
         }}
       >

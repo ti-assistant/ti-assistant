@@ -1745,6 +1745,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
         <LabeledDiv
+          blur
           label={
             <FormattedMessage
               id="43UU69"

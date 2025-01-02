@@ -505,7 +505,11 @@ function TechsByFaction({
       title={
         <div
           className="flexRow"
-          style={{ justifyContent: "center", fontSize: rem(18) }}
+          style={{
+            justifyContent: "center",
+            fontSize: rem(18),
+            whiteSpace: "nowrap",
+          }}
         >
           <FactionIcon factionId={factionId} size={20} />
           {getFactionName(faction)}

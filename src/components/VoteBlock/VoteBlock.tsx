@@ -496,6 +496,12 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
         gridTemplateColumns: "subgrid",
         rowGap: 0,
       }}
+      innerStyle={{
+        display: "grid",
+        gridColumn: "span 4",
+        gridTemplateColumns: "subgrid",
+        rowGap: 0,
+      }}
     >
       <div className="flexColumn" style={{ gridColumn: "span 4", gap: 0 }}>
         {completeRiders.map((rider) => {

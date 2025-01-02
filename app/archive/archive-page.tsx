@@ -165,36 +165,38 @@ export default function ArchivePage({
             defaultMessage="Expansions:"
             description="A label for a selector specifying which expansions should be enabled."
           />
-          <FilterButton
-            filters={expansions}
-            filter="POK"
-            setFilters={setExpansions}
-            text={<Strings.Expansion expansion="POK" />}
-          />
-          <FilterButton
-            filters={expansions}
-            filter="CODEX ONE"
-            setFilters={setExpansions}
-            text={<Strings.Expansion expansion="CODEX ONE" />}
-          />
-          <FilterButton
-            filters={expansions}
-            filter="CODEX TWO"
-            setFilters={setExpansions}
-            text={<Strings.Expansion expansion="CODEX TWO" />}
-          />
-          <FilterButton
-            filters={expansions}
-            filter="CODEX THREE"
-            setFilters={setExpansions}
-            text={<Strings.Expansion expansion="CODEX THREE" />}
-          />
-          <FilterButton
-            filters={expansions}
-            filter="DISCORDANT STARS"
-            setFilters={setExpansions}
-            text={<Strings.Expansion expansion="DISCORDANT STARS" />}
-          />
+          <div className={`flexRow ${styles.FilterRow}`}>
+            <FilterButton
+              filters={expansions}
+              filter="POK"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="POK" />}
+            />
+            <FilterButton
+              filters={expansions}
+              filter="CODEX ONE"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="CODEX ONE" />}
+            />
+            <FilterButton
+              filters={expansions}
+              filter="CODEX TWO"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="CODEX TWO" />}
+            />
+            <FilterButton
+              filters={expansions}
+              filter="CODEX THREE"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="CODEX THREE" />}
+            />
+            <FilterButton
+              filters={expansions}
+              filter="DISCORDANT STARS"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="DISCORDANT STARS" />}
+            />
+          </div>
         </div>
         <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
           <FormattedMessage
@@ -203,36 +205,38 @@ export default function ArchivePage({
             description="Label for a selector to change the number of players"
           />
           :
-          <FilterButton
-            filters={playerCounts}
-            filter={3}
-            setFilters={setPlayerCounts}
-          />
-          <FilterButton
-            filters={playerCounts}
-            filter={4}
-            setFilters={setPlayerCounts}
-          />
-          <FilterButton
-            filters={playerCounts}
-            filter={5}
-            setFilters={setPlayerCounts}
-          />
-          <FilterButton
-            filters={playerCounts}
-            filter={6}
-            setFilters={setPlayerCounts}
-          />
-          <FilterButton
-            filters={playerCounts}
-            filter={7}
-            setFilters={setPlayerCounts}
-          />
-          <FilterButton
-            filters={playerCounts}
-            filter={8}
-            setFilters={setPlayerCounts}
-          />
+          <div className={`flexRow ${styles.FilterRow}`}>
+            <FilterButton
+              filters={playerCounts}
+              filter={3}
+              setFilters={setPlayerCounts}
+            />
+            <FilterButton
+              filters={playerCounts}
+              filter={4}
+              setFilters={setPlayerCounts}
+            />
+            <FilterButton
+              filters={playerCounts}
+              filter={5}
+              setFilters={setPlayerCounts}
+            />
+            <FilterButton
+              filters={playerCounts}
+              filter={6}
+              setFilters={setPlayerCounts}
+            />
+            <FilterButton
+              filters={playerCounts}
+              filter={7}
+              setFilters={setPlayerCounts}
+            />
+            <FilterButton
+              filters={playerCounts}
+              filter={8}
+              setFilters={setPlayerCounts}
+            />
+          </div>
         </div>
         <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
           <FormattedMessage
