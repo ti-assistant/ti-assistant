@@ -4,14 +4,15 @@ import styles from "./LabeledDiv.module.scss";
 import { rem } from "../../util/util";
 
 interface LabeledDivProps {
-  label: ReactNode;
-  noBlur?: boolean;
-  onClick?: () => void;
-  rightLabel?: ReactNode;
-  style?: CSSProperties;
-  color?: string;
-  opts?: LabeledDivOpts;
+  label: Exclude<ReactNode, null | undefined>;
+  blur?: boolean;
   className?: string;
+  innerClass?: string;
+  rightLabel?: ReactNode;
+  color?: string;
+  innerStyle?: CSSProperties;
+  opts?: LabeledDivOpts;
+  style?: CSSProperties;
 }
 
 interface LabeledDivOpts {
@@ -24,42 +25,33 @@ interface LabeledDivCSS extends CSSProperties {
 
 export default function LabeledDiv({
   label,
-  rightLabel,
+  blur,
   children,
-  noBlur,
-  onClick,
-  style = {},
+  className,
+  innerClass,
+  rightLabel,
   color = "var(--neutral-border)",
   opts = {},
-  className,
+  style = {},
+  innerStyle = {},
 }: PropsWithChildren<LabeledDivProps>) {
-  const padding = `${!!label ? rem(10) : rem(6)} ${rem(6)} ${rem(6)} ${rem(6)}`;
   const divStyle: LabeledDivCSS = {
     "--color": color,
-    padding: `${padding}`,
-    cursor: onClick ? "pointer" : "cursor",
-    marginTop: !!label ? rem(4) : 0,
     boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
     ...style,
   };
   return (
-    <div
-      className={`${styles.LabeledDiv} ${className ?? ""}`}
-      style={divStyle}
-      onClick={onClick}
-    >
-      {noBlur ? null : <div className={styles.blurBox}></div>}
-      {!!label ? (
-        <div
-          className={`${styles.label} ${styles.left}`}
-          style={{
-            maxWidth: opts.fixedWidth ? `calc(100% - ${rem(14)})` : undefined,
-            textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
-          }}
-        >
-          <div>{label}</div>
-        </div>
-      ) : null}
+    <div className={`${styles.LabeledDiv} ${className ?? ""}`} style={divStyle}>
+      {blur ? <div className={styles.blurBox}></div> : null}
+      <div
+        className={`${styles.label} ${styles.left}`}
+        style={{
+          maxWidth: opts.fixedWidth ? `calc(100% - ${rem(14)})` : undefined,
+          textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
+        }}
+      >
+        <div>{label}</div>
+      </div>
       {!!rightLabel ? (
         <div
           className={`${styles.label} ${styles.right}`}
@@ -70,20 +62,16 @@ export default function LabeledDiv({
           {rightLabel}
         </div>
       ) : null}
-      <div
-        className="flexRow"
-        style={{
-          height: 0,
-          visibility: "hidden",
-          zIndex: -1,
-          gap: rem(8),
-          whiteSpace: "nowrap",
-        }}
-      >
+      <div className={styles.hiddenLabel}>
         <div>{label}</div>
         <div>{rightLabel}</div>
       </div>
-      {children}
+      <div
+        className={`${styles.innerDiv} ${innerClass ?? ""}`}
+        style={innerStyle}
+      >
+        {children}
+      </div>
     </div>
   );
 }

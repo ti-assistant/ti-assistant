@@ -64,7 +64,6 @@ export default function MawOfWorlds({}) {
           </div>
         }
         color={getFactionColor(owner)}
-        noBlur
         style={{ fontSize: rem(14) }}
       >
         <TechRow
@@ -92,11 +91,7 @@ export default function MawOfWorlds({}) {
   });
 
   return (
-    <LabeledDiv
-      label={getFactionName(owner)}
-      color={getFactionColor(owner)}
-      noBlur
-    >
+    <LabeledDiv label={getFactionName(owner)} color={getFactionColor(owner)}>
       <TechSelectHoverMenu
         factionId={maw.owner}
         ignorePrereqs

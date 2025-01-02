@@ -5,7 +5,6 @@ import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { InfoRow } from "../InfoRow";
 import { LockedButtons } from "../LockedButton";
 import { SelectableRow } from "../SelectableRow";
-import { AgendaTimer } from "../Timer";
 import FactionCircle from "../components/FactionCircle/FactionCircle";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -77,6 +76,7 @@ import {
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import styles from "./AgendaPhase.module.scss";
+import AgendaTimer from "../components/AgendaTimer/AgendaTimer";
 
 export function computeVotes(
   agenda: Optional<Agenda>,
@@ -737,7 +737,11 @@ function AgendaSteps() {
       <div className="flexColumn" style={{ width: "100%" }}>
         <div
           className="flexRow"
-          style={{ width: "100%", justifyContent: "space-evenly" }}
+          style={{
+            width: "90%",
+            justifyContent: "space-evenly",
+            paddingTop: rem(16),
+          }}
         >
           <AgendaTimer agendaNum={1} />
           <AgendaTimer agendaNum={2} />

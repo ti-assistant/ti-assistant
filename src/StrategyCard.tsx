@@ -37,7 +37,7 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
       label={getFactionName(faction)}
       color={borderColor}
       style={{
-        height: height,
+        height,
       }}
     >
       <div className="flexColumn" style={{ height: "100%", width: "100%" }}>

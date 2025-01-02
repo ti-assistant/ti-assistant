@@ -1,100 +1,11 @@
 "use client";
 
-import {
-  CSSProperties,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { FormattedMessage } from "react-intl";
+import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
 import { useGameId, useGameState, useTimers } from "./context/dataHooks";
 import { useSharedTimer } from "./data/SharedTimer";
-import {
-  saveAgendaTimer,
-  saveFactionTimer,
-  updateLocalAgendaTimer,
-  updateLocalFactionTimer,
-} from "./util/api/timers";
+import { saveFactionTimer, updateLocalFactionTimer } from "./util/api/timers";
 import { useInterval } from "./util/client";
-import { rem } from "./util/util";
-
-export function AgendaTimer({ agendaNum }: { agendaNum: number }) {
-  const gameId = useGameId();
-  const state = useGameState();
-  const timers = useTimers();
-
-  const [agendaTimer, setAgendaTimer] = useState(
-    agendaNum === 1 ? timers.firstAgenda ?? 0 : timers.secondAgenda ?? 0
-  );
-  const { addSubscriber, removeSubscriber } = useSharedTimer();
-
-  const timerRef = useRef(0);
-  const lastUpdate = useRef(0);
-
-  useInterval(() => {
-    if (!gameId) {
-      return;
-    }
-    if (lastUpdate.current < timerRef.current) {
-      lastUpdate.current = timerRef.current;
-      saveAgendaTimer(gameId, timerRef.current, agendaNum);
-    }
-  }, 15000);
-
-  const isActive = state?.agendaNum === agendaNum;
-  const paused = state?.paused;
-
-  const updateTime = useCallback(() => {
-    if (!gameId || paused || !isActive) {
-      return;
-    }
-    timerRef.current += 1;
-    updateLocalAgendaTimer(gameId, timerRef.current, agendaNum);
-    setAgendaTimer(timerRef.current);
-  }, [paused, isActive, gameId, agendaNum]);
-
-  useEffect(() => {
-    const id = addSubscriber(updateTime);
-    return () => {
-      removeSubscriber(id);
-    };
-  }, [updateTime, addSubscriber, removeSubscriber]);
-
-  const localAgendaTimer =
-    agendaNum === 1 ? timers?.firstAgenda : timers?.secondAgenda;
-  useEffect(() => {
-    if (localAgendaTimer && localAgendaTimer > timerRef.current) {
-      timerRef.current = localAgendaTimer;
-      lastUpdate.current = localAgendaTimer;
-      setAgendaTimer(localAgendaTimer);
-    }
-  }, [localAgendaTimer]);
-
-  return (
-    <div
-      className="flexColumn"
-      style={{
-        alignItems: "center",
-        gap: 0,
-        justifyContent: "center",
-        fontSize: rem(24),
-      }}
-    >
-      <div style={{ fontSize: rem(18) }}>
-        <FormattedMessage
-          id="OpsE1E"
-          defaultMessage="{num, select, 1 {First} 2 {Second} other {First}} Agenda"
-          description="Label specifying which agenda this is."
-          values={{ num: agendaNum }}
-        />
-      </div>
-      <TimerDisplay time={agendaTimer} width={132} />
-    </div>
-  );
-}
 
 interface FactionTimerProps {
   factionId: FactionId | "Unknown";

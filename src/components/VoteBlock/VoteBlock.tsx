@@ -489,8 +489,13 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
     <LabeledDiv
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
-      noBlur
       style={{
+        display: "grid",
+        gridColumn: "span 4",
+        gridTemplateColumns: "subgrid",
+        rowGap: 0,
+      }}
+      innerStyle={{
         display: "grid",
         gridColumn: "span 4",
         gridTemplateColumns: "subgrid",

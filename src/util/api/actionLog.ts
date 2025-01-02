@@ -58,8 +58,27 @@ export function getCurrentPhasePreviousLogEntries(actionLog: ActionLogEntry[]) {
   return currentPhase;
 }
 
+export function getNthMostRecentAction(
+  actionLog: ActionLogEntry[],
+  action: ActionLogEntry["data"]["action"],
+  num: number
+) {
+  let count = 1;
+  for (const logEntry of actionLog) {
+    if (logEntry.data.action === action) {
+      if (count === num) {
+        return logEntry;
+      }
+      count++;
+    }
+    if (PHASE_BOUNDARIES.includes(logEntry.data.action)) {
+      break;
+    }
+  }
+  return;
+}
+
 export function getFinalActionOfPreviousTurn(actionLog: ActionLogEntry[]) {
-  const currentTurn: ActionLogEntry[] = [];
   for (const logEntry of actionLog) {
     if (
       TURN_BOUNDARIES.includes(logEntry.data.action) &&
@@ -67,7 +86,6 @@ export function getFinalActionOfPreviousTurn(actionLog: ActionLogEntry[]) {
     ) {
       return logEntry;
     }
-    currentTurn.push(logEntry);
   }
 
   return;

@@ -5,7 +5,7 @@
   border-radius: 0.3125rem;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.375rem;
+  margin-top: 0.25rem;
   align-items: flex-start;
 }
 
@@ -22,6 +22,20 @@
   filter: blur(0);
 }
 
+.innerDiv {
+  position: relative;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  width: 100%;
+  height: 100%;
+  padding: 0.6rem 0.375rem 0.375rem 0.375rem;
+}
+
 .label {
   --side-spacing: 0.375rem;
 
@@ -32,6 +46,8 @@
   border-radius: 0.3125rem;
   padding: 0 4px;
   color: var(--color);
+
+  z-index: 1;
 }
 
 .label.left {
@@ -46,4 +62,19 @@
 
 .label.right {
   right: var(--side-spacing);
+}
+
+.hiddenLabel {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+
+  padding: 0 0.5rem;
+
+  height: 0;
+  visibility: hidden;
+  z-index: -1;
+  gap: 0.5rem;
+  white-space: nowrap;
 }

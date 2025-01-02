@@ -621,6 +621,7 @@ export function AdditionalActions({
                 <LabeledDiv
                   label={getFactionName(activeFaction)}
                   color={getFactionColor(activeFaction)}
+                  blur
                 >
                   {researchedTech.length > 0 ? (
                     <div
@@ -716,6 +717,7 @@ export function AdditionalActions({
                     color={getFactionColor(faction)}
                     style={{ width: "48%" }}
                     opts={{ fixedWidth: true }}
+                    blur
                   >
                     <React.Fragment>
                       {researchedTechs.map((tech) => {
@@ -869,6 +871,7 @@ export function AdditionalActions({
                   description="Title of Faction Ability: Peace Accords"
                 />
               }
+              blur
             >
               <React.Fragment>
                 {claimedPlanets.length > 0 ? (
@@ -1095,6 +1098,7 @@ export function AdditionalActions({
               })}
               `}
               color={getFactionColor(factions["Xxcha Kingdom"])}
+              blur
             >
               <React.Fragment>
                 {xxchaPlanets.length > 0 ? (

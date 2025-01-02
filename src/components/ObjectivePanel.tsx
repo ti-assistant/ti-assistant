@@ -1611,13 +1611,14 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                     defaultMessage="Reveal Objective"
                   />
                 }
-                noBlur={true}
                 style={{
-                  flexDirection: "row",
                   width: "min-content",
-                  alignItems: "stretch",
                   gridRow: "1 / 2",
                   fontSize: rem(14),
+                }}
+                innerStyle={{
+                  flexDirection: "row",
+                  alignItems: "stretch",
                 }}
               >
                 <ObjectiveSelectHoverMenu
@@ -1936,7 +1937,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             </div>
           </div>
           <LabeledDiv
-            noBlur={true}
             label={
               <FormattedMessage
                 id="Objectives.Support for the Throne.Title"
@@ -1948,7 +1948,12 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
           >
             <div
               className="flexRow"
-              style={{ justifyContent: "space-evenly", width: "100%" }}
+              style={{
+                justifyContent: "space-evenly",
+                width: "100%",
+                height: "100%",
+                alignItems: "center",
+              }}
             >
               {orderedFactionIds.map((factionId) => {
                 const scorers =
@@ -1957,6 +1962,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 return (
                   <div
                     key={factionId}
+                    className="flexColumn"
                     style={{
                       position: "relative",
                       width: "fit-content",
@@ -2009,7 +2015,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             </div>
           </LabeledDiv>
           <LabeledDiv
-            noBlur={true}
             label={
               <FormattedMessage
                 id="eGEjSH"
@@ -2133,7 +2138,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
           </div>
           {includesPoK ? (
             <LabeledDiv
-              noBlur={true}
               label={
                 <FormattedMessage
                   id="pPpzkR"
@@ -2168,7 +2172,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             </LabeledDiv>
           ) : null}
           <LabeledDiv
-            noBlur={true}
             label={
               <FormattedMessage
                 id="hMWeZX"
@@ -2177,10 +2180,12 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               />
             }
             style={{
-              flexDirection: "row",
-              gridColumn: includesPoK ? "6/8" : "3/ 8",
+              gridColumn: includesPoK ? "6/8" : "3/8",
               width: "100%",
               height: "100%",
+            }}
+            innerStyle={{
+              flexDirection: "row",
             }}
           >
             <SimpleScorable
@@ -2217,7 +2222,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             />
           </LabeledDiv>
           <LabeledDiv
-            noBlur={true}
             label={
               <FormattedMessage
                 id="t6v2oN"
@@ -2229,6 +2233,8 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               gridColumn: includesPoK ? "8 / 13" : " 8 / 13",
               width: "100%",
               height: "100%",
+            }}
+            innerStyle={{
               padding: 0,
             }}
           >

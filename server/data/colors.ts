@@ -1,10 +1,10 @@
 export const BASE_COLORS: string[] = [
-  "Black",
-  "Blue",
-  "Green",
-  "Orange",
-  "Magenta",
-  "Purple",
   "Red",
+  "Black",
+  "Orange",
+  "Green",
   "Yellow",
+  "Magenta",
+  "Blue",
+  "Purple",
 ];

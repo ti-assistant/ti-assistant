@@ -776,6 +776,8 @@ export default function Map({
             style={{
               width: "fit-content",
               backgroundColor: "var(--background-color)",
+            }}
+            innerStyle={{
               justifyContent: "stretch",
               alignItems: "stretch",
               paddingTop: rem(16),

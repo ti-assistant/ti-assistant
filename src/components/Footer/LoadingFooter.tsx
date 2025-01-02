@@ -21,7 +21,6 @@ export default function LoadingFooter() {
       </button>
       <div className={styles.UpdateBox}>
         <LabeledDiv
-          noBlur
           label={
             <FormattedMessage
               id="VjlCY0"

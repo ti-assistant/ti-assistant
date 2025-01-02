@@ -195,7 +195,7 @@ export default function TechsSection({
                 ) : null}
               </div>
             }
-            style={{ gap: 0 }}
+            innerStyle={{ gap: 0 }}
           >
             <div
               className="flexColumn"

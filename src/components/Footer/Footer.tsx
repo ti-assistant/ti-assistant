@@ -27,7 +27,6 @@ import Chip from "../Chip/Chip";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
@@ -319,7 +318,6 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
       </div>
       <div className={styles.UpdateBox}>
         <LabeledDiv
-          noBlur
           label={
             <FormattedMessage
               id="VjlCY0"
@@ -397,11 +395,10 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
       <div className={styles.FactionBox}>
         <LabeledDiv
           label={orderTitle}
-          style={{ alignItems: "center", paddingTop: rem(12) }}
+          innerStyle={{ alignItems: "center", paddingTop: rem(12) }}
         >
           <FactionRow onClick={(factionId) => setSelectedFaction(factionId)} />
           <LabeledDiv
-            noBlur
             label={
               selectedFaction ? (
                 <div className="flexRow" style={{ gap: 0 }}>
@@ -554,7 +551,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
         className="flexColumn largeFont"
         onClick={(e) => e.stopPropagation()}
         style={{
-          width: `clamp(80vw, 60rem, calc(100vw - 1.5rem))`,
+          width: `clamp(80vw, 70rem, calc(100vw - 1.5rem))`,
           justifyContent: "flex-start",
         }}
       >

@@ -30,7 +30,6 @@ interface FactionCardProps {
   faction: Faction;
   hideIcon?: boolean;
   rightLabel?: ReactNode;
-  onClick?: () => void;
   opts?: FactionCardOpts;
   style?: CSSProperties;
 }
@@ -39,7 +38,6 @@ export default function FactionCard({
   children,
   faction,
   hideIcon = false,
-  onClick,
   rightLabel,
   style = {},
   opts = {},
@@ -56,8 +54,7 @@ export default function FactionCard({
       }
       rightLabel={rightLabel}
       color={getFactionColor(faction)}
-      onClick={onClick}
-      style={{ justifyContent: "flex-start", ...style }}
+      innerStyle={{ justifyContent: "flex-start", ...style }}
     >
       <div
         className={styles.FactionCard}

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Dispatch,
   ReactNode,
@@ -11,7 +10,6 @@ import {
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import Chip from "../../src/components/Chip/Chip";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import Sidebars from "../../src/components/Sidebars/Sidebars";
@@ -21,7 +19,6 @@ import Toggle from "../../src/components/Toggle/Toggle";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
-import ResourcesIcon from "../../src/components/ResourcesIcon/ResourcesIcon";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -146,76 +143,69 @@ export default function ArchivePage({
   return (
     <div className={styles.GamePage}>
       <Sidebars left="TI ASSISTANT" right="ARCHIVE" />
-      <div className={styles.Filters}>
-        <LabeledDiv
-          label={intl.formatMessage({
-            id: "Zh1T8Z",
-            defaultMessage: "Filters",
-            description:
-              "Label for a section containing filters that filter out specific games.",
-          })}
+      <LabeledDiv
+        className={styles.Filters}
+        innerClass={styles.FilterContent}
+        label={intl.formatMessage({
+          id: "Zh1T8Z",
+          defaultMessage: "Filters",
+          description:
+            "Label for a section containing filters that filter out specific games.",
+        })}
+      >
+        <div
+          className="flexRow"
+          style={{
+            fontSize: rem(12),
+            gap: rem(4),
+          }}
         >
-          <div
-            className="flexRow"
-            style={{
-              alignItems: "flex-start",
-              fontSize: rem(12),
-              gap: rem(4),
-            }}
-          >
-            <FormattedMessage
-              id="2jNcVD"
-              defaultMessage="Expansions:"
-              description="A label for a selector specifying which expansions should be enabled."
+          <FormattedMessage
+            id="2jNcVD"
+            defaultMessage="Expansions:"
+            description="A label for a selector specifying which expansions should be enabled."
+          />
+          <div className={`flexRow ${styles.FilterRow}`}>
+            <FilterButton
+              filters={expansions}
+              filter="POK"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="POK" />}
             />
-            <div
-              className="flexRow"
-              style={{
-                justifyContent: "flex-start",
-                fontSize: rem(12),
-                gap: rem(4),
-                flexWrap: "wrap",
-              }}
-            >
-              <FilterButton
-                filters={expansions}
-                filter="POK"
-                setFilters={setExpansions}
-                text={<Strings.Expansion expansion="POK" />}
-              />
-              <FilterButton
-                filters={expansions}
-                filter="CODEX ONE"
-                setFilters={setExpansions}
-                text={<Strings.Expansion expansion="CODEX ONE" />}
-              />
-              <FilterButton
-                filters={expansions}
-                filter="CODEX TWO"
-                setFilters={setExpansions}
-                text={<Strings.Expansion expansion="CODEX TWO" />}
-              />
-              <FilterButton
-                filters={expansions}
-                filter="CODEX THREE"
-                setFilters={setExpansions}
-                text={<Strings.Expansion expansion="CODEX THREE" />}
-              />
-              <FilterButton
-                filters={expansions}
-                filter="DISCORDANT STARS"
-                setFilters={setExpansions}
-                text={<Strings.Expansion expansion="DISCORDANT STARS" />}
-              />
-            </div>
+            <FilterButton
+              filters={expansions}
+              filter="CODEX ONE"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="CODEX ONE" />}
+            />
+            <FilterButton
+              filters={expansions}
+              filter="CODEX TWO"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="CODEX TWO" />}
+            />
+            <FilterButton
+              filters={expansions}
+              filter="CODEX THREE"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="CODEX THREE" />}
+            />
+            <FilterButton
+              filters={expansions}
+              filter="DISCORDANT STARS"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="DISCORDANT STARS" />}
+            />
           </div>
-          <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
-            <FormattedMessage
-              id="Jh0WRk"
-              defaultMessage="Player Count"
-              description="Label for a selector to change the number of players"
-            />
-            :
+        </div>
+        <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
+          <FormattedMessage
+            id="Jh0WRk"
+            defaultMessage="Player Count"
+            description="Label for a selector to change the number of players"
+          />
+          :
+          <div className={`flexRow ${styles.FilterRow}`}>
             <FilterButton
               filters={playerCounts}
               filter={3}
@@ -247,30 +237,31 @@ export default function ArchivePage({
               setFilters={setPlayerCounts}
             />
           </div>
-          <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
-            <FormattedMessage
-              id="R06tnh"
-              description="A label for a selector specifying the number of victory points required."
-              defaultMessage="Victory Points"
-            />
-            :
-            <FilterButton
-              filters={victoryPoints}
-              filter={10}
-              setFilters={setVictoryPoints}
-            />
-            <FilterButton
-              filters={victoryPoints}
-              filter={12}
-              setFilters={setVictoryPoints}
-            />
-            <FilterButton
-              filters={victoryPoints}
-              filter={14}
-              setFilters={setVictoryPoints}
-            />
-          </div>
-          {/* <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
+        </div>
+        <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
+          <FormattedMessage
+            id="R06tnh"
+            description="A label for a selector specifying the number of victory points required."
+            defaultMessage="Victory Points"
+          />
+          :
+          <FilterButton
+            filters={victoryPoints}
+            filter={10}
+            setFilters={setVictoryPoints}
+          />
+          <FilterButton
+            filters={victoryPoints}
+            filter={12}
+            setFilters={setVictoryPoints}
+          />
+          <FilterButton
+            filters={victoryPoints}
+            filter={14}
+            setFilters={setVictoryPoints}
+          />
+        </div>
+        {/* <div className="flexRow" style={{ fontSize: rem(12), gap: rem(4) }}>
             Include Factions:
             <Toggle selected={false} toggleFn={() => {}}>
               <FactionIcon factionId="Arborec" size={18} />
@@ -297,9 +288,8 @@ export default function ArchivePage({
               setFilters={setVictoryPoints}
             />
           </div> */}
-        </LabeledDiv>
-      </div>
-      <LabeledDiv label="Games" style={{ height: "calc(100dvh - 4rem)" }}>
+      </LabeledDiv>
+      <LabeledDiv label="Games" innerStyle={{ height: "calc(100dvh - 4rem)" }}>
         <div className={styles.ArchiveGames}>
           <div className={styles.ArchiveGamesHeader}>
             <div

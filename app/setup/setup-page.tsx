@@ -199,8 +199,6 @@ function MobileOptions({
             defaultMessage="Expansions:"
           />
         }
-        style={{ width: "min-content" }}
-        noBlur
       >
         <div className="flexColumn" style={{ alignItems: "center" }}>
           <Toggle
@@ -913,7 +911,9 @@ function FactionSelect({
             position: "absolute",
             opacity: 0.5,
             left: 0,
+            top: 0,
             width: "100%",
+            height: "100%",
             zIndex: -1,
           }}
         >
@@ -992,10 +992,10 @@ function FactionSelect({
                             <button
                               key={color}
                               style={{
-                                width: rem(60),
                                 backgroundColor: factionColor,
                                 color: factionColor,
                                 height: rem(22),
+                                width: rem(18),
                                 opacity:
                                   faction.color !== color && alreadySelected
                                     ? 0.25

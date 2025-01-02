@@ -309,6 +309,7 @@ export function TacticalAction({
               values={{ count: conqueredPlanets.length }}
             />
           }
+          blur
         >
           {/* <React.Fragment> */}
           <div
@@ -482,6 +483,7 @@ export function TacticalAction({
               values={{ count: scoredObjectives.length }}
             />
           }
+          blur
         >
           <React.Fragment>
             <div className="flexColumn" style={{ alignItems: "stretch" }}>
@@ -538,6 +540,7 @@ export function TacticalAction({
               defaultMessage="Gained Relic"
             />
           }
+          blur
         >
           <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
             <SelectableRow
@@ -558,7 +561,7 @@ export function TacticalAction({
       (nekroTechs.length > 0 || researchableTechs.length > 0) ? (
         <React.Fragment>
           {nekroTechs.length > 0 ? (
-            <LabeledDiv label="TECHNOLOGICAL SINGULARITY">
+            <LabeledDiv label="TECHNOLOGICAL SINGULARITY" blur>
               <div className="flexColumn" style={{ alignItems: "stretch" }}>
                 {nekroTechs.map((tech) => {
                   const techObj = techs[tech];
@@ -750,7 +753,7 @@ function AdjudicatorBaal() {
     }
     const planetString = system.planets.join("/");
     return (
-      <LabeledDiv label={adjudicatorBaal.name}>
+      <LabeledDiv label={adjudicatorBaal.name} blur>
         <SelectableRow
           itemId={`${adjudicatorBaalSystem}`}
           removeItem={() => {

@@ -377,7 +377,6 @@ export function MiddleColumn() {
               defaultMessage="Score Objectives"
             />
           }
-          noBlur={true}
         >
           <div className={styles.ScoreObjectivesSection}>
             {filteredStrategyCards.map((card) => {
@@ -957,7 +956,18 @@ export default function StatusPhase() {
                                   onClick={() =>
                                     openModal(
                                       <ModalContent title={ability.name}>
-                                        {ability.description}
+                                        <div
+                                          className="myriadPro"
+                                          style={{
+                                            width: "100%",
+                                            padding: rem(4),
+                                            whiteSpace: "pre-line",
+                                            textAlign: "center",
+                                            fontSize: rem(32),
+                                          }}
+                                        >
+                                          {ability.description}
+                                        </div>
                                       </ModalContent>
                                     )
                                   }
