@@ -1,8 +1,9 @@
-import { processMapString } from "./map";
+import { getDefaultMapString, processMapString } from "./map";
 
 export function getMapString(options: Options, numFactions: number) {
-  const processed = options["processed-map-string"];
-  if (processed && processed !== "") {
+  const defaultMap = getDefaultMapString(numFactions, options["map-style"]);
+  let processed = options["processed-map-string"];
+  if (processed && processed !== "" && processed !== defaultMap) {
     return processed;
   }
 
@@ -11,5 +12,9 @@ export function getMapString(options: Options, numFactions: number) {
     return;
   }
 
-  return processMapString(raw, options["map-style"], numFactions);
+  processed = processMapString(raw, options["map-style"], numFactions);
+  if (processed && processed !== "" && processed !== defaultMap) {
+    return processed;
+  }
+  return;
 }
