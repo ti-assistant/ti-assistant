@@ -490,7 +490,6 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
       style={{
-        // TODO: Check this.
         display: "grid",
         gridColumn: "span 4",
         gridTemplateColumns: "subgrid",

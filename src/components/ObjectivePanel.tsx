@@ -1617,7 +1617,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   fontSize: rem(14),
                 }}
                 innerStyle={{
-                  flexDirection: "row", // TODO: Check this.
+                  flexDirection: "row",
                   alignItems: "stretch",
                 }}
               >
