@@ -1,5 +1,5 @@
 import parse from "html-react-parser";
-import { PropsWithChildren, ReactNode, useContext, useState } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { UnitStat } from "../TechRow";
 import { useGameId, useLeaders, useTechs } from "../context/dataHooks";
@@ -693,7 +693,6 @@ export default function FactionPanel({
   faction: Faction;
   options: Options;
 }) {
-  const [showPanel, setShowPanel] = useState(false);
   const { openModal } = useSharedModal();
 
   return (
@@ -702,6 +701,7 @@ export default function FactionPanel({
         className="popupIcon"
         style={{
           fontSize: rem(16),
+          zIndex: 1,
         }}
         onClick={() =>
           openModal(<FactionPanelModal faction={faction} options={options} />)
