@@ -197,7 +197,7 @@ export default function MapBuilderPage() {
     }
   }
   if (filters.has("DISCORDANT_STARS")) {
-    for (let i = 1037; i < 1061; i++) {
+    for (let i = 4253; i < 4277; i++) {
       tileNumbers.push(i.toString());
     }
   }
