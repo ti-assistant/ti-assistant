@@ -163,10 +163,10 @@ export function validSystemNumber(number: string) {
   if (intVal < -1) {
     return false;
   }
-  if (intVal > 4260) {
+  if (intVal > 4276) {
     return false;
   }
-  if (intVal > 4236) {
+  if (intVal > 4252) {
     return true;
   }
   if (intVal > 1060) {
