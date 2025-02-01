@@ -190,11 +190,6 @@ export function SystemImage({
     );
   }
 
-  const parsedNum = parseInt(systemNumber);
-  if (parsedNum > 4200) {
-    systemNumber = (parsedNum - 3200).toString();
-  }
-
   let systemPlanets = Object.values(planets).filter((planet) => {
     if (!systemNumber) {
       return false;
@@ -610,10 +605,6 @@ export default function Map({
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
     if (tile === "0" && updatedTile && updatedTile !== "0") {
-      const parsedTile = parseInt(updatedTile);
-      if (parsedTile > 4200) {
-        return (parsedTile - 3200).toString();
-      }
       return updatedTile;
     }
     if (tile.startsWith("P")) {

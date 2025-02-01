@@ -215,113 +215,113 @@ export const DISCORDANT_STARS_SYSTEMS: Record<
     planets: ["Gen", "Zelian"],
     type: "HOME",
   },
-  1037: {
+  4253: {
     expansion: "DISCORDANT STARS",
-    id: 1037,
+    id: 4253,
     planets: ["Silence"],
     type: "BLUE",
   },
-  1038: {
+  4254: {
     expansion: "DISCORDANT STARS",
-    id: 1038,
+    id: 4254,
     planets: ["Echo"],
     type: "BLUE",
   },
-  1039: {
+  4255: {
     expansion: "DISCORDANT STARS",
-    id: 1039,
+    id: 4255,
     planets: ["Tarrock"],
     type: "BLUE",
   },
-  1040: {
+  4256: {
     expansion: "DISCORDANT STARS",
-    id: 1040,
+    id: 4256,
     planets: ["Prism"],
     type: "BLUE",
   },
-  1041: {
+  4257: {
     expansion: "DISCORDANT STARS",
-    id: 1041,
+    id: 4257,
     planets: ["Troac"],
     type: "BLUE",
   },
-  1042: {
+  4258: {
     expansion: "DISCORDANT STARS",
-    id: 1042,
+    id: 4258,
     planets: ["Etir V"],
     type: "BLUE",
   },
-  1043: {
+  4259: {
     expansion: "DISCORDANT STARS",
-    id: 1043,
+    id: 4259,
     planets: ["Vioss"],
     type: "BLUE",
   },
-  1044: {
+  4260: {
     expansion: "DISCORDANT STARS",
-    id: 1044,
+    id: 4260,
     planets: ["Fakrenn"],
     type: "BLUE",
   },
-  1045: {
+  4261: {
     expansion: "DISCORDANT STARS",
-    id: 1045,
+    id: 4261,
     planets: ["San-Vit", "Lodran"],
     type: "BLUE",
   },
-  1046: {
+  4262: {
     expansion: "DISCORDANT STARS",
-    id: 1046,
+    id: 4262,
     planets: ["Dorvok", "Derbrae"],
     type: "BLUE",
   },
-  1047: {
+  4263: {
     expansion: "DISCORDANT STARS",
-    id: 1047,
+    id: 4263,
     planets: ["Rysaa", "Moln"],
     type: "BLUE",
   },
-  1048: {
+  4264: {
     expansion: "DISCORDANT STARS",
-    id: 1048,
+    id: 4264,
     planets: ["Salin", "Gwiyun"],
     type: "BLUE",
   },
-  1049: {
+  4265: {
     expansion: "DISCORDANT STARS",
-    id: 1049,
+    id: 4265,
     planets: ["Inan", "Swog"],
     type: "BLUE",
   },
-  1050: {
+  4266: {
     expansion: "DISCORDANT STARS",
-    id: 1050,
+    id: 4266,
     planets: ["Detic", "Lliot"],
     type: "BLUE",
   },
-  1051: {
+  4267: {
     expansion: "DISCORDANT STARS",
-    id: 1051,
+    id: 4267,
     planets: ["Qaak", "Larred", "Nairb"],
     type: "BLUE",
   },
-  1052: {
+  4268: {
     expansion: "DISCORDANT STARS",
-    id: 1052,
+    id: 4268,
     planets: ["Sierpin", "Mandle", "Regnem"],
     type: "BLUE",
   },
-  1053: {
+  4269: {
     expansion: "DISCORDANT STARS",
-    id: 1053,
+    id: 4269,
     planets: ["Domna"],
     type: "RED",
   },
-  1054: EMPTY_RED_SYSTEM(1054, "DISCORDANT STARS"),
-  1055: EMPTY_RED_SYSTEM(1055, "DISCORDANT STARS"),
-  1056: EMPTY_RED_SYSTEM(1056, "DISCORDANT STARS"),
-  1057: EMPTY_RED_SYSTEM(1057, "DISCORDANT STARS"),
-  1058: EMPTY_RED_SYSTEM(1058, "DISCORDANT STARS"),
-  1059: EMPTY_RED_SYSTEM(1059, "DISCORDANT STARS"),
-  1060: EMPTY_RED_SYSTEM(1060, "DISCORDANT STARS"),
+  4270: EMPTY_RED_SYSTEM(4270, "DISCORDANT STARS"),
+  4271: EMPTY_RED_SYSTEM(4271, "DISCORDANT STARS"),
+  4272: EMPTY_RED_SYSTEM(4272, "DISCORDANT STARS"),
+  4273: EMPTY_RED_SYSTEM(4273, "DISCORDANT STARS"),
+  4274: EMPTY_RED_SYSTEM(4274, "DISCORDANT STARS"),
+  4275: EMPTY_RED_SYSTEM(4275, "DISCORDANT STARS"),
+  4276: EMPTY_RED_SYSTEM(4276, "DISCORDANT STARS"),
 };

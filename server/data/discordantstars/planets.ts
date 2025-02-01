@@ -781,7 +781,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Silence",
     position: MIDDLE,
     resources: 2,
-    system: 1037,
+    system: 4253,
     type: "INDUSTRIAL",
   },
   Echo: {
@@ -794,7 +794,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Echo",
     position: MIDDLE,
     resources: 1,
-    system: 1038,
+    system: 4254,
     type: "HAZARDOUS",
   },
   Tarrock: {
@@ -807,7 +807,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Tarrock",
     position: MIDDLE,
     resources: 3,
-    system: 1039,
+    system: 4255,
     type: "INDUSTRIAL",
   },
   Prism: {
@@ -820,7 +820,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Prism",
     position: MIDDLE,
     resources: 0,
-    system: 1040,
+    system: 4256,
     type: "INDUSTRIAL",
   },
   Troac: {
@@ -831,7 +831,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Troac",
     position: MIDDLE,
     resources: 0,
-    system: 1041,
+    system: 4257,
     type: "CULTURAL",
   },
   "Etir V": {
@@ -842,7 +842,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Etir V",
     position: MIDDLE,
     resources: 4,
-    system: 1042,
+    system: 4258,
     type: "HAZARDOUS",
   },
   Vioss: {
@@ -853,7 +853,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Vioss",
     position: MIDDLE,
     resources: 3,
-    system: 1043,
+    system: 4259,
     type: "CULTURAL",
   },
   Fakrenn: {
@@ -864,7 +864,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Fakrenn",
     position: TOP_LEFT,
     resources: 2,
-    system: 1044,
+    system: 4260,
     type: "HAZARDOUS",
   },
   "San-Vit": {
@@ -875,7 +875,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "San-Vit",
     position: TOP_LEFT,
     resources: 3,
-    system: 1045,
+    system: 4261,
     type: "CULTURAL",
   },
   Lodran: {
@@ -886,7 +886,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Lodran",
     position: BOTTOM_RIGHT,
     resources: 0,
-    system: 1045,
+    system: 4261,
     type: "HAZARDOUS",
   },
   Dorvok: {
@@ -897,7 +897,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Dorvok",
     position: TOP_LEFT,
     resources: 1,
-    system: 1046,
+    system: 4262,
     type: "INDUSTRIAL",
   },
   Derbrae: {
@@ -908,7 +908,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Derbrae",
     position: BOTTOM_RIGHT,
     resources: 2,
-    system: 1046,
+    system: 4262,
     type: "CULTURAL",
   },
   Rysaa: {
@@ -919,7 +919,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Rysaa",
     position: TOP_LEFT,
     resources: 1,
-    system: 1047,
+    system: 4263,
     type: "INDUSTRIAL",
   },
   Moln: {
@@ -930,7 +930,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Moln",
     position: BOTTOM_RIGHT,
     resources: 2,
-    system: 1047,
+    system: 4263,
     type: "HAZARDOUS",
   },
   Salin: {
@@ -941,7 +941,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Salin",
     position: TOP_LEFT,
     resources: 1,
-    system: 1048,
+    system: 4264,
     type: "HAZARDOUS",
   },
   Gwiyun: {
@@ -952,7 +952,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Gwiyun",
     position: BOTTOM_RIGHT,
     resources: 2,
-    system: 1048,
+    system: 4264,
     type: "HAZARDOUS",
   },
   Inan: {
@@ -963,7 +963,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Inan",
     position: TOP_LEFT,
     resources: 1,
-    system: 1049,
+    system: 4265,
     type: "INDUSTRIAL",
   },
   Swog: {
@@ -974,7 +974,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Swog",
     position: BOTTOM_RIGHT,
     resources: 1,
-    system: 1049,
+    system: 4265,
     type: "INDUSTRIAL",
   },
   Detic: {
@@ -985,7 +985,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Detic",
     position: TOP_LEFT,
     resources: 3,
-    system: 1050,
+    system: 4266,
     type: "CULTURAL",
   },
   Lliot: {
@@ -996,7 +996,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Lliot",
     position: BOTTOM_RIGHT,
     resources: 0,
-    system: 1050,
+    system: 4266,
     type: "CULTURAL",
   },
   Qaak: {
@@ -1007,7 +1007,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Qaak",
     position: TOP_RIGHT,
     resources: 1,
-    system: 1051,
+    system: 4267,
     type: "CULTURAL",
   },
   Larred: {
@@ -1018,7 +1018,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Larred",
     position: MIDDLE_LEFT,
     resources: 1,
-    system: 1051,
+    system: 4267,
     type: "INDUSTRIAL",
   },
   Nairb: {
@@ -1029,7 +1029,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Nairb",
     position: FAR_BOTTOM_RIGHT,
     resources: 1,
-    system: 1051,
+    system: 4267,
     type: "HAZARDOUS",
   },
   Sierpin: {
@@ -1040,7 +1040,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Sierpin",
     position: TOP_RIGHT,
     resources: 2,
-    system: 1052,
+    system: 4268,
     type: "CULTURAL",
   },
   Mandle: {
@@ -1051,7 +1051,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Mandle",
     position: MIDDLE_LEFT,
     resources: 1,
-    system: 1052,
+    system: 4268,
     type: "INDUSTRIAL",
   },
   Regnem: {
@@ -1062,7 +1062,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Regnem",
     position: FAR_BOTTOM_RIGHT,
     resources: 0,
-    system: 1052,
+    system: 4268,
     type: "HAZARDOUS",
   },
   Domna: {
@@ -1075,7 +1075,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Domna",
     position: MIDDLE,
     resources: 2,
-    system: 1053,
+    system: 4269,
     type: "HAZARDOUS",
   },
 };
