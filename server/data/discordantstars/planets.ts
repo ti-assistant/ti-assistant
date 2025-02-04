@@ -312,6 +312,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     attributes: [],
     expansion: "DISCORDANT STARS",
     faction: "Ghoti Wayfarers",
+    home: true,
     influence: 3,
     locked: true,
     id: "Ghoti",

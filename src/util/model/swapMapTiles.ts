@@ -52,7 +52,8 @@ export class SwapMapTilesHandler implements Handler {
 
     while (
       updatedSystemTiles.length > 0 &&
-      updatedSystemTiles[systems.length - 1] === "-1"
+      (updatedSystemTiles[updatedSystemTiles.length - 1] === "-1" ||
+        !updatedSystemTiles[updatedSystemTiles.length - 1])
     ) {
       updatedSystemTiles.pop();
     }

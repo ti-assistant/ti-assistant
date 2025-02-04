@@ -177,12 +177,16 @@ export function TacticalAction({
     }
   }
 
+  const maxPlanets = claimablePlanets.length > 50 ? 15 : 12;
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
     padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",
-    gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
+    gridTemplateRows: `repeat(${Math.min(
+      maxPlanets,
+      claimablePlanets.length
+    )}, auto)`,
     gap: rem(4),
     justifyContent: "flex-start",
     overflowX: "auto",
@@ -450,7 +454,9 @@ export function TacticalAction({
                   <button
                     key={planet.id}
                     style={{
-                      width: rem(90),
+                      width: claimablePlanets.length > 50 ? rem(72) : rem(90),
+                      fontSize:
+                        claimablePlanets.length > 50 ? rem(14) : undefined,
                     }}
                     onClick={() => {
                       closeFn();

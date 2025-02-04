@@ -8,7 +8,11 @@ type PlanetAttribute =
   | "tomb"
   | "space-cannon"
   | "all-types"
-  | "victory-point";
+  | "victory-point"
+  // Discordant Stars
+  | "extra-votes"
+  | "production"
+  | "infantry";
 
 type PlanetType = "INDUSTRIAL" | "CULTURAL" | "HAZARDOUS" | "ALL" | "NONE";
 

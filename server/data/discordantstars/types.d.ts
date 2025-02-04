@@ -1,5 +1,8 @@
 declare namespace DiscordantStars {
   type AttachmentId =
+    | "Council Preserve"
+    | "Orbital Foundries"
+    | "Arcane Citadel"
     // | "Encryption Key"
     | "Gledge Base"
     // | "Core Token"
@@ -21,7 +24,19 @@ declare namespace DiscordantStars {
     | "Blessing of the Queens"
     // | "Spark Thrusters"
     | "Gift of Insight"
-    | "Incite Revolution";
+    | "Incite Revolution"
+    // Action Cards
+    | "Free Trade Initiative"
+    | "Micrometeoroid Storm"
+    | "Neural Hammer"
+    | "Personnel Writ"
+    | "Planetary Rigs"
+    | "Preparation"
+    | "Professional Archaeologists"
+    | "Remnant Collection"
+    | "Secured Trove"
+    // Exploration Cards
+    | "Star Chart";
   type FactionId =
     | "Augurs of Ilyxum"
     | "Bentor Conglomerate"
@@ -373,4 +388,13 @@ declare namespace DiscordantStars {
     | "SEIDR Project"
     | "Shard Volley"
     | "Impactor II";
+
+  type RelicId =
+    | "Accretion Engine"
+    | "Azdel's Key"
+    | "E6-G0 Network"
+    | "Eye of Vogul"
+    | "Starfall Array"
+    | "Forgotten Throne"
+    | "Twilight Mirror";
 }

@@ -35,4 +35,5 @@ type RelicId =
   | "The Crown of Emphidia"
   | "The Crown of Thalnos"
   | "The Obsidian"
-  | "The Prophet's Tears";
+  | "The Prophet's Tears"
+  | DiscordantStars.RelicId;
