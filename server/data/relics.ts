@@ -1,4 +1,5 @@
 import { IntlShape } from "react-intl";
+import { getBaseDiscordantStarsRelics } from "./discordantstars/relics";
 
 export function getBaseRelics(intl: IntlShape): Record<RelicId, BaseRelic> {
   return {
@@ -222,5 +223,6 @@ export function getBaseRelics(intl: IntlShape): Record<RelicId, BaseRelic> {
       }),
       timing: "PASSIVE",
     },
+    ...getBaseDiscordantStarsRelics(intl),
   };
 }

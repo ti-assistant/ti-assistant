@@ -107,15 +107,16 @@ function ComponentSelect({
   factionId: FactionId;
 }) {
   const factions = useFactions();
+  const options = useOptions();
   const leaders = useLeaders();
 
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
       (component) => component.type !== "TECH"
     ) as (BaseComponent & GameComponent)[];
-  const actionCards = nonTechComponents.filter(
-    (component) => component.type === "CARD"
-  );
+  const actionCards = nonTechComponents
+    .filter((component) => component.type === "CARD")
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
   const techs = components.filter((component) => component.type === "TECH");
   const leaderComponents = nonTechComponents
     .filter((component) => component.type === "LEADER")
@@ -201,12 +202,25 @@ function ComponentSelect({
           />
         }
       >
-        <div className="flexRow" style={innerStyle}>
+        <div
+          className="flexRow"
+          style={{
+            ...innerStyle,
+            fontSize: options.expansions.includes("DISCORDANT STARS")
+              ? rem(12)
+              : undefined,
+          }}
+        >
           {actionCards.map((component) => {
             return (
               <button
                 key={component.id}
-                style={{ writingMode: "horizontal-tb" }}
+                style={{
+                  writingMode: "horizontal-tb",
+                  fontSize: options.expansions.includes("DISCORDANT STARS")
+                    ? rem(14)
+                    : undefined,
+                }}
                 className={
                   component.state === "exhausted" || component.state === "used"
                     ? "faded"
@@ -572,6 +586,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     componentName = getSelectedSubComponent(currentTurn);
   }
 
+  let requiredNeighbors = 2;
   switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {
@@ -873,9 +888,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     case "Hesh and Prit":
     case "Fabrication": {
       const gainedRelic = getGainedRelic(currentTurn);
-      const unownedRelics = Object.values(relics).filter(
-        (relic) => !relic.owner || gainedRelic === relic.id
-      );
+      const unownedRelics = Object.values(relics)
+        .filter((relic) => !relic.owner || gainedRelic === relic.id)
+        .sort((a, b) => (a.name > b.name ? 1 : -1));
       if (gainedRelic) {
         leftLabel = (
           <FormattedMessage
@@ -1439,7 +1454,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
-    case "Dark Energy Tap": {
+    case "Dark Energy Tap":
+      requiredNeighbors = 1;
+    case "Star Chart":
+    case "Azdel's Key": {
       const mapString = getMapString(options, Object.keys(factions).length);
       if (!mapString) {
         break;
@@ -1447,11 +1465,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       const mapOrderedFactions = Object.values(factions).sort(
         (a, b) => a.mapPosition - b.mapPosition
       );
-      let updatedMapString = updateMapString(
-        mapString,
-        options["map-style"],
-        mapOrderedFactions.length
-      );
+      let updatedMapString =
+        mapString === ""
+          ? updateMapString(
+              mapString,
+              options["map-style"],
+              mapOrderedFactions.length
+            )
+          : mapString;
       let updatedSystemTiles = updatedMapString.split(" ");
       updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
         const updatedTile = updatedSystemTiles[index];
@@ -1479,7 +1500,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         }
       }
       if (options.expansions.includes("DISCORDANT STARS")) {
-        for (let i = 1037; i < 1061; i++) {
+        for (let i = 4253; i < 4270; i++) {
           tileNumbers.push(i.toString());
         }
       }
@@ -1507,6 +1528,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 dropOnly
                 exploration
                 mallice={undefined}
+                requiredNeighbors={requiredNeighbors}
               ></MapBuilder>
             </div>
             <LabeledDiv
@@ -1551,6 +1573,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           </DndProvider>
         </div>
       );
+      break;
     }
   }
   if (!innerContent) {

@@ -121,11 +121,13 @@ export function SystemImage({
   systemNumber,
   onDrop,
   blockDrag,
+  hideSystemNumbers = false,
 }: {
   index: number;
   systemNumber: Optional<string>;
   onDrop?: (dragItem: any, dropItem: any) => void;
   blockDrag?: boolean;
+  hideSystemNumbers?: boolean;
 }) {
   const [{ isDragging }, drag] = useDrag(() => {
     return {
@@ -281,18 +283,20 @@ export function SystemImage({
           style={{ objectFit: "contain" }}
           priority
         />
-        <div
-          className="flexRow"
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            fontSize: rem(28),
-            textShadow: "0 0 4px black, 0 0 4px black",
-          }}
-        >
-          {systemNumber}
-        </div>
+        {hideSystemNumbers ? null : (
+          <div
+            className="flexRow"
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              fontSize: rem(28),
+              textShadow: "0 0 4px black, 0 0 4px black",
+            }}
+          >
+            {systemNumber}
+          </div>
+        )}
         {isOver ? (
           <div
             style={{
@@ -343,19 +347,21 @@ export function SystemImage({
         style={{ objectFit: "contain" }}
         priority={systemNumber === "18"}
       />
-      <div
-        className="flexRow"
-        style={{
-          width: "100%",
-          height: "60%",
-          top: 0,
-          position: "absolute",
-          fontSize: rem(18),
-          textShadow: "0 0 4px black, 0 0 4px black",
-        }}
-      >
-        {systemNumber}
-      </div>
+      {hideSystemNumbers ? null : (
+        <div
+          className="flexRow"
+          style={{
+            width: "100%",
+            height: "60%",
+            top: 0,
+            position: "absolute",
+            fontSize: rem(18),
+            textShadow: "0 0 4px black, 0 0 4px black",
+          }}
+        >
+          {systemNumber}
+        </div>
+      )}
       {isOver ? (
         <div
           style={{
@@ -380,6 +386,7 @@ interface MapProps {
   dropOnly?: boolean;
   exploration?: boolean;
   riftWalker?: boolean;
+  requiredNeighbors?: number;
 }
 
 export default function MapBuilder({
@@ -389,17 +396,16 @@ export default function MapBuilder({
   dropOnly,
   exploration,
   riftWalker,
+  requiredNeighbors = 0,
 }: MapProps) {
   let updatedSystemTiles = mapString.split(" ");
-  updatedSystemTiles = updatedSystemTiles
-    .map((tile, index) => {
-      const updatedTile = updatedSystemTiles[index];
-      if (tile === "0" && updatedTile && updatedTile !== "0") {
-        return updatedTile;
-      }
-      return tile;
-    })
-    .filter((tile) => tile !== "");
+  updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
+    const updatedTile = updatedSystemTiles[index];
+    if (tile === "0" && updatedTile && updatedTile !== "0") {
+      return updatedTile;
+    }
+    return tile;
+  });
 
   const numTiles = updatedSystemTiles.length;
   let numRings = Math.ceil((3 + Math.sqrt(9 - 12 * (1 - numTiles))) / 6);
@@ -437,7 +443,7 @@ export default function MapBuilder({
             if (tile !== "-1") {
               canDrop = false;
             }
-            let hasSystemNeighbor = false;
+            let neighborSystems = 0;
             for (const direction of CUBE_DIRECTIONS) {
               const neighbor = cube_neighbor(cube, direction);
               spiral.forEach((cube, index) => {
@@ -449,12 +455,12 @@ export default function MapBuilder({
                     !neighborTile.includes("A") &&
                     !neighborTile.includes("B")
                   ) {
-                    hasSystemNeighbor = true;
+                    neighborSystems++;
                   }
                 }
               });
             }
-            if (!hasSystemNeighbor) {
+            if (neighborSystems < requiredNeighbors) {
               canDrop = false;
             }
           }
@@ -481,6 +487,7 @@ export default function MapBuilder({
                       }
                 }
                 blockDrag={!canDrag}
+                hideSystemNumbers={exploration}
               />
             </div>
           );
