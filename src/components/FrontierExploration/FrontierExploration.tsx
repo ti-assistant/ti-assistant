@@ -72,13 +72,17 @@ export default function FrontierExploration({
       )
       .map((attachment) => attachment.id);
     return (
-      <div className="flexRow" style={{ width: "100%" }}>
+      <div
+        className="flexRow"
+        style={{ width: "100%", justifyContent: "space-between" }}
+      >
         <PlanetRow
           factionId={factionId}
           planet={adjustedPlanet}
           removePlanet={() => {
             unclaimPlanetAsync(gameId, factionId, "Mirage");
           }}
+          opts={{ hideAttachButton: true }}
         />
         {availableAttachments.length > 0 ? (
           <div className="flexRow" style={{ justifyContent: "center" }}>

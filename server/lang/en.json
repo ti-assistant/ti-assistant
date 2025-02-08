@@ -983,6 +983,10 @@
     "defaultMessage": "Strike Wing Alpha I",
     "description": "Title of Faction Unit: Strike Wing Alpha I"
   },
+  "Attachments.Arcane Citadel.Title": {
+    "defaultMessage": "Arcane Citadel",
+    "description": "Title for Attachment: Arcane Citadel"
+  },
   "Attachments.Biotic Research Facility.Title": {
     "defaultMessage": "Biotic Research Facility",
     "description": "Title of Attachment: Biotic Research Facility"
@@ -1006,6 +1010,10 @@
   "Attachments.Core Mining.Title": {
     "defaultMessage": "Core Mining",
     "description": "Title of Attachment: Core Mining"
+  },
+  "Attachments.Council Preserve.Title": {
+    "defaultMessage": "Council Preserve",
+    "description": "Title for Attachment: Council Preserve"
   },
   "Attachments.Cybernetic Research Facility.Title": {
     "defaultMessage": "Cybernetic Research Facility",
@@ -1038,6 +1046,10 @@
   "Attachments.Nano-Forge.Title": {
     "defaultMessage": "Nano-Forge",
     "description": "Title of Attachment: Nano-Forge"
+  },
+  "Attachments.Orbital Foundries.Title": {
+    "defaultMessage": "Orbital Foundries",
+    "description": "Title for Attachment: Orbital Foundries"
   },
   "Attachments.Paradise World.Title": {
     "defaultMessage": "Paradise World",
@@ -4239,6 +4251,22 @@
     "defaultMessage": "Revealed stage I objectives",
     "description": "A label for the stage I objectives that have been revealed"
   },
+  "Relics.Accretion Engine.Description": {
+    "defaultMessage": "Apply +1 to the PRODUCTION value of each of your units with PRODUCTION. When you produce 1 or more units, reduce the combined cost of the produced units by 1.",
+    "description": "Description for Relic: Accretion Engine"
+  },
+  "Relics.Accretion Engine.Title": {
+    "defaultMessage": "Accretion Engine",
+    "description": "Title of Relic: Accretion Engine"
+  },
+  "Relics.Azdel's Key.Description": {
+    "defaultMessage": "ACTION: Purge this card to draw 3 system tiles with a blue-colored back at random; place 1 of those tiles at the edge of the game board, adjacent to at least 2 other systems. Purge the rest.",
+    "description": "Description for Relic: Azdel's Key"
+  },
+  "Relics.Azdel's Key.Title": {
+    "defaultMessage": "Azdel's Key",
+    "description": "Title of Relic: Azdel's Key"
+  },
   "Relics.Dominus Orb.Description": {
     "defaultMessage": "Before you move units during a tactical action, you may purge this card to move and transport units that are in systems that contain 1 of your command tokens.",
     "description": "Description for Relic: Dominus Orb"
@@ -4254,6 +4282,30 @@
   "Relics.Dynamis Core.Title": {
     "defaultMessage": "Dynamis Core",
     "description": "Title of Relic: Dynamis Core"
+  },
+  "Relics.E6-G0 Network.Description": {
+    "defaultMessage": "You may have 2 additional action cards in your hand, game effects cannot prevent you from using this ability.{br}At any time, you may exhaust this card to draw 1 action card.",
+    "description": "Description for Relic: E6-G0 Network"
+  },
+  "Relics.E6-G0 Network.Title": {
+    "defaultMessage": "E6-G0 Network",
+    "description": "Title of Relic: E6-G0 Network"
+  },
+  "Relics.Eye of Vogul.Description": {
+    "defaultMessage": "After you activate a system:{br}Purge this card to treat 2 of your ships as adjacent to the active system until the end of this tactical action.",
+    "description": "Description for Relic: Eye of Vogul"
+  },
+  "Relics.Eye of Vogul.Title": {
+    "defaultMessage": "Eye of Vogul",
+    "description": "Title of Relic: Eye of Vogul"
+  },
+  "Relics.Forgotten Throne.Description": {
+    "defaultMessage": "ACTION: Purge this card to either gain 1 relic or immediately score 1 scored secret objective, or 1 of your unscored secret objectives, if you fulfill its requirements.",
+    "description": "Description for Relic: Forgotten Throne"
+  },
+  "Relics.Forgotten Throne.Title": {
+    "defaultMessage": "Forgotten Throne",
+    "description": "Title of Relic: Forgotten Throne"
   },
   "Relics.JR-XS455-O.Description": {
     "defaultMessage": "ACTION: Exhaust this agent and choose a player; that player may spend 3 resources to place a structure on a planet they control. If they do not, they gain 1 trade good.",
@@ -4294,6 +4346,14 @@
   "Relics.Shard of the Throne.Title": {
     "defaultMessage": "Shard of the Throne",
     "description": "Title of Relic: Shard of the Throne"
+  },
+  "Relics.Starfall Array.Description": {
+    "defaultMessage": "When 1 or more of your units roll dice for a unit ability, you may apply +1 to the result of each of those dice, and 1 of those units may roll 1 additional die.",
+    "description": "Description for Relic: Starfall Array"
+  },
+  "Relics.Starfall Array.Title": {
+    "defaultMessage": "Starfall Array",
+    "description": "Title of Relic: Starfall Array"
   },
   "Relics.Stellar Converter.Description": {
     "defaultMessage": "ACTION: Choose 1 non-home, non-legendary planet other than Mecatol Rex in a system that is adjacent to 1 or more of your units that have BOMBARDMENT; destroy all units on that planet and purge its attachments and its planet card. Then, place the destroyed planet token on that planet and purge this card.",
@@ -4342,6 +4402,14 @@
   "Relics.The Prophet's Tears.Title": {
     "defaultMessage": "The Prophet's Tears",
     "description": "Title of Relic: The Prophet's Tears"
+  },
+  "Relics.Twilight Mirror.Description": {
+    "defaultMessage": "At the start of the agenda phase, you may purge this card to resolve 1 non-strategic action.",
+    "description": "Description for Relic: Twilight Mirror"
+  },
+  "Relics.Twilight Mirror.Title": {
+    "defaultMessage": "Twilight Mirror",
+    "description": "Title of Relic: Twilight Mirror"
   },
   "Riders.Construction Rider.Title": {
     "defaultMessage": "Construction Rider",
@@ -5842,6 +5910,10 @@
   "fW7Ivs": {
     "defaultMessage": "Average scored secrets: {number}",
     "description": "Statistic for the average number of scored secrets."
+  },
+  "fpD/Z6": {
+    "defaultMessage": "Choose Planet",
+    "description": "Text on a menu allowing a player to select a planet."
   },
   "frzrrT": {
     "defaultMessage": "UNLOCK:",

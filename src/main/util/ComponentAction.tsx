@@ -72,6 +72,7 @@ import { getMapString } from "../../util/options";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { pluralize, rem } from "../../util/util";
+import PlanetaryRigs from "./PlanetaryRigs";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -1353,6 +1354,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           />
         );
       }
+      break;
+    }
+    case "Planetary Rigs": {
+      leftLabel = undefined;
+      innerContent = <PlanetaryRigs factionId={factionId} />;
       break;
     }
 

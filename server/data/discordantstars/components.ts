@@ -163,7 +163,7 @@ export const DISCORDANT_STARS_COMPONENTS: Record<
   },
   "Planetary Rigs": {
     description:
-      "Choose 1 non-home planet you control other than Mecatol Rex. Reveal cards from that planet’s corresponding exploration deck until you reveal an attachment; attach that attachment to that planet and discard the rest.",
+      "Choose 1 non-home planet you control other than Mecatol Rex. Reveal cards from that planet's corresponding exploration deck until you reveal an attachment; attach that attachment to that planet and discard the rest.",
     expansion: "DISCORDANT STARS",
     id: "Planetary Rigs",
     name: "Planetary Rigs",
