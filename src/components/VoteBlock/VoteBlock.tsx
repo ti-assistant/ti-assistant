@@ -78,6 +78,21 @@ function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
   return factionVotes.target === empyreanVotes.target;
 }
 
+function hasCouncilPreserve(
+  factionId: FactionId,
+  planets: Partial<Record<PlanetId, Planet>>
+) {
+  for (const planet of Object.values(planets)) {
+    if (
+      planet.owner === factionId &&
+      planet.attachments?.includes("Council Preserve")
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function getTargets(
   agenda: Optional<Agenda>,
   factions: Partial<Record<FactionId, Faction>>,
@@ -431,6 +446,10 @@ export function computeRemainingVotes(
   const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
   if (hasPredictiveIntelligence) {
     extraVotes += 3;
+  }
+  const councilPreserve = hasCouncilPreserve(factionId, planets);
+  if (councilPreserve) {
+    extraVotes += 5;
   }
 
   return {
@@ -829,6 +848,11 @@ function VotingSection({
     currentTurn,
     "Distinguished Councilor"
   )[0] as Optional<FactionId>;
+  // Technically not an action card, but easiest to use as this.
+  const councilPreservePlayer = getActionCardTargets(
+    currentTurn,
+    "Council Preserve"
+  )[0] as Optional<FactionId>;
   const bloodPactUser = getPromissoryTargets(
     currentTurn,
     "Blood Pact"
@@ -837,6 +861,9 @@ function VotingSection({
     castExtraVotes += 4;
   }
   if (factionId === currentCouncilor) {
+    castExtraVotes += 5;
+  }
+  if (factionId === councilPreservePlayer) {
     castExtraVotes += 5;
   }
   if (usingPredictive.includes(factionId)) {
@@ -955,35 +982,64 @@ function VotingSection({
                 />
               </button>
             ) : null}
-            <button
-              disabled={currentCouncilor && currentCouncilor !== factionId}
-              className={currentCouncilor === factionId ? "selected" : ""}
-              style={{ fontSize: rem(14) }}
-              onClick={() => {
-                if (!gameId) {
-                  return;
-                }
-                if (currentCouncilor === factionId) {
-                  unplayActionCardAsync(
-                    gameId,
-                    "Distinguished Councilor",
-                    factionId
-                  );
-                } else {
-                  playActionCardAsync(
-                    gameId,
-                    "Distinguished Councilor",
-                    factionId
-                  );
-                }
-              }}
-            >
-              <FormattedMessage
-                id="Components.Distinguished Councilor.Title"
-                description="Title of Component: Distinguished Councilor"
-                defaultMessage="Distinguished Councilor"
-              />
-            </button>
+            {hasCouncilPreserve(factionId, planets) ? (
+              <span style={{ fontFamily: "Myriad Pro" }}>
+                <Toggle
+                  selected={councilPreservePlayer === factionId}
+                  toggleFn={() => {
+                    if (councilPreservePlayer === factionId) {
+                      unplayActionCardAsync(
+                        gameId,
+                        "Council Preserve",
+                        factionId
+                      );
+                    } else {
+                      playActionCardAsync(
+                        gameId,
+                        "Council Preserve",
+                        factionId
+                      );
+                    }
+                  }}
+                >
+                  <FormattedMessage
+                    id="Attachments.Council Preserve.Title"
+                    description="Title for Attachment: Council Preserve"
+                    defaultMessage="Council Preserve"
+                  />
+                </Toggle>
+              </span>
+            ) : null}
+            <span style={{ fontSize: rem(14), fontFamily: "Myriad Pro" }}>
+              <Toggle
+                disabled={currentCouncilor && currentCouncilor !== factionId}
+                selected={currentCouncilor === factionId}
+                toggleFn={(prevValue) => {
+                  if (!gameId) {
+                    return;
+                  }
+                  if (currentCouncilor === factionId) {
+                    unplayActionCardAsync(
+                      gameId,
+                      "Distinguished Councilor",
+                      factionId
+                    );
+                  } else {
+                    playActionCardAsync(
+                      gameId,
+                      "Distinguished Councilor",
+                      factionId
+                    );
+                  }
+                }}
+              >
+                <FormattedMessage
+                  id="Components.Distinguished Councilor.Title"
+                  description="Title of Component: Distinguished Councilor"
+                  defaultMessage="Distinguished Councilor"
+                />
+              </Toggle>
+            </span>
             {hasVotableTarget ? (
               <div
                 className="flexRow"

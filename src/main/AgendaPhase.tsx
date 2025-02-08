@@ -87,6 +87,10 @@ export function computeVotes(
     currentTurn,
     "Distinguished Councilor"
   )[0] as Optional<FactionId>;
+  const councilPreservePlayer = getActionCardTargets(
+    currentTurn,
+    "Council Preserve"
+  )[0] as Optional<FactionId>;
   const bloodPactUsed =
     getPromissoryTargets(currentTurn, "Blood Pact").length > 0;
   const usingPredictive = getActionCardTargets(
@@ -109,6 +113,9 @@ export function computeVotes(
         votes += 4;
       }
       if (voteEvent.faction === currentCouncilor) {
+        votes += 5;
+      }
+      if (voteEvent.faction === councilPreservePlayer) {
         votes += 5;
       }
       if (usingPredictive.includes(voteEvent.faction)) {
@@ -456,8 +463,9 @@ function AgendaDetails() {
       break;
     }
     case "Minister of Antiques": {
+      const gainedRelic = getGainedRelic(currentTurn);
       const unownedRelics = Object.values(relics ?? {}).filter(
-        (relic) => !relic.owner
+        (relic) => !relic.owner || relic.id === gainedRelic
       );
       agendaSelection = (
         <Selector
@@ -503,7 +511,7 @@ function AgendaDetails() {
               </LabeledDiv>
             );
           }}
-          selectedItem={getGainedRelic(currentTurn)}
+          selectedItem={gainedRelic}
           toggleItem={(relicId, add) => {
             if (add) {
               addRelic(relicId, selectedOutcome as FactionId);

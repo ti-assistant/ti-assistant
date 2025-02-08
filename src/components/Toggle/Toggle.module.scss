@@ -26,7 +26,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   font-weight: bold;
   width: 0.85rem;
   height: 0.85rem;
@@ -37,6 +36,14 @@
 .ToggleContainer:hover {
   background-color: var(--hovered-bg);
   border: var(--border-size) solid var(--neutral-border);
+}
+
+.ToggleContainer.disabled,
+.ToggleContainer.disabled:hover {
+  background-color: var(--disabled-bg);
+  border: var(--border-size) solid var(--disabled-border);
+  color: var(--interactive-bg);
+  cursor: default;
 }
 
 .ToggleContainer > input[type="checkbox"]:not(:checked)::before {
@@ -52,6 +59,10 @@
   color: var(--background-color);
 }
 
-.ToggleContainer > * {
+.ToggleContainer * {
   cursor: pointer;
+}
+
+.ToggleContainer.disabled * {
+  cursor: default;
 }

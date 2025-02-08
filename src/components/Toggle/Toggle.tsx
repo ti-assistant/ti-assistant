@@ -27,6 +27,7 @@ function getToggleStyle(selected: boolean): ToggleCSSProperties {
 }
 
 interface ToggleProps {
+  disabled?: boolean;
   selected: boolean;
   toggleFn: (prevValue: boolean) => void;
 }
@@ -35,14 +36,19 @@ export default function Toggle({
   selected,
   toggleFn,
   children,
+  disabled,
 }: PropsWithChildren<ToggleProps>) {
   let toggleStyle = getToggleStyle(selected);
   return (
-    <label className={styles.ToggleContainer} style={toggleStyle}>
+    <label
+      className={`${styles.ToggleContainer} ${disabled ? styles.disabled : ""}`}
+      style={toggleStyle}
+    >
       <input
         type="checkbox"
         onChange={() => toggleFn(selected)}
         checked={selected}
+        disabled={disabled}
       ></input>
       {children}
     </label>
