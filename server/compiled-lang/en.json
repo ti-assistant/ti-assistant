@@ -2255,6 +2255,12 @@
       "value": "Strike Wing Alpha I"
     }
   ],
+  "Attachments.Arcane Citadel.Title": [
+    {
+      "type": 0,
+      "value": "Arcane Citadel"
+    }
+  ],
   "Attachments.Biotic Research Facility.Title": [
     {
       "type": 0,
@@ -2289,6 +2295,12 @@
     {
       "type": 0,
       "value": "Core Mining"
+    }
+  ],
+  "Attachments.Council Preserve.Title": [
+    {
+      "type": 0,
+      "value": "Council Preserve"
     }
   ],
   "Attachments.Cybernetic Research Facility.Title": [
@@ -2337,6 +2349,12 @@
     {
       "type": 0,
       "value": "Nano-Forge"
+    }
+  ],
+  "Attachments.Orbital Foundries.Title": [
+    {
+      "type": 0,
+      "value": "Orbital Foundries"
     }
   ],
   "Attachments.Paradise World.Title": [
@@ -8349,6 +8367,30 @@
       "value": "Revealed stage I objectives"
     }
   ],
+  "Relics.Accretion Engine.Description": [
+    {
+      "type": 0,
+      "value": "Apply +1 to the PRODUCTION value of each of your units with PRODUCTION. When you produce 1 or more units, reduce the combined cost of the produced units by 1."
+    }
+  ],
+  "Relics.Accretion Engine.Title": [
+    {
+      "type": 0,
+      "value": "Accretion Engine"
+    }
+  ],
+  "Relics.Azdel's Key.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Purge this card to draw 3 system tiles with a blue-colored back at random; place 1 of those tiles at the edge of the game board, adjacent to at least 2 other systems. Purge the rest."
+    }
+  ],
+  "Relics.Azdel's Key.Title": [
+    {
+      "type": 0,
+      "value": "Azdel's Key"
+    }
+  ],
   "Relics.Dominus Orb.Description": [
     {
       "type": 0,
@@ -8379,6 +8421,58 @@
     {
       "type": 0,
       "value": "Dynamis Core"
+    }
+  ],
+  "Relics.E6-G0 Network.Description": [
+    {
+      "type": 0,
+      "value": "You may have 2 additional action cards in your hand, game effects cannot prevent you from using this ability."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "At any time, you may exhaust this card to draw 1 action card."
+    }
+  ],
+  "Relics.E6-G0 Network.Title": [
+    {
+      "type": 0,
+      "value": "E6-G0 Network"
+    }
+  ],
+  "Relics.Eye of Vogul.Description": [
+    {
+      "type": 0,
+      "value": "After you activate a system:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Purge this card to treat 2 of your ships as adjacent to the active system until the end of this tactical action."
+    }
+  ],
+  "Relics.Eye of Vogul.Title": [
+    {
+      "type": 0,
+      "value": "Eye of Vogul"
+    }
+  ],
+  "Relics.Forgotten Throne.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Purge this card to either gain 1 relic or immediately score 1 scored secret objective, or 1 of your unscored secret objectives, if you fulfill its requirements."
+    }
+  ],
+  "Relics.Forgotten Throne.Title": [
+    {
+      "type": 0,
+      "value": "Forgotten Throne"
     }
   ],
   "Relics.JR-XS455-O.Description": [
@@ -8447,6 +8541,18 @@
     {
       "type": 0,
       "value": "Shard of the Throne"
+    }
+  ],
+  "Relics.Starfall Array.Description": [
+    {
+      "type": 0,
+      "value": "When 1 or more of your units roll dice for a unit ability, you may apply +1 to the result of each of those dice, and 1 of those units may roll 1 additional die."
+    }
+  ],
+  "Relics.Starfall Array.Title": [
+    {
+      "type": 0,
+      "value": "Starfall Array"
     }
   ],
   "Relics.Stellar Converter.Description": [
@@ -8527,6 +8633,18 @@
     {
       "type": 0,
       "value": "The Prophet's Tears"
+    }
+  ],
+  "Relics.Twilight Mirror.Description": [
+    {
+      "type": 0,
+      "value": "At the start of the agenda phase, you may purge this card to resolve 1 non-strategic action."
+    }
+  ],
+  "Relics.Twilight Mirror.Title": [
+    {
+      "type": 0,
+      "value": "Twilight Mirror"
     }
   ],
   "Riders.Construction Rider.Title": [
@@ -11345,6 +11463,12 @@
     {
       "type": 1,
       "value": "number"
+    }
+  ],
+  "fpD/Z6": [
+    {
+      "type": 0,
+      "value": "Choose Planet"
     }
   ],
   "frzrrT": [
