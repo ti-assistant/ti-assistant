@@ -17,14 +17,14 @@ export class SelectEligibleOutcomesHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (entry.data.action === "SELECT_ELIGIBLE_OUTCOMES") {
       if (this.data.event.outcomes === "None") {
         return "REWIND_AND_DELETE";

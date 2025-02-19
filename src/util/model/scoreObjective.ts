@@ -82,14 +82,14 @@ export class ScoreObjectiveHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "UNSCORE_OBJECTIVE" &&
       entry.data.event.faction === this.data.event.faction &&
@@ -181,14 +181,14 @@ export class UnscoreObjectiveHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "SCORE_OBJECTIVE" &&
       entry.data.event.faction === this.data.event.faction &&

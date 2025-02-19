@@ -17,14 +17,14 @@ export class SpeakerTieBreakHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (entry.data.action === "SPEAKER_TIE_BREAK") {
       if (this.data.event.tieBreak === "None") {
         return "DELETE";

@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.OtherFactionsLabel:only-child {
+  display: none;
+}
+
 @media only screen and (max-width: 37.5rem) {
   .TacticalAction {
     justify-content: flex-start;

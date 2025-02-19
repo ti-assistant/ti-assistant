@@ -150,14 +150,14 @@ export class AdvancePhaseHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(_: ActionLogEntry): ActionLogAction {
+  getActionLogAction(_: ActionLogEntry<GameUpdateData>): ActionLogAction {
     // Should never be possible to put a
     return "IGNORE";
   }
@@ -184,14 +184,14 @@ export class RewindPhaseHandler implements Handler {
     };
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (entry.data.action === "ADVANCE_PHASE") {
       return "DELETE";
     }

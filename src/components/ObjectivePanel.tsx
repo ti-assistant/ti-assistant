@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { CSSProperties, PropsWithChildren, useState } from "react";
+import React, { CSSProperties, PropsWithChildren } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
   useActionLog,
@@ -10,7 +10,6 @@ import {
 } from "../context/dataHooks";
 import { useSharedModal } from "../data/SharedModal";
 import {
-  changeOptionAsync,
   hideObjectiveAsync,
   manualVPUpdateAsync,
   revealObjectiveAsync,
@@ -18,7 +17,9 @@ import {
   setObjectivePointsAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
+import { getLogEntries } from "../util/actionLog";
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
+import { useSharedSettings } from "../util/cookies";
 import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
 import { objectiveTypeString } from "../util/strings";
 import { Optional } from "../util/types/types";
@@ -32,7 +33,6 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
-import { useSharedSettings } from "../util/cookies";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -344,15 +344,14 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
 
   const revealOrder: Partial<Record<ObjectiveId, number>> = {};
   let order = 1;
-  [...(actionLog ?? [])]
-    .reverse()
-    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
-    .forEach((logEntry) => {
-      const objectiveId = (logEntry.data as RevealObjectiveData).event
-        .objective;
-      revealOrder[objectiveId] = order;
-      ++order;
-    });
+  getLogEntries<RevealObjectiveData>(
+    [...actionLog].reverse(),
+    "REVEAL_OBJECTIVE"
+  ).forEach((logEntry) => {
+    const objectiveId = logEntry.data.event.objective;
+    revealOrder[objectiveId] = order;
+    ++order;
+  });
 
   const sortedObjectives = Object.values(objectives ?? {});
 

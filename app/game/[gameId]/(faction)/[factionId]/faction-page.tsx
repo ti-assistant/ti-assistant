@@ -31,6 +31,7 @@ import {
   useActionLog,
   useAgendas,
   useAttachments,
+  useCurrentTurn,
   useFactions,
   useGameId,
   useGameState,
@@ -80,6 +81,7 @@ import {
 import {
   getActiveAgenda,
   getFactionVotes,
+  getLogEntries,
   getPlayedRelic,
   getScoredObjectives,
   getSelectedEligibleOutcomes,
@@ -275,7 +277,6 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     });
   const isTie = selectedTargets.length !== 1;
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
-  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
 
   let { influence, extraVotes } = computeRemainingVotes(
     factionId,
@@ -355,11 +356,10 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   let phaseContent = null;
   switch (state?.phase) {
     case "SETUP": {
-      const revealedObjectiveIds = currentTurn
-        .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
-        .map(
-          (logEntry) => (logEntry.data as RevealObjectiveData).event.objective
-        );
+      const revealedObjectiveIds = getLogEntries<RevealObjectiveData>(
+        currentTurn,
+        "REVEAL_OBJECTIVE"
+      ).map((logEntry) => logEntry.data.event.objective);
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           return (
@@ -717,11 +717,10 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
           return objective.type === type && !objective.selected;
         }
       );
-      const revealedObjective = currentTurn
-        .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
-        .map(
-          (logEntry) => (logEntry.data as RevealObjectiveData).event.objective
-        )[0];
+      const revealedObjective = getLogEntries<RevealObjectiveData>(
+        currentTurn,
+        "REVEAL_OBJECTIVE"
+      ).map((logEntry) => logEntry.data.event.objective)[0];
       const revealedObjectiveObj = revealedObjective
         ? objectives[revealedObjective]
         : undefined;
@@ -1663,20 +1662,18 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
 
 export default function FactionPage({ factionId }: { factionId: FactionId }) {
   const router = useRouter();
-  const actionLog = useActionLog();
+  const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
-  const options = useOptions();
-  const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
 
   const intl = useIntl();
 
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const revealedObjectives = currentTurn
-    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
-    .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
+  const revealedObjectives = getLogEntries<RevealObjectiveData>(
+    currentTurn,
+    "REVEAL_OBJECTIVE"
+  ).map((logEntry) => logEntry.data.event.objective);
 
   useEffect(() => {
     if (!!gameId) {
@@ -1690,11 +1687,6 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
     if (Object.keys(factions).length > 0) {
       router.push(`/game/${gameId}`);
     }
-    return null;
-  }
-
-  function swapToFaction(newFaction: FactionId) {
-    router.push(`/game/${gameId}/${newFaction}`);
     return null;
   }
 
@@ -1881,9 +1873,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
         return (
           <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <LockedButtons
-              unlocked={statusPhaseComplete(
-                getCurrentTurnLogEntries(actionLog)
-              )}
+              unlocked={statusPhaseComplete(currentTurn)}
               buttons={buttons}
             />
           </div>

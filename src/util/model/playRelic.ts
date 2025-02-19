@@ -66,14 +66,14 @@ export class PlayRelicHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "UNPLAY_RELIC" &&
       entry.data.event.relic === this.data.event.relic
@@ -148,14 +148,14 @@ export class UnplayRelicHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "PLAY_RELIC" &&
       entry.data.event.relic === this.data.event.relic

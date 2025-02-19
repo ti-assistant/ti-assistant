@@ -19,6 +19,9 @@ import Toggle from "../../src/components/Toggle/Toggle";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
+import ObjectivesMenuSVG from "../../src/icons/ui/ObjectivesMenu";
+import PlanetMenuSVG from "../../src/icons/ui/PlanetMenu";
+import MapMenuSVG from "../../src/icons/ui/MapMenu";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -335,31 +338,16 @@ export default function ArchivePage({
                 Features
               </div>
               <div style={{ position: "relative", width: rem(24) }}>
-                <Image
-                  src={`/images/map_icon_outline.svg`}
-                  alt={`Map Icon`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
+                <MapMenuSVG />
               </div>
               <div style={{ position: "relative", width: rem(24) }}>
-                <Image
-                  src={`/images/objectives_icon_two.svg`}
-                  alt={`Objectives Icon`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
+                <ObjectivesMenuSVG />
               </div>
               <div style={{ width: rem(24), height: rem(24) }}>
                 <TechSkipIcon size={24} outline />
               </div>
               <div style={{ position: "relative", width: rem(24) }}>
-                <Image
-                  src={`/images/planet.svg`}
-                  alt={`Planet Icon`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
+                <PlanetMenuSVG />
               </div>
             </div>
           </div>

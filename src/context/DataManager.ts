@@ -12,7 +12,7 @@ import { BASE_GAME_DATA } from "../../server/data/data";
 import { getBaseData } from "../data/baseData";
 import DBConnection from "../data/DBConnection";
 import { buildCompleteGameData } from "../data/gameDataBuilder";
-import { Optional } from "../util/types/types";
+import { ActionLog, Optional } from "../util/types/types";
 
 export default class DataManager {
   private static gameId: string;
@@ -107,9 +107,9 @@ export default class DataManager {
     );
     unlistenFns.push(
       onSnapshot(actionLogQuery, (querySnapshot) => {
-        const actionLog: ActionLogEntry[] = [];
+        const actionLog: ActionLog = [];
         querySnapshot.forEach((doc) => {
-          actionLog.push(doc.data() as ActionLogEntry);
+          actionLog.push(doc.data() as ActionLogEntry<GameUpdateData>);
         });
 
         this.latestServerData.actionLog = actionLog;

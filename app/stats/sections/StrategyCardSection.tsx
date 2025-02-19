@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import { ProcessedGame } from "../processor";
 import styles from "./StrategyCardSection.module.scss";
-import { rem } from "../../../src/util/util";
+import { objectEntries, rem } from "../../../src/util/util";
 
 interface StrategyCardInfo {
   rounds: Record<
@@ -119,12 +119,9 @@ export default function StrategyCardSection({
     factionIndexes.push(i);
   }
 
-  const orderedCards = Object.entries(strategyCardInfo).sort(
+  const orderedCards = objectEntries(strategyCardInfo).sort(
     ([aCard, _], [bCard, __]) => {
-      return (
-        CARD_ORDER[aCard as StrategyCardId] -
-        CARD_ORDER[bCard as StrategyCardId]
-      );
+      return CARD_ORDER[aCard] - CARD_ORDER[bCard];
     }
   );
 

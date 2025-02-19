@@ -4,6 +4,7 @@ import { BASE_PLANETS } from "../../../server/data/planets";
 import { createIntl } from "react-intl";
 import { NextResponse } from "next/server";
 import { Optional } from "../../../src/util/types/types";
+import { objectEntries } from "../../../src/util/util";
 
 function makeid(length: number) {
   var result = "";
@@ -113,8 +114,8 @@ export async function POST(req: Request) {
       };
     }
     baseFactions[faction.id] = localFaction;
-    Object.entries(faction.planets).forEach(([name, planet]) => {
-      basePlanets[name as PlanetId] = {
+    objectEntries(faction.planets).forEach(([name, planet]) => {
+      basePlanets[name] = {
         ...planet,
         owner: baseFaction.id,
       };

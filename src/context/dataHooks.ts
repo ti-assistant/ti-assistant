@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BASE_OPTIONS } from "../../server/data/options";
-import { Optional } from "../util/types/types";
+import { ActionLog, Optional } from "../util/types/types";
 import DataManager from "./DataManager";
+import stableHash from "stable-hash";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import { getLogEntries } from "../util/actionLog";
 
 export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   const [value, setValue] = useState<Type>(
@@ -11,6 +14,31 @@ export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   useEffect(() => {
     return DataManager.subscribe(setValue, path);
   }, [path]);
+
+  return value;
+}
+
+export function useMemoizedGameDataValue<BaseType, Type>(
+  path: string,
+  defaultValue: Type,
+  fn: (value: BaseType) => Type
+) {
+  const initialValue = DataManager.getValue<BaseType>(path);
+  const baseVal = initialValue ? fn(initialValue) : defaultValue;
+  const [value, setValue] = useState<Type>(baseVal);
+
+  useEffect(() => {
+    return DataManager.subscribe((newVal) => {
+      if (!newVal) {
+        return;
+      }
+      const newValue = fn(newVal);
+      if (stableHash(value) === stableHash(newValue)) {
+        return;
+      }
+      setValue(newValue);
+    }, path);
+  }, [path, fn]);
 
   return value;
 }
@@ -35,7 +63,31 @@ export function useGameId() {
 }
 
 export function useActionLog() {
-  return useGameDataValue<ActionLogEntry[]>("actionLog", []);
+  return useGameDataValue<ActionLog>("actionLog", []);
+}
+export function useCurrentTurn() {
+  return useMemoizedGameDataValue<ActionLog, ActionLog>(
+    "actionLog",
+    [],
+    (log) => getCurrentTurnLogEntries(log)
+  );
+}
+export function useLogEntries<DataType extends GameUpdateData>(
+  type: DataType["action"],
+  filters?: (type: ActionLogEntry<DataType>) => boolean
+) {
+  return useMemoizedGameDataValue<ActionLog, ActionLogEntry<DataType>[]>(
+    "actionLog",
+    [],
+    (log) => {
+      const currentTurn = getCurrentTurnLogEntries(log);
+      const entries = getLogEntries<DataType>(currentTurn, type);
+      if (filters) {
+        return entries.filter(filters);
+      }
+      return entries;
+    }
+  );
 }
 
 type Agendas = Partial<Record<AgendaId, Agenda>>;
@@ -97,6 +149,9 @@ export function useAllPlanets() {
 type Relics = Partial<Record<RelicId, Relic>>;
 export function useRelics() {
   return useGameDataValue<Relics>("relics", {});
+}
+export function useRelic(relicId: RelicId) {
+  return useGameDataValue<Optional<Relic>>(`relics.${relicId}`, undefined);
 }
 
 export function useGameState() {

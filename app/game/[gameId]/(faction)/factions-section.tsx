@@ -1,12 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { LockedButtons } from "../../../../src/LockedButton";
 import FactionCircle from "../../../../src/components/FactionCircle/FactionCircle";
 import {
-  useActionLog,
+  useCurrentTurn,
   useFactions,
   useGameId,
   useGameState,
@@ -20,24 +19,24 @@ import {
 } from "../../../../src/main/SetupPhase";
 import { statusPhaseComplete } from "../../../../src/main/StatusPhase";
 import { advanceToActionPhase } from "../../../../src/main/StrategyPhase";
-import { getCurrentTurnLogEntries } from "../../../../src/util/api/actionLog";
+import { getLogEntries } from "../../../../src/util/actionLog";
 import { getFactionColor } from "../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../src/util/helpers";
 import { phaseString } from "../../../../src/util/strings";
 import { rem } from "../../../../src/util/util";
 
 function NextPhaseButtons({}) {
-  const actionLog = useActionLog();
+  const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
   const state = useGameState();
 
   const intl = useIntl();
 
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const revealedObjectives = currentTurn
-    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
-    .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
+  const revealedObjectives = getLogEntries<RevealObjectiveData>(
+    currentTurn,
+    "REVEAL_OBJECTIVE"
+  ).map((logEntry) => logEntry.data.event.objective);
 
   switch (state.phase) {
     case "SETUP":
@@ -152,7 +151,7 @@ function NextPhaseButtons({}) {
       return (
         <div className="flexColumn" style={{ marginTop: rem(8) }}>
           <LockedButtons
-            unlocked={statusPhaseComplete(getCurrentTurnLogEntries(actionLog))}
+            unlocked={statusPhaseComplete(currentTurn)}
             buttons={buttons}
           />
         </div>

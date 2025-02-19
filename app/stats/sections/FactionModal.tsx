@@ -5,7 +5,7 @@ import { CollapsibleSection } from "../../../src/components/CollapsibleSection";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import { objectiveTypeString } from "../../../src/util/strings";
 import { Optional } from "../../../src/util/types/types";
-import { rem } from "../../../src/util/util";
+import { objectEntries, rem } from "../../../src/util/util";
 import styles from "./FactionModal.module.scss";
 import { FactionSummary, GameCounts, ObjectiveGameCounts } from "./types";
 
@@ -172,16 +172,15 @@ function ObjectiveTable({
   objectiveType,
   baseData,
 }: {
-  objectives: Record<string, ObjectiveGameCounts>;
+  objectives: Partial<Record<ObjectiveId, ObjectiveGameCounts>>;
   objectiveGames: number;
   objectiveType: ObjectiveType;
   baseData: BaseData;
 }) {
-  const intl = useIntl();
   const baseObjectives = baseData.objectives;
-  const orderedObjectives = Object.entries(objectives).sort((a, b) => {
-    const aType = baseObjectives[a[0] as ObjectiveId].type;
-    const bType = baseObjectives[b[0] as ObjectiveId].type;
+  const orderedObjectives = objectEntries(objectives).sort((a, b) => {
+    const aType = baseObjectives[a[0]].type;
+    const bType = baseObjectives[b[0]].type;
     const aGames =
       aType === "STAGE ONE" || aType === "STAGE TWO"
         ? a[1].games
@@ -198,7 +197,7 @@ function ObjectiveTable({
     return bRatio - aRatio;
   });
   const filteredObjectives = orderedObjectives.filter(([id, info]) => {
-    const type = baseObjectives[id as ObjectiveId].type;
+    const type = baseObjectives[id].type;
     return type === objectiveType && info.games >= 2;
   });
 
@@ -276,7 +275,7 @@ function ObjectiveTable({
     <table style={{ fontSize: rem(12), width: "100%", borderSpacing: "0" }}>
       <tbody>
         {filteredObjectives.map(([objective, info]) => {
-          const type = baseObjectives[objective as ObjectiveId].type;
+          const type = baseObjectives[objective].type;
           const games =
             type === "STAGE ONE" || type === "STAGE TWO"
               ? info.games
@@ -285,7 +284,7 @@ function ObjectiveTable({
           if (games < 2) {
             return null;
           }
-          const baseObj = baseObjectives[objective as ObjectiveId];
+          const baseObj = baseObjectives[objective];
           return (
             <tr key={objective} style={{ fontFamily: "Source Sans" }}>
               <td
@@ -319,13 +318,13 @@ function TechTable({
   techPoints,
   baseData,
 }: {
-  techs: Record<string, GameCounts>;
+  techs: Partial<Record<TechId, GameCounts>>;
   techGames: number;
   techWins: number;
   techPoints: number;
   baseData: BaseData;
 }) {
-  const orderedTechs = Object.entries(techs).sort((a, b) => {
+  const orderedTechs = objectEntries(techs).sort((a, b) => {
     return b[1].games - a[1].games;
   });
   return (
@@ -389,7 +388,7 @@ function TechTable({
       </thead>
       <tbody>
         {orderedTechs.map(([tech, info]) => {
-          const baseTech = baseData.techs[tech as TechId];
+          const baseTech = baseData.techs[tech];
           if (!baseTech) {
             return null;
           }

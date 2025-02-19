@@ -1,18 +1,21 @@
-import React, { CSSProperties, useContext } from "react";
+import React, { CSSProperties, PropsWithChildren } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
 import { TechRow } from "../TechRow";
 import {
-  useActionLog,
+  useAttachments,
+  useCurrentTurn,
   useFactions,
   useGameId,
   useLeaders,
+  useObjectives,
   useOptions,
   usePlanets,
   useRelics,
   useSystems,
+  useTechs,
 } from "../context/dataHooks";
 import {
   addAttachmentAsync,
@@ -27,72 +30,57 @@ import {
   undoAdjudicatorBaalAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
-import { SymbolX } from "../icons/svgs";
 import {
   getAdjudicatorBaalSystem,
   getAttachments,
   getGainedRelic,
-  getObjectiveScorers,
+  getLogEntries,
   getResearchedTechs,
 } from "../util/actionLog";
 import { hasTech } from "../util/api/techs";
-import { hasScoredObjective } from "../util/api/util";
-import { getFactionColor } from "../util/factions";
+import { getMalliceSystemNumber } from "../util/map";
+import { getMapString } from "../util/options";
 import { applyPlanetAttachments } from "../util/planets";
-import { Optional } from "../util/types/types";
+import { objectKeys, rem } from "../util/util";
 import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
-import FactionIcon from "./FactionIcon/FactionIcon";
-import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import SystemSelect from "./Map/SystemSelect";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
+import ScoreObjectiveRow from "./ObjectiveRow/ScoreObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
-import { rem } from "../util/util";
-import { getMalliceSystemNumber } from "../util/map";
-import { getMapString } from "../util/options";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 
 export function TacticalAction({
   activeFactionId,
-  attachments,
   claimablePlanets,
   conqueredPlanets,
-  currentTurn,
-  factions,
   frontier = true,
-  gameid,
-  leaders,
-  objectives,
-  planets,
   scorableObjectives,
   scoredObjectives,
   style = {},
-  techs,
 }: {
   activeFactionId: FactionId;
-  attachments: Partial<Record<AttachmentId, Attachment>>;
   claimablePlanets: Planet[];
   conqueredPlanets: ClaimPlanetEvent[];
-  currentTurn: ActionLogEntry[];
-  factions: Partial<Record<FactionId, Faction>>;
   frontier?: boolean;
-  gameid: string;
-  leaders: Partial<Record<LeaderId, Leader>>;
-  objectives: Partial<Record<ObjectiveId, Objective>>;
-  planets: Partial<Record<PlanetId, Planet>>;
   scorableObjectives: Objective[];
   scoredObjectives: ObjectiveId[];
   style?: CSSProperties;
-  techs: Partial<Record<TechId, Tech>>;
 }) {
+  const attachments = useAttachments();
+  const currentTurn = useCurrentTurn();
+  const factions = useFactions();
   const gameId = useGameId();
+  const leaders = useLeaders();
+  const objectives = useObjectives();
+  const planets = usePlanets();
   const relics = useRelics();
+  const techs = useTechs();
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
 
   claimablePlanets.sort((a, b) => {
@@ -110,68 +98,13 @@ export function TacticalAction({
 
   const intl = useIntl();
 
-  const custodiansScorer = getObjectiveScorers(
-    currentTurn,
-    "Custodians Token"
-  )[0];
-
-  const currentMartyrs = getObjectiveScorers(
-    currentTurn,
-    "Become a Martyr"
-  ) as FactionId[];
-  const possibleMartyrs = new Set(currentMartyrs);
-  const becomeAMartyr = (objectives ?? {})["Become a Martyr"];
-  if (
-    becomeAMartyr &&
-    (currentMartyrs.length > 0 ||
-      (becomeAMartyr.scorers ?? []).length === 0 ||
-      becomeAMartyr.type === "STAGE ONE")
-  ) {
-    const scorers = becomeAMartyr.scorers ?? [];
-    for (const conqueredPlanet of conqueredPlanets) {
-      const planet = (planets ?? {})[conqueredPlanet.planet];
-      if (!planet) {
-        continue;
-      }
-      if (
-        planet.home &&
-        conqueredPlanet.prevOwner &&
-        conqueredPlanet.prevOwner !== activeFactionId &&
-        !scorers.includes(conqueredPlanet.prevOwner)
-      ) {
-        possibleMartyrs.add(conqueredPlanet.prevOwner as FactionId);
-      }
-    }
-  }
-  const orderedMartyrs = Array.from(possibleMartyrs).sort((a, b) => {
-    if (a > b) {
-      return 1;
-    }
-    return -1;
-  });
-
-  function removeTechLocal(factionId: FactionId, toRemove: TechId) {
-    if (!gameid) {
-      return;
-    }
-    removeTechAsync(gameid, factionId, toRemove);
-  }
-
-  function addTechLocal(factionId: FactionId, tech: Tech) {
-    if (!gameid) {
-      return;
-    }
-    addTechAsync(gameid, factionId, tech.id);
-  }
-
   let hasCustodiansPoint = false;
-  const mecatolConquerers = currentTurn.filter(
-    (logEntry) =>
-      logEntry.data.action === "CLAIM_PLANET" &&
-      logEntry.data.event.planet === "Mecatol Rex"
-  );
+  const mecatolConquerers = getLogEntries<ClaimPlanetData>(
+    currentTurn,
+    "CLAIM_PLANET"
+  ).filter((logEntry) => logEntry.data.event.planet === "Mecatol Rex");
   if (mecatolConquerers[0]) {
-    const event = (mecatolConquerers[0].data as ClaimPlanetData).event;
+    const event = mecatolConquerers[0].data.event;
     if (event.faction === activeFactionId && !event.prevOwner) {
       hasCustodiansPoint = true;
     }
@@ -193,18 +126,6 @@ export function TacticalAction({
     maxWidth: "85vw",
   };
 
-  const secretButtonStyle: CSSProperties = {
-    fontFamily: "Myriad Pro",
-    padding: rem(8),
-    alignItems: "stretch",
-    display: "grid",
-    gridAutoFlow: "column",
-    maxWidth: "85vw",
-    justifyContent: "flex-start",
-    overflowX: "auto",
-    gridTemplateRows: `repeat(${Math.min(5, scorableObjectives.length)}, auto)`,
-    gap: rem(4),
-  };
   function getResearchableTechs(factionId: FactionId) {
     const faction = factions[factionId];
     if (!faction) {
@@ -213,17 +134,15 @@ export function TacticalAction({
     if (factionId === "Nekro Virus") {
       const addedTechs = getResearchedTechs(currentTurn, "Nekro Virus");
       const nekroTechs = new Set<TechId>();
-      Object.values(factions ?? {}).forEach((otherFaction) => {
-        Object.keys(otherFaction.techs).forEach((id) => {
-          const techId = id as TechId;
+      Object.values(factions).forEach((otherFaction) => {
+        objectKeys(otherFaction.techs).forEach((id) => {
+          const techId = id;
           if (!hasTech(faction, techId) && !addedTechs.includes(techId)) {
             nekroTechs.add(techId);
           }
         });
       });
-      return Array.from(nekroTechs).map(
-        (techId) => (techs ?? {})[techId] as Tech
-      );
+      return Array.from(nekroTechs).map((techId) => techs[techId] as Tech);
     }
     const replaces: TechId[] = [];
     const availableTechs = Object.values(techs ?? {}).filter((tech) => {
@@ -253,35 +172,6 @@ export function TacticalAction({
   }
 
   const researchableTechs = getResearchableTechs(activeFactionId);
-
-  function removePlanet(factionId: FactionId, toRemove: ClaimPlanetEvent) {
-    if (!gameid) {
-      return;
-    }
-    unclaimPlanetAsync(gameid, factionId, toRemove.planet);
-  }
-
-  function addPlanet(factionId: FactionId, toAdd: Planet) {
-    if (!gameid) {
-      return;
-    }
-
-    claimPlanetAsync(gameid, factionId, toAdd.id);
-  }
-
-  function addObjective(factionId: FactionId, toScore: ObjectiveId) {
-    if (!gameid) {
-      return;
-    }
-    scoreObjectiveAsync(gameid, factionId, toScore);
-  }
-
-  function undoObjective(factionId: FactionId, toRemove: ObjectiveId) {
-    if (!gameid) {
-      return;
-    }
-    unscoreObjectiveAsync(gameid, factionId, toRemove);
-  }
 
   const claimedAttachments = new Set<AttachmentId>();
   for (const planet of Object.values(planets)) {
@@ -360,14 +250,19 @@ export function TacticalAction({
                     gridTemplateColumns: "subgrid",
                     gridColumn: "span 2",
                   }}
-                  // style={{ justifyContent: "center", gap: 0, width: "100%" }}
                 >
                   <div style={{ width: "100%" }}>
                     <PlanetRow
                       key={planet.planet}
                       factionId={activeFactionId}
                       planet={adjustedPlanet}
-                      removePlanet={() => removePlanet(activeFactionId, planet)}
+                      removePlanet={() =>
+                        unclaimPlanetAsync(
+                          gameId,
+                          activeFactionId,
+                          planet.planet
+                        )
+                      }
                       prevOwner={planet.prevOwner}
                       opts={{
                         hideAttachButton: true,
@@ -409,14 +304,14 @@ export function TacticalAction({
                         onSelect={(attachmentId, prevAttachment) => {
                           if (prevAttachment) {
                             removeAttachmentAsync(
-                              gameid,
+                              gameId,
                               planet.planet,
                               prevAttachment
                             );
                           }
                           if (attachmentId) {
                             addAttachmentAsync(
-                              gameid,
+                              gameId,
                               planet.planet,
                               attachmentId
                             );
@@ -460,7 +355,7 @@ export function TacticalAction({
                     }}
                     onClick={() => {
                       closeFn();
-                      addPlanet(activeFactionId, planet);
+                      claimPlanetAsync(gameId, activeFactionId, planet.id);
                     }}
                   >
                     {planet.name}
@@ -513,7 +408,7 @@ export function TacticalAction({
                     hideScorers={true}
                     objective={objectiveObj}
                     removeObjective={() =>
-                      undoObjective(activeFactionId, objective)
+                      unscoreObjectiveAsync(gameId, activeFactionId, objective)
                     }
                   />
                 );
@@ -525,7 +420,7 @@ export function TacticalAction({
       {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
         <ObjectiveSelectHoverMenu
           action={(_, objectiveId) => {
-            addObjective(activeFactionId, objectiveId);
+            scoreObjectiveAsync(gameId, activeFactionId, objectiveId);
           }}
           label={
             <FormattedMessage
@@ -578,7 +473,9 @@ export function TacticalAction({
                     <TechRow
                       key={tech}
                       tech={techObj}
-                      removeTech={() => removeTechLocal(activeFactionId, tech)}
+                      removeTech={() =>
+                        removeTechAsync(gameId, activeFactionId, tech)
+                      }
                     />
                   );
                 })}
@@ -595,101 +492,12 @@ export function TacticalAction({
                 defaultMessage: "Technological Singularity",
               })}
               techs={researchableTechs}
-              selectTech={(tech) => addTechLocal(activeFactionId, tech)}
+              selectTech={(tech) =>
+                addTechAsync(gameId, activeFactionId, tech.id)
+              }
             />
           ) : null}
         </React.Fragment>
-      ) : null}
-      {becomeAMartyr && possibleMartyrs.size > 0 ? (
-        <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
-          <LabeledLine leftLabel="Other Factions" />
-          <div className="flexRow">
-            <ObjectiveRow objective={becomeAMartyr} hideScorers />
-            {becomeAMartyr.type === "SECRET" || possibleMartyrs.size === 1 ? (
-              <FactionSelectRadialMenu
-                onSelect={(factionId, prevFaction) => {
-                  if (factionId && prevFaction) {
-                    undoObjective(prevFaction, "Become a Martyr");
-                    addObjective(factionId, "Become a Martyr");
-                  } else if (prevFaction) {
-                    undoObjective(prevFaction, "Become a Martyr");
-                  } else if (factionId) {
-                    addObjective(factionId, "Become a Martyr");
-                  }
-                }}
-                borderColor={getFactionColor(
-                  currentMartyrs[0] ? factions[currentMartyrs[0]] : undefined
-                )}
-                selectedFaction={currentMartyrs[0] as Optional<FactionId>}
-                factions={orderedMartyrs}
-              />
-            ) : (
-              orderedMartyrs.map((factionId) => {
-                const current = hasScoredObjective(factionId, becomeAMartyr);
-                return (
-                  <div
-                    key={factionId}
-                    className="flexRow hiddenButtonParent"
-                    style={{
-                      position: "relative",
-                      width: rem(32),
-                      height: rem(32),
-                    }}
-                  >
-                    <FactionIcon factionId={factionId} size="100%" />
-                    <div
-                      className="flexRow"
-                      style={{
-                        position: "absolute",
-                        backgroundColor: "var(--light-bg)",
-                        cursor: "pointer",
-                        borderRadius: "100%",
-                        marginLeft: "60%",
-                        marginTop: "60%",
-                        boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                        width: rem(20),
-                        height: rem(20),
-                        color: current ? "green" : "red",
-                      }}
-                      onClick={() => {
-                        if (!gameid) {
-                          return;
-                        }
-                        if (current) {
-                          undoObjective(factionId, "Become a Martyr");
-                        } else {
-                          addObjective(factionId, "Become a Martyr");
-                        }
-                      }}
-                    >
-                      {current ? (
-                        <div
-                          className="symbol"
-                          style={{
-                            fontSize: rem(16),
-                            lineHeight: rem(16),
-                          }}
-                        >
-                          ✓
-                        </div>
-                      ) : (
-                        <div
-                          className="flexRow"
-                          style={{
-                            width: "80%",
-                            height: "80%",
-                          }}
-                        >
-                          <SymbolX color="red" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
       ) : null}
       {frontier &&
       hasTech(faction, "Dark Energy Tap") &&
@@ -721,12 +529,28 @@ export function TacticalAction({
         </React.Fragment>
       ) : null}
       {activeFactionId === "Embers of Muaat" ? <AdjudicatorBaal /> : null}
+
+      <OtherFactionsSection>
+        <BecomeAMartyr conqueredPlanets={conqueredPlanets} />
+      </OtherFactionsSection>
+    </div>
+  );
+}
+
+function OtherFactionsSection({ children }: PropsWithChildren) {
+  return (
+    <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
+      <LabeledLine
+        className={styles.OtherFactionsLabel}
+        leftLabel="Other Factions"
+      />
+      {children}
     </div>
   );
 }
 
 function AdjudicatorBaal() {
-  const actionLog = useActionLog();
+  const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
   const leaders = useLeaders();
@@ -738,9 +562,7 @@ function AdjudicatorBaal() {
     (a, b) => a.mapPosition - b.mapPosition
   );
 
-  const adjudicatorBaalSystem = getAdjudicatorBaalSystem(
-    getCurrentTurnLogEntries(actionLog)
-  );
+  const adjudicatorBaalSystem = getAdjudicatorBaalSystem(currentTurn);
 
   const mapString = getMapString(options, Object.keys(factions).length);
   if (!mapString) {
@@ -828,5 +650,31 @@ function AdjudicatorBaal() {
         />
       </div>
     </ClientOnlyHoverMenu>
+  );
+}
+
+function BecomeAMartyr({
+  conqueredPlanets,
+}: {
+  conqueredPlanets: ClaimPlanetEvent[];
+}) {
+  const planets = usePlanets();
+
+  function canScore(faction: Faction) {
+    for (const conqueredPlanet of conqueredPlanets) {
+      const planet = planets[conqueredPlanet.planet];
+      const prevOwner = conqueredPlanet.prevOwner;
+      if (!planet || !planet.home || !prevOwner) {
+        continue;
+      }
+      if (faction.id === prevOwner) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  return (
+    <ScoreObjectiveRow objectiveId="Become a Martyr" canScore={canScore} />
   );
 }

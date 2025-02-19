@@ -451,7 +451,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();
   const factions = useFactions();
   const gameId = useGameId();
-  const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -1147,20 +1146,12 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = (
         <TacticalAction
           activeFactionId="Yin Brotherhood"
-          attachments={attachments ?? {}}
           claimablePlanets={conqueredPlanets.length < 3 ? claimablePlanets : []}
           conqueredPlanets={conqueredPlanets}
-          currentTurn={getCurrentTurnLogEntries(actionLog)}
-          factions={factions ?? {}}
           frontier={false}
-          gameid={gameId ?? ""}
-          leaders={leaders}
-          objectives={objectives ?? {}}
-          planets={planets ?? {}}
           scoredObjectives={scoredActionPhaseObjectives}
           scorableObjectives={scorableObjectives}
           style={{ width: "100%" }}
-          techs={techs ?? {}}
         />
       );
       break;
@@ -1281,19 +1272,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             <div style={{ paddingTop: rem(12) }}>
               <TacticalAction
                 activeFactionId={selectedFaction}
-                attachments={attachments ?? {}}
                 claimablePlanets={claimablePlanets}
                 conqueredPlanets={claimedPlanets}
-                currentTurn={getCurrentTurnLogEntries(actionLog)}
-                factions={factions ?? {}}
-                gameid={gameId ?? ""}
-                leaders={leaders}
-                objectives={objectives ?? {}}
-                planets={planets ?? {}}
                 scorableObjectives={scorableObjectives}
                 scoredObjectives={scoredActionPhaseObjectives}
                 style={{ width: "100%" }}
-                techs={techs ?? {}}
               />
             </div>
           ) : null}

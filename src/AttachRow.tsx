@@ -6,6 +6,7 @@ import ResourcesIcon from "./components/ResourcesIcon/ResourcesIcon";
 import { useGameId } from "./context/dataHooks";
 import { addAttachmentAsync, removeAttachmentAsync } from "./dynamic/api";
 import { rem } from "./util/util";
+import DemilitarizedZoneSVG from "./icons/attachments/DemilitarizedZone";
 
 interface AttachRowProps {
   attachment: Attachment;
@@ -132,14 +133,7 @@ function PlanetAttributes({
           />
         );
       case "demilitarized":
-        return (
-          <Image
-            src="/images/demilitarized_zone.svg"
-            alt="Demilitarized Zone"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        );
+        return <DemilitarizedZoneSVG />;
       case "tomb":
         return (
           <Image

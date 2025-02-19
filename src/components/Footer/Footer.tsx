@@ -17,6 +17,9 @@ import {
 } from "../../context/dataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { setSpeakerAsync } from "../../dynamic/api";
+import MapMenuSVG from "../../icons/ui/MapMenu";
+import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
+import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 import { useSharedSettings } from "../../util/cookies";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { getMalliceSystemNumber } from "../../util/map";
@@ -162,7 +165,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
             <FactionSelectRadialMenu
               borderColor={
                 state?.speaker
-                  ? getFactionColor((factions ?? {})[state.speaker])
+                  ? getFactionColor(factions[state.speaker])
                   : undefined
               }
               selectedFaction={state.speaker}
@@ -218,12 +221,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
                   height: "100%",
                 }}
               >
-                <Image
-                  src={`/images/map_icon_outline.svg`}
-                  alt={`Map Icon`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
+                <MapMenuSVG />
               </div>
             </button>
             <FormattedMessage
@@ -268,18 +266,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
                 height: "100%",
               }}
             >
-              {/* <Image
-                src={`/images/objectives_icon.svg`}
-                alt={`Objectives Icon`}
-                fill
-                style={{ objectFit: "contain" }}
-              /> */}
-              <Image
-                src={`/images/objectives_icon_two.svg`}
-                alt={`Objectives Icon`}
-                fill
-                style={{ objectFit: "contain" }}
-              />
+              <ObjectivesMenuSVG />
             </div>
           </button>
           <FormattedMessage
@@ -301,12 +288,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
                 height: "100%",
               }}
             >
-              <Image
-                src={`/images/planet.svg`}
-                alt={`Planet Icon`}
-                fill
-                style={{ objectFit: "contain" }}
-              />
+              <PlanetMenuSVG />
             </div>
           </button>
           <FormattedMessage
@@ -316,82 +298,118 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
           />
         </div>
       </div>
-      <div className={styles.UpdateBox}>
-        <LabeledDiv
-          label={
-            <FormattedMessage
-              id="VjlCY0"
-              description="Text specifying a section that includes update operations."
-              defaultMessage="Update"
+      <LabeledDiv
+        className={styles.UpdateBox}
+        innerClass={styles.UpdateBoxContent}
+        label={
+          <FormattedMessage
+            id="VjlCY0"
+            description="Text specifying a section that includes update operations."
+            defaultMessage="Update"
+          />
+        }
+      >
+        {!shouldBlockSpeakerUpdates() ? (
+          <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+            <FactionSelectRadialMenu
+              borderColor={
+                state?.speaker
+                  ? getFactionColor((factions ?? {})[state.speaker])
+                  : undefined
+              }
+              selectedFaction={state.speaker}
+              factions={orderedFactions.map((faction) => faction.id)}
+              invalidFactions={[state.speaker]}
+              size={40}
+              onSelect={async (factionId, _) => {
+                if (!gameId || !factionId) {
+                  return;
+                }
+                setSpeakerAsync(gameId, factionId);
+              }}
             />
-          }
-        >
-          <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-            {!shouldBlockSpeakerUpdates() ? (
-              <div className="flexRow">
-                <Strings.Speaker />:
-                <FactionSelectRadialMenu
-                  borderColor={
-                    state?.speaker
-                      ? getFactionColor((factions ?? {})[state.speaker])
-                      : undefined
-                  }
-                  selectedFaction={state.speaker}
-                  factions={orderedFactions.map((faction) => faction.id)}
-                  invalidFactions={[state.speaker]}
-                  size={40}
-                  onSelect={async (factionId, _) => {
-                    if (!gameId || !factionId) {
-                      return;
-                    }
-                    setSpeakerAsync(gameId, factionId);
-                  }}
-                />
-              </div>
-            ) : null}
+            <span className={styles.ButtonLabel}>
+              <Strings.Speaker />
+            </span>
+          </div>
+        ) : null}
+        <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+          <button
+            className="flexRow"
+            onClick={() => openModal(<TechModalContent viewOnly={viewOnly} />)}
+            style={{
+              width: rem(34),
+              padding: rem(2),
+              aspectRatio: 1,
+              borderRadius: "100%",
+            }}
+          >
             <div
               className="flexRow"
-              style={{ width: "100%", alignItems: "center" }}
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+              }}
             >
-              <button
-                onClick={() =>
-                  openModal(<TechModalContent viewOnly={viewOnly} />)
-                }
-              >
-                <FormattedMessage
-                  id="ys7uwX"
-                  description="Shortened version of technologies."
-                  defaultMessage="Techs"
-                />
-              </button>
-
-              <button
-                onClick={() =>
-                  openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
-                }
-              >
-                <FormattedMessage
-                  id="5Bl4Ek"
-                  description="Cards that define how to score victory points."
-                  defaultMessage="Objectives"
-                />
-              </button>
-              <button
-                onClick={() =>
-                  openModal(<PlanetModalContent viewOnly={viewOnly} />)
-                }
-              >
-                <FormattedMessage
-                  id="1fNqTf"
-                  description="Planets."
-                  defaultMessage="Planets"
-                />
-              </button>
-              {/* <RelicPanel /> */}
+              <TechSkipIcon size={28} outline />
             </div>
-          </div>
-        </LabeledDiv>
-      </div>
+          </button>
+          <span className={styles.ButtonLabel}>Techs</span>
+        </div>
+        <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+          <button
+            onClick={() =>
+              openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
+            }
+            style={{
+              position: "relative",
+              width: rem(34),
+              height: rem(34),
+              padding: rem(2),
+              borderRadius: "100%",
+            }}
+          >
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <ObjectivesMenuSVG />
+            </div>
+          </button>
+          <span className={styles.ButtonLabel}>Objectives</span>
+        </div>
+        <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+          <button
+            onClick={() =>
+              openModal(<PlanetModalContent viewOnly={viewOnly} />)
+            }
+            style={{
+              position: "relative",
+              width: rem(34),
+              height: rem(34),
+              padding: rem(2),
+              borderRadius: "100%",
+            }}
+          >
+            <div
+              className="flexRow"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <PlanetMenuSVG />
+            </div>
+          </button>
+          <span className={styles.ButtonLabel}>Planets</span>
+        </div>
+      </LabeledDiv>
       <div className={styles.FactionBox}>
         <LabeledDiv
           label={orderTitle}

@@ -12,6 +12,9 @@ import { gameIdString } from "../src/util/strings";
 import { Optional } from "../src/util/types/types";
 import { rem } from "../src/util/util";
 import styles from "./home-page.module.scss";
+import PatreonSVG from "../src/icons/ui/Patreon";
+import BuyMeACoffeeSVG from "../src/icons/ui/BuyMeACoffee";
+import GitHubSVG from "../src/icons/ui/GitHub";
 
 export default function HomePage() {
   const intl = useIntl();
@@ -240,18 +243,11 @@ export default function HomePage() {
                     <div
                       style={{
                         position: "relative",
-                        width: rem(18),
                         height: rem(18),
                         flexBasis: "20%",
                       }}
                     >
-                      <Image
-                        src="/images/patreon-icon.svg"
-                        alt="icon"
-                        sizes={rem(18)}
-                        fill
-                        style={{ contain: "layout" }}
-                      />
+                      <PatreonSVG />
                     </div>
                     <div style={{ width: "80%" }}>
                       <FormattedMessage
@@ -277,18 +273,11 @@ export default function HomePage() {
                     <div
                       style={{
                         position: "relative",
-                        width: rem(18),
                         height: rem(18),
                         flexBasis: "20%",
                       }}
                     >
-                      <Image
-                        src="/images/bmc-icon.svg"
-                        alt="icon"
-                        sizes={rem(18)}
-                        fill
-                        style={{ contain: "layout" }}
-                      />
+                      <BuyMeACoffeeSVG />
                     </div>
                     <div style={{ width: "80%" }}>
                       <FormattedMessage
@@ -314,18 +303,11 @@ export default function HomePage() {
                     <div
                       style={{
                         position: "relative",
-                        width: rem(18),
-                        height: rem(18),
                         flexBasis: "20%",
+                        height: rem(18),
                       }}
                     >
-                      <Image
-                        src="/images/github-icon.svg"
-                        alt="icon"
-                        sizes={rem(18)}
-                        fill
-                        style={{ contain: "layout" }}
-                      />
+                      <GitHubSVG />
                     </div>
                     <div style={{ width: "80%" }}>
                       <FormattedMessage

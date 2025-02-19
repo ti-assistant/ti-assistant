@@ -130,7 +130,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
     >
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
 
-      {orderedFactions.map((faction, index) => {
+      {orderedFactions.map((faction) => {
         const fadeFaction = state.phase !== "END" && faction.passed;
         return (
           <div key={faction.id}>
@@ -149,10 +149,7 @@ export default function SummaryColumn({ order, subOrder }: SummaryColumnProps) {
                 )
               }
               rightLabel={
-                <StaticFactionTimer
-                  factionId={faction?.id ?? "Unknown"}
-                  width={84}
-                />
+                <StaticFactionTimer factionId={faction.id} width={84} />
               }
               color={fadeFaction ? "#555" : getFactionColor(faction)}
             >

@@ -27,14 +27,14 @@ export class ManualVPUpdateHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "MANUAL_VP_UPDATE" &&
       entry.data.event.faction === this.data.event.faction &&

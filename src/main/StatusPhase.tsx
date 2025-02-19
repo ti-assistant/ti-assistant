@@ -14,6 +14,7 @@ import { Selector } from "../components/Selector/Selector";
 import {
   useActionLog,
   useAgenda,
+  useCurrentTurn,
   useFactions,
   useGameId,
   useGameState,
@@ -39,6 +40,7 @@ import { getInitiativeForFaction } from "../util/helpers";
 import { objectiveTypeString, phaseString } from "../util/strings";
 import { rem } from "../util/util";
 import styles from "./StatusPhase.module.scss";
+import { ActionLog } from "../util/types/types";
 
 function InfoContent({ children }: PropsWithChildren) {
   return (
@@ -643,7 +645,7 @@ export function MiddleColumn() {
   );
 }
 
-export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
+export function statusPhaseComplete(currentTurn: ActionLog) {
   const revealedObjectives = currentTurn.filter(
     (logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE"
   );
@@ -651,7 +653,7 @@ export function statusPhaseComplete(currentTurn: ActionLogEntry[]) {
 }
 
 export default function StatusPhase() {
-  const actionLog = useActionLog();
+  const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
@@ -664,8 +666,6 @@ export default function StatusPhase() {
   const ministerOfPolicy = useAgenda("Minister of Policy");
 
   const intl = useIntl();
-
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const { openModal } = useSharedModal();
 

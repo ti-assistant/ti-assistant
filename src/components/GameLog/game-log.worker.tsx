@@ -2,6 +2,7 @@ import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "../../util/api/actionLog";
 import { getHandler } from "../../util/api/gameLog";
 import { updateGameData } from "../../util/api/handler";
 import { updateActionLog } from "../../util/api/update";
+import { ActionLog } from "../../util/types/types";
 import { LogEntryElementProps } from "../LogEntry";
 
 type WithKey<T> = T & { key: number };
@@ -21,7 +22,7 @@ function cleanLogData(data: GameUpdateData) {
 
 function buildGameLog(
   initialGameData: StoredGameData,
-  reversedActionLog: ActionLogEntry[]
+  reversedActionLog: ActionLog
 ) {
   const dynamicGameData = structuredClone(initialGameData);
 

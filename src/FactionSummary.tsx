@@ -8,7 +8,6 @@ import {
   useActionLog,
   useAttachments,
   useFaction,
-  useFactions,
   useGameId,
   useGameState,
   useLeaders,
@@ -17,6 +16,7 @@ import {
   useTechs,
 } from "./context/dataHooks";
 import { manualVPUpdateAsync } from "./dynamic/api";
+import { getLogEntries } from "./util/actionLog";
 import { computeScoredVPs } from "./util/factions";
 import {
   applyAllPlanetAttachments,
@@ -160,25 +160,17 @@ export function FactionSummary({
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   const actionLog = useActionLog();
   const objectives = useObjectives();
-  const factions = useFactions();
-
-  const faction = factions[factionId];
-
-  if (!faction) {
-    return null;
-  }
 
   const revealOrder: Partial<Record<ObjectiveId, number>> = {};
   let order = 1;
-  [...(actionLog ?? [])]
-    .reverse()
-    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
-    .forEach((logEntry) => {
-      const objectiveId = (logEntry.data as RevealObjectiveData).event
-        .objective;
-      revealOrder[objectiveId] = order;
-      ++order;
-    });
+  getLogEntries<RevealObjectiveData>(
+    [...actionLog].reverse(),
+    "REVEAL_OBJECTIVE"
+  ).forEach((logEntry) => {
+    const objectiveId = logEntry.data.event.objective;
+    revealOrder[objectiveId] = order;
+    ++order;
+  });
 
   const stageOnes = {
     scored: 0,

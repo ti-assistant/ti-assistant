@@ -49,7 +49,7 @@ html {
 }
 
 body {
-  font-family: "slider";
+  font-family: "Slider";
   margin: 0px 4rem;
   background-color: var(--background-color);
   color: #eee;
@@ -118,6 +118,10 @@ a:hover {
 a:hover > div.flexColumn {
   background-color: var(--disabled-bg);
   /* box-shadow: 2px 2px 4px #000; */
+}
+
+svg {
+  display: block;
 }
 
 button {

@@ -187,7 +187,8 @@ async function updateActionLog(
 
   let timestamp = 0;
   turnBoundary.forEach((logEntry) => {
-    timestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
+    timestamp = (logEntry.data() as ActionLogEntry<GameUpdateData>)
+      .timestampMillis;
   });
 
   const actionLog = await t.get(
@@ -200,13 +201,13 @@ async function updateActionLog(
   let foundLogEntry = false;
   let endOfTurn = false;
   // Used for rewinding
-  const orderedEntries: Record<string, ActionLogEntry> = {};
+  const orderedEntries: Record<string, ActionLogEntry<GameUpdateData>> = {};
   actionLog.forEach((storedLogEntry) => {
     if (foundLogEntry || endOfTurn) {
       return;
     }
 
-    const logEntry = storedLogEntry.data() as ActionLogEntry;
+    const logEntry = storedLogEntry.data() as ActionLogEntry<GameUpdateData>;
 
     if (TURN_BOUNDARIES.includes(logEntry.data.action)) {
       endOfTurn = true;

@@ -1,20 +1,23 @@
-import { ReactNode, useState } from "react";
-
+import { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
-import Modal, { ModalContent } from "./components/Modal/Modal";
-import TechIcon from "./components/TechIcon/TechIcon";
-import { getTechColor } from "./util/techs";
-import { objectEntries, objectKeys, rem } from "./util/util";
-import { useSharedModal } from "./data/SharedModal";
-import { useActionLog, useFactions, useGameId } from "./context/dataHooks";
-import { hasTech } from "./util/api/techs";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import { ModalContent } from "./components/Modal/Modal";
+import TechIcon from "./components/TechIcon/TechIcon";
+import {
+  useCurrentTurn,
+  useFactions,
+  useGameId,
+  useLogEntries,
+} from "./context/dataHooks";
+import { useSharedModal } from "./data/SharedModal";
 import { addTechAsync, removeTechAsync } from "./dynamic/api";
-import { getCurrentTurnLogEntries } from "./util/api/actionLog";
 import { getResearchAgreementFaction } from "./util/actionLog";
+import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
+import { getTechColor } from "./util/techs";
+import { objectEntries, rem } from "./util/util";
 
 export function UnitStat({
   name,
@@ -293,13 +296,16 @@ export function TechRow({
 }
 
 function ResearchAgreement({ tech }: { tech: Tech }) {
-  const actionLog = useActionLog();
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
+  const researchAgreement = useLogEntries<AddTechData>(
+    "ADD_TECH",
+    (entry) =>
+      !!entry.data.event.researchAgreement && entry.data.event.tech === tech.id
+  )[0];
   const factions = useFactions();
   const gameId = useGameId();
   const { openModal } = useSharedModal();
 
-  const selectedFaction = getResearchAgreementFaction(currentTurn, tech.id);
+  const selectedFaction = researchAgreement?.data.event.faction;
 
   const orderedFactionIds = getMapOrderedFactionIds(factions);
   const fadedFactions = objectEntries(factions)

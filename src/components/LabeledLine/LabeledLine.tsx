@@ -3,6 +3,7 @@ import { BLACK_LINE_GLOW, BLACK_TEXT_GLOW } from "../../util/borderGlow";
 import styles from "./LabeledLine.module.scss";
 
 interface LabeledLineProps {
+  className?: string;
   color?: string;
   leftLabel?: ReactNode;
   label?: ReactNode;
@@ -15,6 +16,7 @@ interface LabeledLineCSS extends CSSProperties {
 }
 
 export default function LabeledLine({
+  className,
   leftLabel,
   label,
   rightLabel,
@@ -27,7 +29,7 @@ export default function LabeledLine({
   };
   return (
     <div
-      className={`flexColumn ${styles.LabeledLine}`}
+      className={`flexColumn ${styles.LabeledLine} ${className}`}
       style={labeledLineStyle}
     >
       <hr

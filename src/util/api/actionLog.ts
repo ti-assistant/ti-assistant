@@ -1,3 +1,5 @@
+import { ActionLog } from "../types/types";
+
 export const TURN_BOUNDARIES = [
   "ASSIGN_STRATEGY_CARD",
   "ADVANCE_PHASE",
@@ -12,8 +14,8 @@ export const PHASE_BOUNDARIES = ["ADVANCE_PHASE", "END_GAME"];
 // Assumes that the actionLog is sorted from newest to oldest.
 // Gets the log entries for the current turn - stopping at turn boundaries.
 // The returned elements will be reversed so that the oldest is first.
-export function getCurrentTurnLogEntries(actionLog: ActionLogEntry[]) {
-  const currentTurn: ActionLogEntry[] = [];
+export function getCurrentTurnLogEntries(actionLog: ActionLog) {
+  const currentTurn: ActionLog = [];
   for (const logEntry of actionLog) {
     if (TURN_BOUNDARIES.includes(logEntry.data.action)) {
       break;
@@ -25,8 +27,8 @@ export function getCurrentTurnLogEntries(actionLog: ActionLogEntry[]) {
   return currentTurn;
 }
 
-export function getCurrentPhaseLogEntries(actionLog: ActionLogEntry[]) {
-  const currentPhase: ActionLogEntry[] = [];
+export function getCurrentPhaseLogEntries(actionLog: ActionLog) {
+  const currentPhase: ActionLog = [];
   for (const logEntry of actionLog) {
     if (PHASE_BOUNDARIES.includes(logEntry.data.action)) {
       break;
@@ -37,9 +39,9 @@ export function getCurrentPhaseLogEntries(actionLog: ActionLogEntry[]) {
   return currentPhase;
 }
 
-export function getCurrentPhasePreviousLogEntries(actionLog: ActionLogEntry[]) {
+export function getCurrentPhasePreviousLogEntries(actionLog: ActionLog) {
   let currentTurn = true;
-  const currentPhase: ActionLogEntry[] = [];
+  const currentPhase: ActionLog = [];
   for (const logEntry of actionLog) {
     if (TURN_BOUNDARIES.includes(logEntry.data.action)) {
       currentTurn = false;
@@ -59,8 +61,8 @@ export function getCurrentPhasePreviousLogEntries(actionLog: ActionLogEntry[]) {
 }
 
 export function getNthMostRecentAction(
-  actionLog: ActionLogEntry[],
-  action: ActionLogEntry["data"]["action"],
+  actionLog: ActionLog,
+  action: ActionLogEntry<GameUpdateData>["data"]["action"],
   num: number
 ) {
   let count = 1;
@@ -78,7 +80,7 @@ export function getNthMostRecentAction(
   return;
 }
 
-export function getFinalActionOfPreviousTurn(actionLog: ActionLogEntry[]) {
+export function getFinalActionOfPreviousTurn(actionLog: ActionLog) {
   for (const logEntry of actionLog) {
     if (
       TURN_BOUNDARIES.includes(logEntry.data.action) &&

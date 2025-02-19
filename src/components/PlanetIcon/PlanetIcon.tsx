@@ -3,6 +3,9 @@ import { CSSProperties } from "react";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import styles from "./PlanetIcon.module.scss";
 import { rem } from "../../util/util";
+import CulturalPlanetSVG from "../../icons/planets/CulturalPlanet";
+import HazardousPlanetSVG from "../../icons/planets/HazardousPlanet";
+import IndustrialPlanetSVG from "../../icons/planets/IndustrialPlanet";
 
 type Size = `${number}%` | number;
 
@@ -29,41 +32,34 @@ export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
     return (
       <div className={styles.TripleIcon} style={planetIconStyle}>
         <div>
-          <Image
-            src="/images/industrial_icon.svg"
-            alt="Industrial Planet Icon"
-            fill
-            style={{ objectFit: "contain" }}
-          />
+          <IndustrialPlanetSVG />
         </div>
         <div>
-          <Image
-            src="/images/cultural_icon.svg"
-            alt="Cultural Planet Icon"
-            fill
-            style={{ objectFit: "contain" }}
-          />
+          <CulturalPlanetSVG />
         </div>
         <div>
-          <Image
-            src="/images/hazardous_icon.svg"
-            alt="Hazardous Planet Icon"
-            fill
-            style={{ objectFit: "contain" }}
-          />
+          <HazardousPlanetSVG />
         </div>
       </div>
     );
   }
 
+  let svg = null;
+  switch (type) {
+    case "CULTURAL":
+      svg = <CulturalPlanetSVG />;
+      break;
+    case "HAZARDOUS":
+      svg = <HazardousPlanetSVG />;
+      break;
+    case "INDUSTRIAL":
+      svg = <IndustrialPlanetSVG />;
+      break;
+  }
+
   return (
     <div className={styles.PlanetIcon} style={planetIconStyle}>
-      <Image
-        src={`/images/${type.toLowerCase()}_icon.svg`}
-        alt={`${type.toLowerCase()} planet icon`}
-        fill
-        style={{ objectFit: "contain" }}
-      />
+      {svg}
     </div>
   );
 }

@@ -10,8 +10,8 @@ interface Handler {
   data: GameUpdateData;
   validate(): boolean;
   getUpdates(): Record<string, any>;
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction;
-  getLogEntry(): ActionLogEntry;
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction;
+  getLogEntry(): ActionLogEntry<GameUpdateData>;
 }
 
 type GameUpdateData =
@@ -57,10 +57,10 @@ type GameUpdateData =
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
 
-interface ActionLogEntry {
+interface ActionLogEntry<DataType extends GameUpdateData> {
   timestampMillis: number;
   gameSeconds?: number;
-  data: GameUpdateData;
+  data: DataType;
 }
 
 interface BaseData {
@@ -78,7 +78,7 @@ interface BaseData {
 }
 
 interface GameData {
-  actionLog?: ActionLogEntry[];
+  actionLog?: ActionLog;
   agendas?: Partial<Record<AgendaId, Agenda>>;
   attachments?: Partial<Record<AttachmentId, Attachment>>;
   components?: Record<string, Component>;
@@ -101,7 +101,7 @@ interface GameData {
 }
 
 interface StoredGameData {
-  actionLog?: ActionLogEntry[];
+  actionLog?: ActionLog;
   agendas?: Record<string, GameAgenda>;
   attachments?: Partial<Record<AttachmentId, GameAttachment>>;
   components?: Record<string, GameComponent>;

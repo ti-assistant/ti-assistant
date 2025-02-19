@@ -2,6 +2,10 @@ import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
 import styles from "./TechIcon.module.scss";
 import { rem } from "../../util/util";
+import RedTechSVG from "../../icons/techs/RedTech";
+import YellowTechSVG from "../../icons/techs/YellowTech";
+import BlueTechSVG from "../../icons/techs/BlueTech";
+import GreenTechSVG from "../../icons/techs/GreenTech";
 
 const RED_RATIO = 61 / 50;
 const GREEN_RATIO = 58 / 50;
@@ -41,14 +45,24 @@ export default function TechIcon({
   const innerContent = useMemo(() => {
     switch (type) {
       case "RED":
+        if (outline) {
+          return <RedTechSVG />;
+        }
       case "YELLOW":
+        if (outline) {
+          return <YellowTechSVG />;
+        }
       case "BLUE":
+        if (outline) {
+          return <BlueTechSVG />;
+        }
       case "GREEN":
+        if (outline) {
+          return <GreenTechSVG />;
+        }
         return (
           <Image
-            src={`/images/${type.toLowerCase()}_tech.${
-              outline ? "svg" : "webp"
-            }`}
+            src={`/images/${type.toLowerCase()}_tech.webp`}
             alt={`${type.toLowerCase()} tech`}
             sizes={rem(20)}
             fill

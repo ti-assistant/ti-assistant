@@ -1,75 +1,43 @@
 import { getCurrentTurnLogEntries } from "./actionLog";
-import { isSetSpeakerData } from "../actionLog";
-
-export function getLogEntry(actionLog: ActionLogEntry[], action: string) {
-  for (const logEntry of actionLog) {
-    if (logEntry.data.action === action) {
-      return logEntry;
-    }
-  }
-  return null;
-}
-
-export function isSelectActionData(
-  data: GameUpdateData
-): data is SelectActionData {
-  return data.action === "SELECT_ACTION";
-}
+import { getLogEntries } from "../actionLog";
+import { ActionLog } from "../types/types";
 
 export function getSelectedAction(gameData: StoredGameData) {
   const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
 
-  const entry = getLogEntry(currentTurn, "SELECT_ACTION");
+  const entry = getLogEntries<SelectActionData>(
+    currentTurn,
+    "SELECT_ACTION"
+  )[0];
 
-  if (!entry || !isSelectActionData(entry.data)) {
+  if (!entry) {
     return undefined;
   }
 
   return entry.data.event.action;
 }
 
-export function getSelectedActionFromLog(actionLog: ActionLogEntry[]) {
+export function getSelectedActionFromLog(actionLog: ActionLog) {
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const entry = getLogEntry(currentTurn, "SELECT_ACTION");
+  const entry = getLogEntries<SelectActionData>(
+    currentTurn,
+    "SELECT_ACTION"
+  )[0];
 
-  if (!entry || !isSelectActionData(entry.data)) {
+  if (!entry) {
     return undefined;
   }
 
   return entry.data.event.action;
 }
 
-export function getNewSpeaker(gameData: StoredGameData) {
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
+export function getNewSpeakerEventFromLog(actionLog: ActionLog) {
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const entry = getLogEntry(currentTurn, "SET_SPEAKER");
+  const entry = getLogEntries<SetSpeakerData>(currentTurn, "SET_SPEAKER")[0];
 
-  if (!entry || !isSetSpeakerData(entry.data)) {
-    return undefined;
-  }
-
-  return entry.data.event.newSpeaker;
-}
-
-export function getNewSpeakerEvent(gameData: StoredGameData) {
-  const currentTurn = getCurrentTurnLogEntries(gameData.actionLog ?? []);
-
-  const entry = getLogEntry(currentTurn, "SET_SPEAKER");
-
-  if (!entry || !isSetSpeakerData(entry.data)) {
-    return undefined;
-  }
-
-  return entry.data.event;
-}
-
-export function getNewSpeakerEventFromLog(actionLog: ActionLogEntry[]) {
-  const currentTurn = getCurrentTurnLogEntries(actionLog ?? []);
-
-  const entry = getLogEntry(currentTurn, "SET_SPEAKER");
-
-  if (!entry || !isSetSpeakerData(entry.data)) {
+  if (!entry) {
     return undefined;
   }
 

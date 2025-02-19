@@ -1,4 +1,4 @@
-import { CSSProperties, useContext, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import {
   useAttachments,
@@ -14,17 +14,13 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "../util/planets";
-import { rem } from "../util/util";
+import { objectKeys, rem } from "../util/util";
+import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import PlanetSummary from "./PlanetSummary/PlanetSummary";
-import { CollapsibleSection } from "./CollapsibleSection";
-
-interface ExtendedCSS extends CSSProperties {
-  "--color": string;
-}
 
 function PlanetSection({
   factionId,
@@ -161,7 +157,7 @@ function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
               >
                 {viewOnly ? null : (
                   <FactionSelectHoverMenu
-                    options={Object.keys(factions) as FactionId[]}
+                    options={objectKeys(factions)}
                     onSelect={(factionId) => {
                       if (!gameId || !factionId) {
                         return;
@@ -202,7 +198,7 @@ export default function PlanetPanel({ viewOnly }: { viewOnly?: boolean }) {
       className={styles.planetGrid}
       style={
         {
-          "--num-columns": Object.keys(factions).length / 2 + 1,
+          "--num-columns": Math.ceil(Object.keys(factions).length / 2) + 1,
           "--num-factions": Object.keys(factions).length,
         } as CSSWithNumColumns
       }

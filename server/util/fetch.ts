@@ -10,7 +10,7 @@ import {
   TURN_BOUNDARIES,
 } from "../../src/util/api/actionLog";
 import { BASE_OPTIONS } from "../data/options";
-import { Optional } from "../../src/util/types/types";
+import { ActionLog, Optional } from "../../src/util/types/types";
 
 /**
  * Returns the game data for a given game.
@@ -52,7 +52,8 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
 
   let firstTimestamp = 0;
   phaseBoundary.forEach((logEntry) => {
-    firstTimestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
+    firstTimestamp = (logEntry.data() as ActionLogEntry<GameUpdateData>)
+      .timestampMillis;
   });
 
   const actionLog = await gameRef
@@ -61,9 +62,9 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
     .where("timestampMillis", ">=", firstTimestamp)
     .get();
 
-  const actionLogEntries: ActionLogEntry[] = [];
+  const actionLogEntries: ActionLog = [];
   actionLog.forEach((logEntry) => {
-    const storedLogEntry = logEntry.data() as ActionLogEntry;
+    const storedLogEntry = logEntry.data() as ActionLogEntry<GameUpdateData>;
     actionLogEntries.push(storedLogEntry);
   });
 
@@ -112,7 +113,8 @@ export async function getArchivedGameData(
 
   let firstTimestamp = 0;
   phaseBoundary.forEach((logEntry) => {
-    firstTimestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
+    firstTimestamp = (logEntry.data() as ActionLogEntry<GameUpdateData>)
+      .timestampMillis;
   });
 
   const actionLog = await gameRef
@@ -121,9 +123,9 @@ export async function getArchivedGameData(
     .where("timestampMillis", ">=", firstTimestamp)
     .get();
 
-  const actionLogEntries: ActionLogEntry[] = [];
+  const actionLogEntries: ActionLog = [];
   actionLog.forEach((logEntry) => {
-    const storedLogEntry = logEntry.data() as ActionLogEntry;
+    const storedLogEntry = logEntry.data() as ActionLogEntry<GameUpdateData>;
     actionLogEntries.push(storedLogEntry);
   });
 
@@ -161,7 +163,8 @@ export async function getCurrentTurnLogEntriesInTransaction(
 
   let timestamp = 0;
   turnBoundary.forEach((logEntry) => {
-    timestamp = (logEntry.data() as ActionLogEntry).timestampMillis;
+    timestamp = (logEntry.data() as ActionLogEntry<GameUpdateData>)
+      .timestampMillis;
   });
 
   const currentTurn = await t.get(
@@ -171,9 +174,9 @@ export async function getCurrentTurnLogEntriesInTransaction(
       .where("timestampMillis", ">=", timestamp)
   );
 
-  const currentTurnEntries: ActionLogEntry[] = [];
+  const currentTurnEntries: ActionLog = [];
   currentTurn.forEach((logEntry) => {
-    const storedLogEntry = logEntry.data() as ActionLogEntry;
+    const storedLogEntry = logEntry.data() as ActionLogEntry<GameUpdateData>;
     currentTurnEntries.push(storedLogEntry);
   });
 
@@ -191,9 +194,9 @@ export async function getLatestActionLogEntryInTransaction(
     return undefined;
   }
 
-  let latestEntry: Optional<ActionLogEntry>;
+  let latestEntry: Optional<ActionLogEntry<GameUpdateData>>;
   logEntry.forEach((entry) => {
-    latestEntry = entry.data() as ActionLogEntry;
+    latestEntry = entry.data() as ActionLogEntry<GameUpdateData>;
   });
 
   return latestEntry;
@@ -212,9 +215,9 @@ export async function getFullActionLog(gameId: string) {
     return [];
   }
 
-  let actionLog: ActionLogEntry[] = [];
+  let actionLog: ActionLog = [];
   logEntry.forEach((entry) => {
-    actionLog.push(entry.data() as ActionLogEntry);
+    actionLog.push(entry.data() as ActionLogEntry<GameUpdateData>);
   });
 
   return actionLog;
@@ -233,9 +236,9 @@ export async function getFullArchivedActionLog(gameId: string) {
     return [];
   }
 
-  let actionLog: ActionLogEntry[] = [];
+  let actionLog: ActionLog = [];
   logEntry.forEach((entry) => {
-    actionLog.push(entry.data() as ActionLogEntry);
+    actionLog.push(entry.data() as ActionLogEntry<GameUpdateData>);
   });
 
   return actionLog;

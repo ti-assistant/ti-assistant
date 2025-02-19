@@ -1,8 +1,8 @@
-import { HistogramData } from "./types";
-import styles from "./Histogram.module.scss";
-import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import { FormattedMessage } from "react-intl";
-import { rem } from "../../../src/util/util";
+import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import { objectEntries, rem } from "../../../src/util/util";
+import styles from "./Histogram.module.scss";
+import { HistogramData } from "./types";
 
 export function Histogram({ histogram }: { histogram: HistogramData }) {
   const [maxVal, minVal] = Object.values(histogram).reduce(
@@ -115,7 +115,7 @@ export function FactionHistogram({
     maxVal = Math.max(val, maxVal);
     total += val;
   }
-  const orderedHistogram = Object.entries(histogram).sort(([a, _], [b, __]) => {
+  const orderedHistogram = objectEntries(histogram).sort(([a, _], [b, __]) => {
     if (a < b) {
       return -1;
     }
@@ -165,7 +165,7 @@ export function FactionHistogram({
                   width: rem(16),
                 }}
               >
-                <FactionIcon factionId={key as FactionId} size={16} />
+                <FactionIcon factionId={key} size={16} />
               </div>
             </div>
           );

@@ -17,6 +17,7 @@ import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
+import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -298,14 +299,7 @@ function PlanetAttributes({
           />
         );
       case "demilitarized":
-        return (
-          <Image
-            src="/images/demilitarized_zone.svg"
-            alt="Demilitarized Zone"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        );
+        return <DemilitarizedZoneSVG />;
       case "tomb":
         return (
           <Image

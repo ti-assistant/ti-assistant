@@ -8,7 +8,7 @@ import { PointsHistogram } from "./Histogram";
 import { FactionSummary } from "./types";
 import styles from "./FactionsSection.module.scss";
 import { FormattedMessage } from "react-intl";
-import { rem } from "../../../src/util/util";
+import { objectEntries, rem } from "../../../src/util/util";
 import { useSharedModal } from "../../../src/data/SharedModal";
 
 export default function FactionsSection({
@@ -24,15 +24,15 @@ export default function FactionsSection({
 
   const baseObjectives = baseData.objectives;
   const factionInfo: Partial<Record<FactionId, FactionSummary>> = {};
-  Object.entries(games).forEach(([gameId, game]) => {
+  Object.values(games).forEach((game) => {
     const factions = game.factions;
 
-    Object.entries(factions).forEach(([factionId, faction], index) => {
-      let info = factionInfo[factionId as FactionId];
+    objectEntries(factions).forEach(([factionId, faction]) => {
+      let info = factionInfo[factionId];
       if (!info) {
         info = {
-          id: factionId as FactionId,
-          name: baseData.factions[factionId as FactionId].name,
+          id: factionId,
+          name: baseData.factions[factionId].name,
           games: { games: 0, wins: 0, points: 0, histogram: {} },
           techGames: { games: 0, wins: 0, points: 0 },
           objectiveGames: { games: 0, wins: 0, points: 0 },
@@ -54,7 +54,7 @@ export default function FactionsSection({
           if (!info) {
             return;
           }
-          const factionInfo = round.factionInfo[factionId as FactionId];
+          const factionInfo = round.factionInfo[factionId];
           if (!factionInfo) {
             return;
           }
@@ -114,19 +114,17 @@ export default function FactionsSection({
       }
       if (game.isObjectiveGame) {
         info.objectiveGames.games++;
-        for (const [objectiveId, objective] of Object.entries(
-          game.objectives
-        )) {
-          const baseObjective = baseObjectives[objectiveId as ObjectiveId];
+        for (const [objectiveId, objective] of objectEntries(game.objectives)) {
+          const baseObjective = baseObjectives[objectiveId];
 
-          const objInfo = info.objectives[objectiveId as ObjectiveId] ?? {
+          const objInfo = info.objectives[objectiveId] ?? {
             games: 0,
             scored: 0,
             wins: 0,
             points: 0,
           };
           objInfo.games++;
-          if (objective.scorers.includes(factionId as FactionId)) {
+          if (objective.scorers.includes(factionId)) {
             objInfo.scored = (objInfo.scored ?? 0) + 1;
             if (factionId === game.winner) {
               objInfo.wins++;
@@ -140,7 +138,7 @@ export default function FactionsSection({
               info.scoredSecrets++;
             }
           }
-          info.objectives[objectiveId as ObjectiveId] = objInfo;
+          info.objectives[objectiveId] = objInfo;
         }
       }
 
@@ -153,7 +151,7 @@ export default function FactionsSection({
       info.games.histogram[factionPoints] = sum;
       info.games.points += factionPoints;
       info.games.games++;
-      factionInfo[factionId as FactionId] = info;
+      factionInfo[factionId] = info;
     });
   });
 
@@ -253,7 +251,7 @@ export default function FactionsSection({
     })
     .map(([aName, _]) => aName);
 
-  const orderedInfo = Object.entries(factionInfo).sort(([_, a], [__, b]) => {
+  const orderedInfo = objectEntries(factionInfo).sort(([_, a], [__, b]) => {
     const aWinRate = (1.0 * a.games.wins) / a.games.games;
     const bWinRate = (1.0 * b.games.wins) / b.games.games;
     return bWinRate - aWinRate;
@@ -269,9 +267,9 @@ export default function FactionsSection({
                 key={id}
                 label={
                   <div className="flexRow" style={{ gap: rem(4) }}>
-                    <FactionIcon factionId={id as FactionId} size={20} />
+                    <FactionIcon factionId={id} size={20} />
                     {id}
-                    <FactionIcon factionId={id as FactionId} size={20} />
+                    <FactionIcon factionId={id} size={20} />
                   </div>
                 }
                 innerStyle={{ gap: rem(2) }}
@@ -288,7 +286,7 @@ export default function FactionsSection({
                       zIndex: -1,
                     }}
                   >
-                    <FactionIcon factionId={id as FactionId} size={80} />
+                    <FactionIcon factionId={id} size={80} />
                   </div>
                   <div
                     className="flexColumn"

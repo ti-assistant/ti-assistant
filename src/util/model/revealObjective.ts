@@ -30,7 +30,7 @@ export class RevealObjectiveHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: {
@@ -40,7 +40,7 @@ export class RevealObjectiveHandler implements Handler {
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "HIDE_OBJECTIVE" &&
       entry.data.event.objective === this.data.event.objective
@@ -82,7 +82,7 @@ export class HideObjectiveHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: {
@@ -92,7 +92,7 @@ export class HideObjectiveHandler implements Handler {
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "REVEAL_OBJECTIVE" &&
       entry.data.event.objective === this.data.event.objective
