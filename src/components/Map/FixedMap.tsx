@@ -156,7 +156,7 @@ export function SystemImage({
           }}
         >
           <NextImage
-            unoptimized
+            sizes={rem(256)}
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
@@ -217,10 +217,9 @@ export function SystemImage({
       }}
     >
       <NextImage
-        unoptimized
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
-        sizes={rem(128)}
+        sizes={rem(256)}
         fill
         style={{ objectFit: "contain" }}
         priority={
@@ -254,7 +253,7 @@ export function SystemImage({
                 }}
               >
                 <NextImage
-                  unoptimized
+                  sizes={rem(144)}
                   src={`/images/destroyed.webp`}
                   alt={`Destroyed Planet`}
                   fill
@@ -428,7 +427,7 @@ export function SystemImage({
             style={{ position: "relative", width: "90%", height: "90%" }}
           >
             <NextImage
-              unoptimized
+              sizes={rem(144)}
               src={`/images/custodians.png`}
               alt={`Custodians Token`}
               fill
@@ -453,130 +452,6 @@ interface MapProps {
     };
   }[];
   hideLegend?: boolean;
-}
-
-// const IMAGES_TO_PRELOAD = [
-//   // Systems
-//   "/images/systems/Hexagon.png",
-//   "/images/systems/ST_1.png",
-//   "/images/systems/ST_2.png",
-//   "/images/systems/ST_3.png",
-//   "/images/systems/ST_4.png",
-//   "/images/systems/ST_5.png",
-//   "/images/systems/ST_6.png",
-//   "/images/systems/ST_7.png",
-//   "/images/systems/ST_8.png",
-//   "/images/systems/ST_9.png",
-//   "/images/systems/ST_10.png",
-//   "/images/systems/ST_11.png",
-//   "/images/systems/ST_12.png",
-//   "/images/systems/ST_13.png",
-//   "/images/systems/ST_14.png",
-//   "/images/systems/ST_15.png",
-//   "/images/systems/ST_16.png",
-//   "/images/systems/ST_17.png",
-//   "/images/systems/ST_18.png",
-//   "/images/systems/ST_19.png",
-//   "/images/systems/ST_20.png",
-//   "/images/systems/ST_21.png",
-//   "/images/systems/ST_22.png",
-//   "/images/systems/ST_23.png",
-//   "/images/systems/ST_24.png",
-//   "/images/systems/ST_25.png",
-//   "/images/systems/ST_26.png",
-//   "/images/systems/ST_27.png",
-//   "/images/systems/ST_28.png",
-//   "/images/systems/ST_29.png",
-//   "/images/systems/ST_30.png",
-//   "/images/systems/ST_31.png",
-//   "/images/systems/ST_32.png",
-//   "/images/systems/ST_33.png",
-//   "/images/systems/ST_34.png",
-//   "/images/systems/ST_35.png",
-//   "/images/systems/ST_36.png",
-//   "/images/systems/ST_37.png",
-//   "/images/systems/ST_38.png",
-//   "/images/systems/ST_39.png",
-//   "/images/systems/ST_40.png",
-//   "/images/systems/ST_41.png",
-//   "/images/systems/ST_42.png",
-//   "/images/systems/ST_43.png",
-//   "/images/systems/ST_44.png",
-//   "/images/systems/ST_45.png",
-//   "/images/systems/ST_46.png",
-//   "/images/systems/ST_47.png",
-//   "/images/systems/ST_48.png",
-//   "/images/systems/ST_49.png",
-//   "/images/systems/ST_50.png",
-//   "/images/systems/ST_51.png",
-//   "/images/systems/ST_52.png",
-//   "/images/systems/ST_53.png",
-//   "/images/systems/ST_54.png",
-//   "/images/systems/ST_55.png",
-//   "/images/systems/ST_56.png",
-//   "/images/systems/ST_57.png",
-//   "/images/systems/ST_58.png",
-//   "/images/systems/ST_59.png",
-//   "/images/systems/ST_60.png",
-//   "/images/systems/ST_61.png",
-//   "/images/systems/ST_62.png",
-//   "/images/systems/ST_63.png",
-//   "/images/systems/ST_64.png",
-//   "/images/systems/ST_65.png",
-//   "/images/systems/ST_66.png",
-//   "/images/systems/ST_67.png",
-//   "/images/systems/ST_68.png",
-//   "/images/systems/ST_69.png",
-//   "/images/systems/ST_70.png",
-//   "/images/systems/ST_71.png",
-//   "/images/systems/ST_72.png",
-//   "/images/systems/ST_73.png",
-//   "/images/systems/ST_74.png",
-//   "/images/systems/ST_75.png",
-//   "/images/systems/ST_76.png",
-//   "/images/systems/ST_77.png",
-//   "/images/systems/ST_78.png",
-//   "/images/systems/ST_79.png",
-//   "/images/systems/ST_80.png",
-//   "/images/systems/ST_81.png",
-//   "/images/systems/ST_82A.png",
-//   "/images/systems/ST_82B.png",
-//   "/images/systems/ST_83A.png",
-//   "/images/systems/ST_83B.png",
-//   "/images/systems/ST_84A.png",
-//   "/images/systems/ST_84B.png",
-//   "/images/systems/ST_85A.png",
-//   "/images/systems/ST_85B.png",
-//   "/images/systems/ST_86A.png",
-//   "/images/systems/ST_86B.png",
-//   "/images/systems/ST_87A.png",
-//   "/images/systems/ST_87B.png",
-//   "/images/systems/ST_88A.png",
-//   "/images/systems/ST_88B.png",
-//   "/images/systems/ST_89A.png",
-//   "/images/systems/ST_89B.png",
-//   "/images/systems/ST_90A.png",
-//   "/images/systems/ST_90B.png",
-//   "/images/systems/ST_91A.png",
-//   "/images/systems/ST_91B.png",
-//   "/images/systems/ST_92.png",
-// ];
-
-function fillHomeSystems(a: string, numFactions: number) {
-  let currentIndex = 0;
-  return a
-    .split(" ")
-    .map((tile) => {
-      if (tile === "0") {
-        currentIndex++;
-        if (currentIndex > numFactions) {
-          return "-1";
-        }
-        return `P${currentIndex}`;
-      }
-      return tile;
-    })
-    .join(" ");
 }
 
 type Details = "NONE" | "ATTACHMENTS" | "OWNERS" | "TECH_SKIPS" | "TYPES";

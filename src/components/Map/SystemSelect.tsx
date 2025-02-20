@@ -3,6 +3,7 @@ import Hexagon from "../../../public/images/systems/Hexagon.png";
 import { useGameId } from "../../context/dataHooks";
 import { getFactionSystemNumber, validSystemNumber } from "../../util/map";
 import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
 import styles from "./Map.module.scss";
 
 interface Cube {
@@ -142,7 +143,7 @@ export function SystemImage({
           }}
         >
           <NextImage
-            unoptimized
+            sizes={rem(256)}
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
@@ -204,7 +205,7 @@ export function SystemImage({
       }}
     >
       <NextImage
-        unoptimized
+        sizes={rem(256)}
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         fill

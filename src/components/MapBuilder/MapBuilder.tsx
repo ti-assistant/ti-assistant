@@ -178,7 +178,7 @@ export function SystemImage({
           src={Hexagon}
           alt={`System ${systemNumber} Tile`}
           fill
-          sizes={rem(128)}
+          sizes={rem(144)}
           style={{
             opacity: "10%",
             objectFit: "contain",
@@ -221,11 +221,10 @@ export function SystemImage({
           }}
         >
           <NextImage
-            unoptimized
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
-            sizes={rem(128)}
+            sizes={rem(256)}
             style={{ objectFit: "contain" }}
           />
         </div>
@@ -245,7 +244,7 @@ export function SystemImage({
           src={Hexagon}
           alt={`System Tile`}
           fill
-          sizes={rem(128)}
+          sizes={rem(144)}
           style={{ opacity: "10%", objectFit: "contain" }}
           priority
         />
@@ -277,10 +276,9 @@ export function SystemImage({
         }}
       >
         <NextImage
-          unoptimized
           src={`/images/systems/ST_92.png`}
           alt={`Player Home System`}
-          sizes={rem(128)}
+          sizes={rem(256)}
           fill
           style={{ objectFit: "contain" }}
           priority
@@ -341,12 +339,11 @@ export function SystemImage({
       }}
     >
       <NextImage
-        unoptimized
         className={classNames}
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         fill
-        sizes={rem(128)}
+        sizes={rem(256)}
         style={{ objectFit: "contain" }}
         priority={systemNumber === "18"}
       />

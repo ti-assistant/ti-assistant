@@ -665,6 +665,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 }}
               >
                 <Image
+                  sizes={rem(144)}
                   src={`/images/custodians.png`}
                   alt={`Custodians Token`}
                   fill
@@ -1891,6 +1892,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               }}
             >
               <Image
+                sizes={rem(144)}
                 src={`/images/custodians.png`}
                 alt={`Custodians Token`}
                 fill

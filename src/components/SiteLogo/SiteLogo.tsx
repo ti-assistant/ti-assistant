@@ -9,9 +9,8 @@ export default function SiteLogo() {
       <Image
         src={Logo}
         alt=""
-        sizes={rem(32)}
+        sizes={rem(64)}
         fill
-        unoptimized
         style={{ objectFit: "contain" }}
         priority
       />
