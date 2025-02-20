@@ -11,6 +11,7 @@ export default function SiteLogo() {
         alt=""
         sizes={rem(32)}
         fill
+        unoptimized
         style={{ objectFit: "contain" }}
         priority
       />
