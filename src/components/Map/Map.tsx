@@ -165,6 +165,7 @@ export function SystemImage({
           }}
         >
           <NextImage
+            unoptimized
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
@@ -225,6 +226,7 @@ export function SystemImage({
       }}
     >
       <NextImage
+        unoptimized
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         sizes={rem(128)}
@@ -261,6 +263,7 @@ export function SystemImage({
                 }}
               >
                 <NextImage
+                  unoptimized
                   src={`/images/destroyed.webp`}
                   alt={`Destroyed Planet`}
                   fill
@@ -434,6 +437,7 @@ export function SystemImage({
             style={{ position: "relative", width: "90%", height: "90%" }}
           >
             <NextImage
+              unoptimized
               src={`/images/custodians.png`}
               alt={`Custodians Token`}
               fill

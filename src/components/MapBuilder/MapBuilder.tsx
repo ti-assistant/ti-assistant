@@ -221,6 +221,7 @@ export function SystemImage({
           }}
         >
           <NextImage
+            unoptimized
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
@@ -276,6 +277,7 @@ export function SystemImage({
         }}
       >
         <NextImage
+          unoptimized
           src={`/images/systems/ST_92.png`}
           alt={`Player Home System`}
           sizes={rem(128)}
@@ -339,6 +341,7 @@ export function SystemImage({
       }}
     >
       <NextImage
+        unoptimized
         className={classNames}
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}

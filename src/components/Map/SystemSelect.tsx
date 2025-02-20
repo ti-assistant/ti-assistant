@@ -142,6 +142,7 @@ export function SystemImage({
           }}
         >
           <NextImage
+            unoptimized
             src={`/images/systems/ST_${systemNumber}.png`}
             alt={`System ${systemNumber} Tile`}
             fill
@@ -203,6 +204,7 @@ export function SystemImage({
       }}
     >
       <NextImage
+        unoptimized
         src={`/images/systems/ST_${systemNumber}.png`}
         alt={`System ${systemNumber} Tile`}
         fill
