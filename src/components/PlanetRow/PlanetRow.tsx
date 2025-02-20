@@ -18,6 +18,10 @@ import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
 import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
+import GreenTechSVG from "../../icons/techs/GreenTech";
+import BlueTechSVG from "../../icons/techs/BlueTech";
+import YellowTechSVG from "../../icons/techs/YellowTech";
+import RedTechSVG from "../../icons/techs/RedTech";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -263,41 +267,13 @@ function PlanetAttributes({
           <LegendaryPlanetIcon planetName={planetName} ability={ability} />
         );
       case "red-skip":
-        return (
-          <Image
-            src="/images/red_tech.webp"
-            alt="Red Tech Skip"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        );
+        return <RedTechSVG />;
       case "yellow-skip":
-        return (
-          <Image
-            src="/images/yellow_tech.webp"
-            alt="Yellow Tech Skip"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        );
+        return <YellowTechSVG />;
       case "blue-skip":
-        return (
-          <Image
-            src="/images/blue_tech.webp"
-            alt="Blue Tech Skip"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        );
+        return <BlueTechSVG />;
       case "green-skip":
-        return (
-          <Image
-            src="/images/green_tech.webp"
-            alt="Green Tech Skip"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        );
+        return <GreenTechSVG />;
       case "demilitarized":
         return <DemilitarizedZoneSVG />;
       case "tomb":

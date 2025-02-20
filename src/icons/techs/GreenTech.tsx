@@ -1,7 +1,13 @@
-export default function GreenTechSVG() {
+export default function GreenTechSVG({
+  outline = false,
+}: {
+  outline?: boolean;
+}) {
+  const fill = outline ? "none" : "#006123";
+  const stroke = outline ? "#eee" : "#00a756";
   return (
-    <svg viewBox="0 0 50 58" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(-92.205 -108.77)" fill="none" stroke="#eee">
+    <svg viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(-88.205 -108.77)" fill={fill} stroke={stroke}>
         <circle cx="117.4" cy="149.88" r="14.868" stroke-width="2.2175" />
         <path
           d="m100.35 130.65a23.52 11.322 0 0 0-6.6877 7.8993 23.52 11.322 0 0 0 6.3958 7.753 17.713 17.561 0 0 1 4.0679-8.5488 17.713 17.561 0 0 1-3.776-7.1034zm34.201 0.26613a17.713 17.561 0 0 1-3.7046 6.8404 17.713 17.561 0 0 1 4.0387 8.2465 23.52 11.322 0 0 0 5.8178-7.4538 23.52 11.322 0 0 0-6.1519-7.6331z"

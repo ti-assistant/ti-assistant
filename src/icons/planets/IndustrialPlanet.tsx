@@ -1,7 +1,7 @@
 export default function IndustrialPlanetSVG() {
   return (
     <svg
-      viewBox="0 0 30.420156 30.292889"
+      viewBox="0 0 30.420156 30.420156"
       xmlns="http://www.w3.org/2000/svg"
       fill="#007f3f"
       stroke="#fff"

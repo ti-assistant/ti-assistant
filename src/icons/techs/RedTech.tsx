@@ -1,15 +1,17 @@
-export default function RedTechSVG() {
+export default function RedTechSVG({ outline = false }: { outline?: boolean }) {
+  const fill = outline ? "none" : "#960010";
+  const stroke = outline ? "#eee" : "#ff6070";
   return (
     <svg
-      viewBox="0 0 50 61"
+      viewBox="0 0 61 61"
       xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      stroke="#eee"
+      fill={fill}
+      stroke={stroke}
       stroke-width="2"
       stroke-linecap="butt"
       stroke-linejoin="round"
     >
-      <g transform="translate(-79.588737,-84.679497)">
+      <g transform="translate(-73.388737,-84.679497)">
         <path
           d="M 82.00835,101.19584 100.0785,87.221781 v 27.948099 z"
           id="path3717"
@@ -25,7 +27,7 @@ export default function RedTechSVG() {
           transform="matrix(0.26458333,0,0,0.26458333,79.588737,84.679497)"
         />
         <rect
-          fill="#eee"
+          fill={stroke}
           stroke="none"
           id="rect7644"
           width="2.8282318"

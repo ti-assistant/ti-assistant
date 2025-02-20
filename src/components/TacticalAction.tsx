@@ -89,12 +89,6 @@ export function TacticalAction({
     }
     return -1;
   });
-  conqueredPlanets.sort((a, b) => {
-    if (a.planet > b.planet) {
-      return 1;
-    }
-    return -1;
-  });
 
   const intl = useIntl();
 
