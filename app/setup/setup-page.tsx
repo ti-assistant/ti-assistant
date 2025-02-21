@@ -703,17 +703,17 @@ function getFactionIndex(
       const standard = options["map-style"] === "standard";
       switch (position) {
         case 7:
-          return 3;
+          return standard ? 2 : 3;
         case 6:
           return 2;
         case 0:
-          return 0;
+          return standard ? 3 : 0;
         case 1:
-          return standard ? 1 : 0;
+          return 0;
         case 2:
           return 1;
         case 4:
-          return 2;
+          return standard ? 1 : 2;
       }
     case 5:
       const warp = options["map-style"] === "warp";

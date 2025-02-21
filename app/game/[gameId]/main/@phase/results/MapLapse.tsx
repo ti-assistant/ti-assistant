@@ -40,7 +40,7 @@ export default function MapLapse({
       className="flexRow"
       style={{
         width: rem(620),
-        height: rem(512),
+        height: rem(500),
         justifyContent: "flex-start",
         alignItems: "center",
         position: "relative",

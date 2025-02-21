@@ -20,9 +20,10 @@ import {
 import { getBaseData } from "../data/baseData";
 import { Loader } from "../Loader";
 import { getMapString } from "../util/options";
-import { Optional } from "../util/types/types";
+import { ActionLog, Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import Timers from "../../app/game/[gameId]/main/@phase/results/Timers";
+import { processMapString } from "../util/map";
 
 type View = "Game Log" | "Victory Points" | "Techs" | "Map Lapse" | "Timers";
 
@@ -83,28 +84,8 @@ export default function ResultsPhase() {
           <BorderedDiv>Download Game Data</BorderedDiv>
         </a>
       </div>
-      <div style={{ marginTop: rem(108), width: "100%" }}>
+      <div style={{ marginTop: rem(96), width: "100%" }}>
         <InnerContent viewing={viewing} />
-        {/* {viewing === "Game Log" ? (
-          <LabeledDiv label="Game Log (Beta)">
-            <GameLog />
-          </LabeledDiv>
-        ) : null}
-        {viewing === "Victory Points" ? (
-          <LabeledDiv label="Victory Points" style={{ width: "fit-content" }}>
-            <VictoryPointsGraph />
-          </LabeledDiv>
-        ) : null}
-        {viewing === "Techs" ? (
-          <LabeledDiv label="Techs" style={{ width: "fit-content" }}>
-            <TechGraph />
-          </LabeledDiv>
-        ) : null}
-        {viewing === "Map Lapse" ? (
-          <LabeledDiv label="Map Lapse" style={{ width: "fit-content" }}>
-            <MapLapse />
-          </LabeledDiv>
-        ) : null} */}
       </div>
     </React.Fragment>
   );
@@ -376,7 +357,7 @@ function buildSetupGameData(gameData: GameData): {
   speaker: number;
   options: Options;
 } {
-  const actionLog = gameData.actionLog ?? [];
+  const actionLog = (gameData.actionLog ?? []) as ActionLog;
   let speaker = 1;
   for (let i = actionLog.length - 1; i >= 0; i--) {
     const entry = actionLog[i];
@@ -398,10 +379,16 @@ function buildSetupGameData(gameData: GameData): {
       playerName: faction.playerName,
     };
   }
+  const options: Options = structuredClone(gameData.options);
+  options["processed-map-string"] = processMapString(
+    options["map-string"] ?? "",
+    options["map-style"],
+    factions.length
+  );
 
   return {
     factions: factions,
     speaker: speaker,
-    options: gameData.options,
+    options: options,
   };
 }

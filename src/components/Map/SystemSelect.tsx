@@ -1,10 +1,7 @@
-import NextImage from "next/image";
-import Hexagon from "../../../public/images/systems/Hexagon.png";
-import { useGameId } from "../../context/dataHooks";
-import { getFactionSystemNumber, validSystemNumber } from "../../util/map";
-import { Optional } from "../../util/types/types";
-import { rem } from "../../util/util";
+import { usePlanets } from "../../context/dataHooks";
+import { getFactionSystemNumber } from "../../util/map";
 import styles from "./Map.module.scss";
+import SystemImage from "./SystemImage";
 
 interface Cube {
   q: number;
@@ -81,140 +78,6 @@ function CubeToPixel(hex: Cube, size: number) {
   return Point(x, y);
 }
 
-function getRotationClass(key: string) {
-  switch (key) {
-    case "rotateSixty":
-      return styles.rotateSixty;
-    case "rotateOneTwenty":
-      return styles.rotateOneTwenty;
-    case "rotateOneEighty":
-      return styles.rotateOneEighty;
-    case "rotateTwoForty":
-      return styles.rotateTwoForty;
-    case "rotateThreeHundred":
-      return styles.rotateThreeHundred;
-  }
-}
-
-function getRotationClassFromNumber(key: number) {
-  switch (key) {
-    case 1:
-      return styles.rotateSixty;
-    case 2:
-      return styles.rotateOneTwenty;
-    case 3:
-      return styles.rotateOneEighty;
-    case 4:
-      return styles.rotateTwoForty;
-    case 5:
-      return styles.rotateThreeHundred;
-  }
-  return "";
-}
-
-export function SystemImage({
-  gameId,
-  systemNumber,
-  selectable,
-  onClick,
-}: {
-  gameId: string;
-  systemNumber: Optional<string>;
-  selectable: boolean;
-  onClick: (systemId: string) => void;
-}) {
-  if (
-    !systemNumber ||
-    systemNumber === "0" ||
-    !validSystemNumber(systemNumber)
-  ) {
-    if (systemNumber && systemNumber.split(":").length > 1) {
-      const classNames = getRotationClass(systemNumber.split(":")[0] ?? "");
-      systemNumber = systemNumber.split(":")[1] ?? "";
-      return (
-        <div
-          className={`flexRow ${classNames}`}
-          style={{
-            position: "relative",
-            width: "100%",
-            height: "100%",
-            cursor: selectable ? "pointer" : undefined,
-            opacity: selectable ? undefined : 0.25,
-          }}
-        >
-          <NextImage
-            sizes={rem(256)}
-            src={`/images/systems/ST_${systemNumber}.png`}
-            alt={`System ${systemNumber} Tile`}
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        </div>
-      );
-    }
-    return (
-      <div
-        className="flexRow"
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          cursor: selectable ? "pointer" : undefined,
-          opacity: selectable ? undefined : 0.25,
-        }}
-      >
-        <NextImage
-          src={Hexagon}
-          alt={`System Tile`}
-          fill
-          style={{ opacity: "10%", objectFit: "contain" }}
-        />
-      </div>
-    );
-  }
-
-  let classNames: Optional<string> = "";
-  if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
-    classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("A")[1] ?? "0")
-    );
-    systemNumber = `${systemNumber.split("A")[0] ?? ""}A`;
-  }
-  if (systemNumber.includes("B") && systemNumber.split("B").length > 1) {
-    classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("B")[1] ?? "0")
-    );
-    systemNumber = `${systemNumber.split("B")[0] ?? ""}B`;
-  }
-
-  return (
-    <div
-      className={`flexRow ${classNames}`}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        cursor: selectable ? "pointer" : undefined,
-        opacity: selectable ? undefined : 0.25,
-      }}
-      onClick={() => {
-        if (!systemNumber) {
-          return;
-        }
-        onClick(systemNumber);
-      }}
-    >
-      <NextImage
-        sizes={rem(256)}
-        src={`/images/systems/ST_${systemNumber}.png`}
-        alt={`System ${systemNumber} Tile`}
-        fill
-        style={{ objectFit: "contain" }}
-      />
-    </div>
-  );
-}
-
 interface MapProps {
   mapString: string;
   mapStyle: MapStyle;
@@ -238,7 +101,7 @@ export default function SystemSelect({
   canSelectSystem,
   onSelect,
 }: MapProps) {
-  const gameId = useGameId();
+  const planets = usePlanets();
 
   let updatedSystemTiles = mapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
@@ -405,10 +268,11 @@ export default function SystemSelect({
               }}
             >
               <SystemImage
-                gameId={gameId}
-                systemNumber={tile}
-                selectable={canSelectSystem(tile)}
                 onClick={onSelect}
+                overlayDetails="NONE"
+                planets={planets}
+                selectable={canSelectSystem(tile)}
+                systemNumber={tile}
               />
             </div>
           );
@@ -439,10 +303,11 @@ export default function SystemSelect({
             }}
           >
             <SystemImage
-              gameId={gameId}
-              systemNumber="51"
               onClick={onSelect}
+              overlayDetails="NONE"
+              planets={planets}
               selectable={false}
+              systemNumber="51"
             />
           </div>
         ) : null}
@@ -458,12 +323,13 @@ export default function SystemSelect({
             }}
           >
             <SystemImage
-              gameId={gameId}
-              systemNumber={mallice === "PURGED" ? "81" : `82${mallice}`}
+              onClick={onSelect}
+              overlayDetails="NONE"
+              planets={planets}
               selectable={canSelectSystem(
                 mallice === "PURGED" ? "81" : `82${mallice}`
               )}
-              onClick={onSelect}
+              systemNumber={mallice === "PURGED" ? "81" : `82${mallice}`}
             />
           </div>
         ) : null}

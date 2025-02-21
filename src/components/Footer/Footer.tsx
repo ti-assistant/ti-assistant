@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Map from "../../../src/components/Map/Map";
 import { FactionSummary } from "../../FactionSummary";
@@ -141,6 +141,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
 
   const mapString = getMapString(options, mapOrderedFactions.length);
 
+  const numButtons = shouldBlockSpeakerUpdates() ? 3 : 4;
   return (
     <>
       <button
@@ -308,6 +309,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
             defaultMessage="Update"
           />
         }
+        style={{ "--num-buttons": numButtons } as CSSProperties}
       >
         {!shouldBlockSpeakerUpdates() ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>

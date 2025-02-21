@@ -6,6 +6,8 @@
 }
 
 div.UpdateBox {
+  --num-buttons: 4;
+
   position: fixed;
   bottom: 1.3rem;
   left: 4rem;
@@ -17,7 +19,7 @@ div.UpdateBox {
 
 .UpdateBox .UpdateBoxContent {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--num-buttons), minmax(0, 1fr));
 
   column-gap: 0.25rem;
   row-gap: 0.25rem;

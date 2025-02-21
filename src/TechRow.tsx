@@ -5,15 +5,9 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
-import {
-  useCurrentTurn,
-  useFactions,
-  useGameId,
-  useLogEntries,
-} from "./context/dataHooks";
+import { useFactions, useGameId, useLogEntries } from "./context/dataHooks";
 import { useSharedModal } from "./data/SharedModal";
 import { addTechAsync, removeTechAsync } from "./dynamic/api";
-import { getResearchAgreementFaction } from "./util/actionLog";
 import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 import { getTechColor } from "./util/techs";

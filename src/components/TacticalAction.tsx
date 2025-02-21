@@ -456,7 +456,15 @@ export function TacticalAction({
       (nekroTechs.length > 0 || researchableTechs.length > 0) ? (
         <React.Fragment>
           {nekroTechs.length > 0 ? (
-            <LabeledDiv label="TECHNOLOGICAL SINGULARITY" blur>
+            <LabeledDiv
+              label={intl.formatMessage({
+                id: "Nekro Virus.Abilities.Technological Singularity.Title",
+                description:
+                  "Title of Faction Ability: Technological Singularity",
+                defaultMessage: "Technological Singularity",
+              })}
+              blur
+            >
               <div className="flexColumn" style={{ alignItems: "stretch" }}>
                 {nekroTechs.map((tech) => {
                   const techObj = techs[tech];

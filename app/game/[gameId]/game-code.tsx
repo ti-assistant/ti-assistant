@@ -1,8 +1,7 @@
 import Link from "next/link";
 import QRCode from "qrcode";
+import { IntlShape } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
-import { createIntlCache, createIntl, IntlShape } from "react-intl";
-import { getLocale, getMessages } from "../../../src/util/server";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
