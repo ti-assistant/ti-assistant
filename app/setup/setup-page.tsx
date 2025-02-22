@@ -12,7 +12,7 @@ import Chip from "../../src/components/Chip/Chip";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
-import Map from "../../src/components/Map/Map";
+import GameMap from "../../src/components/Map/GameMap";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import NumberInput from "../../src/components/NumberInput/NumberInput";
 import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
@@ -1732,10 +1732,12 @@ export default function SetupPage({
             <div
               style={{ position: "relative", width: rem(420), aspectRatio: 1 }}
             >
-              <Map
+              <GameMap
                 mapStyle={options["map-style"]}
                 mapString={options["processed-map-string"] ?? ""}
-                mallice={options["expansions"].has("POK") ? "A" : undefined}
+                wormholeNexus={
+                  options["expansions"].has("POK") ? "A" : undefined
+                }
                 factions={activeFactions}
                 hideLegend
               />

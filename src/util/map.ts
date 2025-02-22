@@ -327,7 +327,7 @@ function hasHomeSystems(mapString: string, numFactions: number) {
   return implicitHomeSystems === numFactions;
 }
 
-export function getMalliceSystemNumber(
+export function getWormholeNexusSystemNumber(
   options: Options,
   planets: Partial<Record<PlanetId, Planet>>,
   factions: Partial<Record<FactionId, Faction>>

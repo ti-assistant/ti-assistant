@@ -1,11 +1,7 @@
 import { useState } from "react";
-import { FormattedMessage } from "react-intl";
-import { usePlanets } from "../../context/dataHooks";
 import { getFactionSystemNumber, updateMapString } from "../../util/map";
-import { rem } from "../../util/util";
-import Chip from "../Chip/Chip";
-import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import styles from "./Map.module.scss";
+import styles from "./GameMap.module.scss";
+import OverlayLegend from "./OverlayLegend";
 import { OverlayDetails } from "./PlanetOverlay";
 import SystemImage from "./SystemImage";
 
@@ -87,7 +83,7 @@ function CubeToPixel(hex: Cube, size: number) {
 interface MapProps {
   mapString: string;
   mapStyle: MapStyle;
-  mallice?: string | SystemId;
+  wormholeNexus?: string | SystemId;
   factions: {
     id?: FactionId;
     name?: string;
@@ -95,18 +91,24 @@ interface MapProps {
       faction?: FactionId;
     };
   }[];
+  planets?: Partial<Record<PlanetId, Planet>>;
   hideLegend?: boolean;
+  // Used for selecting systems.
+  canSelectSystem?: (systemId: string) => boolean;
+  onSelect?: (systemId: string) => void;
 }
 
-export default function Map({
+export default function GameMap({
   mapString,
   mapStyle,
-  mallice,
+  wormholeNexus,
   factions,
   hideLegend,
+  planets,
+  canSelectSystem,
+  onSelect,
 }: MapProps) {
-  const planets = usePlanets();
-
+  const planetInfo = planets ?? {};
   const [overlayDetails, setOverlayDetails] = useState<OverlayDetails>("NONE");
 
   const updatedMapString =
@@ -266,86 +268,12 @@ export default function Map({
 
   return (
     <div className={styles.Map}>
-      {!hideLegend ? (
-        <div className={styles.Legend} onClick={(e) => e.stopPropagation()}>
-          <LabeledDiv
-            label={
-              <FormattedMessage
-                id="5rR4S2"
-                description="Label for a section that includes map details."
-                defaultMessage="View Details"
-              />
-            }
-            style={{
-              width: "fit-content",
-              backgroundColor: "var(--background-color)",
-            }}
-            innerStyle={{
-              justifyContent: "stretch",
-              alignItems: "stretch",
-              paddingTop: rem(16),
-            }}
-          >
-            <div className={styles.LegendContent}>
-              <Chip
-                fontSize={16}
-                selected={overlayDetails === "NONE"}
-                toggleFn={() => setOverlayDetails("NONE")}
-              >
-                <FormattedMessage
-                  id="n8jSwp"
-                  description="Text on a button that will show no overlay."
-                  defaultMessage="None"
-                />
-              </Chip>
-              <Chip
-                fontSize={16}
-                selected={overlayDetails === "OWNERS"}
-                toggleFn={() => setOverlayDetails("OWNERS")}
-              >
-                <FormattedMessage
-                  id="FhKQXR"
-                  description="Text on a button that will show planet ownership."
-                  defaultMessage="Owners"
-                />
-              </Chip>
-              <Chip
-                fontSize={16}
-                selected={overlayDetails === "TYPES"}
-                toggleFn={() => setOverlayDetails("TYPES")}
-              >
-                <FormattedMessage
-                  id="wDLqxZ"
-                  description="Text on a button that will show planet types."
-                  defaultMessage="Types"
-                />
-              </Chip>
-              <Chip
-                fontSize={16}
-                selected={overlayDetails === "TECH_SKIPS"}
-                toggleFn={() => setOverlayDetails("TECH_SKIPS")}
-              >
-                <FormattedMessage
-                  id="j3n7Nr"
-                  description="Text on a button that will show planets with tech skips."
-                  defaultMessage="Tech Skips"
-                />
-              </Chip>
-              <Chip
-                fontSize={16}
-                selected={overlayDetails === "ATTACHMENTS"}
-                toggleFn={() => setOverlayDetails("ATTACHMENTS")}
-              >
-                <FormattedMessage
-                  id="1odgd1"
-                  description="Text on a button that will show planet attachments."
-                  defaultMessage="Attachments"
-                />
-              </Chip>
-            </div>
-          </LabeledDiv>
-        </div>
-      ) : null}
+      {hideLegend ? null : (
+        <OverlayLegend
+          overlayDetails={overlayDetails}
+          setOverlayDetails={setOverlayDetails}
+        />
+      )}
       <div className={styles.MapBody}>
         {spiral.map((cube, index) => {
           const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
@@ -367,8 +295,10 @@ export default function Map({
             >
               <SystemImage
                 overlayDetails={overlayDetails}
-                planets={planets}
+                planets={planetInfo}
                 systemNumber={tile}
+                selectable={canSelectSystem ? canSelectSystem(tile) : false}
+                onClick={onSelect}
               />
             </div>
           );
@@ -400,12 +330,14 @@ export default function Map({
           >
             <SystemImage
               overlayDetails={overlayDetails}
-              planets={planets}
+              planets={planetInfo}
               systemNumber="51"
+              selectable={false}
+              onClick={onSelect}
             />
           </div>
         ) : null}
-        {mallice ? (
+        {wormholeNexus ? (
           <div
             style={{
               position: "absolute",
@@ -413,8 +345,8 @@ export default function Map({
               right: ghostsCorner === "bottom-left" ? 0 : undefined,
               bottom: 0,
               width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${getMalliceHeight(
-                mallice,
+              height: `${getWormholeNexusHeight(
+                wormholeNexus,
                 tilePercentage,
                 HEX_RATIO
               )}%`,
@@ -422,8 +354,16 @@ export default function Map({
           >
             <SystemImage
               overlayDetails={overlayDetails}
-              planets={planets}
-              systemNumber={getMalliceSystemNum(mallice)}
+              planets={planetInfo}
+              systemNumber={getWormholeNexusSystemNum(wormholeNexus)}
+              selectable={
+                canSelectSystem
+                  ? canSelectSystem(
+                      wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`
+                    )
+                  : false
+              }
+              onClick={onSelect}
             />
           </div>
         ) : null}
@@ -432,7 +372,7 @@ export default function Map({
   );
 }
 
-function getMalliceHeight(
+function getWormholeNexusHeight(
   mallice: string | SystemId,
   tilePercentage: number,
   hexRatio: number
@@ -443,7 +383,7 @@ function getMalliceHeight(
   return tilePercentage;
 }
 
-function getMalliceSystemNum(mallice: string | SystemId) {
+function getWormholeNexusSystemNum(mallice: string | SystemId) {
   if (mallice === "PURGED") {
     return "81";
   }

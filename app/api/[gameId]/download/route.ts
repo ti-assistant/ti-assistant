@@ -3,13 +3,14 @@ import {
   getGameData,
   getTimers,
 } from "../../../../server/util/fetch";
+import { ActionLog } from "../../../../src/util/types/types";
 
 function buildSetupGameData(gameData: StoredGameData): {
   factions: SetupFaction[];
   speaker: number;
   options: Options;
 } {
-  const actionLog = gameData.actionLog ?? [];
+  const actionLog: ActionLog = gameData.actionLog ?? [];
   let speaker = 0;
   for (let i = actionLog.length - 1; i >= 0; i--) {
     const entry = actionLog[i];

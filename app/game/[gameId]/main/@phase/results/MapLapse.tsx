@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Chip from "../../../../../../src/components/Chip/Chip";
-import FixedMap from "../../../../../../src/components/Map/FixedMap";
+import GameMap from "../../../../../../src/components/Map/GameMap";
 import {
   useFactions,
   useGameState,
   useOptions,
 } from "../../../../../../src/context/dataHooks";
-import { getMalliceSystemNumber } from "../../../../../../src/util/map";
+import { getWormholeNexusSystemNumber } from "../../../../../../src/util/map";
 import { objectKeys, rem } from "../../../../../../src/util/util";
 
 interface RoundInfo {
@@ -67,12 +67,17 @@ export default function MapLapse({
         className="flexColumn"
         style={{ position: "relative", height: rem(512), aspectRatio: "1/1" }}
       >
-        <FixedMap
+        <GameMap
           factions={mapOrderedFactions}
           mapString={planets.mapString ?? ""}
           mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
-          mallice={getMalliceSystemNumber(options, planets.planets, factions)}
+          wormholeNexus={getWormholeNexusSystemNumber(
+            options,
+            planets.planets,
+            factions
+          )}
           planets={planets.planets}
+          hideLegend
         />
       </div>
     </div>

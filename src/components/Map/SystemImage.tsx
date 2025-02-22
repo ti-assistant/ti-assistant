@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
+import { validSystemNumber } from "../../util/map";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
-import { validSystemNumber } from "../../util/map";
-import styles from "./Map.module.scss";
+import styles from "./GameMap.module.scss";
 import PlanetOverlay, { OverlayDetails } from "./PlanetOverlay";
 
 function getRotationClass(key: string) {
@@ -80,7 +80,13 @@ export default function SystemImage({
     return (
       <div
         className={`flexRow ${classNames}`}
-        style={{ position: "relative", width: "100%", height: "100%" }}
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          cursor: selectable ? "pointer" : undefined,
+          opacity: onClick && !selectable ? 0.25 : undefined,
+        }}
       >
         <Image
           sizes={rem(256)}
@@ -88,6 +94,11 @@ export default function SystemImage({
           alt={`System ${actualSystemNumber} Tile`}
           fill
           style={{ objectFit: "contain" }}
+        />
+        <PlanetOverlay
+          details={overlayDetails}
+          planets={planets}
+          systemNumber={systemNumber}
         />
       </div>
     );

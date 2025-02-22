@@ -7,6 +7,7 @@ import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import {
   useAgendas,
+  useAllPlanets,
   useFactions,
   useGameId,
   useGameState,
@@ -21,11 +22,11 @@ import {
   repealAgendaAsync,
 } from "../../dynamic/api";
 import { computeVPs } from "../../util/factions";
-import { getMalliceSystemNumber } from "../../util/map";
+import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
 import { rem } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
-import Map from "../Map/Map";
+import GameMap from "../Map/GameMap";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
 
@@ -40,6 +41,7 @@ export default function Header({ viewOnly }: { viewOnly?: boolean }) {
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
+  const allPlanets = useAllPlanets();
   const state = useGameState();
 
   const intl = useIntl();
@@ -137,13 +139,16 @@ export default function Header({ viewOnly }: { viewOnly?: boolean }) {
                   height: "min(100dvh, 100dvw)",
                 }}
               >
-                <Map
+                <GameMap
                   factions={mapOrderedFactions}
-                  mapString={mapString ?? ""}
-                  mapStyle={
-                    options ? options["map-style"] ?? "standard" : "standard"
-                  }
-                  mallice={getMalliceSystemNumber(options, planets, factions)}
+                  mapString={mapString}
+                  mapStyle={options["map-style"]}
+                  wormholeNexus={getWormholeNexusSystemNumber(
+                    options,
+                    planets,
+                    factions
+                  )}
+                  planets={allPlanets}
                 />
               </div>
             )

@@ -1,13 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { CSSProperties, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import Map from "../../../src/components/Map/Map";
+import GameMap from "../Map/GameMap";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
 import {
+  useAllPlanets,
   useFactions,
   useGameId,
   useGameState,
@@ -22,7 +22,7 @@ import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 import { useSharedSettings } from "../../util/cookies";
 import { getFactionColor, getFactionName } from "../../util/factions";
-import { getMalliceSystemNumber } from "../../util/map";
+import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
@@ -61,6 +61,7 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
 });
 
 export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
+  const allPlanets = useAllPlanets();
   const factions = useFactions();
   const gameId = useGameId();
   const options = useOptions();
@@ -198,15 +199,16 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
                       height: "min(100dvh, 100dvw)",
                     }}
                   >
-                    <Map
+                    <GameMap
                       factions={mapOrderedFactions}
-                      mapString={mapString ?? ""}
-                      mapStyle={options["map-style"] ?? "standard"}
-                      mallice={getMalliceSystemNumber(
+                      wormholeNexus={getWormholeNexusSystemNumber(
                         options,
                         planets,
                         factions
                       )}
+                      mapString={mapString ?? ""}
+                      mapStyle={options["map-style"] ?? "standard"}
+                      planets={allPlanets}
                     />
                   </div>
                 </div>

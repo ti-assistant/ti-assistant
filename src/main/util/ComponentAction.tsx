@@ -12,7 +12,7 @@ import FactionSelectRadialMenu from "../../components/FactionSelectRadialMenu/Fa
 import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../components/LabeledLine/LabeledLine";
-import Map from "../../components/Map/Map";
+import GameMap from "../../components/Map/GameMap";
 import MapBuilder, {
   SystemImage,
 } from "../../components/MapBuilder/MapBuilder";
@@ -65,7 +65,7 @@ import { hasTech } from "../../util/api/techs";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import {
   getFactionSystemNumber,
-  getMalliceSystemNumber,
+  getWormholeNexusSystemNumber,
   updateMapString,
 } from "../../util/map";
 import { getMapString } from "../../util/options";
@@ -1497,12 +1497,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       leftLabel = alreadyUsed ? "Updated Map" : "Add System";
       innerContent = alreadyUsed ? (
         <div style={{ position: "relative", width: "100%", aspectRatio: 1 }}>
-          <Map
+          <GameMap
             mapString={mapString}
             mapStyle={options["map-style"]}
             factions={mapOrderedFactions}
             hideLegend
-            mallice={getMalliceSystemNumber(options, planets, factions)}
+            wormholeNexus={getWormholeNexusSystemNumber(
+              options,
+              planets,
+              factions
+            )}
+            planets={planets}
           />
         </div>
       ) : (
@@ -1858,17 +1863,22 @@ function RiftwalkerMeian() {
   if (alreadyUsed) {
     return (
       <div style={{ position: "relative", width: "100%", aspectRatio: 1 }}>
-        <Map
+        <GameMap
           mapString={updatedSystemTiles.join(" ")}
           mapStyle={options["map-style"]}
           factions={mapOrderedFactions}
-          mallice={getMalliceSystemNumber(options, planets, factions)}
+          wormholeNexus={getWormholeNexusSystemNumber(
+            options,
+            planets,
+            factions
+          )}
           hideLegend
+          planets={planets}
         />
       </div>
     );
   }
-  const mallice = getMalliceSystemNumber(options, planets, factions);
+  const mallice = getWormholeNexusSystemNumber(options, planets, factions);
   return (
     <div
       className="flexColumn"

@@ -1,9 +1,5 @@
 import React, { CSSProperties, PropsWithChildren } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { InfoRow } from "../InfoRow";
-import { SelectableRow } from "../SelectableRow";
-import { TechRow } from "../TechRow";
 import {
   useAttachments,
   useCurrentTurn,
@@ -30,6 +26,10 @@ import {
   undoAdjudicatorBaalAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
+import { ClientOnlyHoverMenu } from "../HoverMenu";
+import { InfoRow } from "../InfoRow";
+import { SelectableRow } from "../SelectableRow";
+import { TechRow } from "../TechRow";
 import {
   getAdjudicatorBaalSystem,
   getAttachments,
@@ -38,7 +38,7 @@ import {
   getResearchedTechs,
 } from "../util/actionLog";
 import { hasTech } from "../util/api/techs";
-import { getMalliceSystemNumber } from "../util/map";
+import { getWormholeNexusSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { applyPlanetAttachments } from "../util/planets";
 import { objectKeys, rem } from "../util/util";
@@ -46,7 +46,7 @@ import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentS
 import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
-import SystemSelect from "./Map/SystemSelect";
+import GameMap from "./Map/GameMap";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ScoreObjectiveRow from "./ObjectiveRow/ScoreObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
@@ -615,10 +615,12 @@ function AdjudicatorBaal() {
         className="flexColumn"
         style={{ width: rem(320), height: rem(320), marginBottom: rem(16) }}
       >
-        <SystemSelect
+        <GameMap
+          hideLegend
           mapString={mapString}
           mapStyle={options["map-style"]}
           factions={mapOrderedFactions}
+          planets={planets}
           canSelectSystem={(systemId) => {
             const systemNumber = parseInt(systemId);
             if (
@@ -648,7 +650,11 @@ function AdjudicatorBaal() {
 
             playAdjudicatorBaalAsync(gameId, systemId as SystemId);
           }}
-          mallice={getMalliceSystemNumber(options, planets, factions)}
+          wormholeNexus={getWormholeNexusSystemNumber(
+            options,
+            planets,
+            factions
+          )}
         />
       </div>
     </ClientOnlyHoverMenu>
