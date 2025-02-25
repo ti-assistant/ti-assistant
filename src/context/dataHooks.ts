@@ -38,7 +38,7 @@ export function useMemoizedGameDataValue<BaseType, Type>(
       }
       setValue(newValue);
     }, path);
-  }, [path, fn]);
+  }, [path, fn, value]);
 
   return value;
 }

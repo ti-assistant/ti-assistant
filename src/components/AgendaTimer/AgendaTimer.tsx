@@ -38,16 +38,12 @@ export default function AgendaTimer({ agendaNum }: { agendaNum: number }) {
     timerEnd = firstResolution ? secondResolution?.gameSeconds ?? 0 : localTime;
   }
 
-  console.log("Agenda Num", agendaNum);
-  console.log("Start", timerStart);
-  console.log("End", timerEnd);
-
   useEffect(() => {
     const gameTime = timers.game ?? 0;
     if (gameTime > localTime) {
       setLocalTime(gameTime);
     }
-  }, [timers.game]);
+  }, [timers.game, localTime]);
 
   let label = "First Agenda";
   if (agendaNum === 2) {
