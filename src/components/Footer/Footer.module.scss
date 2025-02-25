@@ -5,12 +5,42 @@
   justify-content: space-between;
 }
 
-.UpdateBox {
+div.UpdateBox {
+  --num-buttons: 4;
+
   position: fixed;
-  bottom: 1rem;
+  bottom: 1.3rem;
   left: 4rem;
 
+  width: fit-content;
+
   z-index: 1;
+}
+
+.UpdateBox .UpdateBoxContent {
+  display: grid;
+  grid-template-columns: repeat(var(--num-buttons), minmax(0, 1fr));
+
+  column-gap: 0.25rem;
+  row-gap: 0.25rem;
+}
+
+.UpdateBoxElement {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 2;
+
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+}
+
+.ButtonLabel {
+  text-align: center;
+  font-family: Myriad Pro;
+  font-size: 0.625rem;
+  letter-spacing: 0.02rem;
 }
 
 .FactionBox {

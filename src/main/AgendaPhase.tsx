@@ -5,6 +5,7 @@ import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { InfoRow } from "../InfoRow";
 import { LockedButtons } from "../LockedButton";
 import { SelectableRow } from "../SelectableRow";
+import AgendaTimer from "../components/AgendaTimer/AgendaTimer";
 import FactionCircle from "../components/FactionCircle/FactionCircle";
 import FactionIcon from "../components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -73,14 +74,13 @@ import {
   outcomeString,
   phaseString,
 } from "../util/strings";
-import { Optional } from "../util/types/types";
+import { ActionLog, Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import styles from "./AgendaPhase.module.scss";
-import AgendaTimer from "../components/AgendaTimer/AgendaTimer";
 
 export function computeVotes(
   agenda: Optional<Agenda>,
-  currentTurn: ActionLogEntry[],
+  currentTurn: ActionLog,
   numFactions: number
 ) {
   const currentCouncilor = getActionCardTargets(
@@ -157,10 +157,7 @@ function startNextRound(gameId: string) {
   advancePhaseAsync(gameId, true);
 }
 
-function getSelectedOutcome(
-  selectedTargets: string[],
-  currentTurn: ActionLogEntry[]
-) {
+function getSelectedOutcome(selectedTargets: string[], currentTurn: ActionLog) {
   if (selectedTargets.length === 1) {
     return selectedTargets[0];
   }
@@ -171,7 +168,7 @@ function canScoreObjective(
   factionId: FactionId,
   objectiveId: ObjectiveId,
   objectives: Partial<Record<ObjectiveId, Objective>>,
-  currentTurn: ActionLogEntry[]
+  currentTurn: ActionLog
 ) {
   const scored = getScoredObjectives(currentTurn, factionId);
   if (scored.includes(objectiveId)) {

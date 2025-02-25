@@ -56,14 +56,14 @@ export class GiftOfPrescienceHandler implements Handler {
     return updates;
   }
 
-  getLogEntry(): ActionLogEntry {
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
     return {
       timestampMillis: Date.now(),
       data: this.data,
     };
   }
 
-  getActionLogAction(entry: ActionLogEntry): ActionLogAction {
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "GIFT_OF_PRESCIENCE" &&
       this.data.event.faction === GIFT_OF_PRESCIENCE_FACTION

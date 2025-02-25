@@ -1,6 +1,5 @@
-import { IntlShape } from "react-intl";
+import { getTechCountsByType } from "../../app/game/[gameId]/main/@phase/results/TechGraph";
 import { LogEntryElementProps } from "../components/LogEntry";
-import { getBaseData } from "../data/baseData";
 import {
   buildObjectives,
   buildPlanets,
@@ -10,10 +9,10 @@ import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "../util/api/actionLog";
 import { getHandler } from "../util/api/gameLog";
 import { updateGameData } from "../util/api/handler";
 import { updateActionLog } from "../util/api/update";
-import { getMapString } from "../util/options";
-import { getTechCountsByType } from "../../app/game/[gameId]/main/@phase/results/TechGraph";
-import { objectEntries, objectKeys } from "../util/util";
 import { computeVPsByCategory } from "../util/factions";
+import { getMapString } from "../util/options";
+import { ActionLog } from "../util/types/types";
+import { objectEntries, objectKeys } from "../util/util";
 
 type WithKey<T> = T & { key: number };
 
@@ -50,7 +49,7 @@ function cleanLogData(data: GameUpdateData) {
 
 function buildGameLog(
   initialGameData: StoredGameData,
-  reversedActionLog: ActionLogEntry[],
+  reversedActionLog: ActionLog,
   baseData: BaseData
 ) {
   const dynamicGameData = structuredClone(initialGameData);

@@ -6,6 +6,10 @@ import { TechRow } from "./TechRow";
 import { sortTechsByName, sortTechsByPreReqAndExpansion } from "./util/techs";
 import { FormattedMessage } from "react-intl";
 import { rem } from "./util/util";
+import GreenTechSVG from "./icons/techs/GreenTech";
+import YellowTechSVG from "./icons/techs/YellowTech";
+import RedTechSVG from "./icons/techs/RedTech";
+import BlueTechSVG from "./icons/techs/BlueTech";
 
 interface AddTechListProps {
   techs: Tech[];
@@ -50,42 +54,22 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
       >
         <Tab selectTab={setTabShown} id="blue" selectedId={tabShown}>
           <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <Image
-              src="/images/blue_tech.webp"
-              alt="Blue Tech Skip"
-              width={22}
-              height={22}
-            />
+            <BlueTechSVG />
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="green" selectedId={tabShown}>
           <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <Image
-              src="/images/green_tech.webp"
-              alt="Green Tech Skip"
-              width={22}
-              height={22}
-            />
+            <GreenTechSVG />
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="yellow" selectedId={tabShown}>
           <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <Image
-              src="/images/yellow_tech.webp"
-              alt="Yellow Tech Skip"
-              width={22}
-              height={22}
-            />
+            <YellowTechSVG />
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="red" selectedId={tabShown}>
           <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <Image
-              src="/images/red_tech.webp"
-              alt="Red Tech Skip"
-              width={22}
-              height={22}
-            />
+            <RedTechSVG />
           </div>
         </Tab>
         <Tab selectTab={setTabShown} id="upgrades" selectedId={tabShown}>

@@ -1,10 +1,7 @@
 import { IntlShape } from "react-intl";
-import {
-  updateMapString,
-  isValidMapString,
-  validSystemNumber,
-} from "../util/map";
+import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
+import { objectEntries } from "../util/util";
 
 let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
   return {};
@@ -119,7 +116,7 @@ export function buildAgendas(storedGameData: StoredGameData, intl: IntlShape) {
 
   const expansions = storedGameData.options.expansions;
 
-  Object.entries(getBaseAgendas(intl)).forEach(([agendaId, agenda]) => {
+  objectEntries(getBaseAgendas(intl)).forEach(([agendaId, agenda]) => {
     if (
       agenda.expansion !== "BASE" &&
       agenda.expansion !== "BASE ONLY" &&
@@ -131,9 +128,9 @@ export function buildAgendas(storedGameData: StoredGameData, intl: IntlShape) {
       return;
     }
 
-    agendas[agendaId as AgendaId] = {
+    agendas[agendaId] = {
       ...agenda,
-      ...(gameAgendas[agendaId as AgendaId] ?? {}),
+      ...(gameAgendas[agendaId] ?? {}),
     };
   });
 
@@ -149,7 +146,7 @@ export function buildAttachments(
   const expansions = storedGameData.options.expansions;
 
   const attachments: Partial<Record<AttachmentId, Attachment>> = {};
-  Object.entries(getBaseAttachments(intl)).forEach(
+  objectEntries(getBaseAttachments(intl)).forEach(
     ([attachmentId, attachment]) => {
       // Maybe filter out PoK attachments.
       if (
@@ -169,9 +166,9 @@ export function buildAttachments(
         return;
       }
 
-      attachments[attachmentId as AttachmentId] = {
+      attachments[attachmentId] = {
         ...attachment,
-        ...(gameAttachments[attachmentId as AttachmentId] ?? {}),
+        ...(gameAttachments[attachmentId] ?? {}),
       };
     }
   );
@@ -196,39 +193,37 @@ export function buildComponents(
   const expansions = storedGameData.options.expansions;
 
   let components: Record<string, Component> = {};
-  Object.entries(getBaseComponents(intl)).forEach(
-    ([componentId, component]) => {
-      // Maybe filter out PoK components.
-      if (
-        component.expansion &&
-        component.expansion !== "BASE" &&
-        component.expansion !== "BASE ONLY" &&
-        !expansions.includes(component.expansion)
-      ) {
-        return;
-      }
-
-      // Filter out Codex Two relics if not using PoK.
-      if (!expansions.includes("POK") && component.type === "RELIC") {
-        return;
-      }
-      // Filter out leaders if not using PoK.
-      if (!expansions.includes("POK") && component.type === "LEADER") {
-        return;
-      }
-      // Filter out components that are removed by PoK.
-      if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
-        return;
-      }
-
-      components[componentId] = {
-        ...component,
-        ...(gameComponents[componentId] ?? {}),
-      };
+  objectEntries(getBaseComponents(intl)).forEach(([componentId, component]) => {
+    // Maybe filter out PoK components.
+    if (
+      component.expansion &&
+      component.expansion !== "BASE" &&
+      component.expansion !== "BASE ONLY" &&
+      !expansions.includes(component.expansion)
+    ) {
+      return;
     }
-  );
 
-  const componentLeaders = Object.entries(getBaseLeaders(intl))
+    // Filter out Codex Two relics if not using PoK.
+    if (!expansions.includes("POK") && component.type === "RELIC") {
+      return;
+    }
+    // Filter out leaders if not using PoK.
+    if (!expansions.includes("POK") && component.type === "LEADER") {
+      return;
+    }
+    // Filter out components that are removed by PoK.
+    if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
+      return;
+    }
+
+    components[componentId] = {
+      ...component,
+      ...(gameComponents[componentId] ?? {}),
+    };
+  });
+
+  const componentLeaders = objectEntries(getBaseLeaders(intl))
     // Filter out leaders that are not in the game.
     .filter(([_, leader]) => {
       if (leader.faction && !gameFactions[leader.faction]) {
@@ -274,7 +269,7 @@ export function buildComponents(
     delete components["Ssruu"];
   }
 
-  Object.entries(getBaseRelics(intl))
+  objectEntries(getBaseRelics(intl))
     .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
     .forEach(([relicId, relic]) => {
       if (!expansions.includes("POK")) {
@@ -285,10 +280,10 @@ export function buildComponents(
         return;
       }
 
-      components[relicId as RelicId] = {
+      components[relicId] = {
         ...relic,
-        ...(gameComponents[relicId as RelicId] ?? {}),
-        ...(gameRelics[relicId as RelicId] ?? {}),
+        ...(gameComponents[relicId] ?? {}),
+        ...(gameRelics[relicId] ?? {}),
         type: "RELIC",
       };
     });
@@ -315,14 +310,14 @@ export function buildComponents(
 
 export function buildFactions(storedGameData: StoredGameData, intl: IntlShape) {
   const baseFactions: Partial<Record<FactionId, BaseFaction>> = {};
-  Object.entries(getBaseFactions(intl)).forEach(([id, faction]) => {
-    const factionId = id as FactionId;
+  objectEntries(getBaseFactions(intl)).forEach(([id, faction]) => {
+    const factionId = id;
     baseFactions[factionId] = faction;
   });
 
   const factions: Partial<Record<FactionId, Faction>> = {};
-  Object.entries(storedGameData.factions ?? {}).forEach(([id, faction]) => {
-    const factionId = id as FactionId;
+  objectEntries(storedGameData.factions).forEach(([id, faction]) => {
+    const factionId = id;
     const baseFaction = baseFactions[factionId];
     if (!baseFaction) {
       throw new Error(`Unable to get base version of faction ${factionId}.`);
@@ -412,28 +407,25 @@ export function buildObjectives(
   const expansions = storedGameData.options?.expansions ?? [];
 
   const objectives: Partial<Record<ObjectiveId, Objective>> = {};
-  Object.entries(getBaseObjectives(intl)).forEach(
-    ([objectiveId, objective]) => {
-      // Maybe filter out PoK objectives.
-      if (!expansions.includes("POK") && objective.expansion === "POK") {
-        return;
-      }
-      // Filter out objectives that are removed by PoK.
-      if (expansions.includes("POK") && objective.expansion === "BASE ONLY") {
-        return;
-      }
-
-      if (objective.omega && expansions.includes(objective.omega.expansion)) {
-        objective.description = objective.omega.description;
-      }
-
-      objectives[objectiveId as ObjectiveId] = {
-        ...objective,
-        ...(gameObjectives[objectiveId as ObjectiveId] ?? {}),
-        // ...(secretObjectives[objectiveId] ?? {}),
-      };
+  objectEntries(getBaseObjectives(intl)).forEach(([objectiveId, objective]) => {
+    // Maybe filter out PoK objectives.
+    if (!expansions.includes("POK") && objective.expansion === "POK") {
+      return;
     }
-  );
+    // Filter out objectives that are removed by PoK.
+    if (expansions.includes("POK") && objective.expansion === "BASE ONLY") {
+      return;
+    }
+
+    if (objective.omega && expansions.includes(objective.omega.expansion)) {
+      objective.description = objective.omega.description;
+    }
+
+    objectives[objectiveId] = {
+      ...objective,
+      ...(gameObjectives[objectiveId] ?? {}),
+    };
+  });
 
   Object.values(objectives).forEach((objective) => {
     if (objective.replaces) {
@@ -485,8 +477,8 @@ export function buildPlanets(
     )
     .map((system) => parseInt(system) as SystemId);
 
-  let planets = {} as Partial<Record<PlanetId, Planet>>;
-  Object.entries(BASE_PLANETS).forEach(([_, planet]) => {
+  let planets: Partial<Record<PlanetId, Planet>> = {};
+  objectEntries(BASE_PLANETS).forEach(([_, planet]) => {
     let isPlanetInMap = planet.system && inGameSystems.includes(planet.system);
     if (planet.id === "Creuss" && inGameSystems.includes(17)) {
       isPlanetInMap = true;
@@ -577,15 +569,15 @@ export function buildRelics(storedGameData: StoredGameData, intl: IntlShape) {
   const expansions = storedGameData.options.expansions;
 
   const relics: Partial<Record<RelicId, Relic>> = {};
-  Object.entries(getBaseRelics(intl)).forEach(([relicId, relic]) => {
+  objectEntries(getBaseRelics(intl)).forEach(([relicId, relic]) => {
     // Maybe filter out Codex relics.
     if (!expansions.includes("POK") || !expansions.includes(relic.expansion)) {
       return;
     }
 
-    relics[relicId as RelicId] = {
+    relics[relicId] = {
       ...relic,
-      ...(gameRelics[relicId as RelicId] ?? {}),
+      ...(gameRelics[relicId] ?? {}),
     };
   });
 
@@ -611,10 +603,10 @@ export function buildStrategyCards(
   const strategyCards = storedGameData.strategycards ?? {};
 
   const cards: Partial<Record<StrategyCardId, StrategyCard>> = {};
-  Object.entries(getBaseStrategyCards(intl)).forEach(([cardId, card]) => {
-    cards[cardId as StrategyCardId] = {
+  objectEntries(getBaseStrategyCards(intl)).forEach(([cardId, card]) => {
+    cards[cardId] = {
       ...card,
-      ...(strategyCards[cardId as StrategyCardId] ?? {}),
+      ...(strategyCards[cardId] ?? {}),
     };
   });
 
@@ -623,7 +615,7 @@ export function buildStrategyCards(
 
 export function buildSystems(storedGameData: StoredGameData) {
   const systems: Partial<Record<SystemId, BaseSystem>> = {};
-  Object.entries(BASE_SYSTEMS).forEach(([systemId, system]) => {
+  objectEntries(BASE_SYSTEMS).forEach(([systemId, system]) => {
     if (
       system.expansion !== "BASE" &&
       !storedGameData.options.expansions.includes(system.expansion)
@@ -631,7 +623,7 @@ export function buildSystems(storedGameData: StoredGameData) {
       return;
     }
 
-    systems[systemId as SystemId] = {
+    systems[systemId] = {
       ...system,
     };
   });
@@ -668,7 +660,7 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
   const storedLeaders = storedGameData.leaders ?? {};
 
   const leaders: Record<string, Leader> = {};
-  Object.entries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
+  objectEntries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && leader.expansion === "POK") {
       return;
@@ -693,9 +685,9 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
       return;
     }
 
-    leaders[leaderId as LeaderId] = {
+    leaders[leaderId] = {
       ...leaderCopy,
-      ...(storedLeaders[leaderId as LeaderId] ?? {}),
+      ...(storedLeaders[leaderId] ?? {}),
     };
   });
 
@@ -725,7 +717,7 @@ export function buildBaseTechs(options: Options, intl: IntlShape) {
 
 export function buildBaseLeaders(options: Options, intl: IntlShape) {
   const leaders: Record<string, BaseLeader> = {};
-  Object.entries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
+  objectEntries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && leader.expansion === "POK") {
       return;
@@ -751,8 +743,8 @@ export function buildBaseLeaders(options: Options, intl: IntlShape) {
 
 export function buildBaseSystems() {
   const systems: Partial<Record<SystemId, BaseSystem>> = {};
-  Object.entries(BASE_SYSTEMS).forEach(([systemId, system]) => {
-    systems[systemId as SystemId] = {
+  objectEntries(BASE_SYSTEMS).forEach(([systemId, system]) => {
+    systems[systemId] = {
       ...system,
     };
   });

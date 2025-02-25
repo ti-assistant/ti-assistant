@@ -10,6 +10,7 @@ import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledLine from "../LabeledLine/LabeledLine";
 import styles from "./PromissoryMenu.module.scss";
+import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
 
 interface NumFactionsCSS extends CSSProperties {
   "--num-factions": number;
@@ -61,13 +62,7 @@ export default function PromissoryMenu({
           className="flexRow"
           style={{ position: "relative", width: rem(18), height: rem(14) }}
         >
-          <Image
-            src="/images/promissory.svg"
-            alt="icon"
-            sizes={rem(20)}
-            fill
-            style={{ contain: "layout" }}
-          />
+          <PromissoryMenuSVG />
         </div>
       }
     >

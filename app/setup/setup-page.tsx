@@ -12,7 +12,7 @@ import Chip from "../../src/components/Chip/Chip";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
-import Map from "../../src/components/Map/Map";
+import GameMap from "../../src/components/Map/GameMap";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import NumberInput from "../../src/components/NumberInput/NumberInput";
 import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
@@ -703,17 +703,17 @@ function getFactionIndex(
       const standard = options["map-style"] === "standard";
       switch (position) {
         case 7:
-          return 3;
+          return standard ? 2 : 3;
         case 6:
           return 2;
         case 0:
-          return 0;
+          return standard ? 3 : 0;
         case 1:
-          return standard ? 1 : 0;
+          return 0;
         case 2:
           return 1;
         case 4:
-          return 2;
+          return standard ? 1 : 2;
       }
     case 5:
       const warp = options["map-style"] === "warp";
@@ -1732,10 +1732,12 @@ export default function SetupPage({
             <div
               style={{ position: "relative", width: rem(420), aspectRatio: 1 }}
             >
-              <Map
+              <GameMap
                 mapStyle={options["map-style"]}
                 mapString={options["processed-map-string"] ?? ""}
-                mallice={options["expansions"].has("POK") ? "A" : undefined}
+                wormholeNexus={
+                  options["expansions"].has("POK") ? "A" : undefined
+                }
                 factions={activeFactions}
                 hideLegend
               />

@@ -77,7 +77,7 @@ export default function Timers({
 }
 
 function isFactionId(val: string): val is FactionId {
-  switch (val as FactionId) {
+  switch (val) {
     case "Arborec":
     case "Argent Flight":
     case "Barony of Letnev":

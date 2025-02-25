@@ -1,4 +1,14 @@
 import { Storage } from "@google-cloud/storage";
+import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { createIntl, createIntlCache } from "react-intl";
+import { Readable } from "stream";
+import {
+  getArchivedTimers,
+  getFullActionLog,
+  getFullArchivedActionLog,
+  getTimers,
+} from "../../server/util/fetch";
+import { getBaseData } from "../../src/data/baseData";
 import { buildObjectives } from "../../src/data/gameDataBuilder";
 import { getHandler } from "../../src/util/api/gameLog";
 import { updateGameData } from "../../src/util/api/handler";
@@ -6,24 +16,9 @@ import { getOppositeHandler } from "../../src/util/api/opposite";
 import { updateActionLog } from "../../src/util/api/update";
 import { computeVPs } from "../../src/util/factions";
 import { EndGameHandler } from "../../src/util/model/endGame";
-import { Optional } from "../../src/util/types/types";
-import {
-  FieldValue,
-  getFirestore,
-  Timestamp,
-  WriteResult,
-} from "firebase-admin/firestore";
-import {
-  getArchivedTimers,
-  getFullActionLog,
-  getFullArchivedActionLog,
-  getTimers,
-} from "../../server/util/fetch";
-import { Readable } from "stream";
-import { getBaseData } from "../../src/data/baseData";
-import { createIntlCache, createIntl } from "react-intl";
 import { getLocale, getMessages } from "../../src/util/server";
-import { objectKeys } from "../../src/util/util";
+import { ActionLog, Optional } from "../../src/util/types/types";
+import { objectEntries, objectKeys } from "../../src/util/util";
 
 export interface ProcessedGame {
   // Tags
@@ -99,12 +94,8 @@ const BASE_FACTION_INFO: FactionInfo = {
 
 function hasWinningFaction(game: StoredGameData, baseData: BaseData) {
   const objectives = buildObjectives(game, baseData);
-  return Object.keys(game.factions).reduce((prev, factionId) => {
-    const points = computeVPs(
-      game.factions,
-      factionId as FactionId,
-      objectives
-    );
+  return objectKeys(game.factions).reduce((prev, factionId) => {
+    const points = computeVPs(game.factions, factionId, objectives);
     if (points >= game.options["victory-points"]) {
       return true;
     }
@@ -115,7 +106,7 @@ function hasWinningFaction(game: StoredGameData, baseData: BaseData) {
 export function isCompletedGame(
   game: StoredGameData,
   baseData: BaseData,
-  log: ActionLogEntry[]
+  log: ActionLog
 ) {
   if (!hasWinningFaction(game, baseData)) {
     return false;
@@ -314,19 +305,15 @@ function processGame(
   let maxPoints = 0;
   const factionInfo: Partial<Record<FactionId, GameFactionInfo>> = {};
   const objectives = buildObjectives(fixedGame, baseData);
-  for (const [factionId, faction] of Object.entries(fixedGame.factions)) {
-    const points = computeVPs(
-      fixedGame.factions,
-      factionId as FactionId,
-      objectives
-    );
+  for (const [factionId, faction] of objectEntries(fixedGame.factions)) {
+    const points = computeVPs(fixedGame.factions, factionId, objectives);
     if (points > maxPoints) {
-      winner = factionId as FactionId;
+      winner = factionId;
       maxPoints = points;
     }
     const startingTechs = faction.startswith.techs ?? [];
-    const endingTechs = Object.keys(faction.techs) as TechId[];
-    factionInfo[factionId as FactionId] = {
+    const endingTechs = objectKeys(faction.techs);
+    factionInfo[factionId] = {
       points,
       startingTechs,
       endingTechs,
@@ -334,10 +321,10 @@ function processGame(
   }
 
   const objectiveInfo: Partial<Record<ObjectiveId, ObjectiveInfo>> = {};
-  for (const [objectiveId, objective] of Object.entries(
+  for (const [objectiveId, objective] of objectEntries(
     fixedGame.objectives ?? {}
   )) {
-    const baseObjective = baseData.objectives[objectiveId as ObjectiveId];
+    const baseObjective = baseData.objectives[objectiveId];
     if (!baseObjective) {
       continue;
     }
@@ -348,7 +335,7 @@ function processGame(
     ) {
       continue;
     }
-    objectiveInfo[objectiveId as ObjectiveId] = {
+    objectiveInfo[objectiveId] = {
       scorers: objective.scorers ?? [],
     };
   }
@@ -387,10 +374,10 @@ function isObjectiveGame(game: StoredGameData, baseData: BaseData) {
       return false;
     }
   }
-  return Object.entries(game.objectives ?? {}).reduce(
+  return objectEntries(game.objectives ?? {}).reduce(
     (isObjGame, [id, curr]) => {
       if ((curr.scorers ?? []).length !== 0) {
-        const type = baseObjectives[id as ObjectiveId].type;
+        const type = baseObjectives[id].type;
         foundTypes.add(type);
         switch (foundTypes.size) {
           // Consider games without stage 2, but not without any other.
@@ -412,7 +399,7 @@ function isPlanetGame(game: StoredGameData) {
 
 function isTechGame(game: StoredGameData) {
   return Object.values(game.factions).reduce((isTechGame, faction) => {
-    for (const techId of Object.keys(faction.techs) as TechId[]) {
+    for (const techId of objectKeys(faction.techs)) {
       if (!(faction.startswith.techs ?? []).includes(techId)) {
         return isTechGame;
       }
@@ -423,19 +410,11 @@ function isTechGame(game: StoredGameData) {
 
 // Rewinds game in place so that the last action is the correct last action
 // of the game. If more than 20 steps are rewound, considers the game unfinished.
-function rewindGame(
-  game: StoredGameData,
-  baseData: BaseData,
-  log: ActionLogEntry[]
-) {
+function rewindGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
   let maxPoints = game.options["victory-points"];
   const objectives = buildObjectives(game, baseData);
-  for (const factionId of Object.keys(game.factions)) {
-    const points = computeVPs(
-      game.factions,
-      factionId as FactionId,
-      objectives
-    );
+  for (const factionId of objectKeys(game.factions)) {
+    const points = computeVPs(game.factions, factionId, objectives);
     if (points > maxPoints) {
       maxPoints = points;
     }
@@ -448,7 +427,7 @@ function rewindGame(
 
   let finalEntry;
   let numSteps = 0;
-  let lastEntry: Optional<ActionLogEntry>;
+  let lastEntry: Optional<ActionLogEntry<GameUpdateData>>;
   while (numSteps < 20 && hasWinningFaction(output, baseData)) {
     numSteps++;
     lastEntry = output.actionLog[0];
@@ -501,7 +480,8 @@ function rewindGame(
     lastEntry.gameSeconds ?? 0
   );
 
-  (output.actionLog[0] as ActionLogEntry).gameSeconds = lastEntry.gameSeconds;
+  (output.actionLog[0] as ActionLogEntry<GameUpdateData>).gameSeconds =
+    lastEntry.gameSeconds;
 
   const endGameHandler = new EndGameHandler(output, {
     action: "END_GAME",
@@ -516,16 +496,13 @@ function rewindGame(
   );
 
   output.options["victory-points"] = originalVPs;
-  (output.actionLog[0] as ActionLogEntry).gameSeconds = finalEntry?.gameSeconds;
+  (output.actionLog[0] as ActionLogEntry<GameUpdateData>).gameSeconds =
+    finalEntry?.gameSeconds;
 
   return output;
 }
 
-function processLog(
-  game: StoredGameData,
-  baseData: BaseData,
-  log: ActionLogEntry[]
-) {
+function processLog(game: StoredGameData, baseData: BaseData, log: ActionLog) {
   const objectives = buildObjectives(game, baseData);
   const rounds: ProcessedRound[] = [];
   let systems = new Set<SystemId>();
@@ -641,11 +618,7 @@ function processLog(
   return rounds;
 }
 
-function fixGame(
-  game: StoredGameData,
-  baseData: BaseData,
-  log: ActionLogEntry[]
-) {
+function fixGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
   const fixedGame = rewindGame(game, baseData, log);
   if (!fixedGame) {
     return;
@@ -655,18 +628,15 @@ function fixGame(
   let maxPoints = 0;
   for (const factionId of objectKeys(fixedGame.factions)) {
     delete fixedGame.factions[factionId]?.playerName;
-    const points = computeVPs(
-      fixedGame.factions,
-      factionId as FactionId,
-      objectives
-    );
+    const points = computeVPs(fixedGame.factions, factionId, objectives);
     if (points > maxPoints) {
       maxPoints = points;
     }
   }
 
   // Adjust victory-points if needed.
-  const lastAction = (fixedGame.actionLog ?? [])[1];
+  const lastAction: Optional<ActionLogEntry<GameUpdateData>> =
+    (fixedGame.actionLog ?? [])[1];
   switch (lastAction?.data.action) {
     case "SELECT_ACTION":
       if (lastAction.data.event.action === "Imperial") {

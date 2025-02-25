@@ -22,6 +22,7 @@ function LanguageIcon({ locale }: { locale: string }) {
       src={`/images/${locale}-flag.png`}
       alt={`${locale} language select`}
       fill
+      sizes={rem(128)}
       style={{ objectFit: "contain", pointerEvents: "none" }}
     />
   );

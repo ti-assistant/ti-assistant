@@ -39,16 +39,16 @@ function FactionTechSection({
     (a, b) => a.mapPosition - b.mapPosition
   );
 
-  const nekroFactionTechIds = Object.keys(factions["Nekro Virus"]?.techs ?? {})
+  const nekroFactionTechIds = objectKeys(factions["Nekro Virus"]?.techs ?? {})
     .filter((id) => {
-      const techId = id as TechId;
-      const techObj = (techs ?? {})[techId];
+      const techId = id;
+      const techObj = techs[techId];
       if (!techObj) {
         return false;
       }
       return !!techObj.faction;
     })
-    .map((id) => id as TechId);
+    .map((id) => id);
   const availableNekroTechs = Object.values(techs ?? {}).filter((tech) => {
     const isResearched = orderedFactions.reduce((isResearched, faction) => {
       return isResearched || hasTech(faction, tech.id);
@@ -469,16 +469,13 @@ function TechsByFaction({
     if (faction.id === "Nekro Virus") {
       const nekroTechs = new Set<TechId>();
       Object.values(factions ?? {}).forEach((otherFaction) => {
-        Object.keys(otherFaction.techs).forEach((id) => {
-          const techId = id as TechId;
-          if (!hasTech(faction, techId)) {
-            nekroTechs.add(techId);
+        objectKeys(otherFaction.techs).forEach((id) => {
+          if (!hasTech(faction, id)) {
+            nekroTechs.add(id);
           }
         });
       });
-      return Array.from(nekroTechs).map(
-        (techId) => (techs ?? {})[techId] as Tech
-      );
+      return Array.from(nekroTechs).map((techId) => techs[techId] as Tech);
     }
     const replaces: TechId[] = [];
     const availableTechs = Object.values(techs ?? {}).filter((tech) => {

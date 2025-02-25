@@ -79,6 +79,7 @@ export function getBaseDiscordantStarsAttachments(
     // // Can attach to Mecatol?
     "Gledge Base": {
       expansion: "DISCORDANT STARS",
+      faction: "Gledge Union",
       influence: 0,
       id: "Gledge Base",
       name: intl.formatMessage({

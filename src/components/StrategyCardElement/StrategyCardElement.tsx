@@ -109,6 +109,7 @@ export function StrategyCardElement({
                 }}
               >
                 <Image
+                  sizes={rem(46)}
                   src="/images/trade_good.png"
                   alt="TGs"
                   fill

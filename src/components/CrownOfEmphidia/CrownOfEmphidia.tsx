@@ -1,10 +1,10 @@
 import { FormattedMessage } from "react-intl";
 import {
-  useActionLog,
+  useCurrentTurn,
   useFactions,
   useGameId,
   usePlanets,
-  useRelics,
+  useRelic,
 } from "../../context/dataHooks";
 import { playRelicAsync, unplayRelicAsync } from "../../dynamic/api";
 import { SymbolX } from "../../icons/svgs";
@@ -15,13 +15,12 @@ import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 
 export default function CrownOfEmphidia({}) {
-  const actionLog = useActionLog();
+  const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
   const planets = usePlanets();
-  const relics = useRelics();
 
-  const crownOfEmphidia = relics["The Crown of Emphidia"];
+  const crownOfEmphidia = useRelic("The Crown of Emphidia");
 
   if (!crownOfEmphidia || !crownOfEmphidia.owner) {
     return null;
@@ -42,7 +41,10 @@ export default function CrownOfEmphidia({}) {
     return null;
   }
 
-  const wasPlayedThisTurn = getPlayedRelic(actionLog, "The Crown of Emphidia");
+  const wasPlayedThisTurn = getPlayedRelic(
+    currentTurn,
+    "The Crown of Emphidia"
+  );
   const isPurged = crownOfEmphidia.state === "purged";
 
   if (isPurged && !wasPlayedThisTurn) {

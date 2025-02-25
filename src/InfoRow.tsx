@@ -1,6 +1,6 @@
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
-import Modal, { ModalContent } from "./components/Modal/Modal";
+import { ModalContent } from "./components/Modal/Modal";
 import { useSharedModal } from "./data/SharedModal";
 
 interface InfoRowProps {

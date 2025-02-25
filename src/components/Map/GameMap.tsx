@@ -1,9 +1,9 @@
-import NextImage from "next/image";
-import Hexagon from "../../../public/images/systems/Hexagon.png";
-import { useGameId } from "../../context/dataHooks";
-import { getFactionSystemNumber, validSystemNumber } from "../../util/map";
-import { Optional } from "../../util/types/types";
-import styles from "./Map.module.scss";
+import { useState } from "react";
+import { getFactionSystemNumber, updateMapString } from "../../util/map";
+import styles from "./GameMap.module.scss";
+import OverlayLegend from "./OverlayLegend";
+import { OverlayDetails } from "./PlanetOverlay";
+import SystemImage from "./SystemImage";
 
 interface Cube {
   q: number;
@@ -80,142 +80,10 @@ function CubeToPixel(hex: Cube, size: number) {
   return Point(x, y);
 }
 
-function getRotationClass(key: string) {
-  switch (key) {
-    case "rotateSixty":
-      return styles.rotateSixty;
-    case "rotateOneTwenty":
-      return styles.rotateOneTwenty;
-    case "rotateOneEighty":
-      return styles.rotateOneEighty;
-    case "rotateTwoForty":
-      return styles.rotateTwoForty;
-    case "rotateThreeHundred":
-      return styles.rotateThreeHundred;
-  }
-}
-
-function getRotationClassFromNumber(key: number) {
-  switch (key) {
-    case 1:
-      return styles.rotateSixty;
-    case 2:
-      return styles.rotateOneTwenty;
-    case 3:
-      return styles.rotateOneEighty;
-    case 4:
-      return styles.rotateTwoForty;
-    case 5:
-      return styles.rotateThreeHundred;
-  }
-  return "";
-}
-
-export function SystemImage({
-  gameId,
-  systemNumber,
-  selectable,
-  onClick,
-}: {
-  gameId: string;
-  systemNumber: Optional<string>;
-  selectable: boolean;
-  onClick: (systemId: string) => void;
-}) {
-  if (
-    !systemNumber ||
-    systemNumber === "0" ||
-    !validSystemNumber(systemNumber)
-  ) {
-    if (systemNumber && systemNumber.split(":").length > 1) {
-      const classNames = getRotationClass(systemNumber.split(":")[0] ?? "");
-      systemNumber = systemNumber.split(":")[1] ?? "";
-      return (
-        <div
-          className={`flexRow ${classNames}`}
-          style={{
-            position: "relative",
-            width: "100%",
-            height: "100%",
-            cursor: selectable ? "pointer" : undefined,
-            opacity: selectable ? undefined : 0.25,
-          }}
-        >
-          <NextImage
-            src={`/images/systems/ST_${systemNumber}.png`}
-            alt={`System ${systemNumber} Tile`}
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        </div>
-      );
-    }
-    return (
-      <div
-        className="flexRow"
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          cursor: selectable ? "pointer" : undefined,
-          opacity: selectable ? undefined : 0.25,
-        }}
-      >
-        <NextImage
-          src={Hexagon}
-          alt={`System Tile`}
-          fill
-          style={{ opacity: "10%", objectFit: "contain" }}
-        />
-      </div>
-    );
-  }
-
-  let classNames: Optional<string> = "";
-  if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
-    classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("A")[1] ?? "0")
-    );
-    systemNumber = `${systemNumber.split("A")[0] ?? ""}A`;
-  }
-  if (systemNumber.includes("B") && systemNumber.split("B").length > 1) {
-    classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("B")[1] ?? "0")
-    );
-    systemNumber = `${systemNumber.split("B")[0] ?? ""}B`;
-  }
-
-  return (
-    <div
-      className={`flexRow ${classNames}`}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        cursor: selectable ? "pointer" : undefined,
-        opacity: selectable ? undefined : 0.25,
-      }}
-      onClick={() => {
-        if (!systemNumber) {
-          return;
-        }
-        onClick(systemNumber);
-      }}
-    >
-      <NextImage
-        src={`/images/systems/ST_${systemNumber}.png`}
-        alt={`System ${systemNumber} Tile`}
-        fill
-        style={{ objectFit: "contain" }}
-      />
-    </div>
-  );
-}
-
 interface MapProps {
   mapString: string;
   mapStyle: MapStyle;
-  mallice?: string;
+  wormholeNexus?: string | SystemId;
   factions: {
     id?: FactionId;
     name?: string;
@@ -223,21 +91,31 @@ interface MapProps {
       faction?: FactionId;
     };
   }[];
-  canSelectSystem: (systemId: string) => boolean;
-  onSelect: (systemId: string) => void;
+  planets?: Partial<Record<PlanetId, Planet>>;
+  hideLegend?: boolean;
+  // Used for selecting systems.
+  canSelectSystem?: (systemId: string) => boolean;
+  onSelect?: (systemId: string) => void;
 }
 
-export default function SystemSelect({
+export default function GameMap({
   mapString,
   mapStyle,
-  mallice,
+  wormholeNexus,
   factions,
+  hideLegend,
+  planets,
   canSelectSystem,
   onSelect,
 }: MapProps) {
-  const gameId = useGameId();
+  const planetInfo = planets ?? {};
+  const [overlayDetails, setOverlayDetails] = useState<OverlayDetails>("NONE");
 
-  let updatedSystemTiles = mapString.split(" ");
+  const updatedMapString =
+    mapString === ""
+      ? updateMapString(mapString, mapStyle, factions.length)
+      : mapString;
+  let updatedSystemTiles = updatedMapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
     if (tile === "0" && updatedTile && updatedTile !== "0") {
@@ -379,10 +257,24 @@ export default function SystemSelect({
       ghosts = true;
     }
   });
+  if (!ghosts) {
+    mapString.split(" ").forEach((system) => {
+      if (system === "17") {
+        ghosts = true;
+        ghostsCorner = "bottom-right";
+      }
+    });
+  }
 
   return (
     <div className={styles.Map}>
-      <div className={styles.SystemSelectBody}>
+      {hideLegend ? null : (
+        <OverlayLegend
+          overlayDetails={overlayDetails}
+          setOverlayDetails={setOverlayDetails}
+        />
+      )}
+      <div className={styles.MapBody}>
         {spiral.map((cube, index) => {
           const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
           let tile = updatedSystemTiles[index];
@@ -402,9 +294,10 @@ export default function SystemSelect({
               }}
             >
               <SystemImage
-                gameId={gameId}
+                overlayDetails={overlayDetails}
+                planets={planetInfo}
                 systemNumber={tile}
-                selectable={canSelectSystem(tile)}
+                selectable={canSelectSystem ? canSelectSystem(tile) : false}
                 onClick={onSelect}
               />
             </div>
@@ -416,50 +309,60 @@ export default function SystemSelect({
               position: "absolute",
               right:
                 ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
-                  ? "4%"
+                  ? 0
                   : undefined,
               bottom:
                 ghostsCorner === "bottom-right" ||
                 ghostsCorner === "bottom-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               left:
                 ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               top:
                 ghostsCorner === "top-right" || ghostsCorner === "top-left"
-                  ? "4%"
+                  ? 0
                   : undefined,
               width: `${tilePercentage * HEX_RATIO}%`,
               height: `${tilePercentage * HEX_RATIO}%`,
             }}
           >
             <SystemImage
-              gameId={gameId}
+              overlayDetails={overlayDetails}
+              planets={planetInfo}
               systemNumber="51"
-              onClick={onSelect}
               selectable={false}
+              onClick={onSelect}
             />
           </div>
         ) : null}
-        {mallice ? (
+        {wormholeNexus ? (
           <div
             style={{
               position: "absolute",
-              left: ghostsCorner !== "bottom-left" ? "4%" : undefined,
-              right: ghostsCorner === "bottom-left" ? "4%" : undefined,
-              bottom: "4%",
+              left: ghostsCorner !== "bottom-left" ? 0 : undefined,
+              right: ghostsCorner === "bottom-left" ? 0 : undefined,
+              bottom: 0,
               width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${tilePercentage * HEX_RATIO}%`,
+              height: `${getWormholeNexusHeight(
+                wormholeNexus,
+                tilePercentage,
+                HEX_RATIO
+              )}%`,
             }}
           >
             <SystemImage
-              gameId={gameId}
-              systemNumber={mallice === "PURGED" ? "81" : `82${mallice}`}
-              selectable={canSelectSystem(
-                mallice === "PURGED" ? "81" : `82${mallice}`
-              )}
+              overlayDetails={overlayDetails}
+              planets={planetInfo}
+              systemNumber={getWormholeNexusSystemNum(wormholeNexus)}
+              selectable={
+                canSelectSystem
+                  ? canSelectSystem(
+                      wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`
+                    )
+                  : false
+              }
               onClick={onSelect}
             />
           </div>
@@ -467,4 +370,28 @@ export default function SystemSelect({
       </div>
     </div>
   );
+}
+
+function getWormholeNexusHeight(
+  mallice: string | SystemId,
+  tilePercentage: number,
+  hexRatio: number
+) {
+  if (mallice === "A" || mallice === "B") {
+    return tilePercentage * hexRatio;
+  }
+  return tilePercentage;
+}
+
+function getWormholeNexusSystemNum(mallice: string | SystemId) {
+  if (mallice === "PURGED") {
+    return "81";
+  }
+  if (mallice === "A") {
+    return "82A";
+  }
+  if (mallice === "B") {
+    return "82B";
+  }
+  return (mallice as SystemId).toString();
 }

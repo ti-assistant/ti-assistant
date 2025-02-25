@@ -33,7 +33,7 @@ function ColoredFactionName({ factionId }: { factionId: FactionId }) {
 }
 
 export interface LogEntryElementProps {
-  logEntry: ActionLogEntry;
+  logEntry: ActionLogEntry<GameUpdateData>;
   activePlayer?: FactionId | "None";
   currRound: number;
   startTimeSeconds: number;

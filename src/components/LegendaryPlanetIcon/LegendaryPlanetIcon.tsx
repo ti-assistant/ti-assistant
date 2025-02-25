@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import Modal, { ModalContent } from "../Modal/Modal";
-import { rem } from "../../util/util";
 import { useSharedModal } from "../../data/SharedModal";
+import LegendaryPlanetSVG from "../../icons/planets/LegendaryPlanet";
+import { rem } from "../../util/util";
+import { ModalContent } from "../Modal/Modal";
 
 function InfoContent({ ability }: { ability: string }) {
   const description = ability.replaceAll("\\n", "\n");
@@ -49,32 +48,25 @@ export default function LegendaryPlanetIcon({
             </ModalContent>
           );
         }}
+        className="flexRow"
         style={{
-          cursor: cursor,
-          display: "flex",
-          alignItems: "flex-start",
-          borderRadius: rem(22),
+          cursor,
+          borderRadius: "100%",
           height: rem(16),
           width: rem(16),
-          paddingTop: rem(2),
-          paddingLeft: rem(2),
-          boxShadow: `0px 0px ${"2px"} ${"1px"} purple`,
+          boxShadow: `0px 0px ${rem(2)} ${rem(1.5)} purple`,
           backgroundColor: "black",
         }}
       >
         <div
+          className="flexRow"
           style={{
             position: "relative",
             width: rem(12),
             height: rem(12),
           }}
         >
-          <Image
-            src="/images/legendary_planet.svg"
-            alt="Legendary Planet Icon"
-            fill
-            style={{ objectFit: "contain" }}
-          />
+          <LegendaryPlanetSVG />
         </div>
       </div>
     </>

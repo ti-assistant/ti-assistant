@@ -1,11 +1,15 @@
 import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
+import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
+import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
+import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
+import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
 import { SymbolX } from "../../icons/svgs";
 import { getTechTypeColor } from "../../util/techs";
+import { rem } from "../../util/util";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./AttachmentIcon.module.scss";
-import { rem } from "../../util/util";
 
 interface AttachmentIconProps {
   attachment?: Attachment;
@@ -29,33 +33,10 @@ export default function AttachmentIcon({
       return <SymbolX />;
     }
 
-    if (attachment.attribute === "demilitarized") {
-      return (
-        <div
-          className="flexRow"
-          style={{
-            position: "relative",
-            width: rem(size - 10),
-            height: rem(size - 10),
-          }}
-        >
-          <Image
-            src={`/images/demilitarized_zone.svg`}
-            alt={`Demilitarized Zone`}
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        </div>
-      );
-    }
-
     if (attachment.attribute?.includes("-skip")) {
       const techType = attachment.attribute
         .replace("-skip", "")
         .toUpperCase() as TechType;
-      // if (!hasSkip) {
-      //   return <TechIcon type={techType} size={size - 10} />;
-      // }
       return (
         <div
           className="flexRow"
@@ -118,6 +99,62 @@ export default function AttachmentIcon({
       );
     }
 
+    let iconSize = size;
+    switch (attachment.id) {
+      case "Arcane Citadel":
+        return (
+          <div
+            className="flexRow"
+            style={{
+              position: "relative",
+              width: rem(iconSize),
+              height: rem(iconSize),
+            }}
+          >
+            <ArcaneCitadelSVG />
+          </div>
+        );
+      case "Council Preserve":
+        return (
+          <div
+            className="flexRow"
+            style={{
+              position: "relative",
+              width: rem(iconSize),
+              height: rem(iconSize),
+            }}
+          >
+            <CouncilPreserveSVG />
+          </div>
+        );
+      case "Demilitarized Zone":
+        return (
+          <div
+            className="flexRow"
+            style={{
+              position: "relative",
+              width: rem(size - 4),
+              height: rem(size - 4),
+            }}
+          >
+            <DemilitarizedZoneSVG />
+          </div>
+        );
+      case "Orbital Foundries":
+        return (
+          <div
+            className="flexRow"
+            style={{
+              position: "relative",
+              width: rem(iconSize),
+              height: rem(iconSize),
+            }}
+          >
+            <OrbitalFoundriesSVG />
+          </div>
+        );
+    }
+
     return (
       <div
         className="flexRow"
@@ -137,23 +174,10 @@ export default function AttachmentIcon({
         />
       </div>
     );
-
-    // const adjustedFactionName = factionId.replace("'", "");
-
-    // return (
-    //   <Image
-    //     src={`/images/factions/${adjustedFactionName}.webp`}
-    //     alt={`${factionId} Icon`}
-    //     fill
-    //     style={{ objectFit: "contain" }}
-    //   />
-    // );
   }, [attachment, hasSkip, hideBorder, size]);
 
   const attachmentIconStyle: AttachmentIconCSS = {
     "--size": typeof size === "string" ? size : rem(size),
-    // border: `${"1px"} solid red`,
-    // borderRadius: "100%",
   };
   return (
     <div className={styles.AttachmentIcon} style={attachmentIconStyle}>

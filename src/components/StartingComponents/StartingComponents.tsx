@@ -7,7 +7,7 @@ import {
   removeStartingTechAsync,
 } from "../../dynamic/api";
 import { getTechColor } from "../../util/techs";
-import { rem } from "../../util/util";
+import { objectEntries, rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
@@ -50,7 +50,7 @@ export default function StartingComponents({
 
   const startswith = faction.startswith;
 
-  const orderedUnits = Object.entries(startswith.units).sort(
+  const orderedUnits = objectEntries(startswith.units).sort(
     (a, b) => unitOrder.indexOf(a[0]) - unitOrder.indexOf(b[0])
   );
   const orderedTechs = techs
@@ -263,7 +263,7 @@ export default function StartingComponents({
         {orderedUnits.map(([unit, number]) => {
           return (
             <div key={unit}>
-              <Strings.Units unit={unit as UnitType} count={number} />
+              <Strings.Units unit={unit} count={number} />
             </div>
           );
         })}

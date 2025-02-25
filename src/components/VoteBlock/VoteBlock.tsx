@@ -45,7 +45,7 @@ import {
   filterToClaimedPlanets,
 } from "../../util/planets";
 import { riderString } from "../../util/strings";
-import { Optional } from "../../util/types/types";
+import { ActionLog, Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
@@ -54,7 +54,7 @@ import Toggle from "../Toggle/Toggle";
 import styles from "./VoteBlock.module.scss";
 
 // Checks whether or not a faction can use Blood Pact.
-function canUseBloodPact(currentTurn: ActionLogEntry[], factionId: FactionId) {
+function canUseBloodPact(currentTurn: ActionLog, factionId: FactionId) {
   if (factionId === "Empyrean") {
     return false;
   }
@@ -291,7 +291,7 @@ export function translateOutcome(
 
 export function canFactionPredict(
   factionId: FactionId,
-  currentTurn: ActionLogEntry[]
+  currentTurn: ActionLog
 ) {
   const politicalSecrets = getPromissoryTargets(
     currentTurn,
@@ -304,7 +304,7 @@ export function canFactionVote(
   faction: Faction,
   agendas: Partial<Record<AgendaId, Agenda>>,
   state: GameState,
-  currentTurn: ActionLogEntry[],
+  currentTurn: ActionLog,
   leaders: Partial<Record<LeaderId, Leader>>
 ) {
   if (faction.id === "Nekro Virus") {
@@ -354,7 +354,7 @@ export function computeRemainingVotes(
   agendas: Partial<Record<AgendaId, Agenda>>,
   options: Options,
   state: GameState,
-  currentPhasePrevious: ActionLogEntry[],
+  currentPhasePrevious: ActionLog,
   leaders: Partial<Record<LeaderId, Leader>>
 ) {
   const representativeGovernment = agendas["Representative Government"];

@@ -22,12 +22,11 @@ import PromissoryMenu from "../components/PromissoryMenu/PromissoryMenu";
 import { TacticalAction } from "../components/TacticalAction";
 import TechSelectHoverMenu from "../components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
-  useActionLog,
   useAttachments,
+  useCurrentTurn,
   useFactions,
   useGameId,
   useGameState,
-  useLeaders,
   useObjectives,
   usePlanets,
   useStrategyCards,
@@ -50,8 +49,11 @@ import {
   unselectActionAsync,
 } from "../dynamic/api";
 import { SymbolX } from "../icons/svgs";
-import { getAttachments, getResearchedTechs } from "../util/actionLog";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import {
+  getAttachments,
+  getClaimedPlanets,
+  getResearchedTechs,
+} from "../util/actionLog";
 import {
   getNewSpeakerEventFromLog,
   getSelectedActionFromLog,
@@ -161,7 +163,7 @@ function SecondaryCheck({
 }
 
 export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
-  const actionLog = useActionLog();
+  const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
   const strategyCards = useStrategyCards();
@@ -175,7 +177,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
     return true;
   }
 
-  const selectedAction = getSelectedActionFromLog(actionLog);
+  const selectedAction = getSelectedActionFromLog(currentTurn);
 
   function toggleAction(action: Action) {
     if (!gameId) {
@@ -291,25 +293,22 @@ export function AdditionalActions({
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
-  const actionLog = useActionLog();
   const attachments = useAttachments();
   const factions = useFactions();
   const gameId = useGameId();
-  const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();
   const techs = useTechs();
 
   const intl = useIntl();
+  const currentTurn = useCurrentTurn();
 
   const activeFaction = factions[factionId];
 
   if (!activeFaction) {
     return null;
   }
-
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   function getResearchableTechs(faction: Faction) {
     const researchedTechs = getResearchedTechs(currentTurn, faction.id);
@@ -352,63 +351,7 @@ export function AdditionalActions({
 
   const researchableTechs = getResearchableTechs(activeFaction);
 
-  function removePlanet(factionId: FactionId, toRemove: PlanetId) {
-    if (!gameId) {
-      return;
-    }
-    unclaimPlanetAsync(gameId, factionId, toRemove);
-  }
-
-  function addPlanet(factionId: FactionId, toAdd: Planet) {
-    if (!gameId) {
-      return;
-    }
-    claimPlanetAsync(gameId, factionId, toAdd.id);
-  }
-
-  function addObjective(factionId: FactionId, toScore: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    scoreObjectiveAsync(gameId, factionId, toScore);
-  }
-
-  function undoObjective(factionId: FactionId, toRemove: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    unscoreObjectiveAsync(gameId, factionId, toRemove);
-  }
-
-  function removeTechLocal(factionId: FactionId, toRemove: TechId) {
-    if (!gameId) {
-      return;
-    }
-    removeTechAsync(gameId, factionId, toRemove);
-  }
-
-  function researchTech(factionId: FactionId, tech: Tech) {
-    if (!gameId) {
-      return;
-    }
-    addTechAsync(gameId, factionId, tech.id);
-  }
-
-  async function selectSpeaker(factionId: FactionId) {
-    if (!gameId) {
-      return;
-    }
-    setSpeakerAsync(gameId, factionId);
-  }
-
-  const newSpeakerEvent = getNewSpeakerEventFromLog(actionLog);
-
-  async function resetSpeaker() {
-    if (!gameId || !newSpeakerEvent?.prevSpeaker) {
-      return;
-    }
-    setSpeakerAsync(gameId, newSpeakerEvent.prevSpeaker);
-  }
+  const newSpeakerEvent = getNewSpeakerEventFromLog(currentTurn);
 
   function lastFaction() {
     const numFactions = Object.keys(factions).length;
@@ -418,16 +361,8 @@ export function AdditionalActions({
     return numFactions - 1 === numPassed;
   }
 
-  const claimedPlanets = currentTurn
-    .filter(
-      (logEntry) =>
-        logEntry.data.action === "CLAIM_PLANET" &&
-        logEntry.data.event.faction === activeFaction.id
-    )
-    .map((logEntry) => {
-      return (logEntry.data as ClaimPlanetData).event;
-    });
-  const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
+  const claimedPlanets = getClaimedPlanets(currentTurn, activeFaction.id);
+  const claimablePlanets = Object.values(planets).filter((planet) => {
     if (!planets) {
       return false;
     }
@@ -470,25 +405,6 @@ export function AdditionalActions({
     }
     return objectiveObj.phase === "ACTION";
   });
-  const scorableObjectives = Object.values(objectives).filter((objective) => {
-    const scorers = objective.scorers ?? [];
-    if (scorers.includes(activeFaction.id)) {
-      return false;
-    }
-    if (scoredObjectives.includes(objective.id)) {
-      return false;
-    }
-    if (
-      objective.id === "Become a Martyr" ||
-      objective.id === "Prove Endurance"
-    ) {
-      return false;
-    }
-    if (objective.type === "SECRET" && scorers.length > 0) {
-      return false;
-    }
-    return objective.phase === "ACTION";
-  });
 
   const targetButtonStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
@@ -521,7 +437,7 @@ export function AdditionalActions({
     return -1;
   });
 
-  const selectedAction = getSelectedActionFromLog(actionLog);
+  const selectedAction = getSelectedActionFromLog(currentTurn);
 
   switch (selectedAction) {
     case "Technology":
@@ -550,7 +466,7 @@ export function AdditionalActions({
                         key={tech}
                         tech={techObj}
                         removeTech={() => {
-                          removeTechLocal(activeFaction.id, tech);
+                          removeTechAsync(gameId, activeFaction.id, tech);
                         }}
                         researchAgreement={
                           activeFaction.id === "Universities of Jol-Nar"
@@ -577,7 +493,7 @@ export function AdditionalActions({
                     // ) {
                     //   markSecondary(gameId, activeFaction.id, "DONE");
                     // }
-                    researchTech(activeFaction.id, tech);
+                    addTechAsync(gameId, activeFaction.id, tech.id);
                   }}
                 />
               ) : null}
@@ -638,7 +554,7 @@ export function AdditionalActions({
                             key={tech}
                             tech={techObj}
                             removeTech={() =>
-                              removeTechLocal(activeFaction.id, tech)
+                              removeTechAsync(gameId, activeFaction.id, tech)
                             }
                             researchAgreement={
                               activeFaction.id === "Universities of Jol-Nar"
@@ -659,7 +575,7 @@ export function AdditionalActions({
                         defaultMessage: "Research Tech",
                       })}
                       selectTech={(tech) =>
-                        researchTech(activeFaction.id, tech)
+                        addTechAsync(gameId, activeFaction.id, tech.id)
                       }
                     />
                   ) : null}
@@ -730,7 +646,7 @@ export function AdditionalActions({
                             key={tech}
                             tech={techObj}
                             removeTech={() => {
-                              removeTechLocal(faction.id, tech);
+                              removeTechAsync(gameId, faction.id, tech);
                             }}
                             opts={{ hideSymbols: true }}
                             researchAgreement={
@@ -756,7 +672,7 @@ export function AdditionalActions({
                             // ) {
                             //   markSecondary(gameId, faction.id, "DONE");
                             // }
-                            researchTech(faction.id, tech);
+                            addTechAsync(gameId, faction.id, tech.id);
                           }}
                         />
                       ) : null}
@@ -815,9 +731,12 @@ export function AdditionalActions({
                 }
                 onSelect={(factionId, _) => {
                   if (factionId) {
-                    selectSpeaker(factionId);
+                    setSpeakerAsync(gameId, factionId);
                   } else {
-                    resetSpeaker();
+                    if (!newSpeakerEvent?.prevSpeaker) {
+                      return;
+                    }
+                    setSpeakerAsync(gameId, newSpeakerEvent.prevSpeaker);
                   }
                 }}
                 factions={mapOrderedFactions.map((faction) => faction.id)}
@@ -920,7 +839,11 @@ export function AdditionalActions({
                               factionId={"Xxcha Kingdom"}
                               planet={adjustedPlanet}
                               removePlanet={() => {
-                                removePlanet("Xxcha Kingdom", planet.planet);
+                                unclaimPlanetAsync(
+                                  gameId,
+                                  "Xxcha Kingdom",
+                                  planet.planet
+                                );
                               }}
                             />
                           </div>
@@ -1009,7 +932,13 @@ export function AdditionalActions({
                               writingMode: "horizontal-tb",
                               width: rem(90),
                             }}
-                            onClick={() => addPlanet(activeFaction.id, planet)}
+                            onClick={() =>
+                              claimPlanetAsync(
+                                gameId,
+                                activeFaction.id,
+                                planet.id
+                              )
+                            }
                           >
                             {planet.name}
                           </button>
@@ -1147,7 +1076,11 @@ export function AdditionalActions({
                               factionId={"Xxcha Kingdom"}
                               planet={adjustedPlanet}
                               removePlanet={() => {
-                                removePlanet("Xxcha Kingdom", planet.planet);
+                                unclaimPlanetAsync(
+                                  gameId,
+                                  "Xxcha Kingdom",
+                                  planet.planet
+                                );
                               }}
                             />
                           </div>
@@ -1236,7 +1169,11 @@ export function AdditionalActions({
                               width: rem(90),
                             }}
                             onClick={() => {
-                              addPlanet("Xxcha Kingdom", planet);
+                              claimPlanetAsync(
+                                gameId,
+                                "Xxcha Kingdom",
+                                planet.id
+                              );
                             }}
                           >
                             {planet.name}
@@ -1404,7 +1341,11 @@ export function AdditionalActions({
                         key={objective}
                         objective={objectiveObj}
                         removeObjective={() =>
-                          undoObjective(activeFaction.id, objective)
+                          unscoreObjectiveAsync(
+                            gameId,
+                            activeFaction.id,
+                            objective
+                          )
                         }
                         hideScorers={true}
                       />
@@ -1416,7 +1357,7 @@ export function AdditionalActions({
                 availablePublicObjectives.length > 0 ? (
                   <ObjectiveSelectHoverMenu
                     action={(_, objectiveId) =>
-                      addObjective(activeFaction.id, objectiveId)
+                      scoreObjectiveAsync(gameId, activeFaction.id, objectiveId)
                     }
                     label={
                       <FormattedMessage
@@ -1491,7 +1432,12 @@ export function AdditionalActions({
             whiteSpace: "nowrap",
           }}
         >
-          Prove Endurance:
+          <FormattedMessage
+            id="Objectives.Prove Endurance.Title"
+            defaultMessage="Prove Endurance"
+            description="Title of Objective: Prove Endurance"
+          />
+          :
           <FactionCircle
             key={activeFaction.id}
             blur
@@ -1502,9 +1448,17 @@ export function AdditionalActions({
                 return;
               }
               if (hasProveEndurance) {
-                undoObjective(activeFaction.id, "Prove Endurance");
+                unscoreObjectiveAsync(
+                  gameId,
+                  activeFaction.id,
+                  "Prove Endurance"
+                );
               } else {
-                addObjective(activeFaction.id, "Prove Endurance");
+                scoreObjectiveAsync(
+                  gameId,
+                  activeFaction.id,
+                  "Prove Endurance"
+                );
               }
             }}
             size={52}
@@ -1544,31 +1498,36 @@ export function AdditionalActions({
           />
         </div>
       );
-      return null;
     case "Tactical":
-      const conqueredPlanets = currentTurn
-        .filter(
-          (logEntry) =>
-            logEntry.data.action === "CLAIM_PLANET" &&
-            logEntry.data.event.faction === activeFaction.id
-        )
-        .map((logEntry) => (logEntry.data as ClaimPlanetData).event);
+      const scorableObjectives = Object.values(objectives).filter(
+        (objective) => {
+          const scorers = objective.scorers ?? [];
+          if (scorers.includes(activeFaction.id)) {
+            return false;
+          }
+          if (scoredObjectives.includes(objective.id)) {
+            return false;
+          }
+          if (
+            objective.id === "Become a Martyr" ||
+            objective.id === "Prove Endurance"
+          ) {
+            return false;
+          }
+          if (objective.type === "SECRET" && scorers.length > 0) {
+            return false;
+          }
+          return objective.phase === "ACTION";
+        }
+      );
       return (
         <TacticalAction
           activeFactionId={activeFaction.id}
-          attachments={attachments ?? {}}
           claimablePlanets={claimablePlanets}
-          conqueredPlanets={conqueredPlanets}
-          currentTurn={currentTurn}
-          factions={factions ?? {}}
-          gameid={gameId ?? ""}
-          leaders={leaders}
-          objectives={objectives ?? {}}
-          planets={planets ?? {}}
+          conqueredPlanets={claimedPlanets}
           scorableObjectives={scorableObjectives}
           scoredObjectives={scoredActionPhaseObjectives}
           style={style}
-          techs={techs ?? {}}
         />
       );
   }
@@ -1582,10 +1541,10 @@ interface NextPlayerButtonsProps {
 export function NextPlayerButtons({
   buttonStyle = {},
 }: NextPlayerButtonsProps) {
-  const actionLog = useActionLog();
   const gameId = useGameId();
-  const selectedAction = getSelectedActionFromLog(actionLog);
-  const newSpeaker = getNewSpeakerEventFromLog(actionLog);
+  const currentTurn = useCurrentTurn();
+  const selectedAction = getSelectedActionFromLog(currentTurn);
+  const newSpeaker = getNewSpeakerEventFromLog(currentTurn);
 
   async function completeActions() {
     if (!gameId || selectedAction === null) {
@@ -1835,14 +1794,7 @@ export default function ActionPhase() {
 
   return (
     <React.Fragment>
-      <div
-        className={styles.LeftColumn}
-        style={
-          {
-            "--gap": numFactions > 7 ? rem(4) : rem(8),
-          } as CSSProperties
-        }
-      >
+      <div className={styles.LeftColumn}>
         {Object.values(cardsByFaction).map((cards) => {
           const isActivePlayer = cards[0]?.faction === state.activeplayer;
           return (

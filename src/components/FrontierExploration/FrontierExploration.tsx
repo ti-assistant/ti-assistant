@@ -2,8 +2,8 @@ import { FormattedMessage } from "react-intl";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
 import {
-  useActionLog,
   useAttachments,
+  useCurrentTurn,
   useGameId,
   usePlanets,
   useRelics,
@@ -21,7 +21,6 @@ import {
   getClaimedPlanets,
   getGainedRelic,
 } from "../../util/actionLog";
-import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { applyPlanetAttachments } from "../../util/planets";
 import AttachmentSelectRadialMenu from "../AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
@@ -33,12 +32,11 @@ export default function FrontierExploration({
 }: {
   factionId: FactionId;
 }) {
-  const actionLog = useActionLog();
   const attachments = useAttachments();
   const gameId = useGameId();
   const planets = usePlanets();
   const relics = useRelics();
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
+  const currentTurn = useCurrentTurn();
 
   const gainedRelic = getGainedRelic(currentTurn);
   const claimedPlanets = getClaimedPlanets(currentTurn, factionId);

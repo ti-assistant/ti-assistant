@@ -1,10 +1,7 @@
-import { useContext, useState } from "react";
-
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
-import Modal, { ModalContent } from "./components/Modal/Modal";
+import { ModalContent } from "./components/Modal/Modal";
 import { translateOutcome } from "./components/VoteBlock/VoteBlock";
-import { agendaTypeString, outcomeString } from "./util/strings";
 import {
   useAgendas,
   useFactions,
@@ -12,8 +9,9 @@ import {
   usePlanets,
   useStrategyCards,
 } from "./context/dataHooks";
-import { rem } from "./util/util";
 import { useSharedModal } from "./data/SharedModal";
+import { agendaTypeString, outcomeString } from "./util/strings";
+import { rem } from "./util/util";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
   const intl = useIntl();
