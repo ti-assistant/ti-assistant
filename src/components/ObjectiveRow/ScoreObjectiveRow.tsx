@@ -10,7 +10,6 @@ import { getObjectiveScorers } from "../../util/actionLog";
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasScoredObjective } from "../../util/api/util";
 import { getFactionColor } from "../../util/factions";
-import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";

@@ -380,35 +380,33 @@ export function TacticalAction({
           }
           blur
         >
-          <React.Fragment>
-            <div className="flexColumn" style={{ alignItems: "stretch" }}>
-              {scoredObjectives.map((objective) => {
-                if (!objectives) {
-                  return null;
-                }
-                if (
-                  objective === "Custodians Token" ||
-                  objective === "Support for the Throne"
-                ) {
-                  return null;
-                }
-                const objectiveObj = objectives[objective];
-                if (!objectiveObj) {
-                  return null;
-                }
-                return (
-                  <ObjectiveRow
-                    key={objective}
-                    hideScorers={true}
-                    objective={objectiveObj}
-                    removeObjective={() =>
-                      unscoreObjectiveAsync(gameId, activeFactionId, objective)
-                    }
-                  />
-                );
-              })}
-            </div>
-          </React.Fragment>
+          <div className="flexColumn" style={{ alignItems: "stretch" }}>
+            {scoredObjectives.map((objective) => {
+              if (!objectives) {
+                return null;
+              }
+              if (
+                objective === "Custodians Token" ||
+                objective === "Support for the Throne"
+              ) {
+                return null;
+              }
+              const objectiveObj = objectives[objective];
+              if (!objectiveObj) {
+                return null;
+              }
+              return (
+                <ObjectiveRow
+                  key={objective}
+                  hideScorers={true}
+                  objective={objectiveObj}
+                  removeObjective={() =>
+                    unscoreObjectiveAsync(gameId, activeFactionId, objective)
+                  }
+                />
+              );
+            })}
+          </div>
         </LabeledDiv>
       ) : null}
       {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (

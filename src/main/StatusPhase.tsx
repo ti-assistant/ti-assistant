@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { LockedButtons } from "../LockedButton";
@@ -32,33 +32,15 @@ import {
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
-import { getPlayedRelic } from "../util/actionLog";
+import { getLogEntries, getPlayedRelic } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getInitiativeForFaction } from "../util/helpers";
 import { objectiveTypeString, phaseString } from "../util/strings";
+import { ActionLog } from "../util/types/types";
 import { rem } from "../util/util";
 import styles from "./StatusPhase.module.scss";
-import { ActionLog } from "../util/types/types";
-
-function InfoContent({ children }: PropsWithChildren) {
-  return (
-    <div
-      className="myriadPro"
-      style={{
-        width: "100%",
-        minWidth: rem(320),
-        padding: rem(4),
-        whiteSpace: "pre-line",
-        textAlign: "center",
-        fontSize: rem(32),
-      }}
-    >
-      {children}
-    </div>
-  );
-}
 
 function CommandTokenGains() {
   const factions = useFactions();
@@ -82,15 +64,16 @@ function CommandTokenGains() {
     4: Faction[];
   } = { 2: [], 3: [], 4: [] };
   Object.values(filteredStrategyCards).forEach((card) => {
-    if (!factions || !card.faction) {
+    const factionId = card.faction;
+    if (!factionId) {
       return;
     }
-    const faction = factions[card.faction];
+    const faction = factions[factionId];
     if (!faction) {
       return;
     }
     let number: 2 | 3 | 4 = 2;
-    if (card.faction === "Federation of Sol") {
+    if (factionId === "Federation of Sol") {
       if (hasTech(faction, "Hyper Metabolism")) {
         number = 4;
       } else {
@@ -188,18 +171,19 @@ function ActionCardDraws() {
     3: Faction[];
   } = { 1: [], 2: [], 3: [] };
   Object.values(filteredStrategyCards).forEach((card) => {
-    if (!factions || !card.faction) {
+    const factionId = card.faction;
+    if (!factionId) {
       return;
     }
     let number: 1 | 2 | 3 = 1;
-    const faction = factions[card.faction];
+    const faction = factions[factionId];
     if (!faction) {
       return;
     }
     if (hasTech(faction, "Neural Motivator")) {
       number = 2;
     }
-    if (card.faction === "Yssaril Tribes") {
+    if (factionId === "Yssaril Tribes") {
       number = 3;
     }
     numberOfActionCards[number].push(faction);
@@ -288,19 +272,6 @@ export function MiddleColumn() {
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  function scoreObj(factionId: FactionId, objectiveId: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    scoreObjectiveAsync(gameId, factionId, objectiveId);
-  }
-  function unscoreObj(factionId: FactionId, objectiveId: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    unscoreObjectiveAsync(gameId, factionId, objectiveId);
-  }
-
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
@@ -311,53 +282,6 @@ export function MiddleColumn() {
         (othercard) => card.faction === othercard.faction
       ) === index
     );
-  });
-  const numberOfActionCards: {
-    1: Faction[];
-    2: Faction[];
-    3: Faction[];
-  } = { 1: [], 2: [], 3: [] };
-  Object.values(filteredStrategyCards).forEach((card) => {
-    if (!factions || !card.faction) {
-      return;
-    }
-    let number: 1 | 2 | 3 = 1;
-    const faction = factions[card.faction];
-    if (!faction) {
-      return;
-    }
-    if (hasTech(faction, "Neural Motivator")) {
-      number = 2;
-    }
-    if (card.faction === "Yssaril Tribes") {
-      number = 3;
-    }
-    numberOfActionCards[number].push(faction);
-  });
-  const numberOfCommandTokens: {
-    2: Faction[];
-    3: Faction[];
-    4: Faction[];
-  } = { 2: [], 3: [], 4: [] };
-  Object.values(filteredStrategyCards).forEach((card) => {
-    if (!factions || !card.faction) {
-      return;
-    }
-    const faction = factions[card.faction];
-    if (!faction) {
-      return;
-    }
-    let number: 2 | 3 | 4 = 2;
-    if (card.faction === "Federation of Sol") {
-      if (hasTech(faction, "Hyper Metabolism")) {
-        number = 4;
-      } else {
-        number = 3;
-      }
-    } else if (hasTech(faction, "Hyper Metabolism")) {
-      number = 3;
-    }
-    numberOfCommandTokens[number].push(faction);
   });
 
   if (!objectives || !factions) {
@@ -382,16 +306,19 @@ export function MiddleColumn() {
         >
           <div className={styles.ScoreObjectivesSection}>
             {filteredStrategyCards.map((card) => {
+              const factionId = card.faction;
+              if (!factionId) {
+                return null;
+              }
               const canScoreObjectives = Object.values(planets ?? {}).reduce(
                 (canScore, planet) => {
-                  if (card.faction === "Clan of Saar") {
+                  if (factionId === "Clan of Saar") {
                     return true;
                   }
-                  let planetFaction = card.faction;
                   if (
                     planet.home &&
-                    planet.faction === planetFaction &&
-                    planet.owner !== card.faction
+                    planet.faction === factionId &&
+                    planet.owner !== factionId
                   ) {
                     return false;
                   }
@@ -399,16 +326,14 @@ export function MiddleColumn() {
                 },
                 true
               );
-              const scoredObjectives = currentTurn
+              const scoredObjectives = getLogEntries<ScoreObjectiveData>(
+                currentTurn,
+                "SCORE_OBJECTIVE"
+              )
                 .filter(
-                  (logEntry) =>
-                    logEntry.data.action === "SCORE_OBJECTIVE" &&
-                    logEntry.data.event.faction === card.faction
+                  (logEntry) => logEntry.data.event.faction === card.faction
                 )
-                .map(
-                  (logEntry) =>
-                    (logEntry.data as ScoreObjectiveData).event.objective
-                );
+                .map((logEntry) => logEntry.data.event.objective);
               const scoredPublics = scoredObjectives.filter((objective) => {
                 const objectiveObj = objectives
                   ? objectives[objective]
@@ -432,23 +357,17 @@ export function MiddleColumn() {
               });
               const availableObjectives = Object.values(objectives).filter(
                 (objective) => {
-                  if (!card.faction) {
-                    return null;
-                  }
                   return (
                     objective.selected &&
                     (!objective.phase || objective.phase === "STATUS") &&
                     (objective.type === "STAGE ONE" ||
                       objective.type === "STAGE TWO") &&
-                    (!(objective.scorers ?? []).includes(card.faction) ||
+                    (!(objective.scorers ?? []).includes(factionId) ||
                       scoredPublics.includes(objective.id))
                   );
                 }
               );
               const secrets = Object.values(objectives).filter((objective) => {
-                if (!card.faction) {
-                  return null;
-                }
                 return (
                   objective.type === "SECRET" &&
                   ((objective.scorers ?? []).length === 0 ||
@@ -456,10 +375,7 @@ export function MiddleColumn() {
                   objective.phase === "STATUS"
                 );
               });
-              if (!factions || !card.faction) {
-                return null;
-              }
-              const faction = factions[card.faction];
+              const faction = factions[factionId];
               return (
                 <div
                   key={card.id}
@@ -510,23 +426,29 @@ export function MiddleColumn() {
                               />
                             }
                             toggleItem={(objectiveId, add) => {
-                              if (!card.faction) {
-                                return;
-                              }
                               if (add) {
-                                scoreObj(card.faction, objectiveId);
+                                scoreObjectiveAsync(
+                                  gameId,
+                                  factionId,
+                                  objectiveId
+                                );
                               } else {
-                                unscoreObj(card.faction, objectiveId);
+                                unscoreObjectiveAsync(
+                                  gameId,
+                                  factionId,
+                                  objectiveId
+                                );
                               }
                             }}
                           />
                         ) : (
                           <ObjectiveSelectHoverMenu
                             action={(_, objectiveId) => {
-                              if (!card.faction) {
-                                return;
-                              }
-                              scoreObj(card.faction, objectiveId);
+                              scoreObjectiveAsync(
+                                gameId,
+                                factionId,
+                                objectiveId
+                              );
                             }}
                             label={
                               <FormattedMessage
@@ -590,23 +512,25 @@ export function MiddleColumn() {
                           style={{ maxWidth: `calc(88vw - ${rem(50)})` }}
                           itemsPerColumn={10}
                           toggleItem={(objectiveId, add) => {
-                            if (!card.faction) {
-                              return;
-                            }
                             if (add) {
-                              scoreObj(card.faction, objectiveId);
+                              scoreObjectiveAsync(
+                                gameId,
+                                factionId,
+                                objectiveId
+                              );
                             } else {
-                              unscoreObj(card.faction, objectiveId);
+                              unscoreObjectiveAsync(
+                                gameId,
+                                factionId,
+                                objectiveId
+                              );
                             }
                           }}
                         />
                       ) : (
                         <ObjectiveSelectHoverMenu
                           action={(_, objectiveId) => {
-                            if (!card.faction) {
-                              return;
-                            }
-                            scoreObj(card.faction, objectiveId);
+                            scoreObjectiveAsync(gameId, factionId, objectiveId);
                           }}
                           label={
                             <FormattedMessage
@@ -743,14 +667,14 @@ export default function StatusPhase() {
     return abilities;
   }
 
-  const crownOfEmphidia = (relics ?? {})["The Crown of Emphidia"];
+  const crownOfEmphidia = relics["The Crown of Emphidia"];
 
   const wasCrownPlayedThisTurn = getPlayedRelic(
     currentTurn,
     "The Crown of Emphidia"
   );
-  const isCrownPurged = relics["The Crown of Emphidia"]?.state === "purged";
-  const crownOwner = relics["The Crown of Emphidia"]?.owner;
+  const isCrownPurged = crownOfEmphidia?.state === "purged";
+  const crownOwner = crownOfEmphidia?.owner;
 
   function hasEndOfStatusPhaseAbilities() {
     let canScoreCrown = false;
@@ -859,19 +783,6 @@ export default function StatusPhase() {
       return objective.type === type && !objective.selected;
     }
   );
-  function addObj(objectiveId: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    revealObjectiveAsync(gameId, objectiveId);
-  }
-
-  function removeObj(objectiveId: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    hideObjectiveAsync(gameId, objectiveId);
-  }
 
   const nextPhaseButtons = [];
   if (!state?.agendaUnlocked) {
@@ -1018,7 +929,9 @@ export default function StatusPhase() {
               >
                 <ObjectiveRow
                   objective={revealedObjectiveObj}
-                  removeObjective={() => removeObj(revealedObjectiveObj.id)}
+                  removeObjective={() =>
+                    hideObjectiveAsync(gameId, revealedObjectiveObj.id)
+                  }
                   viewing={true}
                 />
               </LabeledDiv>
@@ -1030,7 +943,9 @@ export default function StatusPhase() {
               >
                 <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
                   <ObjectiveSelectHoverMenu
-                    action={(_, objectiveId) => addObj(objectiveId)}
+                    action={(_, objectiveId) =>
+                      revealObjectiveAsync(gameId, objectiveId)
+                    }
                     label={
                       <FormattedMessage
                         id="lDBTCO"
@@ -1200,7 +1115,6 @@ export default function StatusPhase() {
           buttons={nextPhaseButtons}
         />
       </div>
-      {/* </div> */}
     </React.Fragment>
   );
 }

@@ -1,8 +1,4 @@
-import {
-  isValidMapString,
-  updateMapString,
-  validSystemNumber,
-} from "../util/map";
+import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { objectEntries } from "../util/util";
 

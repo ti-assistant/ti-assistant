@@ -1,9 +1,5 @@
 import { IntlShape } from "react-intl";
-import {
-  updateMapString,
-  isValidMapString,
-  validSystemNumber,
-} from "../util/map";
+import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { objectEntries } from "../util/util";
 
