@@ -68,6 +68,7 @@ export default function MapLapse({
         style={{ position: "relative", height: rem(512), aspectRatio: "1/1" }}
       >
         <GameMap
+          defaultOverlay="OWNERS"
           factions={mapOrderedFactions}
           mapString={planets.mapString ?? ""}
           mapStyle={options ? options["map-style"] ?? "standard" : "standard"}

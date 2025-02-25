@@ -81,6 +81,7 @@ function CubeToPixel(hex: Cube, size: number) {
 }
 
 interface MapProps {
+  defaultOverlay?: OverlayDetails;
   mapString: string;
   mapStyle: MapStyle;
   wormholeNexus?: string | SystemId;
@@ -99,6 +100,7 @@ interface MapProps {
 }
 
 export default function GameMap({
+  defaultOverlay = "NONE",
   mapString,
   mapStyle,
   wormholeNexus,
@@ -109,7 +111,8 @@ export default function GameMap({
   onSelect,
 }: MapProps) {
   const planetInfo = planets ?? {};
-  const [overlayDetails, setOverlayDetails] = useState<OverlayDetails>("NONE");
+  const [overlayDetails, setOverlayDetails] =
+    useState<OverlayDetails>(defaultOverlay);
 
   const updatedMapString =
     mapString === ""
