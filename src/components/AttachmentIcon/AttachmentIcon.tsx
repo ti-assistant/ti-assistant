@@ -10,6 +10,7 @@ import { rem } from "../../util/util";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./AttachmentIcon.module.scss";
+import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
 
 interface AttachmentIconProps {
   attachment?: Attachment;
@@ -76,6 +77,7 @@ export default function AttachmentIcon({
           style={{ width: rem(size), aspectRatio: 1, gap: 0 }}
         >
           <div
+            className="flexRow"
             style={{
               width: "33%",
               height: "100%",
@@ -83,12 +85,7 @@ export default function AttachmentIcon({
               flexShrink: 0,
             }}
           >
-            <Image
-              src={`/images/tomb_symbol.webp`}
-              alt={`Tomb`}
-              fill
-              style={{ objectFit: "contain" }}
-            />
+            <TombOfEmphidiaSVG />
           </div>
           <ResourcesIcon
             resources={attachment.resources ?? 0}
