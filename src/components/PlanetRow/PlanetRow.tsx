@@ -22,6 +22,11 @@ import GreenTechSVG from "../../icons/techs/GreenTech";
 import BlueTechSVG from "../../icons/techs/BlueTech";
 import YellowTechSVG from "../../icons/techs/YellowTech";
 import RedTechSVG from "../../icons/techs/RedTech";
+import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
+import { applyPlanetAttachments } from "../../util/planets";
+import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
+import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
+import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -277,14 +282,13 @@ function PlanetAttributes({
       case "demilitarized":
         return <DemilitarizedZoneSVG />;
       case "tomb":
-        return (
-          <Image
-            src="/images/tomb_symbol.webp"
-            alt="Tomb of Emphidia"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        );
+        return <TombOfEmphidiaSVG />;
+      case "extra-votes":
+        return <CouncilPreserveSVG />;
+      case "infantry":
+        return <ArcaneCitadelSVG />;
+      case "production":
+        return <OrbitalFoundriesSVG />;
       case "space-cannon":
         return (
           <div
@@ -341,46 +345,50 @@ function AttachMenu({ planetId }: AttachMenuProps) {
   if (!planet) {
     return null;
   }
+  const updatedPlanet = applyPlanetAttachments(planet, attachments);
 
   function availableAttachments(): Partial<Record<AttachmentId, Attachment>> {
-    if (!attachments || !planet) {
-      return {};
-    }
-    const planetAttachments = planet.attachments ?? [];
+    const planetAttachments = updatedPlanet.attachments ?? [];
     let available = Object.values(attachments)
       .filter((attachment) => {
         // If attached to this planet, always show.
         if (planetAttachments.includes(attachment.id)) {
           return true;
         }
-        if (planet.id === "Mecatol Rex" && attachment.id !== "Nano-Forge") {
+        if (
+          updatedPlanet.id === "Mecatol Rex" &&
+          attachment.id !== "Nano-Forge"
+        ) {
           return false;
         }
-        if (attachment.id === "Terraform" && planet.owner === "Titans of Ul") {
+        if (
+          attachment.id === "Terraform" &&
+          updatedPlanet.owner === "Titans of Ul"
+        ) {
           return false;
         }
         if (attachment.required.type !== undefined) {
           if (
-            attachment.required.type !== planet.type &&
-            planet.type !== "ALL"
+            attachment.required.type !== updatedPlanet.type &&
+            updatedPlanet.type !== "ALL"
           ) {
             return false;
           }
         }
         if (attachment.required.id !== undefined) {
-          if (attachment.required.id !== planet.id) {
+          if (attachment.required.id !== updatedPlanet.id) {
             return false;
           }
         }
         if (attachment.required.home !== undefined) {
-          if (attachment.required.home !== (planet.home ?? false)) {
+          if (attachment.required.home !== (updatedPlanet.home ?? false)) {
             return false;
           }
         }
         if (attachment.required.legendary !== undefined) {
           if (
             attachment.required.legendary !==
-            planet.attributes.includes("legendary")
+            updatedPlanet.attributes.includes("legendary")
           ) {
             return false;
           }
@@ -405,6 +413,7 @@ function AttachMenu({ planetId }: AttachMenuProps) {
           overflowY: "auto",
           width: "100%",
           maxHeight: "75vh",
+          justifyContent: "flex-start",
         }}
       >
         {Object.entries(availableAttachments()).map(([name, attachment]) => {
