@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AddPlanetList } from "../../../../../src/AddPlanetList";
 import { AddTechList } from "../../../../../src/AddTechList";
@@ -17,7 +17,7 @@ import { StaticFactionTimer } from "../../../../../src/Timer";
 import FactionCard from "../../../../../src/components/FactionCard/FactionCard";
 import LabeledDiv from "../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../src/components/LabeledLine/LabeledLine";
-import Modal, { ModalContent } from "../../../../../src/components/Modal/Modal";
+import { ModalContent } from "../../../../../src/components/Modal/Modal";
 import ObjectiveRow from "../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import PlanetRow from "../../../../../src/components/PlanetRow/PlanetRow";
 import { Selector } from "../../../../../src/components/Selector/Selector";
@@ -32,17 +32,18 @@ import {
   useAgendas,
   useAttachments,
   useCurrentTurn,
-  useFactions,
   useGameId,
-  useGameState,
   useLeaders,
-  useObjectives,
   useOptions,
   usePlanets,
   useRelics,
   useStrategyCards,
   useTechs,
 } from "../../../../../src/context/dataHooks";
+import { useObjectives } from "../../../../../src/context/objectiveDataHooks";
+import { useFactions } from "../../../../../src/context/factionDataHooks";
+import { useGameState } from "../../../../../src/context/stateDataHooks";
+import { useSharedModal } from "../../../../../src/data/SharedModal";
 import {
   addTechAsync,
   advancePhaseAsync,
@@ -62,22 +63,8 @@ import {
   undoAsync,
   unscoreObjectiveAsync,
 } from "../../../../../src/dynamic/api";
-import {
-  AdditionalActions,
-  FactionActionButtons,
-  NextPlayerButtons,
-  advanceToStatusPhase,
-} from "../../../../../src/main/ActionPhase";
-import { computeVotes } from "../../../../../src/main/AgendaPhase";
-import {
-  setupPhaseComplete,
-  startFirstRound,
-} from "../../../../../src/main/SetupPhase";
-import { statusPhaseComplete } from "../../../../../src/main/StatusPhase";
-import {
-  StrategyCardSelectList,
-  advanceToActionPhase,
-} from "../../../../../src/main/StrategyPhase";
+import { computeVotes } from "../../main/@phase/agenda/AgendaPhase";
+import { statusPhaseComplete } from "../../main/@phase/status/StatusPhase";
 import {
   getActiveAgenda,
   getFactionVotes,
@@ -106,10 +93,16 @@ import {
   filterToOwnedTechs,
   filterToUnownedTechs,
 } from "../../../../../src/util/techs";
-import styles from "./faction-page.module.scss";
 import { Optional } from "../../../../../src/util/types/types";
 import { rem } from "../../../../../src/util/util";
-import { useSharedModal } from "../../../../../src/data/SharedModal";
+import {
+  AdditionalActions,
+  FactionActionButtons,
+  NextPlayerButtons,
+} from "../../main/@phase/action/ActionPhase";
+import { setupPhaseComplete } from "../../main/@phase/setup/SetupPhase";
+import { StrategyCardSelectList } from "../../main/@phase/strategy/StrategyPhase";
+import styles from "./faction-page.module.scss";
 
 const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
 
@@ -1777,7 +1770,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
                     if (!gameId) {
                       return;
                     }
-                    startFirstRound(gameId);
+                    advancePhaseAsync(gameId);
                   },
                 },
               ]}
@@ -1790,10 +1783,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
             <div className="flexColumn" style={{ marginTop: rem(8) }}>
               <button
                 onClick={() => {
-                  if (!gameId) {
-                    return;
-                  }
-                  advanceToActionPhase(gameId);
+                  advancePhaseAsync(gameId);
                 }}
               >
                 <FormattedMessage
@@ -1826,10 +1816,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
                     { phase: phaseString("STATUS", intl) }
                   ),
                   onClick: () => {
-                    if (!gameId) {
-                      return;
-                    }
-                    advanceToStatusPhase(gameId);
+                    advancePhaseAsync(gameId);
                   },
                 },
               ]}

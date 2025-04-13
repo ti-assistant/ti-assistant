@@ -1,36 +1,39 @@
 import { useEffect, useMemo, useRef } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
-import { LockedButtons } from "../LockedButton";
-import { NumberedItem } from "../NumberedItem";
-import { SelectableRow } from "../SelectableRow";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import StartingComponents from "../components/StartingComponents/StartingComponents";
+import { LockedButtons } from "../../../../../../src/LockedButton";
+import { NumberedItem } from "../../../../../../src/NumberedItem";
+import { SelectableRow } from "../../../../../../src/SelectableRow";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import StartingComponents from "../../../../../../src/components/StartingComponents/StartingComponents";
 import {
-  useActionLog,
-  useFactions,
   useGameId,
-  useGameState,
-  useObjectives,
+  useLogEntries,
   useOptions,
-} from "../context/dataHooks";
+} from "../../../../../../src/context/dataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
+import {
+  useFaction,
+  useFactions,
+  useNumFactions,
+} from "../../../../../../src/context/factionDataHooks";
+import { useSpeaker } from "../../../../../../src/context/stateDataHooks";
 import {
   advancePhaseAsync,
   changeOptionAsync,
   hideObjectiveAsync,
   revealObjectiveAsync,
-} from "../dynamic/api";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { processMapString } from "../util/map";
-import { objectiveTypeString } from "../util/strings";
-import { rem } from "../util/util";
+} from "../../../../../../src/dynamic/api";
+import {
+  getFactionColor,
+  getFactionName,
+} from "../../../../../../src/util/factions";
+import { processMapString } from "../../../../../../src/util/map";
+import { objectiveTypeString } from "../../../../../../src/util/strings";
+import { rem } from "../../../../../../src/util/util";
 import styles from "./SetupPhase.module.scss";
-
-export function startFirstRound(gameId: string) {
-  advancePhaseAsync(gameId);
-}
+import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>
@@ -135,12 +138,18 @@ function setMapString(
 }
 
 export default function SetupPhase() {
-  const actionLog = useActionLog();
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
-  const state = useGameState();
+
+  const orderedFactionIds = useOrderedFactionIds("SPEAKER");
+  const numFactions = useNumFactions();
+
+  const revealedObjectives = useLogEntries<RevealObjectiveData>(
+    "REVEAL_OBJECTIVE"
+  ).map((entry) => entry.data.event.objective);
+  const speaker = useSpeaker();
 
   const intl = useIntl();
 
@@ -155,22 +164,8 @@ export default function SetupPhase() {
     mapStringRef.current.value = userMapString ?? "";
   }, [userMapString]);
 
-  const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const revealedObjectives = currentTurn
-    .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
-    .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
-
-  const orderedFactions = useMemo(() => {
-    if (!factions) {
-      return [];
-    }
-    return Object.values(factions).sort((a, b) => {
-      return a.order - b.order;
-    });
-  }, [factions]);
-
   const availableObjectives = useMemo(() => {
-    return Object.values(objectives ?? {}).filter((objective) => {
+    return Object.values(objectives).filter((objective) => {
       return (
         objective.type === "STAGE ONE" &&
         !revealedObjectives.includes(objective.id)
@@ -223,7 +218,7 @@ export default function SetupPhase() {
                     gameId,
                     event.currentTarget.value,
                     options["map-style"],
-                    Object.keys(factions).length
+                    numFactions
                   )
                 }
               ></input>
@@ -253,28 +248,12 @@ export default function SetupPhase() {
                   paddingTop: rem(6),
                 }}
               >
-                {Object.values(orderedFactions).map((faction) => {
+                {Object.values(orderedFactionIds).map((factionId) => {
                   return (
-                    <LabeledDiv
-                      key={faction.id}
-                      label={getFactionName(faction)}
-                      color={getFactionColor(faction)}
-                    >
-                      <div
-                        className="flexColumn"
-                        style={{
-                          paddingTop: rem(2),
-                          alignItems: "flex-start",
-                          height: "100%",
-                          width: "100%",
-                        }}
-                      >
-                        <StartingComponents
-                          factionId={faction.id}
-                          showFactionIcon
-                        />
-                      </div>
-                    </LabeledDiv>
+                    <StartingComponentDiv
+                      key={factionId}
+                      factionId={factionId}
+                    />
                   );
                 })}
               </div>
@@ -322,16 +301,13 @@ export default function SetupPhase() {
                 >
                   <div className="flexColumn" style={{ alignItems: "stretch" }}>
                     {revealedObjectives.map((objectiveId) => {
-                      const objective = (objectives ?? {})[objectiveId];
+                      const objective = objectives[objectiveId];
                       if (!objective) {
                         return (
                           <SelectableRow
                             key={objectiveId}
                             itemId={objectiveId}
                             removeItem={() => {
-                              if (!gameId) {
-                                return;
-                              }
                               hideObjectiveAsync(gameId, objectiveId);
                             }}
                           >
@@ -344,9 +320,6 @@ export default function SetupPhase() {
                           key={objectiveId}
                           objective={objective}
                           removeObjective={() => {
-                            if (!gameId) {
-                              return;
-                            }
                             hideObjectiveAsync(gameId, objectiveId);
                           }}
                           viewing={true}
@@ -358,8 +331,8 @@ export default function SetupPhase() {
               ) : null}
               {revealedObjectives.length < 2 ? (
                 <LabeledDiv
-                  label={getFactionName(factions[state.speaker])}
-                  color={getFactionColor(factions[state.speaker])}
+                  label={getFactionName(factions[speaker])}
+                  color={getFactionColor(factions[speaker])}
                   style={{ width: "100%" }}
                 >
                   <ObjectiveSelectHoverMenu
@@ -387,7 +360,7 @@ export default function SetupPhase() {
           </NumberedItem>
 
           <div className={`flexColumn ${styles.Embedded}`}>
-            {!setupPhaseComplete(factions ?? {}, revealedObjectives) ? (
+            {!setupPhaseComplete(factions, revealedObjectives) ? (
               <div
                 style={{
                   color: "firebrick",
@@ -395,11 +368,11 @@ export default function SetupPhase() {
                   fontWeight: "bold",
                 }}
               >
-                {getSetupPhaseText(factions ?? {}, revealedObjectives, intl)}
+                {getSetupPhaseText(factions, revealedObjectives, intl)}
               </div>
             ) : null}
             <LockedButtons
-              unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
+              unlocked={setupPhaseComplete(factions, revealedObjectives)}
               buttons={[
                 {
                   text: intl.formatMessage({
@@ -411,7 +384,7 @@ export default function SetupPhase() {
                     if (!gameId) {
                       return;
                     }
-                    startFirstRound(gameId);
+                    advancePhaseAsync(gameId);
                   },
                   style: { fontSize: rem(40) },
                 },
@@ -448,32 +421,14 @@ export default function SetupPhase() {
               paddingTop: rem(6),
             }}
           >
-            {Object.values(orderedFactions).map((faction) => {
+            {Object.values(orderedFactionIds).map((factionId) => {
               return (
-                <LabeledDiv
-                  key={faction.id}
-                  label={getFactionName(faction)}
-                  color={getFactionColor(faction)}
-                >
-                  <div
-                    className="flexColumn"
-                    style={{
-                      alignItems: "flex-start",
-                      height: "100%",
-                      width: "100%",
-                    }}
-                  >
-                    <StartingComponents
-                      factionId={faction.id}
-                      showFactionIcon
-                    />
-                  </div>
-                </LabeledDiv>
+                <StartingComponentDiv key={factionId} factionId={factionId} />
               );
             })}
           </div>
           <div className="flexColumn">
-            {!setupPhaseComplete(factions ?? {}, revealedObjectives) ? (
+            {!setupPhaseComplete(factions, revealedObjectives) ? (
               <div
                 style={{
                   color: "firebrick",
@@ -481,11 +436,11 @@ export default function SetupPhase() {
                   fontWeight: "bold",
                 }}
               >
-                {getSetupPhaseText(factions ?? {}, revealedObjectives, intl)}
+                {getSetupPhaseText(factions, revealedObjectives, intl)}
               </div>
             ) : null}
             <LockedButtons
-              unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
+              unlocked={setupPhaseComplete(factions, revealedObjectives)}
               buttons={[
                 {
                   text: intl.formatMessage({
@@ -497,7 +452,7 @@ export default function SetupPhase() {
                     if (!gameId) {
                       return;
                     }
-                    startFirstRound(gameId);
+                    advancePhaseAsync(gameId);
                   },
                   style: { fontSize: rem(40) },
                 },
@@ -507,5 +462,29 @@ export default function SetupPhase() {
         </div>
       </div>
     </>
+  );
+}
+
+function StartingComponentDiv({ factionId }: { factionId: FactionId }) {
+  const faction = useFaction(factionId);
+
+  return (
+    <LabeledDiv
+      key={factionId}
+      label={getFactionName(faction)}
+      color={getFactionColor(faction)}
+    >
+      <div
+        className="flexColumn"
+        style={{
+          paddingTop: rem(2),
+          alignItems: "flex-start",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <StartingComponents factionId={factionId} showFactionIcon />
+      </div>
+    </LabeledDiv>
   );
 }

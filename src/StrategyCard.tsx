@@ -1,5 +1,5 @@
 import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
-import { useFactions } from "./context/dataHooks";
+import { useFactions } from "./context/factionDataHooks";
 import { getFactionColor, getFactionName } from "./util/factions";
 import { rem } from "./util/util";
 

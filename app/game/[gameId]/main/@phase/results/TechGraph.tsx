@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import TechIcon from "../../../../../../src/components/TechIcon/TechIcon";
 import Toggle from "../../../../../../src/components/Toggle/Toggle";
-import { useFactions } from "../../../../../../src/context/dataHooks";
+import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import { getFactionColor } from "../../../../../../src/util/factions";
 import { Optional } from "../../../../../../src/util/types/types";
 import {

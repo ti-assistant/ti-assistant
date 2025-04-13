@@ -1,10 +1,10 @@
 "use client";
 
 import { FormattedMessage } from "react-intl";
-import LoadingFactionSummary from "../LoadingFactionSummary";
-import { StaticFactionTimer } from "../Timer";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import { rem } from "../util/util";
+import LoadingFactionSummary from "../../../../../../src/LoadingFactionSummary";
+import { StaticFactionTimer } from "../../../../../../src/Timer";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import { rem } from "../../../../../../src/util/util";
 import styles from "./SummaryColumn.module.scss";
 
 export default function LoadingSummaryColumn() {

@@ -2,28 +2,28 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { IntlShape, useIntl } from "react-intl";
-import MapLapse from "../../app/game/[gameId]/main/@phase/results/MapLapse";
-import TechGraph from "../../app/game/[gameId]/main/@phase/results/TechGraph";
-import { VictoryPointsGraph } from "../../app/game/[gameId]/main/@phase/results/VictoryPointsGraph";
-import BorderedDiv from "../components/BorderedDiv/BorderedDiv";
-import Chip from "../components/Chip/Chip";
-import { GameLog } from "../components/GameLog/GameLog";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import { LogEntryElementProps } from "../components/LogEntry";
+import MapLapse from "./MapLapse";
+import TechGraph from "./TechGraph";
+import { VictoryPointsGraph } from "./VictoryPointsGraph";
+import BorderedDiv from "../../../../../../src/components/BorderedDiv/BorderedDiv";
+import Chip from "../../../../../../src/components/Chip/Chip";
+import { GameLog } from "../../../../../../src/components/GameLog/GameLog";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import { LogEntryElementProps } from "../../../../../../src/components/LogEntry";
 import {
   useActionLog,
-  useFactions,
-  useGameData,
   useGameId,
   useOptions,
-} from "../context/dataHooks";
-import { getBaseData } from "../data/baseData";
-import { Loader } from "../Loader";
-import { getMapString } from "../util/options";
-import { ActionLog, Optional } from "../util/types/types";
-import { rem } from "../util/util";
-import Timers from "../../app/game/[gameId]/main/@phase/results/Timers";
-import { processMapString } from "../util/map";
+} from "../../../../../../src/context/dataHooks";
+import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import { useGameData } from "../../../../../../src/context/gameDataHooks";
+import { getBaseData } from "../../../../../../src/data/baseData";
+import { Loader } from "../../../../../../src/Loader";
+import { getMapString } from "../../../../../../src/util/options";
+import { ActionLog, Optional } from "../../../../../../src/util/types/types";
+import { rem } from "../../../../../../src/util/util";
+import Timers from "./Timers";
+import { processMapString } from "../../../../../../src/util/map";
 
 type View = "Game Log" | "Victory Points" | "Techs" | "Map Lapse" | "Timers";
 
@@ -203,12 +203,12 @@ function InnerContent({ viewing }: { viewing: View }) {
 let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
 };
-import("../../server/data/factions").then((module) => {
+import("../../../../../../server/data/factions").then((module) => {
   getBaseFactions = module.getBaseFactions;
 });
 
 let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
-import("../../server/data/planets").then((module) => {
+import("../../../../../../server/data/planets").then((module) => {
   BASE_PLANETS = module.BASE_PLANETS;
 });
 

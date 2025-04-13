@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
-import { useFactions, useGameId, useTechs } from "../../context/dataHooks";
+import { useGameId, useTechs } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "../../dynamic/api";
 import { getReplacementTech, hasTech } from "../../util/api/techs";
 import { getTechTypeColor } from "../../util/techs";

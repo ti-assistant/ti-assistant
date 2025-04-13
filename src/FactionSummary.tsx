@@ -7,14 +7,14 @@ import TechSummary from "./components/TechSummary/TechSummary";
 import {
   useActionLog,
   useAttachments,
-  useFaction,
   useGameId,
-  useGameState,
   useLeaders,
-  useObjectives,
   usePlanets,
   useTechs,
 } from "./context/dataHooks";
+import { useObjectives } from "./context/objectiveDataHooks";
+import { useFaction } from "./context/factionDataHooks";
+import { useGameState } from "./context/stateDataHooks";
 import { manualVPUpdateAsync } from "./dynamic/api";
 import { getLogEntries } from "./util/actionLog";
 import { computeScoredVPs } from "./util/factions";

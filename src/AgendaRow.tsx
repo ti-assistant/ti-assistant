@@ -2,13 +2,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import { ModalContent } from "./components/Modal/Modal";
 import { translateOutcome } from "./components/VoteBlock/VoteBlock";
-import {
-  useAgendas,
-  useFactions,
-  useObjectives,
-  usePlanets,
-  useStrategyCards,
-} from "./context/dataHooks";
+import { useAgendas, usePlanets, useStrategyCards } from "./context/dataHooks";
+import { useObjectives } from "./context/objectiveDataHooks";
+import { useFactions } from "./context/factionDataHooks";
 import { useSharedModal } from "./data/SharedModal";
 import { agendaTypeString, outcomeString } from "./util/strings";
 import { rem } from "./util/util";

@@ -3,7 +3,8 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { Tab, TabBody } from "./Tab";
 import LabeledLine from "./components/LabeledLine/LabeledLine";
 import ObjectiveRow from "./components/ObjectiveRow/ObjectiveRow";
-import { useGameId, useObjectives } from "./context/dataHooks";
+import { useGameId } from "./context/dataHooks";
+import { useObjectives } from "./context/objectiveDataHooks";
 import {
   hideObjectiveAsync,
   revealObjectiveAsync,

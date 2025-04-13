@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useGameId, useGameState, useTimers } from "../../context/dataHooks";
+import { useGameId, useTimers } from "../../context/dataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import { useSharedTimer } from "../../data/SharedTimer";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";

@@ -1,4 +1,5 @@
-import { useActionLog, useGameState } from "../../context/dataHooks";
+import { useActionLog } from "../../context/dataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import { getFinalActionOfPreviousTurn } from "../../util/api/actionLog";
 import { useSharedSettings } from "../../util/cookies";
 import { rem } from "../../util/util";

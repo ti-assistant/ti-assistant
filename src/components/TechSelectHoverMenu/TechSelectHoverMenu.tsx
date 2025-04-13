@@ -4,13 +4,13 @@ import { useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import {
   useAttachments,
-  useFaction,
-  useFactions,
   useOptions,
   usePlanets,
   useRelics,
   useTechs,
 } from "../../context/dataHooks";
+import { useFaction } from "../../context/factionDataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import {
   canResearchTech,

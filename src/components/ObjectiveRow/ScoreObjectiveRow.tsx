@@ -1,9 +1,6 @@
-import {
-  useActionLog,
-  useFactions,
-  useGameId,
-  useObjectives,
-} from "../../context/dataHooks";
+import { useActionLog, useGameId } from "../../context/dataHooks";
+import { useObjectives } from "../../context/objectiveDataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
 import { SymbolX } from "../../icons/svgs";
 import { getObjectiveScorers } from "../../util/actionLog";

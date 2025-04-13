@@ -1,11 +1,11 @@
 import { FormattedMessage } from "react-intl";
 import {
   useCurrentTurn,
-  useFactions,
   useGameId,
   usePlanets,
   useRelic,
 } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { playRelicAsync, unplayRelicAsync } from "../../dynamic/api";
 import { SymbolX } from "../../icons/svgs";
 import { getPlayedRelic } from "../../util/actionLog";

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { CSSProperties, PropsWithChildren } from "react";
-import { useFactions } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { getFactionColor } from "../../util/factions";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";

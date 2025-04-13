@@ -1,13 +1,13 @@
 import Image from "next/image";
 import React, { CSSProperties, PropsWithChildren } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useActionLog, useGameId, useOptions } from "../context/dataHooks";
+import { useObjective, useObjectives } from "../context/objectiveDataHooks";
 import {
-  useActionLog,
+  useFaction,
+  useFactionColor,
   useFactions,
-  useGameId,
-  useObjectives,
-  useOptions,
-} from "../context/dataHooks";
+} from "../context/factionDataHooks";
 import { useSharedModal } from "../data/SharedModal";
 import {
   hideObjectiveAsync,
@@ -20,7 +20,12 @@ import {
 import { getLogEntries } from "../util/actionLog";
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
 import { useSharedSettings } from "../util/cookies";
-import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
+import {
+  computeVPs,
+  convertToFactionColor,
+  getFactionColor,
+  getFactionName,
+} from "../util/factions";
 import { objectiveTypeString } from "../util/strings";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
@@ -33,6 +38,7 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
+import { useFactionVPs, useOrderedFactionIds } from "../context/gameDataHooks";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -161,37 +167,14 @@ function ObjectiveColumn({
         </div>
       </GridHeader>
       {orderedFactionIds.map((factionId) => {
-        const scoredObjective = objective.scorers?.includes(factionId);
         return (
-          <div
+          <ScorableFactionIcon
             key={factionId}
-            className={`flexRow ${styles.selected} ${
-              styles.factionGridIconWrapper
-            } ${viewOnly ? styles.viewOnly : ""}`}
-            onClick={() => {
-              if (viewOnly) {
-                return;
-              }
-              if (scoredObjective) {
-                unscoreObjectiveAsync(gameId, factionId, objective.id);
-              } else {
-                scoreObjectiveAsync(gameId, factionId, objective.id);
-              }
-            }}
-          >
-            <div
-              className={`${styles.factionIcon} ${
-                scoredObjective ? styles.selected : ""
-              } ${viewOnly ? styles.viewOnly : ""}`}
-              style={
-                {
-                  "--color": getFactionColor((factions ?? {})[factionId]),
-                } as ExtendedCSS
-              }
-            >
-              <FactionIcon factionId={factionId} size="100%" />
-            </div>
-          </div>
+            factionId={factionId}
+            inGrid
+            objectiveId={objective.id}
+            viewOnly={viewOnly}
+          />
         );
       })}
     </>
@@ -289,6 +272,8 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const objectives = useObjectives();
   const options = useOptions();
 
+  const orderedFactionIds = useOrderedFactionIds("ALLIANCE");
+
   const { settings, updateSetting } = useSharedSettings();
   const description = settings["display-objective-description"];
 
@@ -297,50 +282,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const intl = useIntl();
 
   const includesPoK = (options.expansions ?? []).includes("POK");
-
-  let orderedFactions = Object.values(factions ?? {}).sort((a, b) => {
-    if (a.mapPosition < b.mapPosition) {
-      return -1;
-    }
-    return 1;
-  });
-
-  if ((options["game-variant"] ?? "normal").startsWith("alliance")) {
-    orderedFactions = orderedFactions.sort((a, b) => {
-      if (!a.alliancePartner || !b.alliancePartner) {
-        return 0;
-      }
-
-      // If same alliance, sort normally.
-      if (a.alliancePartner === b.name || b.alliancePartner === a.name) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        return 1;
-      }
-
-      // If different alliance, sort by earliest partner.
-      let aName = a.name < a.alliancePartner ? a.name : a.alliancePartner;
-      let bName = b.name < b.alliancePartner ? b.name : b.alliancePartner;
-      if (aName < bName) {
-        return -1;
-      }
-      return 1;
-    });
-  }
-
-  let orderedFactionIds = orderedFactions.map((faction) => faction.id);
-
-  if (orderedFactionIds.length === 0) {
-    orderedFactionIds = [
-      "Ghosts of Creuss",
-      "Mentak Coalition",
-      "Nekro Virus",
-      "Sardakk N'orr",
-      "Vuil'raith Cabal",
-      "Yin Brotherhood",
-    ];
-  }
 
   const revealOrder: Partial<Record<ObjectiveId, number>> = {};
   let order = 1;
@@ -437,10 +378,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
 
   const numRows = orderedFactionIds.length + 1;
 
-  const custodiansToken = (objectives ?? {})["Custodians Token"];
-  const custodiansScorer = (custodiansToken?.scorers ??
-    [])[0] as Optional<FactionId>;
-
   const supportForTheThrone = (objectives ?? {})["Support for the Throne"];
 
   const shardOfTheThrone = (objectives ?? {})["Shard of the Throne"];
@@ -462,14 +399,6 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
 
   const mutiny = (objectives ?? {})["Mutiny"];
   const mutinyDirection = mutiny?.points === 1 ? "[For]" : "[Against]";
-
-  function manualVpAdjust(increase: boolean, factionId: FactionId) {
-    if (!gameId) {
-      return;
-    }
-    const value = increase ? 1 : -1;
-    manualVPUpdateAsync(gameId, factionId, value);
-  }
 
   return (
     <>
@@ -503,64 +432,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   isolation: "isolate",
                 }}
               >
-                {orderedFactionIds.map((name, index) => {
-                  const faction = (factions ?? {})[name];
-                  const VPs = computeVPs(
-                    factions ?? {},
-                    name,
-                    objectives ?? {}
-                  );
+                {orderedFactionIds.map((factionId) => {
                   return (
-                    <LabeledDiv
-                      key={index}
-                      label={getFactionName(faction)}
-                      color={getFactionColor(faction)}
-                      opts={{ fixedWidth: true }}
-                    >
-                      <div
-                        className="flexRow"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          position: "absolute",
-                          opacity: 0.75,
-                          zIndex: -1,
-                          left: 0,
-                          top: 0,
-                        }}
-                      >
-                        <FactionIcon factionId={name} size="90%" />
-                      </div>
-                      <div
-                        key={name}
-                        className="flexRow"
-                        style={{
-                          justifyContent: "center",
-                          fontSize: rem(28),
-                          width: "100%",
-                        }}
-                      >
-                        {!viewOnly && VPs > 0 ? (
-                          <div
-                            className="arrowDown"
-                            onClick={() => manualVpAdjust(false, name)}
-                          ></div>
-                        ) : (
-                          <div style={{ width: rem(12) }}></div>
-                        )}
-                        <div className="flexRow" style={{ width: rem(24) }}>
-                          {VPs}
-                        </div>
-                        {!viewOnly ? (
-                          <div
-                            className="arrowUp"
-                            onClick={() => manualVpAdjust(true, name)}
-                          ></div>
-                        ) : (
-                          <div style={{ width: rem(12) }}></div>
-                        )}
-                      </div>
-                    </LabeledDiv>
+                    <FactionNameAndVPs
+                      key={factionId}
+                      factionId={factionId}
+                      viewOnly={viewOnly}
+                    />
                   );
                 })}
               </div>
@@ -655,60 +533,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               </CollapsibleSection>
             )}
             <div className="flexRow" style={{ width: "95%" }}>
-              <div
-                className="flexRow"
-                style={{
-                  position: "relative",
-                  alignItems: "flex-start",
-                  width: rem(72),
-                  height: rem(72),
-                }}
-              >
-                <Image
-                  sizes={rem(144)}
-                  src={`/images/custodians.png`}
-                  alt={`Custodians Token`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
-                <div
-                  className="flexRow"
-                  style={{
-                    position: "absolute",
-                    marginLeft: "72%",
-                    marginTop: "44%",
-                  }}
-                >
-                  <FactionSelectRadialMenu
-                    factions={viewOnly ? [] : orderedFactionIds}
-                    selectedFaction={custodiansScorer}
-                    onSelect={(factionId) => {
-                      if (!gameId) {
-                        return;
-                      }
-                      if (custodiansScorer) {
-                        unscoreObjectiveAsync(
-                          gameId,
-                          custodiansScorer,
-                          "Custodians Token"
-                        );
-                      }
-                      if (factionId) {
-                        scoreObjectiveAsync(
-                          gameId,
-                          factionId,
-                          "Custodians Token"
-                        );
-                      }
-                    }}
-                    borderColor={
-                      custodiansScorer
-                        ? getFactionColor((factions ?? {})[custodiansScorer])
-                        : undefined
-                    }
-                  />
-                </div>
-              </div>
+              <CustodiansToken viewOnly={viewOnly} />
             </div>
           </div>
 
@@ -756,52 +581,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                           }
                         >
                           {orderedFactionIds.map((factionId) => {
-                            const scoredObjective = (
-                              objective.scorers ?? []
-                            ).includes(factionId);
                             return (
-                              <div
+                              <ScorableFactionIcon
                                 key={factionId}
-                                className={`flexRow ${styles.selected} ${
-                                  styles.factionIconWrapper
-                                } ${viewOnly ? styles.viewOnly : ""}`}
-                                onClick={() => {
-                                  if (viewOnly) {
-                                    return;
-                                  }
-                                  if (scoredObjective) {
-                                    unscoreObjectiveAsync(
-                                      gameId,
-                                      factionId,
-                                      objective.id
-                                    );
-                                  } else {
-                                    scoreObjectiveAsync(
-                                      gameId,
-                                      factionId,
-                                      objective.id
-                                    );
-                                  }
-                                }}
-                              >
-                                <div
-                                  className={`${styles.factionIcon} ${
-                                    scoredObjective ? styles.selected : ""
-                                  } ${viewOnly ? styles.viewOnly : ""}`}
-                                  style={
-                                    {
-                                      "--color": getFactionColor(
-                                        (factions ?? {})[factionId]
-                                      ),
-                                    } as ExtendedCSS
-                                  }
-                                >
-                                  <FactionIcon
-                                    factionId={factionId}
-                                    size="100%"
-                                  />
-                                </div>
-                              </div>
+                                factionId={factionId}
+                                objectiveId={objective.id}
+                                viewOnly={viewOnly}
+                              />
                             );
                           })}
                         </div>
@@ -854,52 +640,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                           }
                         >
                           {Object.values(orderedFactionIds).map((factionId) => {
-                            const scoredObjective = (
-                              objective.scorers ?? []
-                            ).includes(factionId);
                             return (
-                              <div
+                              <ScorableFactionIcon
                                 key={factionId}
-                                className={`flexRow ${styles.selected} ${
-                                  styles.factionIconWrapper
-                                } ${viewOnly ? styles.viewOnly : ""}`}
-                                onClick={() => {
-                                  if (viewOnly) {
-                                    return;
-                                  }
-                                  if (scoredObjective) {
-                                    unscoreObjectiveAsync(
-                                      gameId,
-                                      factionId,
-                                      objective.id
-                                    );
-                                  } else {
-                                    scoreObjectiveAsync(
-                                      gameId,
-                                      factionId,
-                                      objective.id
-                                    );
-                                  }
-                                }}
-                              >
-                                <div
-                                  className={`${styles.factionIcon} ${
-                                    scoredObjective ? styles.selected : ""
-                                  } ${viewOnly ? styles.viewOnly : ""}`}
-                                  style={
-                                    {
-                                      "--color": getFactionColor(
-                                        (factions ?? {})[factionId]
-                                      ),
-                                    } as ExtendedCSS
-                                  }
-                                >
-                                  <FactionIcon
-                                    factionId={factionId}
-                                    size="100%"
-                                  />
-                                </div>
-                              </div>
+                                factionId={factionId}
+                                objectiveId={objective.id}
+                                viewOnly={viewOnly}
+                              />
                             );
                           })}
                         </div>
@@ -1174,11 +921,9 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                           }
                         }}
                         tag={<FactionIcon factionId={id} size="100%" />}
-                        tagBorderColor={getFactionColor((factions ?? {})[id])}
+                        tagBorderColor={getFactionColor(factions[id])}
                         borderColor={
-                          scorer
-                            ? getFactionColor((factions ?? {})[scorer])
-                            : undefined
+                          scorer ? getFactionColor(factions[scorer]) : undefined
                         }
                       />
                     </div>
@@ -1218,7 +963,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 <SimpleScorable
                   gameId={gameId}
                   objective={imperialRider}
-                  orderedFactionNames={orderedFactionIds}
+                  orderedFactionIds={orderedFactionIds}
                   numScorers={includesPoK ? 2 : 1}
                   info="Can be scored 2x due to The Codex"
                   viewOnly={viewOnly}
@@ -1226,7 +971,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 <SimpleScorable
                   gameId={gameId}
                   objective={politicalCensure}
-                  orderedFactionNames={orderedFactionIds}
+                  orderedFactionIds={orderedFactionIds}
                   viewOnly={viewOnly}
                 />
               </div>
@@ -1243,13 +988,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   <SimpleScorable
                     gameId={gameId}
                     objective={shardOfTheThrone}
-                    orderedFactionNames={orderedFactionIds}
+                    orderedFactionIds={orderedFactionIds}
                     viewOnly={viewOnly}
                   />
                   <SimpleScorable
                     gameId={gameId}
                     objective={tomb}
-                    orderedFactionNames={orderedFactionIds}
+                    orderedFactionIds={orderedFactionIds}
                     viewOnly={viewOnly}
                   />
                 </div>
@@ -1257,7 +1002,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               <SimpleScorable
                 gameId={gameId}
                 objective={holyPlanet}
-                orderedFactionNames={orderedFactionIds}
+                orderedFactionIds={orderedFactionIds}
                 numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
                 viewOnly={viewOnly}
@@ -1266,7 +1011,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 <SimpleScorable
                   gameId={gameId}
                   objective={shardOfTheThrone}
-                  orderedFactionNames={orderedFactionIds}
+                  orderedFactionIds={orderedFactionIds}
                   numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                   info="Can be scored 2x due to Miscount Disclosed"
                   viewOnly={viewOnly}
@@ -1275,7 +1020,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               <SimpleScorable
                 gameId={gameId}
                 objective={crown}
-                orderedFactionNames={orderedFactionIds}
+                orderedFactionIds={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
                 viewOnly={viewOnly}
@@ -1344,45 +1089,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                     }
                   >
                     {Object.values(orderedFactionIds).map((factionId) => {
-                      const scoredObjective = (mutiny?.scorers ?? []).includes(
-                        factionId
-                      );
                       return (
-                        <div
+                        <ScorableFactionIcon
                           key={factionId}
-                          className={`flexRow ${styles.selected} ${
-                            styles.factionIconWrapper
-                          } ${viewOnly ? styles.viewOnly : ""}`}
-                          onClick={() => {
-                            if (viewOnly) {
-                              return;
-                            }
-                            if (scoredObjective) {
-                              unscoreObjectiveAsync(
-                                gameId,
-                                factionId,
-                                mutiny.id
-                              );
-                            } else {
-                              scoreObjectiveAsync(gameId, factionId, mutiny.id);
-                            }
-                          }}
-                        >
-                          <div
-                            className={`${styles.factionIcon} ${
-                              scoredObjective ? styles.selected : ""
-                            } ${viewOnly ? styles.viewOnly : ""}`}
-                            style={
-                              {
-                                "--color": getFactionColor(
-                                  (factions ?? {})[factionId]
-                                ),
-                              } as ExtendedCSS
-                            }
-                          >
-                            <FactionIcon factionId={factionId} size="100%" />
-                          </div>
-                        </div>
+                          factionId={factionId}
+                          objectiveId="Mutiny"
+                          viewOnly={viewOnly}
+                        />
                       );
                     })}
                   </div>
@@ -1405,41 +1118,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                     }
                   >
                     {Object.values(orderedFactionIds).map((factionId) => {
-                      const scoredObjective = (seed?.scorers ?? []).includes(
-                        factionId
-                      );
                       return (
-                        <div
+                        <ScorableFactionIcon
                           key={factionId}
-                          className={`flexRow ${styles.selected} ${
-                            styles.factionIconWrapper
-                          } ${viewOnly ? styles.viewOnly : ""}`}
-                          onClick={() => {
-                            if (viewOnly) {
-                              return;
-                            }
-                            if (scoredObjective) {
-                              unscoreObjectiveAsync(gameId, factionId, seed.id);
-                            } else {
-                              scoreObjectiveAsync(gameId, factionId, seed.id);
-                            }
-                          }}
-                        >
-                          <div
-                            className={`${styles.factionIcon} ${
-                              scoredObjective ? styles.selected : ""
-                            } ${viewOnly ? styles.viewOnly : ""}`}
-                            style={
-                              {
-                                "--color": getFactionColor(
-                                  (factions ?? {})[factionId]
-                                ),
-                              } as ExtendedCSS
-                            }
-                          >
-                            <FactionIcon factionId={factionId} size="100%" />
-                          </div>
-                        </div>
+                          factionId={factionId}
+                          objectiveId="Seed of an Empire"
+                          viewOnly={viewOnly}
+                        />
                       );
                     })}
                   </div>
@@ -1882,60 +1567,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             className="flexRow"
             style={{ gridColumn: "1 / 3", width: "100%", height: "100%" }}
           >
-            <div
-              className="flexRow"
-              style={{
-                position: "relative",
-                alignItems: "flex-start",
-                width: rem(72),
-                height: rem(72),
-              }}
-            >
-              <Image
-                sizes={rem(144)}
-                src={`/images/custodians.png`}
-                alt={`Custodians Token`}
-                fill
-                style={{ objectFit: "contain" }}
-              />
-              <div
-                className="flexRow"
-                style={{
-                  position: "absolute",
-                  marginLeft: "72%",
-                  marginTop: "44%",
-                }}
-              >
-                <FactionSelectRadialMenu
-                  factions={viewOnly ? [] : orderedFactionIds}
-                  selectedFaction={custodiansScorer}
-                  onSelect={(factionId) => {
-                    if (viewOnly) {
-                      return;
-                    }
-                    if (custodiansScorer) {
-                      unscoreObjectiveAsync(
-                        gameId,
-                        custodiansScorer,
-                        "Custodians Token"
-                      );
-                    }
-                    if (factionId) {
-                      scoreObjectiveAsync(
-                        gameId,
-                        factionId,
-                        "Custodians Token"
-                      );
-                    }
-                  }}
-                  borderColor={
-                    custodiansScorer
-                      ? getFactionColor((factions ?? {})[custodiansScorer])
-                      : undefined
-                  }
-                />
-              </div>
-            </div>
+            <CustodiansToken viewOnly={viewOnly} />
           </div>
           <LabeledDiv
             label={
@@ -1973,13 +1605,15 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                     <FactionSelectRadialMenu
                       key={factionId}
                       factions={viewOnly ? [] : orderedFactionIds}
-                      invalidFactions={orderedFactions
-                        .filter(
-                          (faction) =>
-                            faction.id === factionId ||
-                            faction.alliancePartner === factionId
-                        )
-                        .map((faction) => faction.id)}
+                      invalidFactions={orderedFactionIds.filter(
+                        (destFactionId) => {
+                          const receivingFaction = factions[destFactionId];
+                          return (
+                            destFactionId === factionId ||
+                            receivingFaction?.alliancePartner === factionId
+                          );
+                        }
+                      )}
                       selectedFaction={scorer}
                       onSelect={(selectedFactionId) => {
                         if (viewOnly) {
@@ -2131,7 +1765,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             <SimpleScorable
               gameId={gameId}
               objective={imperialRider}
-              orderedFactionNames={orderedFactionIds}
+              orderedFactionIds={orderedFactionIds}
               numScorers={includesPoK ? 2 : 1}
               info="Can be scored 2x due to The Codex"
               viewOnly={viewOnly}
@@ -2160,13 +1794,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 <SimpleScorable
                   gameId={gameId}
                   objective={shardOfTheThrone}
-                  orderedFactionNames={orderedFactionIds}
+                  orderedFactionIds={orderedFactionIds}
                   viewOnly={viewOnly}
                 />
                 <SimpleScorable
                   gameId={gameId}
                   objective={tomb}
-                  orderedFactionNames={orderedFactionIds}
+                  orderedFactionIds={orderedFactionIds}
                   viewOnly={viewOnly}
                 />
               </div>
@@ -2192,7 +1826,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             <SimpleScorable
               gameId={gameId}
               objective={holyPlanet}
-              orderedFactionNames={orderedFactionIds}
+              orderedFactionIds={orderedFactionIds}
               numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
               viewOnly={viewOnly}
@@ -2201,7 +1835,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               <SimpleScorable
                 gameId={gameId}
                 objective={shardOfTheThrone}
-                orderedFactionNames={orderedFactionIds}
+                orderedFactionIds={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed"
                 viewOnly={viewOnly}
@@ -2210,7 +1844,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             <SimpleScorable
               gameId={gameId}
               objective={crown}
-              orderedFactionNames={orderedFactionIds}
+              orderedFactionIds={orderedFactionIds}
               numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
               viewOnly={viewOnly}
@@ -2218,7 +1852,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             <SimpleScorable
               gameId={gameId}
               objective={politicalCensure}
-              orderedFactionNames={orderedFactionIds}
+              orderedFactionIds={orderedFactionIds}
               viewOnly={viewOnly}
             />
           </LabeledDiv>
@@ -2302,41 +1936,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   }
                 >
                   {Object.values(orderedFactionIds).map((factionId) => {
-                    const scoredObjective = (mutiny?.scorers ?? []).includes(
-                      factionId
-                    );
                     return (
-                      <div
+                      <ScorableFactionIcon
                         key={factionId}
-                        className={`flexRow ${styles.selected} ${
-                          styles.factionIconWrapper
-                        } ${viewOnly ? styles.viewOnly : ""}`}
-                        onClick={() => {
-                          if (viewOnly) {
-                            return;
-                          }
-                          if (scoredObjective) {
-                            unscoreObjectiveAsync(gameId, factionId, mutiny.id);
-                          } else {
-                            scoreObjectiveAsync(gameId, factionId, mutiny.id);
-                          }
-                        }}
-                      >
-                        <div
-                          className={`${styles.factionIcon} ${
-                            scoredObjective ? styles.selected : ""
-                          } ${viewOnly ? styles.viewOnly : ""}`}
-                          style={
-                            {
-                              "--color": getFactionColor(
-                                (factions ?? {})[factionId]
-                              ),
-                            } as ExtendedCSS
-                          }
-                        >
-                          <FactionIcon factionId={factionId} size="100%" />
-                        </div>
-                      </div>
+                        factionId={factionId}
+                        objectiveId="Mutiny"
+                        viewOnly={viewOnly}
+                      />
                     );
                   })}
                 </div>
@@ -2359,41 +1965,13 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   }
                 >
                   {Object.values(orderedFactionIds).map((factionId) => {
-                    const scoredObjective = (seed?.scorers ?? []).includes(
-                      factionId
-                    );
                     return (
-                      <div
+                      <ScorableFactionIcon
                         key={factionId}
-                        className={`flexRow ${styles.selected} ${
-                          styles.factionIconWrapper
-                        } ${viewOnly ? styles.viewOnly : ""}`}
-                        onClick={() => {
-                          if (viewOnly) {
-                            return;
-                          }
-                          if (scoredObjective) {
-                            unscoreObjectiveAsync(gameId, factionId, seed.id);
-                          } else {
-                            scoreObjectiveAsync(gameId, factionId, seed.id);
-                          }
-                        }}
-                      >
-                        <div
-                          className={`${styles.factionIcon} ${
-                            scoredObjective ? styles.selected : ""
-                          } ${viewOnly ? styles.viewOnly : ""}`}
-                          style={
-                            {
-                              "--color": getFactionColor(
-                                (factions ?? {})[factionId]
-                              ),
-                            } as ExtendedCSS
-                          }
-                        >
-                          <FactionIcon factionId={factionId} size="100%" />
-                        </div>
-                      </div>
+                        factionId={factionId}
+                        objectiveId="Seed of an Empire"
+                        viewOnly={viewOnly}
+                      />
                     );
                   })}
                 </div>
@@ -2409,14 +1987,14 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
 function SimpleScorable({
   gameId,
   objective,
-  orderedFactionNames,
+  orderedFactionIds,
   numScorers = 1,
   info,
   viewOnly,
 }: {
   gameId: string;
   objective: Optional<Objective>;
-  orderedFactionNames: FactionId[];
+  orderedFactionIds: FactionId[];
   numScorers?: number;
   info?: string;
   viewOnly?: boolean;
@@ -2445,7 +2023,7 @@ function SimpleScorable({
         <div className="flexRow">
           <FactionSelectRadialMenu
             selectedFaction={objectiveScorers[0] as Optional<FactionId>}
-            factions={viewOnly ? [] : orderedFactionNames}
+            factions={viewOnly ? [] : orderedFactionIds}
             onSelect={(factionId) => {
               if (viewOnly) {
                 return;
@@ -2463,7 +2041,7 @@ function SimpleScorable({
             }}
             borderColor={
               objectiveScorers[0]
-                ? getFactionColor((factions ?? {})[objectiveScorers[0]])
+                ? getFactionColor(factions[objectiveScorers[0]])
                 : undefined
             }
           />
@@ -2471,7 +2049,7 @@ function SimpleScorable({
           {numScorers > 1 && objectiveScorers[0] ? (
             <FactionSelectRadialMenu
               selectedFaction={objectiveScorers[1] as Optional<FactionId>}
-              factions={viewOnly ? [] : orderedFactionNames}
+              factions={viewOnly ? [] : orderedFactionIds}
               onSelect={(factionId) => {
                 if (viewOnly) {
                   return;
@@ -2532,5 +2110,177 @@ function SimpleScorable({
         </div>
       </div>
     </>
+  );
+}
+
+function FactionNameAndVPs({
+  factionId,
+  viewOnly,
+}: {
+  factionId: FactionId;
+  viewOnly?: boolean;
+}) {
+  const gameId = useGameId();
+  const faction = useFaction(factionId);
+  const VPs = useFactionVPs(factionId);
+
+  return (
+    <LabeledDiv
+      label={getFactionName(faction)}
+      color={getFactionColor(faction)}
+      opts={{ fixedWidth: true }}
+    >
+      <div
+        className="flexRow"
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          opacity: 0.75,
+          zIndex: -1,
+          left: 0,
+          top: 0,
+        }}
+      >
+        <FactionIcon factionId={factionId} size="90%" />
+      </div>
+      <div
+        className="flexRow"
+        style={{
+          justifyContent: "center",
+          fontSize: rem(28),
+          width: "100%",
+        }}
+      >
+        {!viewOnly && VPs > 0 ? (
+          <div
+            className="arrowDown"
+            onClick={() => manualVPUpdateAsync(gameId, factionId, -1)}
+          ></div>
+        ) : (
+          <div style={{ width: rem(12) }}></div>
+        )}
+        <div className="flexRow" style={{ width: rem(24) }}>
+          {VPs}
+        </div>
+        {!viewOnly ? (
+          <div
+            className="arrowUp"
+            onClick={() => manualVPUpdateAsync(gameId, factionId, 1)}
+          ></div>
+        ) : (
+          <div style={{ width: rem(12) }}></div>
+        )}
+      </div>
+    </LabeledDiv>
+  );
+}
+
+function CustodiansToken({ viewOnly }: { viewOnly?: boolean }) {
+  const gameId = useGameId();
+  const orderedFactionIds = useOrderedFactionIds("MAP");
+  const custodiansToken = useObjective("Custodians Token");
+  const custodiansScorerId = (custodiansToken?.scorers ?? [])[0];
+
+  const scorerColor = useFactionColor(custodiansScorerId ?? "Vuil'raith Cabal");
+
+  return (
+    <div
+      className="flexRow"
+      style={{
+        position: "relative",
+        alignItems: "flex-start",
+        width: rem(72),
+        height: rem(72),
+      }}
+    >
+      <Image
+        sizes={rem(144)}
+        src={`/images/custodians.png`}
+        alt={`Custodians Token`}
+        fill
+        style={{ objectFit: "contain" }}
+      />
+      <div
+        className="flexRow"
+        style={{
+          position: "absolute",
+          marginLeft: "72%",
+          marginTop: "44%",
+        }}
+      >
+        <FactionSelectRadialMenu
+          factions={viewOnly ? [] : orderedFactionIds}
+          selectedFaction={custodiansScorerId}
+          onSelect={(factionId) => {
+            if (custodiansScorerId) {
+              unscoreObjectiveAsync(
+                gameId,
+                custodiansScorerId,
+                "Custodians Token"
+              );
+            }
+            if (factionId) {
+              scoreObjectiveAsync(gameId, factionId, "Custodians Token");
+            }
+          }}
+          borderColor={
+            custodiansScorerId ? convertToFactionColor(scorerColor) : undefined
+          }
+        />
+      </div>
+    </div>
+  );
+}
+
+function ScorableFactionIcon({
+  factionId,
+  inGrid,
+  objectiveId,
+  viewOnly,
+}: {
+  factionId: FactionId;
+  inGrid?: boolean;
+  objectiveId: ObjectiveId;
+  viewOnly?: boolean;
+}) {
+  const gameId = useGameId();
+  const faction = useFaction(factionId);
+  const objective = useObjective(objectiveId);
+
+  if (!objective) {
+    return null;
+  }
+
+  const scoredObjective = objective.scorers?.includes(factionId);
+  return (
+    <div
+      className={`flexRow ${styles.selected} ${
+        inGrid ? styles.factionGridIconWrapper : styles.factionIconWrapper
+      } ${viewOnly ? styles.viewOnly : ""}`}
+      onClick={() => {
+        if (viewOnly) {
+          return;
+        }
+        if (scoredObjective) {
+          unscoreObjectiveAsync(gameId, factionId, objective.id);
+        } else {
+          scoreObjectiveAsync(gameId, factionId, objective.id);
+        }
+      }}
+    >
+      <div
+        className={`${styles.factionIcon} ${
+          scoredObjective ? styles.selected : ""
+        } ${viewOnly ? styles.viewOnly : ""}`}
+        style={
+          {
+            "--color": getFactionColor(faction),
+          } as ExtendedCSS
+        }
+      >
+        <FactionIcon factionId={factionId} size="100%" />
+      </div>
+    </div>
   );
 }

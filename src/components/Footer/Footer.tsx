@@ -8,13 +8,13 @@ import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
 import {
   useAllPlanets,
-  useFactions,
   useGameId,
-  useGameState,
   useOptions,
   usePlanets,
   useStrategyCards,
 } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { setSpeakerAsync } from "../../dynamic/api";
 import MapMenuSVG from "../../icons/ui/MapMenu";
@@ -33,6 +33,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,

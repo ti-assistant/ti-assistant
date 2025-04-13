@@ -1,34 +1,34 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { AgendaRow } from "../AgendaRow";
-import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { InfoRow } from "../InfoRow";
-import { LockedButtons } from "../LockedButton";
-import { SelectableRow } from "../SelectableRow";
-import AgendaTimer from "../components/AgendaTimer/AgendaTimer";
-import FactionCircle from "../components/FactionCircle/FactionCircle";
-import FactionIcon from "../components/FactionIcon/FactionIcon";
-import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import MawOfWorlds from "../components/MawOfWorlds/MawOfWorlds";
-import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import { Selector } from "../components/Selector/Selector";
+import { AgendaRow } from "../../../../../../src/AgendaRow";
+import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
+import { InfoRow } from "../../../../../../src/InfoRow";
+import { LockedButtons } from "../../../../../../src/LockedButton";
+import { SelectableRow } from "../../../../../../src/SelectableRow";
+import AgendaTimer from "../../../../../../src/components/AgendaTimer/AgendaTimer";
+import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
+import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
+import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import MawOfWorlds from "../../../../../../src/components/MawOfWorlds/MawOfWorlds";
+import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import { Selector } from "../../../../../../src/components/Selector/Selector";
 import VoteBlock, {
   getTargets,
   translateOutcome,
-} from "../components/VoteBlock/VoteBlock";
+} from "../../../../../../src/components/VoteBlock/VoteBlock";
 import {
   useActionLog,
   useAgendas,
-  useFactions,
   useGameId,
-  useGameState,
-  useObjectives,
   usePlanets,
   useRelics,
   useStrategyCards,
-} from "../context/dataHooks";
+} from "../../../../../../src/context/dataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
+import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import {
   advancePhaseAsync,
   claimPlanetAsync,
@@ -50,8 +50,8 @@ import {
   unplayActionCardAsync,
   unplayPromissoryNoteAsync,
   unscoreObjectiveAsync,
-} from "../dynamic/api";
-import { SymbolX } from "../icons/svgs";
+} from "../../../../../../src/dynamic/api";
+import { SymbolX } from "../../../../../../src/icons/svgs";
 import {
   getActionCardTargets,
   getActiveAgenda,
@@ -65,17 +65,21 @@ import {
   getSelectedEligibleOutcomes,
   getSelectedSubAgenda,
   getSpeakerTieBreak,
-} from "../util/actionLog";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { hasScoredObjective } from "../util/api/util";
-import { computeVPs, getFactionColor, getFactionName } from "../util/factions";
+} from "../../../../../../src/util/actionLog";
+import { getCurrentTurnLogEntries } from "../../../../../../src/util/api/actionLog";
+import { hasScoredObjective } from "../../../../../../src/util/api/util";
+import {
+  computeVPs,
+  getFactionColor,
+  getFactionName,
+} from "../../../../../../src/util/factions";
 import {
   objectiveTypeString,
   outcomeString,
   phaseString,
-} from "../util/strings";
-import { ActionLog, Optional } from "../util/types/types";
-import { rem } from "../util/util";
+} from "../../../../../../src/util/strings";
+import { ActionLog, Optional } from "../../../../../../src/util/types/types";
+import { rem } from "../../../../../../src/util/util";
 import styles from "./AgendaPhase.module.scss";
 
 export function computeVotes(

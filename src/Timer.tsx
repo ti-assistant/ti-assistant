@@ -2,7 +2,8 @@
 
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
-import { useGameId, useGameState, useTimers } from "./context/dataHooks";
+import { useGameId, useTimers } from "./context/dataHooks";
+import { useGameState } from "./context/stateDataHooks";
 import { useSharedTimer } from "./data/SharedTimer";
 import { saveFactionTimer, updateLocalFactionTimer } from "./util/api/timers";
 import { useInterval } from "./util/client";

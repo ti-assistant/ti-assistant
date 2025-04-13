@@ -3,7 +3,7 @@
 import { useIntl } from "react-intl";
 import Sidebars from "../../../src/components/Sidebars/Sidebars";
 import { phaseString } from "../../../src/util/strings";
-import { useGameState } from "../../../src/context/dataHooks";
+import { useGameState } from "../../../src/context/stateDataHooks";
 
 export default function DynamicSidebars() {
   const intl = useIntl();
