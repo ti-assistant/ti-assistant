@@ -2,12 +2,13 @@
 
 import { useIntl } from "react-intl";
 import Sidebars from "../../../src/components/Sidebars/Sidebars";
+import { usePhase, useRound } from "../../../src/context/stateDataHooks";
 import { phaseString } from "../../../src/util/strings";
-import { useGameState } from "../../../src/context/stateDataHooks";
 
 export default function DynamicSidebars() {
   const intl = useIntl();
-  const state = useGameState();
+  const round = useRound();
+  const phase = usePhase();
 
   return (
     <Sidebars
@@ -18,7 +19,7 @@ export default function DynamicSidebars() {
             defaultMessage: "{phase} Phase",
             description: "Text shown on side of screen during a specific phase",
           },
-          { phase: phaseString(state.phase, intl).toUpperCase() }
+          { phase: phaseString(phase, intl).toUpperCase() }
         )
         .toUpperCase()}
       right={intl
@@ -28,7 +29,7 @@ export default function DynamicSidebars() {
             description: "The current round of the game.",
             defaultMessage: "Round {value}",
           },
-          { value: state.round }
+          { value: round }
         )
         .toUpperCase()}
     />

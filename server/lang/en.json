@@ -5876,7 +5876,7 @@
     "description": "Type of action involving activating a system."
   },
   "e1q7sg": {
-    "defaultMessage": "Display Descriptions",
+    "defaultMessage": "Descriptions",
     "description": "Text on a button that will display descriptions."
   },
   "e8vqxH": {
@@ -5892,7 +5892,7 @@
     "description": "The title of an agent: a leader that can get used once per round."
   },
   "entq4x": {
-    "defaultMessage": "Display Titles",
+    "defaultMessage": "Titles",
     "description": "Text on a button that will display titles."
   },
   "etE9Xc": {
@@ -5962,6 +5962,10 @@
   "iFF5UN": {
     "defaultMessage": "Claim {planet}",
     "description": "Text on a button that allows a player to claim a planet."
+  },
+  "iL4f7y": {
+    "defaultMessage": "Settings",
+    "description": "Title for a section about changing settings."
   },
   "ifN0t/": {
     "defaultMessage": "Outcome",

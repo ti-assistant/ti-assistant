@@ -9,7 +9,7 @@ import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import { useGameId } from "../../../src/context/dataHooks";
 import { useFaction } from "../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../src/context/gameDataHooks";
-import { useGameState } from "../../../src/context/stateDataHooks";
+import { usePhase } from "../../../src/context/stateDataHooks";
 import { setGameId } from "../../../src/util/api/util";
 import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
@@ -20,7 +20,7 @@ export default function SelectFactionPage() {
   const router = useRouter();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const gameId = useGameId();
-  const state = useGameState();
+  const phase = usePhase();
 
   useEffect(() => {
     if (!!gameId) {
@@ -28,7 +28,7 @@ export default function SelectFactionPage() {
     }
   }, [gameId]);
 
-  if (state.phase !== "UNKNOWN" && orderedFactionIds.length === 0) {
+  if (phase !== "UNKNOWN" && orderedFactionIds.length === 0) {
     setGameId("");
     router.push("/");
     return null;

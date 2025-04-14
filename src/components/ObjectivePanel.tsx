@@ -39,6 +39,7 @@ import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
 import { useFactionVPs, useOrderedFactionIds } from "../context/gameDataHooks";
+import Chip from "./Chip/Chip";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -1167,31 +1168,43 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
           }}
         >
           {/* TODO: Move to options menu */}
-          <button
-            onClick={() => {
-              updateSetting("display-objective-description", !description);
-            }}
+          <div
+            className="flexRow"
             style={{
-              fontSize: rem(16),
+              fontSize: rem(12),
               position: "absolute",
               top: 0,
               right: 0,
+              gap: rem(4),
+              fontFamily: "Myriad Pro",
             }}
           >
-            {description ? (
+            Display:
+            <Chip
+              toggleFn={() => {
+                updateSetting("display-objective-description", false);
+              }}
+              selected={!description}
+            >
               <FormattedMessage
                 id="entq4x"
                 description="Text on a button that will display titles."
-                defaultMessage="Display Titles"
+                defaultMessage="Titles"
               />
-            ) : (
+            </Chip>
+            <Chip
+              toggleFn={() => {
+                updateSetting("display-objective-description", true);
+              }}
+              selected={description}
+            >
               <FormattedMessage
                 id="e1q7sg"
                 description="Text on a button that will display descriptions."
-                defaultMessage="Display Descriptions"
+                defaultMessage="Descriptions"
               />
-            )}
-          </button>
+            </Chip>
+          </div>
           {orderedFactionIds.map((name, index) => {
             return (
               <div
@@ -1351,7 +1364,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               width: "100%",
               zIndex: -1,
               opacity: 0.5,
-              height: "100%",
+              bottom: 0,
               gridColumn: `${
                 3 + numStageOneObjectives + numStageTwoObjectives
               } / ${3 + numStageOneObjectives + numStageTwoObjectives + 1}`,
@@ -1364,10 +1377,10 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               className="flexRow"
               style={{
                 border: `${"5px"} solid red`,
-                width: rem(60),
-                height: rem(60),
+                width: rem(40),
+                height: rem(40),
                 borderRadius: "100%",
-                fontSize: rem(44),
+                fontSize: rem(28),
               }}
             >
               <FormattedMessage
@@ -1482,13 +1495,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               />
             );
           })}
-          <GridHeader>
-            <FormattedMessage
-              id="QrrIrN"
-              description="The title of secret objectives."
-              defaultMessage="Secrets"
-            />
-          </GridHeader>
+          <GridHeader></GridHeader>
           {orderedFactionIds.map((name) => {
             const factionSecrets = secretsByFaction[name] ?? [];
             return (

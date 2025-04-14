@@ -7,7 +7,10 @@ import SiteLogo from "../src/components/SiteLogo/SiteLogo";
 import { getLocale, getMessages } from "../src/util/server";
 import styles from "./root.module.scss";
 import Wrapper from "./wrapper";
-import SharedModal from "../src/data/SharedModal";
+import SharedModal, { useSharedModal } from "../src/data/SharedModal";
+import { rem } from "../src/util/util";
+import SettingsSVG from "../src/icons/ui/Settings";
+import SettingsButton from "../src/components/SettingsModal/SettingsButton";
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",
@@ -32,19 +35,27 @@ export default async function RootLayout({ children }: PropsWithChildren) {
     <html lang={locale}>
       <body>
         <div className={styles.NavBar}>
-          <Link href={"/"} className={styles.HomeLink}>
-            <div className={styles.Logo}>
-              <SiteLogo />
+          <div className="flexRow">
+            <Link href={"/"} className={styles.HomeLink}>
+              <div className={styles.Logo}>
+                <SiteLogo />
+              </div>
+              <span className={styles.FullName}>
+                Twilight Imperium Assistant
+              </span>
+              <span className={styles.ShortName}>TI Assistant</span>
+            </Link>
+            <div className={styles.LangSelect}>
+              <LangSelectHoverMenu
+                selectedLocale={locale}
+                locales={SUPPORTED_LOCALES}
+                invalidLocales={[locale]}
+                size={28}
+              />
             </div>
-            Twilight Imperium Assistant
-          </Link>
-          <div className={styles.LangSelect}>
-            <LangSelectHoverMenu
-              selectedLocale={locale}
-              locales={SUPPORTED_LOCALES}
-              invalidLocales={[locale]}
-              size={28}
-            />
+          </div>
+          <div className={styles.Settings}>
+            <SettingsButton />
           </div>
         </div>
         <Wrapper locale={locale} messages={messages}>
