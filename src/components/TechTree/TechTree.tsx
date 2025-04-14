@@ -284,3 +284,72 @@ export default function TechTree({
     </div>
   );
 }
+
+interface DummyTech {
+  filled: boolean;
+  id: TechId;
+}
+
+export function DummyTechTree({}) {
+  const techsByPrereq: Record<number, DummyTech[]> = {
+    0: [
+      {
+        filled: false,
+        id: "Plasma Scoring",
+      },
+      {
+        filled: true,
+        id: "AI Development Algorithm",
+      },
+    ],
+    1: [
+      {
+        filled: true,
+        id: "Magen Defense Grid",
+      },
+      {
+        filled: false,
+        id: "Self Assembly Routines",
+      },
+    ],
+    2: [
+      {
+        filled: false,
+        id: "Duranium Armor",
+      },
+    ],
+    3: [
+      {
+        filled: false,
+        id: "Assault Cannon",
+      },
+    ],
+  };
+
+  const color = getTechTypeColor("GREEN");
+
+  return (
+    <div className={styles.TechTree}>
+      {objectEntries(techsByPrereq).map(([num, techs]) => {
+        return (
+          <div key={num} className={styles.TechTreeRow}>
+            {techs.map((tech) => {
+              const filled = tech.filled;
+              return (
+                <div
+                  key={tech.id}
+                  title={tech.id}
+                  className={`${styles.TechTreeElement} ${styles.viewOnly}`}
+                  style={{
+                    border: `1px solid ${color}`,
+                    backgroundColor: filled ? color : undefined,
+                  }}
+                ></div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}

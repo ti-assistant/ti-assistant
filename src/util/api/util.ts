@@ -4,12 +4,23 @@ export interface Settings {
   "display-objective-description": boolean;
   "group-techs-by-faction": boolean;
   "show-turn-timer": boolean;
+  "fs-tech-summary-display": TechSummaryDisplay;
 }
+
+export type TechSummaryDisplay =
+  | "NONE"
+  | "ALL"
+  | "TREE"
+  | "TREE+NUMBER"
+  | "TREE+ICON"
+  | "ICON+NUMBER";
 
 const DEFAULT_SETTINGS: Settings = {
   "display-objective-description": false,
   "group-techs-by-faction": false,
   "show-turn-timer": true,
+  // Faction Summary Settings
+  "fs-tech-summary-display": "ALL",
 } as const;
 
 function genCookie(length: number): string {
@@ -44,7 +55,10 @@ export function getSettings() {
   };
 }
 
-export function updateSetting(setting: keyof Settings, value: any) {
+export function updateSetting<T extends keyof Settings>(
+  setting: T,
+  value: Settings[T]
+) {
   const settings = getSettings();
   settings[setting] = value;
   Cookies.set("settings", JSON.stringify(settings));

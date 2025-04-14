@@ -1,8 +1,14 @@
-import { FormattedMessage } from "react-intl";
-import { rem } from "../../util/util";
-import { useGameId } from "../../context/dataHooks";
 import { useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { useGameId } from "../../context/dataHooks";
+import DummyFactionSummary from "../../InnerFactionSummary";
+import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
+import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import TechIcon from "../TechIcon/TechIcon";
+import { DummyTechTree } from "../TechTree/TechTree";
+import Toggle from "../Toggle/Toggle";
+import { useSharedSettings } from "../../util/cookies";
 
 export default function SettingsModal() {
   const gameId = useGameId();
@@ -51,35 +57,156 @@ export default function SettingsModal() {
 
 function SettingsModalContent() {
   const gameId = useGameId();
+  const { settings, updateSetting } = useSharedSettings();
+
+  const techSummarySetting = settings["fs-tech-summary-display"];
 
   const [selectedTab, setSelectedTab] = useState<string>("POTATO");
 
   return (
-    <div>
+    <>
       <div
         className="flexRow"
-        style={{
-          backgroundColor: "var(--background-color)",
-          border: "1px solid #eee",
-          borderRadius: "0.25rem",
-          padding: rem(4),
-        }}
+        style={{ fontSize: rem(24), width: "min-content" }}
       >
         <Chip
           toggleFn={() => setSelectedTab("TEST")}
           selected={selectedTab === "TEST"}
+          style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
         >
-          Test
+          Faction Summary
         </Chip>
         {gameId ? (
           <Chip
             toggleFn={() => setSelectedTab("GAME")}
             selected={selectedTab === "GAME"}
+            style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
           >
-            {gameId}
+            Game: {gameId}
           </Chip>
         ) : null}
       </div>
-    </div>
+
+      <div
+        className="flexColumn"
+        style={{
+          zIndex: 1,
+          width: "100%",
+          backgroundColor: "var(--background-color)",
+          borderRadius: rem(4),
+          border: `${rem(1)} solid #eee`,
+        }}
+      >
+        {selectedTab}
+        <div style={{ width: "fit-content" }}>
+          <LabeledDiv label="Vuil'raith Cabal" color="red">
+            <DummyFactionSummary />
+          </LabeledDiv>
+        </div>
+        <div style={{ width: "fit-content" }}>
+          <LabeledDiv
+            label={
+              <span
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  color: "#eee",
+                  fontFamily: "Myriad Pro",
+                }}
+              >
+                <Toggle
+                  toggleFn={(prev) => {
+                    if (prev) {
+                      updateSetting("fs-tech-summary-display", "NONE");
+                    } else {
+                      updateSetting("fs-tech-summary-display", "ALL");
+                    }
+                  }}
+                  selected={techSummarySetting !== "NONE"}
+                >
+                  Tech Summary
+                </Toggle>
+              </span>
+            }
+            innerStyle={{
+              paddingTop: rem(24),
+              fontFamily: "Myriad Pro",
+              flexDirection: "row",
+              flexWrap: "wrap",
+            }}
+          >
+            <Chip
+              toggleFn={() => updateSetting("fs-tech-summary-display", "ALL")}
+              selected={techSummarySetting === "ALL"}
+              style={{ height: rem(32) }}
+            >
+              <div
+                className="flexRow"
+                style={{ gap: rem(4), fontFamily: "Slider" }}
+              >
+                2<TechIcon type="GREEN" size={16} />
+                <DummyTechTree />
+              </div>
+            </Chip>
+            <Chip
+              toggleFn={() =>
+                updateSetting("fs-tech-summary-display", "ICON+NUMBER")
+              }
+              selected={techSummarySetting === "ICON+NUMBER"}
+              style={{ height: rem(32) }}
+            >
+              <div
+                className="flexRow"
+                style={{ gap: rem(4), fontFamily: "Slider" }}
+              >
+                2<TechIcon type="GREEN" size={16} />
+              </div>
+            </Chip>
+            <Chip
+              toggleFn={() =>
+                updateSetting("fs-tech-summary-display", "TREE+ICON")
+              }
+              selected={techSummarySetting === "TREE+ICON"}
+              style={{ height: rem(32) }}
+            >
+              <div
+                className="flexRow"
+                style={{ gap: rem(4), fontFamily: "Slider" }}
+              >
+                <TechIcon type="GREEN" size={16} />
+                <DummyTechTree />
+              </div>
+            </Chip>
+            <Chip
+              toggleFn={() =>
+                updateSetting("fs-tech-summary-display", "TREE+NUMBER")
+              }
+              selected={techSummarySetting === "TREE+NUMBER"}
+              style={{ height: rem(32) }}
+            >
+              <div
+                className="flexRow"
+                style={{ gap: rem(4), fontFamily: "Slider" }}
+              >
+                2
+                <DummyTechTree />
+              </div>
+            </Chip>
+            <Chip
+              toggleFn={() => updateSetting("fs-tech-summary-display", "TREE")}
+              selected={techSummarySetting === "TREE"}
+              style={{ height: rem(32) }}
+            >
+              <div
+                className="flexRow"
+                style={{ gap: rem(4), fontFamily: "Slider" }}
+              >
+                <DummyTechTree />
+              </div>
+            </Chip>
+          </LabeledDiv>
+        </div>
+      </div>
+    </>
   );
 }
