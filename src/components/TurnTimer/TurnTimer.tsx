@@ -1,7 +1,8 @@
+import { useContext } from "react";
+import { SettingsContext } from "../../context/contexts";
 import { useActionLog } from "../../context/dataHooks";
 import { useGameState } from "../../context/stateDataHooks";
 import { getFinalActionOfPreviousTurn } from "../../util/api/actionLog";
-import { useSharedSettings } from "../../util/cookies";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 
@@ -10,7 +11,7 @@ export default function TurnTimer({ gameTime }: { gameTime: number }) {
   const state = useGameState();
   const finalAction = getFinalActionOfPreviousTurn(actionLog);
 
-  const { settings } = useSharedSettings();
+  const { settings } = useContext(SettingsContext);
 
   if (!settings["show-turn-timer"]) {
     return null;

@@ -1,11 +1,12 @@
 import { CSSProperties } from "react";
 import { useGameId, useTechs } from "../../context/dataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useFaction } from "../../context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "../../dynamic/api";
 import { getReplacementTech, hasTech } from "../../util/api/techs";
 import { getTechTypeColor } from "../../util/techs";
-import { objectEntries, rem } from "../../util/util";
+import { objectEntries, objectKeys, rem } from "../../util/util";
 import styles from "./TechTree.module.scss";
+import { Techs } from "../../context/techDataHooks";
 
 const TYPE_ORDER: Record<TechType, number> = {
   GREEN: 1,
@@ -15,44 +16,48 @@ const TYPE_ORDER: Record<TechType, number> = {
   UPGRADE: 5,
 } as const;
 
+const UPGRADE_TECH_ORDER: Partial<Record<TechId, number>> = {
+  "War Sun": 1,
+  "Cruiser II": 2,
+  "Dreadnought II": 3,
+  "Destroyer II": 4,
+  "PDS II": 5,
+  "Carrier II": 6,
+  "Fighter II": 7,
+  "Infantry II": 8,
+  "Space Dock II": 9,
+} as const;
+
 export default function TechTree({
   factionId,
+  techs,
+  ownedTechs,
   type,
-  size = 4,
-  style = {},
   viewOnly,
 }: {
   factionId: FactionId;
+  techs: Techs;
+  ownedTechs: TechId[];
   type: TechType | "FACTION";
-  size?: number;
-  style?: CSSProperties;
   viewOnly?: boolean;
 }) {
-  const factions = useFactions();
-  const gameId = useGameId();
-  const techs = useTechs();
-
-  const faction = factions[factionId];
-  if (!faction) {
-    return null;
-  }
-
-  if (type === "FACTION") {
-    let factionTechs = Object.values(techs)
-      .filter((tech) => tech.faction && tech.faction === factionId)
-      .sort((a, b) => {
-        if (a.type === b.type) {
-          if (a.type === "UPGRADE") {
-            return a.name > b.name ? 1 : -1;
-          }
-          return a.prereqs.length > b.prereqs.length ? 1 : -1;
-        }
-        return TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
-      });
-    let extras: string[] = [];
-    if (factionId === "Nekro Virus") {
-      factionTechs = Object.values(techs)
-        .filter((tech) => tech.faction && hasTech(faction, tech.id))
+  let style: CSSProperties;
+  let rowStyle: CSSProperties;
+  const layers: TechTreeElement[][] = [];
+  switch (type) {
+    case "FACTION": {
+      style = {
+        height: "100%",
+        justifyContent: "center",
+        gap: rem(4),
+      };
+      rowStyle = { paddingBottom: 0 };
+      let factionTechs = Object.values(techs)
+        .filter(
+          (tech) =>
+            tech.faction &&
+            (tech.faction === factionId || ownedTechs.includes(tech.id))
+        )
         .sort((a, b) => {
           if (a.type === b.type) {
             if (a.type === "UPGRADE") {
@@ -62,226 +67,98 @@ export default function TechTree({
           }
           return TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
         });
-      while (factionTechs.length + extras.length < 2) {
-        extras.push("#eee");
+      for (const tech of factionTechs) {
+        const level: TechTreeElement[] = [
+          {
+            id: tech.id,
+            name: tech.name,
+            filled: ownedTechs.includes(tech.id),
+            color: getTechTypeColor(tech.type),
+          },
+        ];
+        layers.push(level);
       }
+
+      while (layers.length < 2) {
+        layers.push([]);
+      }
+      break;
     }
-
-    return (
-      <div
-        className="flexColumn"
-        style={{
-          gap: rem(4),
-          height: "100%",
-          justifyContent: "center",
-          ...style,
-        }}
-      >
-        {factionTechs.map((tech) => {
-          const filled = hasTech(faction, tech.id);
-          const color = getTechTypeColor(tech.type);
+    case "UPGRADE": {
+      style = {
+        justifyContent: "flex-start",
+        gap: rem(2),
+      };
+      rowStyle = { justifyContent: "flex-start", paddingBottom: 0 };
+      const color = "#ccc";
+      const sortedUpgrades = Object.values(techs)
+        .filter((tech) => tech.type === type)
+        .filter((tech) => !tech.faction)
+        .sort((a, b) => {
           return (
-            <div
-              key={tech.id}
-              title={tech.name}
-              className={`${styles.TechTreeElement} ${
-                viewOnly ? styles.viewOnly : ""
-              }`}
-              style={{
-                border: `1px solid ${color}`,
-                backgroundColor: filled ? color : undefined,
-              }}
-              onClick={
-                viewOnly
-                  ? undefined
-                  : () => {
-                      if (filled) {
-                        removeTechAsync(gameId, factionId, tech.id);
-                      } else {
-                        addTechAsync(gameId, factionId, tech.id);
-                      }
-                    }
-              }
-            ></div>
+            (UPGRADE_TECH_ORDER[a.id] ?? 0) - (UPGRADE_TECH_ORDER[b.id] ?? 0)
           );
-        })}
-        {extras.map((color, index) => {
-          return (
-            <div
-              key={index}
-              className={styles.TechTreeElement}
-              style={{
-                border: `1px solid ${color}`,
-                cursor: "unset",
-              }}
-            ></div>
-          );
-        })}
-      </div>
-    );
-  }
-
-  const color = getTechTypeColor(type);
-
-  if (type === "UPGRADE") {
-    const color = "#ccc";
-    const upgradeTechOrder: Partial<Record<TechId, number>> = {
-      "War Sun": 1,
-      "Cruiser II": 2,
-      "Dreadnought II": 3,
-      "Destroyer II": 4,
-      "PDS II": 5,
-      "Carrier II": 6,
-      "Fighter II": 7,
-      "Infantry II": 8,
-      "Space Dock II": 9,
-    };
-    const sortedUpgrades = Object.values(techs)
-      .filter((tech) => tech.type === type)
-      .filter((tech) => !tech.faction)
-      .sort((a, b) => {
-        return (upgradeTechOrder[a.id] ?? 0) - (upgradeTechOrder[b.id] ?? 0);
-      });
-    return (
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-          gridAutoFlow: "row",
-          width: "fit-content",
-          gap: rem(2),
-        }}
-        className="flexRow"
-      >
-        {sortedUpgrades.map((tech) => {
-          let filled = hasTech(faction, tech.id);
-          const replacement = getReplacementTech(factionId, tech.id);
-
-          if (replacement) {
-            const newTech = techs[replacement];
-            if (!newTech) {
-              return null;
-            }
-            filled = hasTech(faction, replacement);
-            return (
-              <div
-                key={newTech.id}
-                title={newTech.name}
-                className={`${styles.TechTreeElement} ${
-                  viewOnly ? styles.viewOnly : ""
-                }`}
-                style={{
-                  border: `1px solid ${color}`,
-                  backgroundColor: filled ? color : undefined,
-                  gridColumn:
-                    tech.id === "Cruiser II"
-                      ? "span 3"
-                      : tech.id === "PDS II"
-                      ? "span 2"
-                      : undefined,
-                }}
-                onClick={
-                  viewOnly
-                    ? undefined
-                    : () => {
-                        if (filled) {
-                          removeTechAsync(gameId, factionId, newTech.id);
-                        } else {
-                          addTechAsync(gameId, factionId, newTech.id);
-                        }
-                      }
-                }
-              ></div>
-            );
-          }
-          return (
-            <div
-              key={tech.id}
-              title={tech.name}
-              className={`${styles.TechTreeElement} ${
-                viewOnly ? styles.viewOnly : ""
-              }`}
-              style={{
-                border: `1px solid ${color}`,
-                backgroundColor: filled ? color : undefined,
-                gridColumn:
-                  tech.id === "Cruiser II"
-                    ? "span 3"
-                    : tech.id === "PDS II"
-                    ? "span 2"
-                    : undefined,
-              }}
-              onClick={
-                viewOnly
-                  ? undefined
-                  : () => {
-                      if (filled) {
-                        removeTechAsync(gameId, factionId, tech.id);
-                      } else {
-                        addTechAsync(gameId, factionId, tech.id);
-                      }
-                    }
-              }
-            ></div>
-          );
-        })}
-      </div>
-    );
-  }
-
-  const techsByPrereq: Record<number, Tech[]> = {};
-
-  Object.values(techs)
-    .filter((tech) => tech.type === type)
-    .filter((tech) => !tech.faction)
-    .forEach((tech) => {
-      const prereqs = techsByPrereq[tech.prereqs.length] ?? [];
-      prereqs.push(tech);
-      prereqs.sort((a, b) => {
-        if (a.expansion === "POK") {
-          return 1;
+        });
+      let level = 0;
+      for (const upgrade of sortedUpgrades) {
+        const replacement = getReplacementTech(factionId, upgrade.id);
+        const replacementTech = replacement ? techs[replacement] : undefined;
+        let filled = replacement
+          ? ownedTechs.includes(replacement)
+          : ownedTechs.includes(upgrade.id);
+        const row = layers[level] ?? [];
+        row.push({
+          id: replacement ?? upgrade.id,
+          name: replacementTech?.name ?? upgrade.name,
+          filled,
+          color,
+        });
+        layers[level] = row;
+        if (upgrade.id === "Cruiser II" || upgrade.id === "PDS II") {
+          level++;
         }
-        return -1;
-      });
-      techsByPrereq[tech.prereqs.length] = prereqs;
-    });
+      }
+      break;
+    }
+    default: {
+      style = {};
+      rowStyle = {};
+      Object.values(techs)
+        .filter((tech) => tech.type === type)
+        .filter((tech) => !tech.faction)
+        .forEach((tech) => {
+          const prereqs = layers[tech.prereqs.length] ?? [];
+          const element: TechTreeElement = {
+            id: tech.id,
+            name: tech.name,
+            filled: ownedTechs.includes(tech.id),
+            color: getTechTypeColor(tech.type),
+          };
+          prereqs.push(element);
+          prereqs.sort((a, _) => {
+            const aTech = techs[a.id];
+            if (!aTech) {
+              return -1;
+            }
+            if (aTech.expansion === "POK") {
+              return 1;
+            }
+            return -1;
+          });
+          layers[tech.prereqs.length] = prereqs;
+        });
+      break;
+    }
+  }
 
   return (
-    <div className={styles.TechTree} style={style}>
-      {objectEntries(techsByPrereq).map(([num, techs]) => {
-        return (
-          <div key={num} className={styles.TechTreeRow}>
-            {techs.map((tech) => {
-              const filled = hasTech(faction, tech.id);
-              return (
-                <div
-                  key={tech.id}
-                  title={tech.name}
-                  className={`${styles.TechTreeElement} ${
-                    viewOnly ? styles.viewOnly : ""
-                  }`}
-                  style={{
-                    border: `1px solid ${color}`,
-                    backgroundColor: filled ? color : undefined,
-                  }}
-                  onClick={
-                    viewOnly
-                      ? undefined
-                      : () => {
-                          if (filled) {
-                            removeTechAsync(gameId, factionId, tech.id);
-                          } else {
-                            addTechAsync(gameId, factionId, tech.id);
-                          }
-                        }
-                  }
-                ></div>
-              );
-            })}
-          </div>
-        );
-      })}
-    </div>
+    <TechTreeContent
+      factionId={factionId}
+      layers={layers}
+      style={style}
+      rowStyle={rowStyle}
+      viewOnly={viewOnly}
+    />
   );
 }
 
@@ -344,6 +221,81 @@ export function DummyTechTree({}) {
                     border: `1px solid ${color}`,
                     backgroundColor: filled ? color : undefined,
                   }}
+                ></div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+interface TechTreeElement {
+  id: TechId;
+  name: string;
+  color: string;
+  filled: boolean;
+}
+
+function TechTreeContent({
+  factionId,
+  layers,
+  style = {},
+  rowStyle = {},
+  viewOnly,
+}: {
+  factionId: FactionId;
+  layers: TechTreeElement[][];
+  style?: CSSProperties;
+  rowStyle?: CSSProperties;
+  viewOnly?: boolean;
+}) {
+  const gameId = useGameId();
+
+  return (
+    <div className={styles.TechTree} style={style}>
+      {layers.map((techs, index) => {
+        // Special case for Nekro Virus faction techs
+        if (techs.length === 0) {
+          return (
+            <div key={index} className={styles.TechTreeRow} style={rowStyle}>
+              <div
+                className={styles.TechTreeElement}
+                title="Valefar Assimilator"
+                style={{
+                  border: `1px solid #ccc`,
+                  cursor: "unset",
+                }}
+              ></div>
+            </div>
+          );
+        }
+        return (
+          <div key={index} className={styles.TechTreeRow} style={rowStyle}>
+            {techs.map((tech) => {
+              return (
+                <div
+                  key={tech.id}
+                  title={tech.name}
+                  className={`${styles.TechTreeElement} ${
+                    viewOnly ? styles.viewOnly : ""
+                  }`}
+                  style={{
+                    border: `1px solid ${tech.color}`,
+                    backgroundColor: tech.filled ? tech.color : undefined,
+                  }}
+                  onClick={
+                    viewOnly
+                      ? undefined
+                      : () => {
+                          if (tech.filled) {
+                            removeTechAsync(gameId, factionId, tech.id);
+                          } else {
+                            addTechAsync(gameId, factionId, tech.id);
+                          }
+                        }
+                  }
                 ></div>
               );
             })}

@@ -207,12 +207,16 @@ export default function SetupPhase() {
                   width: `min(75vw, ${rem(268)})`,
                 }}
                 pattern={"((([0-9]{1,4}((A|B)[0-5]?)?)|(P[1-8])|(-1))($|\\s))+"}
-                placeholder={intl.formatMessage({
-                  id: "UJSVtn",
-                  description:
-                    "Label for a textbox used to specify the map string.",
-                  defaultMessage: "Map String",
-                })}
+                placeholder={
+                  userMapString !== ""
+                    ? userMapString
+                    : intl.formatMessage({
+                        id: "UJSVtn",
+                        description:
+                          "Label for a textbox used to specify the map string.",
+                        defaultMessage: "Map String",
+                      })
+                }
                 onBlur={(event) =>
                   setMapString(
                     gameId,

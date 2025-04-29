@@ -46,8 +46,6 @@ export default function SummaryColumn() {
   const numFactions = useNumFactions();
   const finalPhase = useFinalPhase();
 
-  console.log("Summary Column - rerender");
-
   let order: FactionOrdering = "SPEAKER";
   let tieBreak: FactionOrdering = "SPEAKER";
   if (phase === "END") {
@@ -83,7 +81,8 @@ export default function SummaryColumn() {
     <div
       className={styles.SummaryColumn}
       style={{
-        gap: numFactions < 8 ? rem(12) : rem(4),
+        gap: numFactions < 8 ? rem(12) : 0,
+        paddingTop: numFactions === 8 ? rem(48) : undefined,
       }}
     >
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
@@ -103,8 +102,6 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
   if (!faction) {
     return null;
   }
-
-  console.log(`summary for ${factionId} - rerender`);
 
   const factionSummaryOptions = {
     showIcon: true,

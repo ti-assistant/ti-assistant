@@ -1,28 +1,5 @@
 import Cookies from "js-cookie";
 
-export interface Settings {
-  "display-objective-description": boolean;
-  "group-techs-by-faction": boolean;
-  "show-turn-timer": boolean;
-  "fs-tech-summary-display": TechSummaryDisplay;
-}
-
-export type TechSummaryDisplay =
-  | "NONE"
-  | "ALL"
-  | "TREE"
-  | "TREE+NUMBER"
-  | "TREE+ICON"
-  | "ICON+NUMBER";
-
-const DEFAULT_SETTINGS: Settings = {
-  "display-objective-description": false,
-  "group-techs-by-faction": false,
-  "show-turn-timer": true,
-  // Faction Summary Settings
-  "fs-tech-summary-display": "ALL",
-} as const;
-
 function genCookie(length: number): string {
   let result = "";
   const characters =
@@ -42,26 +19,6 @@ export function setGameId(gameId: string) {
 
 export function getGameId() {
   return Cookies.get("gameid");
-}
-
-export function getSettings() {
-  const settings = Cookies.get("settings");
-  if (!settings) {
-    return DEFAULT_SETTINGS;
-  }
-  return {
-    ...DEFAULT_SETTINGS,
-    ...(JSON.parse(settings) as Settings),
-  };
-}
-
-export function updateSetting<T extends keyof Settings>(
-  setting: T,
-  value: Settings[T]
-) {
-  const settings = getSettings();
-  settings[setting] = value;
-  Cookies.set("settings", JSON.stringify(settings));
 }
 
 export function arrayUnion<Type>(array: Type[], value: Type) {

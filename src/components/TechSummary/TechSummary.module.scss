@@ -3,12 +3,32 @@
   font-size: 0.875rem;
   column-gap: 0.25rem;
   row-gap: 0.125rem;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, min-content);
+  grid-auto-flow: row;
   width: min-content;
 }
 
-.TechSummaryGrid > :last-child {
-  grid-column: 2 / 5;
+// .TechSummaryGrid > :last-child {
+//   grid-column: 1 / 6;
+// }
+
+.TechSummarySection {
+  display: flex;
+  flex-direction: row;
+
+  gap: 0.25rem;
+}
+
+.TechSummaryNumber {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  width: 0.75rem;
+  flex-shrink: 0;
 }
 
 .TechSummaryGrid.Horizontal {

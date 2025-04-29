@@ -1,40 +1,16 @@
 import Link from "next/link";
-import QRCode from "qrcode";
 import { IntlShape } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
-
-const BASE_URL =
-  process.env.GAE_SERVICE === "dev"
-    ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
-    : "https://ti-assistant.com";
 
 export default async function GameCode({
   gameId,
   intlPromise,
+  qrCode,
 }: {
   gameId: string;
   intlPromise: Promise<IntlShape>;
+  qrCode: string;
 }) {
-  const qrCode = await new Promise<string>((resolve) => {
-    QRCode.toDataURL(
-      `${BASE_URL}/game/${gameId}`,
-      {
-        color: {
-          dark: "#eeeeeeff",
-          light: "#222222ff",
-        },
-        width: 172,
-        margin: 2,
-      },
-      (err, url) => {
-        if (err) {
-          throw err;
-        }
-        resolve(url);
-      }
-    );
-  });
-
   const intl = await intlPromise;
 
   return (

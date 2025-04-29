@@ -56,7 +56,6 @@ export default function PlanetOverlay({
             : "24%";
 
         if (planet.state === "PURGED") {
-          console.log("I'm purged");
           return (
             <div
               key={planet.id}

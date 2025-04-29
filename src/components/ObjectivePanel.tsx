@@ -1,13 +1,15 @@
 import Image from "next/image";
-import React, { CSSProperties, PropsWithChildren } from "react";
+import React, { CSSProperties, PropsWithChildren, useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { SettingsContext } from "../context/contexts";
 import { useActionLog, useGameId, useOptions } from "../context/dataHooks";
-import { useObjective, useObjectives } from "../context/objectiveDataHooks";
 import {
   useFaction,
   useFactionColor,
   useFactions,
 } from "../context/factionDataHooks";
+import { useFactionVPs, useOrderedFactionIds } from "../context/gameDataHooks";
+import { useObjective, useObjectives } from "../context/objectiveDataHooks";
 import { useSharedModal } from "../data/SharedModal";
 import {
   hideObjectiveAsync,
@@ -19,7 +21,6 @@ import {
 } from "../dynamic/api";
 import { getLogEntries } from "../util/actionLog";
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
-import { useSharedSettings } from "../util/cookies";
 import {
   computeVPs,
   convertToFactionColor,
@@ -29,6 +30,7 @@ import {
 import { objectiveTypeString } from "../util/strings";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
+import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -38,8 +40,6 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
-import { useFactionVPs, useOrderedFactionIds } from "../context/gameDataHooks";
-import Chip from "./Chip/Chip";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -100,7 +100,7 @@ function ObjectiveColumn({
   viewOnly?: boolean;
 }) {
   const { openModal } = useSharedModal();
-  const { settings } = useSharedSettings();
+  const { settings } = useContext(SettingsContext);
   const description = settings["display-objective-description"];
 
   const numScorers = (objective.scorers ?? []).length;
@@ -275,7 +275,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
 
   const orderedFactionIds = useOrderedFactionIds("ALLIANCE");
 
-  const { settings, updateSetting } = useSharedSettings();
+  const { settings, updateSetting } = useContext(SettingsContext);
   const description = settings["display-objective-description"];
 
   const { openModal } = useSharedModal();

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
+import { SettingsContext } from "../../context/contexts";
 import { useGameId } from "../../context/dataHooks";
 import DummyFactionSummary from "../../InnerFactionSummary";
 import { rem } from "../../util/util";
@@ -8,7 +9,6 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechIcon from "../TechIcon/TechIcon";
 import { DummyTechTree } from "../TechTree/TechTree";
 import Toggle from "../Toggle/Toggle";
-import { useSharedSettings } from "../../util/cookies";
 
 export default function SettingsModal() {
   const gameId = useGameId();
@@ -47,9 +47,6 @@ export default function SettingsModal() {
         }}
       >
         <SettingsModalContent />
-        <div style={{ width: "100%", backgroundColor: "var(--light-bg)" }}>
-          {gameId}
-        </div>
       </div>
     </div>
   );
@@ -57,7 +54,7 @@ export default function SettingsModal() {
 
 function SettingsModalContent() {
   const gameId = useGameId();
-  const { settings, updateSetting } = useSharedSettings();
+  const { settings, updateSetting } = useContext(SettingsContext);
 
   const techSummarySetting = settings["fs-tech-summary-display"];
 
@@ -74,7 +71,7 @@ function SettingsModalContent() {
           selected={selectedTab === "TEST"}
           style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
         >
-          Faction Summary
+          Display Settings
         </Chip>
         {gameId ? (
           <Chip
@@ -95,11 +92,12 @@ function SettingsModalContent() {
           backgroundColor: "var(--background-color)",
           borderRadius: rem(4),
           border: `${rem(1)} solid #eee`,
+          padding: rem(8),
         }}
       >
-        {selectedTab}
-        <div style={{ width: "fit-content" }}>
-          <LabeledDiv label="Vuil'raith Cabal" color="red">
+        Display Settings
+        <div style={{ width: "fit-content", scale: 1 }}>
+          <LabeledDiv label="Faction Summary" color="var(--neutral-border)">
             <DummyFactionSummary />
           </LabeledDiv>
         </div>
@@ -119,7 +117,10 @@ function SettingsModalContent() {
                     if (prev) {
                       updateSetting("fs-tech-summary-display", "NONE");
                     } else {
-                      updateSetting("fs-tech-summary-display", "ALL");
+                      updateSetting(
+                        "fs-tech-summary-display",
+                        "NUMBER+ICON+TREE"
+                      );
                     }
                   }}
                   selected={techSummarySetting !== "NONE"}
@@ -133,11 +134,14 @@ function SettingsModalContent() {
               fontFamily: "Myriad Pro",
               flexDirection: "row",
               flexWrap: "wrap",
+              gap: rem(4),
             }}
           >
             <Chip
-              toggleFn={() => updateSetting("fs-tech-summary-display", "ALL")}
-              selected={techSummarySetting === "ALL"}
+              toggleFn={() =>
+                updateSetting("fs-tech-summary-display", "NUMBER+ICON+TREE")
+              }
+              selected={techSummarySetting === "NUMBER+ICON+TREE"}
               style={{ height: rem(32) }}
             >
               <div
@@ -150,9 +154,9 @@ function SettingsModalContent() {
             </Chip>
             <Chip
               toggleFn={() =>
-                updateSetting("fs-tech-summary-display", "ICON+NUMBER")
+                updateSetting("fs-tech-summary-display", "NUMBER+ICON")
               }
-              selected={techSummarySetting === "ICON+NUMBER"}
+              selected={techSummarySetting === "NUMBER+ICON"}
               style={{ height: rem(32) }}
             >
               <div
@@ -164,9 +168,9 @@ function SettingsModalContent() {
             </Chip>
             <Chip
               toggleFn={() =>
-                updateSetting("fs-tech-summary-display", "TREE+ICON")
+                updateSetting("fs-tech-summary-display", "ICON+TREE")
               }
-              selected={techSummarySetting === "TREE+ICON"}
+              selected={techSummarySetting === "ICON+TREE"}
               style={{ height: rem(32) }}
             >
               <div
@@ -179,9 +183,9 @@ function SettingsModalContent() {
             </Chip>
             <Chip
               toggleFn={() =>
-                updateSetting("fs-tech-summary-display", "TREE+NUMBER")
+                updateSetting("fs-tech-summary-display", "NUMBER+TREE")
               }
-              selected={techSummarySetting === "TREE+NUMBER"}
+              selected={techSummarySetting === "NUMBER+TREE"}
               style={{ height: rem(32) }}
             >
               <div

@@ -460,6 +460,7 @@ function TechsByFaction({
     return null;
   }
 
+  const ownedTechs = objectKeys(faction.techs ?? {});
   const factionTechs = objectKeys(faction.techs ?? {})
     .map((techId) => techs[techId])
     .filter((tech) => !!tech) as Tech[];
@@ -550,7 +551,8 @@ function TechsByFaction({
           }}
         >
           <FullTechSummary
-            techs={factionTechs}
+            techs={techs}
+            ownedTechs={ownedTechs}
             factionId={factionId}
             viewOnly={viewOnly}
           />

@@ -1,26 +1,34 @@
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary from "./components/TechSummary/TechSummary";
 import styles from "./FactionSummary.module.scss";
 import { rem } from "./util/util";
 import { useState } from "react";
+import { Techs } from "./context/techDataHooks";
+import { getBaseTechs } from "../server/data/techs";
+import SiteLogo from "./components/SiteLogo/SiteLogo";
 
 const TOP_RIGHT = { x: 22, y: -38 };
 
 export default function DummyFactionSummary() {
+  const intl = useIntl();
+  const techs = getBaseTechs(intl);
+
   const [VPs, setVPs] = useState(0);
 
-  const ownedTechs: Tech[] = [
-    {
-      description: "",
-      id: "Sarween Tools",
-      expansion: "BASE",
-      name: "Sarween Tools",
-      prereqs: [],
-      type: "YELLOW",
-    },
-  ];
+  // const techs: Techs = {
+  //   "Sarween Tools": {
+  //     description: "",
+  //     id: "Sarween Tools",
+  //     expansion: "BASE",
+  //     name: "Sarween Tools",
+  //     prereqs: [],
+  //     type: "YELLOW",
+  //   },
+  // };
+
+  const ownedTechs: TechId[] = ["Sarween Tools"];
 
   const planets: Planet[] = [
     {
@@ -73,7 +81,11 @@ export default function DummyFactionSummary() {
 
   return (
     <div className={styles.FactionSummary}>
-      <TechSummary techs={ownedTechs} />
+      <TechSummary
+        factionId="Vuil'raith Cabal"
+        techs={techs}
+        ownedTechs={ownedTechs}
+      />
       <div className={styles.VPGrid}>
         <div
           className="flexColumn"
@@ -97,7 +109,7 @@ export default function DummyFactionSummary() {
               userSelect: "none",
             }}
           >
-            <FactionIcon factionId="Vuil'raith Cabal" size="100%" />
+            <SiteLogo />
           </div>
         </div>
         <div
