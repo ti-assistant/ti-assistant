@@ -146,6 +146,7 @@ const unselectActionFn = import("../util/api/selectAction").then(
 const unscoreObjectiveFn = import("../util/api/scoreObjective").then(
   (mod) => mod.unscoreObjective
 );
+const updateFactionModule = import("../util/api/updateFaction");
 const updateLeaderStateFn = import("../util/api/updateLeaderState").then(
   (mod) => mod.updateLeaderState
 );
@@ -588,6 +589,15 @@ export async function unscoreObjectiveAsync(
 ) {
   const unscoreObjective = await unscoreObjectiveFn;
   unscoreObjective(gameId, faction, objective, key);
+}
+
+export async function updateFactionAsync(
+  gameId: string,
+  factionId: FactionId,
+  { playerName, color }: { playerName?: string; color?: string }
+) {
+  const mod = await updateFactionModule;
+  mod.updateFaction(gameId, factionId, { playerName, color });
 }
 
 export async function updateLeaderStateAsync(

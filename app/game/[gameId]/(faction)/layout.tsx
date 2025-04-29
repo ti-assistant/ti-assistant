@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "../../../../src/components/Footer/Footer";
 import { rem } from "../../../../src/util/util";
 import FactionsSection from "./factions-section";
+import styles from "./layout.module.scss";
 
 export default async function Layout({
   children,
@@ -11,7 +12,7 @@ export default async function Layout({
   return (
     <>
       <div
-        className="flexColumn"
+        className={styles.FactionLayout}
         style={{ position: "relative", width: "100%" }}
       >
         <div

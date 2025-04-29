@@ -113,9 +113,9 @@ export async function POST(
   const db = getFirestore();
 
   // Uncomment to simulate latency.
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-  await delay(1000);
+  // const delay = (ms: number) =>
+  //   new Promise((resolve) => setTimeout(resolve, ms));
+  // await delay(1000);
 
   const timerDoc = await db.collection("timers").doc(gameId).get();
 
