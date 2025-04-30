@@ -14,7 +14,7 @@ export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   useEffect(() => {
     setValue(DataManager.getValue(path) ?? defaultValue);
     return DataManager.subscribe(setValue, path);
-  }, [path]);
+  }, [path, defaultValue]);
 
   return value;
 }
