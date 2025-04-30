@@ -3,16 +3,16 @@ import { FormattedMessage, useIntl } from "react-intl";
 import {
   useAttachments,
   useCurrentTurn,
-  useFactions,
   useGameId,
   useLeaders,
-  useObjectives,
   useOptions,
   usePlanets,
   useRelics,
   useSystems,
   useTechs,
 } from "../context/dataHooks";
+import { useObjectives } from "../context/objectiveDataHooks";
+import { useFactions } from "../context/factionDataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,

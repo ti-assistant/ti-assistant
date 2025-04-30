@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import AttachmentSelectRadialMenu from "../../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
-import PlanetIcon from "../../components/PlanetIcon/PlanetIcon";
-import PlanetRow from "../../components/PlanetRow/PlanetRow";
+import AttachmentSelectRadialMenu from "../../../../../../../src/components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import PlanetIcon from "../../../../../../../src/components/PlanetIcon/PlanetIcon";
+import PlanetRow from "../../../../../../../src/components/PlanetRow/PlanetRow";
 import {
   useActionLog,
   useAttachments,
   useGameId,
   usePlanets,
-} from "../../context/dataHooks";
-import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
-import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { getAttachments } from "../../util/actionLog";
-import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
-import { applyPlanetAttachments } from "../../util/planets";
-import { Optional } from "../../util/types/types";
-import { rem } from "../../util/util";
+} from "../../../../../../../src/context/dataHooks";
+import {
+  addAttachmentAsync,
+  removeAttachmentAsync,
+} from "../../../../../../../src/dynamic/api";
+import { ClientOnlyHoverMenu } from "../../../../../../../src/HoverMenu";
+import { getAttachments } from "../../../../../../../src/util/actionLog";
+import { getCurrentTurnLogEntries } from "../../../../../../../src/util/api/actionLog";
+import { applyPlanetAttachments } from "../../../../../../../src/util/planets";
+import { Optional } from "../../../../../../../src/util/types/types";
+import { rem } from "../../../../../../../src/util/util";
 
 export default function PlanetaryRigs({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();

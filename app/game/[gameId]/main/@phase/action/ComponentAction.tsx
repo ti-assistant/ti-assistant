@@ -4,37 +4,40 @@ import React, { CSSProperties, ReactNode } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, useIntl } from "react-intl";
-import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { InfoRow } from "../../InfoRow";
-import { SelectableRow } from "../../SelectableRow";
-import { TechRow } from "../../TechRow";
-import FactionSelectRadialMenu from "../../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
-import FrontierExploration from "../../components/FrontierExploration/FrontierExploration";
-import LabeledDiv from "../../components/LabeledDiv/LabeledDiv";
-import LabeledLine from "../../components/LabeledLine/LabeledLine";
-import GameMap from "../../components/Map/GameMap";
+import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
+import { InfoRow } from "../../../../../../src/InfoRow";
+import { SelectableRow } from "../../../../../../src/SelectableRow";
+import { TechRow } from "../../../../../../src/TechRow";
+import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
+import GameMap from "../../../../../../src/components/Map/GameMap";
 import MapBuilder, {
   SystemImage,
-} from "../../components/MapBuilder/MapBuilder";
-import { ModalContent } from "../../components/Modal/Modal";
-import PlanetRow from "../../components/PlanetRow/PlanetRow";
-import { Selector } from "../../components/Selector/Selector";
-import { TacticalAction } from "../../components/TacticalAction";
-import TechSelectHoverMenu from "../../components/TechSelectHoverMenu/TechSelectHoverMenu";
+} from "../../../../../../src/components/MapBuilder/MapBuilder";
+import { ModalContent } from "../../../../../../src/components/Modal/Modal";
+import PlanetRow from "../../../../../../src/components/PlanetRow/PlanetRow";
+import { Selector } from "../../../../../../src/components/Selector/Selector";
+import { TacticalAction } from "../../../../../../src/components/TacticalAction";
+import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useActionLog,
   useAttachments,
   useComponents,
-  useFactions,
   useGameId,
   useLeaders,
-  useObjectives,
   useOptions,
   usePlanets,
   useRelics,
   useTechs,
-} from "../../context/dataHooks";
-import { useSharedModal } from "../../data/SharedModal";
+} from "../../../../../../src/context/dataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
+import {
+  useFactions,
+  useNumFactions,
+} from "../../../../../../src/context/factionDataHooks";
+import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -48,7 +51,7 @@ import {
   swapMapTilesAsync,
   unplayComponentAsync,
   updatePlanetStateAsync,
-} from "../../dynamic/api";
+} from "../../../../../../src/dynamic/api";
 import {
   getClaimedPlanets,
   getGainedRelic,
@@ -59,20 +62,24 @@ import {
   getSelectedFaction,
   getSelectedSubComponent,
   wereTilesSwapped,
-} from "../../util/actionLog";
-import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
-import { hasTech } from "../../util/api/techs";
-import { getFactionColor, getFactionName } from "../../util/factions";
+} from "../../../../../../src/util/actionLog";
+import { getCurrentTurnLogEntries } from "../../../../../../src/util/api/actionLog";
+import { hasTech } from "../../../../../../src/util/api/techs";
+import {
+  getFactionColor,
+  getFactionName,
+} from "../../../../../../src/util/factions";
 import {
   getFactionSystemNumber,
   getWormholeNexusSystemNumber,
   updateMapString,
-} from "../../util/map";
-import { getMapString } from "../../util/options";
-import { applyAllPlanetAttachments } from "../../util/planets";
-import { Optional } from "../../util/types/types";
-import { pluralize, rem } from "../../util/util";
-import PlanetaryRigs from "./PlanetaryRigs";
+} from "../../../../../../src/util/map";
+import { getMapString } from "../../../../../../src/util/options";
+import { applyAllPlanetAttachments } from "../../../../../../src/util/planets";
+import { Optional } from "../../../../../../src/util/types/types";
+import { pluralize, rem } from "../../../../../../src/util/util";
+import PlanetaryRigs from "./components/PlanetaryRigs";
+import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -460,10 +467,8 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
-
-  if (!factions) {
-    return null;
-  }
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const numFactions = useNumFactions();
 
   function getResearchableTechs(faction: Faction) {
     const replaces: TechId[] = [];
@@ -471,7 +476,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       if (hasTech(faction, tech.id)) {
         return false;
       }
-      if (!factions || (tech.faction && !factions[tech.faction])) {
+      if (tech.faction && !factions[tech.faction]) {
         return false;
       }
       if (
@@ -1456,11 +1461,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       let updatedMapString =
         mapString === ""
-          ? updateMapString(
-              mapString,
-              options["map-style"],
-              mapOrderedFactions.length
-            )
+          ? updateMapString(mapString, options["map-style"], numFactions)
           : mapString;
       let updatedSystemTiles = updatedMapString.split(" ");
       updatedSystemTiles = updatedSystemTiles.map((tile, index) => {

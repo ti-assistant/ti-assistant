@@ -1,4 +1,5 @@
-import { useFactions, useGameId, useRelics } from "../../context/dataHooks";
+import { useGameId, useRelics } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
 import { InfoRow } from "../../InfoRow";

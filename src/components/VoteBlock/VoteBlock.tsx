@@ -5,16 +5,16 @@ import {
   useActionLog,
   useAgendas,
   useAttachments,
-  useFactions,
   useGameId,
-  useGameState,
   useLeaders,
-  useObjectives,
   useOptions,
   usePlanets,
   useRelics,
   useStrategyCards,
 } from "../../context/dataHooks";
+import { useObjectives } from "../../context/objectiveDataHooks";
+import { useFactions } from "../../context/factionDataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import {
   castVotesAsync,
   playActionCardAsync,

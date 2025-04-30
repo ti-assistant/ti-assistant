@@ -7,14 +7,14 @@ import TechSummary from "./components/TechSummary/TechSummary";
 import {
   useActionLog,
   useAttachments,
-  useFaction,
   useGameId,
-  useGameState,
   useLeaders,
-  useObjectives,
   usePlanets,
   useTechs,
 } from "./context/dataHooks";
+import { useObjectives } from "./context/objectiveDataHooks";
+import { useFaction } from "./context/factionDataHooks";
+import { useGameState } from "./context/stateDataHooks";
 import { manualVPUpdateAsync } from "./dynamic/api";
 import { getLogEntries } from "./util/actionLog";
 import { computeScoredVPs } from "./util/factions";
@@ -23,7 +23,7 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import { filterToOwnedTechs } from "./util/techs";
-import { objectEntries, rem } from "./util/util";
+import { objectEntries, objectKeys, rem } from "./util/util";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -47,7 +47,6 @@ export function FactionSummary({
   const state = useGameState();
   const techs = useTechs();
 
-  let ownedTechs: Tech[] = [];
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
 
@@ -55,7 +54,7 @@ export function FactionSummary({
     throw new Error("Faction " + factionId + " not found");
   }
 
-  ownedTechs = filterToOwnedTechs(techs ?? {}, faction);
+  const ownedTechs = objectKeys(faction.techs ?? {});
 
   const ownedPlanets = factionId
     ? filterToClaimedPlanets(planets ?? {}, factionId)
@@ -80,7 +79,13 @@ export function FactionSummary({
 
   return (
     <div className={styles.FactionSummary}>
-      {options.hideTechs ? null : <TechSummary techs={ownedTechs} />}
+      {options.hideTechs ? null : (
+        <TechSummary
+          factionId={factionId}
+          techs={techs}
+          ownedTechs={ownedTechs}
+        />
+      )}
       <div className={styles.VPGrid}>
         {options.showIcon ? (
           <div

@@ -1,11 +1,11 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import {
   useActionLog,
-  useFactions,
   useGameId,
   useRelics,
   useTechs,
 } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { playRelicAsync, unplayRelicAsync } from "../../dynamic/api";
 import { TechRow } from "../../TechRow";
 import { getPlayedRelic } from "../../util/actionLog";

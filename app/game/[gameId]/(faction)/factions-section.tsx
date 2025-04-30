@@ -6,24 +6,32 @@ import { LockedButtons } from "../../../../src/LockedButton";
 import FactionCircle from "../../../../src/components/FactionCircle/FactionCircle";
 import {
   useCurrentTurn,
-  useFactions,
   useGameId,
-  useGameState,
   useStrategyCards,
 } from "../../../../src/context/dataHooks";
-import { advancePhaseAsync } from "../../../../src/dynamic/api";
-import { advanceToStatusPhase } from "../../../../src/main/ActionPhase";
 import {
-  setupPhaseComplete,
-  startFirstRound,
-} from "../../../../src/main/SetupPhase";
-import { statusPhaseComplete } from "../../../../src/main/StatusPhase";
-import { advanceToActionPhase } from "../../../../src/main/StrategyPhase";
+  useFaction,
+  useFactions,
+} from "../../../../src/context/factionDataHooks";
+import {
+  useFinalPhase,
+  useGameState,
+  usePhase,
+} from "../../../../src/context/stateDataHooks";
+import { advancePhaseAsync } from "../../../../src/dynamic/api";
+import { statusPhaseComplete } from "../main/@phase/status/StatusPhase";
 import { getLogEntries } from "../../../../src/util/actionLog";
 import { getFactionColor } from "../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../src/util/helpers";
 import { phaseString } from "../../../../src/util/strings";
 import { rem } from "../../../../src/util/util";
+import { setupPhaseComplete } from "../main/@phase/setup/SetupPhase";
+import {
+  FactionOrdering,
+  useActiveFaction,
+  useOrderedFactionIds,
+} from "../../../../src/context/gameDataHooks";
+import { Optional } from "../../../../src/util/types/types";
 
 function NextPhaseButtons({}) {
   const currentTurn = useCurrentTurn();
@@ -55,7 +63,7 @@ function NextPhaseButtons({}) {
                   if (!gameId) {
                     return;
                   }
-                  startFirstRound(gameId);
+                  advancePhaseAsync(gameId);
                 },
               },
             ]}
@@ -68,10 +76,7 @@ function NextPhaseButtons({}) {
           <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <button
               onClick={() => {
-                if (!gameId) {
-                  return;
-                }
-                advanceToActionPhase(gameId);
+                advancePhaseAsync(gameId);
               }}
             >
               <FormattedMessage
@@ -104,10 +109,7 @@ function NextPhaseButtons({}) {
                   { phase: phaseString("STATUS", intl) }
                 ),
                 onClick: () => {
-                  if (!gameId) {
-                    return;
-                  }
-                  advanceToStatusPhase(gameId);
+                  advancePhaseAsync(gameId);
                 },
               },
             ]}
@@ -185,17 +187,16 @@ function NextPhaseButtons({}) {
 }
 
 export default function FactionsSection({}) {
-  const router = useRouter();
-  const factions = useFactions();
-  const gameId = useGameId();
-  const state = useGameState();
-  const strategyCards = useStrategyCards();
+  const phase = usePhase();
+  const finalPhase = useFinalPhase();
 
-  let orderedFactions: Faction[] = [];
+  let ordering: FactionOrdering;
+  let tieBreak: Optional<FactionOrdering>;
   let orderTitle = <></>;
-  switch (state?.phase) {
+  switch (phase) {
     case "SETUP":
     case "STRATEGY":
+    case "UNKNOWN":
       orderTitle = (
         <FormattedMessage
           id="L4UH+0"
@@ -203,9 +204,7 @@ export default function FactionsSection({}) {
           defaultMessage="Speaker Order"
         />
       );
-      orderedFactions = Object.values(factions).sort(
-        (a, b) => a.order - b.order
-      );
+      ordering = "SPEAKER";
       break;
     case "ACTION":
     case "STATUS":
@@ -216,23 +215,7 @@ export default function FactionsSection({}) {
           defaultMessage="Initiative Order"
         />
       );
-      const orderedCards = Object.values(strategyCards).sort(
-        (a, b) => a.order - b.order
-      );
-      const orderedIds: FactionId[] = [];
-      for (const card of orderedCards) {
-        if (card.faction && !orderedIds.includes(card.faction)) {
-          orderedIds.push(card.faction);
-        }
-      }
-
-      for (const factionId of orderedIds) {
-        const faction = factions[factionId];
-        if (!faction) {
-          continue;
-        }
-        orderedFactions.push(faction);
-      }
+      ordering = "INITIATIVE";
       break;
     case "AGENDA":
       orderTitle = (
@@ -242,23 +225,23 @@ export default function FactionsSection({}) {
           defaultMessage="Voting Order"
         />
       );
-      orderedFactions = Object.values(factions).sort((a, b) => {
-        if (a.name === "Argent Flight") {
-          return -1;
-        }
-        if (b.name === "Argent Flight") {
-          return 1;
-        }
-        if (a.name === state.speaker) {
-          return 1;
-        }
-        if (b.name === state.speaker) {
-          return -1;
-        }
-        return a.order - b.order;
-      });
+      ordering = "VOTING";
+      break;
+    case "END":
+      ordering = "VICTORY_POINTS";
+      switch (finalPhase) {
+        case "ACTION":
+        case "STATUS":
+          tieBreak = "INITIATIVE";
+          break;
+        default:
+          tieBreak = "SPEAKER";
+          break;
+      }
       break;
   }
+
+  const orderedFactionIds = useOrderedFactionIds(ordering, tieBreak);
 
   return (
     <div
@@ -275,43 +258,60 @@ export default function FactionsSection({}) {
         className="flexRow"
         style={{ width: "100%", alignItems: "space-evenly", gap: 0 }}
       >
-        {orderedFactions.map((faction) => {
-          const isActive =
-            (state.phase === "ACTION" || state.phase === "STRATEGY") &&
-            state.activeplayer === faction.id;
-          const color = faction.passed ? "#555" : getFactionColor(faction);
-          const cards = getStrategyCardsForFaction(strategyCards, faction.id);
-          return (
-            <FactionCircle
-              key={faction.id}
-              borderColor={color}
-              factionId={faction.id}
-              onClick={() => router.push(`/game/${gameId}/${faction.id}`)}
-              style={{
-                backgroundColor: isActive ? "#333" : undefined,
-                boxShadow: isActive
-                  ? color === "Black"
-                    ? "#eee 0 0 8px 4px"
-                    : "var(--border-color) 0 0 8px 4px"
-                  : undefined,
-              }}
-              tag={
-                cards.length > 0 ? (
-                  <div
-                    style={{
-                      fontSize: rem(18),
-                      color: cards[0]?.used ? "#555" : cards[0]?.color,
-                    }}
-                  >
-                    {cards[0]?.order}
-                  </div>
-                ) : undefined
-              }
-              tagBorderColor={cards[0]?.used ? "#555" : cards[0]?.color}
-            />
-          );
+        {orderedFactionIds.map((factionId) => {
+          return <LocalFactionCircle key={factionId} factionId={factionId} />;
         })}
       </div>
     </div>
+  );
+}
+
+function LocalFactionCircle({ factionId }: { factionId: FactionId }) {
+  const activeFaction = useActiveFaction();
+
+  const faction = useFaction(factionId);
+  const gameId = useGameId();
+
+  const router = useRouter();
+  const phase = usePhase();
+  const strategyCards = useStrategyCards();
+
+  if (!faction) {
+    return null;
+  }
+
+  const isActive =
+    (phase === "ACTION" || phase === "STRATEGY") &&
+    activeFaction?.id === factionId;
+  const color = faction.passed ? "#555" : getFactionColor(faction);
+  const cards = getStrategyCardsForFaction(strategyCards, factionId);
+  return (
+    <FactionCircle
+      key={faction.id}
+      borderColor={color}
+      factionId={faction.id}
+      onClick={() => router.push(`/game/${gameId}/${factionId}`)}
+      style={{
+        backgroundColor: isActive ? "#333" : undefined,
+        boxShadow: isActive
+          ? color === "Black"
+            ? "#eee 0 0 8px 4px"
+            : "var(--border-color) 0 0 8px 4px"
+          : undefined,
+      }}
+      tag={
+        cards.length > 0 ? (
+          <div
+            style={{
+              fontSize: rem(18),
+              color: cards[0]?.used ? "#555" : cards[0]?.color,
+            }}
+          >
+            {cards[0]?.order}
+          </div>
+        ) : undefined
+      }
+      tagBorderColor={cards[0]?.used ? "#555" : cards[0]?.color}
+    />
   );
 }

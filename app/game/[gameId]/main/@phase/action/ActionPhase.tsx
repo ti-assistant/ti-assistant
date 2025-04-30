@@ -1,37 +1,41 @@
 import React, { CSSProperties, useRef } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { LockedButtons } from "../LockedButton";
-import { SmallStrategyCard } from "../StrategyCard";
-import { TechRow } from "../TechRow";
-import { FactionTimer, StaticFactionTimer } from "../Timer";
-import AttachmentSelectRadialMenu from "../components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
-import Chip from "../components/Chip/Chip";
-import FactionCard from "../components/FactionCard/FactionCard";
-import FactionCircle from "../components/FactionCircle/FactionCircle";
-import FactionIcon from "../components/FactionIcon/FactionIcon";
-import FactionSelectRadialMenu from "../components/FactionSelectRadialMenu/FactionSelectRadialMenu";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import LabeledLine from "../components/LabeledLine/LabeledLine";
-import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import PlanetIcon from "../components/PlanetIcon/PlanetIcon";
-import PlanetRow from "../components/PlanetRow/PlanetRow";
-import PromissoryMenu from "../components/PromissoryMenu/PromissoryMenu";
-import { TacticalAction } from "../components/TacticalAction";
-import TechSelectHoverMenu from "../components/TechSelectHoverMenu/TechSelectHoverMenu";
+import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
+import { LockedButtons } from "../../../../../../src/LockedButton";
+import { SmallStrategyCard } from "../../../../../../src/StrategyCard";
+import { TechRow } from "../../../../../../src/TechRow";
+import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
+import AttachmentSelectRadialMenu from "../../../../../../src/components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import Chip from "../../../../../../src/components/Chip/Chip";
+import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
+import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
+import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
+import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
+import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import PlanetIcon from "../../../../../../src/components/PlanetIcon/PlanetIcon";
+import PlanetRow from "../../../../../../src/components/PlanetRow/PlanetRow";
+import PromissoryMenu from "../../../../../../src/components/PromissoryMenu/PromissoryMenu";
+import { TacticalAction } from "../../../../../../src/components/TacticalAction";
+import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useAttachments,
   useCurrentTurn,
-  useFactions,
   useGameId,
-  useGameState,
-  useObjectives,
   usePlanets,
   useStrategyCards,
   useTechs,
-} from "../context/dataHooks";
+} from "../../../../../../src/context/dataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
+import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import { useGameState } from "../../../../../../src/context/stateDataHooks";
+import {
+  useActiveFaction,
+  useOnDeckFaction,
+} from "../../../../../../src/context/gameDataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -47,25 +51,28 @@ import {
   unclaimPlanetAsync,
   unscoreObjectiveAsync,
   unselectActionAsync,
-} from "../dynamic/api";
-import { SymbolX } from "../icons/svgs";
+} from "../../../../../../src/dynamic/api";
+import { SymbolX } from "../../../../../../src/icons/svgs";
+import { ComponentAction } from "./ComponentAction";
 import {
   getAttachments,
   getClaimedPlanets,
   getResearchedTechs,
-} from "../util/actionLog";
+} from "../../../../../../src/util/actionLog";
 import {
   getNewSpeakerEventFromLog,
   getSelectedActionFromLog,
-} from "../util/api/data";
-import { hasTech } from "../util/api/techs";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { getOnDeckFaction, getStrategyCardsForFaction } from "../util/helpers";
-import { applyPlanetAttachments } from "../util/planets";
-import { phaseString } from "../util/strings";
-import { rem } from "../util/util";
+} from "../../../../../../src/util/api/data";
+import { hasTech } from "../../../../../../src/util/api/techs";
+import {
+  getFactionColor,
+  getFactionName,
+} from "../../../../../../src/util/factions";
+import { getStrategyCardsForFaction } from "../../../../../../src/util/helpers";
+import { applyPlanetAttachments } from "../../../../../../src/util/planets";
+import { phaseString } from "../../../../../../src/util/strings";
+import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
-import { ComponentAction } from "./util/ComponentAction";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1617,7 +1624,7 @@ interface ActivePlayerColumnProps {
   onDeckFaction: Faction;
 }
 
-export function ActivePlayerColumn({
+function ActivePlayerColumn({
   activeFaction,
   onDeckFaction,
 }: ActivePlayerColumnProps) {
@@ -1747,10 +1754,7 @@ export function ActivePlayerColumn({
               { phase: phaseString("STATUS", intl) }
             ),
             onClick: () => {
-              if (!gameId) {
-                return;
-              }
-              advanceToStatusPhase(gameId);
+              advancePhaseAsync(gameId);
             },
           },
         ]}
@@ -1759,64 +1763,63 @@ export function ActivePlayerColumn({
   );
 }
 
-export function advanceToStatusPhase(gameId: string) {
-  advancePhaseAsync(gameId);
+type CardWithFaction = StrategyCard & { faction: FactionId };
+
+function StrategyCardColumn() {
+  const activeFaction = useActiveFaction();
+  const strategyCards = useStrategyCards();
+
+  const orderedStrategyCards = Object.values(strategyCards).sort(
+    (a, b) => a.order - b.order
+  );
+
+  const cardsByFaction: Partial<Record<FactionId, CardWithFaction[]>> = {};
+  orderedStrategyCards.forEach((card) => {
+    const faction = card.faction;
+    if (!faction) {
+      return;
+    }
+    if (!cardsByFaction[faction]) {
+      cardsByFaction[faction] = [];
+    }
+    cardsByFaction[faction]?.push({ ...card, faction });
+  });
+
+  return (
+    <div className={styles.LeftColumn}>
+      {Object.values(cardsByFaction).map((cards) => {
+        const primaryCard = cards[0];
+        if (!primaryCard) {
+          return null;
+        }
+        const isActivePlayer = primaryCard.faction === activeFaction?.id;
+        return (
+          <div
+            key={primaryCard.id}
+            style={{
+              transition: "padding 120ms",
+              paddingRight: isActivePlayer ? 0 : rem(40),
+              paddingLeft: isActivePlayer ? rem(40) : 0,
+            }}
+          >
+            <SmallStrategyCard cards={cards} />
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export default function ActionPhase() {
-  const factions = useFactions();
   const gameId = useGameId();
-  const state = useGameState();
-  const strategyCards = useStrategyCards();
   const intl = useIntl();
 
-  const activeFaction =
-    state.activeplayer && state.activeplayer !== "None"
-      ? factions[state.activeplayer]
-      : undefined;
-  const onDeckFaction = getOnDeckFaction(state, factions, strategyCards);
-  const orderedStrategyCards = Object.values(strategyCards)
-    .filter((card) => card.faction)
-    .sort((a, b) => a.order - b.order);
-
-  const cardsByFaction: Partial<Record<FactionId, StrategyCard[]>> = {};
-  orderedStrategyCards.forEach((card) => {
-    if (!card.faction) {
-      return;
-    }
-    if (!cardsByFaction[card.faction]) {
-      cardsByFaction[card.faction] = [];
-    }
-    cardsByFaction[card.faction]?.push(card);
-  });
-
-  const numFactions = Object.keys(factions).length;
+  const activeFaction = useActiveFaction();
+  const onDeckFaction = useOnDeckFaction();
 
   return (
-    <React.Fragment>
-      <div className={styles.LeftColumn}>
-        {Object.values(cardsByFaction).map((cards) => {
-          const isActivePlayer = cards[0]?.faction === state.activeplayer;
-          return (
-            <div
-              key={cards[0] ? cards[0].id : "Error"}
-              style={{
-                transition: "padding 120ms",
-                paddingRight:
-                  isActivePlayer && activeFaction && onDeckFaction
-                    ? 0
-                    : rem(40),
-                paddingLeft:
-                  isActivePlayer && activeFaction && onDeckFaction
-                    ? rem(40)
-                    : 0,
-              }}
-            >
-              <SmallStrategyCard cards={cards} />
-            </div>
-          );
-        })}
-      </div>
+    <>
+      <StrategyCardColumn />
       <div className="flexColumn" style={{ gap: rem(16) }}>
         <div className="flexColumn" style={{ width: "100%" }}>
           {activeFaction && onDeckFaction ? (
@@ -1858,10 +1861,7 @@ export default function ActionPhase() {
                       { phase: phaseString("STATUS", intl) }
                     ),
                     onClick: () => {
-                      if (!gameId) {
-                        return;
-                      }
-                      advanceToStatusPhase(gameId);
+                      advancePhaseAsync(gameId);
                     },
                   },
                 ]}
@@ -1870,6 +1870,6 @@ export default function ActionPhase() {
           )}
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }

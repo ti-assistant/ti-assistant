@@ -1,12 +1,8 @@
 import { AgendaRow } from "../AgendaRow";
-import {
-  useAgendas,
-  useFaction,
-  useFactions,
-  useObjectives,
-  useRelics,
-  useTechs,
-} from "../context/dataHooks";
+import { useAgendas, useRelics, useTechs } from "../context/dataHooks";
+import { useObjectives } from "../context/objectiveDataHooks";
+import { useFaction } from "../context/factionDataHooks";
+import { useFactions } from "../context/factionDataHooks";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getTechColor } from "../util/techs";

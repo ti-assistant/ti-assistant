@@ -6,11 +6,10 @@ import { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import {
-  useFactions,
-  useGameId,
-  useGameState,
-} from "../../../src/context/dataHooks";
+import { useGameId } from "../../../src/context/dataHooks";
+import { useFaction } from "../../../src/context/factionDataHooks";
+import { useOrderedFactionIds } from "../../../src/context/gameDataHooks";
+import { usePhase } from "../../../src/context/stateDataHooks";
 import { setGameId } from "../../../src/util/api/util";
 import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
@@ -19,9 +18,9 @@ import styles from "./game-page.module.scss";
 
 export default function SelectFactionPage() {
   const router = useRouter();
-  const factions = useFactions();
+  const orderedFactionIds = useOrderedFactionIds("MAP");
   const gameId = useGameId();
-  const state = useGameState();
+  const phase = usePhase();
 
   useEffect(() => {
     if (!!gameId) {
@@ -29,16 +28,11 @@ export default function SelectFactionPage() {
     }
   }, [gameId]);
 
-  if (state.phase !== "UNKNOWN" && Object.keys(factions).length === 0) {
-    console.log("Forcing redirect!");
+  if (phase !== "UNKNOWN" && orderedFactionIds.length === 0) {
     setGameId("");
     router.push("/");
     return null;
   }
-
-  const orderedFactions = Object.values(factions).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
 
   // TODO: Fix height on mobile.
   return (
@@ -91,46 +85,54 @@ export default function SelectFactionPage() {
             />
           </div>
         </Link>
-        {orderedFactions.map((faction) => {
-          const factionColor = getFactionColor(faction);
-          return (
-            <Link href={`/game/${gameId}/${faction.id}`} key={faction.id}>
-              <BorderedDiv
-                color={factionColor}
-                style={{
-                  boxShadow:
-                    factionColor === "Black" ? BLACK_BORDER_GLOW : undefined,
-                }}
-              >
-                <div
-                  className="flexRow"
-                  style={{
-                    opacity: "40%",
-                    position: "absolute",
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    zIndex: 0,
-                  }}
-                >
-                  <FactionIcon factionId={faction.id} size="100%" />
-                </div>
-                <div
-                  className="flexColumn"
-                  style={{
-                    height: "5vh",
-                    fontSize: rem(20),
-                    width: "100%",
-                    zIndex: 0,
-                  }}
-                >
-                  {getFactionName(faction)}
-                </div>
-              </BorderedDiv>
-            </Link>
-          );
+        {orderedFactionIds.map((factionId) => {
+          return <FactionLink key={factionId} factionId={factionId} />;
         })}
       </div>
     </div>
+  );
+}
+
+function FactionLink({ factionId }: { factionId: FactionId }) {
+  const gameId = useGameId();
+  const faction = useFaction(factionId);
+
+  return (
+    <Link href={`/game/${gameId}/${factionId}`}>
+      <BorderedDiv
+        color={getFactionColor(faction)}
+        style={{
+          boxShadow:
+            getFactionColor(faction) === "Black"
+              ? BLACK_BORDER_GLOW
+              : undefined,
+        }}
+      >
+        <div
+          className="flexRow"
+          style={{
+            opacity: "40%",
+            position: "absolute",
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+          }}
+        >
+          <FactionIcon factionId={factionId} size="100%" />
+        </div>
+        <div
+          className="flexColumn"
+          style={{
+            height: "5vh",
+            fontSize: rem(20),
+            width: "100%",
+            zIndex: 0,
+          }}
+        >
+          {getFactionName(faction)}
+        </div>
+      </BorderedDiv>
+    </Link>
   );
 }

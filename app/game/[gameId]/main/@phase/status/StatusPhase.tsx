@@ -1,45 +1,59 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { LockedButtons } from "../LockedButton";
-import { NumberedItem } from "../NumberedItem";
-import CrownOfEmphidia from "../components/CrownOfEmphidia/CrownOfEmphidia";
-import FactionIcon from "../components/FactionIcon/FactionIcon";
-import LabeledDiv from "../components/LabeledDiv/LabeledDiv";
-import LabeledLine from "../components/LabeledLine/LabeledLine";
-import { ModalContent } from "../components/Modal/Modal";
-import ObjectiveRow from "../components/ObjectiveRow/ObjectiveRow";
-import ObjectiveSelectHoverMenu from "../components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import { Selector } from "../components/Selector/Selector";
+import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
+import { LockedButtons } from "../../../../../../src/LockedButton";
+import { NumberedItem } from "../../../../../../src/NumberedItem";
+import CrownOfEmphidia from "../../../../../../src/components/CrownOfEmphidia/CrownOfEmphidia";
+import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
+import { ModalContent } from "../../../../../../src/components/Modal/Modal";
+import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
+import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import { Selector } from "../../../../../../src/components/Selector/Selector";
 import {
   useActionLog,
   useAgenda,
   useCurrentTurn,
-  useFactions,
   useGameId,
-  useGameState,
-  useObjectives,
   useOptions,
   usePlanets,
   useRelics,
   useStrategyCards,
-} from "../context/dataHooks";
-import { useSharedModal } from "../data/SharedModal";
+} from "../../../../../../src/context/dataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
+import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import {
+  useAgendaUnlocked,
+  useGameState,
+  useRound,
+  useSpeaker,
+} from "../../../../../../src/context/stateDataHooks";
+import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   advancePhaseAsync,
   hideObjectiveAsync,
   revealObjectiveAsync,
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
-} from "../dynamic/api";
-import { getLogEntries, getPlayedRelic } from "../util/actionLog";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { hasTech } from "../util/api/techs";
-import { getFactionColor, getFactionName } from "../util/factions";
-import { getInitiativeForFaction } from "../util/helpers";
-import { objectiveTypeString, phaseString } from "../util/strings";
-import { ActionLog } from "../util/types/types";
-import { rem } from "../util/util";
+} from "../../../../../../src/dynamic/api";
+import {
+  getLogEntries,
+  getPlayedRelic,
+} from "../../../../../../src/util/actionLog";
+import { getCurrentTurnLogEntries } from "../../../../../../src/util/api/actionLog";
+import { hasTech } from "../../../../../../src/util/api/techs";
+import {
+  getFactionColor,
+  getFactionName,
+} from "../../../../../../src/util/factions";
+import { getInitiativeForFaction } from "../../../../../../src/util/helpers";
+import {
+  objectiveTypeString,
+  phaseString,
+} from "../../../../../../src/util/strings";
+import { ActionLog } from "../../../../../../src/util/types/types";
+import { rem } from "../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
 
 function CommandTokenGains() {
@@ -262,7 +276,7 @@ function ActionCardDraws() {
   );
 }
 
-export function MiddleColumn() {
+function MiddleColumn() {
   const actionLog = useActionLog();
   const factions = useFactions();
   const gameId = useGameId();
@@ -584,8 +598,11 @@ export default function StatusPhase() {
   const options = useOptions();
   const planets = usePlanets();
   const relics = useRelics();
-  const state = useGameState();
   const strategyCards = useStrategyCards();
+
+  const agendaUnlocked = useAgendaUnlocked();
+  const round = useRound();
+  const speaker = useSpeaker();
 
   const ministerOfPolicy = useAgenda("Minister of Policy");
 
@@ -594,9 +611,6 @@ export default function StatusPhase() {
   const { openModal } = useSharedModal();
 
   function nextPhase(skipAgenda = false) {
-    if (!gameId) {
-      return;
-    }
     if (!skipAgenda) {
       advancePhaseAsync(gameId);
       return;
@@ -754,7 +768,6 @@ export default function StatusPhase() {
     return abilities;
   }
 
-  const round = state?.round ?? 1;
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
     .sort((a, b) => a.order - b.order);
@@ -775,17 +788,15 @@ export default function StatusPhase() {
     .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
   const revealedObjective = revealedObjectives[0];
   const revealedObjectiveObj = revealedObjective
-    ? (objectives ?? {})[revealedObjective]
+    ? objectives[revealedObjective]
     : undefined;
   const type = round < 4 ? "STAGE ONE" : "STAGE TWO";
-  const availableObjectives = Object.values(objectives ?? {}).filter(
-    (objective) => {
-      return objective.type === type && !objective.selected;
-    }
-  );
+  const availableObjectives = Object.values(objectives).filter((objective) => {
+    return objective.type === type && !objective.selected;
+  });
 
   const nextPhaseButtons = [];
-  if (!state?.agendaUnlocked) {
+  if (!agendaUnlocked) {
     nextPhaseButtons.push({
       text: intl.formatMessage({
         id: "5WXn8l",
@@ -937,8 +948,8 @@ export default function StatusPhase() {
               </LabeledDiv>
             ) : (
               <LabeledDiv
-                label={getFactionName(factions[state.speaker])}
-                color={getFactionColor(factions[state.speaker])}
+                label={getFactionName(factions[speaker])}
+                color={getFactionColor(factions[speaker])}
                 style={{ width: "100%" }}
               >
                 <div className="flexRow" style={{ whiteSpace: "nowrap" }}>

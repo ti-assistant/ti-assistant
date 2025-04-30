@@ -1,9 +1,7 @@
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import TimerDisplay from "../../../../../../src/components/TimerDisplay/TimerDisplay";
-import {
-  useFactions,
-  useTimers,
-} from "../../../../../../src/context/dataHooks";
+import { useTimers } from "../../../../../../src/context/dataHooks";
+import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import { getFactionColor } from "../../../../../../src/util/factions";
 import { objectEntries, rem } from "../../../../../../src/util/util";
 

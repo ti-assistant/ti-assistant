@@ -1,6 +1,7 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import { useFaction, useGameId, useTechs } from "../../context/dataHooks";
+import { useGameId, useTechs } from "../../context/dataHooks";
+import { useFaction } from "../../context/factionDataHooks";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,

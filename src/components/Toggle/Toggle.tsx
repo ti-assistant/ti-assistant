@@ -30,19 +30,21 @@ interface ToggleProps {
   disabled?: boolean;
   selected: boolean;
   toggleFn: (prevValue: boolean) => void;
+  style?: CSSProperties;
 }
 
 export default function Toggle({
   selected,
   toggleFn,
   children,
+  style = {},
   disabled,
 }: PropsWithChildren<ToggleProps>) {
   let toggleStyle = getToggleStyle(selected);
   return (
     <label
       className={`${styles.ToggleContainer} ${disabled ? styles.disabled : ""}`}
-      style={toggleStyle}
+      style={{ ...toggleStyle, ...style }}
     >
       <input
         type="checkbox"

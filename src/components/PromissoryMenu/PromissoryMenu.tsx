@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
-import { useFactions, useGameId, useObjectives } from "../../context/dataHooks";
+import { useGameId } from "../../context/dataHooks";
+import { useObjectives } from "../../context/objectiveDataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { getFactionColor } from "../../util/factions";

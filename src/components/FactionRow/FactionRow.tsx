@@ -1,10 +1,7 @@
-import {
-  useFactions,
-  useGameState,
-  useObjectives,
-  useOptions,
-  useStrategyCards,
-} from "../../context/dataHooks";
+import { useOptions, useStrategyCards } from "../../context/dataHooks";
+import { useObjectives } from "../../context/objectiveDataHooks";
+import { useFactions } from "../../context/factionDataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import { computeVPs, getFactionColor } from "../../util/factions";
 import {
   getInitiativeForFaction,

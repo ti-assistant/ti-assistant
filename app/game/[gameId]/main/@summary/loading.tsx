@@ -1,4 +1,4 @@
-import LoadingSummaryColumn from "../../../../../src/main/LoadingSummaryColumn";
+import LoadingSummaryColumn from "./column/LoadingSummaryColumn";
 
 export default function Loading() {
   return <LoadingSummaryColumn />;

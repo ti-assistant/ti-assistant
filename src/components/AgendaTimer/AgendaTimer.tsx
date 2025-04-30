@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useActionLog, useGameState, useTimers } from "../../context/dataHooks";
+import { useActionLog, useTimers } from "../../context/dataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import { getNthMostRecentAction } from "../../util/api/actionLog";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";

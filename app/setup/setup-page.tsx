@@ -817,7 +817,7 @@ function FactionSelect({
     if (currentNameRef && !playerName) {
       currentNameRef.value = "";
     }
-  }, [playerName, currentNameRef, intl]);
+  }, [playerName, currentNameRef]);
 
   const isSpeaker = speaker === factionIndex;
 

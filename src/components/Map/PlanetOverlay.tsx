@@ -1,10 +1,7 @@
 import Image from "next/image";
 import { ReactNode } from "react";
-import {
-  useAttachments,
-  useFactions,
-  usePlanets,
-} from "../../context/dataHooks";
+import { useAttachments, usePlanets } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { getFactionColor } from "../../util/factions";
 import {
   applyAllPlanetAttachments,
@@ -59,7 +56,6 @@ export default function PlanetOverlay({
             : "24%";
 
         if (planet.state === "PURGED") {
-          console.log("I'm purged");
           return (
             <div
               key={planet.id}

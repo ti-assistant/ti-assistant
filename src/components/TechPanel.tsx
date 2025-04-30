@@ -1,7 +1,8 @@
 import React, { CSSProperties, useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { TechRow } from "../TechRow";
-import { useFactions, useGameId, useTechs } from "../context/dataHooks";
+import { useGameId, useTechs } from "../context/dataHooks";
+import { useFactions } from "../context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
 import { hasTech, isTechReplaced } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
@@ -459,6 +460,7 @@ function TechsByFaction({
     return null;
   }
 
+  const ownedTechs = objectKeys(faction.techs ?? {});
   const factionTechs = objectKeys(faction.techs ?? {})
     .map((techId) => techs[techId])
     .filter((tech) => !!tech) as Tech[];
@@ -549,7 +551,8 @@ function TechsByFaction({
           }}
         >
           <FullTechSummary
-            techs={factionTechs}
+            techs={techs}
+            ownedTechs={ownedTechs}
             factionId={factionId}
             viewOnly={viewOnly}
           />

@@ -8,13 +8,13 @@ import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import {
   useAgendas,
   useAllPlanets,
-  useFactions,
   useGameId,
-  useGameState,
-  useObjectives,
   useOptions,
   usePlanets,
 } from "../../context/dataHooks";
+import { useObjectives } from "../../context/objectiveDataHooks";
+import { useFactions } from "../../context/factionDataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import {
   continueGameAsync,

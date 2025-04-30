@@ -165,7 +165,6 @@ export default function ObjectiveRow({
                       &#x2715;
                     </div>
                     <FactionIcon factionId={scorer} size="100%" />
-                    {/* <FactionSymbol faction={scorer} size={42} /> */}
                   </div>
                 );
               }

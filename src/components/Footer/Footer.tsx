@@ -1,26 +1,25 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import GameMap from "../Map/GameMap";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
+import { SettingsContext } from "../../context/contexts";
 import {
   useAllPlanets,
-  useFactions,
   useGameId,
-  useGameState,
   useOptions,
   usePlanets,
   useStrategyCards,
 } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
+import { useGameState } from "../../context/stateDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { setSpeakerAsync } from "../../dynamic/api";
 import MapMenuSVG from "../../icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
-import { useSharedSettings } from "../../util/cookies";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
@@ -30,6 +29,7 @@ import Chip from "../Chip/Chip";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import GameMap from "../Map/GameMap";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
@@ -497,7 +497,7 @@ function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
 }
 
 function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
-  const { settings, updateSetting } = useSharedSettings();
+  const { settings, updateSetting } = useContext(SettingsContext);
 
   const groupTechsByFaction = settings["group-techs-by-faction"];
 

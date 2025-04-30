@@ -2,12 +2,12 @@ import { CSSProperties, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import {
   useAttachments,
-  useFaction,
-  useFactions,
   useGameId,
   useLeaders,
   usePlanets,
 } from "../context/dataHooks";
+import { useFaction } from "../context/factionDataHooks";
+import { useFactions } from "../context/factionDataHooks";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
 import { getFactionColor, getFactionName } from "../util/factions";
 import {

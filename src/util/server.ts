@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { DEFAULT_SETTINGS, Settings } from "./settings";
 
 export async function getMessages(
   locale: string
@@ -10,4 +11,16 @@ export async function getMessages(
 
 export function getLocale(): string {
   return cookies().get("TI_LOCALE")?.value ?? "en";
+}
+
+export function getSettings() {
+  let settings = cookies().get("settings");
+
+  if (!settings) {
+    return DEFAULT_SETTINGS;
+  }
+  return {
+    ...DEFAULT_SETTINGS,
+    ...(JSON.parse(settings.value) as Settings),
+  };
 }

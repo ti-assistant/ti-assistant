@@ -4,15 +4,22 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary from "./components/TechSummary/TechSummary";
 import { rem } from "./util/util";
+import { Techs } from "./context/techDataHooks";
 
 export default function LoadingFactionSummary() {
-  let ownedTechs: Tech[] = [];
+  let techs: Techs = {};
+  let ownedTechs: TechId[] = [];
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
 
   return (
     <div className={styles.FactionSummary}>
-      <TechSummary techs={ownedTechs} />
+      <TechSummary
+        factionId="Vuil'raith Cabal"
+        techs={techs}
+        ownedTechs={ownedTechs}
+        viewOnly
+      />
       <div className={styles.VPGrid}>
         <div
           className="flexColumn"

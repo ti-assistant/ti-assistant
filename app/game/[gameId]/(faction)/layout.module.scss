@@ -1,0 +1,14 @@
+.FactionLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  margin-top: 3rem;
+}
+
+@media only screen and (max-width: 75rem) {
+  .FactionLayout {
+    margin-top: 0;
+  }
+}

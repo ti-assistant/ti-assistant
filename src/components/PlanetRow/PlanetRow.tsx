@@ -1,12 +1,8 @@
 import Image from "next/image";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import {
-  useAttachments,
-  useFactions,
-  useGameId,
-  usePlanet,
-} from "../../context/dataHooks";
+import { useAttachments, useGameId, usePlanet } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import { getFactionColor } from "../../util/factions";

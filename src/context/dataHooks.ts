@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
+import stableHash from "stable-hash";
 import { BASE_OPTIONS } from "../../server/data/options";
+import { getLogEntries } from "../util/actionLog";
+import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { ActionLog, Optional } from "../util/types/types";
 import DataManager from "./DataManager";
-import stableHash from "stable-hash";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
-import { getLogEntries } from "../util/actionLog";
 
 export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   const [value, setValue] = useState<Type>(
@@ -12,8 +12,9 @@ export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   );
 
   useEffect(() => {
+    setValue(DataManager.getValue(path) ?? defaultValue);
     return DataManager.subscribe(setValue, path);
-  }, [path]);
+  }, [path, defaultValue]);
 
   return value;
 }
@@ -27,35 +28,29 @@ export function useMemoizedGameDataValue<BaseType, Type>(
   const baseVal = initialValue ? fn(initialValue) : defaultValue;
   const [value, setValue] = useState<Type>(baseVal);
 
+  const valueHash = stableHash(value);
+
   useEffect(() => {
+    const newVal = DataManager.getValue<BaseType>(path);
+    if (newVal) {
+      const newValue = fn(newVal);
+      if (valueHash !== stableHash(newValue)) {
+        setValue(newValue);
+      }
+    }
     return DataManager.subscribe((newVal) => {
       if (!newVal) {
         return;
       }
       const newValue = fn(newVal);
-      if (stableHash(value) === stableHash(newValue)) {
+      if (valueHash === stableHash(newValue)) {
         return;
       }
       setValue(newValue);
     }, path);
-  }, [path, fn, value]);
+  }, [path, fn, valueHash]);
 
   return value;
-}
-
-export function useGameData() {
-  return useGameDataValue<GameData>("", {
-    factions: {},
-    leaders: {},
-    options: BASE_OPTIONS,
-    planets: {},
-    sequenceNum: 0,
-    state: {
-      phase: "UNKNOWN",
-      round: 1,
-      speaker: "Vuil'raith Cabal",
-    },
-  });
 }
 
 export function useGameId() {
@@ -108,25 +103,9 @@ export function useComponents() {
   return useGameDataValue<Components>("components", {});
 }
 
-type Factions = Partial<Record<FactionId, Faction>>;
-export function useFactions() {
-  return useGameDataValue<Factions>("factions", {});
-}
-export function useFaction(factionId: FactionId) {
-  return useGameDataValue<Optional<Faction>>(
-    `factions.${factionId}`,
-    undefined
-  );
-}
-
 type Leaders = Partial<Record<LeaderId, Leader>>;
 export function useLeaders() {
   return useGameDataValue<Leaders>("leaders", {});
-}
-
-type Objectives = Partial<Record<ObjectiveId, Objective>>;
-export function useObjectives() {
-  return useGameDataValue<Objectives>("objectives", {});
 }
 
 export function useOptions() {
@@ -152,14 +131,6 @@ export function useRelics() {
 }
 export function useRelic(relicId: RelicId) {
   return useGameDataValue<Optional<Relic>>(`relics.${relicId}`, undefined);
-}
-
-export function useGameState() {
-  return useGameDataValue<GameState>("state", {
-    phase: "UNKNOWN",
-    round: 1,
-    speaker: "Vuil'raith Cabal",
-  });
 }
 
 type StrategyCards = Partial<Record<StrategyCardId, StrategyCard>>;

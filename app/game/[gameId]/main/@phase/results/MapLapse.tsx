@@ -1,11 +1,9 @@
 import { useState } from "react";
 import Chip from "../../../../../../src/components/Chip/Chip";
 import GameMap from "../../../../../../src/components/Map/GameMap";
-import {
-  useFactions,
-  useGameState,
-  useOptions,
-} from "../../../../../../src/context/dataHooks";
+import { useOptions } from "../../../../../../src/context/dataHooks";
+import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import { getWormholeNexusSystemNumber } from "../../../../../../src/util/map";
 import { objectKeys, rem } from "../../../../../../src/util/util";
 
