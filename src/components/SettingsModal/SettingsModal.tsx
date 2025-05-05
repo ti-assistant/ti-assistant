@@ -18,6 +18,7 @@ import NumberInput from "../NumberInput/NumberInput";
 import TechIcon from "../TechIcon/TechIcon";
 import { DummyTechTree } from "../TechTree/TechTree";
 import Toggle from "../Toggle/Toggle";
+import PlayerNameInput from "../../../app/setup/components/PlayerNameInput";
 
 export default function SettingsModal() {
   return (
@@ -268,7 +269,7 @@ function GameSettings({ gameId }: { gameId: string }) {
           width: "fit-content",
         }}
       >
-        {orderedFactionIds.map((factionId) => {
+        {orderedFactionIds.map((factionId, index) => {
           const faction = factions[factionId];
           if (!faction) {
             return null;
@@ -286,7 +287,11 @@ function GameSettings({ gameId }: { gameId: string }) {
               >
                 <FactionIcon factionId={faction.id} size={36} />
               </div>
-              <PlayerNameInput factionId={factionId} gameId={gameId} />
+              <PlayerNameInputWrapper
+                factionId={factionId}
+                gameId={gameId}
+                index={index}
+              />
               <ColorPicker
                 gameId={gameId}
                 colors={BASE_COLORS}
@@ -301,55 +306,31 @@ function GameSettings({ gameId }: { gameId: string }) {
   );
 }
 
-function PlayerNameInput({
+function PlayerNameInputWrapper({
   factionId,
   gameId,
+  index,
 }: {
   factionId: FactionId;
   gameId: string;
+  index: number;
 }) {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const intl = useIntl();
   const faction = useFaction(factionId);
-
-  const playerName = faction?.playerName;
-  const currentNameRef = nameRef?.current;
-  useEffect(() => {
-    if (currentNameRef) {
-      currentNameRef.value = playerName ?? "";
-    }
-  }, [playerName, currentNameRef]);
 
   if (!faction) {
     return null;
   }
 
+  const factionColor = convertToFactionColor(faction.color);
+
   return (
-    <input
-      defaultValue={faction.playerName}
-      ref={nameRef}
-      type="textbox"
-      spellCheck={false}
-      placeholder={intl.formatMessage({
-        id: "4n1LQO",
-        description: "Initial text in a textbox used to input a player's name",
-        defaultMessage: "Enter Player Name...",
-      })}
-      style={{
-        fontFamily: "Myriad Pro",
-        fontSize: rem(13.33),
-      }}
-      onFocus={(e) => (e.currentTarget.value = "")}
-      onClick={(e) => (e.currentTarget.value = "")}
-      onBlur={(e) => {
-        if (e.currentTarget.value === "") {
-          e.currentTarget.value = faction.playerName ?? "";
-          return;
-        }
-        updateFactionAsync(gameId, factionId, {
-          playerName: e.currentTarget.value,
-        });
-      }}
+    <PlayerNameInput
+      color={factionColor === "#555" ? undefined : factionColor}
+      playerName={faction.playerName}
+      updatePlayerName={(name) =>
+        updateFactionAsync(gameId, factionId, { playerName: name })
+      }
+      tabIndex={index + 1}
     />
   );
 }

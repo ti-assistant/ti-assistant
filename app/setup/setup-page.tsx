@@ -25,6 +25,7 @@ import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
 import { rem } from "../../src/util/util";
 import styles from "./setup.module.scss";
+import PlayerNameInput from "./components/PlayerNameInput";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -983,12 +984,8 @@ function FactionSelect({
     setColor(factionIndex, color);
   }
 
-  function savePlayerName(element: HTMLInputElement) {
-    if (element.value === "") {
-      element.value = faction.playerName ?? "";
-      return;
-    }
-    setPlayerName(factionIndex, element.value);
+  function savePlayerName(name: string) {
+    setPlayerName(factionIndex, name);
   }
 
   function selectAlliancePartner(factionId: Optional<FactionId>) {
@@ -1009,35 +1006,18 @@ function FactionSelect({
 
   const factionColor = convertToFactionColor(faction.color);
 
-  const label = (
-    <input
-      ref={nameRef}
-      tabIndex={position + 1}
-      type="textbox"
-      spellCheck={false}
-      placeholder={intl.formatMessage({
-        id: "4n1LQO",
-        description: "Initial text in a textbox used to input a player's name",
-        defaultMessage: "Enter Player Name...",
-      })}
-      style={{
-        fontFamily: "Myriad Pro",
-        borderColor: factionColor === "#555" ? undefined : factionColor,
-        boxShadow:
-          factionColor === "Black" ? OUTER_BLACK_BORDER_GLOW : undefined,
-        fontSize: rem(13.33),
-      }}
-      onFocus={(e) => (e.currentTarget.value = "")}
-      onClick={(e) => (e.currentTarget.value = "")}
-      onBlur={(e) => savePlayerName(e.currentTarget)}
-    />
-  );
-
   const selectedColors = factions.map((faction) => faction.color);
 
   return (
     <LabeledDiv
-      label={label}
+      label={
+        <PlayerNameInput
+          color={factionColor === "#555" ? undefined : factionColor}
+          playerName={faction.playerName}
+          tabIndex={position + 1}
+          updatePlayerName={savePlayerName}
+        />
+      }
       rightLabel={isSpeaker ? <Strings.Speaker /> : undefined}
       color={factionColor}
       style={{ width: mobile ? "100%" : "28vw", minWidth: rem(260) }}
