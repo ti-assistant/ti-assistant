@@ -26,6 +26,7 @@ import { Optional } from "../../src/util/types/types";
 import { rem } from "../../src/util/util";
 import styles from "./setup.module.scss";
 import PlayerNameInput from "./components/PlayerNameInput";
+import ColorPicker from "./components/ColorPicker";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -1006,7 +1007,9 @@ function FactionSelect({
 
   const factionColor = convertToFactionColor(faction.color);
 
-  const selectedColors = factions.map((faction) => faction.color);
+  const selectedColors = factions
+    .map((faction) => faction.color)
+    .filter((color) => !!color) as string[];
 
   return (
     <LabeledDiv
@@ -1080,59 +1083,11 @@ function FactionSelect({
                     options={createOptions(options)}
                   />
                 </SelectableRow>
-                <ClientOnlyHoverMenu
-                  label={
-                    <FormattedMessage
-                      id="Lm8L7/"
-                      description="Text on a hover menu for picking a player's color."
-                      defaultMessage="Color"
-                    />
-                  }
-                  renderProps={(closeFn) => {
-                    return (
-                      <div
-                        className="flexRow"
-                        style={{
-                          padding: `${rem(8)}`,
-                          display: "grid",
-                          gridAutoFlow: "column",
-                          gridTemplateRows: "repeat(3, auto)",
-                          overflowX: "auto",
-                          gap: `${rem(4)}`,
-                          justifyContent: "flex-start",
-                        }}
-                      >
-                        {colors.map((color) => {
-                          const factionColor = convertToFactionColor(color);
-                          const alreadySelected =
-                            selectedColors.includes(color);
-                          return (
-                            <button
-                              key={color}
-                              style={{
-                                backgroundColor: factionColor,
-                                color: factionColor,
-                                height: rem(22),
-                                width: rem(18),
-                                opacity:
-                                  faction.color !== color && alreadySelected
-                                    ? 0.25
-                                    : undefined,
-                              }}
-                              className={
-                                faction.color === color ? "selected" : ""
-                              }
-                              onClick={() => {
-                                closeFn();
-                                selectColor(color);
-                              }}
-                            ></button>
-                          );
-                        })}
-                      </div>
-                    );
-                  }}
-                ></ClientOnlyHoverMenu>
+                <ColorPicker
+                  pickedColor={faction.color}
+                  selectedColors={selectedColors}
+                  updateColor={selectColor}
+                />
               </>
             ) : (
               <ClientOnlyHoverMenu
@@ -1438,9 +1393,10 @@ export default function SetupPage({
       if (faction.id) {
         selectedFactions[index] = faction.id;
       }
-      if (faction.color) {
-        usedColors.add(faction.color);
-        selectedColors[index] = faction.color;
+      const color = faction.color;
+      if (color) {
+        usedColors.add(color);
+        selectedColors[index] = color;
       }
     }
     const filteredFactions = Object.values(availableFactions ?? {}).filter(

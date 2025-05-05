@@ -1,0 +1,14 @@
+.ColorPicker {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, auto);
+  overflow-x: auto;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  justify-content: flex-start;
+}
+
+.ColorPicker > button {
+  height: 1.375rem;
+  width: 1.125rem;
+}

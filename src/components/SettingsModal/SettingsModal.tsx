@@ -19,6 +19,7 @@ import TechIcon from "../TechIcon/TechIcon";
 import { DummyTechTree } from "../TechTree/TechTree";
 import Toggle from "../Toggle/Toggle";
 import PlayerNameInput from "../../../app/setup/components/PlayerNameInput";
+import ColorPicker from "../../../app/setup/components/ColorPicker";
 
 export default function SettingsModal() {
   return (
@@ -287,115 +288,25 @@ function GameSettings({ gameId }: { gameId: string }) {
               >
                 <FactionIcon factionId={faction.id} size={36} />
               </div>
-              <PlayerNameInputWrapper
-                factionId={factionId}
-                gameId={gameId}
-                index={index}
+              <PlayerNameInput
+                color={convertToFactionColor(faction.color)}
+                playerName={faction.playerName}
+                updatePlayerName={(name) =>
+                  updateFactionAsync(gameId, factionId, { playerName: name })
+                }
+                tabIndex={index + 1}
               />
               <ColorPicker
-                gameId={gameId}
-                colors={BASE_COLORS}
+                pickedColor={faction.color}
                 selectedColors={selectedColors}
-                faction={faction}
+                updateColor={(color) => {
+                  updateFactionAsync(gameId, factionId, { color });
+                }}
               />
             </div>
           );
         })}
       </LabeledDiv>
     </>
-  );
-}
-
-function PlayerNameInputWrapper({
-  factionId,
-  gameId,
-  index,
-}: {
-  factionId: FactionId;
-  gameId: string;
-  index: number;
-}) {
-  const faction = useFaction(factionId);
-
-  if (!faction) {
-    return null;
-  }
-
-  const factionColor = convertToFactionColor(faction.color);
-
-  return (
-    <PlayerNameInput
-      color={factionColor === "#555" ? undefined : factionColor}
-      playerName={faction.playerName}
-      updatePlayerName={(name) =>
-        updateFactionAsync(gameId, factionId, { playerName: name })
-      }
-      tabIndex={index + 1}
-    />
-  );
-}
-
-function ColorPicker({
-  gameId,
-  colors,
-  selectedColors,
-  faction,
-}: {
-  gameId: string;
-  colors: string[];
-  selectedColors: string[];
-  faction: Faction;
-}) {
-  return (
-    <ClientOnlyHoverMenu
-      label={
-        <FormattedMessage
-          id="Lm8L7/"
-          description="Text on a hover menu for picking a player's color."
-          defaultMessage="Color"
-        />
-      }
-      renderProps={(closeFn) => {
-        return (
-          <div
-            className="flexRow"
-            style={{
-              padding: `${rem(8)}`,
-              display: "grid",
-              gridAutoFlow: "column",
-              gridTemplateRows: "repeat(3, auto)",
-              overflowX: "auto",
-              gap: `${rem(4)}`,
-              justifyContent: "flex-start",
-            }}
-          >
-            {colors.map((color) => {
-              const factionColor = convertToFactionColor(color);
-              const alreadySelected = selectedColors.includes(color);
-              return (
-                <button
-                  key={color}
-                  style={{
-                    backgroundColor: factionColor,
-                    color: factionColor,
-                    height: rem(22),
-                    width: rem(18),
-                    opacity:
-                      faction.color !== color && alreadySelected
-                        ? 0.25
-                        : undefined,
-                  }}
-                  className={faction.color === color ? "selected" : ""}
-                  onClick={() => {
-                    closeFn();
-                    updateFactionAsync(gameId, faction.id, { color });
-                  }}
-                ></button>
-              );
-            })}
-          </div>
-        );
-      }}
-    ></ClientOnlyHoverMenu>
   );
 }
