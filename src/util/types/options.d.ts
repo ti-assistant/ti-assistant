@@ -4,6 +4,7 @@ type Expansion =
   | "CODEX ONE"
   | "CODEX TWO"
   | "CODEX THREE"
+  | "CODEX FOUR"
   | "DISCORDANT STARS"
   | "BASE ONLY";
 

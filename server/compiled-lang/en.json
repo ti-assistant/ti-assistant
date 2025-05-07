@@ -299,6 +299,12 @@
       "value": "Research Tech"
     }
   ],
+  "3xEbCN": [
+    {
+      "type": 0,
+      "value": "Codex IV"
+    }
+  ],
   "43UU69": [
     {
       "type": 0,
@@ -11573,6 +11579,12 @@
     {
       "type": 1,
       "value": "planet"
+    }
+  ],
+  "iL4f7y": [
+    {
+      "type": 0,
+      "value": "Settings"
     }
   ],
   "ifN0t/": [

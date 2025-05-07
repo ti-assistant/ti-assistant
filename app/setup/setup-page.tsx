@@ -245,6 +245,14 @@ function MobileOptions({
             >
               III
             </Toggle>
+            <Toggle
+              selected={options.expansions.has("CODEX FOUR")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX FOUR");
+              }}
+            >
+              IV
+            </Toggle>
           </div>
         </div>
       </LabeledDiv>
@@ -555,6 +563,14 @@ function Options({
               }}
             >
               III
+            </Toggle>
+            <Toggle
+              selected={options.expansions.has("CODEX FOUR")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "CODEX FOUR");
+              }}
+            >
+              IV
             </Toggle>
           </div>
         </div>

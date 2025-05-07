@@ -143,6 +143,10 @@
     "defaultMessage": "Research Tech",
     "description": "Label on a hover menu used to research tech."
   },
+  "3xEbCN": {
+    "defaultMessage": "Codex IV",
+    "description": "Text on a button that will enable/disable Codex IV."
+  },
   "43UU69": {
     "defaultMessage": "Component",
     "description": "Text on a button that will select a component action."

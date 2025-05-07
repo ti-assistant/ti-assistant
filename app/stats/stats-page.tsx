@@ -257,6 +257,12 @@ export default function StatsPage({
               />
               <FilterButton
                 filters={expansions}
+                filter="CODEX FOUR"
+                setFilters={setExpansions}
+                text={<Strings.Expansion expansion="CODEX FOUR" />}
+              />
+              <FilterButton
+                filters={expansions}
                 filter="DISCORDANT STARS"
                 setFilters={setExpansions}
                 text={<Strings.Expansion expansion="DISCORDANT STARS" />}
