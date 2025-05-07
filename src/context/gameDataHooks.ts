@@ -85,7 +85,8 @@ function buildSortFn(
             bValue = bValue + bPartnerVPs;
             break;
         }
-        return { a: aValue, b: bValue };
+        // Flip the sign to sort in descending order.
+        return { a: -aValue, b: -bValue };
       case "ALLIANCE":
         if (!a.alliancePartner || !b.alliancePartner) {
           return getSortValues(a, b, "MAP");
