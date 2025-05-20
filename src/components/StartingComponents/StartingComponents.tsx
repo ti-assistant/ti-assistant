@@ -14,6 +14,14 @@ import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRad
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
+import FighterSVG from "../../icons/units/Fighter";
+import InfantrySVG from "../../icons/units/Infantry";
+import CarrierSVG from "../../icons/units/Carrier";
+import CruiserSVG from "../../icons/units/Cruiser";
+import DestroyerSVG from "../../icons/units/Destroyer";
+import PDSSVG from "../../icons/units/PDS";
+import DreadnoughtSVG from "../../icons/units/Dreadnought";
+import { getFactionColor } from "../../util/factions";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -263,12 +271,41 @@ export default function StartingComponents({
       >
         {orderedUnits.map(([unit, number]) => {
           return (
-            <div key={unit}>
+            <div
+              key={unit}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: rem(2),
+              }}
+            >
               <Strings.Units unit={unit} count={number} />
+              <UnitIcon unit={unit} color={getFactionColor(faction)} />
             </div>
           );
         })}
       </div>
     </div>
   );
+}
+function UnitIcon({ unit, color }: { unit: UnitType; color: string }) {
+  switch (unit) {
+    case "Fighter":
+      return <FighterSVG size={14} />;
+    case "Infantry":
+      return <InfantrySVG size={14} />;
+    case "Carrier":
+      return <CarrierSVG size={14} />;
+    case "Cruiser":
+      return <CruiserSVG size={14} />;
+    case "Destroyer":
+      return <DestroyerSVG size={14} />;
+    case "PDS":
+      return <PDSSVG size={14} />;
+    case "Dreadnought":
+      return <DreadnoughtSVG size={14} />;
+  }
+  return null;
 }

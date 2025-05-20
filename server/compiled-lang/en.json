@@ -8424,7 +8424,31 @@
   "RBlsAq": [
     {
       "type": 0,
-      "value": "Revealed stage I objectives"
+      "value": "Revealed stage I "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "objective"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "objectives"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Relics.Accretion Engine.Description": [

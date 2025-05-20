@@ -12,8 +12,8 @@ import {
   usePlanets,
   useTechs,
 } from "./context/dataHooks";
-import { useObjectives } from "./context/objectiveDataHooks";
 import { useFaction } from "./context/factionDataHooks";
+import { useObjectives } from "./context/objectiveDataHooks";
 import { useGameState } from "./context/stateDataHooks";
 import { manualVPUpdateAsync } from "./dynamic/api";
 import { getLogEntries } from "./util/actionLog";
@@ -22,7 +22,6 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { filterToOwnedTechs } from "./util/techs";
 import { objectEntries, objectKeys, rem } from "./util/util";
 
 interface FactionSummaryProps {

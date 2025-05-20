@@ -4288,7 +4288,7 @@
     "description": "A label for a selector specifying the number of victory points required."
   },
   "RBlsAq": {
-    "defaultMessage": "Revealed stage I objectives",
+    "defaultMessage": "Revealed stage I {count, plural, one {objective} other {objectives}}",
     "description": "A label for the stage I objectives that have been revealed"
   },
   "Relics.Accretion Engine.Description": {
