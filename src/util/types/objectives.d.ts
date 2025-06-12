@@ -121,4 +121,5 @@ type ObjectiveId =
   | "Tomb + Crown of Emphidia"
   | "Turn Their Fleets to Dust"
   | "Unify the Colonies"
-  | "Unveil Flagship";
+  | "Unveil Flagship"
+  | CodexFour.ObjectiveId;

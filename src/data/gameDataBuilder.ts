@@ -220,15 +220,28 @@ export function buildComponents(
       };
     });
 
-  if (storedGameData.options.scenario === "AGE_OF_EXPLORATION") {
-    components["Dark Energy Tap"] = {
-      description:
-        "ACTION: You may exhaust DARK ENERGY TAP and roll 1 die. On a result of 1-4, draw a random unused red tile, on a result of 5-10, draw a random unused blue tile; place that tile adjacent to any border system that contains your ships. Place a frontier token in the newly placed system if it does not contain any planets.",
-      expansion: "BASE", // TODO: Add expansion when it comes out.
-      id: "Dark Energy Tap",
-      name: "Age of Exploration",
-      type: "TECH",
-    };
+  if (storedGameData.options.expansions.includes("CODEX FOUR")) {
+    const events = storedGameData.options.events ?? [];
+    if (events.includes("Age of Exploration")) {
+      components["Age of Exploration"] = {
+        description:
+          "ACTION: Exhaust DARK ENERGY TAP and choose a non-home edge system that contains your ships to roll 1 die. On a result of 1-4, draw a random unused red tile; on a result of 5-10, draw a random unused blue tile. Place that tile adjacent to the chosen system so that it is touching at least 2 non-home systems. Place a frontier token in the system if it does not contain any planets.",
+        expansion: "CODEX FOUR",
+        id: "Age of Exploration",
+        name: "Age of Exploration",
+        type: "EVENT",
+      };
+    }
+    if (events.includes("Total War")) {
+      components["Total War"] = {
+        description:
+          "ACTION: Discard 10 commodities from planets in your home system to gain 1 victory point.",
+        expansion: "CODEX FOUR",
+        id: "Total War",
+        name: "Total War",
+        type: "EVENT",
+      };
+    }
   }
 
   Object.values(components).forEach((component) => {

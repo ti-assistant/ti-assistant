@@ -36,4 +36,5 @@ type RelicId =
   | "The Crown of Thalnos"
   | "The Obsidian"
   | "The Prophet's Tears"
+  | CodexFour.RelicId
   | DiscordantStars.RelicId;

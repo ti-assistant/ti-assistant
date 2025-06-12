@@ -13,7 +13,7 @@ interface SetupOptions {
   "hide-objectives": boolean;
   "hide-planets": boolean;
   "hide-techs": boolean;
-  scenario?: Scenario;
+  events: Set<EventId>;
   [key: string]: any;
 }
 

@@ -55,6 +55,7 @@ import {
 import {
   getClaimedPlanets,
   getGainedRelic,
+  getLogEntries,
   getPurgedPlanet,
   getReplacedTechs,
   getResearchedTechs,
@@ -153,6 +154,9 @@ function ComponentSelect({
     }
     return true;
   });
+  const events = nonTechComponents.filter(
+    (component) => component.type === "EVENT"
+  );
   const promissory = nonTechComponents.filter(
     (component) => component.type === "PROMISSORY"
   );
@@ -171,7 +175,8 @@ function ComponentSelect({
       component.type !== "CARD" &&
       component.type !== "RELIC" &&
       component.type !== "PROMISSORY" &&
-      component.type !== "EXPLORATION"
+      component.type !== "EXPLORATION" &&
+      component.type !== "EVENT"
   );
 
   const innerStyle: CSSProperties = {
@@ -342,6 +347,33 @@ function ComponentSelect({
                       ? "faded"
                       : ""
                   }
+                  onClick={() => selectComponent(component.id)}
+                >
+                  {component.name}
+                </button>
+              );
+            })}
+          </div>
+        </ClientOnlyHoverMenu>
+      ) : null}
+      {events.length > 0 ? (
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="WVs5Hr"
+              description="Event actions."
+              defaultMessage="Events"
+            />
+          }
+        >
+          <div
+            className="flexColumn"
+            style={{ alignItems: "stretch", padding: rem(8), width: "100%" }}
+          >
+            {events.map((component) => {
+              return (
+                <button
+                  key={component.id}
                   onClick={() => selectComponent(component.id)}
                 >
                   {component.name}
@@ -592,6 +624,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   }
 
   let requiredNeighbors = 2;
+  let nonHomeNeighbors = false;
   switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {
@@ -866,6 +899,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Exploration Probe":
+    case "Circlet of the Void":
       const gainedRelic = getGainedRelic(currentTurn);
       const claimedPlanets = getClaimedPlanets(currentTurn, factionId);
       const mirageClaimed = claimedPlanets.reduce((claimed, planet) => {
@@ -874,6 +908,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         }
         return claimed;
       }, false);
+      leftLabel = (
+        <FormattedMessage
+          id="GyiC2A"
+          description="Text on a hover menu for selecting the result of frontier exploration."
+          defaultMessage="Frontier Exploration"
+        />
+      );
       if (mirageClaimed) {
         leftLabel = "Mirage";
       }
@@ -1448,8 +1489,41 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
-    case "Dark Energy Tap":
-      requiredNeighbors = 1;
+    case "Total War":
+      innerContent = (
+        <div className="flexRow" style={{ width: "100%" }}>
+          +1 VP
+        </div>
+      );
+      break;
+    case "Book of Latvinia":
+      const bookEntry = getLogEntries<PlayComponentData>(
+        currentTurn,
+        "PLAY_COMPONENT"
+      )[0];
+      if (bookEntry && bookEntry.data.event.prevFaction) {
+        const faction = factions[factionId];
+        innerContent = (
+          <div className="flexRow" style={{ width: "100%" }}>
+            <FormattedMessage
+              id="pTiYPm"
+              description="Label for a selector selecting a new speaker."
+              defaultMessage="New Speaker"
+            />
+            : {getFactionName(faction)}
+          </div>
+        );
+      } else {
+        innerContent = (
+          <div className="flexRow" style={{ width: "100%" }}>
+            +1 VP
+          </div>
+        );
+      }
+      break;
+    case "Age of Exploration":
+      requiredNeighbors = 2;
+      nonHomeNeighbors = true;
     case "Star Chart":
     case "Azdel's Key": {
       const mapString = getMapString(options, Object.keys(factions).length);
@@ -1524,6 +1598,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 exploration
                 mallice={undefined}
                 requiredNeighbors={requiredNeighbors}
+                nonHomeNeighbors={nonHomeNeighbors}
               ></MapBuilder>
             </div>
             <LabeledDiv
@@ -1728,6 +1803,13 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         if (hero.state !== "readied") {
           return false;
         }
+      }
+
+      if (
+        component.id === "Age of Exploration" &&
+        !hasTech(faction, "Dark Energy Tap")
+      ) {
+        return false;
       }
 
       return true;

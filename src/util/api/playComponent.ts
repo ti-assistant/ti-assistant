@@ -31,8 +31,9 @@ export function playComponent(
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
+    // Requires looking at action log.
     updateGameData(storedGameData, handler.getUpdates());
+    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
 
     storedGameData.lastUpdate = now;
 

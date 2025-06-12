@@ -8,7 +8,11 @@ type Expansion =
   | "DISCORDANT STARS"
   | "BASE ONLY";
 
-type Scenario = "AGE_OF_EXPLORATION";
+type EventId =
+  | "Age of Commerce"
+  | "Age of Exploration"
+  | "Minor Factions"
+  | "Total War";
 
 type OptionUpdateAction = "SET_OPTION";
 
@@ -29,6 +33,6 @@ interface Options {
   "map-string"?: string;
   "map-style": MapStyle;
   "victory-points": number;
-  scenario?: Scenario;
+  events?: EventId[];
   [key: string]: any;
 }

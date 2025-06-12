@@ -1,7 +1,11 @@
 import NextImage from "next/image";
 import { useDrag, useDrop } from "react-dnd";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
-import { isHomeSystem, validSystemNumber } from "../../util/map";
+import {
+  isFactionHomeSystem,
+  isHomeSystem,
+  validSystemNumber,
+} from "../../util/map";
 import { Optional } from "../../util/types/types";
 import styles from "./MapBuilder.module.scss";
 import { rem } from "../../util/util";
@@ -387,6 +391,7 @@ interface MapProps {
   exploration?: boolean;
   riftWalker?: boolean;
   requiredNeighbors?: number;
+  nonHomeNeighbors?: boolean;
 }
 
 export default function MapBuilder({
@@ -397,6 +402,7 @@ export default function MapBuilder({
   exploration,
   riftWalker,
   requiredNeighbors = 0,
+  nonHomeNeighbors = false,
 }: MapProps) {
   let updatedSystemTiles = mapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
@@ -449,6 +455,13 @@ export default function MapBuilder({
               spiral.forEach((cube, index) => {
                 if (cube_equals(cube, neighbor)) {
                   const neighborTile = updatedSystemTiles[index];
+                  if (
+                    neighborTile &&
+                    nonHomeNeighbors &&
+                    isFactionHomeSystem(neighborTile)
+                  ) {
+                    return;
+                  }
                   if (
                     neighborTile &&
                     neighborTile !== "-1" &&

@@ -283,6 +283,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const intl = useIntl();
 
   const includesPoK = (options.expansions ?? []).includes("POK");
+  const totalWar = (options.events ?? []).includes("Total War");
 
   const revealOrder: Partial<Record<ObjectiveId, number>> = {};
   let order = 1;
@@ -385,6 +386,8 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const shardScorers = shardOfTheThrone?.scorers ?? [];
 
   const tomb = (objectives ?? {})["Tomb + Crown of Emphidia"];
+
+  const book = objectives["Book of Latvinia"];
 
   const politicalCensure = (objectives ?? {})["Political Censure"];
 
@@ -871,6 +874,134 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 </div>
               </div>
             </CollapsibleSection>
+            {totalWar ? (
+              <CollapsibleSection
+                title={
+                  <FormattedMessage
+                    id="Objectives.Total War.Title"
+                    description="Title of Objective: Total War"
+                    defaultMessage="Total War"
+                  />
+                }
+                style={{
+                  width: "100%",
+                  height: "fit-content",
+                  fontSize: rem(18),
+                  paddingBottom: rem(8),
+                }}
+              >
+                <div className="flexRow" style={{ width: "100%" }}>
+                  <div
+                    className="flexRow"
+                    style={{
+                      padding: `0 ${rem(8)} 0 ${rem(4)}`,
+                      width: "100%",
+                    }}
+                  >
+                    {orderedFactionIds.map((faction) => {
+                      const totalWarPoints = (
+                        (objectives ?? {})["Total War"]?.scorers ?? []
+                      ).filter((name) => name === faction).length;
+                      return (
+                        <div
+                          key={faction}
+                          className="flexRow hiddenButtonParent"
+                          style={{
+                            position: "relative",
+                            width: "100%",
+                            aspectRatio: 1,
+                          }}
+                        >
+                          {!viewOnly && totalWarPoints > 0 ? (
+                            <div
+                              className="hiddenButton flexRow"
+                              style={{
+                                position: "absolute",
+                                left: 0,
+                                top: rem(-4),
+                                fontFamily: "Myriad Pro",
+                                fontWeight: "bold",
+                                height: rem(16),
+                                width: rem(16),
+                                border: `${"1px"} solid #333`,
+                                borderRadius: "100%",
+                                fontSize: rem(12),
+                                backgroundColor: "var(--light-bg)",
+                                boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                                cursor: "pointer",
+                                zIndex: 2,
+                              }}
+                              onClick={() => {
+                                if (viewOnly) {
+                                  return;
+                                }
+                                unscoreObjectiveAsync(
+                                  gameId,
+                                  faction,
+                                  "Total War"
+                                );
+                              }}
+                            >
+                              -
+                            </div>
+                          ) : null}
+                          {viewOnly ? null : (
+                            <div
+                              className="hiddenButton flexRow"
+                              style={{
+                                position: "absolute",
+                                right: 0,
+                                top: rem(-4),
+                                fontFamily: "Myriad Pro",
+                                border: `${"1px"} solid #333`,
+                                fontWeight: "bold",
+                                borderRadius: "100%",
+                                height: rem(16),
+                                width: rem(16),
+                                fontSize: rem(12),
+                                backgroundColor: "var(--light-bg)",
+                                boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                                cursor: "pointer",
+                                zIndex: 2,
+                              }}
+                              onClick={() => {
+                                if (viewOnly) {
+                                  return;
+                                }
+                                scoreObjectiveAsync(
+                                  gameId,
+                                  faction,
+                                  "Total War"
+                                );
+                              }}
+                            >
+                              +
+                            </div>
+                          )}
+                          <FactionIcon factionId={faction} size="100%" />
+                          <div
+                            className="flexRow"
+                            style={{
+                              position: "absolute",
+                              backgroundColor: "var(--light-bg)",
+                              borderRadius: "100%",
+                              marginLeft: "60%",
+                              marginTop: "60%",
+                              boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                              width: rem(24),
+                              height: rem(24),
+                              zIndex: 2,
+                            }}
+                          >
+                            {totalWarPoints}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </CollapsibleSection>
+            ) : null}
           </div>
           <CollapsibleSection
             title={
@@ -1796,6 +1927,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   gap: 0,
                   width: "100%",
                   alignItems: "flex-start",
+                  fontSize: rem(12),
                 }}
               >
                 <SimpleScorable
@@ -1807,6 +1939,12 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 <SimpleScorable
                   gameId={gameId}
                   objective={tomb}
+                  orderedFactionIds={orderedFactionIds}
+                  viewOnly={viewOnly}
+                />
+                <SimpleScorable
+                  gameId={gameId}
+                  objective={book}
                   orderedFactionIds={orderedFactionIds}
                   viewOnly={viewOnly}
                 />
@@ -1872,7 +2010,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               />
             }
             style={{
-              gridColumn: includesPoK ? "8 / 13" : " 8 / 13",
+              gridColumn: totalWar ? "8 / 11" : " 8 / 13",
               width: "100%",
               height: "100%",
             }}
@@ -1985,6 +2123,131 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               </div>
             )}
           </LabeledDiv>
+          {totalWar ? (
+            <LabeledDiv
+              label={
+                <FormattedMessage
+                  id="Objectives.Total War.Title"
+                  description="Title of Objective: Total War"
+                  defaultMessage="Total War"
+                />
+              }
+              style={{
+                gridColumn: "11 / 13",
+                width: "100%",
+                height: "100%",
+              }}
+              innerStyle={{
+                padding: 0,
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridAutoFlow: "row",
+                  gridTemplateColumns: `repeat(${Math.ceil(
+                    Object.keys(factions).length / 2
+                  )}, 1fr)`,
+                  alignItems: "center",
+                  justifyItems: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {orderedFactionIds.map((faction) => {
+                  const totalWarPoints = (
+                    (objectives ?? {})["Total War"]?.scorers ?? []
+                  ).filter((name) => name === faction).length;
+                  return (
+                    <div
+                      key={faction}
+                      className="flexRow hiddenButtonParent"
+                      style={{
+                        position: "relative",
+                        width: rem(36),
+                        height: rem(36),
+                      }}
+                    >
+                      {!viewOnly && totalWarPoints > 0 ? (
+                        <div
+                          className="hiddenButton flexRow"
+                          style={{
+                            position: "absolute",
+                            left: 0,
+                            top: rem(-4),
+                            fontFamily: "Myriad Pro",
+                            fontWeight: "bold",
+                            height: rem(16),
+                            width: rem(16),
+                            borderRadius: "100%",
+                            fontSize: rem(12),
+                            backgroundColor: "var(--interactive-bg)",
+                            boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                            cursor: "pointer",
+                            zIndex: 2,
+                          }}
+                          onClick={() => {
+                            if (viewOnly) {
+                              return;
+                            }
+                            unscoreObjectiveAsync(gameId, faction, "Total War");
+                          }}
+                        >
+                          -
+                        </div>
+                      ) : null}
+                      {viewOnly ? null : (
+                        <div
+                          className="hiddenButton flexRow"
+                          style={{
+                            position: "absolute",
+                            right: 0,
+                            top: rem(-4),
+                            fontFamily: "Myriad Pro",
+                            // border: `${"1px"} solid #333`,
+                            fontWeight: "bold",
+                            borderRadius: "100%",
+                            height: rem(16),
+                            width: rem(16),
+                            fontSize: rem(12),
+                            backgroundColor: "var(--interactive-bg)",
+                            boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                            cursor: "pointer",
+                            zIndex: 2,
+                          }}
+                          onClick={() => {
+                            if (viewOnly) {
+                              return;
+                            }
+                            scoreObjectiveAsync(gameId, faction, "Total War");
+                          }}
+                        >
+                          +
+                        </div>
+                      )}
+                      <FactionIcon factionId={faction} size="100%" />
+                      <div
+                        className="flexRow"
+                        style={{
+                          position: "absolute",
+                          backgroundColor: "var(--light-bg)",
+                          borderRadius: "100%",
+                          marginLeft: "60%",
+                          marginTop: "60%",
+                          boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                          width: rem(24),
+                          height: rem(24),
+                          zIndex: 2,
+                        }}
+                      >
+                        {totalWarPoints}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </LabeledDiv>
+          ) : null}
         </div>
       </div>
     </>
@@ -2018,7 +2281,7 @@ function SimpleScorable({
   return (
     <>
       <div
-        className="flexColumn mediumFont"
+        className="flexColumn"
         style={{
           textAlign: "center",
           whiteSpace: "normal",

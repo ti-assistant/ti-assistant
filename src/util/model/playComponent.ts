@@ -1,8 +1,21 @@
 import { createIntl, createIntlCache } from "react-intl";
-import { buildComponents, buildState } from "../../data/GameData";
+import {
+  buildAttachments,
+  buildComponents,
+  buildPlanets,
+  buildState,
+} from "../../data/GameData";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
 import { UpdateLeaderStateHandler } from "./updateLeaderState";
 import { AddTechHandler, RemoveTechHandler } from "./addTech";
+import {
+  ScoreObjectiveHandler,
+  UnscoreObjectiveHandler,
+} from "./scoreObjective";
+import { applyPlanetAttachments } from "../planets";
+import { SetSpeakerHandler } from "./setSpeaker";
+import { Optional } from "../types/types";
+import { getCurrentTurnLogEntries } from "../api/actionLog";
 
 export class PlayComponentHandler implements Handler {
   constructor(
@@ -40,9 +53,11 @@ export class PlayComponentHandler implements Handler {
           case "Nano-Forge":
           case "Stellar Converter":
           case "The Codex":
+          case "Book of Latvinia":
             updates[`components.${this.data.event.name}.state`] = "purged";
             break;
           case "JR-XS455-O":
+          case "Circlet of the Void":
             updates[`components.${this.data.event.name}.state`] = "exhausted";
             break;
         }
@@ -107,6 +122,65 @@ export class PlayComponentHandler implements Handler {
         ...updates,
         ...handler.getUpdates(),
       };
+    }
+
+    if (this.data.event.name === "Total War" && this.data.event.factionId) {
+      const handler = new ScoreObjectiveHandler(this.gameData, {
+        action: "SCORE_OBJECTIVE",
+        event: {
+          faction: this.data.event.factionId,
+          objective: "Total War",
+        },
+      });
+      updates = {
+        ...updates,
+        ...handler.getUpdates(),
+      };
+    }
+
+    if (
+      this.data.event.name === "Book of Latvinia" &&
+      this.data.event.factionId
+    ) {
+      const planets = buildPlanets(this.gameData);
+      const attachments = buildAttachments(this.gameData, intl);
+      const techSkips = new Set<PlanetAttribute>();
+      for (const planet of Object.values(planets)) {
+        if (planet.owner !== this.data.event.factionId) {
+          continue;
+        }
+        const finalPlanet = applyPlanetAttachments(planet, attachments);
+        for (const attribute of finalPlanet.attributes) {
+          if (attribute.includes("skip")) {
+            techSkips.add(attribute);
+          }
+        }
+      }
+      if (techSkips.size === 4) {
+        const handler = new ScoreObjectiveHandler(this.gameData, {
+          action: "SCORE_OBJECTIVE",
+          event: {
+            faction: this.data.event.factionId,
+            objective: "Book of Latvinia",
+          },
+        });
+        updates = {
+          ...updates,
+          ...handler.getUpdates(),
+        };
+      } else {
+        this.data.event.prevFaction = this.gameData.state.speaker;
+        const handler = new SetSpeakerHandler(this.gameData, {
+          action: "SET_SPEAKER",
+          event: {
+            newSpeaker: this.data.event.factionId,
+          },
+        });
+        updates = {
+          ...updates,
+          ...handler.getUpdates(),
+        };
+      }
     }
 
     return updates;
@@ -205,6 +279,75 @@ export class UnplayComponentHandler implements Handler {
         ...updates,
         ...handler.getUpdates(),
       };
+    }
+
+    if (this.data.event.name === "Total War" && this.data.event.factionId) {
+      const handler = new UnscoreObjectiveHandler(this.gameData, {
+        action: "UNSCORE_OBJECTIVE",
+        event: {
+          faction: this.data.event.factionId,
+          objective: "Total War",
+        },
+      });
+      updates = {
+        ...updates,
+        ...handler.getUpdates(),
+      };
+    }
+    if (
+      this.data.event.name === "Book of Latvinia" &&
+      this.data.event.factionId
+    ) {
+      const planets = buildPlanets(this.gameData);
+      const attachments = buildAttachments(this.gameData, intl);
+      const techSkips = new Set<PlanetAttribute>();
+      for (const planet of Object.values(planets)) {
+        if (planet.owner !== this.data.event.factionId) {
+          continue;
+        }
+        const finalPlanet = applyPlanetAttachments(planet, attachments);
+        for (const attribute of finalPlanet.attributes) {
+          if (attribute.includes("skip")) {
+            techSkips.add(attribute);
+          }
+        }
+      }
+      if (techSkips.size === 4) {
+        const handler = new UnscoreObjectiveHandler(this.gameData, {
+          action: "UNSCORE_OBJECTIVE",
+          event: {
+            faction: this.data.event.factionId,
+            objective: "Book of Latvinia",
+          },
+        });
+        updates = {
+          ...updates,
+          ...handler.getUpdates(),
+        };
+      } else {
+        let prevSpeaker: Optional<FactionId>;
+        const currentTurn = getCurrentTurnLogEntries(
+          this.gameData.actionLog ?? []
+        );
+        for (const entry of currentTurn) {
+          const action = this.getActionLogAction(entry);
+          if (action === "REWIND_AND_DELETE") {
+            prevSpeaker = (entry.data as PlayComponentData).event.prevFaction;
+          }
+        }
+        if (prevSpeaker) {
+          const handler = new SetSpeakerHandler(this.gameData, {
+            action: "SET_SPEAKER",
+            event: {
+              newSpeaker: prevSpeaker,
+            },
+          });
+          updates = {
+            ...updates,
+            ...handler.getUpdates(),
+          };
+        }
+      }
     }
 
     return updates;

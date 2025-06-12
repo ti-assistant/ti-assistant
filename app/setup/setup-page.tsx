@@ -51,6 +51,7 @@ interface OptionsProps {
   updatePlayerCount: (count: number) => void;
   toggleOption: (value: any, name: string) => void;
   toggleExpansion: (enable: boolean, expansion: Expansion) => void;
+  toggleEvent: (enable: boolean, event: EventId) => void;
   options: SetupOptions;
   numFactions: number;
   maxFactions: number;
@@ -58,9 +59,11 @@ interface OptionsProps {
 
 function createOptions(setupOptions: SetupOptions) {
   const expansions = Array.from(setupOptions.expansions);
+  const events = Array.from(setupOptions.events);
   const optionsToSend: Options = {
     ...setupOptions,
-    expansions: expansions,
+    expansions,
+    events,
   };
   return optionsToSend;
 }
@@ -94,6 +97,7 @@ function MobileOptions({
   updatePlayerCount,
   toggleOption,
   toggleExpansion,
+  toggleEvent,
   options,
   numFactions,
   maxFactions,
@@ -387,34 +391,92 @@ function MobileOptions({
                   ></input>
                 </div>
               </div>
-              <div>
-                Scenarios:
+              {options.expansions.has("CODEX FOUR") ? (
                 <div
-                  className="flexRow"
-                  style={{
-                    alignItems: "flex-start",
-                    padding: `${rem(8)} ${rem(20)}`,
-                    fontFamily: "Myriad Pro",
-                  }}
+                  className="flexColumn"
+                  style={{ alignItems: "flex-start" }}
                 >
-                  <Toggle
-                    selected={options.scenario === "AGE_OF_EXPLORATION"}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleOption(undefined, "scenario");
-                      } else {
-                        toggleOption("AGE_OF_EXPLORATION", "scenario");
-                      }
+                  <FormattedMessage
+                    id="WVs5Hr"
+                    description="Event actions."
+                    defaultMessage="Events"
+                  />
+                  :
+                  <div
+                    className="flexRow"
+                    style={{
+                      alignItems: "flex-start",
+                      padding: `0 ${rem(20)}`,
+                      fontFamily: "Myriad Pro",
                     }}
                   >
-                    <FormattedMessage
-                      id="sZua2x"
-                      defaultMessage="Age of Exploration"
-                      description="Name of scenario in which players can add new tiles to the map."
-                    />
-                  </Toggle>
+                    <Toggle
+                      selected={options.events.has("Age of Commerce")}
+                      toggleFn={(prevValue) => {
+                        if (prevValue) {
+                          toggleEvent(false, "Age of Commerce");
+                        } else {
+                          toggleEvent(true, "Age of Commerce");
+                        }
+                      }}
+                    >
+                      <FormattedMessage
+                        id="GaVWfk"
+                        defaultMessage="Age of Commerce"
+                        description="Name of event in which players can trade more."
+                      />
+                    </Toggle>
+                    <Toggle
+                      selected={options.events.has("Age of Exploration")}
+                      toggleFn={(prevValue) => {
+                        if (prevValue) {
+                          toggleEvent(false, "Age of Exploration");
+                        } else {
+                          toggleEvent(true, "Age of Exploration");
+                        }
+                      }}
+                    >
+                      <FormattedMessage
+                        id="sZua2x"
+                        defaultMessage="Age of Exploration"
+                        description="Name of event in which players can add new tiles to the map."
+                      />
+                    </Toggle>
+                    <Toggle
+                      selected={options.events.has("Minor Factions")}
+                      toggleFn={(prevValue) => {
+                        if (prevValue) {
+                          toggleEvent(false, "Minor Factions");
+                        } else {
+                          toggleEvent(true, "Minor Factions");
+                        }
+                      }}
+                    >
+                      <FormattedMessage
+                        id="hxXb/S"
+                        defaultMessage="Minor Factions"
+                        description="Name of event in which other factions' home planets are on the board."
+                      />
+                    </Toggle>
+                    <Toggle
+                      selected={options.events.has("Total War")}
+                      toggleFn={(prevValue) => {
+                        if (prevValue) {
+                          toggleEvent(false, "Total War");
+                        } else {
+                          toggleEvent(true, "Total War");
+                        }
+                      }}
+                    >
+                      <FormattedMessage
+                        id="YcYpgP"
+                        defaultMessage="Total War"
+                        description="Name of event in which combat can be used to gain VPs."
+                      />
+                    </Toggle>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           </div>
         </ClientOnlyHoverMenu>
@@ -428,6 +490,7 @@ function Options({
   updatePlayerCount,
   toggleOption,
   toggleExpansion,
+  toggleEvent,
   options,
   numFactions,
   maxFactions,
@@ -620,34 +683,89 @@ function Options({
                 </Toggle>
               </div>
             </div>
-            <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-              Scenarios:
-              <div
-                className="flexRow"
-                style={{
-                  alignItems: "flex-start",
-                  padding: `0 ${rem(20)}`,
-                  fontFamily: "Myriad Pro",
-                }}
-              >
-                <Toggle
-                  selected={options.scenario === "AGE_OF_EXPLORATION"}
-                  toggleFn={(prevValue) => {
-                    if (prevValue) {
-                      toggleOption(undefined, "scenario");
-                    } else {
-                      toggleOption("AGE_OF_EXPLORATION", "scenario");
-                    }
+            {options.expansions.has("CODEX FOUR") ? (
+              <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+                <FormattedMessage
+                  id="WVs5Hr"
+                  description="Event actions."
+                  defaultMessage="Events"
+                />
+                :
+                <div
+                  className="flexRow"
+                  style={{
+                    alignItems: "flex-start",
+                    padding: `0 ${rem(20)}`,
+                    fontFamily: "Myriad Pro",
                   }}
                 >
-                  <FormattedMessage
-                    id="sZua2x"
-                    defaultMessage="Age of Exploration"
-                    description="Name of scenario in which players can add new tiles to the map."
-                  />
-                </Toggle>
+                  <Toggle
+                    selected={options.events.has("Age of Commerce")}
+                    toggleFn={(prevValue) => {
+                      if (prevValue) {
+                        toggleEvent(false, "Age of Commerce");
+                      } else {
+                        toggleEvent(true, "Age of Commerce");
+                      }
+                    }}
+                  >
+                    <FormattedMessage
+                      id="GaVWfk"
+                      defaultMessage="Age of Commerce"
+                      description="Name of event in which players can trade more."
+                    />
+                  </Toggle>
+                  <Toggle
+                    selected={options.events.has("Age of Exploration")}
+                    toggleFn={(prevValue) => {
+                      if (prevValue) {
+                        toggleEvent(false, "Age of Exploration");
+                      } else {
+                        toggleEvent(true, "Age of Exploration");
+                      }
+                    }}
+                  >
+                    <FormattedMessage
+                      id="sZua2x"
+                      defaultMessage="Age of Exploration"
+                      description="Name of event in which players can add new tiles to the map."
+                    />
+                  </Toggle>
+                  <Toggle
+                    selected={options.events.has("Minor Factions")}
+                    toggleFn={(prevValue) => {
+                      if (prevValue) {
+                        toggleEvent(false, "Minor Factions");
+                      } else {
+                        toggleEvent(true, "Minor Factions");
+                      }
+                    }}
+                  >
+                    <FormattedMessage
+                      id="hxXb/S"
+                      defaultMessage="Minor Factions"
+                      description="Name of event in which other factions' home planets are on the board."
+                    />
+                  </Toggle>
+                  <Toggle
+                    selected={options.events.has("Total War")}
+                    toggleFn={(prevValue) => {
+                      if (prevValue) {
+                        toggleEvent(false, "Total War");
+                      } else {
+                        toggleEvent(true, "Total War");
+                      }
+                    }}
+                  >
+                    <FormattedMessage
+                      id="YcYpgP"
+                      defaultMessage="Total War"
+                      description="Name of event in which combat can be used to gain VPs."
+                    />
+                  </Toggle>
+                </div>
               </div>
-            </div>
+            ) : null}
             {variants.length > 1 ? (
               <div
                 className="flexColumn"
@@ -1123,6 +1241,7 @@ const INITIAL_OPTIONS: SetupOptions = {
     "CODEX TWO",
     "CODEX THREE",
   ]),
+  events: new Set<EventId>(),
   "game-variant": "normal",
   "map-style": "standard",
   "map-string": "",
@@ -1401,9 +1520,11 @@ export default function SetupPage({
     setCreatingGame(true);
 
     const expansions = Array.from(options.expansions);
+    const events = Array.from(options.events);
     const optionsToSend: Options = {
       ...options,
-      expansions: expansions,
+      expansions,
+      events,
     };
 
     const res = await fetch("/api/create-game", {
@@ -1466,6 +1587,16 @@ export default function SetupPage({
       localOptions[option] = value;
       return localOptions;
     });
+  }
+
+  function toggleEvent(value: boolean, event: EventId) {
+    const currentOptions = { ...options };
+    if (value) {
+      currentOptions.events.add(event);
+    } else {
+      currentOptions.events.delete(event);
+    }
+    setOptions(currentOptions);
   }
 
   function toggleExpansion(value: boolean, expansion: Expansion) {
@@ -1542,6 +1673,7 @@ export default function SetupPage({
             updatePlayerCount={updatePlayerCount}
             toggleOption={toggleOption}
             toggleExpansion={toggleExpansion}
+            toggleEvent={toggleEvent}
             options={options}
             numFactions={numFactions}
             maxFactions={maxFactions}
@@ -2003,6 +2135,7 @@ export default function SetupPage({
             updatePlayerCount={updatePlayerCount}
             toggleOption={toggleOption}
             toggleExpansion={toggleExpansion}
+            toggleEvent={toggleEvent}
             options={options}
             numFactions={numFactions}
             maxFactions={maxFactions}
