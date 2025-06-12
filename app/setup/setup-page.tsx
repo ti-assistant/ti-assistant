@@ -1240,6 +1240,7 @@ const INITIAL_OPTIONS: SetupOptions = {
     "CODEX ONE",
     "CODEX TWO",
     "CODEX THREE",
+    "CODEX FOUR",
   ]),
   events: new Set<EventId>(),
   "game-variant": "normal",
