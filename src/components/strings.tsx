@@ -149,6 +149,14 @@ export namespace Strings {
             defaultMessage="Codex III"
           />
         );
+      case "CODEX FOUR":
+        return (
+          <FormattedMessage
+            id="3xEbCN"
+            description="Text on a button that will enable/disable Codex IV."
+            defaultMessage="Codex IV"
+          />
+        );
       case "DISCORDANT STARS":
         return (
           <FormattedMessage

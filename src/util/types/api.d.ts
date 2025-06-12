@@ -337,6 +337,9 @@ interface UnplayActionCardData {
 interface PlayComponentEvent {
   name: string;
   factionId: FactionId;
+
+  // Used in cases that certain actions need to be undone.
+  prevFaction?: FactionId;
 }
 
 interface PlayComponentData {

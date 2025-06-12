@@ -143,6 +143,10 @@
     "defaultMessage": "Research Tech",
     "description": "Label on a hover menu used to research tech."
   },
+  "3xEbCN": {
+    "defaultMessage": "Codex IV",
+    "description": "Text on a button that will enable/disable Codex IV."
+  },
   "43UU69": {
     "defaultMessage": "Component",
     "description": "Text on a button that will select a component action."
@@ -2359,6 +2363,10 @@
     "defaultMessage": "Resolve with Outcome: {outcome}",
     "description": "Text on a button that resolves the current agenda with a specific outcome."
   },
+  "GaVWfk": {
+    "defaultMessage": "Age of Commerce",
+    "description": "Name of event in which players can trade more."
+  },
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": {
     "defaultMessage": "When you create the game board, place the Creuss Gate (tile 17) where your home system would normally be placed. The Creuss Gate system is not a home system. Then, place your home system (tile 51) in your play area.",
     "description": "Description for Faction Ability: Creuss Gate"
@@ -4267,6 +4275,22 @@
     "defaultMessage": "Azdel's Key",
     "description": "Title of Relic: Azdel's Key"
   },
+  "Relics.Book of Latvinia.Description": {
+    "defaultMessage": "When you gain this card, research up to 2 technologies that have no prerequisites.{br}ACTION: Purge this card; if you control planets that have all 4 types of technology specialties, gain 1 victory point. Otherwise, gain the speaker token.",
+    "description": "Description for Relic: Book of Latvinia"
+  },
+  "Relics.Book of Latvinia.Title": {
+    "defaultMessage": "Book of Latvinia",
+    "description": "Title of Relic: Book of Latvinia"
+  },
+  "Relics.Circlet of the Void.Description": {
+    "defaultMessage": "Your units do not roll for gravity rifts, and you ignore the movement effects of other anomalies.{br}ACTION: Exhaust this card toexplore a frontier token in asystem that does not containany other players' ships.",
+    "description": "Description for Relic: Circlet of the Void"
+  },
+  "Relics.Circlet of the Void.Title": {
+    "defaultMessage": "Circlet of the Void",
+    "description": "Title of Relic: Circlet of the Void"
+  },
   "Relics.Dominus Orb.Description": {
     "defaultMessage": "Before you move units during a tactical action, you may purge this card to move and transport units that are in systems that contain 1 of your command tokens.",
     "description": "Description for Relic: Dominus Orb"
@@ -4330,6 +4354,14 @@
   "Relics.Nano-Forge.Title": {
     "defaultMessage": "Nano-Forge",
     "description": "Title of Relic: Nano-Forge"
+  },
+  "Relics.Neuraloop.Description": {
+    "defaultMessage": "When a public objective is revealed, you may purge one of your relics to discard that objective and replace it with a random objective from any objective deck; that objective is a public objective, even if it is a secret objective.",
+    "description": "Description for Relic: Neuraloop"
+  },
+  "Relics.Neuraloop.Title": {
+    "defaultMessage": "Neuraloop",
+    "description": "Title of Relic: Neuraloop"
   },
   "Relics.Scepter of Emelpar.Description": {
     "defaultMessage": "When you would spend a token from your strategy pool, you may exhaust this card to spend a token from your reinforcements instead.",
@@ -5287,6 +5319,10 @@
     "defaultMessage": "Score Objectives",
     "description": "Text telling the players to score objectives."
   },
+  "WVs5Hr": {
+    "defaultMessage": "Events",
+    "description": "Event actions."
+  },
   "Winnu.Abilities.Blood Ties.Description": {
     "defaultMessage": "You do not have to spend influence to remove the custodians token from Mecatol Rex.",
     "description": "Description for Faction Ability: Blood Ties"
@@ -5530,6 +5566,10 @@
   "YKkcsO": {
     "defaultMessage": "Discard to Swap",
     "description": "Text on a button that will apply a Imperial Arbiter Strategy Card swap."
+  },
+  "YcYpgP": {
+    "defaultMessage": "Total War",
+    "description": "Name of event in which combat can be used to gain VPs."
   },
   "YeYE6S": {
     "defaultMessage": "Select Action",
@@ -5951,6 +5991,10 @@
     "defaultMessage": "Win Rate with Custodians Token: {perc}% ({count} of {games})",
     "description": "Text for a stat about the number of times a faction won with the custodians token."
   },
+  "hxXb/S": {
+    "defaultMessage": "Minor Factions",
+    "description": "Name of event in which other factions' home planets are on the board."
+  },
   "i3D47t": {
     "defaultMessage": "Faction Games",
     "description": "Label for a chart showing the number of games per faction."
@@ -6097,7 +6141,7 @@
   },
   "sZua2x": {
     "defaultMessage": "Age of Exploration",
-    "description": "Name of scenario in which players can add new tiles to the map."
+    "description": "Name of event in which players can add new tiles to the map."
   },
   "sgqLYB": {
     "defaultMessage": "Other",

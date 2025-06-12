@@ -8,6 +8,26 @@ export function isHomeSystem(systemNumber?: string) {
   return systemNumber.match(/^P[1-8]$/);
 }
 
+export function isFactionHomeSystem(systemNumber: string) {
+  const systemId = parseInt(systemNumber);
+  if (systemId > 0 && systemId < 18) {
+    return true;
+  }
+  if (systemId > 50 && systemId < 59) {
+    return true;
+  }
+  if (systemId > 99 && systemId < 103) {
+    return true;
+  }
+  if (systemId > 1000 && systemId < 1011) {
+    return true;
+  }
+  if (systemId > 1011 && systemId < 1034) {
+    return true;
+  }
+  return false;
+}
+
 export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
   switch (numFactions) {
     case 3:

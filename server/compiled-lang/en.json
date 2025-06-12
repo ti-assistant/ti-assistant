@@ -299,6 +299,12 @@
       "value": "Research Tech"
     }
   ],
+  "3xEbCN": [
+    {
+      "type": 0,
+      "value": "Codex IV"
+    }
+  ],
   "43UU69": [
     {
       "type": 0,
@@ -4867,6 +4873,12 @@
       "value": "outcome"
     }
   ],
+  "GaVWfk": [
+    {
+      "type": 0,
+      "value": "Age of Commerce"
+    }
+  ],
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": [
     {
       "type": 0,
@@ -8391,6 +8403,46 @@
       "value": "Azdel's Key"
     }
   ],
+  "Relics.Book of Latvinia.Description": [
+    {
+      "type": 0,
+      "value": "When you gain this card, research up to 2 technologies that have no prerequisites."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "ACTION: Purge this card; if you control planets that have all 4 types of technology specialties, gain 1 victory point. Otherwise, gain the speaker token."
+    }
+  ],
+  "Relics.Book of Latvinia.Title": [
+    {
+      "type": 0,
+      "value": "Book of Latvinia"
+    }
+  ],
+  "Relics.Circlet of the Void.Description": [
+    {
+      "type": 0,
+      "value": "Your units do not roll for gravity rifts, and you ignore the movement effects of other anomalies."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card toexplore a frontier token in asystem that does not containany other players' ships."
+    }
+  ],
+  "Relics.Circlet of the Void.Title": [
+    {
+      "type": 0,
+      "value": "Circlet of the Void"
+    }
+  ],
   "Relics.Dominus Orb.Description": [
     {
       "type": 0,
@@ -8509,6 +8561,18 @@
     {
       "type": 0,
       "value": "Nano-Forge"
+    }
+  ],
+  "Relics.Neuraloop.Description": [
+    {
+      "type": 0,
+      "value": "When a public objective is revealed, you may purge one of your relics to discard that objective and replace it with a random objective from any objective deck; that objective is a public objective, even if it is a secret objective."
+    }
+  ],
+  "Relics.Neuraloop.Title": [
+    {
+      "type": 0,
+      "value": "Neuraloop"
     }
   ],
   "Relics.Scepter of Emelpar.Description": [
@@ -10221,6 +10285,12 @@
       "value": "Score Objectives"
     }
   ],
+  "WVs5Hr": [
+    {
+      "type": 0,
+      "value": "Events"
+    }
+  ],
   "Winnu.Abilities.Blood Ties.Description": [
     {
       "type": 0,
@@ -10721,6 +10791,12 @@
     {
       "type": 0,
       "value": "Discard to Swap"
+    }
+  ],
+  "YcYpgP": [
+    {
+      "type": 0,
+      "value": "Total War"
     }
   ],
   "YeYE6S": [
@@ -11553,6 +11629,12 @@
       "value": ")"
     }
   ],
+  "hxXb/S": [
+    {
+      "type": 0,
+      "value": "Minor Factions"
+    }
+  ],
   "i3D47t": [
     {
       "type": 0,
@@ -11573,6 +11655,12 @@
     {
       "type": 1,
       "value": "planet"
+    }
+  ],
+  "iL4f7y": [
+    {
+      "type": 0,
+      "value": "Settings"
     }
   ],
   "ifN0t/": [

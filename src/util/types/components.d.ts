@@ -1,6 +1,7 @@
 type ComponentType =
   | "ABILITY"
   | "CARD"
+  | "EVENT"
   | "EXPLORATION"
   | "FLAGSHIP"
   | "LEADER"
@@ -71,7 +72,7 @@ interface BaseComponent {
   description: string;
   expansion: Expansion;
   faction?: FactionId;
-  id: ComponentId | RelicId | TechId | LeaderId;
+  id: ComponentId | RelicId | TechId | LeaderId | EventId;
   leader?: LeaderType;
   name: string;
   replaces?: string;
