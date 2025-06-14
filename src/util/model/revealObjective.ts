@@ -27,6 +27,14 @@ export class RevealObjectiveHandler implements Handler {
       [`objectives.${this.data.event.objective}.selected`]: true,
     };
 
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const objectives = buildObjectives(this.gameData, intl);
+    const objective = objectives[this.data.event.objective];
+    if (objective && objective.type === "SECRET") {
+      updates[`objectives.${this.data.event.objective}.type`] = "STAGE ONE";
+    }
+
     return updates;
   }
 
@@ -76,7 +84,7 @@ export class HideObjectiveHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
       [`objectives.${this.data.event.objective}.selected`]: "DELETE",
-      // [`objectives.${this.data.event.objective}.revealOrder`]: "DELETE",
+      [`objectives.${this.data.event.objective}.type`]: "DELETE",
     };
 
     return updates;
