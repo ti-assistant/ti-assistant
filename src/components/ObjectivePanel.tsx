@@ -367,6 +367,9 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
   const remainingStageTwoObjectives = stageTwoObjectives.filter(
     (obj) => !obj.selected
   );
+  const remainingSecretObjectives = secretObjectives.filter(
+    (obj) => !obj.selected
+  );
   const selectedObjectives = new Set<ObjectiveId>();
   selectedStageOneObjectives.forEach((objective) => {
     selectedObjectives.add(objective.id);
@@ -509,6 +512,33 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   <Selector
                     options={remainingStageTwoObjectives}
                     hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
+                    renderButton={(itemId, itemName, toggleItem) => {
+                      return (
+                        <button
+                          key={itemId}
+                          style={{ fontSize: rem(14) }}
+                          onClick={() => {
+                            toggleItem(itemId, true);
+                          }}
+                        >
+                          {itemName}
+                        </button>
+                      );
+                    }}
+                    toggleItem={(objectiveId, add) => {
+                      if (!gameId) {
+                        return;
+                      }
+                      if (add) {
+                        revealObjectiveAsync(gameId, objectiveId);
+                      } else {
+                        hideObjectiveAsync(gameId, objectiveId);
+                      }
+                    }}
+                  />
+                  <Selector
+                    options={remainingSecretObjectives}
+                    hoverMenuLabel={"Secret (as Public)"}
                     renderButton={(itemId, itemName, toggleItem) => {
                       return (
                         <button
@@ -1446,20 +1476,28 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   fontSize: rem(14),
                 }}
                 innerStyle={{
-                  flexDirection: "row",
+                  flexDirection: "column",
                   alignItems: "stretch",
                 }}
               >
+                <div className="flexRow">
+                  <ObjectiveSelectHoverMenu
+                    action={revealObjectiveAsync}
+                    label={objectiveTypeString("STAGE ONE", intl)}
+                    objectives={remainingStageOneObjectives}
+                    fontSize={rem(14)}
+                  />
+                  <ObjectiveSelectHoverMenu
+                    action={revealObjectiveAsync}
+                    label={objectiveTypeString("STAGE TWO", intl)}
+                    objectives={remainingStageTwoObjectives}
+                    fontSize={rem(14)}
+                  />
+                </div>
                 <ObjectiveSelectHoverMenu
                   action={revealObjectiveAsync}
-                  label={objectiveTypeString("STAGE ONE", intl)}
-                  objectives={remainingStageOneObjectives}
-                  fontSize={rem(14)}
-                />
-                <ObjectiveSelectHoverMenu
-                  action={revealObjectiveAsync}
-                  label={objectiveTypeString("STAGE TWO", intl)}
-                  objectives={remainingStageTwoObjectives}
+                  label={"Secret (as Public)"}
+                  objectives={remainingSecretObjectives}
                   fontSize={rem(14)}
                 />
               </LabeledDiv>

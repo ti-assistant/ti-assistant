@@ -859,20 +859,39 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Magen Defense Grid",
         defaultMessage: "Magen Defense Grid",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Techs.Magen Defense Grid.Omega.Description",
-          description: "Description for Tech: Magen Defense Grid Ω",
-          defaultMessage:
-            "At the start of ground combat on a planet that contains 1 or more of your structures, you may produce 1 hit and assign it to 1 of your opponent's ground forces.",
-        }),
-        expansion: "CODEX ONE",
-        name: intl.formatMessage({
-          id: "Techs.Magen Defense Grid.Omega.Title",
-          description: "Title of Tech: Magen Defense Grid Ω",
-          defaultMessage: "Magen Defense Grid Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Techs.Magen Defense Grid.Omega.Description",
+            description: "Description for Tech: Magen Defense Grid Ω",
+            defaultMessage:
+              "At the start of ground combat on a planet that contains 1 or more of your structures, you may produce 1 hit and assign it to 1 of your opponent's ground forces.",
+          }),
+          expansion: "CODEX ONE",
+          name: intl.formatMessage({
+            id: "Techs.Magen Defense Grid.Omega.Title",
+            description: "Title of Tech: Magen Defense Grid Ω",
+            defaultMessage: "Magen Defense Grid Ω",
+          }),
+        },
+        {
+          description: intl.formatMessage(
+            {
+              id: "Techs.Magen Defense Grid.Codex Four.Description",
+              description: "Description for Tech: Magen Defense Grid (Codex 4)",
+              defaultMessage:
+                "When any player activates a system that contains 1 or more of your structures, place 1 infantry from your reinforcements with each of those structures.{br}At the start of ground combat on a planet that contains 1 or more of your structures, produce 1 hit and assign it to 1 of your opponent's ground forces.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "CODEX FOUR",
+          name: intl.formatMessage({
+            id: "Techs.Magen Defense Grid.Title",
+            description: "Title of Tech: Magen Defense Grid",
+            defaultMessage: "Magen Defense Grid",
+          }),
+        },
+      ],
       prereqs: ["RED"],
       type: "RED",
     },
@@ -912,23 +931,25 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Magmus Reactor",
         defaultMessage: "Magmus Reactor",
       }),
-      omega: {
-        description: intl.formatMessage(
-          {
-            id: "Embers of Muaat.Techs.Magmus Reactor.Omega.Description",
-            description: "Description for Tech: Magmus Reactor Ω",
-            defaultMessage:
-              "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were 1 of your units.",
-          },
-          { br: "\n\n" }
-        ),
-        expansion: "CODEX ONE",
-        name: intl.formatMessage({
-          id: "Embers of Muaat.Techs.Magmus Reactor.Omega.Title",
-          description: "Title of Tech: Magmus Reactor Ω",
-          defaultMessage: "Magmus Reactor Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage(
+            {
+              id: "Embers of Muaat.Techs.Magmus Reactor.Omega.Description",
+              description: "Description for Tech: Magmus Reactor Ω",
+              defaultMessage:
+                "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were 1 of your units.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "CODEX ONE",
+          name: intl.formatMessage({
+            id: "Embers of Muaat.Techs.Magmus Reactor.Omega.Title",
+            description: "Title of Tech: Magmus Reactor Ω",
+            defaultMessage: "Magmus Reactor Ω",
+          }),
+        },
+      ],
       prereqs: ["RED", "RED"],
       type: "RED",
     },
@@ -1590,20 +1611,22 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Wormhole Generator",
         defaultMessage: "Wormhole Generator",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Ghosts of Creuss.Techs.Wormhole Generator.Omega.Description",
-          description: "Description for Tech: Wormhole Generator Ω",
-          defaultMessage:
-            "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
-        }),
-        expansion: "CODEX ONE",
-        name: intl.formatMessage({
-          id: "Ghosts of Creuss.Techs.Wormhole Generator.Omega.Title",
-          description: "Title of Tech: Wormhole Generator Ω",
-          defaultMessage: "Wormhole Generator Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Ghosts of Creuss.Techs.Wormhole Generator.Omega.Description",
+            description: "Description for Tech: Wormhole Generator Ω",
+            defaultMessage:
+              "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
+          }),
+          expansion: "CODEX ONE",
+          name: intl.formatMessage({
+            id: "Ghosts of Creuss.Techs.Wormhole Generator.Omega.Title",
+            description: "Title of Tech: Wormhole Generator Ω",
+            defaultMessage: "Wormhole Generator Ω",
+          }),
+        },
+      ],
       prereqs: ["BLUE", "BLUE"],
       type: "BLUE",
     },
@@ -1621,20 +1644,40 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: X-89 Bacterial Weapon",
         defaultMessage: "X-89 Bacterial Weapon",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Techs.X-89 Bacterial Weapon.Omega.Description",
-          description: "Description for Tech: X-89 Bacterial Weapon Ω",
-          defaultMessage:
-            "After 1 or more of your units use BOMBARDMENT against a planet, if at least 1 of your opponent's infantry was destroyed, you may destroy all of your opponent's infantry on that planet.",
-        }),
-        expansion: "CODEX ONE",
-        name: intl.formatMessage({
-          id: "Techs.X-89 Bacterial Weapon.Omega.Tech",
-          description: "Title of Tech: X-89 Bacterial Weapon Ω",
-          defaultMessage: "X-89 Bacterial Weapon Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Techs.X-89 Bacterial Weapon.Omega.Description",
+            description: "Description for Tech: X-89 Bacterial Weapon Ω",
+            defaultMessage:
+              "After 1 or more of your units use BOMBARDMENT against a planet, if at least 1 of your opponent's infantry was destroyed, you may destroy all of your opponent's infantry on that planet.",
+          }),
+          expansion: "CODEX ONE",
+          name: intl.formatMessage({
+            id: "Techs.X-89 Bacterial Weapon.Omega.Tech",
+            description: "Title of Tech: X-89 Bacterial Weapon Ω",
+            defaultMessage: "X-89 Bacterial Weapon Ω",
+          }),
+        },
+        {
+          description: intl.formatMessage(
+            {
+              id: "Techs.X-89 Bacterial Weapon.Codex Four.Description",
+              description:
+                "Description for Tech: X-89 Bacterial Weapon (Codex 4)",
+              defaultMessage:
+                "Double the hits produced by your units' BOMBARDMENT and ground combat rolls.{br}Exhaust each planet you use BOMBARDMENT against.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "CODEX FOUR",
+          name: intl.formatMessage({
+            id: "Techs.X-89 Bacterial Weapon.Tech",
+            description: "Title of Tech: X-89 Bacterial Weapon",
+            defaultMessage: "X-89 Bacterial Weapon",
+          }),
+        },
+      ],
       prereqs: ["GREEN", "GREEN", "GREEN"],
       type: "GREEN",
     },
@@ -1653,20 +1696,22 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Yin Spinner",
         defaultMessage: "Yin Spinner",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Yin Brotherhood.Techs.Yin Spinner.Omega.Description",
-          description: "Description for Tech: Yin Spinner Ω",
-          defaultMessage:
-            "After you produce units, place up to 2 infantry from your reinforcements on any planet you control or in any space area that contains 1 or more of your ships.",
-        }),
-        expansion: "CODEX ONE",
-        name: intl.formatMessage({
-          id: "Yin Brotherhood.Techs.Yin Spinner.Omega.Title",
-          description: "Title of Tech: Yin Spinner Ω",
-          defaultMessage: "Yin Spinner Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Yin Brotherhood.Techs.Yin Spinner.Omega.Description",
+            description: "Description for Tech: Yin Spinner Ω",
+            defaultMessage:
+              "After you produce units, place up to 2 infantry from your reinforcements on any planet you control or in any space area that contains 1 or more of your ships.",
+          }),
+          expansion: "CODEX ONE",
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Techs.Yin Spinner.Omega.Title",
+            description: "Title of Tech: Yin Spinner Ω",
+            defaultMessage: "Yin Spinner Ω",
+          }),
+        },
+      ],
       prereqs: ["GREEN", "GREEN"],
       type: "GREEN",
     },
