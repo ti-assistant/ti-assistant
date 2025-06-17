@@ -24,6 +24,7 @@ import StrategyCardSection from "./sections/StrategyCardSection";
 import TechsSection from "./sections/TechsSection";
 import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
+import { Loader } from "../../src/Loader";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -158,9 +159,11 @@ function applyFilters(
 export default function StatsPage({
   processedGames,
   baseData,
+  loading,
 }: {
   processedGames: Record<string, ProcessedGame>;
   baseData: BaseData;
+  loading?: boolean;
 }) {
   const intl = useIntl();
   const [expansions, setExpansions] = useState<Set<Expansion>>(
@@ -331,13 +334,19 @@ export default function StatsPage({
             </div>
           </LabeledDiv>
           <div className={styles.DataSection}>
-            <GameDataSection games={localGames} points={points} />
-            <DetailsSection
-              games={localGames}
-              baseData={baseData}
-              playerCounts={playerCounts}
-              points={points}
-            />
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                <GameDataSection games={localGames} points={points} />
+                <DetailsSection
+                  games={localGames}
+                  baseData={baseData}
+                  playerCounts={playerCounts}
+                  points={points}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
