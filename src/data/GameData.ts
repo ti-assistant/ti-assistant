@@ -656,7 +656,7 @@ export function buildTechs(storedGameData: StoredGameData, intl: IntlShape) {
     const techCopy = { ...tech };
 
     // Maybe update techs for codices.
-    const omegas = tech.omega ?? [];
+    const omegas = tech.omegas ?? [];
     for (const omega of omegas) {
       if (!options.expansions.includes(omega.expansion)) {
         continue;
@@ -721,7 +721,7 @@ export function buildBaseTechs(options: Options, intl: IntlShape) {
     const techCopy = { ...tech };
 
     // Maybe update techs for codices.
-    const omegas = tech.omega ?? [];
+    const omegas = tech.omegas ?? [];
     for (const omega of omegas) {
       if (!options.expansions.includes(omega.expansion)) {
         continue;

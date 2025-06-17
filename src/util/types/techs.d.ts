@@ -19,7 +19,7 @@ interface BaseNormalTech {
   faction?: FactionId;
   id: TechId;
   name: string;
-  omega?: OmegaTech[];
+  omegas?: OmegaTech[];
   prereqs: TechType[];
   type: "RED" | "GREEN" | "BLUE" | "YELLOW";
 }
@@ -31,7 +31,7 @@ interface BaseUpgradeTech {
   faction?: FactionId;
   id: TechId;
   name: string;
-  omega?: OmegaTech[];
+  omegas?: OmegaTech[];
   prereqs: TechType[];
   replaces?: TechId;
   stats: UnitStats;

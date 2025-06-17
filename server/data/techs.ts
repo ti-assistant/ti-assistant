@@ -859,7 +859,7 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Magen Defense Grid",
         defaultMessage: "Magen Defense Grid",
       }),
-      omega: [
+      omegas: [
         {
           description: intl.formatMessage({
             id: "Techs.Magen Defense Grid.Omega.Description",
@@ -931,7 +931,7 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Magmus Reactor",
         defaultMessage: "Magmus Reactor",
       }),
-      omega: [
+      omegas: [
         {
           description: intl.formatMessage(
             {
@@ -1611,7 +1611,7 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Wormhole Generator",
         defaultMessage: "Wormhole Generator",
       }),
-      omega: [
+      omegas: [
         {
           description: intl.formatMessage({
             id: "Ghosts of Creuss.Techs.Wormhole Generator.Omega.Description",
@@ -1644,7 +1644,7 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: X-89 Bacterial Weapon",
         defaultMessage: "X-89 Bacterial Weapon",
       }),
-      omega: [
+      omegas: [
         {
           description: intl.formatMessage({
             id: "Techs.X-89 Bacterial Weapon.Omega.Description",
@@ -1696,7 +1696,7 @@ export function getBaseTechs(intl: IntlShape): Record<TechId, BaseTech> {
         description: "Title of Tech: Yin Spinner",
         defaultMessage: "Yin Spinner",
       }),
-      omega: [
+      omegas: [
         {
           description: intl.formatMessage({
             id: "Yin Brotherhood.Techs.Yin Spinner.Omega.Description",
