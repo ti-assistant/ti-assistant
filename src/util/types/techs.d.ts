@@ -7,17 +7,19 @@ interface UnitStats {
   move?: number;
 }
 
+interface OmegaTech {
+  description: string;
+  expansion: Expansion;
+  name: string;
+}
+
 interface BaseNormalTech {
   description: string;
   expansion: Expansion;
   faction?: FactionId;
   id: TechId;
   name: string;
-  omega?: {
-    description: string;
-    expansion: Expansion;
-    name: string;
-  };
+  omega?: OmegaTech[];
   prereqs: TechType[];
   type: "RED" | "GREEN" | "BLUE" | "YELLOW";
 }
@@ -29,11 +31,7 @@ interface BaseUpgradeTech {
   faction?: FactionId;
   id: TechId;
   name: string;
-  omega?: {
-    description: string;
-    expansion: Expansion;
-    name: string;
-  };
+  omega?: OmegaTech[];
   prereqs: TechType[];
   replaces?: TechId;
   stats: UnitStats;

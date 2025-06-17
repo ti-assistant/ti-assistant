@@ -94,22 +94,11 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
         <div className="flexColumn" style={{ gap: rem(4) }}>
           <button onClick={toggleEditMode}>
             <FormattedMessage
-              id="6L07nG"
-              description="Text telling the user to reveal an objective."
-              defaultMessage="Reveal Objective"
+              id="zlpl9F"
+              description="Message telling a player to score a secret objective."
+              defaultMessage="Score Secret Objective"
             />
           </button>
-          <div style={{ fontSize: rem(16), textAlign: "center" }}>
-            Secret Objectives will only be revealed to other players when scored
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="flexColumn" style={{ gap: rem(4) }}>
-          <div style={{ fontSize: rem(16), textAlign: "center" }}>
-            Secret Objectives will only be revealed to other players when scored
-          </div>
         </div>
       );
     }
@@ -139,8 +128,6 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
                   factionId={factionId}
                   objective={obj}
                   scoreObjective={scoreObj}
-                  removeObjective={editMode ? undefined : removeObj}
-                  addObjective={editMode ? addObj : undefined}
                 />
               );
             })}
