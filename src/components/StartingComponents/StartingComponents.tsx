@@ -22,6 +22,10 @@ import DestroyerSVG from "../../icons/units/Destroyer";
 import PDSSVG from "../../icons/units/PDS";
 import DreadnoughtSVG from "../../icons/units/Dreadnought";
 import { getFactionColor } from "../../util/factions";
+import SpaceDockSVG from "../../icons/units/SpaceDock";
+import FlagshipSVG from "../../icons/units/Flagship";
+import WarSunSVG from "../../icons/units/WarSun";
+import MechSVG from "../../icons/units/Mech";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -259,11 +263,7 @@ export default function StartingComponents({
           gridTemplateRows: `repeat(${Math.ceil(
             orderedUnits.length / 2
           )}, 1fr)`,
-          paddingLeft: rem(4),
-          paddingRight: rem(4),
           fontFamily: "Myriad Pro",
-          // justifyContent: "stretch",
-          // alignItems: "flex-start",
           columnGap: rem(8),
           fontSize: rem(14),
           width: "100%",
@@ -291,21 +291,30 @@ export default function StartingComponents({
   );
 }
 function UnitIcon({ unit, color }: { unit: UnitType; color: string }) {
+  const iconColor = "#eee"; // color === "Black" ? "#eee" : color;
+  const size = 14;
   switch (unit) {
-    case "Fighter":
-      return <FighterSVG size={14} />;
-    case "Infantry":
-      return <InfantrySVG size={14} />;
     case "Carrier":
-      return <CarrierSVG size={14} />;
+      return <CarrierSVG size={size} color={iconColor} />;
     case "Cruiser":
-      return <CruiserSVG size={14} />;
+      return <CruiserSVG size={size} color={iconColor} />;
     case "Destroyer":
-      return <DestroyerSVG size={14} />;
-    case "PDS":
-      return <PDSSVG size={14} />;
+      return <DestroyerSVG size={size} color={iconColor} />;
     case "Dreadnought":
-      return <DreadnoughtSVG size={14} />;
+      return <DreadnoughtSVG size={size} color={iconColor} />;
+    case "Fighter":
+      return <FighterSVG size={size} color={iconColor} />;
+    case "Flagship":
+      return <FlagshipSVG size={size} color={iconColor} />;
+    case "Infantry":
+      return <InfantrySVG size={size} color={iconColor} />;
+    case "Mech":
+      return <MechSVG size={size} color={iconColor} />;
+    case "PDS":
+      return <PDSSVG size={size} color={iconColor} />;
+    case "Space Dock":
+      return <SpaceDockSVG size={size} color={iconColor} />;
+    case "War Sun":
+      return <WarSunSVG size={size} color={iconColor} />;
   }
-  return null;
 }
