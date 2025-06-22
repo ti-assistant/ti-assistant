@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildSystems } from "../../data/GameData";
 import { getMapString } from "../options";
 
@@ -35,7 +36,9 @@ export class PlayAdjudicatorBaalHandler implements Handler {
 
     updates[`options.processed-map-string`] = newMapString;
 
-    const system = buildSystems(this.gameData)[this.data.event.systemId];
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const system = buildSystems(this.gameData, intl)[this.data.event.systemId];
     if (!system) {
       return updates;
     }
@@ -97,7 +100,9 @@ export class UndoAdjudicatorBaalHandler implements Handler {
 
     updates[`options.processed-map-string`] = newMapString;
 
-    const system = buildSystems(this.gameData)[this.data.event.systemId];
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const system = buildSystems(this.gameData, intl)[this.data.event.systemId];
     if (!system) {
       return updates;
     }

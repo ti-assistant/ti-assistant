@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildPlanets } from "../../data/GameData";
 import { arrayRemove, arrayUnion } from "../api/util";
 
@@ -70,7 +71,9 @@ export class RemoveAttachmentHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const planets = buildPlanets(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const planets = buildPlanets(this.gameData, intl);
     const planetAttachments =
       planets[this.data.event.planet]?.attachments ?? [];
     const updates: Record<string, any> = {

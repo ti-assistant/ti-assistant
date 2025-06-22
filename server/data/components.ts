@@ -1,66 +1,13 @@
 import { IntlShape } from "react-intl";
 import { DISCORDANT_STARS_COMPONENTS } from "./discordantstars/components";
+import getCodexFourComponents from "./codexfour/components";
+import getCodexOneComponents from "./codexone/components";
+import getProphecyOfKingsComponents from "./prophecyofkings/components";
 
 export function getBaseComponents(
   intl: IntlShape
 ): Record<ComponentId, BaseComponent | BaseTechComponent> {
   return {
-    "Archaeological Expedition": {
-      description: intl.formatMessage({
-        id: "Components.Archaeological Expedition.Description",
-        description: "Description for Component: Archaeological Expedition",
-        defaultMessage:
-          "ACTION: Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest.",
-      }),
-      expansion: "POK",
-      id: "Archaeological Expedition",
-      name: intl.formatMessage({
-        id: "Components.Archaeological Expedition.Title",
-        description: "Title of Component: Archaeological Expedition",
-        defaultMessage: "Archaeological Expedition",
-      }),
-      type: "CARD",
-    },
-    "Black Market Forgery": {
-      description: intl.formatMessage(
-        {
-          id: "Components.Black Market Forgery.Description",
-          description: "Description for Component: Black Market Forgery",
-          defaultMessage:
-            "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic.{br}Then return this card to the Naaz-Rokha player.",
-        },
-        { br: "\n\n" }
-      ),
-      expansion: "POK",
-      faction: "Naaz-Rokha Alliance",
-      id: "Black Market Forgery",
-      name: intl.formatMessage({
-        id: "Components.Black Market Forgery.Title",
-        description: "Title of Component: Black Market Forgery",
-        defaultMessage: "Black Market Forgery",
-      }),
-      type: "PROMISSORY",
-    },
-    "Blood Pact": {
-      description: intl.formatMessage(
-        {
-          id: "Components.Blood Pact.Description",
-          description: "Description for Component: Blood Pact",
-          defaultMessage:
-            "ACTION: Place this card face up in your play area.{br}When you and the Empyrean player cast votes for the same outcome, cast 4 additional votes for that outcome.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
-        },
-        { br: "\n\n" }
-      ),
-      expansion: "POK",
-      faction: "Empyrean",
-      id: "Blood Pact",
-      name: intl.formatMessage({
-        id: "Components.Blood Pact.Title",
-        description: "Title of Component: Blood Pact",
-        defaultMessage: "Blood Pact",
-      }),
-      type: "PROMISSORY",
-    },
     "Cripple Defenses": {
       description: intl.formatMessage({
         id: "Components.Cripple Defenses.Description",
@@ -77,42 +24,6 @@ export function getBaseComponents(
       }),
       type: "CARD",
     },
-    "Dark Pact": {
-      description: intl.formatMessage(
-        {
-          id: "Components.Dark Pact.Description",
-          description: "Description for Component: Dark Pact",
-          defaultMessage:
-            "ACTION: Place this card face up in your play area.{br}When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
-        },
-        { br: "\n\n" }
-      ),
-      expansion: "POK",
-      faction: "Empyrean",
-      id: "Dark Pact",
-      name: intl.formatMessage({
-        id: "Components.Dark Pact.Title",
-        description: "Title of Component: Dark Pact",
-        defaultMessage: "Dark Pact",
-      }),
-      type: "PROMISSORY",
-    },
-    "Divert Funding": {
-      description: intl.formatMessage({
-        id: "Components.Divert Funding.Description",
-        description: "Description for Component: Divert Funding",
-        defaultMessage:
-          "ACTION: Return a non-unit upgrade, non-faction technology that you own to your technology deck. Then, research another technology.",
-      }),
-      expansion: "POK",
-      id: "Divert Funding",
-      name: intl.formatMessage({
-        id: "Components.Divert Funding.Title",
-        description: "Title of Component: Divert Funding",
-        defaultMessage: "Divert Funding",
-      }),
-      type: "CARD",
-    },
     "Economic Initiative": {
       description: intl.formatMessage({
         id: "Components.Economic Initiative.Description",
@@ -125,71 +36,6 @@ export function getBaseComponents(
         id: "Components.Economic Initiative.Title",
         description: "Title of Component: Economic Initiative",
         defaultMessage: "Economic Initiative",
-      }),
-      type: "CARD",
-    },
-    "Enigmatic Device": {
-      description: intl.formatMessage({
-        id: "Components.Enigmatic Device.Description",
-        description: "Description for Component: Enigmatic Device",
-        defaultMessage:
-          "ACTION: You may spend 6 resources and purge this card to research 1 technology.",
-      }),
-      expansion: "POK",
-      id: "Enigmatic Device",
-      name: intl.formatMessage({
-        id: "Components.Enigmatic Device.Title",
-        description: "Title of Component: Enigmatic Device",
-        defaultMessage: "Enigmatic Device",
-      }),
-      type: "EXPLORATION",
-    },
-    "Exploration Probe": {
-      description: intl.formatMessage({
-        id: "Components.Exploration Probe.Description",
-        description: "Description for Component: Exploration Probe",
-        defaultMessage:
-          "ACTION: Explore a frontier token that is in or adjacent to a system that contains 1 or more of your ships.",
-      }),
-      expansion: "POK",
-      id: "Exploration Probe",
-      name: intl.formatMessage({
-        id: "Components.Exploration Probe.Title",
-        description: "Title of Component: Exploration Probe",
-        defaultMessage: "Exploration Probe",
-      }),
-      type: "CARD",
-    },
-    Fabrication: {
-      description: intl.formatMessage({
-        id: "Components.Fabrication.Description",
-        description: "Description for Component: Fabrication",
-        defaultMessage:
-          "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic; or purge 1 of your relic fragments to gain 1 command token.",
-      }),
-      expansion: "POK",
-      faction: "Naaz-Rokha Alliance",
-      id: "Fabrication",
-      name: intl.formatMessage({
-        id: "Components.Fabrication.Title",
-        description: "Title of Component: Fabrication",
-        defaultMessage: "Fabrication",
-      }),
-      type: "ABILITY",
-    },
-    "Fighter Conscription": {
-      description: intl.formatMessage({
-        id: "Components.Fighter Conscription.Description",
-        description: "Description for Component: Fighter Conscription",
-        defaultMessage:
-          "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships.",
-      }),
-      expansion: "CODEX ONE",
-      id: "Fighter Conscription",
-      name: intl.formatMessage({
-        id: "Components.Fighter Conscription.Title",
-        description: "Title of Component: Fighter Conscription",
-        defaultMessage: "Fighter Conscription",
       }),
       type: "CARD",
     },
@@ -244,22 +90,6 @@ export function getBaseComponents(
       }),
       type: "CARD",
     },
-    "Gain Relic": {
-      description: intl.formatMessage({
-        id: "Components.Gain Relic.Description",
-        description: "Description for Component: Gain Relic",
-        defaultMessage:
-          "ACTION: Purge 3 of your relic fragments of the same type to gain 1 Relic.",
-      }),
-      expansion: "POK",
-      id: "Gain Relic",
-      name: intl.formatMessage({
-        id: "Components.Gain Relic.Title",
-        description: "Title of Component: Gain Relic",
-        defaultMessage: "Gain Relic",
-      }),
-      type: "EXPLORATION",
-    },
     "Ghost Ship": {
       description: intl.formatMessage({
         id: "Components.Ghost Ship.Description",
@@ -273,21 +103,6 @@ export function getBaseComponents(
         id: "Components.Ghost Ship.Title",
         description: "Title of Component: Ghost Ship",
         defaultMessage: "Ghost Ship",
-      }),
-      type: "CARD",
-    },
-    Impersonation: {
-      description: intl.formatMessage({
-        id: "Components.Impersonation.Description",
-        description: "Description for Component: Impersonation",
-        defaultMessage: "ACTION: Spend 3 influence to draw 1 secret objective.",
-      }),
-      expansion: "CODEX ONE",
-      id: "Impersonation",
-      name: intl.formatMessage({
-        id: "Components.Impersonation.Title",
-        description: "Title of Component: Impersonation",
-        defaultMessage: "Impersonation",
       }),
       type: "CARD",
     },
@@ -406,22 +221,6 @@ export function getBaseComponents(
       }),
       type: "ABILITY",
     },
-    Plagiarize: {
-      description: intl.formatMessage({
-        id: "Components.Plagiarize.Description",
-        description: "Description for Component: Plagiarize",
-        defaultMessage:
-          "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology.",
-      }),
-      expansion: "CODEX ONE",
-      id: "Plagiarize",
-      name: intl.formatMessage({
-        id: "Components.Plagiarize.Title",
-        description: "Title of Component: Plagiarize",
-        defaultMessage: "Plagiarize",
-      }),
-      type: "CARD",
-    },
     Plague: {
       description: intl.formatMessage({
         id: "Components.Plague.Description",
@@ -490,22 +289,6 @@ export function getBaseComponents(
       }),
       type: "CARD",
     },
-    "Refit Troops": {
-      description: intl.formatMessage({
-        id: "Components.Refit Troops.Description",
-        description: "Description for Component: Refit Troops",
-        defaultMessage:
-          "ACTION: Choose 1 or 2 of your infantry on the game board; replace each of those infantry with mechs.",
-      }),
-      expansion: "POK",
-      id: "Refit Troops",
-      name: intl.formatMessage({
-        id: "Components.Refit Troops.Title",
-        description: "Title of Component: Refit Troops",
-        defaultMessage: "Refit Troops",
-      }),
-      type: "CARD",
-    },
     "Repeal Law": {
       description: intl.formatMessage({
         id: "Components.Repeal Law.Description",
@@ -537,38 +320,6 @@ export function getBaseComponents(
       }),
       type: "CARD",
     },
-    Scuttle: {
-      description: intl.formatMessage({
-        id: "Components.Scuttle.Description",
-        description: "Description for Component: Scuttle",
-        defaultMessage:
-          "ACTION: Choose 1 or 2 of your non-fighter ships on the game board and return them to your reinforcements; gain trade goods equal to the combined cost of those ships.",
-      }),
-      expansion: "POK",
-      id: "Scuttle",
-      name: intl.formatMessage({
-        id: "Components.Scuttle.Title",
-        description: "Title of Component: Scuttle",
-        defaultMessage: "Scuttle",
-      }),
-      type: "CARD",
-    },
-    "Seize Artifact": {
-      description: intl.formatMessage({
-        id: "Components.Seize Artifact.Description",
-        description: "Description for Component: Seize Artifact",
-        defaultMessage:
-          "ACTION: Choose 1 of your neighbors that has 1 or more relic fragments. That player must give you 1 relic fragment of your choice.",
-      }),
-      expansion: "POK",
-      id: "Seize Artifact",
-      name: intl.formatMessage({
-        id: "Components.Seize Artifact.Title",
-        description: "Title of Component: Seize Artifact",
-        defaultMessage: "Seize Artifact",
-      }),
-      type: "CARD",
-    },
     "Signal Jamming": {
       description: intl.formatMessage({
         id: "Components.Signal Jamming.Description",
@@ -584,22 +335,6 @@ export function getBaseComponents(
         defaultMessage: "Signal Jamming",
       }),
       type: "CARD",
-    },
-    "Sling Relay": {
-      description: intl.formatMessage({
-        id: "Components.Sling Relay.Description",
-        description: "Description for Component: Sling Relay",
-        defaultMessage:
-          "ACTION: Exhaust this card to produce 1 ship in any system that contains one of your space docks.",
-      }),
-      expansion: "POK",
-      id: "Sling Relay",
-      name: intl.formatMessage({
-        id: "Components.Sling Relay.Title",
-        description: "Title of Component: Sling Relay",
-        defaultMessage: "Sling Relay",
-      }),
-      type: "TECH",
     },
     Spy: {
       description: intl.formatMessage({
@@ -686,26 +421,6 @@ export function getBaseComponents(
       }),
       type: "CARD",
     },
-    Terraform: {
-      description: intl.formatMessage(
-        {
-          id: "Components.Terraform.Description",
-          description: "Description for Component: Terraform",
-          defaultMessage:
-            "ACTION: Attach this card to a non-home planet you control other than Mecatol Rex.{br}Its resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial).",
-        },
-        { br: "\n\n" }
-      ),
-      expansion: "POK",
-      faction: "Titans of Ul",
-      id: "Terraform",
-      name: intl.formatMessage({
-        id: "Components.Terraform.Title",
-        description: "Title of Component: Terraform",
-        defaultMessage: "Terraform",
-      }),
-      type: "PROMISSORY",
-    },
     "The Inferno": {
       description: intl.formatMessage({
         id: "Components.The Inferno.Description",
@@ -791,23 +506,6 @@ export function getBaseComponents(
       }),
       type: "CARD",
     },
-    Vortex: {
-      description: intl.formatMessage({
-        id: "Components.Vortex.Description",
-        description: "Description for Component: Vortex",
-        defaultMessage:
-          "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements.",
-      }),
-      expansion: "POK",
-      faction: "Vuil'raith Cabal",
-      id: "Vortex",
-      name: intl.formatMessage({
-        id: "Components.Vortex.Title",
-        description: "Title of Component: Vortex",
-        defaultMessage: "Vortex",
-      }),
-      type: "TECH",
-    },
     "War Effort": {
       description: intl.formatMessage({
         id: "Components.War Effort.Description",
@@ -823,23 +521,6 @@ export function getBaseComponents(
         defaultMessage: "War Effort",
       }),
       type: "CARD",
-    },
-    "Wormhole Generator": {
-      description: intl.formatMessage({
-        id: "Components.Wormhole Generator.Description",
-        description: "Description for Component: Wormhole Generator Ω",
-        defaultMessage:
-          "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
-      }),
-      expansion: "CODEX ONE",
-      faction: "Ghosts of Creuss",
-      id: "Wormhole Generator",
-      name: intl.formatMessage({
-        id: "Components.Wormhole Generator.Title",
-        description: "Title of Component: Wormhole Generator Ω",
-        defaultMessage: "Wormhole Generator Ω",
-      }),
-      type: "TECH",
     },
     "X-89 Bacterial Weapon": {
       description: intl.formatMessage({
@@ -857,6 +538,9 @@ export function getBaseComponents(
       }),
       type: "TECH",
     },
+    ...getProphecyOfKingsComponents(intl),
+    ...getCodexOneComponents(intl),
+    ...getCodexFourComponents(intl),
     ...DISCORDANT_STARS_COMPONENTS,
   };
 }

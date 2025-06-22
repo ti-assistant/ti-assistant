@@ -1,11 +1,10 @@
 import { getTechCountsByType } from "./TechGraph";
 import { LogEntryElementProps } from "../../../../../../src/components/LogEntry";
+
 import {
-  buildObjectives,
-  buildPlanets,
-  buildTechs,
-} from "../../../../../../src/data/gameDataBuilder";
-import { PHASE_BOUNDARIES, TURN_BOUNDARIES } from "../../../../../../src/util/api/actionLog";
+  PHASE_BOUNDARIES,
+  TURN_BOUNDARIES,
+} from "../../../../../../src/util/api/actionLog";
 import { getHandler } from "../../../../../../src/util/api/gameLog";
 import { updateGameData } from "../../../../../../src/util/api/handler";
 import { updateActionLog } from "../../../../../../src/util/api/update";
@@ -13,6 +12,11 @@ import { computeVPsByCategory } from "../../../../../../src/util/factions";
 import { getMapString } from "../../../../../../src/util/options";
 import { ActionLog } from "../../../../../../src/util/types/types";
 import { objectEntries, objectKeys } from "../../../../../../src/util/util";
+import {
+  buildCompleteObjectives,
+  buildCompletePlanets,
+  buildCompleteTechs,
+} from "../../../../../../src/data/gameDataBuilder";
 
 type WithKey<T> = T & { key: number };
 
@@ -59,7 +63,7 @@ function buildGameLog(
   const mapOrderedFactions = Object.values(dynamicGameData.factions).sort(
     (a, b) => a.mapPosition - b.mapPosition
   );
-  const techs = buildTechs(dynamicGameData, baseData);
+  const techs = buildCompleteTechs(baseData, dynamicGameData);
 
   const timerData: Partial<Record<FactionId, TimerData>> = {};
 
@@ -71,7 +75,7 @@ function buildGameLog(
       logEntry.data.action === "ADVANCE_PHASE" &&
       dynamicGameData.state.phase === "SETUP"
     ) {
-      const techs = buildTechs(dynamicGameData, baseData);
+      const techs = buildCompleteTechs(baseData, dynamicGameData);
 
       const initialTechs: Partial<Record<FactionId, Record<TechType, number>>> =
         {};
@@ -93,9 +97,9 @@ function buildGameLog(
         };
       }
       rounds[0] = {
-        planets: buildPlanets(
-          dynamicGameData,
+        planets: buildCompletePlanets(
           baseData,
+          dynamicGameData,
           /* includePurged */ true
         ),
         mapString: getMapString(
@@ -213,7 +217,7 @@ function buildGameLog(
     }
 
     if (currentRound !== dynamicGameData.state.round) {
-      const objectives = buildObjectives(dynamicGameData, baseData);
+      const objectives = buildCompleteObjectives(baseData, dynamicGameData);
       const points: Partial<Record<FactionId, Record<ObjectiveType, number>>> =
         {};
       const factionTechs: Partial<Record<FactionId, Record<TechType, number>>> =
@@ -233,9 +237,9 @@ function buildGameLog(
         );
       }
       rounds[currentRound] = {
-        planets: buildPlanets(
-          dynamicGameData,
+        planets: buildCompletePlanets(
           baseData,
+          dynamicGameData,
           /* includePurged */ true
         ),
         mapString: getMapString(
@@ -251,7 +255,7 @@ function buildGameLog(
       self.postMessage({ annotatedLog: processedEntries, rounds, timerData });
     }
   });
-  const objectives = buildObjectives(dynamicGameData, baseData);
+  const objectives = buildCompleteObjectives(baseData, dynamicGameData);
   const points: Partial<Record<FactionId, Record<ObjectiveType, number>>> = {};
   const factionTechs: Partial<Record<FactionId, Record<TechType, number>>> = {};
   for (const [factionId, faction] of objectEntries(dynamicGameData.factions)) {
@@ -267,7 +271,11 @@ function buildGameLog(
     );
   }
   rounds[dynamicGameData.state.round] = {
-    planets: buildPlanets(dynamicGameData, baseData, /* includePurged */ true),
+    planets: buildCompletePlanets(
+      baseData,
+      dynamicGameData,
+      /* includePurged */ true
+    ),
     mapString: getMapString(dynamicGameData.options, mapOrderedFactions.length),
     techs: factionTechs,
     victoryPoints: points,

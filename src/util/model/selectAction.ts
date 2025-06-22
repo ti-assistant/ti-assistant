@@ -20,7 +20,7 @@ export class SelectActionHandler implements Handler {
     const selectedAction = getSelectedAction(this.gameData);
 
     if (selectedAction === "Imperial") {
-      const mecatol = buildPlanets(this.gameData)["Mecatol Rex"];
+      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
       if (
         mecatol &&
         this.gameData.state.activeplayer &&
@@ -37,7 +37,7 @@ export class SelectActionHandler implements Handler {
     }
 
     if (this.data.event.action === "Imperial") {
-      const mecatol = buildPlanets(this.gameData)["Mecatol Rex"];
+      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
       if (
         mecatol &&
         this.gameData.state.activeplayer &&
@@ -90,7 +90,7 @@ export class UnselectActionHandler implements Handler {
       [`sequenceNum`]: "INCREMENT",
     };
     if (this.data.event.action === "Imperial") {
-      const mecatol = buildPlanets(this.gameData)["Mecatol Rex"];
+      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
       if (
         mecatol &&
         this.gameData.state.activeplayer &&

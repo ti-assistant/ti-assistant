@@ -1,3 +1,4 @@
+import { createIntl, createIntlCache } from "react-intl";
 import { buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
 import { Optional } from "../types/types";
@@ -11,7 +12,9 @@ export class ClaimPlanetHandler implements Handler {
   }
 
   validate(): boolean {
-    const planets = buildPlanets(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const planets = buildPlanets(this.gameData, intl);
     const planet = planets[this.data.event.planet];
     if (!planet) {
       return false;
@@ -96,7 +99,9 @@ export class UnclaimPlanetHandler implements Handler {
   ) {}
 
   validate(): boolean {
-    const planets = buildPlanets(this.gameData);
+    const cache = createIntlCache();
+    const intl = createIntl({ locale: "en" }, cache);
+    const planets = buildPlanets(this.gameData, intl);
     const planet = planets[this.data.event.planet];
     if (!planet) {
       return false;

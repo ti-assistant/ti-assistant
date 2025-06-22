@@ -222,6 +222,7 @@ function MobileOptions({
             style={{
               justifyContent: "flex-start",
               fontFamily: "Myriad Pro",
+              gap: rem(4),
             }}
           >
             Codices:
@@ -408,6 +409,7 @@ function MobileOptions({
                       alignItems: "flex-start",
                       padding: `0 ${rem(20)}`,
                       fontFamily: "Myriad Pro",
+                      gap: rem(4),
                     }}
                   >
                     <Toggle
@@ -600,6 +602,7 @@ function Options({
             style={{
               justifyContent: "flex-start",
               fontFamily: "Myriad Pro",
+              gap: rem(4),
             }}
           >
             Codices:
@@ -697,6 +700,7 @@ function Options({
                     alignItems: "flex-start",
                     padding: `0 ${rem(20)}`,
                     fontFamily: "Myriad Pro",
+                    gap: rem(4),
                   }}
                 >
                   <Toggle
@@ -1265,6 +1269,7 @@ export default function SetupPage({
   const [options, setOptions] = useState<SetupOptions>({
     ...INITIAL_OPTIONS,
     expansions: new Set(INITIAL_OPTIONS.expansions),
+    events: new Set(),
   });
   const [numFactions, setNumFactions] = useState(6);
   const [creatingGame, setCreatingGame] = useState(false);

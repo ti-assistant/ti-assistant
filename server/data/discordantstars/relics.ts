@@ -1,6 +1,6 @@
 import { IntlShape } from "react-intl";
 
-export function getBaseDiscordantStarsRelics(
+export default function getDiscordantStarsRelics(
   intl: IntlShape
 ): Record<DiscordantStars.RelicId, BaseRelic> {
   return {

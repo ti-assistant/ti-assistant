@@ -207,9 +207,11 @@ import("../../../../../../server/data/factions").then((module) => {
   getBaseFactions = module.getBaseFactions;
 });
 
-let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
+let getBasePlanets: DataFunction<PlanetId, BasePlanet> = () => {
+  return {};
+};
 import("../../../../../../server/data/planets").then((module) => {
-  BASE_PLANETS = module.BASE_PLANETS;
+  getBasePlanets = module.getBasePlanets;
 });
 
 function buildInitialGameData(
@@ -234,7 +236,7 @@ function buildInitialGameData(
       }
 
       // Get home planets for each faction.
-      const homeBasePlanets = Object.values(BASE_PLANETS).filter(
+      const homeBasePlanets = Object.values(getBasePlanets(intl)).filter(
         (planet) => planet.faction === faction.name && planet.home
       );
       const homePlanets: Partial<Record<PlanetId, { ready: boolean }>> = {};

@@ -1,9 +1,5 @@
 namespace CodexFour {
-  type ComponentId =
-    | "Circlet of the Void"
-    | "Book of Latvinia"
-    | "Age of Exploration"
-    | "Total War";
+  type ComponentId = "Age of Exploration" | "Total War";
 
   type RelicId = "Circlet of the Void" | "Book of Latvinia" | "Neuraloop";
 

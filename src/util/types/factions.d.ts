@@ -119,28 +119,22 @@ type Faction = BaseFaction & GameFaction;
 
 type FactionId =
   | "Arborec"
-  | "Argent Flight"
   | "Barony of Letnev"
   | "Clan of Saar"
-  | "Council Keleres"
   | "Embers of Muaat"
   | "Emirates of Hacan"
-  | "Empyrean"
   | "Federation of Sol"
   | "Ghosts of Creuss"
   | "L1Z1X Mindnet"
-  | "Mahact Gene-Sorcerers"
   | "Mentak Coalition"
   | "Naalu Collective"
-  | "Naaz-Rokha Alliance"
   | "Nekro Virus"
-  | "Nomad"
   | "Sardakk N'orr"
-  | "Titans of Ul"
   | "Universities of Jol-Nar"
-  | "Vuil'raith Cabal"
   | "Winnu"
   | "Xxcha Kingdom"
   | "Yin Brotherhood"
   | "Yssaril Tribes"
+  | ProphecyOfKings.FactionId
+  | CodexThree.FactionId
   | DiscordantStars.FactionId;
