@@ -35,15 +35,7 @@ interface GameAttachment {
 type Attachment = BaseAttachment & GameAttachment;
 
 type AttachmentId =
-  | "Core Mining"
-  | "Demilitarized Zone"
-  | "Holy Planet of Ixth"
-  | "Research Team: Biotic"
-  | "Research Team: Cybernetic"
-  | "Research Team: Propulsion"
-  | "Research Team: Warfare"
-  | "Senate Sanctuary"
-  | "Terraforming Initiative"
+  | BaseGame.AttachmentId
   | ProphecyOfKings.AttachmentId
   | CodexTwo.AttachmentId
   | DiscordantStars.AttachmentId;

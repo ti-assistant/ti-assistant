@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { getBaseFactions } from "../../server/data/factions";
+import { getFactions } from "../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../src/HoverMenu";
 import { Loader } from "../../src/Loader";
 import { SelectableRow } from "../../src/SelectableRow";
@@ -943,7 +943,7 @@ function FactionSelect({
 }: FactionSelectProps) {
   const nameRef = useRef<HTMLInputElement>(null);
   const intl = useIntl();
-  const availableFactions = getBaseFactions(intl);
+  const availableFactions = getFactions(intl);
 
   const factionIndex = mobile
     ? position

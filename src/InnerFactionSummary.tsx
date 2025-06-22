@@ -1,19 +1,17 @@
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import FactionIcon from "./components/FactionIcon/FactionIcon";
+import { getTechs } from "../server/data/techs";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
+import SiteLogo from "./components/SiteLogo/SiteLogo";
 import TechSummary from "./components/TechSummary/TechSummary";
 import styles from "./FactionSummary.module.scss";
 import { rem } from "./util/util";
-import { useState } from "react";
-import { Techs } from "./context/techDataHooks";
-import { getBaseTechs } from "../server/data/techs";
-import SiteLogo from "./components/SiteLogo/SiteLogo";
 
 const TOP_RIGHT = { x: 22, y: -38 };
 
 export default function DummyFactionSummary() {
   const intl = useIntl();
-  const techs = getBaseTechs(intl);
+  const techs = getTechs(intl);
 
   const [VPs, setVPs] = useState(0);
 

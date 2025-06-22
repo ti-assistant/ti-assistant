@@ -1,6 +1,6 @@
 import { IntlShape } from "react-intl";
 
-export function getProphecyOfKingsObjectives(
+export default function getProphecyOfKingsObjectives(
   intl: IntlShape
 ): Record<ProphecyOfKings.ObjectiveId, BaseObjective> {
   return {

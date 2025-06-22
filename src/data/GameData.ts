@@ -1,15 +1,15 @@
 import { IntlShape } from "react-intl";
-import { getBaseAgendas } from "../../server/data/agendas";
-import { getBaseAttachments } from "../../server/data/attachments";
-import { getBaseComponents } from "../../server/data/components";
-import { getBaseFactions } from "../../server/data/factions";
-import { getBaseLeaders } from "../../server/data/leaders";
-import { getBaseObjectives } from "../../server/data/objectives";
-import { getBasePlanets } from "../../server/data/planets";
-import { getBaseRelics } from "../../server/data/relics";
-import { getBaseStrategyCards } from "../../server/data/strategyCards";
-import { BASE_SYSTEMS } from "../../server/data/systems";
-import { getBaseTechs } from "../../server/data/techs";
+import { getAgendas } from "../../server/data/agendas";
+import { getAttachments } from "../../server/data/attachments";
+import { getComponents } from "../../server/data/components";
+import { getFactions } from "../../server/data/factions";
+import { getLeaders } from "../../server/data/leaders";
+import { getObjectives } from "../../server/data/objectives";
+import { getPlanets } from "../../server/data/planets";
+import { getRelics } from "../../server/data/relics";
+import { getStrategyCards } from "../../server/data/strategyCards";
+import { getSystems } from "../../server/data/systems";
+import { getTechs } from "../../server/data/techs";
 import { objectEntries } from "../util/util";
 import {
   buildCompleteAgendas,
@@ -108,17 +108,17 @@ import {
 
 function buildBaseData(intl: IntlShape): BaseData {
   return {
-    agendas: getBaseAgendas(intl),
-    attachments: getBaseAttachments(intl),
-    components: getBaseComponents(intl),
-    factions: getBaseFactions(intl),
-    leaders: getBaseLeaders(intl),
-    objectives: getBaseObjectives(intl),
-    planets: getBasePlanets(intl),
-    relics: getBaseRelics(intl),
-    strategycards: getBaseStrategyCards(intl),
-    systems: BASE_SYSTEMS,
-    techs: getBaseTechs(intl),
+    agendas: getAgendas(intl),
+    attachments: getAttachments(intl),
+    components: getComponents(intl),
+    factions: getFactions(intl),
+    leaders: getLeaders(intl),
+    objectives: getObjectives(intl),
+    planets: getPlanets(intl),
+    relics: getRelics(intl),
+    strategycards: getStrategyCards(intl),
+    systems: getSystems(),
+    techs: getTechs(intl),
   };
 }
 
@@ -214,7 +214,7 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
 
 export function buildBaseTechs(options: Options, intl: IntlShape) {
   const techs: Partial<Record<TechId, Tech>> = {};
-  Object.values(getBaseTechs(intl)).forEach((tech) => {
+  Object.values(getTechs(intl)).forEach((tech) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
@@ -239,7 +239,7 @@ export function buildBaseTechs(options: Options, intl: IntlShape) {
 
 export function buildBaseLeaders(options: Options, intl: IntlShape) {
   const leaders: Record<string, BaseLeader> = {};
-  objectEntries(getBaseLeaders(intl)).forEach(([leaderId, leader]) => {
+  objectEntries(getLeaders(intl)).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && leader.expansion === "POK") {
       return;
@@ -265,7 +265,7 @@ export function buildBaseLeaders(options: Options, intl: IntlShape) {
 
 export function buildBaseSystems() {
   const systems: Partial<Record<SystemId, BaseSystem>> = {};
-  objectEntries(BASE_SYSTEMS).forEach(([systemId, system]) => {
+  objectEntries(getSystems()).forEach(([systemId, system]) => {
     systems[systemId] = {
       ...system,
     };

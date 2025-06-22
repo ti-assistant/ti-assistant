@@ -5,7 +5,7 @@ import getCodexThreeLeaders from "./codexthree/leaders";
 import { DISCORDANT_STARS_LEADERS } from "./discordantstars/leaders";
 import getProphecyOfKingsLeaders from "./prophecyofkings/leaders";
 
-export function getBaseLeaders(intl: IntlShape): Record<LeaderId, BaseLeader> {
+export function getLeaders(intl: IntlShape): Record<LeaderId, BaseLeader> {
   return {
     ...getProphecyOfKingsLeaders(intl),
     ...getCodexThreeLeaders(intl),

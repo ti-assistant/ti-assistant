@@ -4,7 +4,7 @@ import getCodexTwoRelics from "./codextwo/relics";
 import getDiscordantStarsRelics from "./discordantstars/relics";
 import getProphecyOfKingsRelics from "./prophecyofkings/relics";
 
-export function getBaseRelics(intl: IntlShape): Record<RelicId, BaseRelic> {
+export function getRelics(intl: IntlShape): Record<RelicId, BaseRelic> {
   return {
     ...getProphecyOfKingsRelics(intl),
     ...getCodexTwoRelics(intl),

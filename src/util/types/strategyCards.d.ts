@@ -42,12 +42,4 @@ interface GameStrategyCard {
 
 type StrategyCard = BaseStrategyCard & GameStrategyCard;
 
-type StrategyCardId =
-  | "Leadership"
-  | "Diplomacy"
-  | "Politics"
-  | "Construction"
-  | "Trade"
-  | "Warfare"
-  | "Technology"
-  | "Imperial";
+type StrategyCardId = BaseGame.StrategyCardId;

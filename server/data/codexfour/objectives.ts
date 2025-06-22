@@ -1,6 +1,6 @@
 import { IntlShape } from "react-intl/src/types";
 
-export function getCodexFourObjectives(
+export default function getCodexFourObjectives(
   intl: IntlShape
 ): Record<CodexFour.ObjectiveId, BaseObjective> {
   return {

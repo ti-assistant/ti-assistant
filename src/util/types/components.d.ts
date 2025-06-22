@@ -94,38 +94,7 @@ namespace DiscordantStars {
 }
 
 type ComponentId =
-  | "Cripple Defenses"
-  | "Economic Initiative"
-  | "Fires of the Gashlai"
-  | "Focused Research"
-  | "Frontline Deployment"
-  | "Ghost Ship"
-  | "Industrial Initiative"
-  | "Insubordination"
-  | "Lazax Gate Folding"
-  | "Lucky Shot"
-  | "Mageon Implants"
-  | "Mining Initiative"
-  | "Orbital Drop"
-  | "Plague"
-  | "Production Biomes"
-  | "Promise of Protection"
-  | "Reactor Meltdown"
-  | "Repeal Law"
-  | "Rise of a Messiah"
-  | "Signal Jamming"
-  | "Spy"
-  | "Stall Tactics"
-  | "Star Forge"
-  | "Stymie"
-  | "Tactical Bombardment"
-  | "The Inferno"
-  | "Trade Convoys"
-  | "Unexpected Action"
-  | "Unstable Planet"
-  | "Uprising"
-  | "War Effort"
-  | "X-89 Bacterial Weapon"
+  | BaseGame.ComponentId
   | ProphecyOfKings.ComponentId
   | CodexOne.ComponentId
   | CodexFour.ComponentId
