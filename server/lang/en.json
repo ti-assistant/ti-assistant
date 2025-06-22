@@ -1335,6 +1335,14 @@
     "defaultMessage": "Cannot score Public Objectives",
     "description": "Message telling a player that they cannot score public objectives."
   },
+  "Components.Age of Exploration.Description": {
+    "defaultMessage": "ACTION: Exhaust DARK ENERGY TAP and choose a non-home edge system that contains your ships to roll 1 die. On a result of 1-4, draw a random unused red tile; on a result of 5-10, draw a random unused blue tile. Place that tile adjacent to the chosen system so that it is touching at least 2 non-home systems. Place a frontier token in the system if it does not contain any planets.",
+    "description": "Description for Component: Age of Exploration"
+  },
+  "Components.Age of Exploration.Title": {
+    "defaultMessage": "Age of Exploration",
+    "description": "Title of Component: Age of Exploration"
+  },
   "Components.Ancient Burial Sites.Title": {
     "defaultMessage": "Ancient Burial Sites",
     "description": "Title of Component: Ancient Burial Sites"
@@ -1694,6 +1702,14 @@
   "Components.The Inferno.Title": {
     "defaultMessage": "The Inferno",
     "description": "Title of Component: The Inferno"
+  },
+  "Components.Total War.Description": {
+    "defaultMessage": "ACTION: Discard 10 commodities from planets in your home system to gain 1 victory point.",
+    "description": "Description for Component: Total War"
+  },
+  "Components.Total War.Title": {
+    "defaultMessage": "Total War",
+    "description": "Title of Component: Total War"
   },
   "Components.Trade Convoys.Description": {
     "defaultMessage": "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, you may negotiate transactions with players who are not your neighbor.{br}If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player.",
@@ -3427,6 +3443,14 @@
     "defaultMessage": "Betray a Friend",
     "description": "Title of Objective: Betray a Friend"
   },
+  "Objectives.Book of Latvinia.Description": {
+    "defaultMessage": "Use the Book of Latvinia's ACTION while in control of planets with all 4 types of technology specialities.",
+    "description": "Description for Objective: Book of Latvinia"
+  },
+  "Objectives.Book of Latvinia.Title": {
+    "defaultMessage": "Book of Latvinia",
+    "description": "Title of Objective: Book of Latvinia"
+  },
   "Objectives.Brave the Void.Description": {
     "defaultMessage": "Win a combat in an anomaly.",
     "description": "Description for Objective: Brave the Void"
@@ -4091,6 +4115,14 @@
     "defaultMessage": "Tomb + Crown of Emphidia",
     "description": "Title of Objective: Tomb + Crown of Emphidia"
   },
+  "Objectives.Total War.Description": {
+    "defaultMessage": "Discard 10 commodities from planets in your home system.",
+    "description": "Description for Objective: Total War"
+  },
+  "Objectives.Total War.Title": {
+    "defaultMessage": "Total War",
+    "description": "Title of Objective: Total War"
+  },
   "Objectives.Turn Their Fleets to Dust.Description": {
     "defaultMessage": "Use SPACE CANNON to destroy the last of a player's ships in a system.",
     "description": "Description for Objective: Turn Their Fleets to Dust"
@@ -4284,7 +4316,7 @@
     "description": "Title of Relic: Book of Latvinia"
   },
   "Relics.Circlet of the Void.Description": {
-    "defaultMessage": "Your units do not roll for gravity rifts, and you ignore the movement effects of other anomalies.{br}ACTION: Exhaust this card toexplore a frontier token in asystem that does not containany other players' ships.",
+    "defaultMessage": "Your units do not roll for gravity rifts, and you ignore the movement effects of other anomalies.{br}ACTION: Exhaust this card to explore a frontier token in a system that does not contain any other players' ships.",
     "description": "Description for Relic: Circlet of the Void"
   },
   "Relics.Circlet of the Void.Title": {
@@ -4771,6 +4803,10 @@
     "defaultMessage": "Light/Wave Deflector",
     "description": "Title of Tech: Light/Wave Deflector"
   },
+  "Techs.Magen Defense Grid.Codex Four.Description": {
+    "defaultMessage": "When any player activates a system that contains 1 or more of your structures, place 1 infantry from your reinforcements with each of those structures.{br}At the start of ground combat on a planet that contains 1 or more of your structures, produce 1 hit and assign it to 1 of your opponent's ground forces.",
+    "description": "Description for Tech: Magen Defense Grid (Codex 4)"
+  },
   "Techs.Magen Defense Grid.Description": {
     "defaultMessage": "You may exhaust this card at the start of a round of ground combat on a planet that contains 1 or more of your units that have PLANETARY SHIELD; your opponent cannot make combat rolls this combat round.",
     "description": "Description for Tech: Magen Defense Grid"
@@ -4883,6 +4919,10 @@
     "defaultMessage": "War Sun",
     "description": "Title of Tech: War Sun"
   },
+  "Techs.X-89 Bacterial Weapon.Codex Four.Description": {
+    "defaultMessage": "Double the hits produced by your units' BOMBARDMENT and ground combat rolls.{br}Exhaust each planet you use BOMBARDMENT against.",
+    "description": "Description for Tech: X-89 Bacterial Weapon (Codex 4)"
+  },
   "Techs.X-89 Bacterial Weapon.Description": {
     "defaultMessage": "ACTION: Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet.",
     "description": "Description for Tech: X-89 Bacterial Weapon"
@@ -4894,6 +4934,10 @@
   "Techs.X-89 Bacterial Weapon.Omega.Tech": {
     "defaultMessage": "X-89 Bacterial Weapon Ω",
     "description": "Title of Tech: X-89 Bacterial Weapon Ω"
+  },
+  "Techs.X-89 Bacterial Weapon.Tech": {
+    "defaultMessage": "X-89 Bacterial Weapon",
+    "description": "Title of Tech: X-89 Bacterial Weapon"
   },
   "Techs.X-89 Bacterial Weapon.Title": {
     "defaultMessage": "X-89 Bacterial Weapon",

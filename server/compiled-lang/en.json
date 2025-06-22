@@ -2927,6 +2927,18 @@
       "value": "Cannot score Public Objectives"
     }
   ],
+  "Components.Age of Exploration.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust DARK ENERGY TAP and choose a non-home edge system that contains your ships to roll 1 die. On a result of 1-4, draw a random unused red tile; on a result of 5-10, draw a random unused blue tile. Place that tile adjacent to the chosen system so that it is touching at least 2 non-home systems. Place a frontier token in the system if it does not contain any planets."
+    }
+  ],
+  "Components.Age of Exploration.Title": [
+    {
+      "type": 0,
+      "value": "Age of Exploration"
+    }
+  ],
   "Components.Ancient Burial Sites.Title": [
     {
       "type": 0,
@@ -3553,6 +3565,18 @@
     {
       "type": 0,
       "value": "The Inferno"
+    }
+  ],
+  "Components.Total War.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Discard 10 commodities from planets in your home system to gain 1 victory point."
+    }
+  ],
+  "Components.Total War.Title": [
+    {
+      "type": 0,
+      "value": "Total War"
     }
   ],
   "Components.Trade Convoys.Description": [
@@ -6997,6 +7021,18 @@
       "value": "Betray a Friend"
     }
   ],
+  "Objectives.Book of Latvinia.Description": [
+    {
+      "type": 0,
+      "value": "Use the Book of Latvinia's ACTION while in control of planets with all 4 types of technology specialities."
+    }
+  ],
+  "Objectives.Book of Latvinia.Title": [
+    {
+      "type": 0,
+      "value": "Book of Latvinia"
+    }
+  ],
   "Objectives.Brave the Void.Description": [
     {
       "type": 0,
@@ -8001,6 +8037,18 @@
       "value": "Tomb + Crown of Emphidia"
     }
   ],
+  "Objectives.Total War.Description": [
+    {
+      "type": 0,
+      "value": "Discard 10 commodities from planets in your home system."
+    }
+  ],
+  "Objectives.Total War.Title": [
+    {
+      "type": 0,
+      "value": "Total War"
+    }
+  ],
   "Objectives.Turn Their Fleets to Dust.Description": [
     {
       "type": 0,
@@ -8434,7 +8482,7 @@
     },
     {
       "type": 0,
-      "value": "ACTION: Exhaust this card toexplore a frontier token in asystem that does not containany other players' ships."
+      "value": "ACTION: Exhaust this card to explore a frontier token in a system that does not contain any other players' ships."
     }
   ],
   "Relics.Circlet of the Void.Title": [
@@ -9303,6 +9351,20 @@
       "value": "Light/Wave Deflector"
     }
   ],
+  "Techs.Magen Defense Grid.Codex Four.Description": [
+    {
+      "type": 0,
+      "value": "When any player activates a system that contains 1 or more of your structures, place 1 infantry from your reinforcements with each of those structures."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "At the start of ground combat on a planet that contains 1 or more of your structures, produce 1 hit and assign it to 1 of your opponent's ground forces."
+    }
+  ],
   "Techs.Magen Defense Grid.Description": [
     {
       "type": 0,
@@ -9503,6 +9565,20 @@
       "value": "War Sun"
     }
   ],
+  "Techs.X-89 Bacterial Weapon.Codex Four.Description": [
+    {
+      "type": 0,
+      "value": "Double the hits produced by your units' BOMBARDMENT and ground combat rolls."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Exhaust each planet you use BOMBARDMENT against."
+    }
+  ],
   "Techs.X-89 Bacterial Weapon.Description": [
     {
       "type": 0,
@@ -9519,6 +9595,12 @@
     {
       "type": 0,
       "value": "X-89 Bacterial Weapon Ω"
+    }
+  ],
+  "Techs.X-89 Bacterial Weapon.Tech": [
+    {
+      "type": 0,
+      "value": "X-89 Bacterial Weapon"
     }
   ],
   "Techs.X-89 Bacterial Weapon.Title": [
