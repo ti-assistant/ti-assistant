@@ -4,13 +4,12 @@ export default function InfantrySVG({
   size,
   color = "#eee",
 }: {
-  size: number;
+  size: number | string;
   color?: string;
 }) {
   return (
     <svg
-      width={rem(size)}
-      height={rem(size)}
+      height={typeof size === "number" ? rem(size) : size}
       viewBox="0 0 17 17"
       xmlns="http://www.w3.org/2000/svg"
       fill={color}

@@ -5,11 +5,11 @@ export default function CarrierSVG({
   size,
 }: {
   color?: string;
-  size: number;
+  size: number | string;
 }) {
   return (
     <svg
-      height={rem(size)}
+      height={typeof size === "number" ? rem(size) : size}
       version="1.1"
       viewBox="0 0 33 17"
       xmlns="http://www.w3.org/2000/svg"

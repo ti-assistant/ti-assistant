@@ -972,6 +972,12 @@ function FactionSelect({
       return true;
     }
   );
+  filteredFactions.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
 
   const selectedFactions = factions
     .filter((faction, index) => !!faction.id && index < numFactions)

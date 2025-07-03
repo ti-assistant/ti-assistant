@@ -13,6 +13,8 @@ import styles from "./SetupFactionPanel.module.scss";
 import TechIcon from "./TechIcon/TechIcon";
 import { rem } from "../util/util";
 import { useSharedModal } from "../data/SharedModal";
+import UnitType, { UnitTypeWithIcon } from "./Units/Types";
+import UnitIcon from "./Units/Icons";
 
 function AbilitySection({
   leftLabel,
@@ -428,6 +430,19 @@ function FactionPanelContent({
                     leftLabel={
                       <div className="flexRow" style={{ gap: rem(4) }}>
                         {tech.name}
+                      </div>
+                    }
+                    label={
+                      tech.type === "UPGRADE" ? (
+                        <UnitIcon
+                          type={tech.unitType}
+                          size={18}
+                          color="var(--neutral-border)"
+                        />
+                      ) : null
+                    }
+                    rightLabel={
+                      <div className="flexRow" style={{ gap: rem(4) }}>
                         {tech.prereqs.map((prereq, index) => {
                           return (
                             <TechIcon key={index} type={prereq} size={20} />
@@ -579,7 +594,14 @@ function FactionPanelContent({
               <AbilitySection
                 key={index}
                 leftLabel={leftLabel}
-                rightLabel={unitTypeString(localUnit.type, intl).toUpperCase()}
+                label={
+                  <UnitIcon
+                    type={unit.type}
+                    color="var(--neutral-border)"
+                    size={18}
+                  />
+                }
+                rightLabel={<UnitType type={unit.type} />}
               >
                 {localUnit.description
                   ? formatDescription(localUnit.description).map(

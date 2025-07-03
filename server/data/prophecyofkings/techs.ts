@@ -110,6 +110,7 @@ export default function getProphecyOfKingsTechs(
         cost: "1(x2)",
       },
       type: "UPGRADE",
+      unitType: "Infantry",
     },
     "Dark Energy Tap": {
       description: intl.formatMessage(
@@ -152,8 +153,9 @@ export default function getProphecyOfKingsTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       replaces: "Space Dock II",
-      type: "UPGRADE",
       stats: {},
+      type: "UPGRADE",
+      unitType: "Space Dock",
     },
     "Genetic Recombination": {
       description: intl.formatMessage({
@@ -200,6 +202,7 @@ export default function getProphecyOfKingsTechs(
         combat: 6,
       },
       type: "UPGRADE",
+      unitType: "PDS",
     },
     "Memoria II": {
       abilities: [sustainDamage(intl), antiFighterBarrage("5 (x3)", intl)],
@@ -225,6 +228,7 @@ export default function getProphecyOfKingsTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Flagship",
     },
     "Pre-Fab Arcologies": {
       description: intl.formatMessage({
@@ -302,6 +306,7 @@ export default function getProphecyOfKingsTechs(
         move: 3,
       },
       type: "UPGRADE",
+      unitType: "Cruiser",
     },
     "Scanlink Drone Network": {
       description: intl.formatMessage({
@@ -382,6 +387,7 @@ export default function getProphecyOfKingsTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Destroyer",
     },
     Supercharge: {
       description: intl.formatMessage({

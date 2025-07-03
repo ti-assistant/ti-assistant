@@ -4,12 +4,12 @@ export default function FlagshipSVG({
   size,
   color = "#eee",
 }: {
-  size: number;
+  size: number | string;
   color?: string;
 }) {
   return (
     <svg
-      height={rem(size)}
+      height={typeof size === "number" ? rem(size) : size}
       viewBox="0 0 128 64"
       xmlns="http://www.w3.org/2000/svg"
       fill={color}

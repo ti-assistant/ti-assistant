@@ -36,6 +36,7 @@ interface BaseUpgradeTech {
   replaces?: TechId;
   stats: UnitStats;
   type: "UPGRADE";
+  unitType: UnitType;
 }
 
 type BaseTech = BaseNormalTech | BaseUpgradeTech;

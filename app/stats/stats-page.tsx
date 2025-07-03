@@ -14,6 +14,7 @@ import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import { Strings } from "../../src/components/strings";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
+import { Loader } from "../../src/Loader";
 import { Optional } from "../../src/util/types/types";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "./processor";
@@ -24,7 +25,6 @@ import StrategyCardSection from "./sections/StrategyCardSection";
 import TechsSection from "./sections/TechsSection";
 import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
-import { Loader } from "../../src/Loader";
 
 function FilterButton<T extends string | number>({
   filter,

@@ -32,6 +32,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Carrier",
     },
     "Antimass Deflectors": {
       description: intl.formatMessage(
@@ -106,6 +107,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Carrier",
     },
     "Chaos Mapping": {
       description: intl.formatMessage(
@@ -145,6 +147,7 @@ export default function getBaseTechs(
         move: 3,
       },
       type: "UPGRADE",
+      unitType: "Cruiser",
     },
     "Daxcive Animators": {
       description: intl.formatMessage({
@@ -179,6 +182,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Destroyer",
     },
     "Dimensional Splicer": {
       description: intl.formatMessage({
@@ -221,6 +225,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Dreadnought",
     },
     "Duranium Armor": {
       description: intl.formatMessage({
@@ -285,6 +290,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Dreadnought",
     },
     "Fighter II": {
       abilities: [],
@@ -308,6 +314,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Fighter",
     },
     "Fleet Logistics": {
       description: intl.formatMessage({
@@ -349,6 +356,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Space Dock",
     },
     "Graviton Laser System": {
       description: intl.formatMessage({
@@ -426,6 +434,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Fighter",
     },
     "Hyper Metabolism": {
       description: intl.formatMessage({
@@ -483,6 +492,7 @@ export default function getBaseTechs(
         cost: "1(x2)",
       },
       type: "UPGRADE",
+      unitType: "Infantry",
     },
     "Inheritance Systems": {
       description: intl.formatMessage({
@@ -599,6 +609,7 @@ export default function getBaseTechs(
         cost: "1(x2)",
       },
       type: "UPGRADE",
+      unitType: "Infantry",
     },
     "LightWave Deflector": {
       description: intl.formatMessage({
@@ -832,6 +843,7 @@ export default function getBaseTechs(
       prereqs: ["RED", "YELLOW"],
       stats: {},
       type: "UPGRADE",
+      unitType: "PDS",
     },
     "Plasma Scoring": {
       description: intl.formatMessage({
@@ -893,6 +905,7 @@ export default function getBaseTechs(
         move: 3,
       },
       type: "UPGRADE",
+      unitType: "War Sun",
     },
     "Quantum Datahub Node": {
       description: intl.formatMessage({
@@ -968,6 +981,7 @@ export default function getBaseTechs(
       prereqs: ["YELLOW", "YELLOW"],
       stats: {},
       type: "UPGRADE",
+      unitType: "Space Dock",
     },
     "Spacial Conduit Cylinder": {
       description: intl.formatMessage({
@@ -1010,6 +1024,7 @@ export default function getBaseTechs(
         cost: "1(x2)",
       },
       type: "UPGRADE",
+      unitType: "Infantry",
     },
     "Super-Dreadnought II": {
       abilities: [sustainDamage(intl), bombardment("4", intl)],
@@ -1036,6 +1051,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Dreadnought",
     },
     "Transit Diodes": {
       description: intl.formatMessage({
@@ -1113,6 +1129,7 @@ export default function getBaseTechs(
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "War Sun",
     },
     "Wormhole Generator": {
       description: intl.formatMessage({

@@ -4,12 +4,12 @@ export default function CruiserSVG({
   size,
   color = "#eee",
 }: {
-  size: number;
+  size: number | string;
   color?: string;
 }) {
   return (
     <svg
-      height={rem(size)}
+      height={typeof size === "number" ? rem(size) : size}
       version="1.1"
       viewBox="0 0 34 17"
       xmlns="http://www.w3.org/2000/svg"

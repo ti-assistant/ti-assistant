@@ -1,5 +1,6 @@
 import { IntlShape } from "react-intl";
 import {
+  antiFighterBarrage,
   bombardment,
   planetaryShield,
   production,
@@ -733,7 +734,7 @@ export default function getProphecyOfKingsFactions(
       },
       units: [
         {
-          abilities: [sustainDamage(intl)],
+          abilities: [sustainDamage(intl), antiFighterBarrage("8 (x3)", intl)],
           description: intl.formatMessage({
             id: "Nomad.Units.Memoria.Description",
             description: "Description for Faction Unit: Memoria",
