@@ -14,6 +14,18 @@ import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRad
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
+import FighterSVG from "../../icons/units/Fighter";
+import InfantrySVG from "../../icons/units/Infantry";
+import CarrierSVG from "../../icons/units/Carrier";
+import CruiserSVG from "../../icons/units/Cruiser";
+import DestroyerSVG from "../../icons/units/Destroyer";
+import PDSSVG from "../../icons/units/PDS";
+import DreadnoughtSVG from "../../icons/units/Dreadnought";
+import { getFactionColor } from "../../util/factions";
+import SpaceDockSVG from "../../icons/units/SpaceDock";
+import FlagshipSVG from "../../icons/units/Flagship";
+import WarSunSVG from "../../icons/units/WarSun";
+import MechSVG from "../../icons/units/Mech";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -251,11 +263,7 @@ export default function StartingComponents({
           gridTemplateRows: `repeat(${Math.ceil(
             orderedUnits.length / 2
           )}, 1fr)`,
-          paddingLeft: rem(4),
-          paddingRight: rem(4),
           fontFamily: "Myriad Pro",
-          // justifyContent: "stretch",
-          // alignItems: "flex-start",
           columnGap: rem(8),
           fontSize: rem(14),
           width: "100%",
@@ -263,12 +271,50 @@ export default function StartingComponents({
       >
         {orderedUnits.map(([unit, number]) => {
           return (
-            <div key={unit}>
+            <div
+              key={unit}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: rem(2),
+              }}
+            >
               <Strings.Units unit={unit} count={number} />
+              <UnitIcon unit={unit} color={getFactionColor(faction)} />
             </div>
           );
         })}
       </div>
     </div>
   );
+}
+function UnitIcon({ unit, color }: { unit: UnitType; color: string }) {
+  const iconColor = "#eee"; // color === "Black" ? "#eee" : color;
+  const size = 14;
+  switch (unit) {
+    case "Carrier":
+      return <CarrierSVG size={size} color={iconColor} />;
+    case "Cruiser":
+      return <CruiserSVG size={size} color={iconColor} />;
+    case "Destroyer":
+      return <DestroyerSVG size={size} color={iconColor} />;
+    case "Dreadnought":
+      return <DreadnoughtSVG size={size} color={iconColor} />;
+    case "Fighter":
+      return <FighterSVG size={size} color={iconColor} />;
+    case "Flagship":
+      return <FlagshipSVG size={size} color={iconColor} />;
+    case "Infantry":
+      return <InfantrySVG size={size} color={iconColor} />;
+    case "Mech":
+      return <MechSVG size={size} color={iconColor} />;
+    case "PDS":
+      return <PDSSVG size={size} color={iconColor} />;
+    case "Space Dock":
+      return <SpaceDockSVG size={size} color={iconColor} />;
+    case "War Sun":
+      return <WarSunSVG size={size} color={iconColor} />;
+  }
 }

@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { getBaseFactions } from "../../server/data/factions";
+import { getFactions } from "../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../src/HoverMenu";
 import { Loader } from "../../src/Loader";
 import { SelectableRow } from "../../src/SelectableRow";
@@ -25,6 +25,8 @@ import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
 import { rem } from "../../src/util/util";
 import styles from "./setup.module.scss";
+import PlayerNameInput from "./components/PlayerNameInput";
+import ColorPicker from "./components/ColorPicker";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -222,6 +224,7 @@ function MobileOptions({
             style={{
               justifyContent: "flex-start",
               fontFamily: "Myriad Pro",
+              gap: rem(4),
             }}
           >
             Codices:
@@ -408,6 +411,7 @@ function MobileOptions({
                       alignItems: "flex-start",
                       padding: `0 ${rem(20)}`,
                       fontFamily: "Myriad Pro",
+                      gap: rem(4),
                     }}
                   >
                     <Toggle
@@ -600,6 +604,7 @@ function Options({
             style={{
               justifyContent: "flex-start",
               fontFamily: "Myriad Pro",
+              gap: rem(4),
             }}
           >
             Codices:
@@ -697,6 +702,7 @@ function Options({
                     alignItems: "flex-start",
                     padding: `0 ${rem(20)}`,
                     fontFamily: "Myriad Pro",
+                    gap: rem(4),
                   }}
                 >
                   <Toggle
@@ -939,7 +945,7 @@ function FactionSelect({
 }: FactionSelectProps) {
   const nameRef = useRef<HTMLInputElement>(null);
   const intl = useIntl();
-  const availableFactions = getBaseFactions(intl);
+  const availableFactions = getFactions(intl);
 
   const factionIndex = mobile
     ? position
@@ -966,6 +972,12 @@ function FactionSelect({
       return true;
     }
   );
+  filteredFactions.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
 
   const selectedFactions = factions
     .filter((faction, index) => !!faction.id && index < numFactions)
@@ -979,12 +991,8 @@ function FactionSelect({
     setColor(factionIndex, color);
   }
 
-  function savePlayerName(element: HTMLInputElement) {
-    if (element.value === "") {
-      element.value = faction.playerName ?? "";
-      return;
-    }
-    setPlayerName(factionIndex, element.value);
+  function savePlayerName(name: string) {
+    setPlayerName(factionIndex, name);
   }
 
   function selectAlliancePartner(factionId: Optional<FactionId>) {
@@ -1005,35 +1013,20 @@ function FactionSelect({
 
   const factionColor = convertToFactionColor(faction.color);
 
-  const label = (
-    <input
-      ref={nameRef}
-      tabIndex={position + 1}
-      type="textbox"
-      spellCheck={false}
-      placeholder={intl.formatMessage({
-        id: "4n1LQO",
-        description: "Initial text in a textbox used to input a player's name",
-        defaultMessage: "Enter Player Name...",
-      })}
-      style={{
-        fontFamily: "Myriad Pro",
-        borderColor: factionColor === "#555" ? undefined : factionColor,
-        boxShadow:
-          factionColor === "Black" ? OUTER_BLACK_BORDER_GLOW : undefined,
-        fontSize: rem(13.33),
-      }}
-      onFocus={(e) => (e.currentTarget.value = "")}
-      onClick={(e) => (e.currentTarget.value = "")}
-      onBlur={(e) => savePlayerName(e.currentTarget)}
-    />
-  );
-
-  const selectedColors = factions.map((faction) => faction.color);
+  const selectedColors = factions
+    .map((faction) => faction.color)
+    .filter((color) => !!color) as string[];
 
   return (
     <LabeledDiv
-      label={label}
+      label={
+        <PlayerNameInput
+          color={factionColor === "#555" ? undefined : factionColor}
+          playerName={faction.playerName}
+          tabIndex={position + 1}
+          updatePlayerName={savePlayerName}
+        />
+      }
       rightLabel={isSpeaker ? <Strings.Speaker /> : undefined}
       color={factionColor}
       style={{ width: mobile ? "100%" : "28vw", minWidth: rem(260) }}
@@ -1096,59 +1089,11 @@ function FactionSelect({
                     options={createOptions(options)}
                   />
                 </SelectableRow>
-                <ClientOnlyHoverMenu
-                  label={
-                    <FormattedMessage
-                      id="Lm8L7/"
-                      description="Text on a hover menu for picking a player's color."
-                      defaultMessage="Color"
-                    />
-                  }
-                  renderProps={(closeFn) => {
-                    return (
-                      <div
-                        className="flexRow"
-                        style={{
-                          padding: `${rem(8)}`,
-                          display: "grid",
-                          gridAutoFlow: "column",
-                          gridTemplateRows: "repeat(3, auto)",
-                          overflowX: "auto",
-                          gap: `${rem(4)}`,
-                          justifyContent: "flex-start",
-                        }}
-                      >
-                        {colors.map((color) => {
-                          const factionColor = convertToFactionColor(color);
-                          const alreadySelected =
-                            selectedColors.includes(color);
-                          return (
-                            <button
-                              key={color}
-                              style={{
-                                backgroundColor: factionColor,
-                                color: factionColor,
-                                height: rem(22),
-                                width: rem(18),
-                                opacity:
-                                  faction.color !== color && alreadySelected
-                                    ? 0.25
-                                    : undefined,
-                              }}
-                              className={
-                                faction.color === color ? "selected" : ""
-                              }
-                              onClick={() => {
-                                closeFn();
-                                selectColor(color);
-                              }}
-                            ></button>
-                          );
-                        })}
-                      </div>
-                    );
-                  }}
-                ></ClientOnlyHoverMenu>
+                <ColorPicker
+                  pickedColor={faction.color}
+                  selectedColors={selectedColors}
+                  updateColor={selectColor}
+                />
               </>
             ) : (
               <ClientOnlyHoverMenu
@@ -1265,6 +1210,7 @@ export default function SetupPage({
   const [options, setOptions] = useState<SetupOptions>({
     ...INITIAL_OPTIONS,
     expansions: new Set(INITIAL_OPTIONS.expansions),
+    events: new Set(),
   });
   const [numFactions, setNumFactions] = useState(6);
   const [creatingGame, setCreatingGame] = useState(false);
@@ -1453,9 +1399,10 @@ export default function SetupPage({
       if (faction.id) {
         selectedFactions[index] = faction.id;
       }
-      if (faction.color) {
-        usedColors.add(faction.color);
-        selectedColors[index] = faction.color;
+      const color = faction.color;
+      if (color) {
+        usedColors.add(color);
+        selectedColors[index] = color;
       }
     }
     const filteredFactions = Object.values(availableFactions ?? {}).filter(

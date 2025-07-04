@@ -28,7 +28,7 @@ export class ChooseSubFactionHandler implements Handler {
       ? "DELETE"
       : this.data.event.subFaction;
 
-    const planets = buildPlanets(this.gameData);
+    const planets = buildPlanets(this.gameData, intl);
     for (const [planetId, planet] of Object.entries(planets ?? {})) {
       if (planet.owner === this.data.event.faction) {
         updates[`planets.${planetId}`] = "DELETE";

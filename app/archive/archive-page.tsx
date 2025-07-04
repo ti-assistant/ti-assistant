@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import {
   Dispatch,
@@ -16,12 +15,13 @@ import Sidebars from "../../src/components/Sidebars/Sidebars";
 import { Strings } from "../../src/components/strings";
 import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
 import Toggle from "../../src/components/Toggle/Toggle";
+import MapMenuSVG from "../../src/icons/ui/MapMenu";
+import ObjectivesMenuSVG from "../../src/icons/ui/ObjectivesMenu";
+import PlanetMenuSVG from "../../src/icons/ui/PlanetMenu";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
-import ObjectivesMenuSVG from "../../src/icons/ui/ObjectivesMenu";
-import PlanetMenuSVG from "../../src/icons/ui/PlanetMenu";
-import MapMenuSVG from "../../src/icons/ui/MapMenu";
+import { Loader } from "../../src/Loader";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -105,9 +105,11 @@ function applyFilters(
 }
 
 export default function ArchivePage({
+  loading,
   processedGames,
 }: {
   processedGames: Record<string, ProcessedGame>;
+  loading?: boolean;
 }) {
   const intl = useIntl();
   const [expansions, setExpansions] = useState<Set<Expansion>>(
@@ -357,145 +359,153 @@ export default function ArchivePage({
               </div>
             </div>
           </div>
-          <div className={styles.ArchiveGameBody}>
-            {orderedGames.map(([gameId, game]) => {
-              // Skip games that pre-date action log.
-              if (!game.timestampMillis) {
-                return null;
-              }
-
-              const orderedFactions = objectEntries(game.factions).sort(
-                (a, b) => {
-                  return b[1].points - a[1].points;
+          {loading ? (
+            <div style={{ gridColumn: "1/-1", width: "100%", height: "100%" }}>
+              <Loader />
+            </div>
+          ) : (
+            <div className={styles.ArchiveGameBody}>
+              {orderedGames.map(([gameId, game]) => {
+                // Skip games that pre-date action log.
+                if (!game.timestampMillis) {
+                  return null;
                 }
-              );
 
-              const date = new Date(game.timestampMillis);
+                const orderedFactions = objectEntries(game.factions).sort(
+                  (a, b) => {
+                    return b[1].points - a[1].points;
+                  }
+                );
 
-              return (
-                <Link
-                  href={`/archive/${gameId}`}
-                  key={gameId}
-                  className={styles.ArchiveGame}
-                  prefetch={false}
-                >
-                  <div
-                    className="flexRow"
-                    style={{ justifyContent: "flex-start" }}
+                const date = new Date(game.timestampMillis);
+
+                return (
+                  <Link
+                    href={`/archive/${gameId}`}
+                    key={gameId}
+                    className={styles.ArchiveGame}
+                    prefetch={false}
                   >
-                    {gameId}
-                  </div>
-                  <div
-                    className="flexRow"
-                    style={{ justifyContent: "flex-start" }}
-                  >
-                    {date.toDateString()}
-                  </div>
-                  <div
-                    className="flexRow"
-                    style={{ gap: rem(8), justifyContent: "flex-start" }}
-                  >
-                    {orderedFactions.map(([factionId, faction]) => {
-                      return (
-                        <div
-                          key={factionId}
-                          className="flexRow"
-                          style={{
-                            position: "relative",
-                            width: rem(24),
-                            height: rem(24),
-                          }}
-                        >
-                          <FactionIcon factionId={factionId} size="100%" />
+                    <div
+                      className="flexRow"
+                      style={{ justifyContent: "flex-start" }}
+                    >
+                      {gameId}
+                    </div>
+                    <div
+                      className="flexRow"
+                      style={{ justifyContent: "flex-start" }}
+                    >
+                      {date.toDateString()}
+                    </div>
+                    <div
+                      className="flexRow"
+                      style={{ gap: rem(8), justifyContent: "flex-start" }}
+                    >
+                      {orderedFactions.map(([factionId, faction]) => {
+                        return (
                           <div
+                            key={factionId}
                             className="flexRow"
                             style={{
-                              position: "absolute",
-                              backgroundColor: "var(--background-color)",
-                              borderRadius: "100%",
-                              marginLeft: "70%",
-                              marginTop: "70%",
-                              fontSize: rem(12),
-                              boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                              width: rem(18),
-                              height: rem(18),
-                              zIndex: 2,
+                              position: "relative",
+                              width: rem(24),
+                              height: rem(24),
                             }}
                           >
-                            {faction.points}
+                            <FactionIcon factionId={factionId} size="100%" />
+                            <div
+                              className="flexRow"
+                              style={{
+                                position: "absolute",
+                                backgroundColor: "var(--background-color)",
+                                borderRadius: "100%",
+                                marginLeft: "70%",
+                                marginTop: "70%",
+                                fontSize: rem(12),
+                                boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+                                width: rem(18),
+                                height: rem(18),
+                                zIndex: 2,
+                              }}
+                            >
+                              {faction.points}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="flexRow" style={{ height: "100%" }}>
-                    <div
-                      className="flexRow"
-                      style={{
-                        width: rem(16),
-                        height: rem(16),
-                        fontSize: rem(14),
-                        fontWeight: "bold",
-                        backgroundColor: game.isMapGame ? "#999" : "#333",
-                        color: "#111",
-                        borderRadius: "100%",
-                      }}
-                    >
-                      {game.isMapGame ? "✓" : ""}
+                        );
+                      })}
                     </div>
-                  </div>
-                  <div className="flexRow" style={{ height: "100%" }}>
-                    <div
-                      className="flexRow"
-                      style={{
-                        width: rem(16),
-                        height: rem(16),
-                        fontSize: rem(14),
-                        fontWeight: "bold",
-                        backgroundColor: game.isObjectiveGame ? "#999" : "#333",
-                        color: "#111",
-                        borderRadius: "100%",
-                      }}
-                    >
-                      {game.isObjectiveGame ? "✓" : ""}
+                    <div className="flexRow" style={{ height: "100%" }}>
+                      <div
+                        className="flexRow"
+                        style={{
+                          width: rem(16),
+                          height: rem(16),
+                          fontSize: rem(14),
+                          fontWeight: "bold",
+                          backgroundColor: game.isMapGame ? "#999" : "#333",
+                          color: "#111",
+                          borderRadius: "100%",
+                        }}
+                      >
+                        {game.isMapGame ? "✓" : ""}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flexRow" style={{ height: "100%" }}>
-                    <div
-                      className="flexRow"
-                      style={{
-                        width: rem(16),
-                        height: rem(16),
-                        fontSize: rem(14),
-                        fontWeight: "bold",
-                        backgroundColor: game.isTechGame ? "#999" : "#333",
-                        color: "#111",
-                        borderRadius: "100%",
-                      }}
-                    >
-                      {game.isTechGame ? "✓" : ""}
+                    <div className="flexRow" style={{ height: "100%" }}>
+                      <div
+                        className="flexRow"
+                        style={{
+                          width: rem(16),
+                          height: rem(16),
+                          fontSize: rem(14),
+                          fontWeight: "bold",
+                          backgroundColor: game.isObjectiveGame
+                            ? "#999"
+                            : "#333",
+                          color: "#111",
+                          borderRadius: "100%",
+                        }}
+                      >
+                        {game.isObjectiveGame ? "✓" : ""}
+                      </div>
                     </div>
-                  </div>{" "}
-                  <div className="flexRow" style={{ height: "100%" }}>
-                    <div
-                      className="flexRow"
-                      style={{
-                        width: rem(16),
-                        height: rem(16),
-                        fontSize: rem(14),
-                        fontWeight: "bold",
-                        backgroundColor: game.isPlanetGame ? "#999" : "#333",
-                        color: "#111",
-                        borderRadius: "100%",
-                      }}
-                    >
-                      {game.isPlanetGame ? "✓" : ""}
+                    <div className="flexRow" style={{ height: "100%" }}>
+                      <div
+                        className="flexRow"
+                        style={{
+                          width: rem(16),
+                          height: rem(16),
+                          fontSize: rem(14),
+                          fontWeight: "bold",
+                          backgroundColor: game.isTechGame ? "#999" : "#333",
+                          color: "#111",
+                          borderRadius: "100%",
+                        }}
+                      >
+                        {game.isTechGame ? "✓" : ""}
+                      </div>
+                    </div>{" "}
+                    <div className="flexRow" style={{ height: "100%" }}>
+                      <div
+                        className="flexRow"
+                        style={{
+                          width: rem(16),
+                          height: rem(16),
+                          fontSize: rem(14),
+                          fontWeight: "bold",
+                          backgroundColor: game.isPlanetGame ? "#999" : "#333",
+                          color: "#111",
+                          borderRadius: "100%",
+                        }}
+                      >
+                        {game.isPlanetGame ? "✓" : ""}
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </LabeledDiv>
     </div>

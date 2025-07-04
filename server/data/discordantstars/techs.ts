@@ -59,6 +59,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         capacity: 6,
       },
       type: "UPGRADE",
+      unitType: "Carrier",
     },
     "Zhrgar Stimulants": {
       description:
@@ -120,6 +121,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       replaces: "Space Dock II",
       type: "UPGRADE",
       stats: {},
+      unitType: "Space Dock",
     },
     // Cheiran Hordes
     "Chitin Hulk II": {
@@ -139,6 +141,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         capacity: 1,
       },
       type: "UPGRADE",
+      unitType: "Dreadnought",
     },
     "Brood Pod": {
       description:
@@ -178,6 +181,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Dreadnought",
     },
     // Edyn Mandate
     "Unity Algorithm": {
@@ -227,6 +231,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         move: 3,
       },
       type: "UPGRADE",
+      unitType: "Fighter",
     },
     // Free Systems Compact
     "Envoy Network": {
@@ -277,6 +282,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Carrier",
     },
     // Ghoti Wayfarers
     "Networked Command": {
@@ -312,6 +318,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       stats: {},
       replaces: "PDS II",
       type: "UPGRADE",
+      unitType: "PDS",
     },
     "Lightning Drives": {
       description:
@@ -466,6 +473,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Fighter",
     },
     "Wraith Engine": {
       description:
@@ -490,6 +498,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       replaces: "Space Dock II",
       stats: {},
       type: "UPGRADE",
+      unitType: "Space Dock",
     },
     "Psychoactive Armaments": {
       description:
@@ -526,6 +535,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         combat: 4,
       },
       type: "UPGRADE",
+      unitType: "Mech",
     },
     // Nokar Sellships
     "Sabre II": {
@@ -537,12 +547,14 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       id: "Sabre II",
       name: "Sabre II",
       prereqs: ["RED", "RED"],
+      replaces: "Destroyer II",
       stats: {
         cost: 1,
         combat: 7,
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Destroyer",
     },
     "Local Contracts": {
       description:
@@ -603,6 +615,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         capacity: 6,
       },
       type: "UPGRADE",
+      unitType: "War Sun",
     },
     // Savages of Cymiae
     "Unholy Abomination II": {
@@ -620,6 +633,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         cost: 1,
       },
       type: "UPGRADE",
+      unitType: "Infantry",
     },
     "Recursive Worm": {
       description:
@@ -657,6 +671,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         capacity: 2,
       },
       type: "UPGRADE",
+      unitType: "Cruiser",
     },
     // Mirveda Protectorate
     "Gauss Cannon II": {
@@ -674,6 +689,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "PDS",
     },
     "Orbital Defense Grid": {
       description:
@@ -723,6 +739,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         move: 2,
       },
       type: "UPGRADE",
+      unitType: "Destroyer",
     },
     "Daedalon Flight System": {
       description:
@@ -783,6 +800,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         capacity: 1,
       },
       type: "UPGRADE",
+      unitType: "Cruiser",
     },
     // Veldyr Sovereignty
     "Lancer Dreadnought II": {
@@ -802,6 +820,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         capacity: 1,
       },
       type: "UPGRADE",
+      unitType: "Dreadnought",
     },
     "SEIDR Project": {
       description:
@@ -860,5 +879,6 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
         combat: 7,
       },
       type: "UPGRADE",
+      unitType: "Infantry",
     },
   };

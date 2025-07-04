@@ -266,7 +266,13 @@ interface ExtendedCSS extends CSSProperties {
   "--color": string;
 }
 
-export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
+export default function ObjectivePanel({
+  viewOnly,
+  asModal,
+}: {
+  viewOnly?: boolean;
+  asModal?: boolean;
+}) {
   const actionLog = useActionLog();
   const factions = useFactions();
   const gameId = useGameId();
@@ -552,6 +558,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                         </button>
                       );
                     }}
+                    itemsPerColumn={10}
                     toggleItem={(objectiveId, add) => {
                       if (!gameId) {
                         return;
@@ -1458,7 +1465,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
               alignItems: "center",
               justifyContent: "flex-end",
               width: "100%",
-              paddingTop: rem(36),
+              paddingTop: asModal ? undefined : rem(36),
             }}
           >
             {viewOnly ? null : (
@@ -1499,6 +1506,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                   label={"Secret (as Public)"}
                   objectives={remainingSecretObjectives}
                   fontSize={rem(14)}
+                  perColumn={10}
                 />
               </LabeledDiv>
             )}
@@ -2054,6 +2062,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
             }}
             innerStyle={{
               padding: 0,
+              paddingTop: rem(8),
             }}
           >
             {!mutiny ? null : (
@@ -2061,6 +2070,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 className="flexColumn mediumFont"
                 style={{
                   width: "100%",
+                  gap: rem(2),
                 }}
               >
                 <div
@@ -2083,31 +2093,61 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                       })}]`
                     )
                   ) : (
-                    <button
-                      style={{ fontSize: rem(14) }}
-                      onClick={() => {
-                        if (!gameId) {
-                          return;
+                    <div className="flexRow" style={{ gap: rem(4) }}>
+                      <Chip
+                        selected={mutinyDirection === "[For]"}
+                        toggleFn={() =>
+                          setObjectivePointsAsync(gameId, "Mutiny", 1)
                         }
-                        if (mutinyDirection === "[For]") {
-                          setObjectivePointsAsync(gameId, "Mutiny", -1);
-                        } else {
-                          setObjectivePointsAsync(gameId, "Mutiny", 1);
+                      >
+                        [
+                        {intl.formatMessage({
+                          id: "ymJxS0",
+                          defaultMessage: "For",
+                          description: "Outcome choosing to pass a law.",
+                        })}
+                        ]
+                      </Chip>
+                      <Chip
+                        selected={mutinyDirection !== "[For]"}
+                        toggleFn={() =>
+                          setObjectivePointsAsync(gameId, "Mutiny", -1)
                         }
-                      }}
-                    >
-                      {mutinyDirection === "[For]"
-                        ? `[${intl.formatMessage({
-                            id: "ymJxS0",
-                            defaultMessage: "For",
-                            description: "Outcome choosing to pass a law.",
-                          })}]`
-                        : `[${intl.formatMessage({
-                            id: "SOC2Bh",
-                            defaultMessage: "Against",
-                            description: "Outcome choosing to vote down a law.",
-                          })}]`}
-                    </button>
+                      >
+                        [
+                        {intl.formatMessage({
+                          id: "SOC2Bh",
+                          defaultMessage: "Against",
+                          description: "Outcome choosing to vote down a law.",
+                        })}
+                        ]
+                      </Chip>
+                    </div>
+                    // <button
+                    //   style={{ fontSize: rem(14) }}
+                    //   onClick={() => {
+                    //     if (!gameId) {
+                    //       return;
+                    //     }
+                    //     if (mutinyDirection === "[For]") {
+                    //       setObjectivePointsAsync(gameId, "Mutiny", -1);
+                    //     } else {
+                    //       setObjectivePointsAsync(gameId, "Mutiny", 1);
+                    //     }
+                    //   }}
+                    // >
+                    //   {mutinyDirection === "[For]"
+                    //     ? `[${intl.formatMessage({
+                    //         id: "ymJxS0",
+                    //         defaultMessage: "For",
+                    //         description: "Outcome choosing to pass a law.",
+                    //       })}]`
+                    //     : `[${intl.formatMessage({
+                    //         id: "SOC2Bh",
+                    //         defaultMessage: "Against",
+                    //         description: "Outcome choosing to vote down a law.",
+                    //       })}]`}
+                    // </button>
                   )}
                 </div>
                 <div
@@ -2136,6 +2176,7 @@ export default function ObjectivePanel({ viewOnly }: { viewOnly?: boolean }) {
                 className="flexColumn mediumFont"
                 style={{
                   width: "100%",
+                  gap: rem(2),
                 }}
               >
                 <ObjectiveRow objective={seed} hideScorers />

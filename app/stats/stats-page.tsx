@@ -14,6 +14,7 @@ import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import { Strings } from "../../src/components/strings";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
+import { Loader } from "../../src/Loader";
 import { Optional } from "../../src/util/types/types";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "./processor";
@@ -158,9 +159,11 @@ function applyFilters(
 export default function StatsPage({
   processedGames,
   baseData,
+  loading,
 }: {
   processedGames: Record<string, ProcessedGame>;
   baseData: BaseData;
+  loading?: boolean;
 }) {
   const intl = useIntl();
   const [expansions, setExpansions] = useState<Set<Expansion>>(
@@ -331,13 +334,19 @@ export default function StatsPage({
             </div>
           </LabeledDiv>
           <div className={styles.DataSection}>
-            <GameDataSection games={localGames} points={points} />
-            <DetailsSection
-              games={localGames}
-              baseData={baseData}
-              playerCounts={playerCounts}
-              points={points}
-            />
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                <GameDataSection games={localGames} points={points} />
+                <DetailsSection
+                  games={localGames}
+                  baseData={baseData}
+                  playerCounts={playerCounts}
+                  points={points}
+                />
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -21,6 +21,7 @@ import {
 } from "../../util/techs";
 import styles from "./TechSelectHoverMenu.module.scss";
 import { rem } from "../../util/util";
+import UnitIcon from "../Units/Icons";
 
 interface InnerTechSelectHoverMenuProps {
   factionId: FactionId;
@@ -67,6 +68,13 @@ function InnerTechSelectHoverMenu({
                 break;
               }
             }
+            const canResearch = canResearchTech(
+              tech,
+              options,
+              prereqs,
+              faction,
+              isTechOwned
+            );
             return (
               <button
                 key={tech.id}
@@ -75,15 +83,27 @@ function InnerTechSelectHoverMenu({
                   outerCloseFn();
                   selectTech(tech);
                 }}
-                className={
-                  ignorePrereqs ||
-                  canResearchTech(tech, options, prereqs, faction, isTechOwned)
-                    ? ""
-                    : "faded"
-                }
-                style={{ fontSize: rem(16) }}
+                className={ignorePrereqs || canResearch ? "" : "faded"}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: rem(16),
+                  gap: rem(8),
+                }}
               >
                 {tech.name}
+                {tech.type === "UPGRADE" ? (
+                  <UnitIcon
+                    type={tech.unitType}
+                    size={16}
+                    color={
+                      ignorePrereqs || canResearch
+                        ? undefined
+                        : "var(--disabled-fg)"
+                    }
+                  />
+                ) : null}
               </button>
             );
           })}

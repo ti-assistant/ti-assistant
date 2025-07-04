@@ -1,6 +1,6 @@
 import { IntlShape } from "react-intl";
 
-export function getBaseDiscordantStarsAttachments(
+export default function getDiscordantStarsAttachments(
   intl: IntlShape
 ): Record<DiscordantStars.AttachmentId, BaseAttachment> {
   return {

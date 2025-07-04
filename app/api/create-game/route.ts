@@ -1,8 +1,8 @@
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import { getBaseFactions } from "../../../server/data/factions";
-import { BASE_PLANETS } from "../../../server/data/planets";
-import { createIntl } from "react-intl";
 import { NextResponse } from "next/server";
+import { createIntl } from "react-intl";
+import { getFactions } from "../../../server/data/factions";
+import { getPlanets } from "../../../server/data/planets";
 import { Optional } from "../../../src/util/types/types";
 import { objectEntries } from "../../../src/util/util";
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   const intl = createIntl({
     locale: "en",
   });
-  const BASE_FACTIONS = getBaseFactions(intl);
+  const BASE_FACTIONS = getFactions(intl);
 
   const gameFactions = factions.map((faction, index) => {
     if (!faction.name || !faction.color || !faction.id) {
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     }
 
     // Get home planets for each faction.
-    const homeBasePlanets = Object.values(BASE_PLANETS).filter(
+    const homeBasePlanets = Object.values(getPlanets(intl)).filter(
       (planet) => planet.faction === faction.id && planet.home
     );
     const homePlanets: Partial<Record<PlanetId, { ready: boolean }>> = {};

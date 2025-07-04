@@ -13,6 +13,7 @@ import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { objectEntries, rem } from "./util/util";
+import UnitIcon from "./components/Units/Icons";
 
 export function UnitStat({
   name,
@@ -216,6 +217,7 @@ export function TechRow({
           }}
         >
           <div
+            className="flexRow"
             style={{
               position: "relative",
               // display: "flex",
@@ -224,6 +226,7 @@ export function TechRow({
             }}
           >
             {tech.name}
+            {tech.type === "UPGRADE" ? <UnitIcon type={tech.unitType} /> : null}
             {tech.faction && !opts.hideIcon ? (
               <div
                 style={{

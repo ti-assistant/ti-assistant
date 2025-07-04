@@ -17,6 +17,7 @@ import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { FullTechSummary } from "./TechSummary/TechSummary";
+import UnitIcon from "./Units/Icons";
 
 function FactionTechSection({
   openedByDefault,

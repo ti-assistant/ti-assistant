@@ -200,16 +200,18 @@ function InnerContent({ viewing }: { viewing: View }) {
   );
 }
 
-let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
+let getFactions: DataFunction<FactionId, BaseFaction> = () => {
   return {};
 };
 import("../../../../../../server/data/factions").then((module) => {
-  getBaseFactions = module.getBaseFactions;
+  getFactions = module.getFactions;
 });
 
-let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
+let getPlanets: DataFunction<PlanetId, BasePlanet> = () => {
+  return {};
+};
 import("../../../../../../server/data/planets").then((module) => {
-  BASE_PLANETS = module.BASE_PLANETS;
+  getPlanets = module.getPlanets;
 });
 
 function buildInitialGameData(
@@ -234,7 +236,7 @@ function buildInitialGameData(
       }
 
       // Get home planets for each faction.
-      const homeBasePlanets = Object.values(BASE_PLANETS).filter(
+      const homeBasePlanets = Object.values(getPlanets(intl)).filter(
         (planet) => planet.faction === faction.name && planet.home
       );
       const homePlanets: Partial<Record<PlanetId, { ready: boolean }>> = {};
@@ -245,7 +247,7 @@ function buildInitialGameData(
       });
 
       // Get starting techs for each faction.
-      const baseFaction = getBaseFactions(intl)[faction.id];
+      const baseFaction = getFactions(intl)[faction.id];
       if (!baseFaction) {
         return {
           // Client specified values

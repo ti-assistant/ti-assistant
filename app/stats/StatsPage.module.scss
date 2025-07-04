@@ -1,6 +1,4 @@
 .Filters {
-  position: fixed;
-  top: 4rem;
   width: calc(100dvw - 9rem);
 }
 
@@ -18,7 +16,6 @@
   width: 100%;
   align-items: flex-start;
   justify-content: space-evenly;
-  margin-top: 7.5rem;
 }
 
 .GameDataSection {
@@ -32,16 +29,14 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 0 0.25rem;
+  padding: 0.25rem;
   height: calc(100dvh - 15rem);
   overflow-y: scroll;
 }
 
 @media only screen and (max-width: 56.25rem) {
   .Filters {
-    position: relative;
     width: 100%;
-    top: unset;
   }
 
   .FilterContent > :global(.flexRow) {
@@ -52,7 +47,6 @@
 
   .DataSection {
     flex-direction: column;
-    margin-top: 0;
     align-items: flex-start;
     justify-content: flex-start;
     gap: 0.5rem;

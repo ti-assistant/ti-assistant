@@ -8,8 +8,11 @@
   --hovered-bg: #464448;
   --selected-bg: #4a484c;
 
+  --disabled-fg: #555;
+
   /* 2px at 1920 */
   --border-size: 0.084rem;
+  --thick-border-size: 0.168rem;
   --disabled-border: #2a282c;
   --neutral-border: #7a787c;
   --selected-border: #bab8bc;

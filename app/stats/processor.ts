@@ -9,7 +9,7 @@ import {
   getTimers,
 } from "../../server/util/fetch";
 import { getBaseData } from "../../src/data/baseData";
-import { buildObjectives } from "../../src/data/gameDataBuilder";
+import { buildCompleteObjectives } from "../../src/data/gameDataBuilder";
 import { getHandler } from "../../src/util/api/gameLog";
 import { updateGameData } from "../../src/util/api/handler";
 import { getOppositeHandler } from "../../src/util/api/opposite";
@@ -93,7 +93,7 @@ const BASE_FACTION_INFO: FactionInfo = {
 };
 
 function hasWinningFaction(game: StoredGameData, baseData: BaseData) {
-  const objectives = buildObjectives(game, baseData);
+  const objectives = buildCompleteObjectives(baseData, game);
   return objectKeys(game.factions).reduce((prev, factionId) => {
     const points = computeVPs(game.factions, factionId, objectives);
     if (points >= game.options["victory-points"]) {
@@ -304,7 +304,7 @@ function processGame(
   let winner: FactionId = "Vuil'raith Cabal";
   let maxPoints = 0;
   const factionInfo: Partial<Record<FactionId, GameFactionInfo>> = {};
-  const objectives = buildObjectives(fixedGame, baseData);
+  const objectives = buildCompleteObjectives(baseData, fixedGame);
   for (const [factionId, faction] of objectEntries(fixedGame.factions)) {
     const points = computeVPs(fixedGame.factions, factionId, objectives);
     if (points > maxPoints) {
@@ -412,7 +412,7 @@ function isTechGame(game: StoredGameData) {
 // of the game. If more than 20 steps are rewound, considers the game unfinished.
 function rewindGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
   let maxPoints = game.options["victory-points"];
-  const objectives = buildObjectives(game, baseData);
+  const objectives = buildCompleteObjectives(baseData, game);
   for (const factionId of objectKeys(game.factions)) {
     const points = computeVPs(game.factions, factionId, objectives);
     if (points > maxPoints) {
@@ -503,7 +503,7 @@ function rewindGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
 }
 
 function processLog(game: StoredGameData, baseData: BaseData, log: ActionLog) {
-  const objectives = buildObjectives(game, baseData);
+  const objectives = buildCompleteObjectives(baseData, game);
   const rounds: ProcessedRound[] = [];
   let systems = new Set<SystemId>();
   let processedRound: ProcessedRound = {
@@ -624,7 +624,7 @@ function fixGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
     return;
   }
 
-  const objectives = buildObjectives(fixedGame, baseData);
+  const objectives = buildCompleteObjectives(baseData, fixedGame);
   let maxPoints = 0;
   for (const factionId of objectKeys(fixedGame.factions)) {
     delete fixedGame.factions[factionId]?.playerName;

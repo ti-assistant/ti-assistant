@@ -142,7 +142,7 @@ export class PlayComponentHandler implements Handler {
       this.data.event.name === "Book of Latvinia" &&
       this.data.event.factionId
     ) {
-      const planets = buildPlanets(this.gameData);
+      const planets = buildPlanets(this.gameData, intl);
       const attachments = buildAttachments(this.gameData, intl);
       const techSkips = new Set<PlanetAttribute>();
       for (const planet of Object.values(planets)) {
@@ -298,7 +298,7 @@ export class UnplayComponentHandler implements Handler {
       this.data.event.name === "Book of Latvinia" &&
       this.data.event.factionId
     ) {
-      const planets = buildPlanets(this.gameData);
+      const planets = buildPlanets(this.gameData, intl);
       const attachments = buildAttachments(this.gameData, intl);
       const techSkips = new Set<PlanetAttribute>();
       for (const planet of Object.values(planets)) {

@@ -34,6 +34,7 @@ import { objectiveTypeString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./SetupPhase.module.scss";
 import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
+import FactionDiv from "../../../../../../src/components/LabeledDiv/FactionDiv";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>
@@ -299,7 +300,8 @@ export default function SetupPhase() {
                     <FormattedMessage
                       id="RBlsAq"
                       description="A label for the stage I objectives that have been revealed"
-                      defaultMessage="Revealed stage I objectives"
+                      defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
+                      values={{ count: revealedObjectives.length }}
                     />
                   }
                 >
@@ -334,11 +336,7 @@ export default function SetupPhase() {
                 </LabeledDiv>
               ) : null}
               {revealedObjectives.length < 2 ? (
-                <LabeledDiv
-                  label={getFactionName(factions[speaker])}
-                  color={getFactionColor(factions[speaker])}
-                  style={{ width: "100%" }}
-                >
+                <FactionDiv factionId={speaker}>
                   <ObjectiveSelectHoverMenu
                     action={revealObjectiveAsync}
                     label={
@@ -358,7 +356,7 @@ export default function SetupPhase() {
                       }
                     )}
                   />
-                </LabeledDiv>
+                </FactionDiv>
               ) : null}
             </div>
           </NumberedItem>
@@ -470,18 +468,11 @@ export default function SetupPhase() {
 }
 
 function StartingComponentDiv({ factionId }: { factionId: FactionId }) {
-  const faction = useFaction(factionId);
-
   return (
-    <LabeledDiv
-      key={factionId}
-      label={getFactionName(faction)}
-      color={getFactionColor(faction)}
-    >
+    <FactionDiv factionId={factionId}>
       <div
         className="flexColumn"
         style={{
-          paddingTop: rem(2),
           alignItems: "flex-start",
           height: "100%",
           width: "100%",
@@ -489,6 +480,6 @@ function StartingComponentDiv({ factionId }: { factionId: FactionId }) {
       >
         <StartingComponents factionId={factionId} showFactionIcon />
       </div>
-    </LabeledDiv>
+    </FactionDiv>
   );
 }

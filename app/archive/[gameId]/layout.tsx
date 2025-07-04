@@ -7,7 +7,7 @@ import {
 } from "../../../server/util/fetch";
 import Footer from "../../../src/components/Footer/Footer";
 import DataWrapper from "../../../src/context/DataWrapper";
-import { buildCompleteGameData } from "../../../src/data/GameData";
+import { buildGameData } from "../../../src/data/GameData";
 import { getLocale, getMessages } from "../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import GameLoader from "../../game/[gameId]/game-loader";
@@ -20,7 +20,7 @@ async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
 
   const [data, timers] = await Promise.all([dataPromise, timerPromise]);
 
-  const gameData = buildCompleteGameData(data, intl);
+  const gameData = buildGameData(data, intl);
   gameData.timers = timers;
   gameData.gameId = gameId;
 

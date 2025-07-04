@@ -490,7 +490,7 @@ function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
           paddingBottom: rem(28),
         }}
       >
-        <ObjectivePanel viewOnly={viewOnly} />
+        <ObjectivePanel viewOnly={viewOnly} asModal />
       </div>
     </div>
   );

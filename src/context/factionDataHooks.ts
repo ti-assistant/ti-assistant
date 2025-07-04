@@ -1,3 +1,4 @@
+import { convertToFactionColor, getFactionName } from "../util/factions";
 import { Optional } from "../util/types/types";
 import { useGameDataValue, useMemoizedGameDataValue } from "./dataHooks";
 
@@ -23,8 +24,17 @@ export function useNumFactions() {
 }
 
 export function useFactionColor(factionId: FactionId) {
-  return useGameDataValue<Optional<string>>(
+  return useMemoizedGameDataValue<Optional<string>, string>(
     `factions.${factionId}.color`,
-    undefined
+    "#555",
+    (color) => convertToFactionColor(color)
+  );
+}
+
+export function useFactionDisplayName(factionId: FactionId) {
+  return useMemoizedGameDataValue<Optional<Faction>, string>(
+    `factions.${factionId}`,
+    "Loading Faction...",
+    (faction) => getFactionName(faction)
   );
 }
