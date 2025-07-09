@@ -3352,7 +3352,7 @@
     "description": "Title of Tech: Temporal Command Suite"
   },
   "Nomad.Units.Memoria.Description": {
-    "defaultMessage": "You may treat this unit as if it were adjacent to systems that contain one or more of your mechs.",
+    "defaultMessage": "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs.",
     "description": "Description for Faction Unit: Memoria"
   },
   "Nomad.Units.Memoria.Title": {
@@ -5316,7 +5316,7 @@
     "description": "Shortened version of Faction name: Vuil'raith Cabal"
   },
   "Vuil'raith Cabal.Techs.Dimensional Tear II.Description": {
-    "defaultMessage": "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder.{br}Up to 12 fighters in this system do not count against your ships' capacity.",
+    "defaultMessage": "This system is a gravity rift; your ships do not roll for this gravity rift.{br}Place a dimensional tear token beneath this unit as a reminder.{br}Up to 12 fighters in this system do not count against your ships' capacity.",
     "description": "Description for Tech: Dimensional Tear II"
   },
   "Vuil'raith Cabal.Techs.Dimensional Tear II.Title": {

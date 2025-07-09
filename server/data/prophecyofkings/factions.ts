@@ -485,7 +485,7 @@ export default function getProphecyOfKingsFactions(
             combat: 8,
           },
           type: "Infantry",
-          upgrade: "Crimson Legionnaire I",
+          upgrade: "Crimson Legionnaire II",
         },
       ],
     },
@@ -739,7 +739,7 @@ export default function getProphecyOfKingsFactions(
             id: "Nomad.Units.Memoria.Description",
             description: "Description for Faction Unit: Memoria",
             defaultMessage:
-              "You may treat this unit as if it were adjacent to systems that contain one or more of your mechs.",
+              "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs.",
           }),
           expansion: "POK",
           name: intl.formatMessage({

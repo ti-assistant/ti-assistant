@@ -139,7 +139,7 @@ export default function getProphecyOfKingsTechs(
           id: "Vuil'raith Cabal.Techs.Dimensional Tear II.Description",
           description: "Description for Tech: Dimensional Tear II",
           defaultMessage:
-            "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder.{br}Up to 12 fighters in this system do not count against your ships' capacity.",
+            "This system is a gravity rift; your ships do not roll for this gravity rift.{br}Place a dimensional tear token beneath this unit as a reminder.{br}Up to 12 fighters in this system do not count against your ships' capacity.",
         },
         { br: "\n\n" }
       ),

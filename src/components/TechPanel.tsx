@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useState } from "react";
+import React, { CSSProperties, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { TechRow } from "../TechRow";
 import { useGameId, useTechs } from "../context/dataHooks";
@@ -17,7 +17,6 @@ import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { FullTechSummary } from "./TechSummary/TechSummary";
-import UnitIcon from "./Units/Icons";
 
 function FactionTechSection({
   openedByDefault,

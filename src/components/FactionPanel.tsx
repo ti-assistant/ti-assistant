@@ -3,10 +3,16 @@ import { PropsWithChildren, ReactNode } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { UnitStat } from "../TechRow";
 import { useGameId, useLeaders, useTechs } from "../context/dataHooks";
+import { useFaction } from "../context/factionDataHooks";
 import { useSharedModal } from "../data/SharedModal";
-import { updateLeaderStateAsync } from "../dynamic/api";
+import {
+  addTechAsync,
+  removeTechAsync,
+  updateLeaderStateAsync,
+} from "../dynamic/api";
+import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
-import { leaderTypeString, unitTypeString } from "../util/strings";
+import { leaderTypeString } from "../util/strings";
 import { sortTechs } from "../util/techs";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
@@ -14,7 +20,6 @@ import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionPanel.module.scss";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
-import UnitType, { UnitTypeWithIcon } from "./Units/Types";
 import UnitIcon from "./Units/Icons";
 
 function AbilitySection({
@@ -53,6 +58,169 @@ function AbilitySection({
         {children}
       </div>
     </div>
+  );
+}
+
+function FactionTech({
+  tech,
+  faction,
+  viewOnly,
+}: {
+  tech: Tech;
+  faction: Faction;
+  viewOnly?: boolean;
+}) {
+  const gameId = useGameId();
+  return (
+    <AbilitySection
+      key={tech.id}
+      leftLabel={
+        <div className="flexRow" style={{ gap: rem(4) }}>
+          {tech.name}
+          <div className="flexRow" style={{ gap: rem(4) }}>
+            {tech.prereqs.map((prereq, index) => {
+              return <TechIcon key={index} type={prereq} size={18} />;
+            })}
+          </div>
+        </div>
+      }
+      rightLabel={
+        tech.type === "UPGRADE" ? (
+          <UnitIcon
+            type={tech.unitType}
+            size={18}
+            color="var(--neutral-border)"
+          />
+        ) : null
+      }
+    >
+      {tech.description
+        ? formatDescription(tech.description).map((section, index) => {
+            return <div key={index}>{section}</div>;
+          })
+        : null}
+      {tech.type === "UPGRADE" ? (
+        <>
+          {tech.abilities.length > 0 ? (
+            <div
+              style={{
+                display: "grid",
+                gridAutoFlow: "row",
+                whiteSpace: "nowrap",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                fontFamily: "Slider",
+                paddingLeft: rem(8),
+                rowGap: rem(2),
+                width: "100%",
+              }}
+            >
+              {tech.abilities.map((ability) => {
+                return <div key={ability}>{ability.toUpperCase()}</div>;
+              })}
+            </div>
+          ) : null}
+          <UnitStatBlock stats={tech.stats} />
+          {!viewOnly ? (
+            <div className="flexRow" style={{ width: "100%" }}>
+              <button
+                style={{
+                  fontSize: rem(12),
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: rem(8),
+                }}
+                onClick={() => removeTechAsync(gameId, faction.id, tech.id)}
+              >
+                Downgrade
+              </button>
+            </div>
+          ) : null}
+        </>
+      ) : null}
+    </AbilitySection>
+  );
+}
+
+function FactionUnit({
+  unit,
+  faction,
+  viewUpgrade,
+  viewOnly,
+}: {
+  unit: Unit;
+  faction: Faction;
+  viewUpgrade: boolean;
+  viewOnly?: boolean;
+}) {
+  const gameId = useGameId();
+  const techs = useTechs();
+  const abilities = unit.abilities ?? [];
+  const upgradeTech = unit.upgrade ? techs[unit.upgrade] : undefined;
+
+  if (upgradeTech && viewUpgrade) {
+    return (
+      <FactionTech tech={upgradeTech} faction={faction} viewOnly={viewOnly} />
+    );
+  }
+  return (
+    <AbilitySection
+      key={unit.name}
+      leftLabel={
+        <div className="flexRow" style={{ height: "100%" }}>
+          {unit.name}
+          {upgradeTech ? (
+            <div className="flexRow" style={{ gap: rem(2) }}>
+              {upgradeTech.prereqs.map((prereq, index) => {
+                return <TechIcon key={index} type={prereq} size={18} />;
+              })}
+            </div>
+          ) : null}
+        </div>
+      }
+      rightLabel={
+        <UnitIcon type={unit.type} color="var(--neutral-border)" size={18} />
+      }
+    >
+      {unit.description
+        ? formatDescription(unit.description).map((section, index) => {
+            return <div key={index}>{section}</div>;
+          })
+        : null}
+      {abilities.length > 0 ? (
+        <div
+          style={{
+            display: "grid",
+            gridAutoFlow: "row",
+            whiteSpace: "nowrap",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            fontFamily: "Slider",
+            paddingLeft: rem(8),
+            rowGap: rem(2),
+            width: "100%",
+          }}
+        >
+          {abilities.map((ability) => {
+            return <div key={ability}>{ability.toUpperCase()}</div>;
+          })}
+        </div>
+      ) : null}
+      <UnitStatBlock stats={unit.stats} />
+      {!viewOnly && upgradeTech ? (
+        <div className="flexRow" style={{ width: "100%" }}>
+          <button
+            style={{
+              fontSize: rem(12),
+              display: "flex",
+              flexDirection: "row",
+              gap: rem(8),
+            }}
+            onClick={() => addTechAsync(gameId, faction.id, upgradeTech.id)}
+          >
+            Upgrade
+          </button>
+        </div>
+      ) : null}
+    </AbilitySection>
   );
 }
 
@@ -216,18 +384,25 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
 function FactionPanelContent({
   faction,
   options,
+  viewOnly,
 }: {
   faction: Faction;
   options: Options;
+  viewOnly?: boolean;
 }) {
   const intl = useIntl();
+  const innerFaction = useFaction(faction.id);
   // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
   const gameId = useGameId();
   const leaders = useLeaders();
   const techs = useTechs();
 
+  if (!innerFaction) {
+    return null;
+  }
+
   const factionTechs = Object.values(techs).filter(
-    (tech) => tech.faction === faction.id
+    (tech) => tech.faction === faction.id && tech.type !== "UPGRADE"
   );
   sortTechs(factionTechs);
   const factionLeaders = Object.values(leaders)
@@ -477,91 +652,6 @@ function FactionPanelContent({
             </div>
           </CollapsibleSection>
         ) : null}
-
-        {factionTechs.length > 0 ? (
-          <CollapsibleSection
-            title={
-              <FormattedMessage
-                id="yctdL8"
-                defaultMessage="Faction Techs"
-                description="Header for a section listing out various faction technologies."
-              />
-            }
-          >
-            <div
-              className="flexColumn"
-              style={{
-                gap: rem(4),
-                padding: rem(4),
-                fontSize: rem(14),
-              }}
-            >
-              {factionTechs.map((tech) => {
-                return (
-                  <AbilitySection
-                    key={tech.id}
-                    leftLabel={
-                      <div className="flexRow" style={{ gap: rem(4) }}>
-                        {tech.name}
-                      </div>
-                    }
-                    label={
-                      tech.type === "UPGRADE" ? (
-                        <UnitIcon
-                          type={tech.unitType}
-                          size={18}
-                          color="var(--neutral-border)"
-                        />
-                      ) : null
-                    }
-                    rightLabel={
-                      <div className="flexRow" style={{ gap: rem(4) }}>
-                        {tech.prereqs.map((prereq, index) => {
-                          return (
-                            <TechIcon key={index} type={prereq} size={20} />
-                          );
-                        })}
-                      </div>
-                    }
-                  >
-                    {tech.description
-                      ? formatDescription(tech.description).map(
-                          (section, index) => {
-                            return <div key={index}>{section}</div>;
-                          }
-                        )
-                      : null}
-                    {tech.type === "UPGRADE" ? (
-                      <>
-                        {tech.abilities.length > 0 ? (
-                          <div
-                            style={{
-                              display: "grid",
-                              gridAutoFlow: "row",
-                              whiteSpace: "nowrap",
-                              gridTemplateColumns: "repeat(2, 1fr)",
-                              fontFamily: "Slider",
-                              paddingLeft: rem(8),
-                              rowGap: rem(2),
-                              width: "100%",
-                            }}
-                          >
-                            {tech.abilities.map((ability) => {
-                              return (
-                                <div key={ability}>{ability.toUpperCase()}</div>
-                              );
-                            })}
-                          </div>
-                        ) : null}
-                        <UnitStatBlock stats={tech.stats} />
-                      </>
-                    ) : null}
-                  </AbilitySection>
-                );
-              })}
-            </div>
-          </CollapsibleSection>
-        ) : null}
       </div>
       <div
         className="flexColumn"
@@ -638,72 +728,118 @@ function FactionPanelContent({
             })}
           </div>
         </CollapsibleSection>
-      </div>
-      <CollapsibleSection
-        title={
-          <FormattedMessage
-            id="9eqKm5"
-            defaultMessage="Unique {count, plural, one {Unit} other {Units}}"
-            description="Header for section listing out unique units."
-            values={{ count: faction.units.length }}
-          />
-        }
-      >
-        <div
-          className="flexColumn"
-          style={{
-            gap: rem(4),
-            padding: rem(4),
-            fontSize: rem(14),
-          }}
-        >
-          {faction.units.map((unit, index) => {
-            const localUnit = { ...unit };
-            let leftLabel: ReactNode = unit.name;
-            return (
-              <AbilitySection
-                key={index}
-                leftLabel={leftLabel}
-                label={
-                  <UnitIcon
-                    type={unit.type}
-                    color="var(--neutral-border)"
-                    size={18}
+        {factionTechs.length > 0 ? (
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="yctdL8"
+                defaultMessage="Faction Techs"
+                description="Header for a section listing out various faction technologies."
+              />
+            }
+          >
+            <div
+              className="flexColumn"
+              style={{
+                gap: rem(4),
+                padding: rem(4),
+                fontSize: rem(14),
+              }}
+            >
+              {factionTechs.map((tech) => {
+                return (
+                  <FactionTech
+                    tech={tech}
+                    faction={innerFaction}
+                    viewOnly={viewOnly}
                   />
-                }
-                rightLabel={<UnitType type={unit.type} />}
-              >
-                {localUnit.description
-                  ? formatDescription(localUnit.description).map(
-                      (section, index) => {
-                        return <div key={index}>{section}</div>;
-                      }
-                    )
-                  : null}
-                {(localUnit.abilities ?? []).length > 0 ? (
-                  <div
-                    style={{
-                      display: "grid",
-                      gridAutoFlow: "row",
-                      whiteSpace: "nowrap",
-                      gridTemplateColumns: "repeat(2, 1fr)",
-                      fontFamily: "Slider",
-                      paddingLeft: rem(8),
-                      rowGap: rem(2),
-                      width: "100%",
-                    }}
-                  >
-                    {localUnit.abilities?.map((ability) => {
-                      return <div key={ability}>{ability.toUpperCase()}</div>;
-                    })}
-                  </div>
-                ) : null}
-                <UnitStatBlock stats={localUnit.stats} />
-              </AbilitySection>
-            );
-          })}
-        </div>
-      </CollapsibleSection>
+                );
+              })}
+            </div>
+          </CollapsibleSection>
+        ) : null}
+      </div>
+      <div
+        className="flexColumn"
+        style={{ width: "100%", justifyContent: "flex-start" }}
+      >
+        <CollapsibleSection
+          title={
+            <FormattedMessage
+              id="9eqKm5"
+              defaultMessage="Unique {count, plural, one {Unit} other {Units}}"
+              description="Header for section listing out unique units."
+              values={{ count: faction.units.length }}
+            />
+          }
+        >
+          <div
+            className="flexColumn"
+            style={{
+              gap: rem(4),
+              padding: rem(4),
+              fontSize: rem(14),
+            }}
+          >
+            {faction.units.map((unit, index) => {
+              const showUpgrade =
+                (unit.upgrade && hasTech(innerFaction, unit.upgrade)) ?? false;
+              return (
+                <FactionUnit
+                  key={unit.name}
+                  unit={unit}
+                  faction={faction}
+                  viewUpgrade={showUpgrade}
+                  viewOnly={viewOnly}
+                />
+              );
+              // const localUnit = { ...unit };
+              // let leftLabel: ReactNode = unit.name;
+              // return (
+              //   <AbilitySection
+              //     key={index}
+              //     leftLabel={leftLabel}
+              //     label={
+              //       <UnitIcon
+              //         type={unit.type}
+              //         color="var(--neutral-border)"
+              //         size={18}
+              //       />
+              //     }
+              //     rightLabel={<UnitType type={unit.type} />}
+              //   >
+              //     {localUnit.description
+              //       ? formatDescription(localUnit.description).map(
+              //           (section, index) => {
+              //             return <div key={index}>{section}</div>;
+              //           }
+              //         )
+              //       : null}
+              //     {(localUnit.abilities ?? []).length > 0 ? (
+              //       <div
+              //         style={{
+              //           display: "grid",
+              //           gridAutoFlow: "row",
+              //           whiteSpace: "nowrap",
+              //           gridTemplateColumns: "repeat(2, 1fr)",
+              //           fontFamily: "Slider",
+              //           paddingLeft: rem(8),
+              //           rowGap: rem(2),
+              //           width: "100%",
+              //         }}
+              //       >
+              //         {localUnit.abilities?.map((ability) => {
+              //           return <div key={ability}>{ability.toUpperCase()}</div>;
+              //         })}
+              //       </div>
+              //     ) : null}
+              //     <UnitStatBlock stats={localUnit.stats} />
+              //   </AbilitySection>
+              // );
+            })}
+          </div>
+        </CollapsibleSection>
+      </div>
     </div>
   );
 }
@@ -711,9 +847,11 @@ function FactionPanelContent({
 export default function FactionPanel({
   faction,
   options,
+  viewOnly = false,
 }: {
   faction: Faction;
   options: Options;
+  viewOnly?: boolean;
 }) {
   const { openModal } = useSharedModal();
 
@@ -726,7 +864,13 @@ export default function FactionPanel({
           zIndex: 1,
         }}
         onClick={() =>
-          openModal(<FactionPanelModal faction={faction} options={options} />)
+          openModal(
+            <FactionPanelModal
+              faction={faction}
+              options={options}
+              viewOnly={viewOnly}
+            />
+          )
         }
       >
         &#x24D8;
@@ -738,9 +882,11 @@ export default function FactionPanel({
 function FactionPanelModal({
   faction,
   options,
+  viewOnly,
 }: {
   faction: Faction;
   options: Options;
+  viewOnly?: boolean;
 }) {
   return (
     <div
@@ -776,7 +922,11 @@ function FactionPanelModal({
           height: "fit-content",
         }}
       >
-        <FactionPanelContent faction={faction} options={options} />
+        <FactionPanelContent
+          faction={faction}
+          options={options}
+          viewOnly={viewOnly}
+        />
       </div>
     </div>
   );

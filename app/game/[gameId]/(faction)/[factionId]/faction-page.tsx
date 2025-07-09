@@ -394,7 +394,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   <FormattedMessage
                     id="RBlsAq"
                     description="A label for the stage I objectives that have been revealed"
-                    defaultMessage="Revealed stage I objectives"
+                    defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
+                    values={{ count: revealedObjectiveIds.length }}
                   />
                 }
               >
