@@ -51,7 +51,10 @@ export default function FactionCard({
       label={
         <div className="flexRow" style={{ gap: 0 }}>
           {getFactionName(faction)}
-          <FactionPanel faction={faction} options={options} />
+          <FactionPanel
+            faction={faction}
+            options={options}
+          />
         </div>
       }
       rightLabel={rightLabel}

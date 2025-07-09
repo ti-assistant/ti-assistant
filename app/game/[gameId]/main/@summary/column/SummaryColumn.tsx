@@ -41,7 +41,7 @@ function sortByOrder(a: Faction, b: Faction) {
   }
 }
 
-export default function SummaryColumn() {
+export default function SummaryColumn({ viewOnly }: { viewOnly?: boolean }) {
   const phase = usePhase();
   const numFactions = useNumFactions();
   const finalPhase = useFinalPhase();
@@ -88,13 +88,25 @@ export default function SummaryColumn() {
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
 
       {orderedFactionIds.map((factionId) => {
-        return <FactionDiv key={factionId} factionId={factionId} />;
+        return (
+          <FactionDiv
+            key={factionId}
+            factionId={factionId}
+            viewOnly={viewOnly}
+          />
+        );
       })}
     </div>
   );
 }
 
-function FactionDiv({ factionId }: { factionId: FactionId }) {
+function FactionDiv({
+  factionId,
+  viewOnly,
+}: {
+  factionId: FactionId;
+  viewOnly?: boolean;
+}) {
   const faction = useFaction(factionId);
   const options = useOptions();
   const phase = usePhase();
@@ -115,7 +127,10 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
         faction ? (
           <div className="flexRow" style={{ gap: 0 }}>
             {getFactionName(faction)}
-            <FactionPanel faction={faction} options={options} />
+            <FactionPanel
+              faction={faction}
+              options={options}
+            />
           </div>
         ) : (
           <div className="flexRow" style={{ gap: 0 }}>

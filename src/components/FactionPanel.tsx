@@ -308,7 +308,6 @@ function FactionPanelContent({
 }: {
   faction: Faction;
   options: Options;
-  viewOnly?: boolean;
 }) {
   const intl = useIntl();
   const innerFaction = useFaction(faction.id);
@@ -317,6 +316,10 @@ function FactionPanelContent({
   const leaders = useLeaders();
   const techs = useTechs();
   const viewOnly = useViewOnly();
+
+  if (!innerFaction) {
+    return null;
+  }
 
   if (!innerFaction) {
     return null;
