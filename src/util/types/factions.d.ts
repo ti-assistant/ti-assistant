@@ -82,8 +82,16 @@ interface Unit {
   upgrade?: TechId;
 }
 
+interface Breakthrough {
+  description: string;
+  name: string;
+  synergy: TechType[];
+  timing: Timing;
+}
+
 interface BaseFaction {
   abilities: Ability[];
+  breakthrough: Breakthrough;
   colors: Record<string, number>;
   colorList?: string[];
   commodities: number;
@@ -121,4 +129,5 @@ type FactionId =
   | BaseGame.FactionId
   | ProphecyOfKings.FactionId
   | CodexThree.FactionId
+  | ThundersEdge.FactionId
   | DiscordantStars.FactionId;

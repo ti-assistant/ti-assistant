@@ -9,13 +9,7 @@ type ComponentType =
   | "RELIC"
   | "TECH";
 
-type ComponentState =
-  | "exhausted"
-  | "purged"
-  | "used"
-  | "one-left"
-  | "readied"
-  | "locked";
+type ComponentState = "exhausted" | "purged" | "used" | "readied" | "locked";
 
 type Timing =
   | "AGENDA_PHASE"

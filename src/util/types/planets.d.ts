@@ -9,6 +9,8 @@ type PlanetAttribute =
   | "space-cannon"
   | "all-types"
   | "victory-point"
+  // Thunder's Edge
+  | "relic"
   // Discordant Stars
   | "extra-votes"
   | "production"
@@ -62,4 +64,5 @@ type PlanetId =
   | BaseGame.PlanetId
   | ProphecyOfKings.PlanetId
   | CodexThree.PlanetId
+  | ThundersEdge.PlanetId
   | DiscordantStars.PlanetId;

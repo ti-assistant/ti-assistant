@@ -27,6 +27,24 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Arborec.Breakthrough.Psychospore.Title",
+          description: "Title of Faction Breakthrough: Psychospore",
+          defaultMessage: "Psychospore",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Arborec.Breakthrough.Psychospore.Description",
+            description: "Description of Faction Breakthrough: Psychospore",
+            defaultMessage:
+              "ACTION: Exhaust this card to remove a command token from a system that contains 1 or more of your infantry and return it to your reinforcements.{br}Then, place 1 infantry in that system.",
+          },
+          { br: "\n\n" }
+        ),
+        synergy: ["RED", "GREEN"],
+        timing: "COMPONENT_ACTION",
+      },
       colors: {
         Black: 0.1,
         Blue: 0.1,
@@ -488,6 +506,24 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Embers of Muaat.Breakthrough.Stellar Genesis.Title",
+          description: "Title of Faction Breakthrough: Stellar Genesis",
+          defaultMessage: "Stellar Genesis",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Embers of Muaat.Breakthrough.Stellar Genesis.Description",
+            description: "Description of Faction Breakthrough: Stellar Genesis",
+            defaultMessage:
+              "When you gain this card, place the Avernus planet token into a non-home system that is adjacent to a planet you control; gain control of and ready it.{br}After you move 1 of your War Suns out of or through Avernus's system and into a non-home system, you may move the Avernus token with it.",
+          },
+          { br: "\n\n" }
+        ),
+        synergy: ["RED", "YELLOW"],
+        timing: "PASSIVE",
+      },
       colors: {
         Orange: 0.65,
         Red: 1.25,
@@ -958,6 +994,9 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        synergy: ["BLUE", "YELLOW"],
+      },
       colors: {
         Black: 0.1,
         Blue: 1.7,
