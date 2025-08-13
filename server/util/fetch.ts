@@ -344,7 +344,7 @@ export function generateSessionId() {
 }
 
 export async function canEditGame(gameId: string) {
-  const password = getGamePassword(gameId);
+  const password = await getGamePassword(gameId);
 
   if (!password) {
     return true;
