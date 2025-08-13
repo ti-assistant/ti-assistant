@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import { useGameId, useTechs } from "../../context/dataHooks";
+import { useGameId, useTechs, useViewOnly } from "../../context/dataHooks";
 import { useFaction } from "../../context/factionDataHooks";
 import {
   chooseStartingTechAsync,
@@ -54,6 +54,7 @@ export default function StartingComponents({
   const faction = useFaction(factionId);
   const gameId = useGameId();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -184,6 +185,7 @@ export default function StartingComponents({
             }}
             selectedFaction={startswith.faction}
             size={36}
+            viewOnly={viewOnly}
           />
         </div>
       ) : null}
@@ -217,6 +219,7 @@ export default function StartingComponents({
                   whiteSpace: "nowrap",
                   fontFamily: "Myriad Pro",
                 }}
+                viewOnly={viewOnly}
               >
                 {tech.name}
               </SelectableRow>

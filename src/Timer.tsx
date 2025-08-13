@@ -2,7 +2,7 @@
 
 import { CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
-import { useGameId, useTimers } from "./context/dataHooks";
+import { useGameId, useTimers, useViewOnly } from "./context/dataHooks";
 import { useGameState } from "./context/stateDataHooks";
 import { useSharedTimer } from "./data/SharedTimer";
 import { saveFactionTimer, updateLocalFactionTimer } from "./util/api/timers";
@@ -37,7 +37,7 @@ export function StaticFactionTimer({
         lastUpdate.current < timerRef.current
       ) {
         lastUpdate.current = timerRef.current;
-        saveFactionTimer(gameId, factionId, timerRef.current);
+        // setFactionTimer(gameId, factionId, timerRef.current);
       }
     };
   }, [factionId, gameId]);
@@ -63,6 +63,7 @@ export function FactionTimer({ factionId, style }: FactionTimerProps) {
   const gameId = useGameId();
   const state = useGameState();
   const timers = useTimers();
+  const viewOnly = useViewOnly();
 
   const [factionTimer, setFactionTimer] = useState(timers[factionId] ?? 0);
   const prevFaction = useRef<string>();
@@ -88,7 +89,7 @@ export function FactionTimer({ factionId, style }: FactionTimerProps) {
   }, [factionId, gameId]);
 
   useInterval(() => {
-    if (!gameId || factionId === "Unknown") {
+    if (!gameId || factionId === "Unknown" || viewOnly) {
       return;
     }
     if (prevFaction.current == factionId && lastUpdate.current < factionTimer) {
@@ -121,7 +122,8 @@ export function FactionTimer({ factionId, style }: FactionTimerProps) {
   useEffect(() => {
     if (
       (localFactionTimer && localFactionTimer > timerRef.current) ||
-      factionId !== prevFaction.current
+      factionId !== prevFaction.current ||
+      viewOnly
     ) {
       prevFaction.current = factionId;
       timerRef.current = localFactionTimer ?? 0;

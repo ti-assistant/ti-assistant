@@ -1,6 +1,6 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { useGameId, useTimers } from "../../context/dataHooks";
+import { useGameId, useTimers, useViewOnly } from "../../context/dataHooks";
 import { useGameState } from "../../context/stateDataHooks";
 import { useSharedTimer } from "../../data/SharedTimer";
 import { setGlobalPauseAsync } from "../../dynamic/api";
@@ -8,13 +8,14 @@ import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
 import { useInterval } from "../../util/client";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
-import styles from "./GameTimer.module.scss";
 import TurnTimer from "../TurnTimer/TurnTimer";
+import styles from "./GameTimer.module.scss";
 
 export default function GameTimer({ frozen = false }) {
   const gameId = useGameId();
   const state = useGameState();
   const timers = useTimers();
+  const viewOnly = useViewOnly();
 
   const [gameTimer, setGameTimer] = useState(timers.game ?? 0);
   const { addSubscriber, removeSubscriber } = useSharedTimer();
@@ -23,7 +24,7 @@ export default function GameTimer({ frozen = false }) {
   const lastUpdate = useRef(0);
 
   useInterval(() => {
-    if (!gameId) {
+    if (viewOnly) {
       return;
     }
     if (lastUpdate.current < timerRef.current) {
@@ -52,7 +53,7 @@ export default function GameTimer({ frozen = false }) {
 
   const localGameTimer = timers?.game;
   useEffect(() => {
-    if (localGameTimer && localGameTimer > timerRef.current) {
+    if (localGameTimer && (localGameTimer > timerRef.current || viewOnly)) {
       timerRef.current = localGameTimer;
       lastUpdate.current = localGameTimer;
       setGameTimer(localGameTimer);
@@ -90,21 +91,23 @@ export default function GameTimer({ frozen = false }) {
       </div>
       {frozen ? null : (
         <div className="flexRow">
-          <button className={styles.PauseButton} onClick={togglePause}>
-            {paused ? (
-              <FormattedMessage
-                id="dNmJ1r"
-                description="Text shown on a button that will unpause the game."
-                defaultMessage="Unpause"
-              />
-            ) : (
-              <FormattedMessage
-                id="COzTbT"
-                description="Text shown on a button that will pause the game."
-                defaultMessage="Pause"
-              />
-            )}
-          </button>
+          {viewOnly ? null : (
+            <button className={styles.PauseButton} onClick={togglePause}>
+              {paused ? (
+                <FormattedMessage
+                  id="dNmJ1r"
+                  description="Text shown on a button that will unpause the game."
+                  defaultMessage="Unpause"
+                />
+              ) : (
+                <FormattedMessage
+                  id="COzTbT"
+                  description="Text shown on a button that will pause the game."
+                  defaultMessage="Pause"
+                />
+              )}
+            </button>
+          )}
         </div>
       )}
       {!frozen ? <TurnTimer gameTime={gameTimer} /> : null}

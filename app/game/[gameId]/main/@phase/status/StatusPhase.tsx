@@ -20,12 +20,12 @@ import {
   usePlanets,
   useRelics,
   useStrategyCards,
+  useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
   useAgendaUnlocked,
-  useGameState,
   useRound,
   useSpeaker,
 } from "../../../../../../src/context/stateDataHooks";
@@ -603,6 +603,7 @@ export default function StatusPhase() {
   const agendaUnlocked = useAgendaUnlocked();
   const round = useRound();
   const speaker = useSpeaker();
+  const viewOnly = useViewOnly();
 
   const ministerOfPolicy = useAgenda("Minister of Policy");
 
@@ -1116,6 +1117,7 @@ export default function StatusPhase() {
           <LockedButtons
             unlocked={statusPhaseComplete(currentTurn)}
             buttons={nextPhaseButtons}
+            viewOnly={viewOnly}
           />
         </div>
       </ol>
@@ -1124,6 +1126,7 @@ export default function StatusPhase() {
         <LockedButtons
           unlocked={statusPhaseComplete(currentTurn)}
           buttons={nextPhaseButtons}
+          viewOnly={viewOnly}
         />
       </div>
     </React.Fragment>

@@ -12,7 +12,7 @@
   background-color: var(--background-color);
   border-radius: 1.25rem;
   border: var(--border-size) solid var(--border-color);
-  color: #eee;
+  color: var(--foreground-color);
   gap: 0;
   white-space: nowrap;
   font-size: var(--font-size);
@@ -23,11 +23,21 @@
 .ChipContainer:hover {
   background-color: var(--hovered-bg);
   border: var(--border-size) solid var(--neutral-border);
+  color: var(--foreground-color);
+}
+
+.ChipContainer.disabled,
+.ChipContainer.disabled:hover {
+  background-color: var(--disabled-bg);
+  border: var(--border-size) solid var(--disabled-border);
+  color: var(--interactive-bg);
+  cursor: default;
 }
 
 .ChipContainer:hover:has(input[type="radio"]:checked) {
   background-color: var(--selected-bg);
   border: var(--border-size) solid var(--selected-border);
+  color: var(--foreground-color);
 }
 
 .ChipContainer > input[type="radio"] {
@@ -40,8 +50,13 @@
   background-color: var(--selected-bg);
   cursor: default;
   border: var(--border-size) solid var(--selected-border);
+  color: var(--foreground-color);
 }
 
 .ChipContainer > * {
   cursor: pointer;
+}
+
+.ChipContainer.disabled * {
+  cursor: default;
 }

@@ -19,6 +19,7 @@ interface FactionSelectRadialMenuProps {
   tag?: ReactNode;
   borderColor?: string;
   tagBorderColor?: string;
+  viewOnly?: boolean;
 }
 
 function getRadialPosition(index: number, numOptions: number, size: number) {
@@ -62,6 +63,7 @@ export default function FactionSelectRadialMenu({
   tag,
   borderColor = "var(--neutral-border)",
   tagBorderColor = "var(--neutral-border)",
+  viewOnly,
 }: FactionSelectRadialMenuProps) {
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
@@ -101,7 +103,7 @@ export default function FactionSelectRadialMenu({
       }}
       ref={menu}
     >
-      {factions.length > 0 ? (
+      {factions.length > 0 && !viewOnly ? (
         <React.Fragment>
           <div className={styles.hoverBackground}></div>
           <div className={`flexRow ${styles.hoverRadial}`} ref={innerMenu}>

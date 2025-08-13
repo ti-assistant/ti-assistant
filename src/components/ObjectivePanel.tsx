@@ -2,7 +2,12 @@ import Image from "next/image";
 import React, { CSSProperties, PropsWithChildren, useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { SettingsContext } from "../context/contexts";
-import { useActionLog, useGameId, useOptions } from "../context/dataHooks";
+import {
+  useActionLog,
+  useGameId,
+  useOptions,
+  useViewOnly,
+} from "../context/dataHooks";
 import {
   useFaction,
   useFactionColor,
@@ -87,19 +92,14 @@ function InfoContent({ objective }: InfoContentProps) {
 function ObjectiveColumn({
   gameId,
   objective,
-  factions,
   orderedFactionIds,
-  options,
-  viewOnly,
 }: {
   gameId: string;
   objective: Objective;
-  factions: Partial<Record<FactionId, Faction>>;
   orderedFactionIds: FactionId[];
-  options: Options;
-  viewOnly?: boolean;
 }) {
   const { openModal } = useSharedModal();
+  const viewOnly = useViewOnly();
   const { settings } = useContext(SettingsContext);
   const description = settings["display-objective-description"];
 
@@ -174,7 +174,6 @@ function ObjectiveColumn({
             factionId={factionId}
             inGrid
             objectiveId={objective.id}
-            viewOnly={viewOnly}
           />
         );
       })}
@@ -185,13 +184,12 @@ function ObjectiveColumn({
 function SecretModalContent({
   factionId,
   gameId,
-  viewOnly,
 }: {
   factionId: FactionId;
   gameId: string;
-  viewOnly?: boolean;
 }) {
   const objectives = useObjectives();
+  const viewOnly = useViewOnly();
 
   const secrets = Object.values(objectives ?? {}).filter(
     (objective) => objective.type === "SECRET"
@@ -266,18 +264,13 @@ interface ExtendedCSS extends CSSProperties {
   "--color": string;
 }
 
-export default function ObjectivePanel({
-  viewOnly,
-  asModal,
-}: {
-  viewOnly?: boolean;
-  asModal?: boolean;
-}) {
+export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const actionLog = useActionLog();
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
+  const viewOnly = useViewOnly();
 
   const orderedFactionIds = useOrderedFactionIds("ALLIANCE");
 
@@ -447,11 +440,7 @@ export default function ObjectivePanel({
               >
                 {orderedFactionIds.map((factionId) => {
                   return (
-                    <FactionNameAndVPs
-                      key={factionId}
-                      factionId={factionId}
-                      viewOnly={viewOnly}
-                    />
+                    <FactionNameAndVPs key={factionId} factionId={factionId} />
                   );
                 })}
               </div>
@@ -574,7 +563,7 @@ export default function ObjectivePanel({
               </CollapsibleSection>
             )}
             <div className="flexRow" style={{ width: "95%" }}>
-              <CustodiansToken viewOnly={viewOnly} />
+              <CustodiansToken />
             </div>
           </div>
 
@@ -627,7 +616,6 @@ export default function ObjectivePanel({
                                 key={factionId}
                                 factionId={factionId}
                                 objectiveId={objective.id}
-                                viewOnly={viewOnly}
                               />
                             );
                           })}
@@ -686,7 +674,6 @@ export default function ObjectivePanel({
                                 key={factionId}
                                 factionId={factionId}
                                 objectiveId={objective.id}
-                                viewOnly={viewOnly}
                               />
                             );
                           })}
@@ -841,16 +828,17 @@ export default function ObjectivePanel({
                               cursor: "pointer",
                               zIndex: 2,
                             }}
-                            onClick={() => {
-                              if (viewOnly) {
-                                return;
-                              }
-                              unscoreObjectiveAsync(
-                                gameId,
-                                faction,
-                                "Imperial Point"
-                              );
-                            }}
+                            onClick={
+                              viewOnly
+                                ? undefined
+                                : () => {
+                                    unscoreObjectiveAsync(
+                                      gameId,
+                                      faction,
+                                      "Imperial Point"
+                                    );
+                                  }
+                            }
                           >
                             -
                           </div>
@@ -874,16 +862,17 @@ export default function ObjectivePanel({
                               cursor: "pointer",
                               zIndex: 2,
                             }}
-                            onClick={() => {
-                              if (viewOnly) {
-                                return;
-                              }
-                              scoreObjectiveAsync(
-                                gameId,
-                                faction,
-                                "Imperial Point"
-                              );
-                            }}
+                            onClick={
+                              viewOnly
+                                ? undefined
+                                : () => {
+                                    scoreObjectiveAsync(
+                                      gameId,
+                                      faction,
+                                      "Imperial Point"
+                                    );
+                                  }
+                            }
                           >
                             +
                           </div>
@@ -968,16 +957,17 @@ export default function ObjectivePanel({
                                 cursor: "pointer",
                                 zIndex: 2,
                               }}
-                              onClick={() => {
-                                if (viewOnly) {
-                                  return;
-                                }
-                                unscoreObjectiveAsync(
-                                  gameId,
-                                  faction,
-                                  "Total War"
-                                );
-                              }}
+                              onClick={
+                                viewOnly
+                                  ? undefined
+                                  : () => {
+                                      unscoreObjectiveAsync(
+                                        gameId,
+                                        faction,
+                                        "Total War"
+                                      );
+                                    }
+                              }
                             >
                               -
                             </div>
@@ -1001,16 +991,17 @@ export default function ObjectivePanel({
                                 cursor: "pointer",
                                 zIndex: 2,
                               }}
-                              onClick={() => {
-                                if (viewOnly) {
-                                  return;
-                                }
-                                scoreObjectiveAsync(
-                                  gameId,
-                                  faction,
-                                  "Total War"
-                                );
-                              }}
+                              onClick={
+                                viewOnly
+                                  ? undefined
+                                  : () => {
+                                      scoreObjectiveAsync(
+                                        gameId,
+                                        faction,
+                                        "Total War"
+                                      );
+                                    }
+                              }
                             >
                               +
                             </div>
@@ -1065,13 +1056,10 @@ export default function ObjectivePanel({
                     <div key={id}>
                       <FactionSelectRadialMenu
                         key={id}
-                        factions={viewOnly ? [] : orderedFactionIds}
+                        factions={orderedFactionIds}
                         invalidFactions={[id]}
                         selectedFaction={scorer}
                         onSelect={(factionId) => {
-                          if (viewOnly) {
-                            return;
-                          }
                           if (scorer) {
                             unscoreObjectiveAsync(
                               gameId,
@@ -1094,6 +1082,7 @@ export default function ObjectivePanel({
                         borderColor={
                           scorer ? getFactionColor(factions[scorer]) : undefined
                         }
+                        viewOnly={viewOnly}
                       />
                     </div>
                   );
@@ -1135,13 +1124,11 @@ export default function ObjectivePanel({
                   orderedFactionIds={orderedFactionIds}
                   numScorers={includesPoK ? 2 : 1}
                   info="Can be scored 2x due to The Codex"
-                  viewOnly={viewOnly}
                 />
                 <SimpleScorable
                   gameId={gameId}
                   objective={politicalCensure}
                   orderedFactionIds={orderedFactionIds}
-                  viewOnly={viewOnly}
                 />
               </div>
               {includesPoK ? (
@@ -1158,13 +1145,11 @@ export default function ObjectivePanel({
                     gameId={gameId}
                     objective={shardOfTheThrone}
                     orderedFactionIds={orderedFactionIds}
-                    viewOnly={viewOnly}
                   />
                   <SimpleScorable
                     gameId={gameId}
                     objective={tomb}
                     orderedFactionIds={orderedFactionIds}
-                    viewOnly={viewOnly}
                   />
                 </div>
               ) : null}
@@ -1174,7 +1159,6 @@ export default function ObjectivePanel({
                 orderedFactionIds={orderedFactionIds}
                 numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
-                viewOnly={viewOnly}
               />
               {!includesPoK ? (
                 <SimpleScorable
@@ -1183,7 +1167,6 @@ export default function ObjectivePanel({
                   orderedFactionIds={orderedFactionIds}
                   numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                   info="Can be scored 2x due to Miscount Disclosed"
-                  viewOnly={viewOnly}
                 />
               ) : null}
               <SimpleScorable
@@ -1192,7 +1175,6 @@ export default function ObjectivePanel({
                 orderedFactionIds={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed."
-                viewOnly={viewOnly}
               />
               {!mutiny ? null : (
                 <div
@@ -1263,7 +1245,6 @@ export default function ObjectivePanel({
                           key={factionId}
                           factionId={factionId}
                           objectiveId="Mutiny"
-                          viewOnly={viewOnly}
                         />
                       );
                     })}
@@ -1292,7 +1273,6 @@ export default function ObjectivePanel({
                           key={factionId}
                           factionId={factionId}
                           objectiveId="Seed of an Empire"
-                          viewOnly={viewOnly}
                         />
                       );
                     })}
@@ -1527,10 +1507,7 @@ export default function ObjectivePanel({
                 key={objective.id}
                 gameId={gameId}
                 objective={objective}
-                factions={factions ?? {}}
                 orderedFactionIds={orderedFactionIds}
-                options={options}
-                viewOnly={viewOnly}
               />
             );
           })}
@@ -1665,10 +1642,7 @@ export default function ObjectivePanel({
                 key={objective.id}
                 gameId={gameId}
                 objective={objective}
-                factions={factions ?? {}}
                 orderedFactionIds={orderedFactionIds}
-                options={options}
-                viewOnly={viewOnly}
               />
             );
           })}
@@ -1699,11 +1673,7 @@ export default function ObjectivePanel({
                         })
                       }
                     >
-                      <SecretModalContent
-                        factionId={name}
-                        gameId={gameId}
-                        viewOnly={viewOnly}
-                      />
+                      <SecretModalContent factionId={name} gameId={gameId} />
                     </ModalContent>
                   );
                 }}
@@ -1751,7 +1721,7 @@ export default function ObjectivePanel({
             className="flexRow"
             style={{ gridColumn: "1 / 3", width: "100%", height: "100%" }}
           >
-            <CustodiansToken viewOnly={viewOnly} />
+            <CustodiansToken />
           </div>
           <LabeledDiv
             label={
@@ -1788,7 +1758,7 @@ export default function ObjectivePanel({
                   >
                     <FactionSelectRadialMenu
                       key={factionId}
-                      factions={viewOnly ? [] : orderedFactionIds}
+                      factions={orderedFactionIds}
                       invalidFactions={orderedFactionIds.filter(
                         (destFactionId) => {
                           const receivingFaction = factions[destFactionId];
@@ -1800,9 +1770,6 @@ export default function ObjectivePanel({
                       )}
                       selectedFaction={scorer}
                       onSelect={(selectedFactionId) => {
-                        if (viewOnly) {
-                          return;
-                        }
                         if (scorer) {
                           unscoreObjectiveAsync(
                             gameId,
@@ -1827,6 +1794,7 @@ export default function ObjectivePanel({
                           ? getFactionColor((factions ?? {})[scorer])
                           : undefined
                       }
+                      viewOnly={viewOnly}
                     />
                   </div>
                 );
@@ -1952,7 +1920,6 @@ export default function ObjectivePanel({
               orderedFactionIds={orderedFactionIds}
               numScorers={includesPoK ? 2 : 1}
               info="Can be scored 2x due to The Codex"
-              viewOnly={viewOnly}
             />
           </div>
           {includesPoK ? (
@@ -1980,19 +1947,16 @@ export default function ObjectivePanel({
                   gameId={gameId}
                   objective={shardOfTheThrone}
                   orderedFactionIds={orderedFactionIds}
-                  viewOnly={viewOnly}
                 />
                 <SimpleScorable
                   gameId={gameId}
                   objective={tomb}
                   orderedFactionIds={orderedFactionIds}
-                  viewOnly={viewOnly}
                 />
                 <SimpleScorable
                   gameId={gameId}
                   objective={book}
                   orderedFactionIds={orderedFactionIds}
-                  viewOnly={viewOnly}
                 />
               </div>
             </LabeledDiv>
@@ -2020,7 +1984,6 @@ export default function ObjectivePanel({
               orderedFactionIds={orderedFactionIds}
               numScorers={!shardScorers[1] && !crownScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
-              viewOnly={viewOnly}
             />
             {!includesPoK ? (
               <SimpleScorable
@@ -2029,7 +1992,6 @@ export default function ObjectivePanel({
                 orderedFactionIds={orderedFactionIds}
                 numScorers={!holyPlanetScorers[1] && !crownScorers[1] ? 2 : 1}
                 info="Can be scored 2x due to Miscount Disclosed"
-                viewOnly={viewOnly}
               />
             ) : null}
             <SimpleScorable
@@ -2038,13 +2000,11 @@ export default function ObjectivePanel({
               orderedFactionIds={orderedFactionIds}
               numScorers={!holyPlanetScorers[1] && !shardScorers[1] ? 2 : 1}
               info="Can be scored 2x due to Miscount Disclosed."
-              viewOnly={viewOnly}
             />
             <SimpleScorable
               gameId={gameId}
               objective={politicalCensure}
               orderedFactionIds={orderedFactionIds}
-              viewOnly={viewOnly}
             />
           </LabeledDiv>
           <LabeledDiv
@@ -2164,7 +2124,6 @@ export default function ObjectivePanel({
                         key={factionId}
                         factionId={factionId}
                         objectiveId="Mutiny"
-                        viewOnly={viewOnly}
                       />
                     );
                   })}
@@ -2194,7 +2153,6 @@ export default function ObjectivePanel({
                         key={factionId}
                         factionId={factionId}
                         objectiveId="Seed of an Empire"
-                        viewOnly={viewOnly}
                       />
                     );
                   })}
@@ -2339,16 +2297,15 @@ function SimpleScorable({
   orderedFactionIds,
   numScorers = 1,
   info,
-  viewOnly,
 }: {
   gameId: string;
   objective: Optional<Objective>;
   orderedFactionIds: FactionId[];
   numScorers?: number;
   info?: string;
-  viewOnly?: boolean;
 }) {
   const factions = useFactions();
+  const viewOnly = useViewOnly();
 
   const { openModal } = useSharedModal();
 
@@ -2372,11 +2329,8 @@ function SimpleScorable({
         <div className="flexRow">
           <FactionSelectRadialMenu
             selectedFaction={objectiveScorers[0] as Optional<FactionId>}
-            factions={viewOnly ? [] : orderedFactionIds}
+            factions={orderedFactionIds}
             onSelect={(factionId) => {
-              if (viewOnly) {
-                return;
-              }
               if (objectiveScorers[0]) {
                 unscoreObjectiveAsync(
                   gameId,
@@ -2393,16 +2347,14 @@ function SimpleScorable({
                 ? getFactionColor(factions[objectiveScorers[0]])
                 : undefined
             }
+            viewOnly={viewOnly}
           />
           {/* TODO: Only show this if The Codex has been gained */}
           {numScorers > 1 && objectiveScorers[0] ? (
             <FactionSelectRadialMenu
               selectedFaction={objectiveScorers[1] as Optional<FactionId>}
-              factions={viewOnly ? [] : orderedFactionIds}
+              factions={orderedFactionIds}
               onSelect={(factionId) => {
-                if (viewOnly) {
-                  return;
-                }
                 if (objectiveScorers[1]) {
                   unscoreObjectiveAsync(
                     gameId,
@@ -2454,6 +2406,7 @@ function SimpleScorable({
                   ? getFactionColor(factions[objectiveScorers[1]])
                   : undefined
               }
+              viewOnly={viewOnly}
             />
           ) : null}
         </div>
@@ -2462,16 +2415,11 @@ function SimpleScorable({
   );
 }
 
-function FactionNameAndVPs({
-  factionId,
-  viewOnly,
-}: {
-  factionId: FactionId;
-  viewOnly?: boolean;
-}) {
+function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
   const faction = useFaction(factionId);
   const VPs = useFactionVPs(factionId);
+  const viewOnly = useViewOnly();
 
   return (
     <LabeledDiv
@@ -2525,8 +2473,9 @@ function FactionNameAndVPs({
   );
 }
 
-function CustodiansToken({ viewOnly }: { viewOnly?: boolean }) {
+function CustodiansToken({}) {
   const gameId = useGameId();
+  const viewOnly = useViewOnly();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const custodiansToken = useObjective("Custodians Token");
   const custodiansScorerId = (custodiansToken?.scorers ?? [])[0];
@@ -2559,7 +2508,7 @@ function CustodiansToken({ viewOnly }: { viewOnly?: boolean }) {
         }}
       >
         <FactionSelectRadialMenu
-          factions={viewOnly ? [] : orderedFactionIds}
+          factions={orderedFactionIds}
           selectedFaction={custodiansScorerId}
           onSelect={(factionId) => {
             if (custodiansScorerId) {
@@ -2576,6 +2525,7 @@ function CustodiansToken({ viewOnly }: { viewOnly?: boolean }) {
           borderColor={
             custodiansScorerId ? convertToFactionColor(scorerColor) : undefined
           }
+          viewOnly={viewOnly}
         />
       </div>
     </div>
@@ -2586,16 +2536,15 @@ function ScorableFactionIcon({
   factionId,
   inGrid,
   objectiveId,
-  viewOnly,
 }: {
   factionId: FactionId;
   inGrid?: boolean;
   objectiveId: ObjectiveId;
-  viewOnly?: boolean;
 }) {
   const gameId = useGameId();
   const faction = useFaction(factionId);
   const objective = useObjective(objectiveId);
+  const viewOnly = useViewOnly();
 
   if (!objective) {
     return null;

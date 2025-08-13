@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode, useRef, useState } from "react";
-import { useAttachments } from "../../context/dataHooks";
+import { useAttachments, useViewOnly } from "../../context/dataHooks";
 import { SymbolX } from "../../icons/svgs";
 import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
@@ -59,6 +59,7 @@ export default function AttachmentSelectRadialMenu({
   tagBorderColor = "var(--neutral-border)",
 }: AttachmentSelectRadialMenuProps) {
   const attachmentData = useAttachments();
+  const viewOnly = useViewOnly();
 
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
@@ -108,7 +109,7 @@ export default function AttachmentSelectRadialMenu({
       }}
       ref={menu}
     >
-      {attachments.length > 0 ? (
+      {!viewOnly && attachments.length > 0 ? (
         <React.Fragment>
           <div className={styles.hoverBackground}></div>
           <div className={`flexRow ${styles.hoverRadial}`} ref={innerMenu}>

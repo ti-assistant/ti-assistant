@@ -1,7 +1,7 @@
 import React, { CSSProperties, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { TechRow } from "../TechRow";
-import { useGameId, useTechs } from "../context/dataHooks";
+import { useGameId, useTechs, useViewOnly } from "../context/dataHooks";
 import { useFactions } from "../context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
 import { hasTech, isTechReplaced } from "../util/api/techs";
@@ -18,16 +18,11 @@ import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { FullTechSummary } from "./TechSummary/TechSummary";
 
-function FactionTechSection({
-  openedByDefault,
-  viewOnly,
-}: {
-  openedByDefault: boolean;
-  viewOnly?: boolean;
-}) {
+function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useFactions();
   const gameId = useGameId();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
 
@@ -264,13 +259,12 @@ interface NumFactionsCSS extends CSSProperties {
 function TechUpdateRow({
   tech,
   orderedFactions,
-  viewOnly,
 }: {
   tech: Tech;
   orderedFactions: Faction[];
-  viewOnly?: boolean;
 }) {
   const gameId = useGameId();
+  const viewOnly = useViewOnly();
 
   const numFactions = orderedFactions.length;
 
@@ -300,16 +294,17 @@ function TechUpdateRow({
               className={`flexRow ${styles.selected} ${
                 styles.factionIconWrapper
               } ${viewOnly ? styles.viewOnly : ""}`}
-              onClick={() => {
-                if (viewOnly) {
-                  return;
-                }
-                if (factionHasTech) {
-                  removeTechAsync(gameId, faction.id, tech.id);
-                } else {
-                  addTechAsync(gameId, faction.id, tech.id);
-                }
-              }}
+              onClick={
+                viewOnly
+                  ? undefined
+                  : () => {
+                      if (factionHasTech) {
+                        removeTechAsync(gameId, faction.id, tech.id);
+                      } else {
+                        addTechAsync(gameId, faction.id, tech.id);
+                      }
+                    }
+              }
             >
               <div
                 className={`
@@ -339,11 +334,9 @@ interface ExtendedCSS extends CSSProperties {
 function TechSection({
   type,
   openedByDefault = false,
-  viewOnly,
 }: {
   type: TechType;
   openedByDefault?: boolean;
-  viewOnly?: boolean;
 }) {
   const factions = useFactions();
   const techs = useTechs();
@@ -387,7 +380,6 @@ function TechSection({
                 key={tech.id}
                 tech={tech}
                 orderedFactions={orderedFactions}
-                viewOnly={viewOnly}
               />
             );
           })}
@@ -397,7 +389,7 @@ function TechSection({
   );
 }
 
-function UpgradeTechSection({ viewOnly }: { viewOnly?: boolean }) {
+function UpgradeTechSection() {
   const factions = useFactions();
   const techs = useTechs();
   const intl = useIntl();
@@ -431,7 +423,6 @@ function UpgradeTechSection({ viewOnly }: { viewOnly?: boolean }) {
                 key={tech.id}
                 tech={tech}
                 orderedFactions={orderedFactions}
-                viewOnly={viewOnly}
               />
             );
           })}
@@ -444,16 +435,15 @@ function UpgradeTechSection({ viewOnly }: { viewOnly?: boolean }) {
 function TechsByFaction({
   factionId,
   openedByDefault,
-  viewOnly,
 }: {
   factionId: FactionId;
   openedByDefault: boolean;
-  viewOnly?: boolean;
 }) {
   const factions = useFactions();
   const techs = useTechs();
   const gameId = useGameId();
   const intl = useIntl();
+  const viewOnly = useViewOnly();
 
   const faction = factions[factionId];
   if (!faction) {
@@ -554,7 +544,6 @@ function TechsByFaction({
             techs={techs}
             ownedTechs={ownedTechs}
             factionId={factionId}
-            viewOnly={viewOnly}
           />
         </div>
         <div className={styles.factionTechList}>
@@ -608,13 +597,7 @@ interface TechGridProperties extends CSSProperties {
   "--num-columns": number;
 }
 
-export default function TechPanel({
-  byFaction,
-  viewOnly,
-}: {
-  byFaction: boolean;
-  viewOnly?: boolean;
-}) {
+export default function TechPanel({ byFaction }: { byFaction: boolean }) {
   const factions = useFactions();
 
   const orderedFactions = Object.values(factions)
@@ -632,18 +615,17 @@ export default function TechPanel({
               key={factionId}
               factionId={factionId}
               openedByDefault={index === 0}
-              viewOnly={viewOnly}
             />
           );
         })
       ) : (
         <>
-          <FactionTechSection openedByDefault viewOnly={viewOnly} />
-          <TechSection type="GREEN" viewOnly={viewOnly} />
-          <TechSection type="BLUE" viewOnly={viewOnly} />
-          <TechSection type="YELLOW" viewOnly={viewOnly} />
-          <TechSection type="RED" viewOnly={viewOnly} />
-          <UpgradeTechSection viewOnly={viewOnly} />
+          <FactionTechSection openedByDefault />
+          <TechSection type="GREEN" />
+          <TechSection type="BLUE" />
+          <TechSection type="YELLOW" />
+          <TechSection type="RED" />
+          <UpgradeTechSection />
         </>
       )}
     </div>

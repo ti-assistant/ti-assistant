@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import { useGameId } from "../../../src/context/dataHooks";
+import { useGameId, useViewOnly } from "../../../src/context/dataHooks";
 import { useFaction } from "../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../src/context/gameDataHooks";
 import { usePhase } from "../../../src/context/stateDataHooks";
@@ -15,12 +15,16 @@ import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
 import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { rem } from "../../../src/util/util";
 import styles from "./game-page.module.scss";
+import { enterPassword } from "../../../src/util/api/enterPassword";
 
 export default function SelectFactionPage() {
   const router = useRouter();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const gameId = useGameId();
   const phase = usePhase();
+  const viewOnly = useViewOnly();
+
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!!gameId) {
@@ -37,6 +41,28 @@ export default function SelectFactionPage() {
   // TODO: Fix height on mobile.
   return (
     <div className={styles.GamePage}>
+      {viewOnly ? (
+        <div className={styles.ControlButtons}>
+          <div className="flexRow">
+            <input
+              ref={passwordRef}
+              type="textbox"
+              placeholder="Enter Password"
+            ></input>
+            <button
+              onClick={() => {
+                const password = passwordRef.current?.value;
+                if (!password) {
+                  return;
+                }
+                enterPassword(gameId, password);
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      ) : null}
       <div
         className="flexColumn"
         style={{

@@ -1,7 +1,12 @@
 import Image from "next/image";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import { useAttachments, useGameId, usePlanet } from "../../context/dataHooks";
+import {
+  useAttachments,
+  useGameId,
+  usePlanet,
+  useViewOnly,
+} from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
@@ -49,6 +54,7 @@ export default function PlanetRow({
 }: PlanetRowProps) {
   const attachments = useAttachments();
   const factions = useFactions();
+  const viewOnly = useViewOnly();
 
   const { openModal } = useSharedModal();
 
@@ -129,6 +135,7 @@ export default function PlanetRow({
       itemId={planet.id}
       selectItem={planet.locked ? undefined : addPlanet}
       removeItem={planet.locked ? undefined : removePlanet}
+      viewOnly={viewOnly}
     >
       <div
         // ref={dragRef}
@@ -429,6 +436,7 @@ interface AttachRowProps {
 
 function AttachRow({ attachment, planet }: AttachRowProps) {
   const gameId = useGameId();
+  const viewOnly = useViewOnly();
 
   function isSkip() {
     return (attachment.attribute ?? "").includes("skip");
@@ -463,6 +471,7 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
           <Toggle
             toggleFn={() => toggleAttachment()}
             selected={(planet.attachments ?? []).includes(attachment.id)}
+            disabled={viewOnly}
           >
             {attachment.name}
           </Toggle>

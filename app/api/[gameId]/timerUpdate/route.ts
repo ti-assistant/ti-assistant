@@ -1,5 +1,6 @@
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import {
+  canEditGame,
   getTimers,
   getTimersInTransaction,
 } from "../../../../server/util/fetch";
@@ -10,6 +11,13 @@ export async function POST(
   { params }: { params: { gameId: string } }
 ) {
   const gameId = params.gameId;
+
+  const canEdit = await canEditGame(gameId);
+  if (!canEdit) {
+    return new Response("Not authorized", {
+      status: 403,
+    });
+  }
 
   const data = (await req.json()) as TimerUpdateData;
 

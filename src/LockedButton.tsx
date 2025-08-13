@@ -4,6 +4,7 @@ export function LockedButtons({
   buttons,
   style = {},
   unlocked,
+  viewOnly,
 }: {
   buttons: {
     text: string;
@@ -13,12 +14,13 @@ export function LockedButtons({
   buttonStyle?: CSSProperties;
   style?: CSSProperties;
   unlocked: boolean;
+  viewOnly?: boolean;
 }) {
   const [locked, setLocked] = useState(true);
 
   return (
     <div className="flexRow" style={style}>
-      {!unlocked ? (
+      {!unlocked && !viewOnly ? (
         locked ? (
           <div style={{ cursor: "pointer" }} onClick={() => setLocked(false)}>
             &#128274;
@@ -33,7 +35,7 @@ export function LockedButtons({
         return (
           <button
             key={button.text}
-            disabled={!unlocked && locked}
+            disabled={(!unlocked && locked) || viewOnly}
             onClick={button.onClick}
             style={button.style ?? {}}
           >

@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
-import { getGameData } from "../../../../server/util/fetch";
+import { canEditGame, getGameData } from "../../../../server/util/fetch";
 
 interface ChangeOptionData {
   option: string;
@@ -12,6 +12,12 @@ export async function POST(
   { params }: { params: { gameId: string } }
 ) {
   const gameId = params.gameId;
+  const canEdit = await canEditGame(gameId);
+  if (!canEdit) {
+    return new Response("Not authorized", {
+      status: 403,
+    });
+  }
 
   const db = getFirestore();
 

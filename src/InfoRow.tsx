@@ -18,7 +18,7 @@ export function InfoRow({
   return (
     <div
       className="flexRow"
-      style={{ width: "100%", justifyContent: "stretch" }}
+      style={{ width: "100%", justifyContent: "stretch", gap: 0 }}
     >
       {children}
       <div

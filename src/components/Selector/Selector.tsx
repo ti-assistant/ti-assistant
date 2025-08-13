@@ -23,6 +23,7 @@ interface SelectorProps<Id extends string, Name extends string> {
   selectedItem?: Id;
   selectedLabel?: ReactNode;
   style?: CSSProperties;
+  viewOnly?: boolean;
 }
 
 interface IdType {
@@ -52,6 +53,7 @@ export function Selector<Id extends string, Name extends string>({
   renderItem,
   renderButton,
   style,
+  viewOnly,
 }: SelectorProps<Id, Name>) {
   const shouldAutoSelect = !!autoSelect && options.length <= 1;
 
@@ -87,6 +89,7 @@ export function Selector<Id extends string, Name extends string>({
         itemId={selectedItem}
         removeItem={removeItem}
         style={style}
+        viewOnly={viewOnly}
       >
         {selectedOption.name}
       </SelectableRow>
@@ -134,6 +137,7 @@ export function Selector<Id extends string, Name extends string>({
                   closeFn();
                   toggleItem(option.id, true);
                 }}
+                disabled={viewOnly}
               >
                 {option.name}
               </button>

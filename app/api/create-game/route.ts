@@ -1,8 +1,14 @@
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 import { createIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import { getPlanets } from "../../../server/data/planets";
+import { generateSessionId } from "../../../server/util/fetch";
+import {
+  getSessionIdFromCookie,
+  hashPassword,
+  setSessionIdCookie,
+} from "../../../src/util/server";
 import { Optional } from "../../../src/util/types/types";
 import { objectEntries } from "../../../src/util/util";
 
@@ -163,6 +169,33 @@ export async function POST(req: Request) {
     gameid = makeid(6);
     game = await db.collection("games").doc(gameid).get();
     archive = await db.collection("archive").doc(gameid).get();
+  }
+
+  if (json.password) {
+    const sessionDeleteDate = new Date();
+    sessionDeleteDate.setDate(sessionDeleteDate.getDate() + 14);
+
+    const hashedPassword = hashPassword(json.password);
+    await db.collection("passwords").doc(gameid).set({
+      password: hashedPassword,
+      deleteAt: deleteDate,
+    });
+
+    let sessionId = getSessionIdFromCookie();
+    if (!sessionId) {
+      sessionId = generateSessionId();
+      setSessionIdCookie(sessionId);
+      await db.collection("sessions").doc(sessionId).set({
+        deleteAt: sessionDeleteDate,
+      });
+    }
+    await db
+      .collection("sessions")
+      .doc(sessionId)
+      .update({
+        games: FieldValue.arrayUnion(gameid),
+        deleteAt: sessionDeleteDate,
+      });
   }
 
   await db.collection("games").doc(gameid).set(gameState);

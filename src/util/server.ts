@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { DEFAULT_SETTINGS, Settings } from "./settings";
+import jsSHA from "jssha";
 
 export async function getMessages(
   locale: string
@@ -23,4 +24,22 @@ export function getSettings() {
     ...DEFAULT_SETTINGS,
     ...(JSON.parse(settings.value) as Settings),
   };
+}
+
+export function getSessionIdFromCookie() {
+  const sessionIdCookie = cookies().get("session");
+  if (!sessionIdCookie) {
+    return;
+  }
+  return sessionIdCookie.value;
+}
+
+export function setSessionIdCookie(sessionId: string) {
+  cookies().set("session", sessionId);
+}
+
+export function hashPassword(password: string) {
+  const sha = new jsSHA("SHA-512", "TEXT", { encoding: "UTF8" });
+  sha.update(password);
+  return sha.getHash("HEX");
 }

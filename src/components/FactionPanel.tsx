@@ -130,6 +130,7 @@ function FactionTech({
                   gap: rem(8),
                 }}
                 onClick={() => removeTechAsync(gameId, faction.id, tech.id)}
+                disabled={viewOnly}
               >
                 Downgrade
               </button>
@@ -215,6 +216,7 @@ function FactionUnit({
               gap: rem(8),
             }}
             onClick={() => addTechAsync(gameId, faction.id, upgradeTech.id)}
+            disabled={viewOnly}
           >
             Upgrade
           </button>
@@ -557,7 +559,7 @@ function FactionPanelContent({
                             [Exhausted]
                           </span>
                         ) : null}
-                        {gameId && leader.type !== "AGENT" ? (
+                        {gameId && !viewOnly && leader.type !== "AGENT" ? (
                           <div
                             className="flexRow"
                             style={{
@@ -565,9 +567,6 @@ function FactionPanelContent({
                               cursor: "pointer",
                             }}
                             onClick={() => {
-                              if (!gameId) {
-                                return;
-                              }
                               updateLeaderStateAsync(
                                 gameId,
                                 leader.id,
@@ -585,25 +584,24 @@ function FactionPanelContent({
                     leftLabel = (
                       <div className="flexRow">
                         {leader.name}
-                        <div
-                          className="flexRow"
-                          style={{
-                            gap: "4px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            if (!gameId) {
-                              return;
-                            }
-                            updateLeaderStateAsync(
-                              gameId,
-                              leader.id,
-                              "readied"
-                            );
-                          }}
-                        >
-                          &#128274;
-                        </div>
+                        {viewOnly ? null : (
+                          <div
+                            className="flexRow"
+                            style={{
+                              gap: "4px",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              updateLeaderStateAsync(
+                                gameId,
+                                leader.id,
+                                "readied"
+                              );
+                            }}
+                          >
+                            &#128274;
+                          </div>
+                        )}
                       </div>
                     );
                     break;
@@ -619,15 +617,19 @@ function FactionPanelContent({
                               border: "1px solid #eee",
                               padding: rem(2),
                               borderRadius: rem(2),
-                              cursor: "pointer",
+                              cursor: viewOnly ? "default" : "pointer",
                             }}
-                            onClick={() => {
-                              updateLeaderStateAsync(
-                                gameId,
-                                leader.id,
-                                "readied"
-                              );
-                            }}
+                            onClick={
+                              viewOnly
+                                ? undefined
+                                : () => {
+                                    updateLeaderStateAsync(
+                                      gameId,
+                                      leader.id,
+                                      "readied"
+                                    );
+                                  }
+                            }
                           >
                             UNPURGE
                           </div>

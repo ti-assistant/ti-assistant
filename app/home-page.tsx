@@ -15,6 +15,8 @@ import styles from "./home-page.module.scss";
 import PatreonSVG from "../src/icons/ui/Patreon";
 import BuyMeACoffeeSVG from "../src/icons/ui/BuyMeACoffee";
 import GitHubSVG from "../src/icons/ui/GitHub";
+import ThreeWaySelector from "../src/components/ThreeWaySelector/ThreeWaySelector";
+import Toggle from "../src/components/Toggle/Toggle";
 
 export default function HomePage() {
   const intl = useIntl();

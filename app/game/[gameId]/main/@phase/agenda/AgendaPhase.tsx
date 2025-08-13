@@ -25,6 +25,7 @@ import {
   usePlanets,
   useRelics,
   useStrategyCards,
+  useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
@@ -200,6 +201,7 @@ function AgendaDetails() {
   const planets = usePlanets();
   const relics = useRelics();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -459,6 +461,7 @@ function AgendaDetails() {
               );
             }
           }}
+          viewOnly={viewOnly}
         />
       );
       break;
@@ -499,6 +502,7 @@ function AgendaDetails() {
                     removeItem={() => {
                       removeRelic(relic.id, selectedOutcome as FactionId);
                     }}
+                    viewOnly={viewOnly}
                   >
                     <InfoRow
                       infoTitle={relic.name}
@@ -520,6 +524,7 @@ function AgendaDetails() {
               removeRelic(relicId, selectedOutcome as FactionId);
             }
           }}
+          viewOnly={viewOnly}
         />
       );
       break;
@@ -546,6 +551,7 @@ function AgendaSteps() {
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -838,6 +844,7 @@ function AgendaSteps() {
                     }
                   }}
                   selectedItem={ancientBurialSites}
+                  viewOnly={viewOnly}
                 />
                 <MawOfWorlds />
               </div>
@@ -866,7 +873,7 @@ function AgendaSteps() {
                       className="flexRow"
                       style={{
                         padding: rem(8),
-                        maxWidth: "70vw",
+                        maxWidth: "75vw",
                         overflowX: "auto",
                         gap: rem(4),
                         display: "grid",
@@ -886,6 +893,7 @@ function AgendaSteps() {
                               writingMode: "horizontal-tb",
                             }}
                             onClick={() => selectAgenda(agenda.id)}
+                            disabled={viewOnly}
                           >
                             {agenda.name}
                           </button>
@@ -929,6 +937,7 @@ function AgendaSteps() {
                         selectEligibleOutcome("None");
                       }
                     }}
+                    viewOnly={viewOnly}
                   />
                 ) : null}
               </LabeledDiv>
@@ -958,6 +967,7 @@ function AgendaSteps() {
                 >
                   <button
                     onClick={() => hideAgendaLocal(currentAgenda?.id, true)}
+                    disabled={viewOnly}
                   >
                     {vetoText}
                   </button>
@@ -993,7 +1003,7 @@ function AgendaSteps() {
                                 backgroundColor: "var(--light-bg)",
                                 borderRadius: "100%",
                                 marginLeft: "60%",
-                                cursor: "pointer",
+                                cursor: viewOnly ? "default" : "pointer",
                                 marginTop: "60%",
                                 boxShadow: `${"1px"} ${"1px"} ${"1px"} black`,
                                 width: rem(20),
@@ -1001,7 +1011,7 @@ function AgendaSteps() {
                                 color: politicalSecret ? "green" : "red",
                               }}
                               onClick={() => {
-                                if (!gameId) {
+                                if (viewOnly) {
                                   return;
                                 }
                                 if (politicalSecret) {
@@ -1083,6 +1093,7 @@ function AgendaSteps() {
                       playActionCardAsync(gameId, "Hack Election", "None");
                     }
                   }}
+                  disabled={viewOnly}
                 >
                   <FormattedMessage
                     id="Components.Hack Election.Title"
@@ -1125,6 +1136,7 @@ function AgendaSteps() {
                       );
                     }
                   }}
+                  viewOnly={viewOnly}
                 />
               </div>
             </ClientOnlyHoverMenu>
@@ -1135,11 +1147,9 @@ function AgendaSteps() {
                 <button
                   style={{ width: "fit-content" }}
                   onClick={() => {
-                    if (!gameId) {
-                      return;
-                    }
                     startVotingAsync(gameId);
                   }}
+                  disabled={viewOnly}
                 >
                   <FormattedMessage
                     id="gQ0twG"
@@ -1241,6 +1251,7 @@ function AgendaSteps() {
                         selectSubAgendaLocal(undefined);
                       }
                     }}
+                    viewOnly={viewOnly}
                   />
                 ) : null
               ) : null}
@@ -1278,7 +1289,7 @@ function AgendaSteps() {
                   className="flexColumn"
                   style={{ paddingTop: rem(8), width: "100%" }}
                 >
-                  <button onClick={completeAgenda}>
+                  <button onClick={completeAgenda} disabled={viewOnly}>
                     <FormattedMessage
                       id="GR4fXA"
                       defaultMessage="Resolve with Outcome: {outcome}"
@@ -1341,6 +1352,7 @@ function DictatePolicy({}) {
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const viewOnly = useViewOnly();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
   const numLawsInPlay = Object.values(agendas ?? {}).filter((agenda) => {
@@ -1387,9 +1399,6 @@ function DictatePolicy({}) {
       {dictatePolicy.type === "SECRET" ? (
         <FactionSelectRadialMenu
           onSelect={(factionId, prevFaction) => {
-            if (!gameId) {
-              return;
-            }
             if (prevFaction) {
               unscoreObjectiveAsync(gameId, prevFaction, "Dictate Policy");
             }
@@ -1404,6 +1413,7 @@ function DictatePolicy({}) {
           )}
           factions={orderedDictators}
           selectedFaction={currentDictators[0] as Optional<FactionId>}
+          viewOnly={viewOnly}
         />
       ) : (
         orderedDictators.map((factionId) => {
@@ -1483,6 +1493,7 @@ export default function AgendaPhase() {
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -1662,6 +1673,7 @@ export default function AgendaPhase() {
                 fontSize: rem(24),
               }}
               onClick={() => nextPhase()}
+              disabled={viewOnly}
             >
               {intl.formatMessage({
                 id: "5WXn8l",
@@ -1776,6 +1788,7 @@ export default function AgendaPhase() {
                                     writingMode: "horizontal-tb",
                                   }}
                                   onClick={() => selectSpeakerTieBreak(target)}
+                                  disabled={viewOnly}
                                 >
                                   {target}
                                 </button>
@@ -1795,6 +1808,7 @@ export default function AgendaPhase() {
                                   onClick={() =>
                                     selectSpeakerTieBreak(target.id)
                                   }
+                                  disabled={viewOnly}
                                 >
                                   {target.name}
                                 </button>
@@ -1811,6 +1825,7 @@ export default function AgendaPhase() {
                     <SelectableRow
                       itemId={tieBreak}
                       removeItem={() => selectSpeakerTieBreak(undefined)}
+                      viewOnly={viewOnly}
                     >
                       {tieBreak}
                     </SelectableRow>
@@ -1839,6 +1854,7 @@ export default function AgendaPhase() {
                   onClick: nextPhase,
                 },
               ]}
+              viewOnly={viewOnly}
             />
           </React.Fragment>
         )}

@@ -11,6 +11,7 @@ import {
   useLeaders,
   usePlanets,
   useTechs,
+  useViewOnly,
 } from "./context/dataHooks";
 import { useFaction } from "./context/factionDataHooks";
 import { useObjectives } from "./context/objectiveDataHooks";
@@ -45,6 +46,7 @@ export function FactionSummary({
   const planets = usePlanets();
   const state = useGameState();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
 
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
@@ -70,7 +72,7 @@ export function FactionSummary({
     manualVPUpdateAsync(gameId, factionId, value);
   }
 
-  const editable = state?.phase !== "END";
+  const editable = state?.phase !== "END" && !viewOnly;
 
   const hasXxchaHero =
     factionId === "Xxcha Kingdom" &&

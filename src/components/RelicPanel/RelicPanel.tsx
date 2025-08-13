@@ -1,4 +1,4 @@
-import { useGameId, useRelics } from "../../context/dataHooks";
+import { useGameId, useRelics, useViewOnly } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
@@ -12,6 +12,7 @@ function RelicPanelContent({}) {
   const factions = useFactions();
   const gameId = useGameId();
   const relics = useRelics();
+  const viewOnly = useViewOnly();
 
   return (
     <div className={styles.factionInfoGrid}>
@@ -65,6 +66,7 @@ function RelicPanelContent({}) {
                       gainRelicAsync(gameId, factionId, relic.id);
                     }
                   }}
+                  viewOnly={viewOnly}
                 />
                 <InfoRow infoTitle={relic.name} infoContent={relic.description}>
                   {relic.name}

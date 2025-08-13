@@ -8,6 +8,7 @@ import {
   useAttachments,
   useGameId,
   usePlanets,
+  useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import {
   addAttachmentAsync,
@@ -26,6 +27,7 @@ export default function PlanetaryRigs({ factionId }: { factionId: FactionId }) {
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   const gameId = useGameId();
   const planets = usePlanets();
+  const viewOnly = useViewOnly();
   const [selectedPlanet, setSelectedPlanet] = useState<Optional<PlanetId>>();
 
   if (selectedPlanet) {
@@ -148,6 +150,7 @@ export default function PlanetaryRigs({ factionId }: { factionId: FactionId }) {
                   closeFn();
                   setSelectedPlanet(planet.id);
                 }}
+                disabled={viewOnly}
               >
                 {planet.name}
               </button>

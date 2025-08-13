@@ -6,7 +6,9 @@ import {
   Transaction,
   getFirestore,
 } from "firebase-admin/firestore";
+import { NextResponse } from "next/server";
 import {
+  canEditGame,
   getCurrentTurnLogEntriesInTransaction,
   getGameData,
   getGameDataInTransaction,
@@ -50,6 +52,10 @@ import {
   UnplayActionCardHandler,
 } from "../../../../src/util/model/playActionCard";
 import {
+  PlayAdjudicatorBaalHandler,
+  UndoAdjudicatorBaalHandler,
+} from "../../../../src/util/model/playAdjudicatorBaal";
+import {
   PlayComponentHandler,
   UnplayComponentHandler,
 } from "../../../../src/util/model/playComponent";
@@ -57,6 +63,10 @@ import {
   PlayPromissoryNoteHandler,
   UnplayPromissoryNoteHandler,
 } from "../../../../src/util/model/playPromissoryNote";
+import {
+  PlayRelicHandler,
+  UnplayRelicHandler,
+} from "../../../../src/util/model/playRelic";
 import {
   PlayRiderHandler,
   UnplayRiderHandler,
@@ -89,19 +99,10 @@ import { SetObjectivePointsHandler } from "../../../../src/util/model/setObjecti
 import { SetSpeakerHandler } from "../../../../src/util/model/setSpeaker";
 import { SpeakerTieBreakHandler } from "../../../../src/util/model/speakerTieBreak";
 import { StartVotingHandler } from "../../../../src/util/model/startVoting";
+import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
 import { SwapStrategyCardsHandler } from "../../../../src/util/model/swapStrategyCards";
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
-import { NextResponse } from "next/server";
-import {
-  PlayRelicHandler,
-  UnplayRelicHandler,
-} from "../../../../src/util/model/playRelic";
-import {
-  UndoAdjudicatorBaalHandler,
-  PlayAdjudicatorBaalHandler,
-} from "../../../../src/util/model/playAdjudicatorBaal";
-import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
 import { Optional } from "../../../../src/util/types/types";
 
 export async function POST(
@@ -109,6 +110,13 @@ export async function POST(
   { params }: { params: { gameId: string } }
 ) {
   const gameId = params.gameId;
+
+  const canEdit = await canEditGame(gameId);
+  if (!canEdit) {
+    return new Response("Not authorized", {
+      status: 403,
+    });
+  }
 
   const db = getFirestore();
 

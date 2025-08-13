@@ -8,6 +8,7 @@ import {
   usePlanets,
   useRelics,
   useTechs,
+  useViewOnly,
 } from "../../context/dataHooks";
 import { useFaction } from "../../context/factionDataHooks";
 import { useFactions } from "../../context/factionDataHooks";
@@ -45,6 +46,7 @@ function InnerTechSelectHoverMenu({
   const faction = useFaction(factionId);
   const factions = useFactions();
   const options = useOptions();
+  const viewOnly = useViewOnly();
 
   return techs.length > 0 ? (
     <ClientOnlyHoverMenu
@@ -91,6 +93,7 @@ function InnerTechSelectHoverMenu({
                   fontSize: rem(16),
                   gap: rem(8),
                 }}
+                disabled={viewOnly}
               >
                 {tech.name}
                 {tech.type === "UPGRADE" ? (

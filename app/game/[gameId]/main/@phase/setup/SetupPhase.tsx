@@ -3,6 +3,7 @@ import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
+import FactionDiv from "../../../../../../src/components/LabeledDiv/FactionDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
@@ -11,13 +12,14 @@ import {
   useGameId,
   useLogEntries,
   useOptions,
+  useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
-  useFaction,
   useFactions,
   useNumFactions,
 } from "../../../../../../src/context/factionDataHooks";
+import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useSpeaker } from "../../../../../../src/context/stateDataHooks";
 import {
   advancePhaseAsync,
@@ -25,16 +27,10 @@ import {
   hideObjectiveAsync,
   revealObjectiveAsync,
 } from "../../../../../../src/dynamic/api";
-import {
-  getFactionColor,
-  getFactionName,
-} from "../../../../../../src/util/factions";
 import { processMapString } from "../../../../../../src/util/map";
 import { objectiveTypeString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./SetupPhase.module.scss";
-import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
-import FactionDiv from "../../../../../../src/components/LabeledDiv/FactionDiv";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>
@@ -143,6 +139,7 @@ export default function SetupPhase() {
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
+  const viewOnly = useViewOnly();
 
   const orderedFactionIds = useOrderedFactionIds("SPEAKER");
   const numFactions = useNumFactions();
@@ -316,6 +313,7 @@ export default function SetupPhase() {
                             removeItem={() => {
                               hideObjectiveAsync(gameId, objectiveId);
                             }}
+                            viewOnly={viewOnly}
                           >
                             {objectiveId}
                           </SelectableRow>
@@ -391,6 +389,7 @@ export default function SetupPhase() {
                   style: { fontSize: rem(40) },
                 },
               ]}
+              viewOnly={viewOnly}
             />
           </div>
         </ol>
@@ -459,6 +458,7 @@ export default function SetupPhase() {
                   style: { fontSize: rem(40) },
                 },
               ]}
+              viewOnly={viewOnly}
             />
           </div>
         </div>

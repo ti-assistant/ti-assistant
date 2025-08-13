@@ -5,7 +5,7 @@ export default function HazardousPlanetSVG() {
       xmlns="http://www.w3.org/2000/svg"
       fill="#ae1318"
       stroke="#fff"
-      stroke-width="0.377015"
+      strokeWidth="0.377015"
     >
       <g transform="translate(-71.229817,-82.364662)">
         <ellipse cx="86.915443" cy="95.178101" rx="3.4357388" ry="3.3068988" />

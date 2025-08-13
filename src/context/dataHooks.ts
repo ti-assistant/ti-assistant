@@ -57,6 +57,10 @@ export function useGameId() {
   return useGameDataValue<string>("gameId", "");
 }
 
+export function useViewOnly() {
+  return useGameDataValue<boolean>("viewOnly", false);
+}
+
 export function useActionLog() {
   return useGameDataValue<ActionLog>("actionLog", []);
 }

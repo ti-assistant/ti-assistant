@@ -1,12 +1,12 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
-import { BASE_COLORS } from "../../../server/data/colors";
+import { useContext, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import ColorPicker from "../../../app/setup/components/ColorPicker";
+import PlayerNameInput from "../../../app/setup/components/PlayerNameInput";
 import { SettingsContext } from "../../context/contexts";
-import { useGameId, useOptions } from "../../context/dataHooks";
-import { useFaction, useFactions } from "../../context/factionDataHooks";
+import { useGameId, useOptions, useViewOnly } from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { changeOptionAsync, updateFactionAsync } from "../../dynamic/api";
-import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import DummyFactionSummary from "../../InnerFactionSummary";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
 import { convertToFactionColor } from "../../util/factions";
@@ -18,8 +18,6 @@ import NumberInput from "../NumberInput/NumberInput";
 import TechIcon from "../TechIcon/TechIcon";
 import { DummyTechTree } from "../TechTree/TechTree";
 import Toggle from "../Toggle/Toggle";
-import PlayerNameInput from "../../../app/setup/components/PlayerNameInput";
-import ColorPicker from "../../../app/setup/components/ColorPicker";
 
 export default function SettingsModal() {
   return (
@@ -65,6 +63,7 @@ type SettingsTab = "DISPLAY SETTINGS" | "GAME SETTINGS";
 
 function SettingsModalContent() {
   const gameId = useGameId();
+  const viewOnly = useViewOnly();
   const { settings, updateSetting } = useContext(SettingsContext);
 
   const techSummarySetting = settings["fs-tech-summary-display"];
@@ -85,7 +84,7 @@ function SettingsModalContent() {
         >
           Display Settings
         </Chip>
-        {gameId ? (
+        {gameId && !viewOnly ? (
           <Chip
             toggleFn={() => setSelectedTab("GAME SETTINGS")}
             selected={selectedTab === "GAME SETTINGS"}

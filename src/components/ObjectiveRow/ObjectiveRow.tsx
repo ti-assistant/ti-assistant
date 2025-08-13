@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { SelectableRow } from "../../SelectableRow";
-import FactionIcon from "../FactionIcon/FactionIcon";
-import Modal, { ModalContent } from "../Modal/Modal";
-import { rem } from "../../util/util";
+import { useViewOnly } from "../../context/dataHooks";
 import { useSharedModal } from "../../data/SharedModal";
+import { SelectableRow } from "../../SelectableRow";
+import { rem } from "../../util/util";
+import FactionIcon from "../FactionIcon/FactionIcon";
+import { ModalContent } from "../Modal/Modal";
 
 interface InfoContentProps {
   objective: Objective;
@@ -48,7 +48,7 @@ export default function ObjectiveRow({
   viewing,
   hideScorers,
 }: ObjectiveRowProps) {
-  const [showInfoModal, setShowInfoModal] = useState(false);
+  const viewOnly = useViewOnly();
 
   const { openModal } = useSharedModal();
 
@@ -72,6 +72,7 @@ export default function ObjectiveRow({
       itemId={objective.id}
       selectItem={addObjective}
       removeItem={removeObjective}
+      viewOnly={viewOnly}
     >
       <div className="flexColumn" style={{ width: "100%", gap: 0 }}>
         <div
@@ -113,6 +114,7 @@ export default function ObjectiveRow({
               <button
                 style={{ fontSize: rem(12) }}
                 onClick={() => scoreObjective(objective.id, true)}
+                disabled={viewOnly}
               >
                 Score
               </button>
@@ -160,7 +162,11 @@ export default function ObjectiveRow({
                         borderRadius: rem(12),
                         boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                       }}
-                      onClick={() => scoreObjective(objective.id, false)}
+                      onClick={
+                        viewOnly
+                          ? undefined
+                          : () => scoreObjective(objective.id, false)
+                      }
                     >
                       &#x2715;
                     </div>
