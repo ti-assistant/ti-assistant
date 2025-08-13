@@ -751,6 +751,7 @@ function FactionPanelContent({
               {factionTechs.map((tech) => {
                 return (
                   <FactionTech
+                    key={tech.id}
                     tech={tech}
                     faction={innerFaction}
                     viewOnly={viewOnly}

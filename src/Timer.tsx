@@ -130,7 +130,7 @@ export function FactionTimer({ factionId, style }: FactionTimerProps) {
       lastUpdate.current = localFactionTimer ?? 0;
       setFactionTimer(localFactionTimer ?? 0);
     }
-  }, [localFactionTimer, factionId, factionTimer]);
+  }, [localFactionTimer, factionId, factionTimer, viewOnly]);
 
   return <TimerDisplay time={!timers ? 0 : factionTimer} style={style} />;
 }

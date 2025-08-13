@@ -58,7 +58,7 @@ export default function GameTimer({ frozen = false }) {
       lastUpdate.current = localGameTimer;
       setGameTimer(localGameTimer);
     }
-  }, [localGameTimer, gameTimer]);
+  }, [localGameTimer, gameTimer, viewOnly]);
 
   function togglePause() {
     if (!gameId) {

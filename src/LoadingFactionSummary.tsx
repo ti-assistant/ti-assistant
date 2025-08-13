@@ -18,7 +18,6 @@ export default function LoadingFactionSummary() {
         factionId="Vuil'raith Cabal"
         techs={techs}
         ownedTechs={ownedTechs}
-        viewOnly
       />
       <div className={styles.VPGrid}>
         <div
