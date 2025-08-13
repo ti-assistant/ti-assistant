@@ -2,7 +2,12 @@ import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { UnitStat } from "../TechRow";
-import { useGameId, useLeaders, useTechs } from "../context/dataHooks";
+import {
+  useGameId,
+  useLeaders,
+  useTechs,
+  useViewOnly,
+} from "../context/dataHooks";
 import { useFaction } from "../context/factionDataHooks";
 import { useSharedModal } from "../data/SharedModal";
 import {
@@ -386,7 +391,6 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
 function FactionPanelContent({
   faction,
   options,
-  viewOnly,
 }: {
   faction: Faction;
   options: Options;
@@ -398,6 +402,7 @@ function FactionPanelContent({
   const gameId = useGameId();
   const leaders = useLeaders();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
 
   if (!innerFaction) {
     return null;
@@ -850,11 +855,9 @@ function FactionPanelContent({
 export default function FactionPanel({
   faction,
   options,
-  viewOnly = false,
 }: {
   faction: Faction;
   options: Options;
-  viewOnly?: boolean;
 }) {
   const { openModal } = useSharedModal();
 
@@ -867,13 +870,7 @@ export default function FactionPanel({
           zIndex: 1,
         }}
         onClick={() =>
-          openModal(
-            <FactionPanelModal
-              faction={faction}
-              options={options}
-              viewOnly={viewOnly}
-            />
-          )
+          openModal(<FactionPanelModal faction={faction} options={options} />)
         }
       >
         &#x24D8;
@@ -885,11 +882,9 @@ export default function FactionPanel({
 function FactionPanelModal({
   faction,
   options,
-  viewOnly,
 }: {
   faction: Faction;
   options: Options;
-  viewOnly?: boolean;
 }) {
   return (
     <div
@@ -925,11 +920,7 @@ function FactionPanelModal({
           height: "fit-content",
         }}
       >
-        <FactionPanelContent
-          faction={faction}
-          options={options}
-          viewOnly={viewOnly}
-        />
+        <FactionPanelContent faction={faction} options={options} />
       </div>
     </div>
   );
