@@ -3,7 +3,11 @@ import { NextResponse } from "next/server";
 import { createIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import { getPlanets } from "../../../server/data/planets";
-import { generateSessionId } from "../../../server/util/fetch";
+import {
+  generateSessionId,
+  getSession,
+  TIASession,
+} from "../../../server/util/fetch";
 import {
   getSessionIdFromCookie,
   hashPassword,
@@ -182,12 +186,16 @@ export async function POST(req: Request) {
     });
 
     let sessionId = getSessionIdFromCookie();
-    if (!sessionId) {
-      sessionId = generateSessionId();
-      setSessionIdCookie(sessionId);
-      await db.collection("sessions").doc(sessionId).set({
+    let session: Optional<TIASession>;
+    if (sessionId) {
+      session = await getSession(sessionId);
+    }
+    if (!sessionId || !session) {
+      const result = await db.collection("sessions").add({
         deleteAt: sessionDeleteDate,
       });
+      sessionId = result.id;
+      setSessionIdCookie(sessionId);
     }
     await db
       .collection("sessions")

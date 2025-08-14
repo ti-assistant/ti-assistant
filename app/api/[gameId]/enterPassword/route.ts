@@ -1,14 +1,16 @@
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 import {
-  generateSessionId,
   getGamePassword,
+  getSession,
+  TIASession,
 } from "../../../../server/util/fetch";
 import {
   getSessionIdFromCookie,
   hashPassword,
   setSessionIdCookie,
 } from "../../../../src/util/server";
+import { Optional } from "../../../../src/util/types/types";
 
 interface EnterPasswordData {
   password: string;
@@ -42,14 +44,18 @@ export async function POST(
   const db = getFirestore();
 
   let sessionId = getSessionIdFromCookie();
+  let session: Optional<TIASession>;
+  if (sessionId) {
+    session = await getSession(sessionId);
+  }
   const sessionDeleteDate = new Date();
   sessionDeleteDate.setDate(sessionDeleteDate.getDate() + 14);
-  if (!sessionId) {
-    sessionId = generateSessionId();
-    setSessionIdCookie(sessionId);
-    await db.collection("sessions").doc(sessionId).set({
+  if (!sessionId || !session) {
+    const result = await db.collection("sessions").add({
       deleteAt: sessionDeleteDate,
     });
+    sessionId = result.id;
+    setSessionIdCookie(sessionId);
   }
   await db
     .collection("sessions")

@@ -340,7 +340,7 @@ export async function getGamePassword(gameId: string) {
 }
 
 export function generateSessionId() {
-  return crypto.randomBytes(16).toString("utf8");
+  return crypto.randomBytes(16).toString("base64");
 }
 
 export async function canEditGame(gameId: string) {
