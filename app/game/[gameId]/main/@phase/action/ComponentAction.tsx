@@ -31,6 +31,7 @@ import {
   usePlanets,
   useRelics,
   useTechs,
+  useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
@@ -118,6 +119,7 @@ function ComponentSelect({
   const factions = useFactions();
   const options = useOptions();
   const leaders = useLeaders();
+  const viewOnly = useViewOnly();
 
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
@@ -240,6 +242,7 @@ function ComponentSelect({
                     : ""
                 }
                 onClick={() => selectComponent(component.id)}
+                disabled={viewOnly}
               >
                 {component.name}
               </button>
@@ -275,6 +278,7 @@ function ComponentSelect({
                   style={{ writingMode: "horizontal-tb" }}
                   className={gameTech && !gameTech.ready ? "faded" : ""}
                   onClick={() => selectComponent(component.id)}
+                  disabled={viewOnly}
                 >
                   {component.name}
                 </button>
@@ -310,6 +314,7 @@ function ComponentSelect({
                   <button
                     className={leader.state === "exhausted" ? "faded" : ""}
                     onClick={() => selectComponent(component.id)}
+                    disabled={viewOnly}
                   >
                     {component.name}
                   </button>
@@ -348,6 +353,7 @@ function ComponentSelect({
                       : ""
                   }
                   onClick={() => selectComponent(component.id)}
+                  disabled={viewOnly}
                 >
                   {component.name}
                 </button>
@@ -375,6 +381,7 @@ function ComponentSelect({
                 <button
                   key={component.id}
                   onClick={() => selectComponent(component.id)}
+                  disabled={viewOnly}
                 >
                   {component.name}
                 </button>
@@ -423,6 +430,7 @@ function ComponentSelect({
                             : ""
                         }
                         onClick={() => selectComponent(component.id)}
+                        disabled={viewOnly}
                       >
                         {component.name}
                       </button>
@@ -463,6 +471,7 @@ function ComponentSelect({
                           : ""
                       }
                       onClick={() => selectComponent(component.id)}
+                      disabled={viewOnly}
                     >
                       {component.name}
                     </button>
@@ -473,6 +482,7 @@ function ComponentSelect({
                 <button
                   key={component.id}
                   onClick={() => selectComponent(component.id)}
+                  disabled={viewOnly}
                 >
                   {component.name}
                 </button>
@@ -495,6 +505,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const planets = usePlanets();
   const relics = useRelics();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -964,7 +975,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
               }
               return (
                 <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
-                  <SelectableRow itemId={relic.id} removeItem={removeRelic}>
+                  <SelectableRow
+                    itemId={relic.id}
+                    removeItem={removeRelic}
+                    viewOnly={viewOnly}
+                  >
                     <InfoRow
                       infoTitle={relic.name}
                       infoContent={relic.description}
@@ -984,6 +999,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 removeRelic(relicId);
               }
             }}
+            viewOnly={viewOnly}
           />
         ) : (
           "No Relics remaining"
@@ -1024,6 +1040,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 undestroyPlanet(planetId);
               }
             }}
+            viewOnly={viewOnly}
           />
         </div>
       );
@@ -1068,8 +1085,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 <PlanetRow
                   planet={planet}
                   factionId={factionId}
-                  removePlanet={() =>
-                    toggleAttachment(planetId, "Nano-Forge", false)
+                  removePlanet={
+                    viewOnly
+                      ? undefined
+                      : () => toggleAttachment(planetId, "Nano-Forge", false)
                   }
                   opts={{ hideAttachButton: true }}
                 />
@@ -1079,6 +1098,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             toggleItem={(planetId, add) => {
               toggleAttachment(planetId, "Nano-Forge", add);
             }}
+            viewOnly={viewOnly}
           />
         </div>
       );
@@ -1124,8 +1144,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 <PlanetRow
                   planet={planet}
                   factionId={factionId}
-                  removePlanet={() =>
-                    toggleAttachment(planetId, "Terraform", false)
+                  removePlanet={
+                    viewOnly
+                      ? undefined
+                      : () => toggleAttachment(planetId, "Terraform", false)
                   }
                 />
               );
@@ -1133,15 +1155,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             toggleItem={(planetId, add) => {
               toggleAttachment(planetId, "Terraform", add);
             }}
+            viewOnly={viewOnly}
           />
         </div>
       );
       break;
     }
     case "Dannel of the Tenth": {
-      const nonHomeUnownedPlanets = updatedPlanets.filter((planet) => {
-        return !planet.home && !planet.locked && planet.owner !== factionId;
-      });
       const conqueredPlanets = getClaimedPlanets(currentTurn, factionId);
       const claimablePlanets = Object.values(planets ?? {}).filter((planet) => {
         if (planet.home || planet.locked || planet.owner === factionId) {
@@ -1298,15 +1318,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             .sort((a, b) => a.mapPosition - b.mapPosition)
             .map((faction) => faction.id)}
           onSelect={(factionId, _) => {
-            if (!gameId) {
-              return;
-            }
             selectFactionAsync(gameId, factionId ?? "None");
           }}
           size={44}
           borderColor={getFactionColor(
             selectedFaction ? factions[selectedFaction] : undefined
           )}
+          viewOnly={viewOnly}
         />
       );
       lineColor = getFactionColor(
@@ -1674,6 +1692,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
   const leaders = useLeaders();
   const relics = useRelics();
+  const viewOnly = useViewOnly();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -1854,6 +1873,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
           <SelectableRow
             itemId={component.id}
             removeItem={() => unselectComponent(component.id)}
+            viewOnly={viewOnly}
           >
             {component.name}
             <div
@@ -1884,15 +1904,13 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
                 options={agentsForSsruu}
                 selectedItem={getSelectedSubComponent(currentTurn)}
                 toggleItem={(agent, add) => {
-                  if (!gameId) {
-                    return;
-                  }
                   const updatedName = agent
                     .replace(/\./g, "")
                     .replace(/,/g, "")
                     .replace(/ Ω/g, "");
                   selectSubComponentAsync(gameId, add ? updatedName : "None");
                 }}
+                viewOnly={viewOnly}
               />
             </div>
           ) : null}
@@ -1912,6 +1930,7 @@ function RiftwalkerMeian() {
   const leaders = useLeaders();
   const options = useOptions();
   const planets = usePlanets();
+  const viewOnly = useViewOnly();
 
   const mapString = getMapString(options, Object.keys(factions).length);
   if (!mapString) {
@@ -1973,7 +1992,7 @@ function RiftwalkerMeian() {
             <MapBuilder
               mapString={updatedSystemTiles.join(" ")}
               updateMapString={(dragItem, dropItem) => {
-                if (dragItem.index === dropItem.index) {
+                if (viewOnly || dragItem.index === dropItem.index) {
                   return;
                 }
                 swapMapTilesAsync(gameId, dropItem, dragItem);

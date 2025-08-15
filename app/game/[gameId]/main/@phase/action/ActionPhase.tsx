@@ -28,14 +28,15 @@ import {
   usePlanets,
   useStrategyCards,
   useTechs,
+  useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
-import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import {
   useActiveFaction,
   useOnDeckFaction,
 } from "../../../../../../src/context/gameDataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
+import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -53,7 +54,6 @@ import {
   unselectActionAsync,
 } from "../../../../../../src/dynamic/api";
 import { SymbolX } from "../../../../../../src/icons/svgs";
-import { ComponentAction } from "./ComponentAction";
 import {
   getAttachments,
   getClaimedPlanets,
@@ -73,6 +73,7 @@ import { applyPlanetAttachments } from "../../../../../../src/util/planets";
 import { phaseString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
+import { ComponentAction } from "./ComponentAction";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -88,6 +89,7 @@ function SecondaryCheck({
   orderedFactions: Faction[];
 }) {
   let allCompleted = true;
+  const viewOnly = useViewOnly();
   return (
     <div className="flexColumn hugeFont">
       <div
@@ -113,24 +115,28 @@ function SecondaryCheck({
               borderColor={color}
               fade={secondaryState !== "PENDING"}
               factionId={faction.id}
-              onClick={() => {
-                if (!gameId) {
-                  return;
-                }
-                let nextState: Secondary = "DONE";
-                switch (secondaryState) {
-                  case "DONE":
-                    nextState = "SKIPPED";
-                    break;
-                  case "PENDING":
-                    nextState = "DONE";
-                    break;
-                  case "SKIPPED":
-                    nextState = "PENDING";
-                    break;
-                }
-                markSecondaryAsync(gameId, faction.id, nextState);
-              }}
+              onClick={
+                viewOnly
+                  ? undefined
+                  : () => {
+                      if (!gameId) {
+                        return;
+                      }
+                      let nextState: Secondary = "DONE";
+                      switch (secondaryState) {
+                        case "DONE":
+                          nextState = "SKIPPED";
+                          break;
+                        case "PENDING":
+                          nextState = "DONE";
+                          break;
+                        case "SKIPPED":
+                          nextState = "PENDING";
+                          break;
+                      }
+                      markSecondaryAsync(gameId, faction.id, nextState);
+                    }
+              }
               size={52}
               tag={
                 secondaryState === "PENDING" ? undefined : (
@@ -174,6 +180,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
   const factions = useFactions();
   const gameId = useGameId();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   function canFactionPass(factionId: FactionId) {
     for (const card of getStrategyCardsForFaction(strategyCards, factionId)) {
@@ -226,6 +233,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
               selected={selectedAction === card.id}
               fontSize={18}
               toggleFn={() => toggleAction(card.id)}
+              disabled={viewOnly}
             >
               {card.name}
             </Chip>
@@ -236,6 +244,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
         selected={selectedAction === "Tactical"}
         fontSize={18}
         toggleFn={() => toggleAction("Tactical")}
+        disabled={viewOnly}
       >
         <FormattedMessage
           id="/KXhGz"
@@ -247,6 +256,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
         selected={selectedAction === "Component"}
         fontSize={18}
         toggleFn={() => toggleAction("Component")}
+        disabled={viewOnly}
       >
         <FormattedMessage
           id="43UU69"
@@ -259,6 +269,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
           selected={selectedAction === "Pass"}
           fontSize={18}
           toggleFn={() => toggleAction("Pass")}
+          disabled={viewOnly}
         >
           <FormattedMessage
             id="7ECd6J"
@@ -307,6 +318,7 @@ export function AdditionalActions({
   const planets = usePlanets();
   const state = useGameState();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
   const currentTurn = useCurrentTurn();
@@ -754,6 +766,7 @@ export function AdditionalActions({
                 ]}
                 selectedFaction={selectedSpeaker?.id}
                 size={52}
+                viewOnly={viewOnly}
               />
             </div>
           </React.Fragment>
@@ -946,6 +959,7 @@ export function AdditionalActions({
                                 planet.id
                               )
                             }
+                            disabled={viewOnly}
                           >
                             {planet.name}
                           </button>
@@ -1182,6 +1196,7 @@ export function AdditionalActions({
                                 planet.id
                               );
                             }}
+                            disabled={viewOnly}
                           >
                             {planet.name}
                           </button>
@@ -1273,22 +1288,6 @@ export function AdditionalActions({
           objectiveObj.type === "STAGE ONE" || objectiveObj.type === "STAGE TWO"
         );
       });
-
-      const secretButtonStyle: CSSProperties = {
-        fontFamily: "Myriad Pro",
-        padding: rem(8),
-        alignItems: "stretch",
-        display: "grid",
-        gridAutoFlow: "column",
-        maxWidth: "85vw",
-        justifyContent: "flex-start",
-        overflowX: "auto",
-        gridTemplateRows: `repeat(${Math.min(
-          availablePublicObjectives.length,
-          8
-        )}, auto)`,
-        gap: rem(4),
-      };
       return (
         <div
           className="flexColumn largeFont"
@@ -1450,24 +1449,28 @@ export function AdditionalActions({
             blur
             borderColor={getFactionColor(activeFaction)}
             factionId={activeFaction.id}
-            onClick={() => {
-              if (!gameId) {
-                return;
-              }
-              if (hasProveEndurance) {
-                unscoreObjectiveAsync(
-                  gameId,
-                  activeFaction.id,
-                  "Prove Endurance"
-                );
-              } else {
-                scoreObjectiveAsync(
-                  gameId,
-                  activeFaction.id,
-                  "Prove Endurance"
-                );
-              }
-            }}
+            onClick={
+              viewOnly
+                ? undefined
+                : () => {
+                    if (!gameId) {
+                      return;
+                    }
+                    if (hasProveEndurance) {
+                      unscoreObjectiveAsync(
+                        gameId,
+                        activeFaction.id,
+                        "Prove Endurance"
+                      );
+                    } else {
+                      scoreObjectiveAsync(
+                        gameId,
+                        activeFaction.id,
+                        "Prove Endurance"
+                      );
+                    }
+                  }
+            }
             size={52}
             tag={
               <div
@@ -1550,6 +1553,7 @@ export function NextPlayerButtons({
 }: NextPlayerButtonsProps) {
   const gameId = useGameId();
   const currentTurn = useCurrentTurn();
+  const viewOnly = useViewOnly();
   const selectedAction = getSelectedActionFromLog(currentTurn);
   const newSpeaker = getNewSpeakerEventFromLog(currentTurn);
 
@@ -1585,6 +1589,7 @@ export function NextPlayerButtons({
           onClick={completeActions}
           className={styles.EndTurnButton}
           style={buttonStyle}
+          disabled={viewOnly}
         >
           <FormattedMessage
             id="NxpzKH"
@@ -1605,6 +1610,7 @@ export function NextPlayerButtons({
               onClick={finalizeAction}
               className={styles.EndTurnButton}
               style={buttonStyle}
+              disabled={viewOnly}
             >
               <FormattedMessage
                 id="5ChhqO"
@@ -1630,6 +1636,7 @@ function ActivePlayerColumn({
 }: ActivePlayerColumnProps) {
   const gameId = useGameId();
   const intl = useIntl();
+  const viewOnly = useViewOnly();
 
   const primaryRef = useRef<HTMLDivElement>(null);
   const secondaryRef = useRef<HTMLDivElement>(null);
@@ -1758,6 +1765,7 @@ function ActivePlayerColumn({
             },
           },
         ]}
+        viewOnly={viewOnly}
       />
     </div>
   );
@@ -1813,6 +1821,7 @@ function StrategyCardColumn() {
 export default function ActionPhase() {
   const gameId = useGameId();
   const intl = useIntl();
+  const viewOnly = useViewOnly();
 
   const activeFaction = useActiveFaction();
   const onDeckFaction = useOnDeckFaction();
@@ -1865,6 +1874,7 @@ export default function ActionPhase() {
                     },
                   },
                 ]}
+                viewOnly={viewOnly}
               />
             </div>
           )}

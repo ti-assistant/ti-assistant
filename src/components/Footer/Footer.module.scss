@@ -98,7 +98,7 @@ div.UpdateBox {
     gap: 0.25rem;
     border-radius: 100%;
 
-    z-index: 1;
+    z-index: 2;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -125,7 +125,7 @@ div.UpdateBox {
     gap: 0.5rem;
     pointer-events: none;
 
-    z-index: 0;
+    z-index: 2;
     backdrop-filter: blur(0.5rem);
     border-radius: 0.5rem;
     border: 2px solid var(--neutral-border);

@@ -7,8 +7,36 @@
   height: 100dvh;
 }
 
+.ControlButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: space-evenly;
+  align-items: center;
+
+  position: fixed;
+  top: 1rem;
+  left: 29.375rem;
+  font-size: 1.5rem;
+
+  z-index: 2;
+}
+
+@media only screen and (max-width: 75rem) {
+  .ControlButtons {
+    left: 27.375rem;
+  }
+}
+
 @media only screen and (max-width: 56.25rem) {
   .GamePage {
     height: calc(100dvh - 4.625rem);
+  }
+
+  .ControlButtons {
+    left: unset;
+    right: 1.25rem;
+    top: 5rem;
+    z-index: 1;
   }
 }

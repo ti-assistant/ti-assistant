@@ -11,6 +11,9 @@ import {
 } from "../../src/util/api/actionLog";
 import { BASE_OPTIONS } from "../data/options";
 import { ActionLog, Optional } from "../../src/util/types/types";
+import crypto from "crypto";
+import { getSessionIdFromCookie } from "../../src/util/server";
+import { tree } from "next/dist/build/templates/app-page";
 
 /**
  * Returns the game data for a given game.
@@ -294,4 +297,67 @@ export async function getArchivedTimers(gameId: string) {
   delete timers.deleteAt;
 
   return timers;
+}
+
+export interface TIASession {
+  games?: string[];
+}
+
+export async function getSession(
+  sessionId: string
+): Promise<Optional<TIASession>> {
+  const db = getFirestore();
+
+  const sessionRef = db.collection("sessions").doc(sessionId);
+
+  const sessionDoc = await sessionRef.get();
+
+  if (!sessionDoc.exists) {
+    return undefined;
+  }
+
+  const session = sessionDoc.data() as TIASession & { deleteAt: any };
+
+  delete session.deleteAt;
+
+  return session;
+}
+
+export async function getGamePassword(gameId: string) {
+  const db = getFirestore();
+
+  const passwordRef = db.collection("passwords").doc(gameId);
+  const passwordDoc = await passwordRef.get();
+  if (!passwordDoc.exists) {
+    return undefined;
+  }
+
+  const password = passwordDoc.data() as { password: string; deleteAt: any };
+
+  delete password.deleteAt;
+
+  return password.password;
+}
+
+export function generateSessionId() {
+  return crypto.randomBytes(16).toString("base64");
+}
+
+export async function canEditGame(gameId: string) {
+  const password = await getGamePassword(gameId);
+
+  if (!password) {
+    return true;
+  }
+
+  const sessionId = getSessionIdFromCookie();
+  if (!sessionId) {
+    return false;
+  }
+
+  const session = await getSession(sessionId);
+  if (!session) {
+    return false;
+  }
+  return (session.games ?? []).includes(gameId);
 }

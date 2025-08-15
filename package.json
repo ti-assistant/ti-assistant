@@ -3,10 +3,12 @@
   "version": "3.0.0",
   "dependencies": {
     "@google-cloud/storage": "^7.13.0",
+    "crypto": "^1.0.1",
     "firebase": "^10.12.5",
     "firebase-admin": "^12.1.1",
     "html-react-parser": "^5.1.18",
     "js-cookie": "^3.0.1",
+    "jssha": "^3.3.1",
     "next": "^14.0.4",
     "qrcode": "^1.5.1",
     "react": "^18.2.0",
@@ -48,5 +50,5 @@
   },
   "overrides": {
     "uri-js": "npm:uri-js-replace"
- }
+  }
 }

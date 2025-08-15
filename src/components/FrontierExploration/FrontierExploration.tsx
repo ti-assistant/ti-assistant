@@ -7,6 +7,7 @@ import {
   useGameId,
   usePlanets,
   useRelics,
+  useViewOnly,
 } from "../../context/dataHooks";
 import {
   addAttachmentAsync,
@@ -37,6 +38,7 @@ export default function FrontierExploration({
   const planets = usePlanets();
   const relics = useRelics();
   const currentTurn = useCurrentTurn();
+  const viewOnly = useViewOnly();
 
   const gainedRelic = getGainedRelic(currentTurn);
   const claimedPlanets = getClaimedPlanets(currentTurn, factionId);
@@ -155,6 +157,7 @@ export default function FrontierExploration({
                   removeItem={(relicId) => {
                     loseRelicAsync(gameId, factionId, relicId);
                   }}
+                  viewOnly={viewOnly}
                 >
                   <InfoRow
                     infoTitle={relic.name}
@@ -175,6 +178,7 @@ export default function FrontierExploration({
               loseRelicAsync(gameId, factionId, relicId);
             }
           }}
+          viewOnly={viewOnly}
         />
       ) : null}
       {!mirageFound && !gainedRelic ? (
@@ -182,6 +186,7 @@ export default function FrontierExploration({
           onClick={() => {
             claimPlanetAsync(gameId, factionId, "Mirage");
           }}
+          disabled={viewOnly}
         >
           <FormattedMessage
             id="iFF5UN"

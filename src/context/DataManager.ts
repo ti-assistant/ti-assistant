@@ -16,10 +16,12 @@ import { ActionLog, Optional } from "../util/types/types";
 
 export default class DataManager {
   private static gameId: string;
+  private static sessionId: Optional<string>;
   private static instance: DataManager;
 
   public static init(
     gameId: string,
+    sessionId: Optional<string>,
     data: GameData,
     intl: IntlShape,
     archive: boolean
@@ -27,9 +29,11 @@ export default class DataManager {
     const shouldOverride =
       !this.instance ||
       this.gameId !== gameId ||
+      this.sessionId !== sessionId ||
       this.instance.data.sequenceNum < data.sequenceNum;
     if (shouldOverride) {
       this.gameId = gameId;
+      this.sessionId = sessionId;
       this.instance = new DataManager(data, intl, archive);
     }
     return this.instance;
@@ -61,11 +65,15 @@ export default class DataManager {
     if (!this.instance) {
       return;
     }
+    const viewOnly = this.instance.data.viewOnly;
     this.instance.storedData = structuredClone(this.instance.latestServerData);
     this.instance.data = buildCompleteGameData(
       this.instance.storedData,
       this.instance.baseData
     );
+
+    this.instance.data.viewOnly = viewOnly;
+    this.instance.data.gameId = this.gameId;
 
     this.instance.lastLocalSequenceNum = this.instance.storedData.sequenceNum;
 
@@ -160,8 +168,11 @@ export default class DataManager {
         this.storedData.actionLog = actionLog;
         this.storedData.timers = timers;
 
+        const viewOnly = this.data.viewOnly;
+
         this.data = buildCompleteGameData(this.storedData, this.baseData);
         this.data.gameId = gameId;
+        this.data.viewOnly = viewOnly;
 
         this.publish();
       })
@@ -183,14 +194,24 @@ export default class DataManager {
     this.instance.storedData = structuredClone(
       updateFn(this.instance.storedData)
     );
+    const viewOnly = this.instance.data.viewOnly;
     this.instance.data = buildCompleteGameData(
       this.instance.storedData,
       this.instance.baseData
     );
     this.instance.data.gameId = this.gameId;
+    this.instance.data.viewOnly = viewOnly;
 
     this.instance.lastLocalSequenceNum = this.instance.storedData.sequenceNum;
 
+    this.instance.publish();
+  }
+
+  public static setViewOnly(viewOnly: boolean) {
+    if (!this.instance) {
+      return;
+    }
+    this.instance.data.viewOnly = viewOnly;
     this.instance.publish();
   }
 

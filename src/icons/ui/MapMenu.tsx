@@ -1,10 +1,7 @@
 export default function MapMenuSVG() {
   return (
-    <svg
-      viewBox="0 0 200 200"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g fill="none" stroke="#eee" stroke-width="28.907">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#eee" strokeWidth="28.907">
         <path
           transform="matrix(.27679 0 0 .2767 -143.64 41.873)"
           d="m932.33 300.42-104.29-0.0586-52.096-90.35 52.197-90.291 104.29 0.0586 52.096 90.35z"

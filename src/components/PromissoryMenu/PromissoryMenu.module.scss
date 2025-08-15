@@ -22,6 +22,10 @@
   cursor: pointer;
 }
 
+.factionIconWrapper {
+  cursor: default;
+}
+
 .factionIcon {
   position: relative;
   cursor: pointer;
@@ -31,6 +35,10 @@
   height: 66%;
   border-radius: 100%;
   transition: width 50ms, height 50ms, opacity 50ms;
+}
+
+.factionIcon.viewOnly {
+  cursor: default;
 }
 
 .factionIcon.selected {
@@ -43,6 +51,12 @@
     opacity: 0.75;
     width: 90%;
     height: 90%;
+  }
+
+  .factionIcon.viewOnly:not(.selected):hover {
+    opacity: 0.2;
+    width: 66%;
+    height: 66%;
   }
 }
 
@@ -62,6 +76,10 @@
 @media (hover: hover) and (pointer: fine) {
   .factionIcon:hover::before {
     opacity: 1;
+  }
+
+  .factionIcon.viewOnly:hover::before {
+    opacity: 0;
   }
 }
 

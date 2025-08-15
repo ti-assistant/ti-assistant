@@ -12,6 +12,7 @@ import {
   useOptions,
   usePlanets,
   useStrategyCards,
+  useViewOnly,
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
@@ -60,7 +61,7 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
   ssr: false,
 });
 
-export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
+export default function Footer() {
   const allPlanets = useAllPlanets();
   const factions = useFactions();
   const gameId = useGameId();
@@ -68,6 +69,7 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
@@ -175,11 +177,12 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               invalidFactions={[state.speaker]}
               size={30}
               onSelect={async (factionId, _) => {
-                if (!gameId || !factionId) {
+                if (!factionId) {
                   return;
                 }
                 setSpeakerAsync(gameId, factionId);
               }}
+              viewOnly={viewOnly}
             />
           </div>
         ) : null}
@@ -326,11 +329,12 @@ export default function Footer({ viewOnly }: { viewOnly?: boolean }) {
               invalidFactions={[state.speaker]}
               size={40}
               onSelect={async (factionId, _) => {
-                if (!gameId || !factionId) {
+                if (!factionId) {
                   return;
                 }
                 setSpeakerAsync(gameId, factionId);
               }}
+              viewOnly={viewOnly}
             />
             <span className={styles.ButtonLabel}>
               <Strings.Speaker />
@@ -490,7 +494,7 @@ function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
           paddingBottom: rem(28),
         }}
       >
-        <ObjectivePanel viewOnly={viewOnly} asModal />
+        <ObjectivePanel asModal />
       </div>
     </div>
   );
@@ -577,7 +581,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
           justifyContent: "flex-start",
         }}
       >
-        <TechPanel byFaction={groupTechsByFaction} viewOnly={viewOnly} />
+        <TechPanel byFaction={groupTechsByFaction} />
       </div>
     </div>
   );
@@ -618,7 +622,7 @@ function PlanetModalContent({ viewOnly }: { viewOnly?: boolean }) {
           height: "100%",
         }}
       >
-        <PlanetPanel viewOnly={viewOnly} />
+        <PlanetPanel />
       </div>
     </div>
   );

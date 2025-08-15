@@ -11,6 +11,7 @@ import {
   usePlanets,
   useRelics,
   useStrategyCards,
+  useViewOnly,
 } from "../../context/dataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
 import { useFactions } from "../../context/factionDataHooks";
@@ -487,6 +488,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   const [overrideVotingBlock, setOverrideVotingBlock] = useState(false);
 
@@ -532,16 +534,13 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
                 fontSize: rem(14),
               }}
             >
-              {state.votingStarted ? (
+              {state.votingStarted || viewOnly ? (
                 <div style={{ height: rem(20) }}></div>
               ) : (
                 <div
                   className="icon clickable negative"
                   style={{ marginRight: 0 }}
                   onClick={() => {
-                    if (!gameId) {
-                      return;
-                    }
                     unplayRiderAsync(gameId, rider.rider);
                   }}
                 >
@@ -604,6 +603,7 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
               <button
                 style={{ fontSize: rem(10) }}
                 onClick={() => setOverrideVotingBlock(true)}
+                disabled={viewOnly}
               >
                 Allow Voting
               </button>
@@ -632,6 +632,7 @@ function PredictionSection({
   const options = useOptions();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -728,6 +729,7 @@ function PredictionSection({
             unplayRiderAsync(gameId, itemId);
           }
         }}
+        viewOnly={viewOnly}
       />
       <AvailableVotes factionId={factionId} />{" "}
       {pendingRider && targets.length > 0 ? (
@@ -742,13 +744,11 @@ function PredictionSection({
             }
             options={targets}
             selectedItem={undefined}
-            toggleItem={(itemId, add) => {
-              if (!gameId) {
-                return;
-              }
+            toggleItem={(itemId, _) => {
               playRiderAsync(gameId, pendingRider.rider, factionId, itemId);
             }}
             style={{ minWidth: rem(154) }}
+            viewOnly={viewOnly}
           />
         </div>
       ) : null}
@@ -775,6 +775,7 @@ function VotingSection({
   const relics = useRelics();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -899,6 +900,7 @@ function VotingSection({
               }
             }}
             style={{ minWidth: rem(154) }}
+            viewOnly={viewOnly}
           />
         ) : null}
       </div>
@@ -912,6 +914,7 @@ function VotingSection({
           onChange={(votes) => {
             castVotesLocal(factionVotes.target, votes, factionVotes.extraVotes);
           }}
+          viewOnly={viewOnly}
         />
       ) : null}
       {hasVotableTarget && factionVotes.votes > 0 ? (
@@ -942,6 +945,7 @@ function VotingSection({
                     playPromissoryNoteAsync(gameId, "Blood Pact", factionId);
                   }
                 }}
+                disabled={viewOnly}
               >
                 <FormattedMessage
                   id="Components.Blood Pact.Title"
@@ -957,9 +961,6 @@ function VotingSection({
                 }
                 style={{ fontSize: rem(14) }}
                 onClick={() => {
-                  if (!gameId) {
-                    return;
-                  }
                   if (usingPredictive.includes(factionId)) {
                     unplayActionCardAsync(
                       gameId,
@@ -974,6 +975,7 @@ function VotingSection({
                     );
                   }
                 }}
+                disabled={viewOnly}
               >
                 <FormattedMessage
                   id="Techs.Predictive Intelligence.Title"
@@ -1001,6 +1003,7 @@ function VotingSection({
                       );
                     }
                   }}
+                  disabled={viewOnly}
                 >
                   <FormattedMessage
                     id="Attachments.Council Preserve.Title"
@@ -1012,12 +1015,12 @@ function VotingSection({
             ) : null}
             <span style={{ fontSize: rem(14), fontFamily: "Myriad Pro" }}>
               <Toggle
-                disabled={currentCouncilor && currentCouncilor !== factionId}
+                disabled={
+                  viewOnly ||
+                  (currentCouncilor && currentCouncilor !== factionId)
+                }
                 selected={currentCouncilor === factionId}
-                toggleFn={(prevValue) => {
-                  if (!gameId) {
-                    return;
-                  }
+                toggleFn={(_) => {
                   if (currentCouncilor === factionId) {
                     unplayActionCardAsync(
                       gameId,
@@ -1061,6 +1064,7 @@ function VotingSection({
                       votes
                     );
                   }}
+                  viewOnly={viewOnly}
                 />
               </div>
             ) : null}

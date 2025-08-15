@@ -7,18 +7,19 @@ import OptionalElement from "../OptionalElement/OptionalElement";
 import TechIcon from "../TechIcon/TechIcon";
 import TechTree from "../TechTree/TechTree";
 import styles from "./TechSummary.module.scss";
+import { useViewOnly } from "../../context/dataHooks";
 
 export function FullTechSummary({
   techs,
   ownedTechs,
   factionId,
-  viewOnly,
 }: {
   techs: Techs;
   ownedTechs: TechId[];
   factionId: FactionId;
-  viewOnly?: boolean;
 }) {
+  const viewOnly = useViewOnly();
+
   let blueTechs = [];
   let yellowTechs = [];
   let greenTechs = [];
@@ -178,14 +179,13 @@ export default function TechSummary({
   factionId,
   techs,
   ownedTechs,
-  viewOnly,
 }: {
   factionId: FactionId;
   techs: Techs;
   ownedTechs: TechId[];
-  viewOnly?: boolean;
 }) {
   const { settings } = useContext(SettingsContext);
+  const viewOnly = useViewOnly();
 
   if (settings["fs-tech-summary-display"] === "NONE") {
     return null;

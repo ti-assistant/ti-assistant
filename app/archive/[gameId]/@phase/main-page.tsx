@@ -4,7 +4,7 @@ import ResultsPhase from "../../../game/[gameId]/main/@phase/results/ResultsPhas
 export default function MainScreenPage() {
   return (
     <>
-      <Header viewOnly />
+      <Header archive />
       <ResultsPhase />
     </>
   );

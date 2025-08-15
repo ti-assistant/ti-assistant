@@ -8,6 +8,7 @@ import {
   useCurrentTurn,
   useGameId,
   useStrategyCards,
+  useViewOnly,
 } from "../../../../src/context/dataHooks";
 import {
   useFaction,
@@ -38,6 +39,7 @@ function NextPhaseButtons({}) {
   const factions = useFactions();
   const gameId = useGameId();
   const state = useGameState();
+  const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
@@ -67,6 +69,7 @@ function NextPhaseButtons({}) {
                 },
               },
             ]}
+            viewOnly={viewOnly}
           />
         </div>
       );
@@ -78,6 +81,7 @@ function NextPhaseButtons({}) {
               onClick={() => {
                 advancePhaseAsync(gameId);
               }}
+              disabled={viewOnly}
             >
               <FormattedMessage
                 id="8/h2ME"
@@ -113,6 +117,7 @@ function NextPhaseButtons({}) {
                 },
               },
             ]}
+            viewOnly={viewOnly}
           />
         </div>
       );
@@ -155,6 +160,7 @@ function NextPhaseButtons({}) {
           <LockedButtons
             unlocked={statusPhaseComplete(currentTurn)}
             buttons={buttons}
+            viewOnly={viewOnly}
           />
         </div>
       );
@@ -179,6 +185,7 @@ function NextPhaseButtons({}) {
                 },
               },
             ]}
+            viewOnly={viewOnly}
           />
         </div>
       );

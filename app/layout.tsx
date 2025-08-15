@@ -35,31 +35,31 @@ export default async function RootLayout({ children }: PropsWithChildren) {
     <html lang={locale}>
       <body>
         <SettingsProvider initialSettings={settings}>
-          <div className={styles.NavBar}>
-            <div className="flexRow">
-              <Link href={"/"} className={styles.HomeLink}>
-                <div className={styles.Logo}>
-                  <SiteLogo />
+          <Wrapper locale={locale} messages={messages}>
+            <div className={styles.NavBar}>
+              <div className="flexRow">
+                <Link href={"/"} className={styles.HomeLink}>
+                  <div className={styles.Logo}>
+                    <SiteLogo />
+                  </div>
+                  <span className={styles.FullName}>
+                    Twilight Imperium Assistant
+                  </span>
+                  <span className={styles.ShortName}>TI Assistant</span>
+                </Link>
+                <div className={styles.LangSelect}>
+                  <LangSelectHoverMenu
+                    selectedLocale={locale}
+                    locales={SUPPORTED_LOCALES}
+                    invalidLocales={[locale]}
+                    size={28}
+                  />
                 </div>
-                <span className={styles.FullName}>
-                  Twilight Imperium Assistant
-                </span>
-                <span className={styles.ShortName}>TI Assistant</span>
-              </Link>
-              <div className={styles.LangSelect}>
-                <LangSelectHoverMenu
-                  selectedLocale={locale}
-                  locales={SUPPORTED_LOCALES}
-                  invalidLocales={[locale]}
-                  size={28}
-                />
+              </div>
+              <div className={styles.Settings}>
+                <SettingsButton />
               </div>
             </div>
-            <div className={styles.Settings}>
-              <SettingsButton />
-            </div>
-          </div>
-          <Wrapper locale={locale} messages={messages}>
             <SharedModal />
             {children}
           </Wrapper>

@@ -8,7 +8,11 @@ import {
 import Footer from "../../../src/components/Footer/Footer";
 import DataWrapper from "../../../src/context/DataWrapper";
 import { buildGameData } from "../../../src/data/GameData";
-import { getLocale, getMessages } from "../../../src/util/server";
+import {
+  getLocale,
+  getMessages,
+  getSessionIdFromCookie,
+} from "../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import GameLoader from "../../game/[gameId]/game-loader";
 import styles from "./main.module.scss";
@@ -23,6 +27,7 @@ async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
   const gameData = buildGameData(data, intl);
   gameData.timers = timers;
   gameData.gameId = gameId;
+  gameData.viewOnly = true;
 
   return gameData;
 }
@@ -45,6 +50,8 @@ export default async function Layout({
 }) {
   const intlPromise = getIntl();
 
+  const sessionId = getSessionIdFromCookie();
+
   return (
     <>
       <div className={styles.QRCode}>Game: {gameId}</div>
@@ -52,6 +59,7 @@ export default async function Layout({
         <DataWrapper
           archive
           gameId={gameId}
+          sessionId={sessionId}
           data={fetchGameData(gameId, intlPromise)}
         >
           <DynamicSidebars />
@@ -59,7 +67,7 @@ export default async function Layout({
             {phase}
             {summary}
           </div>
-          <Footer viewOnly />
+          <Footer />
         </DataWrapper>
       </Suspense>
     </>

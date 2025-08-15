@@ -1,20 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import BorderedDiv from "../src/components/BorderedDiv/BorderedDiv";
 import LabeledDiv from "../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../src/components/NonGameHeader/NonGameHeader";
+import BuyMeACoffeeSVG from "../src/icons/ui/BuyMeACoffee";
+import GitHubSVG from "../src/icons/ui/GitHub";
+import PatreonSVG from "../src/icons/ui/Patreon";
 import { getGameId } from "../src/util/api/util";
 import { gameIdString } from "../src/util/strings";
 import { Optional } from "../src/util/types/types";
 import { rem } from "../src/util/util";
 import styles from "./home-page.module.scss";
-import PatreonSVG from "../src/icons/ui/Patreon";
-import BuyMeACoffeeSVG from "../src/icons/ui/BuyMeACoffee";
-import GitHubSVG from "../src/icons/ui/GitHub";
 
 export default function HomePage() {
   const intl = useIntl();

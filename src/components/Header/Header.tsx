@@ -1,7 +1,7 @@
 "use client";
 
 import QRCode from "qrcode";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
@@ -11,9 +11,10 @@ import {
   useGameId,
   useOptions,
   usePlanets,
+  useViewOnly,
 } from "../../context/dataHooks";
-import { useObjectives } from "../../context/objectiveDataHooks";
 import { useFactions } from "../../context/factionDataHooks";
+import { useObjectives } from "../../context/objectiveDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import {
@@ -29,13 +30,14 @@ import GameTimer from "../GameTimer/GameTimer";
 import GameMap from "../Map/GameMap";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
+import { enterPassword } from "../../util/api/enterPassword";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
     ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
     : "https://ti-assistant.com";
 
-export default function Header({ viewOnly }: { viewOnly?: boolean }) {
+export default function Header({ archive }: { archive?: boolean }) {
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
@@ -43,6 +45,9 @@ export default function Header({ viewOnly }: { viewOnly?: boolean }) {
   const planets = usePlanets();
   const allPlanets = useAllPlanets();
   const state = useGameState();
+  const viewOnly = useViewOnly();
+
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const intl = useIntl();
 
@@ -166,7 +171,30 @@ export default function Header({ viewOnly }: { viewOnly?: boolean }) {
           <GameTimer frozen={state.phase === "END"} />
         </div>
       ) : null}
-      {viewOnly ? null : (
+      {viewOnly ? (
+        <div className={styles.ControlButtons}>
+          {archive ? null : (
+            <div className="flexRow">
+              <input
+                ref={passwordRef}
+                type="textbox"
+                placeholder="Enter Password"
+              ></input>
+              <button
+                onClick={() => {
+                  const password = passwordRef.current?.value;
+                  if (!password) {
+                    return;
+                  }
+                  enterPassword(gameId, password);
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
         <div className={styles.ControlButtons}>
           <UndoButton gameId={gameId} />
           {gameFinished ? (
@@ -253,7 +281,7 @@ function PassedLaws({ viewOnly }: { viewOnly?: boolean }) {
             <AgendaRow
               key={agenda.id}
               agenda={agenda}
-              removeAgenda={viewOnly ? undefined : removeAgenda}
+              removeAgenda={removeAgenda}
             />
           ))}
         </div>

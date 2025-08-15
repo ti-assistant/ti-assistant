@@ -14,6 +14,7 @@ export default function NumberInput({
   softMin = Number.MIN_SAFE_INTEGER,
   minValue = Number.MIN_SAFE_INTEGER,
   onChange,
+  viewOnly,
 }: {
   onChange: (value: number) => void;
   maxValue?: number;
@@ -21,6 +22,7 @@ export default function NumberInput({
   softMin?: number;
   minValue?: number;
   value: number;
+  viewOnly?: boolean;
 }) {
   function updateValue(element: HTMLDivElement) {
     if (element.innerText !== "") {
@@ -41,7 +43,7 @@ export default function NumberInput({
 
   return (
     <div className={styles.NumberInput} style={numberInputStyle}>
-      {value > minValue ? (
+      {!viewOnly && value > minValue ? (
         <div
           className={`${styles.arrow} ${styles.arrowDown}`}
           onClick={() => onChange(value - 1)}
@@ -51,16 +53,20 @@ export default function NumberInput({
       )}
       <div
         className={styles.InputBox}
-        contentEditable
+        contentEditable={!viewOnly}
         suppressContentEditableWarning
-        onClick={(e) => {
-          e.currentTarget.innerText = "";
-        }}
+        onClick={
+          viewOnly
+            ? undefined
+            : (e) => {
+                e.currentTarget.innerText = "";
+              }
+        }
         onBlur={(e) => updateValue(e.currentTarget)}
       >
         {value}
       </div>
-      {value < maxValue ? (
+      {!viewOnly && value < maxValue ? (
         <div
           className={`${styles.arrow} ${styles.arrowUp}`}
           onClick={() => onChange(value + 1)}

@@ -10,6 +10,7 @@ import {
   useRelics,
   useSystems,
   useTechs,
+  useViewOnly,
 } from "../context/dataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
 import { useFactions } from "../context/factionDataHooks";
@@ -82,6 +83,7 @@ export function TacticalAction({
   const relics = useRelics();
   const techs = useTechs();
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
+  const viewOnly = useViewOnly();
 
   claimablePlanets.sort((a, b) => {
     if (a.name > b.name) {
@@ -351,6 +353,7 @@ export function TacticalAction({
                       closeFn();
                       claimPlanetAsync(gameId, activeFactionId, planet.id);
                     }}
+                    disabled={viewOnly}
                   >
                     {planet.name}
                   </button>
@@ -441,6 +444,7 @@ export function TacticalAction({
               removeItem={(relicId) => {
                 loseRelicAsync(gameId, activeFactionId, relicId);
               }}
+              viewOnly={viewOnly}
             >
               <InfoRow infoTitle={relic.name} infoContent={relic.description}>
                 {relic.name}
@@ -557,6 +561,7 @@ function AdjudicatorBaal() {
   const options = useOptions();
   const planets = usePlanets();
   const systems = useSystems();
+  const viewOnly = useViewOnly();
 
   const mapOrderedFactions = Object.values(factions).sort(
     (a, b) => a.mapPosition - b.mapPosition
@@ -588,6 +593,7 @@ function AdjudicatorBaal() {
             undoAdjudicatorBaalAsync(gameId, adjudicatorBaalSystem);
           }}
           style={{ fontSize: rem(14) }}
+          viewOnly={viewOnly}
         >
           <FormattedMessage
             id="dsGVrU"
@@ -601,7 +607,7 @@ function AdjudicatorBaal() {
     );
   }
 
-  if (adjudicatorBaal.state !== "readied") {
+  if (adjudicatorBaal.state !== "readied" || viewOnly) {
     return null;
   }
   return (

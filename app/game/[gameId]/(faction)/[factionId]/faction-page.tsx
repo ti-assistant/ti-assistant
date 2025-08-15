@@ -39,6 +39,7 @@ import {
   useRelics,
   useStrategyCards,
   useTechs,
+  useViewOnly,
 } from "../../../../../src/context/dataHooks";
 import { useObjectives } from "../../../../../src/context/objectiveDataHooks";
 import { useFactions } from "../../../../../src/context/factionDataHooks";
@@ -114,6 +115,7 @@ function SecondaryCheck({
   gameId: string;
 }) {
   const secondaryState = faction.secondary ?? "PENDING";
+  const viewOnly = useViewOnly();
   return (
     <div className="flexRow">
       {secondaryState === "PENDING" ? (
@@ -122,6 +124,7 @@ function SecondaryCheck({
             onClick={() => {
               markSecondaryAsync(gameId, faction.id, "DONE");
             }}
+            disabled={viewOnly}
           >
             Mark Completed
           </button>
@@ -129,6 +132,7 @@ function SecondaryCheck({
             onClick={() => {
               markSecondaryAsync(gameId, faction.id, "SKIPPED");
             }}
+            disabled={viewOnly}
           >
             Skip
           </button>
@@ -138,6 +142,7 @@ function SecondaryCheck({
           onClick={() => {
             markSecondaryAsync(gameId, faction.id, "PENDING");
           }}
+          disabled={viewOnly}
         >
           Not Done Yet
         </button>
@@ -159,6 +164,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const relics = useRelics();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
   const voteRef = useRef<HTMLDivElement>(null);
 
   const intl = useIntl();
@@ -394,7 +400,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   <FormattedMessage
                     id="RBlsAq"
                     description="A label for the stage I objectives that have been revealed"
-                    defaultMessage="Revealed stage I objectives"
+                    defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
+                    values={{ count: revealedObjectiveIds.length }}
                   />
                 }
               >
@@ -449,6 +456,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                           key={objective.id}
                           style={{ writingMode: "horizontal-tb" }}
                           onClick={() => addObj(objective.id)}
+                          disabled={viewOnly}
                         >
                           {objective.name}
                         </button>
@@ -501,11 +509,9 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
         phaseContent = (
           <button
             onClick={() => {
-              if (!gameId) {
-                return;
-              }
               undoAsync(gameId);
             }}
+            disabled={viewOnly}
           >
             Undo SC Pick
           </button>
@@ -744,6 +750,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                 <SelectableRow
                   itemId={scoredPublics[0]}
                   removeItem={unscoreObj}
+                  viewOnly={viewOnly}
                 >
                   {scoredPublics[0]}
                 </SelectableRow>
@@ -785,6 +792,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                       <button
                         key={objective.id}
                         onClick={() => scoreObj(objective.id)}
+                        disabled={viewOnly}
                       >
                         {objective.name}
                       </button>
@@ -802,6 +810,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                 <SelectableRow
                   itemId={scoredSecrets[0]}
                   removeItem={unscoreObj}
+                  viewOnly={viewOnly}
                 >
                   {scoredSecrets[0]}
                 </SelectableRow>
@@ -837,6 +846,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         key={objective.id}
                         style={{ writingMode: "horizontal-tb" }}
                         onClick={() => scoreObj(objective.id)}
+                        disabled={viewOnly}
                       >
                         {objective.name}
                       </button>
@@ -926,6 +936,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                             key={objective.id}
                             style={{ writingMode: "horizontal-tb" }}
                             onClick={() => addObj(objective.id)}
+                            disabled={viewOnly}
                           >
                             {objective.name}
                           </button>
@@ -997,6 +1008,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                         key={agenda.id}
                         style={{ writingMode: "horizontal-tb" }}
                         onClick={() => selectAgenda(agenda.id)}
+                        disabled={viewOnly}
                       >
                         {agenda.name}
                       </button>
@@ -1035,6 +1047,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                     <SelectableRow
                       itemId={eligibleOutcomes}
                       removeItem={() => selectEligibleOutcome("None")}
+                      viewOnly={viewOnly}
                     >
                       <div style={{ display: "flex", fontSize: rem(18) }}>
                         {eligibleOutcomes}
@@ -1076,6 +1089,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                             <button
                               key={outcome}
                               onClick={() => selectEligibleOutcome(outcome)}
+                              disabled={viewOnly}
                             >
                               {outcome}
                             </button>
@@ -1265,6 +1279,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                                   key={target}
                                   style={{ writingMode: "horizontal-tb" }}
                                   onClick={() => selectSpeakerTieBreak(target)}
+                                  disabled={viewOnly}
                                 >
                                   {target}
                                 </button>
@@ -1281,6 +1296,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                                   onClick={() =>
                                     selectSpeakerTieBreak(target.id)
                                   }
+                                  disabled={viewOnly}
                                 >
                                   {target.name}
                                 </button>
@@ -1297,6 +1313,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                     <SelectableRow
                       itemId={tieBreak}
                       removeItem={() => selectSpeakerTieBreak(undefined)}
+                      viewOnly={viewOnly}
                     >
                       {tieBreak}
                     </SelectableRow>
@@ -1308,7 +1325,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                   className="flexRow"
                   style={{ width: "100%", justifyContent: "center" }}
                 >
-                  <button onClick={completeAgenda}>
+                  <button onClick={completeAgenda} disabled={viewOnly}>
                     Resolve with target:{" "}
                     {selectedTargets.length === 1
                       ? selectedTargets[0]
@@ -1348,6 +1365,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
   const objectives = useObjectives();
   const planets = usePlanets();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
 
   const [tabShown, setTabShown] = useState<string>("");
 
@@ -1537,6 +1555,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
                           </ModalContent>
                         )
                       }
+                      disabled={viewOnly}
                     >
                       <FormattedMessage
                         id="3qIvsL"
@@ -1591,6 +1610,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
                           </ModalContent>
                         )
                       }
+                      disabled={viewOnly}
                     >
                       <FormattedMessage
                         id="PrGqwQ"
@@ -1750,147 +1770,6 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
         return a.order - b.order;
       });
       break;
-  }
-
-  function NextPhaseButtons({}) {
-    switch (state?.phase) {
-      case "SETUP":
-        return (
-          <div className="flexColumn" style={{ marginTop: rem(8) }}>
-            <LockedButtons
-              unlocked={setupPhaseComplete(factions ?? {}, revealedObjectives)}
-              buttons={[
-                {
-                  text: intl.formatMessage({
-                    id: "lYD2yu",
-                    description: "Text on a button that will start a game.",
-                    defaultMessage: "Start Game",
-                  }),
-                  onClick: () => {
-                    if (!gameId) {
-                      return;
-                    }
-                    advancePhaseAsync(gameId);
-                  },
-                },
-              ]}
-            />
-          </div>
-        );
-      case "STRATEGY":
-        if (state?.activeplayer === "None") {
-          return (
-            <div className="flexColumn" style={{ marginTop: rem(8) }}>
-              <button
-                onClick={() => {
-                  advancePhaseAsync(gameId);
-                }}
-              >
-                <FormattedMessage
-                  id="8/h2ME"
-                  defaultMessage="Advance to {phase} Phase"
-                  description="Text on a button that will advance the game to a specific phase."
-                  values={{
-                    phase: phaseString("ACTION", intl),
-                  }}
-                />
-              </button>
-            </div>
-          );
-        }
-        return null;
-      case "ACTION":
-        return (
-          <div className="flexColumn" style={{ marginTop: rem(8) }}>
-            <LockedButtons
-              unlocked={state?.activeplayer === "None"}
-              buttons={[
-                {
-                  text: intl.formatMessage(
-                    {
-                      id: "8/h2ME",
-                      defaultMessage: "Advance to {phase} Phase",
-                      description:
-                        "Text on a button that will advance the game to a specific phase.",
-                    },
-                    { phase: phaseString("STATUS", intl) }
-                  ),
-                  onClick: () => {
-                    advancePhaseAsync(gameId);
-                  },
-                },
-              ]}
-            />
-          </div>
-        );
-      case "STATUS":
-        let buttons = [];
-        if (!state?.agendaUnlocked) {
-          buttons.push({
-            text: intl.formatMessage({
-              id: "5WXn8l",
-              defaultMessage: "Start Next Round",
-              description: "Text on a button that will start the next round.",
-            }),
-            onClick: () => {
-              if (!gameId) {
-                return;
-              }
-              advancePhaseAsync(gameId, true);
-            },
-          });
-        }
-        buttons.push({
-          text: intl.formatMessage(
-            {
-              id: "8/h2ME",
-              defaultMessage: "Advance to {phase} Phase",
-              description:
-                "Text on a button that will advance the game to a specific phase.",
-            },
-            { phase: phaseString("AGENDA", intl) }
-          ),
-          onClick: () => {
-            if (!gameId) {
-              return;
-            }
-            advancePhaseAsync(gameId);
-          },
-        });
-        return (
-          <div className="flexColumn" style={{ marginTop: rem(8) }}>
-            <LockedButtons
-              unlocked={statusPhaseComplete(currentTurn)}
-              buttons={buttons}
-            />
-          </div>
-        );
-      case "AGENDA":
-        return (
-          <div className="flexColumn" style={{ marginTop: rem(8) }}>
-            <LockedButtons
-              unlocked={state?.agendaNum === 3}
-              buttons={[
-                {
-                  text: intl.formatMessage({
-                    id: "5WXn8l",
-                    defaultMessage: "Start Next Round",
-                    description:
-                      "Text on a button that will start the next round.",
-                  }),
-                  onClick: () => {
-                    if (!gameId) {
-                      return;
-                    }
-                    advancePhaseAsync(gameId, true);
-                  },
-                },
-              ]}
-            />
-          </div>
-        );
-    }
-    return null;
   }
 
   return (

@@ -38,7 +38,7 @@ export function StrategyCardElement({
     "--text-color": textColor,
     fontSize: rem(fontSize),
     cursor: onClick ? "pointer" : "auto",
-    backgroundColor: active ? undefined : "var(--disabled-bg)",
+    backgroundColor: active && onClick ? undefined : "var(--disabled-bg)",
   };
   return (
     <div

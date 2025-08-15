@@ -5,7 +5,7 @@ export default function CulturalPlanetSVG() {
       xmlns="http://www.w3.org/2000/svg"
       fill="#098db6"
       stroke="#fff"
-      stroke-width="0.3"
+      strokeWidth="0.3"
     >
       <g transform="translate(-12.585139,-82.601901)">
         <ellipse cx="30.862656" cy="92.620247" rx="2.6397181" ry="2.5407288" />

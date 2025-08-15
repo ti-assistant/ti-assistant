@@ -7,6 +7,7 @@ interface SelectableRowProps<Type extends string> {
   selectItem?: (itemId: Type) => void;
   removeItem?: (itemId: Type) => void;
   style?: CSSProperties;
+  viewOnly?: boolean;
 }
 
 export function SelectableRow<Type extends string>({
@@ -15,6 +16,7 @@ export function SelectableRow<Type extends string>({
   selectItem,
   removeItem,
   style,
+  viewOnly,
 }: PropsWithChildren<SelectableRowProps<Type>>) {
   const iconStyle: CSSProperties = {
     textShadow: "none",
@@ -42,7 +44,7 @@ export function SelectableRow<Type extends string>({
 
   return (
     <div className={styles.SelectableRow} style={style}>
-      {selectItem ? (
+      {!viewOnly && selectItem ? (
         <div
           className="icon clickable positive"
           style={iconStyle}
@@ -51,7 +53,7 @@ export function SelectableRow<Type extends string>({
           +
         </div>
       ) : null}
-      {removeItem ? (
+      {!viewOnly && removeItem ? (
         <div
           className="icon clickable negative"
           style={iconStyle}

@@ -32,6 +32,7 @@ interface FactionCardProps {
   rightLabel?: ReactNode;
   opts?: FactionCardOpts;
   style?: CSSProperties;
+  viewOnly?: boolean;
 }
 
 export default function FactionCard({
@@ -41,6 +42,7 @@ export default function FactionCard({
   rightLabel,
   style = {},
   opts = {},
+  viewOnly,
 }: PropsWithChildren<FactionCardProps>) {
   const options = useOptions();
 

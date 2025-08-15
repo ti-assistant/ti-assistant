@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode, useState } from "react";
 import { useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { useGameId } from "../../context/dataHooks";
+import { useGameId, useViewOnly } from "../../context/dataHooks";
 import styles from "./ObjectiveSelectHoverMenu.module.scss";
 
 interface ObjectiveGridCSSProperties extends CSSProperties {
@@ -26,8 +26,8 @@ export default function ObjectiveSelectHoverMenu({
   perColumn = 5,
 }: ObjectiveSelectHoverMenuProps) {
   const intl = useIntl();
-
   const gameId = useGameId();
+  const viewOnly = useViewOnly();
 
   const [description, setDescription] = useState("Hover to see full text.");
 
@@ -62,13 +62,11 @@ export default function ObjectiveSelectHoverMenu({
                   key={objective.id}
                   className={styles.ObjectiveButton}
                   onClick={() => {
-                    if (!gameId) {
-                      return;
-                    }
                     closeFn();
                     action(gameId, objective.id);
                   }}
                   onMouseEnter={() => setDescription(objective.description)}
+                  disabled={viewOnly}
                 >
                   {objective.name}
                 </button>

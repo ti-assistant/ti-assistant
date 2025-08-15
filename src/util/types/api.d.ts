@@ -96,6 +96,9 @@ interface GameData {
   techs?: Partial<Record<TechId, Tech>>;
   timers?: Record<string, number>;
 
+  // If set, prevent the user from making changes.
+  viewOnly?: boolean;
+
   // Synthetic values used for specific use cases.
   allPlanets?: Partial<Record<PlanetId, Planet>>;
 }

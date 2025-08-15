@@ -5,6 +5,7 @@ import {
   useGameId,
   useLeaders,
   usePlanets,
+  useViewOnly,
 } from "../context/dataHooks";
 import { useFaction } from "../context/factionDataHooks";
 import { useFactions } from "../context/factionDataHooks";
@@ -25,17 +26,16 @@ import PlanetSummary from "./PlanetSummary/PlanetSummary";
 function PlanetSection({
   factionId,
   openedByDefault,
-  viewOnly,
 }: {
   factionId: FactionId;
   openedByDefault: boolean;
-  viewOnly?: boolean;
 }) {
   const attachments = useAttachments();
   const faction = useFaction(factionId);
   const gameId = useGameId();
   const leaders = useLeaders();
   const planets = usePlanets();
+  const viewOnly = useViewOnly();
 
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
@@ -109,10 +109,11 @@ function PlanetSection({
   );
 }
 
-function UnclaimedPlanetSection({ viewOnly }: { viewOnly?: boolean }) {
+function UnclaimedPlanetSection() {
   const factions = useFactions();
   const gameId = useGameId();
   const planets = usePlanets();
+  const viewOnly = useViewOnly();
 
   const [collapsed, setCollapsed] = useState(true);
 
@@ -186,7 +187,7 @@ interface CSSWithNumColumns extends CSSProperties {
   "--num-columns": number;
 }
 
-export default function PlanetPanel({ viewOnly }: { viewOnly?: boolean }) {
+export default function PlanetPanel() {
   const factions = useFactions();
 
   const orderedFactionIds = Object.values(factions)
@@ -209,11 +210,10 @@ export default function PlanetPanel({ viewOnly }: { viewOnly?: boolean }) {
             key={factionId}
             factionId={factionId}
             openedByDefault
-            viewOnly={viewOnly}
           />
         );
       })}
-      <UnclaimedPlanetSection viewOnly={viewOnly} />
+      <UnclaimedPlanetSection />
     </div>
   );
 }

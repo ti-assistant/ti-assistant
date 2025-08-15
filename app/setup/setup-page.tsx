@@ -27,6 +27,7 @@ import { rem } from "../../src/util/util";
 import styles from "./setup.module.scss";
 import PlayerNameInput from "./components/PlayerNameInput";
 import ColorPicker from "./components/ColorPicker";
+import { InfoRow } from "../../src/InfoRow";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -1214,6 +1215,7 @@ export default function SetupPage({
   });
   const [numFactions, setNumFactions] = useState(6);
   const [creatingGame, setCreatingGame] = useState(false);
+  const [password, setPassword] = useState("");
 
   const router = useRouter();
 
@@ -1467,6 +1469,8 @@ export default function SetupPage({
   async function startGame() {
     setCreatingGame(true);
 
+    const passwordToSend = password === "" ? undefined : password;
+
     const expansions = Array.from(options.expansions);
     const events = Array.from(options.events);
     const optionsToSend: Options = {
@@ -1484,6 +1488,7 @@ export default function SetupPage({
         factions: activeFactions,
         speaker: speaker,
         options: optionsToSend,
+        password: passwordToSend,
       }),
     });
     const data = await res.json();
@@ -2000,6 +2005,29 @@ export default function SetupPage({
               }}
             />
           </div>
+          <div className="flexRow">
+            <InfoRow
+              infoTitle="Password Protection"
+              infoContent={
+                <div>
+                  Only users that have entered the password will be able to make
+                  changes.
+                  <br />
+                  <br />
+                  Once the game is started, it is not possible to change the
+                  password.
+                </div>
+              }
+            >
+              <input
+                id="password"
+                type="textbox"
+                placeholder="Password (optional)"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </InfoRow>
+          </div>
           <button
             style={{
               fontSize: rem(40),
@@ -2136,8 +2164,16 @@ export default function SetupPage({
             <div className="flexRow">
               Speaker:
               <FactionSelectRadialMenu
+                selectedFaction={setupFactions[speaker]?.id}
+                borderColor={convertToFactionColor(
+                  setupFactions[speaker]?.color
+                )}
+                size={36}
+                invalidFactions={
+                  setupFactions[speaker]?.id ? [setupFactions[speaker].id] : []
+                }
                 factions={setupFactions
-                  .filter((faction, index) => !!faction.id && speaker !== index)
+                  .filter((faction) => !!faction.id)
                   .map((faction) => faction.id as FactionId)}
                 onSelect={(factionId) => {
                   const index = setupFactions.findIndex(
@@ -2147,15 +2183,68 @@ export default function SetupPage({
                 }}
               />
             </div>
+            <div className="flexRow">
+              <InfoRow
+                infoTitle="Password Protection"
+                infoContent={
+                  <div>
+                    Only users that have entered the password will be able to
+                    make changes.
+                    <br />
+                    <br />
+                    Once the game is started, it is not possible to change the
+                    password.
+                  </div>
+                }
+              >
+                <input
+                  id="password"
+                  type="textbox"
+                  placeholder="Password (optional)"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </InfoRow>
+            </div>
             <button
               style={{
                 fontSize: rem(40),
                 fontFamily: "Slider",
+                color: creatingGame ? "var(--disabled-bg)" : undefined,
+                position: "relative",
               }}
               onClick={startGame}
               disabled={disableNextButton()}
             >
-              {creatingGame ? <Loader /> : "Start Game"}
+              <FormattedMessage
+                id="lYD2yu"
+                description="Text on a button that will start a game."
+                defaultMessage="Start Game"
+              />
+              {creatingGame ? (
+                <div
+                  className="flexColumn"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      aspectRatio: 1,
+                      height: "80%",
+                      opacity: 0.5,
+                      animation: "spin 2s linear infinite",
+                    }}
+                  >
+                    <SiteLogo />
+                  </div>
+                </div>
+              ) : null}
             </button>
             {!creatingGame && disableNextButton() ? (
               <div

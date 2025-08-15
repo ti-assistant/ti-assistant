@@ -18,10 +18,10 @@ import Toggle from "../../src/components/Toggle/Toggle";
 import MapMenuSVG from "../../src/icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../src/icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../src/icons/ui/PlanetMenu";
+import { Loader } from "../../src/Loader";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
-import { Loader } from "../../src/Loader";
 
 function FilterButton<T extends string | number>({
   filter,

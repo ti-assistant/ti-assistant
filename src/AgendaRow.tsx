@@ -2,7 +2,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import { ModalContent } from "./components/Modal/Modal";
 import { translateOutcome } from "./components/VoteBlock/VoteBlock";
-import { useAgendas, usePlanets, useStrategyCards } from "./context/dataHooks";
+import {
+  useAgendas,
+  usePlanets,
+  useStrategyCards,
+  useViewOnly,
+} from "./context/dataHooks";
 import { useObjectives } from "./context/objectiveDataHooks";
 import { useFactions } from "./context/factionDataHooks";
 import { useSharedModal } from "./data/SharedModal";
@@ -59,6 +64,7 @@ export function AgendaRow({
   const objectives = useObjectives();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   const { openModal } = useSharedModal();
 
@@ -67,7 +73,11 @@ export function AgendaRow({
   const textColor = "#eee";
 
   return (
-    <SelectableRow itemId={agenda.id} removeItem={removeAgenda}>
+    <SelectableRow
+      itemId={agenda.id}
+      removeItem={removeAgenda}
+      viewOnly={viewOnly}
+    >
       <div>
         <div className="flexRow">
           <div

@@ -13,12 +13,14 @@ import {
   useAgenda,
   useGameId,
   useStrategyCards,
+  useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import {
-  useGameState,
-  useRound,
-} from "../../../../../../src/context/stateDataHooks";
+  useActiveFaction,
+  useOnDeckFaction,
+} from "../../../../../../src/context/gameDataHooks";
+import { useRound } from "../../../../../../src/context/stateDataHooks";
 import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   advancePhaseAsync,
@@ -31,15 +33,10 @@ import {
   getFactionColor,
   getFactionName,
 } from "../../../../../../src/util/factions";
-import { getOnDeckFaction } from "../../../../../../src/util/helpers";
 import { phaseString } from "../../../../../../src/util/strings";
 import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./StrategyPhase.module.scss";
-import {
-  useActiveFaction,
-  useOnDeckFaction,
-} from "../../../../../../src/context/gameDataHooks";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -53,6 +50,7 @@ function ChecksAndBalancesMenu({
   onSelect: (factionId: FactionId) => void;
 }) {
   const checksAndBalances = useAgenda("Checks and Balances");
+  const viewOnly = useViewOnly();
   if (!faction || !checksAndBalances || !checksAndBalances.passed) {
     return null;
   }
@@ -106,6 +104,7 @@ function ChecksAndBalancesMenu({
         }}
         factions={otherFactions}
         size={32}
+        viewOnly={viewOnly}
       />
     </div>
   );
@@ -119,6 +118,7 @@ function QuantumDatahubNode({
   strategyCards: StrategyCard[];
 }) {
   const gameId = useGameId();
+  const viewOnly = useViewOnly();
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
     otherCard: Optional<StrategyCardId>;
@@ -196,6 +196,7 @@ function QuantumDatahubNode({
                     });
                   }}
                   selectedItem={quantum.mainCard}
+                  viewOnly={viewOnly}
                 />
               ),
               secondCard: (
@@ -221,6 +222,7 @@ function QuantumDatahubNode({
                     });
                   }}
                   selectedItem={quantum.otherCard}
+                  viewOnly={viewOnly}
                 />
               ),
             }}
@@ -234,7 +236,7 @@ function QuantumDatahubNode({
             }}
           >
             <button
-              disabled={!quantum.mainCard || !quantum.otherCard}
+              disabled={viewOnly || !quantum.mainCard || !quantum.otherCard}
               onClick={() => {
                 quantumDatahubNode();
                 setQuantum({
@@ -260,6 +262,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const arbiter = useAgenda("Imperial Arbiter");
   const gameId = useGameId();
   const factions = useFactions();
+  const viewOnly = useViewOnly();
 
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
@@ -340,6 +343,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
                     });
                   }}
                   selectedItem={quantum.mainCard}
+                  viewOnly={viewOnly}
                 />
               ),
               secondCard: (
@@ -365,6 +369,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
                     });
                   }}
                   selectedItem={quantum.otherCard}
+                  viewOnly={viewOnly}
                 />
               ),
             }}
@@ -378,7 +383,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
             }}
           >
             <button
-              disabled={!quantum.mainCard || !quantum.otherCard}
+              disabled={viewOnly || !quantum.mainCard || !quantum.otherCard}
               onClick={() => {
                 quantumDatahubNode();
                 setQuantum({
@@ -433,6 +438,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const checksAndBalancesAgenda = useAgenda("Checks and Balances");
   const factions = useFactions();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
 
   function pickStrategyCard(
     card: StrategyCard,
@@ -476,7 +482,8 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
               checksAndBalances ||
               card.faction ||
               !activeFaction ||
-              card.invalid
+              card.invalid ||
+              viewOnly
                 ? undefined
                 : () => pickStrategyCard(card, activeFaction, activeFaction.id)
             }
@@ -512,6 +519,7 @@ export default function StrategyPhase() {
   const factions = useFactions();
   const strategyCards = useStrategyCards();
   const intl = useIntl();
+  const viewOnly = useViewOnly();
 
   const activeFaction = useActiveFaction();
   const onDeckFaction = useOnDeckFaction();
@@ -768,6 +776,7 @@ export default function StrategyPhase() {
                   );
                 }}
                 selectedItem={giftFaction}
+                viewOnly={viewOnly}
               />
             ) : null}
             <QuantumDatahubNode
@@ -877,6 +886,7 @@ export default function StrategyPhase() {
           <button
             style={{ fontSize: rem(20) }}
             onClick={() => advancePhaseAsync(gameId)}
+            disabled={viewOnly}
           >
             <FormattedMessage
               id="8/h2ME"

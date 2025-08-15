@@ -5,7 +5,7 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
-import { useGameId, useLogEntries } from "./context/dataHooks";
+import { useGameId, useLogEntries, useViewOnly } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
 import { useSharedModal } from "./data/SharedModal";
 import { addTechAsync, removeTechAsync } from "./dynamic/api";
@@ -193,6 +193,7 @@ export function TechRow({
   researchAgreement,
   opts = {},
 }: TechRowProps) {
+  const viewOnly = useViewOnly();
   const { openModal } = useSharedModal();
 
   return (
@@ -200,6 +201,7 @@ export function TechRow({
       itemId={tech.id}
       selectItem={addTech}
       removeItem={removeTech}
+      viewOnly={viewOnly}
     >
       <div
         className="flexRow"
@@ -301,6 +303,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   )[0];
   const factions = useFactions();
   const gameId = useGameId();
+  const viewOnly = useViewOnly();
   const { openModal } = useSharedModal();
 
   const selectedFaction = researchAgreement?.data.event.faction;
@@ -377,6 +380,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
           &#x24D8;
         </div>
       }
+      viewOnly={viewOnly}
     />
   );
 }

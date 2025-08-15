@@ -6862,7 +6862,7 @@
   "Nomad.Units.Memoria.Description": [
     {
       "type": 0,
-      "value": "You may treat this unit as if it were adjacent to systems that contain one or more of your mechs."
+      "value": "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs."
     }
   ],
   "Nomad.Units.Memoria.Title": [
@@ -10298,7 +10298,15 @@
   "Vuil'raith Cabal.Techs.Dimensional Tear II.Description": [
     {
       "type": 0,
-      "value": "This system is a gravity rift; your ships do not roll for this gravity rift. Place a dimensional tear token beneath this unit as a reminder."
+      "value": "This system is a gravity rift; your ships do not roll for this gravity rift."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place a dimensional tear token beneath this unit as a reminder."
     },
     {
       "type": 1,

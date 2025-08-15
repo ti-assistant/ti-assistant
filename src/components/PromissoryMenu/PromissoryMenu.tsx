@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
-import { useGameId } from "../../context/dataHooks";
+import { useGameId, useViewOnly } from "../../context/dataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
@@ -41,6 +41,7 @@ export default function PromissoryMenu({
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const viewOnly = useViewOnly();
 
   let orderedFactions = Object.values(factions).sort((a, b) => {
     if (a.mapPosition < b.mapPosition) {
@@ -116,6 +117,7 @@ export default function PromissoryMenu({
                 ? getFactionColor(factions[supportGivenTo])
                 : undefined
             }
+            viewOnly={viewOnly}
           />
         </div>
         <LabeledLine
@@ -144,29 +146,35 @@ export default function PromissoryMenu({
               return (
                 <div
                   key={id}
-                  className={`flexRow ${styles.factionIconWrapper}`}
-                  onClick={() => {
-                    if (scored) {
-                      unscoreObjectiveAsync(
-                        gameId,
-                        factionId,
-                        "Support for the Throne",
-                        id
-                      );
-                    } else {
-                      scoreObjectiveAsync(
-                        gameId,
-                        factionId,
-                        "Support for the Throne",
-                        id
-                      );
-                    }
-                  }}
+                  className={`flexRow ${styles.factionIconWrapper} ${
+                    viewOnly ? styles.viewOnly : ""
+                  }`}
+                  onClick={
+                    viewOnly
+                      ? undefined
+                      : () => {
+                          if (scored) {
+                            unscoreObjectiveAsync(
+                              gameId,
+                              factionId,
+                              "Support for the Throne",
+                              id
+                            );
+                          } else {
+                            scoreObjectiveAsync(
+                              gameId,
+                              factionId,
+                              "Support for the Throne",
+                              id
+                            );
+                          }
+                        }
+                  }
                 >
                   <div
                     className={`${styles.factionIcon} ${
                       scored ? styles.selected : ""
-                    }`}
+                    }  ${viewOnly ? styles.viewOnly : ""}`}
                     style={
                       {
                         "--color": getFactionColor(factions[id]),

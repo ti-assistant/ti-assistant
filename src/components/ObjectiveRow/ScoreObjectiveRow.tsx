@@ -1,4 +1,4 @@
-import { useActionLog, useGameId } from "../../context/dataHooks";
+import { useActionLog, useGameId, useViewOnly } from "../../context/dataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
@@ -24,6 +24,7 @@ export default function ScoreObjectiveRow({
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const viewOnly = useViewOnly();
 
   const objective = objectives[objectiveId];
   if (!objective) {
@@ -72,6 +73,7 @@ export default function ScoreObjectiveRow({
           )}
           selectedFaction={currentScorers[0]}
           factions={orderedScorers}
+          viewOnly={viewOnly}
         />
       ) : (
         orderedScorers.map((factionId) => {
@@ -82,13 +84,17 @@ export default function ScoreObjectiveRow({
               blur
               borderColor={getFactionColor(factions[factionId])}
               factionId={factionId}
-              onClick={() => {
-                if (current) {
-                  unscoreObjectiveAsync(gameId, factionId, objectiveId);
-                } else {
-                  scoreObjectiveAsync(gameId, factionId, objectiveId);
-                }
-              }}
+              onClick={
+                viewOnly
+                  ? undefined
+                  : () => {
+                      if (current) {
+                        unscoreObjectiveAsync(gameId, factionId, objectiveId);
+                      } else {
+                        scoreObjectiveAsync(gameId, factionId, objectiveId);
+                      }
+                    }
+              }
               size={32}
               tag={
                 <div

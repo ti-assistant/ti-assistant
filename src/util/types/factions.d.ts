@@ -79,7 +79,7 @@ interface Unit {
   omega?: {
     expansion: Expansion;
   } & Partial<Unit>;
-  upgrade?: string;
+  upgrade?: TechId;
 }
 
 interface BaseFaction {
