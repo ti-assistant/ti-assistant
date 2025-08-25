@@ -6,6 +6,7 @@ import { InfoRow } from "../../InfoRow";
 import { getFactionColor } from "../../util/factions";
 import { CollapsibleSection } from "../CollapsibleSection";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import styles from "./RelicPanel.module.scss";
 
 function RelicPanelContent({}) {
@@ -68,7 +69,12 @@ function RelicPanelContent({}) {
                   }}
                   viewOnly={viewOnly}
                 />
-                <InfoRow infoTitle={relic.name} infoContent={relic.description}>
+                <InfoRow
+                  infoTitle={relic.name}
+                  infoContent={
+                    <FormattedDescription description={relic.description} />
+                  }
+                >
                   {relic.name}
                 </InfoRow>
                 {/* {relic.owner ? (

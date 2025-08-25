@@ -37,6 +37,7 @@ import { phaseString } from "../../../../../../src/util/strings";
 import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./StrategyPhase.module.scss";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -719,7 +720,9 @@ export default function StrategyPhase() {
                                         }
                                       >
                                         <InfoContent>
-                                          {ability.description}
+                                          <FormattedDescription
+                                            description={ability.description}
+                                          />
                                         </InfoContent>
                                       </ModalContent>
                                     )

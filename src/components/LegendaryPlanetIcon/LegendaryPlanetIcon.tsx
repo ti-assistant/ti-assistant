@@ -3,6 +3,7 @@
 import { useSharedModal } from "../../data/SharedModal";
 import LegendaryPlanetSVG from "../../icons/planets/LegendaryPlanet";
 import { rem } from "../../util/util";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import { ModalContent } from "../Modal/Modal";
 
 function InfoContent({ ability }: { ability: string }) {
@@ -18,7 +19,7 @@ function InfoContent({ ability }: { ability: string }) {
         fontSize: rem(32),
       }}
     >
-      {description}
+      <FormattedDescription description={description} />
     </div>
   );
 }

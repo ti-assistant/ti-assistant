@@ -12,8 +12,8 @@ import {
   useTechs,
   useViewOnly,
 } from "../context/dataHooks";
-import { useObjectives } from "../context/objectiveDataHooks";
 import { useFactions } from "../context/factionDataHooks";
+import { useObjectives } from "../context/objectiveDataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -44,6 +44,7 @@ import { getMapString } from "../util/options";
 import { applyPlanetAttachments } from "../util/planets";
 import { objectKeys, rem } from "../util/util";
 import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
@@ -446,7 +447,12 @@ export function TacticalAction({
               }}
               viewOnly={viewOnly}
             >
-              <InfoRow infoTitle={relic.name} infoContent={relic.description}>
+              <InfoRow
+                infoTitle={relic.name}
+                infoContent={
+                  <FormattedDescription description={relic.description} />
+                }
+              >
                 {relic.name}
               </InfoRow>
             </SelectableRow>

@@ -268,8 +268,9 @@ export function outcomeString(type: OutcomeType, intl: IntlShape) {
         description: "Outcome type: Non-Home Planet Other Than Mecatol Rex",
         defaultMessage: "Non-Home Planet Other Than Mecatol Rex",
       });
+    case "???":
+      return "???";
   }
-  return "";
 }
 
 export function riderString(rider: string, intl: IntlShape) {

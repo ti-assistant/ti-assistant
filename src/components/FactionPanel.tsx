@@ -1,4 +1,3 @@
-import parse from "html-react-parser";
 import { PropsWithChildren, ReactNode } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { UnitStat } from "../TechRow";
@@ -23,6 +22,7 @@ import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionPanel.module.scss";
+import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
@@ -99,11 +99,7 @@ function FactionTech({
         ) : null
       }
     >
-      {tech.description
-        ? formatDescription(tech.description).map((section, index) => {
-            return <div key={index}>{section}</div>;
-          })
-        : null}
+      <FormattedDescription description={tech.description} />
       {tech.type === "UPGRADE" ? (
         <>
           {tech.abilities.length > 0 ? (
@@ -187,11 +183,7 @@ function FactionUnit({
         <UnitIcon type={unit.type} color="var(--neutral-border)" size={18} />
       }
     >
-      {unit.description
-        ? formatDescription(unit.description).map((section, index) => {
-            return <div key={index}>{section}</div>;
-          })
-        : null}
+      <FormattedDescription description={unit.description} />
       {abilities.length > 0 ? (
         <div
           style={{
@@ -229,84 +221,6 @@ function FactionUnit({
       ) : null}
     </AbilitySection>
   );
-}
-
-const KEYWORDS = [
-  // ACTION
-  "ACTION:",
-  "AKTION:",
-  // DEPLOY
-  "DEPLOY:",
-  "EINSATZ:",
-  // UNLOCK
-  "UNLOCK:",
-];
-
-const ABILITY_REGEX = [
-  // PRODUCTION
-  /PRODUCTION( [1-9]| X)?/gi,
-  /PRODUKTION( [1-9]| X)?/gi,
-  // ANTI-FIGHTER BARRAGE
-  /ANTI-FIGHTER BARRAGE( [1-9] \(x[1-9]\))?/gi,
-  // BOMBARDMENT
-  /BOMBARDMENT( [1-9] \(x[1-9]\))?/gi,
-  /BOMBARDEMENT( [1-9] \(x[1-9]\))?/gi,
-  // SPACE CANNON
-  /SPACE CANNON( [1-9]( \(x[1-9]\))?)?/gi,
-  /WELTRAUMKANONE( [1-9]( \(x[1-9]\))?)?/gi,
-  // SUSTAIN DAMAGE
-  /SUSTAIN DAMAGE/gi,
-  /SCHADENSRESISTENZ/gi,
-  // PLANETARY SHIELD
-  /PLANETARY SHIELD/gi,
-  /PLANETARER SCHILD/gi,
-  // Faction specific keywords
-  /MITOSIS/gi,
-  /ZELLTEILUNG/gi,
-  /AWAKEN/gi,
-  /ERWECKEN/gi,
-  /STAR FORGE/gi,
-  /STERNENSCHMIEDE/gi,
-  /ORBITAL DROP/gi,
-  /ORBITALE LANDUNG/gi,
-  /PILLAGE/gi,
-  /PLÜNDERN/gi,
-  /TELEPATHIC/gi,
-  /TELEPATHIE/gi,
-  /TECHNOLOGICAL SINGULARITY/gi,
-  /TECHNOLOGISCHE SINGULARITÄT/gi,
-  /FRAGILE/gi,
-  /ZERBRECHLICH/gi,
-  /INDOCTRINATION/gi,
-  /MISSIONIEREN/gi,
-  /STALL TACTICS/gi,
-  /VERZÖGERUNGSTAKTIK/gi,
-  // DS Faction specific keywords
-  /RALLY TO THE CAUSE/gi,
-  /RECYCLED MATERIALS/gi,
-  /AUTONETIC MEMORY/gi,
-];
-
-function formatDescription(description: string) {
-  const parsedSections = [];
-  const sections = description.split("\n\n");
-  for (const section of sections) {
-    let updated = section;
-    for (const keyword of KEYWORDS) {
-      updated = updated.replaceAll(
-        keyword,
-        `<i class="keyword">${keyword}</i>`
-      );
-    }
-    for (const regex of ABILITY_REGEX) {
-      updated = updated.replaceAll(regex, `<span class="ability">$&</span>`);
-    }
-    if (updated.endsWith(":")) {
-      updated = `<b>${updated}</b>`;
-    }
-    parsedSections.push(parse(updated));
-  }
-  return parsedSections;
 }
 
 function UnitStatBlock({ stats }: { stats?: UnitStats }) {
@@ -493,31 +407,21 @@ function FactionPanelContent({
                   >
                     {leader.type !== "AGENT" ? (
                       <>
-                        <div>
-                          <span>
-                            {formatDescription(
-                              intl.formatMessage({
-                                id: "frzrrT",
-                                defaultMessage: "UNLOCK:",
-                                description:
-                                  "Text that gets pre-fixed to a leader unlock condition.",
-                              })
-                            ).map((val, index) => (
-                              <span key={index}>{val}</span>
-                            ))}
-                          </span>{" "}
-                          {formatDescription(
+                        <FormattedDescription
+                          description={`${intl.formatMessage({
+                            id: "frzrrT",
+                            defaultMessage: "UNLOCK:",
+                            description:
+                              "Text that gets pre-fixed to a leader unlock condition.",
+                          })} ${
                             leader.unlock ??
-                              intl.formatMessage({
-                                id: "Leaders.Hero.Unlock",
-                                defaultMessage: "Have 3 scored objectives.",
-                                description: "Unlock condition for all heroes.",
-                              })
-                          ).map((val, index) => (
-                            <span key={index}>{val}</span>
-                          ))}
-                        </div>
-
+                            intl.formatMessage({
+                              id: "Leaders.Hero.Unlock",
+                              defaultMessage: "Have 3 scored objectives.",
+                              description: "Unlock condition for all heroes.",
+                            })
+                          }`}
+                        />
                         <hr
                           style={{
                             width: "100%",
@@ -534,11 +438,7 @@ function FactionPanelContent({
                         alignItems: "flex-start",
                       }}
                     >
-                      {formatDescription(leader.description).map(
-                        (section, index) => {
-                          return <div key={index}>{section}</div>;
-                        }
-                      )}
+                      <FormattedDescription description={leader.description} />
                     </div>
                   </div>
                 );
@@ -689,11 +589,7 @@ function FactionPanelContent({
                   key={ability.name}
                   leftLabel={ability.name.toUpperCase()}
                 >
-                  {formatDescription(ability.description).map(
-                    (section, index) => {
-                      return <div key={index}>{section}</div>;
-                    }
-                  )}
+                  <FormattedDescription description={ability.description} />
                 </AbilitySection>
               );
             })}
@@ -725,11 +621,7 @@ function FactionPanelContent({
                   key={promissory.name}
                   leftLabel={promissory.name}
                 >
-                  {formatDescription(promissory.description).map(
-                    (section, index) => {
-                      return <div key={index}>{section}</div>;
-                    }
-                  )}
+                  <FormattedDescription description={promissory.description} />
                 </AbilitySection>
               );
             })}
@@ -801,49 +693,6 @@ function FactionPanelContent({
                   viewOnly={viewOnly}
                 />
               );
-              // const localUnit = { ...unit };
-              // let leftLabel: ReactNode = unit.name;
-              // return (
-              //   <AbilitySection
-              //     key={index}
-              //     leftLabel={leftLabel}
-              //     label={
-              //       <UnitIcon
-              //         type={unit.type}
-              //         color="var(--neutral-border)"
-              //         size={18}
-              //       />
-              //     }
-              //     rightLabel={<UnitType type={unit.type} />}
-              //   >
-              //     {localUnit.description
-              //       ? formatDescription(localUnit.description).map(
-              //           (section, index) => {
-              //             return <div key={index}>{section}</div>;
-              //           }
-              //         )
-              //       : null}
-              //     {(localUnit.abilities ?? []).length > 0 ? (
-              //       <div
-              //         style={{
-              //           display: "grid",
-              //           gridAutoFlow: "row",
-              //           whiteSpace: "nowrap",
-              //           gridTemplateColumns: "repeat(2, 1fr)",
-              //           fontFamily: "Slider",
-              //           paddingLeft: rem(8),
-              //           rowGap: rem(2),
-              //           width: "100%",
-              //         }}
-              //       >
-              //         {localUnit.abilities?.map((ability) => {
-              //           return <div key={ability}>{ability.toUpperCase()}</div>;
-              //         })}
-              //       </div>
-              //     ) : null}
-              //     <UnitStatBlock stats={localUnit.stats} />
-              //   </AbilitySection>
-              // );
             })}
           </div>
         </CollapsibleSection>

@@ -608,7 +608,7 @@
   "Agendas.Anti-Intellectual Revolution.Description": [
     {
       "type": 0,
-      "value": "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships."
+      "value": "For: After a player researches a technology, they must destroy 1 of their non-fighter ships."
     },
     {
       "type": 1,
@@ -616,7 +616,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own."
+      "value": "Against: At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own."
     }
   ],
   "Agendas.Anti-Intellectual Revolution.Title": [
@@ -652,7 +652,7 @@
   "Agendas.Arms Reduction.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player destroys all but 2 of their dreadnaughts and all but 4 of their cruisers."
+      "value": "For: Each player destroys all but 2 of their dreadnaughts and all but 4 of their cruisers."
     },
     {
       "type": 1,
@@ -660,7 +660,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : At the start of the next strategy phase, each player exhausts each of their planets that have a technology specialty."
+      "value": "Against: At the start of the next strategy phase, each player exhausts each of their planets that have a technology specialty."
     }
   ],
   "Agendas.Arms Reduction.Title": [
@@ -712,7 +712,7 @@
   "Agendas.Clandestine Operations.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player removes 2 command tokens from their command sheet and returns those tokens to their reinforcements."
+      "value": "For: Each player removes 2 command tokens from their command sheet and returns those tokens to their reinforcements."
     },
     {
       "type": 1,
@@ -720,7 +720,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player removes 1 command token from their fleet pool and returns that token to their reinforcements."
+      "value": "Against: Each player removes 1 command token from their fleet pool and returns that token to their reinforcements."
     }
   ],
   "Agendas.Clandestine Operations.Title": [
@@ -804,7 +804,7 @@
   "Agendas.Conventions of War.Description": [
     {
       "type": 0,
-      "value": "FOR : Players cannot use BOMBARDMENT against units that are on cultural planets."
+      "value": "For: Players cannot use BOMBARDMENT against units that are on cultural planets."
     },
     {
       "type": 1,
@@ -812,7 +812,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player that voted \"Against\" discards all of their action cards."
+      "value": "Against: Each player that voted \"Against\" discards all of their action cards."
     }
   ],
   "Agendas.Conventions of War.Title": [
@@ -900,7 +900,7 @@
   "Agendas.Economic Equality.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player returns all of their trade goods to the supply. Then, each player gains 5 trade goods."
+      "value": "For: Each player returns all of their trade goods to the supply. Then, each player gains 5 trade goods."
     },
     {
       "type": 1,
@@ -908,7 +908,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player returns all of their trade goods to the supply."
+      "value": "Against: Each player returns all of their trade goods to the supply."
     }
   ],
   "Agendas.Economic Equality.Title": [
@@ -920,7 +920,7 @@
   "Agendas.Enforced Travel Ban.Description": [
     {
       "type": 0,
-      "value": "FOR : Alpha and beta wormholes have no effect during movement."
+      "value": "For: Alpha and beta wormholes have no effect during movement."
     },
     {
       "type": 1,
@@ -928,7 +928,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Destroy each PDS in or adjacent to a system that contains a wormhole."
+      "value": "Against: Destroy each PDS in or adjacent to a system that contains a wormhole."
     }
   ],
   "Agendas.Enforced Travel Ban.Title": [
@@ -940,7 +940,7 @@
   "Agendas.Executive Sanctions.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player can have a maximum of 3 action cards in their hand."
+      "value": "For: Each player can have a maximum of 3 action cards in their hand."
     },
     {
       "type": 1,
@@ -948,7 +948,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player discards 1 random action card from their hand."
+      "value": "Against: Each player discards 1 random action card from their hand."
     }
   ],
   "Agendas.Executive Sanctions.Title": [
@@ -960,7 +960,7 @@
   "Agendas.Fleet Regulations.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player cannot have more than 4 tokens in their fleet pool."
+      "value": "For: Each player cannot have more than 4 tokens in their fleet pool."
     },
     {
       "type": 1,
@@ -968,7 +968,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player places 1 command token from their reinforcements in their fleet pool."
+      "value": "Against: Each player places 1 command token from their reinforcements in their fleet pool."
     }
   ],
   "Agendas.Fleet Regulations.Title": [
@@ -1036,7 +1036,7 @@
   "Agendas.Homeland Defense Act.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player can have any number of PDS units on planets they control."
+      "value": "For: Each player can have any number of PDS units on planets they control."
     },
     {
       "type": 1,
@@ -1044,7 +1044,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player destroys 1 of their PDS units."
+      "value": "Against: Each player destroys 1 of their PDS units."
     }
   ],
   "Agendas.Homeland Defense Act.Title": [
@@ -1076,7 +1076,7 @@
   "Agendas.Incentive Program.Description": [
     {
       "type": 0,
-      "value": "FOR : Draw and reveal 1 stage I public objective from the deck and place it near the public objectives."
+      "value": "For: Draw and reveal 1 stage I public objective from the deck and place it near the public objectives."
     },
     {
       "type": 1,
@@ -1084,7 +1084,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Draw and reveal 1 stage II public objective from the deck and place it near the public objectives."
+      "value": "Against: Draw and reveal 1 stage II public objective from the deck and place it near the public objectives."
     }
   ],
   "Agendas.Incentive Program.Title": [
@@ -1096,7 +1096,7 @@
   "Agendas.Ixthian Artifact.Description": [
     {
       "type": 0,
-      "value": "FOR : The speaker rolls 1 die. If the result is 6-10, each player may research 2 technologies. If the result is 1-5, destroy all units in Mecatol Rex's system, and each player with units in systems adjacent to Mecatol Rex's system destroys 3 of their units in each of those systems."
+      "value": "For: The speaker rolls 1 die. If the result is 6-10, each player may research 2 technologies. If the result is 1-5, destroy all units in Mecatol Rex's system, and each player with units in systems adjacent to Mecatol Rex's system destroys 3 of their units in each of those systems."
     },
     {
       "type": 1,
@@ -1104,7 +1104,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : No effect."
+      "value": "Against: No effect."
     }
   ],
   "Agendas.Ixthian Artifact.Title": [
@@ -1308,7 +1308,7 @@
   "Agendas.Mutiny.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player who voted \"For\" gains 1 victory point."
+      "value": "For: Each player who voted \"For\" gains 1 victory point."
     },
     {
       "type": 1,
@@ -1316,7 +1316,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player who voted \"For\" loses 1 victory point."
+      "value": "Against: Each player who voted \"For\" loses 1 victory point."
     }
   ],
   "Agendas.Mutiny.Title": [
@@ -1336,7 +1336,7 @@
     },
     {
       "type": 0,
-      "value": "FOR : Discard all laws in play. At the start of the next strategy phase, each player exhausts each planet in their home system."
+      "value": "For: Discard all laws in play. At the start of the next strategy phase, each player exhausts each planet in their home system."
     },
     {
       "type": 1,
@@ -1344,7 +1344,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : No effect."
+      "value": "Against: No effect."
     }
   ],
   "Agendas.New Constitution.Title": [
@@ -1436,7 +1436,7 @@
   "Agendas.Publicize Weapon Schematics.Description": [
     {
       "type": 0,
-      "value": "FOR : If any player owns a war sun technology, all players may ignore all prerequisites on war sun technologies. All war suns lose SUSTAIN DAMAGE."
+      "value": "For: If any player owns a war sun technology, all players may ignore all prerequisites on war sun technologies. All war suns lose SUSTAIN DAMAGE."
     },
     {
       "type": 1,
@@ -1444,7 +1444,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player that owns a war sun technology discards all of their action cards."
+      "value": "Against: Each player that owns a war sun technology discards all of their action cards."
     }
   ],
   "Agendas.Publicize Weapon Schematics.Title": [
@@ -1476,7 +1476,7 @@
   "Agendas.Regulated Conscription.Description": [
     {
       "type": 0,
-      "value": "FOR : When a player produces units, they produce only 1 fighter and infantry for its cost instead of 2."
+      "value": "For: When a player produces units, they produce only 1 fighter and infantry for its cost instead of 2."
     },
     {
       "type": 1,
@@ -1484,7 +1484,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : No effect."
+      "value": "Against: No effect."
     }
   ],
   "Agendas.Regulated Conscription.Title": [
@@ -1496,7 +1496,7 @@
   "Agendas.Representative Government.Description": [
     {
       "type": 0,
-      "value": "FOR : Players cannot exhaust planets to cast votes during the agenda phase. Each player may cast 1 vote on each agenda instead."
+      "value": "For: Players cannot exhaust planets to cast votes during the agenda phase. Each player may cast 1 vote on each agenda instead."
     },
     {
       "type": 1,
@@ -1504,13 +1504,13 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
+      "value": "Against: At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
     }
   ],
   "Agendas.Representative Government.Omega.Description": [
     {
       "type": 0,
-      "value": "FOR : Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes."
+      "value": "For: Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes."
     },
     {
       "type": 1,
@@ -1518,7 +1518,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
+      "value": "Against: At the start of the next strategy phase, each player that voted \"Against\" exhausts all of their cultural planets."
     }
   ],
   "Agendas.Representative Government.Title": [
@@ -1642,7 +1642,7 @@
   "Agendas.Seed of an Empire.Description": [
     {
       "type": 0,
-      "value": "FOR : The player with most victory points gains 1 victory point."
+      "value": "For: The player with most victory points gains 1 victory point."
     },
     {
       "type": 1,
@@ -1650,7 +1650,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : The player with the fewest victory points gains 1 victory point."
+      "value": "Against: The player with the fewest victory points gains 1 victory point."
     }
   ],
   "Agendas.Seed of an Empire.Title": [
@@ -1710,7 +1710,7 @@
   "Agendas.Shared Research.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player's units can move through nebulae."
+      "value": "For: Each player's units can move through nebulae."
     },
     {
       "type": 1,
@@ -1718,7 +1718,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player places a command token from their reinforcements in their home system, if able."
+      "value": "Against: Each player places a command token from their reinforcements in their home system, if able."
     }
   ],
   "Agendas.Shared Research.Title": [
@@ -1730,7 +1730,7 @@
   "Agendas.Swords to Plowshares.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player destroys half of their infantry on each planet they control, rounded up. Then, each player gains trade goods equal to the number of their infantry that were destroyed."
+      "value": "For: Each player destroys half of their infantry on each planet they control, rounded up. Then, each player gains trade goods equal to the number of their infantry that were destroyed."
     },
     {
       "type": 1,
@@ -1738,7 +1738,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player places 1 infantry from their reinforcements on each planet they control."
+      "value": "Against: Each player places 1 infantry from their reinforcements on each planet they control."
     }
   ],
   "Agendas.Swords to Plowshares.Title": [
@@ -1818,7 +1818,7 @@
   "Agendas.Unconventional Measures.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player that voted \"For\" draws 2 action cards."
+      "value": "For: Each player that voted \"For\" draws 2 action cards."
     },
     {
       "type": 1,
@@ -1826,7 +1826,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player that voted \"For\" discards all of their action cards."
+      "value": "Against: Each player that voted \"For\" discards all of their action cards."
     }
   ],
   "Agendas.Unconventional Measures.Title": [
@@ -1838,7 +1838,7 @@
   "Agendas.Wormhole Reconstruction.Description": [
     {
       "type": 0,
-      "value": "FOR : All systems that contain either an alpha or beta wormhole are adjacent to each other."
+      "value": "For: All systems that contain either an alpha or beta wormhole are adjacent to each other."
     },
     {
       "type": 1,
@@ -1846,7 +1846,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player places a command token from their reinforcements in each system that contains a wormhole and 1 or more of their ships."
+      "value": "Against: Each player places a command token from their reinforcements in each system that contains a wormhole and 1 or more of their ships."
     }
   ],
   "Agendas.Wormhole Reconstruction.Title": [
@@ -1858,7 +1858,7 @@
   "Agendas.Wormhole Research.Description": [
     {
       "type": 0,
-      "value": "FOR : Each player who has 1 or more ships in a system that contains a wormhole may research 1 technology. Then, destroy all ships in systems that contain an alpha or beta wormhole."
+      "value": "For: Each player who has 1 or more ships in a system that contains a wormhole may research 1 technology. Then, destroy all ships in systems that contain an alpha or beta wormhole."
     },
     {
       "type": 1,
@@ -1866,7 +1866,7 @@
     },
     {
       "type": 0,
-      "value": "AGAINST : Each player that voted \"Against\" removes 1 command token from their command sheet and returns it to their reinforcements."
+      "value": "Against: Each player that voted \"Against\" removes 1 command token from their command sheet and returns it to their reinforcements."
     }
   ],
   "Agendas.Wormhole Research.Title": [
@@ -3346,7 +3346,7 @@
     },
     {
       "type": 0,
-      "value": "While this card is in your play area, the Mentak player cannot use their Pillage faction ability against you."
+      "value": "While this card is in your play area, the Mentak player cannot use their PILLAGE faction ability against you."
     },
     {
       "type": 1,

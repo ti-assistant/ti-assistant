@@ -11,7 +11,7 @@ export default function getBaseAgendas(
           description:
             "Description for Agenda Card: Anti-Intellectual Revolution",
           defaultMessage:
-            "FOR : After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}AGAINST : At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
+            "For: After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}Against: At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
         },
         { br: "\n\n" }
       ),
@@ -47,7 +47,7 @@ export default function getBaseAgendas(
           id: "Agendas.Arms Reduction.Description",
           description: "Description for Agenda Card: Arms Reduction",
           defaultMessage:
-            "FOR : Each player destroys all but 2 of their dreadnaughts and all but 4 of their cruisers.{br}AGAINST : At the start of the next strategy phase, each player exhausts each of their planets that have a technology specialty.",
+            "For: Each player destroys all but 2 of their dreadnaughts and all but 4 of their cruisers.{br}Against: At the start of the next strategy phase, each player exhausts each of their planets that have a technology specialty.",
         },
         { br: "\n\n" }
       ),
@@ -67,7 +67,7 @@ export default function getBaseAgendas(
           id: "Agendas.Clandestine Operations.Description",
           description: "Description for Agenda Card: Clandestine Operations",
           defaultMessage:
-            "FOR : Each player removes 2 command tokens from their command sheet and returns those tokens to their reinforcements.{br}AGAINST : Each player removes 1 command token from their fleet pool and returns that token to their reinforcements.",
+            "For: Each player removes 2 command tokens from their command sheet and returns those tokens to their reinforcements.{br}Against: Each player removes 1 command token from their fleet pool and returns that token to their reinforcements.",
         },
         { br: "\n\n" }
       ),
@@ -164,7 +164,7 @@ export default function getBaseAgendas(
           id: "Agendas.Conventions of War.Description",
           description: "Description for Agenda Card: Conventions of War",
           defaultMessage:
-            'FOR : Players cannot use BOMBARDMENT against units that are on cultural planets.{br}AGAINST : Each player that voted "Against" discards all of their action cards.',
+            'For: Players cannot use BOMBARDMENT against units that are on cultural planets.{br}Against: Each player that voted "Against" discards all of their action cards.',
         },
         { br: "\n\n" }
       ),
@@ -224,7 +224,7 @@ export default function getBaseAgendas(
           id: "Agendas.Economic Equality.Description",
           description: "Description for Agenda Card: Economic Equality",
           defaultMessage:
-            "FOR : Each player returns all of their trade goods to the supply. Then, each player gains 5 trade goods.{br}AGAINST : Each player returns all of their trade goods to the supply.",
+            "For: Each player returns all of their trade goods to the supply. Then, each player gains 5 trade goods.{br}Against: Each player returns all of their trade goods to the supply.",
         },
         { br: "\n\n" }
       ),
@@ -244,7 +244,7 @@ export default function getBaseAgendas(
           id: "Agendas.Enforced Travel Ban.Description",
           description: "Description for Agenda Card: Enforced Travel Ban",
           defaultMessage:
-            "FOR : Alpha and beta wormholes have no effect during movement.{br}AGAINST : Destroy each PDS in or adjacent to a system that contains a wormhole.",
+            "For: Alpha and beta wormholes have no effect during movement.{br}Against: Destroy each PDS in or adjacent to a system that contains a wormhole.",
         },
         { br: "\n\n" }
       ),
@@ -264,7 +264,7 @@ export default function getBaseAgendas(
           id: "Agendas.Executive Sanctions.Description",
           description: "Description for Agenda Card: Executive Sanctions",
           defaultMessage:
-            "FOR : Each player can have a maximum of 3 action cards in their hand.{br}AGAINST : Each player discards 1 random action card from their hand.",
+            "For: Each player can have a maximum of 3 action cards in their hand.{br}Against: Each player discards 1 random action card from their hand.",
         },
         { br: "\n\n" }
       ),
@@ -284,7 +284,7 @@ export default function getBaseAgendas(
           id: "Agendas.Fleet Regulations.Description",
           description: "Description for Agenda Card: Fleet Regulations",
           defaultMessage:
-            "FOR : Each player cannot have more than 4 tokens in their fleet pool.{br}AGAINST : Each player places 1 command token from their reinforcements in their fleet pool.",
+            "For: Each player cannot have more than 4 tokens in their fleet pool.{br}Against: Each player places 1 command token from their reinforcements in their fleet pool.",
         },
         { br: "\n\n" }
       ),
@@ -324,7 +324,7 @@ export default function getBaseAgendas(
           id: "Agendas.Homeland Defense Act.Description",
           description: "Description for Agenda Card: Homeland Defense Act",
           defaultMessage:
-            "FOR : Each player can have any number of PDS units on planets they control.{br}AGAINST : Each player destroys 1 of their PDS units.",
+            "For: Each player can have any number of PDS units on planets they control.{br}Against: Each player destroys 1 of their PDS units.",
         },
         { br: "\n\n" }
       ),
@@ -364,7 +364,7 @@ export default function getBaseAgendas(
           id: "Agendas.Incentive Program.Description",
           description: "Description for Agenda Card: Incentive Program",
           defaultMessage:
-            "FOR : Draw and reveal 1 stage I public objective from the deck and place it near the public objectives.{br}AGAINST : Draw and reveal 1 stage II public objective from the deck and place it near the public objectives.",
+            "For: Draw and reveal 1 stage I public objective from the deck and place it near the public objectives.{br}Against: Draw and reveal 1 stage II public objective from the deck and place it near the public objectives.",
         },
         { br: "\n\n" }
       ),
@@ -384,7 +384,7 @@ export default function getBaseAgendas(
           id: "Agendas.Ixthian Artifact.Description",
           description: "Description for Agenda Card: Ixthian Artifact",
           defaultMessage:
-            "FOR : The speaker rolls 1 die. If the result is 6-10, each player may research 2 technologies. If the result is 1-5, destroy all units in Mecatol Rex's system, and each player with units in systems adjacent to Mecatol Rex's system destroys 3 of their units in each of those systems.{br}AGAINST : No effect.",
+            "For: The speaker rolls 1 die. If the result is 6-10, each player may research 2 technologies. If the result is 1-5, destroy all units in Mecatol Rex's system, and each player with units in systems adjacent to Mecatol Rex's system destroys 3 of their units in each of those systems.{br}Against: No effect.",
         },
         { br: "\n\n" }
       ),
@@ -584,7 +584,7 @@ export default function getBaseAgendas(
           id: "Agendas.Mutiny.Description",
           description: "Description for Agenda Card: Mutiny",
           defaultMessage:
-            'FOR : Each player who voted "For" gains 1 victory point.{br}AGAINST : Each player who voted "For" loses 1 victory point.',
+            'For: Each player who voted "For" gains 1 victory point.{br}Against: Each player who voted "For" loses 1 victory point.',
         },
         { br: "\n\n" }
       ),
@@ -604,7 +604,7 @@ export default function getBaseAgendas(
           id: "Agendas.New Constitution.Description",
           description: "Description for Agenda Card: New Constitution",
           defaultMessage:
-            "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.{br}FOR : Discard all laws in play. At the start of the next strategy phase, each player exhausts each planet in their home system.{br}AGAINST : No effect.",
+            "When this agenda is revealed, if there are no laws in play, discard this card and reveal another agenda from the top of the deck.{br}For: Discard all laws in play. At the start of the next strategy phase, each player exhausts each planet in their home system.{br}Against: No effect.",
         },
         { br: "\n\n" }
       ),
@@ -662,7 +662,7 @@ export default function getBaseAgendas(
           description:
             "Description for Agenda Card: Publicize Weapon Schematics",
           defaultMessage:
-            "FOR : If any player owns a war sun technology, all players may ignore all prerequisites on war sun technologies. All war suns lose SUSTAIN DAMAGE.{br}AGAINST : Each player that owns a war sun technology discards all of their action cards.",
+            "For: If any player owns a war sun technology, all players may ignore all prerequisites on war sun technologies. All war suns lose SUSTAIN DAMAGE.{br}Against: Each player that owns a war sun technology discards all of their action cards.",
         },
         { br: "\n\n" }
       ),
@@ -682,7 +682,7 @@ export default function getBaseAgendas(
           id: "Agendas.Regulated Conscription.Description",
           description: "Description for Agenda Card: Regulated Conscription",
           defaultMessage:
-            "FOR : When a player produces units, they produce only 1 fighter and infantry for its cost instead of 2.{br}AGAINST : No effect.",
+            "For: When a player produces units, they produce only 1 fighter and infantry for its cost instead of 2.{br}Against: No effect.",
         },
         { br: "\n\n" }
       ),
@@ -702,7 +702,7 @@ export default function getBaseAgendas(
           id: "Agendas.Representative Government.Description",
           description: "Description for Agenda Card: Representative Government",
           defaultMessage:
-            'FOR : Players cannot exhaust planets to cast votes during the agenda phase. Each player may cast 1 vote on each agenda instead.{br}AGAINST : At the start of the next strategy phase, each player that voted "Against" exhausts all of their cultural planets.',
+            'For: Players cannot exhaust planets to cast votes during the agenda phase. Each player may cast 1 vote on each agenda instead.{br}Against: At the start of the next strategy phase, each player that voted "Against" exhausts all of their cultural planets.',
         },
         { br: "\n\n" }
       ),
@@ -722,7 +722,7 @@ export default function getBaseAgendas(
             description:
               "Omega description for Agenda Card: Representative Government",
             defaultMessage:
-              'FOR : Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes.{br}AGAINST : At the start of the next strategy phase, each player that voted "Against" exhausts all of their cultural planets.',
+              'For: Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes.{br}Against: At the start of the next strategy phase, each player that voted "Against" exhausts all of their cultural planets.',
           },
           { br: "\n\n" }
         ),
@@ -815,7 +815,7 @@ export default function getBaseAgendas(
           id: "Agendas.Seed of an Empire.Description",
           description: "Description for Agenda Card: Seed of an Empire",
           defaultMessage:
-            "FOR : The player with most victory points gains 1 victory point.{br}AGAINST : The player with the fewest victory points gains 1 victory point.",
+            "For: The player with most victory points gains 1 victory point.{br}Against: The player with the fewest victory points gains 1 victory point.",
         },
         { br: "\n\n" }
       ),
@@ -875,7 +875,7 @@ export default function getBaseAgendas(
           id: "Agendas.Shared Research.Description",
           description: "Description for Agenda Card: Shared Research",
           defaultMessage:
-            "FOR : Each player's units can move through nebulae.{br}AGAINST : Each player places a command token from their reinforcements in their home system, if able.",
+            "For: Each player's units can move through nebulae.{br}Against: Each player places a command token from their reinforcements in their home system, if able.",
         },
         { br: "\n\n" }
       ),
@@ -895,7 +895,7 @@ export default function getBaseAgendas(
           id: "Agendas.Swords to Plowshares.Description",
           description: "Description for Agenda Card: Swords to Plowshares",
           defaultMessage:
-            "FOR : Each player destroys half of their infantry on each planet they control, rounded up. Then, each player gains trade goods equal to the number of their infantry that were destroyed.{br}AGAINST : Each player places 1 infantry from their reinforcements on each planet they control.",
+            "For: Each player destroys half of their infantry on each planet they control, rounded up. Then, each player gains trade goods equal to the number of their infantry that were destroyed.{br}Against: Each player places 1 infantry from their reinforcements on each planet they control.",
         },
         { br: "\n\n" }
       ),
@@ -975,7 +975,7 @@ export default function getBaseAgendas(
           id: "Agendas.Unconventional Measures.Description",
           description: "Description for Agenda Card: Unconventional Measures",
           defaultMessage:
-            'FOR : Each player that voted "For" draws 2 action cards.{br}AGAINST : Each player that voted "For" discards all of their action cards.',
+            'For: Each player that voted "For" draws 2 action cards.{br}Against: Each player that voted "For" discards all of their action cards.',
         },
         { br: "\n\n" }
       ),
@@ -995,7 +995,7 @@ export default function getBaseAgendas(
           id: "Agendas.Wormhole Reconstruction.Description",
           description: "Description for Agenda Card: Wormhole Reconstruction",
           defaultMessage:
-            "FOR : All systems that contain either an alpha or beta wormhole are adjacent to each other.{br}AGAINST : Each player places a command token from their reinforcements in each system that contains a wormhole and 1 or more of their ships.",
+            "For: All systems that contain either an alpha or beta wormhole are adjacent to each other.{br}Against: Each player places a command token from their reinforcements in each system that contains a wormhole and 1 or more of their ships.",
         },
         { br: "\n\n" }
       ),
@@ -1015,7 +1015,7 @@ export default function getBaseAgendas(
           id: "Agendas.Wormhole Research.Description",
           description: "Description for Agenda Card: Wormhole Research",
           defaultMessage:
-            'FOR : Each player who has 1 or more ships in a system that contains a wormhole may research 1 technology. Then, destroy all ships in systems that contain an alpha or beta wormhole.{br}AGAINST : Each player that voted "Against" removes 1 command token from their command sheet and returns it to their reinforcements.',
+            'For: Each player who has 1 or more ships in a system that contains a wormhole may research 1 technology. Then, destroy all ships in systems that contain an alpha or beta wormhole.{br}Against: Each player that voted "Against" removes 1 command token from their command sheet and returns it to their reinforcements.',
         },
         { br: "\n\n" }
       ),

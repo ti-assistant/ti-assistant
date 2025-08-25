@@ -82,13 +82,13 @@ import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import PlanetaryRigs from "./components/PlanetaryRigs";
 import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function InfoContent({ component }: { component: Component }) {
-  const description = component.description.replaceAll("\\n", "\n");
   return (
     <div
       className="myriadPro"
@@ -102,7 +102,9 @@ function InfoContent({ component }: { component: Component }) {
         fontSize: rem(32),
       }}
     >
-      <div className="flexColumn">{description}</div>
+      <div className="flexColumn" style={{ gap: rem(32) }}>
+        <FormattedDescription description={component.description} />
+      </div>
     </div>
   );
 }
@@ -982,7 +984,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   >
                     <InfoRow
                       infoTitle={relic.name}
-                      infoContent={relic.description}
+                      infoContent={
+                        <FormattedDescription description={relic.description} />
+                      }
                     >
                       {relic.name}
                     </InfoRow>

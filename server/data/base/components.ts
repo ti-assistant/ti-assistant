@@ -41,7 +41,7 @@ export default function getBaseComponents(
           id: "Components.Fires of the Gashlai.Description",
           description: "Description for Component: Fires of the Gashlai",
           defaultMessage:
-            "Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
+            "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
         },
         { br: "\n\n" }
       ),
@@ -256,7 +256,7 @@ export default function getBaseComponents(
           id: "Components.Promise of Protection.Description",
           description: "Description for Component: Promise of Protection",
           defaultMessage:
-            "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, the Mentak player cannot use their Pillage faction ability against you.{br}If you activate a system that contains 1 or more of the Mentak player's units, return this card to the Mentak player.",
+            "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, the Mentak player cannot use their PILLAGE faction ability against you.{br}If you activate a system that contains 1 or more of the Mentak player's units, return this card to the Mentak player.",
         },
         { br: "\n\n" }
       ),

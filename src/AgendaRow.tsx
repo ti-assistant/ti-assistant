@@ -13,11 +13,11 @@ import { useFactions } from "./context/factionDataHooks";
 import { useSharedModal } from "./data/SharedModal";
 import { agendaTypeString, outcomeString } from "./util/strings";
 import { rem } from "./util/util";
+import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
   const intl = useIntl();
 
-  const description = agenda.description.replaceAll("\\n", "\n");
   return (
     <div
       className="myriadPro"
@@ -31,9 +31,9 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
         fontSize: rem(32),
       }}
     >
-      <div className="flexColumn">
+      <div className="flexColumn" style={{ gap: rem(32) }}>
         {agenda.elect !== "For/Against" ? (
-          <div style={{ padding: rem(12), fontFamily: "Slider" }}>
+          <div style={{ paddingTop: rem(12), fontFamily: "Slider" }}>
             <FormattedMessage
               id="EAsvAe"
               defaultMessage="Elect {outcomeType}"
@@ -42,7 +42,7 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
             />
           </div>
         ) : null}
-        {description}
+        <FormattedDescription description={agenda.description} />
       </div>
     </div>
   );

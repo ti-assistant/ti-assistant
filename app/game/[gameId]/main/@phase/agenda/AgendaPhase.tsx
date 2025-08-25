@@ -9,6 +9,7 @@ import AgendaTimer from "../../../../../../src/components/AgendaTimer/AgendaTime
 import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import MawOfWorlds from "../../../../../../src/components/MawOfWorlds/MawOfWorlds";
 import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
@@ -27,8 +28,8 @@ import {
   useStrategyCards,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import {
   advancePhaseAsync,
@@ -506,7 +507,9 @@ function AgendaDetails() {
                   >
                     <InfoRow
                       infoTitle={relic.name}
-                      infoContent={relic.description}
+                      infoContent={
+                        <FormattedDescription description={relic.description} />
+                      }
                     >
                       {relic.name}
                     </InfoRow>
