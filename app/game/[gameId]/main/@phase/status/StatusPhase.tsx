@@ -55,6 +55,7 @@ import {
 import { ActionLog } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 function CommandTokenGains() {
   const factions = useFactions();
@@ -889,7 +890,9 @@ export default function StatusPhase() {
                                             fontSize: rem(32),
                                           }}
                                         >
-                                          {ability.description}
+                                          <FormattedDescription
+                                            description={ability.description}
+                                          />
                                         </div>
                                       </ModalContent>
                                     )
@@ -1094,7 +1097,9 @@ export default function StatusPhase() {
                                   onClick={() =>
                                     openModal(
                                       <ModalContent title={ability.name}>
-                                        {ability.description}
+                                        <FormattedDescription
+                                          description={ability.description}
+                                        />
                                       </ModalContent>
                                     )
                                   }

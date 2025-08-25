@@ -2,6 +2,7 @@ import { PropsWithChildren, ReactNode } from "react";
 
 import { ModalContent } from "./components/Modal/Modal";
 import { useSharedModal } from "./data/SharedModal";
+import { rem } from "./util/util";
 
 interface InfoRowProps {
   infoContent: ReactNode;
@@ -30,7 +31,7 @@ export function InfoRow({
           openModal(
             <ModalContent title={infoTitle}>
               <div
-                className="myriadPro"
+                className="myriadPro flexColumn"
                 style={{
                   boxSizing: "border-box",
                   maxWidth: "50rem",
@@ -39,7 +40,8 @@ export function InfoRow({
                   padding: "0.25rem",
                   whiteSpace: "pre-line",
                   textAlign: "center",
-                  fontSize: "2rem",
+                  fontSize: rem(32),
+                  gap: rem(32),
                 }}
               >
                 {infoContent}

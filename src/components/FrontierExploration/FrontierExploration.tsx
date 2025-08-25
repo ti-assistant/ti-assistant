@@ -24,6 +24,7 @@ import {
 } from "../../util/actionLog";
 import { applyPlanetAttachments } from "../../util/planets";
 import AttachmentSelectRadialMenu from "../AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import PlanetRow from "../PlanetRow/PlanetRow";
 import { Selector } from "../Selector/Selector";
@@ -161,7 +162,9 @@ export default function FrontierExploration({
                 >
                   <InfoRow
                     infoTitle={relic.name}
-                    infoContent={relic.description}
+                    infoContent={
+                      <FormattedDescription description={relic.description} />
+                    }
                   >
                     {relic.name}
                   </InfoRow>

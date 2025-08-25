@@ -45,6 +45,7 @@ import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
+import FormattedDescription from "./FormattedDescription/FormattedDescription";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -84,7 +85,7 @@ function InfoContent({ objective }: InfoContentProps) {
         fontSize: rem(32),
       }}
     >
-      {objective.description}
+      <FormattedDescription description={objective.description} />
     </div>
   );
 }
@@ -141,7 +142,7 @@ function ObjectiveColumn({
                 alignItems: "center",
               }}
             >
-              {objective.description}
+              <FormattedDescription description={objective.description} />
             </div>
           ) : (
             objective.name
@@ -198,9 +199,14 @@ function SecretModalContent({
   const scoredSecrets = secrets.filter((secret) =>
     (secret.scorers ?? []).includes(factionId)
   );
-  const availableSecrets = secrets.filter(
-    (secret) => (secret.scorers ?? []).length === 0
-  );
+  const availableSecrets = secrets
+    .filter((secret) => (secret.scorers ?? []).length === 0)
+    .sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    });
 
   return (
     <div

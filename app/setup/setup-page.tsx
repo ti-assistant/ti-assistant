@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getFactions } from "../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../src/HoverMenu";
-import { Loader } from "../../src/Loader";
+import { InfoRow } from "../../src/InfoRow";
 import { SelectableRow } from "../../src/SelectableRow";
 import Chip from "../../src/components/Chip/Chip";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
@@ -18,16 +18,14 @@ import NumberInput from "../../src/components/NumberInput/NumberInput";
 import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Strings } from "../../src/components/strings";
-import { OUTER_BLACK_BORDER_GLOW } from "../../src/util/borderGlow";
 import { convertToFactionColor } from "../../src/util/factions";
 import { extractFactionIds, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
 import { rem } from "../../src/util/util";
-import styles from "./setup.module.scss";
-import PlayerNameInput from "./components/PlayerNameInput";
 import ColorPicker from "./components/ColorPicker";
-import { InfoRow } from "../../src/InfoRow";
+import PlayerNameInput from "./components/PlayerNameInput";
+import styles from "./setup.module.scss";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),

@@ -3,8 +3,10 @@ import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
+import UnitIcon from "./components/Units/Icons";
 import { useGameId, useLogEntries, useViewOnly } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
 import { useSharedModal } from "./data/SharedModal";
@@ -13,7 +15,6 @@ import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { objectEntries, rem } from "./util/util";
-import UnitIcon from "./components/Units/Icons";
 
 export function UnitStat({
   name,
@@ -125,44 +126,47 @@ function InfoContent({ tech }: { tech: Tech }) {
           whiteSpace: "pre-line",
           textAlign: "center",
           fontSize: rem(32),
+          gap: rem(32),
         }}
       >
-        {tech.description ? tech.description.replaceAll("\\n", "\n") : null}
-        {tech.abilities.length > 0 ? (
-          <div
-            style={{
-              display: "grid",
-              gridAutoFlow: "row",
-              whiteSpace: "nowrap",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              fontFamily: "Slider",
-              paddingLeft: rem(8),
-              rowGap: rem(2),
-              width: "100%",
-            }}
-          >
-            {tech.abilities.map((ability) => {
-              return <div key={ability}>{ability.toUpperCase()}</div>;
-            })}
-          </div>
-        ) : null}
-        <UnitStatBlock stats={tech.stats} />
+        <FormattedDescription description={tech.description} />
+        <div className="flexColumn" style={{ width: "100%" }}>
+          {tech.abilities.length > 0 ? (
+            <div
+              style={{
+                display: "grid",
+                gridAutoFlow: "row",
+                whiteSpace: "nowrap",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                fontFamily: "Slider",
+                paddingLeft: rem(8),
+                rowGap: rem(2),
+                width: "100%",
+              }}
+            >
+              {tech.abilities.map((ability) => {
+                return <div key={ability}>{ability.toUpperCase()}</div>;
+              })}
+            </div>
+          ) : null}
+          <UnitStatBlock stats={tech.stats} />
+        </div>
       </div>
     );
   }
-  const description = tech.description.replaceAll("\\n", "\n");
   return (
     <div
-      className="myriadPro"
+      className="myriadPro flexColumn"
       style={{
         width: "100%",
         padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
         fontSize: rem(32),
+        gap: rem(32),
       }}
     >
-      {description}
+      <FormattedDescription description={tech.description} />
     </div>
   );
 }
@@ -264,7 +268,17 @@ export function TechRow({
               e.stopPropagation();
               openModal(
                 <ModalContent
-                  title={<div style={{ fontSize: rem(40) }}>{tech.name}</div>}
+                  title={
+                    <div
+                      className="flexRow"
+                      style={{ fontSize: rem(40), gap: rem(20) }}
+                    >
+                      {tech.name}
+                      {tech.type === "UPGRADE" ? (
+                        <UnitIcon type={tech.unitType} size={40} />
+                      ) : null}
+                    </div>
+                  }
                 >
                   <InfoContent tech={tech} />
                 </ModalContent>

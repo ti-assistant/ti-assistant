@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { useGameId, useViewOnly } from "../../context/dataHooks";
 import styles from "./ObjectiveSelectHoverMenu.module.scss";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
 
 interface ObjectiveGridCSSProperties extends CSSProperties {
   "--font-size": string;
@@ -37,6 +38,13 @@ export default function ObjectiveSelectHoverMenu({
     "--per-column": perColumn,
   };
 
+  const sortedObjectives = [...objectives].sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
+
   return (
     <ClientOnlyHoverMenu
       label={label}
@@ -56,7 +64,7 @@ export default function ObjectiveSelectHoverMenu({
               )
             }
           >
-            {objectives.map((objective) => {
+            {sortedObjectives.map((objective) => {
               return (
                 <button
                   key={objective.id}
@@ -77,7 +85,7 @@ export default function ObjectiveSelectHoverMenu({
       )}
       postContent={
         <div className={styles.Description} style={{ fontSize: fontSize }}>
-          {description}
+          <FormattedDescription description={description} />
         </div>
       }
     ></ClientOnlyHoverMenu>

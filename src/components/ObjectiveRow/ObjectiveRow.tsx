@@ -3,6 +3,7 @@ import { useSharedModal } from "../../data/SharedModal";
 import { SelectableRow } from "../../SelectableRow";
 import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import { ModalContent } from "../Modal/Modal";
 
 interface InfoContentProps {
@@ -24,7 +25,7 @@ function InfoContent({ objective }: InfoContentProps) {
         fontSize: rem(32),
       }}
     >
-      {objective.description}
+      <FormattedDescription description={objective.description} />
     </div>
   );
 }
