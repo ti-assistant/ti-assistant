@@ -429,10 +429,7 @@ export default function Footer() {
               selectedFaction ? (
                 <div className="flexRow" style={{ gap: 0 }}>
                   {getFactionName(factions[selectedFaction])}
-                  <FactionPanel
-                    faction={factions[selectedFaction] as Faction}
-                    options={options}
-                  />
+                  <FactionPanel factionId={selectedFaction} options={options} />
                 </div>
               ) : (
                 "Loading..."

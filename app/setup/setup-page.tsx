@@ -218,48 +218,62 @@ function MobileOptions({
               defaultMessage="Prophecy of Kings"
             />
           </Toggle>
-          <div
-            className="flexRow"
-            style={{
-              justifyContent: "flex-start",
-              fontFamily: "Myriad Pro",
-              gap: rem(4),
+          <Toggle
+            selected={options.expansions.has("THUNDERS EDGE")}
+            toggleFn={(prevValue) => {
+              toggleExpansion(!prevValue, "THUNDERS EDGE");
             }}
           >
-            Codices:
-            <Toggle
-              selected={options.expansions.has("CODEX ONE")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX ONE");
+            <FormattedMessage
+              id="SpNTY7"
+              description="Text on a button that will enable/disable the Thunder's Edge expansion."
+              defaultMessage="Thunder's Edge"
+            />
+          </Toggle>
+          {!options.expansions.has("THUNDERS EDGE") ? (
+            <div
+              className="flexRow"
+              style={{
+                justifyContent: "flex-start",
+                fontFamily: "Myriad Pro",
+                gap: rem(4),
               }}
             >
-              I
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX TWO")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX TWO");
-              }}
-            >
-              II
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX THREE")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX THREE");
-              }}
-            >
-              III
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX FOUR")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX FOUR");
-              }}
-            >
-              IV
-            </Toggle>
-          </div>
+              Codices:
+              <Toggle
+                selected={options.expansions.has("CODEX ONE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX ONE");
+                }}
+              >
+                I
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX TWO")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX TWO");
+                }}
+              >
+                II
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX THREE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX THREE");
+                }}
+              >
+                III
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX FOUR")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX FOUR");
+                }}
+              >
+                IV
+              </Toggle>
+            </div>
+          ) : null}
         </div>
       </LabeledDiv>
       <div
@@ -586,60 +600,76 @@ function Options({
         }
       >
         <div className="flexColumn" style={{ alignItems: "center" }}>
-          <Toggle
-            selected={options.expansions.has("POK")}
-            toggleFn={(prevValue) => {
-              toggleExpansion(!prevValue, "POK");
-            }}
-          >
-            <FormattedMessage
-              id="p9XVGB"
-              description="Text on a button that will enable/disable the Prophecy of Kings expansion."
-              defaultMessage="Prophecy of Kings"
-            />
-          </Toggle>
-          <div
-            className="flexRow"
-            style={{
-              justifyContent: "flex-start",
-              fontFamily: "Myriad Pro",
-              gap: rem(4),
-            }}
-          >
-            Codices:
+          <div className="flexRow">
             <Toggle
-              selected={options.expansions.has("CODEX ONE")}
+              selected={options.expansions.has("POK")}
               toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX ONE");
+                toggleExpansion(!prevValue, "POK");
               }}
             >
-              I
+              <FormattedMessage
+                id="p9XVGB"
+                description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+                defaultMessage="Prophecy of Kings"
+              />
             </Toggle>
             <Toggle
-              selected={options.expansions.has("CODEX TWO")}
+              selected={options.expansions.has("THUNDERS EDGE")}
               toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX TWO");
+                toggleExpansion(!prevValue, "THUNDERS EDGE");
               }}
             >
-              II
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX THREE")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX THREE");
-              }}
-            >
-              III
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX FOUR")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX FOUR");
-              }}
-            >
-              IV
+              <FormattedMessage
+                id="SpNTY7"
+                description="Text on a button that will enable/disable the Thunder's Edge expansion."
+                defaultMessage="Thunder's Edge"
+              />
             </Toggle>
           </div>
+          {!options.expansions.has("THUNDERS EDGE") ? (
+            <div
+              className="flexRow"
+              style={{
+                justifyContent: "flex-start",
+                fontFamily: "Myriad Pro",
+                gap: rem(4),
+              }}
+            >
+              Codices:
+              <Toggle
+                selected={options.expansions.has("CODEX ONE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX ONE");
+                }}
+              >
+                I
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX TWO")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX TWO");
+                }}
+              >
+                II
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX THREE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX THREE");
+                }}
+              >
+                III
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX FOUR")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX FOUR");
+                }}
+              >
+                IV
+              </Toggle>
+            </div>
+          ) : null}
         </div>
       </LabeledDiv>
       <ClientOnlyHoverMenu
@@ -1185,6 +1215,7 @@ const INITIAL_OPTIONS: SetupOptions = {
     "CODEX TWO",
     "CODEX THREE",
     "CODEX FOUR",
+    "THUNDERS EDGE",
   ]),
   events: new Set<EventId>(),
   "game-variant": "normal",
@@ -1554,6 +1585,15 @@ export default function SetupPage({
     const currentOptions = { ...options };
     if (value) {
       currentOptions.expansions.add(expansion);
+
+      // Add codices if using Thunder's Edge. Some components will not be usable otherwise.
+      // TODO: Determine if this is the "right" way to handle this.
+      if (expansion === "THUNDERS EDGE") {
+        currentOptions.expansions.add("CODEX ONE");
+        currentOptions.expansions.add("CODEX TWO");
+        currentOptions.expansions.add("CODEX THREE");
+        currentOptions.expansions.add("CODEX FOUR");
+      }
     } else {
       currentOptions.expansions.delete(expansion);
       setFactions(

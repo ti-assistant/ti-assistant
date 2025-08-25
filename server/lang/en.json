@@ -795,6 +795,14 @@
     "defaultMessage": "Mitosis",
     "description": "Title of Faction Ability: Mitosis"
   },
+  "Arborec.Breakthrough.Psychospore.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to remove a command token from a system that contains 1 or more of your infantry and return it to your reinforcements.{br}Then, place 1 infantry in that system.",
+    "description": "Description of Faction Breakthrough: Psychospore"
+  },
+  "Arborec.Breakthrough.Psychospore.Title": {
+    "defaultMessage": "Psychospore",
+    "description": "Title of Faction Breakthrough: Psychospore"
+  },
   "Arborec.Leaders.Dirzuga Rophal.Description": {
     "defaultMessage": "After another player activates a system that contains 1 or more of your units that have PRODUCTION:{br}You may produce 1 unit in that system.",
     "description": "Description for Arborec Commander: Dirzuga Rophal"
@@ -1444,7 +1452,7 @@
     "description": "Title of Component: Fighter Conscription"
   },
   "Components.Fires of the Gashlai.Description": {
-    "defaultMessage": "Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
+    "defaultMessage": "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
     "description": "Description for Component: Fires of the Gashlai"
   },
   "Components.Fires of the Gashlai.Title": {
@@ -1950,6 +1958,14 @@
   "Embers of Muaat.Abilities.Star Forge.Title": {
     "defaultMessage": "Star Forge",
     "description": "Title of Faction Ability: Star Forge"
+  },
+  "Embers of Muaat.Breakthrough.Stellar Genesis.Description": {
+    "defaultMessage": "When you gain this card, place the Avernus planet token into a non-home system that is adjacent to a planet you control; gain control of and ready it.{br}After you move 1 of your War Suns out of or through Avernus's system and into a non-home system, you may move the Avernus token with it.",
+    "description": "Description of Faction Breakthrough: Stellar Genesis"
+  },
+  "Embers of Muaat.Breakthrough.Stellar Genesis.Title": {
+    "defaultMessage": "Stellar Genesis",
+    "description": "Title of Faction Breakthrough: Stellar Genesis"
   },
   "Embers of Muaat.Leaders.Adjudicator Ba'al.AbilityName": {
     "defaultMessage": "NOVA SEED",
@@ -2690,6 +2706,62 @@
   "LaXLjN": {
     "defaultMessage": "Abstain",
     "description": "Outcome choosing not to vote."
+  },
+  "Last Bastion.Abilities.Galvanize.Description": {
+    "defaultMessage": "When a game effect instructs a player to galvanize a unit, they place a galvanize token beneath it if it does not have one. Galvanized units roll 1 additional die for combat rolls and unit abilities.",
+    "description": "Description for Faction Ability: Galvanize"
+  },
+  "Last Bastion.Abilities.Galvanize.Title": {
+    "defaultMessage": "Galvanize",
+    "description": "Title of Faction Ability: Galvanize"
+  },
+  "Last Bastion.Abilities.Liberate.Description": {
+    "defaultMessage": "When you gain control of a planet, ready that planet if it contains a number of your Infantry equal to or greater than that planet's resource value; otherwise, place 1 Infantry on that planet.",
+    "description": "Description for Faction Ability: Liberate"
+  },
+  "Last Bastion.Abilities.Liberate.Title": {
+    "defaultMessage": "Liberate",
+    "description": "Title of Faction Ability: Liberate"
+  },
+  "Last Bastion.Abilities.Pheonix Standard.Description": {
+    "defaultMessage": "At the end of combat, you may galvanize 1 of your units that participated.",
+    "description": "Description for Faction Ability: Pheonix Standard"
+  },
+  "Last Bastion.Abilities.Pheonix Standard.Title": {
+    "defaultMessage": "Pheonix Standard",
+    "description": "Title of Faction Ability: Pheonix Standard"
+  },
+  "Last Bastion.Name": {
+    "defaultMessage": "Last Bastion",
+    "description": "Name of Faction: Last Bastion"
+  },
+  "Last Bastion.Shortname": {
+    "defaultMessage": "Bastion",
+    "description": "Shortened version of Faction name: Last Bastion"
+  },
+  "Last Bastion.Units.4X41C \"Helios\" V1.Description": {
+    "defaultMessage": "This unit's PRODUCTION value is equal to 2 more than the resource value of this planet.{br}The resource value of this planet is increased by 1.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
+    "description": "Description for Faction Unit: 4X41C \"Helios\" V1"
+  },
+  "Last Bastion.Units.4X41C \"Helios\" VI.Title": {
+    "defaultMessage": "4X41C \"Helios\" VI",
+    "description": "Title of Faction Unit: 4X41C \"Helios\" VI"
+  },
+  "Last Bastion.Units.A3 Valiance.Description": {
+    "defaultMessage": "When this unit is destroyed, if it was galvanized, galvanize up to 3 of your Infantry in its system.",
+    "description": "Description for Faction Unit: A3 Valiance"
+  },
+  "Last Bastion.Units.A3 Valiance.Title": {
+    "defaultMessage": "A3 Valiance",
+    "description": "Title of Faction Unit: A3 Valiance"
+  },
+  "Last Bastion.Units.The Egeiro.Description": {
+    "defaultMessage": "Apply +1 to the result of each of this unit's combat rolls for each non-home system that contains a planet you control.",
+    "description": "Description for Faction Unit: The Egeiro"
+  },
+  "Last Bastion.Units.The Egeiro.Title": {
+    "defaultMessage": "The Egeiro",
+    "description": "Title of Faction Unit: The Egeiro"
   },
   "Leaders.Hero.Unlock": {
     "defaultMessage": "Have 3 scored objectives.",
@@ -4243,6 +4315,14 @@
     "defaultMessage": "Unknown",
     "description": "Phase text shown while game is loading."
   },
+  "Planets.Styx.Ability": {
+    "defaultMessage": "When you gain this card, gain 1 victory point.{br}When you lose this card, lose 1 victory point.",
+    "description": "Planet Ability for Styx"
+  },
+  "Planets.Thunder's Edge.Ability": {
+    "defaultMessage": "Gain your breakthrough when you gain this card if you do not already have it.{br}You may exhaust this card at the end of your turn to perform an action.",
+    "description": "Planet Ability for Thunder's Edge"
+  },
   "PmqXSZ": {
     "defaultMessage": "Average Number of Rounds",
     "description": "Label for the average number of rounds."
@@ -4622,6 +4702,10 @@
   "Sardakk N'orr.Units.Valkyrie Exoskeleton.Title": {
     "defaultMessage": "Valkyrie Exoskeleton",
     "description": "Title of Faction Unit: Valkyrie Exoskeleton"
+  },
+  "SpNTY7": {
+    "defaultMessage": "Thunder's Edge",
+    "description": "Text on a button that will enable/disable the Thunder's Edge expansion."
   },
   "Strategy Cards.Construction.Title": {
     "defaultMessage": "Construction",
@@ -6074,6 +6158,10 @@
   "jgVoqe": {
     "defaultMessage": "{count} {count, plural, one {Carrier} other {Carriers}}",
     "description": "A number of Carrier units."
+  },
+  "kEbj0N": {
+    "defaultMessage": "Breakthrough",
+    "description": "Header for a section listed a faction breakthrough."
   },
   "knYKVl": {
     "defaultMessage": "Codex II",

@@ -221,6 +221,20 @@ export function buildCompleteComponents(
       };
     });
 
+  // Faction breakthroughs
+  if (expansions.includes("THUNDERS EDGE")) {
+    objectEntries(baseData.factions).map(([factionId, faction]) => {
+      if (faction.breakthrough?.timing === "COMPONENT_ACTION") {
+        components[faction.breakthrough.id] = {
+          ...faction.breakthrough,
+          expansion: "THUNDERS EDGE",
+          faction: factionId,
+          type: "BREAKTHROUGH",
+        };
+      }
+    });
+  }
+
   Object.values(components).forEach((component) => {
     if (component.replaces) {
       delete components[component.replaces];
@@ -241,9 +255,14 @@ export function buildCompleteFactions(
     if (!baseFaction) {
       throw new Error("Unable to get base version of faction.");
     }
+    const breakthrough = {
+      ...baseFaction.breakthrough,
+      ...faction.breakthrough,
+    };
     factions[factionId] = {
       ...baseFaction,
       ...faction,
+      breakthrough,
     };
   });
 

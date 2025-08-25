@@ -127,6 +127,15 @@ export default function getThundersEdgeFactions(
         },
         {
           abilities: [production("X", intl)],
+          description: intl.formatMessage(
+            {
+              id: 'Last Bastion.Units.4X41C "Helios" V1.Description',
+              description: 'Description for Faction Unit: 4X41C "Helios" V1',
+              defaultMessage:
+                "This unit's PRODUCTION value is equal to 2 more than the resource value of this planet.{br}The resource value of this planet is increased by 1.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
+            },
+            { br: "\n\n" }
+          ),
           expansion: "THUNDERS EDGE",
           name: intl.formatMessage({
             id: 'Last Bastion.Units.4X41C "Helios" VI.Title',

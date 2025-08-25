@@ -42,7 +42,8 @@ export default function getBaseFactions(
           },
           { br: "\n\n" }
         ),
-        synergy: ["RED", "GREEN"],
+        id: "Psychospore",
+        synergy: { left: "RED", right: "GREEN" },
         timing: "COMPONENT_ACTION",
       },
       colors: {
@@ -521,7 +522,8 @@ export default function getBaseFactions(
           },
           { br: "\n\n" }
         ),
-        synergy: ["RED", "YELLOW"],
+        id: "Stellar Genesis",
+        synergy: { left: "RED", right: "YELLOW" },
         timing: "PASSIVE",
       },
       colors: {
@@ -995,7 +997,7 @@ export default function getBaseFactions(
         },
       ],
       breakthrough: {
-        synergy: ["BLUE", "YELLOW"],
+        synergy: { left: "BLUE", right: "YELLOW" },
       },
       colors: {
         Black: 0.1,

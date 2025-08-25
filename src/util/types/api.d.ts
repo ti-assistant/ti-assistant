@@ -41,6 +41,7 @@ type GameUpdateData =
   | (GainRelicData | LoseRelicData)
   | UpdatePlanetStateData
   | UpdateLeaderStateData
+  | UpdateBreakthroughStateData
   | SelectFactionData
   | SelectSubComponentData
   | SelectEligibleOutcomesData
@@ -555,6 +556,17 @@ interface SwapStrategyCardsData {
 interface UnswapStrategyCardsData {
   action: "UNSWAP_STRATEGY_CARDS";
   event: SwapStrategyCardsEvent;
+}
+
+interface UpdateBreakthroughStateEvent {
+  factionId: FactionId;
+  state: ComponentState;
+  prevState?: ComponentState;
+}
+
+interface UpdateBreakthroughStateData {
+  action: "UPDATE_BREAKTHROUGH_STATE";
+  event: UpdateBreakthroughStateEvent;
 }
 
 interface UpdateLeaderStateEvent {

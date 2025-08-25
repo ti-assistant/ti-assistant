@@ -47,6 +47,7 @@ import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
+import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -325,6 +326,16 @@ export function getOppositeHandler(
     }
     case "LOSE_RELIC": {
       throw new Error("LOSE_RELIC should not be in log");
+    }
+    case "UPDATE_BREAKTHROUGH_STATE": {
+      return new UpdateBreakthroughStateHandler(gameData, {
+        action: "UPDATE_BREAKTHROUGH_STATE",
+        event: {
+          factionId: data.event.factionId,
+          state: data.event.prevState ?? "locked",
+          prevState: data.event.state,
+        },
+      });
     }
     case "UPDATE_LEADER_STATE": {
       return new UpdateLeaderStateHandler(gameData, {

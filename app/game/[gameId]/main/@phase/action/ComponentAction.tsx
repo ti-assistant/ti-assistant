@@ -9,6 +9,7 @@ import { InfoRow } from "../../../../../../src/InfoRow";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import { TechRow } from "../../../../../../src/TechRow";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
@@ -33,11 +34,12 @@ import {
   useTechs,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
   useFactions,
   useNumFactions,
 } from "../../../../../../src/context/factionDataHooks";
+import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   addAttachmentAsync,
@@ -81,11 +83,9 @@ import { applyAllPlanetAttachments } from "../../../../../../src/util/planets";
 import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import PlanetaryRigs from "./components/PlanetaryRigs";
-import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
-import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 function InfoContent({ component }: { component: Component }) {
@@ -173,15 +173,23 @@ function ComponentSelect({
     factionComponents.push(component);
     promissoryByFaction[component.faction] = factionComponents;
   });
-  const others = nonTechComponents.filter(
-    (component) =>
-      component.type !== "LEADER" &&
-      component.type !== "CARD" &&
-      component.type !== "RELIC" &&
-      component.type !== "PROMISSORY" &&
-      component.type !== "EXPLORATION" &&
-      component.type !== "EVENT"
-  );
+  const faction = factions[factionId];
+  const others = nonTechComponents
+    .filter(
+      (component) =>
+        component.type !== "LEADER" &&
+        component.type !== "CARD" &&
+        component.type !== "RELIC" &&
+        component.type !== "PROMISSORY" &&
+        component.type !== "EXPLORATION" &&
+        component.type !== "EVENT"
+    )
+    .filter(
+      (component) =>
+        component.type !== "BREAKTHROUGH" ||
+        (faction?.breakthrough?.state &&
+          faction.breakthrough.state !== "locked")
+    );
 
   const innerStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
@@ -196,8 +204,6 @@ function ComponentSelect({
   };
 
   const className = window.innerWidth < 900 ? "flexColumn" : "flexRow";
-
-  const faction = factions[factionId];
 
   return (
     <div
@@ -471,6 +477,29 @@ function ComponentSelect({
                         component.state === "used"
                           ? "faded"
                           : ""
+                      }
+                      onClick={() => selectComponent(component.id)}
+                      disabled={viewOnly}
+                    >
+                      {component.name}
+                    </button>
+                  </div>
+                );
+              }
+              if (component.type === "BREAKTHROUGH") {
+                const state = faction?.breakthrough?.state;
+                return (
+                  <div
+                    className="flexColumn"
+                    key={component.id}
+                    style={{ minWidth: rem(150), alignItems: "flex-start" }}
+                  >
+                    <LabeledLine
+                      leftLabel={capitalizeFirstLetter(component.type)}
+                    />
+                    <button
+                      className={
+                        state === "exhausted" || state === "used" ? "faded" : ""
                       }
                       onClick={() => selectComponent(component.id)}
                       disabled={viewOnly}

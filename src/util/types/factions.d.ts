@@ -84,9 +84,14 @@ interface Unit {
 
 interface Breakthrough {
   description: string;
+  id: BreakthroughId;
   name: string;
-  synergy: TechType[];
+  synergy: {
+    left: TechType;
+    right: TechType;
+  };
   timing: Timing;
+  state?: ComponentState;
 }
 
 interface BaseFaction {
@@ -106,6 +111,7 @@ interface BaseFaction {
 
 interface GameFaction {
   alliancePartner?: FactionId;
+  breakthrough?: Partial<Breakthrough>;
   color: string;
   commander: LeaderState;
   hero: LeaderState;
@@ -131,3 +137,5 @@ type FactionId =
   | CodexThree.FactionId
   | ThundersEdge.FactionId
   | DiscordantStars.FactionId;
+
+type BreakthroughId = ThundersEdge.BreakthroughId;

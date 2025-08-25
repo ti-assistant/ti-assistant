@@ -47,6 +47,10 @@ export class PlayComponentHandler implements Handler {
       case "CARD":
         updates[`components.${this.data.event.name}.state`] = "used";
         break;
+      case "BREAKTHROUGH":
+        updates[`factions.${this.data.event.factionId}.breakthrough.state`] =
+          "used";
+        break;
       case "RELIC":
         switch (component.id) {
           case "Dynamis Core":
@@ -248,6 +252,10 @@ export class UnplayComponentHandler implements Handler {
           `factions.${state.activeplayer}.techs.${this.data.event.name}.ready`
         ] = true;
       }
+    }
+    if (component.type === "BREAKTHROUGH") {
+      updates[`factions.${this.data.event.factionId}.breakthrough.state`] =
+        "readied";
     }
 
     if (this.data.event.name === "Ul the Progenitor") {

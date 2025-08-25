@@ -12,6 +12,7 @@ import { useSharedModal } from "../data/SharedModal";
 import {
   addTechAsync,
   removeTechAsync,
+  updateBreakthroughStateAsync,
   updateLeaderStateAsync,
 } from "../dynamic/api";
 import { hasTech } from "../util/api/techs";
@@ -596,6 +597,61 @@ function FactionPanelContent({
                 </AbilitySection>
               );
             })}
+            {options.expansions.includes("THUNDERS EDGE") ? (
+              <AbilitySection
+                leftLabel={
+                  <div className="flexRow">
+                    {faction.breakthrough.name.toUpperCase()}
+                    {!viewOnly ? (
+                      <div
+                        className="flexRow"
+                        onClick={() => {
+                          const state: ComponentState =
+                            !faction.breakthrough.state ||
+                            faction.breakthrough.state === "locked"
+                              ? "readied"
+                              : "locked";
+                          updateBreakthroughStateAsync(
+                            gameId,
+                            faction.id,
+                            state
+                          );
+                        }}
+                        style={{
+                          gap: rem(4),
+                          cursor: "pointer",
+                        }}
+                      >
+                        {!faction.breakthrough.state ||
+                        faction.breakthrough.state === "locked" ? (
+                          <>&#128274;</>
+                        ) : (
+                          <>&#128275;</>
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                }
+                rightLabel={
+                  <div className="flexRow" style={{ gap: 0 }}>
+                    <TechIcon
+                      type={faction.breakthrough.synergy.left}
+                      size={16}
+                    />
+                    {/* TODO: Replace with synergy icon. */}
+                    {"<->"}
+                    <TechIcon
+                      type={faction.breakthrough.synergy.right}
+                      size={16}
+                    />
+                  </div>
+                }
+              >
+                <FormattedDescription
+                  description={faction.breakthrough.description}
+                />
+              </AbilitySection>
+            ) : null}
           </div>
         </CollapsibleSection>
         <CollapsibleSection
@@ -705,10 +761,10 @@ function FactionPanelContent({
 }
 
 export default function FactionPanel({
-  faction,
+  factionId,
   options,
 }: {
-  faction: Faction;
+  factionId: FactionId;
   options: Options;
 }) {
   const { openModal } = useSharedModal();
@@ -722,7 +778,9 @@ export default function FactionPanel({
           zIndex: 1,
         }}
         onClick={() =>
-          openModal(<FactionPanelModal faction={faction} options={options} />)
+          openModal(
+            <FactionPanelModal factionId={factionId} options={options} />
+          )
         }
       >
         &#x24D8;
@@ -732,12 +790,16 @@ export default function FactionPanel({
 }
 
 function FactionPanelModal({
-  faction,
+  factionId,
   options,
 }: {
-  faction: Faction;
+  factionId: FactionId;
   options: Options;
 }) {
+  const faction = useFaction(factionId);
+  if (!faction) {
+    return null;
+  }
   return (
     <div
       className="flexColumn"

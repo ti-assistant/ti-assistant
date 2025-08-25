@@ -1,5 +1,6 @@
 type ComponentType =
   | "ABILITY"
+  | "BREAKTHROUGH"
   | "CARD"
   | "EVENT"
   | "EXPLORATION"
@@ -68,7 +69,7 @@ interface BaseComponent {
   expansion: Expansion;
   event?: EventId;
   faction?: FactionId;
-  id: ComponentId | RelicId | TechId | LeaderId | EventId;
+  id: BreakthroughId | ComponentId | RelicId | TechId | LeaderId | EventId;
   leader?: LeaderType;
   name: string;
   replaces?: string;

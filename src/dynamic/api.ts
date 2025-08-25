@@ -147,6 +147,9 @@ const unscoreObjectiveFn = import("../util/api/scoreObjective").then(
   (mod) => mod.unscoreObjective
 );
 const updateFactionModule = import("../util/api/updateFaction");
+const updateBreakthroughStateModule = import(
+  "../util/api/updateBreakthroughState"
+);
 const updateLeaderStateFn = import("../util/api/updateLeaderState").then(
   (mod) => mod.updateLeaderState
 );
@@ -598,6 +601,15 @@ export async function updateFactionAsync(
 ) {
   const mod = await updateFactionModule;
   mod.updateFaction(gameId, factionId, { playerName, color });
+}
+
+export async function updateBreakthroughStateAsync(
+  gameId: string,
+  factionId: FactionId,
+  state: ComponentState
+) {
+  const mod = await updateBreakthroughStateModule;
+  mod.updateBreakthroughState(gameId, factionId, state);
 }
 
 export async function updateLeaderStateAsync(

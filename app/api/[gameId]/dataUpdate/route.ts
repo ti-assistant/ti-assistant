@@ -104,6 +104,7 @@ import { SwapStrategyCardsHandler } from "../../../../src/util/model/swapStrateg
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
+import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 
 export async function POST(
   req: Request,
@@ -532,6 +533,9 @@ function updateInTransaction(
         break;
       case "SWAP_MAP_TILES":
         handler = new SwapMapTilesHandler(gameData, data);
+        break;
+      case "UPDATE_BREAKTHROUGH_STATE":
+        handler = new UpdateBreakthroughStateHandler(gameData, data);
         break;
       case "UNDO": {
         const actionToUndo = (gameData.actionLog ?? [])[0];

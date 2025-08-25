@@ -127,10 +127,7 @@ function FactionDiv({
         faction ? (
           <div className="flexRow" style={{ gap: 0 }}>
             {getFactionName(faction)}
-            <FactionPanel
-              faction={faction}
-              options={options}
-            />
+            <FactionPanel factionId={factionId} options={options} />
           </div>
         ) : (
           <div className="flexRow" style={{ gap: 0 }}>
