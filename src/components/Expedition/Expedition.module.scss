@@ -1,0 +1,63 @@
+.AvailableVotes {
+  position: relative;
+  height: 100%;
+
+  font-size: 1rem;
+
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.InfluenceIcon {
+  width: var(--width);
+  height: var(--height);
+
+  color: #72d4f7;
+  text-shadow: 0 0 4px #72d4f7;
+
+  line-height: var(--height);
+  font-size: var(--height);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.InfluenceIcon.Faded,
+.ResourcesIcon.Faded {
+  color: #555;
+  text-shadow: 0 0 4px #555;
+}
+
+.InfluenceText {
+  position: absolute;
+  width: var(--width);
+  height: var(--height);
+
+  line-height: var(--height);
+  font-size: 0.75rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ResourcesIcon {
+  width: var(--width);
+  height: var(--height);
+
+  color: #fad54d;
+  text-shadow: 0 0 4px #fad54d;
+
+  line-height: var(--height);
+  font-size: calc(var(--height) * 0.7);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}

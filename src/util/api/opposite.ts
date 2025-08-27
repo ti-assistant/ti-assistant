@@ -48,6 +48,7 @@ import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
+import { CommitToExpeditionHandler } from "../model/commitToExpedition";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -445,6 +446,14 @@ export function getOppositeHandler(
             systemNumber: data.event.oldItem.systemNumber,
             index: data.event.newItem.index,
           },
+        },
+      });
+    case "COMMIT_TO_EXPEDITION":
+      return new CommitToExpeditionHandler(gameData, {
+        action: "COMMIT_TO_EXPEDITION",
+        event: {
+          factionId: data.event.prevFaction,
+          expedition: data.event.expedition,
         },
       });
   }

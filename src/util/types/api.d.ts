@@ -53,6 +53,7 @@ type GameUpdateData =
   | (PlayRelicData | UnplayRelicData)
   | (PlayAdjudicatorBaalData | UndoAdjudicatorBaalData)
   | SwapMapTilesData
+  | CommitToExpeditionData
   // TODO
   | UndoData;
 
@@ -83,6 +84,7 @@ interface GameData {
   agendas?: Partial<Record<AgendaId, Agenda>>;
   attachments?: Partial<Record<AttachmentId, Attachment>>;
   components?: Record<string, Component>;
+  expedition?: Expedition;
   factions: Partial<Record<FactionId, Faction>>;
   gameId?: string;
   leaders: Partial<Record<LeaderId, Leader>>;
@@ -104,11 +106,22 @@ interface GameData {
   allPlanets?: Partial<Record<PlanetId, Planet>>;
 }
 
+type ExpeditionId =
+  | "actionCards"
+  | "influence"
+  | "secrets"
+  | "techSkip"
+  | "tradeGoods"
+  | "resources";
+
+type Expedition = Partial<Record<ExpeditionId, FactionId>>;
+
 interface StoredGameData {
   actionLog?: ActionLog;
   agendas?: Record<string, GameAgenda>;
   attachments?: Partial<Record<AttachmentId, GameAttachment>>;
   components?: Record<string, GameComponent>;
+  expedition?: Expedition;
   factions: Partial<Record<FactionId, GameFaction>>;
   leaders?: Partial<Record<LeaderId, GameLeader>>;
   objectives?: Partial<Record<ObjectiveId, GameObjective>>;
@@ -649,4 +662,15 @@ interface SwapMapTilesEvent {
 interface SwapMapTilesData {
   action: "SWAP_MAP_TILES";
   event: SwapMapTilesEvent;
+}
+
+interface CommitToExpeditionEvent {
+  factionId?: FactionId;
+  expedition: keyof Expedition;
+  prevFaction?: FactionId; // Used to undo.
+}
+
+interface CommitToExpeditionData {
+  action: "COMMIT_TO_EXPEDITION";
+  event: CommitToExpeditionEvent;
 }

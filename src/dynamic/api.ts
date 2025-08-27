@@ -1,3 +1,5 @@
+import { Optional } from "../util/types/types";
+
 const addAttachmentFn = import("../util/api/addAttachment").then(
   (mod) => mod.addAttachment
 );
@@ -23,6 +25,7 @@ const chooseSubFactionFn = import("../util/api/chooseSubFaction").then(
 const claimPlanetFn = import("../util/api/claimPlanet").then(
   (mod) => mod.claimPlanet
 );
+const commitToExpeditionModule = import("../util/api/commitToExpedition");
 const continueGameFn = import("../util/api/endGame").then(
   (mod) => mod.continueGame
 );
@@ -241,6 +244,15 @@ export async function claimPlanetAsync(
 ) {
   const claimPlanet = await claimPlanetFn;
   claimPlanet(gameId, faction, planet);
+}
+
+export async function commitToExpeditionAsync(
+  gameId: string,
+  expedition: keyof Expedition,
+  factionId: Optional<FactionId>
+) {
+  const mod = await commitToExpeditionModule;
+  return mod.commitToExpedition(gameId, expedition, factionId);
 }
 
 export async function continueGameAsync(gameId: string) {

@@ -13,6 +13,7 @@ const BLUE_RATIO = 58 / 58;
 const YELLOW_RATIO = 50 / 50;
 
 interface TechIconProps {
+  color?: string;
   outline?: boolean;
   type: TechType;
   size: string | number;
@@ -24,6 +25,7 @@ interface TechIconCSS extends CSSProperties {
 }
 
 export default function TechIcon({
+  color = "#eee",
   outline = false,
   type,
   size,
@@ -45,13 +47,13 @@ export default function TechIcon({
   const innerContent = useMemo(() => {
     switch (type) {
       case "YELLOW":
-        return <YellowTechSVG outline={outline} />;
+        return <YellowTechSVG outline={outline} color={color} />;
       case "GREEN":
-        return <GreenTechSVG outline={outline} />;
+        return <GreenTechSVG outline={outline} color={color} />;
       case "RED":
-        return <RedTechSVG outline={outline} />;
+        return <RedTechSVG outline={outline} color={color} />;
       case "BLUE":
-        return <BlueTechSVG outline={outline} />;
+        return <BlueTechSVG outline={outline} color={color} />;
       case "UPGRADE":
         return null;
     }

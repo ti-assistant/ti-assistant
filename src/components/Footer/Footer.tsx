@@ -34,6 +34,7 @@ import GameMap from "../Map/GameMap";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
+import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -60,6 +61,39 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
   ),
   ssr: false,
 });
+
+function shouldBlockSpeakerUpdates(
+  phase: Phase,
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>
+) {
+  if (phase === "END") {
+    return true;
+  }
+  if (phase !== "STRATEGY") {
+    return false;
+  }
+
+  const selectedCards = Object.values(strategyCards).filter(
+    (card) => !!card.faction
+  );
+
+  return selectedCards.length !== 0;
+}
+
+function getNumButtons(
+  phase: Phase,
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
+  options: Options
+) {
+  let buttons = 3;
+  if (!shouldBlockSpeakerUpdates(phase, strategyCards)) {
+    buttons++;
+  }
+  if (options.expansions.includes("THUNDERS EDGE")) {
+    buttons++;
+  }
+  return buttons;
+}
 
 export default function Footer() {
   const allPlanets = useAllPlanets();
@@ -88,10 +122,10 @@ export default function Footer() {
   }, [factions]);
 
   function shouldBlockSpeakerUpdates() {
-    if (state?.phase === "END") {
+    if (state.phase === "END") {
       return true;
     }
-    if (state?.phase !== "STRATEGY") {
+    if (state.phase !== "STRATEGY") {
       return false;
     }
 
@@ -144,7 +178,7 @@ export default function Footer() {
 
   const mapString = getMapString(options, mapOrderedFactions.length);
 
-  const numButtons = shouldBlockSpeakerUpdates() ? 3 : 4;
+  const numButtons = getNumButtons(state.phase, strategyCards, options);
   return (
     <>
       <button
@@ -417,6 +451,41 @@ export default function Footer() {
           </button>
           <span className={styles.ButtonLabel}>Planets</span>
         </div>
+        {options.expansions.includes("THUNDERS EDGE") ? (
+          <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+            <button
+              onClick={() =>
+                openModal(<PlanetModalContent viewOnly={viewOnly} />)
+              }
+              style={{
+                display: "flex",
+                position: "relative",
+                width: rem(34),
+                height: rem(34),
+                padding: rem(2),
+                borderRadius: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "60%",
+                  height: "60%",
+                }}
+              >
+                <ThundersEdgeMenuSVG />
+              </div>
+            </button>
+            <span className={styles.ButtonLabel} style={{ whiteSpace: "wrap" }}>
+              Thunder's
+              <br />
+              Edge
+            </span>
+          </div>
+        ) : null}
       </LabeledDiv>
       <div className={styles.FactionBox}>
         <LabeledDiv

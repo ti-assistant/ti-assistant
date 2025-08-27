@@ -95,6 +95,10 @@
     "defaultMessage": "Large",
     "description": "Text on a button specifying that the map style should be large."
   },
+  "1bUwOq": {
+    "defaultMessage": "Thunder's Edge Expedition",
+    "description": "Text shown on a menu for selecting an expedition."
+  },
   "1fNqTf": {
     "defaultMessage": "Planets",
     "description": "Planets."
@@ -6158,10 +6162,6 @@
   "jgVoqe": {
     "defaultMessage": "{count} {count, plural, one {Carrier} other {Carriers}}",
     "description": "A number of Carrier units."
-  },
-  "kEbj0N": {
-    "defaultMessage": "Breakthrough",
-    "description": "Header for a section listed a faction breakthrough."
   },
   "knYKVl": {
     "defaultMessage": "Codex II",

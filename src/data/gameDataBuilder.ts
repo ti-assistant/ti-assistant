@@ -11,6 +11,7 @@ export function buildCompleteGameData(
     agendas: buildCompleteAgendas(baseData, storedGameData),
     attachments: buildCompleteAttachments(baseData, storedGameData),
     components: buildCompleteComponents(baseData, storedGameData),
+    expedition: storedGameData.expedition,
     factions: buildCompleteFactions(baseData, storedGameData),
     leaders: buildCompleteLeaders(baseData, storedGameData),
     objectives: buildCompleteObjectives(baseData, storedGameData),

@@ -105,6 +105,7 @@ import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeade
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
 import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
+import { CommitToExpeditionHandler } from "../../../../src/util/model/commitToExpedition";
 
 export async function POST(
   req: Request,
@@ -536,6 +537,9 @@ function updateInTransaction(
         break;
       case "UPDATE_BREAKTHROUGH_STATE":
         handler = new UpdateBreakthroughStateHandler(gameData, data);
+        break;
+      case "COMMIT_TO_EXPEDITION":
+        handler = new CommitToExpeditionHandler(gameData, data);
         break;
       case "UNDO": {
         const actionToUndo = (gameData.actionLog ?? [])[0];

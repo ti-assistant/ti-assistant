@@ -1,6 +1,12 @@
-export default function RedTechSVG({ outline = false }: { outline?: boolean }) {
+export default function RedTechSVG({
+  color = "#eee",
+  outline = false,
+}: {
+  color?: string;
+  outline?: boolean;
+}) {
   const fill = outline ? "none" : "#960010";
-  const stroke = outline ? "#eee" : "#ff6070";
+  const stroke = outline ? color : "#ff6070";
   return (
     <svg
       viewBox="0 0 61 61"

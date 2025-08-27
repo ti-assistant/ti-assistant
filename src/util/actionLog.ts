@@ -194,3 +194,15 @@ export function getResearchAgreementFaction(
     )
     .map((logEntry) => logEntry.data.event.faction)[0];
 }
+
+export function getLatestExpedition(
+  actionLog: ActionLog,
+  factionId: FactionId
+) {
+  return getLogEntries<CommitToExpeditionData>(
+    actionLog,
+    "COMMIT_TO_EXPEDITION"
+  )
+    .filter((logEntry) => logEntry.data.event.factionId === factionId)
+    .map((logEntry) => logEntry.data.event)[0];
+}

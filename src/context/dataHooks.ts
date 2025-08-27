@@ -156,3 +156,7 @@ type Timers = Record<string, number>;
 export function useTimers() {
   return useGameDataValue<Timers>("timers", {});
 }
+
+export function useExpedition() {
+  return useGameDataValue<Expedition>("expedition", {});
+}

@@ -2317,6 +2317,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Yin Brotherhood.Breakthrough.Yin Ascendant.Title",
+          description: "Title of Faction Breakthrough: Yin Ascendant",
+          defaultMessage: "Yin Ascendant",
+        }),
+        id: "Yin Ascendant",
+        description: intl.formatMessage({
+          id: "Yin Brotherhood.Breakthrough.Yin Ascendant.Description",
+          description: "Description for Faction Breakthrough: Yin Ascendant",
+          defaultMessage:
+            "When you gain this card or score a public objective, gain the alliance ability of a random, unused faction.",
+        }),
+        synergy: {
+          right: "YELLOW",
+          left: "GREEN",
+        },
+        timing: "PASSIVE",
+      },
       colors: {
         Black: 0.6,
         Purple: 1.05,

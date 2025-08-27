@@ -24,6 +24,7 @@ import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHove
 import {
   useAttachments,
   useCurrentTurn,
+  useExpedition,
   useGameId,
   usePlanets,
   useStrategyCards,
@@ -42,6 +43,7 @@ import {
   addTechAsync,
   advancePhaseAsync,
   claimPlanetAsync,
+  commitToExpeditionAsync,
   endTurnAsync,
   markSecondaryAsync,
   removeAttachmentAsync,
@@ -57,6 +59,7 @@ import { SymbolX } from "../../../../../../src/icons/svgs";
 import {
   getAttachments,
   getClaimedPlanets,
+  getLatestExpedition,
   getResearchedTechs,
 } from "../../../../../../src/util/actionLog";
 import {
@@ -71,9 +74,16 @@ import {
 import { getStrategyCardsForFaction } from "../../../../../../src/util/helpers";
 import { applyPlanetAttachments } from "../../../../../../src/util/planets";
 import { phaseString } from "../../../../../../src/util/strings";
-import { rem } from "../../../../../../src/util/util";
+import {
+  objectEntries,
+  objectKeys,
+  rem,
+} from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
+import { Selector } from "../../../../../../src/components/Selector/Selector";
+import ExpeditionIcon from "../../../../../../src/components/Expedition/ExpeditionIcon";
+import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1677,6 +1687,7 @@ function ActivePlayerColumn({
                 factionId={activeFaction.id}
                 style={{ minWidth: rem(350) }}
               />
+              <ExpeditionSelector factionId={activeFaction.id} />
             </div>
           </FactionCard>
         </CSSTransition>

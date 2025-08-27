@@ -27,6 +27,7 @@ import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
+import SynergySVG from "../icons/ui/Synergy";
 
 function AbilitySection({
   leftLabel,
@@ -633,13 +634,14 @@ function FactionPanelContent({
                   </div>
                 }
                 rightLabel={
-                  <div className="flexRow" style={{ gap: 0 }}>
+                  <div className="flexRow" style={{ gap: rem(2) }}>
                     <TechIcon
                       type={faction.breakthrough.synergy.left}
                       size={16}
                     />
-                    {/* TODO: Replace with synergy icon. */}
-                    {"<->"}
+                    <div className="flexRow" style={{ width: rem(24) }}>
+                      <SynergySVG />
+                    </div>
                     <TechIcon
                       type={faction.breakthrough.synergy.right}
                       size={16}
