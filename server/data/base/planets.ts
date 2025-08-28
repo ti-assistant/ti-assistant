@@ -340,6 +340,7 @@ export default function getBasePlanets(
     },
     "Mecatol Rex": {
       attributes: [],
+      alwaysInclude: true,
       expansion: "BASE",
       influence: 6,
       id: "Mecatol Rex",

@@ -195,6 +195,13 @@ export function validSystemNumber(number: string) {
   if (intVal > 1000) {
     return true;
   }
+  // The Fracture fake systems.
+  if (intVal > 668) {
+    return false;
+  }
+  if (intVal > 665) {
+    return true;
+  }
   if (intVal > 102) {
     return false;
   }

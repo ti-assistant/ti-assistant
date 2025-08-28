@@ -4,6 +4,8 @@ import styles from "./GameMap.module.scss";
 import OverlayLegend from "./OverlayLegend";
 import { OverlayDetails } from "./PlanetOverlay";
 import SystemImage from "./SystemImage";
+import { rem } from "../../util/util";
+import { useOptions } from "../../context/dataHooks";
 
 interface Cube {
   q: number;
@@ -32,6 +34,7 @@ function Point(x: number, y: number): Point {
 }
 
 const HEX_RATIO = 2 / Math.sqrt(3);
+const HEX_OVERLAP = 0.2888;
 
 const CUBE_DIRECTIONS = [
   Cube(0, -1, +1),
@@ -94,6 +97,7 @@ interface MapProps {
   }[];
   planets?: Partial<Record<PlanetId, Planet>>;
   hideLegend?: boolean;
+  hideFracture?: boolean;
   // Used for selecting systems.
   canSelectSystem?: (systemId: string) => boolean;
   onSelect?: (systemId: string) => void;
@@ -109,6 +113,7 @@ export default function GameMap({
   planets,
   canSelectSystem,
   onSelect,
+  hideFracture,
 }: MapProps) {
   const planetInfo = planets ?? {};
   const [overlayDetails, setOverlayDetails] =
@@ -370,6 +375,14 @@ export default function GameMap({
             />
           </div>
         ) : null}
+        {hideFracture ? null : (
+          <Fracture
+            tilePercentage={tilePercentage}
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            numRings={numRings}
+          />
+        )}
       </div>
     </div>
   );
@@ -397,4 +410,101 @@ function getWormholeNexusSystemNum(mallice: string | SystemId) {
     return "82B";
   }
   return (mallice as SystemId).toString();
+}
+
+function getFracturePosition(numRings: number) {
+  // Returns [-1, -2, -2, -3, -3, -4, -4, etc.]
+  const q = (1 / 4) * (-2 * numRings - (-1) ** numRings - 3);
+  return Cube(q, 0, numRings);
+}
+
+function Fracture({
+  tilePercentage,
+  overlayDetails,
+  planetInfo,
+  numRings,
+}: {
+  tilePercentage: number;
+  overlayDetails: OverlayDetails;
+  planetInfo: Partial<Record<PlanetId, Planet>>;
+  numRings: number;
+}) {
+  const options = useOptions();
+
+  if (!options.expansions.includes("THUNDERS EDGE")) {
+    return null;
+  }
+
+  const position = getFracturePosition(numRings);
+
+  const twoTileWidth = tilePercentage * (HEX_RATIO * 2 - HEX_OVERLAP);
+  const threeTileWidth = tilePercentage * (HEX_RATIO * 3 - HEX_OVERLAP * 2);
+  const tileHeight = tilePercentage * 1.5;
+
+  const fracture = CubeToPixel(position, tilePercentage * HEX_RATIO);
+  const fractureMid = CubeToPixel(
+    Cube(position.q + 1, 0, position.s),
+    tilePercentage * HEX_RATIO
+  );
+  const fractureBot = CubeToPixel(
+    Cube(position.q + 1, 0, position.s + 2),
+    tilePercentage * HEX_RATIO
+  );
+
+  const leftShift = (tileHeight * HEX_RATIO) / 2;
+  const threeTileLeftShift = tileHeight * HEX_RATIO;
+  const topShift = -tileHeight / 3;
+
+  return (
+    <>
+      <div
+        style={{
+          position: "absolute",
+          width: `${twoTileWidth}%`,
+          height: `${tileHeight}%`,
+          marginLeft: `${fracture.x + leftShift}%`,
+          marginTop: `${fracture.y + topShift}%`,
+        }}
+      >
+        <SystemImage
+          overlayDetails={overlayDetails}
+          planets={planetInfo}
+          systemNumber={"666"}
+          selectable={false}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          width: `${threeTileWidth}%`,
+          height: `${tileHeight}%`,
+          marginLeft: `${fractureMid.x + threeTileLeftShift}%`,
+          marginTop: `${fractureMid.y + topShift}%`,
+        }}
+      >
+        <SystemImage
+          overlayDetails={overlayDetails}
+          planets={planetInfo}
+          systemNumber={"667"}
+          selectable={false}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          width: `${twoTileWidth}%`,
+          height: `${tileHeight}%`,
+          marginLeft: `${fractureBot.x - leftShift}%`,
+          marginTop: `${fractureBot.y + topShift}%`,
+        }}
+      >
+        <SystemImage
+          overlayDetails={overlayDetails}
+          planets={planetInfo}
+          systemNumber={"668"}
+          selectable={false}
+        />
+      </div>
+    </>
+  );
 }

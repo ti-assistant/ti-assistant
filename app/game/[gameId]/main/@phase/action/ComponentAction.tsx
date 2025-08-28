@@ -1628,6 +1628,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             mapStyle={options["map-style"]}
             factions={mapOrderedFactions}
             hideLegend
+            hideFracture
             wormholeNexus={getWormholeNexusSystemNumber(
               options,
               planets,
@@ -2008,6 +2009,7 @@ function RiftwalkerMeian() {
             factions
           )}
           hideLegend
+          hideFracture
           planets={planets}
         />
       </div>

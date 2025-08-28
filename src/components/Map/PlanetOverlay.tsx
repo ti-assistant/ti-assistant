@@ -23,6 +23,33 @@ export type OverlayDetails =
   | "TECH_SKIPS"
   | "TYPES";
 
+function getOverlayHeight(id: PlanetId) {
+  switch (id) {
+    case "Creuss":
+    case "Mallice":
+      return "24%";
+    case "Styx":
+      return "20%";
+    case "Cocytus":
+    case "Lethe":
+    case "Phlegethon":
+      return "19%";
+  }
+  return `calc(24% * ${HEX_RATIO})`;
+}
+
+function getOverlayWidth(id: PlanetId) {
+  switch (id) {
+    case "Styx":
+      return `11%`;
+    case "Cocytus":
+    case "Lethe":
+    case "Phlegethon":
+      return `14%`;
+  }
+  return "24%";
+}
+
 export default function PlanetOverlay({
   details,
   planets,
@@ -45,15 +72,15 @@ export default function PlanetOverlay({
     return planet.system === parseInt(systemNumber);
   });
   systemPlanets = applyAllPlanetAttachments(systemPlanets, attachments);
-
   return (
     <>
       {systemPlanets.map((planet) => {
+        if (planet.id === "Styx") {
+          console.log("Planets", planet);
+        }
         let detailsSymbol: Optional<ReactNode>;
-        const height =
-          planet.id !== "Mallice" && planet.id !== "Creuss"
-            ? `calc(24% * ${HEX_RATIO})`
-            : "24%";
+        const height = getOverlayHeight(planet.id);
+        const width = getOverlayWidth(planet.id);
 
         if (planet.state === "PURGED") {
           return (
@@ -66,7 +93,7 @@ export default function PlanetOverlay({
                 className="flexRow"
                 style={{
                   position: "absolute",
-                  width: "24%",
+                  width: width,
                   height: height,
                   marginLeft: `${planet.position?.x}%`,
                   marginTop: `${planet.position?.y}%`,
@@ -99,7 +126,7 @@ export default function PlanetOverlay({
                     factions[planet.owner]
                   )}`,
                   borderRadius: "100%",
-                  width: "24%",
+                  width: width,
                   height: height,
                   marginLeft: `${planet.position?.x}%`,
                   marginTop: `${planet.position?.y}%`,
@@ -125,7 +152,7 @@ export default function PlanetOverlay({
                     planet.type
                   )}`,
                   borderRadius: "100%",
-                  width: "24%",
+                  width: width,
                   height: height,
                   marginLeft: `${planet.position?.x}%`,
                   marginTop: `${planet.position?.y}%`,
@@ -149,7 +176,7 @@ export default function PlanetOverlay({
                   backgroundColor: "var(--background-color)",
                   border: `var(--border-size) solid ${"#eee"}`,
                   borderRadius: "100%",
-                  width: "24%",
+                  width: width,
                   height: height,
                   marginLeft: `${planet.position?.x}%`,
                   marginTop: `${planet.position?.y}%`,
@@ -199,7 +226,7 @@ export default function PlanetOverlay({
                       color
                     )}`,
                     borderRadius: "100%",
-                    width: "24%",
+                    width: width,
                     height: height,
                     marginLeft: `${planet.position?.x}%`,
                     marginTop: `${planet.position?.y}%`,

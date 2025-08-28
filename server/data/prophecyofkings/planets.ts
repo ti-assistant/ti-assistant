@@ -259,6 +259,7 @@ export default function getProphecyOfKingsPlanets(
     Mallice: {
       ability:
         "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods",
+      alwaysInclude: true,
       attributes: ["legendary"],
       expansion: "POK",
       influence: 3,
@@ -272,6 +273,7 @@ export default function getProphecyOfKingsPlanets(
     Mirage: {
       ability:
         "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships",
+      alwaysInclude: true,
       attributes: ["legendary"],
       expansion: "POK",
       influence: 2,

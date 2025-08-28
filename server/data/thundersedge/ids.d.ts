@@ -12,4 +12,8 @@ namespace ThundersEdge {
     | "Phlegethon"
     | "Styx"
     | "Thunder's Edge";
+
+  type ObjectiveId = "Styx";
+
+  type SystemId = 666 | 667 | 668; // Used for fracture
 }

@@ -4143,6 +4143,14 @@
     "defaultMessage": "Strengthen Bonds",
     "description": "Title of Objective: Strengthen Bonds"
   },
+  "Objectives.Styx.Description": {
+    "defaultMessage": "Given to the player currently in control of the planet Styx.",
+    "description": "Description for Objective: Styx"
+  },
+  "Objectives.Styx.Title": {
+    "defaultMessage": "Styx",
+    "description": "Title of Objective: Styx"
+  },
   "Objectives.Subdue the Galaxy.Description": {
     "defaultMessage": "Control 11 planets in non-home systems.",
     "description": "Description for Objective: Subdue the Galaxy"
@@ -5722,6 +5730,14 @@
   "Yin Brotherhood.Abilities.Indoctrination.Title": {
     "defaultMessage": "Indoctrination",
     "description": "Title of Faction Ability: Indoctrination"
+  },
+  "Yin Brotherhood.Breakthrough.Yin Ascendant.Description": {
+    "defaultMessage": "When you gain this card or score a public objective, gain the alliance ability of a random, unused faction.",
+    "description": "Description for Faction Breakthrough: Yin Ascendant"
+  },
+  "Yin Brotherhood.Breakthrough.Yin Ascendant.Title": {
+    "defaultMessage": "Yin Ascendant",
+    "description": "Title of Faction Breakthrough: Yin Ascendant"
   },
   "Yin Brotherhood.Leaders.Brother Milor.Description": {
     "defaultMessage": "After a player's destroyer or cruiser is destroyed:{br}You may exhaust this card; if you do, that player may place up to 2 fighters from their reinforcements in that unit's system.",

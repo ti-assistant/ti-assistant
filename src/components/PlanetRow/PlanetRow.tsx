@@ -28,6 +28,8 @@ import { applyPlanetAttachments } from "../../util/planets";
 import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
 import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
 import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
+import RelicMenuSVG from "../../icons/ui/RelicMenu";
+import RelicPlanetIcon from "../LegendaryPlanetIcon/RelicPlanetIcon";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -303,6 +305,8 @@ function PlanetAttributes({
             ✹✹✹
           </div>
         );
+      case "relic":
+        return <RelicPlanetIcon />;
       default:
         return null;
     }

@@ -375,6 +375,7 @@ export function buildCompletePlanets(
       planet.id !== "Mirage" &&
       planet.id !== "Mallice" &&
       planet.id !== "Mecatol Rex" &&
+      !planet.alwaysInclude &&
       !planet.faction
     ) {
       // TODO: Remove once Milty Draft site fixes numbering
@@ -386,6 +387,14 @@ export function buildCompletePlanets(
       } else {
         return;
       }
+    }
+
+    if (
+      planet.alwaysInclude &&
+      planet.expansion !== "BASE" &&
+      !gameOptions.expansions.includes(planet.expansion)
+    ) {
+      return;
     }
     // Maybe filter out PoK/DS systems. Only do it this way if not using the map to filter.
     if (

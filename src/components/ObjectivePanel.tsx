@@ -406,6 +406,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const crownScorers = crown?.scorers ?? [];
 
   const imperialRider = (objectives ?? {})["Imperial Rider"];
+  const styx = objectives["Styx"];
 
   const seed = (objectives ?? {})["Seed of an Empire"];
 
@@ -570,6 +571,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
             )}
             <div className="flexRow" style={{ width: "95%" }}>
               <CustodiansToken />
+              <Styx />
             </div>
           </div>
 
@@ -1728,6 +1730,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
             style={{ gridColumn: "1 / 3", width: "100%", height: "100%" }}
           >
             <CustodiansToken />
+            <Styx />
           </div>
           <LabeledDiv
             label={
@@ -2530,6 +2533,67 @@ function CustodiansToken({}) {
           }}
           borderColor={
             custodiansScorerId ? convertToFactionColor(scorerColor) : undefined
+          }
+          viewOnly={viewOnly}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Styx({}) {
+  const gameId = useGameId();
+  const viewOnly = useViewOnly();
+  const options = useOptions();
+  const orderedFactionIds = useOrderedFactionIds("MAP");
+  const styx = useObjective("Styx");
+  const styxScorerId = (styx?.scorers ?? [])[0];
+
+  const scorerColor = useFactionColor(styxScorerId ?? "Vuil'raith Cabal");
+
+  if (!options.expansions.includes("THUNDERS EDGE")) {
+    return null;
+  }
+
+  return (
+    <div
+      className="flexRow"
+      style={{
+        position: "relative",
+        alignItems: "flex-start",
+        width: rem(72),
+        height: rem(72),
+      }}
+    >
+      <Image
+        sizes={rem(144)}
+        // TODO: Replace with higher quality image of Styx.
+        src={`/images/styx.png`}
+        alt={`Styx`}
+        fill
+        style={{ objectFit: "contain" }}
+      />
+      <div
+        className="flexRow"
+        style={{
+          position: "absolute",
+          marginLeft: "72%",
+          marginTop: "44%",
+        }}
+      >
+        <FactionSelectRadialMenu
+          factions={orderedFactionIds}
+          selectedFaction={styxScorerId}
+          onSelect={(factionId) => {
+            if (styxScorerId) {
+              unscoreObjectiveAsync(gameId, styxScorerId, "Styx");
+            }
+            if (factionId) {
+              scoreObjectiveAsync(gameId, factionId, "Styx");
+            }
+          }}
+          borderColor={
+            styxScorerId ? convertToFactionColor(scorerColor) : undefined
           }
           viewOnly={viewOnly}
         />

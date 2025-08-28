@@ -1879,6 +1879,7 @@ export default function SetupPage({
                 }
                 factions={activeFactions}
                 hideLegend
+                hideFracture
               />
             </div>
           </div>

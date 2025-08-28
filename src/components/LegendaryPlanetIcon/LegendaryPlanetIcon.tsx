@@ -10,13 +10,14 @@ function InfoContent({ ability }: { ability: string }) {
   const description = ability.replaceAll("\\n", "\n");
   return (
     <div
-      className="myriadPro"
+      className="myriadPro flexColumn"
       style={{
         width: "100%",
         padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
         fontSize: rem(32),
+        gap: rem(32),
       }}
     >
       <FormattedDescription description={description} />

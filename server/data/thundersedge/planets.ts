@@ -8,39 +8,46 @@ const BOTTOM_RIGHT = { x: 18, y: 32 };
 const MIDDLE_LEFT = { x: -48, y: -8 };
 const TOP_RIGHT = { x: 22, y: -38 };
 const FAR_BOTTOM_RIGHT = { x: 28, y: 42 };
+const FRACTURE_MID = { x: 0, y: -16 };
 
 export default function getThundersEdgePlanets(
   intl: IntlShape
 ): Record<ThundersEdge.PlanetId, BasePlanet> {
   return {
     Cocytus: {
+      alwaysInclude: true,
       attributes: ["relic"],
       expansion: "THUNDERS EDGE",
       influence: 0,
       id: "Cocytus",
       name: "Cocytus",
-      position: MIDDLE,
+      position: { x: -43, y: 25 },
       resources: 3,
+      system: 666,
       type: "NONE",
     },
     Lethe: {
+      alwaysInclude: true,
       attributes: ["relic"],
       expansion: "THUNDERS EDGE",
       influence: 2,
       id: "Lethe",
       name: "Lethe",
-      position: TOP_LEFT,
+      position: { x: 34, y: 6 },
       resources: 0,
+      system: 668,
       type: "NONE",
     },
     Phlegethon: {
+      alwaysInclude: true,
       attributes: ["relic"],
       expansion: "THUNDERS EDGE",
       influence: 2,
       id: "Phlegethon",
       name: "Phlegethon",
-      position: BOTTOM_RIGHT,
+      position: { x: 54, y: 44 },
       resources: 1,
+      system: 668,
       type: "NONE",
     },
     Styx: {
@@ -53,13 +60,15 @@ export default function getThundersEdgePlanets(
         },
         { br: "\n\n" }
       ),
+      alwaysInclude: true,
       attributes: ["legendary", "relic"],
       expansion: "THUNDERS EDGE",
       influence: 0,
       id: "Styx",
       name: "Styx",
-      position: MIDDLE,
+      position: { x: 0, y: -16 },
       resources: 4,
+      system: 667,
       type: "NONE",
     },
     "Thunder's Edge": {
@@ -72,6 +81,7 @@ export default function getThundersEdgePlanets(
         },
         { br: "\n\n" }
       ),
+      alwaysInclude: true,
       attributes: ["legendary"],
       expansion: "THUNDERS EDGE",
       influence: 1,

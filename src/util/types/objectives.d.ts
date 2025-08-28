@@ -33,4 +33,5 @@ type Objective = BaseObjective & GameObjective;
 type ObjectiveId =
   | BaseGame.ObjectiveId
   | ProphecyOfKings.ObjectiveId
-  | CodexFour.ObjectiveId;
+  | CodexFour.ObjectiveId
+  | ThundersEdge.ObjectiveId;

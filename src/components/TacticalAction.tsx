@@ -627,6 +627,7 @@ function AdjudicatorBaal() {
       >
         <GameMap
           hideLegend
+          hideFracture
           mapString={mapString}
           mapStyle={options["map-style"]}
           factions={mapOrderedFactions}

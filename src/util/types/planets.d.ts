@@ -49,6 +49,8 @@ interface BasePlanet {
   subFaction?: SubFaction;
   system?: SystemId;
   type: PlanetType;
+  // Used to bypass normal system filtering.
+  alwaysInclude?: boolean;
 }
 
 interface GamePlanet {

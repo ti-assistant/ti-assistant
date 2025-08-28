@@ -54,6 +54,10 @@ export class ClaimPlanetHandler implements Handler {
       ];
     }
 
+    if (this.data.event.planet === "Styx") {
+      updates[`objectives.Styx.scorers`] = [this.data.event.faction];
+    }
+
     return updates;
   }
 
@@ -140,6 +144,10 @@ export class UnclaimPlanetHandler implements Handler {
       this.data.event.planet === "Mecatol Rex"
     ) {
       updates[`objectives.Custodians Token.scorers`] = "DELETE";
+    }
+
+    if (this.data.event.planet === "Styx") {
+      updates[`objectives.Styx.scorers`] = prevOwner ? [prevOwner] : "DELETE";
     }
 
     return updates;
