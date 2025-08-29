@@ -9,16 +9,6 @@ type Expansion =
   | "DISCORDANT STARS"
   | "BASE ONLY";
 
-type EventId =
-  | "Age of Commerce"
-  | "Age of Exploration"
-  | "Age of Fighters"
-  | "Civilized Society"
-  | "Dangerous Wilds"
-  | "Minor Factions"
-  | "Stellar Atomics"
-  | "Total War";
-
 type OptionUpdateAction = "SET_OPTION";
 
 interface OptionUpdateData {

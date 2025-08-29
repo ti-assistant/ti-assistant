@@ -16,4 +16,10 @@ namespace ThundersEdge {
   type ObjectiveId = "Styx";
 
   type SystemId = 666 | 667 | 668; // Used for fracture
+
+  type EventId =
+    | "Age of Fighters"
+    | "Civilized Society"
+    | "Dangerous Wilds"
+    | "Stellar Atomics";
 }

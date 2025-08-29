@@ -3,6 +3,7 @@ type ObjectiveType = "STAGE ONE" | "STAGE TWO" | "SECRET" | "OTHER";
 interface BaseObjective {
   description: string;
   expansion: Expansion;
+  event?: EventId;
   id: ObjectiveId;
   name: string;
   points: number;

@@ -14,7 +14,7 @@ export default function GenericModal({
   level,
   visible,
 }: PropsWithChildren<ModalProps>) {
-  const zIndex = 900 * (level ?? 1);
+  const zIndex = 1200 * (level ?? 1);
   const nodeRef = useRef<HTMLDivElement>(null);
 
   function onExited() {

@@ -34,6 +34,11 @@ const ABILITY_REGEX_LIST = [
   // PLANETARY SHIELD
   /PLANETARY SHIELD/gi,
   /PLANETARER SCHILD/gi,
+  // Unit values
+  /MOVE/gi,
+  /COMBAT/gi,
+  /CAPACITY/gi,
+  /COST/gi,
   // Faction specific keywords
   /MITOSIS/gi,
   /ZELLTEILUNG/gi,
@@ -55,6 +60,10 @@ const ABILITY_REGEX_LIST = [
   /MISSIONIEREN/gi,
   /STALL TACTICS/gi,
   /VERZÖGERUNGSTAKTIK/gi,
+  /FABRICATION/gi,
+  /BLACK MARKET FORGERY/gi,
+  // Tech specific keywords
+  /DARK ENERGY TAP/gi,
   // DS Faction specific keywords
   /RALLY TO THE CAUSE/gi,
   /RECYCLED MATERIALS/gi,

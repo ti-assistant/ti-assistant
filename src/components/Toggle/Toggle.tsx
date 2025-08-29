@@ -1,5 +1,9 @@
-import { CSSProperties, PropsWithChildren } from "react";
+import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import styles from "./Toggle.module.scss";
+import { useSharedModal } from "../../data/SharedModal";
+import { rem } from "../../util/util";
+import { ModalContent } from "../Modal/Modal";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
 
 interface SelectedCSSProperties extends CSSProperties {
   "--border-color": "var(--background-color)";
@@ -26,8 +30,14 @@ function getToggleStyle(selected: boolean): ToggleCSSProperties {
   };
 }
 
+interface ToggleInfo {
+  title: ReactNode;
+  description: ReactNode;
+}
+
 interface ToggleProps {
   disabled?: boolean;
+  info?: ToggleInfo;
   selected: boolean;
   toggleFn: (prevValue: boolean) => void;
   style?: CSSProperties;
@@ -39,7 +49,10 @@ export default function Toggle({
   children,
   style = {},
   disabled,
+  info,
 }: PropsWithChildren<ToggleProps>) {
+  const { openModal } = useSharedModal();
+
   let toggleStyle = getToggleStyle(selected);
   return (
     <label
@@ -53,6 +66,55 @@ export default function Toggle({
         disabled={disabled}
       ></input>
       {children}
+      {info ? (
+        <div
+          className="popupIcon"
+          style={{
+            fontSize: rem(16),
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            openModal(
+              <ModalContent
+                title={
+                  <div
+                    className="flexRow"
+                    style={{ fontSize: rem(40), gap: rem(20) }}
+                  >
+                    {info.title}
+                  </div>
+                }
+              >
+                <InfoContent description={info.description} />
+              </ModalContent>
+            );
+          }}
+        >
+          &#x24D8;
+        </div>
+      ) : null}
     </label>
+  );
+}
+
+function InfoContent({ description }: { description: ReactNode }) {
+  return (
+    <div
+      className="myriadPro"
+      style={{
+        boxSizing: "border-box",
+        width: "100%",
+        minWidth: rem(320),
+        padding: rem(4),
+        whiteSpace: "pre-line",
+        textAlign: "center",
+        fontSize: rem(32),
+      }}
+    >
+      <div className="flexColumn" style={{ gap: rem(32) }}>
+        {description}
+      </div>
+    </div>
   );
 }

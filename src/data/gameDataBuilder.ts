@@ -289,7 +289,8 @@ export function buildCompleteObjectives(
   storedGameData: StoredGameData
 ) {
   const gameObjectives = storedGameData.objectives ?? {};
-  const expansions = storedGameData.options?.expansions ?? [];
+  const expansions = storedGameData.options.expansions;
+  const events = storedGameData.options.events ?? [];
 
   const objectives: Partial<Record<ObjectiveId, Objective>> = {};
   objectEntries(baseData.objectives).forEach(([objectiveId, objective]) => {
@@ -299,6 +300,11 @@ export function buildCompleteObjectives(
     }
     // Filter out objectives that are removed by PoK.
     if (expansions.includes("POK") && objective.expansion === "BASE ONLY") {
+      return;
+    }
+
+    // Filter out event objectives.
+    if (objective.event && !events.includes(objective.event)) {
       return;
     }
 

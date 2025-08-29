@@ -22,10 +22,13 @@ import { convertToFactionColor } from "../../src/util/factions";
 import { extractFactionIds, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
-import { rem } from "../../src/util/util";
+import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
+import { useSharedModal } from "../../src/data/SharedModal";
+import { ModalContent } from "../../src/components/Modal/Modal";
+import FormattedDescription from "../../src/components/FormattedDescription/FormattedDescription";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -48,6 +51,27 @@ export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function InfoContent({ event }: { event: TIEvent }) {
+  return (
+    <div
+      className="myriadPro"
+      style={{
+        boxSizing: "border-box",
+        width: "100%",
+        minWidth: rem(320),
+        padding: rem(4),
+        whiteSpace: "pre-line",
+        textAlign: "center",
+        fontSize: rem(32),
+      }}
+    >
+      <div className="flexColumn" style={{ gap: rem(32) }}>
+        <FormattedDescription description={event.description} />
+      </div>
+    </div>
+  );
+}
+
 interface OptionsProps {
   updatePlayerCount: (count: number) => void;
   toggleOption: (value: any, name: string) => void;
@@ -56,6 +80,7 @@ interface OptionsProps {
   options: SetupOptions;
   numFactions: number;
   maxFactions: number;
+  events: Record<EventId, TIEvent>;
 }
 
 function createOptions(setupOptions: SetupOptions) {
@@ -511,7 +536,10 @@ function Options({
   options,
   numFactions,
   maxFactions,
+  events,
 }: OptionsProps) {
+  const { openModal } = useSharedModal();
+
   let variants: GameVariant[] = [];
   switch (numFactions) {
     case 3:
@@ -533,6 +561,17 @@ function Options({
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
   }
+
+  const filteredEvents = objectEntries(events)
+    .filter(([_, event]) => {
+      return options.expansions.has(event.expansion);
+    })
+    .sort(([_, a], [__, b]) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    });
 
   return (
     <div className="flexColumn" style={{ justifyContent: "flex-start" }}>
@@ -717,7 +756,7 @@ function Options({
                 </Toggle>
               </div>
             </div>
-            {options.expansions.has("CODEX FOUR") ? (
+            {filteredEvents.length > 0 ? (
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
                 <FormattedMessage
                   id="WVs5Hr"
@@ -726,78 +765,39 @@ function Options({
                 />
                 :
                 <div
-                  className="flexRow"
                   style={{
-                    alignItems: "flex-start",
+                    display: "grid",
+                    gridAutoFlow: "column",
+                    gridTemplateRows: "repeat(2, 1fr)",
+                    gridTemplateColumns: "repeat(4, 1fr)",
+                    justifyContent: "flex-start",
+                    alignContent: "flex-start",
                     padding: `0 ${rem(20)}`,
                     fontFamily: "Myriad Pro",
                     gap: rem(4),
                   }}
                 >
-                  <Toggle
-                    selected={options.events.has("Age of Commerce")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Age of Commerce");
-                      } else {
-                        toggleEvent(true, "Age of Commerce");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="GaVWfk"
-                      defaultMessage="Age of Commerce"
-                      description="Name of event in which players can trade more."
-                    />
-                  </Toggle>
-                  <Toggle
-                    selected={options.events.has("Age of Exploration")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Age of Exploration");
-                      } else {
-                        toggleEvent(true, "Age of Exploration");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="sZua2x"
-                      defaultMessage="Age of Exploration"
-                      description="Name of event in which players can add new tiles to the map."
-                    />
-                  </Toggle>
-                  <Toggle
-                    selected={options.events.has("Minor Factions")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Minor Factions");
-                      } else {
-                        toggleEvent(true, "Minor Factions");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="hxXb/S"
-                      defaultMessage="Minor Factions"
-                      description="Name of event in which other factions' home planets are on the board."
-                    />
-                  </Toggle>
-                  <Toggle
-                    selected={options.events.has("Total War")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Total War");
-                      } else {
-                        toggleEvent(true, "Total War");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="YcYpgP"
-                      defaultMessage="Total War"
-                      description="Name of event in which combat can be used to gain VPs."
-                    />
-                  </Toggle>
+                  {filteredEvents.map(([eventId, event]) => {
+                    return (
+                      <Toggle
+                        selected={options.events.has(eventId)}
+                        toggleFn={(prevValue) =>
+                          toggleEvent(!prevValue, eventId)
+                        }
+                        style={{ justifyContent: "space-between" }}
+                        info={{
+                          title: event.name,
+                          description: (
+                            <FormattedDescription
+                              description={event.description}
+                            />
+                          ),
+                        }}
+                      >
+                        {event.name}
+                      </Toggle>
+                    );
+                  })}
                 </div>
               </div>
             ) : null}
@@ -1231,9 +1231,11 @@ const INITIAL_OPTIONS: SetupOptions = {
 export default function SetupPage({
   factions,
   colors,
+  events,
 }: {
   factions: Record<FactionId, BaseFaction>;
   colors: string[];
+  events: Record<EventId, TIEvent>;
 }) {
   const [speaker, setSpeaker] = useState(0);
   const [setupFactions, setFactions] = useState([...INITIAL_FACTIONS]);
@@ -1668,6 +1670,7 @@ export default function SetupPage({
             options={options}
             numFactions={numFactions}
             maxFactions={maxFactions}
+            events={events}
           />
         </div>
         <div
