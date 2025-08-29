@@ -26,6 +26,7 @@ import {
   buildCompleteSystems,
   buildCompleteTechs,
 } from "./gameDataBuilder";
+import { getEvents } from "../../server/data/events";
 
 // let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
 //   return {};
@@ -111,6 +112,7 @@ function buildBaseData(intl: IntlShape): BaseData {
     agendas: getAgendas(intl),
     attachments: getAttachments(intl),
     components: getComponents(intl),
+    events: getEvents(intl),
     factions: getFactions(intl),
     leaders: getLeaders(intl),
     objectives: getObjectives(intl),

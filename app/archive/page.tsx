@@ -2,6 +2,9 @@ import { Storage } from "@google-cloud/storage";
 import "server-only";
 import { ProcessedGame } from "../stats/processor";
 import ArchivePage from "./archive-page";
+import { getEvents } from "../../server/data/events";
+import { createIntlCache, createIntl } from "react-intl";
+import { getLocale, getMessages } from "../../src/util/server";
 
 async function getJSONFileFromStorage(
   storage: Storage
@@ -15,11 +18,18 @@ async function getJSONFileFromStorage(
 }
 
 export default async function Page() {
+  const locale = getLocale();
+  const messages = await getMessages(locale);
+  const cache = createIntlCache();
+  const intl = createIntl({ locale, messages }, cache);
   const storage = new Storage({
     keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
   });
 
   const processedGames = await getJSONFileFromStorage(storage);
 
-  return <ArchivePage processedGames={processedGames} />;
+  const events = Object.values(getEvents(intl)).sort((a, b) =>
+    a.name > b.name ? 1 : -1
+  );
+  return <ArchivePage processedGames={processedGames} baseEvents={events} />;
 }

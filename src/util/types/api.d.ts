@@ -69,6 +69,7 @@ interface BaseData {
   agendas: Record<AgendaId, BaseAgenda>;
   attachments: Record<AttachmentId, BaseAttachment>;
   components: Record<ComponentId, BaseComponent | BaseTechComponent>;
+  events: Record<EventId, TIEvent>;
   factions: Record<FactionId, BaseFaction>;
   leaders: Record<LeaderId, BaseLeader>;
   objectives: Record<ObjectiveId, BaseObjective>;
