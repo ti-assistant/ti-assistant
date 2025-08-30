@@ -341,7 +341,7 @@ export default function Footer() {
         {options.expansions.includes("THUNDERS EDGE") ? (
           <div
             className="flexRow"
-            onClick={() => openModal(<PlanetModalContent />)}
+            onClick={() => openModal(<ThundersEdgeModalContent />)}
           >
             <button>
               <div

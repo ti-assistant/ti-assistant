@@ -22,6 +22,13 @@ export function rem(pixels: number): `${number}rem` {
   return `${pixels / 16}rem`;
 }
 
+/**
+ * Converts pixel units to em units and and appends rem.
+ */
+export function em(pixels: number): `${number}em` {
+  return `${pixels / 16}em`;
+}
+
 export function lerp(min: number, max: number, value: number) {
   return (value - min) / (max - min);
 }

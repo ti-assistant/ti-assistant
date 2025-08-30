@@ -1,8 +1,8 @@
 import { CSSProperties } from "react";
-import styles from "./ResourcesIcon.module.scss";
-import { rem } from "../../util/util";
-import ResourcesSVG from "../../icons/planets/Resources";
 import InfluenceSVG from "../../icons/planets/Influence";
+import ResourcesSVG from "../../icons/planets/Resources";
+import { rem } from "../../util/util";
+import styles from "./ResourcesIcon.module.scss";
 
 interface ResourcesProps {
   resources: number;
@@ -28,11 +28,9 @@ export default function ResourcesIcon({
       <div className={styles.ResourceSymbol}>
         <ResourcesSVG resources={resources} />
       </div>
-      {/* <div className={styles.ResourceValue}>{resources}</div> */}
       <div className={styles.InfluenceSymbol}>
         <InfluenceSVG influence={influence} />
       </div>
-      {/* <div className={styles.InfluenceValue}>{influence}</div> */}
     </div>
   );
 }

@@ -1,8 +1,6 @@
-import { rem } from "../../util/util";
-
 export default function InfluenceSVG({ influence }: { influence: number }) {
-  const fontSize = influence > 9 ? rem(6) : rem(7);
-  const fontY = influence > 9 ? "173" : "173.33505";
+  const fontSize = influence > 9 ? "8px" : "11px";
+  const fontY = influence > 9 ? "172.5" : "173.33505";
 
   return (
     <svg
