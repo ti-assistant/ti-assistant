@@ -32,6 +32,7 @@ import FormattedDescription from "../../src/components/FormattedDescription/Form
 import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
 import CodexSVG from "../../src/icons/ui/Codex";
+import ExpansionIcon from "../../src/components/ExpansionIcon/ExpansionIcon";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -1228,6 +1229,7 @@ function FactionSelect({
                           selectedFactions.includes(faction.id) ? "faded" : ""
                         }`}
                         style={{
+                          position: "relative",
                           justifyContent: "flex-start",
                           alignItems: "center",
                           fontSize: rem(16),
@@ -1236,6 +1238,23 @@ function FactionSelect({
                       >
                         <FactionIcon factionId={faction.id} size={20} />
                         {faction.name}
+                        {faction.expansion !== "BASE" ? (
+                          <>
+                            <div style={{ width: rem(4) }}></div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                bottom: rem(4),
+                                right: rem(4),
+                              }}
+                            >
+                              <ExpansionIcon
+                                expansion={faction.expansion}
+                                size={8}
+                              />
+                            </div>
+                          </>
+                        ) : null}
                       </button>
                     );
                   })}
