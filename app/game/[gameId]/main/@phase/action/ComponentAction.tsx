@@ -21,6 +21,7 @@ import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import PlanetRow from "../../../../../../src/components/PlanetRow/PlanetRow";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
+import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
 import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useActionLog,
@@ -670,70 +671,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {
-      const faction = factions[factionId];
-      if (!faction) {
-        break;
-      }
-      if (factionId === "Nekro Virus") {
-        innerContent = (
-          <div className="flexRow" style={{ width: "100%" }}>
-            <FormattedMessage
-              id="t5fXQR"
-              description="Text telling a player how many command tokens to gain."
-              defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
-              values={{ count: 3 }}
-            />
-          </div>
-        );
-        break;
-      }
-      const researchedTech = getResearchedTechs(currentTurn, factionId);
-      const availableTechs = getResearchableTechs(faction);
-
-      if (researchedTech.length > 0) {
-        leftLabel = (
-          <FormattedMessage
-            id="wHhicR"
-            description="Label for a section listing researched techs."
-            defaultMessage="Researched {count, plural, one {Tech} other {Techs}}"
-            values={{ count: researchedTech.length }}
-          />
-        );
-        innerContent = (
-          <React.Fragment>
-            {researchedTech.map((tech) => {
-              if (!techs) {
-                return null;
-              }
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
-              return (
-                <TechRow
-                  key={tech}
-                  tech={techObj}
-                  removeTech={() => removeTechLocal(tech)}
-                  researchAgreement={factionId === "Universities of Jol-Nar"}
-                />
-              );
-            })}
-          </React.Fragment>
-        );
-      } else {
-        innerContent = (
-          <TechSelectHoverMenu
-            factionId={factionId}
-            label={intl.formatMessage({
-              id: "3qIvsL",
-              description: "Label on a hover menu used to research tech.",
-              defaultMessage: "Research Tech",
-            })}
-            techs={availableTechs}
-            selectTech={addTechLocal}
-          />
-        );
-      }
+      innerContent = <TechResearchSection factionId={factionId} />;
       break;
     }
     case "Plagiarize": {
@@ -760,52 +698,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         (techId) => techs[techId] as Tech
       );
 
-      if (researchedTech.length > 0) {
-        leftLabel = (
-          <FormattedMessage
-            id="+tb/XA"
-            description="Label for a section listing gained techs."
-            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
-            values={{ count: researchedTech.length }}
-          />
-        );
-        innerContent = (
-          <div className="flexColumn" style={{ width: "100%" }}>
-            {researchedTech.map((tech) => {
-              if (!techs) {
-                return null;
-              }
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
-              return (
-                <TechRow
-                  key={tech}
-                  tech={techObj}
-                  removeTech={() => removeTechLocal(tech)}
-                  researchAgreement={factionId === "Universities of Jol-Nar"}
-                />
-              );
-            })}
-          </div>
-        );
-      } else {
-        innerContent = (
-          <div className="flexColumn" style={{ width: "100%" }}>
-            <TechSelectHoverMenu
-              factionId={factionId}
-              label={intl.formatMessage({
-                id: "McKqpw",
-                description: "Label on a hover menu used to gain tech.",
-                defaultMessage: "Gain Tech",
-              })}
-              techs={availableTechs}
-              selectTech={addTechLocal}
-            />
-          </div>
-        );
-      }
+      innerContent = (
+        <TechResearchSection
+          factionId={factionId}
+          filter={(tech) => possibleTechs.has(tech.id)}
+          gain
+        />
+      );
       break;
     }
     case "Divert Funding": {
@@ -824,7 +723,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         })
         .map((techId) => techs[techId as TechId] as Tech);
       const researchedTech = getResearchedTechs(currentTurn, factionId);
-      const availableTechs = getResearchableTechs(faction);
 
       innerContent = (
         <div className="flexColumn" style={{ width: "100%" }}>
@@ -857,53 +755,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   );
                 })}
               </LabeledDiv>
-              {researchedTech.length > 0 ? (
-                <LabeledDiv
-                  label={
-                    <FormattedMessage
-                      id="wHhicR"
-                      description="Label for a section listing researched techs."
-                      defaultMessage="Researched {count, plural, one {Tech} other {Techs}}"
-                      values={{ count: researchedTech.length }}
-                    />
-                  }
-                >
-                  {researchedTech.map((tech) => {
-                    const techObj = techs[tech];
-                    if (!techObj) {
-                      return null;
-                    }
-                    return (
-                      <TechRow
-                        key={tech}
-                        tech={techObj}
-                        removeTech={() => removeTechLocal(tech)}
-                        researchAgreement={
-                          factionId === "Universities of Jol-Nar"
-                        }
-                      />
-                    );
-                  })}
-                </LabeledDiv>
-              ) : factionId !== "Nekro Virus" ? (
-                <TechSelectHoverMenu
-                  factionId={factionId}
-                  label={intl.formatMessage({
-                    id: "3qIvsL",
-                    description: "Label on a hover menu used to research tech.",
-                    defaultMessage: "Research Tech",
-                  })}
-                  techs={availableTechs}
-                  selectTech={addTechLocal}
-                />
-              ) : (
-                <FormattedMessage
-                  id="t5fXQR"
-                  description="Text telling a player how many command tokens to gain."
-                  defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
-                  values={{ count: 3 }}
-                />
-              )}
+              <TechResearchSection factionId={factionId} />
             </React.Fragment>
           ) : (
             <TechSelectHoverMenu
@@ -990,50 +842,63 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       }
       innerContent =
         unownedRelics.length > 0 ? (
-          <Selector
-            hoverMenuLabel={
-              <FormattedMessage
-                id="Components.Gain Relic.Title"
-                description="Title of Component: Gain Relic"
-                defaultMessage="Gain Relic"
-              />
-            }
-            options={unownedRelics}
-            renderItem={(itemId, _) => {
-              const relic = relics[itemId];
-              if (!relic) {
-                return null;
+          <>
+            <Selector
+              hoverMenuLabel={
+                <FormattedMessage
+                  id="Components.Gain Relic.Title"
+                  description="Title of Component: Gain Relic"
+                  defaultMessage="Gain Relic"
+                />
               }
-              return (
-                <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
-                  <SelectableRow
-                    itemId={relic.id}
-                    removeItem={removeRelic}
-                    viewOnly={viewOnly}
-                  >
-                    <InfoRow
-                      infoTitle={relic.name}
-                      infoContent={
-                        <FormattedDescription description={relic.description} />
-                      }
+              options={unownedRelics}
+              renderItem={(itemId, _) => {
+                const relic = relics[itemId];
+                if (!relic) {
+                  return null;
+                }
+                return (
+                  <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
+                    <SelectableRow
+                      itemId={relic.id}
+                      removeItem={removeRelic}
+                      viewOnly={viewOnly}
                     >
-                      {relic.name}
-                    </InfoRow>
-                  </SelectableRow>
-                  {relic.id === "Shard of the Throne" ? <div>+1 VP</div> : null}
-                </div>
-              );
-            }}
-            selectedItem={gainedRelic}
-            toggleItem={(relicId, add) => {
-              if (add) {
-                addRelic(relicId);
-              } else {
-                removeRelic(relicId);
-              }
-            }}
-            viewOnly={viewOnly}
-          />
+                      <InfoRow
+                        infoTitle={relic.name}
+                        infoContent={
+                          <FormattedDescription
+                            description={relic.description}
+                          />
+                        }
+                      >
+                        {relic.name}
+                      </InfoRow>
+                    </SelectableRow>
+                    {relic.id === "Shard of the Throne" ? (
+                      <div>+1 VP</div>
+                    ) : null}
+                  </div>
+                );
+              }}
+              selectedItem={gainedRelic}
+              toggleItem={(relicId, add) => {
+                if (add) {
+                  addRelic(relicId);
+                } else {
+                  removeRelic(relicId);
+                }
+              }}
+              viewOnly={viewOnly}
+            />
+            {gainedRelic === "Book of Latvinia" ? (
+              <TechResearchSection
+                factionId={factionId}
+                filter={(tech) => tech.prereqs.length === 0}
+                numTechs={2}
+              />
+            ) : null}
+          </>
         ) : (
           "No Relics remaining"
         );
@@ -1381,58 +1246,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "UNITDSGNFLAYESH": {
-      const faction = factions[factionId];
-      if (!faction) {
-        break;
-      }
-      const researchedTech = getResearchedTechs(currentTurn, factionId);
-      const availableTechs = getResearchableTechs(faction).filter((tech) => {
-        return !tech.faction && tech.type !== "UPGRADE";
-      });
-
-      if (researchedTech.length > 0) {
-        leftLabel = (
-          <FormattedMessage
-            id="+tb/XA"
-            description="Label for a section listing gained techs."
-            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
-            values={{ count: researchedTech.length }}
-          />
-        );
-        innerContent = (
-          <React.Fragment>
-            {researchedTech.map((tech) => {
-              if (!techs) {
-                return null;
-              }
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
-              return (
-                <TechRow
-                  key={tech}
-                  tech={techObj}
-                  removeTech={() => removeTechLocal(tech)}
-                />
-              );
-            })}
-          </React.Fragment>
-        );
-      } else {
-        innerContent = (
-          <TechSelectHoverMenu
-            factionId={factionId}
-            label={intl.formatMessage({
-              id: "McKqpw",
-              description: "Label on a hover menu used to gain tech.",
-              defaultMessage: "Gain Tech",
-            })}
-            techs={availableTechs}
-            selectTech={addTechLocal}
-          />
-        );
-      }
+      innerContent = (
+        <TechResearchSection
+          factionId={factionId}
+          filter={(tech) => !tech.faction && tech.type !== "UPGRADE"}
+          gain
+        />
+      );
       break;
     }
     case "Planetary Rigs": {

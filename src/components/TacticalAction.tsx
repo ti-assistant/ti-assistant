@@ -16,12 +16,10 @@ import { useFactions } from "../context/factionDataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
 import {
   addAttachmentAsync,
-  addTechAsync,
   claimPlanetAsync,
   loseRelicAsync,
   playAdjudicatorBaalAsync,
   removeAttachmentAsync,
-  removeTechAsync,
   scoreObjectiveAsync,
   unclaimPlanetAsync,
   undoAdjudicatorBaalAsync,
@@ -30,7 +28,6 @@ import {
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
-import { TechRow } from "../TechRow";
 import {
   getAdjudicatorBaalSystem,
   getAttachments,
@@ -55,7 +52,7 @@ import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelect
 import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
-import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
+import TechResearchSection from "./TechResearchSection/TechResearchSection";
 
 export function TacticalAction({
   activeFactionId,
@@ -181,6 +178,15 @@ export function TacticalAction({
   if (!faction) {
     return null;
   }
+  const nekroPossibleTechs = new Set<TechId>();
+  Object.values(factions).forEach((otherFaction) => {
+    objectKeys(otherFaction.techs).forEach((id) => {
+      const techId = id;
+      if (!hasTech(faction, techId)) {
+        nekroPossibleTechs.add(techId);
+      }
+    });
+  });
 
   const gainedRelic = getGainedRelic(currentTurn);
   const relic = gainedRelic ? relics[gainedRelic] : undefined;
@@ -464,52 +470,21 @@ export function TacticalAction({
         </LabeledDiv>
       ) : null}
       {activeFactionId === "Nekro Virus" &&
-      (nekroTechs.length > 0 || researchableTechs.length > 0) ? (
+      (nekroTechs.length > 0 || nekroPossibleTechs.size > 0) ? (
         <React.Fragment>
-          {nekroTechs.length > 0 ? (
-            <LabeledDiv
-              label={intl.formatMessage({
-                id: "Nekro Virus.Abilities.Technological Singularity.Title",
-                description:
-                  "Title of Faction Ability: Technological Singularity",
-                defaultMessage: "Technological Singularity",
-              })}
-              blur
-            >
-              <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                {nekroTechs.map((tech) => {
-                  const techObj = techs[tech];
-                  if (!techObj) {
-                    return null;
-                  }
-                  return (
-                    <TechRow
-                      key={tech}
-                      tech={techObj}
-                      removeTech={() =>
-                        removeTechAsync(gameId, activeFactionId, tech)
-                      }
-                    />
-                  );
-                })}
-              </div>
-            </LabeledDiv>
-          ) : null}
-          {nekroTechs.length < 4 && researchableTechs.length > 0 ? (
-            <TechSelectHoverMenu
-              factionId="Nekro Virus"
-              label={intl.formatMessage({
-                id: "Nekro Virus.Abilities.Technological Singularity.Title",
-                description:
-                  "Title of Faction Ability: Technological Singularity",
-                defaultMessage: "Technological Singularity",
-              })}
-              techs={researchableTechs}
-              selectTech={(tech) =>
-                addTechAsync(gameId, activeFactionId, tech.id)
-              }
-            />
-          ) : null}
+          <TechResearchSection
+            factionId={activeFactionId}
+            label={intl.formatMessage({
+              id: "Nekro Virus.Abilities.Technological Singularity.Title",
+              description:
+                "Title of Faction Ability: Technological Singularity",
+              defaultMessage: "Technological Singularity",
+            })}
+            filter={(tech) => nekroPossibleTechs.has(tech.id)}
+            numTechs={4}
+            gain
+            style={{ alignItems: "center" }}
+          />
         </React.Fragment>
       ) : null}
       {frontier &&

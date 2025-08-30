@@ -28,6 +28,8 @@ import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import PlanetRow from "../PlanetRow/PlanetRow";
 import { Selector } from "../Selector/Selector";
+import TechResearchSection from "../TechResearchSection/TechResearchSection";
+import { rem } from "../../util/util";
 
 export default function FrontierExploration({
   factionId,
@@ -131,9 +133,9 @@ export default function FrontierExploration({
   }
 
   const mirageFound = !mirageClaimed && mirage?.owner;
-  const unownedRelics = Object.values(relics).filter(
-    (relic) => !relic.owner || gainedRelic === relic.id
-  );
+  const unownedRelics = Object.values(relics)
+    .filter((relic) => !relic.owner || gainedRelic === relic.id)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
   return (
     <div className="flexRow" style={{ width: "100%" }}>
       {unownedRelics.length > 0 ? (
@@ -152,7 +154,10 @@ export default function FrontierExploration({
               return null;
             }
             return (
-              <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
+              <div
+                className="flexColumn"
+                style={{ gap: rem(8), width: "100%" }}
+              >
                 <SelectableRow
                   itemId={relic.id}
                   removeItem={(relicId) => {
@@ -170,6 +175,13 @@ export default function FrontierExploration({
                   </InfoRow>
                 </SelectableRow>
                 {relic.id === "Shard of the Throne" ? <div>+1 VP</div> : null}
+                {relic.id === "Book of Latvinia" ? (
+                  <TechResearchSection
+                    factionId={factionId}
+                    filter={(tech) => tech.prereqs.length === 0}
+                    numTechs={2}
+                  />
+                ) : null}
               </div>
             );
           }}

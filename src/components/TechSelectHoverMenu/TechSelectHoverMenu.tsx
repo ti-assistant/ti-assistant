@@ -166,6 +166,10 @@ export default function TechSelectHoverMenu({
   });
   sortTechsByName(unitUpgrades);
 
+  if (techs.length === 0) {
+    return <div>No techs available.</div>;
+  }
+
   return (
     <ClientOnlyHoverMenu
       label={label}

@@ -4,10 +4,10 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { SmallStrategyCard } from "../../../../../../src/StrategyCard";
-import { TechRow } from "../../../../../../src/TechRow";
 import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
 import AttachmentSelectRadialMenu from "../../../../../../src/components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import Chip from "../../../../../../src/components/Chip/Chip";
+import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
@@ -20,11 +20,10 @@ import PlanetIcon from "../../../../../../src/components/PlanetIcon/PlanetIcon";
 import PlanetRow from "../../../../../../src/components/PlanetRow/PlanetRow";
 import PromissoryMenu from "../../../../../../src/components/PromissoryMenu/PromissoryMenu";
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
-import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
+import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
 import {
   useAttachments,
   useCurrentTurn,
-  useExpedition,
   useGameId,
   usePlanets,
   useStrategyCards,
@@ -40,14 +39,11 @@ import { useObjectives } from "../../../../../../src/context/objectiveDataHooks"
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import {
   addAttachmentAsync,
-  addTechAsync,
   advancePhaseAsync,
   claimPlanetAsync,
-  commitToExpeditionAsync,
   endTurnAsync,
   markSecondaryAsync,
   removeAttachmentAsync,
-  removeTechAsync,
   scoreObjectiveAsync,
   selectActionAsync,
   setSpeakerAsync,
@@ -59,7 +55,6 @@ import { SymbolX } from "../../../../../../src/icons/svgs";
 import {
   getAttachments,
   getClaimedPlanets,
-  getLatestExpedition,
   getResearchedTechs,
 } from "../../../../../../src/util/actionLog";
 import {
@@ -74,16 +69,9 @@ import {
 import { getStrategyCardsForFaction } from "../../../../../../src/util/helpers";
 import { applyPlanetAttachments } from "../../../../../../src/util/planets";
 import { phaseString } from "../../../../../../src/util/strings";
-import {
-  objectEntries,
-  objectKeys,
-  rem,
-} from "../../../../../../src/util/util";
+import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
-import { Selector } from "../../../../../../src/components/Selector/Selector";
-import ExpeditionIcon from "../../../../../../src/components/Expedition/ExpeditionIcon";
-import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -470,7 +458,6 @@ export function AdditionalActions({
 
   switch (selectedAction) {
     case "Technology":
-      const researchedTech = getResearchedTechs(currentTurn, factionId);
       if (!!primaryOnly || !!secondaryOnly) {
         const isActive = state?.activeplayer === factionId;
         const numTechs =
@@ -483,49 +470,11 @@ export function AdditionalActions({
               }
             />
             <React.Fragment>
-              {researchedTech.length > 0 ? (
-                <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  {researchedTech.map((tech) => {
-                    const techObj = techs[tech];
-                    if (!techObj) {
-                      return null;
-                    }
-                    return (
-                      <TechRow
-                        key={tech}
-                        tech={techObj}
-                        removeTech={() => {
-                          removeTechAsync(gameId, activeFaction.id, tech);
-                        }}
-                        researchAgreement={
-                          activeFaction.id === "Universities of Jol-Nar"
-                        }
-                      />
-                    );
-                  })}
-                </div>
-              ) : null}
-              {researchedTech.length < numTechs ? (
-                <TechSelectHoverMenu
-                  factionId={activeFaction.id}
-                  label={intl.formatMessage({
-                    id: "3qIvsL",
-                    description: "Label on a hover menu used to research tech.",
-                    defaultMessage: "Research Tech",
-                  })}
-                  techs={researchableTechs}
-                  selectTech={(tech) => {
-                    // if (
-                    //   gameId &&
-                    //   !isActive &&
-                    //   researchedTech.length + 1 === numTechs
-                    // ) {
-                    //   markSecondary(gameId, activeFaction.id, "DONE");
-                    // }
-                    addTechAsync(gameId, activeFaction.id, tech.id);
-                  }}
-                />
-              ) : null}
+              <TechResearchSection
+                factionId={activeFaction.id}
+                numTechs={numTechs}
+                hideWrapper
+              />
               {isActive ? (
                 <React.Fragment>
                   <LabeledLine
@@ -568,46 +517,11 @@ export function AdditionalActions({
                   color={getFactionColor(activeFaction)}
                   blur
                 >
-                  {researchedTech.length > 0 ? (
-                    <div
-                      className="flexColumn"
-                      style={{ alignItems: "stretch", gap: 0 }}
-                    >
-                      {researchedTech.map((tech) => {
-                        const techObj = techs[tech];
-                        if (!techObj) {
-                          return null;
-                        }
-                        return (
-                          <TechRow
-                            key={tech}
-                            tech={techObj}
-                            removeTech={() =>
-                              removeTechAsync(gameId, activeFaction.id, tech)
-                            }
-                            researchAgreement={
-                              activeFaction.id === "Universities of Jol-Nar"
-                            }
-                          />
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                  {researchedTech.length < 2 ? (
-                    <TechSelectHoverMenu
-                      factionId={activeFaction.id}
-                      techs={researchableTechs}
-                      label={intl.formatMessage({
-                        id: "3qIvsL",
-                        description:
-                          "Label on a hover menu used to research tech.",
-                        defaultMessage: "Research Tech",
-                      })}
-                      selectTech={(tech) =>
-                        addTechAsync(gameId, activeFaction.id, tech.id)
-                      }
-                    />
-                  ) : null}
+                  <TechResearchSection
+                    factionId={activeFaction.id}
+                    numTechs={2}
+                    hideWrapper
+                  />
                 </LabeledDiv>
               </div>
             </div>
@@ -665,46 +579,11 @@ export function AdditionalActions({
                     blur
                   >
                     <React.Fragment>
-                      {researchedTechs.map((tech) => {
-                        const techObj = techs[tech];
-                        if (!techObj) {
-                          return null;
-                        }
-                        return (
-                          <TechRow
-                            key={tech}
-                            tech={techObj}
-                            removeTech={() => {
-                              removeTechAsync(gameId, faction.id, tech);
-                            }}
-                            opts={{ hideSymbols: true }}
-                            researchAgreement={
-                              faction.id === "Universities of Jol-Nar"
-                            }
-                          />
-                        );
-                      })}
-                      {researchedTechs.length < maxTechs ? (
-                        <TechSelectHoverMenu
-                          factionId={faction.id}
-                          label={intl.formatMessage({
-                            id: "3qIvsL",
-                            description:
-                              "Label on a hover menu used to research tech.",
-                            defaultMessage: "Research Tech",
-                          })}
-                          techs={availableTechs}
-                          selectTech={(tech) => {
-                            // if (
-                            //   gameId &&
-                            //   researchedTechs.length + 1 === maxTechs
-                            // ) {
-                            //   markSecondary(gameId, faction.id, "DONE");
-                            // }
-                            addTechAsync(gameId, faction.id, tech.id);
-                          }}
-                        />
-                      ) : null}
+                      <TechResearchSection
+                        factionId={faction.id}
+                        numTechs={maxTechs}
+                        hideWrapper
+                      />
                     </React.Fragment>
                   </LabeledDiv>
                 );
@@ -1530,7 +1409,8 @@ export function AdditionalActions({
           }
           if (
             objective.id === "Become a Martyr" ||
-            objective.id === "Prove Endurance"
+            objective.id === "Prove Endurance" ||
+            objective.id === "Book of Latvinia"
           ) {
             return false;
           }

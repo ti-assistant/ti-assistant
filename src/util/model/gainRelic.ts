@@ -93,6 +93,10 @@ export class LoseRelicHandler implements Handler {
       entry.data.event.faction === this.data.event.faction &&
       entry.data.event.relic === this.data.event.relic
     ) {
+      // Book of Latvinia has an effect on gain, so need to remove it.
+      if (entry.data.event.relic === "Book of Latvinia") {
+        return "REWIND_AND_DELETE";
+      }
       return "DELETE";
     }
 

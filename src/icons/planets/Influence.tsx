@@ -17,9 +17,9 @@ export default function InfluenceSVG({ influence }: { influence: number }) {
           y="-.1328"
           width="1.307"
           height="1.266"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-color="#72d4f7" result="flood" />
+          <feFlood floodColor="#72d4f7" result="flood" />
           <feComposite
             in="SourceGraphic"
             in2="flood"
@@ -38,16 +38,15 @@ export default function InfluenceSVG({ influence }: { influence: number }) {
           fill="none"
           filter="url(#filter45612)"
           stroke="#72d4f7"
-          stroke-width="4"
+          strokeWidth="4"
         />
         <text
           x="140.481"
           y={fontY}
           fill="#eee"
-          font-family="Slider"
-          font-size={fontSize}
-          text-align="center"
-          text-anchor="middle"
+          fontFamily="Slider"
+          fontSize={fontSize}
+          textAnchor="middle"
         >
           {/* <tspan
             x="140.481"

@@ -16,9 +16,9 @@ export default function ResourcesSVG({ resources }: { resources: number }) {
           y="-.1236"
           width="1.266"
           height="1.247"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-color="#fad54d" result="flood" />
+          <feFlood floodColor="#fad54d" result="flood" />
           <feComposite
             in="SourceGraphic"
             in2="flood"
@@ -37,16 +37,15 @@ export default function ResourcesSVG({ resources }: { resources: number }) {
           fill="none"
           filter="url(#filter41896)"
           stroke="#fad54d"
-          stroke-width="4"
+          strokeWidth="4"
         />
         <text
           x="141.05365"
           y={fontY}
           fill="#eee"
-          font-family="Slider"
-          font-size={fontSize}
-          text-align="center"
-          text-anchor="middle"
+          fontFamily="Slider"
+          fontSize={fontSize}
+          textAnchor="middle"
         >
           {resources}
         </text>

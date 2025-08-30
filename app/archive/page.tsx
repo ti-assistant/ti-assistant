@@ -1,10 +1,10 @@
 import { Storage } from "@google-cloud/storage";
+import { createIntl, createIntlCache } from "react-intl";
 import "server-only";
+import { getEvents } from "../../server/data/events";
+import { getLocale, getMessages } from "../../src/util/server";
 import { ProcessedGame } from "../stats/processor";
 import ArchivePage from "./archive-page";
-import { getEvents } from "../../server/data/events";
-import { createIntlCache, createIntl } from "react-intl";
-import { getLocale, getMessages } from "../../src/util/server";
 
 async function getJSONFileFromStorage(
   storage: Storage
