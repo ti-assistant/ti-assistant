@@ -29,6 +29,9 @@ import styles from "./setup.module.scss";
 import { useSharedModal } from "../../src/data/SharedModal";
 import { ModalContent } from "../../src/components/Modal/Modal";
 import FormattedDescription from "../../src/components/FormattedDescription/FormattedDescription";
+import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
+import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
+import CodexSVG from "../../src/icons/ui/Codex";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -254,6 +257,7 @@ function MobileOptions({
               description="Text on a button that will enable/disable the Prophecy of Kings expansion."
               defaultMessage="Prophecy of Kings"
             />
+            <ProphecyofKingsSVG />
           </Toggle>
           <Toggle
             selected={options.expansions.has("THUNDERS EDGE")}
@@ -712,6 +716,9 @@ function Options({
                 description="Text on a button that will enable/disable the Prophecy of Kings expansion."
                 defaultMessage="Prophecy of Kings"
               />
+              <div style={{ width: rem(12), marginLeft: rem(4) }}>
+                <ProphecyofKingsSVG />
+              </div>
             </Toggle>
             <Toggle
               selected={options.expansions.has("THUNDERS EDGE")}
@@ -724,6 +731,9 @@ function Options({
                 description="Text on a button that will enable/disable the Thunder's Edge expansion."
                 defaultMessage="Thunder's Edge"
               />
+              <div style={{ width: rem(14), marginLeft: rem(4) }}>
+                <ThundersEdgeMenuSVG />
+              </div>
             </Toggle>
           </div>
           {!options.expansions.has("THUNDERS EDGE") ? (
@@ -735,7 +745,11 @@ function Options({
                 gap: rem(4),
               }}
             >
-              Codices:
+              Codices{" "}
+              <div style={{ width: rem(12) }}>
+                <CodexSVG />
+              </div>
+              :
               <Toggle
                 selected={options.expansions.has("CODEX ONE")}
                 toggleFn={(prevValue) => {
