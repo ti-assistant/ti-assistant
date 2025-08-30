@@ -160,7 +160,6 @@ export default function AttachmentIcon({
           justifyContent: "center",
           width: "100%",
           aspectRatio: 1,
-          paddingTop: rem(4),
           paddingLeft: rem(1),
         }}
       >

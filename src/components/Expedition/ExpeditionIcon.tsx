@@ -6,6 +6,8 @@ import { rem } from "../../util/util";
 
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import styles from "./Expedition.module.scss";
+import InfluenceSVG from "../../icons/planets/Influence";
+import ResourcesSVG from "../../icons/planets/Resources";
 
 interface AvailableVotesStyle extends CSSProperties {
   "--width": string;
@@ -38,18 +40,12 @@ export default function ExpeditionIcon({
       );
       break;
     case "influence":
-      const availableVotesStyle: AvailableVotesStyle = {
-        "--height": rem(32),
-        "--width": rem(26),
-      };
       innerContent = (
-        <div className={styles.AvailableVotes} style={availableVotesStyle}>
-          <div
-            className={`${styles.InfluenceIcon} ${faded ? styles.Faded : ""}`}
-          >
-            &#x2B21;
-          </div>
-          <div className={styles.InfluenceText}>5</div>
+        <div
+          className="flexRow"
+          style={{ position: "relative", width: rem(32) }}
+        >
+          <InfluenceSVG influence={5} />
         </div>
       );
       break;
@@ -59,13 +55,11 @@ export default function ExpeditionIcon({
         "--width": rem(28),
       };
       innerContent = (
-        <div className={styles.AvailableVotes} style={resourcesStyle}>
-          <div
-            className={`${styles.ResourcesIcon} ${faded ? styles.Faded : ""}`}
-          >
-            &#9711;
-          </div>
-          <div className={styles.InfluenceText}>5</div>
+        <div
+          className="flexRow"
+          style={{ position: "relative", width: rem(32) }}
+        >
+          <ResourcesSVG resources={5} />
         </div>
       );
       break;

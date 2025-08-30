@@ -35,6 +35,7 @@ import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
+import ThundersEdgePanel from "../ThundersEdgePanel";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -317,7 +318,7 @@ export default function Footer() {
         </div>
         <div
           className="flexRow"
-          onClick={() => openModal(<PlanetModalContent viewOnly={viewOnly} />)}
+          onClick={() => openModal(<PlanetModalContent />)}
         >
           <button>
             <div
@@ -337,6 +338,26 @@ export default function Footer() {
             defaultMessage="Update Planets"
           />
         </div>
+        {options.expansions.includes("THUNDERS EDGE") ? (
+          <div
+            className="flexRow"
+            onClick={() => openModal(<PlanetModalContent />)}
+          >
+            <button>
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "60%",
+                  height: "60%",
+                }}
+              >
+                <ThundersEdgeMenuSVG />
+              </div>
+            </button>
+            <span style={{ whiteSpace: "nowrap" }}>Thunder's Edge</span>
+          </div>
+        ) : null}
       </div>
       <LabeledDiv
         className={styles.UpdateBox}
@@ -427,9 +448,7 @@ export default function Footer() {
         </div>
         <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
           <button
-            onClick={() =>
-              openModal(<PlanetModalContent viewOnly={viewOnly} />)
-            }
+            onClick={() => openModal(<PlanetModalContent />)}
             style={{
               position: "relative",
               width: rem(34),
@@ -454,9 +473,7 @@ export default function Footer() {
         {options.expansions.includes("THUNDERS EDGE") ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
-              onClick={() =>
-                openModal(<PlanetModalContent viewOnly={viewOnly} />)
-              }
+              onClick={() => openModal(<ThundersEdgeModalContent />)}
               style={{
                 display: "flex",
                 position: "relative",
@@ -653,7 +670,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
   );
 }
 
-function PlanetModalContent({ viewOnly }: { viewOnly?: boolean }) {
+function PlanetModalContent() {
   return (
     <div
       className="flexColumn"
@@ -689,6 +706,47 @@ function PlanetModalContent({ viewOnly }: { viewOnly?: boolean }) {
         }}
       >
         <PlanetPanel />
+      </div>
+    </div>
+  );
+}
+
+function ThundersEdgeModalContent() {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        justifyContent: "flex-start",
+        maxHeight: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          border: "1px solid var(--neutral-border)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+          width: "min-content",
+        }}
+      >
+        <FormattedMessage
+          id="SpNTY7"
+          description="Text on a button that will enable/disable the Thunder's Edge expansion."
+          defaultMessage="Thunder's Edge"
+        />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "100%",
+        }}
+      >
+        <ThundersEdgePanel />
       </div>
     </div>
   );

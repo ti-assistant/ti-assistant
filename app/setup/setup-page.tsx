@@ -128,6 +128,7 @@ function MobileOptions({
   numFactions,
   maxFactions,
   reset,
+  events,
 }: OptionsProps & { reset: () => void }) {
   const mapStringRef = useRef<HTMLInputElement>(null);
   const intl = useIntl();
@@ -164,6 +165,17 @@ function MobileOptions({
       mapStyles = ["standard", "warp"];
       break;
   }
+
+  const filteredEvents = objectEntries(events)
+    .filter(([_, event]) => {
+      return options.expansions.has(event.expansion);
+    })
+    .sort(([_, a], [__, b]) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    });
 
   return (
     <div className="flexColumn" style={{ width: "100%" }}>
@@ -346,6 +358,55 @@ function MobileOptions({
                   </Toggle>
                 </div>
               </div>
+
+              {filteredEvents.length > 0 ? (
+                <div
+                  className="flexColumn"
+                  style={{ alignItems: "flex-start" }}
+                >
+                  <FormattedMessage
+                    id="WVs5Hr"
+                    description="Event actions."
+                    defaultMessage="Events"
+                  />
+                  :
+                  <div
+                    style={{
+                      display: "grid",
+                      gridAutoFlow: "column",
+                      gridTemplateRows: "repeat(2, 1fr)",
+                      gridTemplateColumns: "repeat(4, 1fr)",
+                      justifyContent: "flex-start",
+                      alignContent: "flex-start",
+                      padding: `0 ${rem(20)}`,
+                      fontFamily: "Myriad Pro",
+                      gap: rem(4),
+                    }}
+                  >
+                    {filteredEvents.map(([eventId, event]) => {
+                      return (
+                        <Toggle
+                          selected={options.events.has(eventId)}
+                          toggleFn={(prevValue) =>
+                            toggleEvent(!prevValue, eventId)
+                          }
+                          style={{ justifyContent: "space-between" }}
+                          info={{
+                            title: event.name,
+                            description: (
+                              <FormattedDescription
+                                description={event.description}
+                              />
+                            ),
+                          }}
+                        >
+                          {event.name}
+                        </Toggle>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
               <div>
                 <FormattedMessage
                   id="46dzNs"
@@ -2158,6 +2219,7 @@ export default function SetupPage({
             numFactions={numFactions}
             maxFactions={maxFactions}
             reset={reset}
+            events={events}
           />
           {setupFactions.map((_, index) => {
             if (index >= numFactions) {

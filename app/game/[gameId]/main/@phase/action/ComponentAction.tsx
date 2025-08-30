@@ -1138,16 +1138,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Terraform": {
-      const ownedNonHomeNonLegendaryNonMecatolPlanets = updatedPlanets.filter(
-        (planet) => {
-          return (
-            planet.owner === factionId &&
-            !planet.home &&
-            !planet.attributes.includes("legendary") &&
-            planet.id !== "Mecatol Rex"
-          );
-        }
-      );
+      const ownedNonHomeNonMecatolPlanets = updatedPlanets.filter((planet) => {
+        return (
+          planet.owner === factionId &&
+          !planet.home &&
+          planet.id !== "Mecatol Rex"
+        );
+      });
       let terraformedPlanet: Optional<PlanetId>;
       Object.values(planets).forEach((planet) => {
         if ((planet.attachments ?? []).includes("Terraform")) {
@@ -1164,7 +1161,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         >
           <Selector
             hoverMenuLabel="Attach to Planet"
-            options={ownedNonHomeNonLegendaryNonMecatolPlanets}
+            options={ownedNonHomeNonMecatolPlanets}
             selectedItem={terraformedPlanet}
             renderItem={(planetId) => {
               const planet = updatedPlanets.find(
@@ -1174,15 +1171,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 return null;
               }
               return (
-                <PlanetRow
-                  planet={planet}
-                  factionId={factionId}
-                  removePlanet={
-                    viewOnly
-                      ? undefined
-                      : () => toggleAttachment(planetId, "Terraform", false)
-                  }
-                />
+                <div style={{ width: "100%" }}>
+                  <PlanetRow
+                    planet={planet}
+                    factionId={factionId}
+                    removePlanet={
+                      viewOnly
+                        ? undefined
+                        : () => toggleAttachment(planetId, "Terraform", false)
+                    }
+                  />
+                </div>
               );
             }}
             toggleItem={(planetId, add) => {

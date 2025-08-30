@@ -1,8 +1,8 @@
 .ResourcesIcon {
   position: relative;
 
-  width: calc(var(--height) * 0.72);
-  height: var(--height);
+  width: calc(var(--height) * 0.75);
+  height: calc(var(--height) * 0.92);
 }
 
 .ResourcesIcon > div {
@@ -28,7 +28,7 @@
 }
 
 .ResourceSymbol {
-  --size: calc(var(--height) * 0.44);
+  --size: calc(var(--height) * 0.55);
   --font-size: var(--size);
   --width: var(--size);
 
@@ -36,7 +36,7 @@
   left: 0;
 
   color: #fad54d;
-  text-shadow: 0 0 4px #fad54d;
+  // text-shadow: 0 0 4px #fad54d;
   font-weight: bold;
   user-select: none;
 }
@@ -51,7 +51,7 @@
 }
 
 .InfluenceSymbol {
-  --size: calc(var(--height) * 0.7);
+  --size: calc(var(--height) * 0.44);
   --font-size: var(--size);
   --width: calc(var(--height) * 0.56);
 
@@ -59,6 +59,6 @@
   right: 0;
 
   color: #72d4f7;
-  text-shadow: 0 0 4px #72d4f7;
+  // text-shadow: 0 0 4px #72d4f7;
   user-select: none;
 }

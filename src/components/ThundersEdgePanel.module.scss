@@ -1,0 +1,14 @@
+.ThundersEdgeGrid {
+  width: 100%;
+  height: 100%;
+  min-height: calc(50dvh);
+  display: grid;
+  gap: 0.5rem;
+
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-areas:
+    "left expedition right"
+    "left other right";
+}

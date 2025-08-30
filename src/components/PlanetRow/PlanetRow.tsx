@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
 import {
@@ -10,26 +9,25 @@ import {
 import { useFactions } from "../../context/factionDataHooks";
 import { useSharedModal } from "../../data/SharedModal";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
+import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
+import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
+import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
+import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
+import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
+import BlueTechSVG from "../../icons/techs/BlueTech";
+import GreenTechSVG from "../../icons/techs/GreenTech";
+import RedTechSVG from "../../icons/techs/RedTech";
+import YellowTechSVG from "../../icons/techs/YellowTech";
 import { getFactionColor } from "../../util/factions";
+import { applyPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
+import RelicPlanetIcon from "../LegendaryPlanetIcon/RelicPlanetIcon";
 import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
-import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
-import GreenTechSVG from "../../icons/techs/GreenTech";
-import BlueTechSVG from "../../icons/techs/BlueTech";
-import YellowTechSVG from "../../icons/techs/YellowTech";
-import RedTechSVG from "../../icons/techs/RedTech";
-import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
-import { applyPlanetAttachments } from "../../util/planets";
-import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
-import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
-import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
-import RelicMenuSVG from "../../icons/ui/RelicMenu";
-import RelicPlanetIcon from "../LegendaryPlanetIcon/RelicPlanetIcon";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -224,7 +222,7 @@ export default function PlanetRow({
         />
         <div
           style={{
-            margin: `0 ${rem(4)} ${rem(8)}`,
+            // margin: `0 ${rem(4)} ${rem(8)}`,
             width: rem(24),
           }}
         >
@@ -311,6 +309,7 @@ function PlanetAttributes({
         return null;
     }
   }
+
   return (
     <div
       style={{

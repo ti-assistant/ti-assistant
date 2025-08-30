@@ -346,9 +346,12 @@ export function TacticalAction({
                   <button
                     key={planet.id}
                     style={{
-                      width: claimablePlanets.length > 50 ? rem(72) : rem(90),
+                      minWidth:
+                        claimablePlanets.length > 50 ? rem(72) : rem(90),
                       fontSize:
                         claimablePlanets.length > 50 ? rem(14) : undefined,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                     }}
                     onClick={() => {
                       closeFn();

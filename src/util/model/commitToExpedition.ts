@@ -1,4 +1,6 @@
 import { Optional } from "../types/types";
+import { objectEntries } from "../util";
+import { ClaimPlanetHandler, UnclaimPlanetHandler } from "./claimPlanet";
 import { UpdateBreakthroughStateHandler } from "./updateBreakthroughState";
 
 function getExpeditionCountPerFaction(expedition: Optional<Expedition>) {
@@ -44,7 +46,44 @@ export class CommitToExpeditionHandler implements Handler {
       return updates;
     }
 
+    // TODO: Account for tie-breaker.
+    let addedFaction = !this.data.event.factionId;
+    let removedFaction = !this.data.event.prevFaction;
     const counts = getExpeditionCountPerFaction(expedition);
+    let { total, max, topFaction } = objectEntries(counts).reduce(
+      (
+        runningTally: { total: number; max: number; topFaction?: FactionId },
+        [factionId, count]
+      ) => {
+        const updated = { ...runningTally };
+        let localCount = count;
+        if (factionId === this.data.event.factionId) {
+          localCount++;
+          addedFaction = true;
+        }
+        if (factionId === this.data.event.prevFaction) {
+          localCount--;
+          removedFaction = true;
+        }
+        updated.total += localCount;
+        if (localCount > updated.max) {
+          updated.max = localCount;
+          updated.topFaction = factionId;
+        }
+        return updated;
+      },
+      { total: 0, max: 0, topFaction: undefined }
+    );
+
+    if (!addedFaction) {
+      total++;
+      if (max === 1) {
+        // TODO: Handle tie-break including current player.
+      }
+    }
+
+    console.log("Total", total);
+    console.log("Top", topFaction);
 
     // If the previous faction should no longer have their breakthrough, lock their breakthrough.
     if (prevFaction) {
@@ -84,9 +123,35 @@ export class CommitToExpeditionHandler implements Handler {
         };
       }
       // TODO: If this was the 6th expedition, add ownership of Thunder's Edge based on rules.
+      if (total >= 6 && topFaction) {
+        const handler = new ClaimPlanetHandler(this.gameData, {
+          action: "CLAIM_PLANET",
+          event: {
+            faction: topFaction,
+            planet: "Thunder's Edge",
+          },
+        });
+        updates = {
+          ...updates,
+          ...handler.getUpdates(),
+        };
+      }
     } else {
       updates[`expedition.${this.data.event.expedition}`] = "DELETE";
       // TODO: If this was the 6th expedition, remove ownership of Thunder's Edge.
+      if (total >= 5 && topFaction) {
+        const handler = new UnclaimPlanetHandler(this.gameData, {
+          action: "UNCLAIM_PLANET",
+          event: {
+            faction: topFaction,
+            planet: "Thunder's Edge",
+          },
+        });
+        updates = {
+          ...updates,
+          ...handler.getUpdates(),
+        };
+      }
     }
 
     return updates;
