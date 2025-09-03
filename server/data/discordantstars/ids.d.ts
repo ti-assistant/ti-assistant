@@ -1,4 +1,15 @@
 declare namespace DiscordantStars {
+  type ActionCardId =
+    | "Free Trade Initiative"
+    | "Micrometeoroid Storm"
+    | "Neural Hammer"
+    | "Personnel Writ"
+    | "Planetary Rigs"
+    | "Preparation"
+    | "Professional Archaeologists"
+    | "Remnant Collection"
+    | "Secured Trove";
+
   type AttachmentId =
     | "Council Preserve"
     | "Orbital Foundries"
@@ -10,33 +21,19 @@ declare namespace DiscordantStars {
     | "Branch Office - Broadcast Hub"
     | "Branch Office - Reserve Bank"
     | "Branch Office - Orbital Shipyard";
+
   type ComponentId =
     | "Algorithmic Replication"
     | "Emergency Deployment"
-    // | "Encryption Key"
     | "Impressment Programs"
-    // | "Mantle Cracking"
     | "Gledge Base"
     | "Read the Fates"
     | "Seeker Drones"
-    // | "Meditation"
-    // | "Applied Biothermics"
     | "Blessing of the Queens"
-    // | "Spark Thrusters"
     | "Gift of Insight"
     | "Incite Revolution"
-    // Action Cards
-    | "Free Trade Initiative"
-    | "Micrometeoroid Storm"
-    | "Neural Hammer"
-    | "Personnel Writ"
-    | "Planetary Rigs"
-    | "Preparation"
-    | "Professional Archaeologists"
-    | "Remnant Collection"
-    | "Secured Trove"
-    // Exploration Cards
     | "Star Chart";
+
   type FactionId =
     | "Augurs of Ilyxum"
     | "Bentor Conglomerate"
@@ -72,6 +69,7 @@ declare namespace DiscordantStars {
     | "Veldyr Sovereignty"
     | "Zealots of Rhodun"
     | "Zelian Purifier";
+
   type LeaderId =
     | "Clodho"
     | "Lachis"
@@ -176,6 +174,7 @@ declare namespace DiscordantStars {
     | "Sal Sparrow"
     | "Jack Hallard"
     | "Starsails";
+
   type PlanetId =
     | "Auldane"
     | "Avicenna"
@@ -260,6 +259,7 @@ declare namespace DiscordantStars {
     | "Mandle"
     | "Regnem"
     | "Domna";
+
   type SystemId =
     | 1001
     | 1002
@@ -319,6 +319,7 @@ declare namespace DiscordantStars {
     | 4274
     | 4275
     | 4276;
+
   type TechId =
     | "Rift Engines"
     | "Emergency Deployment"

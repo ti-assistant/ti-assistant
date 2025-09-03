@@ -4,6 +4,7 @@ import {
   buildAttachments,
   buildComponents,
   buildPlanets,
+  buildRelics,
   buildState,
 } from "../../data/GameData";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
@@ -33,6 +34,7 @@ export class PlayComponentHandler implements Handler {
     const intl = createIntl({ locale: "en" }, cache);
     const actionCards = buildActionCards(this.gameData, intl);
     const components = buildComponents(this.gameData, intl);
+    const relics = buildRelics(this.gameData, intl);
     const state = buildState(this.gameData);
 
     let updates: Record<string, any> = {
@@ -45,6 +47,23 @@ export class PlayComponentHandler implements Handler {
       const actionCard = actionCards[this.data.event.name as ActionCardId];
       if (actionCard) {
         updates[`actionCards.${this.data.event.name}.state`] = "discarded";
+        return updates;
+      }
+      const relic = relics[this.data.event.name as RelicId];
+      if (relic) {
+        switch (relic.id) {
+          case "Dynamis Core":
+          case "Nano-Forge":
+          case "Stellar Converter":
+          case "The Codex":
+          case "Book of Latvinia":
+            updates[`relics.${this.data.event.name}.state`] = "purged";
+            break;
+          case "JR-XS455-O":
+          case "Circlet of the Void":
+            updates[`relics.${this.data.event.name}.state`] = "exhausted";
+            break;
+        }
         return updates;
       }
       return updates;
@@ -224,6 +243,7 @@ export class UnplayComponentHandler implements Handler {
     const intl = createIntl({ locale: "en" }, cache);
     const actionCards = buildActionCards(this.gameData, intl);
     const components = buildComponents(this.gameData, intl);
+    const relics = buildRelics(this.gameData, intl);
 
     let updates: Record<string, any> = {
       [`state.paused`]: false,
@@ -236,6 +256,11 @@ export class UnplayComponentHandler implements Handler {
       const actionCard = actionCards[this.data.event.name as ActionCardId];
       if (actionCard) {
         updates[`actionCards.${this.data.event.name}.state`] = "DELETE";
+        return updates;
+      }
+      const relic = relics[this.data.event.name as RelicId];
+      if (relic) {
+        updates[`relics.${this.data.event.name}.state`] = "DELETE";
         return updates;
       }
       return updates;

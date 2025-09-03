@@ -18,4 +18,5 @@ type ActionCards = Partial<Record<ActionCardId, ActionCard>>;
 type ActionCardId =
   | BaseGame.ActionCardId
   | CodexOne.ActionCardId
-  | ProphecyOfKings.ActionCardId;
+  | ProphecyOfKings.ActionCardId
+  | DiscordantStars.ActionCardId;

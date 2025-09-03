@@ -230,24 +230,24 @@ export function buildCompleteComponents(
     delete components["Ssruu"];
   }
 
-  objectEntries(baseData.relics)
-    .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
-    .forEach(([relicId, relic]) => {
-      if (!expansions.includes("POK")) {
-        return;
-      }
-      // Maybe filter out Codex Two relics.
-      if (!expansions.includes(relic.expansion)) {
-        return;
-      }
+  // objectEntries(baseData.relics)
+  //   .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
+  //   .forEach(([relicId, relic]) => {
+  //     if (!expansions.includes("POK")) {
+  //       return;
+  //     }
+  //     // Maybe filter out Codex Two relics.
+  //     if (!expansions.includes(relic.expansion)) {
+  //       return;
+  //     }
 
-      components[relicId] = {
-        ...relic,
-        ...(gameComponents[relicId] ?? {}),
-        ...(gameRelics[relicId] ?? {}),
-        type: "RELIC",
-      };
-    });
+  //     components[relicId] = {
+  //       ...relic,
+  //       ...(gameComponents[relicId] ?? {}),
+  //       ...(gameRelics[relicId] ?? {}),
+  //       type: "RELIC",
+  //     };
+  //   });
 
   // Faction breakthroughs
   if (expansions.includes("THUNDERS EDGE")) {

@@ -84,10 +84,6 @@ interface GameComponent {
 
 type Component = (BaseComponent | BaseTechComponent) & GameComponent;
 
-namespace DiscordantStars {
-  type ComponentId = "Emergency Deployment";
-}
-
 type ComponentId =
   | BaseGame.ComponentId
   | ProphecyOfKings.ComponentId

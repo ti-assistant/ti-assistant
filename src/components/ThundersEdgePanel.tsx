@@ -3,14 +3,15 @@ import {
   useExpedition,
   useGameId,
   useRelics,
-  useViewOnly
+  useViewOnly,
 } from "../context/dataHooks";
 import { useFactions } from "../context/factionDataHooks";
 import { useOrderedFactionIds } from "../context/gameDataHooks";
 import {
   commitToExpeditionAsync,
   gainRelicAsync,
-  loseRelicAsync
+  loseRelicAsync,
+  unplayComponentAsync,
 } from "../dynamic/api";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
@@ -125,12 +126,9 @@ function RelicsSection() {
     .filter((relic) => !relic.owner)
     .sort((a, b) => (a.name > b.name ? 1 : -1));
   // TODO: Fix purged relics.
-  // const purgedRelics = Object.values(relics)
-  //   .filter((relic) => {
-  //     const component = components[relic.id];
-  //     return !component || component.state === "purged";
-  // })
-  // .sort((a, b) => (a.name > b.name ? 1 : -1));
+  const purgedRelics = Object.values(relics)
+    .filter((relic) => relic.state === "purged")
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   return (
     <CollapsibleSection
@@ -147,7 +145,6 @@ function RelicsSection() {
         height: "fit-content",
         gridArea: "left",
         padding: `${rem(8)}`,
-        paddingBottom: rem(28),
       }}
     >
       <div className="flexColumn">
@@ -224,9 +221,9 @@ function RelicsSection() {
             </div>
           );
         })}
-        {/* {purgedRelics.length > 0 ? (
+        <LabeledLine leftLabel="Purged Relics" />
+        {purgedRelics.length > 0 ? (
           <>
-            <LabeledLine leftLabel="Purged Relics" />
             {purgedRelics.map((relic) => {
               const owner = relic.owner as FactionId;
               return (
@@ -241,6 +238,7 @@ function RelicsSection() {
                   <SelectableRow
                     itemId={relic.id}
                     removeItem={() =>
+                      // TODO: Replace with just updating the state.
                       unplayComponentAsync(gameId, relic.id, owner)
                     }
                     style={{ width: "100%" }}
@@ -258,7 +256,7 @@ function RelicsSection() {
               );
             })}
           </>
-        ) : null} */}
+        ) : null}
       </div>
     </CollapsibleSection>
   );

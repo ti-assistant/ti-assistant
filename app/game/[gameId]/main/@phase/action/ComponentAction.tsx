@@ -85,12 +85,17 @@ import { applyAllPlanetAttachments } from "../../../../../../src/util/planets";
 import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import PlanetaryRigs from "./components/PlanetaryRigs";
+import RelicMenuSVG from "../../../../../../src/icons/ui/RelicMenu";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-function InfoContent({ component }: { component: ActionCard | Component }) {
+function InfoContent({
+  component,
+}: {
+  component: ActionCard | Component | Relic;
+}) {
   return (
     <div
       className="myriadPro"
@@ -124,8 +129,8 @@ function ComponentSelect({
   const factions = useFactions();
   const options = useOptions();
   const leaders = useLeaders();
+  const relics = useRelics();
   const viewOnly = useViewOnly();
-  console.log("Action Cards", allActionCards);
 
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
@@ -153,15 +158,18 @@ function ComponentSelect({
       }
       return 0;
     });
-  const exploration = nonTechComponents.filter((component) => {
-    if (component.type === "EXPLORATION") {
-      return true;
-    }
-    if (component.type !== "RELIC") {
-      return false;
-    }
-    return true;
-  });
+  const exploration = [
+    ...nonTechComponents.filter(
+      (component) => component.type === "EXPLORATION"
+    ),
+    ...Object.values(relics).filter((relic) => {
+      return (
+        relic.timing === "COMPONENT_ACTION" &&
+        relic.owner === factionId &&
+        relic.state !== "purged"
+      );
+    }),
+  ].sort((a, b) => (a.name > b.name ? 1 : -1));
   const events = nonTechComponents.filter(
     (component) => component.type === "EVENT"
   );
@@ -351,19 +359,34 @@ function ComponentSelect({
             }}
           >
             {exploration.map((component) => {
+              const isRelic = !component.hasOwnProperty("type");
+              const faded =
+                component.state === "exhausted" || component.state === "used";
+              console.log("Is Relic", isRelic);
               return (
                 <button
                   key={component.id}
-                  className={
-                    component.state === "exhausted" ||
-                    component.state === "used"
-                      ? "faded"
-                      : ""
-                  }
+                  className={`flexRow ${faded ? "faded" : ""}`}
                   onClick={() => selectComponent(component.id)}
                   disabled={viewOnly}
+                  style={{ position: "relative", justifyContent: "flex-start" }}
                 >
                   {component.name}
+                  {isRelic ? (
+                    <>
+                      <div style={{ width: rem(4) }}></div>
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: rem(4),
+                          right: rem(4),
+                          width: rem(10),
+                        }}
+                      >
+                        <RelicMenuSVG color={faded ? "#555" : undefined} />
+                      </div>
+                    </>
+                  ) : null}
                 </button>
               );
             })}
@@ -1517,11 +1540,14 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
     .map((logEntry) => (logEntry.data as PlayComponentData).event.name)[0];
 
-  let component: Optional<Component | ActionCard>;
+  let component: Optional<Component | ActionCard | Relic>;
   if (playedComponent) {
     component = components[playedComponent];
     if (!component) {
       component = actionCards[playedComponent as ActionCardId];
+    }
+    if (!component) {
+      component = relics[playedComponent as RelicId];
     }
   }
 
