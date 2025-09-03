@@ -9,8 +9,10 @@ import { ClientOnlyHoverMenu } from "../../src/HoverMenu";
 import { InfoRow } from "../../src/InfoRow";
 import { SelectableRow } from "../../src/SelectableRow";
 import Chip from "../../src/components/Chip/Chip";
+import ExpansionIcon from "../../src/components/ExpansionIcon/ExpansionIcon";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import GameMap from "../../src/components/Map/GameMap";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
@@ -18,6 +20,10 @@ import NumberInput from "../../src/components/NumberInput/NumberInput";
 import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Strings } from "../../src/components/strings";
+import { useSharedModal } from "../../src/data/SharedModal";
+import CodexSVG from "../../src/icons/ui/Codex";
+import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
+import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
 import { convertToFactionColor } from "../../src/util/factions";
 import { extractFactionIds, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
@@ -26,13 +32,6 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
-import { useSharedModal } from "../../src/data/SharedModal";
-import { ModalContent } from "../../src/components/Modal/Modal";
-import FormattedDescription from "../../src/components/FormattedDescription/FormattedDescription";
-import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
-import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
-import CodexSVG from "../../src/icons/ui/Codex";
-import ExpansionIcon from "../../src/components/ExpansionIcon/ExpansionIcon";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -53,27 +52,6 @@ const SetupFactionPanel = dynamic(
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function InfoContent({ event }: { event: TIEvent }) {
-  return (
-    <div
-      className="myriadPro"
-      style={{
-        boxSizing: "border-box",
-        width: "100%",
-        minWidth: rem(320),
-        padding: rem(4),
-        whiteSpace: "pre-line",
-        textAlign: "center",
-        fontSize: rem(32),
-      }}
-    >
-      <div className="flexColumn" style={{ gap: rem(32) }}>
-        <FormattedDescription description={event.description} />
-      </div>
-    </div>
-  );
 }
 
 interface OptionsProps {
@@ -1222,12 +1200,11 @@ function FactionSelect({
                   }}
                 >
                   {filteredFactions.map((faction) => {
+                    const faded = selectedFactions.includes(faction.id);
                     return (
                       <button
                         key={faction.id}
-                        className={`flexRow ${
-                          selectedFactions.includes(faction.id) ? "faded" : ""
-                        }`}
+                        className={`flexRow ${faded ? "faded" : ""}`}
                         style={{
                           position: "relative",
                           justifyContent: "flex-start",
@@ -1251,6 +1228,7 @@ function FactionSelect({
                               <ExpansionIcon
                                 expansion={faction.expansion}
                                 size={8}
+                                color={faded ? "#555" : undefined}
                               />
                             </div>
                           </>

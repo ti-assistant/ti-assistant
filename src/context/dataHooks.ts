@@ -89,6 +89,10 @@ export function useLogEntries<DataType extends GameUpdateData>(
   );
 }
 
+export function useActionCards() {
+  return useGameDataValue<ActionCards>("actionCards", {});
+}
+
 type Agendas = Partial<Record<AgendaId, Agenda>>;
 export function useAgendas() {
   return useGameDataValue<Agendas>("agendas", {});

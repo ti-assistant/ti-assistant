@@ -66,6 +66,7 @@ interface ActionLogEntry<DataType extends GameUpdateData> {
 }
 
 interface BaseData {
+  actionCards: Record<ActionCardId, BaseActionCard>;
   agendas: Record<AgendaId, BaseAgenda>;
   attachments: Record<AttachmentId, BaseAttachment>;
   components: Record<ComponentId, BaseComponent | BaseTechComponent>;
@@ -81,6 +82,7 @@ interface BaseData {
 }
 
 interface GameData {
+  actionCards?: Partial<Record<ActionCardId, ActionCard>>;
   actionLog?: ActionLog;
   agendas?: Partial<Record<AgendaId, Agenda>>;
   attachments?: Partial<Record<AttachmentId, Attachment>>;
@@ -118,6 +120,7 @@ type ExpeditionId =
 type Expedition = Partial<Record<ExpeditionId, FactionId>>;
 
 interface StoredGameData {
+  actionCards?: Partial<Record<ActionCardId, GameActionCard>>;
   actionLog?: ActionLog;
   agendas?: Record<string, GameAgenda>;
   attachments?: Partial<Record<AttachmentId, GameAttachment>>;

@@ -12,6 +12,7 @@ import { getSystems } from "../../server/data/systems";
 import { getTechs } from "../../server/data/techs";
 import { objectEntries } from "../util/util";
 import {
+  buildCompleteActionCards,
   buildCompleteAgendas,
   buildCompleteAttachments,
   buildCompleteComponents,
@@ -27,6 +28,7 @@ import {
   buildCompleteTechs,
 } from "./gameDataBuilder";
 import { getEvents } from "../../server/data/events";
+import { getActionCards } from "../../server/data/actionCards";
 
 // let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
 //   return {};
@@ -109,6 +111,7 @@ import { getEvents } from "../../server/data/events";
 
 function buildBaseData(intl: IntlShape): BaseData {
   return {
+    actionCards: getActionCards(intl),
     agendas: getAgendas(intl),
     attachments: getAttachments(intl),
     components: getComponents(intl),
@@ -128,6 +131,15 @@ export function buildGameData(storedGameData: StoredGameData, intl: IntlShape) {
   const baseData = buildBaseData(intl);
 
   return buildCompleteGameData(storedGameData, baseData);
+}
+
+export function buildActionCards(
+  storedGameData: StoredGameData,
+  intl: IntlShape
+) {
+  const baseData = buildBaseData(intl);
+
+  return buildCompleteActionCards(baseData, storedGameData);
 }
 
 export function buildAgendas(storedGameData: StoredGameData, intl: IntlShape) {

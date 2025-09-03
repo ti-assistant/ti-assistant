@@ -6,6 +6,7 @@ import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionTile from "../FactionTile/FactionTile";
 import styles from "./StrategyCardElement.module.scss";
+import TradeGoodSVG from "../../icons/ui/TradeGood";
 
 interface StrategyCardProps {
   active?: boolean;
@@ -108,13 +109,7 @@ export function StrategyCardElement({
                   position: "relative",
                 }}
               >
-                <Image
-                  sizes={rem(46)}
-                  src="/images/trade_good.png"
-                  alt="TGs"
-                  fill
-                  style={{ objectFit: "contain" }}
-                />
+                <TradeGoodSVG />
               </div>
             </div>
           ) : (

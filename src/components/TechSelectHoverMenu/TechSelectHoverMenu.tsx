@@ -10,8 +10,7 @@ import {
   useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFaction } from "../../context/factionDataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useFaction, useFactions } from "../../context/factionDataHooks";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import {
   canResearchTech,
@@ -20,9 +19,9 @@ import {
   sortTechsByName,
   sortTechsByPreReqAndExpansion,
 } from "../../util/techs";
-import styles from "./TechSelectHoverMenu.module.scss";
 import { rem } from "../../util/util";
 import UnitIcon from "../Units/Icons";
+import styles from "./TechSelectHoverMenu.module.scss";
 
 interface InnerTechSelectHoverMenuProps {
   factionId: FactionId;

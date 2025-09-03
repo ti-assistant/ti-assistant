@@ -36,6 +36,7 @@ import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import ThundersEdgePanel from "../ThundersEdgePanel";
+import RelicMenuSVG from "../../icons/ui/RelicMenu";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -488,18 +489,41 @@ export default function Footer() {
               <div
                 className="flexRow"
                 style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  gridAutoFlow: "row",
                   position: "relative",
-                  width: "60%",
-                  height: "60%",
+                  width: rem(30),
+                  height: rem(30),
+                  gap: rem(1),
                 }}
               >
-                <ThundersEdgeMenuSVG />
+                <div
+                  style={{
+                    width: "calc(1.875rem / 2)",
+                    height: "100%",
+                    gridColumn: "2 / 4",
+                  }}
+                >
+                  <RelicMenuSVG />
+                </div>
+                <div
+                  style={{
+                    width: "calc(1.875rem / 2)",
+                    height: "100%",
+                    gridColumn: "3 / 4",
+                  }}
+                >
+                  <ThundersEdgeMenuSVG />
+                </div>
               </div>
             </button>
             <span className={styles.ButtonLabel} style={{ whiteSpace: "wrap" }}>
-              Thunder's
-              <br />
-              Edge
+              <FormattedMessage
+                id="sgqLYB"
+                defaultMessage="Other"
+                description="Text on a button used to select a non-listed value"
+              />
             </span>
           </div>
         ) : null}

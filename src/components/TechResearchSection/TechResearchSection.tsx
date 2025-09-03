@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import { CSSProperties } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
   useCurrentTurn,
@@ -6,15 +6,15 @@ import {
   useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFaction, useFactions } from "../../context/factionDataHooks";
+import { useFactions } from "../../context/factionDataHooks";
+import { addTechAsync, removeTechAsync } from "../../dynamic/api";
 import { TechRow } from "../../TechRow";
 import { getResearchedTechs } from "../../util/actionLog";
+import { hasTech } from "../../util/api/techs";
 import { ActionLog, Optional } from "../../util/types/types";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
-import { addTechAsync, removeTechAsync } from "../../dynamic/api";
 import styles from "./TechResearchSection.module.scss";
-import { hasTech } from "../../util/api/techs";
 
 function getResearchableTechs(
   currentTurn: ActionLog,
@@ -102,7 +102,7 @@ export default function TechResearchSection({
         hideWrapper={hideWrapper}
         researchedTechs={researchedTechs}
       />
-      {!viewOnly || researchedTechs.length < numTechs ? (
+      {!viewOnly && researchedTechs.length < numTechs ? (
         factionId !== "Nekro Virus" || gain ? (
           <TechSelectHoverMenu
             factionId={factionId}

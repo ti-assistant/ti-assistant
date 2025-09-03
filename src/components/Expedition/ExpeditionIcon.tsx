@@ -1,13 +1,12 @@
-import Image from "next/image";
 import { CSSProperties } from "react";
 import ActionCardsSVG from "../../icons/expedition/ActionCards";
 import SecretIconSVG from "../../icons/expedition/SecretIcon";
 import { rem } from "../../util/util";
 
-import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
-import styles from "./Expedition.module.scss";
 import InfluenceSVG from "../../icons/planets/Influence";
 import ResourcesSVG from "../../icons/planets/Resources";
+import TripleTradeGoodSVG from "../../icons/ui/TripleTradeGood";
+import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 
 interface AvailableVotesStyle extends CSSProperties {
   "--width": string;
@@ -88,7 +87,6 @@ export default function ExpeditionIcon({
       );
       break;
     case "tradeGoods":
-      // TODO: Create triple TG icon.
       innerContent = (
         <>
           <div className="flexRow" style={{ width: rem(14) }}>
@@ -99,17 +97,10 @@ export default function ExpeditionIcon({
             style={{
               position: "relative",
               width: rem(20),
-              height: rem(20),
               filter: faded ? "grayscale(1)" : undefined,
             }}
           >
-            <Image
-              sizes={rem(48)}
-              src="/images/trade_good.png"
-              alt="TGs"
-              fill
-              style={{ objectFit: "contain" }}
-            />
+            <TripleTradeGoodSVG color={faded ? "#555" : undefined} />
           </div>
         </>
       );

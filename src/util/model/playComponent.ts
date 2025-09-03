@@ -1,5 +1,6 @@
 import { createIntl, createIntlCache } from "react-intl";
 import {
+  buildActionCards,
   buildAttachments,
   buildComponents,
   buildPlanets,
@@ -30,6 +31,7 @@ export class PlayComponentHandler implements Handler {
   getUpdates(): Record<string, any> {
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
+    const actionCards = buildActionCards(this.gameData, intl);
     const components = buildComponents(this.gameData, intl);
     const state = buildState(this.gameData);
 
@@ -40,6 +42,11 @@ export class PlayComponentHandler implements Handler {
 
     const component = components[this.data.event.name];
     if (!component) {
+      const actionCard = actionCards[this.data.event.name as ActionCardId];
+      if (actionCard) {
+        updates[`actionCards.${this.data.event.name}.state`] = "discarded";
+        return updates;
+      }
       return updates;
     }
 
@@ -215,6 +222,7 @@ export class UnplayComponentHandler implements Handler {
   getUpdates(): Record<string, any> {
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
+    const actionCards = buildActionCards(this.gameData, intl);
     const components = buildComponents(this.gameData, intl);
 
     let updates: Record<string, any> = {
@@ -225,6 +233,11 @@ export class UnplayComponentHandler implements Handler {
 
     const component = components[this.data.event.name];
     if (!component) {
+      const actionCard = actionCards[this.data.event.name as ActionCardId];
+      if (actionCard) {
+        updates[`actionCards.${this.data.event.name}.state`] = "DELETE";
+        return updates;
+      }
       return updates;
     }
 

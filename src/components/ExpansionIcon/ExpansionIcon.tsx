@@ -4,9 +4,11 @@ import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import { rem } from "../../util/util";
 
 export default function ExpansionIcon({
+  color = "#eee",
   expansion,
   size,
 }: {
+  color?: string;
   expansion: Expansion;
   size: number;
 }) {
@@ -16,16 +18,16 @@ export default function ExpansionIcon({
     case "BASE ONLY":
       return null;
     case "POK":
-      innerContent = <ProphecyofKingsSVG />;
+      innerContent = <ProphecyofKingsSVG color={color} />;
       break;
     case "CODEX ONE":
     case "CODEX TWO":
     case "CODEX THREE":
     case "CODEX FOUR":
-      innerContent = <CodexSVG />;
+      innerContent = <CodexSVG color={color} />;
       break;
     case "THUNDERS EDGE":
-      innerContent = <ThundersEdgeMenuSVG />;
+      innerContent = <ThundersEdgeMenuSVG color={color} />;
       break;
     case "DISCORDANT STARS":
       // TODO: Add DS icon.

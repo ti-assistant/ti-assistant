@@ -7,6 +7,7 @@ export function buildCompleteGameData(
   baseData: BaseData
 ) {
   const completeGameData: GameData = {
+    actionCards: buildCompleteActionCards(baseData, storedGameData),
     actionLog: storedGameData.actionLog,
     agendas: buildCompleteAgendas(baseData, storedGameData),
     attachments: buildCompleteAttachments(baseData, storedGameData),
@@ -29,6 +30,32 @@ export function buildCompleteGameData(
   };
 
   return completeGameData;
+}
+
+export function buildCompleteActionCards(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const actionCards: Partial<Record<ActionCardId, ActionCard>> = {};
+
+  const expansions = storedGameData.options.expansions;
+  const gameActionCards = storedGameData.actionCards ?? {};
+
+  objectEntries(baseData.actionCards).forEach(([actionCardId, actionCard]) => {
+    if (
+      actionCard.expansion !== "BASE" &&
+      !expansions.includes(actionCard.expansion)
+    ) {
+      return;
+    }
+
+    actionCards[actionCardId] = {
+      ...actionCard,
+      ...(gameActionCards[actionCardId] ?? {}),
+    };
+  });
+
+  return actionCards;
 }
 
 export function buildCompleteAgendas(
@@ -541,6 +568,7 @@ export function buildCompleteTechs(
       }
       techCopy.name = omega.name;
       techCopy.description = omega.description;
+      techCopy.expansion = omega.expansion;
     }
 
     techs[tech.id] = techCopy;

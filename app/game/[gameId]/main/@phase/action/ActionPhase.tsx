@@ -554,13 +554,11 @@ export function AdditionalActions({
                 let maxTechs = 1;
                 if (faction.id === "Universities of Jol-Nar") {
                   maxTechs = 2;
-                  // TODO: Add ability for people to copy them.
                 }
                 const researchedTechs = getResearchedTechs(
                   currentTurn,
                   faction.id
                 );
-                const availableTechs = getResearchableTechs(faction);
                 const secondaryState =
                   factions[faction.id]?.secondary ?? "PENDING";
                 if (

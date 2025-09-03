@@ -24,6 +24,7 @@ import { TacticalAction } from "../../../../../../src/components/TacticalAction"
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
 import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
+  useActionCards,
   useActionLog,
   useAttachments,
   useComponents,
@@ -89,7 +90,7 @@ function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-function InfoContent({ component }: { component: Component }) {
+function InfoContent({ component }: { component: ActionCard | Component }) {
   return (
     <div
       className="myriadPro"
@@ -119,17 +120,19 @@ function ComponentSelect({
   selectComponent: (componentName: string) => void;
   factionId: FactionId;
 }) {
+  const allActionCards = useActionCards();
   const factions = useFactions();
   const options = useOptions();
   const leaders = useLeaders();
   const viewOnly = useViewOnly();
+  console.log("Action Cards", allActionCards);
 
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
       (component) => component.type !== "TECH"
     ) as (BaseComponent & GameComponent)[];
-  const actionCards = nonTechComponents
-    .filter((component) => component.type === "CARD")
+  const actionCards = Object.values(allActionCards)
+    .filter((actionCard) => actionCard.timing === "COMPONENT_ACTION")
     .sort((a, b) => (a.name > b.name ? 1 : -1));
   const techs = components.filter((component) => component.type === "TECH");
   const leaderComponents = nonTechComponents
@@ -235,25 +238,21 @@ function ComponentSelect({
               : undefined,
           }}
         >
-          {actionCards.map((component) => {
+          {actionCards.map((actionCard) => {
             return (
               <button
-                key={component.id}
+                key={actionCard.id}
                 style={{
                   writingMode: "horizontal-tb",
                   fontSize: options.expansions.includes("DISCORDANT STARS")
                     ? rem(14)
                     : undefined,
                 }}
-                className={
-                  component.state === "exhausted" || component.state === "used"
-                    ? "faded"
-                    : ""
-                }
-                onClick={() => selectComponent(component.id)}
+                className={actionCard.state === "discarded" ? "faded" : ""}
+                onClick={() => selectComponent(actionCard.id)}
                 disabled={viewOnly}
               >
-                {component.name}
+                {actionCard.name}
               </button>
             );
           })}
@@ -542,46 +541,8 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const numFactions = useNumFactions();
 
-  function getResearchableTechs(faction: Faction) {
-    const replaces: TechId[] = [];
-    const availableTechs = Object.values(techs ?? {}).filter((tech) => {
-      if (hasTech(faction, tech.id)) {
-        return false;
-      }
-      if (tech.faction && !factions[tech.faction]) {
-        return false;
-      }
-      if (
-        faction.id !== "Nekro Virus" &&
-        tech.faction &&
-        faction.id !== tech.faction
-      ) {
-        return false;
-      }
-      const researchedTechs = getResearchedTechs(currentTurn, faction.id);
-      if (researchedTechs.includes(tech.id)) {
-        return false;
-      }
-      if (tech.type === "UPGRADE" && tech.replaces) {
-        replaces.push(tech.replaces);
-      }
-      return true;
-    });
-    if (faction.id !== "Nekro Virus") {
-      return availableTechs.filter((tech) => !replaces.includes(tech.id));
-    }
-    return availableTechs;
-  }
-
-  function addTechLocal(tech: Tech) {
-    if (!gameId) {
-      return;
-    }
-    addTechAsync(gameId, factionId, tech.id);
-  }
   function removeTechLocal(techId: TechId) {
     if (!gameId) {
       return;
@@ -1539,6 +1500,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 }
 
 export function ComponentAction({ factionId }: { factionId: FactionId }) {
+  const actionCards = useActionCards();
   const actionLog = useActionLog();
   const components = useComponents();
   const factions = useFactions();
@@ -1555,9 +1517,13 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
     .map((logEntry) => (logEntry.data as PlayComponentData).event.name)[0];
 
-  const component = playedComponent
-    ? components[playedComponent as ComponentId]
-    : null;
+  let component: Optional<Component | ActionCard>;
+  if (playedComponent) {
+    component = components[playedComponent];
+    if (!component) {
+      component = actionCards[playedComponent as ActionCardId];
+    }
+  }
 
   async function selectComponent(componentName: string) {
     if (!gameId) {

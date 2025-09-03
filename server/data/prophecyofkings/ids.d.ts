@@ -1,4 +1,23 @@
 namespace ProphecyOfKings {
+  type ActionCardId =
+    | "Archaeological Expedition"
+    | "Confounding Legal Text"
+    | "Coup d'Etat"
+    | "Deadly Plot"
+    | "Decoy Operation"
+    | "Diplomatic Pressure"
+    | "Divert Funding"
+    | "Exploration Probe"
+    | "Manipulate Investments"
+    | "Nav Suite"
+    | "Refit Troops"
+    | "Reveal Prototype"
+    | "Reverse Engineer"
+    | "Rout"
+    | "Scuttle"
+    | "Seize Artifact"
+    | "Waylay";
+
   type AgendaId =
     | "Armed Forces Standardization"
     | "Articles of War"
@@ -27,18 +46,12 @@ namespace ProphecyOfKings {
     | "Warfare Research Facility";
 
   type ComponentId =
-    | "Archaeological Expedition"
     | "Black Market Forgery"
     | "Blood Pact"
     | "Dark Pact"
-    | "Divert Funding"
     | "Enigmatic Device"
-    | "Exploration Probe"
     | "Fabrication"
     | "Gain Relic"
-    | "Refit Troops"
-    | "Scuttle"
-    | "Seize Artifact"
     | "Sling Relay"
     | "Terraform"
     | "Vortex";
