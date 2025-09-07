@@ -120,6 +120,51 @@ export default function PromissoryMenu({
             viewOnly={viewOnly}
           />
         </div>
+        {/* {factionId !== "Mahact Gene-Sorcerers" ? (
+          <div
+            className="flexRow"
+            style={{ width: "100%", justifyContent: "flex-start" }}
+          >
+            <FormattedMessage
+              id="Objectives.Support for the Throne.Title"
+              description="Title of Objective: Support for the Throne"
+              defaultMessage="Support for the Throne"
+            />
+            :{" "}
+            <FactionSelectRadialMenu
+              factions={orderedFactionIds}
+              invalidFactions={[factionId]}
+              selectedFaction={supportGivenTo}
+              size={32}
+              onSelect={(newSupport) => {
+                if (supportGivenTo) {
+                  unscoreObjectiveAsync(
+                    gameId,
+                    supportGivenTo,
+                    "Support for the Throne",
+                    factionId
+                  );
+                }
+                if (newSupport) {
+                  scoreObjectiveAsync(
+                    gameId,
+                    newSupport,
+                    "Support for the Throne",
+                    factionId
+                  );
+                }
+              }}
+              tag={<FactionIcon factionId={factionId} size="100%" />}
+              tagBorderColor={getFactionColor(factions[factionId])}
+              borderColor={
+                supportGivenTo
+                  ? getFactionColor(factions[supportGivenTo])
+                  : undefined
+              }
+              viewOnly={viewOnly}
+            />
+          </div>
+        ) : null} */}
         <LabeledLine
           leftLabel={<div style={{ fontSize: rem(12) }}>Play Area</div>}
         />

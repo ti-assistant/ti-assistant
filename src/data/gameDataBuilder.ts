@@ -1,3 +1,4 @@
+import { buildMergeFunction } from "../util/expansions";
 import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { objectEntries } from "../util/util";
@@ -142,6 +143,8 @@ export function buildCompleteComponents(
   const expansions = storedGameData.options.expansions;
   const events = storedGameData.options.events ?? [];
 
+  const omegaMergeFn = buildMergeFunction(expansions);
+
   let components: Record<string, Component> = {};
   Object.entries(baseData.components).forEach(([componentId, component]) => {
     // Maybe filter out PoK components.
@@ -191,18 +194,7 @@ export function buildCompleteComponents(
     })
     // Update leaders with omega versions if applicable.
     .map(([leaderId, leader]): [string, BaseLeader] => {
-      const updatedLeader: BaseLeader = { ...leader };
-      if (leader.omega && expansions.includes(leader.omega.expansion)) {
-        if (leader.omega.abilityName) {
-          updatedLeader.abilityName = leader.omega.abilityName;
-        }
-        updatedLeader.description = leader.omega.description;
-        updatedLeader.name = leader.omega.name;
-        if (leader.omega.timing) {
-          updatedLeader.timing = leader.omega.timing;
-        }
-      }
-      return [leaderId, updatedLeader];
+      return [leaderId, omegaMergeFn(leader)];
     })
     // Filter out leaders that have the wrong timing.
     .filter(([_, leader]) => {
@@ -283,12 +275,21 @@ export function buildCompleteFactions(
     if (!baseFaction) {
       throw new Error("Unable to get base version of faction.");
     }
+
+    const omegaMergeFn = buildMergeFunction(storedGameData.options.expansions);
+
+    let updatedFaction = omegaMergeFn(baseFaction);
+
+    updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+    updatedFaction.promissories = updatedFaction.promissories.map(omegaMergeFn);
+    updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
+
     const breakthrough = {
-      ...baseFaction.breakthrough,
+      ...updatedFaction.breakthrough,
       ...faction.breakthrough,
     };
     factions[factionId] = {
-      ...baseFaction,
+      ...updatedFaction,
       ...faction,
       breakthrough,
     };
@@ -319,6 +320,8 @@ export function buildCompleteObjectives(
   const expansions = storedGameData.options.expansions;
   const events = storedGameData.options.events ?? [];
 
+  const omegaMergeFn = buildMergeFunction(storedGameData.options.expansions);
+
   const objectives: Partial<Record<ObjectiveId, Objective>> = {};
   objectEntries(baseData.objectives).forEach(([objectiveId, objective]) => {
     // Maybe filter out PoK objectives.
@@ -335,12 +338,10 @@ export function buildCompleteObjectives(
       return;
     }
 
-    if (objective.omega && expansions.includes(objective.omega.expansion)) {
-      objective.description = objective.omega.description;
-    }
+    const updatedObjective = omegaMergeFn(objective);
 
     objectives[objectiveId] = {
-      ...objective,
+      ...updatedObjective,
       ...(gameObjectives[objectiveId] ?? {}),
     };
   });
@@ -552,26 +553,16 @@ export function buildCompleteTechs(
 ) {
   const options = storedGameData.options;
 
+  const omegaMergeFn = buildMergeFunction(options.expansions);
+
   const techs: Partial<Record<TechId, Tech>> = {};
   Object.values(baseData.techs).forEach((tech) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
     }
-    const techCopy = { ...tech };
 
-    // Maybe update techs for codices.
-    const omegas = tech.omegas ?? [];
-    for (const omega of omegas) {
-      if (!options.expansions.includes(omega.expansion)) {
-        continue;
-      }
-      techCopy.name = omega.name;
-      techCopy.description = omega.description;
-      techCopy.expansion = omega.expansion;
-    }
-
-    techs[tech.id] = techCopy;
+    techs[tech.id] = omegaMergeFn(tech);
   });
 
   return techs;
@@ -585,23 +576,15 @@ export function buildCompleteLeaders(
   const options = storedGameData.options;
   const storedLeaders = storedGameData.leaders ?? {};
   const leaders: Partial<Record<LeaderId, Leader>> = {};
+
+  const omegaMergeFn = buildMergeFunction(options.expansions);
+
   objectEntries(baseData.leaders).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && leader.expansion === "POK") {
       return;
     }
-    const leaderCopy = { ...leader };
-
-    // Maybe update techs for codices.
-    if (leader.omega && options.expansions.includes(leader.omega.expansion)) {
-      leaderCopy.abilityName =
-        leader.omega.abilityName ?? leaderCopy.abilityName;
-      leaderCopy.name = leader.omega.name ?? leaderCopy.name;
-      leaderCopy.description =
-        leader.omega.description ?? leaderCopy.description;
-      leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
-      leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
-    }
+    const updatedLeader = omegaMergeFn(leader);
 
     if (
       leader.subFaction &&
@@ -611,7 +594,7 @@ export function buildCompleteLeaders(
     }
 
     leaders[leaderId] = {
-      ...leaderCopy,
+      ...updatedLeader,
       ...(storedLeaders[leaderId] ?? {}),
     };
   });

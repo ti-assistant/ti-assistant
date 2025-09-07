@@ -287,6 +287,750 @@
     "defaultMessage": "Cultural Planets Exhausted",
     "description": "Label for section explaining which player has had their cultural planets exhausted."
   },
+  "Action Cards.Ancient Burial Sites.Description": {
+    "defaultMessage": "At the start of the agenda phase:{br}Choose 1 player. Exhause each cultural planet owned by that player.",
+    "description": "Description of action card: Ancient Burial Sites"
+  },
+  "Action Cards.Ancient Burial Sites.Name": {
+    "defaultMessage": "Ancient Burial Sites",
+    "description": "Name of action card: Ancient Burial Sites"
+  },
+  "Action Cards.Archaeological Expedition.Description": {
+    "defaultMessage": "ACTION: Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest.",
+    "description": "Description of action card: Archaeological Expedition"
+  },
+  "Action Cards.Archaeological Expedition.Name": {
+    "defaultMessage": "Archaeological Expedition",
+    "description": "Name of action card: Archaeological Expedition"
+  },
+  "Action Cards.Assassinate Representative.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}Choose 1 player. That player cannot vote on this agenda.",
+    "description": "Description of action card: Assassinate Representative"
+  },
+  "Action Cards.Assassinate Representative.Name": {
+    "defaultMessage": "Assassinate Representative",
+    "description": "Name of action card: Assassinate Representative"
+  },
+  "Action Cards.Blitz.Description": {
+    "defaultMessage": "At the start of an invasion:{br}Each of your non-fighter ships in the active system that do not have BOMBARDMENT gain BOMBARDMENT 6 until the end of the invasion.",
+    "description": "Description of action card: Blitz"
+  },
+  "Action Cards.Blitz.Name": {
+    "defaultMessage": "Blitz",
+    "description": "Name of action card: Blitz"
+  },
+  "Action Cards.Bribery.Description": {
+    "defaultMessage": "After the speaker votes on an agenda:{br}Spend any number of trade goods. For each trade good spent, cast 1 additional vote for the outcome on which you voted.",
+    "description": "Description of action card: Bribery"
+  },
+  "Action Cards.Bribery.Name": {
+    "defaultMessage": "Bribery",
+    "description": "Name of action card: Bribery"
+  },
+  "Action Cards.Bunker.Description": {
+    "defaultMessage": "At the start of an invasion:{br}During this invasion, apply -4 to the result of each BOMBARDMENT roll against planets you control.",
+    "description": "Description of action card: Bunker"
+  },
+  "Action Cards.Bunker.Name": {
+    "defaultMessage": "Bunker",
+    "description": "Name of action card: Bunker"
+  },
+  "Action Cards.Confounding Legal Text.Description": {
+    "defaultMessage": "When another player is elected as the outcome of an agenda:{br}You are the elected player instead.",
+    "description": "Description of action card: Confounding Legal Text"
+  },
+  "Action Cards.Confounding Legal Text.Name": {
+    "defaultMessage": "Confounding Legal Text",
+    "description": "Name of action card: Confounding Legal Text"
+  },
+  "Action Cards.Confusing Legal Text.Description": {
+    "defaultMessage": "When you are elected as the outcome of an agenda:{br}Choose 1 player. That player is the elected player instead.",
+    "description": "Description of action card: Confusing Legal Text"
+  },
+  "Action Cards.Confusing Legal Text.Name": {
+    "defaultMessage": "Confusing Legal Text",
+    "description": "Name of action card: Confusing Legal Text"
+  },
+  "Action Cards.Construction Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, place 1 space dock from your reinforcements on a planet you control.",
+    "description": "Description of action card: Construction Rider"
+  },
+  "Action Cards.Construction Rider.Name": {
+    "defaultMessage": "Construction Rider",
+    "description": "Name of action card: Construction Rider"
+  },
+  "Action Cards.Counterstroke.Description": {
+    "defaultMessage": "After a player activates a system that contains 1 of your command tokens:{br}Return that command token to your tactic pool.",
+    "description": "Description of action card: Counterstroke"
+  },
+  "Action Cards.Counterstroke.Name": {
+    "defaultMessage": "Counterstroke",
+    "description": "Name of action card: Counterstroke"
+  },
+  "Action Cards.Coup d'Etat.Description": {
+    "defaultMessage": "When another player would perform a strategic action:{br}End that player's trun; that strategic action is not resolved and the strategy card is not exhausted.",
+    "description": "Description of action card: Coup d'Etat"
+  },
+  "Action Cards.Coup d'Etat.Name": {
+    "defaultMessage": "Coup d'Etat",
+    "description": "Name of action card: Coup d'Etat"
+  },
+  "Action Cards.Courageous to the End.Description": {
+    "defaultMessage": "After 1 of your ships is destroyed during a space combat:{br}Roll 2 dice. For each result equal to or greater than that ship's combat value, your opponent must choose and destroy 1 of their ships.",
+    "description": "Description of action card: Courageous to the End"
+  },
+  "Action Cards.Courageous to the End.Name": {
+    "defaultMessage": "Courageous to the End",
+    "description": "Name of action card: Courageous to the End"
+  },
+  "Action Cards.Cripple Defenses.Description": {
+    "defaultMessage": "ACTION: Choose 1 planet. Destroy each PDS on that planet.",
+    "description": "Description of action card: Cripple Defenses"
+  },
+  "Action Cards.Cripple Defenses.Name": {
+    "defaultMessage": "Cripple Defenses",
+    "description": "Name of action card: Cripple Defenses"
+  },
+  "Action Cards.Deadly Plot.Description": {
+    "defaultMessage": "During the agenda phase, when an outcome would be resolved:{br}If you voted for or predicted another outcome, discard the agenda instead; the agenda is resolved with no effect and it is not replaced.{br}Then, exhaust all of your planets.",
+    "description": "Description of action card: Deadly Plot"
+  },
+  "Action Cards.Deadly Plot.Name": {
+    "defaultMessage": "Deadly Plot",
+    "description": "Name of action card: Deadly Plot"
+  },
+  "Action Cards.Decoy Operation.Description": {
+    "defaultMessage": "After another player activates a system that contains 1 or more of your structures:{br}Remove up to 2 of your ground forces from the game board and place them on a planet you control in the active system.",
+    "description": "Description of action card: Decoy Operation"
+  },
+  "Action Cards.Decoy Operation.Name": {
+    "defaultMessage": "Decoy Operation",
+    "description": "Name of action card: Decoy Operation"
+  },
+  "Action Cards.Diplomacy Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, choose 1 system that contains a planet you control. Each other player places a command token from their reinforcements in that system.",
+    "description": "Description of action card: Diplomacy Rider"
+  },
+  "Action Cards.Diplomacy Rider.Name": {
+    "defaultMessage": "Diplomacy Rider",
+    "description": "Name of action card: Diplomacy Rider"
+  },
+  "Action Cards.Diplomatic Pressure.Description": {
+    "defaultMessage": "When an agenda is revealed:{br}Choose another player; that player must give you 1 promissory note from their hand.",
+    "description": "Description of action card: Diplomatic Pressure"
+  },
+  "Action Cards.Diplomatic Pressure.Name": {
+    "defaultMessage": "Diplomatic Pressure",
+    "description": "Name of action card: Diplomatic Pressure"
+  },
+  "Action Cards.Direct Hit.Description": {
+    "defaultMessage": "After another player's ship uses SUSTAIN DAMAGE to cancel a hit produced by your units or abilities:{br}Destroy that ship.",
+    "description": "Description of action card: Direct Hit"
+  },
+  "Action Cards.Direct Hit.Name": {
+    "defaultMessage": "Direct Hit",
+    "description": "Name of action card: Direct Hit"
+  },
+  "Action Cards.Disable.Description": {
+    "defaultMessage": "At the start of an invasion in a system that contains 1 or more of your opponents' PDS units:{br}Your opponents' PDS units lose PLANETARY SHIELD and SPACE CANNON during this invasion.",
+    "description": "Description of action card: Disable"
+  },
+  "Action Cards.Disable.Name": {
+    "defaultMessage": "Disable",
+    "description": "Name of action card: Disable"
+  },
+  "Action Cards.Distinguished Councilor.Description": {
+    "defaultMessage": "After you cast votes on an outcome of an agenda:{br}Cast 5 additional votes for that outcome.",
+    "description": "Description of action card: Distinguished Councilor"
+  },
+  "Action Cards.Distinguished Councilor.Name": {
+    "defaultMessage": "Distinguished Councilor",
+    "description": "Name of action card: Distinguished Councilor"
+  },
+  "Action Cards.Divert Funding.Description": {
+    "defaultMessage": "ACTION: Return a non-unit upgrade, non-faction technology that you own to your technology deck.{br}Then, research another technology.",
+    "description": "Description of action card: Divert Funding"
+  },
+  "Action Cards.Divert Funding.Name": {
+    "defaultMessage": "Divert Funding",
+    "description": "Name of action card: Divert Funding"
+  },
+  "Action Cards.Economic Initiative.Description": {
+    "defaultMessage": "ACTION: Ready each cultural planet you control.",
+    "description": "Description of action card: Economic Initiative"
+  },
+  "Action Cards.Economic Initiative.Name": {
+    "defaultMessage": "Economic Initiative",
+    "description": "Name of action card: Economic Initiative"
+  },
+  "Action Cards.Emergency Repairs.Description": {
+    "defaultMessage": "At the start or end of a combat round:{br}Repair all of your units that have SUSTAIN DAMAGE in the active system.",
+    "description": "Description of action card: Emergency Repairs"
+  },
+  "Action Cards.Emergency Repairs.Name": {
+    "defaultMessage": "Emergency Repairs",
+    "description": "Name of action card: Emergency Repairs"
+  },
+  "Action Cards.Experimental Battlestation.Description": {
+    "defaultMessage": "After another player moves ships into a system during a tactical action:{br}Choose 1 of your space docks that is either in or adjacent to that system. That space dock uses SPACE CANNON 5 (x3) against ships in the active system.",
+    "description": "Description of action card: Experimental Battlestation"
+  },
+  "Action Cards.Experimental Battlestation.Name": {
+    "defaultMessage": "Experimental Battlestation",
+    "description": "Name of action card: Experimental Battlestation"
+  },
+  "Action Cards.Exploration Probe.Description": {
+    "defaultMessage": "ACTION: Explore a frontier token that is in or adjacent to a system that contains 1 or more of your ships.",
+    "description": "Description of action card: Exploration Probe"
+  },
+  "Action Cards.Exploration Probe.Name": {
+    "defaultMessage": "Exploration Probe",
+    "description": "Name of action card: Exploration Probe"
+  },
+  "Action Cards.Fighter Conscription.Description": {
+    "defaultMessage": "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships.",
+    "description": "Description of action card: Fighter Conscription"
+  },
+  "Action Cards.Fighter Conscription.Name": {
+    "defaultMessage": "Fighter Conscription",
+    "description": "Name of action card: Fighter Conscription"
+  },
+  "Action Cards.Fighter Prototype.Description": {
+    "defaultMessage": "At the start of the first round of a space combat:{br}Apply +2 to the result of each of your fighters' combat rolls during this combat round.",
+    "description": "Description of action card: Fighter Prototype"
+  },
+  "Action Cards.Fighter Prototype.Name": {
+    "defaultMessage": "Fighter Prototype",
+    "description": "Name of action card: Fighter Prototype"
+  },
+  "Action Cards.Fire Team.Description": {
+    "defaultMessage": "After your ground forces make combat rolls during a round of ground combat:{br}Reroll any number of your dice.",
+    "description": "Description of action card: Fire Team"
+  },
+  "Action Cards.Fire Team.Name": {
+    "defaultMessage": "Fire Team",
+    "description": "Name of action card: Fire Team"
+  },
+  "Action Cards.Flank Speed.Description": {
+    "defaultMessage": "After you activate a system:{br}Apply +1 to the move value of each of your ships during this tactical action.",
+    "description": "Description of action card: Flank Speed"
+  },
+  "Action Cards.Flank Speed.Name": {
+    "defaultMessage": "Flank Speed",
+    "description": "Name of action card: Flank Speed"
+  },
+  "Action Cards.Focused Research.Description": {
+    "defaultMessage": "ACTION: Spend 4 trade goods to research 1 technology.",
+    "description": "Description of action card: Focused Research"
+  },
+  "Action Cards.Focused Research.Name": {
+    "defaultMessage": "Focused Research",
+    "description": "Name of action card: Focused Research"
+  },
+  "Action Cards.Forward Supply Base.Description": {
+    "defaultMessage": "After another player activates a system that contains your units:{br}Gain 3 trade goods. Then, choose another player to gain 1 trade good.",
+    "description": "Description of action card: Forward Supply Base"
+  },
+  "Action Cards.Forward Supply Base.Name": {
+    "defaultMessage": "Forward Supply Base",
+    "description": "Name of action card: Forward Supply Base"
+  },
+  "Action Cards.Frontline Deployment.Description": {
+    "defaultMessage": "ACTION: Place 3 infantry from your reinforcements on 1 planet you control.",
+    "description": "Description of action card: Frontline Deployment"
+  },
+  "Action Cards.Frontline Deployment.Name": {
+    "defaultMessage": "Frontline Deployment",
+    "description": "Name of action card: Frontline Deployment"
+  },
+  "Action Cards.Ghost Ship.Description": {
+    "defaultMessage": "ACTION: Place 1 destroyer from your reinforcements in a non-home system that contains a wormhole and does not contain other players' ships.",
+    "description": "Description of action card: Ghost Ship"
+  },
+  "Action Cards.Ghost Ship.Name": {
+    "defaultMessage": "Ghost Ship",
+    "description": "Name of action card: Ghost Ship"
+  },
+  "Action Cards.Ghost Squad.Description": {
+    "defaultMessage": "After a player commits units to land on a planet you control:{br}Move any number of ground forces from any planet you control in the active system to any other planet you control in the active system.",
+    "description": "Description of action card: Ghost Squad"
+  },
+  "Action Cards.Ghost Squad.Name": {
+    "defaultMessage": "Ghost Squad",
+    "description": "Name of action card: Ghost Squad"
+  },
+  "Action Cards.Hack Election.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}During this agenda, voting begins with the player to the right of the speaker and continues counterclockwise.",
+    "description": "Description of action card: Hack Election"
+  },
+  "Action Cards.Hack Election.Name": {
+    "defaultMessage": "Hack Election",
+    "description": "Name of action card: Hack Election"
+  },
+  "Action Cards.Harness Energy.Description": {
+    "defaultMessage": "After you activate an anomaly:{br}Replenish your commodities.",
+    "description": "Description of action card: Harness Energy"
+  },
+  "Action Cards.Harness Energy.Name": {
+    "defaultMessage": "Harness Energy",
+    "description": "Name of action card: Harness Energy"
+  },
+  "Action Cards.Imperial Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, gain 1 victory point.",
+    "description": "Description of action card: Imperial Rider"
+  },
+  "Action Cards.Imperial Rider.Name": {
+    "defaultMessage": "Imperial Rider",
+    "description": "Name of action card: Imperial Rider"
+  },
+  "Action Cards.Impersonation.Description": {
+    "defaultMessage": "ACTION: Spend 3 influence to draw 1 secret objective.",
+    "description": "Description of action card: Impersonation"
+  },
+  "Action Cards.Impersonation.Name": {
+    "defaultMessage": "Impersonation",
+    "description": "Name of action card: Impersonation"
+  },
+  "Action Cards.In The Silence Of Space.Description": {
+    "defaultMessage": "After you activate a system:{br}Choose 1 system. During this tactical action, your ships in the chosen system can move through systems that contain other players' ships.",
+    "description": "Description of action card: In The Silence Of Space"
+  },
+  "Action Cards.In The Silence Of Space.Name": {
+    "defaultMessage": "In The Silence Of Space",
+    "description": "Name of action card: In The Silence Of Space"
+  },
+  "Action Cards.Industrial Initiative.Description": {
+    "defaultMessage": "ACTION: Gain 1 trade good for each industrial planet you control.",
+    "description": "Description of action card: Industrial Initiative"
+  },
+  "Action Cards.Industrial Initiative.Name": {
+    "defaultMessage": "Industrial Initiative",
+    "description": "Name of action card: Industrial Initiative"
+  },
+  "Action Cards.Infiltrate.Description": {
+    "defaultMessage": "When you gain control of a planet:{br}Replace each PDS and space dock that is on that planet with a matching unit from your reinforcements.",
+    "description": "Description of action card: Infiltrate"
+  },
+  "Action Cards.Infiltrate.Name": {
+    "defaultMessage": "Infiltrate",
+    "description": "Name of action card: Infiltrate"
+  },
+  "Action Cards.Insider Information.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}Look at the top card of the agenda deck.",
+    "description": "Description of action card: Insider Information"
+  },
+  "Action Cards.Insider Information.Name": {
+    "defaultMessage": "Insider Information",
+    "description": "Name of action card: Insider Information"
+  },
+  "Action Cards.Insubordination.Description": {
+    "defaultMessage": "ACTION: Remove 1 token from another player's tactic pool and return it to their reinforcements.",
+    "description": "Description of action card: Insubordination"
+  },
+  "Action Cards.Insubordination.Name": {
+    "defaultMessage": "Insubordination",
+    "description": "Name of action card: Insubordination"
+  },
+  "Action Cards.Intercept.Description": {
+    "defaultMessage": "After your opponent declares a retreat during a space combat:{br}Your opponent cannot retreat during this round of space combat.",
+    "description": "Description of action card: Intercept"
+  },
+  "Action Cards.Intercept.Name": {
+    "defaultMessage": "Intercept",
+    "description": "Name of action card: Intercept"
+  },
+  "Action Cards.Leadership Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, gain 3 command tokens.",
+    "description": "Description of action card: Leadership Rider"
+  },
+  "Action Cards.Leadership Rider.Name": {
+    "defaultMessage": "Leadership Rider",
+    "description": "Name of action card: Leadership Rider"
+  },
+  "Action Cards.Lost Star Chart.Description": {
+    "defaultMessage": "After you activate a system:{br}During this tactical action, systems that contain alpha and beta wormholes are adjacent to each other.",
+    "description": "Description of action card: Lost Star Chart"
+  },
+  "Action Cards.Lost Star Chart.Name": {
+    "defaultMessage": "Lost Star Chart",
+    "description": "Name of action card: Lost Star Chart"
+  },
+  "Action Cards.Lucky Shot.Description": {
+    "defaultMessage": "ACTION: Destroy 1 dreadnought, cruiser, or destroyer in a system that contains a planet you control.",
+    "description": "Description of action card: Lucky Shot"
+  },
+  "Action Cards.Lucky Shot.Name": {
+    "defaultMessage": "Lucky Shot",
+    "description": "Name of action card: Lucky Shot"
+  },
+  "Action Cards.Maneuvering Jets.Description": {
+    "defaultMessage": "Before you assign hits produced by another player's SPACE CANNON roll:{br}Cancel 1 hit.",
+    "description": "Description of action card: Maneuvering Jets"
+  },
+  "Action Cards.Maneuvering Jets.Name": {
+    "defaultMessage": "Maneuvering Jets",
+    "description": "Name of action card: Maneuvering Jets"
+  },
+  "Action Cards.Manipulate Investments.Description": {
+    "defaultMessage": "At the start of the strategy phase:{br}Place a total of 5 trade goods from the supply on strategy cards of your choice; you must place these tokens on at least 3 different cards.",
+    "description": "Description of action card: Manipulate Investments"
+  },
+  "Action Cards.Manipulate Investments.Name": {
+    "defaultMessage": "Manipulate Investments",
+    "description": "Name of action card: Manipulate Investments"
+  },
+  "Action Cards.Master Plan.Description": {
+    "defaultMessage": "After you perform an action:{br}You may perform an additional action this turn.",
+    "description": "Description of action card: Master Plan"
+  },
+  "Action Cards.Master Plan.Name": {
+    "defaultMessage": "Master Plan",
+    "description": "Name of action card: Master Plan"
+  },
+  "Action Cards.Mining Initiative.Description": {
+    "defaultMessage": "ACTION: Gain trade goods equal to the resource value of 1 planet you control.",
+    "description": "Description of action card: Mining Initiative"
+  },
+  "Action Cards.Mining Initiative.Name": {
+    "defaultMessage": "Mining Initiative",
+    "description": "Name of action card: Mining Initiative"
+  },
+  "Action Cards.Morale Boost.Description": {
+    "defaultMessage": "At the start of a combat round:{br}Apply +1 to the result of each of your unit's combat rolls during this combat round.",
+    "description": "Description of action card: Morale Boost"
+  },
+  "Action Cards.Morale Boost.Name": {
+    "defaultMessage": "Morale Boost",
+    "description": "Name of action card: Morale Boost"
+  },
+  "Action Cards.Nav Suite.Description": {
+    "defaultMessage": "After you activate a system:{br}During the \"Movement\" step of this tactical action, ignore the effect of anomalies.",
+    "description": "Description of action card: Nav Suite"
+  },
+  "Action Cards.Nav Suite.Name": {
+    "defaultMessage": "Nav Suite",
+    "description": "Name of action card: Nav Suite"
+  },
+  "Action Cards.Parley.Description": {
+    "defaultMessage": "After another player commits units to land on a planet you control:{br}Return the committed units to the space area.",
+    "description": "Description of action card: Parley"
+  },
+  "Action Cards.Parley.Name": {
+    "defaultMessage": "Parley",
+    "description": "Name of action card: Parley"
+  },
+  "Action Cards.Plagiarize.Description": {
+    "defaultMessage": "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology.",
+    "description": "Description of action card: Plagiarize"
+  },
+  "Action Cards.Plagiarize.Name": {
+    "defaultMessage": "Plagiarize",
+    "description": "Name of action card: Plagiarize"
+  },
+  "Action Cards.Plague.Description": {
+    "defaultMessage": "ACTION: Choose 1 planet that is controlled by another player. Roll 1 die for each infantry on that planet. For each result of 6 or greater, destroy 1 of those units.",
+    "description": "Description of action card: Plague"
+  },
+  "Action Cards.Plague.Name": {
+    "defaultMessage": "Plague",
+    "description": "Name of action card: Plague"
+  },
+  "Action Cards.Political Stability.Description": {
+    "defaultMessage": "When you would return your strategy card(s) during the status phase:{br}Do not return your strategy card(s). You do not choose strategy cards during the next strategy phase.",
+    "description": "Description of action card: Political Stability"
+  },
+  "Action Cards.Political Stability.Name": {
+    "defaultMessage": "Political Stability",
+    "description": "Name of action card: Political Stability"
+  },
+  "Action Cards.Politics Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, draw 3 action cards and gain the speaker token.",
+    "description": "Description of action card: Politics Rider"
+  },
+  "Action Cards.Politics Rider.Name": {
+    "defaultMessage": "Politics Rider",
+    "description": "Name of action card: Politics Rider"
+  },
+  "Action Cards.Public Disgrace.Description": {
+    "defaultMessage": "When another player chooses a strategy card during the strategy phase:{br}That player must choose a different strategy card instead, if able.",
+    "description": "Description of action card: Public Disgrace"
+  },
+  "Action Cards.Public Disgrace.Name": {
+    "defaultMessage": "Public Disgrace",
+    "description": "Name of action card: Public Disgrace"
+  },
+  "Action Cards.Rally.Description": {
+    "defaultMessage": "After you activate a system that contains another player's ships:{br}Place 2 command tokens from your reinforcements in your fleet pool.",
+    "description": "Description of action card: Rally"
+  },
+  "Action Cards.Rally.Name": {
+    "defaultMessage": "Rally",
+    "description": "Name of action card: Rally"
+  },
+  "Action Cards.Reactor Meltdown.Description": {
+    "defaultMessage": "ACTION: Destroy 1 space dock in a non-home system.",
+    "description": "Description of action card: Reactor Meltdown"
+  },
+  "Action Cards.Reactor Meltdown.Name": {
+    "defaultMessage": "Reactor Meltdown",
+    "description": "Name of action card: Reactor Meltdown"
+  },
+  "Action Cards.Refit Troops.Description": {
+    "defaultMessage": "ACTION: Choose 1 or 2 of your infantry on the game board; replace each of those infantry with mechs.",
+    "description": "Description of action card: Refit Troops"
+  },
+  "Action Cards.Refit Troops.Name": {
+    "defaultMessage": "Refit Troops",
+    "description": "Name of action card: Refit Troops"
+  },
+  "Action Cards.Reflective Shielding.Description": {
+    "defaultMessage": "When one of your ships uses SUSTAIN DAMAGE during combat:{br}Produce 2 hits against your opponent's ships in the active system.",
+    "description": "Description of action card: Reflective Shielding"
+  },
+  "Action Cards.Reflective Shielding.Name": {
+    "defaultMessage": "Reflective Shielding",
+    "description": "Name of action card: Reflective Shielding"
+  },
+  "Action Cards.Reparations.Description": {
+    "defaultMessage": "After another player gains control of a planet you control:{br}Exhaust 1 planet that player controls and ready 1 planet you control.",
+    "description": "Description of action card: Reparations"
+  },
+  "Action Cards.Reparations.Name": {
+    "defaultMessage": "Reparations",
+    "description": "Name of action card: Reparations"
+  },
+  "Action Cards.Repeal Law.Description": {
+    "defaultMessage": "ACTION: Discard 1 law from play.",
+    "description": "Description of action card: Repeal Law"
+  },
+  "Action Cards.Repeal Law.Name": {
+    "defaultMessage": "Repeal Law",
+    "description": "Name of action card: Repeal Law"
+  },
+  "Action Cards.Reveal Prototype.Description": {
+    "defaultMessage": "At the start of a combat:{br}Spend 4 resources to research a unit upgrade technology of the same type as 1 of your units that is participating in this combat.",
+    "description": "Description of action card: Reveal Prototype"
+  },
+  "Action Cards.Reveal Prototype.Name": {
+    "defaultMessage": "Reveal Prototype",
+    "description": "Name of action card: Reveal Prototype"
+  },
+  "Action Cards.Reverse Engineer.Description": {
+    "defaultMessage": "After another player discards an action card that has a component action:{br}Take that action card from the discard pile.",
+    "description": "Description of action card: Reverse Engineer"
+  },
+  "Action Cards.Reverse Engineer.Name": {
+    "defaultMessage": "Reverse Engineer",
+    "description": "Name of action card: Reverse Engineer"
+  },
+  "Action Cards.Rise of a Messiah.Description": {
+    "defaultMessage": "ACTION: Place 1 infantry from your reinforcements on each planet you control.",
+    "description": "Description of action card: Rise of a Messiah"
+  },
+  "Action Cards.Rise of a Messiah.Name": {
+    "defaultMessage": "Rise of a Messiah",
+    "description": "Name of action card: Rise of a Messiah"
+  },
+  "Action Cards.Rout.Description": {
+    "defaultMessage": "At the start of the \"Announce Retreats\" step of space combat, if you are the defender:{br}Your opponent must announce a retreat, if able.",
+    "description": "Description of action card: Rout"
+  },
+  "Action Cards.Rout.Name": {
+    "defaultMessage": "Rout",
+    "description": "Name of action card: Rout"
+  },
+  "Action Cards.Sabotage.Description": {
+    "defaultMessage": "When another player plays an action card other than \"Sabotage\":{br}Cancel that action card.",
+    "description": "Description of action card: Sabotage"
+  },
+  "Action Cards.Sabotage.Name": {
+    "defaultMessage": "Sabotage",
+    "description": "Name of action card: Sabotage"
+  },
+  "Action Cards.Salvage.Description": {
+    "defaultMessage": "After you win a space combat:{br}Your opponent gives you all of their commodities.",
+    "description": "Description of action card: Salvage"
+  },
+  "Action Cards.Salvage.Name": {
+    "defaultMessage": "Salvage",
+    "description": "Name of action card: Salvage"
+  },
+  "Action Cards.Sanction.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, each player that voted for that outcome returns 1 command token from their fleet supply to their reinforcements.",
+    "description": "Description of action card: Sanction"
+  },
+  "Action Cards.Sanction.Name": {
+    "defaultMessage": "Sanction",
+    "description": "Name of action card: Sanction"
+  },
+  "Action Cards.Scramble Frequency.Description": {
+    "defaultMessage": "After another player makes a BOMBARDMENT, SPACE CANNON, or ANTI-FIGHTER BARRAGE roll:{br}That player rerolls all of their dice.",
+    "description": "Description of action card: Scramble Frequency"
+  },
+  "Action Cards.Scramble Frequency.Name": {
+    "defaultMessage": "Scramble Frequency",
+    "description": "Name of action card: Scramble Frequency"
+  },
+  "Action Cards.Scuttle.Description": {
+    "defaultMessage": "ACTION: Choose 1 or 2 of your non-fighter ships on the game board and return them to your reinforcements; gain trade goods equal to the combined cost of those ships.",
+    "description": "Description of action card: Scuttle"
+  },
+  "Action Cards.Scuttle.Name": {
+    "defaultMessage": "Scuttle",
+    "description": "Name of action card: Scuttle"
+  },
+  "Action Cards.Seize Artifact.Description": {
+    "defaultMessage": "ACTION: Choose 1 of your neighbors that has 1 or more relic fragments. That player must give you 1 relic fragment of your choice.",
+    "description": "Description of action card: Seize Artifact"
+  },
+  "Action Cards.Seize Artifact.Name": {
+    "defaultMessage": "Seize Artifact",
+    "description": "Name of action card: Seize Artifact"
+  },
+  "Action Cards.Shields Holding.Description": {
+    "defaultMessage": "Before you assign hits to your ships during a space combat:{br}Cancel up to 2 hits.",
+    "description": "Description of action card: Shields Holding"
+  },
+  "Action Cards.Shields Holding.Name": {
+    "defaultMessage": "Shields Holding",
+    "description": "Name of action card: Shields Holding"
+  },
+  "Action Cards.Signal Jamming.Description": {
+    "defaultMessage": "ACTION: Chose 1 non-home system that contains or is adjacent to 1 of your ships. Place a command token from another player's reinforcements in that system.",
+    "description": "Description of action card: Signal Jamming"
+  },
+  "Action Cards.Signal Jamming.Name": {
+    "defaultMessage": "Signal Jamming",
+    "description": "Name of action card: Signal Jamming"
+  },
+  "Action Cards.Skilled Retreat.Description": {
+    "defaultMessage": "At the start of a combat round:{br}Move all of your ships from the active system into an adjacent system that does not contain another player's ships; the space combat ends in a draw. Then, place a command token from your reinforcements in that system.",
+    "description": "Description of action card: Skilled Retreat"
+  },
+  "Action Cards.Skilled Retreat.Name": {
+    "defaultMessage": "Skilled Retreat",
+    "description": "Name of action card: Skilled Retreat"
+  },
+  "Action Cards.Solar Flare.Description": {
+    "defaultMessage": "After you activate a system:{br}During this movement, other players cannot use SPACE CANNON against your ships.",
+    "description": "Description of action card: Solar Flare"
+  },
+  "Action Cards.Solar Flare.Name": {
+    "defaultMessage": "Solar Flare",
+    "description": "Name of action card: Solar Flare"
+  },
+  "Action Cards.Spy.Description": {
+    "defaultMessage": "ACTION: Choose 1 player. That player gives you 1 random action card from their hand.",
+    "description": "Description of action card: Spy"
+  },
+  "Action Cards.Spy.Name": {
+    "defaultMessage": "Spy",
+    "description": "Name of action card: Spy"
+  },
+  "Action Cards.Summit.Description": {
+    "defaultMessage": "At the start of the strategy phase:{br}Gain 2 command tokens.",
+    "description": "Description of action card: Summit"
+  },
+  "Action Cards.Summit.Name": {
+    "defaultMessage": "Summit",
+    "description": "Name of action card: Summit"
+  },
+  "Action Cards.Tactical Bombardment.Description": {
+    "defaultMessage": "ACTION: Choose 1 system that contains 1 or more of your units that have BOMBARDMENT. Exhaust each planet controlled by other players in that system.",
+    "description": "Description of action card: Tactical Bombardment"
+  },
+  "Action Cards.Tactical Bombardment.Name": {
+    "defaultMessage": "Tactical Bombardment",
+    "description": "Name of action card: Tactical Bombardment"
+  },
+  "Action Cards.Technology Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, research 1 technology.",
+    "description": "Description of action card: Technology Rider"
+  },
+  "Action Cards.Technology Rider.Name": {
+    "defaultMessage": "Technology Rider",
+    "description": "Name of action card: Technology Rider"
+  },
+  "Action Cards.Trade Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, gain 5 trade goods.",
+    "description": "Description of action card: Trade Rider"
+  },
+  "Action Cards.Trade Rider.Name": {
+    "defaultMessage": "Trade Rider",
+    "description": "Name of action card: Trade Rider"
+  },
+  "Action Cards.Unexpected Action.Description": {
+    "defaultMessage": "ACTION: Remove 1 of your command tokens from the game board and return it to your reinforcements.",
+    "description": "Description of action card: Unexpected Action"
+  },
+  "Action Cards.Unexpected Action.Name": {
+    "defaultMessage": "Unexpected Action",
+    "description": "Name of action card: Unexpected Action"
+  },
+  "Action Cards.Unstable Planet.Description": {
+    "defaultMessage": "ACTION: Choose 1 hazardous planet. Exhaust that planet and destroy up to 3 infantry on it.",
+    "description": "Description of action card: Unstable Planet"
+  },
+  "Action Cards.Unstable Planet.Name": {
+    "defaultMessage": "Unstable Planet",
+    "description": "Name of action card: Unstable Planet"
+  },
+  "Action Cards.Upgrade.Description": {
+    "defaultMessage": "After you activate a system that contains 1 or more of your ships:{br}Replace one of your cruisers in that system with one of your dreadnoughts from your reinforcements.",
+    "description": "Description of action card: Upgrade"
+  },
+  "Action Cards.Upgrade.Name": {
+    "defaultMessage": "Upgrade",
+    "description": "Name of action card: Upgrade"
+  },
+  "Action Cards.Uprising.Description": {
+    "defaultMessage": "ACTION: Exhaust 1 non-home planet controlled by another player. Then gain trade goods equal to its resource value.",
+    "description": "Description of action card: Uprising"
+  },
+  "Action Cards.Uprising.Name": {
+    "defaultMessage": "Uprising",
+    "description": "Name of action card: Uprising"
+  },
+  "Action Cards.Veto.Description": {
+    "defaultMessage": "When an agenda is revealed:{br}Discard that agenda and reveal 1 agenda from the top of the deck. Players vote on this agenda instead.",
+    "description": "Description of action card: Veto"
+  },
+  "Action Cards.Veto.Name": {
+    "defaultMessage": "Veto",
+    "description": "Name of action card: Veto"
+  },
+  "Action Cards.War Effort.Description": {
+    "defaultMessage": "ACTION: Place 1 cruiser from your reinforcements in a system that contains 1 or more of your ships.",
+    "description": "Description of action card: War Effort"
+  },
+  "Action Cards.War Effort.Name": {
+    "defaultMessage": "War Effort",
+    "description": "Name of action card: War Effort"
+  },
+  "Action Cards.War Machine.Description": {
+    "defaultMessage": "When 1 or more of your units use PRODUCTION:{br}Apply +4 to the total PRODUCTION value of your units and reduce the combined cost of the produced units by 1.",
+    "description": "Description of action card: War Machine"
+  },
+  "Action Cards.War Machine.Name": {
+    "defaultMessage": "War Machine",
+    "description": "Name of action card: War Machine"
+  },
+  "Action Cards.Warfare Rider.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, place 1 dreadnought from your reinforcements in a system that contains 1 or more of your ships.",
+    "description": "Description of action card: Warfare Rider"
+  },
+  "Action Cards.Warfare Rider.Name": {
+    "defaultMessage": "Warfare Rider",
+    "description": "Name of action card: Warfare Rider"
+  },
+  "Action Cards.Waylay.Description": {
+    "defaultMessage": "Before you roll dice for ANTI-FIGHTER BARRAGE:{br}Hits from this roll are produced against all ships (not just fighters).",
+    "description": "Description of action card: Waylay"
+  },
+  "Action Cards.Waylay.Name": {
+    "defaultMessage": "Waylay",
+    "description": "Name of action card: Waylay"
+  },
   "Agendas.Anti-Intellectual Revolution.Description": {
     "defaultMessage": "For: After a player researches a technology, they must destroy 1 of their non-fighter ships.{br}Against: At the start of the next strategy phase, each player chooses and exhausts 1 planet for each technology they own.",
     "description": "Description for Agenda Card: Anti-Intellectual Revolution"
@@ -1227,6 +1971,10 @@
     "defaultMessage": "End of {phase} Phase",
     "description": "Text showing that something will occur at the end of a specific phase."
   },
+  "CH11Yw": {
+    "defaultMessage": "Promissories",
+    "description": "The title of promissory notes."
+  },
   "CKpFBk": {
     "defaultMessage": "Draw 2 secret objectives and keep 1",
     "description": "A step in the setup phase: Draw 2 secret objectives and keep 1."
@@ -1359,14 +2107,6 @@
     "defaultMessage": "Ancient Burial Sites",
     "description": "Title of Component: Ancient Burial Sites"
   },
-  "Components.Archaeological Expedition.Description": {
-    "defaultMessage": "ACTION: Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest.",
-    "description": "Description for Component: Archaeological Expedition"
-  },
-  "Components.Archaeological Expedition.Title": {
-    "defaultMessage": "Archaeological Expedition",
-    "description": "Title of Component: Archaeological Expedition"
-  },
   "Components.Assassinate Representative.Title": {
     "defaultMessage": "Assassinate Representative",
     "description": "Title of Component: Assassinate Representative"
@@ -1387,14 +2127,6 @@
     "defaultMessage": "Blood Pact",
     "description": "Title of Component: Blood Pact"
   },
-  "Components.Cripple Defenses.Description": {
-    "defaultMessage": "ACTION: Choose 1 planet. Destroy each PDS on that planet",
-    "description": "Description for Component: Cripple Defenses"
-  },
-  "Components.Cripple Defenses.Title": {
-    "defaultMessage": "Cripple Defenses",
-    "description": "Title of Component: Cripple Defenses"
-  },
   "Components.Dark Pact.Description": {
     "defaultMessage": "ACTION: Place this card face up in your play area.{br}When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
     "description": "Description for Component: Dark Pact"
@@ -1407,22 +2139,6 @@
     "defaultMessage": "Distinguished Councilor",
     "description": "Title of Component: Distinguished Councilor"
   },
-  "Components.Divert Funding.Description": {
-    "defaultMessage": "ACTION: Return a non-unit upgrade, non-faction technology that you own to your technology deck. Then, research another technology.",
-    "description": "Description for Component: Divert Funding"
-  },
-  "Components.Divert Funding.Title": {
-    "defaultMessage": "Divert Funding",
-    "description": "Title of Component: Divert Funding"
-  },
-  "Components.Economic Initiative.Description": {
-    "defaultMessage": "ACTION: Ready each cultural planet you control.",
-    "description": "Description for Component: Economic Initiative"
-  },
-  "Components.Economic Initiative.Title": {
-    "defaultMessage": "Economic Initiative",
-    "description": "Title of Component: Economic Initiative"
-  },
   "Components.Enigmatic Device.Description": {
     "defaultMessage": "ACTION: You may spend 6 resources and purge this card to research 1 technology.",
     "description": "Description for Component: Enigmatic Device"
@@ -1430,14 +2146,6 @@
   "Components.Enigmatic Device.Title": {
     "defaultMessage": "Enigmatic Device",
     "description": "Title of Component: Enigmatic Device"
-  },
-  "Components.Exploration Probe.Description": {
-    "defaultMessage": "ACTION: Explore a frontier token that is in or adjacent to a system that contains 1 or more of your ships.",
-    "description": "Description for Component: Exploration Probe"
-  },
-  "Components.Exploration Probe.Title": {
-    "defaultMessage": "Exploration Probe",
-    "description": "Title of Component: Exploration Probe"
   },
   "Components.Fabrication.Description": {
     "defaultMessage": "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic; or purge 1 of your relic fragments to gain 1 command token.",
@@ -1447,14 +2155,6 @@
     "defaultMessage": "Fabrication",
     "description": "Title of Component: Fabrication"
   },
-  "Components.Fighter Conscription.Description": {
-    "defaultMessage": "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships.",
-    "description": "Description for Component: Fighter Conscription"
-  },
-  "Components.Fighter Conscription.Title": {
-    "defaultMessage": "Fighter Conscription",
-    "description": "Title of Component: Fighter Conscription"
-  },
   "Components.Fires of the Gashlai.Description": {
     "defaultMessage": "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
     "description": "Description for Component: Fires of the Gashlai"
@@ -1462,22 +2162,6 @@
   "Components.Fires of the Gashlai.Title": {
     "defaultMessage": "Fires of the Gashlai",
     "description": "Title of Component: Fires of the Gashlai"
-  },
-  "Components.Focused Research.Description": {
-    "defaultMessage": "ACTION: Spend 4 trade goods to research 1 technology.",
-    "description": "Description for Component: Focused Research"
-  },
-  "Components.Focused Research.Title": {
-    "defaultMessage": "Focused Research",
-    "description": "Title of Component: Focused Research"
-  },
-  "Components.Frontline Deployment.Description": {
-    "defaultMessage": "ACTION: Place 3 infantry from your reinforcements on 1 planet you control.",
-    "description": "Description for Component: Frontline Deployment"
-  },
-  "Components.Frontline Deployment.Title": {
-    "defaultMessage": "Frontline Deployment",
-    "description": "Title of Component: Frontline Deployment"
   },
   "Components.Gain Relic.Description": {
     "defaultMessage": "ACTION: Purge 3 of your relic fragments of the same type to gain 1 Relic.",
@@ -1487,41 +2171,9 @@
     "defaultMessage": "Gain Relic",
     "description": "Title of Component: Gain Relic"
   },
-  "Components.Ghost Ship.Description": {
-    "defaultMessage": "ACTION: Place 1 destroyer from your reinforcements in a non-home system that contains a wormhole and does not contain other players' ships.",
-    "description": "Description for Component: Ghost Ship"
-  },
-  "Components.Ghost Ship.Title": {
-    "defaultMessage": "Ghost Ship",
-    "description": "Title of Component: Ghost Ship"
-  },
   "Components.Hack Election.Title": {
     "defaultMessage": "Hack Election",
     "description": "Title of Component: Hack Election"
-  },
-  "Components.Impersonation.Description": {
-    "defaultMessage": "ACTION: Spend 3 influence to draw 1 secret objective.",
-    "description": "Description for Component: Impersonation"
-  },
-  "Components.Impersonation.Title": {
-    "defaultMessage": "Impersonation",
-    "description": "Title of Component: Impersonation"
-  },
-  "Components.Industrial Initiative.Description": {
-    "defaultMessage": "ACTION: Gain 1 trade good for each industrial planet you control.",
-    "description": "Description for Component: Industrial Initiative"
-  },
-  "Components.Industrial Initiative.Title": {
-    "defaultMessage": "Industrial Initiative",
-    "description": "Title of Component: Industrial Initiative"
-  },
-  "Components.Insubordination.Description": {
-    "defaultMessage": "ACTION: Remove 1 token from another player's tactic pool and return it to their reinforcements.",
-    "description": "Description for Component: Insubordination"
-  },
-  "Components.Insubordination.Title": {
-    "defaultMessage": "Insubordination",
-    "description": "Title of Component: Insubordination"
   },
   "Components.Lazax Gate Folding.Description": {
     "defaultMessage": "ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex.",
@@ -1531,14 +2183,6 @@
     "defaultMessage": "Lazax Gate Folding",
     "description": "Title of Component: Lazax Gate Folding"
   },
-  "Components.Lucky Shot.Description": {
-    "defaultMessage": "ACTION: Destroy 1 dreadnought, cruiser, or destroyer in a system that contains a planet you control.",
-    "description": "Description for Component: Lucky Shot"
-  },
-  "Components.Lucky Shot.Title": {
-    "defaultMessage": "Lucky Shot",
-    "description": "Title of Component: Lucky Shot"
-  },
   "Components.Mageon Implants.Description": {
     "defaultMessage": "ACTION: Exhaust this card to look at another player's hand of action cards. Choose 1 of those cards and add it to your hand.",
     "description": "Description for Component: Mageon Implants"
@@ -1547,14 +2191,6 @@
     "defaultMessage": "Mageon Implants",
     "description": "Title of Component: Mageon Implants"
   },
-  "Components.Mining Initiative.Description": {
-    "defaultMessage": "ACTION: Gain trade goods equal to the resource value of 1 planet you control.",
-    "description": "Description for Component: Mining Initiative"
-  },
-  "Components.Mining Initiative.Title": {
-    "defaultMessage": "Mining Initiative",
-    "description": "Title of Component: Mining Initiative"
-  },
   "Components.Orbital Drop.Description": {
     "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control.",
     "description": "Description for Component: Orbital Drop"
@@ -1562,22 +2198,6 @@
   "Components.Orbital Drop.Title": {
     "defaultMessage": "Orbital Drop",
     "description": "Title of Component: Orbital Drop"
-  },
-  "Components.Plagiarize.Description": {
-    "defaultMessage": "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology.",
-    "description": "Description for Component: Plagiarize"
-  },
-  "Components.Plagiarize.Title": {
-    "defaultMessage": "Plagiarize",
-    "description": "Title of Component: Plagiarize"
-  },
-  "Components.Plague.Description": {
-    "defaultMessage": "ACTION: Choose 1 planet that is controlled by another player. Roll 1 die for each infantry on that planet. For each result of 6 or greater, destroy 1 of those units.",
-    "description": "Description for Component: Plague"
-  },
-  "Components.Plague.Title": {
-    "defaultMessage": "Plague",
-    "description": "Title of Component: Plague"
   },
   "Components.Production Biomes.Description": {
     "defaultMessage": "ACTION: Exhaust this card and spend 1 token from your strategy pool to gain 4 trade goods and choose 1 other player; that player gains 2 trade goods.",
@@ -1595,62 +2215,6 @@
     "defaultMessage": "Promise of Protection",
     "description": "Title of Component: Promise of Protection"
   },
-  "Components.Reactor Meltdown.Description": {
-    "defaultMessage": "ACTION: Destroy 1 space dock in a non-home system.",
-    "description": "Description for Component: Reactor Meltdown"
-  },
-  "Components.Reactor Meltdown.Title": {
-    "defaultMessage": "Reactor Meltdown",
-    "description": "Title of Component: Reactor Meltdown"
-  },
-  "Components.Refit Troops.Description": {
-    "defaultMessage": "ACTION: Choose 1 or 2 of your infantry on the game board; replace each of those infantry with mechs.",
-    "description": "Description for Component: Refit Troops"
-  },
-  "Components.Refit Troops.Title": {
-    "defaultMessage": "Refit Troops",
-    "description": "Title of Component: Refit Troops"
-  },
-  "Components.Repeal Law.Description": {
-    "defaultMessage": "ACTION: Discard 1 law from play.",
-    "description": "Description for Component: Repeal Law"
-  },
-  "Components.Repeal Law.Title": {
-    "defaultMessage": "Repeal Law",
-    "description": "Title of Component: Repeal Law"
-  },
-  "Components.Rise of a Messiah.Description": {
-    "defaultMessage": "ACTION: Place 1 infantry from your reinforcements on each planet you control.",
-    "description": "Description for Component: Rise of a Messiah"
-  },
-  "Components.Rise of a Messiah.Title": {
-    "defaultMessage": "Rise of a Messiah",
-    "description": "Title of Component: Rise of a Messiah"
-  },
-  "Components.Scuttle.Description": {
-    "defaultMessage": "ACTION: Choose 1 or 2 of your non-fighter ships on the game board and return them to your reinforcements; gain trade goods equal to the combined cost of those ships.",
-    "description": "Description for Component: Scuttle"
-  },
-  "Components.Scuttle.Title": {
-    "defaultMessage": "Scuttle",
-    "description": "Title of Component: Scuttle"
-  },
-  "Components.Seize Artifact.Description": {
-    "defaultMessage": "ACTION: Choose 1 of your neighbors that has 1 or more relic fragments. That player must give you 1 relic fragment of your choice.",
-    "description": "Description for Component: Seize Artifact"
-  },
-  "Components.Seize Artifact.Title": {
-    "defaultMessage": "Seize Artifact",
-    "description": "Title of Component: Seize Artifact"
-  },
-  "Components.Signal Jamming.Description": {
-    "defaultMessage": "ACTION: Chose 1 non-home system that contains or is adjacent to 1 of your ships. Place a command token from another player's reinforcements in that system.",
-    "description": "Description for Component: Signal Jamming"
-  },
-  "Components.Signal Jamming.Title": {
-    "defaultMessage": "Signal Jamming",
-    "description": "Title of Component: Signal Jamming"
-  },
   "Components.Sling Relay.Description": {
     "defaultMessage": "ACTION: Exhaust this card to produce 1 ship in any system that contains one of your space docks.",
     "description": "Description for Component: Sling Relay"
@@ -1658,14 +2222,6 @@
   "Components.Sling Relay.Title": {
     "defaultMessage": "Sling Relay",
     "description": "Title of Component: Sling Relay"
-  },
-  "Components.Spy.Description": {
-    "defaultMessage": "ACTION: Choose 1 player. That player gives you 1 random action card from their hand.",
-    "description": "Description for Component: Spy"
-  },
-  "Components.Spy.Title": {
-    "defaultMessage": "Spy",
-    "description": "Title of Component: Spy"
   },
   "Components.Stall Tactics.Description": {
     "defaultMessage": "ACTION: Discard 1 action card from your hand.",
@@ -1690,14 +2246,6 @@
   "Components.Stymie.Title": {
     "defaultMessage": "Stymie",
     "description": "Title of Component: Stymie"
-  },
-  "Components.Tactical Bombardment.Description": {
-    "defaultMessage": "ACTION: Choose 1 system that contains 1 or more of your units that have Bombardment. Exhaust each planet controlled by other players in that system.",
-    "description": "Description for Component: Tactical Bombardment"
-  },
-  "Components.Tactical Bombardment.Title": {
-    "defaultMessage": "Tactical Bombardment",
-    "description": "Title of Component: Tactical Bombardment"
   },
   "Components.Terraform.Description": {
     "defaultMessage": "ACTION: Attach this card to a non-home planet you control other than Mecatol Rex.{br}Its resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial).",
@@ -1731,30 +2279,6 @@
     "defaultMessage": "Trade Convoys",
     "description": "Title of Component: Trade Convoys"
   },
-  "Components.Unexpected Action.Description": {
-    "defaultMessage": "ACTION: Remove 1 of your command tokens from the game board and return it to your reinforcements.",
-    "description": "Description for Component: Unexpected Action"
-  },
-  "Components.Unexpected Action.Title": {
-    "defaultMessage": "Unexpected Action",
-    "description": "Title of Component: Unexpected Action"
-  },
-  "Components.Unstable Planet.Description": {
-    "defaultMessage": "ACTION: Choose 1 hazardous planet. Exhaust that planet and destroy up to 3 infantry on it.",
-    "description": "Description for Component: Unstable Planet"
-  },
-  "Components.Unstable Planet.Title": {
-    "defaultMessage": "Unstable Planet",
-    "description": "Title of Component: Unstable Planet"
-  },
-  "Components.Uprising.Description": {
-    "defaultMessage": "ACTION: Exhaust 1 non-home planet controlled by another player. Then gain trade goods equal to its resource value.",
-    "description": "Description for Component: Uprising"
-  },
-  "Components.Uprising.Title": {
-    "defaultMessage": "Uprising",
-    "description": "Title of Component: Uprising"
-  },
   "Components.Veto.Title": {
     "defaultMessage": "Veto",
     "description": "Title of Component: Veto"
@@ -1766,14 +2290,6 @@
   "Components.Vortex.Title": {
     "defaultMessage": "Vortex",
     "description": "Title of Component: Vortex"
-  },
-  "Components.War Effort.Description": {
-    "defaultMessage": "ACTION: Place 1 cruiser from your reinforcements in a system that contains 1 or more of your ships.",
-    "description": "Description for Component: War Effort"
-  },
-  "Components.War Effort.Title": {
-    "defaultMessage": "War Effort",
-    "description": "Title of Component: War Effort"
   },
   "Components.Wormhole Generator.Description": {
     "defaultMessage": "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
@@ -1905,6 +2421,10 @@
   },
   "Council Keleres.Units.Artemiris.Description": {
     "defaultMessage": "Other players must spend 2 influence to activate the system that contains this ship.",
+    "description": "Description for Faction Unit: Artemiris"
+  },
+  "Council Keleres.Units.Artemiris.Omega.Description": {
+    "defaultMessage": "Other players must spend 2 influence to activate this system.",
     "description": "Description for Faction Unit: Artemiris"
   },
   "Council Keleres.Units.Artemiris.Title": {
@@ -2282,6 +2802,70 @@
   "Empyrean.Units.Watcher.Title": {
     "defaultMessage": "Watcher",
     "description": "Title of Faction Unit: Watcher"
+  },
+  "Events.Age of Commerce.Description": {
+    "defaultMessage": "Players do not have to be neighbors to perform transactions with each other.{br}Players do not have a maximum number of commodities; when they refresh commodities, they gain a number of commodities equal to their commodities value instead.{br}Players can share non-faction technology with other players as part of a transaction. When sharing technology, the receiving player gains that technology from their own deck; the sharing player does not lose the technology.",
+    "description": "Description of Event: Age of Commerce"
+  },
+  "Events.Age of Commerce.Title": {
+    "defaultMessage": "Age of Commerce",
+    "description": "Title of Event: Age of Commerce"
+  },
+  "Events.Age of Exploration.Description": {
+    "defaultMessage": "Relics only require 2 matching fragments be purged instead of 3.{br}The Naaz-Rokha Alliance's FABRICATION faction ability and BLACK MARKET FORGERY promissory note do not require purged fragments to match.{br}All players can perform the following action:{br}ACTION: Exhaust DARK ENERGY TAP and choose a non-home edge system that contains your ships to roll a 1 die. On a result of 1 - 4, draw a random unused red tile; on a result of 5 - 10, draw an random unused blue tile. Place that tile adjacent to the chosen system so that it is touching 2 non-home systems. Place a frontier token in the system if it does not contain any planets.",
+    "description": "Description of Event: Age of Exploration"
+  },
+  "Events.Age of Exploration.Title": {
+    "defaultMessage": "Age of Exploration",
+    "description": "Title of Event: Age of Exploration"
+  },
+  "Events.Age of Fighters.Description": {
+    "defaultMessage": "During setup, all players gain the Fighter II unit upgrade technology; the Naalu Collective player gains Hybrid Crystal Fighter II technology instead.{br}Fighters that count against your fleet pool have CAPACITY value of 1; fighters cannot transport other fighters.{br}Non-fighter ships are purged when they are destroyed.",
+    "description": "Description of Event: Age of Fighters"
+  },
+  "Events.Age of Fighters.Title": {
+    "defaultMessage": "Age of Fighters",
+    "description": "Title of Event: Age of Fighters"
+  },
+  "Events.Civilized Society.Description": {
+    "defaultMessage": "During setup, turn all public objectives faceup.{br}There is no limit to the number of public objectives a player may score during the status phase.{br}The game does not immediately end when a player reaches the required number of victory points; instead, it ends at the end of that round's status phase, and the player with the most victory points wins. In the case of a tie, the tied players total the influence values of their controlled planets and their unspent trade goods; the player or players with the highest total win the game.",
+    "description": "Description for Event: Civilized Society"
+  },
+  "Events.Civilized Society.Title": {
+    "defaultMessage": "Civilized Society",
+    "description": "Title of Event: Civilized Society"
+  },
+  "Events.Dangerous Wilds.Description": {
+    "defaultMessage": "During setup, place neutral infantry on each hazardous planet equal to that planet's resource value.{br}At the end of each round, for each hazardous planet that is not controlled, replenish any neutral units that were destroyed during the game round.{br}When a player gains control of a hazardous planet from the planet deck, they may research 1 technology; they may ignore a number of that technology's prerequisites equal to the planet's resource value.",
+    "description": "Description for Event: Dangerous Wilds"
+  },
+  "Events.Dangerous Wilds.Title": {
+    "defaultMessage": "Dangerous Wilds",
+    "description": "Title of Event: Dangerous Wilds"
+  },
+  "Events.Minor Factions.Description": {
+    "defaultMessage": "During setup, players are dealt 1 fewer blue tile. Before creating the galaxy, shuffle the reference cards for factions not being played and deal 1 to each player. In speaker order, each player places that faction's home system in the second ring, equidistant from players' home systems. Then, that player places 3 neutral infantry on that system's planets, split as evenly as possible. These systems are minor faction systems and do not count as home systems.{br}When a player controls each planet in a minor faction system, they take that factions alliance card from the deck or from the player that owned it previously.{br}Planets in minor faction systems gain all three planet traits (cultural, industrial, and hazardous).",
+    "description": "Description for Event: Minor Factions"
+  },
+  "Events.Minor Factions.Title": {
+    "defaultMessage": "Minor Factions",
+    "description": "Title of Event: Minor Factions"
+  },
+  "Events.Stellar Atomics.Description": {
+    "defaultMessage": "During setup, each player places one of their control tokens on this card.{br}All players can perform the following action:{br}ACTION: Discard your control token from this card to destroy all ground forces and structures on any non-home planet.{br}If you do not have a control token on this card, you cannot vote or play action cards during the agenda phase.",
+    "description": "Description of Event: Stellar Atomics"
+  },
+  "Events.Stellar Atomics.Title": {
+    "defaultMessage": "Stellar Atomics",
+    "description": "Title of Event: Stellar Atomics"
+  },
+  "Events.Total War.Description": {
+    "defaultMessage": "When a player destroys or produces a hit that destroys another player's units, they place commodities from the supply equal to the combined cost of the units they destroyed on a planet they control in their home system (infantry and fighters are worth 1 each).{br}When a player gains control of a home system that has commodities, they move those commodities to a planet they control in their own home system.{br}All players can perform the following action:{br}ACTION: Discard 10 commodities from planets in your home system to gain 1 victory point.",
+    "description": "Description for Event: Total War"
+  },
+  "Events.Total War.Title": {
+    "defaultMessage": "Total War",
+    "description": "Title of Event: Total War"
   },
   "FHUFoZ": {
     "defaultMessage": "Game ID",
@@ -5644,12 +6228,20 @@
     "description": "Ability name for Xxcha Hero: Xxekir Grom Ω"
   },
   "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.Description": {
-    "defaultMessage": "When you exhaust planets, combine the values of their resources and influence. Treat the combined value as if it were both resources and influence",
+    "defaultMessage": "When you exhaust planets, combine the values of their resources and influence. Treat the combined value as if it were both resources and influence.",
     "description": "Description for Xxcha Hero: Xxekir Grom Ω"
   },
   "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.Name": {
     "defaultMessage": "Xxekir Grom Ω",
     "description": "Name of Xxcha Hero: Xxekir Grom Ω"
+  },
+  "Xxcha Kingdom.Leaders.Xxekir Grom.Thunders Edge.AbilityName": {
+    "defaultMessage": "PLANETARY DEFENSE NEXUS",
+    "description": "Ability name for Xxcha Hero: Xxekir Grom"
+  },
+  "Xxcha Kingdom.Leaders.Xxekir Grom.Thunders Edge.Description": {
+    "defaultMessage": "ACTION: Place any combination of up to 4 PDS or mechs onto planets that you control; ready each planet that you place a unit on.{br}Then, purge this card.",
+    "description": "Description for Xxcha Hero: Xxekir Grom"
   },
   "Xxcha Kingdom.Name": {
     "defaultMessage": "Xxcha Kingdom",

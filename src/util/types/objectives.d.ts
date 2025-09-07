@@ -10,11 +10,7 @@ interface BaseObjective {
   type: ObjectiveType;
   // Optional
   max?: number;
-  omega?: {
-    description: string;
-    expansion: Expansion;
-    name: string;
-  };
+  omegas?: Omega<BaseObjective>[];
   phase?: Phase;
   repeatable?: boolean;
   replaces?: ObjectiveId;

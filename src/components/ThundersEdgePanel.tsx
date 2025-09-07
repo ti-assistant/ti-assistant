@@ -2,6 +2,7 @@ import { FormattedMessage } from "react-intl";
 import {
   useExpedition,
   useGameId,
+  useOptions,
   useRelics,
   useViewOnly,
 } from "../context/dataHooks";
@@ -11,11 +12,13 @@ import {
   commitToExpeditionAsync,
   gainRelicAsync,
   loseRelicAsync,
+  scoreObjectiveAsync,
   unplayComponentAsync,
+  unscoreObjectiveAsync,
 } from "../dynamic/api";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
-import { getFactionColor } from "../util/factions";
+import { getFactionColor, getFactionName } from "../util/factions";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import ExpeditionIcon from "./Expedition/ExpeditionIcon";
@@ -24,12 +27,28 @@ import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadi
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import styles from "./ThundersEdgePanel.module.scss";
+import { useObjective } from "../context/objectiveDataHooks";
+
+function getSupportScorer(factionId: FactionId, support: Objective) {
+  if (!support.keyedScorers) {
+    return;
+  }
+  const scorers = support.keyedScorers[factionId];
+  if (!scorers) {
+    return;
+  }
+  return scorers[0];
+}
 
 export default function ThundersEdgePanel() {
+  const options = useOptions();
   return (
     <div className={styles.ThundersEdgeGrid}>
-      <ExpeditionSection />
+      {options.expansions.includes("THUNDERS EDGE") ? (
+        <ExpeditionSection />
+      ) : null}
       <RelicsSection />
+      <PromissoriesSection />
     </div>
   );
 }
@@ -113,9 +132,8 @@ function ExpeditionRadialSelector({
 }
 
 function RelicsSection() {
-  // const components = useComponents();
-  const gameId = useGameId();
   const factions = useFactions();
+  const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const relics = useRelics();
 
@@ -145,6 +163,7 @@ function RelicsSection() {
         height: "fit-content",
         gridArea: "left",
         padding: `${rem(8)}`,
+        paddingTop: 0,
       }}
     >
       <div className="flexColumn">
@@ -187,6 +206,169 @@ function RelicsSection() {
           );
         })}
         <LabeledLine leftLabel="Unowned Relics" />
+        {unownedRelics.map((relic) => {
+          return (
+            <div
+              key={relic.id}
+              className="flexRow"
+              style={{
+                width: "100%",
+                padding: `0 ${rem(8)}`,
+              }}
+            >
+              <InfoRow
+                infoTitle={relic.name}
+                infoContent={
+                  <FormattedDescription description={relic.description} />
+                }
+              >
+                {relic.name}
+              </InfoRow>
+              <FactionSelectRadialMenu
+                factions={mapOrderedFactionIds}
+                onSelect={(factionId, prevFaction) => {
+                  if (factionId) {
+                    gainRelicAsync(gameId, factionId, relic.id);
+                  }
+                  if (prevFaction) {
+                    loseRelicAsync(gameId, prevFaction, relic.id);
+                  }
+                }}
+                selectedFaction={relic.owner}
+                size={24}
+              />
+            </div>
+          );
+        })}
+        <LabeledLine leftLabel="Purged Relics" />
+        {purgedRelics.length > 0 ? (
+          <>
+            {purgedRelics.map((relic) => {
+              const owner = relic.owner as FactionId;
+              return (
+                <div
+                  key={relic.id}
+                  className="flexRow"
+                  style={{
+                    width: "100%",
+                    padding: `0 ${rem(8)}`,
+                  }}
+                >
+                  <SelectableRow
+                    itemId={relic.id}
+                    removeItem={() =>
+                      // TODO: Replace with just updating the state.
+                      unplayComponentAsync(gameId, relic.id, owner)
+                    }
+                    style={{ width: "100%" }}
+                  >
+                    <InfoRow
+                      infoTitle={relic.name}
+                      infoContent={
+                        <FormattedDescription description={relic.description} />
+                      }
+                    >
+                      {relic.name}
+                    </InfoRow>
+                  </SelectableRow>
+                </div>
+              );
+            })}
+          </>
+        ) : null}
+      </div>
+    </CollapsibleSection>
+  );
+}
+
+function PromissoriesSection() {
+  const factions = useFactions();
+  const gameId = useGameId();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const relics = useRelics();
+
+  const supportForTheThrone = useObjective("Support for the Throne");
+  if (!supportForTheThrone) {
+    return null;
+  }
+
+  const ownedRelics = Object.values(relics)
+    .filter((relic) => relic.owner && relic.state !== "purged")
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+  const unownedRelics = Object.values(relics)
+    .filter((relic) => !relic.owner)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+  // TODO: Fix purged relics.
+  const purgedRelics = Object.values(relics)
+    .filter((relic) => relic.state === "purged")
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  return (
+    <CollapsibleSection
+      title={
+        <div className={styles.planetTitle}>
+          <FormattedMessage
+            id="CH11Yw"
+            description="The title of promissory notes."
+            defaultMessage="Promissories"
+          />
+        </div>
+      }
+      style={{
+        height: "fit-content",
+        gridArea: "right",
+        padding: `${rem(8)}`,
+        paddingTop: 0,
+      }}
+    >
+      <div className="flexColumn">
+        <LabeledLine leftLabel="Support for the Throne" />
+        {mapOrderedFactionIds.map((factionId) => {
+          const supportHolder = getSupportScorer(
+            factionId,
+            supportForTheThrone
+          );
+          return (
+            <div
+              key={factionId}
+              className="flexRow"
+              style={{
+                width: "100%",
+                padding: `0 ${rem(8)}`,
+              }}
+            >
+              {getFactionName(factions[factionId])}
+              <FactionSelectRadialMenu
+                factions={mapOrderedFactionIds}
+                invalidFactions={[factionId]}
+                onSelect={(newFaction, prevFaction) => {
+                  if (newFaction) {
+                    scoreObjectiveAsync(
+                      gameId,
+                      newFaction,
+                      "Support for the Throne",
+                      factionId
+                    );
+                  }
+                  if (prevFaction) {
+                    unscoreObjectiveAsync(
+                      gameId,
+                      prevFaction,
+                      "Support for the Throne",
+                      factionId
+                    );
+                  }
+                }}
+                selectedFaction={supportHolder}
+                borderColor={getFactionColor(
+                  supportHolder ? factions[supportHolder] : undefined
+                )}
+                size={24}
+              />
+            </div>
+          );
+        })}
+        <LabeledLine leftLabel="Alliance" />
         {unownedRelics.map((relic) => {
           return (
             <div

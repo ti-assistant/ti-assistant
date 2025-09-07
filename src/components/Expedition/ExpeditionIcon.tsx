@@ -26,7 +26,10 @@ export default function ExpeditionIcon({
     case "actionCards":
       innerContent = (
         <>
-          <div className="flexRow" style={{ width: rem(14) }}>
+          <div
+            className="flexRow"
+            style={{ width: rem(14), fontSize: rem(18) }}
+          >
             2
           </div>
           <div
@@ -49,10 +52,6 @@ export default function ExpeditionIcon({
       );
       break;
     case "resources":
-      const resourcesStyle: AvailableVotesStyle = {
-        "--height": rem(32),
-        "--width": rem(28),
-      };
       innerContent = (
         <div
           className="flexRow"
@@ -65,7 +64,10 @@ export default function ExpeditionIcon({
     case "secrets":
       innerContent = (
         <>
-          <div className="flexRow" style={{ width: rem(14) }}>
+          <div
+            className="flexRow"
+            style={{ width: rem(14), fontSize: rem(18) }}
+          >
             1
           </div>
           <div
@@ -89,7 +91,13 @@ export default function ExpeditionIcon({
     case "tradeGoods":
       innerContent = (
         <>
-          <div className="flexRow" style={{ width: rem(14) }}>
+          <div
+            className="flexRow"
+            style={{
+              width: rem(14),
+              fontSize: rem(18),
+            }}
+          >
             3
           </div>
           <div

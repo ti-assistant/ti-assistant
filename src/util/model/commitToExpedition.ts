@@ -33,6 +33,7 @@ export class CommitToExpeditionHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
+    console.log("Event", this.data.event);
     let updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
@@ -81,9 +82,6 @@ export class CommitToExpeditionHandler implements Handler {
         // TODO: Handle tie-break including current player.
       }
     }
-
-    console.log("Total", total);
-    console.log("Top", topFaction);
 
     // If the previous faction should no longer have their breakthrough, lock their breakthrough.
     if (prevFaction) {

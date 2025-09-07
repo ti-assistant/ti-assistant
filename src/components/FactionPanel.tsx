@@ -598,7 +598,8 @@ function FactionPanelContent({
                 </AbilitySection>
               );
             })}
-            {options.expansions.includes("THUNDERS EDGE") ? (
+            {options.expansions.includes("THUNDERS EDGE") &&
+            faction.breakthrough.name ? (
               <AbilitySection
                 leftLabel={
                   <div className="flexRow">

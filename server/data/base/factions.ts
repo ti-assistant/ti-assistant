@@ -86,20 +86,22 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Arborec.Promissories.Stymie.Omega.Title",
-              description: "Title of Faction Promissory: Stymie Ω",
-              defaultMessage: "Stymie Ω",
-            }),
-            description: intl.formatMessage({
-              id: "Arborec.Promissories.Stymie.Omega.Description",
-              description: "Description for Faction Promissory: Stymie Ω",
-              defaultMessage:
-                "After another player moves ships into a system that contains 1 or more of your units:\n\nYou may place 1 command token from that player's reinforcements in any non-home system.\n\nThen, return this card to the Arborec player.",
-            }),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Arborec.Promissories.Stymie.Omega.Title",
+                description: "Title of Faction Promissory: Stymie Ω",
+                defaultMessage: "Stymie Ω",
+              }),
+              description: intl.formatMessage({
+                id: "Arborec.Promissories.Stymie.Omega.Description",
+                description: "Description for Faction Promissory: Stymie Ω",
+                defaultMessage:
+                  "After another player moves ships into a system that contains 1 or more of your units:\n\nYou may place 1 command token from that player's reinforcements in any non-home system.\n\nThen, return this card to the Arborec player.",
+              }),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -251,24 +253,26 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Barony of Letnev.Promissories.War Funding.Omega.Title",
-              description: "Title of Faction Promissory: War Funding Ω",
-              defaultMessage: "War Funding Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "Barony of Letnev.Promissories.War Funding.Omega.Description",
-                description:
-                  "Description for Faction Promissory: War Funding Ω",
-                defaultMessage:
-                  "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice. You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Barony of Letnev.Promissories.War Funding.Omega.Title",
+                description: "Title of Faction Promissory: War Funding Ω",
+                defaultMessage: "War Funding Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "Barony of Letnev.Promissories.War Funding.Omega.Description",
+                  description:
+                    "Description for Faction Promissory: War Funding Ω",
+                  defaultMessage:
+                    "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice. You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -1170,25 +1174,27 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Title",
-              description:
-                "Title of Faction Promissory: Cybernetic Enhancements Ω",
-              defaultMessage: "Cybernetic Enhancements Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Description",
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Title",
                 description:
-                  "Description for Faction Promissory: Cybernetic Enhancements Ω",
-                defaultMessage:
-                  "When you gain command tokens during the status phase:{br}Gain 1 additional command token.{br}Then, return this card to the L1Z1X player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+                  "Title of Faction Promissory: Cybernetic Enhancements Ω",
+                defaultMessage: "Cybernetic Enhancements Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Description",
+                  description:
+                    "Description for Faction Promissory: Cybernetic Enhancements Ω",
+                  defaultMessage:
+                    "When you gain command tokens during the status phase:{br}Gain 1 additional command token.{br}Then, return this card to the L1Z1X player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -1529,20 +1535,22 @@ export default function getBaseFactions(
             description: "Title of Faction Unit: Iconoclast",
             defaultMessage: "Iconoclast",
           }),
-          omega: {
-            name: intl.formatMessage({
-              id: "Naalu Collective.Units.Iconoclast.Omega.Title",
-              description: "Title of Faction Unit: Iconoclast Ω",
-              defaultMessage: "Iconoclast Ω",
-            }),
-            description: intl.formatMessage({
-              id: "Naalu Collective.Units.Iconoclast.Omega.Description",
-              description: "Description for Faction Unit: Iconoclast Ω",
-              defaultMessage:
-                "Other players cannot use ANTI-FIGHTER BARRAGE against your units in this system.",
-            }),
-            expansion: "CODEX THREE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.Omega.Title",
+                description: "Title of Faction Unit: Iconoclast Ω",
+                defaultMessage: "Iconoclast Ω",
+              }),
+              description: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.Omega.Description",
+                description: "Description for Faction Unit: Iconoclast Ω",
+                defaultMessage:
+                  "Other players cannot use ANTI-FIGHTER BARRAGE against your units in this system.",
+              }),
+              expansion: "CODEX THREE",
+            },
+          ],
           stats: {
             cost: 2,
             combat: 6,
@@ -2063,23 +2071,26 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Winnu.Promissories.Acquiescence.Omega.Title",
-              description: "Title of Faction Ability: Acquiescence Ω",
-              defaultMessage: "Acquiescence Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "Winnu.Promissories.Acquiescence.Omega.Description",
-                description: "Description for Faction Ability: Acquiescence Ω",
-                defaultMessage:
-                  "When the Winnu player resolves a strategic action:{br}You do not have to spend or place a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Winnu.Promissories.Acquiescence.Omega.Title",
+                description: "Title of Faction Ability: Acquiescence Ω",
+                defaultMessage: "Acquiescence Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "Winnu.Promissories.Acquiescence.Omega.Description",
+                  description:
+                    "Description for Faction Ability: Acquiescence Ω",
+                  defaultMessage:
+                    "When the Winnu player resolves a strategic action:{br}You do not have to spend or place a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -2376,24 +2387,26 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Title",
-              description: "Title of Faction Promissory: Greyfire Mutagen Ω",
-              defaultMessage: "Greyfire Mutagen Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Description",
-                description:
-                  "Description for Faction Promissory: Greyfire Mutagen Ω",
-                defaultMessage:
-                  "At the start of a ground combat against 2 or more ground forces that are not controlled by the Yin player:{br}Replace 1 of your opponent's infantry with 1 infantry from your reinforcements.{br}Then, return this card to the Yin player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Title",
+                description: "Title of Faction Promissory: Greyfire Mutagen Ω",
+                defaultMessage: "Greyfire Mutagen Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Description",
+                  description:
+                    "Description for Faction Promissory: Greyfire Mutagen Ω",
+                  defaultMessage:
+                    "At the start of a ground combat against 2 or more ground forces that are not controlled by the Yin player:{br}Replace 1 of your opponent's infantry with 1 infantry from your reinforcements.{br}Then, return this card to the Yin player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({

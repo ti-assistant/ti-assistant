@@ -354,20 +354,22 @@ export default function getProphecyOfKingsObjectives(
         description: "Title of Objective: Fight With Precision",
         defaultMessage: "Fight With Precision",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Objectives.Fight With Precision.Omega.Description",
-          description: "Description for Objective: Fight With Precision Ω",
-          defaultMessage:
-            "Destroy the last of a player's fighters in the active system during the anti-fighter barrage step",
-        }),
-        name: intl.formatMessage({
-          id: "Objectives.Fight With Precision.Omega.Title",
-          description: "Title of Objective: Fight With Precision Ω",
-          defaultMessage: "Fight With Precision Ω",
-        }),
-        expansion: "CODEX THREE",
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Objectives.Fight With Precision.Omega.Description",
+            description: "Description for Objective: Fight With Precision Ω",
+            defaultMessage:
+              "Destroy the last of a player's fighters in the active system during the anti-fighter barrage step",
+          }),
+          name: intl.formatMessage({
+            id: "Objectives.Fight With Precision.Omega.Title",
+            description: "Title of Objective: Fight With Precision Ω",
+            defaultMessage: "Fight With Precision Ω",
+          }),
+          expansion: "CODEX THREE",
+        },
+      ],
       phase: "ACTION",
       points: 1,
       type: "SECRET",

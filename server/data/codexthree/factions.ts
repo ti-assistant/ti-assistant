@@ -71,6 +71,11 @@ export default function getCodexThreeFactions(
         description: "Name of Faction: Council Keleres",
         defaultMessage: "Council Keleres",
       }),
+      omegas: [
+        {
+          expansion: "THUNDERS EDGE",
+        },
+      ],
       promissories: [
         {
           name: intl.formatMessage({
@@ -125,6 +130,17 @@ export default function getCodexThreeFactions(
             description: "Title of Faction Unit: Artemiris",
             defaultMessage: "Artemiris",
           }),
+          omegas: [
+            {
+              expansion: "THUNDERS EDGE",
+              description: intl.formatMessage({
+                id: "Council Keleres.Units.Artemiris.Omega.Description",
+                description: "Description for Faction Unit: Artemiris",
+                defaultMessage:
+                  "Other players must spend 2 influence to activate this system.",
+              }),
+            },
+          ],
           stats: {
             cost: 8,
             combat: "7(x2)",

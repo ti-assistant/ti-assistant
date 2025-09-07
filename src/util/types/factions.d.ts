@@ -12,19 +12,6 @@ type FactionUpdateAction =
 
 type SubFaction = "Argent Flight" | "Mentak Coalition" | "Xxcha Kingdom";
 
-interface FactionUpdateData {
-  action?: FactionUpdateAction;
-  faction?: string;
-  factions?: Record<string, { votes: number }>;
-  planet?: string;
-  planets?: string[];
-  ready?: boolean;
-  subFaction?: SubFaction;
-  tech?: string;
-  timestamp?: number;
-  vps?: number;
-}
-
 type UnitType =
   | "Carrier"
   | "Cruiser"
@@ -59,14 +46,13 @@ interface StartsWith {
 interface Ability {
   name: string;
   description: string;
+  omegas?: Omega<Ability>[];
 }
 
 interface PromissoryNote {
   name: string;
   description: string;
-  omega?: {
-    expansion: Expansion;
-  } & Partial<PromissoryNote>;
+  omegas?: Omega<PromissoryNote>[];
 }
 
 interface Unit {
@@ -76,9 +62,7 @@ interface Unit {
   name: string;
   stats: UnitStats;
   type: UnitType;
-  omega?: {
-    expansion: Expansion;
-  } & Partial<Unit>;
+  omegas?: Omega<Unit>[];
   upgrade?: TechId;
 }
 
@@ -103,6 +87,7 @@ interface BaseFaction {
   expansion: Expansion;
   id: FactionId;
   name: string;
+  omegas?: Omega<BaseFaction>[];
   promissories: PromissoryNote[];
   shortname: string;
   startswith: StartsWith;

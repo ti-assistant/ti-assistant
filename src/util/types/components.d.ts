@@ -31,14 +31,7 @@ interface BaseLeader {
   faction?: FactionId;
   id: LeaderId;
   name: string;
-  omega?: {
-    abilityName?: string;
-    description: string;
-    expansion: Expansion;
-    name: string;
-    timing?: Timing;
-    unlock?: string;
-  };
+  omegas?: Omega<BaseLeader>[];
   replaces?: string;
   subFaction?: FactionId;
   timing: Timing;

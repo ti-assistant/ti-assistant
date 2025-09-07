@@ -32,6 +32,7 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
+import { buildMergeFunction } from "../../src/util/expansions";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -1044,8 +1045,10 @@ function FactionSelect({
 
   const isSpeaker = speaker === factionIndex;
 
-  const filteredFactions = Object.values(availableFactions ?? {}).filter(
-    (faction) => {
+  const omegaMergeFn = buildMergeFunction(Array.from(options.expansions));
+
+  const filteredFactions = Object.values(availableFactions ?? {})
+    .filter((faction) => {
       if (faction.expansion === "BASE") {
         return true;
       }
@@ -1053,8 +1056,17 @@ function FactionSelect({
         return false;
       }
       return true;
-    }
-  );
+    })
+    .map((faction) => {
+      const updatedFaction = omegaMergeFn(faction);
+
+      updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+      updatedFaction.promissories =
+        updatedFaction.promissories.map(omegaMergeFn);
+      updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
+
+      return updatedFaction;
+    });
   filteredFactions.sort((a, b) => {
     if (a.name > b.name) {
       return 1;

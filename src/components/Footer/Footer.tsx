@@ -37,6 +37,7 @@ import styles from "./Footer.module.scss";
 import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import ThundersEdgePanel from "../ThundersEdgePanel";
 import RelicMenuSVG from "../../icons/ui/RelicMenu";
+import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -91,7 +92,10 @@ function getNumButtons(
   if (!shouldBlockSpeakerUpdates(phase, strategyCards)) {
     buttons++;
   }
-  if (options.expansions.includes("THUNDERS EDGE")) {
+  if (
+    options.expansions.includes("POK") ||
+    options.expansions.includes("THUNDERS EDGE")
+  ) {
     buttons++;
   }
   return buttons;
@@ -339,7 +343,8 @@ export default function Footer() {
             defaultMessage="Update Planets"
           />
         </div>
-        {options.expansions.includes("THUNDERS EDGE") ? (
+        {options.expansions.includes("THUNDERS EDGE") ||
+        options.expansions.includes("POK") ? (
           <div
             className="flexRow"
             onClick={() => openModal(<ThundersEdgeModalContent />)}
@@ -471,7 +476,8 @@ export default function Footer() {
           </button>
           <span className={styles.ButtonLabel}>Planets</span>
         </div>
-        {options.expansions.includes("THUNDERS EDGE") ? (
+        {options.expansions.includes("THUNDERS EDGE") ||
+        options.expansions.includes("POK") ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
               onClick={() => openModal(<ThundersEdgeModalContent />)}
@@ -514,7 +520,11 @@ export default function Footer() {
                     gridColumn: "3 / 4",
                   }}
                 >
-                  <ThundersEdgeMenuSVG />
+                  {options.expansions.includes("THUNDERS EDGE") ? (
+                    <ThundersEdgeMenuSVG />
+                  ) : (
+                    <PromissoryMenuSVG />
+                  )}
                 </div>
               </div>
             </button>
@@ -755,9 +765,9 @@ function ThundersEdgeModalContent() {
         }}
       >
         <FormattedMessage
-          id="SpNTY7"
-          description="Text on a button that will enable/disable the Thunder's Edge expansion."
-          defaultMessage="Thunder's Edge"
+          id="sgqLYB"
+          defaultMessage="Other"
+          description="Text on a button used to select a non-listed value"
         />
       </div>
       <div
