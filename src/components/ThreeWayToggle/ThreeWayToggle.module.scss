@@ -14,6 +14,16 @@
 
   user-select: none;
   font-size: 0.875rem;
+
+  color: var(--selected-border);
+}
+
+.ToggleContainer.Positive {
+  color: var(--foreground-color);
+}
+
+.ToggleContainer.Negative {
+  color: var(--neutral-border);
 }
 
 .ToggleContainer::before {
@@ -33,7 +43,7 @@
 .ToggleContainer.Negative::before {
   margin-left: 1.4rem;
   width: calc(100% - 1.4rem);
-  background-color: var(--selected-bg);
+  background-color: var(--light-bg);
 }
 
 .ToggleContainer.Positive::before {
@@ -77,6 +87,10 @@
 .ToggleContainer > input[type="checkbox"]:checked::before {
   background-color: var(--selected-border);
   color: var(--background-color);
+}
+
+input[type="checkbox"].Negative:checked::before {
+  background-color: var(--neutral-border);
 }
 
 input[type="checkbox"].Positive::before {

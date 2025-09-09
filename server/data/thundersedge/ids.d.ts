@@ -19,7 +19,9 @@ namespace ThundersEdge {
 
   type EventId =
     | "Age of Fighters"
+    | "Call of the Void"
     | "Civilized Society"
     | "Dangerous Wilds"
+    | "Hidden Agenda"
     | "Stellar Atomics";
 }

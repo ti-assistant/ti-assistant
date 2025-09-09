@@ -146,10 +146,6 @@ function FactionPanelContent({
   const techs = buildBaseTechs(options, intl);
   const leaders = buildBaseLeaders(options, intl);
 
-  if (!faction) {
-    return null;
-  }
-
   const factionTechs = Object.values(techs).filter(
     (tech) => tech.faction === faction.id
   );
@@ -177,10 +173,6 @@ function FactionPanelContent({
       }
       return a.name > b.name ? 1 : -1;
     });
-
-  if (!faction) {
-    return null;
-  }
 
   return (
     <div className={styles.factionInfoGrid}>

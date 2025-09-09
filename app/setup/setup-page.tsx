@@ -24,6 +24,7 @@ import { useSharedModal } from "../../src/data/SharedModal";
 import CodexSVG from "../../src/icons/ui/Codex";
 import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
+import { buildMergeFunction } from "../../src/util/expansions";
 import { convertToFactionColor } from "../../src/util/factions";
 import { extractFactionIds, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
@@ -32,7 +33,6 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
-import { buildMergeFunction } from "../../src/util/expansions";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -346,7 +346,7 @@ function MobileOptions({
               {filteredEvents.length > 0 ? (
                 <div
                   className="flexColumn"
-                  style={{ alignItems: "flex-start" }}
+                  style={{ alignItems: "flex-start", maxWidth: "86vw" }}
                 >
                   <FormattedMessage
                     id="WVs5Hr"
@@ -358,13 +358,14 @@ function MobileOptions({
                     style={{
                       display: "grid",
                       gridAutoFlow: "column",
-                      gridTemplateRows: "repeat(2, 1fr)",
+                      gridTemplateRows: "repeat(4, 1fr)",
                       gridTemplateColumns: "repeat(4, 1fr)",
                       justifyContent: "flex-start",
                       alignContent: "flex-start",
-                      padding: `0 ${rem(20)}`,
                       fontFamily: "Myriad Pro",
                       gap: rem(4),
+                      overflowX: "scroll",
+                      width: "100%",
                     }}
                   >
                     {filteredEvents.map(([eventId, event]) => {
@@ -477,93 +478,6 @@ function MobileOptions({
                   ></input>
                 </div>
               </div>
-              {options.expansions.has("CODEX FOUR") ? (
-                <div
-                  className="flexColumn"
-                  style={{ alignItems: "flex-start" }}
-                >
-                  <FormattedMessage
-                    id="WVs5Hr"
-                    description="Event actions."
-                    defaultMessage="Events"
-                  />
-                  :
-                  <div
-                    className="flexRow"
-                    style={{
-                      alignItems: "flex-start",
-                      padding: `0 ${rem(20)}`,
-                      fontFamily: "Myriad Pro",
-                      gap: rem(4),
-                    }}
-                  >
-                    <Toggle
-                      selected={options.events.has("Age of Commerce")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Age of Commerce");
-                        } else {
-                          toggleEvent(true, "Age of Commerce");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="GaVWfk"
-                        defaultMessage="Age of Commerce"
-                        description="Name of event in which players can trade more."
-                      />
-                    </Toggle>
-                    <Toggle
-                      selected={options.events.has("Age of Exploration")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Age of Exploration");
-                        } else {
-                          toggleEvent(true, "Age of Exploration");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="sZua2x"
-                        defaultMessage="Age of Exploration"
-                        description="Name of event in which players can add new tiles to the map."
-                      />
-                    </Toggle>
-                    <Toggle
-                      selected={options.events.has("Minor Factions")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Minor Factions");
-                        } else {
-                          toggleEvent(true, "Minor Factions");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="hxXb/S"
-                        defaultMessage="Minor Factions"
-                        description="Name of event in which other factions' home planets are on the board."
-                      />
-                    </Toggle>
-                    <Toggle
-                      selected={options.events.has("Total War")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Total War");
-                        } else {
-                          toggleEvent(true, "Total War");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="YcYpgP"
-                        defaultMessage="Total War"
-                        description="Name of event in which combat can be used to gain VPs."
-                      />
-                    </Toggle>
-                  </div>
-                </div>
-              ) : null}
             </div>
           </div>
         </ClientOnlyHoverMenu>
@@ -823,7 +737,7 @@ function Options({
                   style={{
                     display: "grid",
                     gridAutoFlow: "column",
-                    gridTemplateRows: "repeat(2, 1fr)",
+                    gridTemplateRows: "repeat(4, 1fr)",
                     gridTemplateColumns: "repeat(4, 1fr)",
                     justifyContent: "flex-start",
                     alignContent: "flex-start",
@@ -1047,26 +961,29 @@ function FactionSelect({
 
   const omegaMergeFn = buildMergeFunction(Array.from(options.expansions));
 
-  const filteredFactions = Object.values(availableFactions ?? {})
-    .filter((faction) => {
-      if (faction.expansion === "BASE") {
-        return true;
-      }
-      if (!options.expansions.has(faction.expansion)) {
-        return false;
-      }
+  const updatedFactions: Record<FactionId, BaseFaction> = {} as Record<
+    FactionId,
+    BaseFaction
+  >;
+  for (const [factionId, faction] of objectEntries(availableFactions)) {
+    const updatedFaction = omegaMergeFn(faction);
+
+    updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+    updatedFaction.promissories = updatedFaction.promissories.map(omegaMergeFn);
+    updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
+
+    updatedFactions[factionId] = updatedFaction;
+  }
+
+  const filteredFactions = Object.values(updatedFactions).filter((faction) => {
+    if (faction.expansion === "BASE") {
       return true;
-    })
-    .map((faction) => {
-      const updatedFaction = omegaMergeFn(faction);
-
-      updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
-      updatedFaction.promissories =
-        updatedFaction.promissories.map(omegaMergeFn);
-      updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
-
-      return updatedFaction;
-    });
+    }
+    if (!options.expansions.has(faction.expansion)) {
+      return false;
+    }
+    return true;
+  });
   filteredFactions.sort((a, b) => {
     if (a.name > b.name) {
       return 1;
@@ -1174,13 +1091,13 @@ function FactionSelect({
             {faction.id ? (
               <>
                 <SelectableRow
-                  itemId={availableFactions[faction.id].name}
+                  itemId={updatedFactions[faction.id].name}
                   removeItem={() => selectFaction(undefined)}
                   style={{ height: rem(32.67) }}
                 >
-                  {availableFactions[faction.id].name}
+                  {updatedFactions[faction.id].name}
                   <SetupFactionPanel
-                    faction={availableFactions[faction.id]}
+                    faction={updatedFactions[faction.id]}
                     options={createOptions(options)}
                   />
                 </SelectableRow>

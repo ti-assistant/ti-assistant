@@ -12,11 +12,12 @@ import Chip from "../../src/components/Chip/Chip";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import { Strings } from "../../src/components/strings";
+import ThreeWayToggle from "../../src/components/ThreeWayToggle/ThreeWayToggle";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Loader } from "../../src/Loader";
 import { Optional } from "../../src/util/types/types";
-import { objectEntries, rem } from "../../src/util/util";
+import { objectEntries, objectKeys, rem } from "../../src/util/util";
 import { ProcessedGame } from "./processor";
 import FactionsSection from "./sections/FactionsSection";
 import { FactionHistogram, PointsHistogram } from "./sections/Histogram";
@@ -25,7 +26,6 @@ import StrategyCardSection from "./sections/StrategyCardSection";
 import TechsSection from "./sections/TechsSection";
 import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
-import ThreeWayToggle from "../../src/components/ThreeWayToggle/ThreeWayToggle";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -235,16 +235,7 @@ export default function StatsPage({
   });
   const [events, setEvents] = useState<IncludeExclude<EventId>>({
     include: new Set(),
-    exclude: new Set([
-      "Age of Commerce",
-      "Age of Exploration",
-      "Age of Fighters",
-      "Civilized Society",
-      "Dangerous Wilds",
-      "Minor Factions",
-      "Stellar Atomics",
-      "Total War",
-    ]),
+    exclude: new Set(objectKeys(baseData.events)),
   });
 
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(

@@ -183,16 +183,7 @@ export default function ArchivePage({
   });
   const [events, setEvents] = useState<IncludeExclude<EventId>>({
     include: new Set(),
-    exclude: new Set([
-      "Age of Commerce",
-      "Age of Exploration",
-      "Age of Fighters",
-      "Civilized Society",
-      "Dangerous Wilds",
-      "Minor Factions",
-      "Stellar Atomics",
-      "Total War",
-    ]),
+    exclude: new Set(baseEvents.map((event) => event.id)),
   });
 
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(

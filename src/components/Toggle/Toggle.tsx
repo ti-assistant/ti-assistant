@@ -100,18 +100,7 @@ export default function Toggle({
 
 function InfoContent({ description }: { description: ReactNode }) {
   return (
-    <div
-      className="myriadPro"
-      style={{
-        boxSizing: "border-box",
-        width: "100%",
-        minWidth: rem(320),
-        padding: rem(4),
-        whiteSpace: "pre-line",
-        textAlign: "center",
-        fontSize: rem(32),
-      }}
-    >
+    <div className={styles.ToggleInfo}>
       <div className="flexColumn" style={{ gap: rem(32) }}>
         {description}
       </div>

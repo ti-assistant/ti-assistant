@@ -22,6 +22,24 @@ export default function getThundersEdgeEvents(
         defaultMessage: "Age of Fighters",
       }),
     },
+    "Call of the Void": {
+      description: intl.formatMessage(
+        {
+          id: "Events.Call of the Void.Description",
+          description: "Description for Event: Call of the Void",
+          defaultMessage:
+            "After you move 1 or more units into the active system, if that system is in The Fracture, gain 1 command token.{br}When you activate a system in The Fracture, apply +1 to the move values of each of your ships.",
+        },
+        { br: "\n\n" }
+      ),
+      expansion: "THUNDERS EDGE",
+      id: "Call of the Void",
+      name: intl.formatMessage({
+        id: "Events.Call of the Void.Title",
+        description: "Title of Event: Call of the Void",
+        defaultMessage: "Call of the Void",
+      }),
+    },
     "Civilized Society": {
       description: intl.formatMessage(
         {
@@ -56,6 +74,25 @@ export default function getThundersEdgeEvents(
         id: "Events.Dangerous Wilds.Title",
         description: "Title of Event: Dangerous Wilds",
         defaultMessage: "Dangerous Wilds",
+      }),
+    },
+    // TODO: Confirm accuracy
+    "Hidden Agenda": {
+      description: intl.formatMessage(
+        {
+          id: "Events.Hidden Agenda.Description",
+          description: "Description of Event: Hidden Agenda",
+          defaultMessage:
+            "During the agenda phase, only the speaker can talk; all other players must remain silent except when declaring action cards. Transactions cannot be performed during this phase.{br}When voting, players secretly and simultaneously write their desired outcome and number of votes and pass them to the speaker. After all players have voted, the speaker secretly tallies the results and reveals only the totals to the other players; the speaker reveals who voted for which outcome only when required to resolve the outcome.{br}The Argent Flight's votes are public and are known before the other players vote.",
+        },
+        { br: "\n\n" }
+      ),
+      expansion: "THUNDERS EDGE",
+      id: "Hidden Agenda",
+      name: intl.formatMessage({
+        id: "Events.Hidden Agenda.Title",
+        description: "Title of Event: Hidden Agenda",
+        defaultMessage: "Hidden Agenda",
       }),
     },
     "Stellar Atomics": {

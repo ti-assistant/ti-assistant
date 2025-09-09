@@ -19,6 +19,17 @@ export default function getCodexThreeFactions(
             defaultMessage:
               "During setup, choose an unplayed faction from among the Mentak, the Xxcha and the Argent Flight; take that faction's home system, command tokens and control markers. Additionally, take the Keleres Hero that corresponds to that faction.",
           }),
+          omegas: [
+            {
+              description: intl.formatMessage({
+                id: "Council Keleres.Abilities.The Tribunii.Thunder's Edge.Description.",
+                description: "Description for Faction Ability: The Tribunii",
+                defaultMessage:
+                  "During setup, choose a Keleres hero that corresponds to an unused faction; take that faction's home system, command tokens and control tokens. The unchosen Keleres heroes are not used.",
+              }),
+              expansion: "THUNDERS EDGE",
+            },
+          ],
         },
         {
           name: intl.formatMessage({
@@ -45,6 +56,17 @@ export default function getCodexThreeFactions(
             defaultMessage:
               "You may spend 1 influence at the start of your turn to treat all laws as blank until the end of your turn.",
           }),
+          omegas: [
+            {
+              description: intl.formatMessage({
+                id: "Council Keleres.Abilities.Law's Order.Thunder's Edge.Description",
+                description: "Description for Faction Ability: Law's Order",
+                defaultMessage:
+                  "You may spend 1 trade good or 1 commodity at the start of any player's turn to treat all laws as blank until the end of that turn.",
+              }),
+              expansion: "THUNDERS EDGE",
+            },
+          ],
         },
       ],
       colors: {
