@@ -40,7 +40,7 @@ export default function FactionCircle({
       {factionId ? (
         <FactionIcon factionId={factionId} size="100%" />
       ) : (
-        <SymbolX />
+        <SymbolX color={style.color} />
       )}
     </Circle>
   );

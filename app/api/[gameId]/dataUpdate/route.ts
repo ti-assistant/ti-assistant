@@ -106,6 +106,10 @@ import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlane
 import { Optional } from "../../../../src/util/types/types";
 import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 import { CommitToExpeditionHandler } from "../../../../src/util/model/commitToExpedition";
+import {
+  GainAllianceHandler,
+  LoseAllianceHandler,
+} from "../../../../src/util/model/gainAlliance";
 
 export async function POST(
   req: Request,
@@ -472,6 +476,14 @@ function updateInTransaction(
       }
       case "LOSE_RELIC": {
         handler = new LoseRelicHandler(gameData, data);
+        break;
+      }
+      case "GAIN_ALLIANCE": {
+        handler = new GainAllianceHandler(gameData, data);
+        break;
+      }
+      case "LOSE_ALLIANCE": {
+        handler = new LoseAllianceHandler(gameData, data);
         break;
       }
       case "UPDATE_PLANET_STATE": {

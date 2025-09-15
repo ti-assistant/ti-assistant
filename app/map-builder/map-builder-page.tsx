@@ -16,12 +16,15 @@ import { buildBaseSystems } from "../../src/data/GameData";
 import { getDefaultMapString, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { rem } from "../../src/util/util";
+import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
+import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
 
 type Filter =
   | "BASE_GAME"
   | "PROPHECY_OF_KINGS"
   | "HYPERSPACE_TILES"
   | "DISCORDANT_STARS"
+  | "THUNDERS_EDGE"
   | "NO_PLANETS"
   | "ONE_PLANET"
   | "TWO_PLANETS"
@@ -38,12 +41,19 @@ function getFilterButtonText(filter: Filter, intl: IntlShape) {
         defaultMessage: "Base Game",
       });
     case "PROPHECY_OF_KINGS":
-      return intl.formatMessage({
-        id: "p9XVGB",
-        description:
-          "Text on a button that will enable/disable the Prophecy of Kings expansion.",
-        defaultMessage: "Prophecy of Kings",
-      });
+      return (
+        <div className="flexRow" style={{ gap: 0 }}>
+          {intl.formatMessage({
+            id: "p9XVGB",
+            description:
+              "Text on a button that will enable/disable the Prophecy of Kings expansion.",
+            defaultMessage: "Prophecy of Kings",
+          })}
+          <span style={{ width: rem(12), marginLeft: rem(4) }}>
+            <ProphecyofKingsSVG />
+          </span>
+        </div>
+      );
     case "HYPERSPACE_TILES":
       return intl.formatMessage({
         id: "i4Uu4m",
@@ -57,6 +67,20 @@ function getFilterButtonText(filter: Filter, intl: IntlShape) {
           "Text on a button that will enable/disable the Discordant Stars expansion.",
         defaultMessage: "Discordant Stars",
       });
+    case "THUNDERS_EDGE":
+      return (
+        <div className="flexRow" style={{ gap: 0 }}>
+          {intl.formatMessage({
+            id: "SpNTY7",
+            defaultMessage: "Thunder's Edge",
+            description:
+              "Text on a button that will enable/disable the Thunder's Edge expansion.",
+          })}
+          <span style={{ width: rem(14), marginLeft: rem(4) }}>
+            <ThundersEdgeMenuSVG />
+          </span>
+        </div>
+      );
     case "HOME_SYSTEMS":
       return intl.formatMessage({
         id: "22b12K",
@@ -190,6 +214,9 @@ export default function MapBuilderPage() {
         tileNumbers.push(i.toString());
       }
     }
+    if (filters.has("THUNDERS_EDGE")) {
+      // TODO: Add systems for TE.
+    }
     if (filters.has("DISCORDANT_STARS")) {
       for (let i = 1001; i < 1035; i++) {
         tileNumbers.push(i.toString());
@@ -295,6 +322,11 @@ export default function MapBuilderPage() {
                 />
                 <FilterButton
                   filter="PROPHECY_OF_KINGS"
+                  filters={filters}
+                  setFilters={setFilters}
+                />
+                <FilterButton
+                  filter="THUNDERS_EDGE"
                   filters={filters}
                   setFilters={setFilters}
                 />

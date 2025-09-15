@@ -39,13 +39,13 @@ import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import { ModalContent } from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
-import FormattedDescription from "./FormattedDescription/FormattedDescription";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (

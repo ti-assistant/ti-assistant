@@ -17,7 +17,6 @@ import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { FullTechSummary } from "./TechSummary/TechSummary";
-import TechResearchSection from "./TechResearchSection/TechResearchSection";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useFactions();

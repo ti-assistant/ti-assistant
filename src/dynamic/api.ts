@@ -161,6 +161,7 @@ const updatePlanetStateFn = import("../util/api/updatePlanetState").then(
 );
 const playAdjudicatorBaalModule = import("../util/api/playAdjudicatorBaal");
 const swapMapTilesModule = import("../util/api/swapMapTiles");
+const gainAllianceModule = import("../util/api/gainAlliance");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -279,6 +280,15 @@ export async function gainRelicAsync(
   gainRelic(gameId, faction, relic);
 }
 
+export async function gainAllianceAsync(
+  gameId: string,
+  faction: FactionId,
+  fromFaction: FactionId
+) {
+  const mod = await gainAllianceModule;
+  return mod.gainAlliance(gameId, faction, fromFaction);
+}
+
 export async function giftOfPrescienceAsync(
   gameId: string,
   faction: FactionId
@@ -311,6 +321,15 @@ export async function loseRelicAsync(
 ) {
   const loseRelic = await loseRelicFn;
   loseRelic(gameId, faction, relic);
+}
+
+export async function loseAllianceAsync(
+  gameId: string,
+  faction: FactionId,
+  fromFaction: FactionId
+) {
+  const mod = await gainAllianceModule;
+  return mod.loseAlliance(gameId, faction, fromFaction);
 }
 
 export async function manualVPUpdateAsync(

@@ -49,6 +49,10 @@ import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { CommitToExpeditionHandler } from "../model/commitToExpedition";
+import {
+  GainAllianceHandler,
+  LoseAllianceHandler,
+} from "../model/gainAlliance";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -327,6 +331,33 @@ export function getOppositeHandler(
     }
     case "LOSE_RELIC": {
       throw new Error("LOSE_RELIC should not be in log");
+    }
+    case "GAIN_ALLIANCE": {
+      if (data.event.prevFaction) {
+        return new GainAllianceHandler(gameData, {
+          action: "GAIN_ALLIANCE",
+          event: {
+            faction: data.event.prevFaction,
+            fromFaction: data.event.fromFaction,
+          },
+        });
+      }
+      return new LoseAllianceHandler(gameData, {
+        action: "LOSE_ALLIANCE",
+        event: {
+          faction: data.event.faction,
+          fromFaction: data.event.fromFaction,
+        },
+      });
+    }
+    case "LOSE_ALLIANCE": {
+      return new GainAllianceHandler(gameData, {
+        action: "GAIN_ALLIANCE",
+        event: {
+          faction: data.event.faction,
+          fromFaction: data.event.fromFaction,
+        },
+      });
     }
     case "UPDATE_BREAKTHROUGH_STATE": {
       return new UpdateBreakthroughStateHandler(gameData, {

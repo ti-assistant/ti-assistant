@@ -14,6 +14,7 @@ import styles from "./SetupFactionPanel.module.scss";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
+import SynergySVG from "../icons/ui/Synergy";
 
 function AbilitySection({
   leftLabel,
@@ -419,6 +420,35 @@ function FactionPanelContent({
                 </AbilitySection>
               );
             })}
+            {options.expansions.includes("THUNDERS EDGE") &&
+            faction.breakthrough.name ? (
+              <AbilitySection
+                leftLabel={
+                  <div className="flexRow">
+                    {faction.breakthrough.name.toUpperCase()}
+                  </div>
+                }
+                rightLabel={
+                  <div className="flexRow" style={{ gap: rem(2) }}>
+                    <TechIcon
+                      type={faction.breakthrough.synergy.left}
+                      size={16}
+                    />
+                    <div className="flexRow" style={{ width: rem(24) }}>
+                      <SynergySVG />
+                    </div>
+                    <TechIcon
+                      type={faction.breakthrough.synergy.right}
+                      size={16}
+                    />
+                  </div>
+                }
+              >
+                <FormattedDescription
+                  description={faction.breakthrough.description}
+                />
+              </AbilitySection>
+            ) : null}
           </div>
         </CollapsibleSection>
         <CollapsibleSection
@@ -474,6 +504,12 @@ function FactionPanelContent({
         >
           {faction.units.map((unit, index) => {
             const localUnit = { ...unit };
+            if (
+              unit.expansion !== "BASE" &&
+              !options.expansions.includes(unit.expansion)
+            ) {
+              return null;
+            }
             let leftLabel: ReactNode = unit.name;
             return (
               <AbilitySection

@@ -96,6 +96,7 @@ interface BaseFaction {
 
 interface GameFaction {
   alliancePartner?: FactionId;
+  alliances?: FactionId[];
   breakthrough?: Partial<Breakthrough>;
   color: string;
   commander: LeaderState;

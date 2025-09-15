@@ -54,6 +54,7 @@ type GameUpdateData =
   | (PlayAdjudicatorBaalData | UndoAdjudicatorBaalData)
   | SwapMapTilesData
   | CommitToExpeditionData
+  | (GainAllianceData | LoseAllianceData)
   // TODO
   | UndoData;
 
@@ -303,6 +304,28 @@ interface GainRelicEvent {
 interface GainRelicData {
   action: "GAIN_RELIC";
   event: GainRelicEvent;
+}
+
+interface GainAllianceEvent {
+  faction: FactionId;
+  fromFaction: FactionId;
+  prevFaction?: FactionId;
+}
+
+interface LoseAllianceEvent {
+  faction: FactionId;
+  fromFaction: FactionId;
+  prevFaction?: FactionId;
+}
+
+interface GainAllianceData {
+  action: "GAIN_ALLIANCE";
+  event: GainAllianceEvent;
+}
+
+interface LoseAllianceData {
+  action: "LOSE_ALLIANCE";
+  event: LoseAllianceEvent;
 }
 
 interface LoseRelicData {
