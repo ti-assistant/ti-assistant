@@ -26,7 +26,8 @@ export default class DBConnection {
     const app = initializeApp(firebaseConfig);
     this.db = getFirestore(app);
 
-    if (location.hostname === "localhost") {
+    const isDev = !!process && process.env.NODE_ENV !== "production";
+    if (isDev) {
       connectFirestoreEmulator(this.db, "127.0.0.1", 8020);
     }
 
