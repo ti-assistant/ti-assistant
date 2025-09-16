@@ -3,7 +3,6 @@ import { PropsWithChildren, ReactNode } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
 import { useSharedModal } from "../data/SharedModal";
-import { UnitStat } from "../TechRow";
 import { leaderTypeString } from "../util/strings";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
@@ -15,6 +14,120 @@ import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
 import SynergySVG from "../icons/ui/Synergy";
+import HitSVG from "../icons/ui/Hit";
+import { Optional } from "../util/types/types";
+
+export function UnitStat({
+  name,
+  stat,
+}: {
+  name: ReactNode;
+  stat: number | string | ReactNode;
+}) {
+  return (
+    <div
+      className="centered"
+      style={{
+        width: rem(82),
+        boxSizing: "border-box",
+        border: "1px solid #eee",
+        borderRadius: rem(10),
+      }}
+    >
+      <div
+        style={{
+          fontSize: rem(24),
+          borderBottom: "1px solid #eee",
+        }}
+      >
+        {stat}
+      </div>
+      <div
+        style={{
+          lineHeight: rem(18),
+          fontSize: rem(11),
+          padding: `0 ${rem(6)}`,
+        }}
+      >
+        {name}
+      </div>
+    </div>
+  );
+}
+
+function UnitCost({
+  cost,
+  type,
+}: {
+  cost: Optional<string | number>;
+  type: UnitType;
+}) {
+  if (typeof cost === "string") {
+    if (cost.includes("(x2)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(12), justifyContent: "center" }}
+        >
+          {cost.replace("(x2)", "")}
+          <div className="flexColumn" style={{ gap: 0 }}>
+            <UnitIcon type={type} size={12} />
+            <UnitIcon type={type} size={12} />
+          </div>
+        </div>
+      );
+    }
+  }
+  return cost;
+}
+
+function UnitCombat({ combat }: { combat: Optional<string | number> }) {
+  if (typeof combat === "string") {
+    if (combat.includes("(x2)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(8), justifyContent: "center" }}
+        >
+          {combat.replace("(x2)", "")}
+          <div className="flexColumn" style={{ gap: 0, width: rem(12) }}>
+            <HitSVG />
+            <HitSVG />
+          </div>
+        </div>
+      );
+    } else if (combat.includes("(x3)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(4), justifyContent: "center" }}
+        >
+          {combat.replace("(x3)", "")}
+          <div
+            className="flexColumn"
+            style={{
+              gap: 0,
+              width: rem(24),
+              flexWrap: "wrap",
+              height: rem(24),
+            }}
+          >
+            <span style={{ width: rem(12) }}>
+              <HitSVG />
+            </span>
+            <span style={{ width: rem(12) }}>
+              <HitSVG />
+            </span>
+            <span style={{ width: rem(12) }}>
+              <HitSVG />
+            </span>
+          </div>
+        </div>
+      );
+    }
+  }
+  return combat;
+}
 
 function AbilitySection({
   leftLabel,
@@ -55,7 +168,7 @@ function AbilitySection({
   );
 }
 
-function UnitStatBlock({ stats }: { stats?: UnitStats }) {
+function UnitStatBlock({ stats, type }: { stats?: UnitStats; type: UnitType }) {
   if (!stats) {
     return null;
   }
@@ -82,7 +195,7 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
                 description="Label for unit stat block - cost of the unit."
               />
             }
-            stat={stats.cost ?? "-"}
+            stat={stats.cost ? <UnitCost cost={stats.cost} type={type} /> : "-"}
           />
         ) : (
           <div></div>
@@ -96,7 +209,7 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
                 description="Label for unit stat block - combat value of the unit."
               />
             }
-            stat={stats.combat ?? "-"}
+            stat={stats.combat ? <UnitCombat combat={stats.combat} /> : "-"}
           />
         ) : (
           <div></div>
@@ -374,7 +487,10 @@ function FactionPanelContent({
                             })}
                           </div>
                         ) : null}
-                        <UnitStatBlock stats={tech.stats} />
+                        <UnitStatBlock
+                          stats={tech.stats}
+                          type={tech.unitType}
+                        />
                       </>
                     ) : null}
                   </AbilitySection>
@@ -543,7 +659,7 @@ function FactionPanelContent({
                     })}
                   </div>
                 ) : null}
-                <UnitStatBlock stats={localUnit.stats} />
+                <UnitStatBlock stats={localUnit.stats} type={localUnit.type} />
               </AbilitySection>
             );
           })}

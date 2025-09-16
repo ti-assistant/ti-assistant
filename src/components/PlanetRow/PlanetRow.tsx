@@ -28,6 +28,7 @@ import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
+import HitSVG from "../../icons/ui/Hit";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -295,12 +296,16 @@ function PlanetAttributes({
       case "space-cannon":
         return (
           <div
+            className="flexRow"
             style={{
+              gap: 0,
               width: rem(36),
               height: rem(22),
             }}
           >
-            ✹✹✹
+            <HitSVG />
+            <HitSVG />
+            <HitSVG />
           </div>
         );
       case "relic":

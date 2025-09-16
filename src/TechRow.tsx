@@ -15,19 +15,21 @@ import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { objectEntries, rem } from "./util/util";
+import { Optional } from "./util/types/types";
+import HitSVG from "./icons/ui/Hit";
 
 export function UnitStat({
   name,
   stat,
 }: {
   name: ReactNode;
-  stat: number | string;
+  stat: number | string | ReactNode;
 }) {
   return (
     <div
       className="centered"
       style={{
-        width: rem(82),
+        width: rem(200),
         boxSizing: "border-box",
         border: "1px solid #eee",
         borderRadius: rem(10),
@@ -35,7 +37,7 @@ export function UnitStat({
     >
       <div
         style={{
-          fontSize: rem(24),
+          fontSize: rem(64),
           borderBottom: "1px solid #eee",
         }}
       >
@@ -43,8 +45,8 @@ export function UnitStat({
       </div>
       <div
         style={{
-          lineHeight: rem(18),
-          fontSize: rem(11),
+          lineHeight: rem(36),
+          fontSize: rem(32),
           padding: `0 ${rem(6)}`,
         }}
       >
@@ -54,7 +56,81 @@ export function UnitStat({
   );
 }
 
-function UnitStatBlock({ stats }: { stats?: UnitStats }) {
+function UnitCost({
+  cost,
+  type,
+}: {
+  cost: Optional<string | number>;
+  type: UnitType;
+}) {
+  if (typeof cost === "string") {
+    if (cost.includes("(x2)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(32), justifyContent: "center" }}
+        >
+          {cost.replace("(x2)", "")}
+          <div className="flexColumn" style={{ gap: 0 }}>
+            <UnitIcon type={type} size={32} />
+            <UnitIcon type={type} size={32} />
+          </div>
+        </div>
+      );
+    }
+  }
+  return cost;
+}
+
+function UnitCombat({ combat }: { combat: Optional<string | number> }) {
+  if (typeof combat === "string") {
+    if (combat.includes("(x2)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(12), justifyContent: "center" }}
+        >
+          {combat.replace("(x2)", "")}
+          <div className="flexColumn" style={{ gap: rem(4), width: rem(24) }}>
+            <HitSVG />
+            <HitSVG />
+          </div>
+        </div>
+      );
+    } else if (combat.includes("(x3)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(12), justifyContent: "center" }}
+        >
+          {combat.replace("(x3)", "")}
+          <div
+            className="flexColumn"
+            style={{
+              gap: rem(4),
+              width: rem(52),
+              flexWrap: "wrap",
+              height: rem(52),
+            }}
+          >
+            <span style={{ width: rem(24) }}>
+              <HitSVG />
+            </span>
+            <span style={{ width: rem(24) }}>
+              <HitSVG />
+            </span>
+            <span style={{ width: rem(24) }}>
+              <HitSVG />
+            </span>
+          </div>
+        </div>
+      );
+    }
+  }
+  return combat;
+}
+
+function UnitStatBlock({ stats, type }: { stats?: UnitStats; type: UnitType }) {
   if (!stats) {
     return null;
   }
@@ -79,7 +155,7 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
             description="Label for unit stat block - cost of the unit."
           />
         }
-        stat={stats.cost ?? "-"}
+        stat={stats.cost ? <UnitCost cost={stats.cost} type={type} /> : "-"}
       />
       <UnitStat
         name={
@@ -89,7 +165,7 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
             description="Label for unit stat block - combat value of the unit."
           />
         }
-        stat={stats.combat ?? "-"}
+        stat={stats.combat ? <UnitCombat combat={stats.combat} /> : "-"}
       />
       <UnitStat
         name={
@@ -149,7 +225,7 @@ function InfoContent({ tech }: { tech: Tech }) {
               })}
             </div>
           ) : null}
-          <UnitStatBlock stats={tech.stats} />
+          <UnitStatBlock stats={tech.stats} type={tech.unitType} />
         </div>
       </div>
     );
