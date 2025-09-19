@@ -1,0 +1,16 @@
+.UnitStatsGrid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.05em;
+  font-family: "Slider";
+  width: fit-content;
+  box-sizing: border-box;
+}
+
+.UnitStat {
+  width: 1em;
+  border: 1px solid #eee;
+  border-radius: 0.625rem;
+  text-align: center;
+}

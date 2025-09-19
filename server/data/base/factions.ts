@@ -823,6 +823,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Federation of Sol.Breakthrough.Bellum Gloriosum.Title",
+          description: "Title of Faction Breakthrough: Bellum Gloriosum",
+          defaultMessage: "Bellum Gloriosum",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Federation of Sol.Breakthrough.Bellum Gloriosum.Description",
+            description:
+              "Description of Faction Breakthrough: Bellum Gloriosum",
+            defaultMessage:
+              "When you produce a ship that has capacity, you may also produce any combination of ground forces or fighters up to that ship's capacity; they do not count against your PRODUCTION limit.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Bellum Gloriosum",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Blue: 1.15,
         Yellow: 0.75,
@@ -1134,6 +1154,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "L1Z1X Mindnet.Breakthrough.Fealty Uplink.Title",
+          description: "Title of Faction Breakthrough: Fealty Uplink",
+          defaultMessage: "Fealty Uplink",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "L1Z1X Mindnet.Breakthrough.Fealty Uplink.Description",
+            description: "Description of Faction Breakthrough: Fealty Uplink",
+            defaultMessage:
+              "When you gain control of a planet, place infantry from your reinforcements equal to that planet's influence value onto that planet.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Fealty Uplink",
+        synergy: { left: "RED", right: "GREEN" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 0.7,
         Blue: 0.6,
@@ -1734,6 +1773,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Sardakk N'orr.Breakthrough.N'orr Supremacy.Title",
+          description: "Title of Faction Breakthrough: N'orr Supremacy",
+          defaultMessage: "N'orr Supremacy",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Sardakk N'orr.Breakthrough.N'orr Supremacy.Description",
+            description: "Description of Faction Breakthrough: N'orr Supremacy",
+            defaultMessage:
+              "After you win a combat, either gain 1 command token or research a unit upgrade technology.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "N'orr Supremacy",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 1,
         Red: 0.9,

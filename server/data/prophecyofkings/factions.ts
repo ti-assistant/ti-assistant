@@ -1003,6 +1003,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Vuil'raith Cabal.Breakthrough.Al'raith Ix Ianovar.Title",
+          description: "Title of Faction Breakthrough: Al'raith Ix Ianovar",
+          defaultMessage: "Al'raith Ix Ianovar",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Vuil'raith Cabal.Breakthrough.Al'raith Ix Ianovar.Description",
+            description:
+              "Description of Faction Breakthrough: Al'raith Ix Ianovar",
+            defaultMessage:
+              "This breakthrough causes The Fracture to enter play without a roll, if it is not already in play. After this card enters play, move up to 2 ingress tokens into systems that contain gravity rifts.{br}Apply +1 to the MOVE value of each of your ships that start their movement in The Fracture.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Al'raith Ix Ianovar",
+        synergy: { left: "RED", right: "GREEN" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 0.4,
         Magenta: 0.1,

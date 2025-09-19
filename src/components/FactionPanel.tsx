@@ -14,10 +14,13 @@ import {
   updateBreakthroughStateAsync,
   updateLeaderStateAsync,
 } from "../dynamic/api";
+import HitSVG from "../icons/ui/Hit";
+import SynergySVG from "../icons/ui/Synergy";
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { leaderTypeString } from "../util/strings";
 import { sortTechs } from "../util/techs";
+import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
@@ -26,9 +29,7 @@ import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
-import SynergySVG from "../icons/ui/Synergy";
-import HitSVG from "../icons/ui/Hit";
-import { Optional } from "../util/types/types";
+import UnitStats from "./UnitStats/UnitStats";
 
 export function UnitStat({
   name,
@@ -235,7 +236,7 @@ function FactionTech({
               })}
             </div>
           ) : null}
-          <UnitStatBlock stats={tech.stats} type={tech.unitType} />
+          <UnitStats stats={tech.stats} type={tech.unitType} size={rem(82)} />
           {!viewOnly ? (
             <div className="flexRow" style={{ width: "100%" }}>
               <button
@@ -317,7 +318,7 @@ function FactionUnit({
           })}
         </div>
       ) : null}
-      <UnitStatBlock stats={unit.stats} type={unit.type} />
+      <UnitStats stats={unit.stats} type={unit.type} size={rem(82)} />
       {!viewOnly && upgradeTech ? (
         <div className="flexRow" style={{ width: "100%" }}>
           <button

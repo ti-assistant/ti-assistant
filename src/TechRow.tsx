@@ -6,6 +6,7 @@ import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/Factio
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
+import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
 import { useGameId, useLogEntries, useViewOnly } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
@@ -15,181 +16,6 @@ import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { objectEntries, rem } from "./util/util";
-import { Optional } from "./util/types/types";
-import HitSVG from "./icons/ui/Hit";
-
-export function UnitStat({
-  name,
-  stat,
-}: {
-  name: ReactNode;
-  stat: number | string | ReactNode;
-}) {
-  return (
-    <div
-      className="centered"
-      style={{
-        width: rem(200),
-        boxSizing: "border-box",
-        border: "1px solid #eee",
-        borderRadius: rem(10),
-      }}
-    >
-      <div
-        style={{
-          fontSize: rem(64),
-          borderBottom: "1px solid #eee",
-        }}
-      >
-        {stat}
-      </div>
-      <div
-        style={{
-          lineHeight: rem(36),
-          fontSize: rem(32),
-          padding: `0 ${rem(6)}`,
-        }}
-      >
-        {name}
-      </div>
-    </div>
-  );
-}
-
-function UnitCost({
-  cost,
-  type,
-}: {
-  cost: Optional<string | number>;
-  type: UnitType;
-}) {
-  if (typeof cost === "string") {
-    if (cost.includes("(x2)")) {
-      return (
-        <div
-          className="flexRow"
-          style={{ gap: rem(32), justifyContent: "center" }}
-        >
-          {cost.replace("(x2)", "")}
-          <div className="flexColumn" style={{ gap: 0 }}>
-            <UnitIcon type={type} size={32} />
-            <UnitIcon type={type} size={32} />
-          </div>
-        </div>
-      );
-    }
-  }
-  return cost;
-}
-
-function UnitCombat({ combat }: { combat: Optional<string | number> }) {
-  if (typeof combat === "string") {
-    if (combat.includes("(x2)")) {
-      return (
-        <div
-          className="flexRow"
-          style={{ gap: rem(12), justifyContent: "center" }}
-        >
-          {combat.replace("(x2)", "")}
-          <div className="flexColumn" style={{ gap: rem(4), width: rem(24) }}>
-            <HitSVG />
-            <HitSVG />
-          </div>
-        </div>
-      );
-    } else if (combat.includes("(x3)")) {
-      return (
-        <div
-          className="flexRow"
-          style={{ gap: rem(12), justifyContent: "center" }}
-        >
-          {combat.replace("(x3)", "")}
-          <div
-            className="flexColumn"
-            style={{
-              gap: rem(4),
-              width: rem(52),
-              flexWrap: "wrap",
-              height: rem(52),
-            }}
-          >
-            <span style={{ width: rem(24) }}>
-              <HitSVG />
-            </span>
-            <span style={{ width: rem(24) }}>
-              <HitSVG />
-            </span>
-            <span style={{ width: rem(24) }}>
-              <HitSVG />
-            </span>
-          </div>
-        </div>
-      );
-    }
-  }
-  return combat;
-}
-
-function UnitStatBlock({ stats, type }: { stats?: UnitStats; type: UnitType }) {
-  if (!stats) {
-    return null;
-  }
-  return (
-    <div
-      className="flexRow"
-      style={{
-        gap: rem(3),
-        padding: `0 ${rem(4)}`,
-        margin: `${rem(4)} ${rem(4)} ${rem(4)} 0`,
-        fontFamily: "Slider",
-        alignItems: "stretch",
-        justifyContent: "center",
-        boxSizing: "border-box",
-      }}
-    >
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Cost"
-            defaultMessage="COST"
-            description="Label for unit stat block - cost of the unit."
-          />
-        }
-        stat={stats.cost ? <UnitCost cost={stats.cost} type={type} /> : "-"}
-      />
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Combat"
-            defaultMessage="COMBAT"
-            description="Label for unit stat block - combat value of the unit."
-          />
-        }
-        stat={stats.combat ? <UnitCombat combat={stats.combat} /> : "-"}
-      />
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Move"
-            defaultMessage="MOVE"
-            description="Label for unit stat block - move value of the unit."
-          />
-        }
-        stat={stats.move ?? "-"}
-      />
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Capacity"
-            defaultMessage="CAPACITY"
-            description="Label for unit stat block - capacity value of the unit."
-          />
-        }
-        stat={stats.capacity ?? "-"}
-      />
-    </div>
-  );
-}
 
 function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
@@ -225,7 +51,7 @@ function InfoContent({ tech }: { tech: Tech }) {
               })}
             </div>
           ) : null}
-          <UnitStatBlock stats={tech.stats} type={tech.unitType} />
+          <UnitStats stats={tech.stats} type={tech.unitType} size={rem(192)} />
         </div>
       </div>
     );
