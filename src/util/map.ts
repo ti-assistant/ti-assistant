@@ -214,13 +214,13 @@ export function updateMapString(
       : defaultMapString;
 
   if (!isValidMapString(updatedMapString, numFactions)) {
-    let currentNum = 1;
+    let currentNum = numFactions;
     const tiles = updatedMapString.split(" ");
     for (let i = tiles.length - 1; i > 0; i--) {
       if (tiles[i] === "0") {
         tiles[i] = `P${currentNum}`;
-        currentNum++;
-        if (currentNum > numFactions) {
+        currentNum--;
+        if (currentNum < 1) {
           break;
         }
       }
