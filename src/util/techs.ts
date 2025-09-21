@@ -185,8 +185,27 @@ export function canResearchTech(
     }
   }
 
+  const synergy = faction?.breakthrough?.synergy;
+
   for (const req of tech.prereqs) {
     if (localPrereqs[req] === 0) {
+      if (
+        faction?.breakthrough.state &&
+        faction.breakthrough.state !== "locked"
+      ) {
+        if (synergy && synergy.left === req) {
+          if (localPrereqs[synergy.right] > 0) {
+            localPrereqs[synergy.right] -= 1;
+            continue;
+          }
+        }
+        if (synergy && synergy.right === req) {
+          if (localPrereqs[synergy.left] > 0) {
+            localPrereqs[synergy.left] -= 1;
+            continue;
+          }
+        }
+      }
       if (!usedAida && tech.type === "UPGRADE") {
         usedAida = true;
         continue;
