@@ -15,6 +15,7 @@ app.prepare().then(async () => {
   );
   const env = process.env.NODE_ENV;
   const emulator = process.env.FIRESTORE_EMULATOR_HOST;
+  const projectId = process.env.NEXT_PUBLIC_TI_PROJECT;
   if (env === "production" || !emulator) {
     console.log("Using production Firestore instance");
     const serviceAccount = require("./twilight-imperium-360307-ea7cce25efeb.json");
@@ -23,8 +24,10 @@ app.prepare().then(async () => {
       credential: cert(serviceAccount),
     });
   } else {
-    console.log(`Using Firestore Emulator on ${emulator}`);
-    initializeApp();
+    console.log(
+      `Using Firestore Emulator on ${emulator} w/ project ${projectId}`
+    );
+    initializeApp({ projectId });
   }
 
   server.listen(HTTP_PORT, (err) => {

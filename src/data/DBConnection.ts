@@ -23,10 +23,16 @@ export default class DBConnection {
       messagingSenderId: "881312315045",
       appId: "1:881312315045:web:d43e66019ce64ecf623f4c",
     };
+
+    const isDev = !!process && process.env.NODE_ENV !== "production";
+    if (isDev) {
+      firebaseConfig.projectId =
+        process.env.NEXT_PUBLIC_TI_PROJECT ?? firebaseConfig.projectId;
+    }
+
     const app = initializeApp(firebaseConfig);
     this.db = getFirestore(app);
 
-    const isDev = !!process && process.env.NODE_ENV !== "production";
     if (isDev) {
       connectFirestoreEmulator(this.db, "127.0.0.1", 8020);
     }
