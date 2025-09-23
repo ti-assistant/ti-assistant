@@ -487,19 +487,6 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   <Selector
                     options={remainingStageOneObjectives}
                     hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
-                    renderButton={(itemId, itemName, toggleItem) => {
-                      return (
-                        <button
-                          key={itemId}
-                          style={{ fontSize: rem(14) }}
-                          onClick={() => {
-                            toggleItem(itemId, true);
-                          }}
-                        >
-                          {itemName}
-                        </button>
-                      );
-                    }}
                     toggleItem={(objectiveId, add) => {
                       if (!gameId) {
                         return;
@@ -514,19 +501,6 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   <Selector
                     options={remainingStageTwoObjectives}
                     hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
-                    renderButton={(itemId, itemName, toggleItem) => {
-                      return (
-                        <button
-                          key={itemId}
-                          style={{ fontSize: rem(14) }}
-                          onClick={() => {
-                            toggleItem(itemId, true);
-                          }}
-                        >
-                          {itemName}
-                        </button>
-                      );
-                    }}
                     toggleItem={(objectiveId, add) => {
                       if (!gameId) {
                         return;
@@ -541,19 +515,6 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   <Selector
                     options={remainingSecretObjectives}
                     hoverMenuLabel={"Secret (as Public)"}
-                    renderButton={(itemId, itemName, toggleItem) => {
-                      return (
-                        <button
-                          key={itemId}
-                          style={{ fontSize: rem(14) }}
-                          onClick={() => {
-                            toggleItem(itemId, true);
-                          }}
-                        >
-                          {itemName}
-                        </button>
-                      );
-                    }}
                     itemsPerColumn={10}
                     toggleItem={(objectiveId, add) => {
                       if (!gameId) {

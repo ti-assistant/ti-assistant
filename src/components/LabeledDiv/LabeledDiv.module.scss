@@ -1,4 +1,6 @@
 .LabeledDiv {
+  --side-spacing: 0.375rem;
+
   position: relative;
   gap: 0.5rem;
   border: var(--border-size) solid var(--color);

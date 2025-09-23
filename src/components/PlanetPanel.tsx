@@ -7,8 +7,7 @@ import {
   usePlanets,
   useViewOnly,
 } from "../context/dataHooks";
-import { useFaction } from "../context/factionDataHooks";
-import { useFactions } from "../context/factionDataHooks";
+import { useFaction, useFactions } from "../context/factionDataHooks";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
 import { getFactionColor, getFactionName } from "../util/factions";
 import {
@@ -153,7 +152,7 @@ function UnclaimedPlanetSection() {
                   justifyContent: "flex-start",
                   alignItems: "center",
                   width: "100%",
-                  gap: 0,
+                  gap: rem(4),
                 }}
               >
                 {viewOnly ? null : (

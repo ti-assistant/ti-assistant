@@ -118,7 +118,6 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                   {faction.id === "Nekro Virus" ? (
                     <>
                       <Selector
-                        buttonStyle={{ fontSize: rem(14) }}
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs.filter(
                           (tech) => tech.id !== nekroFactionTechIds[1]
@@ -164,7 +163,6 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                         selectedItem={nekroFactionTechIds[0]}
                       />
                       <Selector
-                        buttonStyle={{ fontSize: rem(14) }}
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs.filter(
                           (tech) => tech.id !== nekroFactionTechIds[0]

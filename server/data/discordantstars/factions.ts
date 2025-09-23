@@ -1436,7 +1436,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
           cost: "1(x2)",
           combat: 9,
         },
-        type: "Mech",
+        type: "Fighter",
       },
     ],
   },

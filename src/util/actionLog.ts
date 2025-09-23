@@ -107,10 +107,13 @@ export function getPromissoryTargets(actionLog: ActionLog, card: string) {
     .map((logEntry) => logEntry.data.event.target);
 }
 
-export function getGainedRelic(actionLog: ActionLog) {
-  return getLogEntries<GainRelicData>(actionLog, "GAIN_RELIC").map(
-    (logEntry) => logEntry.data.event.relic
-  )[0];
+export function getGainedRelic(actionLog: ActionLog, planet?: PlanetId) {
+  return getLogEntries<GainRelicData>(actionLog, "GAIN_RELIC")
+    .filter((logEntry) => {
+      console.log(logEntry);
+      return !planet || logEntry.data.event.planet === planet;
+    })
+    .map((logEntry) => logEntry.data.event.relic)[0];
 }
 
 export function getPurgedPlanet(actionLog: ActionLog) {

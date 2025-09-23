@@ -5,6 +5,7 @@ import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { SmallStrategyCard } from "../../../../../../src/StrategyCard";
 import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
+import GainRelic from "../../../../../../src/components/Actions/GainRelic";
 import AttachmentSelectRadialMenu from "../../../../../../src/components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import Chip from "../../../../../../src/components/Chip/Chip";
 import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
@@ -26,6 +27,7 @@ import {
   useCurrentTurn,
   useGameId,
   usePlanets,
+  useRelics,
   useStrategyCards,
   useTechs,
   useViewOnly,
@@ -314,6 +316,7 @@ export function AdditionalActions({
   const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
+  const relics = useRelics();
   const state = useGameState();
   const techs = useTechs();
   const viewOnly = useViewOnly();
@@ -675,9 +678,9 @@ export function AdditionalActions({
       );
     case "Diplomacy":
       if (activeFaction.id === "Xxcha Kingdom") {
-        const peaceAccordsPlanets = claimablePlanets.filter(
-          (planet) => planet.id !== "Mecatol Rex"
-        );
+        const peaceAccordsPlanets = claimablePlanets
+          .filter((planet) => planet.id !== "Mecatol Rex")
+          .sort((a, b) => (a.name > b.name ? 1 : -1));
         return (
           <div className="flexColumn largeFont" style={{ ...style }}>
             <LabeledLine
@@ -738,79 +741,100 @@ export function AdditionalActions({
                       return (
                         <div
                           key={planet.planet}
-                          className="flexRow"
-                          style={{ width: "100%" }}
+                          className="flexColumn"
+                          style={{
+                            width: "100%",
+                            gap: 0,
+                            justifyItems: "flex-start",
+                            alignItems: "flex-start",
+                          }}
                         >
-                          <div style={{ width: "100%" }}>
-                            <PlanetRow
-                              factionId={"Xxcha Kingdom"}
-                              planet={adjustedPlanet}
-                              removePlanet={() => {
-                                unclaimPlanetAsync(
-                                  gameId,
-                                  "Xxcha Kingdom",
-                                  planet.planet
-                                );
-                              }}
-                            />
-                          </div>
-                          {availableAttachments.length > 0 &&
-                          !planet.prevOwner ? (
-                            <div
-                              className="flexRow"
-                              style={{ justifyContent: "center" }}
-                            >
-                              <AttachmentSelectRadialMenu
-                                attachments={availableAttachments}
-                                hasSkip={adjustedPlanet.attributes.reduce(
-                                  (hasSkip, attribute) => {
-                                    if (attribute.includes("skip")) {
-                                      if (
-                                        currentAttachment &&
-                                        attachments[currentAttachment]
-                                          ?.attribute === attribute
-                                      ) {
-                                        return planetObj.attributes.reduce(
-                                          (hasSkip, attribute) => {
-                                            if (attribute.includes("skip")) {
-                                              return true;
-                                            }
-                                            return hasSkip;
-                                          },
-                                          false
-                                        );
-                                      }
-                                      return true;
-                                    }
-                                    return hasSkip;
-                                  },
-                                  false
-                                )}
-                                onSelect={(attachmentId, prevAttachment) => {
-                                  if (prevAttachment) {
-                                    removeAttachmentAsync(
-                                      gameId,
-                                      planet.planet,
-                                      prevAttachment
-                                    );
-                                  }
-                                  if (attachmentId) {
-                                    addAttachmentAsync(
-                                      gameId,
-                                      planet.planet,
-                                      attachmentId
-                                    );
-                                  }
+                          <div className="flexRow" style={{ width: "100%" }}>
+                            <div style={{ width: "100%" }}>
+                              <PlanetRow
+                                factionId={"Xxcha Kingdom"}
+                                planet={adjustedPlanet}
+                                removePlanet={() => {
+                                  unclaimPlanetAsync(
+                                    gameId,
+                                    "Xxcha Kingdom",
+                                    planet.planet
+                                  );
                                 }}
-                                selectedAttachment={currentAttachment}
-                                tag={
-                                  adjustedPlanet.type === "ALL" ? undefined : (
-                                    <PlanetIcon
-                                      type={adjustedPlanet.type}
-                                      size="60%"
-                                    />
-                                  )
-                                }
+                                opts={{
+                                  hideAttachButton: true,
+                                }}
+                              />
+                            </div>
+                            {availableAttachments.length > 0 &&
+                            !planet.prevOwner ? (
+                              <div
+                                className="flexRow"
+                                style={{ justifyContent: "center" }}
+                              >
+                                <AttachmentSelectRadialMenu
+                                  attachments={availableAttachments}
+                                  hasSkip={adjustedPlanet.attributes.reduce(
+                                    (hasSkip, attribute) => {
+                                      if (attribute.includes("skip")) {
+                                        if (
+                                          currentAttachment &&
+                                          attachments[currentAttachment]
+                                            ?.attribute === attribute
+                                        ) {
+                                          return planetObj.attributes.reduce(
+                                            (hasSkip, attribute) => {
+                                              if (attribute.includes("skip")) {
+                                                return true;
+                                              }
+                                              return hasSkip;
+                                            },
+                                            false
+                                          );
+                                        }
+                                        return true;
+                                      }
+                                      return hasSkip;
+                                    },
+                                    false
+                                  )}
+                                  onSelect={(attachmentId, prevAttachment) => {
+                                    if (prevAttachment) {
+                                      removeAttachmentAsync(
+                                        gameId,
+                                        planet.planet,
+                                        prevAttachment
+                                      );
+                                    }
+                                    if (attachmentId) {
+                                      addAttachmentAsync(
+                                        gameId,
+                                        planet.planet,
+                                        attachmentId
+                                      );
+                                    }
+                                  }}
+                                  selectedAttachment={currentAttachment}
+                                  tag={
+                                    adjustedPlanet.type ===
+                                    "ALL" ? undefined : (
+                                      <PlanetIcon
+                                        type={adjustedPlanet.type}
+                                        size="60%"
+                                      />
+                                    )
+                                  }
+                                />
+                              </div>
+                            ) : null}
+                          </div>
+                          {/* TODO: Remove if rules specify whenever a planet changes hands. */}
+                          {!planet.prevOwner &&
+                          adjustedPlanet.attributes.includes("relic") ? (
+                            <div style={{ marginLeft: rem(16) }}>
+                              <GainRelic
+                                factionId={activeFaction.id}
+                                planetId={planet.planet}
                               />
                             </div>
                           ) : null}
@@ -836,8 +860,16 @@ export function AdditionalActions({
                           <button
                             key={planet.id}
                             style={{
-                              writingMode: "horizontal-tb",
-                              width: rem(90),
+                              minWidth:
+                                peaceAccordsPlanets.length > 50
+                                  ? rem(72)
+                                  : rem(90),
+                              fontSize:
+                                peaceAccordsPlanets.length > 50
+                                  ? rem(14)
+                                  : undefined,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
                             }}
                             onClick={() =>
                               claimPlanetAsync(
@@ -976,79 +1008,101 @@ export function AdditionalActions({
                       return (
                         <div
                           key={planet.planet}
-                          className="flexRow"
-                          style={{ width: "100%" }}
+                          className="flexColumn"
+                          style={{
+                            width: "100%",
+                            gap: 0,
+                            justifyItems: "flex-start",
+                            alignItems: "flex-start",
+                          }}
                         >
-                          <div style={{ width: "100%" }}>
-                            <PlanetRow
-                              factionId={"Xxcha Kingdom"}
-                              planet={adjustedPlanet}
-                              removePlanet={() => {
-                                unclaimPlanetAsync(
-                                  gameId,
-                                  "Xxcha Kingdom",
-                                  planet.planet
-                                );
-                              }}
-                            />
-                          </div>
-                          {availableAttachments.length > 0 &&
-                          !planet.prevOwner ? (
-                            <div
-                              className="flexRow"
-                              style={{ justifyContent: "center" }}
-                            >
-                              <AttachmentSelectRadialMenu
-                                attachments={availableAttachments}
-                                hasSkip={adjustedPlanet.attributes.reduce(
-                                  (hasSkip, attribute) => {
-                                    if (attribute.includes("skip")) {
-                                      if (
-                                        currentAttachment &&
-                                        attachments[currentAttachment]
-                                          ?.attribute === attribute
-                                      ) {
-                                        return planetObj.attributes.reduce(
-                                          (hasSkip, attribute) => {
-                                            if (attribute.includes("skip")) {
-                                              return true;
-                                            }
-                                            return hasSkip;
-                                          },
-                                          false
-                                        );
-                                      }
-                                      return true;
-                                    }
-                                    return hasSkip;
-                                  },
-                                  false
-                                )}
-                                onSelect={(attachmentId, prevAttachment) => {
-                                  if (prevAttachment) {
-                                    removeAttachmentAsync(
-                                      gameId,
-                                      planet.planet,
-                                      prevAttachment
-                                    );
-                                  }
-                                  if (attachmentId) {
-                                    addAttachmentAsync(
-                                      gameId,
-                                      planet.planet,
-                                      attachmentId
-                                    );
-                                  }
+                          <div
+                            key={planet.planet}
+                            className="flexRow"
+                            style={{ width: "100%" }}
+                          >
+                            <div style={{ width: "100%" }}>
+                              <PlanetRow
+                                factionId={"Xxcha Kingdom"}
+                                planet={adjustedPlanet}
+                                removePlanet={() => {
+                                  unclaimPlanetAsync(
+                                    gameId,
+                                    "Xxcha Kingdom",
+                                    planet.planet
+                                  );
                                 }}
-                                selectedAttachment={currentAttachment}
-                                tag={
-                                  adjustedPlanet.type === "ALL" ? undefined : (
-                                    <PlanetIcon
-                                      type={adjustedPlanet.type}
-                                      size="60%"
-                                    />
-                                  )
-                                }
+                              />
+                            </div>
+                            {availableAttachments.length > 0 &&
+                            !planet.prevOwner ? (
+                              <div
+                                className="flexRow"
+                                style={{ justifyContent: "center" }}
+                              >
+                                <AttachmentSelectRadialMenu
+                                  attachments={availableAttachments}
+                                  hasSkip={adjustedPlanet.attributes.reduce(
+                                    (hasSkip, attribute) => {
+                                      if (attribute.includes("skip")) {
+                                        if (
+                                          currentAttachment &&
+                                          attachments[currentAttachment]
+                                            ?.attribute === attribute
+                                        ) {
+                                          return planetObj.attributes.reduce(
+                                            (hasSkip, attribute) => {
+                                              if (attribute.includes("skip")) {
+                                                return true;
+                                              }
+                                              return hasSkip;
+                                            },
+                                            false
+                                          );
+                                        }
+                                        return true;
+                                      }
+                                      return hasSkip;
+                                    },
+                                    false
+                                  )}
+                                  onSelect={(attachmentId, prevAttachment) => {
+                                    if (prevAttachment) {
+                                      removeAttachmentAsync(
+                                        gameId,
+                                        planet.planet,
+                                        prevAttachment
+                                      );
+                                    }
+                                    if (attachmentId) {
+                                      addAttachmentAsync(
+                                        gameId,
+                                        planet.planet,
+                                        attachmentId
+                                      );
+                                    }
+                                  }}
+                                  selectedAttachment={currentAttachment}
+                                  tag={
+                                    adjustedPlanet.type ===
+                                    "ALL" ? undefined : (
+                                      <PlanetIcon
+                                        type={adjustedPlanet.type}
+                                        size="60%"
+                                      />
+                                    )
+                                  }
+                                />
+                              </div>
+                            ) : null}
+                          </div>
+                          {/* TODO: Remove if rules specify whenever a planet changes hands. */}
+                          {!planet.prevOwner &&
+                          adjustedPlanet.attributes.includes("relic") ? (
+                            <div style={{ marginLeft: rem(16) }}>
+                              <GainRelic
+                                factionId="Xxcha Kingdom"
+                                planetId={planet.planet}
                               />
                             </div>
                           ) : null}
@@ -1073,8 +1127,14 @@ export function AdditionalActions({
                           <button
                             key={planet.id}
                             style={{
-                              writingMode: "horizontal-tb",
-                              width: rem(90),
+                              minWidth:
+                                nonXxchaPlanets.length > 50 ? rem(72) : rem(90),
+                              fontSize:
+                                nonXxchaPlanets.length > 50
+                                  ? rem(14)
+                                  : undefined,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
                             }}
                             onClick={() => {
                               claimPlanetAsync(

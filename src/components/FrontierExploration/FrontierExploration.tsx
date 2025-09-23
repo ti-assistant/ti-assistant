@@ -1,19 +1,14 @@
 import { FormattedMessage } from "react-intl";
-import { InfoRow } from "../../InfoRow";
-import { SelectableRow } from "../../SelectableRow";
 import {
   useAttachments,
   useCurrentTurn,
   useGameId,
   usePlanets,
-  useRelics,
   useViewOnly,
 } from "../../context/dataHooks";
 import {
   addAttachmentAsync,
   claimPlanetAsync,
-  gainRelicAsync,
-  loseRelicAsync,
   removeAttachmentAsync,
   unclaimPlanetAsync,
 } from "../../dynamic/api";
@@ -23,13 +18,10 @@ import {
   getGainedRelic,
 } from "../../util/actionLog";
 import { applyPlanetAttachments } from "../../util/planets";
+import GainRelic from "../Actions/GainRelic";
 import AttachmentSelectRadialMenu from "../AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
-import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import PlanetRow from "../PlanetRow/PlanetRow";
-import { Selector } from "../Selector/Selector";
-import TechResearchSection from "../TechResearchSection/TechResearchSection";
-import { rem } from "../../util/util";
 
 export default function FrontierExploration({
   factionId,
@@ -39,7 +31,6 @@ export default function FrontierExploration({
   const attachments = useAttachments();
   const gameId = useGameId();
   const planets = usePlanets();
-  const relics = useRelics();
   const currentTurn = useCurrentTurn();
   const viewOnly = useViewOnly();
 
@@ -133,69 +124,9 @@ export default function FrontierExploration({
   }
 
   const mirageFound = !mirageClaimed && mirage?.owner;
-  const unownedRelics = Object.values(relics)
-    .filter((relic) => !relic.owner || gainedRelic === relic.id)
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
   return (
     <div className="flexRow" style={{ width: "100%" }}>
-      {unownedRelics.length > 0 ? (
-        <Selector
-          hoverMenuLabel={
-            <FormattedMessage
-              id="Components.Gain Relic.Title"
-              description="Title of Component: Gain Relic"
-              defaultMessage="Gain Relic"
-            />
-          }
-          options={unownedRelics}
-          renderItem={(itemId, _) => {
-            const relic = relics[itemId];
-            if (!relic) {
-              return null;
-            }
-            return (
-              <div
-                className="flexColumn"
-                style={{ gap: rem(8), width: "100%" }}
-              >
-                <SelectableRow
-                  itemId={relic.id}
-                  removeItem={(relicId) => {
-                    loseRelicAsync(gameId, factionId, relicId);
-                  }}
-                  viewOnly={viewOnly}
-                >
-                  <InfoRow
-                    infoTitle={relic.name}
-                    infoContent={
-                      <FormattedDescription description={relic.description} />
-                    }
-                  >
-                    {relic.name}
-                  </InfoRow>
-                </SelectableRow>
-                {relic.id === "Shard of the Throne" ? <div>+1 VP</div> : null}
-                {relic.id === "Book of Latvinia" ? (
-                  <TechResearchSection
-                    factionId={factionId}
-                    filter={(tech) => tech.prereqs.length === 0}
-                    numTechs={2}
-                  />
-                ) : null}
-              </div>
-            );
-          }}
-          selectedItem={gainedRelic}
-          toggleItem={(relicId, add) => {
-            if (add) {
-              gainRelicAsync(gameId, factionId, relicId);
-            } else {
-              loseRelicAsync(gameId, factionId, relicId);
-            }
-          }}
-          viewOnly={viewOnly}
-        />
-      ) : null}
+      <GainRelic factionId={factionId} />
       {!mirageFound && !gainedRelic ? (
         <button
           onClick={() => {

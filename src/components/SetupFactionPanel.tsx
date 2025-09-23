@@ -15,6 +15,7 @@ import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
 import UnitStats from "./UnitStats/UnitStats";
+import { sortTechsByPreReqAndExpansion } from "../util/techs";
 
 function AbilitySection({
   leftLabel,
@@ -71,6 +72,7 @@ function FactionPanelContent({
   const factionTechs = Object.values(techs).filter(
     (tech) => tech.faction === faction.id
   );
+  sortTechsByPreReqAndExpansion(factionTechs);
   const factionLeaders = Object.values(leaders)
     .filter((leader) => leader.faction === faction.id)
     .filter((leader) =>
@@ -240,7 +242,7 @@ function FactionPanelContent({
               className="flexColumn"
               style={{
                 gap: rem(4),
-                padding: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
                 fontSize: rem(14),
               }}
             >
@@ -316,9 +318,14 @@ function FactionPanelContent({
         <CollapsibleSection
           title={
             <FormattedMessage
-              id="2dmEIv"
-              defaultMessage="Abilities"
+              id="I54oy6"
+              defaultMessage="{count, plural, one {Ability} other {Abilities}}"
               description="Header for a section listing out abilities."
+              values={{
+                count:
+                  faction.abilities.length +
+                  (options.expansions.includes("THUNDERS EDGE") ? 1 : 0),
+              }}
             />
           }
           style={{ width: "100%" }}
@@ -331,7 +338,7 @@ function FactionPanelContent({
               // gridAutoFlow: "row",
               // gridTemplateRows: `repeat(${faction.abilities.length}, 1fr)`,
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
             }}
           >
@@ -391,7 +398,7 @@ function FactionPanelContent({
             className="flexColumn"
             style={{
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
               width: "100%",
             }}
@@ -423,7 +430,7 @@ function FactionPanelContent({
           className="flexColumn"
           style={{
             gap: rem(4),
-            padding: rem(4),
+            padding: `0 ${rem(4)} ${rem(4)}`,
             fontSize: rem(14),
           }}
         >

@@ -77,10 +77,25 @@ export default function getThundersEdgeFactions(
         defaultMessage: "Bastion",
       }),
       startswith: {
-        // TODO: Add starting stuff.
-        techs: [],
+        choice: {
+          options: [
+            "Antimass Deflectors",
+            "Dark Energy Tap",
+            "Sarween Tools",
+            "Scanlink Drone Network",
+          ],
+          select: 1,
+        },
+        // TODO: Add starting planets.
         planets: [],
-        units: {},
+        units: {
+          Carrier: 1,
+          Cruiser: 1,
+          Dreadnought: 1,
+          Fighter: 2,
+          Infantry: 3,
+          "Space Dock": 1,
+        },
       },
       units: [
         {
@@ -144,9 +159,47 @@ export default function getThundersEdgeFactions(
           }),
           stats: {},
           type: "Space Dock",
-          // upgrade: '4X41C "Helios" VII',
+          // TODO: upgrade: '4X41C "Helios" VII',
         },
       ],
+    },
+    "Ral Nel Consortium": {
+      abilities: [],
+      colors: {
+        Green: 1.6,
+      },
+      colorList: [
+        "Green",
+        "Yellow",
+        "Black",
+        "Blue",
+        "Red",
+        "Purple",
+        "Magenta",
+        "Orange",
+      ],
+      commodities: 0,
+      expansion: "THUNDERS EDGE",
+      id: "Ral Nel Consortium",
+      name: intl.formatMessage({
+        id: "Ral Nel Consortium.Name",
+        description: "Name of Faction: Ral Nel Consortium",
+        defaultMessage: "Ral Nel Consortium",
+      }),
+      promissories: [
+        // TODO: Add promissories.
+      ],
+      shortname: intl.formatMessage({
+        id: "Ral Nel Consortium.Shortname",
+        description: "Shortened version of Faction name: Ral Nel Consortium",
+        defaultMessage: "Ral Nel",
+      }),
+      startswith: {
+        // TODO: Add starting stuff.
+        planets: [],
+        units: {},
+      },
+      units: [],
     },
   };
 }

@@ -2319,12 +2319,20 @@
     "defaultMessage": "You may spend 1 influence at the start of your turn to treat all laws as blank until the end of your turn.",
     "description": "Description for Faction Ability: Law's Order"
   },
+  "Council Keleres.Abilities.Law's Order.Thunder's Edge.Description": {
+    "defaultMessage": "You may spend 1 trade good or 1 commodity at the start of any player's turn to treat all laws as blank until the end of that turn.",
+    "description": "Description for Faction Ability: Law's Order"
+  },
   "Council Keleres.Abilities.Law's Order.Title": {
     "defaultMessage": "Law's Order",
     "description": "Title of Faction Ability: Law's Order"
   },
   "Council Keleres.Abilities.The Tribunii.Description": {
     "defaultMessage": "During setup, choose an unplayed faction from among the Mentak, the Xxcha and the Argent Flight; take that faction's home system, command tokens and control markers. Additionally, take the Keleres Hero that corresponds to that faction.",
+    "description": "Description for Faction Ability: The Tribunii"
+  },
+  "Council Keleres.Abilities.The Tribunii.Thunder's Edge.Description.": {
+    "defaultMessage": "During setup, choose a Keleres hero that corresponds to an unused faction; take that faction's home system, command tokens and control tokens. The unchosen Keleres heroes are not used.",
     "description": "Description for Faction Ability: The Tribunii"
   },
   "Council Keleres.Abilities.The Tribunii.Title": {
@@ -2827,6 +2835,14 @@
     "defaultMessage": "Age of Fighters",
     "description": "Title of Event: Age of Fighters"
   },
+  "Events.Call of the Void.Description": {
+    "defaultMessage": "After you move 1 or more units into the active system, if that system is in The Fracture, gain 1 command token.{br}When you activate a system in The Fracture, apply +1 to the move values of each of your ships.",
+    "description": "Description for Event: Call of the Void"
+  },
+  "Events.Call of the Void.Title": {
+    "defaultMessage": "Call of the Void",
+    "description": "Title of Event: Call of the Void"
+  },
   "Events.Civilized Society.Description": {
     "defaultMessage": "During setup, turn all public objectives faceup.{br}There is no limit to the number of public objectives a player may score during the status phase.{br}The game does not immediately end when a player reaches the required number of victory points; instead, it ends at the end of that round's status phase, and the player with the most victory points wins. In the case of a tie, the tied players total the influence values of their controlled planets and their unspent trade goods; the player or players with the highest total win the game.",
     "description": "Description for Event: Civilized Society"
@@ -2842,6 +2858,14 @@
   "Events.Dangerous Wilds.Title": {
     "defaultMessage": "Dangerous Wilds",
     "description": "Title of Event: Dangerous Wilds"
+  },
+  "Events.Hidden Agenda.Description": {
+    "defaultMessage": "During the agenda phase, only the speaker can talk; all other players must remain silent except when declaring action cards. Transactions cannot be performed during this phase.{br}When voting, players secretly and simultaneously write their desired outcome and number of votes and pass them to the speaker. After all players have voted, the speaker secretly tallies the results and reveals only the totals to the other players; the speaker reveals who voted for which outcome only when required to resolve the outcome.{br}The Argent Flight's votes are public and are known before the other players vote.",
+    "description": "Description of Event: Hidden Agenda"
+  },
+  "Events.Hidden Agenda.Title": {
+    "defaultMessage": "Hidden Agenda",
+    "description": "Title of Event: Hidden Agenda"
   },
   "Events.Minor Factions.Description": {
     "defaultMessage": "During setup, players are dealt 1 fewer blue tile. Before creating the galaxy, shuffle the reference cards for factions not being played and deal 1 to each player. In speaker order, each player places that faction's home system in the second ring, equidistant from players' home systems. Then, that player places 3 neutral infantry on that system's planets, split as evenly as possible. These systems are minor faction systems and do not count as home systems.{br}When a player controls each planet in a minor faction system, they take that factions alliance card from the deck or from the player that owned it previously.{br}Planets in minor faction systems gain all three planet traits (cultural, industrial, and hazardous).",
@@ -2886,6 +2910,14 @@
   "Federation of Sol.Abilities.Versatile.Title": {
     "defaultMessage": "Versatile",
     "description": "Title of Faction Ability: Versatile"
+  },
+  "Federation of Sol.Breakthrough.Bellum Gloriosum.Description": {
+    "defaultMessage": "When you produce a ship that has capacity, you may also produce any combination of ground forces or fighters up to that ship's capacity; they do not count against your PRODUCTION limit.",
+    "description": "Description of Faction Breakthrough: Bellum Gloriosum"
+  },
+  "Federation of Sol.Breakthrough.Bellum Gloriosum.Title": {
+    "defaultMessage": "Bellum Gloriosum",
+    "description": "Title of Faction Breakthrough: Bellum Gloriosum"
   },
   "Federation of Sol.Leaders.Claire Gibson.Description": {
     "defaultMessage": "At the start of a ground combat on a planet you control:{br}You may place 1 infantry from your reinforcements on that planet.",
@@ -2982,10 +3014,6 @@
   "GR4fXA": {
     "defaultMessage": "Resolve with Outcome: {outcome}",
     "description": "Text on a button that resolves the current agenda with a specific outcome."
-  },
-  "GaVWfk": {
-    "defaultMessage": "Age of Commerce",
-    "description": "Name of event in which players can trade more."
   },
   "Ghosts of Creuss.Abilities.Creuss Gate.Description": {
     "defaultMessage": "When you create the game board, place the Creuss Gate (tile 17) where your home system would normally be placed. The Creuss Gate system is not a home system. Then, place your home system (tile 51) in your play area.",
@@ -3123,6 +3151,10 @@
     "defaultMessage": "Action Cards",
     "description": "Cards that are used to make actions."
   },
+  "I54oy6": {
+    "defaultMessage": "{count, plural, one {Ability} other {Abilities}}",
+    "description": "Header for a section listing out abilities."
+  },
   "IG7CG4": {
     "defaultMessage": "{count} {count, plural, one {Space Dock} other {Space Docks}}",
     "description": "A number of Space Dock units."
@@ -3186,6 +3218,14 @@
   "L1Z1X Mindnet.Abilities.Harrow.Title": {
     "defaultMessage": "Harrow",
     "description": "Title of Faction Ability: Harrow"
+  },
+  "L1Z1X Mindnet.Breakthrough.Fealty Uplink.Description": {
+    "defaultMessage": "When you gain control of a planet, place infantry from your reinforcements equal to that planet's influence value onto that planet.",
+    "description": "Description of Faction Breakthrough: Fealty Uplink"
+  },
+  "L1Z1X Mindnet.Breakthrough.Fealty Uplink.Title": {
+    "defaultMessage": "Fealty Uplink",
+    "description": "Title of Faction Breakthrough: Fealty Uplink"
   },
   "L1Z1X Mindnet.Leaders.2RAM.Description": {
     "defaultMessage": "Units that have PLANETARY SHIELD do not prevent you from using BOMBARDMENT.",
@@ -4967,6 +5007,22 @@
     "defaultMessage": "Revealed stage I {count, plural, one {objective} other {objectives}}",
     "description": "A label for the stage I objectives that have been revealed"
   },
+  "Ral Nel Consortium.Leaders.Kan Kip Rel.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to draw 2 action cards; give 1 of those cards to another player.",
+    "description": "Description for Ral Nel Agent: Kan Kip Rel"
+  },
+  "Ral Nel Consortium.Leaders.Kan Kip Rel.Name": {
+    "defaultMessage": "Kan Kip Rel",
+    "description": "Name of Ral Nel Agent: Kan Kip Rel"
+  },
+  "Ral Nel Consortium.Name": {
+    "defaultMessage": "Ral Nel Consortium",
+    "description": "Name of Faction: Ral Nel Consortium"
+  },
+  "Ral Nel Consortium.Shortname": {
+    "defaultMessage": "Ral Nel",
+    "description": "Shortened version of Faction name: Ral Nel Consortium"
+  },
   "Relics.Accretion Engine.Description": {
     "defaultMessage": "Apply +1 to the PRODUCTION value of each of your units with PRODUCTION. When you produce 1 or more units, reduce the combined cost of the produced units by 1.",
     "description": "Description for Relic: Accretion Engine"
@@ -5214,6 +5270,14 @@
   "Sardakk N'orr.Abilities.Unrelenting.Title": {
     "defaultMessage": "Unrelenting",
     "description": "Title of Faction Ability: Unrelenting"
+  },
+  "Sardakk N'orr.Breakthrough.N'orr Supremacy.Description": {
+    "defaultMessage": "After you win a combat, either gain 1 command token or research a unit upgrade technology.",
+    "description": "Description of Faction Breakthrough: N'orr Supremacy"
+  },
+  "Sardakk N'orr.Breakthrough.N'orr Supremacy.Title": {
+    "defaultMessage": "N'orr Supremacy",
+    "description": "Title of Faction Breakthrough: N'orr Supremacy"
   },
   "Sardakk N'orr.Leaders.G'hom Sek'kus.Description": {
     "defaultMessage": "During the \"Commit Ground Forces\" step:{br}You can commit up to 1 ground force from each planet in the active system and each planet in adjacent systems that do not contain 1 of your command tokens.",
@@ -5947,6 +6011,14 @@
     "defaultMessage": "Riftmeld",
     "description": "Title of Faction Ability: Riftmeld"
   },
+  "Vuil'raith Cabal.Breakthrough.Al'raith Ix Ianovar.Description": {
+    "defaultMessage": "This breakthrough causes The Fracture to enter play without a roll, if it is not already in play. After this card enters play, move up to 2 ingress tokens into systems that contain gravity rifts.{br}Apply +1 to the MOVE value of each of your ships that start their movement in The Fracture.",
+    "description": "Description of Faction Breakthrough: Al'raith Ix Ianovar"
+  },
+  "Vuil'raith Cabal.Breakthrough.Al'raith Ix Ianovar.Title": {
+    "defaultMessage": "Al'raith Ix Ianovar",
+    "description": "Title of Faction Breakthrough: Al'raith Ix Ianovar"
+  },
   "Vuil'raith Cabal.Leaders.It Feeds on Carrion.AbilityName": {
     "defaultMessage": "DIMENSIONAL ANCHOR",
     "description": "Ability name for Vuil'raith Hero: It Feeds on Carrion"
@@ -6298,10 +6370,6 @@
   "YKkcsO": {
     "defaultMessage": "Discard to Swap",
     "description": "Text on a button that will apply a Imperial Arbiter Strategy Card swap."
-  },
-  "YcYpgP": {
-    "defaultMessage": "Total War",
-    "description": "Name of event in which combat can be used to gain VPs."
   },
   "YeYE6S": {
     "defaultMessage": "Select Action",
@@ -6731,10 +6799,6 @@
     "defaultMessage": "Win Rate with Custodians Token: {perc}% ({count} of {games})",
     "description": "Text for a stat about the number of times a faction won with the custodians token."
   },
-  "hxXb/S": {
-    "defaultMessage": "Minor Factions",
-    "description": "Name of event in which other factions' home planets are on the board."
-  },
   "i3D47t": {
     "defaultMessage": "Faction Games",
     "description": "Label for a chart showing the number of games per faction."
@@ -6878,10 +6942,6 @@
   "sJ5zBj": {
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
     "description": "A number of Cruiser units."
-  },
-  "sZua2x": {
-    "defaultMessage": "Age of Exploration",
-    "description": "Name of event in which players can add new tiles to the map."
   },
   "sgqLYB": {
     "defaultMessage": "Other",

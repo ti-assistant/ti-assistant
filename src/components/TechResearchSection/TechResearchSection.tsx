@@ -15,6 +15,9 @@ import { ActionLog, Optional } from "../../util/types/types";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import styles from "./TechResearchSection.module.scss";
+import TechIcon from "../TechIcon/TechIcon";
+import IconDiv from "../LabeledDiv/IconDiv";
+import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 
 function getResearchableTechs(
   currentTurn: ActionLog,
@@ -179,6 +182,10 @@ function ResearchedTechsSection({
   if (hideWrapper) {
     return innerContent;
   }
+
+  // return (
+  //   <IconDiv icon={<TechSkipIcon size={16} outline />}>{innerContent}</IconDiv>
+  // );
 
   return (
     <LabeledDiv

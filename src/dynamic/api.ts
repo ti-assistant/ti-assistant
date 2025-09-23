@@ -274,10 +274,11 @@ export async function endTurnAsync(gameId: string, samePlayer?: boolean) {
 export async function gainRelicAsync(
   gameId: string,
   faction: FactionId,
-  relic: RelicId
+  relic: RelicId,
+  planet?: PlanetId
 ) {
   const gainRelic = await gainRelicFn;
-  gainRelic(gameId, faction, relic);
+  gainRelic(gameId, faction, relic, planet);
 }
 
 export async function gainAllianceAsync(

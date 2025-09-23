@@ -40,7 +40,6 @@ import {
   useFactions,
   useNumFactions,
 } from "../../../../../../src/context/factionDataHooks";
-import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
@@ -57,6 +56,7 @@ import {
   unplayComponentAsync,
   updatePlanetStateAsync,
 } from "../../../../../../src/dynamic/api";
+import RelicMenuSVG from "../../../../../../src/icons/ui/RelicMenu";
 import {
   getClaimedPlanets,
   getGainedRelic,
@@ -85,7 +85,7 @@ import { applyAllPlanetAttachments } from "../../../../../../src/util/planets";
 import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import PlanetaryRigs from "./components/PlanetaryRigs";
-import RelicMenuSVG from "../../../../../../src/icons/ui/RelicMenu";
+import GainRelic from "../../../../../../src/components/Actions/GainRelic";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -778,7 +778,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Exploration Probe":
     case "Circlet of the Void":
-      const gainedRelic = getGainedRelic(currentTurn);
       const claimedPlanets = getClaimedPlanets(currentTurn, factionId);
       const mirageClaimed = claimedPlanets.reduce((claimed, planet) => {
         if (planet.planet === "Mirage") {
@@ -796,96 +795,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       if (mirageClaimed) {
         leftLabel = "Mirage";
       }
-      if (gainedRelic) {
-        leftLabel = (
-          <FormattedMessage
-            id="cqWqzv"
-            description="Label for section listing the relic gained."
-            defaultMessage="Gained Relic"
-          />
-        );
-      }
       innerContent = <FrontierExploration factionId={factionId} />;
       break;
     case "Gain Relic":
     case "Black Market Forgery":
     case "Hesh and Prit":
     case "Fabrication": {
-      const gainedRelic = getGainedRelic(currentTurn);
-      const unownedRelics = Object.values(relics)
-        .filter((relic) => !relic.owner || gainedRelic === relic.id)
-        .sort((a, b) => (a.name > b.name ? 1 : -1));
-      if (gainedRelic) {
-        leftLabel = (
-          <FormattedMessage
-            id="cqWqzv"
-            description="Label for section listing the relic gained."
-            defaultMessage="Gained Relic"
-          />
-        );
-      }
-      innerContent =
-        unownedRelics.length > 0 ? (
-          <>
-            <Selector
-              hoverMenuLabel={
-                <FormattedMessage
-                  id="Components.Gain Relic.Title"
-                  description="Title of Component: Gain Relic"
-                  defaultMessage="Gain Relic"
-                />
-              }
-              options={unownedRelics}
-              renderItem={(itemId, _) => {
-                const relic = relics[itemId];
-                if (!relic) {
-                  return null;
-                }
-                return (
-                  <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
-                    <SelectableRow
-                      itemId={relic.id}
-                      removeItem={removeRelic}
-                      viewOnly={viewOnly}
-                    >
-                      <InfoRow
-                        infoTitle={relic.name}
-                        infoContent={
-                          <FormattedDescription
-                            description={relic.description}
-                          />
-                        }
-                      >
-                        {relic.name}
-                      </InfoRow>
-                    </SelectableRow>
-                    {relic.id === "Shard of the Throne" ? (
-                      <div>+1 VP</div>
-                    ) : null}
-                  </div>
-                );
-              }}
-              selectedItem={gainedRelic}
-              toggleItem={(relicId, add) => {
-                if (add) {
-                  addRelic(relicId);
-                } else {
-                  removeRelic(relicId);
-                }
-              }}
-              viewOnly={viewOnly}
-            />
-            {gainedRelic === "Book of Latvinia" ? (
-              <TechResearchSection
-                factionId={factionId}
-                filter={(tech) => tech.prereqs.length === 0}
-                numTechs={2}
-              />
-            ) : null}
-          </>
-        ) : (
-          "No Relics remaining"
-        );
+      innerContent = (
+        <div className="flexColumn" style={{ width: "100%" }}>
+          <GainRelic factionId={factionId} />
+        </div>
+      );
       break;
     }
     case "Stellar Converter": {

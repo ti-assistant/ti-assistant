@@ -919,22 +919,6 @@ export default function getProphecyOfKingsFactions(
           type: "Mech",
         },
         {
-          expansion: "POK",
-          name: intl.formatMessage({
-            id: "Titans of Ul.Units.Saturn Engine I.Title",
-            description: "Title of Faction Unit: Saturn Engine I",
-            defaultMessage: "Saturn Engine I",
-          }),
-          stats: {
-            cost: 2,
-            combat: 7,
-            move: 2,
-            capacity: 1,
-          },
-          type: "Cruiser",
-          upgrade: "Saturn Engine II",
-        },
-        {
           abilities: [
             planetaryShield(intl),
             sustainDamage(intl),
@@ -958,6 +942,22 @@ export default function getProphecyOfKingsFactions(
           },
           type: "PDS",
           upgrade: "Hel Titan II",
+        },
+        {
+          expansion: "POK",
+          name: intl.formatMessage({
+            id: "Titans of Ul.Units.Saturn Engine I.Title",
+            description: "Title of Faction Unit: Saturn Engine I",
+            defaultMessage: "Saturn Engine I",
+          }),
+          stats: {
+            cost: 2,
+            combat: 7,
+            move: 2,
+            capacity: 1,
+          },
+          type: "Cruiser",
+          upgrade: "Saturn Engine II",
         },
       ],
     },

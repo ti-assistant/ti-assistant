@@ -4,12 +4,18 @@ import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
 import { poster } from "./util";
 
-export function gainRelic(gameId: string, faction: FactionId, relic: RelicId) {
+export function gainRelic(
+  gameId: string,
+  faction: FactionId,
+  relic: RelicId,
+  planet?: PlanetId
+) {
   const data: GameUpdateData = {
     action: "GAIN_RELIC",
     event: {
       faction,
       relic,
+      planet,
     },
   };
 

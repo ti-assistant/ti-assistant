@@ -224,6 +224,9 @@ export function canResearchTech(
 export function sortTechsByPreReqAndExpansion(techs: Tech[]) {
   techs.sort((a, b) => {
     if (a.prereqs.length === b.prereqs.length) {
+      if (a.expansion === b.expansion) {
+        return a.name > b.name ? 1 : -1;
+      }
       if (a.expansion > b.expansion) {
         return 1;
       }

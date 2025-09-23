@@ -8,7 +8,9 @@ namespace ThundersEdge {
     | "Al'raith Ix Ianovar" // Vuil'raith Cabal
     | "Yin Ascendant"; // Yin Brotherhood
 
-  type FactionId = "Last Bastion";
+  type FactionId = "Last Bastion" | "Ral Nel Consortium";
+
+  type LeaderId = "Kan Kip Rel";
 
   type PlanetId =
     | "Cocytus"

@@ -946,21 +946,6 @@ export default function getBaseFactions(
         {
           abilities: [],
           name: intl.formatMessage({
-            id: "Federation of Sol.Units.Spec Ops I.Title",
-            description: "Title of Faction Unit: Spec Ops I",
-            defaultMessage: "Spec Ops I",
-          }),
-          expansion: "BASE",
-          stats: {
-            cost: "1(x2)",
-            combat: 7,
-          },
-          type: "Infantry",
-          upgrade: "Spec Ops II",
-        },
-        {
-          abilities: [],
-          name: intl.formatMessage({
             id: "Federation of Sol.Units.Advanced Carrier I.Title",
             description: "Title of Faction Unit: Advanced Carrier I",
             defaultMessage: "Advanced Carrier I",
@@ -974,6 +959,21 @@ export default function getBaseFactions(
           },
           type: "Carrier",
           upgrade: "Advanced Carrier II",
+        },
+        {
+          abilities: [],
+          name: intl.formatMessage({
+            id: "Federation of Sol.Units.Spec Ops I.Title",
+            description: "Title of Faction Unit: Spec Ops I",
+            defaultMessage: "Spec Ops I",
+          }),
+          expansion: "BASE",
+          stats: {
+            cost: "1(x2)",
+            combat: 7,
+          },
+          type: "Infantry",
+          upgrade: "Spec Ops II",
         },
       ],
     },

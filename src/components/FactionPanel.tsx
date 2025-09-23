@@ -686,9 +686,14 @@ function FactionPanelContent({
         <CollapsibleSection
           title={
             <FormattedMessage
-              id="2dmEIv"
-              defaultMessage="Abilities"
+              id="I54oy6"
+              defaultMessage="{count, plural, one {Ability} other {Abilities}}"
               description="Header for a section listing out abilities."
+              values={{
+                count:
+                  faction.abilities.length +
+                  (options.expansions.includes("THUNDERS EDGE") ? 1 : 0),
+              }}
             />
           }
           style={{ width: "100%" }}
@@ -698,7 +703,7 @@ function FactionPanelContent({
             style={{
               width: "100%",
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
             }}
           >
@@ -786,7 +791,7 @@ function FactionPanelContent({
             className="flexColumn"
             style={{
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
               width: "100%",
             }}
@@ -817,7 +822,7 @@ function FactionPanelContent({
               className="flexColumn"
               style={{
                 gap: rem(4),
-                padding: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
                 fontSize: rem(14),
               }}
             >
@@ -853,7 +858,7 @@ function FactionPanelContent({
             className="flexColumn"
             style={{
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
             }}
           >

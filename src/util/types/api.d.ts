@@ -299,6 +299,8 @@ interface UnendTurnData {
 interface GainRelicEvent {
   faction: FactionId;
   relic: RelicId;
+  // Used to differentiate when selecting from planets.
+  planet?: PlanetId;
 }
 
 interface GainRelicData {
