@@ -14,6 +14,19 @@ export default function getThundersEdgePlanets(
   intl: IntlShape
 ): Record<ThundersEdge.PlanetId, BasePlanet> {
   return {
+    Ikatena: {
+      attributes: [],
+      expansion: "THUNDERS EDGE",
+      faction: "Deepwrought Scholarate",
+      home: true,
+      influence: 4,
+      id: "Ikatena",
+      name: "Ikatena",
+      position: HOME_MIDDLE,
+      resources: 4,
+      // TODO: Add system.
+      type: "NONE",
+    },
     Cocytus: {
       alwaysInclude: true,
       attributes: ["relic"],

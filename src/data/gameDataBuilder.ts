@@ -157,6 +157,7 @@ export function buildCompleteComponents(
       return;
     }
 
+    // TODO: Remove this for TE.
     // Filter out Codex Two relics if not using PoK.
     if (!expansions.includes("POK") && component.type === "RELIC") {
       return;
@@ -165,6 +166,7 @@ export function buildCompleteComponents(
     if (!expansions.includes("POK") && component.type === "LEADER") {
       return;
     }
+    // TODO: Consider this for TE.
     // Filter out components that are removed by PoK.
     if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
       return;
@@ -378,6 +380,8 @@ export function buildCompletePlanets(
     )
     .map((system) => parseInt(system) as SystemId);
 
+  const omegaMergeFn = buildMergeFunction(gameOptions.expansions);
+
   let planets: Partial<Record<PlanetId, Planet>> = {};
   objectEntries(baseData.planets).forEach(([_, planet]) => {
     let isPlanetInMap = planet.system && inGameSystems.includes(planet.system);
@@ -457,7 +461,7 @@ export function buildCompletePlanets(
     }
 
     planet = {
-      ...planet,
+      ...omegaMergeFn(planet),
       ...(gamePlanets[planet.id] ?? {}),
     };
 

@@ -89,6 +89,12 @@ export async function POST(req: Request) {
         : "locked",
     };
 
+    if (faction.id === "Crimson Rebellion") {
+      gameFaction.breakthrough = {
+        state: "readied",
+      };
+    }
+
     if (faction.playerName) {
       gameFaction.playerName = faction.playerName;
     }

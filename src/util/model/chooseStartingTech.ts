@@ -23,6 +23,10 @@ export class ChooseStartingTechHandler implements Handler {
       return false;
     }
 
+    if (faction.id === "Deepwrought Scholarate") {
+      return true;
+    }
+
     if (
       !faction.startswith.choice ||
       !faction.startswith.choice.options.includes(this.data.event.tech)

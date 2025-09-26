@@ -86,6 +86,7 @@ interface BaseFaction {
   commodities: number;
   expansion: Expansion;
   id: FactionId;
+  locked?: boolean; // Prevents a faction from being selected.
   name: string;
   omegas?: Omega<BaseFaction>[];
   promissories: PromissoryNote[];

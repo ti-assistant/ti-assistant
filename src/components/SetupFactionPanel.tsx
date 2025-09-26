@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
 import { useSharedModal } from "../data/SharedModal";
@@ -16,6 +16,8 @@ import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
 import UnitStats from "./UnitStats/UnitStats";
 import { sortTechsByPreReqAndExpansion } from "../util/techs";
+import Toggle from "./Toggle/Toggle";
+import Chip from "./Chip/Chip";
 
 function AbilitySection({
   leftLabel,
@@ -492,9 +494,11 @@ function FactionPanelContent({
 export default function SetupFactionPanel({
   faction,
   options,
+  altFaction,
 }: {
   faction: BaseFaction;
   options: Options;
+  altFaction?: BaseFaction;
 }) {
   const { openModal } = useSharedModal();
 
@@ -507,7 +511,11 @@ export default function SetupFactionPanel({
         }}
         onClick={() =>
           openModal(
-            <SetupFactionPanelModal faction={faction} options={options} />
+            <SetupFactionPanelModal
+              faction={faction}
+              options={options}
+              altFaction={altFaction}
+            />
           )
         }
       >
@@ -520,10 +528,16 @@ export default function SetupFactionPanel({
 function SetupFactionPanelModal({
   faction,
   options,
+  altFaction,
 }: {
   faction: BaseFaction;
   options: Options;
+  altFaction?: BaseFaction;
 }) {
+  const [viewAlt, setViewAlt] = useState(false);
+
+  const selectedFaction = !viewAlt || !altFaction ? faction : altFaction;
+
   return (
     <div
       className="flexColumn"
@@ -543,10 +557,20 @@ function SetupFactionPanelModal({
           borderRadius: rem(4),
         }}
       >
-        <FactionIcon factionId={faction.id} size={36} />
-        {faction.name}
-        <FactionIcon factionId={faction.id} size={36} />
+        <FactionIcon factionId={selectedFaction.id} size={36} />
+        {selectedFaction.name}
+        <FactionIcon factionId={selectedFaction.id} size={36} />
       </div>
+      {altFaction ? (
+        <div className="flexRow" onClick={(e) => e.stopPropagation()}>
+          <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
+            {faction.name}
+          </Chip>
+          <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
+            {altFaction.name}
+          </Chip>
+        </div>
+      ) : null}
       <div
         className="flexColumn largeFont"
         onClick={(e) => e.stopPropagation()}
@@ -557,7 +581,7 @@ function SetupFactionPanelModal({
           height: "fit-content",
         }}
       >
-        <FactionPanelContent faction={faction} options={options} />
+        <FactionPanelContent faction={selectedFaction} options={options} />
       </div>
     </div>
   );

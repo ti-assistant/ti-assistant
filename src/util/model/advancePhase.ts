@@ -1,6 +1,9 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 import { Optional } from "../types/types";
+import { getCurrentRoundLogEntries } from "../api/actionLog";
+import { getLogEntries } from "../actionLog";
+import { objectEntries } from "../util";
 
 export class AdvancePhaseHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {
@@ -107,8 +110,12 @@ export class AdvancePhaseHandler implements Handler {
             updates[`components.${componentId}.state`] = "DELETE";
           }
         }
-        for (const [factionId, faction] of Object.entries(factions ?? {})) {
-          for (const [techId, tech] of Object.entries(faction.techs ?? {})) {
+        for (const [factionId, faction] of objectEntries(factions ?? {})) {
+          for (const [techId, tech] of objectEntries(faction.techs ?? {})) {
+            if (tech.shareKnowledge) {
+              updates[`factions.${factionId}.techs.${techId}`] = "DELETE";
+              continue;
+            }
             if (!tech.ready) {
               updates[`factions.${factionId}.techs.${techId}.ready`] = true;
             }

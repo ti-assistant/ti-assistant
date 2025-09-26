@@ -976,6 +976,9 @@ function FactionSelect({
   }
 
   const filteredFactions = Object.values(updatedFactions).filter((faction) => {
+    if (faction.locked) {
+      return false;
+    }
     if (faction.expansion === "BASE") {
       return true;
     }
@@ -1099,6 +1102,11 @@ function FactionSelect({
                   <SetupFactionPanel
                     faction={updatedFactions[faction.id]}
                     options={createOptions(options)}
+                    altFaction={
+                      faction.id === "Firmament"
+                        ? updatedFactions["Obsidian"]
+                        : undefined
+                    }
                   />
                 </SelectableRow>
                 <ColorPicker

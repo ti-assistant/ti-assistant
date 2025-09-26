@@ -366,6 +366,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Clan of Saar.Breakthrough.Deorbit Barrage.Title",
+          description: "Title of Faction Breakthrough: Deorbit Barrage",
+          defaultMessage: "Deorbit Barrage",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Clan of Saar.Breakthrough.Deorbit Barrage.Description",
+            description: "Description of Faction Breakthrough: Deorbit Barrage",
+            defaultMessage:
+              "ACTION: Exhaust this card and spend any amount of resources to choose a planet up to 2 systems away from an asteroid field that contains your ships; roll a number of dice equal to the amount spent and assign 1 hit to a ground force on that planet for each roll of 4 or greater.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Deorbit Barrage",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "COMPONENT_ACTION",
+      },
       colors: {
         Green: 0.5,
         Orange: 0.85,
@@ -2090,6 +2109,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Winnu.Breakthrough.Imperator.Title",
+          description: "Title of Faction Breakthrough: Imperator",
+          defaultMessage: "Imperator",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Winnu.Breakthrough.Imperator.Description",
+            description: "Description of Faction Breakthrough: Imperator",
+            defaultMessage:
+              "Apply +1 to the results of each of your unit's combat rolls for each \"Support for the Throne\" in your opponent's play area.{br}After you activate a system that contains a legendary planet, apply +1 to the move value of 1 of your ships during the tactical action.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Imperator",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Orange: 0.75,
         Purple: 0.6,

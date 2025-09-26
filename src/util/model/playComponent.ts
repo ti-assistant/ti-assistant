@@ -7,17 +7,18 @@ import {
   buildRelics,
   buildState,
 } from "../../data/GameData";
+import { getCurrentTurnLogEntries } from "../api/actionLog";
+import { applyPlanetAttachments } from "../planets";
+import { Optional } from "../types/types";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
-import { UpdateLeaderStateHandler } from "./updateLeaderState";
 import { AddTechHandler, RemoveTechHandler } from "./addTech";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
 } from "./scoreObjective";
-import { applyPlanetAttachments } from "../planets";
 import { SetSpeakerHandler } from "./setSpeaker";
-import { Optional } from "../types/types";
-import { getCurrentTurnLogEntries } from "../api/actionLog";
+import { UpdateLeaderStateHandler } from "./updateLeaderState";
+import { objectEntries } from "../util";
 
 export class PlayComponentHandler implements Handler {
   constructor(
@@ -99,6 +100,61 @@ export class PlayComponentHandler implements Handler {
         updates[
           `factions.${state.activeplayer}.techs.${this.data.event.name}.ready`
         ] = false;
+        break;
+      case "PROMISSORY":
+        switch (component.id) {
+          case "Share Knowledge":
+            updates[`components.${this.data.event.name}.state`] = "used";
+            break;
+        }
+        break;
+      case "ABILITY":
+        switch (component.id) {
+          case "Puppets of the Blade":
+            const faction = this.gameData.factions["Firmament"];
+            if (!faction) {
+              break;
+            }
+            faction.id = "Obsidian";
+            if (faction.techs["Neural Parasite"]) {
+              faction.techs["Neural Parasite (Obsidian)"] =
+                faction.techs["Neural Parasite"];
+              delete faction.techs["Neural Parasite"];
+            }
+            if (faction.techs["Planesplitter"]) {
+              faction.techs["Planesplitter (Obsidian)"] =
+                faction.techs["Planesplitter"];
+              delete faction.techs["Planesplitter"];
+            }
+            updates[`factions.Obsidian`] = faction;
+            updates[`factions.Firmament`] = "DELETE";
+            updates[`state.activeplayer`] = "Obsidian";
+            for (const [id, strategyCard] of objectEntries(
+              this.gameData.strategycards ?? {}
+            )) {
+              if (strategyCard.faction === "Firmament") {
+                updates[`strategycards.${id}.faction`] = "Obsidian";
+              }
+            }
+            for (const [id, objective] of objectEntries(
+              this.gameData.objectives ?? {}
+            )) {
+              updates[`objectives.${id}.scorers`] = (
+                objective.scorers ?? []
+              ).map((factionId) =>
+                factionId === "Firmament" ? "Obsidian" : factionId
+              );
+              for (const [factionId, scorers] of objectEntries(
+                objective.keyedScorers ?? {}
+              )) {
+                updates[`objectives.${id}.keyedScorers.${factionId}`] =
+                  scorers.map((factionId) =>
+                    factionId === "Firmament" ? "Obsidian" : factionId
+                  );
+              }
+            }
+            break;
+        }
         break;
       case "LEADER":
         let newState: LeaderState = "exhausted";
@@ -294,6 +350,53 @@ export class UnplayComponentHandler implements Handler {
     if (component.type === "BREAKTHROUGH") {
       updates[`factions.${this.data.event.factionId}.breakthrough.state`] =
         "readied";
+    }
+    if (component.type === "ABILITY") {
+      switch (component.id) {
+        case "Puppets of the Blade":
+          const faction = this.gameData.factions["Obsidian"];
+          if (!faction) {
+            break;
+          }
+          faction.id = "Firmament";
+          if (faction.techs["Neural Parasite (Obsidian)"]) {
+            faction.techs["Neural Parasite"] =
+              faction.techs["Neural Parasite (Obsidian)"];
+            delete faction.techs["Neural Parasite (Obsidian)"];
+          }
+          if (faction.techs["Planesplitter (Obsidian)"]) {
+            faction.techs["Planesplitter"] =
+              faction.techs["Planesplitter (Obsidian)"];
+            delete faction.techs["Planesplitter (Obsidian)"];
+          }
+          updates[`factions.Firmament`] = faction;
+          updates[`factions.Obsidian`] = "DELETE";
+          updates[`state.activeplayer`] = "Firmament";
+          for (const [id, strategyCard] of objectEntries(
+            this.gameData.strategycards ?? {}
+          )) {
+            if (strategyCard.faction === "Obsidian") {
+              updates[`strategycards.${id}.faction`] = "Firmament";
+            }
+          }
+          for (const [id, objective] of objectEntries(
+            this.gameData.objectives ?? {}
+          )) {
+            updates[`objectives.${id}.scorers`] = (objective.scorers ?? []).map(
+              (factionId) =>
+                factionId === "Obsidian" ? "Firmament" : factionId
+            );
+            for (const [factionId, scorers] of objectEntries(
+              objective.keyedScorers ?? {}
+            )) {
+              updates[`objectives.${id}.keyedScorers.${factionId}`] =
+                scorers.map((factionId) =>
+                  factionId === "Obsidian" ? "Firmament" : factionId
+                );
+            }
+          }
+          break;
+      }
     }
 
     if (this.data.event.name === "Ul the Progenitor") {

@@ -74,6 +74,7 @@ import { phaseString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
+import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1770,10 +1771,12 @@ function StrategyCardColumn() {
 export default function ActionPhase() {
   const gameId = useGameId();
   const intl = useIntl();
+  const state = useGameState();
   const viewOnly = useViewOnly();
 
   const activeFaction = useActiveFaction();
   const onDeckFaction = useOnDeckFaction();
+  console.log("State", state);
 
   return (
     <>

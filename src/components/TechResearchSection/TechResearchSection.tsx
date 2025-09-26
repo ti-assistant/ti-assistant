@@ -70,6 +70,7 @@ export default function TechResearchSection({
   gain = false,
   hideWrapper = false,
   numTechs = 1,
+  shareKnowledge = false,
   style,
 }: {
   label?: string;
@@ -78,6 +79,7 @@ export default function TechResearchSection({
   gain?: boolean;
   hideWrapper?: boolean;
   numTechs?: number;
+  shareKnowledge?: boolean;
   style?: CSSProperties;
 }) {
   const currentTurn = useCurrentTurn();
@@ -125,7 +127,9 @@ export default function TechResearchSection({
                   }))
             }
             techs={availableTechs}
-            selectTech={(tech) => addTechAsync(gameId, factionId, tech.id)}
+            selectTech={(tech) =>
+              addTechAsync(gameId, factionId, tech.id, false, shareKnowledge)
+            }
           />
         ) : (
           <FormattedMessage

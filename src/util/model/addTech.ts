@@ -39,6 +39,13 @@ export class AddTechHandler implements Handler {
         true,
     };
 
+    console.log("Sharing knowledge", this.data.event);
+    if (this.data.event.shareKnowledge) {
+      updates[
+        `factions.${this.data.event.faction}.techs.${this.data.event.tech}.shareKnowledge`
+      ] = true;
+    }
+
     if (this.data.event.tech === "IIHQ Modernization") {
       updates[`planets.Custodia Vigilia.owner`] = "Council Keleres";
     }

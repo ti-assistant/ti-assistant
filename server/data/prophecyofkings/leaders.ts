@@ -24,7 +24,7 @@ export default function getProphecyOfKingsLeaders(
       unlock: intl.formatMessage({
         id: "L1Z1X Mindnet.Leaders.2RAM.Unlock",
         description: "Unlock condition for L1Z1X Commander: 2RAM",
-        defaultMessage: "Have 4 dreadnoughts on the Board.",
+        defaultMessage: "Have 4 dreadnoughts on the board.",
       }),
     },
     Acamar: {

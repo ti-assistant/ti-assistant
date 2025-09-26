@@ -4,6 +4,7 @@ import getCodexFourComponents from "./codexfour/components";
 import getCodexOneComponents from "./codexone/components";
 import { DISCORDANT_STARS_COMPONENTS } from "./discordantstars/components";
 import getProphecyOfKingsComponents from "./prophecyofkings/components";
+import getThundersEdgeComponents from "./thundersedge/components";
 
 export function getComponents(
   intl: IntlShape
@@ -11,6 +12,7 @@ export function getComponents(
   return {
     ...getBaseComponents(intl),
     ...getProphecyOfKingsComponents(intl),
+    ...getThundersEdgeComponents(intl),
     ...getCodexOneComponents(intl),
     ...getCodexFourComponents(intl),
     ...DISCORDANT_STARS_COMPONENTS,

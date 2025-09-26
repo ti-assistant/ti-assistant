@@ -8,7 +8,8 @@ export function addTech(
   gameId: string,
   faction: FactionId,
   techId: TechId,
-  researchAgreement?: boolean
+  researchAgreement?: boolean,
+  shareKnowledge?: boolean
 ) {
   const data: GameUpdateData = {
     action: "ADD_TECH",
@@ -16,6 +17,7 @@ export function addTech(
       faction,
       tech: techId,
       researchAgreement,
+      shareKnowledge,
     },
   };
 

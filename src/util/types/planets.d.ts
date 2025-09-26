@@ -45,6 +45,7 @@ interface BasePlanet {
   locked?: boolean;
   name: string;
   position?: { x: number; y: number };
+  omegas?: Omega<BasePlanet>[];
   resources: number;
   subFaction?: SubFaction;
   system?: SystemId;

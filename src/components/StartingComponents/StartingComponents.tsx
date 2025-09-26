@@ -1,14 +1,23 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import { useGameId, useTechs, useViewOnly } from "../../context/dataHooks";
+import {
+  useGameId,
+  useOptions,
+  useTechs,
+  useViewOnly,
+} from "../../context/dataHooks";
 import { useFaction } from "../../context/factionDataHooks";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
   removeStartingTechAsync,
 } from "../../dynamic/api";
-import { getTechColor } from "../../util/techs";
-import { objectEntries, rem } from "../../util/util";
+import {
+  canResearchTech,
+  getFactionPreReqs,
+  getTechColor,
+} from "../../util/techs";
+import { objectEntries, objectKeys, rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
@@ -53,6 +62,7 @@ export default function StartingComponents({
 }: StartingComponentsProps) {
   const faction = useFaction(factionId);
   const gameId = useGameId();
+  const options = useOptions();
   const techs = useTechs();
   const viewOnly = useViewOnly();
 
@@ -98,8 +108,26 @@ export default function StartingComponents({
           }
         })
     : [];
+  let choices = (startswith.choice ?? {}).options ?? [];
+  if (factionId === "Deepwrought Scholarate") {
+    const factionPreReqs = getFactionPreReqs(
+      faction,
+      techs,
+      options,
+      /* planets= */ [],
+      /* relics= */ {}
+    );
+    choices = Object.values(techs)
+      .filter((tech) => {
+        return (
+          canResearchTech(tech, options, factionPreReqs, faction, false) &&
+          (!tech.faction || tech.faction === faction.id)
+        );
+      })
+      .map((tech) => tech.id);
+  }
   const orderedChoices = techs
-    ? ((startswith.choice ?? {}).options ?? [])
+    ? choices
         .filter((tech) => {
           return !(startswith.techs ?? []).includes(tech);
         })
@@ -128,7 +156,7 @@ export default function StartingComponents({
           if (prereqDiff !== 0) {
             return prereqDiff;
           }
-          if (a.id < b.id) {
+          if (a.name < b.name) {
             return -1;
           } else {
             return 1;

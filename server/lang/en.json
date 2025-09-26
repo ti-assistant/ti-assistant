@@ -119,10 +119,6 @@
     "defaultMessage": "Biotic",
     "description": "Title of green techs."
   },
-  "2dmEIv": {
-    "defaultMessage": "Abilities",
-    "description": "Header for a section listing out abilities."
-  },
   "2fB0Ox": {
     "defaultMessage": "Base Game",
     "description": "Text on a button that will show/hide features related to the base game."
@@ -2459,6 +2455,90 @@
     "defaultMessage": "Scored Action Phase {count, plural, one {Objective} other {Objectives}}",
     "description": "Label for section of scored action phase objectives."
   },
+  "Deepwrought Scholarate.Abilities.Oceanbound.Description": {
+    "defaultMessage": "When your units begin coexisting on a planet, gain an ocean card and ready it. Any time you have more ocean cards than there are planets that have your coexisting units, discard ocean cards until you do not.",
+    "description": "Description for Faction Ability: Oceanbound"
+  },
+  "Deepwrought Scholarate.Abilities.Oceanbound.Title": {
+    "defaultMessage": "Oceanbound",
+    "description": "Title of Faction Ability: Oceanbound"
+  },
+  "Deepwrought Scholarate.Abilities.Research Team.Description": {
+    "defaultMessage": "When ground forces are committed, if your units on the planet are already not coexisting, you may choose for your units to coexist.",
+    "description": "Description for Faction Ability: Research Team"
+  },
+  "Deepwrought Scholarate.Abilities.Research Team.Title": {
+    "defaultMessage": "Research Team",
+    "description": "Title of Faction Ability: Research Team"
+  },
+  "Deepwrought Scholarate.Breakthrough.Visionaria Select.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to allow each other player to spend 3 trade goods and give you 1 promissory note. Each player that does may research a non-faction, non-unit upgrade technology. You also gain each technology researched this way.",
+    "description": "Description of Faction Breakthrough: Visionaria Select"
+  },
+  "Deepwrought Scholarate.Breakthrough.Visionaria Select.Title": {
+    "defaultMessage": "Visionaria Select",
+    "description": "Title of Faction Breakthrough: Visionaria Select"
+  },
+  "Deepwrought Scholarate.Leaders.Aello.Description": {
+    "defaultMessage": "When another player spends resources to research a technology:{br}That player may reduce the cost by 1, if they do, gain 1 commodity or convert 1 of your commodities to a trade good.",
+    "description": "Description for Deepwrought Commander: Aello"
+  },
+  "Deepwrought Scholarate.Leaders.Aello.Name": {
+    "defaultMessage": "Aello",
+    "description": "Name of Deepwrought Commander: Aello"
+  },
+  "Deepwrought Scholarate.Leaders.Aello.Unlock": {
+    "defaultMessage": "Have an ocean card in play.",
+    "description": "Unlock condition for Deepwrought Commander: Aello"
+  },
+  "Deepwrought Scholarate.Leaders.Doctor Carrina.Description": {
+    "defaultMessage": "When another player researches a technology:{br}You may exhaust this card to allow that player to ignore 1 prerequisite; if they do, you may place 1 infantry from your reinforcements into coexistence on a non-home planet they control.",
+    "description": "Description for Deepwrought Agent: Doctor Carrina"
+  },
+  "Deepwrought Scholarate.Leaders.Doctor Carrina.Name": {
+    "defaultMessage": "Doctor Carrina",
+    "description": "Name of Deepwrought Agent: Doctor Carrina"
+  },
+  "Deepwrought Scholarate.Leaders.Ta Zern.Description": {
+    "defaultMessage": "ACTION: Purge this card and a non-unit upgrade technology you own or from your deck; then, purge all cards with the same name owned by other players and in other players' decks.{br}Then, each player that purged a technology they owned researches another technology.",
+    "description": "Description for Deepwrought Hero: Ta Zern"
+  },
+  "Deepwrought Scholarate.Leaders.Ta Zern.Name": {
+    "defaultMessage": "Ta Zern",
+    "description": "Name of Deepwrought Hero: Ta Zern"
+  },
+  "Deepwrought Scholarate.Name": {
+    "defaultMessage": "Deepwrought Scholarate",
+    "description": "Name of Faction: Deepwrought Scholarate"
+  },
+  "Deepwrought Scholarate.Promissories.Share Knowledge.Description": {
+    "defaultMessage": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
+    "description": "Description for Faction Promissory: Share Knowledge"
+  },
+  "Deepwrought Scholarate.Promissories.Share Knowledge.Title": {
+    "defaultMessage": "Share Knowledge",
+    "description": "Title of Faction Promissory: Share Knowledge"
+  },
+  "Deepwrought Scholarate.Shortname": {
+    "defaultMessage": "Deepwrought",
+    "description": "Shortened version of Faction name: Deepwrought Scholarate"
+  },
+  "Deepwrought Scholarate.Units.D.W.S Luminous.Description": {
+    "defaultMessage": "This ship can move through systems that contain your units, even if other players units are present: if it would, apply +1 to its move value for each of those systems.",
+    "description": "Description for Faction Unit: D.W.S Luminous"
+  },
+  "Deepwrought Scholarate.Units.D.W.S Luminous.Title": {
+    "defaultMessage": "D.W.S Luminous",
+    "description": "Title of Faction Unit: D.W.S Luminous"
+  },
+  "Deepwrought Scholarate.Units.Eanautic.Description": {
+    "defaultMessage": "When another player activates this system, if this unit is coexisting, you may move it and any infantry on its planet to a planet you control in your home system.",
+    "description": "Description for Faction Unit: Eanautic"
+  },
+  "Deepwrought Scholarate.Units.Eanautic.Title": {
+    "defaultMessage": "Eanautic",
+    "description": "Title of Faction Unit: Eanautic"
+  },
   "Dw1fzR": {
     "defaultMessage": "Update Planets",
     "description": "Text shown on a button that opens the update planets panel."
@@ -3236,7 +3316,7 @@
     "description": "Name of L1Z1X Commander: 2RAM"
   },
   "L1Z1X Mindnet.Leaders.2RAM.Unlock": {
-    "defaultMessage": "Have 4 dreadnoughts on the Board.",
+    "defaultMessage": "Have 4 dreadnoughts on the board.",
     "description": "Unlock condition for L1Z1X Commander: 2RAM"
   },
   "L1Z1X Mindnet.Leaders.I48S.Description": {

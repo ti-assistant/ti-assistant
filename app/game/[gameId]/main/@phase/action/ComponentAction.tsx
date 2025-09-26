@@ -362,7 +362,6 @@ function ComponentSelect({
               const isRelic = !component.hasOwnProperty("type");
               const faded =
                 component.state === "exhausted" || component.state === "used";
-              console.log("Is Relic", isRelic);
               return (
                 <button
                   key={component.id}
@@ -557,7 +556,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
-  const relics = useRelics();
   const techs = useTechs();
   const viewOnly = useViewOnly();
 
@@ -583,18 +581,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       return;
     }
     addTechAsync(gameId, factionId, techId);
-  }
-  function addRelic(relicId: RelicId) {
-    if (!gameId) {
-      return;
-    }
-    gainRelicAsync(gameId, factionId, relicId);
-  }
-  function removeRelic(relicId: RelicId) {
-    if (!gameId) {
-      return;
-    }
-    loseRelicAsync(gameId, factionId, relicId);
   }
   function destroyPlanet(planetId: PlanetId) {
     if (!gameId) {
@@ -656,6 +642,21 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     case "Enigmatic Device":
     case "Focused Research": {
       innerContent = <TechResearchSection factionId={factionId} />;
+      break;
+    }
+    case "Share Knowledge": {
+      const deepwrought = factions["Deepwrought Scholarate"];
+      if (!deepwrought) {
+        return null;
+      }
+      innerContent = (
+        <TechResearchSection
+          factionId={factionId}
+          filter={(tech) => hasTech(deepwrought, tech.id)}
+          gain
+          shareKnowledge
+        />
+      );
       break;
     }
     case "Plagiarize": {

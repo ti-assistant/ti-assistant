@@ -349,6 +349,14 @@ export default function getBasePlanets(
       resources: 1,
       system: 18,
       type: "NONE",
+      omegas: [
+        {
+          ability:
+            "You may exhaust this card and discard 1 secret objective at the end of your turn to draw 1 secret objective.",
+          attributes: ["legendary"],
+          expansion: "THUNDERS EDGE",
+        },
+      ],
     },
     Meer: {
       attributes: ["red-skip"],

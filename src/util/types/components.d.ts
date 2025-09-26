@@ -80,6 +80,7 @@ type Component = (BaseComponent | BaseTechComponent) & GameComponent;
 type ComponentId =
   | BaseGame.ComponentId
   | ProphecyOfKings.ComponentId
+  | ThundersEdge.ComponentId
   | CodexOne.ComponentId
   | CodexFour.ComponentId
   | DiscordantStars.ComponentId;

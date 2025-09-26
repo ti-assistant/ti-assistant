@@ -164,6 +164,8 @@ interface RemoveAttachmentData {
 interface AddTechEvent {
   faction: FactionId;
   researchAgreement?: boolean;
+  // Tech gained with Share Knowledge is lost at the end of the status phase.
+  shareKnowledge?: boolean;
   tech: TechId;
 }
 
