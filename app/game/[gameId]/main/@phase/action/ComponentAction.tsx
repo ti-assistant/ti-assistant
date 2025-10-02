@@ -86,6 +86,11 @@ import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import PlanetaryRigs from "./components/PlanetaryRigs";
 import GainRelic from "../../../../../../src/components/Actions/GainRelic";
+import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
+import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
+import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
+import TechIcon from "../../../../../../src/components/TechIcon/TechIcon";
+import TechSVG from "../../../../../../src/icons/techs/Icon";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -201,7 +206,8 @@ function ComponentSelect({
         component.type !== "BREAKTHROUGH" ||
         (faction?.breakthrough?.state &&
           faction.breakthrough.state !== "locked")
-    );
+    )
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   const innerStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
@@ -553,6 +559,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();
   const factions = useFactions();
   const gameId = useGameId();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -754,6 +761,41 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
               selectTech={addRemoveTech}
             />
           )}
+        </div>
+      );
+      break;
+    }
+    case "Visionaria Select": {
+      innerContent = (
+        <div
+          className="flexColumn"
+          style={{ width: "100%", boxSizing: "border-box" }}
+        >
+          {mapOrderedFactionIds.map((id) => {
+            const faction = factions[id];
+            if (!faction) {
+              return null;
+            }
+            if (faction.id === "Deepwrought Scholarate") {
+              return null;
+            }
+            return (
+              <IconDiv
+                key={faction.id}
+                // icon={<TechSVG />}
+                icon={<FactionIcon size={24} factionId={faction.id} />}
+                iconSize={24}
+                color={getFactionColor(faction)}
+              >
+                <TechResearchSection
+                  factionId={faction.id}
+                  duplicateToFaction="Deepwrought Scholarate"
+                  hideWrapper
+                  filter={(tech) => !tech.faction && tech.type !== "UPGRADE"}
+                />
+              </IconDiv>
+            );
+          })}
         </div>
       );
       break;
@@ -1450,6 +1492,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   const factions = useFactions();
   const gameId = useGameId();
   const leaders = useLeaders();
+  const planets = usePlanets();
   const relics = useRelics();
   const viewOnly = useViewOnly();
 
@@ -1535,7 +1578,8 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       if (
         component.faction &&
         component.type !== "PROMISSORY" &&
-        component.type !== "TECH"
+        component.type !== "TECH" &&
+        component.type !== "PLANET"
       ) {
         if (component.faction !== faction.id) {
           return false;
@@ -1595,6 +1639,15 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         !hasTech(faction, "Dark Energy Tap")
       ) {
         return false;
+      }
+
+      if (component.type === "PLANET") {
+        const planet = planets[component.id as PlanetId];
+        if (!planet) {
+          return false;
+        }
+        console.log("Planet", planet);
+        return planet.owner === factionId;
       }
 
       return true;

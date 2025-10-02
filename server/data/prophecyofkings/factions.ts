@@ -518,6 +518,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Naaz-Rokha Alliance.Breakthrough.Absolute Synergy.Title",
+          description: "Title of Faction Breakthrough: Absolute Synergy",
+          defaultMessage: "Absolute Synergy",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Naaz-Rokha Alliance.Breakthrough.Absolute Synergy.Description",
+            description:
+              "Description of Faction Breakthrough: Absolute Synergy",
+            defaultMessage:
+              "When you have 4 mechs in the same system, you may return 3 of those mechs to your reinforcements to flip this card and place it on top of your mech card.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Absolute Synergy",
+        synergy: { left: "GREEN", right: "BLUE" },
+        timing: "OTHER",
+      },
       colors: {
         Green: 1.6,
         Yellow: 0.3,
@@ -641,6 +661,28 @@ export default function getProphecyOfKingsFactions(
           stats: {
             cost: 2,
             combat: "8(x2)",
+          },
+          type: "Mech",
+        },
+        {
+          description: intl.formatMessage(
+            {
+              id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Description",
+              description: "Description for Faction Unit: Eidolon Maximum",
+              defaultMessage:
+                "This unit is both a ship and a ground force. It cannot be assigned hits from unit abilities. Repair it at the start of every combat round. Game effects cannot place or produce your mechs. When this unit is destroyed or removed, flip this card and return it to your play area.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Title",
+            description: "Title of Faction Unit: Eidolon Maximum",
+            defaultMessage: "Eidolon Maximum",
+          }),
+          stats: {
+            combat: "4(x4)",
+            move: 3,
           },
           type: "Mech",
         },

@@ -1,3 +1,6 @@
+import { Optional } from "../types/types";
+import { ClaimPlanetHandler, UnclaimPlanetHandler } from "./claimPlanet";
+
 // Note: This doesn't handle exhausted breakthroughs.
 export class UpdateBreakthroughStateHandler implements Handler {
   constructor(
@@ -24,6 +27,36 @@ export class UpdateBreakthroughStateHandler implements Handler {
       [`factions.${this.data.event.factionId}.breakthrough.state`]:
         this.data.event.state === "locked" ? "DELETE" : this.data.event.state,
     };
+
+    if (this.data.event.factionId === "Embers of Muaat") {
+      let handler: Optional<Handler>;
+      switch (this.data.event.state) {
+        case "locked":
+          handler = new UnclaimPlanetHandler(this.gameData, {
+            action: "UNCLAIM_PLANET",
+            event: {
+              planet: "Avernus",
+              faction: "Embers of Muaat",
+            },
+          });
+          break;
+        case "readied":
+          handler = new ClaimPlanetHandler(this.gameData, {
+            action: "CLAIM_PLANET",
+            event: {
+              planet: "Avernus",
+              faction: "Embers of Muaat",
+            },
+          });
+          break;
+      }
+      if (handler) {
+        updates = {
+          ...updates,
+          ...handler.getUpdates(),
+        };
+      }
+    }
 
     return updates;
   }

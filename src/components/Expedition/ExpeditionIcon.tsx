@@ -47,7 +47,7 @@ export default function ExpeditionIcon({
           className="flexRow"
           style={{ position: "relative", width: rem(32) }}
         >
-          <InfluenceSVG influence={5} />
+          <InfluenceSVG influence={5} color={faded ? "#555" : undefined} />
         </div>
       );
       break;
@@ -57,7 +57,7 @@ export default function ExpeditionIcon({
           className="flexRow"
           style={{ position: "relative", width: rem(32) }}
         >
-          <ResourcesSVG resources={5} />
+          <ResourcesSVG resources={5} color={faded ? "#555" : undefined} />
         </div>
       );
       break;

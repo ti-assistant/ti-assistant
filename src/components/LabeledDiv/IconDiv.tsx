@@ -1,9 +1,11 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
 import styles from "./IconDiv.module.scss";
+import { rem } from "../../util/util";
 
 interface IconDivProps {
   icon: Exclude<ReactNode, null | undefined>;
+  iconSize?: number;
   blur?: boolean;
   className?: string;
   innerClass?: string;
@@ -19,11 +21,13 @@ interface IconDivOpts {
 
 interface IconDivCSS extends CSSProperties {
   "--color": string;
+  "--icon-size": string;
 }
 
 // Div with an icon on the left side. Icon must be 1rem (16px).
 export default function IconDiv({
   icon,
+  iconSize = 16,
   blur,
   children,
   className,
@@ -34,6 +38,7 @@ export default function IconDiv({
 }: PropsWithChildren<IconDivProps>) {
   const divStyle: IconDivCSS = {
     "--color": color,
+    "--icon-size": rem(iconSize),
     boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
     ...style,
   };

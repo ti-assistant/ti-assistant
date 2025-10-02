@@ -9,15 +9,13 @@ import {
 import { useFactions } from "../../context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "../../dynamic/api";
 import { TechRow } from "../../TechRow";
-import { getResearchedTechs } from "../../util/actionLog";
+import { getAddTechEvents, getResearchedTechs } from "../../util/actionLog";
 import { hasTech } from "../../util/api/techs";
 import { ActionLog, Optional } from "../../util/types/types";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import styles from "./TechResearchSection.module.scss";
-import TechIcon from "../TechIcon/TechIcon";
-import IconDiv from "../LabeledDiv/IconDiv";
-import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
+import { flattenDiagnosticMessageText } from "typescript";
 
 function getResearchableTechs(
   currentTurn: ActionLog,
@@ -66,6 +64,7 @@ function getResearchableTechs(
 export default function TechResearchSection({
   label,
   factionId,
+  duplicateToFaction,
   filter,
   gain = false,
   hideWrapper = false,
@@ -75,6 +74,7 @@ export default function TechResearchSection({
 }: {
   label?: string;
   factionId: FactionId;
+  duplicateToFaction?: FactionId;
   filter?: (tech: Tech) => boolean;
   gain?: boolean;
   hideWrapper?: boolean;
@@ -98,14 +98,17 @@ export default function TechResearchSection({
     filter
   );
   const researchedTechs = getResearchedTechs(currentTurn, factionId);
+  const addTechEvents = getAddTechEvents(currentTurn);
 
   return (
     <div className={styles.TechResearchSection} style={style}>
       <ResearchedTechsSection
         factionId={factionId}
+        duplicateToFaction={duplicateToFaction}
         gain={gain}
         hideWrapper={hideWrapper}
         researchedTechs={researchedTechs}
+        addTechEvents={addTechEvents}
       />
       {!viewOnly && researchedTechs.length < numTechs ? (
         factionId !== "Nekro Virus" || gain ? (
@@ -127,9 +130,23 @@ export default function TechResearchSection({
                   }))
             }
             techs={availableTechs}
-            selectTech={(tech) =>
-              addTechAsync(gameId, factionId, tech.id, false, shareKnowledge)
-            }
+            selectTech={(tech) => {
+              let additionalFactions: Optional<FactionId[]>;
+              if (duplicateToFaction) {
+                const extraFaction = factions[duplicateToFaction];
+                if (extraFaction && !hasTech(extraFaction, tech.id)) {
+                  additionalFactions = [extraFaction.id];
+                }
+              }
+              addTechAsync(
+                gameId,
+                factionId,
+                tech.id,
+                additionalFactions,
+                false,
+                shareKnowledge
+              );
+            }}
           />
         ) : (
           <FormattedMessage
@@ -146,14 +163,18 @@ export default function TechResearchSection({
 
 function ResearchedTechsSection({
   factionId,
+  duplicateToFaction,
   researchedTechs,
   gain = false,
   hideWrapper = false,
+  addTechEvents,
 }: {
   factionId: FactionId;
+  duplicateToFaction?: FactionId;
   gain?: boolean;
   researchedTechs: TechId[];
   hideWrapper?: boolean;
+  addTechEvents?: ActionLogEntry<AddTechData>[];
 }) {
   const gameId = useGameId();
   const techs = useTechs();
@@ -172,7 +193,27 @@ function ResearchedTechsSection({
           <TechRow
             key={techId}
             tech={tech}
-            removeTech={() => removeTechAsync(gameId, factionId, techId)}
+            removeTech={() => {
+              const { techCount, hadTech } = (addTechEvents ?? []).reduce(
+                (result, event) => {
+                  if (event.data.event.tech === techId) {
+                    const hadTech = !event.data.event.additionalFactions;
+                    return {
+                      techCount: result.techCount + 1,
+                      hadTech: result.hadTech && hadTech,
+                    };
+                  }
+                  return result;
+                },
+                { techCount: 0, hadTech: true }
+              );
+              console.log("Count", techCount);
+              let additionalFactions: Optional<FactionId[]>;
+              if (techCount === 1 && !hadTech) {
+                additionalFactions = ["Deepwrought Scholarate"];
+              }
+              removeTechAsync(gameId, factionId, techId, additionalFactions);
+            }}
             researchAgreement={factionId === "Universities of Jol-Nar"}
             opts={{
               hideSymbols: true,

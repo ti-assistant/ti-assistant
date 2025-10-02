@@ -1132,7 +1132,7 @@ function FactionSelect({
                     gridTemplateRows: "repeat(10, minmax(0, 1fr))",
                     gap: rem(4),
                     padding: rem(8),
-                    maxWidth: `min(80vw, ${rem(600)})`,
+                    maxWidth: `min(80vw, ${rem(700)})`,
                     overflowX: "auto",
                   }}
                 >

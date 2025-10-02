@@ -9,6 +9,7 @@ namespace ThundersEdge {
     | "The Sowing" // Firmament
     | "The Icon" // Last Bastion
     | "Fealty Uplink" // L1Z1X Mindnet
+    | "Absolute Synergy" // Naaz-Rokha Alliance
     | "The Reaping" // Obsidian
     | "Data Skimmer" // Ral Nel Consortium
     | "N'orr Supremacy" // Sardakk N'orr
@@ -16,7 +17,7 @@ namespace ThundersEdge {
     | "Imperator" // Winnu
     | "Yin Ascendant"; // Yin Brotherhood
 
-  type ComponentId = "Share Knowledge" | "Puppets of the Blade";
+  type ComponentId = "Avernus" | "Share Knowledge" | "Puppets of the Blade";
 
   type FactionId =
     | "Crimson Rebellion"
@@ -53,6 +54,7 @@ namespace ThundersEdge {
     | "TODO: Name";
 
   type PlanetId =
+    | "Avernus"
     | "Ikatena"
     | "Cocytus"
     | "Lethe"

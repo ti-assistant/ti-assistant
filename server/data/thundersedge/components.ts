@@ -4,6 +4,26 @@ export default function getThundersEdgeComponents(
   intl: IntlShape
 ): Record<ThundersEdge.ComponentId, BaseComponent | BaseTechComponent> {
   return {
+    Avernus: {
+      description: intl.formatMessage(
+        {
+          id: "Planets.Avernus.Ability",
+          description: "Planet Ability for Avernus",
+          defaultMessage:
+            "ACTION: Exhaust this card to use the Embers of Muaat's STAR FORGE faction ability without spending a command token.",
+        },
+        { br: "\n\n" }
+      ),
+      expansion: "THUNDERS EDGE",
+      faction: "Embers of Muaat",
+      id: "Avernus",
+      name: intl.formatMessage({
+        id: "Components.Avernus.Title",
+        description: "Title of Component: Avernus",
+        defaultMessage: "Avernus",
+      }),
+      type: "PLANET",
+    },
     "Puppets of the Blade": {
       description: intl.formatMessage(
         {

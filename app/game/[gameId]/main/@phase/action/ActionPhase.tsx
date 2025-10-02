@@ -26,6 +26,7 @@ import {
   useAttachments,
   useCurrentTurn,
   useGameId,
+  useOptions,
   usePlanets,
   useRelics,
   useStrategyCards,
@@ -74,7 +75,6 @@ import { phaseString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
-import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -98,6 +98,7 @@ function SecondaryCheck({
         style={{
           justifyContent: "center",
           flexWrap: "wrap",
+          gap: rem(2),
         }}
       >
         {orderedFactions.map((faction) => {
@@ -316,6 +317,7 @@ export function AdditionalActions({
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const options = useOptions();
   const planets = usePlanets();
   const relics = useRelics();
   const state = useGameState();
@@ -1184,7 +1186,6 @@ export function AdditionalActions({
     case "Leadership":
     case "Construction":
     case "Trade":
-    case "Warfare":
       return (
         <div className="flexColumn" style={{ width: "100%" }}>
           <LabeledLine
@@ -1203,6 +1204,91 @@ export function AdditionalActions({
           />
         </div>
       );
+    case "Warfare": {
+      if (!options.expansions.includes("THUNDERS EDGE")) {
+        return (
+          <div className="flexColumn" style={{ width: "100%" }}>
+            <LabeledLine
+              leftLabel={
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              }
+            />
+            <SecondaryCheck
+              activeFactionId={activeFaction.id}
+              gameId={gameId ?? ""}
+              orderedFactions={orderedFactions}
+            />
+          </div>
+        );
+      }
+      const scorableObjectives = Object.values(objectives).filter(
+        (objective) => {
+          const scorers = objective.scorers ?? [];
+          if (scorers.includes(activeFaction.id)) {
+            return false;
+          }
+          if (scoredObjectives.includes(objective.id)) {
+            return false;
+          }
+          if (
+            objective.id === "Become a Martyr" ||
+            objective.id === "Prove Endurance" ||
+            objective.id === "Book of Latvinia"
+          ) {
+            return false;
+          }
+          if (objective.type === "SECRET" && scorers.length > 0) {
+            return false;
+          }
+          return objective.phase === "ACTION";
+        }
+      );
+      return (
+        <div
+          className="flexColumn"
+          style={{ gap: rem(4), width: "100%", ...style }}
+        >
+          <React.Fragment>
+            <LabeledLine
+              leftLabel={
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              }
+            />
+            <div> </div>
+            <TacticalAction
+              activeFactionId={activeFaction.id}
+              claimablePlanets={claimablePlanets}
+              conqueredPlanets={claimedPlanets}
+              scorableObjectives={scorableObjectives}
+              scoredObjectives={scoredActionPhaseObjectives}
+              style={style}
+            />
+          </React.Fragment>
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
+                id="PBW6vs"
+                description="The alternate ability for a strategy card."
+                defaultMessage="Secondary"
+              />
+            }
+          />
+          <SecondaryCheck
+            activeFactionId={activeFaction.id}
+            gameId={gameId ?? ""}
+            orderedFactions={orderedFactions}
+          />
+        </div>
+      );
+    }
     case "Imperial":
       let hasImperialPoint = false;
       const mecatol = planets["Mecatol Rex"];

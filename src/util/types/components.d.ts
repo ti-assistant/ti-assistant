@@ -6,6 +6,7 @@ type ComponentType =
   | "EXPLORATION"
   | "FLAGSHIP"
   | "LEADER"
+  | "PLANET"
   | "PROMISSORY"
   | "RELIC"
   | "TECH";

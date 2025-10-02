@@ -246,7 +246,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
       selectedFaction={selectedFaction}
       onSelect={(factionId, prevFaction) => {
         if (factionId) {
-          addTechAsync(gameId, factionId, tech.id, true);
+          addTechAsync(gameId, factionId, tech.id, undefined, true);
         }
         if (prevFaction) {
           removeTechAsync(gameId, prevFaction, tech.id);

@@ -10,6 +10,7 @@ interface PlanetSummaryProps {
   hasXxchaHero: boolean;
 }
 
+// TODO: Figure out how to display oceans.
 export default function PlanetSummary({
   planets,
   hasXxchaHero,

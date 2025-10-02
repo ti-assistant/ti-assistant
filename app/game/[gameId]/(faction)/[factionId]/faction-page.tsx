@@ -8,7 +8,6 @@ import { AddTechList } from "../../../../../src/AddTechList";
 import { AgendaRow } from "../../../../../src/AgendaRow";
 import { FactionSummary } from "../../../../../src/FactionSummary";
 import { ClientOnlyHoverMenu } from "../../../../../src/HoverMenu";
-import { LockedButtons } from "../../../../../src/LockedButton";
 import { ObjectiveList } from "../../../../../src/ObjectiveList";
 import { SelectableRow } from "../../../../../src/SelectableRow";
 import { Tab, TabBody } from "../../../../../src/Tab";
@@ -41,13 +40,12 @@ import {
   useTechs,
   useViewOnly,
 } from "../../../../../src/context/dataHooks";
-import { useObjectives } from "../../../../../src/context/objectiveDataHooks";
 import { useFactions } from "../../../../../src/context/factionDataHooks";
+import { useObjectives } from "../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../src/context/stateDataHooks";
 import { useSharedModal } from "../../../../../src/data/SharedModal";
 import {
   addTechAsync,
-  advancePhaseAsync,
   castVotesAsync,
   claimPlanetAsync,
   hideAgendaAsync,
@@ -62,10 +60,9 @@ import {
   speakerTieBreakAsync,
   unclaimPlanetAsync,
   undoAsync,
-  unscoreObjectiveAsync,
+  unscoreObjectiveAsync
 } from "../../../../../src/dynamic/api";
-import { computeVotes } from "../../main/@phase/agenda/AgendaPhase";
-import { statusPhaseComplete } from "../../main/@phase/status/StatusPhase";
+import InfluenceSVG from "../../../../../src/icons/planets/Influence";
 import {
   getActiveAgenda,
   getFactionVotes,
@@ -101,7 +98,7 @@ import {
   FactionActionButtons,
   NextPlayerButtons,
 } from "../../main/@phase/action/ActionPhase";
-import { setupPhaseComplete } from "../../main/@phase/setup/SetupPhase";
+import { computeVotes } from "../../main/@phase/agenda/AgendaPhase";
 import { StrategyCardSelectList } from "../../main/@phase/strategy/StrategyPhase";
 import styles from "./faction-page.module.scss";
 
@@ -1161,10 +1158,10 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
                     >
                       Available Votes:
                       <div className={styles.VotingBlock}>
-                        <div className={styles.InfluenceSymbol}>&#x2B21;</div>
-                        <div className={styles.InfluenceTextWrapper}>
-                          {influence}
+                        <div className={styles.InfluenceSymbol}>
+                          <InfluenceSVG influence={influence} />
                         </div>
+
                         <div style={{ fontSize: rem(16) }}>+ {extraVotes}</div>
                       </div>
                     </div>

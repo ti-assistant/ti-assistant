@@ -26,6 +26,12 @@ export function getResearchedTechs(actionLog: ActionLog, factionId: FactionId) {
     .map((logEntry) => (logEntry.data as AddTechData).event.tech);
 }
 
+export function getAddTechEvents(actionLog: ActionLog) {
+  return getLogEntries<AddTechData>(actionLog, "ADD_TECH").filter(
+    (logEntry) => !logEntry.data.event.researchAgreement
+  );
+}
+
 export function getRevealedObjectives(actionLog: ActionLog) {
   return getLogEntries<RevealObjectiveData>(actionLog, "REVEAL_OBJECTIVE").map(
     (logEntry) => logEntry.data.event.objective

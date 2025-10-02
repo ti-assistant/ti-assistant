@@ -1,8 +1,6 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 import { Optional } from "../types/types";
-import { getCurrentRoundLogEntries } from "../api/actionLog";
-import { getLogEntries } from "../actionLog";
 import { objectEntries } from "../util";
 
 export class AdvancePhaseHandler implements Handler {

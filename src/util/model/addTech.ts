@@ -39,7 +39,11 @@ export class AddTechHandler implements Handler {
         true,
     };
 
-    console.log("Sharing knowledge", this.data.event);
+    for (const factionId of this.data.event.additionalFactions ?? []) {
+      updates[`factions.${factionId}.techs.${this.data.event.tech}.ready`] =
+        true;
+    }
+
     if (this.data.event.shareKnowledge) {
       updates[
         `factions.${this.data.event.faction}.techs.${this.data.event.tech}.shareKnowledge`
@@ -108,6 +112,11 @@ export class RemoveTechHandler implements Handler {
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}`]:
         "DELETE",
     };
+
+    console.log("Data", this.data.event);
+    for (const factionId of this.data.event.additionalFactions ?? []) {
+      updates[`factions.${factionId}.techs.${this.data.event.tech}`] = "DELETE";
+    }
 
     if (this.data.event.tech === "IIHQ Modernization") {
       updates[`planets.Custodia Vigilia.owner`] = "DELETE";

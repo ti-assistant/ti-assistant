@@ -8,6 +8,7 @@ export function addTech(
   gameId: string,
   faction: FactionId,
   techId: TechId,
+  additionalFactions?: FactionId[],
   researchAgreement?: boolean,
   shareKnowledge?: boolean
 ) {
@@ -15,6 +16,7 @@ export function addTech(
     action: "ADD_TECH",
     event: {
       faction,
+      additionalFactions,
       tech: techId,
       researchAgreement,
       shareKnowledge,
@@ -45,12 +47,18 @@ export function addTech(
   });
 }
 
-export function removeTech(gameId: string, faction: FactionId, techId: TechId) {
+export function removeTech(
+  gameId: string,
+  faction: FactionId,
+  techId: TechId,
+  additionalFactions?: FactionId[]
+) {
   const data: GameUpdateData = {
     action: "REMOVE_TECH",
     event: {
       faction,
       tech: techId,
+      additionalFactions,
     },
   };
 

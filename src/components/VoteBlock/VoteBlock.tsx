@@ -53,6 +53,7 @@ import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
 import Toggle from "../Toggle/Toggle";
 import styles from "./VoteBlock.module.scss";
+import InfluenceSVG from "../../icons/planets/Influence";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLog, factionId: FactionId) {
@@ -1125,8 +1126,9 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
 
   return (
     <div className={styles.AvailableVotes} style={availableVotesStyle}>
-      <div className={styles.InfluenceIcon}>&#x2B21;</div>
-      <div className={styles.InfluenceText}>{influence}</div>
+      <div className={styles.InfluenceIcon}>
+        <InfluenceSVG influence={influence} />
+      </div>
       <div className="flexRow" style={{ gap: 0 }}>
         {hasHacanCommander ? (
           <>

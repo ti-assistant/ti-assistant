@@ -43,7 +43,8 @@
 
   position: absolute;
   white-space: nowrap;
-  top: -0.75rem;
+  top: 0;
+  transform: translateY(calc(-50% - 2px));
   background-color: var(--background-color);
   border-radius: 0.3125rem;
   padding: 0 4px;

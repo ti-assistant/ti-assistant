@@ -176,11 +176,19 @@ export async function addTechAsync(
   gameId: string,
   faction: FactionId,
   techId: TechId,
+  additionalFactions?: FactionId[],
   researchAgreement?: boolean,
   shareKnowledge?: boolean
 ) {
   const addTech = await addTechFn;
-  addTech(gameId, faction, techId, researchAgreement, shareKnowledge);
+  addTech(
+    gameId,
+    faction,
+    techId,
+    additionalFactions,
+    researchAgreement,
+    shareKnowledge
+  );
 }
 
 export async function advancePhaseAsync(
@@ -415,10 +423,11 @@ export async function removeStartingTechAsync(
 export async function removeTechAsync(
   gameId: string,
   faction: FactionId,
-  techId: TechId
+  techId: TechId,
+  additionalFactions?: FactionId[]
 ) {
   const removeTech = await removeTechFn;
-  removeTech(gameId, faction, techId);
+  removeTech(gameId, faction, techId, additionalFactions);
 }
 
 export async function repealAgendaAsync(

@@ -14,6 +14,26 @@ export default function getThundersEdgePlanets(
   intl: IntlShape
 ): Record<ThundersEdge.PlanetId, BasePlanet> {
   return {
+    Avernus: {
+      ability: intl.formatMessage(
+        {
+          id: "Planets.Avernus.Ability",
+          description: "Planet Ability for Avernus",
+          defaultMessage:
+            "ACTION: Exhaust this card to use the Embers of Muaat's STAR FORGE faction ability without spending a command token.",
+        },
+        { br: "\n\n" }
+      ),
+      attributes: ["legendary"],
+      expansion: "THUNDERS EDGE",
+      faction: "Embers of Muaat",
+      influence: 0,
+      id: "Avernus",
+      name: "Avernus",
+      position: HOME_MIDDLE,
+      resources: 2,
+      type: "HAZARDOUS",
+    },
     Ikatena: {
       attributes: [],
       expansion: "THUNDERS EDGE",
