@@ -392,7 +392,6 @@ export function getWormholeNexusSystemNumber(
 }
 
 const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
-  "Council Keleres": "92",
   "Federation of Sol": "1",
   "Mentak Coalition": "2",
   "Yin Brotherhood": "3",
@@ -417,6 +416,13 @@ const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
   Empyrean: "56",
   "Naaz-Rokha Alliance": "57",
   "Argent Flight": "58",
+  "Council Keleres": "",
+  "Last Bastion": "92",
+  "Ral Nel Consortium": "93",
+  "Deepwrought Scholarate": "95",
+  "Firmament": "96A",
+  "Obsidian": "96B",
+  // Discordant Stars
   "Augurs of Ilyxum": "1001",
   "Bentor Conglomerate": "1002",
   "Berserkers of Kjalengard": "1003",

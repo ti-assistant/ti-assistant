@@ -17,13 +17,7 @@ type PlanetAttribute =
   | "production"
   | "infantry";
 
-type PlanetType =
-  | "INDUSTRIAL"
-  | "CULTURAL"
-  | "HAZARDOUS"
-  | "ALL"
-  | "NONE"
-  | "SPACE STATION";
+type PlanetType = "INDUSTRIAL" | "CULTURAL" | "HAZARDOUS";
 
 type PlanetUpdateAction =
   | "ADD_PLANET"
@@ -56,7 +50,7 @@ interface BasePlanet {
   resources: number;
   subFaction?: SubFaction;
   system?: SystemId;
-  type: PlanetType;
+  types: PlanetType[];
   // Used to bypass normal system filtering.
   alwaysInclude?: boolean;
 }

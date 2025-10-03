@@ -23,7 +23,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1001,
-    type: "NONE",
+    types: [],
   },
   Chrion: {
     attributes: [],
@@ -36,7 +36,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 2,
     system: 1001,
-    type: "NONE",
+    types: [],
   },
   // Bentor Conglomerate
   Benc: {
@@ -50,7 +50,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1002,
-    type: "NONE",
+    types: [],
   },
   Hau: {
     attributes: [],
@@ -63,7 +63,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     system: 1002,
-    type: "NONE",
+    types: [],
   },
   // Berserkers of Kjalengard
   Kjalengard: {
@@ -77,7 +77,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 3,
     system: 1003,
-    type: "NONE",
+    types: [],
   },
   Hulgade: {
     attributes: [],
@@ -90,7 +90,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     system: 1003,
-    type: "NONE",
+    types: [],
   },
   // Kyro Sodality
   Avicenna: {
@@ -103,7 +103,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Avicenna",
     position: HOME_MIDDLE,
     resources: 4,
-    type: "NONE",
+    types: [],
   },
   // Celdauri Trade Confederation
   Louk: {
@@ -117,7 +117,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1004,
-    type: "NONE",
+    types: [],
   },
   Auldane: {
     attributes: [],
@@ -130,7 +130,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     system: 1004,
-    type: "NONE",
+    types: [],
   },
   // Cheiran Hordes
   "Gghurn Theta": {
@@ -144,7 +144,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 2,
     system: 1005,
-    type: "NONE",
+    types: [],
   },
   Arche: {
     attributes: [],
@@ -157,7 +157,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1005,
-    type: "NONE",
+    types: [],
   },
   // Dih-Mohn Flotilla
   Abyssus: {
@@ -171,7 +171,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 4,
     system: 1006,
-    type: "NONE",
+    types: [],
   },
   // Edyn Mandate
   Edyn: {
@@ -185,7 +185,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE_LEFT,
     resources: 3,
     system: 1007,
-    type: "NONE",
+    types: [],
   },
   Ekko: {
     attributes: [],
@@ -198,7 +198,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_RIGHT,
     resources: 0,
     system: 1007,
-    type: "NONE",
+    types: [],
   },
   Okke: {
     attributes: [],
@@ -211,7 +211,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: FAR_BOTTOM_RIGHT,
     resources: 0,
     system: 1007,
-    type: "NONE",
+    types: [],
   },
   // Florzen Profiteers
   Delmor: {
@@ -225,7 +225,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1008,
-    type: "NONE",
+    types: [],
   },
   Kyd: {
     attributes: [],
@@ -238,7 +238,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     system: 1008,
-    type: "NONE",
+    types: [],
   },
   // Free Systems Compact
   Idyn: {
@@ -252,7 +252,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE_LEFT,
     resources: 1,
     system: 1009,
-    type: "NONE",
+    types: [],
   },
   Kroll: {
     attributes: [],
@@ -265,7 +265,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_RIGHT,
     resources: 1,
     system: 1009,
-    type: "NONE",
+    types: [],
   },
   Cyrra: {
     attributes: [],
@@ -278,7 +278,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: FAR_BOTTOM_RIGHT,
     resources: 0,
     system: 1009,
-    type: "NONE",
+    types: [],
   },
   // Ghemina Raiders
   Drah: {
@@ -292,7 +292,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 1,
     system: 1010,
-    type: "NONE",
+    types: [],
   },
   Trykk: {
     attributes: [],
@@ -305,7 +305,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 2,
     system: 1010,
-    type: "NONE",
+    types: [],
   },
   // Ghoti Wayfarers
   Ghoti: {
@@ -319,7 +319,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     name: "Ghoti",
     resources: 3,
     system: 1011,
-    type: "NONE",
+    types: [],
   },
   // Gledge Union
   "Last Stop": {
@@ -333,7 +333,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 3,
     system: 1012,
-    type: "NONE",
+    types: [],
   },
   // Glimmer of Mortheus
   Biaheo: {
@@ -347,7 +347,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 3,
     system: 1013,
-    type: "NONE",
+    types: [],
   },
   Empero: {
     attributes: [],
@@ -360,7 +360,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 0,
     system: 1013,
-    type: "NONE",
+    types: [],
   },
   // Kollecc Society
   Susuros: {
@@ -374,7 +374,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 4,
     system: 1014,
-    type: "NONE",
+    types: [],
   },
   // Monks of Kolume
   Alesna: {
@@ -388,7 +388,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1021,
-    type: "NONE",
+    types: [],
   },
   Azle: {
     attributes: [],
@@ -401,7 +401,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 2,
     system: 1021,
-    type: "NONE",
+    types: [],
   },
   // Kortali Tribunal
   Ogdun: {
@@ -415,7 +415,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1015,
-    type: "NONE",
+    types: [],
   },
   Brthkul: {
     attributes: [],
@@ -428,7 +428,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     system: 1015,
-    type: "NONE",
+    types: [],
   },
   // Lanefir Remnants
   "Aysis Rest": {
@@ -442,7 +442,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 4,
     system: 1017,
-    type: "NONE",
+    types: [],
   },
   Solitude: {
     attributes: [],
@@ -455,7 +455,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 0,
     system: 1017,
-    type: "NONE",
+    types: [],
   },
   // Li-Zho Dynasty
   Pax: {
@@ -469,7 +469,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_RIGHT,
     resources: 1,
     system: 1018,
-    type: "NONE",
+    types: [],
   },
   Kyr: {
     attributes: [],
@@ -482,7 +482,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE_LEFT,
     resources: 2,
     system: 1018,
-    type: "NONE",
+    types: [],
   },
   Vess: {
     attributes: [],
@@ -495,7 +495,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: FAR_BOTTOM_RIGHT,
     resources: 0,
     system: 1018,
-    type: "NONE",
+    types: [],
   },
   // L'tokk Khrask
   "Bohl-Dhur": {
@@ -509,7 +509,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 3,
     system: 1019,
-    type: "NONE",
+    types: [],
   },
   // Mirveda Protectorate
   Aldra: {
@@ -523,7 +523,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1020,
-    type: "NONE",
+    types: [],
   },
   Beata: {
     attributes: [],
@@ -536,7 +536,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 2,
     system: 1020,
-    type: "NONE",
+    types: [],
   },
   // Myko-Mentori
   "Shi-Halaum": {
@@ -550,7 +550,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 4,
     system: 1022,
-    type: "NONE",
+    types: [],
   },
   // Nivyn Star Kings
   Ellas: {
@@ -564,7 +564,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 3,
     system: 1023,
-    type: "NONE",
+    types: [],
   },
   // Nokar Sellships
   Zarr: {
@@ -578,7 +578,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1024,
-    type: "NONE",
+    types: [],
   },
   Nokk: {
     attributes: [],
@@ -591,7 +591,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     system: 1024,
-    type: "NONE",
+    types: [],
   },
   // Olradin League
   Sanctuary: {
@@ -605,7 +605,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 3,
     system: 1025,
-    type: "NONE",
+    types: [],
   },
   // Roh'Dhna Mechatronics
   Prind: {
@@ -619,7 +619,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 3,
     system: 1026,
-    type: "NONE",
+    types: [],
   },
   // Savages of Cymiae
   Cymiae: {
@@ -633,7 +633,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 3,
     system: 1027,
-    type: "NONE",
+    types: [],
   },
   // Shipwrights of Axis
   Axis: {
@@ -647,7 +647,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 5,
     system: 1028,
-    type: "NONE",
+    types: [],
   },
   // Tnelis Syndicate
   Discordia: {
@@ -661,7 +661,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 4,
     system: 1029,
-    type: "NONE",
+    types: [],
   },
   // Vaden Banking Clans
   Vadarian: {
@@ -675,7 +675,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 3,
     system: 1030,
-    type: "NONE",
+    types: [],
   },
   Norvus: {
     attributes: [],
@@ -688,7 +688,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 1,
     system: 1030,
-    type: "NONE",
+    types: [],
   },
   // Vaylerian Scourge
   Vaylar: {
@@ -702,7 +702,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 3,
     system: 1031,
-    type: "NONE",
+    types: [],
   },
   // Veldyr Sovereignty
   Rhune: {
@@ -716,7 +716,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_MIDDLE,
     resources: 3,
     system: 1032,
-    type: "NONE",
+    types: [],
   },
   // Zealots of Rhodun
   Poh: {
@@ -730,7 +730,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1033,
-    type: "NONE",
+    types: [],
   },
   Orad: {
     attributes: [],
@@ -743,7 +743,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 3,
     system: 1033,
-    type: "NONE",
+    types: [],
   },
   // Zelian Purifier
   Zelian: {
@@ -757,7 +757,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: HOME_BOTTOM_RIGHT,
     resources: 3,
     system: 1034,
-    type: "NONE",
+    types: [],
   },
   Gen: {
     attributes: [],
@@ -770,7 +770,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 1034,
-    type: "NONE",
+    types: [],
   },
   Silence: {
     ability:
@@ -783,7 +783,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 2,
     system: 4253,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Echo: {
     ability:
@@ -796,7 +796,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 1,
     system: 4254,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Tarrock: {
     ability:
@@ -809,7 +809,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 3,
     system: 4255,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Prism: {
     ability:
@@ -822,7 +822,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 0,
     system: 4256,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Troac: {
     attributes: [],
@@ -833,7 +833,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 0,
     system: 4257,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   "Etir V": {
     attributes: [],
@@ -844,7 +844,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 4,
     system: 4258,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Vioss: {
     attributes: [],
@@ -855,7 +855,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 3,
     system: 4259,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   Fakrenn: {
     attributes: [],
@@ -866,7 +866,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 2,
     system: 4260,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   "San-Vit": {
     attributes: [],
@@ -877,7 +877,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 3,
     system: 4261,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   Lodran: {
     attributes: ["yellow-skip"],
@@ -888,7 +888,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: BOTTOM_RIGHT,
     resources: 0,
     system: 4261,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Dorvok: {
     attributes: ["red-skip"],
@@ -899,7 +899,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 1,
     system: 4262,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Derbrae: {
     attributes: [],
@@ -910,7 +910,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: BOTTOM_RIGHT,
     resources: 2,
     system: 4262,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   Rysaa: {
     attributes: ["green-skip"],
@@ -921,7 +921,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: BOTTOM_RIGHT,
     resources: 2,
     system: 4263,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Moln: {
     attributes: ["blue-skip"],
@@ -932,7 +932,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 1,
     system: 4263,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Salin: {
     attributes: [],
@@ -943,7 +943,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 1,
     system: 4264,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Gwiyun: {
     attributes: [],
@@ -954,7 +954,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: BOTTOM_RIGHT,
     resources: 2,
     system: 4264,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Inan: {
     attributes: [],
@@ -965,7 +965,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 1,
     system: 4265,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Swog: {
     attributes: [],
@@ -976,7 +976,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: BOTTOM_RIGHT,
     resources: 1,
     system: 4265,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Detic: {
     attributes: [],
@@ -987,7 +987,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_LEFT,
     resources: 3,
     system: 4266,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   Lliot: {
     attributes: [],
@@ -998,7 +998,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: BOTTOM_RIGHT,
     resources: 0,
     system: 4266,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   Qaak: {
     attributes: [],
@@ -1009,7 +1009,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_RIGHT,
     resources: 1,
     system: 4267,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   Larred: {
     attributes: [],
@@ -1020,7 +1020,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE_LEFT,
     resources: 1,
     system: 4267,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Nairb: {
     attributes: [],
@@ -1031,7 +1031,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: FAR_BOTTOM_RIGHT,
     resources: 1,
     system: 4267,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Sierpin: {
     attributes: [],
@@ -1042,7 +1042,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: TOP_RIGHT,
     resources: 2,
     system: 4268,
-    type: "CULTURAL",
+    types: ["CULTURAL"],
   },
   Mandle: {
     attributes: [],
@@ -1053,7 +1053,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE_LEFT,
     resources: 1,
     system: 4268,
-    type: "INDUSTRIAL",
+    types: ["INDUSTRIAL"],
   },
   Regnem: {
     attributes: [],
@@ -1064,7 +1064,7 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: FAR_BOTTOM_RIGHT,
     resources: 0,
     system: 4268,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
   Domna: {
     ability:
@@ -1077,6 +1077,6 @@ export const DISCORDANT_STARS_PLANETS: Record<
     position: MIDDLE,
     resources: 2,
     system: 4269,
-    type: "HAZARDOUS",
+    types: ["HAZARDOUS"],
   },
 };

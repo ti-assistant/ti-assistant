@@ -24,7 +24,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 5,
       system: 6,
-      type: "NONE",
+      types: [],
     },
     Abyz: {
       attributes: [],
@@ -35,7 +35,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 3,
       system: 38,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "Arc Prime": {
       attributes: [],
@@ -48,7 +48,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 4,
       system: 10,
-      type: "NONE",
+      types: [],
     },
     "Archon Ren": {
       attributes: [],
@@ -61,7 +61,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 14,
-      type: "NONE",
+      types: [],
     },
     "Archon Tau": {
       attributes: [],
@@ -74,7 +74,7 @@ export default function getBasePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 1,
       system: 14,
-      type: "NONE",
+      types: [],
     },
     Arinam: {
       attributes: [],
@@ -85,7 +85,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 37,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Arnor: {
       attributes: [],
@@ -96,7 +96,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 36,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Arretze: {
       attributes: [],
@@ -109,7 +109,7 @@ export default function getBasePlanets(
       position: TOP_RIGHT,
       resources: 2,
       system: 16,
-      type: "NONE",
+      types: [],
     },
     Bereg: {
       attributes: [],
@@ -120,7 +120,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 3,
       system: 35,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Centauri: {
       attributes: [],
@@ -131,7 +131,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 34,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Corneeq: {
       attributes: [],
@@ -142,7 +142,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 33,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Creuss: {
       attributes: [],
@@ -155,7 +155,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE, // TODO
       resources: 4,
       system: 51,
-      type: "NONE",
+      types: [],
     },
     "Dal Bootha": {
       attributes: [],
@@ -166,7 +166,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 0,
       system: 32,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Darien: {
       attributes: [],
@@ -179,7 +179,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 3,
-      type: "NONE",
+      types: [],
     },
     Druaa: {
       attributes: [],
@@ -192,7 +192,7 @@ export default function getBasePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 3,
       system: 9,
-      type: "NONE",
+      types: [],
     },
     Fria: {
       attributes: [],
@@ -203,7 +203,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 38,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Gral: {
       attributes: ["blue-skip"],
@@ -214,7 +214,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 34,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Hercant: {
       attributes: [],
@@ -227,7 +227,7 @@ export default function getBasePlanets(
       position: MIDDLE_LEFT,
       resources: 1,
       system: 16,
-      type: "NONE",
+      types: [],
     },
     Jol: {
       attributes: [],
@@ -240,7 +240,7 @@ export default function getBasePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 1,
       system: 12,
-      type: "NONE",
+      types: [],
     },
     Jord: {
       attributes: [],
@@ -253,7 +253,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 1,
-      type: "NONE",
+      types: [],
     },
     Kamdorn: {
       attributes: [],
@@ -266,7 +266,7 @@ export default function getBasePlanets(
       position: FAR_BOTTOM_RIGHT,
       resources: 0,
       system: 16,
-      type: "NONE",
+      types: [],
     },
     Lazar: {
       attributes: ["yellow-skip"],
@@ -277,7 +277,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 31,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     "Lirta IV": {
       attributes: [],
@@ -288,7 +288,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 35,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "Lisis II": {
       attributes: [],
@@ -301,7 +301,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 11,
-      type: "NONE",
+      types: [],
     },
     Lodor: {
       attributes: [],
@@ -312,7 +312,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 3,
       system: 26,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Lor: {
       attributes: [],
@@ -323,7 +323,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 36,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Maaluuk: {
       attributes: [],
@@ -336,7 +336,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 0,
       system: 9,
-      type: "NONE",
+      types: [],
     },
     "Mecatol Rex": {
       attributes: [],
@@ -348,7 +348,7 @@ export default function getBasePlanets(
       position: MIDDLE,
       resources: 1,
       system: 18,
-      type: "NONE",
+      types: [],
       omegas: [
         {
           ability:
@@ -367,7 +367,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 0,
       system: 37,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "Mehar Xull": {
       attributes: ["red-skip"],
@@ -378,7 +378,7 @@ export default function getBasePlanets(
       position: MIDDLE,
       resources: 1,
       system: 24,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Mellon: {
       attributes: [],
@@ -389,7 +389,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 0,
       system: 30,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     "Moll Primus": {
       attributes: [],
@@ -402,7 +402,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 2,
-      type: "NONE",
+      types: [],
     },
     "Mordai II": {
       attributes: [],
@@ -415,7 +415,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 8,
-      type: "NONE",
+      types: [],
     },
     Muaat: {
       attributes: [],
@@ -428,7 +428,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 4,
-      type: "NONE",
+      types: [],
     },
     Nar: {
       attributes: [],
@@ -441,7 +441,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 12,
-      type: "NONE",
+      types: [],
     },
     Nestphar: {
       attributes: [],
@@ -454,7 +454,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 3,
       system: 5,
-      type: "NONE",
+      types: [],
     },
     "New Albion": {
       attributes: ["green-skip"],
@@ -465,7 +465,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 27,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Quann: {
       attributes: [],
@@ -476,7 +476,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 25,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     "Qucen'n": {
       attributes: [],
@@ -487,7 +487,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 29,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Quinarra: {
       attributes: [],
@@ -500,7 +500,7 @@ export default function getBasePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 3,
       system: 13,
-      type: "NONE",
+      types: [],
     },
     Ragh: {
       attributes: [],
@@ -513,7 +513,7 @@ export default function getBasePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 2,
       system: 11,
-      type: "NONE",
+      types: [],
     },
     Rarron: {
       attributes: [],
@@ -524,7 +524,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 0,
       system: 29,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Resculon: {
       attributes: [],
@@ -535,7 +535,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 33,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Retillion: {
       attributes: [],
@@ -548,7 +548,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 15,
-      type: "NONE",
+      types: [],
     },
     Sakulag: {
       attributes: [],
@@ -559,7 +559,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 31,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Saudor: {
       attributes: [],
@@ -570,7 +570,7 @@ export default function getBasePlanets(
       position: MIDDLE,
       resources: 2,
       system: 23,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Shalloq: {
       attributes: [],
@@ -583,7 +583,7 @@ export default function getBasePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 1,
       system: 15,
-      type: "NONE",
+      types: [],
     },
     Starpoint: {
       attributes: [],
@@ -594,7 +594,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 3,
       system: 27,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "Tar'Mann": {
       attributes: ["green-skip"],
@@ -605,7 +605,7 @@ export default function getBasePlanets(
       position: MIDDLE,
       resources: 1,
       system: 22,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     "Tequ'ran": {
       attributes: [],
@@ -616,7 +616,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 28,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Thibah: {
       attributes: ["blue-skip"],
@@ -627,7 +627,7 @@ export default function getBasePlanets(
       position: MIDDLE,
       resources: 1,
       system: 21,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Torkan: {
       attributes: [],
@@ -638,7 +638,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 0,
       system: 28,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     "Tren'lak": {
       attributes: [],
@@ -651,7 +651,7 @@ export default function getBasePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 13,
-      type: "NONE",
+      types: [],
     },
     "Vefut II": {
       attributes: [],
@@ -662,7 +662,7 @@ export default function getBasePlanets(
       position: MIDDLE,
       resources: 2,
       system: 20,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Wellon: {
       attributes: ["yellow-skip"],
@@ -673,7 +673,7 @@ export default function getBasePlanets(
       position: MIDDLE,
       resources: 1,
       system: 19,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Winnu: {
       attributes: [],
@@ -686,7 +686,7 @@ export default function getBasePlanets(
       position: HOME_MIDDLE,
       resources: 3,
       system: 7,
-      type: "NONE",
+      types: [],
     },
     "Wren Terra": {
       attributes: [],
@@ -699,7 +699,7 @@ export default function getBasePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 2,
       system: 10,
-      type: "NONE",
+      types: [],
     },
     Xxehan: {
       attributes: [],
@@ -710,7 +710,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 32,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Zohbat: {
       attributes: [],
@@ -721,7 +721,7 @@ export default function getBasePlanets(
       position: BOTTOM_RIGHT,
       resources: 3,
       system: 30,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
   };
 }

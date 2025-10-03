@@ -1455,6 +1455,9 @@ export default function SetupPage({
         if (!options.expansions.has(faction.expansion)) {
           return false;
         }
+        if (faction.locked) {
+          return false;
+        }
         return true;
       }
     );
@@ -1892,6 +1895,7 @@ export default function SetupPage({
                 factions={activeFactions}
                 hideLegend
                 hideFracture
+                expansions={Array.from(options.expansions)}
               />
             </div>
           </div>

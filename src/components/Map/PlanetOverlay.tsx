@@ -138,7 +138,7 @@ export default function PlanetOverlay({
             break;
           }
           case "TYPES": {
-            if (planet.type === "NONE") {
+            if (planet.types.length === 0) {
               break;
             }
 
@@ -149,7 +149,7 @@ export default function PlanetOverlay({
                   position: "absolute",
                   backgroundColor: "var(--background-color)",
                   border: `var(--border-size) solid ${getPlanetTypeColor(
-                    planet.type
+                    planet.types[0]
                   )}`,
                   borderRadius: "100%",
                   width: width,
@@ -158,7 +158,7 @@ export default function PlanetOverlay({
                   marginTop: `${planet.position?.y}%`,
                 }}
               >
-                <PlanetIcon type={planet.type} size="70%" />
+                <PlanetIcon types={planet.types} size="70%" />
               </div>
             );
             break;

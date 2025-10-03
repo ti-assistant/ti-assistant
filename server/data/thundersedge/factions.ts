@@ -118,10 +118,24 @@ export default function getThundersEdgeFactions(
         defaultMessage: "Rebellion",
       }),
       startswith: {
-        // TODO: Add starting components.
+        choice: {
+          options: [
+            "Antimass Deflectors",
+            "Dark Energy Tap",
+            "Plasma Scoring",
+            "AI Development Algorithm",
+          ],
+          select: 1,
+        },
         planets: ["Ahk Creuxx"],
-        techs: [],
-        units: {},
+        units: {
+          Carrier: 1,
+          Destroyer: 2,
+          Fighter: 3,
+          Infantry: 4,
+          "Space Dock": 1,
+          PDS: 1,
+        },
       },
       units: [
         {
@@ -165,6 +179,27 @@ export default function getThundersEdgeFactions(
             combat: 6,
           },
           type: "Mech",
+        },
+        {
+          abilities: [antiFighterBarrage("9 (x2)", intl)],
+          description: intl.formatMessage({
+            id: "Crimson Rebellion.Units.Exile I.Description",
+            description: "Description for Faction Unit: Exile I",
+            defaultMessage:
+              "At the end of any player's combat in this unit's system or an adjacent system, you may place 1 inactive breach in that system.",
+          }),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Crimson Rebellion.Units.Exile I.Title",
+            description: "Title of Faction Unit: Exile I",
+            defaultMessage: "Exile I",
+          }),
+          stats: {
+            cost: 1,
+            combat: 8,
+            move: 2,
+          },
+          type: "Destroyer",
         },
       ],
     },
@@ -271,10 +306,9 @@ export default function getThundersEdgeFactions(
           select: 2,
         },
         planets: ["Ikatena"],
-        techs: [],
         units: {
-          Carrier: 1,
           Dreadnought: 1,
+          Carrier: 1,
           Fighter: 4,
           Infantry: 3,
           "Space Dock": 1,
@@ -422,10 +456,24 @@ export default function getThundersEdgeFactions(
         defaultMessage: "Firmament",
       }),
       startswith: {
-        // TODO: Add starting stuff.
+        choice: {
+          options: [
+            "Neural Motivator",
+            "Psychoarchaeology",
+            "Sarween Tools",
+            "Scanlink Drone Network",
+          ],
+          select: 1,
+        },
         planets: ["Cronos", "Tallin"],
-        techs: [],
-        units: {},
+        units: {
+          Carrier: 1,
+          Cruiser: 1,
+          Destroyer: 1,
+          Fighter: 3,
+          Infantry: 3,
+          "Space Dock": 1,
+        },
       },
       units: [
         {
@@ -590,9 +638,9 @@ export default function getThundersEdgeFactions(
         },
         planets: ["Ordinian", "Revelation"],
         units: {
+          Dreadnought: 1,
           Carrier: 1,
           Cruiser: 1,
-          Dreadnought: 1,
           Fighter: 2,
           Infantry: 3,
           "Space Dock": 1,
@@ -914,9 +962,25 @@ export default function getThundersEdgeFactions(
         defaultMessage: "Ral Nel",
       }),
       startswith: {
-        // TODO: Add starting stuff.
+        choice: {
+          options: [
+            "Neural Motivator",
+            "Psychoarchaeology",
+            "Plasma Scoring",
+            "AI Development Algorithm",
+          ],
+          select: 1,
+        },
         planets: ["Mez Lo Orz Fei Zsha", "Rep Lo Orz Oet"],
-        units: {},
+        units: {
+          Dreadnought: 1,
+          Carrier: 1,
+          Destroyer: 1,
+          Fighter: 2,
+          Infantry: 4,
+          "Space Dock": 1,
+          PDS: 2,
+        },
       },
       units: [
         {

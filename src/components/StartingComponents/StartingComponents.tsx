@@ -35,6 +35,8 @@ import SpaceDockSVG from "../../icons/units/SpaceDock";
 import FlagshipSVG from "../../icons/units/Flagship";
 import WarSunSVG from "../../icons/units/WarSun";
 import MechSVG from "../../icons/units/Mech";
+import TechIcon from "../TechIcon/TechIcon";
+import SynergySVG from "../../icons/ui/Synergy";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -126,43 +128,41 @@ export default function StartingComponents({
       })
       .map((tech) => tech.id);
   }
-  const orderedChoices = techs
-    ? choices
-        .filter((tech) => {
-          return !(startswith.techs ?? []).includes(tech);
-        })
-        .filter((tech) => {
-          return !!techs[tech];
-        })
-        .filter((tech) => {
-          if (factionId !== "Edyn Mandate") {
-            return true;
-          }
-          const selectedTypes = (startswith.techs ?? []).map(
-            (tech) => techs[tech]?.type
-          );
-          return !selectedTypes.includes(techs[tech]?.type);
-        })
-        .map((tech) => {
-          return techs[tech] as Tech;
-        })
-        .sort((a, b) => {
-          const typeDiff =
-            techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
-          if (typeDiff !== 0) {
-            return typeDiff;
-          }
-          const prereqDiff: number = a.prereqs.length - b.prereqs.length;
-          if (prereqDiff !== 0) {
-            return prereqDiff;
-          }
-          if (a.name < b.name) {
-            return -1;
-          } else {
-            return 1;
-          }
-        })
-    : [];
+  const orderedChoices = choices
+    .filter((tech) => {
+      return !(startswith.techs ?? []).includes(tech);
+    })
+    .filter((tech) => {
+      return !!techs[tech];
+    })
+    .filter((tech) => {
+      if (factionId !== "Edyn Mandate") {
+        return true;
+      }
+      const selectedTypes = (startswith.techs ?? []).map(
+        (tech) => techs[tech]?.type
+      );
+      return !selectedTypes.includes(techs[tech]?.type);
+    })
+    .map((tech) => {
+      return techs[tech] as Tech;
+    })
+    .filter((tech) => !tech.faction || tech.faction === factionId)
+    .sort((a, b) => {
+      const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+      if (typeDiff !== 0) {
+        return typeDiff;
+      }
+      const prereqDiff: number = a.prereqs.length - b.prereqs.length;
+      if (prereqDiff !== 0) {
+        return prereqDiff;
+      }
+      if (a.name < b.name) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
 
   function selectSubFaction(subFaction: SubFaction) {
     if (factionId !== "Council Keleres") {
@@ -284,6 +284,24 @@ export default function StartingComponents({
               chooseStartingTechAsync(gameId, factionId, tech.id)
             }
           />
+        </div>
+      ) : null}
+      {factionId === "Crimson Rebellion" ? (
+        <div className="flexRow">
+          <div className="flexRow" style={{ gap: rem(2) }}>
+            <TechIcon
+              type={faction.breakthrough.synergy?.left ?? "RED"}
+              size={16}
+            />
+            <div className="flexRow" style={{ width: rem(24) }}>
+              <SynergySVG />
+            </div>
+            <TechIcon
+              type={faction.breakthrough.synergy?.right ?? "BLUE"}
+              size={16}
+            />
+          </div>
+          {faction.breakthrough.name}
         </div>
       ) : null}
       {/* Units */}

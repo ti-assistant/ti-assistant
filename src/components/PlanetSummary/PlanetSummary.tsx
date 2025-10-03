@@ -47,16 +47,18 @@ export default function PlanetSummary({
     if (hasSkip) {
       ++techSkips;
     }
-    switch (planet.type) {
-      case "CULTURAL":
-        ++cultural;
-        break;
-      case "INDUSTRIAL":
-        ++industrial;
-        break;
-      case "HAZARDOUS":
-        ++hazardous;
-        break;
+    for (const type of planet.types) {
+      switch (type) {
+        case "CULTURAL":
+          ++cultural;
+          break;
+        case "INDUSTRIAL":
+          ++industrial;
+          break;
+        case "HAZARDOUS":
+          ++hazardous;
+          break;
+      }
     }
     if (planet.attachments?.includes("Terraform")) {
       ++cultural;
@@ -81,11 +83,11 @@ export default function PlanetSummary({
       <div className={styles.CountSection}>
         <div className={styles.PlanetTypeGrid}>
           <div className={styles.centered}>{cultural || "-"}</div>
-          <PlanetIcon type={"CULTURAL"} size={16} />
+          <PlanetIcon types={["CULTURAL"]} size={16} />
           <div className={styles.centered}>{hazardous || "-"}</div>
-          <PlanetIcon type={"HAZARDOUS"} size={16} />
+          <PlanetIcon types={["HAZARDOUS"]} size={16} />
           <div className={styles.centered}>{industrial || "-"}</div>
-          <PlanetIcon type={"INDUSTRIAL"} size={16} />
+          <PlanetIcon types={["INDUSTRIAL"]} size={16} />
         </div>
         <div className={styles.PlanetTypeGrid}>
           <LegendaryPlanetIcon />

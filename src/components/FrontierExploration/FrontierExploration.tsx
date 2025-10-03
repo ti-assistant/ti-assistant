@@ -59,8 +59,8 @@ export default function FrontierExploration({
     const availableAttachments = Object.values(attachments)
       .filter(
         (attachment) =>
-          ((adjustedPlanet.type === "ALL" && attachment.required.type) ||
-            attachment.required.type === adjustedPlanet.type) &&
+          (!attachment.required.type ||
+            adjustedPlanet.types.includes(attachment.required.type)) &&
           (attachment.id === currentAttachment ||
             !claimedAttachments.has(attachment.id))
       )
@@ -111,11 +111,7 @@ export default function FrontierExploration({
                 }
               }}
               selectedAttachment={currentAttachment}
-              tag={
-                adjustedPlanet.type === "ALL" ? undefined : (
-                  <PlanetIcon type={adjustedPlanet.type} size="60%" />
-                )
-              }
+              tag={<PlanetIcon types={adjustedPlanet.types} size="75%" />}
             />
           </div>
         ) : null}

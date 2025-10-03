@@ -469,7 +469,7 @@ export function buildCompletePlanets(
       const attributes = new Set(planet.attributes);
       attributes.add("all-types");
       planet.attributes = Array.from(attributes);
-      planet.type = "ALL";
+      planet.types = ["CULTURAL", "HAZARDOUS", "INDUSTRIAL"];
     }
 
     planets[planet.id] = planet;

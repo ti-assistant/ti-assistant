@@ -98,6 +98,7 @@ interface MapProps {
   planets?: Partial<Record<PlanetId, Planet>>;
   hideLegend?: boolean;
   hideFracture?: boolean;
+  expansions: Expansion[];
   // Used for selecting systems.
   canSelectSystem?: (systemId: string) => boolean;
   onSelect?: (systemId: string) => void;
@@ -114,6 +115,7 @@ export default function GameMap({
   canSelectSystem,
   onSelect,
   hideFracture,
+  expansions,
 }: MapProps) {
   const planetInfo = planets ?? {};
   const [overlayDetails, setOverlayDetails] =
@@ -275,7 +277,13 @@ export default function GameMap({
   }
 
   return (
-    <div className={styles.Map}>
+    <div
+      className={`${styles.Map} ${
+        !hideFracture && expansions.includes("THUNDERS EDGE")
+          ? styles.Fracture
+          : ""
+      }`}
+    >
       {hideLegend ? null : (
         <OverlayLegend
           overlayDetails={overlayDetails}
@@ -381,6 +389,7 @@ export default function GameMap({
             overlayDetails={overlayDetails}
             planetInfo={planetInfo}
             numRings={numRings}
+            expansions={expansions}
           />
         )}
       </div>
@@ -423,15 +432,15 @@ function Fracture({
   overlayDetails,
   planetInfo,
   numRings,
+  expansions,
 }: {
   tilePercentage: number;
   overlayDetails: OverlayDetails;
   planetInfo: Partial<Record<PlanetId, Planet>>;
   numRings: number;
+  expansions: Expansion[];
 }) {
-  const options = useOptions();
-
-  if (!options.expansions.includes("THUNDERS EDGE")) {
+  if (!expansions.includes("THUNDERS EDGE")) {
     return null;
   }
 
@@ -441,15 +450,9 @@ function Fracture({
   const threeTileWidth = tilePercentage * (HEX_RATIO * 3 - HEX_OVERLAP * 2);
   const tileHeight = tilePercentage * 1.5;
 
-  const fracture = CubeToPixel(position, tilePercentage * HEX_RATIO);
-  const fractureMid = CubeToPixel(
-    Cube(position.q + 1, 0, position.s),
-    tilePercentage * HEX_RATIO
-  );
-  const fractureBot = CubeToPixel(
-    Cube(position.q + 1, 0, position.s + 2),
-    tilePercentage * HEX_RATIO
-  );
+  const fracture = CubeToPixel(Cube(-1, 0, -3), tilePercentage * HEX_RATIO);
+  const fractureMid = CubeToPixel(Cube(-3, 0, -1), tilePercentage * HEX_RATIO);
+  const fractureBot = CubeToPixel(Cube(-4, 0, 3), tilePercentage * HEX_RATIO);
 
   const leftShift = (tileHeight * HEX_RATIO) / 2;
   const threeTileLeftShift = tileHeight * HEX_RATIO;

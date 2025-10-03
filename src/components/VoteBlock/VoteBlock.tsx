@@ -159,7 +159,7 @@ export function getTargets(
       return [...ownedPlanetNames, abstain];
     case "Cultural Planet":
       const culturalPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "CULTURAL")
+        .filter((planet) => planet.types.includes("CULTURAL"))
         .filter((planet) => !!planet.owner)
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -167,7 +167,7 @@ export function getTargets(
       return [...culturalPlanets, abstain];
     case "Hazardous Planet":
       const hazardousPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "HAZARDOUS")
+        .filter((planet) => planet.types.includes("HAZARDOUS"))
         .filter((planet) => !!planet.owner)
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -175,7 +175,7 @@ export function getTargets(
       return [...hazardousPlanets, abstain];
     case "Industrial Planet":
       const industrialPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "INDUSTRIAL")
+        .filter((planet) => planet.types.includes("INDUSTRIAL"))
         .filter((planet) => !!planet.owner)
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -375,7 +375,8 @@ export function computeRemainingVotes(
       return true;
     }
     return (
-      planet.type !== "CULTURAL" && !planet.attributes.includes("all-types")
+      !planet.types.includes("CULTURAL") &&
+      !planet.attributes.includes("all-types")
     );
   });
 

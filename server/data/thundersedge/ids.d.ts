@@ -32,7 +32,13 @@ namespace ThundersEdge {
     | "Yin Ascendant" // Yin Brotherhood
     | "Deepgloom Executable"; // Yssaril Tribes
 
-  type ComponentId = "Avernus" | "Share Knowledge" | "Puppets of the Blade";
+  type ComponentId =
+    | "Avernus"
+    | "Conventions of War Abandoned"
+    | "Mercenaries for Hire"
+    | "Share Knowledge"
+    | "Stellar Atomics"
+    | "Puppets of the Blade";
 
   type FactionId =
     | "Crimson Rebellion"

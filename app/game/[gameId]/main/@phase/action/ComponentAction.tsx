@@ -1266,7 +1266,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         if (planet.owner !== factionId) {
           return false;
         }
-        return planet.type === "ALL" || planet.type === "INDUSTRIAL";
+        return planet.types.includes("INDUSTRIAL");
       }).length;
 
       innerContent = (
@@ -1401,6 +1401,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
               factions
             )}
             planets={planets}
+            expansions={options.expansions}
           />
         </div>
       ) : (
@@ -1796,6 +1797,7 @@ function RiftwalkerMeian() {
           hideLegend
           hideFracture
           planets={planets}
+          expansions={options.expansions}
         />
       </div>
     );

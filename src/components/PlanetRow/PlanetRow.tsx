@@ -82,11 +82,8 @@ export default function PlanetRow({
         if (attachment.id === "Terraform" && factionId === "Titans of Ul") {
           return false;
         }
-        if (attachment.required.type !== undefined) {
-          if (
-            attachment.required.type !== planet.type &&
-            planet.type !== "ALL"
-          ) {
+        if (attachment.required.type) {
+          if (!planet.types.includes(attachment.required.type)) {
             return false;
           }
         }
@@ -191,7 +188,7 @@ export default function PlanetRow({
             }}
           >
             <PlanetIcon
-              type={planet.type}
+              types={planet.types}
               factionId={planet.faction}
               size={28}
             />
@@ -379,10 +376,7 @@ function AttachMenu({ planetId }: AttachMenuProps) {
           return false;
         }
         if (attachment.required.type !== undefined) {
-          if (
-            attachment.required.type !== updatedPlanet.type &&
-            updatedPlanet.type !== "ALL"
-          ) {
+          if (!updatedPlanet.types.includes(attachment.required.type)) {
             return false;
           }
         }

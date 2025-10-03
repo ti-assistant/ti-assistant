@@ -4,6 +4,35 @@
   height: var(--size);
 }
 
+.DoubleIcon {
+  height: var(--size);
+  width: var(--size);
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-flow: row;
+
+  justify-items: center;
+  align-items: center;
+
+  gap: 0;
+}
+
+.DoubleIcon > div {
+  position: relative;
+  height: 100%;
+
+  aspect-ratio: 1;
+}
+
+.DoubleIcon > div:first-child {
+  grid-column: 1 /3;
+}
+
+.DoubleIcon > div:last-child {
+  grid-column: 2 / 4;
+}
+
 .TripleIcon {
   height: var(--size);
   width: var(--size);

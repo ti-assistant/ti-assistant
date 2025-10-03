@@ -252,6 +252,7 @@ export default function Footer() {
                       mapString={mapString ?? ""}
                       mapStyle={options["map-style"] ?? "standard"}
                       planets={allPlanets}
+                      expansions={options.expansions}
                     />
                   </div>
                 </div>

@@ -1,3 +1,5 @@
+import { Optional } from "./types/types";
+
 /**
  * Gets all the planets claimed by a specific faction.
  */
@@ -60,7 +62,7 @@ export function applyPlanetAttachments(
         updatedPlanet.attributes.push(attribute);
       }
     } else if (attribute === "all-types") {
-      updatedPlanet.type = "ALL";
+      updatedPlanet.types = ["CULTURAL", "HAZARDOUS", "INDUSTRIAL"];
       updatedPlanet.resources += attachment.resources ?? 1;
       updatedPlanet.influence += attachment.influence ?? 1;
     } else {
@@ -77,7 +79,10 @@ export function applyPlanetAttachments(
   return updatedPlanet;
 }
 
-export function getPlanetTypeColor(type: PlanetType) {
+export function getPlanetTypeColor(type: Optional<PlanetType>) {
+  if (!type) {
+    return "#555";
+  }
   switch (type) {
     case "CULTURAL": {
       return "steelblue";
@@ -87,9 +92,6 @@ export function getPlanetTypeColor(type: PlanetType) {
     }
     case "INDUSTRIAL": {
       return "Green";
-    }
-    case "ALL": {
-      return "#777";
     }
   }
   return "#555";

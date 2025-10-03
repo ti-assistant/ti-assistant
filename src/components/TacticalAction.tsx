@@ -238,9 +238,10 @@ export function TacticalAction({
               const availableAttachments = Object.values(attachments)
                 .filter(
                   (attachment) =>
-                    ((adjustedPlanet.type === "ALL" &&
-                      attachment.required.type) ||
-                      attachment.required.type === adjustedPlanet.type) &&
+                    (!attachment.required.type ||
+                      adjustedPlanet.types.includes(
+                        attachment.required.type
+                      )) &&
                     (attachment.id === currentAttachment ||
                       !claimedAttachments.has(attachment.id))
                 )
@@ -340,17 +341,10 @@ export function TacticalAction({
                           }}
                           selectedAttachment={currentAttachment}
                           tag={
-                            adjustedPlanet.type === "ALL" ? (
-                              <PlanetIcon
-                                type={adjustedPlanet.type}
-                                size="60%"
-                              />
-                            ) : (
-                              <PlanetIcon
-                                type={adjustedPlanet.type}
-                                size="60%"
-                              />
-                            )
+                            <PlanetIcon
+                              types={adjustedPlanet.types}
+                              size="75%"
+                            />
                           }
                         />
                       </div>
@@ -622,6 +616,7 @@ function AdjudicatorBaal() {
           mapStyle={options["map-style"]}
           factions={mapOrderedFactions}
           planets={planets}
+          expansions={options.expansions}
           canSelectSystem={(systemId) => {
             const systemNumber = parseInt(systemId);
             if (

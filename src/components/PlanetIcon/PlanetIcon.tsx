@@ -10,7 +10,7 @@ import IndustrialPlanetSVG from "../../icons/planets/IndustrialPlanet";
 type Size = `${number}%` | number;
 
 interface PlanetIconProps {
-  type: PlanetType;
+  types: PlanetType[];
   factionId?: FactionId;
   size: Size;
 }
@@ -19,8 +19,23 @@ interface PlanetIconCSS extends CSSProperties {
   "--size": string;
 }
 
-export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
-  if (type === "NONE") {
+function PlanetIconSVG({ type }: { type: PlanetType }) {
+  switch (type) {
+    case "CULTURAL":
+      return <CulturalPlanetSVG />;
+    case "HAZARDOUS":
+      return <HazardousPlanetSVG />;
+    case "INDUSTRIAL":
+      return <IndustrialPlanetSVG />;
+  }
+}
+
+export default function PlanetIcon({
+  types,
+  factionId,
+  size,
+}: PlanetIconProps) {
+  if (types.length === 0) {
     return factionId ? <FactionIcon factionId={factionId} size={size} /> : null;
   }
 
@@ -28,38 +43,46 @@ export default function PlanetIcon({ type, factionId, size }: PlanetIconProps) {
     "--size": typeof size === "string" ? size : rem(size),
   };
 
-  if (type === "ALL") {
-    return (
-      <div className={styles.TripleIcon} style={planetIconStyle}>
-        <div>
-          <IndustrialPlanetSVG />
-        </div>
-        <div>
-          <CulturalPlanetSVG />
-        </div>
-        <div>
-          <HazardousPlanetSVG />
-        </div>
-      </div>
-    );
-  }
+  switch (types.length) {
+    case 0:
+      return factionId ? (
+        <FactionIcon factionId={factionId} size={size} />
+      ) : null;
+    case 1:
+      const type = types[0];
+      if (!type) {
+        return null;
+      }
 
-  let svg = null;
-  switch (type) {
-    case "CULTURAL":
-      svg = <CulturalPlanetSVG />;
-      break;
-    case "HAZARDOUS":
-      svg = <HazardousPlanetSVG />;
-      break;
-    case "INDUSTRIAL":
-      svg = <IndustrialPlanetSVG />;
-      break;
-  }
+      return (
+        <div className={styles.PlanetIcon} style={planetIconStyle}>
+          <PlanetIconSVG type={type} />
+        </div>
+      );
+    case 2:
+      return (
+        <div className={styles.DoubleIcon} style={planetIconStyle}>
+          {types.map((type) => {
+            return (
+              <div key={type}>
+                <PlanetIconSVG type={type} />
+              </div>
+            );
+          })}
+        </div>
+      );
 
-  return (
-    <div className={styles.PlanetIcon} style={planetIconStyle}>
-      {svg}
-    </div>
-  );
+    default:
+      return (
+        <div className={styles.TripleIcon} style={planetIconStyle}>
+          {types.map((type) => {
+            return (
+              <div key={type}>
+                <PlanetIconSVG type={type} />
+              </div>
+            );
+          })}
+        </div>
+      );
+  }
 }

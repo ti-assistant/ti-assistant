@@ -38,7 +38,7 @@ export default function DummyFactionSummary() {
       position: TOP_RIGHT,
       resources: 1,
       system: 75,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     {
       attributes: [],
@@ -51,7 +51,7 @@ export default function DummyFactionSummary() {
       position: TOP_RIGHT,
       resources: 4,
       system: 54,
-      type: "NONE",
+      types: [],
     },
     {
       attributes: [],
@@ -62,7 +62,7 @@ export default function DummyFactionSummary() {
       position: TOP_RIGHT,
       resources: 2,
       system: 75,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     {
       attributes: [],
@@ -73,7 +73,7 @@ export default function DummyFactionSummary() {
       position: TOP_RIGHT,
       resources: 1,
       system: 75,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
   ];
 

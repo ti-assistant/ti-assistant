@@ -32,7 +32,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 1,
       system: 97,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Garbozia: {
       ability: intl.formatMessage(
@@ -52,7 +52,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 2,
       system: 98,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Emelpar: {
       ability: intl.formatMessage(
@@ -72,7 +72,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 0,
       system: 99,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Tempesta: {
       ability: intl.formatMessage(
@@ -92,7 +92,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 1,
       system: 100,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     // TODO: Handle multi-type planets.
     Olergodt: {
@@ -104,7 +104,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 2,
       system: 101,
-      type: "HAZARDOUS", // and CULTURAL
+      types: ["CULTURAL", "HAZARDOUS"],
     },
     Andeara: {
       attributes: ["blue-skip"],
@@ -115,7 +115,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 102,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     "ViraPics III": {
       attributes: [],
@@ -126,7 +126,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 2,
       system: 103,
-      type: "CULTURAL", // and HAZARDOUS
+      types: ["CULTURAL", "HAZARDOUS"],
     },
     Lesab: {
       attributes: [],
@@ -137,7 +137,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 2,
       system: 104,
-      type: "INDUSTRIAL", // and HAZARDOUS
+      types: ["HAZARDOUS", "INDUSTRIAL"],
     },
     "New Terra": {
       attributes: ["green-skip"],
@@ -148,7 +148,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 105,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Tinnes: {
       attributes: ["green-skip"],
@@ -159,7 +159,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 105,
-      type: "INDUSTRIAL", // and HAZARDOUS
+      types: ["HAZARDOUS", "INDUSTRIAL"],
     },
     Cresius: {
       attributes: [],
@@ -170,7 +170,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 0,
       system: 106,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "Lazul Rex": {
       attributes: [],
@@ -181,7 +181,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 106,
-      type: "CULTURAL", // and INDUSTRIAL
+      types: ["CULTURAL", "INDUSTRIAL"],
     },
     Tiamat: {
       attributes: ["yellow-skip", "yellow-skip"],
@@ -192,7 +192,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 107,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Hercalor: {
       attributes: [],
@@ -203,7 +203,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 107,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Kostboth: {
       attributes: [],
@@ -214,7 +214,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 0,
       system: 108,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Capha: {
       attributes: [],
@@ -225,7 +225,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 3,
       system: 108,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Bellatrix: {
       attributes: [],
@@ -236,7 +236,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 109,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     "Tsion Station": {
       attributes: ["space-station"],
@@ -247,7 +247,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 109,
-      type: "SPACE STATION",
+      types: [],
     },
     Horizon: {
       attributes: [],
@@ -258,7 +258,7 @@ export default function getThundersEdgePlanets(
       position: TOP_RIGHT,
       resources: 1,
       system: 110,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Elnath: {
       attributes: [],
@@ -269,7 +269,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE_LEFT,
       resources: 2,
       system: 110,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "Luthien VI": {
       attributes: [],
@@ -280,7 +280,7 @@ export default function getThundersEdgePlanets(
       position: FAR_BOTTOM_RIGHT,
       resources: 3,
       system: 110,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Tarana: {
       attributes: [],
@@ -291,7 +291,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 1,
       system: 111,
-      type: "CULTURAL", // and INDUSTRIAL
+      types: ["CULTURAL", "INDUSTRIAL"],
     },
     "Oluz Station": {
       attributes: ["space-station"],
@@ -302,7 +302,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 111,
-      type: "SPACE STATION",
+      types: [],
     },
     Industrex: {
       ability: intl.formatMessage(
@@ -322,7 +322,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 2,
       system: 115,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Lemox: {
       attributes: [],
@@ -333,7 +333,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 0,
       system: 116,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     "The Watchtower": {
       attributes: ["space-station"],
@@ -344,7 +344,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 117,
-      type: "SPACE STATION",
+      types: [],
     },
     // Factions
     Avernus: {
@@ -365,7 +365,7 @@ export default function getThundersEdgePlanets(
       name: "Avernus",
       position: HOME_MIDDLE,
       resources: 2,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Ordinian: {
       ability: intl.formatMessage(
@@ -387,7 +387,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 0,
       system: 92,
-      type: "NONE",
+      types: [],
     },
     Revelation: {
       attributes: ["space-station"],
@@ -400,7 +400,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 92,
-      type: "SPACE STATION",
+      types: [],
     },
     "Mez Lo Orz Fei Zsha": {
       attributes: [],
@@ -413,7 +413,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 93,
-      type: "NONE",
+      types: [],
     },
     "Rep Lo Orz Oet": {
       attributes: [],
@@ -426,7 +426,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 93,
-      type: "NONE",
+      types: [],
     },
     Ikatena: {
       attributes: [],
@@ -439,7 +439,7 @@ export default function getThundersEdgePlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 95,
-      type: "NONE",
+      types: [],
     },
     Cronos: {
       attributes: [],
@@ -452,7 +452,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 2,
       system: "96A",
-      type: "NONE",
+      types: [],
     },
     Tallin: {
       attributes: [],
@@ -465,7 +465,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: "96A",
-      type: "NONE",
+      types: [],
     },
     "Cronos Hollow": {
       attributes: [],
@@ -478,7 +478,7 @@ export default function getThundersEdgePlanets(
       position: TOP_LEFT,
       resources: 3,
       system: "96B",
-      type: "NONE",
+      types: [],
     },
     "Tallin Hollow": {
       attributes: [],
@@ -491,7 +491,7 @@ export default function getThundersEdgePlanets(
       position: BOTTOM_RIGHT,
       resources: 3,
       system: "96B",
-      type: "NONE",
+      types: [],
     },
     "Ahk Creuxx": {
       attributes: [],
@@ -504,7 +504,7 @@ export default function getThundersEdgePlanets(
       position: MIDDLE,
       resources: 4,
       system: 118,
-      type: "NONE",
+      types: [],
     },
     Cocytus: {
       alwaysInclude: true,
@@ -516,7 +516,7 @@ export default function getThundersEdgePlanets(
       position: { x: -43, y: 25 },
       resources: 3,
       system: 666,
-      type: "NONE",
+      types: [],
     },
     Lethe: {
       alwaysInclude: true,
@@ -528,7 +528,7 @@ export default function getThundersEdgePlanets(
       position: { x: 34, y: 6 },
       resources: 0,
       system: 668,
-      type: "NONE",
+      types: [],
     },
     Phlegethon: {
       alwaysInclude: true,
@@ -540,7 +540,7 @@ export default function getThundersEdgePlanets(
       position: { x: 54, y: 44 },
       resources: 1,
       system: 668,
-      type: "NONE",
+      types: [],
     },
     Styx: {
       ability: intl.formatMessage(
@@ -561,7 +561,7 @@ export default function getThundersEdgePlanets(
       position: { x: 0, y: -16 },
       resources: 4,
       system: 667,
-      type: "NONE",
+      types: [],
     },
     "Thunder's Edge": {
       ability: intl.formatMessage(
@@ -581,7 +581,7 @@ export default function getThundersEdgePlanets(
       name: "Thunder's Edge",
       position: MIDDLE,
       resources: 5,
-      type: "NONE",
+      types: [],
     },
   };
 }
