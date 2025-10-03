@@ -28,34 +28,69 @@ export class UpdateBreakthroughStateHandler implements Handler {
         this.data.event.state === "locked" ? "DELETE" : this.data.event.state,
     };
 
+    switch (this.data.event.factionId) {
+      case "Council Keleres": {
+        let handler: Optional<Handler>;
+        switch (this.data.event.state) {
+          case "locked":
+            handler = new UnclaimPlanetHandler(this.gameData, {
+              action: "UNCLAIM_PLANET",
+              event: {
+                planet: "Custodia Vigilia",
+                faction: "Council Keleres",
+              },
+            });
+            break;
+          case "readied":
+            handler = new ClaimPlanetHandler(this.gameData, {
+              action: "CLAIM_PLANET",
+              event: {
+                planet: "Custodia Vigilia",
+                faction: "Council Keleres",
+              },
+            });
+            break;
+        }
+        if (handler) {
+          updates = {
+            ...updates,
+            ...handler.getUpdates(),
+          };
+        }
+        break;
+      }
+      case "Embers of Muaat": {
+        let handler: Optional<Handler>;
+        switch (this.data.event.state) {
+          case "locked":
+            handler = new UnclaimPlanetHandler(this.gameData, {
+              action: "UNCLAIM_PLANET",
+              event: {
+                planet: "Avernus",
+                faction: "Embers of Muaat",
+              },
+            });
+            break;
+          case "readied":
+            handler = new ClaimPlanetHandler(this.gameData, {
+              action: "CLAIM_PLANET",
+              event: {
+                planet: "Avernus",
+                faction: "Embers of Muaat",
+              },
+            });
+            break;
+        }
+        if (handler) {
+          updates = {
+            ...updates,
+            ...handler.getUpdates(),
+          };
+        }
+        break;
+      }
+    }
     if (this.data.event.factionId === "Embers of Muaat") {
-      let handler: Optional<Handler>;
-      switch (this.data.event.state) {
-        case "locked":
-          handler = new UnclaimPlanetHandler(this.gameData, {
-            action: "UNCLAIM_PLANET",
-            event: {
-              planet: "Avernus",
-              faction: "Embers of Muaat",
-            },
-          });
-          break;
-        case "readied":
-          handler = new ClaimPlanetHandler(this.gameData, {
-            action: "CLAIM_PLANET",
-            event: {
-              planet: "Avernus",
-              faction: "Embers of Muaat",
-            },
-          });
-          break;
-      }
-      if (handler) {
-        updates = {
-          ...updates,
-          ...handler.getUpdates(),
-        };
-      }
     }
 
     return updates;

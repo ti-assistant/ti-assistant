@@ -569,6 +569,12 @@ export function buildCompleteTechs(
     techs[tech.id] = omegaMergeFn(tech);
   });
 
+  for (const tech of Object.values(techs)) {
+    if (tech.type !== "UPGRADE" && tech.deprecates) {
+      delete techs[tech.deprecates];
+    }
+  }
+
   return techs;
 }
 

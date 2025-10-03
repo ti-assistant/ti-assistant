@@ -69,6 +69,26 @@ export default function getCodexThreeFactions(
           ],
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Council Keleres.Breakthrough.IIHQ Modernization.Title",
+          description: "Title of Faction Breakthrough: IIHQ Modernization",
+          defaultMessage: "I.I.H.Q. Modernization",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Council Keleres.Breakthrough.IIHQ Modernization.Description",
+            description:
+              "Description of Faction Breakthrough: IIHQ Modernization",
+            defaultMessage:
+              "When you gain this card, gain the Custodia Vigilia planet card and its legendary planet ability card.{br}You are neighbors with all players that have units or control planets in or adjacent to the Mecatol Rex system.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "IIHQ Modernization",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 0.5,
         Orange: 0.35,

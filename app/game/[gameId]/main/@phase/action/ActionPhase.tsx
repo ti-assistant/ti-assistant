@@ -1262,7 +1262,7 @@ export function AdditionalActions({
                 />
               }
             />
-            <div> </div>
+            <div></div>
             <TacticalAction
               activeFactionId={activeFaction.id}
               claimablePlanets={claimablePlanets}

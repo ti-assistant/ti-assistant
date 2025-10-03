@@ -358,8 +358,8 @@ function MobileOptions({
                     style={{
                       display: "grid",
                       gridAutoFlow: "column",
-                      gridTemplateRows: "repeat(4, 1fr)",
-                      gridTemplateColumns: "repeat(4, 1fr)",
+                      gridTemplateRows: "repeat(5, 1fr)",
+                      gridTemplateColumns: "repeat(5, 1fr)",
                       justifyContent: "flex-start",
                       alignContent: "flex-start",
                       fontFamily: "Myriad Pro",
@@ -737,8 +737,8 @@ function Options({
                   style={{
                     display: "grid",
                     gridAutoFlow: "column",
-                    gridTemplateRows: "repeat(4, 1fr)",
-                    gridTemplateColumns: "repeat(4, 1fr)",
+                    gridTemplateRows: "repeat(5, 1fr)",
+                    gridTemplateColumns: "repeat(5, 1fr)",
                     justifyContent: "flex-start",
                     alignContent: "flex-start",
                     padding: `0 ${rem(20)}`,

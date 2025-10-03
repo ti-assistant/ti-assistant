@@ -14,6 +14,7 @@ interface OmegaTech {
 }
 
 interface BaseNormalTech {
+  deprecates?: TechId;
   description: string;
   expansion: Expansion;
   faction?: FactionId;

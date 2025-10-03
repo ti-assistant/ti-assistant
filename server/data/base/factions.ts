@@ -214,6 +214,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Barony of Letnev.Breakthrough.Gravleash Maneuvers.Title",
+          description: "Title of Faction Breakthrough: Gravleash Maneuvers",
+          defaultMessage: "Gravleash Maneuvers",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Barony of Letnev.Breakthrough.Gravleash Maneuvers.Description",
+            description:
+              "Description of Faction Breakthrough: Gravleash Maneuvers",
+            defaultMessage:
+              "Before you roll dice during space combat, apply +1 to the results of 1 of your ship's rolls, where X is the number of ship types you have in the combat.{br}During movement, your non-fighter ships' move values are equal to the highest move value amongst moving ships in the system they started in.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Gravleash Maneuvers",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 0.8,
         Blue: 0.1,
@@ -712,6 +732,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Emirates of Hacan.Breakthrough.Auto-Factories.Title",
+          description: "Title of Faction Breakthrough: Auto-Factories",
+          defaultMessage: "Auto-Factories",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Emirates of Hacan.Breakthrough.Auto-Factories.Description",
+            description: "Description of Faction Breakthrough: Auto-Factories",
+            defaultMessage:
+              "When you produce 3 or more non-fighter ships, place 1 command token from your reinforcements into your fleet pool.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Auto-Factories",
+        synergy: { left: "RED", right: "YELLOW" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Orange: 0.7,
         Yellow: 1.2,
@@ -1040,7 +1079,24 @@ export default function getBaseFactions(
         },
       ],
       breakthrough: {
+        name: intl.formatMessage({
+          id: "Ghosts of Creuss.Breakthrough.Particle Synthesis.Title",
+          description: "Title of Faction Breakthrough: Particle Synthesis",
+          defaultMessage: "Particle Synthesis",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Ghosts of Creuss.Breakthrough.Particle Synthesis.Description",
+            description:
+              "Description of Faction Breakthrough: Particle Synthesis",
+            defaultMessage:
+              "Each wormhole in a system that contains your ships gains PRODUCTION 1 as if it were a unit you control.{br}Reduce the combined cost of units you produce in systems that contain wormholes by 1 for each wormhole in that system.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Particle Synthesis",
         synergy: { left: "BLUE", right: "YELLOW" },
+        timing: "TACTICAL_ACTION",
       },
       colors: {
         Black: 0.1,
@@ -1363,6 +1419,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Mentak Coalition.Breakthrough.The Table's Grace.Title",
+          description: "Title of Faction Breakthrough: The Table's Grace",
+          defaultMessage: "The Table's Grace",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Mentak Coalition.Breakthrough.The Table's Grace.Description",
+            description:
+              "Description of Faction Breakthrough: The Table's Grace",
+            defaultMessage:
+              "If you have the Cruiser II unit upgrade technology, flip this card and place it on top of Cruiser II.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "The Table's Grace",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Black: 0.5,
         Orange: 0.95,
@@ -1465,6 +1541,28 @@ export default function getBaseFactions(
           },
           type: "Mech",
         },
+        {
+          abilities: [],
+          description: intl.formatMessage({
+            id: "Mentak Coalition.Units.Corsair.Description",
+            description: "Description for Faction Unit: Corsair",
+            defaultMessage:
+              "If the active system contains another player's non-fighter ships, this unit can move through systems that contain other players' ships.",
+          }),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Mentak Coalition.Units.Corsair.Title",
+            description: "Title of Faction Unit: Corsair",
+            defaultMessage: "Corsair",
+          }),
+          stats: {
+            cost: 2,
+            combat: 6,
+            move: 3,
+            capacity: 2,
+          },
+          type: "Cruiser",
+        },
       ],
     },
     "Naalu Collective": {
@@ -1496,6 +1594,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Naalu Collective.Breakthrough.Mindsieve.Title",
+          description: "Title of Faction Breakthrough: Mindsieve",
+          defaultMessage: "Mindsieve",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Naalu Collective.Breakthrough.Mindsieve.Description",
+            description: "Description of Faction Breakthrough: Mindsieve",
+            defaultMessage:
+              "When you would resolve the secondary ability of another player's strategy card, you may give them a promissory note to resolve it without spending a command token.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Mindsieve",
+        synergy: { left: "RED", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Green: 1.15,
         Orange: 0.3,
@@ -1674,6 +1791,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Nekro Virus.Breakthrough.Valefar Assimilator Z.Title",
+          description: "Title of Faction Breakthrough: Valefar Assimilator Z",
+          defaultMessage: "Valefar Assimilator Z",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Nekro Virus.Breakthrough.Valefar Assimilator Z.Description",
+            description:
+              "Description of Faction Breakthrough: Valefar Assimilator Z",
+            defaultMessage:
+              "When you would gain another player's technology using one of your faction abilities, you may instead place one of your \"Z\" assimilator tokens on that player's faction sheet. Your flagship gains the text abilities of that faction's flagship in addition to its own.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Valefar Assimilator Z",
+        timing: "PASSIVE",
+      },
       colors: {
         Black: 0.15,
         Red: 1.75,
@@ -1971,6 +2107,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Universities of Jol-Nar.Breakthrough.Specialized Compounds.Title",
+          description: "Title of Faction Breakthrough: Specialized Compounds",
+          defaultMessage: "Specialized Compounds",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Universities of Jol-Nar.Breakthrough.Specialized Compounds.Description",
+            description:
+              "Description of Faction Breakthrough: Specialized Compounds",
+            defaultMessage:
+              'When you research technology using the "Technology" strategy card, you may exhaust a planet that has a technology specialty instead of spending resources; if you do, you must research a technology of that color.',
+          },
+          { br: "\n\n" }
+        ),
+        id: "Specialized Compounds",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 1.6,
         Purple: 0.3,
@@ -2292,6 +2448,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Xxcha Kingdom.Breakthrough.Archon's Gift.Title",
+          description: "Title of Faction Breakthrough: Archon's Gift",
+          defaultMessage: "Archon's Gift",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Xxcha Kingdom.Breakthrough.Archon's Gift.Description",
+            description: "Description of Faction Breakthrough: Archon's Gift",
+            defaultMessage:
+              "You can spend influence as if it were resources.{br}You can spend resources as if it were influence.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Archon's Gift",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 0.8,
         Green: 1.1,
@@ -2438,8 +2613,8 @@ export default function getBaseFactions(
             "When you gain this card or score a public objective, gain the alliance ability of a random, unused faction.",
         }),
         synergy: {
-          right: "YELLOW",
           left: "GREEN",
+          right: "YELLOW",
         },
         timing: "PASSIVE",
       },
@@ -2607,6 +2782,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Yssaril Tribes.Breakthrough.Deepgloom Executable.Title",
+          description: "Title of Faction Breakthrough: Deepgloom Executable",
+          defaultMessage: "Deepgloom Executable",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Yssaril Tribes.Breakthrough.Deepgloom Executable.Description",
+            description:
+              "Description of Faction Breakthrough: Deepgloom Executable",
+            defaultMessage:
+              "You can allow other players to use your STALL TACTICS or SCHEMING faction abilities; when you do, you may resolve a transaction with that player. During the action phase, that transaction does not count against the once per player transaction limit for that turn.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Deepgloom Executable",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Black: 0.1,
         Green: 0.93,

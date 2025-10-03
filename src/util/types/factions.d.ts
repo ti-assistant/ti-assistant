@@ -70,7 +70,7 @@ interface Breakthrough {
   description: string;
   id: BreakthroughId;
   name: string;
-  synergy: {
+  synergy?: {
     left: TechType;
     right: TechType;
   };

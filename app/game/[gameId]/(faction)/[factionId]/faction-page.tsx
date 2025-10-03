@@ -60,7 +60,7 @@ import {
   speakerTieBreakAsync,
   unclaimPlanetAsync,
   undoAsync,
-  unscoreObjectiveAsync
+  unscoreObjectiveAsync,
 } from "../../../../../src/dynamic/api";
 import InfluenceSVG from "../../../../../src/icons/planets/Influence";
 import {

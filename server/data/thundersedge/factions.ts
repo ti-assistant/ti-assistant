@@ -119,7 +119,7 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         // TODO: Add starting components.
-        planets: [],
+        planets: ["Ahk Creuxx"],
         techs: [],
         units: {},
       },
@@ -423,8 +423,8 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         // TODO: Add starting stuff.
-        // planets: ["Cronos", "Tallin"],
-        planets: [],
+        planets: ["Cronos", "Tallin"],
+        techs: [],
         units: {},
       },
       units: [
@@ -588,9 +588,7 @@ export default function getThundersEdgeFactions(
           ],
           select: 1,
         },
-        // TODO: Add starting planets.
-        // planets: ["Ordinian", "Revelation"],
-        planets: [],
+        planets: ["Ordinian", "Revelation"],
         units: {
           Carrier: 1,
           Cruiser: 1,
@@ -780,7 +778,6 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         // TODO: Add starting stuff.
-        // planets: ["Cronos", "Tallin"],
         planets: [],
         units: {},
       },
@@ -918,7 +915,7 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         // TODO: Add starting stuff.
-        planets: [],
+        planets: ["Mez Lo Orz Fei Zsha", "Rep Lo Orz Oet"],
         units: {},
       },
       units: [

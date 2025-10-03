@@ -41,6 +41,25 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Argent Flight.Breakthrough.Wing Transfer.Title",
+          description: "Title of Faction Breakthrough: Wing Transfer",
+          defaultMessage: "Wing Transfer",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Argent Flight.Breakthrough.Wing Transfer.Description",
+            description: "Description of Faction Breakthrough: Wing Transfer",
+            defaultMessage:
+              "When you activate a system that contains only your units, you may place command tokens from your reinforcements into any systems adjacent to that system that contain only your units; at the end of this action, you may move ships among the active system and systems adjacent to it that contain your command tokens.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Wing Transfer",
+        synergy: { left: "BLUE", right: "YELLOW" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 0.15,
         Green: 0.15,
@@ -206,6 +225,25 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Empyrean.Breakthrough.Void Tether.Title",
+          description: "Title of Faction Breakthrough: Void Tether",
+          defaultMessage: "Void Tether",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Empyrean.Breakthrough.Void Tether.Description",
+            description: "Description of Faction Breakthrough: Void Tether",
+            defaultMessage:
+              "When you activate a system that contains or is adjacent to a unit or planet you control, you may place or move 1 of your void tether tokens onto a border that system shares with another system; other players do not treat those systems as adjacent to each other unless you allow it.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Void Tether",
+        synergy: { left: "GREEN", right: "BLUE" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Magenta: 0.15,
         Purple: 1.6,
@@ -366,6 +404,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Mahact Gene-Sorcerers.Breakthrough.Vaults of the Heir.Title",
+          description: "Title of Faction Breakthrough: Vaults of the Heir",
+          defaultMessage: "Vaults of the Heir",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Mahact Gene-Sorcerers.Breakthrough.Vaults of the Heir.Description",
+            description:
+              "Description of Faction Breakthrough: Vaults of the Heir",
+            defaultMessage:
+              "ACTION: Exhaust this card and purge 1 of your technologies to gain 1 relic.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Vaults of the Heir",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "COMPONENT_ACTION",
+      },
       colors: {
         Purple: 0.3,
         Yellow: 1.6,
@@ -717,6 +775,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Nomad.Breakthrough.Thunder's Paradox.Title",
+          description: "Title of Faction Breakthrough: Thunder's Paradox",
+          defaultMessage: "Thunder's Paradox",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Nomad.Breakthrough.Thunder's Paradox.Description",
+            description:
+              "Description of Faction Breakthrough: Thunder's Paradox",
+            defaultMessage:
+              "At the start of any player's turn, you may exhaust 1 of your agents to ready any other agent.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Thunder's Paradox",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "OTHER",
+      },
       colors: {
         Blue: 1.25,
         Purple: 0.65,
@@ -862,6 +940,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Titans of Ul.Breakthrough.Slumberstate Computing.Title",
+          description: "Title of Faction Breakthrough: Slumberstate Computing",
+          defaultMessage: "Slumberstate Computing",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Titans of Ul.Breakthrough.Slumberstate Computing.Description",
+            description:
+              "Description of Faction Breakthrough: Slumberstate Computing",
+            defaultMessage:
+              "When COALESCENCE results in a ground combat, if you commit no other units, you may choose for your units to coexist instead. During the status phase, for each player you are coexisting with, you and that player each draw 1 additional action card.{br}Other players may allow you to place a sleeper token on a planet they control.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Slumberstate Computing",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "OTHER",
+      },
       colors: {
         Magenta: 1.9,
       },

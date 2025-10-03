@@ -11,12 +11,19 @@ type PlanetAttribute =
   | "victory-point"
   // Thunder's Edge
   | "relic"
+  | "space-station"
   // Discordant Stars
   | "extra-votes"
   | "production"
   | "infantry";
 
-type PlanetType = "INDUSTRIAL" | "CULTURAL" | "HAZARDOUS" | "ALL" | "NONE";
+type PlanetType =
+  | "INDUSTRIAL"
+  | "CULTURAL"
+  | "HAZARDOUS"
+  | "ALL"
+  | "NONE"
+  | "SPACE STATION";
 
 type PlanetUpdateAction =
   | "ADD_PLANET"

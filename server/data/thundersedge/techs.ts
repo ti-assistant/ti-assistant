@@ -5,6 +5,26 @@ export default function getThundersEdgeTechs(
   intl: IntlShape
 ): Record<ThundersEdge.TechId, BaseTech> {
   return {
+    // Council Keleres
+    "Executive Order": {
+      deprecates: "IIHQ Modernization",
+      description: intl.formatMessage({
+        id: "Council Keleres.Techs.Executive Order.Description",
+        description: "Description for Tech: Executive Order",
+        defaultMessage:
+          "ACTION: Reveal the top or bottom card of the agenda deck and vote on it, being speaker. You may use trade goods to vote.",
+      }),
+      expansion: "THUNDERS EDGE",
+      faction: "Council Keleres",
+      id: "Executive Order",
+      name: intl.formatMessage({
+        id: "Council Keleres.Techs.Executive Order.Title",
+        description: "Title of Tech: Executive Order",
+        defaultMessage: "Executive Order",
+      }),
+      prereqs: ["YELLOW"],
+      type: "YELLOW",
+    },
     // Crimson Rebellion
     "Subatomic Splicer": {
       description: intl.formatMessage({

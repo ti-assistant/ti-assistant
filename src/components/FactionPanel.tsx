@@ -754,19 +754,21 @@ function FactionPanelContent({
                   </div>
                 }
                 rightLabel={
-                  <div className="flexRow" style={{ gap: rem(2) }}>
-                    <TechIcon
-                      type={faction.breakthrough.synergy.left}
-                      size={16}
-                    />
-                    <div className="flexRow" style={{ width: rem(24) }}>
-                      <SynergySVG />
+                  faction.breakthrough.synergy ? (
+                    <div className="flexRow" style={{ gap: rem(2) }}>
+                      <TechIcon
+                        type={faction.breakthrough.synergy.left}
+                        size={16}
+                      />
+                      <div className="flexRow" style={{ width: rem(24) }}>
+                        <SynergySVG />
+                      </div>
+                      <TechIcon
+                        type={faction.breakthrough.synergy.right}
+                        size={16}
+                      />
                     </div>
-                    <TechIcon
-                      type={faction.breakthrough.synergy.right}
-                      size={16}
-                    />
-                  </div>
+                  ) : null
                 }
               >
                 <FormattedDescription
