@@ -31,6 +31,7 @@ import GameMap from "../Map/GameMap";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
 import { enterPassword } from "../../util/api/enterPassword";
+import { fracturePlanetsOwned } from "../../util/planets";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -154,6 +155,8 @@ export default function Header({ archive }: { archive?: boolean }) {
                     factions
                   )}
                   planets={allPlanets}
+                  expansions={options.expansions}
+                  hideFracture={!fracturePlanetsOwned(allPlanets)}
                 />
               </div>
             )

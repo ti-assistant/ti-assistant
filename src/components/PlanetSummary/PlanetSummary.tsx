@@ -27,7 +27,12 @@ export default function PlanetSummary({
   let techSkips = 0;
   let attachments = 0;
   for (const planet of planets) {
-    numPlanets++;
+    if (
+      !planet.attributes.includes("space-station") &&
+      !planet.attributes.includes("ocean")
+    ) {
+      numPlanets++;
+    }
     if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
       resources += planet.resources + planet.influence;
       influence += planet.resources + planet.influence;

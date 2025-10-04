@@ -38,6 +38,7 @@ import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import ThundersEdgePanel from "../ThundersEdgePanel";
 import RelicMenuSVG from "../../icons/ui/RelicMenu";
 import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
+import { fracturePlanetsOwned } from "../../util/planets";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -253,6 +254,7 @@ export default function Footer() {
                       mapStyle={options["map-style"] ?? "standard"}
                       planets={allPlanets}
                       expansions={options.expansions}
+                      hideFracture={!fracturePlanetsOwned(allPlanets)}
                     />
                   </div>
                 </div>

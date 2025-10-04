@@ -144,7 +144,13 @@ namespace ThundersEdge {
     | "Phlegethon"
     | "Styx"
     // Special
-    | "Thunder's Edge";
+    | "Thunder's Edge"
+    // Oceans
+    | "Deep Abyss"
+    | "Brine Pool"
+    | "Coral Reef"
+    | "Ice Shelf"
+    | "Lost Fleet";
 
   type ObjectiveId = "Styx" | "The Silver Flame";
 
@@ -159,8 +165,8 @@ namespace ThundersEdge {
 
   // TODO: Change if fracture has actual system numbers.
   type SystemId =
-    | 83
-    | 84
+    // | 83
+    // | 84
     // TODO: Verify above
     | 92
     | 93

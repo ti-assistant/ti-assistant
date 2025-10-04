@@ -12,6 +12,7 @@ type PlanetAttribute =
   // Thunder's Edge
   | "relic"
   | "space-station"
+  | "ocean"
   // Discordant Stars
   | "extra-votes"
   | "production"

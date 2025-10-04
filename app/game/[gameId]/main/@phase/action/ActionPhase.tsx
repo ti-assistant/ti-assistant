@@ -400,17 +400,30 @@ export function AdditionalActions({
         return false;
       }
     }
+    if (planet.attributes.includes("ocean")) {
+      return factionId === "Deepwrought Scholarate";
+    }
+    // Avernus could be in any system.
+    if (planet.id === "Avernus" && planet.owner) {
+      return true;
+    }
     if (claimedPlanets.length > 0) {
-      const claimedPlanet = claimedPlanets[0]
-        ? planets[claimedPlanets[0].planet]
-        : null;
-      if (claimedPlanet?.faction) {
-        return planet.faction === claimedPlanet.faction;
+      for (const claimedPlanetEvent of claimedPlanets) {
+        if (claimedPlanetEvent.planet === "Avernus") {
+          continue;
+        }
+        const claimedPlanet = planets[claimedPlanetEvent.planet];
+        if (claimedPlanet?.attributes.includes("ocean")) {
+          continue;
+        }
+        if (claimedPlanet?.faction) {
+          return planet.faction === claimedPlanet.faction;
+        }
+        if (claimedPlanet?.system) {
+          return planet.system === claimedPlanet.system;
+        }
+        return false;
       }
-      if (claimedPlanet?.system) {
-        return planet.system === claimedPlanet.system;
-      }
-      return false;
     }
     return true;
   });
@@ -683,6 +696,7 @@ export function AdditionalActions({
       if (activeFaction.id === "Xxcha Kingdom") {
         const peaceAccordsPlanets = claimablePlanets
           .filter((planet) => planet.id !== "Mecatol Rex")
+          .filter((planet) => !planet.attributes.includes("ocean"))
           .sort((a, b) => (a.name > b.name ? 1 : -1));
         return (
           <div className="flexColumn largeFont" style={{ ...style }}>
@@ -921,6 +935,9 @@ export function AdditionalActions({
               return false;
             }
             if (planet.locked) {
+              return false;
+            }
+            if (planet.attributes.includes("ocean")) {
               return false;
             }
             for (const claimedPlanet of claimedPlanets) {

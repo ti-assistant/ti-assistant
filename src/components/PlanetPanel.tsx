@@ -144,6 +144,10 @@ function UnclaimedPlanetSection() {
           style={{ position: "relative" }}
         >
           {unownedPlanets.map((planet) => {
+            let possibleFactions = objectKeys(factions);
+            if (planet.attributes.includes("ocean")) {
+              possibleFactions = ["Deepwrought Scholarate"];
+            }
             return (
               <div
                 key={planet.id}

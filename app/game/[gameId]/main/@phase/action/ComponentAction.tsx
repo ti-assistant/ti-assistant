@@ -1014,6 +1014,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         if (planet.owner === factionId) {
           return false;
         }
+        if (planet.attributes.includes("ocean")) {
+          return false;
+        }
         return true;
       });
       const scoredObjectives = getScoredObjectives(currentTurn, factionId);
@@ -1093,18 +1096,30 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             return false;
           }
         }
+        if (planet.attributes.includes("ocean")) {
+          return selectedFaction === "Deepwrought Scholarate";
+        }
+        // Avernus could be in any system.
+        if (planet.id === "Avernus" && planet.owner) {
+          return true;
+        }
         if (claimedPlanets.length > 0) {
-          const claimedPlanetName = claimedPlanets[0]?.planet;
-          const claimedPlanet = claimedPlanetName
-            ? planets[claimedPlanetName]
-            : undefined;
-          if (claimedPlanet?.system) {
-            return planet.system === claimedPlanet.system;
+          for (const claimedPlanetEvent of claimedPlanets) {
+            if (claimedPlanetEvent.planet === "Avernus") {
+              continue;
+            }
+            const claimedPlanet = planets[claimedPlanetEvent.planet];
+            if (claimedPlanet?.attributes.includes("ocean")) {
+              continue;
+            }
+            if (claimedPlanet?.system) {
+              return planet.system === claimedPlanet.system;
+            }
+            if (claimedPlanet?.faction) {
+              return planet.faction === claimedPlanet.faction;
+            }
+            return false;
           }
-          if (claimedPlanet?.faction) {
-            return planet.faction === claimedPlanet.faction;
-          }
-          return false;
         }
         return true;
       });

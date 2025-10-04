@@ -4,8 +4,6 @@ import styles from "./GameMap.module.scss";
 import OverlayLegend from "./OverlayLegend";
 import { OverlayDetails } from "./PlanetOverlay";
 import SystemImage from "./SystemImage";
-import { rem } from "../../util/util";
-import { useOptions } from "../../context/dataHooks";
 
 interface Cube {
   q: number;
@@ -390,6 +388,8 @@ export default function GameMap({
             planetInfo={planetInfo}
             numRings={numRings}
             expansions={expansions}
+            mapStyle={mapStyle}
+            numFactions={factions.length}
           />
         )}
       </div>
@@ -421,10 +421,50 @@ function getWormholeNexusSystemNum(mallice: string | SystemId) {
   return (mallice as SystemId).toString();
 }
 
-function getFracturePosition(numRings: number) {
-  // Returns [-1, -2, -2, -3, -3, -4, -4, etc.]
-  const q = (1 / 4) * (-2 * numRings - (-1) ** numRings - 3);
-  return Cube(q, 0, numRings);
+function getFracturePosition(
+  numFactions: number,
+  mapStyle: MapStyle
+): { left: Cube; center: Cube; right: Cube } {
+  switch (numFactions) {
+    case 3:
+      return {
+        left: Cube(-1, 0, -3),
+        center: Cube(-2, 0, -1),
+        right: Cube(-4, 0, 3),
+      };
+    case 4:
+    case 5:
+      return {
+        left: Cube(-1, 0, -3),
+        center: Cube(-3, 0, -1),
+        right: Cube(-4, 0, 3),
+      };
+    case 6:
+      if (mapStyle === "large") {
+        return {
+          left: Cube(-2, 0, -3),
+          center: Cube(-4, 0, -1),
+          right: Cube(-5, 0, 3),
+        };
+      }
+      return {
+        left: Cube(-1, 0, -3),
+        center: Cube(-3, 0, -1),
+        right: Cube(-4, 0, 3),
+      };
+    case 7:
+    case 8:
+      return {
+        left: Cube(-2, 0, -3),
+        center: Cube(-4, 0, -1),
+        right: Cube(-5, 0, 3),
+      };
+  }
+  return {
+    left: Cube(-1, 0, -3),
+    center: Cube(-3, 0, -1),
+    right: Cube(-4, 0, 3),
+  };
 }
 
 function Fracture({
@@ -433,26 +473,30 @@ function Fracture({
   planetInfo,
   numRings,
   expansions,
+  numFactions,
+  mapStyle,
 }: {
   tilePercentage: number;
   overlayDetails: OverlayDetails;
   planetInfo: Partial<Record<PlanetId, Planet>>;
   numRings: number;
   expansions: Expansion[];
+  numFactions: number;
+  mapStyle: MapStyle;
 }) {
   if (!expansions.includes("THUNDERS EDGE")) {
     return null;
   }
 
-  const position = getFracturePosition(numRings);
+  const position = getFracturePosition(numFactions, mapStyle);
 
   const twoTileWidth = tilePercentage * (HEX_RATIO * 2 - HEX_OVERLAP);
   const threeTileWidth = tilePercentage * (HEX_RATIO * 3 - HEX_OVERLAP * 2);
   const tileHeight = tilePercentage * 1.5;
 
-  const fracture = CubeToPixel(Cube(-1, 0, -3), tilePercentage * HEX_RATIO);
-  const fractureMid = CubeToPixel(Cube(-3, 0, -1), tilePercentage * HEX_RATIO);
-  const fractureBot = CubeToPixel(Cube(-4, 0, 3), tilePercentage * HEX_RATIO);
+  const fracture = CubeToPixel(position.left, tilePercentage * HEX_RATIO);
+  const fractureMid = CubeToPixel(position.center, tilePercentage * HEX_RATIO);
+  const fractureBot = CubeToPixel(position.right, tilePercentage * HEX_RATIO);
 
   const leftShift = (tileHeight * HEX_RATIO) / 2;
   const threeTileLeftShift = tileHeight * HEX_RATIO;

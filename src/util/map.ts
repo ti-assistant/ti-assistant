@@ -202,7 +202,17 @@ export function validSystemNumber(number: string) {
   if (intVal > 665) {
     return true;
   }
-  if (intVal > 102) {
+  if (intVal === 299) {
+    return true;
+  }
+  // Council Keleres home systems
+  if (intVal > 202) {
+    return false;
+  }
+  if (intVal > 199) {
+    return true;
+  }
+  if (intVal > 118) {
     return false;
   }
 
@@ -416,12 +426,13 @@ const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
   Empyrean: "56",
   "Naaz-Rokha Alliance": "57",
   "Argent Flight": "58",
-  "Council Keleres": "",
+  "Council Keleres": "299",
   "Last Bastion": "92",
   "Ral Nel Consortium": "93",
+  "Crimson Rebellion": "94",
   "Deepwrought Scholarate": "95",
-  "Firmament": "96A",
-  "Obsidian": "96B",
+  Firmament: "96A",
+  Obsidian: "96B",
   // Discordant Stars
   "Augurs of Ilyxum": "1001",
   "Bentor Conglomerate": "1002",
@@ -469,7 +480,7 @@ export function getFactionSystemNumber(
   }>
 ) {
   if (!faction?.id) {
-    return "92";
+    return "299";
   }
   if (faction.id === "Council Keleres") {
     switch (faction.startswith?.faction) {
@@ -480,9 +491,9 @@ export function getFactionSystemNumber(
       case "Mentak Coalition":
         return "102";
     }
-    return "92";
+    return "299";
   }
-  return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "92";
+  return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "299";
 }
 
 export function extractFactionIds(

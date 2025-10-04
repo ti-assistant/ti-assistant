@@ -17,7 +17,7 @@ namespace CodexThree {
     | "Valk Keleres"
     | "Ylir Keleres";
 
-  type SystemId = 100 | 101 | 102;
+  type SystemId = 200 | 201 | 202;
 
   type TechId = "Agency Supply Network" | "IIHQ Modernization";
 }

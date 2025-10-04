@@ -146,7 +146,7 @@ export default function SystemImage({
         fill
         style={{ objectFit: "contain" }}
         priority={
-          systemNumber === "92" ||
+          systemNumber === "299" ||
           systemNumber === "18" ||
           systemNumber === "82A"
         }

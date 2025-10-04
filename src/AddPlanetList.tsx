@@ -45,6 +45,9 @@ export function AddPlanetList({
     if (planet.locked) {
       return false;
     }
+    if (planet.attributes.includes("ocean")) {
+      return factionId === "Deepwrought Scholarate";
+    }
     return true;
   });
 

@@ -191,6 +191,11 @@ export default function MapBuilderPage() {
       tileNumbers.push(i.toString());
     }
   }
+  if (filters.has("THUNDERS_EDGE")) {
+    for (let i = 97; i < 118; i++) {
+      tileNumbers.push(i.toString());
+    }
+  }
   if (filters.has("HYPERSPACE_TILES")) {
     for (let i = 83; i < 92; i++) {
       const inMapString = mapString.split(" ").reduce((found, systemNumber) => {
@@ -215,7 +220,10 @@ export default function MapBuilderPage() {
       }
     }
     if (filters.has("THUNDERS_EDGE")) {
-      // TODO: Add systems for TE.
+      for (let i = 92; i < 96; i++) {
+        tileNumbers.push(i.toString());
+      }
+      tileNumbers.push("96A");
     }
     if (filters.has("DISCORDANT_STARS")) {
       for (let i = 1001; i < 1035; i++) {

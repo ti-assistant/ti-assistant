@@ -17,8 +17,6 @@ import { useObjectives } from "../context/objectiveDataHooks";
 import {
   addAttachmentAsync,
   claimPlanetAsync,
-  gainRelicAsync,
-  loseRelicAsync,
   playAdjudicatorBaalAsync,
   removeAttachmentAsync,
   scoreObjectiveAsync,
@@ -27,7 +25,6 @@ import {
   unscoreObjectiveAsync,
 } from "../dynamic/api";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
-import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
 import {
   getAdjudicatorBaalSystem,
@@ -41,8 +38,8 @@ import { getWormholeNexusSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { applyPlanetAttachments } from "../util/planets";
 import { objectKeys, rem } from "../util/util";
+import GainRelic from "./Actions/GainRelic";
 import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
-import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
@@ -54,8 +51,6 @@ import PlanetIcon from "./PlanetIcon/PlanetIcon";
 import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechResearchSection from "./TechResearchSection/TechResearchSection";
-import { Selector } from "./Selector/Selector";
-import GainRelic from "./Actions/GainRelic";
 
 export function TacticalAction({
   activeFactionId,

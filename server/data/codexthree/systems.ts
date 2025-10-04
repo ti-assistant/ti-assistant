@@ -3,21 +3,21 @@ export default function getCodexThreeSystems(): Record<
   BaseSystem
 > {
   return {
-    100: {
+    200: {
       expansion: "CODEX THREE",
-      id: 100,
+      id: 200,
       planets: ["Archon Ren Keleres", "Archon Tau Keleres"],
       type: "HOME",
     },
-    101: {
+    201: {
       expansion: "CODEX THREE",
-      id: 101,
+      id: 201,
       planets: ["Avar Keleres", "Valk Keleres", "Ylir Keleres"],
       type: "HOME",
     },
-    102: {
+    202: {
       expansion: "CODEX THREE",
-      id: 102,
+      id: 202,
       planets: ["Moll Primus Keleres"],
       type: "HOME",
     },

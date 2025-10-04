@@ -153,6 +153,11 @@ export function getTargets(
     case "Planet":
       const ownedPlanetNames = Object.values(planets)
         .filter((planet) => !!planet.owner)
+        .filter(
+          (planet) =>
+            !planet.attributes.includes("ocean") &&
+            !planet.attributes.includes("space-station")
+        )
         .map((planet) => {
           return { id: planet.id, name: planet.name };
         });
@@ -185,6 +190,11 @@ export function getTargets(
       const electablePlanets = Object.values(planets)
         .filter((planet) => !planet.home && planet.name !== "Mecatol Rex")
         .filter((planet) => !!planet.owner)
+        .filter(
+          (planet) =>
+            !planet.attributes.includes("ocean") &&
+            !planet.attributes.includes("space-station")
+        )
         .map((planet) => {
           return { id: planet.id, name: planet.name };
         });

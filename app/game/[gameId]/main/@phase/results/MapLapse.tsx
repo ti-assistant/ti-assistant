@@ -6,6 +6,7 @@ import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import { getWormholeNexusSystemNumber } from "../../../../../../src/util/map";
 import { objectKeys, rem } from "../../../../../../src/util/util";
+import { fracturePlanetsOwned } from "../../../../../../src/util/planets";
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
@@ -89,7 +90,9 @@ export default function MapLapse({
               factions
             )}
             planets={planets.planets}
+            expansions={options.expansions}
             hideLegend
+            hideFracture={!fracturePlanetsOwned(planets.planets)}
           />
         </div>
       </div>

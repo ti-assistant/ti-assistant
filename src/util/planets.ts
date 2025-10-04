@@ -96,3 +96,14 @@ export function getPlanetTypeColor(type: Optional<PlanetType>) {
   }
   return "#555";
 }
+
+export function fracturePlanetsOwned(
+  planets: Partial<Record<PlanetId, Planet>>
+) {
+  return (
+    planets.Styx?.owner ||
+    planets.Lethe?.owner ||
+    planets.Cocytus?.owner ||
+    planets.Phlegethon?.owner
+  );
+}

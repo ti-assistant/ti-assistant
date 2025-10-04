@@ -22,6 +22,7 @@ import DynamicSidebars from "./dynamic-sidebars";
 import GameCode from "./game-code";
 import GameLoader from "./game-loader";
 import styles from "./game.module.scss";
+import { Metadata } from "next/types";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"

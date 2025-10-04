@@ -142,6 +142,11 @@ export default function PlanetOverlay({
               break;
             }
 
+            const leftColor = getPlanetTypeColor(planet.types[0]);
+            const rightColor = planet.types[1]
+              ? getPlanetTypeColor(planet.types[1])
+              : leftColor;
+
             detailsSymbol = (
               <div
                 className="flexRow"
@@ -151,6 +156,7 @@ export default function PlanetOverlay({
                   border: `var(--border-size) solid ${getPlanetTypeColor(
                     planet.types[0]
                   )}`,
+                  borderColor: `${leftColor} ${rightColor} ${rightColor} ${leftColor}`,
                   borderRadius: "100%",
                   width: width,
                   height: height,
